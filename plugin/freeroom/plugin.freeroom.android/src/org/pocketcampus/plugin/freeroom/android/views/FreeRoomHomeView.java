@@ -206,6 +206,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Dialog that holds the SHARE Dialog.
 	 */
 	private AlertDialog mShareDialog;
+	/**
+	 * Dialog that holds the WARNING Dialog.
+	 */
+	private AlertDialog mWarningDialog;
 
 	/* UI ELEMENTS FOR ALL DIALOGS */
 	/* UI ELEMENTS FOR DIALOGS - INFO ROOM */
@@ -382,6 +386,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initFavoritesDialog();
 		initAddRoomDialog();
 		initShareDialog();
+		initWarningDialog();
 	}
 
 	/**
@@ -444,6 +449,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				null);
 		builder.setNegativeButton(
 				getString(R.string.freeroom_dialog_fav_close), null);
+		builder.setNeutralButton(getString(R.string.freeroom_dialog_fav_reset),
+				null);
 
 		// Get the AlertDialog from create()
 		mFavoritesDialog = builder.create();
@@ -489,6 +496,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				if (!mAddRoomDialog.isShowing()) {
 					displayAddRoomDialog(AddRoomCaller.FAVORITES);
 				}
+			}
+		});
+
+		Button bt = mFavoritesDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+		bt.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mWarningDialog.show();
 			}
 		});
 
@@ -779,6 +795,41 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// mSearchPreviousListView.setAdapter();
 
 		initSearch();
+	}
+
+	private void initWarningDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.freeroom_dialog_warn_title));
+		builder.setMessage(getString(R.string.freeroom_dialog_warn_text));
+		builder.setIcon(R.drawable.warning_white_50);
+		builder.setPositiveButton(
+				getString(R.string.freeroom_dialog_warn_reset),
+				new AlertDialog.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						mModel.resetFavorites();
+						mFavoritesAdapter.notifyDataSetChanged();
+					}
+				});
+		builder.setNegativeButton(
+				getString(R.string.freeroom_dialog_warn_cancel), null);
+
+		// Get the AlertDialog from create()
+		mWarningDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mWarningDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.WRAP_CONTENT;
+		lp.height = LayoutParams.WRAP_CONTENT;
+		mWarningDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mWarningDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mWarningDialog.getWindow().setAttributes(lp);
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {

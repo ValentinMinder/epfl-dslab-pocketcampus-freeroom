@@ -104,6 +104,11 @@
     <string name="freeroom_dialog_fav_title">Favorites</string>
     <string name="freeroom_dialog_fav_add">Add new favorites</string>
     <string name="freeroom_dialog_fav_close">Close</string>
+    <string name="freeroom_dialog_fav_reset">Reset favorites</string>
+    <string name="freeroom_dialog_warn_title">Warning</string>
+    <string name="freeroom_dialog_warn_text">Are you sure you want to reset all favorites ?</string>
+    <string name="freeroom_dialog_warn_cancel">Cancel</string>
+    <string name="freeroom_dialog_warn_reset">Reset all favorites</string>
     <string name="freeroom_dialog_add_room_title">Add rooms</string>
     <string name="freeroom_dialog_add_room_validate">Validate</string>
     <string name="freeroom_dialog_add_room_empty_list">Empty selected list, please insert room by typing first letters.</string>
