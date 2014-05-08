@@ -100,6 +100,7 @@
     <string name="freeroom_popup_info_surface">Surface</string>
     <string name="freeroom_popup_info_sqm">sqm</string>
     <string name="freeroom_popup_info_uniqID">Unique UID</string>
+    <string name="freeroom_dialog_info_share">Share my location</string>
     <string name="freeroom_dialog_fav_title">Favorites</string>
     <string name="freeroom_dialog_fav_add">Add new favorites</string>
     <string name="freeroom_dialog_fav_close">Close</string>

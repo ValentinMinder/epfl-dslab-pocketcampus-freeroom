@@ -142,7 +142,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * the closing button (red cross), back button, or clicking outside the
 	 * popup.
 	 */
-	private PopupWindow popupInfoWindow;
+	// private PopupWindow popupInfoWindow;
+	private AlertDialog mInfoDialog;
 
 	/**
 	 * View that holds the SEARCH dialog content, defined in xml in layout
@@ -334,7 +335,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		addActionToActionBar(refresh);
 		addActionToActionBar(editFavorites);
 		addActionToActionBar(search);
-		initPopupInfoRoom();
+		initInfoDialog();
 		initSearchDialog();
 		initFavoritesDialog();
 		initAddRoomDialog();
@@ -344,24 +345,46 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	/**
 	 * Inits the popup to diplay the information about a room.
 	 */
-	private void initPopupInfoRoom() {
-		// construct the popup
-		// it MUST fill the parent in height, such that weight works in xml for
-		// heights. Otherwise, some elements may not be displayed anymore
-		LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
-				.getSystemService(LAYOUT_INFLATER_SERVICE);
-		popupInfoView = layoutInflater.inflate(
+	private void initInfoDialog() {
+		// Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("room name");
+		builder.setIcon(R.drawable.details_white_50);
+		builder.setPositiveButton(
+				getString(R.string.freeroom_dialog_info_share), null);
+		builder.setNegativeButton(
+				getString(R.string.freeroom_dialog_fav_close), null);
+
+		// Get the AlertDialog from create()
+		mInfoDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mInfoDialog.getWindow().getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.FILL_PARENT;
+		lp.height = LayoutParams.WRAP_CONTENT;
+		mInfoDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mInfoDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mInfoDialog.getWindow().setAttributes(lp);
+
+		popupInfoView = mLayoutInflater.inflate(
 				R.layout.freeroom_layout_popup_info, null);
-		popupInfoWindow = new PopupWindow(popupInfoView,
-				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, true);
 
-		// allows outside clicks to close the popup
-		popupInfoWindow.setOutsideTouchable(true);
-		popupInfoWindow.setBackgroundDrawable(new BitmapDrawable());
+		// these work perfectly
+		popupInfoView.setMinimumWidth((int) (activityWidth * 0.9f));
+		popupInfoView.setMinimumHeight((int) (activityHeight * 0.8f));
 
-		TextView tv = (TextView) popupInfoView
-				.findViewById(R.id.freeroom_layout_popup_info_name);
-		tv.setText("room"); // TODO
+		mInfoDialog.setView(popupInfoView);
+		mInfoDialog.setOnShowListener(new OnShowListener() {
+
+			@Override
+			public void onShow(DialogInterface dialog) {
+
+			}
+		});
 	}
 
 	/**
@@ -753,8 +776,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Override back button
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			boolean flag = false;
-			if (popupInfoWindow.isShowing()) {
-				popupInfoWindow.dismiss();
+			if (mInfoDialog.isShowing()) {
+				mInfoDialog.dismiss();
 				flag = true;
 			}
 			if (searchDialog.isShowing()) {
@@ -929,7 +952,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				getString(R.string.freeroom_pattern_hour_format));
 
 		build.append(hour_min.format(startDate));
-		build.append("\n");
+		build.append(" - ");
 		build.append(hour_min.format(endDate));
 		return build.toString();
 	}
@@ -945,13 +968,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * @param mOccupancy
 	 *            the holder of data for location and time
 	 */
-	public void setShareClickListener(ImageView shareImageView,
+	public void setShareClickListener(View shareImageView,
 			final FreeRoomHomeView homeView, final Occupancy mOccupancy) {
 
 		if (!mOccupancy.isIsAtLeastOccupiedOnce()
 				&& mOccupancy.isIsAtLeastFreeOnce()) {
 			shareImageView.setClickable(true);
-			shareImageView.setImageResource(R.drawable.share);
+			shareImageView.setEnabled(true);
+			if (shareImageView instanceof ImageView) {
+				((ImageView) shareImageView).setImageResource(R.drawable.share);
+			}
 			shareImageView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -962,7 +988,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			});
 		} else {
 			shareImageView.setClickable(false);
-			shareImageView.setImageResource(R.drawable.share_disabled);
+			shareImageView.setEnabled(false);
+
+			if (shareImageView instanceof ImageView) {
+				((ImageView) shareImageView)
+						.setImageResource(R.drawable.share_disabled);
+			}
 		}
 	}
 
@@ -982,14 +1013,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
-	 * Display the popup that provides more info about the occupation of the
+	 * Display the dialog that provides more info about the occupation of the
 	 * selected room.
 	 */
-	public void displayPopupInfo() {
+	public void displayInfoDialog() {
 		final Occupancy mOccupancy = mModel.getDisplayedOccupancy();
 		if (mOccupancy != null) {
-			TextView tv = (TextView) popupInfoView
-					.findViewById(R.id.freeroom_layout_popup_info_name);
+			mInfoDialog.hide();
+			mInfoDialog.show();
+
 			final FRRoom mRoom = mOccupancy.getRoom();
 			String text = mRoom.getDoorCode();
 			if (mRoom.isSetDoorCodeAlias()) {
@@ -997,29 +1029,34 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				// the official name can be found in bottom of popup
 				text = mRoom.getDoorCodeAlias();
 			}
-			tv.setText(text);
+			mInfoDialog.setTitle(text);
 
 			TextView periodTextView = (TextView) popupInfoView
-					.findViewById(R.id.freeroom_layout_popup_info_period);
+					.findViewById(R.id.freeroom_layout_dialog_info_period);
 			periodTextView
-					.setText(generateShortTimeSummary(getMaxPeriodFromList(mOccupancy
+					.setText(generateFullTimeSummary(getMaxPeriodFromList(mOccupancy
 							.getOccupancy())));
 
 			ImageView iv = (ImageView) popupInfoView
-					.findViewById(R.id.freeroom_layout_popup_info_share);
+					.findViewById(R.id.freeroom_layout_dialog_info_share);
 			setShareClickListener(iv, this, mOccupancy);
 
+			Button share = mInfoDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+			share.setEnabled(mOccupancy.isIsAtLeastFreeOnce()
+					&& !mOccupancy.isIsAtLeastOccupiedOnce());
+			setShareClickListener(share, this, mOccupancy);
+
 			ListView roomOccupancyListView = (ListView) popupInfoView
-					.findViewById(R.id.freeroom_layout_popup_info_roomOccupancy);
+					.findViewById(R.id.freeroom_layout_dialog_info_roomOccupancy);
 			roomOccupancyListView
 					.setAdapter(new ActualOccupationArrayAdapter<ActualOccupation>(
 							getApplicationContext(), mOccupancy.getOccupancy(),
 							mController, this));
 
 			TextView detailsTextView = (TextView) popupInfoView
-					.findViewById(R.id.freeroom_layout_popup_info_details);
+					.findViewById(R.id.freeroom_layout_dialog_info_details);
 			detailsTextView.setText(getInfoFRRoom(mOccupancy.getRoom()));
-			popupInfoWindow.showAsDropDown(mTextView, 0, 0);
+			mInfoDialog.show();
 		}
 	}
 
