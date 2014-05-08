@@ -26,24 +26,6 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 public class Utils {
 
 	/**
-	 * Adjust the period given in the request. It adds 30s to the lower bound,
-	 * substract 30s from the upper bound. It is used to allow a margin for
-	 * error with the timestamps
-	 * 
-	 * @param req
-	 *            The intial request issued by the client
-	 * @return The new request with correct timestamps.
-	 */
-	public static FreeRoomRequest convertMinPrecision(FreeRoomRequest req) {
-		FRPeriod period = req.getPeriod();
-		period.setTimeStampStart(period.getTimeStampStart() + FRTimes.m30_MIN_IN_MS);
-		period.setTimeStampEnd(period.getTimeStampEnd() - FRTimes.m30_MIN_IN_MS);
-
-		return new FreeRoomRequest(period);
-
-	}
-
-	/**
 	 * Extract the building from the doorCode
 	 * 
 	 * @param doorCode
