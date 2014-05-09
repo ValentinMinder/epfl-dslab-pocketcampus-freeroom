@@ -573,6 +573,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				mFavoritesAdapter.notifyDataSetChanged();
 			}
 		});
+
+		mFavoritesDialog.hide();
+		mFavoritesDialog.show();
+		mFavoritesDialog.dismiss();
+
 		mFavoritesDialog
 				.setOnDismissListener(new AlertDialog.OnDismissListener() {
 
@@ -583,10 +588,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						refresh();
 					}
 				});
-
-		mFavoritesDialog.hide();
-		mFavoritesDialog.show();
-		mFavoritesDialog.dismiss();
 
 		Button tv = mFavoritesDialog.getButton(DialogInterface.BUTTON_POSITIVE);
 		tv.setOnClickListener(new OnClickListener() {
