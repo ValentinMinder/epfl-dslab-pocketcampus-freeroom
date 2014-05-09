@@ -32,8 +32,7 @@
 
             <!-- Meal template -->
             <DataTemplate x:Key="MealItemTemplate">
-                <Grid Margin="24,10,24,30"
-                      Width="432">
+                <Grid Margin="24,10,0,30">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition />
@@ -76,7 +75,8 @@
                         </StackPanel>
                     </Grid>
 
-                    <Grid Grid.Column="1">
+                    <Grid Grid.Column="1"
+                          Margin="0,0,10,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
