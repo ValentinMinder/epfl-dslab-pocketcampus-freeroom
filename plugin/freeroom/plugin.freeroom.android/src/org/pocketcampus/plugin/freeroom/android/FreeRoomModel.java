@@ -612,7 +612,13 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		List<FRRoom> list = null;
 		if (favorites.containsKey(key)) {
 			list = favorites.get(key);
-			return list.contains(mRoom);
+			Iterator<FRRoom> iter = list.iterator();
+			while (iter.hasNext()) {
+				if (iter.next().getUid().equals(mRoom.getUid())) {
+					return true;
+				}
+			}
+			return false;
 		} else {
 			return false;
 		}
@@ -634,7 +640,18 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		if (favorites.containsKey(key)) {
 			list = favorites.get(key);
 			boolean flag1 = list.remove(mRoom);
-			favorites.put(key, list);
+			Iterator<FRRoom> iter = list.iterator();
+			while (iter.hasNext()) {
+				FRRoom mRoomSel = iter.next();
+				if (mRoomSel.getUid().equals(mRoom.getUid())) {
+					flag1 = list.remove(mRoomSel);
+				}
+			}
+			if (list.isEmpty()) {
+				favorites.remove(key);
+			} else {
+				favorites.put(key, list);
+			}
 			boolean flag2 = saveFavorites();
 			return flag1 && flag2;
 		} else {

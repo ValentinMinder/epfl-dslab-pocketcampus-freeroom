@@ -483,6 +483,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				mFavoritesAdapter.notifyDataSetChanged();
 			}
 		});
+		mFavoritesDialog
+				.setOnDismissListener(new AlertDialog.OnDismissListener() {
+
+					@Override
+					public void onDismiss(DialogInterface dialog) {
+						// sends a new request with the new favorites
+						initDefaultRequest();
+						refresh();
+					}
+				});
 
 		mFavoritesDialog.hide();
 		mFavoritesDialog.show();
