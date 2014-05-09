@@ -43,6 +43,19 @@
                     android:host="freeroom.plugin.pocketcampus.org"
                     android:scheme="pocketcampus-authenticate" />
             </intent-filter>
+
+            <!-- Interception of epfl QR-code or website http://occupancy.epfl.ch/room -->
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="occupancy.epfl.ch"
+                    android:scheme="http" />
+            </intent-filter>
         </activity>
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"

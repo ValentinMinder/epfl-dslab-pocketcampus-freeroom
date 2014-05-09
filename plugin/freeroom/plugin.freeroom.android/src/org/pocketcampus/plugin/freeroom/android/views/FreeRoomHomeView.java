@@ -45,6 +45,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -326,9 +327,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		initDefaultRequest();
 		refresh();
-
-		// TODO: NOT the right call to handle the intent
-		handleIntent(getIntent());
 	}
 
 	/**
@@ -354,13 +352,105 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	/**
 	 * Handles an intent for a search coming from outside.
 	 * <p>
-	 * // TODO: handles occupancy.epfl.ch + pockecampus://
+	 * It supports:
+	 * <p>
+	 * http://occupancy.epfl.ch/content format, with content being the
+	 * autocomplete requet.
+	 * <p>
+	 * TODO: pockecampus://
 	 * 
 	 * @param intent
 	 *            the intent to handle
 	 */
-	private void handleSearchIntent(Intent intent) {
-		// TODO: if search launched by other plugin.
+	@Override
+	protected void handleIntent(Intent intent) {
+		if (intent.getAction().equals("android.intent.action.VIEW")) {
+			// using standard http page
+			if (intent.getScheme().equals("http")) {
+				Uri mUri = intent.getData();
+				if (mUri.getHost().equals("occupancy.epfl.ch")) {
+					String mPathData = mUri.getPath();
+					if (mPathData != null && mPathData.length() > 1) {
+						// removing first '/'
+						searchByUriPrepareArguments(mPathData.substring(1,
+								mPathData.length()));
+					}
+				}
+
+				// TODO: something else, predefined
+				if (mUri.getHost().equals("freeroom.plugin.pocketcampus.org")) {
+
+				}
+			}
+		}
+	}
+
+	/**
+	 * Stores if a search by URI has been initiated recently, in order for
+	 * auto-complete to automatically launch a new search if triggered, using
+	 * <code>searchByUriMakeRequest</code>
+	 */
+	private boolean mSearchByUriTriggered = false;
+
+	/**
+	 * Initiates a search by URI with the given constraint as the argument for
+	 * the auto-complete.
+	 * 
+	 * <p>
+	 * If the requirement for autocomplete are not met, it will simply start a
+	 * standard request (any free room now). If the autocomplete gave relevant
+	 * results, it will search the availabilities of these rooms now. If
+	 * autocomplete gave no results, it will also search for any free room now.
+	 * 
+	 * @param constraint
+	 *            argument for the auto-complete to search for rooms.
+	 */
+	private void searchByUriPrepareArguments(String constraint) {
+		mSearchByUriTriggered = true;
+		// TODO: constraint in common!!
+		if (constraint.length() < 2) {
+			// this is not valid: we simply display free room now.
+			searchByUriMakeRequest(new ArrayList<FRRoom>());
+		} else {
+			// TODO: group
+			AutoCompleteRequest req = new AutoCompleteRequest(constraint, 1);
+			mController.autoCompleteBuilding(this, req);
+		}
+	}
+
+	/**
+	 * Make a FRRequest with the FRRoom given in argument, for the rest of the
+	 * day. If the argument is empty, it will display free room now.
+	 * 
+	 * @param collection
+	 *            collection of FRRoom to make a new search on.
+	 */
+	private void searchByUriMakeRequest(Collection<FRRoom> collection) {
+		mSearchByUriTriggered = false;
+		// TODO: getWholeDay (or starting now)
+		FRPeriod period = FRTimes.getNextValidPeriod();
+		FRRequestDetails request = null;
+		List<String> uidList = new ArrayList<String>();
+		SetArrayList<FRRoom> uidNonFav = new SetArrayList<FRRoom>();
+		boolean empty = collection.isEmpty();
+		if (empty) {
+			// TODO: usergroup
+			request = new FRRequestDetails(period, true, uidList, true, false,
+					false, uidNonFav, 1);
+		} else {
+			// TODO: find a simpler and more efficient way ?
+			Iterator<FRRoom> iter = collection.iterator();
+			while (iter.hasNext()) {
+				FRRoom room = iter.next();
+				uidList.add(room.getUid());
+				uidNonFav.add(room);
+			}
+			// TODO: usergroup
+			request = new FRRequestDetails(period, false, uidList, false,
+					false, true, uidNonFav, 1);
+		}
+		mModel.setFRRequestDetails(request, !empty);
+		mController.sendFRRequest(this);
 	}
 
 	/* MAIN ACTIVITY - INITIALIZATION */
@@ -2339,9 +2429,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// TODO: adapt to use the new version of autocomplete mapped by building
 		Iterator<List<FRRoom>> iter = mModel.getAutoComplete().values()
 				.iterator();
+		// TODO: syso
 		System.out.println(mModel.getAutoComplete().values().size());
 		while (iter.hasNext()) {
 			List<FRRoom> list = iter.next();
+			// TODO: syso
 			System.out.println(list.size());
 			Iterator<FRRoom> iterroom = list.iterator();
 			while (iterroom.hasNext()) {
@@ -2351,6 +2443,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					mAutoCompleteSuggestionArrayListFRRoom.add(room);
 				}
 			}
+		}
+
+		if (mSearchByUriTriggered) {
+			searchByUriMakeRequest(mAutoCompleteSuggestionArrayListFRRoom);
 		}
 
 		mAdapter.notifyDataSetChanged();
