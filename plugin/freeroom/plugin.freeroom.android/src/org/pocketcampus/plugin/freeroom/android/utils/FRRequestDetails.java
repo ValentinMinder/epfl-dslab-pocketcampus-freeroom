@@ -74,10 +74,6 @@ public class FRRequestDetails extends FRRequest {
 		this.uidNonFav = uidNonFav;
 	}
 
-	public FRRequestDetails() {
-		// TODO Auto-generated constructor stub
-	}
-
 	public FRRequestDetails(FRPeriod period, boolean onlyFreeRooms,
 			List<String> uidList, int userGroup) {
 		super(period, onlyFreeRooms, uidList, userGroup);

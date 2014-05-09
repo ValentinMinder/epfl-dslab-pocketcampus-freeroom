@@ -324,9 +324,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// This is necessary: xml definition don't support affFillerView!!
 		titleLayout.removeView(mainLayout);
 		titleLayout.addFillerView(mainLayout);
-
-		initDefaultRequest();
-		refresh();
 	}
 
 	/**
@@ -343,14 +340,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		 * if(mModel != null && mModel.getFreeRoomCookie() == null) { // Resumed
 		 * and lot logged in? go back finish(); }
 		 */
-
-		if (mController != null) {
-			mController.sendFRRequest(this);
-		}
 	}
 
 	/**
-	 * Handles an intent for a search coming from outside.
+	 * Handles an intent for coming from outside, eg. for specific search.
+	 * <p>
+	 * If it's not a specific intended Intent, it will simply construct the
+	 * default request and refresh it. As specified in SDK javadoc, this method
+	 * is called AFTER the onCreate and onResume methods, so it's used to
+	 * initiate the default behavior at (re)launch.
 	 * <p>
 	 * It supports:
 	 * <p>
@@ -381,6 +379,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				if (mUri.getHost().equals("freeroom.plugin.pocketcampus.org")) {
 
 				}
+			}
+		} else {
+			// no particular intent, so construct the default request
+			// and refresh it.
+			if (mController != null && mModel != null) {
+				initDefaultRequest();
+				refresh();
 			}
 		}
 	}
@@ -450,7 +455,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					false, true, uidNonFav, 1);
 		}
 		mModel.setFRRequestDetails(request, !empty);
-		mController.sendFRRequest(this);
+		refresh();
 	}
 
 	/* MAIN ACTIVITY - INITIALIZATION */
@@ -2347,7 +2352,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		FRRequestDetails details = new FRRequestDetails(period,
 				freeButton.isChecked(), mUIDList, any, fav, user, userDef, 1);
 		mModel.setFRRequestDetails(details, true);
-		mController.sendFRRequest(this);
+		refresh();
 		mSearchDialog.dismiss();
 
 		resetUserDefined(); // cleans the selectedRooms of userDefined
