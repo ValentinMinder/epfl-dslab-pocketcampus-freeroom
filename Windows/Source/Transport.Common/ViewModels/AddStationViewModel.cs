@@ -63,9 +63,14 @@ namespace PocketCampus.Transport.ViewModels
         /// <summary>
         /// Adds the specified station to the settings, and navigates back.
         /// </summary>
-        private Task AddAsync( string stationName )
+        private async Task AddAsync( string stationName )
         {
-            return TryExecuteAsync( async token =>
+            if ( _pluginSettings.Stations.Any( s => s.Name == stationName ) )
+            {
+                _navigationService.NavigateBack();
+            }
+
+            await TryExecuteAsync( async token =>
             {
                 var station = ( await _transportService.GetStationsAsync( new[] { stationName }, token ) )[0];
                 _pluginSettings.Stations.Add( station );
