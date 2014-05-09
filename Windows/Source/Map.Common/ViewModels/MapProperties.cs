@@ -41,7 +41,14 @@ namespace PocketCampus.Map.ViewModels
         public GeoPosition UserPosition
         {
             get { return _userPosition; }
-            set { SetProperty( ref _userPosition, value ); }
+            set
+            {
+                if ( Center == _userPosition )
+                {
+                    Center = value;
+                }
+                SetProperty( ref _userPosition, value );
+            }
         }
 
         /// <summary>
