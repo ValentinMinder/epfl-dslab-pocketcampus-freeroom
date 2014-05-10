@@ -546,9 +546,9 @@ public class FRTimes {
 		int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
 
 		if (day == Calendar.SATURDAY || day == Calendar.SUNDAY) {
-			return shiftWeekEndToMondayFirstHour(nowTimeStampNeeded);
+			return shiftWeekEndToMondayFirstHour(tsStart);
 		} else if (day == Calendar.FRIDAY && hour >= LAST_HOUR_CHECK) {
-			return shiftWeekEndToMondayFirstHour(nowTimeStampNeeded);
+			return shiftWeekEndToMondayFirstHour(tsStart);
 		} else if (hour == LAST_HOUR_CHECK - 1) {
 			mCalendar.set(Calendar.MINUTE, 0);
 			return new FRPeriod(mCalendar.getTimeInMillis(),
@@ -578,8 +578,7 @@ public class FRTimes {
 		int day = mCalendar.get(Calendar.DAY_OF_WEEK);
 		int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
 		
-		int hourToCompleteDay = (hour == 0) ? 0 : 24 - hour;
-		
+		int hourToCompleteDay = 24 - hour;
 		if (day == Calendar.FRIDAY) {
 			hourToCompleteDay += 2 * 24;
 		} else if (day == Calendar.SATURDAY) {
