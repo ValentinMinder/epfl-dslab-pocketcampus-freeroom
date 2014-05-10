@@ -532,15 +532,37 @@ public class FRTimes {
 	// return mFrPeriod;
 	// }
 
+	/**
+	 * Get the next valid period according to the following criterias.
+	 * 
+	 * Starting from Friday LAST_HOUR_CHECK until Monday 00h we return Monday
+	 * from 8h to 9h.
+	 * 
+	 * For any week day between 18h and 19h we return the given day from 18h to
+	 * 19h.
+	 * 
+	 * For any week day between LAST_HOUR_CHECK and 00h (except for Friday which
+	 * is matched by the first rule) we return the next day from 8h to 9h.
+	 * 
+	 * For any week day between 00h and FIRST_HOUR_CHECK we return the given day
+	 * from 8h to 9h.
+	 * 
+	 * For any week and between FIRST_HOUR_CHECK and LAST_HOUR_CHECK - 1 we apply
+	 * the rules described by TimeUtils.roundFRRequestTimestamp(FRPeriod).
+	 * 
+	 * @param nowTimeStampNeeded
+	 *            The timestamp from which we want the next valid period
+	 * @return The next valid period
+	 */
 	public static FRPeriod getNextValidPeriod(long nowTimeStampNeeded) {
 
 		Calendar mCalendar = Calendar.getInstance();
 		mCalendar.setTimeInMillis(TimesUtils
 				.roundSAndMSToZero(nowTimeStampNeeded));
 		long tsStart = mCalendar.getTimeInMillis();
-		
+
 		FRPeriod period = new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
-		
+
 		int day = mCalendar.get(Calendar.DAY_OF_WEEK);
 		int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
 
@@ -555,37 +577,38 @@ public class FRTimes {
 		} else if (hour >= 0 && hour < FIRST_HOUR_CHECK) {
 			int hourShift = FIRST_HOUR_CHECK - hour;
 			mCalendar.set(Calendar.MINUTE, 0);
-			tsStart = mCalendar.getTimeInMillis() + ONE_HOUR_IN_MS*hourShift;
+			tsStart = mCalendar.getTimeInMillis() + ONE_HOUR_IN_MS * hourShift;
 			return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
-		} else if (day != Calendar.FRIDAY && hour >= LAST_HOUR_CHECK && hour <= 23) {
+		} else if (day != Calendar.FRIDAY && hour >= LAST_HOUR_CHECK
+				&& hour <= 23) {
 			int hourShift = FIRST_HOUR_CHECK + (24 - hour);
 			mCalendar.set(Calendar.MINUTE, 0);
-			tsStart = mCalendar.getTimeInMillis() + ONE_HOUR_IN_MS*hourShift;
+			tsStart = mCalendar.getTimeInMillis() + ONE_HOUR_IN_MS * hourShift;
 			return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
 		} else {
 			return TimesUtils.roundFRRequestTimestamp(period);
 		}
 	}
-	
+
 	private static FRPeriod shiftWeekEndToMondayFirstHour(long timestamp) {
 		Calendar mCalendar = Calendar.getInstance();
-		mCalendar.setTimeInMillis(TimesUtils
-				.roundSAndMSToZero(timestamp));
-		
+		mCalendar.setTimeInMillis(TimesUtils.roundSAndMSToZero(timestamp));
+
 		mCalendar.set(Calendar.MINUTE, 0);
-		
+
 		int day = mCalendar.get(Calendar.DAY_OF_WEEK);
 		int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
-		
+
 		int hourToCompleteDay = 24 - hour;
 		if (day == Calendar.FRIDAY) {
 			hourToCompleteDay += 2 * 24;
 		} else if (day == Calendar.SATURDAY) {
 			hourToCompleteDay += 24;
-		} 
-		
+		}
+
 		hourToCompleteDay += FIRST_HOUR_CHECK;
-		long tsStart = mCalendar.getTimeInMillis() + hourToCompleteDay * ONE_HOUR_IN_MS;
+		long tsStart = mCalendar.getTimeInMillis() + hourToCompleteDay
+				* ONE_HOUR_IN_MS;
 		return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
 	}
 
