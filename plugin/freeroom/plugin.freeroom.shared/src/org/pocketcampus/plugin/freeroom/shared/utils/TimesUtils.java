@@ -12,11 +12,13 @@ public class TimesUtils {
 	 * 30min, we round to the previous full hour, otherwise we round the half
 	 * hour
 	 * 
-	 * @param timestamp The timestamp to round
+	 * @param timestamp
+	 *            The timestamp to round
 	 * @return The rounded timestamp
 	 */
 	public static long roundToNearestHalfHourBefore(long timestamp) {
-		long timeToCompleteHour = FRTimes.ONE_HOUR_IN_MS - timestamp % FRTimes.ONE_HOUR_IN_MS;
+		long timeToCompleteHour = FRTimes.ONE_HOUR_IN_MS - timestamp
+				% FRTimes.ONE_HOUR_IN_MS;
 
 		if (timeToCompleteHour < FRTimes.m30_MIN_IN_MS) {
 			return (timestamp + timeToCompleteHour) - FRTimes.m30_MIN_IN_MS;
@@ -25,21 +27,25 @@ public class TimesUtils {
 		long timeInMin = timestamp % FRTimes.ONE_HOUR_IN_MS;
 		return timestamp - timeInMin;
 	}
-	
+
 	/**
 	 * Round the nearest half hour after
-	 * @param timestamp The timestamp to round
+	 * 
+	 * @param timestamp
+	 *            The timestamp to round
 	 * @return The rounded timestamp
 	 */
 	public static long roundToNearestHalfHourAfter(long timestamp) {
-		long timeToCompleteHour = FRTimes.ONE_HOUR_IN_MS - timestamp % FRTimes.ONE_HOUR_IN_MS;
+		long timeToCompleteHour = FRTimes.ONE_HOUR_IN_MS - timestamp
+				% FRTimes.ONE_HOUR_IN_MS;
 		long timeInMin = timestamp % FRTimes.ONE_HOUR_IN_MS;
 
 		// if the hour is full (like 8:00am) no need to round
 		if (timeInMin == 0) {
 			return timestamp;
 		} else if (timeInMin < FRTimes.MARGIN_ERROR && timeInMin > 0) {
-			//in this case we are very close to the full hour, take the full hour
+			// in this case we are very close to the full hour, take the full
+			// hour
 			return timestamp - timeInMin;
 		}
 
@@ -49,10 +55,11 @@ public class TimesUtils {
 		}
 
 		// otherwise we take the next half hour
-		long timeInMinToHalfHour = FRTimes.m30_MIN_IN_MS - timestamp % FRTimes.m30_MIN_IN_MS;
+		long timeInMinToHalfHour = FRTimes.m30_MIN_IN_MS - timestamp
+				% FRTimes.m30_MIN_IN_MS;
 		return timestamp + timeInMinToHalfHour;
 	}
-	
+
 	/**
 	 * Round the given timestamp to the previous hour.
 	 * 
@@ -75,7 +82,8 @@ public class TimesUtils {
 	 * @return The timestamp rounded as defined above
 	 */
 	public static long roundHourAfter(long timestamp) {
-		long minToCompleteHour = FRTimes.ONE_HOUR_IN_MS - (timestamp % FRTimes.ONE_HOUR_IN_MS);
+		long minToCompleteHour = FRTimes.ONE_HOUR_IN_MS
+				- (timestamp % FRTimes.ONE_HOUR_IN_MS);
 		long min = timestamp % FRTimes.ONE_HOUR_IN_MS;
 
 		// if the hour is really close (according to MARGIN_ERROR) to the
@@ -112,9 +120,6 @@ public class TimesUtils {
 		return end - start;
 	}
 
-
-
-	
 	/**
 	 * Set the seconds and milliseconds to zero in the given timestamp.
 	 * 
@@ -129,23 +134,48 @@ public class TimesUtils {
 		mCalendar.set(Calendar.MILLISECOND, 0);
 		return mCalendar.getTimeInMillis();
 	}
-	
+
 	/**
 	 * Adjust the period given in the request. It adds 30s to the lower bound,
 	 * substract 30s from the upper bound. It is used to allow a margin for
 	 * error with the timestamps
 	 * 
 	 * @param req
-	 *            The intial request issued by the client
+	 *            The initial request issued by the client
 	 * @return The new request with correct timestamps.
 	 */
 	public static FreeRoomRequest convertMinPrecision(FreeRoomRequest req) {
 		FRPeriod period = req.getPeriod();
-		period.setTimeStampStart(period.getTimeStampStart() + FRTimes.m30_MIN_IN_MS);
+		period.setTimeStampStart(period.getTimeStampStart()
+				+ FRTimes.m30_MIN_IN_MS);
 		period.setTimeStampEnd(period.getTimeStampEnd() - FRTimes.m30_MIN_IN_MS);
 
 		return new FreeRoomRequest(period);
 
 	}
+
+	/**
+	 * Round the timestamps of a given FRRequest
+	 * 
+	 * @param period
+	 *            The period to round
+	 * @return The new period rounded
+	 */
+	public static FRPeriod roundFRRequestTimestamp(FRPeriod period) {
+		long tsStart = period.getTimeStampStart();
+		long tsEnd = period.getTimeStampEnd();
+		
+		long minutesStart = tsStart % FRTimes.ONE_HOUR_IN_MS;
+		if (minutesStart < FRTimes.m30_MIN_IN_MS) {
+			tsStart -= minutesStart;
+			tsEnd = tsStart + FRTimes.ONE_HOUR_IN_MS;
+		} else {
+			tsStart -= minutesStart;
+			tsEnd = tsStart + 2*FRTimes.ONE_HOUR_IN_MS;
+		}
+		
+		return new FRPeriod(tsStart, tsEnd, false);
+	}
+
 
 }

@@ -507,10 +507,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		// round the given period to half hours to have a nice display on UI.
 		FRPeriod period = request.getPeriod();
-		long tsStart = TimesUtils.roundToNearestHalfHourBefore(period
-				.getTimeStampStart());
-		long tsEnd = TimesUtils.roundToNearestHalfHourAfter(period
-				.getTimeStampEnd());
+//		long tsStart = TimesUtils.roundToNearestHalfHourBefore(period
+//				.getTimeStampStart());
+//		long tsEnd = TimesUtils.roundToNearestHalfHourAfter(period
+//				.getTimeStampEnd());
+		
+		period = TimesUtils.roundFRRequestTimestamp(period);
+		long tsStart = period.getTimeStampStart();
+		long tsEnd = period.getTimeStampEnd();
+		
 		int group = request.getUserGroup();
 
 		if (!FRTimes.validCalendars(period)) {
