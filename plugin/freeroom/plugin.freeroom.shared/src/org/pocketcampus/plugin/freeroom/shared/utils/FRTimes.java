@@ -196,7 +196,6 @@ public class FRTimes {
 	 */
 	public static boolean validCalendars(FRPeriod mFrPeriod) {
 		String message = validCalendarsString(mFrPeriod);
-		System.out.println(message);
 		return message.equals("");
 	}
 
