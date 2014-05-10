@@ -40,10 +40,9 @@ public class FRTimes {
 	public static final int LAST_HOUR_CHECK = 19;
 	public static final int MIN_MINUTE_INTERVAL = 5;
 
-	
 	public static final long MARGIN_ERROR = 5 * 60 * 1000;
 	public static final long MIN_PERIOD = 15 * 60 * 1000;
-	
+
 	/**
 	 * Return a FreeRoomRequest from a given day, starthour and endhour.
 	 * 
@@ -442,94 +441,153 @@ public class FRTimes {
 		return getNextValidPeriod(calendar.getTimeInMillis());
 	}
 
+	// public static FRPeriod getNextValidPeriod(long nowTimeStampNeeded) {
+	//
+	// // reset the time to the present time given
+	// Calendar mCalendar = Calendar.getInstance();
+	// mCalendar.setTimeInMillis(nowTimeStampNeeded);
+	//
+	// int yearSelected = mCalendar.get(Calendar.YEAR);
+	// int monthSelected = mCalendar.get(Calendar.MONTH);
+	// int dayOfMonthSelected = mCalendar.get(Calendar.DAY_OF_MONTH);
+	// int startHourSelected = mCalendar.get(Calendar.HOUR_OF_DAY);
+	// int startMinSelected = mCalendar.get(Calendar.MINUTE);
+	// int endHourSelected = mCalendar.get(Calendar.HOUR_OF_DAY);
+	// int endMinSelected = mCalendar.get(Calendar.MINUTE);
+	//
+	// // values for test only (weekends, nights, ...)
+	// int temp_now_day_week = mCalendar.get(Calendar.DAY_OF_WEEK);
+	// int temp_now_hour = mCalendar.get(Calendar.HOUR_OF_DAY);
+	// int temp_now_min = mCalendar.get(Calendar.MINUTE);
+	//
+	// // starting Friday 18h55, and during all the weekend, we shift to Mon
+	// // between 0am and 1am. It will be reshifted to Mon 8h-9h after.
+	// int hourShift = 0;
+	// if (temp_now_day_week == Calendar.SUNDAY) {
+	// hourShift = 24 - temp_now_hour + 1;
+	// }
+	// if (temp_now_day_week == Calendar.SATURDAY) {
+	// hourShift = 24 - temp_now_hour + 1;
+	// hourShift += 24;
+	// }
+	// if ((temp_now_day_week == Calendar.FRIDAY)
+	// && checkHourMinIsEveningAndShifted(temp_now_hour, temp_now_min)) {
+	// hourShift = 24 - temp_now_hour + 1;
+	// hourShift += 2 * 24;
+	// }
+	// long newTimeInMS = mCalendar.getTimeInMillis() + hourShift
+	// * ONE_HOUR_IN_MS;
+	// mCalendar.setTimeInMillis(newTimeInMS);
+	//
+	// // actualize with the enventually shifted Calendar
+	// temp_now_hour = mCalendar.get(Calendar.HOUR_OF_DAY);
+	// temp_now_min = mCalendar.get(Calendar.MINUTE);
+	//
+	// yearSelected = mCalendar.get(Calendar.YEAR);
+	// monthSelected = mCalendar.get(Calendar.MONTH);
+	// dayOfMonthSelected = mCalendar.get(Calendar.DAY_OF_MONTH);
+	//
+	// // default set: next hour to next+1 hour, all minutes to 0
+	// // Works perfectly Mon-Fri 8h-18h.
+	// // weekend are handled before to be on next Monday.
+	// startHourSelected = mCalendar.get(Calendar.HOUR_OF_DAY) + 1;
+	// startMinSelected = 0;
+	// endHourSelected = startHourSelected + 1;
+	// endMinSelected = 0;
+	//
+	// // during the evening (starting 18h55), we shift to the next morning
+	// // during the night (before 8h), we shift to the first hour of morning
+	// // (8h-9h).
+	// // during late afternoon (18h-18h55), we default set from now to 19h00.
+	// if (temp_now_hour < FIRST_HOUR_CHECK) {
+	// startHourSelected = FIRST_HOUR_CHECK;
+	// endHourSelected = FIRST_HOUR_CHECK + 1;
+	// } else if (checkHourMinIsEveningAndShifted(temp_now_hour, temp_now_min))
+	// {
+	// yearSelected = mCalendar.get(Calendar.YEAR);
+	// monthSelected = mCalendar.get(Calendar.MONTH);
+	// dayOfMonthSelected = mCalendar.get(Calendar.DAY_OF_MONTH);
+	// mCalendar
+	// .setTimeInMillis(mCalendar.getTimeInMillis() + 24 * 3600 * 1000);
+	// yearSelected = mCalendar.get(Calendar.YEAR);
+	// monthSelected = mCalendar.get(Calendar.MONTH);
+	// dayOfMonthSelected = mCalendar.get(Calendar.DAY_OF_MONTH);
+	// startHourSelected = FIRST_HOUR_CHECK;
+	// endHourSelected = FIRST_HOUR_CHECK + 1;
+	// } else if (temp_now_hour == LAST_HOUR_CHECK - 1) {
+	// startHourSelected = temp_now_hour;
+	// startMinSelected = temp_now_min;
+	// endHourSelected = temp_now_hour + 1;
+	// }
+	//
+	// mCalendar.set(yearSelected, monthSelected, dayOfMonthSelected,
+	// startHourSelected, startMinSelected);
+	// long startMS = mCalendar.getTimeInMillis();
+	// mCalendar.set(yearSelected, monthSelected, dayOfMonthSelected,
+	// endHourSelected, endMinSelected);
+	// startMS = TimesUtils.roundToNearestHalfHourBefore(startMS);
+	// long endMS = mCalendar.getTimeInMillis();
+	//
+	// FRPeriod mFrPeriod = new FRPeriod(startMS, endMS, false);
+	// return mFrPeriod;
+	// }
+
 	public static FRPeriod getNextValidPeriod(long nowTimeStampNeeded) {
 
-		// reset the time to the present time given
 		Calendar mCalendar = Calendar.getInstance();
-		mCalendar.setTimeInMillis(nowTimeStampNeeded);
+		mCalendar.setTimeInMillis(TimesUtils
+				.roundSAndMSToZero(nowTimeStampNeeded));
+		long tsStart = mCalendar.getTimeInMillis();
+		
+		FRPeriod period = new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
+		
+		int day = mCalendar.get(Calendar.DAY_OF_WEEK);
+		int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
 
-		int yearSelected = mCalendar.get(Calendar.YEAR);
-		int monthSelected = mCalendar.get(Calendar.MONTH);
-		int dayOfMonthSelected = mCalendar.get(Calendar.DAY_OF_MONTH);
-		int startHourSelected = mCalendar.get(Calendar.HOUR_OF_DAY);
-		int startMinSelected = mCalendar.get(Calendar.MINUTE);
-		int endHourSelected = mCalendar.get(Calendar.HOUR_OF_DAY);
-		int endMinSelected = mCalendar.get(Calendar.MINUTE);
-
-		// values for test only (weekends, nights, ...)
-		int temp_now_day_week = mCalendar.get(Calendar.DAY_OF_WEEK);
-		int temp_now_hour = mCalendar.get(Calendar.HOUR_OF_DAY);
-		int temp_now_min = mCalendar.get(Calendar.MINUTE);
-
-		// starting Friday 18h55, and during all the weekend, we shift to Mon
-		// between 0am and 1am. It will be reshifted to Mon 8h-9h after.
-		int hourShift = 0;
-		if (temp_now_day_week == Calendar.SUNDAY) {
-			hourShift = 24 - temp_now_hour + 1;
+		if (day == Calendar.SATURDAY || day == Calendar.SUNDAY) {
+			return shiftWeekEndToMondayFirstHour(nowTimeStampNeeded);
+		} else if (day == Calendar.FRIDAY && hour >= LAST_HOUR_CHECK) {
+			return shiftWeekEndToMondayFirstHour(nowTimeStampNeeded);
+		} else if (hour == LAST_HOUR_CHECK - 1) {
+			mCalendar.set(Calendar.MINUTE, 0);
+			return new FRPeriod(mCalendar.getTimeInMillis(),
+					mCalendar.getTimeInMillis() + ONE_HOUR_IN_MS, false);
+		} else if (hour >= 0 && hour < FIRST_HOUR_CHECK) {
+			int hourShift = FIRST_HOUR_CHECK - hour;
+			mCalendar.set(Calendar.MINUTE, 0);
+			tsStart = mCalendar.getTimeInMillis() + ONE_HOUR_IN_MS*hourShift;
+			return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
+		} else if (day != Calendar.FRIDAY && hour >= LAST_HOUR_CHECK && hour <= 23) {
+			int hourShift = FIRST_HOUR_CHECK + (24 - hour);
+			mCalendar.set(Calendar.MINUTE, 0);
+			tsStart = mCalendar.getTimeInMillis() + ONE_HOUR_IN_MS*hourShift;
+			return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
+		} else {
+			return TimesUtils.roundFRRequestTimestamp(period);
 		}
-		if (temp_now_day_week == Calendar.SATURDAY) {
-			hourShift = 24 - temp_now_hour + 1;
-			hourShift += 24;
-		}
-		if ((temp_now_day_week == Calendar.FRIDAY)
-				&& checkHourMinIsEveningAndShifted(temp_now_hour, temp_now_min)) {
-			hourShift = 24 - temp_now_hour + 1;
-			hourShift += 2 * 24;
-		}
-		long newTimeInMS = mCalendar.getTimeInMillis() + hourShift
-				* ONE_HOUR_IN_MS;
-		mCalendar.setTimeInMillis(newTimeInMS);
-
-		// actualize with the enventually shifted Calendar
-		temp_now_hour = mCalendar.get(Calendar.HOUR_OF_DAY);
-		temp_now_min = mCalendar.get(Calendar.MINUTE);
-
-		yearSelected = mCalendar.get(Calendar.YEAR);
-		monthSelected = mCalendar.get(Calendar.MONTH);
-		dayOfMonthSelected = mCalendar.get(Calendar.DAY_OF_MONTH);
-
-		// default set: next hour to next+1 hour, all minutes to 0
-		// Works perfectly Mon-Fri 8h-18h.
-		// weekend are handled before to be on next Monday.
-		startHourSelected = mCalendar.get(Calendar.HOUR_OF_DAY) + 1;
-		startMinSelected = 0;
-		endHourSelected = startHourSelected + 1;
-		endMinSelected = 0;
-
-		// during the evening (starting 18h55), we shift to the next morning
-		// during the night (before 8h), we shift to the first hour of morning
-		// (8h-9h).
-		// during late afternoon (18h-18h55), we default set from now to 19h00.
-		if (temp_now_hour < FIRST_HOUR_CHECK) {
-			startHourSelected = FIRST_HOUR_CHECK;
-			endHourSelected = FIRST_HOUR_CHECK + 1;
-		} else if (checkHourMinIsEveningAndShifted(temp_now_hour, temp_now_min)) {
-			yearSelected = mCalendar.get(Calendar.YEAR);
-			monthSelected = mCalendar.get(Calendar.MONTH);
-			dayOfMonthSelected = mCalendar.get(Calendar.DAY_OF_MONTH);
-			mCalendar
-					.setTimeInMillis(mCalendar.getTimeInMillis() + 24 * 3600 * 1000);
-			yearSelected = mCalendar.get(Calendar.YEAR);
-			monthSelected = mCalendar.get(Calendar.MONTH);
-			dayOfMonthSelected = mCalendar.get(Calendar.DAY_OF_MONTH);
-			startHourSelected = FIRST_HOUR_CHECK;
-			endHourSelected = FIRST_HOUR_CHECK + 1;
-		} else if (temp_now_hour == LAST_HOUR_CHECK - 1) {
-			startHourSelected = temp_now_hour;
-			startMinSelected = temp_now_min;
-			endHourSelected = temp_now_hour + 1;
-		}
-
-		mCalendar.set(yearSelected, monthSelected, dayOfMonthSelected,
-				startHourSelected, startMinSelected);
-		long startMS = mCalendar.getTimeInMillis();
-		mCalendar.set(yearSelected, monthSelected, dayOfMonthSelected,
-				endHourSelected, endMinSelected);
-		startMS = TimesUtils.roundToNearestHalfHourBefore(startMS);
-		long endMS = mCalendar.getTimeInMillis();
-
-		FRPeriod mFrPeriod = new FRPeriod(startMS, endMS, false);
-		return mFrPeriod;
+	}
+	
+	private static FRPeriod shiftWeekEndToMondayFirstHour(long timestamp) {
+		Calendar mCalendar = Calendar.getInstance();
+		mCalendar.setTimeInMillis(TimesUtils
+				.roundSAndMSToZero(timestamp));
+		
+		mCalendar.set(Calendar.MINUTE, 0);
+		
+		int day = mCalendar.get(Calendar.DAY_OF_WEEK);
+		int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
+		
+		int hourToCompleteDay = (hour == 0) ? 0 : 24 - hour;
+		
+		if (day == Calendar.FRIDAY) {
+			hourToCompleteDay += 2 * 24;
+		} else if (day == Calendar.SATURDAY) {
+			hourToCompleteDay += 24;
+		} 
+		
+		hourToCompleteDay += FIRST_HOUR_CHECK;
+		long tsStart = mCalendar.getTimeInMillis() + hourToCompleteDay * ONE_HOUR_IN_MS;
+		return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
 	}
 
 	/**
