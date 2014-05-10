@@ -1106,6 +1106,20 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					}
 				}
 			}
+
+			// if there's only one result, we display immediately the info
+			// dialog, to get the detailed information (very useful in context
+			// of QR codes)
+			if (mModel.getOccupancyResults().size() == 1) {
+				List<?> list = mModel.getOccupancyResults().get(0);
+				if (list != null) {
+					Object elem = list.get(0);
+					if (elem != null && elem instanceof Occupancy) {
+						mModel.setDisplayedOccupancy((Occupancy) elem);
+						displayInfoDialog();
+					}
+				}
+			}
 		}
 
 		setTextSummary(build.toString());
