@@ -174,6 +174,9 @@ public class TimesUtils {
 			tsEnd = tsStart + 2*FRTimes.ONE_HOUR_IN_MS;
 		}
 		
+		tsStart = roundSAndMSToZero(tsStart);
+		tsEnd = roundSAndMSToZero(tsEnd);
+		
 		return new FRPeriod(tsStart, tsEnd, false);
 	}
 
