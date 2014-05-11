@@ -543,10 +543,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		occupancies = sortRooms(occupancies);
 		reply.setOccupancyOfRooms(occupancies);
 		
-		FRPeriod overallPeriod = TimesUtils.findLargestPeriod(occupancies);
-		if (overallPeriod != null) {
-			reply.setOverallTreatedPeriod(overallPeriod);
-		}
+		reply.setOverallTreatedPeriod(period);
 		
 		return reply;
 	}

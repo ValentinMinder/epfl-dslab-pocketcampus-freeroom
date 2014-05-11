@@ -189,35 +189,4 @@ public class TimesUtils {
 		return new FRPeriod(tsStart, tsEnd, false);
 	}
 
-	/**
-	 * Find the largest period that contains all the occupancies contained in the given HashMap.
-	 * @param occupancies The occupancies to be considered by the search
-	 * @return The largest period which contains all the given occupancies.
-	 */
-	public static FRPeriod findLargestPeriod(
-			HashMap<String, List<Occupancy>> occupancies) {
-		if (occupancies == null || occupancies.isEmpty()) {
-			return null;
-		}
-		
-		long minStart = 0;
-		long maxEnd = 0;
-		
-		for (List<Occupancy> mListOcc : occupancies.values()) {
-			for (Occupancy mOcc : mListOcc) {
-				long tsStart = mOcc.getTreatedPeriod().getTimeStampStart();
-				long tsEnd = mOcc.getTreatedPeriod().getTimeStampEnd();
-				
-				minStart = Math.min(tsStart, minStart);
-				maxEnd = Math.max(tsEnd,  maxEnd);
-			}
-		}
-		
-		if (minStart == 0 || maxEnd == 0) {
-			return null;
-		} else {
-			return new FRPeriod(minStart, maxEnd, false);
-		}
-	}
-
 }
