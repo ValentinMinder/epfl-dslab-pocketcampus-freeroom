@@ -84,14 +84,21 @@ public class OccupancySorted {
 		if (isAtLeastOccupiedOnce && onlyFreeRooms) {
 			return null;
 		} else {
-			long start = mActualOccupations.get(0).getPeriod().getTimeStampStart();
-			long end = mActualOccupations.get(mActualOccupations.size() - 1).getPeriod().getTimeStampEnd();
-			FRPeriod periodTreated = new FRPeriod(start, end, false);
-			Occupancy mOccupancy = new Occupancy(room, mActualOccupations,
-					isAtLeastOccupiedOnce, isAtLeastFreeOnce, periodTreated);
-			mOccupancy.setRatioWorstCaseProbableOccupancy(worstRatio);
+			if (mActualOccupations.size() >= 1) {
+				long start = mActualOccupations.get(0).getPeriod()
+						.getTimeStampStart();
+				long end = mActualOccupations
+						.get(mActualOccupations.size() - 1).getPeriod()
+						.getTimeStampEnd();
+				FRPeriod periodTreated = new FRPeriod(start, end, false);
+				Occupancy mOccupancy = new Occupancy(room, mActualOccupations,
+						isAtLeastOccupiedOnce, isAtLeastFreeOnce, periodTreated);
+				mOccupancy.setRatioWorstCaseProbableOccupancy(worstRatio);
 
-			return mOccupancy;
+				return mOccupancy;
+			} else {
+				return null;
+			}
 		}
 	}
 
