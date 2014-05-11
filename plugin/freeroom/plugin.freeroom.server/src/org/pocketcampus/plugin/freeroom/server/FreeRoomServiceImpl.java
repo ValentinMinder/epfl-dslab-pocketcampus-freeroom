@@ -172,7 +172,19 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 */
 	public boolean insertOccupancy(FRPeriod period, OCCUPANCY_TYPE type,
 			FRRoom room, String hash) {
-
+		if (period == null || type == null || room == null || hash == null) {
+			log(LOG_SIDE.SERVER,
+					Level.WARNING,
+					"Error during insertion of occupancy, at least one of the arguments is null : is null ? period = "
+							+ (period == null)
+							+ " type = "
+							+ (type == null)
+							+ " room = "
+							+ (room == null)
+							+ " hash = "
+							+ (hash == null));
+			return false;
+		}
 		// putting seconds and milliseconds to zero
 		period.setTimeStampStart(TimesUtils.roundSAndMSToZero(period
 				.getTimeStampStart()));
@@ -330,7 +342,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					String prevRoom = checkMultipleSubmissionUserOccupancy(
 							hourSharpBefore + i * FRTimes.ONE_HOUR_IN_MS, room,
 							hash);
-					if ((prevRoom != null && !prevRoom.equals(room.getUid())) || prevRoom == null) {
+					if ((prevRoom != null && !prevRoom.equals(room.getUid()))
+							|| prevRoom == null) {
 						insertCheckOccupancyInDB(room.getUid(), hourSharpBefore
 								+ i * FRTimes.ONE_HOUR_IN_MS, hash, prevRoom);
 						overallInsertion = overallInsertion
@@ -502,16 +515,27 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 */
 	@Override
 	public FRReply getOccupancy(FRRequest request) throws TException {
-		FRReply reply = new FRReply(HttpURLConnection.HTTP_OK,
-				HttpURLConnection.HTTP_OK + "");
+		if (request == null) {
+			log(LOG_SIDE.SERVER, Level.WARNING, "Receiving null FRRequest");
+			return new FRReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"FRRequest is null");
+		}
+
+		FRReply reply = checkFRRequest(request);
+		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
+			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
+			return reply;
+		} else {
+			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
+		}
 
 		// round the given period to half hours to have a nice display on UI.
 		FRPeriod period = request.getPeriod();
-		
+
 		period = TimesUtils.roundFRRequestTimestamp(period);
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
-		
+
 		int group = request.getUserGroup();
 
 		if (!FRTimes.validCalendars(period)) {
@@ -542,9 +566,43 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		occupancies = sortRooms(occupancies);
 		reply.setOccupancyOfRooms(occupancies);
-		
+
 		reply.setOverallTreatedPeriod(period);
-		
+
+		return reply;
+	}
+
+	private FRReply checkFRRequest(FRRequest request) {
+		FRReply reply = new FRReply();
+		int status = HttpURLConnection.HTTP_OK;
+		String statusComment = "FRRequest : ";
+
+		if (request == null) {
+			status = HttpURLConnection.HTTP_BAD_REQUEST;
+			statusComment = "FRRequest is null;";
+		} else {
+			if (!request.isSetPeriod()) {
+				status = HttpURLConnection.HTTP_BAD_REQUEST;
+				statusComment += "FRPeriod is null;";
+			}
+
+			if (!request.isSetOnlyFreeRooms()) {
+				status = HttpURLConnection.HTTP_BAD_REQUEST;
+				statusComment += "boolean onlyFreeRooms is not set;";
+			}
+
+			if (!request.isSetUserGroup()) {
+				status = HttpURLConnection.HTTP_BAD_REQUEST;
+				statusComment += "User group is not set;";
+			}
+		}
+
+		reply.setStatus(status);
+		if (status != HttpURLConnection.HTTP_OK) {
+			reply.setStatusComment(statusComment);
+		} else {
+			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
+		}
 		return reply;
 	}
 
@@ -1006,11 +1064,23 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	@Override
 	public AutoCompleteReply autoCompleteRoom(AutoCompleteRequest request)
 			throws TException {
+		if (request == null) {
+			log(LOG_SIDE.SERVER, Level.WARNING,
+					"Receiving null AutoCompleteRequest");
+			return new AutoCompleteReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"AutocompleteRequest is null");
+		}
+
+		AutoCompleteReply reply = checkAutoCompleteRequest(request);
+		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
+			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
+			return reply;
+		} else {
+			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
+		}
+
 		log(LOG_SIDE.SERVER, Level.INFO,
 				"Autocomplete of " + request.getConstraint());
-
-		AutoCompleteReply reply = new AutoCompleteReply(
-				HttpURLConnection.HTTP_OK, "" + HttpURLConnection.HTTP_OK);
 
 		String constraint = request.getConstraint();
 
@@ -1115,6 +1185,36 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return reply;
 	}
 
+	private AutoCompleteReply checkAutoCompleteRequest(
+			AutoCompleteRequest request) {
+		AutoCompleteReply reply = new AutoCompleteReply();
+		int status = HttpURLConnection.HTTP_OK;
+		String statusComment = "AutoCompleteRequest : ";
+
+		if (request == null) {
+			status = HttpURLConnection.HTTP_BAD_REQUEST;
+			statusComment = "AutoCompleteRequest is null;";
+		} else {
+			if (!request.isSetConstraint()) {
+				status = HttpURLConnection.HTTP_BAD_REQUEST;
+				statusComment += "Constraint is null;";
+			}
+
+			if (!request.isSetUserGroup()) {
+				status = HttpURLConnection.HTTP_BAD_REQUEST;
+				statusComment += "User group is not set;";
+			}
+		}
+
+		reply.setStatus(status);
+		if (status != HttpURLConnection.HTTP_OK) {
+			reply.setStatusComment(statusComment);
+		} else {
+			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
+		}
+		return reply;
+	}
+
 	/**
 	 * The client can specify a user occupancy during a given period, multiple
 	 * submits for the same period (and same user) are not allowed, we return a
@@ -1123,6 +1223,22 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	@Override
 	public ImWorkingReply indicateImWorking(ImWorkingRequest request)
 			throws TException {
+		if (request == null) {
+			log(LOG_SIDE.SERVER, Level.WARNING,
+					"Receiving null ImWorkingRequest");
+			return new ImWorkingReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"ImWorkingReply is null");
+		}
+		
+		ImWorkingReply reply = checkImWorkingRequest(request);
+		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
+			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
+			return reply;
+		} else {
+			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
+		}
+
+		
 		WorkingOccupancy work = request.getWork();
 		FRPeriod period = work.getPeriod();
 
@@ -1139,6 +1255,63 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 	}
 
+	private ImWorkingReply checkImWorkingRequest(ImWorkingRequest request) {
+		ImWorkingReply reply = new ImWorkingReply();
+		int status = HttpURLConnection.HTTP_OK;
+		String statusComment = "ImWorkingRequest : ";
+
+		if (request == null) {
+			status = HttpURLConnection.HTTP_BAD_REQUEST;
+			statusComment = "ImWorkingRequest is null;";
+		} else {
+			if (!request.isSetWork()) {
+				status = HttpURLConnection.HTTP_BAD_REQUEST;
+				statusComment += "work (WorkingOccupancy) is null;";
+			}
+
+			if (!request.isSetHash()) {
+				status = HttpURLConnection.HTTP_BAD_REQUEST;
+				statusComment += "Hash is not set;";
+			}
+			
+			String workCheck = checkWorkingOccupancy(request.getWork());
+			if (workCheck != null) {
+				status = HttpURLConnection.HTTP_BAD_REQUEST;
+				statusComment += workCheck;
+			}
+		}
+
+		reply.setStatus(status);
+		if (status != HttpURLConnection.HTTP_OK) {
+			reply.setStatusComment(statusComment);
+		} else {
+			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
+		}
+		return reply;
+	}
+	
+	private String checkWorkingOccupancy(WorkingOccupancy work) {
+		boolean error = false;
+		String comment = "WorkingOccupancy ";
+		if (work == null) {
+			comment += "is null;";
+			error = true;
+		}
+		
+		if (!work.isSetPeriod()) {
+			comment += "FRPeriod is not set;";
+		}
+		
+		if (!work.isSetRoom()) {
+			comment += "FRRoom is not set;";
+		}
+		
+		if (error) {
+			return comment;
+		}
+		return null;
+	}
+	
 	@Override
 	public WhoIsWorkingReply whoIsWorking(WhoIsWorkingRequest request)
 			throws TException {
