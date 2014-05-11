@@ -362,23 +362,31 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	@Override
 	protected void handleIntent(Intent intent) {
-		if (intent.getAction().equals("android.intent.action.VIEW")) {
+		if (intent.getAction().equalsIgnoreCase("android.intent.action.VIEW")) {
+
+			String errorIntentHandled = getString(R.string.freeroom_urisearch_error_URINotUnderstood)
+					+ " "
+					+ getString(R.string.freeroom_urisearch_error_URINotSupported);
 			// using standard http page
-			if (intent.getScheme().equals("http")) {
+			if (intent.getScheme().equalsIgnoreCase("http")) {
 				Uri mUri = intent.getData();
-				if (mUri.getHost().equals("occupancy.epfl.ch")) {
+				if (mUri.getHost().equalsIgnoreCase("occupancy.epfl.ch")) {
 					String mPathData = mUri.getPath();
-					if (mPathData != null && mPathData.length() > 1) {
+					if (mPathData != null && mPathData.length() >= 1) {
 						// removing first '/'
-						searchByUriPrepareArguments(mPathData.substring(1,
-								mPathData.length()));
+						errorIntentHandled = searchByUriPrepareArguments(mPathData
+								.substring(1, mPathData.length()));
 					}
 				}
 
 				// TODO: something else, predefined
-				if (mUri.getHost().equals("freeroom.plugin.pocketcampus.org")) {
+				if (mUri.getHost().equalsIgnoreCase(
+						"freeroom.plugin.pocketcampus.org")) {
 
 				}
+			}
+			if (errorIntentHandled.length() != 0) {
+				onErrorHandleIntent(errorIntentHandled);
 			}
 		} else {
 			// no particular intent, so construct the default request
@@ -387,6 +395,27 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				initDefaultRequest(true);
 				refresh();
 			}
+		}
+	}
+
+	/**
+	 * In case of error while handling an Intent, display a message to the user,
+	 * and then launch a default request (without taking the favorites into
+	 * account).
+	 * 
+	 * @param errorMessage
+	 *            the error message to display.
+	 */
+	private void onErrorHandleIntent(String errorMessage) {
+		// TODO: display a popup
+		Log.e("uri-search-error",
+				getString(R.string.freeroom_urisearch_error_basis));
+		Log.e("uri-search-error", errorMessage);
+		Log.e("uri-search-error",
+				getString(R.string.freeroom_urisearch_error_end));
+		if (mController != null && mModel != null) {
+			initDefaultRequest(false);
+			refresh();
 		}
 	}
 
@@ -409,17 +438,20 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * 
 	 * @param constraint
 	 *            argument for the auto-complete to search for rooms.
+	 * @return an empty String if successful, an error message if
 	 */
-	private void searchByUriPrepareArguments(String constraint) {
-		mSearchByUriTriggered = true;
+	private String searchByUriPrepareArguments(String constraint) {
 		// TODO: constraint in common!!
 		if (constraint.length() < 2) {
-			// this is not valid: we simply display free room now.
-			searchByUriMakeRequest(new ArrayList<FRRoom>());
+			return getString(R.string.freeroom_urisearch_error_AutoComplete_error)
+					+ " "
+					+ getString(R.string.freeroom_urisearch_error_AutoComplete_precond);
 		} else {
+			mSearchByUriTriggered = true;
 			// TODO: group
 			AutoCompleteRequest req = new AutoCompleteRequest(constraint, 1);
 			mController.autoCompleteBuilding(this, req);
+			return "";
 		}
 	}
 
@@ -432,17 +464,21 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private void searchByUriMakeRequest(Collection<FRRoom> collection) {
 		mSearchByUriTriggered = false;
-		// search for the rest of the day.
-		FRPeriod period = FRTimes.getNextValidPeriodTillEndOfDay();
-		FRRequestDetails request = null;
-		List<String> uidList = new ArrayList<String>();
-		SetArrayList<FRRoom> uidNonFav = new SetArrayList<FRRoom>();
+
 		boolean empty = collection.isEmpty();
 		if (empty) {
-			// TODO: usergroup
-			request = new FRRequestDetails(period, true, uidList, true, false,
-					false, uidNonFav, 1);
+			// if nothing matched the search, we notify the user.
+			onErrorHandleIntent(getString(R.string.freeroom_urisearch_error_AutoComplete_error)
+					+ " "
+					+ getString(R.string.freeroom_urisearch_error_AutoComplete_noMatch));
 		} else {
+			// TODO: warn if there is more than 1 result ? Val. think no.
+
+			// search for the rest of the day.
+			FRPeriod period = FRTimes.getNextValidPeriodTillEndOfDay();
+			FRRequestDetails request = null;
+			List<String> uidList = new ArrayList<String>();
+			SetArrayList<FRRoom> uidNonFav = new SetArrayList<FRRoom>();
 			// TODO: find a simpler and more efficient way ?
 			Iterator<FRRoom> iter = collection.iterator();
 			while (iter.hasNext()) {
@@ -453,9 +489,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			// TODO: usergroup
 			request = new FRRequestDetails(period, false, uidList, false,
 					false, true, uidNonFav, 1);
+			mModel.setFRRequestDetails(request, !empty);
+			refresh();
 		}
-		mModel.setFRRequestDetails(request, !empty);
-		refresh();
 	}
 
 	/* MAIN ACTIVITY - INITIALIZATION */

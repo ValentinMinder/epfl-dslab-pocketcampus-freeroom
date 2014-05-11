@@ -117,6 +117,13 @@
     <string name="freeroom_dialog_add_room_title">Add rooms</string>
     <string name="freeroom_dialog_add_room_validate">Validate</string>
     <string name="freeroom_dialog_add_room_empty_list">Empty selected list, please insert room by typing first letters.</string>
+    <string name="freeroom_urisearch_error_basis">The URI you followed was not treated.</string>
+    <string name="freeroom_urisearch_error_URINotUnderstood">The URI was not understood and nothing happened.</string>
+    <string name="freeroom_urisearch_error_URINotSupported">The URI format may be corrupted or not supported by this version.</string>
+    <string name="freeroom_urisearch_error_AutoComplete_error">Autocompletion was not successful.</string>
+    <string name="freeroom_urisearch_error_AutoComplete_precond">The server receive not enough information to treat the query.</string>
+    <string name="freeroom_urisearch_error_AutoComplete_noMatch">Nothing matched the search query.</string>
+    <string name="freeroom_urisearch_error_end">Press to dismiss and make a new search for any free room.</string>
     <string name="freeroom_results_room_header_room">room</string>
     <string name="freeroom_results_room_header_rooms">rooms</string>
     <string name="freeroom_results_room_header_reduce">reduce</string>
