@@ -1020,7 +1020,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 *            the new summary to be displayed.
 	 */
 	private void setTextSummary(String text) {
-		mTextView.setText(text);
+		// always start by space!
+		mTextView.setText(" " + text);
 	}
 
 	/**
@@ -1360,9 +1361,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		textBuilder.append(getString(R.string.freeroom_share_in_room) + " ");
 		if (mRoom.isSetDoorCodeAlias()) {
 			textBuilder.append(mRoom.getDoorCodeAlias() + " ("
-					+ mRoom.getDoorCode() + ") ");
+					+ mRoom.getDoorCode() + ")");
 		} else {
-			textBuilder.append(mRoom.getDoorCode() + " ");
+			textBuilder.append(mRoom.getDoorCode());
 		}
 		// TODO: which period to use ?
 		// in case of specified in request, we should use the personalized
