@@ -581,7 +581,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			status = HttpURLConnection.HTTP_BAD_REQUEST;
 			statusComment = "FRRequest is null;";
 		} else {
-			if (!request.isSetPeriod()) {
+			if (!request.isSetPeriod() || request.getPeriod() == null) {
 				status = HttpURLConnection.HTTP_BAD_REQUEST;
 				statusComment += "FRPeriod is null;";
 			}
@@ -1195,7 +1195,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			status = HttpURLConnection.HTTP_BAD_REQUEST;
 			statusComment = "AutoCompleteRequest is null;";
 		} else {
-			if (!request.isSetConstraint()) {
+			if (!request.isSetConstraint() || request.getConstraint() == null) {
 				status = HttpURLConnection.HTTP_BAD_REQUEST;
 				statusComment += "Constraint is null;";
 			}
@@ -1264,12 +1264,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			status = HttpURLConnection.HTTP_BAD_REQUEST;
 			statusComment = "ImWorkingRequest is null;";
 		} else {
-			if (!request.isSetWork()) {
+			if (!request.isSetWork() || request.getWork() == null) {
 				status = HttpURLConnection.HTTP_BAD_REQUEST;
 				statusComment += "work (WorkingOccupancy) is null;";
 			}
 
-			if (!request.isSetHash()) {
+			if (!request.isSetHash() || request.getHash() == null) {
 				status = HttpURLConnection.HTTP_BAD_REQUEST;
 				statusComment += "Hash is not set;";
 			}
@@ -1298,11 +1298,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			error = true;
 		}
 		
-		if (!work.isSetPeriod()) {
+		if (!work.isSetPeriod() || work.getPeriod() == null) {
 			comment += "FRPeriod is not set;";
 		}
 		
-		if (!work.isSetRoom()) {
+		if (!work.isSetRoom() || work.getRoom() == null) {
 			comment += "FRRoom is not set;";
 		}
 		
