@@ -456,8 +456,8 @@ public class FRTimes {
 	 * For any week day between 00h and FIRST_HOUR_CHECK we return the given day
 	 * from 8h to 9h.
 	 * 
-	 * For any week and between FIRST_HOUR_CHECK and LAST_HOUR_CHECK - 1 we apply
-	 * the rules described by TimeUtils.roundFRRequestTimestamp(FRPeriod).
+	 * For any week and between FIRST_HOUR_CHECK and LAST_HOUR_CHECK - 1 we
+	 * apply the rules described by TimeUtils.roundFRRequestTimestamp(FRPeriod).
 	 * 
 	 * @param nowTimeStampNeeded
 	 *            The timestamp from which we want the next valid period
@@ -555,5 +555,26 @@ public class FRTimes {
 		boolean sameDay = (cal1.get(Calendar.DAY_OF_MONTH) == cal2
 				.get(Calendar.DAY_OF_MONTH));
 		return sameYear && sameMonth && sameDay;
+	}
+
+	/**
+	 * Get a valid period with start at the last hour and end at the end of the
+	 * current day, if we are before the end of the day. Otherwise, it will
+	 * return the whole next day (from the start hour till the end hour).
+	 * 
+	 * @return a valid period covering now till end of the day.
+	 */
+	public static FRPeriod getNextValidPeriodTillEndOfDay() {
+		FRPeriod period = FRTimes.getNextValidPeriod();
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(period.getTimeStampStart());
+
+		if (cal.get(Calendar.HOUR) < FRTimes.LAST_HOUR_CHECK) {
+			cal.set(Calendar.HOUR, FRTimes.LAST_HOUR_CHECK);
+		}
+
+		period.setTimeStampEnd(cal.getTimeInMillis());
+
+		return period;
 	}
 }

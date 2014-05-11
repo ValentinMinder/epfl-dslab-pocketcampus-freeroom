@@ -432,8 +432,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private void searchByUriMakeRequest(Collection<FRRoom> collection) {
 		mSearchByUriTriggered = false;
-		// TODO: getWholeDay (or starting now)
-		FRPeriod period = FRTimes.getNextValidPeriod();
+		// search for the rest of the day.
+		FRPeriod period = FRTimes.getNextValidPeriodTillEndOfDay();
 		FRRequestDetails request = null;
 		List<String> uidList = new ArrayList<String>();
 		SetArrayList<FRRoom> uidNonFav = new SetArrayList<FRRoom>();

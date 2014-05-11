@@ -2,7 +2,6 @@ package org.pocketcampus.plugin.freeroom.shared.utils;
 
 import java.util.Calendar;
 
-import org.pocketcampus.platform.sdk.shared.utils.Utils;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 
@@ -186,5 +185,4 @@ public class TimesUtils {
 
 		return new FRPeriod(tsStart, tsEnd, false);
 	}
-
 }
