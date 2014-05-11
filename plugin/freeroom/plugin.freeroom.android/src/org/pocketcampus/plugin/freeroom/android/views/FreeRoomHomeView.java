@@ -221,7 +221,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * <P>
 	 * TODO: NOT USED SO FAR
 	 */
-	private ListView mSearchPreviousListView;
+	// private ListView mSearchPreviousListView;
 
 	/* UI ELEMENTS FOR DIALOGS - FAVORITES */
 
@@ -941,25 +941,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mSummarySelectedRoomsTextViewSearchMenu.setText("empty");
 
 		// display the previous searches
-		mSearchPreviousListView = (ListView) mSearchView
-				.findViewById(R.id.freeroom_layout_dialog_search_prev_search_list);
-		ArrayAdapter<FRRequestDetails> adapter = new ArrayAdapter<FRRequestDetails>(
-				this, R.layout.sdk_list_entry, R.id.sdk_list_entry_text,
-				mModel.getPreviousRequest());
-		mSearchPreviousListView.setAdapter(adapter);
-		mSearchPreviousListView
-				.setOnItemClickListener(new OnItemClickListener() {
+		// TODO: non scrollable items up to five elements + button to open all the
+		// previous
 
-					@Override
-					public void onItemClick(AdapterView<?> arg0, View arg1,
-							int arg2, long arg3) {
-						FRRequestDetails req = mModel.getPreviousRequest().get(
-								arg2);
-						if (req != null) {
-							fillSearchDialog(req);
-						}
-					}
-				});
 
 		initSearch();
 	}
