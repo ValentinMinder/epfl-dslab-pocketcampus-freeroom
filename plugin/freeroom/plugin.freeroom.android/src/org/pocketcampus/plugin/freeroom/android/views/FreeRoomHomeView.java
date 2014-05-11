@@ -1082,7 +1082,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			} else {
 				build.append(getString(R.string.freeroom_home_info_rooms));
 			}
-			FRPeriod period = request.getPeriod();
+			FRPeriod period = mModel.getOverAllTreatedPeriod();
 			build.append(generateFullTimeSummary(period));
 
 			// if the info dialog is opened, we update the CORRECT occupancy
@@ -1232,8 +1232,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			shareImageView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					homeView.displayShareDialog(
-							getMaxPeriodFromList(mOccupancy.getOccupancy()),
+					homeView.displayShareDialog(mOccupancy.getTreatedPeriod(),
 							mOccupancy.getRoom());
 				}
 			});
@@ -1246,21 +1245,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						.setImageResource(R.drawable.share_disabled);
 			}
 		}
-	}
-
-	/**
-	 * Finds the whole period covered by a list of contiguous and ordered of
-	 * occupancies.
-	 * 
-	 * @param listOccupations
-	 *            the list of occupancies.
-	 * @return the period covered by the list
-	 */
-	private FRPeriod getMaxPeriodFromList(List<ActualOccupation> listOccupations) {
-		long tss = listOccupations.get(0).getPeriod().getTimeStampStart();
-		long tse = listOccupations.get(listOccupations.size() - 1).getPeriod()
-				.getTimeStampEnd();
-		return new FRPeriod(tss, tse, false);
 	}
 
 	private ActualOccupationArrayAdapter<ActualOccupation> mInfoActualOccupationAdapter;
@@ -1286,9 +1270,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			TextView periodTextView = (TextView) mInfoRoomView
 					.findViewById(R.id.freeroom_layout_dialog_info_period);
-			periodTextView
-					.setText(generateFullTimeSummary(getMaxPeriodFromList(mOccupancy
-							.getOccupancy())));
+			if (mOccupancy.isSetTreatedPeriod()
+					&& mOccupancy.getTreatedPeriod() != null) {
+				periodTextView.setText(generateFullTimeSummary(mOccupancy
+						.getTreatedPeriod()));
+			} else {
+				// TODO: error coming from server ??
+				periodTextView.setText("Error: cannot display period");
+			}
 
 			ImageView iv = (ImageView) mInfoRoomView
 					.findViewById(R.id.freeroom_layout_dialog_info_share);

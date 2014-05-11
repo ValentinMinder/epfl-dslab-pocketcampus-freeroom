@@ -23,6 +23,7 @@ import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
@@ -768,5 +769,30 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		// ensure favorites structure exists.
 		getPreviousRequest();
 		return previousRequestDetails.add(request);
+	}
+
+	/**
+	 * Stores the whole period treated by the last FRReply received from server.
+	 */
+	private FRPeriod overAllTreatedPeriod = null;
+
+	/**
+	 * Set the whole period treated by the last FRReply received from server.
+	 * 
+	 * @param overAllTreatedPeriod
+	 *            the new period
+	 */
+	public void setOverAllTreatedPeriod(FRPeriod overAllTreatedPeriod) {
+		this.overAllTreatedPeriod = overAllTreatedPeriod;
+	}
+
+	/**
+	 * Retrieves the whole period treated by the last FRReply received from
+	 * server.
+	 * 
+	 * @return the whole period.
+	 */
+	public FRPeriod getOverAllTreatedPeriod() {
+		return overAllTreatedPeriod;
 	}
 }

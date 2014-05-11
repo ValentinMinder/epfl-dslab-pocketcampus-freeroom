@@ -249,6 +249,7 @@ public class FreeRoomController extends PluginController implements
 	 *            FRReply results received from the server
 	 */
 	public void setOccupancyResults(FRReply result) {
+		mModel.setOverAllTreatedPeriod(result.getOverallTreatedPeriod());
 		mModel.setOccupancyResults(result.getOccupancyOfRooms());
 	}
 
