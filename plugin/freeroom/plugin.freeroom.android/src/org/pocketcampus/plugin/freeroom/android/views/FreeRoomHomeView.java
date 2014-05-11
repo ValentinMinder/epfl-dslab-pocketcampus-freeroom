@@ -384,7 +384,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			// no particular intent, so construct the default request
 			// and refresh it.
 			if (mController != null && mModel != null) {
-				initDefaultRequest();
+				initDefaultRequest(true);
 				refresh();
 			}
 		}
@@ -589,7 +589,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					@Override
 					public void onDismiss(DialogInterface dialog) {
 						// sends a new request with the new favorites
-						initDefaultRequest();
+						initDefaultRequest(true);
 						refresh();
 					}
 				});
@@ -1025,19 +1025,33 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
-	 * Constructs the default request (check all the favorites for the next
-	 * valid period) and sets it in the model for future use. You may call
-	 * <code>refresh</code> in order to send it to the server.
+	 * Constructs the default request and sets it in the model for future use.
+	 * You may call <code>refresh</code> in order to actually send it to the
+	 * server.
+	 * 
+	 * @param useFavorites
+	 *            if the constructor of the request should consider the
+	 *            favorites or not
 	 */
-	private void initDefaultRequest() {
-		mModel.setFRRequestDetails(validRequest(), false);
+	private void initDefaultRequest(boolean useFavorites) {
+		mModel.setFRRequestDetails(validRequest(useFavorites), false);
 	}
 
-	private FRRequestDetails validRequest() {
+	/**
+	 * Construct a valid and default request. If useFavorites is true, it will
+	 * check all the favorites for the next valid period, otherwise or if there
+	 * are not.
+	 * 
+	 * @param useFavorites
+	 *            if it should consider the favorites or not
+	 * @return a valid and default request, based or nor on the favorites.
+	 */
+	private FRRequestDetails validRequest(boolean useFavorites) {
 		OrderMapListFew<String, List<FRRoom>, FRRoom> set = mModel
 				.getFavorites();
 		FRRequestDetails details = null;
-		if (set.isEmpty()) {
+		// if there are no favorites or we dont want to use them.
+		if (set.isEmpty() || !useFavorites) {
 			// NO FAV = check all free rooms
 			// TODO change group accordingly, set to 1 by default and for
 			// testing purpose
