@@ -28,12 +28,14 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
   private static final org.apache.thrift.protocol.TField OCCUPANCY_FIELD_DESC = new org.apache.thrift.protocol.TField("occupancy", org.apache.thrift.protocol.TType.LIST, (short)2);
   private static final org.apache.thrift.protocol.TField IS_AT_LEAST_OCCUPIED_ONCE_FIELD_DESC = new org.apache.thrift.protocol.TField("isAtLeastOccupiedOnce", org.apache.thrift.protocol.TType.BOOL, (short)3);
   private static final org.apache.thrift.protocol.TField IS_AT_LEAST_FREE_ONCE_FIELD_DESC = new org.apache.thrift.protocol.TField("isAtLeastFreeOnce", org.apache.thrift.protocol.TType.BOOL, (short)4);
+  private static final org.apache.thrift.protocol.TField TREATED_PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("treatedPeriod", org.apache.thrift.protocol.TType.STRUCT, (short)41);
   private static final org.apache.thrift.protocol.TField RATIO_WORST_CASE_PROBABLE_OCCUPANCY_FIELD_DESC = new org.apache.thrift.protocol.TField("ratioWorstCaseProbableOccupancy", org.apache.thrift.protocol.TType.DOUBLE, (short)5);
 
   private FRRoom room; // required
   private List<ActualOccupation> occupancy; // required
   private boolean isAtLeastOccupiedOnce; // required
   private boolean isAtLeastFreeOnce; // required
+  private FRPeriod treatedPeriod; // required
   private double ratioWorstCaseProbableOccupancy; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
@@ -42,6 +44,7 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     OCCUPANCY((short)2, "occupancy"),
     IS_AT_LEAST_OCCUPIED_ONCE((short)3, "isAtLeastOccupiedOnce"),
     IS_AT_LEAST_FREE_ONCE((short)4, "isAtLeastFreeOnce"),
+    TREATED_PERIOD((short)41, "treatedPeriod"),
     RATIO_WORST_CASE_PROBABLE_OCCUPANCY((short)5, "ratioWorstCaseProbableOccupancy");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -65,6 +68,8 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
           return IS_AT_LEAST_OCCUPIED_ONCE;
         case 4: // IS_AT_LEAST_FREE_ONCE
           return IS_AT_LEAST_FREE_ONCE;
+        case 41: // TREATED_PERIOD
+          return TREATED_PERIOD;
         case 5: // RATIO_WORST_CASE_PROBABLE_OCCUPANCY
           return RATIO_WORST_CASE_PROBABLE_OCCUPANCY;
         default:
@@ -124,6 +129,8 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.IS_AT_LEAST_FREE_ONCE, new org.apache.thrift.meta_data.FieldMetaData("isAtLeastFreeOnce", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.TREATED_PERIOD, new org.apache.thrift.meta_data.FieldMetaData("treatedPeriod", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRPeriod.class)));
     tmpMap.put(_Fields.RATIO_WORST_CASE_PROBABLE_OCCUPANCY, new org.apache.thrift.meta_data.FieldMetaData("ratioWorstCaseProbableOccupancy", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -137,7 +144,8 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     FRRoom room,
     List<ActualOccupation> occupancy,
     boolean isAtLeastOccupiedOnce,
-    boolean isAtLeastFreeOnce)
+    boolean isAtLeastFreeOnce,
+    FRPeriod treatedPeriod)
   {
     this();
     this.room = room;
@@ -146,6 +154,7 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     setIsAtLeastOccupiedOnceIsSet(true);
     this.isAtLeastFreeOnce = isAtLeastFreeOnce;
     setIsAtLeastFreeOnceIsSet(true);
+    this.treatedPeriod = treatedPeriod;
   }
 
   /**
@@ -166,6 +175,9 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     }
     this.isAtLeastOccupiedOnce = other.isAtLeastOccupiedOnce;
     this.isAtLeastFreeOnce = other.isAtLeastFreeOnce;
+    if (other.isSetTreatedPeriod()) {
+      this.treatedPeriod = new FRPeriod(other.treatedPeriod);
+    }
     this.ratioWorstCaseProbableOccupancy = other.ratioWorstCaseProbableOccupancy;
   }
 
@@ -181,6 +193,7 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     this.isAtLeastOccupiedOnce = false;
     setIsAtLeastFreeOnceIsSet(false);
     this.isAtLeastFreeOnce = false;
+    this.treatedPeriod = null;
     setRatioWorstCaseProbableOccupancyIsSet(false);
     this.ratioWorstCaseProbableOccupancy = 0.0;
   }
@@ -294,6 +307,30 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     __isset_bit_vector.set(__ISATLEASTFREEONCE_ISSET_ID, value);
   }
 
+  public FRPeriod getTreatedPeriod() {
+    return this.treatedPeriod;
+  }
+
+  public Occupancy setTreatedPeriod(FRPeriod treatedPeriod) {
+    this.treatedPeriod = treatedPeriod;
+    return this;
+  }
+
+  public void unsetTreatedPeriod() {
+    this.treatedPeriod = null;
+  }
+
+  /** Returns true if field treatedPeriod is set (has been assigned a value) and false otherwise */
+  public boolean isSetTreatedPeriod() {
+    return this.treatedPeriod != null;
+  }
+
+  public void setTreatedPeriodIsSet(boolean value) {
+    if (!value) {
+      this.treatedPeriod = null;
+    }
+  }
+
   public double getRatioWorstCaseProbableOccupancy() {
     return this.ratioWorstCaseProbableOccupancy;
   }
@@ -351,6 +388,14 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
       }
       break;
 
+    case TREATED_PERIOD:
+      if (value == null) {
+        unsetTreatedPeriod();
+      } else {
+        setTreatedPeriod((FRPeriod)value);
+      }
+      break;
+
     case RATIO_WORST_CASE_PROBABLE_OCCUPANCY:
       if (value == null) {
         unsetRatioWorstCaseProbableOccupancy();
@@ -376,6 +421,9 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     case IS_AT_LEAST_FREE_ONCE:
       return Boolean.valueOf(isIsAtLeastFreeOnce());
 
+    case TREATED_PERIOD:
+      return getTreatedPeriod();
+
     case RATIO_WORST_CASE_PROBABLE_OCCUPANCY:
       return Double.valueOf(getRatioWorstCaseProbableOccupancy());
 
@@ -398,6 +446,8 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
       return isSetIsAtLeastOccupiedOnce();
     case IS_AT_LEAST_FREE_ONCE:
       return isSetIsAtLeastFreeOnce();
+    case TREATED_PERIOD:
+      return isSetTreatedPeriod();
     case RATIO_WORST_CASE_PROBABLE_OCCUPANCY:
       return isSetRatioWorstCaseProbableOccupancy();
     }
@@ -453,6 +503,15 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
         return false;
     }
 
+    boolean this_present_treatedPeriod = true && this.isSetTreatedPeriod();
+    boolean that_present_treatedPeriod = true && that.isSetTreatedPeriod();
+    if (this_present_treatedPeriod || that_present_treatedPeriod) {
+      if (!(this_present_treatedPeriod && that_present_treatedPeriod))
+        return false;
+      if (!this.treatedPeriod.equals(that.treatedPeriod))
+        return false;
+    }
+
     boolean this_present_ratioWorstCaseProbableOccupancy = true && this.isSetRatioWorstCaseProbableOccupancy();
     boolean that_present_ratioWorstCaseProbableOccupancy = true && that.isSetRatioWorstCaseProbableOccupancy();
     if (this_present_ratioWorstCaseProbableOccupancy || that_present_ratioWorstCaseProbableOccupancy) {
@@ -488,6 +547,11 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     builder.append(present_isAtLeastFreeOnce);
     if (present_isAtLeastFreeOnce)
       builder.append(isAtLeastFreeOnce);
+
+    boolean present_treatedPeriod = true && (isSetTreatedPeriod());
+    builder.append(present_treatedPeriod);
+    if (present_treatedPeriod)
+      builder.append(treatedPeriod);
 
     boolean present_ratioWorstCaseProbableOccupancy = true && (isSetRatioWorstCaseProbableOccupancy());
     builder.append(present_ratioWorstCaseProbableOccupancy);
@@ -541,6 +605,16 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     }
     if (isSetIsAtLeastFreeOnce()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.isAtLeastFreeOnce, typedOther.isAtLeastFreeOnce);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetTreatedPeriod()).compareTo(typedOther.isSetTreatedPeriod());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetTreatedPeriod()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.treatedPeriod, typedOther.treatedPeriod);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -614,6 +688,14 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 41: // TREATED_PERIOD
+          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+            this.treatedPeriod = new FRPeriod();
+            this.treatedPeriod.read(iprot);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         case 5: // RATIO_WORST_CASE_PROBABLE_OCCUPANCY
           if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
             this.ratioWorstCaseProbableOccupancy = iprot.readDouble();
@@ -671,6 +753,11 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
       oprot.writeDouble(this.ratioWorstCaseProbableOccupancy);
       oprot.writeFieldEnd();
     }
+    if (this.treatedPeriod != null) {
+      oprot.writeFieldBegin(TREATED_PERIOD_FIELD_DESC);
+      this.treatedPeriod.write(oprot);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -703,6 +790,14 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     sb.append("isAtLeastFreeOnce:");
     sb.append(this.isAtLeastFreeOnce);
     first = false;
+    if (!first) sb.append(", ");
+    sb.append("treatedPeriod:");
+    if (this.treatedPeriod == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.treatedPeriod);
+    }
+    first = false;
     if (isSetRatioWorstCaseProbableOccupancy()) {
       if (!first) sb.append(", ");
       sb.append("ratioWorstCaseProbableOccupancy:");
@@ -723,6 +818,9 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     }
     // alas, we cannot check 'isAtLeastOccupiedOnce' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'isAtLeastFreeOnce' because it's a primitive and you chose the non-beans generator.
+    if (treatedPeriod == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'treatedPeriod' was not present! Struct: " + toString());
+    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

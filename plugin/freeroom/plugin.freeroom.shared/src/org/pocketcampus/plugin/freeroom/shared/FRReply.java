@@ -27,16 +27,19 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
   private static final org.apache.thrift.protocol.TField STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("status", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField STATUS_COMMENT_FIELD_DESC = new org.apache.thrift.protocol.TField("statusComment", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField OCCUPANCY_OF_ROOMS_FIELD_DESC = new org.apache.thrift.protocol.TField("occupancyOfRooms", org.apache.thrift.protocol.TType.MAP, (short)3);
+  private static final org.apache.thrift.protocol.TField OVERALL_TREATED_PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("overallTreatedPeriod", org.apache.thrift.protocol.TType.STRUCT, (short)4);
 
   private int status; // required
   private String statusComment; // required
   private Map<String,List<Occupancy>> occupancyOfRooms; // required
+  private FRPeriod overallTreatedPeriod; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     STATUS((short)1, "status"),
     STATUS_COMMENT((short)2, "statusComment"),
-    OCCUPANCY_OF_ROOMS((short)3, "occupancyOfRooms");
+    OCCUPANCY_OF_ROOMS((short)3, "occupancyOfRooms"),
+    OVERALL_TREATED_PERIOD((short)4, "overallTreatedPeriod");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -57,6 +60,8 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
           return STATUS_COMMENT;
         case 3: // OCCUPANCY_OF_ROOMS
           return OCCUPANCY_OF_ROOMS;
+        case 4: // OVERALL_TREATED_PERIOD
+          return OVERALL_TREATED_PERIOD;
         default:
           return null;
       }
@@ -112,6 +117,8 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING), 
             new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
                 new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Occupancy.class)))));
+    tmpMap.put(_Fields.OVERALL_TREATED_PERIOD, new org.apache.thrift.meta_data.FieldMetaData("overallTreatedPeriod", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRPeriod.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRReply.class, metaDataMap);
   }
@@ -157,6 +164,9 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
       }
       this.occupancyOfRooms = __this__occupancyOfRooms;
     }
+    if (other.isSetOverallTreatedPeriod()) {
+      this.overallTreatedPeriod = new FRPeriod(other.overallTreatedPeriod);
+    }
   }
 
   public FRReply deepCopy() {
@@ -169,6 +179,7 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
     this.status = 0;
     this.statusComment = null;
     this.occupancyOfRooms = null;
+    this.overallTreatedPeriod = null;
   }
 
   public int getStatus() {
@@ -253,6 +264,30 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
     }
   }
 
+  public FRPeriod getOverallTreatedPeriod() {
+    return this.overallTreatedPeriod;
+  }
+
+  public FRReply setOverallTreatedPeriod(FRPeriod overallTreatedPeriod) {
+    this.overallTreatedPeriod = overallTreatedPeriod;
+    return this;
+  }
+
+  public void unsetOverallTreatedPeriod() {
+    this.overallTreatedPeriod = null;
+  }
+
+  /** Returns true if field overallTreatedPeriod is set (has been assigned a value) and false otherwise */
+  public boolean isSetOverallTreatedPeriod() {
+    return this.overallTreatedPeriod != null;
+  }
+
+  public void setOverallTreatedPeriodIsSet(boolean value) {
+    if (!value) {
+      this.overallTreatedPeriod = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case STATUS:
@@ -279,6 +314,14 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
       }
       break;
 
+    case OVERALL_TREATED_PERIOD:
+      if (value == null) {
+        unsetOverallTreatedPeriod();
+      } else {
+        setOverallTreatedPeriod((FRPeriod)value);
+      }
+      break;
+
     }
   }
 
@@ -292,6 +335,9 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
 
     case OCCUPANCY_OF_ROOMS:
       return getOccupancyOfRooms();
+
+    case OVERALL_TREATED_PERIOD:
+      return getOverallTreatedPeriod();
 
     }
     throw new IllegalStateException();
@@ -310,6 +356,8 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
       return isSetStatusComment();
     case OCCUPANCY_OF_ROOMS:
       return isSetOccupancyOfRooms();
+    case OVERALL_TREATED_PERIOD:
+      return isSetOverallTreatedPeriod();
     }
     throw new IllegalStateException();
   }
@@ -354,6 +402,15 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
         return false;
     }
 
+    boolean this_present_overallTreatedPeriod = true && this.isSetOverallTreatedPeriod();
+    boolean that_present_overallTreatedPeriod = true && that.isSetOverallTreatedPeriod();
+    if (this_present_overallTreatedPeriod || that_present_overallTreatedPeriod) {
+      if (!(this_present_overallTreatedPeriod && that_present_overallTreatedPeriod))
+        return false;
+      if (!this.overallTreatedPeriod.equals(that.overallTreatedPeriod))
+        return false;
+    }
+
     return true;
   }
 
@@ -375,6 +432,11 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
     builder.append(present_occupancyOfRooms);
     if (present_occupancyOfRooms)
       builder.append(occupancyOfRooms);
+
+    boolean present_overallTreatedPeriod = true && (isSetOverallTreatedPeriod());
+    builder.append(present_overallTreatedPeriod);
+    if (present_overallTreatedPeriod)
+      builder.append(overallTreatedPeriod);
 
     return builder.toHashCode();
   }
@@ -413,6 +475,16 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
     }
     if (isSetOccupancyOfRooms()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.occupancyOfRooms, typedOther.occupancyOfRooms);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetOverallTreatedPeriod()).compareTo(typedOther.isSetOverallTreatedPeriod());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetOverallTreatedPeriod()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.overallTreatedPeriod, typedOther.overallTreatedPeriod);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -479,6 +551,14 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 4: // OVERALL_TREATED_PERIOD
+          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+            this.overallTreatedPeriod = new FRPeriod();
+            this.overallTreatedPeriod.read(iprot);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -527,6 +607,13 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
         oprot.writeFieldEnd();
       }
     }
+    if (this.overallTreatedPeriod != null) {
+      if (isSetOverallTreatedPeriod()) {
+        oprot.writeFieldBegin(OVERALL_TREATED_PERIOD_FIELD_DESC);
+        this.overallTreatedPeriod.write(oprot);
+        oprot.writeFieldEnd();
+      }
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -554,6 +641,16 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
         sb.append("null");
       } else {
         sb.append(this.occupancyOfRooms);
+      }
+      first = false;
+    }
+    if (isSetOverallTreatedPeriod()) {
+      if (!first) sb.append(", ");
+      sb.append("overallTreatedPeriod:");
+      if (this.overallTreatedPeriod == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.overallTreatedPeriod);
       }
       first = false;
     }

@@ -81,6 +81,7 @@ struct Occupancy {
 	2: required list<ActualOccupation> occupancy;
 	3: required bool isAtLeastOccupiedOnce;
 	4: required bool isAtLeastFreeOnce;
+	41: required FRPeriod treatedPeriod;
 	5: optional double ratioWorstCaseProbableOccupancy;
 }
 
@@ -98,6 +99,7 @@ struct FRReply {
 	2: required string statusComment;
 	//map from building to list of occupancies in the building
 	3: optional map<string, list<Occupancy>> occupancyOfRooms;
+	4: optional FRPeriod overallTreatedPeriod;
 }
 
 //forbiddenRooms represents the rooms that shouldn't be replied 
