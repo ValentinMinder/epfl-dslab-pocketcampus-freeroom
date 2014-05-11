@@ -211,40 +211,57 @@
                     android:id="@+id/freeroom_layout_dialog_search_opt_line_wrapper_in"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="vertical" >
 
                     <TextView
                         android:id="@+id/freeroom_layout_dialog_search_text_summary"
-                        android:layout_width="0dp"
+                        android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:layout_weight="10"
                         android:text="no text"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@android:color/black" />
 
-                    <!-- Button to edit chosen rooms -->
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+                        
+                        <!-- Button to add more rooms -->
 
-                    <Button
-                        android:id="@+id/freeroom_layout_dialog_search_user_edit"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_gravity="bottom"
-                        android:layout_weight="5"
-                        android:text="@string/freeroom_search_userdef_edit"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@android:color/black" />
+                        <Button
+                            android:id="@+id/freeroom_layout_dialog_search_user_add"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="bottom"
+                            android:layout_weight="5"
+                            android:text="@string/freeroom_search_userdef_add"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@android:color/black" />
 
-                    <!-- Button to remove chosen rooms -->
+                        <!-- Button to edit chosen rooms -->
 
-                    <Button
-                        android:id="@+id/freeroom_layout_dialog_search_user_reset"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_gravity="bottom"
-                        android:layout_weight="5"
-                        android:text="@string/freeroom_search_userdef_reset"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@android:color/black" />
+                        <Button
+                            android:id="@+id/freeroom_layout_dialog_search_user_edit"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="bottom"
+                            android:layout_weight="5"
+                            android:text="@string/freeroom_search_userdef_edit"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@android:color/black" />
+
+                        <!-- Button to remove ALL chosen rooms -->
+
+                        <Button
+                            android:id="@+id/freeroom_layout_dialog_search_user_reset"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="bottom"
+                            android:layout_weight="5"
+                            android:text="@string/freeroom_search_userdef_reset"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@android:color/black" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

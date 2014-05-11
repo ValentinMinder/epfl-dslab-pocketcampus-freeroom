@@ -1534,6 +1534,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private Button resetButton;
 
 	private Button userDefEditButton;
+	private Button userDefAddButton;
 	private Button userDefResetButton;
 	private ImageButton addHourButton;
 	private ImageButton upToEndHourButton;
@@ -1913,15 +1914,27 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		userDefEditButton = (Button) mSearchView
-				.findViewById(R.id.freeroom_layout_dialog_search_user_edit);
-		userDefEditButton.setOnClickListener(new OnClickListener() {
+		userDefAddButton = (Button) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_user_add);
+		userDefAddButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				displayAddRoomDialog(AddRoomCaller.SEARCH);
 			}
 		});
+
+		userDefEditButton = (Button) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_user_edit);
+		userDefEditButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO: display something else! Edit, not adding!!!
+				displayAddRoomDialog(AddRoomCaller.SEARCH);
+			}
+		});
+
 		userDefResetButton = (Button) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_user_reset);
 		userDefResetButton.setOnClickListener(new OnClickListener() {

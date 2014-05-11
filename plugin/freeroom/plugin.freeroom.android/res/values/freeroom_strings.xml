@@ -49,6 +49,7 @@
     <string name="freeroom_search_favorites">Favorites</string>
     <string name="freeroom_search_userdef">Specified list</string>
     <string name="freeroom_search_userdef_reset">Reset</string>
+    <string name="freeroom_search_userdef_add">Add more</string>
     <string name="freeroom_search_userdef_edit">Edit</string>
     <string name="freeroom_search_previous_search">Previous searches</string>
     <string name="freeroom_selectday">Day</string>
