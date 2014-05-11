@@ -189,6 +189,11 @@ public class TimesUtils {
 		return new FRPeriod(tsStart, tsEnd, false);
 	}
 
+	/**
+	 * Find the largest period that contains all the occupancies contained in the given HashMap.
+	 * @param occupancies The occupancies to be considered by the search
+	 * @return The largest period which contains all the given occupancies.
+	 */
 	public static FRPeriod findLargestPeriod(
 			HashMap<String, List<Occupancy>> occupancies) {
 		if (occupancies == null || occupancies.isEmpty()) {
