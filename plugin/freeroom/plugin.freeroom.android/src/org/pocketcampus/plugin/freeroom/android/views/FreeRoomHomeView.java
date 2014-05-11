@@ -72,6 +72,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -218,10 +219,44 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	/* UI ELEMENTS FOR DIALOGS - SEARCH */
 	/**
 	 * ListView that holds previous searches.
-	 * <P>
-	 * TODO: NOT USED SO FAR
 	 */
-	// private ListView mSearchPreviousListView;
+	private ListView mSearchPreviousListView;
+	/**
+	 * TextView to write "previous searches" +show/hide
+	 */
+	private TextView prevSearchTitle;
+	/**
+	 * Layout of the first part, the search input (without the second part,
+	 * previous searches).
+	 */
+	private LinearLayout searchDialogUpperLinearLayout;
+	/**
+	 * Main layout of the search dialog.
+	 */
+	private LinearLayout searchDialogMainLinearLayout;
+	/**
+	 * Stores the height available
+	 */
+	private int searchDialogMainLayoutHeightAvailable = 0;
+	/**
+	 * Stores if the screen is too small
+	 */
+	private boolean searchDialogHasHeightExtenstionProblem = false;
+	/**
+	 * Ratio of dialog that should be occupied with searches input when NOT
+	 * displaying previous request.
+	 */
+	private double searchDialogNonExtended = 0.90;
+	/**
+	 * Ratio of dialog that should be occupied with searches input when
+	 * displaying previous request.
+	 */
+	private double searchDialogExtended = 0.70;
+	/**
+	 * Stores if the previous search has been hidden (the rest is more
+	 * extended).
+	 */
+	private boolean searchDialogExtendMoreTriggered = false;
 
 	/* UI ELEMENTS FOR DIALOGS - FAVORITES */
 
@@ -249,8 +284,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private Action search = new Action() {
 		public void performAction(View view) {
-			fillSearchDialog();
-			mSearchDialog.show();
+			displaySearchDialog();
 		}
 
 		public int getDrawable() {
@@ -914,15 +948,42 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		mSearchDialog.setView(mSearchView);
 		final String textTitlePrevious = getString(R.string.freeroom_search_previous_search);
+		prevSearchTitle = (TextView) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_prev_search_title);
+		prevSearchTitle.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				searchDialogMissSpaceExtendChangeState(searchDialogExtendMoreTriggered);
+				if (searchDialogHasHeightExtenstionProblem) {
+					if (searchDialogExtendMoreTriggered) {
+						prevSearchTitle
+								.setText(textTitlePrevious
+										+ ": "
+										+ getString(R.string.freeroom_search_previous_hide));
+					} else {
+						prevSearchTitle
+								.setText(textTitlePrevious
+										+ ": "
+										+ getString(R.string.freeroom_search_previous_show));
+					}
+				}
+				searchDialogExtendMoreTriggered = !searchDialogExtendMoreTriggered;
+			}
+		});
+
 		mSearchDialog.setOnShowListener(new OnShowListener() {
 
 			@Override
 			public void onShow(DialogInterface dialog) {
 				searchButton.setEnabled(auditSubmit() == 0);
-				TextView prevSearchTitle = (TextView) mSearchView
-						.findViewById(R.id.freeroom_layout_dialog_search_prev_search_title);
 				if (mModel.getPreviousRequest().isEmpty()) {
 					prevSearchTitle.setText("");
+				} else if (searchDialogHasHeightExtenstionProblem) {
+					prevSearchTitle
+							.setText(textTitlePrevious
+									+ ": "
+									+ getString(R.string.freeroom_search_previous_show));
 				} else {
 					prevSearchTitle.setText(textTitlePrevious);
 				}
@@ -941,11 +1002,123 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mSummarySelectedRoomsTextViewSearchMenu.setText("empty");
 
 		// display the previous searches
-		// TODO: non scrollable items up to five elements + button to open all the
-		// previous
+		mSearchPreviousListView = (ListView) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_prev_search_list);
+		ArrayAdapter<FRRequestDetails> adapter = new ArrayAdapter<FRRequestDetails>(
+				this, R.layout.sdk_list_entry, R.id.sdk_list_entry_text,
+				mModel.getPreviousRequest());
+		mSearchPreviousListView.setAdapter(adapter);
+		mSearchPreviousListView
+				.setOnItemClickListener(new OnItemClickListener() {
 
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int arg2, long arg3) {
+						FRRequestDetails req = mModel.getPreviousRequest().get(
+								arg2);
+						if (req != null) {
+							fillSearchDialog(req);
+						}
+
+						searchDialogExtendMoreTriggered = true;
+						if (searchDialogHasHeightExtenstionProblem) {
+							prevSearchTitle
+									.setText(textTitlePrevious
+											+ ": "
+											+ getString(R.string.freeroom_search_previous_show));
+						}
+						searchDialogMissSpaceExtendChangeState(false);
+					}
+				});
+
+		searchDialogUpperLinearLayout = (LinearLayout) mSearchDialog
+				.findViewById(R.id.freeroom_layout_dialog_search_scroll_main);
+		searchDialogMainLinearLayout = (LinearLayout) mSearchDialog
+				.findViewById(R.id.freeroom_layout_dialog_search_main);
 
 		initSearch();
+	}
+
+	/**
+	 * Finds if the available height in the search popup is not enough to store
+	 * the layout, in order the minimize it's size.
+	 * <p>
+	 * TODO: this method has an issue and never work on 1st time! The mock
+	 * filling seems not to be working regarding to the mesurements.
+	 * 
+	 * @return true if no problem
+	 */
+	private boolean findIfHeightProblem() {
+		// TODO: seems useless regarding the issue
+		searchDialogUpperLinearLayout
+				.setLayoutParams(new LinearLayout.LayoutParams(
+						LinearLayout.LayoutParams.FILL_PARENT, 1700));
+		searchDialogUpperLinearLayout
+				.setLayoutParams(new LinearLayout.LayoutParams(
+						LinearLayout.LayoutParams.FILL_PARENT,
+						LinearLayout.LayoutParams.WRAP_CONTENT));
+		FRRequestDetails request = validRequest(true);
+		request.setAny(false);
+		request.setFav(true);
+		request.setUser(true);
+		SetArrayList<FRRoom> set = new SetArrayList<FRRoom>(100);
+		List<String> uidList = new ArrayList<String>(100);
+		for (int i = 0; i < 100; i++) {
+			set.add(new FRRoom("BC898989", i + "123"));
+			uidList.add(i + "123");
+		}
+		request.setUidNonFav(set);
+		request.setUidList(uidList);
+		fillSearchDialog(request);
+		mSearchDialog.show();
+		// TODO: seems useless regarding the issue
+		searchDialogUpperLinearLayout.refreshDrawableState();
+		searchDialogUpperLinearLayout.getDrawableState();
+		searchDialogMainLayoutHeightAvailable = searchDialogMainLinearLayout
+				.getMeasuredHeight();
+		boolean toreturn = (searchDialogUpperLinearLayout.getMeasuredHeight() > (searchDialogExtended * searchDialogMainLayoutHeightAvailable));
+		fillSearchDialog();
+		return toreturn;
+	}
+
+	/**
+	 * Display the search dialog and checks the compatibility of the UI and make
+	 * some change if necessary.
+	 */
+	private void displaySearchDialog() {
+		if (findIfHeightProblem()) {
+			searchDialogHasHeightExtenstionProblem = true;
+		}
+		fillSearchDialog();
+		if (!mModel.getPreviousRequest().isEmpty()) {
+			searchDialogMissSpaceExtendChangeState(false);
+		} else {
+			searchDialogUpperLinearLayout
+					.setLayoutParams(new LinearLayout.LayoutParams(
+							LinearLayout.LayoutParams.FILL_PARENT,
+							LinearLayout.LayoutParams.WRAP_CONTENT));
+		}
+		mSearchDialog.show();
+	}
+
+	/**
+	 * Modify the height of the upper layout of the search dialog in order to
+	 * show/hide the previous requests.
+	 * 
+	 * @param lessExtend
+	 */
+	private void searchDialogMissSpaceExtendChangeState(boolean lessExtend) {
+		if (searchDialogHasHeightExtenstionProblem) {
+			int height = (int) (searchDialogNonExtended * searchDialogMainLayoutHeightAvailable);
+
+			if (lessExtend) {
+				height = (int) (searchDialogExtended * searchDialogMainLayoutHeightAvailable);
+			}
+			searchDialogUpperLinearLayout
+					.setLayoutParams(new LinearLayout.LayoutParams(
+							LinearLayout.LayoutParams.FILL_PARENT, height));
+			searchDialogUpperLinearLayout.refreshDrawableState();
+		}
 	}
 
 	private void initWarningDialog() {
