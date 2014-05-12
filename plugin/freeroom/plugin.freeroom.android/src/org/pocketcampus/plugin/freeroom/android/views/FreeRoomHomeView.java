@@ -1586,7 +1586,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		favButton.setChecked(request.isFav());
 		userDefButton.setChecked(request.isUser());
 		freeButton.setChecked(request.isOnlyFreeRooms());
-		searchButton.setEnabled(auditSubmit() == 0);
 		boolean enabled = !request.isAny();
 		favButton.setEnabled(enabled);
 		userDefButton.setEnabled(enabled);
@@ -1607,6 +1606,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					.setText(getSummaryTextFromCollection(selectedRooms));
 		}
 		updateDateTimePickersAndButtons();
+
+		// MUST be the last action: after all field are set, check if the
+		// request is valid
+		searchButton.setEnabled(auditSubmit() == 0);
 	}
 
 	public String wantToShare(FRPeriod mPeriod, FRRoom mRoom, String toShare) {
