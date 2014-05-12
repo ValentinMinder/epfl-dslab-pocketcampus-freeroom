@@ -495,8 +495,41 @@ public class FRTimes {
 			tsStart = mCalendar.getTimeInMillis() + ONE_HOUR_IN_MS * hourShift;
 			return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
 		} else {
-			return TimesUtils.roundFRRequestTimestamp(period);
+			return getNextValidPeriodDuringDay(period);
 		}
+	}
+	
+	/**
+	 * Round the timestamps of a given FRRequest.
+	 * 
+	 * If the minutes (e.g 10h32, the minutes are 32) are between 0 and 29 we
+	 * round to the previous complete hour (10h23 -> 10h00) and the total period
+	 * has length ONE hour.
+	 * 
+	 * If the minutes are between 30 and 59 we round to the previous complete
+	 * hour (10h45-> 10h00) and the total period has length TWO hours.
+	 * 
+	 * @param period
+	 *            The period to round
+	 * @return The new period rounded
+	 */
+	private static FRPeriod getNextValidPeriodDuringDay(FRPeriod period) {
+		long tsStart = period.getTimeStampStart();
+		long tsEnd = period.getTimeStampEnd();
+
+		long minutesStart = tsStart % FRTimes.ONE_HOUR_IN_MS;
+		if (minutesStart < FRTimes.m30_MIN_IN_MS) {
+			tsStart -= minutesStart;
+			tsEnd = tsStart + FRTimes.ONE_HOUR_IN_MS;
+		} else {
+			tsStart -= minutesStart;
+			tsEnd = tsStart + 2 * FRTimes.ONE_HOUR_IN_MS;
+		}
+
+		tsStart = TimesUtils.roundSAndMSToZero(tsStart);
+		tsEnd = TimesUtils.roundSAndMSToZero(tsEnd);
+
+		return new FRPeriod(tsStart, tsEnd, false);
 	}
 
 	private static FRPeriod shiftWeekEndToMondayFirstHour(long timestamp) {
