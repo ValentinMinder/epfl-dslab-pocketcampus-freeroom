@@ -9,7 +9,6 @@ import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
-import org.pocketcampus.plugin.freeroom.shared.utils.TimesUtils;
 
 /**
  * This class is used to sort, fill and then create an occupancy based on

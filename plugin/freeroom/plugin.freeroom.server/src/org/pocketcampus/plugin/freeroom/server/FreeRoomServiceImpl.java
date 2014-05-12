@@ -41,7 +41,6 @@ import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
-import org.pocketcampus.plugin.freeroom.shared.utils.TimesUtils;
 
 /**
  * The actual implementation of the server side of the FreeRoom Plugin.
