@@ -81,9 +81,14 @@ static NSInteger const kMaxZ = 30;
     return 0.85;
 }
 
+- (MKOverlayLevel)desiredLevelForMapView {
+    return MKOverlayLevelAboveRoads;
+}
+
 #pragma mark - MKTileOverlay overrides
 
 - (NSURL*)URLForTilePath:(MKTileOverlayPath)path {
+#warning CACHING does not work anymore, should override loadTilePath:...
     NSString* serverBaseURLString = [self serverBaseURLStringForTilePath:path];
     NSString* pathOnServer = [NSString stringWithFormat:@"/batiments%d-merc/%d/%@/%@%@", (int)self.floorLevel, (int)path.z, [self createStringCoordForTileCoord:path.x], [self createStringCoordForTileCoord:path.y], kURLEnding];
     NSURL* url = [NSURL URLWithString:pathOnServer relativeToURL:[NSURL URLWithString:serverBaseURLString]];

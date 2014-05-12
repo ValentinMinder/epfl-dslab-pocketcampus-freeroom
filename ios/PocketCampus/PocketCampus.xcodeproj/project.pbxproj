@@ -121,6 +121,7 @@
 		324A59A0151E453300977F33 /* TransportUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A599F151E453300977F33 /* TransportUtils.m */; };
 		324ADABC191A39F6000737E7 /* PCTileOverlayRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 324ADABB191A39F6000737E7 /* PCTileOverlayRenderer.m */; };
 		324ADABF191A3A36000737E7 /* PCTileOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 324ADABE191A3A36000737E7 /* PCTileOverlay.m */; };
+		324ADAC2191A44B1000737E7 /* EPFLLayersOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 324ADAC1191A44B1000737E7 /* EPFLLayersOverlay.m */; };
 		324C7A23174A627C00ED19FD /* GenericResizableShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 324C7A21174A627C00ED19FD /* GenericResizableShadow.png */; };
 		324C7A24174A627C00ED19FD /* GenericResizableShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324C7A22174A627C00ED19FD /* GenericResizableShadow@2x.png */; };
 		324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */; };
@@ -570,6 +571,8 @@
 		324ADABB191A39F6000737E7 /* PCTileOverlayRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCTileOverlayRenderer.m; sourceTree = "<group>"; };
 		324ADABD191A3A36000737E7 /* PCTileOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCTileOverlay.h; sourceTree = "<group>"; };
 		324ADABE191A3A36000737E7 /* PCTileOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCTileOverlay.m; sourceTree = "<group>"; };
+		324ADAC0191A44B1000737E7 /* EPFLLayersOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPFLLayersOverlay.h; sourceTree = "<group>"; };
+		324ADAC1191A44B1000737E7 /* EPFLLayersOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPFLLayersOverlay.m; sourceTree = "<group>"; };
 		324C7A21174A627C00ED19FD /* GenericResizableShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GenericResizableShadow.png; sourceTree = "<group>"; };
 		324C7A22174A627C00ED19FD /* GenericResizableShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GenericResizableShadow@2x.png"; sourceTree = "<group>"; };
 		324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleSplashDetailView.xib; sourceTree = "<group>"; };
@@ -922,6 +925,7 @@
 		32EE9622166E19D5005B0F65 /* MoodleCoursesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MoodleCoursesListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32EE9626166E25BD005B0F65 /* MoodleCourseSectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleCourseSectionsViewController.h; sourceTree = "<group>"; };
 		32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MoodleCourseSectionsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		32EF30391921007A00FB6421 /* PCScreenTileOverlay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCScreenTileOverlay.h; sourceTree = "<group>"; };
 		32F5308716EA973B00F66484 /* EventsCategorySelectorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventsCategorySelectorViewController.h; sourceTree = "<group>"; };
 		32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventsCategorySelectorViewController.m; sourceTree = "<group>"; };
 		32F5308C16EAB02400F66484 /* EventItemInfo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = EventItemInfo.html; sourceTree = "<group>"; };
@@ -1319,10 +1323,13 @@
 				32763230166511B600C33DF9 /* MapView-pad.xib */,
 				324151F215377B4C00CCFB22 /* MapItemAnnotation.h */,
 				324151F315377B4C00CCFB22 /* MapItemAnnotation.m */,
+				32EF30391921007A00FB6421 /* PCScreenTileOverlay.h */,
 				324ADABD191A3A36000737E7 /* PCTileOverlay.h */,
 				324ADABE191A3A36000737E7 /* PCTileOverlay.m */,
 				32728D6A191A26830031B52B /* EPFLTileOverlay.h */,
 				32728D6B191A26830031B52B /* EPFLTileOverlay.m */,
+				324ADAC0191A44B1000737E7 /* EPFLLayersOverlay.h */,
+				324ADAC1191A44B1000737E7 /* EPFLLayersOverlay.m */,
 				324ADABA191A39F6000737E7 /* PCTileOverlayRenderer.h */,
 				324ADABB191A39F6000737E7 /* PCTileOverlayRenderer.m */,
 			);
@@ -2742,6 +2749,7 @@
 			files = (
 				32B956231878BA60003B9330 /* DirectoryPersonCell.m in Sources */,
 				3219EF5D14FCDE4900A271CD /* main.m in Sources */,
+				324ADAC2191A44B1000737E7 /* EPFLLayersOverlay.m in Sources */,
 				328869AC14FE5AF400CC97DB /* AppDelegate.m in Sources */,
 				32930AAD17F898910025F864 /* TSocketServer.m in Sources */,
 				32FAC0F51500F40700925180 /* DirectoryController.m in Sources */,

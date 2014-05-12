@@ -71,4 +71,10 @@
  */
 @property (nonatomic, readonly) CGFloat desiredAlpha;
 
+/**
+ * Should return level at which overlay should be added
+ * Default: MKOverlayLevelAboveRoads
+ */
+@property (nonatomic, readonly) MKOverlayLevel desiredLevelForMapView;
+
 @end

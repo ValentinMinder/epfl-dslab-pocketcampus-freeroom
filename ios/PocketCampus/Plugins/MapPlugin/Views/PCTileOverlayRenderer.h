@@ -31,10 +31,19 @@
 
 @class PCTileOverlay;
 
+@protocol PCScreenTileOverlay;
+
 @interface PCTileOverlayRenderer : MKTileOverlayRenderer
 
 - (instancetype)initWithPCTileOverlay:(PCTileOverlay*)overlay;
 
+- (instancetype)initWithScreenPCTileOverlay:(PCTileOverlay<PCScreenTileOverlay>*)overlay;
+
 @property (nonatomic, readonly, weak) PCTileOverlay* pcTileOverlay;
+
+/**
+ * Non-nil only if self was instantiated with initWithScreenPCTileOverlay
+ */
+@property (nonatomic, readonly, weak) PCTileOverlay<PCScreenTileOverlay>* pcScreenTileOverlay;
 
 @end

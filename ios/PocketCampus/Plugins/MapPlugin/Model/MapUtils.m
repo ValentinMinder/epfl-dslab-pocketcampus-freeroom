@@ -439,17 +439,20 @@ double tiley2lat(int y, int z) {
     double lat = tiley2lat(tilePath.y, tilePath.z);
     double lon = tilex2long(tilePath.x, tilePath.z);
     
-    CLLocationDegrees span = 360.0 / [MapUtils worldTileWidthForZoomLevel:tilePath.z];
+    CLLocationDegrees latSpan = (360.0*cos(lat * M_PI / 180.0)) / (double)(pow(2,tilePath.z));
+    CLLocationDegrees lonSpan = (360.0*cos(lon * M_PI / 180.0)) / (double)(pow(2,tilePath.z));
     
-    MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(lat, lon), MKCoordinateSpanMake(span, span));
+    lat -= latSpan/2.0;
+    lon += lonSpan/2.0;
+    
+    MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(lat, lon), MKCoordinateSpanMake(latSpan, lonSpan));
     
     MKMapRect mapRect = MKMapRectForCoordinateRegion(region);
     
-    return [MapUtils WGStoCH1903:mapRect];
+    return [self WGStoCH1903:mapRect];
 }
 
-MKMapRect MKMapRectForCoordinateRegion(MKCoordinateRegion region)
-{
+MKMapRect MKMapRectForCoordinateRegion(MKCoordinateRegion region) {
     MKMapPoint a = MKMapPointForCoordinate(CLLocationCoordinate2DMake(
                                                                       region.center.latitude + region.span.latitudeDelta / 2,
                                                                       region.center.longitude - region.span.longitudeDelta / 2));
@@ -457,6 +460,10 @@ MKMapRect MKMapRectForCoordinateRegion(MKCoordinateRegion region)
                                                                       region.center.latitude - region.span.latitudeDelta / 2,
                                                                       region.center.longitude + region.span.longitudeDelta / 2));
     return MKMapRectMake(MIN(a.x,b.x), MIN(a.y,b.y), ABS(a.x-b.x), ABS(a.y-b.y));
+}
+
+NSString* NSStringFromMKTileOverlayPath(MKTileOverlayPath path) {
+    return [NSString stringWithFormat:@"x:%ld, y:%ld, z:%ld, contentScaleFactor:%f", path.x, path.y, path.z, path.contentScaleFactor];
 }
 
 @end

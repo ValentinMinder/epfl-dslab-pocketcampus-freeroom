@@ -31,9 +31,18 @@
 
 #import "PCTileOverlay.h"
 
+#import "PCScreenTileOverlay.h"
+
+#import <AFNetworking/AFNetworking.h>
+
 @interface PCTileOverlayRenderer ()
 
 @property (nonatomic, readwrite) PCTileOverlay* pcTileOverlay;
+@property (nonatomic, readwrite) PCTileOverlay<PCScreenTileOverlay>* pcScreenTileOverlay;
+
+@property (nonatomic, strong) NSCache* tilesCache;
+
+@property (nonatomic, strong) NSOperationQueue* operationQueue;
 
 @end
 
@@ -44,9 +53,20 @@
 - (instancetype)initWithPCTileOverlay:(PCTileOverlay*)overlay {
     self = [super initWithTileOverlay:overlay];
     if (self) {
+        self.tilesCache = [NSCache new];
         self.pcTileOverlay = overlay;
         self.alpha = overlay.desiredAlpha;
         [self.pcTileOverlay addObserver:self forKeyPath:NSStringFromSelector(@selector(floorLevel)) options:0 context:nil];
+    }
+    return self;
+}
+
+- (instancetype)initWithScreenPCTileOverlay:(PCTileOverlay<PCScreenTileOverlay>*)overlay {
+    self = [self initWithPCTileOverlay:overlay];
+    if (self) {
+        self.operationQueue = [NSOperationQueue new];
+        self.operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
+        self.pcScreenTileOverlay = overlay;
     }
     return self;
 }
@@ -56,6 +76,68 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (object == self.pcTileOverlay && [keyPath isEqualToString:NSStringFromSelector(@selector(floorLevel))]) {
         [self reloadData];
+    }
+}
+
+/*#pragma mark - MKTileOverlayRenderer
+
+- (void)reloadData {
+    
+}*/
+
+#pragma mark - MKOverlayRenderer overrides
+
+- (BOOL)canDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale {
+    if (!self.pcScreenTileOverlay) {
+        return [super canDrawMapRect:mapRect zoomScale:zoomScale];
+    }
+    
+    if (![self.pcScreenTileOverlay shouldDrawMapRect:mapRect zoomScale:zoomScale]) {
+        return NO;
+    }
+    
+    NSURL* url = [self.pcScreenTileOverlay URLForCurrentlyVisibleMapRectAndZoomScale];
+    
+    if (self.tilesCache[url.absoluteString]) {
+        return YES;
+    }
+    
+    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:20.0];
+    
+    AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.responseSerializer = [AFImageResponseSerializer serializer];
+    
+    __weak __typeof(self) welf = self;
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, UIImage* responseImage) {
+        if (responseImage) {
+            welf.tilesCache[url.absoluteString] = responseImage;
+            [welf setNeedsDisplayInMapRect:mapRect zoomScale:zoomScale];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        //too bad...
+    }];
+    
+    [self.operationQueue addOperation:operation];
+    
+    return NO;
+}
+
+- (void)drawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale inContext:(CGContextRef)context {
+    if (!self.pcScreenTileOverlay) {
+        return [super drawMapRect:mapRect zoomScale:zoomScale inContext:context];
+    }
+    @synchronized (self) {
+        NSURL* url = [self.pcScreenTileOverlay URLForCurrentlyVisibleMapRectAndZoomScale];
+        UIImage* image = self.tilesCache[url.absoluteString];
+        if (!image) {
+            [self canDrawMapRect:mapRect zoomScale:zoomScale];
+            return;
+        }
+        UIImage* croppedImage = [self.pcScreenTileOverlay croppedImageFromCurrentlyVisibleMapRectImage:image forMapRect:mapRect zoomScale:zoomScale];
+        UIGraphicsPushContext(context);
+        [croppedImage drawInRect:[self rectForMapRect:mapRect] blendMode:kCGBlendModeNormal alpha:self.pcScreenTileOverlay.desiredAlpha];
+        CGContextSetRGBStrokeColor(context, 1.0, 0.5, 1.0, 1.0);
+        UIGraphicsPopContext();
     }
 }
 
