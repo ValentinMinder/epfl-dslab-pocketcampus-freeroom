@@ -48,7 +48,7 @@ namespace PocketCampus.Common
             return ( (MemberExpression) expr.Body ).Member.Name;
         }
 
-        // Required for collection initializers, see §7.5.10.3 of the C# spec.
+        // Required for collection initializers, see §7.6.10.3 of the C# spec.
         public IEnumerator GetEnumerator()
         {
             throw new NotSupportedException();
