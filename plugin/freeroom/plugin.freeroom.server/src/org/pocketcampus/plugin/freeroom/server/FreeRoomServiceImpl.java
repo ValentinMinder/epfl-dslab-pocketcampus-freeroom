@@ -186,14 +186,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return false;
 		}
 		// putting seconds and milliseconds to zero
-		period.setTimeStampStart(TimesUtils.roundSAndMSToZero(period
+		period.setTimeStampStart(FRTimes.roundSAndMSToZero(period
 				.getTimeStampStart()));
-		period.setTimeStampEnd(TimesUtils.roundSAndMSToZero(period
+		period.setTimeStampEnd(FRTimes.roundSAndMSToZero(period
 				.getTimeStampEnd()));
 
 		if (type == OCCUPANCY_TYPE.USER) {
 			// round user occupancy to a full hour
-			period.setTimeStampStart(TimesUtils
+			period.setTimeStampStart(FRTimes
 					.roundToNearestHalfHourBefore(period.getTimeStampStart()));
 		}
 
@@ -332,8 +332,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 				boolean overallInsertion = true;
 
-				long hourSharpBefore = TimesUtils.roundHourBefore(tsStart);
-				long numberHours = TimesUtils.determineNumberHour(tsStart,
+				long hourSharpBefore = FRTimes.roundHourBefore(tsStart);
+				long numberHours = FRTimes.determineNumberHour(tsStart,
 						tsEnd);
 
 				for (int i = 0; i < numberHours; ++i) {

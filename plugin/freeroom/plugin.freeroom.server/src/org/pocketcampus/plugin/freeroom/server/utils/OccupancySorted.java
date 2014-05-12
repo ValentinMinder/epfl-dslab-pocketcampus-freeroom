@@ -49,8 +49,8 @@ public class OccupancySorted {
 
 	public void addActualOccupation(ActualOccupation occ) {
 		FRPeriod period = occ.getPeriod();
-		long start = TimesUtils.roundSAndMSToZero(period.getTimeStampStart());
-		long end = TimesUtils.roundSAndMSToZero(period.getTimeStampEnd());
+		long start = FRTimes.roundSAndMSToZero(period.getTimeStampStart());
+		long end = FRTimes.roundSAndMSToZero(period.getTimeStampEnd());
 
 		if (start < timestampStart) {
 			start = timestampStart;
@@ -279,8 +279,8 @@ public class OccupancySorted {
 	 */
 	private ArrayList<ActualOccupation> cutInStepsPeriod(long start, long end) {
 		ArrayList<ActualOccupation> result = new ArrayList<ActualOccupation>();
-		long hourSharpBefore = TimesUtils.roundHourBefore(start);
-		long numberHours = TimesUtils.determineNumberHour(start, end);
+		long hourSharpBefore = FRTimes.roundHourBefore(start);
+		long numberHours = FRTimes.determineNumberHour(start, end);
 
 		for (int i = 0; i < numberHours; ++i) {
 			long minStart = Math.max(hourSharpBefore, hourSharpBefore + i
