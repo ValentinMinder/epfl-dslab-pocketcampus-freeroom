@@ -554,23 +554,6 @@ public class FRTimes {
 	}
 
 	/**
-	 * Checks if the given hour and minutes is evening. Request in evening are
-	 * shifted to next morning.
-	 * 
-	 * Should return true if time is greater or equal to 19h00, up to 24h00.
-	 * Moreover, it returns true a few minutes before 19h00, because we need at
-	 * least a few minutes to check
-	 * 
-	 * @param hour
-	 * @param min
-	 * @return
-	 */
-	private static boolean checkHourMinIsEveningAndShifted(int hour, int min) {
-		return (hour >= LAST_HOUR_CHECK)
-				|| (hour == (LAST_HOUR_CHECK - 1) && min >= (60 - MIN_MINUTE_INTERVAL));
-	}
-
-	/**
 	 * Compare two calendars to know if it's the same day, basically if their
 	 * year/month/day are all the same.
 	 * 
