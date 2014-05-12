@@ -407,6 +407,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			if (intent.getAction().equalsIgnoreCase(
 					"android.intent.action.MAIN")) {
 				logV("starting MAIN and default mode");
+				defaultMainStart();
 			} else if (intent.getAction().equalsIgnoreCase(
 					"android.intent.action.VIEW")) {
 				logV("starting the app and handling simple VIEW intent");
@@ -451,6 +452,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				logE("ERROR: Found an unhandled action: \""
 						+ intent.getAction() + "\"");
 				logE("Starting the app in default mode anyway");
+				defaultMainStart();
 			}
 		} else {
 			logE("ERROR: Found a null Intent or Action !!!");
