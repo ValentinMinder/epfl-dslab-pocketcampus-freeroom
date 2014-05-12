@@ -1381,7 +1381,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			// of QR codes)
 			if (mModel.getOccupancyResults().size() == 1) {
 				List<?> list = mModel.getOccupancyResults().get(0);
-				if (list != null) {
+				if (list != null && list.size() == 1) {
 					Object elem = list.get(0);
 					if (elem != null && elem instanceof Occupancy) {
 						mModel.setDisplayedOccupancy((Occupancy) elem);
