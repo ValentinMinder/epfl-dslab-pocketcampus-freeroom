@@ -34,6 +34,7 @@ import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
+import org.pocketcampus.plugin.freeroom.shared.utils.FRStruct;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 import android.app.AlertDialog;
@@ -72,7 +73,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -127,6 +127,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private FreeRoomModel mModel;
 
 	/* COMMON SHARED VALUES */
+	/**
+	 * Class name for logs.
+	 */
+	private String className = this.getClass().getSimpleName();
 	/**
 	 * Width of the main Activity.
 	 */
@@ -396,39 +400,62 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	@Override
 	protected void handleIntent(Intent intent) {
-		if (intent.getAction().equalsIgnoreCase("android.intent.action.VIEW")) {
+		logV("Starting the app: handling an Intent");
+		// Intent and/or action seems to be null in some cases... so we just
+		// skip these cases and launch the default settings.
+		if (intent != null && intent.getAction() != null) {
+			if (intent.getAction().equalsIgnoreCase(
+					"android.intent.action.MAIN")) {
+				logV("starting MAIN and default mode");
+			} else if (intent.getAction().equalsIgnoreCase(
+					"android.intent.action.VIEW")) {
+				logV("starting the app and handling simple VIEW intent");
+				String errorIntentHandled = ""
+						+ getString(R.string.freeroom_urisearch_error_URINotUnderstood)
+						+ " "
+						+ getString(R.string.freeroom_urisearch_error_URINotSupported);
+				String intentScheme = intent.getScheme();
+				Uri intentUri = intent.getData();
+				if (intentScheme != null && intentUri != null) {
+					String intentUriHost = intentUri.getHost();
+					String intentUriPath = intentUri.getPath();
+					if (intentUriHost != null && intentUriPath != null) {
+						String intentUriPathQuery = FRStruct
+								.removeFirstCharSafely(intentUriPath);
+						// using standard epfl http page
+						if (intentScheme.equalsIgnoreCase("http")
+								&& intentUriHost
+										.equalsIgnoreCase("occupancy.epfl.ch")) {
+							logV("Found an EPFL http://occupancy.epfl.ch/room URI");
+							logV("With room query: \"" + intentUriPathQuery + "\"");
+							errorIntentHandled = searchByUriPrepareArguments(intentUriPathQuery);
+						}
 
-			String errorIntentHandled = getString(R.string.freeroom_urisearch_error_URINotUnderstood)
-					+ " "
-					+ getString(R.string.freeroom_urisearch_error_URINotSupported);
-			// using standard http page
-			if (intent.getScheme().equalsIgnoreCase("http")) {
-				Uri mUri = intent.getData();
-				if (mUri.getHost().equalsIgnoreCase("occupancy.epfl.ch")) {
-					String mPathData = mUri.getPath();
-					if (mPathData != null && mPathData.length() >= 1) {
-						// removing first '/'
-						errorIntentHandled = searchByUriPrepareArguments(mPathData
-								.substring(1, mPathData.length()));
+						// using freeroom links.
+						else if (intentScheme.equalsIgnoreCase("pocketcampus")
+								&& intentUriHost
+										.equalsIgnoreCase("freeroom.plugin.pocketcampus.org")) {
+							logV("Found a pocketcampus://freeroom.plugin.pocketcampus.org/data URI");
+							logV("With room query: \"" + intentUriPathQuery + "\"");
+							// TODO: do something.
+							errorIntentHandled = "URI NOR supported right now!";
+						} else {
+							logE("Unknow URI: \"" + intentUri + "\"");
+						}
 					}
 				}
-
-				// TODO: something else, predefined
-				if (mUri.getHost().equalsIgnoreCase(
-						"freeroom.plugin.pocketcampus.org")) {
-
+				if (errorIntentHandled.length() != 0) {
+					onErrorHandleIntent(errorIntentHandled);
 				}
-			}
-			if (errorIntentHandled.length() != 0) {
-				onErrorHandleIntent(errorIntentHandled);
+			} else {
+				logE("ERROR: Found an unhandled action: \""
+						+ intent.getAction() + "\"");
+				logE("Starting the app in default mode anyway");
 			}
 		} else {
-			// no particular intent, so construct the default request
-			// and refresh it.
-			if (mController != null && mModel != null) {
-				initDefaultRequest(true);
-				refresh();
-			}
+			logE("ERROR: Found a null Intent or Action !!!");
+			logE("Starting the app in default mode anyway");
+			defaultMainStart();
 		}
 	}
 
@@ -451,6 +478,40 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			initDefaultRequest(false);
 			refresh();
 		}
+	}
+
+	/**
+	 * Constructs the default request and refreshes it.
+	 */
+	private void defaultMainStart() {
+		logV("Starting in default mode.");
+		if (mController != null && mModel != null) {
+			initDefaultRequest(true);
+			refresh();
+			logV("Successful start in default mode: wait for server response.");
+		} else {
+			logE("Controller or Model not defined: cannot start default mode.");
+		}
+	}
+
+	/**
+	 * Logs a given message using Log.V (VERBOSE MODE)
+	 * 
+	 * @param msg
+	 *            message to log.
+	 */
+	private void logV(String msg) {
+		Log.v(className, msg);
+	}
+
+	/**
+	 * Logs a given message using Log.E (ERROR MODE)
+	 * 
+	 * @param msg
+	 *            message to log.
+	 */
+	private void logE(String msg) {
+		Log.e(className, msg);
 	}
 
 	/**

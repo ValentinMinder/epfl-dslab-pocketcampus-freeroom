@@ -26,4 +26,20 @@ public class FRStruct {
 		}
 		return listUID;
 	}
+
+	/**
+	 * Removes safely the first char of a String.
+	 * <p>
+	 * Used to extract the "/" in path of URI usage.
+	 * 
+	 * @param intentUriData
+	 *            the original string
+	 * @return the same string without the first char, an empty string if the
+	 *         original was 1 or 0 chars long.
+	 */
+	public static String removeFirstCharSafely(String intentUriData) {
+		int length = intentUriData.length();
+		String query = intentUriData.substring(Math.min(length, 1), length);
+		return query;
+	}
 }
