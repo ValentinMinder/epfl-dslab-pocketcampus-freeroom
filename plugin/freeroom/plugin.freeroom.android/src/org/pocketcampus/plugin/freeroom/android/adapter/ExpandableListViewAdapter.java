@@ -339,15 +339,9 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		if (!ev.isGroupExpanded(groupPosition)
 				|| !data.isOverLimit(groupPosition)) {
 			int roomNumber = data.getChildCountTotal(groupPosition);
-			String room_s = "";
-			if (roomNumber > 1) {
-				room_s = context
-						.getString(R.string.freeroom_results_room_header_rooms);
-			} else {
-				room_s = context
-						.getString(R.string.freeroom_results_room_header_room);
-			}
-			more.setText(roomNumber + " " + room_s);
+			more.setText(context.getResources().getQuantityString(
+					R.plurals.freeroom_results_room_header, roomNumber,
+					roomNumber));
 
 			if (ev.isGroupExpanded(groupPosition)) {
 				iv.setImageResource(R.drawable.arrow_up);
