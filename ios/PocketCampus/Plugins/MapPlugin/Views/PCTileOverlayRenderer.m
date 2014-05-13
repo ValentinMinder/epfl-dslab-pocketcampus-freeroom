@@ -79,11 +79,12 @@
     }
 }
 
-/*#pragma mark - MKTileOverlayRenderer
+#pragma mark - MKTileOverlayRenderer
 
 - (void)reloadData {
-    
-}*/
+    [self.operationQueue cancelAllOperations];
+    [super reloadData];
+}
 
 #pragma mark - MKOverlayRenderer overrides
 

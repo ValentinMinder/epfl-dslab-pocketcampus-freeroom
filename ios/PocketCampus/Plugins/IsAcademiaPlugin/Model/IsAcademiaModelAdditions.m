@@ -25,8 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Copyright (c) 2014 EPFL. All rights reserved.
-
 #import "IsAcademiaModelAdditions.h"
 
 #import "NSDate+Addtions.h"

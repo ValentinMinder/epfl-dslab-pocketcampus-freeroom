@@ -62,15 +62,14 @@ static double const kFloorLevelsMaxAltitude = 1200.0;
         NSLog(@"NO: zoomScale: %f, current: %f", zoomScale, currentZoomScale);
         return NO;
     }*/
-    if (!MKMapRectContainsRect(self.mapView.visibleMapRect, mapRect)) {
-#warning temporary
+    if (!MKMapRectIntersectsRect(self.mapView.completeVisibleMapRect, mapRect)) {
         return NO;
     }
     return YES;
 }
 
 - (NSURL*)URLForCurrentlyVisibleMapRectAndZoomScale {
-    MKMapRect rect = self.mapView.visibleMapRect;
+    MKMapRect rect = self.mapView.completeVisibleMapRect;
     MKZoomScale zoomScale = [self currentMapViewZoomScale];
     NSString* urlString = [self urlForMapRect:rect andZoomScale:zoomScale];
     return [NSURL URLWithString:urlString];
@@ -78,27 +77,29 @@ static double const kFloorLevelsMaxAltitude = 1200.0;
 
 - (UIImage*)croppedImageFromCurrentlyVisibleMapRectImage:(UIImage *)image forMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale {
     [PCUtils throwExceptionIfObject:image notKindOfClass:[UIImage class]];
-    if (![self shouldDrawMapRect:mapRect zoomScale:zoomScale]) {
-        return [self blankImageOfSize:CGSizeMake(mapRect.size.width, mapRect.size.height)];
-    }
-    
-    MKCoordinateRegion visibleRegion = MKCoordinateRegionForMapRect(self.mapView.visibleMapRect);
-    CGRect visibleRect = [self.mapView convertRegion:visibleRegion toRectToView:self.mapView];
-    
     MKCoordinateRegion region = MKCoordinateRegionForMapRect(mapRect);
     CGRect rect = [self.mapView convertRegion:region toRectToView:self.mapView];
+    if (![self shouldDrawMapRect:mapRect zoomScale:zoomScale]) {
+        return [self blankImageOfSize:CGSizeMake(rect.size.width, rect.size.height)];
+    }
+    
+    MKCoordinateRegion visibleRegion = MKCoordinateRegionForMapRect(self.mapView.completeVisibleMapRect);
+    CGRect visibleRect = [self.mapView convertRegion:visibleRegion toRectToView:self.mapView];
     
     CGRect croppedRect = CGRectIntersection(visibleRect, rect);
-
-    NSLog(@"\n\n%@\n%@", NSStringFromCGRect(croppedRect), NSStringFromCGRect(rect));
+    
+    //NSString* test = [NSString stringWithFormat:@"\n\n%@\n=>\n%@", NSStringFromCGRect(rect), NSStringFromCGRect(croppedRect)];
+    
     CGImageRef cropppedImageRef = CGImageCreateWithImageInRect(image.CGImage, croppedRect);
     UIImage* croppedImage = [UIImage imageWithCGImage:cropppedImageRef];
     CGImageRelease(cropppedImageRef);
     
-    return croppedImage;
+    CGPoint drawOrigin;
+    drawOrigin.x = rect.origin.x < 0.0 ? fabsf(rect.origin.x) : 0.0;
+    drawOrigin.y = rect.origin.y < 0.0 ? fabsf(rect.origin.y) : 0.0;
     
-    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0.0);
-    [croppedImage drawAtPoint:rect.origin];
+    UIGraphicsBeginImageContext(rect.size);
+    [croppedImage drawAtPoint:drawOrigin];
     UIImage* finalImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
@@ -181,7 +182,7 @@ static double const kFloorLevelsMaxAltitude = 1200.0;
     
     CH1903BBox bbox = [MapUtils WGStoCH1903:mapRect];
     
-    if (![PCUtils isRetinaDevice]) {
+    /*if (![PCUtils isRetinaDevice]) {
         zoomScale *= 2.0;
     }
     
@@ -199,12 +200,14 @@ static double const kFloorLevelsMaxAltitude = 1200.0;
     } else {
         width = abs(bbox.start_x-bbox.end_x)*5.0*zoomScale;
         height = abs(bbox.start_y-bbox.end_y)*5.0*zoomScale;
-    }
+    }*/
     
-    MKCoordinateRegion visibleRegion = MKCoordinateRegionForMapRect(self.mapView.visibleMapRect);
-    CGRect visibleRect = [self.mapView convertRegion:visibleRegion toRectToView:self.mapView];
+    CGRect visibleRect = self.mapView.bounds;
+    CGFloat scale = 1.0;//[[UIScreen mainScreen] scale];
+    CGFloat width = visibleRect.size.width * scale;
+    CGFloat height = visibleRect.size.height * scale;
     
-    NSString* url = [self urlForEpflLayerWithCH1903StartX:bbox.start_x startY:bbox.start_y endX:bbox.end_x endY:bbox.end_y width:visibleRect.size.width height:visibleRect.size.height];
+    NSString* url = [self urlForEpflLayerWithCH1903StartX:bbox.start_x startY:bbox.start_y endX:bbox.end_x endY:bbox.end_y width:width height:height];
     
     return url;
 }

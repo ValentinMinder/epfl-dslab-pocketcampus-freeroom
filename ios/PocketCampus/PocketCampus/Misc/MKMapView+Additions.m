@@ -25,30 +25,29 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 12.05.14.
+//  Created by Loïc Gardiol on 13.05.14.
 
-@import MapKit;
+#import "MKMapView+Additions.h"
 
-@protocol PCScreenTileOverlay <NSObject>
+@implementation MKMapView (Additions)
 
-@property (nonatomic, weak, readonly) MKMapView* mapView;
+#pragma mark - Public
 
-@required
+- (MKMapRect)completeVisibleMapRect {
+    MKCoordinateRegion region = [self convertRect:self.bounds toRegionFromView:self];
+    return _MKMapRectForCoordinateRegion(region);
+}
 
-- (instancetype)initWithMapView:(MKMapView*)mapView;
+#pragma mark - Private
 
-/**
- * Returns wether NOW mapMap is in a state where fetching/drawing mapRect with zoomScale is possible
- * Typically NO if mapRect is outside visibleMapRect or zoomScale not equal to mapView current's zoomScale
- */
-- (BOOL)shouldDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale;
-
-- (NSURL*)URLForCurrentlyVisibleMapRectAndZoomScale;
-
-/**
- * Should return empty image if zoomScale is not equal to mapView current zoom scale, partial or empty image if mapRect is partially or completely outside
- * or mapView visibleMapRect respectively
- */
-- (UIImage*)croppedImageFromCurrentlyVisibleMapRectImage:(UIImage*)image forMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale;
+MKMapRect _MKMapRectForCoordinateRegion(MKCoordinateRegion region) {
+    MKMapPoint a = MKMapPointForCoordinate(CLLocationCoordinate2DMake(
+                                                                      region.center.latitude + region.span.latitudeDelta / 2,
+                                                                      region.center.longitude - region.span.longitudeDelta / 2));
+    MKMapPoint b = MKMapPointForCoordinate(CLLocationCoordinate2DMake(
+                                                                      region.center.latitude - region.span.latitudeDelta / 2,
+                                                                      region.center.longitude + region.span.longitudeDelta / 2));
+    return MKMapRectMake(MIN(a.x,b.x), MIN(a.y,b.y), ABS(a.x-b.x), ABS(a.y-b.y));
+}
 
 @end

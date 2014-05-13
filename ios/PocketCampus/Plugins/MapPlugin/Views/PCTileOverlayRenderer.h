@@ -37,6 +37,11 @@
 
 - (instancetype)initWithPCTileOverlay:(PCTileOverlay*)overlay;
 
+/**
+ * IMPORTANT: when using screen (single) tile overay, reloadData MUST be called
+ * when the mapView's region change. PCTileOverlayRendered cannot observe it because
+ * region is not KVO-compliant.
+ */
 - (instancetype)initWithScreenPCTileOverlay:(PCTileOverlay<PCScreenTileOverlay>*)overlay;
 
 @property (nonatomic, readonly, weak) PCTileOverlay* pcTileOverlay;

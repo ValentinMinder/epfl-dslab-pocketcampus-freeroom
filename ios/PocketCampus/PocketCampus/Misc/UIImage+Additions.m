@@ -120,7 +120,7 @@
     }
     
     //create drawing context
-    UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
+    UIGraphicsBeginImageContextWithOptions(size, NO, 1.0f);
     
     //draw
     [self drawInRect:CGRectMake(0.0f, 0.0f, size.width, size.height)];

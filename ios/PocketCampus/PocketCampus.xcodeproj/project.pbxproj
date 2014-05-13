@@ -122,6 +122,7 @@
 		324ADABC191A39F6000737E7 /* PCTileOverlayRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 324ADABB191A39F6000737E7 /* PCTileOverlayRenderer.m */; };
 		324ADABF191A3A36000737E7 /* PCTileOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 324ADABE191A3A36000737E7 /* PCTileOverlay.m */; };
 		324ADAC2191A44B1000737E7 /* EPFLLayersOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 324ADAC1191A44B1000737E7 /* EPFLLayersOverlay.m */; };
+		324BEE7F19221A8D00886693 /* MKMapView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 324BEE7E19221A8D00886693 /* MKMapView+Additions.m */; };
 		324C7A23174A627C00ED19FD /* GenericResizableShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 324C7A21174A627C00ED19FD /* GenericResizableShadow.png */; };
 		324C7A24174A627C00ED19FD /* GenericResizableShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324C7A22174A627C00ED19FD /* GenericResizableShadow@2x.png */; };
 		324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */; };
@@ -573,6 +574,8 @@
 		324ADABE191A3A36000737E7 /* PCTileOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCTileOverlay.m; sourceTree = "<group>"; };
 		324ADAC0191A44B1000737E7 /* EPFLLayersOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPFLLayersOverlay.h; sourceTree = "<group>"; };
 		324ADAC1191A44B1000737E7 /* EPFLLayersOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPFLLayersOverlay.m; sourceTree = "<group>"; };
+		324BEE7D19221A8D00886693 /* MKMapView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKMapView+Additions.h"; sourceTree = "<group>"; };
+		324BEE7E19221A8D00886693 /* MKMapView+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+Additions.m"; sourceTree = "<group>"; };
 		324C7A21174A627C00ED19FD /* GenericResizableShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GenericResizableShadow.png; sourceTree = "<group>"; };
 		324C7A22174A627C00ED19FD /* GenericResizableShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GenericResizableShadow@2x.png"; sourceTree = "<group>"; };
 		324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleSplashDetailView.xib; sourceTree = "<group>"; };
@@ -1271,6 +1274,8 @@
 				32DE5B2717F2003800E03423 /* NSLayoutConstraint+LGAdditions.m */,
 				32797ABA1877050B005A19FD /* NSCache+LGAdditions.h */,
 				32797ABB1877050B005A19FD /* NSCache+LGAdditions.m */,
+				324BEE7D19221A8D00886693 /* MKMapView+Additions.h */,
+				324BEE7E19221A8D00886693 /* MKMapView+Additions.m */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -2810,6 +2815,7 @@
 				32A54B7D15B5A8E100A7C882 /* AuthenticationViewController.m in Sources */,
 				3293AD2015D1BC7C0097D414 /* PCAboutViewController.m in Sources */,
 				32649B23160DD7DA002E6498 /* DirectoryPersonViewController.m in Sources */,
+				324BEE7F19221A8D00886693 /* MKMapView+Additions.m in Sources */,
 				32930AB717F898910025F864 /* TSharedProcessorFactory.m in Sources */,
 				32930AAC17F898910025F864 /* TProtocolUtil.m in Sources */,
 				32B3F39016219403007A75C7 /* MainMenuViewController.m in Sources */,

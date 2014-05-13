@@ -797,8 +797,6 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     NSInteger zoomLevel = [MapUtils zoomLevelForMapRect:self.mapView.visibleMapRect];
     
-    //NSLog(@"Coordinate: %lf %lf span: %lf %lf", mapView.region.center.latitude, mapView.region.center.longitude, mapView.region.span.latitudeDelta, mapView.region.span.longitudeDelta);
-    
     BOOL shouldShowOverlay = (zoomLevel >= self.epflTileOverlay.minimumZ) && (zoomLevel <= self.epflTileOverlay.maximumZ);
     
     CLLocationDistance altitude = self.mapView.camera.altitude/cos(self.mapView.camera.pitch*M_PI/180.0);
@@ -808,6 +806,9 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         if (self.mapView.overlays.count == 0) {
             [self.mapView addOverlay:self.epflTileOverlay level:self.epflTileOverlay.desiredLevelForMapView];
             [self.mapView addOverlay:self.epflLayersOverlay level:self.epflLayersOverlay.desiredLevelForMapView];
+        } else {
+            MKTileOverlayRenderer* layersRenderer = (MKTileOverlayRenderer*)[self.mapView rendererForOverlay:self.epflLayersOverlay];
+            [layersRenderer reloadData];
         }
         if (shouldAllowFloorLevelChange) {
             self.mapControlsState = MapControlsStateAllAvailable;
