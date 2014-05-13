@@ -465,7 +465,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				defaultMainStart();
 			}
 		} else {
-			u.logE("ERROR: Found a null Intent or Action !!!");
+			if (intent == null) {
+				u.logE("ERROR: Found a null Intent !!!");
+			} else if (intent.getAction() == null) {
+				u.logE("ERROR: Found a null Action !!!");
+				u.logE("This issue may appear by launching the app from the pocketcampus dashboard");
+			}
+
 			u.logE("Starting the app in default mode anyway");
 			defaultMainStart();
 		}
