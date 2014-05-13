@@ -3,19 +3,8 @@
 
     <string name="freeroom_plugin_title">FreeRoom</string>
     
-    <string name="freeroom_courses_view_title">Liste des Cours FreeRoom inscrits</string>
-    <string name="freeroom_events_view_title">Événements FreeRoom Actuels</string>
-        
-    <string name="freeroom_string_logout">Déconnexion</string>
-    <string name="freeroom_string_events">Événements</string>
-        
-    <string name="freeroom_error_freeroom_down">PocketCampus a essayé de se connecter aux serveurs FreeRoom, mais ils semblent hors-ligne.</string>
     <string name="freeroom_connection_error_happened">Nous ne pouvons pas récupérer les données FreeRoom maintenant, car vous n\'êtes pas connecté à Internet.</string>
-    <string name="freeroom_file_downloaded">Fichier téléchargé avec succès.</string>
-    <string name="freeroom_file_downloading">Téléchargement du fichier... Patienter.</string>
-    
-    <string name="freeroom_no_app_to_handle_filetype">Impossible de trouver une application pour ouvrir ce fichier.</string>
-    
+   
     <string name="freeroom_pattern_day_format">EEE d MMM</string>
 	<string name="freeroom_pattern_hour_format">HH:mm</string>
 </resources>
