@@ -1679,9 +1679,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	private void formatters() {
 		dateFormat = new SimpleDateFormat(
-				getString(R.string.freeroom_pattern_day_format));
+				getString(R.string.freeroom_pattern_day_format_default));
 		timeFormat = new SimpleDateFormat(
-				getString(R.string.freeroom_pattern_hour_format));
+				getString(R.string.freeroom_pattern_hour_format_default));
 	}
 
 	private void UIConstructPickers() {

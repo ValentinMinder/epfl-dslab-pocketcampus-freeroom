@@ -106,9 +106,9 @@ public class FRTimesClient {
 		Date endDate = new Date(period.getTimeStampEnd());
 		Date startDate = new Date(period.getTimeStampStart());
 		SimpleDateFormat day_month = new SimpleDateFormat(
-				context.getString(R.string.freeroom_pattern_day_format));
+				context.getString(R.string.freeroom_pattern_day_format_default));
 		SimpleDateFormat hour_min = new SimpleDateFormat(
-				context.getString(R.string.freeroom_pattern_hour_format));
+				context.getString(R.string.freeroom_pattern_hour_format_default));
 
 		build.append(" ");
 		// TODO: if date is today, use "today" instead of specifying date
@@ -143,7 +143,7 @@ public class FRTimesClient {
 		Date endDate = new Date(period.getTimeStampEnd());
 		Date startDate = new Date(period.getTimeStampStart());
 		SimpleDateFormat hour_min = new SimpleDateFormat(
-				context.getString(R.string.freeroom_pattern_hour_format));
+				context.getString(R.string.freeroom_pattern_hour_format_default));
 
 		build.append(hour_min.format(startDate));
 		build.append(" - ");

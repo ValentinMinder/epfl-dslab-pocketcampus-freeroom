@@ -80,7 +80,7 @@ public class ActualOccupationArrayAdapter<T> extends
 		Date end = new Date(mFrPeriod.getTimeStampEnd());
 
 		SimpleDateFormat sdf = new SimpleDateFormat(
-				context.getString(R.string.freeroom_pattern_hour_format));
+				context.getString(R.string.freeroom_pattern_hour_format_default));
 		s += sdf.format(start) + "-" + sdf.format(end) + " ";
 		tv.setText(s);
 		// displayed text is minimal: only hours
