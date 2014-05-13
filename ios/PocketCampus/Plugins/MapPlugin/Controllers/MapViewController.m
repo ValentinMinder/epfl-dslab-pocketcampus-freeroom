@@ -515,12 +515,11 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         if ([PCUtils isIdiomPad]) {
             if (!self.recentSearchesListPopoverController) {
                 self.recentSearchesListPopoverController = [[UIPopoverController alloc] initWithContentViewController:[[PCNavigationController alloc] initWithRootViewController:self.recentSearchesListViewController]];
+                self.recentSearchesListPopoverController.passthroughViews = @[self.searchBar];
                 self.recentSearchesListPopoverController.delegate = self;
             }
             if (!self.recentSearchesListPopoverController.isPopoverVisible) {
-                //[NSTimer scheduledTimerWithTimeInterval:0.1 block:^{
-                    [self.recentSearchesListPopoverController togglePopoverFromBarButtonItem:self.searchBarItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
-                //} repeats:NO];
+                [self.recentSearchesListPopoverController togglePopoverFromBarButtonItem:self.searchBarItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
             }
         } else {
             self.searchBar.showsCancelButton = YES;
