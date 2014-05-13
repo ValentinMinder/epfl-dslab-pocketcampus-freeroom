@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="10"
-            android:text="@string/freeroom_dialog_add_room_empty_list"
+            android:text="@string/freeroom_dialog_add_room_init"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
 
@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:text="@string/freeroom_dialog_add_room_validate"
+            android:text="@string/freeroom_dialog_add_room_add"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black" />
     </LinearLayout>

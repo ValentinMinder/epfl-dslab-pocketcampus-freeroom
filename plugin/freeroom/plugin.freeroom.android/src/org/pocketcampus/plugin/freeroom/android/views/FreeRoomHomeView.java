@@ -1182,10 +1182,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void initWarningDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.freeroom_dialog_warn_title));
-		builder.setMessage(getString(R.string.freeroom_dialog_warn_text));
+		builder.setMessage(getString(R.string.freeroom_dialog_warn_delete_fav_text));
 		builder.setIcon(R.drawable.warning_white_50);
 		builder.setPositiveButton(
-				getString(R.string.freeroom_dialog_warn_reset),
+				getString(R.string.freeroom_dialog_warn_confirm),
 				new AlertDialog.OnClickListener() {
 
 					@Override
@@ -2356,8 +2356,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private void updateEndTimePickerAndButton() {
 		showEndTimePicker.setText(generateTime(
-				getString(R.string.freeroom_selectendHour),
-				prepareFRFrPeriod().getTimeStampEnd()));
+				getString(R.string.freeroom_selectendHour), prepareFRFrPeriod()
+						.getTimeStampEnd()));
 		if (endHourSelected >= FRTimes.LAST_HOUR_CHECK
 				|| (endHourSelected == FRTimes.LAST_HOUR_CHECK - 1 && endMinSelected != 0)) {
 			addHourButton.setEnabled(false);
