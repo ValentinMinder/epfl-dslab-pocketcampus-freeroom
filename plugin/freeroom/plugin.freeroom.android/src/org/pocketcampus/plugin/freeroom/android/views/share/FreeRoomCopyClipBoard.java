@@ -56,16 +56,14 @@ public class FreeRoomCopyClipBoard extends FreeRoomAbstractView implements
 		this.finish(); // KILL THE VIEW
 	}
 
-	/**
-	 * This is called when the Activity is resumed.
-	 * 
-	 * If the user presses back on the Authentication window, This Activity is
-	 * resumed but we do not have the freeroomCookie. In this case we close the
-	 * Activity.
-	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
+	}
+
+	@Override
+	public void initializeView() {
+		// WE DO NOTHING!
 	}
 
 	/**
@@ -119,17 +117,17 @@ public class FreeRoomCopyClipBoard extends FreeRoomAbstractView implements
 	}
 
 	@Override
+	public void anyError() {
+		// WE DO NOTHING!
+	}
+
+	@Override
 	public void autoCompletedUpdated() {
 		// WE DO NOTHING!
 	}
 
 	@Override
 	public void occupancyResultsUpdated() {
-		// WE DO NOTHING!
-	}
-
-	@Override
-	public void initializeView() {
 		// WE DO NOTHING!
 	}
 

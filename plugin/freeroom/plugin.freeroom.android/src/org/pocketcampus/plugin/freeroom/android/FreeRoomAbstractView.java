@@ -34,11 +34,6 @@ public abstract class FreeRoomAbstractView extends PluginView implements
 	}
 
 	@Override
-	public void anyError() {
-		// we do nothing here
-	}
-
-	@Override
 	public void networkErrorHappened() {
 		Toast.makeText(
 				getApplicationContext(),
