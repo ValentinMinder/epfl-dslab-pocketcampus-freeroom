@@ -1358,8 +1358,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * the model.
 	 */
 	private void refresh() {
-		setTitle();
 		setTextSummary(getString(R.string.freeroom_home_please_wait));
+		setTitle();
+		// cleans the previous results
+		mModel.getOccupancyResults().clear();
+		mExpListAdapter.notifyDataSetChanged();
 		mController.sendFRRequest(this);
 	}
 
@@ -1375,7 +1378,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			String title = "";
 			if (request.isOnlyFreeRooms()) {
-				 title = getString(R.string.freeroom_home_info_free_rooms);
+				title = getString(R.string.freeroom_home_info_free_rooms);
 			} else {
 				title = getString(R.string.freeroom_home_info_rooms);
 			}
