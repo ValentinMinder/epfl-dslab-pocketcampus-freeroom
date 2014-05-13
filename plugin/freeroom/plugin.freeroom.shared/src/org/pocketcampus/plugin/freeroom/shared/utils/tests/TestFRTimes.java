@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Calendar;
 
 import org.junit.Test;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 public class TestFRTimes {
@@ -248,5 +249,6 @@ public class TestFRTimes {
 	public void testGetNextValidPeriodIsNeededValidPeriod() {
 		// TODO: write this test for many cases!
 	}
+	
 
 }

@@ -751,12 +751,12 @@ public class FRTimes {
 		
 		Calendar mCalendar = Calendar.getInstance();
 		mCalendar.setTimeInMillis(tsEnd);
-		int hourEnd = mCalendar.get(Calendar.HOUR);
+		int hourEnd = mCalendar.get(Calendar.HOUR_OF_DAY);
 		
 		//if we are not a full hour, take the next hour is possible
 		if (minEnd != 0) {
 			hourEnd = Math.min(LAST_HOUR_CHECK, hourEnd + 1);
-			mCalendar.set(Calendar.HOUR_OF_DAY, hourEnd + 1);
+			mCalendar.set(Calendar.HOUR_OF_DAY, hourEnd);
 			mCalendar.set(Calendar.MINUTE, 0);
 			tsEnd = mCalendar.getTimeInMillis();
 		}
