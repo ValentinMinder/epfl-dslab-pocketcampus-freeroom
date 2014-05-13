@@ -1353,13 +1353,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				build.append(getString(R.string.freeroom_home_info_rooms));
 			}
 			FRPeriod period = mModel.getOverAllTreatedPeriod();
-			// TODO: for tests only, please keep this line
-//			build.append(generateFullTimeSummary(period));
-			// TODO: for tests only, please remove these 4 lines.
-			build.append("\n sent from client: ");
-			build.append(generateFullTimeSummary(mModel.getFRRequestDetails()
-					.getPeriod()));
-			build.append("\n recieve from server: ");
 			build.append(generateFullTimeSummary(period));
 
 			// if the info dialog is opened, we update the CORRECT occupancy
