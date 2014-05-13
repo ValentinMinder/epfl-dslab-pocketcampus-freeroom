@@ -357,7 +357,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				R.layout.freeroom_layout_home, null);
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(titleLayout);
-		titleLayout.setTitle(getString(R.string.freeroom_title_main_title));
+		setTitle();
 
 		mExpListView = (ExpandableListView) mainLayout
 				.findViewById(R.id.freeroom_layout_home_list);
@@ -1259,6 +1259,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	@Override
 	public void anyError() {
+		setTitle();
 		setTextSummary(getString(R.string.freeroom_home_error_sorry));
 	}
 
@@ -1273,6 +1274,33 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private void setTextSummary(String text) {
 		mTextView.setText(text);
+	}
+
+	/**
+	 * Sets the title to the default value.
+	 * <p>
+	 * same effect as <br>
+	 * <code>String default = getString(R.string.freeroom_title_main_title)</code>
+	 * <br>
+	 * <code>titleLayout.setTitle(defaultTitle);</code>
+	 * 
+	 */
+	private void setTitle() {
+		setTitle(getString(R.string.freeroom_title_main_title));
+	}
+
+	/**
+	 * Sets the title to the given value.
+	 * <p>
+	 * same effect as <br>
+	 * <code>titleLayout.setTitle(titleValue);</code>
+	 * 
+	 * @param titleValue
+	 *            the new title
+	 * 
+	 */
+	private void setTitle(String titleValue) {
+		titleLayout.setTitle(titleValue);
 	}
 
 	/**
@@ -1330,25 +1358,30 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * the model.
 	 */
 	private void refresh() {
+		setTitle();
 		setTextSummary(getString(R.string.freeroom_home_please_wait));
 		mController.sendFRRequest(this);
 	}
 
 	@Override
 	public void occupancyResultsUpdated() {
-		StringBuilder build = new StringBuilder(50);
+		setTitle();
+		String subtitle = "";
 		if (mModel.getOccupancyResults().isEmpty()) {
-			build.append(getString(R.string.freeroom_home_error_no_results));
+			// TODO: popup with no results message ?
+			subtitle = getString(R.string.freeroom_home_error_no_results);
 		} else {
 			FRRequest request = mModel.getFRRequestDetails();
 
+			String title = "";
 			if (request.isOnlyFreeRooms()) {
-				build.append(getString(R.string.freeroom_home_info_free_rooms));
+				 title = getString(R.string.freeroom_home_info_free_rooms);
 			} else {
-				build.append(getString(R.string.freeroom_home_info_rooms));
+				title = getString(R.string.freeroom_home_info_rooms);
 			}
 			FRPeriod period = mModel.getOverAllTreatedPeriod();
-			build.append(times.generateFullTimeSummary(period));
+			setTitle(title + times.generateShortTimeSummary(period));
+			subtitle = times.generateFullTimeSummary(period);
 
 			// if the info dialog is opened, we update the CORRECT occupancy
 			// with the new data.
@@ -1388,7 +1421,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		}
 
-		setTextSummary(build.toString());
+		setTextSummary(subtitle);
 		mExpListAdapter.notifyDataSetChanged();
 		updateCollapse(mExpListView, mExpListAdapter);
 

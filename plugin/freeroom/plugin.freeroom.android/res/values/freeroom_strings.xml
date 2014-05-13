@@ -59,8 +59,8 @@
     <string name="freeroom_home_init_please_wait">"Initialization, please wait!"</string>
     <string name="freeroom_home_error_sorry">"An error occurred, no results to display. Sorry! ;)"</string>
     <string name="freeroom_home_error_no_results">"No results: no rooms seem to be free with your selection."</string>
-    <string name="freeroom_home_info_rooms">"Rooms occupancies"</string>
-    <string name="freeroom_home_info_free_rooms">"Free rooms"</string>
+    <string name="freeroom_home_info_rooms">"Occupancies "</string>
+    <string name="freeroom_home_info_free_rooms">"Free rooms "</string>
     <string name="freeroom_share_iwillbe">"I will be"</string>
     <string name="freeroom_share_in_room">"in room"</string>
     <string name="freeroom_share_please_come">"Please come and join me."</string>
