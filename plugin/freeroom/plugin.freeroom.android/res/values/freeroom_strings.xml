@@ -44,7 +44,6 @@
     <string name="freeroom_no_room_available">No room available!</string>
     <string name="freeroom_please_wait">Please wait while results are being updated</string>
     <string name="freeroom_no_results_sorry">No results to display, sorry!</string>
-    <string name="freeroom_check_occupancy_search_date">Date</string>
     <string name="freeroom_check_occupancy_search_start">Start</string>
     <string name="freeroom_check_occupancy_search_end">End</string>
     <string name="freeroom_check_occupancy_search_text_no_selected_rooms">No selected rooms.</string>
@@ -52,15 +51,8 @@
     <string name="freeroom_check_occupancy_result_onthe">on</string>
     <string name="freeroom_check_occupancy_result_from">from</string>
     <string name="freeroom_check_occupancy_result_to">to</string>
-    <string name="freeroom_check_occupancy_result_occupied">OCCUPIED</string>
-    <string name="freeroom_check_occupancy_result_free">FREE</string>
-    <string name="freeroom_check_occupancy_result_checking_rooms">Checking result for rooms:</string>
     <string name="freeroom_check_occupancy_search_inputbarhint">Type in for searching a specific room</string>
     <string name="freeroom_result_occupancy_favorites">Favorites</string>
-    <string name="freeroom_tab_home">Home</string>
-    <string name="freeroom_tab_freeroomsearch">Quick search</string>
-    <string name="freeroom_tab_occupancysearch">Adv. search</string>
-    <string name="freeroom_no_favorites_freeroom">No favorites rooms are free right now</string>
     <string name="freeroom_home_please_wait">Please wait while results are refreshed</string>
     <string name="freeroom_home_init_please_wait">Initialization, please wait!</string>
     <string name="freeroom_home_error_sorry">An error occurred, sorry! ;)</string>
