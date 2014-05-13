@@ -170,7 +170,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		ArrayList<FRRoom> roomsFavorites = null;
 		if (wantFavoritesList) {
 			buildingsList.add(context
-					.getString(R.string.freeroom_result_occupancy_favorites));
+					.getString(R.string.freeroom_result_group_favorites));
 			roomsFavorites = new ArrayList<FRRoom>();
 		}
 

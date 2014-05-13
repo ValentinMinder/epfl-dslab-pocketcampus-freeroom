@@ -1585,7 +1585,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// because it waits for this special type.
 		sendIntent.setType("text/*");
 		startActivity(Intent.createChooser(sendIntent,
-				getString(R.string.freeroom_share_title)));
+				getString(R.string.freeroom_share_intent_title)));
 	}
 
 	// ** REUSED FROM SCRATCH FROM FreeRoomSearchView ** //
@@ -2339,7 +2339,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private void updateStartTimePickerAndButton() {
 		showStartTimePicker.setText(generateTime(
-				getString(R.string.freeroom_check_occupancy_search_start),
+				getString(R.string.freeroom_selectstartHour),
 				prepareFRFrPeriod().getTimeStampStart()));
 		mTimePickerStartDialog.updateTime(startHourSelected, startMinSelected);
 	}
@@ -2356,7 +2356,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private void updateEndTimePickerAndButton() {
 		showEndTimePicker.setText(generateTime(
-				getString(R.string.freeroom_check_occupancy_search_end),
+				getString(R.string.freeroom_selectendHour),
 				prepareFRFrPeriod().getTimeStampEnd()));
 		if (endHourSelected >= FRTimes.LAST_HOUR_CHECK
 				|| (endHourSelected == FRTimes.LAST_HOUR_CHECK - 1 && endMinSelected != 0)) {
