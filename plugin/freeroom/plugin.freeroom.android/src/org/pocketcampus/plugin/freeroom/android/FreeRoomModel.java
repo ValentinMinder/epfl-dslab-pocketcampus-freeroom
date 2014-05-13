@@ -55,6 +55,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * key for the anonymous and unique ID of the user.
 	 */
 	private final String anonymIDKey = "anonymIDKey";
+	private int minutesRequestTimeOut = 5;
 
 	public final int COLOR_CHECK_OCCUPANCY_DEFAULT = Color.WHITE;
 	public final int COLOR_CHECK_OCCUPANCY_FREE = Color.GREEN;
@@ -107,6 +108,21 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	public IFreeRoomView getListenersToNotify() {
 		return mListeners;
+	}
+
+	/**
+	 * @return the minutesRequestTimeOut
+	 */
+	public int getMinutesRequestTimeOut() {
+		return minutesRequestTimeOut;
+	}
+
+	/**
+	 * @param minutesRequestTimeOut
+	 *            the minutesRequestTimeOut to set
+	 */
+	public void setMinutesRequestTimeOut(int minutesRequestTimeOut) {
+		this.minutesRequestTimeOut = minutesRequestTimeOut;
 	}
 
 	// ********** START OF "WHO'S WORKING THERE" PART **********

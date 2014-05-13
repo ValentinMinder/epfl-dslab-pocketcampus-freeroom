@@ -23,6 +23,10 @@ public class FRRequestDetails extends FRRequest {
 	 * Auto-generated serial version ID.
 	 */
 	private static final long serialVersionUID = 1097781363203978779L;
+	/**
+	 * Time of generation of the object, to check the validity.
+	 */
+	private final long time = System.currentTimeMillis();
 
 	private FRRequest req = null;
 	private boolean any = false;
@@ -105,6 +109,18 @@ public class FRRequestDetails extends FRRequest {
 			}
 		}
 		return build.toString();
+	}
+
+	/**
+	 * Checks if the request is outdated. It checks if it has been generated
+	 * before the given timeout expires or not.
+	 * 
+	 * @param timeout
+	 *            the wanted expiration timeout.
+	 * @return true if outdated, false otherwise.
+	 */
+	public boolean isOutDated(long timeout) {
+		return (time - System.currentTimeMillis()) > timeout;
 	}
 
 }

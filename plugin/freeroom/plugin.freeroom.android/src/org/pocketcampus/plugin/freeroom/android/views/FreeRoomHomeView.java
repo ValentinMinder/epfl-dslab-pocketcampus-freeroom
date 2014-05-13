@@ -496,11 +496,24 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	/**
 	 * Constructs the default request and refreshes it.
+	 * <p>
+	 * If a previous request exists and it's not outdated, it wont construct a
+	 * new request but use this one instead.
 	 */
 	private void defaultMainStart() {
 		u.logV("Starting in default mode.");
 		if (mController != null && mModel != null) {
-			initDefaultRequest(true);
+			FRRequestDetails req = mModel.getFRRequestDetails();
+			// if no previous request or it's outdated
+			long timeOut = mModel.getMinutesRequestTimeOut()
+					* FRTimes.ONE_MIN_IN_MS;
+			// TODO: remove this line.
+			timeOut = FRTimes.ONE_SEC_IN_MS * 15;
+			if (req == null || req.isOutDated(timeOut)) {
+				initDefaultRequest(true);
+			} else {
+				u.logV("existing request will be reused");
+			}
 			refresh();
 			u.logV("Successful start in default mode: wait for server response.");
 		} else {
@@ -1313,6 +1326,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 *            favorites or not
 	 */
 	private void initDefaultRequest(boolean useFavorites) {
+		u.logV("generating and setting a new default request");
 		mModel.setFRRequestDetails(validRequest(useFavorites), false);
 	}
 
@@ -1356,6 +1370,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	/**
 	 * Asks the controller to send again the request which was already set in
 	 * the model.
+	 * <p>
+	 * Don't call it before setting a request in the model!
 	 */
 	private void refresh() {
 		setTextSummary(getString(R.string.freeroom_home_please_wait));
