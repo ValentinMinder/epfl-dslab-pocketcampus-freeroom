@@ -428,7 +428,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 								&& intentUriHost
 										.equalsIgnoreCase("occupancy.epfl.ch")) {
 							logV("Found an EPFL http://occupancy.epfl.ch/room URI");
-							logV("With room query: \"" + intentUriPathQuery + "\"");
+							logV("With room query: \"" + intentUriPathQuery
+									+ "\"");
 							errorIntentHandled = searchByUriPrepareArguments(intentUriPathQuery);
 						}
 
@@ -437,7 +438,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 								&& intentUriHost
 										.equalsIgnoreCase("freeroom.plugin.pocketcampus.org")) {
 							logV("Found a pocketcampus://freeroom.plugin.pocketcampus.org/data URI");
-							logV("With room query: \"" + intentUriPathQuery + "\"");
+							logV("With room query: \"" + intentUriPathQuery
+									+ "\"");
 							// TODO: do something.
 							errorIntentHandled = "URI NOR supported right now!";
 						} else {
@@ -2496,14 +2498,30 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * also updated: it's useful if the date has changed from somewhere else,
 	 * the <code>PickerDialog</code> will reopen with the new value.
 	 * 
-	 * <p>
-	 * Instead of the usual format "Wed 24 May", the date is summarize to
-	 * "today", "yesterday", "tomorrow" when relevant.
 	 */
 	private void updateDatePickerAndButton() {
 		// creating selected time
 		Calendar selected = Calendar.getInstance();
 		selected.setTimeInMillis(prepareFRFrPeriod().getTimeStampStart());
+		showDatePicker.setText(getDateText(selected, dateFormat));
+
+		mDatePickerDialog.updateDate(yearSelected, monthSelected,
+				dayOfMonthSelected);
+	}
+
+	/**
+	 * Generates the summary of a selected date.
+	 * <p>
+	 * Instead of the usual format "Wed 24 May", the date is summarize to
+	 * "today", "yesterday", "tomorrow" when relevant.
+	 * 
+	 * @param selected
+	 *            the selected time
+	 * @param sdf
+	 *            the chosen formatter for date
+	 * @return a printable summary of the date.
+	 */
+	private String getDateText(Calendar selected, SimpleDateFormat sdf) {
 		// creating now time reference
 		Calendar now = Calendar.getInstance();
 		// creating tomorrow time reference
@@ -2514,19 +2532,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		yesterday.roll(Calendar.DAY_OF_MONTH, false);
 
 		if (FRTimes.compareCalendars(now, selected)) {
-			showDatePicker.setText(getString(R.string.freeroom_search_today));
+			return getString(R.string.freeroom_search_today);
 		} else if (FRTimes.compareCalendars(tomorrow, selected)) {
-			showDatePicker
-					.setText(getString(R.string.freeroom_search_tomorrow));
+			return getString(R.string.freeroom_search_tomorrow);
 		} else if (FRTimes.compareCalendars(yesterday, selected)) {
-			showDatePicker
-					.setText(getString(R.string.freeroom_search_yesterday));
+			return getString(R.string.freeroom_search_yesterday);
 		} else {
-			showDatePicker.setText(dateFormat.format(selected.getTime()));
+			// default case: eg. "Wed May 24"
+			return sdf.format(selected.getTime());
 		}
-
-		mDatePickerDialog.updateDate(yearSelected, monthSelected,
-				dayOfMonthSelected);
 	}
 
 	/**
