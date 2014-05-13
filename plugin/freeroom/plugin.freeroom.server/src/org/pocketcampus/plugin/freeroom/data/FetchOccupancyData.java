@@ -124,7 +124,7 @@ public class FetchOccupancyData {
 
 			query = conn.prepareStatement(req);
 			NodeList nl = element.getElementsByTagName(KEY_UID);
-			if (nl.getLength() > 0) {
+			if (nl.getLength() > 0 && !nl.item(0).getTextContent().isEmpty()) {
 				uid = nl.item(0).getTextContent();
 			} else {
 				return null;
