@@ -739,4 +739,29 @@ public class FRTimes {
 		return new FreeRoomRequest(period);
 
 	}
+
+	public static FRPeriod roundFRRequestTimestamp(FRPeriod period) {
+		long tsStart = roundSAndMSToZero(period.getTimeStampStart());
+		long tsEnd = roundSAndMSToZero(period.getTimeStampEnd());
+		long minStart = tsStart % ONE_HOUR_IN_MS;
+		long minEnd = tsEnd % ONE_HOUR_IN_MS;
+		
+		//round to the previous hour
+		tsStart -= minStart;
+		
+		Calendar mCalendar = Calendar.getInstance();
+		mCalendar.setTimeInMillis(tsEnd);
+		int hourEnd = mCalendar.get(Calendar.HOUR);
+		
+		//if we are not a full hour, take the next hour is possible
+		if (minEnd != 0) {
+			hourEnd = Math.min(LAST_HOUR_CHECK, hourEnd + 1);
+			mCalendar.set(Calendar.HOUR_OF_DAY, hourEnd + 1);
+			mCalendar.set(Calendar.MINUTE, 0);
+			tsEnd = mCalendar.getTimeInMillis();
+		}
+		
+		
+		return new FRPeriod(tsStart, tsEnd, false);
+	}
 }
