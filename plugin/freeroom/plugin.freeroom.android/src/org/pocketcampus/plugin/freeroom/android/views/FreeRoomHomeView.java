@@ -24,6 +24,8 @@ import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewFavori
 import org.pocketcampus.plugin.freeroom.android.adapter.FRRoomSuggestionArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
+import org.pocketcampus.plugin.freeroom.android.utils.FRTimesClient;
+import org.pocketcampus.plugin.freeroom.android.utils.FRUtilsClient;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.utils.SetArrayList;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
@@ -125,12 +127,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * FreeRoom model in MVC scheme.
 	 */
 	private FreeRoomModel mModel;
+	/**
+	 * Reference to times utility method for client-side.
+	 */
+	private FRTimesClient times;
+	/**
+	 * Reference to other utility method for client-side.
+	 */
+	private FRUtilsClient u;
 
 	/* COMMON SHARED VALUES */
-	/**
-	 * Class name for logs.
-	 */
-	private String className = this.getClass().getSimpleName();
 	/**
 	 * Width of the main Activity.
 	 */
@@ -341,6 +347,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Get and cast the controller and model
 		mController = (FreeRoomController) controller;
 		mModel = (FreeRoomModel) controller.getModel();
+		times = new FRTimesClient(this);
+		u = new FRUtilsClient(this);
 
 		// Setup the layout
 		mLayoutInflater = this.getLayoutInflater();
@@ -400,17 +408,17 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	@Override
 	protected void handleIntent(Intent intent) {
-		logV("Starting the app: handling an Intent");
+		u.logV("Starting the app: handling an Intent");
 		// Intent and/or action seems to be null in some cases... so we just
 		// skip these cases and launch the default settings.
 		if (intent != null && intent.getAction() != null) {
 			if (intent.getAction().equalsIgnoreCase(
 					"android.intent.action.MAIN")) {
-				logV("starting MAIN and default mode");
+				u.logV("starting MAIN and default mode");
 				defaultMainStart();
 			} else if (intent.getAction().equalsIgnoreCase(
 					"android.intent.action.VIEW")) {
-				logV("starting the app and handling simple VIEW intent");
+				u.logV("starting the app and handling simple VIEW intent");
 				String errorIntentHandled = ""
 						+ getString(R.string.freeroom_urisearch_error_URINotUnderstood)
 						+ " "
@@ -427,8 +435,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						if (intentScheme.equalsIgnoreCase("http")
 								&& intentUriHost
 										.equalsIgnoreCase("occupancy.epfl.ch")) {
-							logV("Found an EPFL http://occupancy.epfl.ch/room URI");
-							logV("With room query: \"" + intentUriPathQuery
+							u.logV("Found an EPFL http://occupancy.epfl.ch/room URI");
+							u.logV("With room query: \"" + intentUriPathQuery
 									+ "\"");
 							errorIntentHandled = searchByUriPrepareArguments(intentUriPathQuery);
 						}
@@ -437,13 +445,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						else if (intentScheme.equalsIgnoreCase("pocketcampus")
 								&& intentUriHost
 										.equalsIgnoreCase("freeroom.plugin.pocketcampus.org")) {
-							logV("Found a pocketcampus://freeroom.plugin.pocketcampus.org/data URI");
-							logV("With room query: \"" + intentUriPathQuery
+							u.logV("Found a pocketcampus://freeroom.plugin.pocketcampus.org/data URI");
+							u.logV("With room query: \"" + intentUriPathQuery
 									+ "\"");
 							// TODO: do something.
 							errorIntentHandled = "URI NOR supported right now!";
 						} else {
-							logE("Unknow URI: \"" + intentUri + "\"");
+							u.logE("Unknow URI: \"" + intentUri + "\"");
 						}
 					}
 				}
@@ -451,14 +459,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					onErrorHandleIntent(errorIntentHandled);
 				}
 			} else {
-				logE("ERROR: Found an unhandled action: \""
+				u.logE("ERROR: Found an unhandled action: \""
 						+ intent.getAction() + "\"");
-				logE("Starting the app in default mode anyway");
+				u.logE("Starting the app in default mode anyway");
 				defaultMainStart();
 			}
 		} else {
-			logE("ERROR: Found a null Intent or Action !!!");
-			logE("Starting the app in default mode anyway");
+			u.logE("ERROR: Found a null Intent or Action !!!");
+			u.logE("Starting the app in default mode anyway");
 			defaultMainStart();
 		}
 	}
@@ -473,11 +481,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private void onErrorHandleIntent(String errorMessage) {
 		// TODO: display a popup
-		Log.e("uri-search-error",
-				getString(R.string.freeroom_urisearch_error_basis));
-		Log.e("uri-search-error", errorMessage);
-		Log.e("uri-search-error",
-				getString(R.string.freeroom_urisearch_error_end));
+		u.logE(getString(R.string.freeroom_urisearch_error_basis));
+		u.logE(errorMessage);
+		u.logE(getString(R.string.freeroom_urisearch_error_end));
 		if (mController != null && mModel != null) {
 			initDefaultRequest(false);
 			refresh();
@@ -488,34 +494,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Constructs the default request and refreshes it.
 	 */
 	private void defaultMainStart() {
-		logV("Starting in default mode.");
+		u.logV("Starting in default mode.");
 		if (mController != null && mModel != null) {
 			initDefaultRequest(true);
 			refresh();
-			logV("Successful start in default mode: wait for server response.");
+			u.logV("Successful start in default mode: wait for server response.");
 		} else {
-			logE("Controller or Model not defined: cannot start default mode.");
+			u.logE("Controller or Model not defined: cannot start default mode.");
 		}
-	}
-
-	/**
-	 * Logs a given message using Log.V (VERBOSE MODE)
-	 * 
-	 * @param msg
-	 *            message to log.
-	 */
-	private void logV(String msg) {
-		Log.v(className, msg);
-	}
-
-	/**
-	 * Logs a given message using Log.E (ERROR MODE)
-	 * 
-	 * @param msg
-	 *            message to log.
-	 */
-	private void logE(String msg) {
-		Log.e(className, msg);
 	}
 
 	/**
@@ -775,8 +761,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			resetUserDefined();
 		} else if (lastCaller.equals(AddRoomCaller.SEARCH)) {
 			// we do nothing: reset will be done at search time
-			mSummarySelectedRoomsTextViewSearchMenu
-					.setText(getSummaryTextFromCollection(selectedRooms));
+			mSummarySelectedRoomsTextViewSearchMenu.setText(u
+					.getSummaryTextFromCollection(selectedRooms));
 		}
 	}
 
@@ -891,7 +877,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		final TextView tv = (TextView) mShareView
 				.findViewById(R.id.freeroom_layout_dialog_share_textBasic);
-		tv.setText(wantToShare(mPeriod, mRoom, ""));
+		tv.setText(u.wantToShare(mPeriod, mRoom, ""));
 
 		final EditText ed = (EditText) mShareView
 				.findViewById(R.id.freeroom_layout_dialog_share_text_edit);
@@ -899,7 +885,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
-				tv.setText(wantToShare(mPeriod, mRoom, ed.getText().toString()));
+				tv.setText(u.wantToShare(mPeriod, mRoom, ed.getText()
+						.toString()));
 				dismissSoftKeyBoard(arg0);
 				return true;
 			}
@@ -1355,7 +1342,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				build.append(getString(R.string.freeroom_home_info_rooms));
 			}
 			FRPeriod period = mModel.getOverAllTreatedPeriod();
-			build.append(generateFullTimeSummary(period));
+			build.append(times.generateFullTimeSummary(period));
 
 			// if the info dialog is opened, we update the CORRECT occupancy
 			// with the new data.
@@ -1423,64 +1410,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
-	 * Generates a string summary of a given period of time.
-	 * <p>
-	 * eg: "Wednesday Apr 24 from 9am to 12pm"
-	 * 
-	 * @param period
-	 *            the period of time
-	 * @return a string summary of a given period of time.
-	 */
-	private String generateFullTimeSummary(FRPeriod period) {
-		StringBuilder build = new StringBuilder(100);
-		Date endDate = new Date(period.getTimeStampEnd());
-		Date startDate = new Date(period.getTimeStampStart());
-		SimpleDateFormat day_month = new SimpleDateFormat(
-				getString(R.string.freeroom_pattern_day_format));
-		SimpleDateFormat hour_min = new SimpleDateFormat(
-				getString(R.string.freeroom_pattern_hour_format));
-
-		build.append(" ");
-		// TODO: if date is today, use "today" instead of specifying date
-		build.append(getString(R.string.freeroom_check_occupancy_result_onthe));
-		build.append(" ");
-		build.append(day_month.format(startDate));
-		build.append(" ");
-		build.append(getString(R.string.freeroom_check_occupancy_result_from));
-		build.append(" ");
-		build.append(hour_min.format(startDate));
-		build.append(" ");
-		build.append(getString(R.string.freeroom_check_occupancy_result_to));
-		build.append(" ");
-		build.append(hour_min.format(endDate));
-		return build.toString();
-	}
-
-	/**
-	 * Generates a short string summary of a given period of time.
-	 * <p>
-	 * eg: "9:00\n12:00pm"
-	 * 
-	 * @param period
-	 *            the period of time
-	 * @return a string summary of a given period of time.
-	 */
-	public static String generateShortTimeSummary(FRPeriod period) {
-		StringBuilder build = new StringBuilder(100);
-		Date endDate = new Date(period.getTimeStampEnd());
-		Date startDate = new Date(period.getTimeStampStart());
-		// TODO: move that to utils, and clean that.
-		// SimpleDateFormat hour_min = new SimpleDateFormat(
-		// getString(R.string.freeroom_pattern_hour_format));
-		SimpleDateFormat hour_min = new SimpleDateFormat("HH:mm");
-
-		build.append(hour_min.format(startDate));
-		build.append(" - ");
-		build.append(hour_min.format(endDate));
-		return build.toString();
-	}
-
-	/**
 	 * Put a onClickListener on an imageView in order to share the location and
 	 * time when clicking share, if available.
 	 * 
@@ -1544,7 +1473,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					.findViewById(R.id.freeroom_layout_dialog_info_period);
 			if (mOccupancy.isSetTreatedPeriod()
 					&& mOccupancy.getTreatedPeriod() != null) {
-				periodTextView.setText(generateFullTimeSummary(mOccupancy
+				periodTextView.setText(times.generateFullTimeSummary(mOccupancy
 						.getTreatedPeriod()));
 			} else {
 				// TODO: error coming from server ??
@@ -1570,7 +1499,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			TextView detailsTextView = (TextView) mInfoRoomView
 					.findViewById(R.id.freeroom_layout_dialog_info_details);
-			detailsTextView.setText(getInfoFRRoom(mOccupancy.getRoom()));
+			detailsTextView.setText(u.getInfoFRRoom(mOccupancy.getRoom()));
 			mInfoRoomDialog.show();
 		}
 	}
@@ -1606,39 +1535,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			mOptionalLineLinearLayoutWrapper
 					.addView(mOptionalLineLinearLayoutWrapperIn);
 			selectedRooms.addAll(request.getUidNonFav());
-			mSummarySelectedRoomsTextViewSearchMenu
-					.setText(getSummaryTextFromCollection(selectedRooms));
+			mSummarySelectedRoomsTextViewSearchMenu.setText(u
+					.getSummaryTextFromCollection(selectedRooms));
 		}
 		updateDateTimePickersAndButtons();
 
 		// MUST be the last action: after all field are set, check if the
 		// request is valid
 		searchButton.setEnabled(auditSubmit() == 0);
-	}
-
-	public String wantToShare(FRPeriod mPeriod, FRRoom mRoom, String toShare) {
-		// TODO: in case of "now" request (nextPeriodValid is now), just put
-		// "i am, now, " instead of
-		// time
-		StringBuilder textBuilder = new StringBuilder(100);
-		textBuilder.append(getString(R.string.freeroom_share_iwillbe) + " ");
-		textBuilder.append(getString(R.string.freeroom_share_in_room) + " ");
-		if (mRoom.isSetDoorCodeAlias()) {
-			textBuilder.append(mRoom.getDoorCodeAlias() + " ("
-					+ mRoom.getDoorCode() + ")");
-		} else {
-			textBuilder.append(mRoom.getDoorCode());
-		}
-		// TODO: which period to use ?
-		// in case of specified in request, we should use the personalized
-		// period
-		textBuilder.append(generateFullTimeSummary(mPeriod) + ". ");
-		if (toShare.length() == 0) {
-			textBuilder.append(getString(R.string.freeroom_share_please_come));
-		} else {
-			textBuilder.append(toShare);
-		}
-		return textBuilder.toString();
 	}
 
 	private void share(FRPeriod mPeriod, FRRoom mRoom, boolean withFriends,
@@ -1664,7 +1568,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 *            location
 	 */
 	private void shareWithFriends(FRPeriod mPeriod, FRRoom mRoom, String toShare) {
-		String sharing = wantToShare(mPeriod, mRoom, toShare);
+		String sharing = u.wantToShare(mPeriod, mRoom, toShare);
 		sharing += " \n" + getString(R.string.freeroom_share_ref_pocket);
 		Log.v(this.getClass().getName() + "-share", "sharing:" + sharing);
 		Intent sendIntent = new Intent();
@@ -1676,71 +1580,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		sendIntent.setType("text/*");
 		startActivity(Intent.createChooser(sendIntent,
 				getString(R.string.freeroom_share_title)));
-	}
-
-	/**
-	 * Converts a FRRoom to a String of only major properties, in order to
-	 * display them. It includes name (with alias), type, capacity, surface and
-	 * UID.
-	 * <p>
-	 * TODO: this method may be changed
-	 * 
-	 * @param mFrRoom
-	 * @return
-	 */
-	private String getInfoFRRoom(FRRoom mFrRoom) {
-		StringBuilder builder = new StringBuilder(50);
-		if (mFrRoom.isSetDoorCode()) {
-			if (mFrRoom.isSetDoorCodeAlias()) {
-				builder.append(mFrRoom.getDoorCode() + " (alias: "
-						+ mFrRoom.getDoorCodeAlias() + ")");
-			} else {
-				builder.append(mFrRoom.getDoorCode());
-			}
-		}
-		if (mFrRoom.isSetTypeFR() || mFrRoom.isSetTypeEN()) {
-			builder.append(" / "
-					+ getString(R.string.freeroom_dialog_info_type) + ": ");
-			if (mFrRoom.isSetTypeFR()) {
-				builder.append(mFrRoom.getTypeFR());
-			}
-			if (mFrRoom.isSetTypeFR() && mFrRoom.isSetTypeEN()) {
-				builder.append(" / ");
-			}
-			if (mFrRoom.isSetTypeFR()) {
-				builder.append(mFrRoom.getTypeEN());
-			}
-		}
-		if (mFrRoom.isSetCapacity()) {
-			builder.append(" / "
-					+ getString(R.string.freeroom_dialog_info_capacity) + ": "
-					+ mFrRoom.getCapacity() + " "
-					+ getString(R.string.freeroom_dialog_info_places));
-		}
-		if (mFrRoom.isSetSurface()) {
-			builder.append(" / "
-					+ getString(R.string.freeroom_dialog_info_surface) + ": "
-					+ mFrRoom.getSurface() + " "
-					+ getString(R.string.freeroom_dialog_info_sqm));
-		}
-		// TODO: for production, remove UID (it's useful for debugging for the
-		// moment)
-		if (mFrRoom.isSetUid()) {
-			// uniq UID must be 1201XXUID, with XX filled with 0 such that
-			// it has 10 digit
-			// the prefix "1201" indiquates that it's a EPFL room (not a phone,
-			// a computer)
-			String communUID = "1201";
-			String roomUID = mFrRoom.getUid();
-			for (int i = roomUID.length() + 1; i <= 6; i++) {
-				communUID += "0";
-			}
-			communUID += roomUID;
-			builder.append(" / "
-					+ getString(R.string.freeroom_dialog_info_uniqID) + ": "
-					+ communUID);
-		}
-		return builder.toString();
 	}
 
 	// ** REUSED FROM SCRATCH FROM FreeRoomSearchView ** //
@@ -1970,10 +1809,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				.removeView(mOptionalLineLinearLayoutWrapperIn);
 		selectedRooms.clear();
 		userDefButton.setChecked(false);
-		mSummarySelectedRoomsTextView
-				.setText(getSummaryTextFromCollection(selectedRooms));
-		mSummarySelectedRoomsTextViewSearchMenu
-				.setText(getSummaryTextFromCollection(selectedRooms));
+		mSummarySelectedRoomsTextView.setText(u
+				.getSummaryTextFromCollection(selectedRooms));
+		mSummarySelectedRoomsTextViewSearchMenu.setText(u
+				.getSummaryTextFromCollection(selectedRooms));
 		mAutoCompleteSuggestionInputBarElement.setInputText("");
 	}
 
@@ -2067,8 +1906,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							.removeView(mOptionalLineLinearLayoutWrapperIn);
 					mOptionalLineLinearLayoutWrapper
 							.addView(mOptionalLineLinearLayoutWrapperIn);
-					mSummarySelectedRoomsTextViewSearchMenu
-							.setText(getSummaryTextFromCollection(selectedRooms));
+					mSummarySelectedRoomsTextViewSearchMenu.setText(u
+							.getSummaryTextFromCollection(selectedRooms));
 					displayAddRoomDialog(AddRoomCaller.SEARCH);
 				} else if (!favButton.isChecked()) {
 					userDefButton.setChecked(true);
@@ -2379,40 +2218,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// we only add if it already contains the room
 		if (!selectedRooms.contains(room)) {
 			selectedRooms.add(room);
-			mSummarySelectedRoomsTextView
-					.setText(getSummaryTextFromCollection(selectedRooms));
+			mSummarySelectedRoomsTextView.setText(u
+					.getSummaryTextFromCollection(selectedRooms));
 
 		} else {
 			Log.e(this.getClass().toString(),
 					"room cannot be added: already added");
 		}
-	}
-
-	private String getSummaryTextFromCollection(Collection<FRRoom> collec) {
-		Iterator<FRRoom> iter = collec.iterator();
-		StringBuffer buffer = new StringBuffer(collec.size() * 5);
-		FRRoom room = null;
-		buffer.append(getString(R.string.freeroom_check_occupancy_search_text_selected_rooms)
-				+ " ");
-		boolean empty = true;
-		while (iter.hasNext()) {
-			empty = false;
-			room = iter.next();
-			buffer.append(room.getDoorCode() + ", ");
-		}
-		buffer.setLength(buffer.length() - 2);
-		int MAX = 100;
-		if (buffer.length() > MAX) {
-			buffer.setLength(MAX);
-			buffer.append("...");
-		}
-		String result = "";
-		if (empty) {
-			result = getString(R.string.freeroom_check_occupancy_search_text_no_selected_rooms);
-		} else {
-			result = buffer.toString();
-		}
-		return result;
 	}
 
 	/**
@@ -2503,44 +2315,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// creating selected time
 		Calendar selected = Calendar.getInstance();
 		selected.setTimeInMillis(prepareFRFrPeriod().getTimeStampStart());
-		showDatePicker.setText(getDateText(selected, dateFormat));
+		showDatePicker.setText(times.getDateText(selected, dateFormat));
 
 		mDatePickerDialog.updateDate(yearSelected, monthSelected,
 				dayOfMonthSelected);
-	}
-
-	/**
-	 * Generates the summary of a selected date.
-	 * <p>
-	 * Instead of the usual format "Wed 24 May", the date is summarize to
-	 * "today", "yesterday", "tomorrow" when relevant.
-	 * 
-	 * @param selected
-	 *            the selected time
-	 * @param sdf
-	 *            the chosen formatter for date
-	 * @return a printable summary of the date.
-	 */
-	private String getDateText(Calendar selected, SimpleDateFormat sdf) {
-		// creating now time reference
-		Calendar now = Calendar.getInstance();
-		// creating tomorrow time reference
-		Calendar tomorrow = Calendar.getInstance();
-		tomorrow.roll(Calendar.DAY_OF_MONTH, true);
-		// creating yesterday time reference
-		Calendar yesterday = Calendar.getInstance();
-		yesterday.roll(Calendar.DAY_OF_MONTH, false);
-
-		if (FRTimes.compareCalendars(now, selected)) {
-			return getString(R.string.freeroom_search_today);
-		} else if (FRTimes.compareCalendars(tomorrow, selected)) {
-			return getString(R.string.freeroom_search_tomorrow);
-		} else if (FRTimes.compareCalendars(yesterday, selected)) {
-			return getString(R.string.freeroom_search_yesterday);
-		} else {
-			// default case: eg. "Wed May 24"
-			return sdf.format(selected.getTime());
-		}
 	}
 
 	/**

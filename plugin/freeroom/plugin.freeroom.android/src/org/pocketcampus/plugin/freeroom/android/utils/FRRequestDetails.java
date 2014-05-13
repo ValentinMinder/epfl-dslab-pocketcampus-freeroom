@@ -89,8 +89,9 @@ public class FRRequestDetails extends FRRequest {
 	public String toString() {
 		// TODO: should be better!!!
 		StringBuilder build = new StringBuilder(100);
-		build.append(FreeRoomHomeView.generateShortTimeSummary(super
-				.getPeriod()) + " ");
+		build.append(FRTimesClient.getInstance().generateShortTimeSummary(
+				super.getPeriod())
+				+ " ");
 		if (isAny()) {
 			build.append("any free room");
 		} else {
