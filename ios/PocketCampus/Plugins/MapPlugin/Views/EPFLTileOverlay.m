@@ -36,7 +36,7 @@ static NSString* const kTileServersBaseURLStringWithFormat = @"http://plan-epfl-
 static NSInteger const kNbTileServers = 5;
 
 static NSString* const kURLEnding = @".png";
-static NSInteger const kMinZ = 13;
+static NSInteger const kMinZ = 12;
 static NSInteger const kMaxZ = 30;
 
 #import "EPFLTileOverlay.h"

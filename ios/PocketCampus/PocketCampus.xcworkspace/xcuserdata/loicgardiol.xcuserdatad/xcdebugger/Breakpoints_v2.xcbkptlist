@@ -478,11 +478,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421600545.591389"
+            timestampString = "421676847.477139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "160"
-            endingLineNumber = "160"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
             landmarkName = "-initWithInitialQuery:"
             landmarkType = "5">
          </BreakpointContent>
@@ -494,11 +494,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421600545.591389"
+            timestampString = "421676847.477139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "602"
-            endingLineNumber = "602"
+            startingLineNumber = "600"
+            endingLineNumber = "600"
             landmarkName = "-resultsListPressed"
             landmarkType = "5">
          </BreakpointContent>
@@ -510,11 +510,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421600545.591389"
+            timestampString = "421676847.477139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "588"
-            endingLineNumber = "588"
+            startingLineNumber = "586"
+            endingLineNumber = "586"
             landmarkName = "-resultsListPressed"
             landmarkType = "5">
             <Locations>
@@ -556,11 +556,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421600545.591389"
+            timestampString = "421676847.477139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "398"
-            endingLineNumber = "398"
+            startingLineNumber = "396"
+            endingLineNumber = "396"
             landmarkName = "-setSearchState:animated:"
             landmarkType = "5">
          </BreakpointContent>
@@ -586,11 +586,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421600545.591389"
+            timestampString = "421676847.477139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "687"
-            endingLineNumber = "687"
+            startingLineNumber = "685"
+            endingLineNumber = "685"
             landmarkName = "-searchBar:textDidChange:"
             landmarkType = "5">
          </BreakpointContent>
@@ -602,7 +602,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421668094.376263"
+            timestampString = "421677898.762268"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "840"
@@ -634,7 +634,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421668094.376263"
+            timestampString = "421677898.762268"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "924"
@@ -682,11 +682,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421600545.591389"
+            timestampString = "421676847.477139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "731"
-            endingLineNumber = "731"
+            startingLineNumber = "729"
+            endingLineNumber = "729"
             landmarkName = "@implementation MapViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -698,11 +698,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421600545.591389"
+            timestampString = "421676847.477139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "545"
-            endingLineNumber = "545"
+            startingLineNumber = "543"
+            endingLineNumber = "543"
             landmarkName = "-manageRecentSearchesControllerVisibilityAnimated:"
             landmarkType = "5">
          </BreakpointContent>
@@ -714,11 +714,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421600545.591389"
+            timestampString = "421676847.477139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "658"
-            endingLineNumber = "658"
+            startingLineNumber = "656"
+            endingLineNumber = "656"
             landmarkName = "-updateControls"
             landmarkType = "5">
          </BreakpointContent>
@@ -730,11 +730,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421600545.591389"
+            timestampString = "421676847.477139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "641"
-            endingLineNumber = "641"
+            startingLineNumber = "639"
+            endingLineNumber = "639"
             landmarkName = "-centerOnEPFLPressed"
             landmarkType = "5">
          </BreakpointContent>
@@ -746,7 +746,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421668094.376263"
+            timestampString = "421677898.762268"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "883"
@@ -794,11 +794,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421600545.591389"
+            timestampString = "421676847.477139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "432"
-            endingLineNumber = "432"
+            startingLineNumber = "430"
+            endingLineNumber = "430"
             landmarkName = "-setMapControlsState:"
             landmarkType = "5">
          </BreakpointContent>
@@ -810,11 +810,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421600545.591389"
+            timestampString = "421676847.477139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "376"
-            endingLineNumber = "376"
+            startingLineNumber = "374"
+            endingLineNumber = "374"
             landmarkName = "-setSearchState:animated:"
             landmarkType = "5">
             <Actions>
@@ -1079,11 +1079,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421600545.591389"
+            timestampString = "421676847.477139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "455"
-            endingLineNumber = "455"
+            startingLineNumber = "453"
+            endingLineNumber = "453"
             landmarkName = "-setMapControlsState:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2853,11 +2853,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421600545.591389"
+            timestampString = "421676847.477139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "676"
-            endingLineNumber = "676"
+            startingLineNumber = "674"
+            endingLineNumber = "674"
             landmarkName = "-searchBarSearchButtonClicked:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4171,11 +4171,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Model/IsAcademiaModelAdditions.m"
-            timestampString = "417272545.03859"
+            timestampString = "421670487.204416"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
             landmarkName = "-studyDayForDate:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4633,11 +4633,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Views/EPFLLayersOverlay.m"
-            timestampString = "421669841.82998"
+            timestampString = "421673970.347078"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "458"
-            endingLineNumber = "458">
+            startingLineNumber = "388"
+            endingLineNumber = "388">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
@@ -4671,11 +4671,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "421668094.376263"
+            timestampString = "421677898.762268"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "798"
-            endingLineNumber = "798"
+            startingLineNumber = "799"
+            endingLineNumber = "799"
             landmarkName = "-mapView:regionDidChangeAnimated:"
             landmarkType = "5">
             <Actions>
@@ -4694,13 +4694,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Plugins/MapPlugin/Views/EPFLLayersOverlay.m"
-            timestampString = "421669841.82998"
+            filePath = "Plugins/MapPlugin/Model/MapUtils.m"
+            timestampString = "421158107.340126"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "232"
-            endingLineNumber = "232"
-            landmarkName = "@implementation EPFLLayersOverlay"
+            startingLineNumber = "446"
+            endingLineNumber = "446"
+            landmarkName = "@implementation MapUtils"
             landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4710,28 +4710,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Plugins/MapPlugin/Model/MapUtils.m"
-            timestampString = "421158107.340126"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "446"
-            endingLineNumber = "446"
-            landmarkName = "+tilePathToCH1903:tileSize:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Views/EPFLLayersOverlay.m"
-            timestampString = "421669841.82998"
+            timestampString = "421673970.347078"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
+            startingLineNumber = "164"
+            endingLineNumber = "164"
             landmarkName = "@implementation EPFLLayersOverlay"
             landmarkType = "3">
             <Locations>
@@ -4789,11 +4773,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Views/EPFLLayersOverlay.m"
-            timestampString = "421669841.82998"
+            timestampString = "421673970.347078"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
             landmarkName = "@implementation EPFLLayersOverlay"
             landmarkType = "3">
             <Actions>
@@ -4819,11 +4803,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Views/PCTileOverlayRenderer.m"
-            timestampString = "421668094.376263"
+            timestampString = "421677462.621601"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "101"
-            endingLineNumber = "101"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
             landmarkName = "-canDrawMapRect:zoomScale:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4835,11 +4819,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Views/PCTileOverlayRenderer.m"
-            timestampString = "421668094.376263"
+            timestampString = "421677462.621601"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
             landmarkName = "-canDrawMapRect:zoomScale:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4851,27 +4835,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Views/EPFLLayersOverlay.m"
-            timestampString = "421600702.609265"
+            timestampString = "421673970.347078"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "61"
-            endingLineNumber = "61"
-            landmarkName = "-shouldDrawMapRect:zoomScale:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Plugins/MapPlugin/Views/EPFLLayersOverlay.m"
-            timestampString = "421669841.82998"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "209"
-            endingLineNumber = "209"
+            startingLineNumber = "204"
+            endingLineNumber = "204"
             landmarkName = "-urlForMapRect:andZoomScale:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4883,11 +4851,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Views/EPFLLayersOverlay.m"
-            timestampString = "421668220.593652"
+            timestampString = "421673970.347078"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
             landmarkName = "-URLForCurrentlyVisibleMapRectAndZoomScale"
             landmarkType = "5">
          </BreakpointContent>
@@ -4899,11 +4867,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Views/EPFLLayersOverlay.m"
-            timestampString = "421669841.82998"
+            timestampString = "421673970.347078"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
             landmarkName = "-croppedImageFromCurrentlyVisibleMapRectImage:forMapRect:zoomScale:"
             landmarkType = "5">
             <Actions>
@@ -4922,13 +4890,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Plugins/MapPlugin/Views/PCTileOverlayRenderer.m"
-            timestampString = "421668094.376263"
+            filePath = "Plugins/MapPlugin/Views/EPFLLayersOverlay.m"
+            timestampString = "421673970.347078"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
-            landmarkName = "-canDrawMapRect:zoomScale:"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "-croppedImageFromCurrentlyVisibleMapRectImage:forMapRect:zoomScale:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4938,13 +4906,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Plugins/MapPlugin/Views/EPFLLayersOverlay.m"
-            timestampString = "421669094.418786"
+            filePath = "Plugins/MapPlugin/Views/PCTileOverlayRenderer.m"
+            timestampString = "421677462.621601"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
-            landmarkName = "-croppedImageFromCurrentlyVisibleMapRectImage:forMapRect:zoomScale:"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
+            landmarkName = "-canDrawMapRect:zoomScale:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

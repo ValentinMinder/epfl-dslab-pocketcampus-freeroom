@@ -84,6 +84,8 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 @property (nonatomic, strong) EPFLTileOverlay* epflTileOverlay;
 @property (nonatomic, strong) EPFLLayersOverlay* epflLayersOverlay;
 
+@property (nonatomic, strong) PCTileOverlayRenderer* epflLayersOverlayRenderer;
+
 @property (nonatomic, strong) NSArray* mapItemsAllResults; //raw result from map service for a search. Nil if searchState is != SearchStateResults
 
 @property (nonatomic, strong) MapItem* initialMapItem;
@@ -209,8 +211,6 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         self.navigationItem.leftItemsSupplementBackButton = YES;
         [self startSearchForQuery:self.initialQuery];
     }
-    [self mapView:self.mapView regionDidChangeAnimated:NO]; //to refresh UI controls and add overlays
-    [self updateControls];
     [[MainController publicController] addPluginStateObserver:self selector:@selector(willLoseForeground) notification:PluginWillLoseForegroundNotification pluginIdentifierName:@"Map"];
     [[MainController publicController] addPluginStateObserver:self selector:@selector(didEnterForeground) notification:PluginDidEnterForegroundNotification pluginIdentifierName:@"Map"];
     
@@ -233,16 +233,14 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
+    [self mapView:self.mapView regionDidChangeAnimated:NO]; //to refresh UI controls and add overlays
+    [self updateControls];
 }
 
-/*- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    MKMapCamera* cam = self.mapView.camera;
-    cam.altitude = 2.0;
-    [self.mapView setCamera:cam animated:YES];
-}*/
-
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.epflLayersOverlayRenderer cancelScreenTileDownload];
+}
 
 - (NSUInteger)supportedInterfaceOrientations
 {
@@ -734,7 +732,10 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         return [[PCTileOverlayRenderer alloc] initWithPCTileOverlay:self.epflTileOverlay];
     }
     if (overlay == self.epflLayersOverlay) {
-        return [[PCTileOverlayRenderer alloc] initWithScreenPCTileOverlay:self.epflLayersOverlay];
+        if (!self.epflLayersOverlayRenderer) {
+            self.epflLayersOverlayRenderer = [[PCTileOverlayRenderer alloc] initWithScreenPCTileOverlay:self.epflLayersOverlay];
+        }
+        return self.epflLayersOverlayRenderer;
     }
     //other, not managed
     return nil;
@@ -807,8 +808,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
             [self.mapView addOverlay:self.epflTileOverlay level:self.epflTileOverlay.desiredLevelForMapView];
             [self.mapView addOverlay:self.epflLayersOverlay level:self.epflLayersOverlay.desiredLevelForMapView];
         } else {
-            MKTileOverlayRenderer* layersRenderer = (MKTileOverlayRenderer*)[self.mapView rendererForOverlay:self.epflLayersOverlay];
-            [layersRenderer reloadData];
+             [self.epflLayersOverlayRenderer reloadData];
         }
         if (shouldAllowFloorLevelChange) {
             self.mapControlsState = MapControlsStateAllAvailable;
@@ -1030,6 +1030,8 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     }
     @catch (NSException *exception) {}
     self.mapView.delegate = nil;
+    [self.mapView removeOverlays:self.mapView.overlays]; // http://stackoverflow.com/a/22244049/1423774
+    [self.epflLayersOverlayRenderer cancelScreenTileDownload];
     self.internetConnectionAlert.delegate = nil;
 }
 

@@ -33,9 +33,13 @@
 
 #pragma mark - Public
 
-- (MKMapRect)completeVisibleMapRect {
+- (MKMapRect)pc_completeVisibleMapRect {
     MKCoordinateRegion region = [self convertRect:self.bounds toRegionFromView:self];
     return _MKMapRectForCoordinateRegion(region);
+}
+
+- (MKZoomScale)pc_zoomScale {
+    return self.bounds.size.width / self.visibleMapRect.size.width;
 }
 
 #pragma mark - Private

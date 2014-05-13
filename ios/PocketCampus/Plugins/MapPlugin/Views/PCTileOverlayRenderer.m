@@ -40,9 +40,12 @@
 @property (nonatomic, readwrite) PCTileOverlay* pcTileOverlay;
 @property (nonatomic, readwrite) PCTileOverlay<PCScreenTileOverlay>* pcScreenTileOverlay;
 
+/**
+ * Only used when in screen (single) tile mode
+ */
 @property (nonatomic, strong) NSCache* tilesCache;
-
 @property (nonatomic, strong) NSOperationQueue* operationQueue;
+@property (nonatomic, strong) NSMutableDictionary* operationForURLString;
 
 @end
 
@@ -53,7 +56,6 @@
 - (instancetype)initWithPCTileOverlay:(PCTileOverlay*)overlay {
     self = [super initWithTileOverlay:overlay];
     if (self) {
-        self.tilesCache = [NSCache new];
         self.pcTileOverlay = overlay;
         self.alpha = overlay.desiredAlpha;
         [self.pcTileOverlay addObserver:self forKeyPath:NSStringFromSelector(@selector(floorLevel)) options:0 context:nil];
@@ -64,11 +66,27 @@
 - (instancetype)initWithScreenPCTileOverlay:(PCTileOverlay<PCScreenTileOverlay>*)overlay {
     self = [self initWithPCTileOverlay:overlay];
     if (self) {
+        self.tilesCache = [NSCache new];
+        [self.tilesCache setCountLimit:5];
         self.operationQueue = [NSOperationQueue new];
         self.operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
+        self.operationForURLString = [NSMutableDictionary dictionary];
         self.pcScreenTileOverlay = overlay;
     }
     return self;
+}
+
+#pragma mark - Public
+
+- (void)cancelScreenTileDownload {
+    if (!self.pcScreenTileOverlay) {
+        return;
+    }
+    for (AFHTTPRequestOperation* operation in self.operationQueue.operations) {
+        [operation setCompletionBlockWithSuccess:NULL failure:NULL];
+    }
+    [self.operationQueue cancelAllOperations];
+    [self.operationForURLString removeAllObjects];
 }
 
 #pragma mark - Observation
@@ -82,8 +100,18 @@
 #pragma mark - MKTileOverlayRenderer
 
 - (void)reloadData {
-    [self.operationQueue cancelAllOperations];
-    [super reloadData];
+    if (!self.pcScreenTileOverlay) {
+        [super reloadData];
+        return;
+    }
+    [self cancelScreenTileDownload];
+    __weak __typeof(self) welf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        //calling directly sometimes does not work apparently
+        //maybe if setNeedsDisplay was already just before reloadData
+        //need to schedule in next main run loop pass
+        [welf setNeedsDisplay];
+    });
 }
 
 #pragma mark - MKOverlayRenderer overrides
@@ -103,22 +131,37 @@
         return YES;
     }
     
-    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:20.0];
-    
-    AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operation.responseSerializer = [AFImageResponseSerializer serializer];
-    
-    __weak __typeof(self) welf = self;
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, UIImage* responseImage) {
-        if (responseImage) {
-            welf.tilesCache[url.absoluteString] = responseImage;
-            [welf setNeedsDisplayInMapRect:mapRect zoomScale:zoomScale];
+    @synchronized (self) {
+        if (self.operationForURLString[url.absoluteString]) {
+            //request already in progress
+            return NO;
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        //too bad...
-    }];
-    
-    [self.operationQueue addOperation:operation];
+        NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:20.0];
+        AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+        operation.responseSerializer = [AFImageResponseSerializer serializer];
+        
+        self.operationForURLString[url.absoluteString] = operation;
+        
+        __weak __typeof(self) welf = self;
+        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, UIImage* responseImage) {
+            if (!welf) {
+                return;
+            }
+            @synchronized (welf) {
+                if (responseImage) {
+                    welf.tilesCache[url.absoluteString] = responseImage;
+                    [welf setNeedsDisplay];
+                }
+                [welf.operationForURLString removeObjectForKey:url.absoluteString];
+            }
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            @synchronized (welf) {
+                [welf.operationForURLString removeObjectForKey:url.absoluteString];
+            }
+        }];
+        [self.operationQueue addOperation:operation];
+    }
     
     return NO;
 }
@@ -149,6 +192,7 @@
         [self.pcTileOverlay removeObserver:self forKeyPath:NSStringFromSelector(@selector(floorLevel))];
     }
     @catch (NSException *exception) {}
+    [self cancelScreenTileDownload];
 }
 
 @end

@@ -34,6 +34,8 @@
 /**
  * Returns visible map rect, *including* portions that might be under navbar/toolbar
  */
-@property (nonatomic, readonly) MKMapRect completeVisibleMapRect;
+@property (nonatomic, readonly) MKMapRect pc_completeVisibleMapRect;
+
+@property (nonatomic, readonly) MKZoomScale pc_zoomScale;
 
 @end

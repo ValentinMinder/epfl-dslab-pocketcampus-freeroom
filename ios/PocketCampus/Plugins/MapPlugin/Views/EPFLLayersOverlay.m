@@ -57,20 +57,15 @@ static double const kFloorLevelsMaxAltitude = 1200.0;
 }
 
 - (BOOL)shouldDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale {
-    MKZoomScale currentZoomScale = [self currentMapViewZoomScale];
-    /*if (zoomScale != currentZoomScale) {
-        NSLog(@"NO: zoomScale: %f, current: %f", zoomScale, currentZoomScale);
-        return NO;
-    }*/
-    if (!MKMapRectIntersectsRect(self.mapView.completeVisibleMapRect, mapRect)) {
+    if (!MKMapRectIntersectsRect(self.mapView.pc_completeVisibleMapRect, mapRect)) {
         return NO;
     }
     return YES;
 }
 
 - (NSURL*)URLForCurrentlyVisibleMapRectAndZoomScale {
-    MKMapRect rect = self.mapView.completeVisibleMapRect;
-    MKZoomScale zoomScale = [self currentMapViewZoomScale];
+    MKMapRect rect = self.mapView.pc_completeVisibleMapRect;
+    MKZoomScale zoomScale = self.mapView.pc_zoomScale;
     NSString* urlString = [self urlForMapRect:rect andZoomScale:zoomScale];
     return [NSURL URLWithString:urlString];
 }
@@ -83,12 +78,10 @@ static double const kFloorLevelsMaxAltitude = 1200.0;
         return [self blankImageOfSize:CGSizeMake(rect.size.width, rect.size.height)];
     }
     
-    MKCoordinateRegion visibleRegion = MKCoordinateRegionForMapRect(self.mapView.completeVisibleMapRect);
+    MKCoordinateRegion visibleRegion = MKCoordinateRegionForMapRect(self.mapView.pc_completeVisibleMapRect);
     CGRect visibleRect = [self.mapView convertRegion:visibleRegion toRectToView:self.mapView];
     
     CGRect croppedRect = CGRectIntersection(visibleRect, rect);
-    
-    //NSString* test = [NSString stringWithFormat:@"\n\n%@\n=>\n%@", NSStringFromCGRect(rect), NSStringFromCGRect(croppedRect)];
     
     CGImageRef cropppedImageRef = CGImageCreateWithImageInRect(image.CGImage, croppedRect);
     UIImage* croppedImage = [UIImage imageWithCGImage:cropppedImageRef];
@@ -134,6 +127,12 @@ static double const kFloorLevelsMaxAltitude = 1200.0;
 
 #pragma mark - MKTileOverlay overrides
 
+/**
+ * Code for multi-tile with MKTileOverlay system
+ * EPFL layers not compatible with multi-tile
+ * Keeping in case EPFL system becomes compatible (less code)
+ */
+
 /*- (NSURL*)URLForTilePath:(MKTileOverlayPath)path {
     CH1903BBox bbox = [MapUtils tilePathToCH1903:path tileSize:self.tileSize];
     
@@ -173,10 +172,6 @@ static double const kFloorLevelsMaxAltitude = 1200.0;
 }*/
 
 #pragma mark - Private
-
-- (MKZoomScale)currentMapViewZoomScale {
-    return self.mapView.bounds.size.width / self.mapView.visibleMapRect.size.width;
-}
 
 - (NSString *)urlForMapRect:(MKMapRect)mapRect andZoomScale:(MKZoomScale)zoomScale {
     
@@ -226,71 +221,6 @@ static double const kFloorLevelsMaxAltitude = 1200.0;
     UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return image;
-}
-
-#pragma mark - Tests
-
-- (UIImage*)imageWithBorderFromImage:(UIImage*)source;
-{
-    CGSize size = [source size];
-    //size.width *= 2.0;
-    //size.height *= 2.0;
-    UIGraphicsBeginImageContext(size);
-    CGRect rect = CGRectMake(0, 0, size.width, size.height);
-    [source drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetRGBStrokeColor(context, 1.0, 0.5, 1.0, 1.0);
-    CGContextSetLineWidth(context, 2.0);
-    CGContextStrokeRect(context, rect);
-    UIImage *testImg =  UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return testImg;
-}
-
-- (UIImage *)addBorderToImage:(UIImage *)image {
-	CGImageRef bgimage = [image CGImage];
-	float width = CGImageGetWidth(bgimage);
-	float height = CGImageGetHeight(bgimage);
-	
-    // Create a temporary texture data buffer
-	void *data = malloc(width * height * 4);
-	
-	// Draw image to buffer
-	CGContextRef ctx = CGBitmapContextCreate(data,
-                                             width,
-                                             height,
-                                             8,
-                                             width * 4,
-                                             CGImageGetColorSpace(image.CGImage),
-                                             kCGImageAlphaPremultipliedLast);
-	CGContextDrawImage(ctx, CGRectMake(0, 0, (CGFloat)width, (CGFloat)height), bgimage);
-	
-	//Set the stroke (pen) color
-	CGContextSetStrokeColorWithColor(ctx, [UIColor greenColor].CGColor);
-    
-	//Set the width of the pen mark
-	CGFloat borderWidth = 2.0;
-	CGContextSetLineWidth(ctx, borderWidth);
-    
-	//Start at 0,0 and draw a square
-	CGContextMoveToPoint(ctx, 0.0, 0.0);
-	CGContextAddLineToPoint(ctx, 0.0, height);
-	CGContextAddLineToPoint(ctx, width, height);
-	CGContextAddLineToPoint(ctx, width, 0.0);
-	CGContextAddLineToPoint(ctx, 0.0, 0.0);
-	
-	//Draw it
-	CGContextStrokePath(ctx);
-    
-    // write it to a new image
-	CGImageRef cgimage = CGBitmapContextCreateImage(ctx);
-	UIImage *newImage = [UIImage imageWithCGImage:cgimage];
-	CFRelease(cgimage);
-	CGContextRelease(ctx);
-	
-    // auto-released
-	return newImage;
 }
 
 @end

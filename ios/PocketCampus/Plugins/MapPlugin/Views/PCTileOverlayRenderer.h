@@ -38,8 +38,8 @@
 - (instancetype)initWithPCTileOverlay:(PCTileOverlay*)overlay;
 
 /**
- * IMPORTANT: when using screen (single) tile overay, reloadData MUST be called
- * when the mapView's region change. PCTileOverlayRendered cannot observe it because
+ * IMPORTANT: when using screen (single) tile overlay (this mode), reloadData MUST be called
+ * when in mapView region changes. PCTileOverlayRendered cannot observe it because
  * region is not KVO-compliant.
  */
 - (instancetype)initWithScreenPCTileOverlay:(PCTileOverlay<PCScreenTileOverlay>*)overlay;
@@ -47,8 +47,14 @@
 @property (nonatomic, readonly, weak) PCTileOverlay* pcTileOverlay;
 
 /**
- * Non-nil only if self was instantiated with initWithScreenPCTileOverlay
+ * Non-nil only if self was instantiated with initWithScreenPCTileOverlay:
  */
 @property (nonatomic, readonly, weak) PCTileOverlay<PCScreenTileOverlay>* pcScreenTileOverlay;
+
+/**
+ * Muse be called before self is released if
+ * self was instantiated with initWithScreenPCTileOverlay: (does nothing if not)
+ */
+- (void)cancelScreenTileDownload;
 
 @end
