@@ -57,7 +57,7 @@ static NSTimeInterval const kTilesCacheValidityInterval = 259200.0; //2 days
     self = [super init];
     if (self) {
         self.alpha = 0.85;
-        self.cachedTilesValidityInterval = kTilesCacheValidityInterval;
+        self.tilesDataCacheValidityInterval = kTilesCacheValidityInterval;
         self.overlayIdentifier = NSStringFromClass(self.class);
     }
     return self;

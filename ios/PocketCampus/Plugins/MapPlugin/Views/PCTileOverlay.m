@@ -37,7 +37,7 @@
     self = [super init];
     if (self) {
         self.floorLevel = self.defaultFloorLevel;
-        self.returnCachedTileEvenIfStaleWhenNoInternetConnection = YES;
+        self.allowStaleCachedTilesDataUsageWhenNoInternetConnection = YES;
     }
     return self;
 }
@@ -46,7 +46,7 @@
     self = [super initWithURLTemplate:URLTemplate];
     if (self) {
         self.floorLevel = self.defaultFloorLevel;
-        self.returnCachedTileEvenIfStaleWhenNoInternetConnection = YES;
+        self.allowStaleCachedTilesDataUsageWhenNoInternetConnection = YES;
     }
     return self;
 }
@@ -54,7 +54,7 @@
 #pragma mark - MKTileOverlay overrides
 
 - (void)loadTileAtPath:(MKTileOverlayPath)path result:(void (^)(NSData *, NSError *))result {
-    if (self.cachedTilesValidityInterval <= 0.0) {
+    if (self.tilesDataCacheValidityInterval <= 0.0) {
         [super loadTileAtPath:path result:result];
         return;
     }
@@ -75,13 +75,27 @@
 #pragma mark - Public
 
 - (void)setFloorLevel:(NSInteger)floorLevel {
+    NSInteger oldVal = _floorLevel;
+    NSInteger newVal;
     if (floorLevel > self.maxFloorLevel) {
-        _floorLevel = self.maxFloorLevel;
+        newVal = self.maxFloorLevel;
     } else if (floorLevel < self.minFloorLevel) {
-        _floorLevel = self.minFloorLevel;
+        newVal = self.minFloorLevel;
     } else {
-        _floorLevel = floorLevel;
+        newVal = floorLevel;
     }
+    if (newVal != oldVal) {
+        [self willChangeValueForKey:NSStringFromSelector(@selector(floorLevel))];
+        _floorLevel = newVal;
+        [self didChangeValueForKey:NSStringFromSelector(@selector(floorLevel))];
+    }
+}
+
+//KVO override
++ (BOOL)automaticallyNotifiesObserversOfFloorLevel {
+    //so that we can manage notificaiton manually,
+    //only notifying when level has actually changed (not only setter called)
+    return NO;
 }
 
 - (void)increaseFloorLevel {
@@ -122,11 +136,11 @@
 
 - (NSData*)cachedTileDataForTileOverlayPath:(MKTileOverlayPath)tilePath {
     NSString* key = [self keyForTileOverlayPath:tilePath];
-    NSData* cachedIfValid = (NSData*)[PCPersistenceManager objectForKey:key pluginName:@"map" nilIfDiffIntervalLargerThan:self.cachedTilesValidityInterval isCache:YES];
+    NSData* cachedIfValid = (NSData*)[PCPersistenceManager objectForKey:key pluginName:@"map" nilIfDiffIntervalLargerThan:self.tilesDataCacheValidityInterval isCache:YES];
     if ([PCUtils hasDeviceInternetConnection]) {
         return cachedIfValid;
     }
-    if (self.returnCachedTileEvenIfStaleWhenNoInternetConnection) {
+    if (self.allowStaleCachedTilesDataUsageWhenNoInternetConnection) {
         return (NSData*)[PCPersistenceManager objectForKey:key pluginName:@"map" isCache:YES];
     }
     return cachedIfValid;
