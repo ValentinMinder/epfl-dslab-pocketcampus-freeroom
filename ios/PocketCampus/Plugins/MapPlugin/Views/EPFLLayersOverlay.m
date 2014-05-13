@@ -212,8 +212,20 @@ static double const kFloorLevelsMaxAltitude = 1200.0;
     
     NSString* baseURLWithBBoxEmptyParameter = @"http://plan.epfl.ch/wms_themes?FORMAT=image/png&LOCALID=-1&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A21781&BBOX=";
     
-    NSString* urlString = [NSString stringWithFormat:@"%@%lf,%lf,%lf,%lf&WIDTH=%.0lf&HEIGHT=%.0lf&LAYERS=locaux_labels_en%d,batiments_routes_labels,parkings_publicsall,informationall", baseURLWithBBoxEmptyParameter, startY, endX, endY, startX, width, height, (int)self.floorLevel];
+    NSString* urlString = [NSString stringWithFormat:@"%@%lf,%lf,%lf,%lf&WIDTH=%.0lf&HEIGHT=%.0lf&LAYERS=%@", baseURLWithBBoxEmptyParameter, startY, endX, endY, startX, width, height, [self layersCommaSeparatedString]];
     return urlString;
+}
+
+- (NSString*)layersCommaSeparatedString {
+    static NSString* languageCode = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        languageCode = [[PCUtils userLanguageCode] lowercaseString];
+        if (![languageCode isEqualToString:@"fr"] && ![languageCode isEqualToString:@"en"]) {
+            languageCode = @"en";
+        }
+    });
+    return [NSString stringWithFormat:@"locaux_labels_%@%d,batiments_routes_labels,parkings_publicsall,informationall", languageCode, (int)self.floorLevel];
 }
 
 - (UIImage*)blankImageOfSize:(CGSize)size {
