@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Views/EPFLTileOverlay.m"
-            timestampString = "421160899.813431"
+            timestampString = "421706243.803141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "208"
-            endingLineNumber = "208">
+            startingLineNumber = "212"
+            endingLineNumber = "212">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2408,11 +2408,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Views/EPFLTileOverlay.m"
-            timestampString = "421160899.813431"
+            timestampString = "421706243.803141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "119"
-            endingLineNumber = "119"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
             landmarkName = "-createStringCoordForTileCoord:"
             landmarkType = "5">
             <Actions>
@@ -2432,11 +2432,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Views/EPFLTileOverlay.m"
-            timestampString = "421160899.813431"
+            timestampString = "421706243.803141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149">
+            startingLineNumber = "153"
+            endingLineNumber = "153">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
@@ -2454,11 +2454,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Views/EPFLTileOverlay.m"
-            timestampString = "421160899.813431"
+            timestampString = "421706243.803141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156">
+            startingLineNumber = "160"
+            endingLineNumber = "160">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
@@ -2838,11 +2838,11 @@
             ignoreCount = "20"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Views/EPFLTileOverlay.m"
-            timestampString = "421160899.813431"
+            timestampString = "421706243.803141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163">
+            startingLineNumber = "167"
+            endingLineNumber = "167">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">

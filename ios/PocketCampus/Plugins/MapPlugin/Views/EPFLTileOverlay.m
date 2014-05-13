@@ -39,6 +39,8 @@ static NSString* const kURLEnding = @".png";
 static NSInteger const kMinZ = 12;
 static NSInteger const kMaxZ = 30;
 
+static NSTimeInterval const kTilesCacheValidityInterval = 259200.0; //2 days
+
 #import "EPFLTileOverlay.h"
 
 @interface EPFLTileOverlay ()
@@ -55,6 +57,8 @@ static NSInteger const kMaxZ = 30;
     self = [super init];
     if (self) {
         self.alpha = 0.85;
+        self.cachedTilesValidityInterval = kTilesCacheValidityInterval;
+        self.overlayIdentifier = NSStringFromClass(self.class);
     }
     return self;
 }
@@ -88,7 +92,6 @@ static NSInteger const kMaxZ = 30;
 #pragma mark - MKTileOverlay overrides
 
 - (NSURL*)URLForTilePath:(MKTileOverlayPath)path {
-#warning CACHING does not work anymore, should override loadTilePath:...
     NSString* serverBaseURLString = [self serverBaseURLStringForTilePath:path];
     NSString* pathOnServer = [NSString stringWithFormat:@"/batiments%d-merc/%d/%@/%@%@", (int)self.floorLevel, (int)path.z, [self createStringCoordForTileCoord:path.x], [self createStringCoordForTileCoord:path.y], kURLEnding];
     NSURL* url = [NSURL URLWithString:pathOnServer relativeToURL:[NSURL URLWithString:serverBaseURLString]];

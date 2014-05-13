@@ -31,8 +31,25 @@
 
 @interface PCTileOverlay : MKTileOverlay
 
+/**
+ * Set this property to a positive value to enable tiles persistence caching
+ * loadTileAtPath:result: automatically looks for a tile that is still valid
+ * and directly returns it in result(...) if found.
+ * 0.0 or negative value means no caching.
+ * IMPORTANT: self.overlayIdentifier MUST be set and unique
+ * Default: 0.0
+ */
+@property (nonatomic) NSTimeInterval cachedTilesValidityInterval;
+
+@property (nonatomic, strong) NSString* overlayIdentifier;
+
+/**
+ * Default: YES
+ */
+@property (nonatomic) BOOL returnCachedTileEvenIfStaleWhenNoInternetConnection;
+
 /*
- * Setter ensures that value stays withing [kMinFloorLevel, kMaxFloorLevel] bounds
+ * Setter ensures that value stays withing [self.minFloorLevel, self.maxFloorLevel] bounds
  */
 @property (nonatomic) NSInteger floorLevel;
 

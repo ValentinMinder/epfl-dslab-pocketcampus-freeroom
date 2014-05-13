@@ -37,8 +37,39 @@
     self = [super init];
     if (self) {
         self.floorLevel = self.defaultFloorLevel;
+        self.returnCachedTileEvenIfStaleWhenNoInternetConnection = YES;
     }
     return self;
+}
+
+- (instancetype)initWithURLTemplate:(NSString *)URLTemplate {
+    self = [super initWithURLTemplate:URLTemplate];
+    if (self) {
+        self.floorLevel = self.defaultFloorLevel;
+        self.returnCachedTileEvenIfStaleWhenNoInternetConnection = YES;
+    }
+    return self;
+}
+
+#pragma mark - MKTileOverlay overrides
+
+- (void)loadTileAtPath:(MKTileOverlayPath)path result:(void (^)(NSData *, NSError *))result {
+    if (self.cachedTilesValidityInterval <= 0.0) {
+        [super loadTileAtPath:path result:result];
+        return;
+    }
+    NSData* cachedData = [self cachedTileDataForTileOverlayPath:path];
+    if (!cachedData || ![cachedData isKindOfClass:[NSData class]]) {
+        __weak __typeof(self) welf = self;
+        [super loadTileAtPath:path result:^void(NSData* data, NSError* error) {
+            if (data && !error) {
+                [welf saveTileData:data forTileOverlayPath:path];
+            }
+            result(data, error);
+        }];
+        return;
+    }
+    result(cachedData, nil);
 }
 
 #pragma mark - Public
@@ -85,6 +116,33 @@
 
 - (MKOverlayLevel)desiredLevelForMapView {
     return MKOverlayLevelAboveRoads;
+}
+
+#pragma mark - Private
+
+- (NSData*)cachedTileDataForTileOverlayPath:(MKTileOverlayPath)tilePath {
+    NSString* key = [self keyForTileOverlayPath:tilePath];
+    NSData* cachedIfValid = (NSData*)[PCPersistenceManager objectForKey:key pluginName:@"map" nilIfDiffIntervalLargerThan:self.cachedTilesValidityInterval isCache:YES];
+    if ([PCUtils hasDeviceInternetConnection]) {
+        return cachedIfValid;
+    }
+    if (self.returnCachedTileEvenIfStaleWhenNoInternetConnection) {
+        return (NSData*)[PCPersistenceManager objectForKey:key pluginName:@"map" isCache:YES];
+    }
+    return cachedIfValid;
+}
+
+- (void)saveTileData:(NSData*)data forTileOverlayPath:(MKTileOverlayPath)tilePath {
+    NSString* key = [self keyForTileOverlayPath:tilePath];
+    [PCPersistenceManager saveObject:data forKey:key pluginName:@"map" isCache:YES];
+    
+}
+
+- (NSString*)keyForTileOverlayPath:(MKTileOverlayPath)tilePath {
+    if (!self.overlayIdentifier) {
+        [NSException raise:@"Illegal state" format:@"self.overlayIdentifier MUST be set to use tiles caching"];
+    }
+    return [NSString stringWithFormat:@"%@_cached_tile_%ld_%ld_%ld_%f", self.overlayIdentifier, tilePath.x, tilePath.y, tilePath.z, tilePath.contentScaleFactor];
 }
 
 @end
