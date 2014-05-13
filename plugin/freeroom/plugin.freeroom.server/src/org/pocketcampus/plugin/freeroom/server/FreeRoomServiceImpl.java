@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+import org.pocketcampus.plugin.freeroom.data.FetchOccupancyData;
 import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeServiceImpl;
 import org.pocketcampus.plugin.freeroom.server.utils.FetchRoomsDetails;
 import org.pocketcampus.plugin.freeroom.server.utils.OccupancySorted;
@@ -78,6 +79,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ... V2");
 		logger.setLevel(Level.INFO);
+		new FetchOccupancyData(PC_SRV_CONFIG.getString("DB_URL") + "?allowMultiQueries=true",
+				PC_SRV_CONFIG.getString("DB_USERNAME"),
+				PC_SRV_CONFIG.getString("DB_PASSWORD")).fetchAndInsert(System.currentTimeMillis());
 
 		try {
 			connMgr = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL")

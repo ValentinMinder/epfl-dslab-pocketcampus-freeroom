@@ -787,4 +787,15 @@ public class FRTimes {
 
 		return new FRPeriod(tsStart, tsEnd, false);
 	}
+
+	public static String convertTimeStampInString(long timestamp) {
+		Calendar mCalendar = Calendar.getInstance();
+		mCalendar.setTimeInMillis(timestamp);
+		
+		int year = mCalendar.get(Calendar.YEAR);
+		int month = mCalendar.get(Calendar.MONTH) + 1;
+		int day = mCalendar.get(Calendar.DAY_OF_MONTH);
+		
+		return year + "-" + month + "-" + day;
+	}
 }
