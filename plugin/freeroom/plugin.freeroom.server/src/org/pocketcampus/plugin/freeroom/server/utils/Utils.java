@@ -101,4 +101,12 @@ public class Utils {
 		uidSet.addAll(uidList);
 		return new ArrayList<>(uidSet);
 	}
+
+	public static boolean checkValidUID(String uid) {
+		Pattern mUIDPattern = Pattern
+				.compile("^[0-9]+$");
+		Matcher mMatcher = mUIDPattern.matcher(uid);
+
+		return mMatcher.matches();
+	}
 }

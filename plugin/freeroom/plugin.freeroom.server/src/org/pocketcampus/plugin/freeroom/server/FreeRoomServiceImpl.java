@@ -22,6 +22,7 @@ import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.freeroom.data.FetchOccupancyData;
+import org.pocketcampus.plugin.freeroom.data.FetchOccupancyDataJSON;
 import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeServiceImpl;
 import org.pocketcampus.plugin.freeroom.server.utils.FetchRoomsDetails;
 import org.pocketcampus.plugin.freeroom.server.utils.OccupancySorted;
@@ -79,9 +80,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ... V2");
 		logger.setLevel(Level.INFO);
-		new FetchOccupancyData(PC_SRV_CONFIG.getString("DB_URL") + "?allowMultiQueries=true",
-				PC_SRV_CONFIG.getString("DB_USERNAME"),
-				PC_SRV_CONFIG.getString("DB_PASSWORD")).fetchAndInsert(System.currentTimeMillis());
 
 		try {
 			connMgr = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL")
@@ -120,6 +118,18 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					+ " rooms inserted/updated");
 		}
 
+		// new FetchOccupancyData(PC_SRV_CONFIG.getString("DB_URL")
+		// + "?allowMultiQueries=true",
+		// PC_SRV_CONFIG.getString("DB_USERNAME"),
+		// PC_SRV_CONFIG.getString("DB_PASSWORD"), this)
+		// .fetchAndInsert(System.currentTimeMillis()
+		// + FRTimes.ONE_DAY_IN_MS);
+
+		new FetchOccupancyDataJSON(PC_SRV_CONFIG.getString("DB_URL")
+				+ "?allowMultiQueries=true",
+				PC_SRV_CONFIG.getString("DB_USERNAME"),
+				PC_SRV_CONFIG.getString("DB_PASSWORD"), this)
+				.fetchAndInsert(System.currentTimeMillis());
 	}
 
 	/**
@@ -175,17 +185,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 */
 	public boolean insertOccupancy(FRPeriod period, OCCUPANCY_TYPE type,
 			FRRoom room, String hash) {
-		if (period == null || type == null || room == null || hash == null) {
+		if (period == null || type == null || room == null) {
 			log(LOG_SIDE.SERVER,
 					Level.WARNING,
 					"Error during insertion of occupancy, at least one of the arguments is null : is null ? period = "
 							+ (period == null)
 							+ " type = "
 							+ (type == null)
-							+ " room = "
-							+ (room == null)
-							+ " hash = "
-							+ (hash == null));
+							+ " room = " + (room == null));
 			return false;
 		}
 		// putting seconds and milliseconds to zero
@@ -193,6 +200,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				.getTimeStampStart()));
 		period.setTimeStampEnd(FRTimes.roundSAndMSToZero(period
 				.getTimeStampEnd()));
+
+		if (type == OCCUPANCY_TYPE.USER && hash == null) {
+			log(LOG_SIDE.SERVER, Level.WARNING,
+					"Hash is null when inserting user occupancy");
+		}
 
 		if (type == OCCUPANCY_TYPE.USER) {
 			// round user occupancy to a full hour
@@ -336,8 +348,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				boolean overallInsertion = true;
 
 				long hourSharpBefore = FRTimes.roundHourBefore(tsStart);
-				long numberHours = FRTimes.determineNumberHour(tsStart,
-						tsEnd);
+				long numberHours = FRTimes.determineNumberHour(tsStart, tsEnd);
 
 				for (int i = 0; i < numberHours; ++i) {
 					// also insert in the check table to prevent further submit
@@ -1231,7 +1242,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return new ImWorkingReply(HttpURLConnection.HTTP_BAD_REQUEST,
 					"ImWorkingReply is null");
 		}
-		
+
 		ImWorkingReply reply = checkImWorkingRequest(request);
 		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
@@ -1240,7 +1251,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
 		}
 
-		
 		WorkingOccupancy work = request.getWork();
 		FRPeriod period = work.getPeriod();
 
@@ -1275,7 +1285,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				status = HttpURLConnection.HTTP_BAD_REQUEST;
 				statusComment += "Hash is not set;";
 			}
-			
+
 			String workCheck = checkWorkingOccupancy(request.getWork());
 			if (workCheck != null) {
 				status = HttpURLConnection.HTTP_BAD_REQUEST;
@@ -1291,7 +1301,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 		return reply;
 	}
-	
+
 	private String checkWorkingOccupancy(WorkingOccupancy work) {
 		boolean error = false;
 		String comment = "WorkingOccupancy ";
@@ -1299,21 +1309,21 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			comment += "is null;";
 			error = true;
 		}
-		
+
 		if (!work.isSetPeriod() || work.getPeriod() == null) {
 			comment += "FRPeriod is not set;";
 		}
-		
+
 		if (!work.isSetRoom() || work.getRoom() == null) {
 			comment += "FRRoom is not set;";
 		}
-		
+
 		if (error) {
 			return comment;
 		}
 		return null;
 	}
-	
+
 	@Override
 	public WhoIsWorkingReply whoIsWorking(WhoIsWorkingRequest request)
 			throws TException {

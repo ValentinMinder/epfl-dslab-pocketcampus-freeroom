@@ -94,6 +94,17 @@ public class FetchRoomsDetails {
 	}
 
 	/**
+	 * Fetch and insert a particular room in the database.
+	 * @param uid The unique identifier of the room to fetch
+	 */
+	public void fetchRoomDetailInDB(String uid) {
+		if (uid == null) {
+			return;
+		}
+		insertIntoDBRoomDetail(fetchRoomDetail(uid));
+	}
+	
+	/**
 	 * Fetch details about a room (i.e all its attributes) and convert it to a
 	 * JSONObject.
 	 * 

@@ -798,4 +798,27 @@ public class FRTimes {
 		
 		return year + "-" + month + "-" + day;
 	}
+
+	public static long getTimestamp(String date, String time) {
+		String[] dateSplitted = date.split("-");
+		if (dateSplitted.length == 3) {
+			int year = Integer.parseInt(dateSplitted[2]);
+			int month = Integer.parseInt(dateSplitted[1]);
+			int day = Integer.parseInt(dateSplitted[0]);
+			
+			String[] timeSplitted = time.split(":");
+			if (timeSplitted.length != 2) {
+				return 0;
+			} 
+			
+			int hour = Integer.parseInt(timeSplitted[0]);
+			int min = Integer.parseInt(timeSplitted[1]);
+			
+			Calendar mCalendar = Calendar.getInstance();
+			mCalendar.set(year, month, day, hour, min);
+			return mCalendar.getTimeInMillis();
+		} else {
+			return 0;
+		}
+	}
 }
