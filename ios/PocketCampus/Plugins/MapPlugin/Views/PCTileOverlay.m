@@ -58,12 +58,13 @@
         [super loadTileAtPath:path result:result];
         return;
     }
-    NSData* cachedData = [self cachedTileDataForTileOverlayPath:path];
+    NSInteger floorLevel = self.floorLevel;
+    NSData* cachedData = [self cachedTileDataForTileOverlayPath:path floorLevel:floorLevel];
     if (!cachedData || ![cachedData isKindOfClass:[NSData class]]) {
         __weak __typeof(self) welf = self;
         [super loadTileAtPath:path result:^void(NSData* data, NSError* error) {
             if (data && !error) {
-                [welf saveTileData:data forTileOverlayPath:path];
+                [welf saveTileData:data forTileOverlayPath:path floorLevel:floorLevel];
             }
             result(data, error);
         }];
@@ -134,8 +135,8 @@
 
 #pragma mark - Private
 
-- (NSData*)cachedTileDataForTileOverlayPath:(MKTileOverlayPath)tilePath {
-    NSString* key = [self keyForTileOverlayPath:tilePath];
+- (NSData*)cachedTileDataForTileOverlayPath:(MKTileOverlayPath)tilePath floorLevel:(NSInteger)floorLevel {
+    NSString* key = [self keyForTileOverlayPath:tilePath floorLevel:floorLevel];
     NSData* cachedIfValid = (NSData*)[PCPersistenceManager objectForKey:key pluginName:@"map" nilIfDiffIntervalLargerThan:self.tilesDataCacheValidityInterval isCache:YES];
     if ([PCUtils hasDeviceInternetConnection]) {
         return cachedIfValid;
@@ -146,17 +147,17 @@
     return cachedIfValid;
 }
 
-- (void)saveTileData:(NSData*)data forTileOverlayPath:(MKTileOverlayPath)tilePath {
-    NSString* key = [self keyForTileOverlayPath:tilePath];
+- (void)saveTileData:(NSData*)data forTileOverlayPath:(MKTileOverlayPath)tilePath floorLevel:(NSInteger)floorLevel {
+    NSString* key = [self keyForTileOverlayPath:tilePath floorLevel:floorLevel];
     [PCPersistenceManager saveObject:data forKey:key pluginName:@"map" isCache:YES];
     
 }
 
-- (NSString*)keyForTileOverlayPath:(MKTileOverlayPath)tilePath {
+- (NSString*)keyForTileOverlayPath:(MKTileOverlayPath)tilePath floorLevel:(NSInteger)floorLevel {
     if (!self.overlayIdentifier) {
         [NSException raise:@"Illegal state" format:@"self.overlayIdentifier MUST be set to use tiles caching"];
     }
-    return [NSString stringWithFormat:@"%@_cached_tile_%ld_%ld_%ld_%f", self.overlayIdentifier, tilePath.x, tilePath.y, tilePath.z, tilePath.contentScaleFactor];
+    return [NSString stringWithFormat:@"%@_cached_tile_%ld_%ld_%ld_%ld_%f", self.overlayIdentifier, floorLevel, tilePath.x, tilePath.y, tilePath.z, tilePath.contentScaleFactor];
 }
 
 @end
