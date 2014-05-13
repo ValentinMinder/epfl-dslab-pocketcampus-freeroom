@@ -17,10 +17,14 @@
             android:id="@+id/freeroom_layout_home_text_summary"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="2dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingTop="2dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
-        
-         <ExpandableListView
+
+        <ExpandableListView
             android:id="@+id/freeroom_layout_home_list"
             android:layout_width="fill_parent"
             android:layout_height="0dp"

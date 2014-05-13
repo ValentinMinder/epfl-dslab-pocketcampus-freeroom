@@ -1266,13 +1266,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	/**
 	 * Sets the summary text box to the specified text.
+	 * <p>
+	 * It doesn't need to start by a space, the text view already contains an
+	 * appropriate padding.
 	 * 
 	 * @param text
 	 *            the new summary to be displayed.
 	 */
 	private void setTextSummary(String text) {
-		// always start by space!
-		mTextView.setText(" " + text);
+		mTextView.setText(text);
 	}
 
 	/**
