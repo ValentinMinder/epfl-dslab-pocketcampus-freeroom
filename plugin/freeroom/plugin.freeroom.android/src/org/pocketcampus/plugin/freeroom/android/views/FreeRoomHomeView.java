@@ -352,23 +352,21 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		// Setup the layout
 		mLayoutInflater = this.getLayoutInflater();
-		titleLayout = (StandardTitledLayout) mLayoutInflater.inflate(
+		titleLayout = new StandardTitledLayout(this);
+		mainLayout = (LinearLayout) mLayoutInflater.inflate(
 				R.layout.freeroom_layout_home, null);
-		mainLayout = (LinearLayout) titleLayout
-				.findViewById(R.id.freeroom_layout_home_main_layout);
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(titleLayout);
 		titleLayout.setTitle(getString(R.string.freeroom_title_main_title));
 
-		mExpListView = (ExpandableListView) titleLayout
+		mExpListView = (ExpandableListView) mainLayout
 				.findViewById(R.id.freeroom_layout_home_list);
-		mTextView = (TextView) titleLayout
+		mTextView = (TextView) mainLayout
 				.findViewById(R.id.freeroom_layout_home_text_summary);
 		setTextSummary(getString(R.string.freeroom_home_init_please_wait));
 		initializeView();
 
-		// This is necessary: xml definition don't support affFillerView!!
-		titleLayout.removeView(mainLayout);
+		// add the main layout to the pocketcampus titled layout.
 		titleLayout.addFillerView(mainLayout);
 	}
 
