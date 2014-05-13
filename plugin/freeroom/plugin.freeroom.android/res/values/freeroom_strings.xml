@@ -20,15 +20,6 @@
     <string name="freeroom_pattern_day_format">EEE MMM d</string>
     <string name="freeroom_pattern_hour_format">h:mm a</string>
     <string name="freeroom_title_main_title">FreeRoom: Home</string>
-    <string name="freeroom_title_FRsearch"> FreeRoom: search for a free room</string>
-    <string name="freeroom_title_FRresult"> FreeRoom: free room results</string>
-    <string name="freeroom_title_occupancy_search"> FreeRoom: check the occupancy</string>
-    <string name="freeroom_title_occupancy_result"> FreeRoom: occupancy results</string>
-    <string name="freeroom_title_manage_favorites">Add/Remove favorites</string>
-    <string name="freeroom_menu_freeroom_now">Find me a free room now !</string>
-    <string name="freeroom_menu_freeroom_search">Search for a free room</string>
-    <string name="freeroom_menu_check_occupancy">Check the occupancy</string>
-    <string name="freeroom_menu_manage_favorites">Manage favorites</string>
     <string name="freeroom_search_today">today</string>
     <string name="freeroom_search_yesterday">yesterday</string>
     <string name="freeroom_search_tomorrow">tomorrow</string>
