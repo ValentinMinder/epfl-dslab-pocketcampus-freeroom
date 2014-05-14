@@ -56,6 +56,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Keys for the parameters.
 	 */
 	private final String anonymIDKey = "anonymIDKey";
+	private final String homeBehaviourRoomIDKey = "homeBehaviourRoomIDKey";
 	private final String timeLanguageIDKey = "timeLanguageIDKey";
 	private final String displayTimePrefixIDKey = "displayTimePrefixIDKey";
 	private final String minutesRequestTimeOutIDKey = "minutesRequestTimeOutIDKey";
@@ -101,6 +102,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public FreeRoomModel(Context context) {
 		preferences = context.getSharedPreferences(PREF_USER_DETAILS_KEY,
 				Context.MODE_PRIVATE);
+		homeBehaviourRoom = HomeBehaviourRoom.valueOf(preferences.getString(
+				homeBehaviourRoomIDKey, homeBehaviourRoom.name()));
 		timeLanguage = TimeLanguage.valueOf(preferences.getString(
 				timeLanguageIDKey, timeLanguage.name()));
 		displayTimePrefix = preferences.getBoolean(displayTimePrefixIDKey,
@@ -129,6 +132,42 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	public IFreeRoomView getListenersToNotify() {
 		return mListeners;
+	}
+
+	/**
+	 * Stores the default behavior at launch time.
+	 */
+	public enum HomeBehaviourRoom {
+		FAVORITES, ANYFREEROOM, LASTREQUEST;
+	}
+
+	/**
+	 * Stores the homeBehaviourRoom parameters.
+	 * <p>
+	 * Default: HomeBehaviourRoom.FAVORITES.
+	 */
+	private HomeBehaviourRoom homeBehaviourRoom = HomeBehaviourRoom.FAVORITES;
+
+	/**
+	 * Set the homeBehaviourRoom parameters.
+	 * 
+	 * @param next
+	 *            the new homeBehaviourRoom parameters.
+	 */
+	public void setHomeBehaviourRoom(HomeBehaviourRoom next) {
+		this.homeBehaviourRoom = next;
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putString(homeBehaviourRoomIDKey, homeBehaviourRoom.name());
+		editor.commit();
+	}
+
+	/**
+	 * Retrieves the homeBehaviourRoom parameters.
+	 * 
+	 * @return the current homeBehaviourRoom parameters.
+	 */
+	public HomeBehaviourRoom getHomeBehaviourRoom() {
+		return this.homeBehaviourRoom;
 	}
 
 	/**
