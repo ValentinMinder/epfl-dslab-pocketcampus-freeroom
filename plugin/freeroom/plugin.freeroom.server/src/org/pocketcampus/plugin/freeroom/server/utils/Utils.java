@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.freeroom.server.utils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -10,10 +10,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
-import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
-import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
  * This is an utility class doing useful conversions, and defining a few
@@ -24,7 +21,18 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
  * 
  */
 public class Utils {
-
+	public static final int GROUP_STUDENT = 1;
+	public static final int GROUP_STAFF = 20;
+	
+	public static final List<String> mediacomList = Arrays.asList( "875", "876", "9001", "877", "878",
+			"880", "1884", "1886", "1887", "1888", "1895", "1835", "1898",
+			"1837", "1891", "1896", "2043", "2044", "2045", "2046", "2047",
+			"2124", "2125", "2126", "2127", "12205", "12206", "12207", "12208",
+			"9208", "9209", "9210", "9275", "9276", "9277", "9278", "9281",
+			"9313", "9054", "9055", "4911", "4913", "4914", "4915", "3014",
+			"3137", "3208", "3623", "3624", "3625", "3702", "3738");
+	
+	
 	/**
 	 * Extract the building from the doorCode
 	 * 
@@ -108,5 +116,9 @@ public class Utils {
 		Matcher mMatcher = mUIDPattern.matcher(uid);
 
 		return mMatcher.matches();
+	}
+
+	public static int determineGroupAccessRoom(String uid) {
+		return mediacomList.contains(uid) ? GROUP_STUDENT : GROUP_STAFF;
 	}
 }

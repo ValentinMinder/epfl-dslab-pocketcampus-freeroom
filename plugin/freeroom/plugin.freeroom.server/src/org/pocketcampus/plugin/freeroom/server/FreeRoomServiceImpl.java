@@ -127,12 +127,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		FetchOccupancyDataJSON fodj = new FetchOccupancyDataJSON(DB_URL,
 				DB_USER, DB_PASSWORD, this);
-//		Calendar mCalendar = Calendar.getInstance();
+
 //		mCalendar.set(2014, 02, 18, 8, 0);
+//		System.out.println(mCalendar);
 //		long startSemester = mCalendar.getTimeInMillis();
 //		mCalendar.set(2014, 06, 01, 8, 0);
 //		long endSemester = mCalendar.getTimeInMillis();
 //		fodj.fetchAndInsertRoomsList(startSemester, endSemester);
+//		fodj.fetchAndInsert(System.currentTimeMillis());
 	}
 
 	/**

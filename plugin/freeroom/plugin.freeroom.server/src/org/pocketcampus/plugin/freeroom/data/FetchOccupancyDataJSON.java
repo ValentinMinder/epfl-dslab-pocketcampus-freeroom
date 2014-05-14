@@ -46,13 +46,7 @@ public class FetchOccupancyDataJSON {
 	private final String KEY_OCCUPANCY_LENGTH = "duration";
 	private final String KEY_OCCUPANCY_ROOMS = "rooms";
 
-	private String[] mediacomList = { "875", "876", "9001", "877", "878",
-			"880", "1884", "1886", "1887", "1888", "1895", "1835", "1898",
-			"1837", "1891", "1896", "2043", "2044", "2045", "2046", "2047",
-			"2124", "2125", "2126", "2127", "12205", "12206", "12207", "12208",
-			"9208", "9209", "9210", "9275", "9276", "9277", "9278", "9281",
-			"9313", "9054", "9055", "4911", "4913", "4914", "4915", "3014",
-			"3137", "3208", "3623", "3624", "3625", "3702", "3738"};
+
 	private ConnectionManager connMgr = null;
 	private String DB_URL;
 	private String DB_USER;

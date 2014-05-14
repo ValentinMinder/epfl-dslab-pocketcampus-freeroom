@@ -233,8 +233,8 @@ public class FetchRoomsDetails {
 				+ "uid, doorCode, doorCodeWithoutSpace, alias, capacity, "
 				+ "site_label, surface, building_name, zone, unitlabel, "
 				+ "site_id, floor, unitname, site_name, unitid, building_label, "
-				+ "cf, adminuse, typeFR, typeEN, dincat) "
-				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?, ?, ?) "
+				+ "cf, adminuse, typeFR, typeEN, dincat, groupAccess) "
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?, ?, ?, ?) "
 				+ "ON DUPLICATE KEY UPDATE dincat = (?), typeFR = (?), typeEN = (?)";
 		PreparedStatement query;
 		try {
@@ -353,17 +353,19 @@ public class FetchRoomsDetails {
 				query.setString(19, typeFR);
 				query.setString(20, typeEN);
 				query.setString(21, room.getString("dincat"));
+				query.setInt(22, Utils.determineGroupAccessRoom(room.getString("id")));
 				// in case of update
-				query.setString(22, room.getString("dincat"));
-				query.setString(23, typeFR);
-				query.setString(24, typeEN);
+				query.setString(23, room.getString("dincat"));
+				query.setString(24, typeFR);
+				query.setString(25, typeEN);
 			} else {
 				query.setNull(19, Types.CHAR);
 				query.setNull(20, Types.CHAR);
 				query.setNull(21, Types.CHAR);
-				query.setNull(22, Types.CHAR);
+				query.setInt(22, Utils.determineGroupAccessRoom(room.getString("id")));
 				query.setNull(23, Types.CHAR);
 				query.setNull(24, Types.CHAR);
+				query.setNull(25, Types.CHAR);
 			}
 
 			return query.executeUpdate() > 0;
