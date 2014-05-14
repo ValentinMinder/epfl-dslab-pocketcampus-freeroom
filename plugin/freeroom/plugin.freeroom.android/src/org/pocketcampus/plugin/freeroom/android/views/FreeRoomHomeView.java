@@ -18,6 +18,9 @@ import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomAbstractView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
+import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.HomeBehaviourRoom;
+import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.HomeBehaviourTime;
+import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.TimeLanguage;
 import org.pocketcampus.plugin.freeroom.android.adapter.ActualOccupationArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewFavoriteAdapter;
@@ -1241,7 +1244,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void initParamDialog() {
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Settings"); //TODO: string
+		builder.setTitle("Settings"); // TODO: string
 		builder.setIcon(R.drawable.details_white_50);
 
 		// Get the AlertDialog from create()
@@ -1267,6 +1270,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mParamView.setMinimumWidth((int) (activityWidth * 0.95f));
 
 		mParamDialog.setView(mParamView);
+
+		// TODO: fill with the real value from model!
+		mParamDialogRefreshTimeFormatExample();
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
@@ -2619,4 +2625,126 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		refresh();
 	}
 
+	// ******* SETTINGS/PARAMETERS *****///
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            caller view (not used)
+	 */
+	public void onHomeBehaviourRoomSetFavorites(View v) {
+		mModel.setHomeBehaviourRoom(HomeBehaviourRoom.FAVORITES);
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            caller view (not used)
+	 */
+	public void onHomeBehaviourRoomSetFavoritesFree(View v) {
+		mModel.setHomeBehaviourRoom(HomeBehaviourRoom.FAVORITES_ONLY_FREE);
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            caller view (not used)
+	 */
+	public void onHomeBehaviourRoomSetAnyFreeRoom(View v) {
+		mModel.setHomeBehaviourRoom(HomeBehaviourRoom.ANYFREEROOM);
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            caller view (not used)
+	 */
+	public void onHomeBehaviourRoomSetLastRequest(View v) {
+		mModel.setHomeBehaviourRoom(HomeBehaviourRoom.LASTREQUEST);
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            caller view (not used)
+	 */
+	public void onHomeBehaviourTimeSetCurrent(View v) {
+		mModel.setHomeBehaviourTime(HomeBehaviourTime.CURRENT_TIME);
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            caller view (not used)
+	 */
+	public void onHomeBehaviourTimeSetEndOfDay(View v) {
+		mModel.setHomeBehaviourTime(HomeBehaviourTime.UP_TO_END_OF_DAY);
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            caller view (not used)
+	 */
+	public void onHomeBehaviourTimeSetWholeDay(View v) {
+		mModel.setHomeBehaviourTime(HomeBehaviourTime.WHOLE_DAY);
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            caller view (not used)
+	 */
+	public void onFormattingSetDefault(View v) {
+		mModel.setTimeLanguage(TimeLanguage.DEFAULT);
+		mParamDialogRefreshTimeFormatExample();
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            caller view (not used)
+	 */
+	public void onFormattingSetEnglish(View v) {
+		mModel.setTimeLanguage(TimeLanguage.ENGLISH);
+		mParamDialogRefreshTimeFormatExample();
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            caller view (not used)
+	 */
+	public void onFormattingSetFrench(View v) {
+		mModel.setTimeLanguage(TimeLanguage.FRENCH);
+		mParamDialogRefreshTimeFormatExample();
+	}
+
+	/**
+	 * Refreshes the example text of formatting times.
+	 * <p>
+	 * Used in param dialog to show the impact of a particular formatting.
+	 */
+	private void mParamDialogRefreshTimeFormatExample() {
+		times = mModel.getFRTimesClient(this);
+		TextView tv = (TextView) mParamView
+				.findViewById(R.id.freeroom_layout_dialog_param_time_language_example);
+		long now = System.currentTimeMillis();
+		FRPeriod period = new FRPeriod(now, now + FRTimes.ONE_HOUR_IN_MS, false);
+		String text = "";
+		text += times.generateFullTimeSummary(period) + "\n";
+		text += times.generateShortTimeSummary(period, false) + "\n";
+		text += times.generateShortTimeSummary(period, true);
+		tv.setText(text);
+	}
 }

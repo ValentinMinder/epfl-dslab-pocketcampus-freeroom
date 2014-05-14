@@ -1087,7 +1087,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 *            the language chosen (may be default).
 	 * @return a FRTimesClient with appropriate context and formatters.
 	 */
-	public FRTimesClient getFRTimesClient(Context context,
+	private FRTimesClient getFRTimesClient(Context context,
 			TimeLanguage timeLanguage) {
 		if (timeLanguage.equals(TimeLanguage.ENGLISH)) {
 			return new FRTimesClient(

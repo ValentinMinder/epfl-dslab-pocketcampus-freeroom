@@ -73,7 +73,19 @@
                         android:id="@+id/freeroom_layout_param_home_fav"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:onClick="onHomeBehaviourRoomSetFavorites"
                         android:text="Favorites (default)"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <!-- to chose to display the FREE favorites -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_home_favfree"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="onHomeBehaviourRoomSetFavoritesFree"
+                        android:text="Free favorites room"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@android:color/black" />
 
@@ -83,7 +95,19 @@
                         android:id="@+id/freeroom_layout_param_home_any"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:onClick="onHomeBehaviourRoomSetAnyFreeRoom"
                         android:text="Any free room."
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <!-- to chose to display the last request -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_home_last"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="onHomeBehaviourRoomSetLastRequest"
+                        android:text="Use last request."
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@android:color/black" />
                 </RadioGroup>
@@ -109,6 +133,7 @@
                     <RadioButton
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:onClick="onHomeBehaviourTimeSetCurrent"
                         android:text="Only current hour (default)"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@android:color/black" />
@@ -118,6 +143,7 @@
                     <RadioButton
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:onClick="onHomeBehaviourTimeSetEndOfDay"
                         android:text="Up to end of current day."
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@android:color/black" />
@@ -127,6 +153,7 @@
                     <RadioButton
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:onClick="onHomeBehaviourTimeSetWholeDay"
                         android:text="Whole current day."
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@android:color/black" />
@@ -174,6 +201,7 @@
                         android:id="@+id/freeroom_layout_param_time_language_def"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:onClick="onFormattingSetDefault"
                         android:text="Default settings."
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@android:color/black" />
@@ -184,6 +212,7 @@
                         android:id="@+id/freeroom_layout_param_time_language_en"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:onClick="onFormattingSetEnglish"
                         android:text="English formatting."
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@android:color/black" />
@@ -194,6 +223,7 @@
                         android:id="@+id/freeroom_layout_param_time_language_fr"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:onClick="onFormattingSetFrench"
                         android:text="French formatting."
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@android:color/black" />
