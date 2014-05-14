@@ -105,6 +105,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 				Context.MODE_PRIVATE);
 		homeBehaviourRoom = HomeBehaviourRoom.valueOf(preferences.getString(
 				homeBehaviourRoomIDKey, homeBehaviourRoom.name()));
+		homeBehaviourTime = HomeBehaviourTime.valueOf(preferences.getString(
+				homeBehaviourTimeIDKey, homeBehaviourTime.name()));
 		timeLanguage = TimeLanguage.valueOf(preferences.getString(
 				timeLanguageIDKey, timeLanguage.name()));
 		displayTimePrefix = preferences.getBoolean(displayTimePrefixIDKey,
