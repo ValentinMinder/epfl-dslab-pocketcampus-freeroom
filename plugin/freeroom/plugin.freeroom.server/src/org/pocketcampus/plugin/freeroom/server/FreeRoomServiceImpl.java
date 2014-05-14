@@ -63,7 +63,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			.getName());
 	private SimpleDateFormat dateLogFormat = new SimpleDateFormat(
 			"MMM dd,yyyy HH:mm");
-	
+
 	private String DB_URL;
 	private String DB_USER;
 	private String DB_PASSWORD;
@@ -84,7 +84,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ... V2");
 		logger.setLevel(Level.INFO);
-		
+
 		DB_URL = PC_SRV_CONFIG.getString("DB_URL") + "?allowMultiQueries=true";
 		DB_USER = PC_SRV_CONFIG.getString("DB_USERNAME");
 		DB_PASSWORD = PC_SRV_CONFIG.getString("DB_PASSWORD");
@@ -97,7 +97,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			e.printStackTrace();
 		}
 
-		mExchangeService = new ExchangeServiceImpl(DB_URL, DB_USER, DB_PASSWORD, this);
+		mExchangeService = new ExchangeServiceImpl(DB_URL, DB_USER,
+				DB_PASSWORD, this);
 
 		// update ewa : should be done periodically...
 		boolean updateEWA = false;
@@ -111,8 +112,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		boolean updateRoomsDetails = false;
 		if (updateRoomsDetails) {
-			FetchRoomsDetails details = new FetchRoomsDetails(
-					DB_URL, DB_USER, DB_PASSWORD);
+			FetchRoomsDetails details = new FetchRoomsDetails(DB_URL, DB_USER,
+					DB_PASSWORD);
 			System.out.println(details.fetchRoomsIntoDB()
 					+ " rooms inserted/updated");
 		}
@@ -124,8 +125,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		// .fetchAndInsert(System.currentTimeMillis()
 		// + FRTimes.ONE_DAY_IN_MS);
 
-		new FetchOccupancyDataJSON(DB_URL, DB_USER, DB_PASSWORD, this)
-				.fetchAndInsert(System.currentTimeMillis());
+		FetchOccupancyDataJSON fodj = new FetchOccupancyDataJSON(DB_URL,
+				DB_USER, DB_PASSWORD, this);
+//		Calendar mCalendar = Calendar.getInstance();
+//		mCalendar.set(2014, 02, 18, 8, 0);
+//		long startSemester = mCalendar.getTimeInMillis();
+//		mCalendar.set(2014, 06, 01, 8, 0);
+//		long endSemester = mCalendar.getTimeInMillis();
+//		fodj.fetchAndInsertRoomsList(startSemester, endSemester);
 	}
 
 	/**
@@ -210,10 +217,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		boolean inserted = insertOccupancyAndCheckOccupancy(period, uid, type,
 				hash);
-		log(LOG_SIDE.SERVER,
-				Level.INFO,
-				"Inserting occupancy " + type.toString() + " for room "
-						+ uid + " : " + inserted);
+		log(LOG_SIDE.SERVER, Level.INFO,
+				"Inserting occupancy " + type.toString() + " for room " + uid
+						+ " : " + inserted);
 		return inserted;
 
 	}
@@ -353,12 +359,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							hash);
 					if ((prevRoom != null && !prevRoom.equals(uid))
 							|| prevRoom == null) {
-						insertCheckOccupancyInDB(uid, hourSharpBefore
-								+ i * FRTimes.ONE_HOUR_IN_MS, hash, prevRoom);
+						insertCheckOccupancyInDB(uid, hourSharpBefore + i
+								* FRTimes.ONE_HOUR_IN_MS, hash, prevRoom);
 						overallInsertion = overallInsertion
-								&& insertOccupancyInDB(uid,
-										hourSharpBefore + i
-												* FRTimes.ONE_HOUR_IN_MS,
+								&& insertOccupancyInDB(uid, hourSharpBefore + i
+										* FRTimes.ONE_HOUR_IN_MS,
 										hourSharpBefore + (i + 1)
 												* FRTimes.ONE_HOUR_IN_MS,
 										OCCUPANCY_TYPE.USER, 1);
@@ -371,13 +376,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			log(LOG_SIDE.SERVER,
-					Level.SEVERE,
+			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"SQL error when checking and inserting occupancies in DB for room = "
-							+ uid + " start = "
-							+ period.getTimeStampStart() + " end = "
-							+ period.getTimeStampEnd() + " hash = " + hash
-							+ " type = " + typeToInsert.toString());
+							+ uid + " start = " + period.getTimeStampStart()
+							+ " end = " + period.getTimeStampEnd() + " hash = "
+							+ hash + " type = " + typeToInsert.toString());
 			return false;
 		}
 	}
@@ -1250,8 +1253,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		FRPeriod period = work.getPeriod();
 
 		FRRoom room = work.getRoom();
-		boolean success = insertOccupancy(period, OCCUPANCY_TYPE.USER, room.getUid(),
-				request.getHash());
+		boolean success = insertOccupancy(period, OCCUPANCY_TYPE.USER,
+				room.getUid(), request.getHash());
 		log(LOG_SIDE.SERVER, Level.INFO, "ImWorkingThere request for room "
 				+ room.getDoorCode() + " : " + success);
 		if (success) {

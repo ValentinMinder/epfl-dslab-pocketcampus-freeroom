@@ -45,8 +45,14 @@ public class FetchOccupancyDataJSON {
 	private final String KEY_OCCUPANCY_START = "startDateTime";
 	private final String KEY_OCCUPANCY_LENGTH = "duration";
 	private final String KEY_OCCUPANCY_ROOMS = "rooms";
-	
 
+	private String[] mediacomList = { "875", "876", "9001", "877", "878",
+			"880", "1884", "1886", "1887", "1888", "1895", "1835", "1898",
+			"1837", "1891", "1896", "2043", "2044", "2045", "2046", "2047",
+			"2124", "2125", "2126", "2127", "12205", "12206", "12207", "12208",
+			"9208", "9209", "9210", "9275", "9276", "9277", "9278", "9281",
+			"9313", "9054", "9055", "4911", "4913", "4914", "4915", "3014",
+			"3137", "3208", "3623", "3624", "3625", "3702", "3738"};
 	private ConnectionManager connMgr = null;
 	private String DB_URL;
 	private String DB_USER;
@@ -71,18 +77,17 @@ public class FetchOccupancyDataJSON {
 	public void fetchAndInsert(long timestamp) {
 		String json = readFromFile("src" + File.separator + "freeroomjson");
 		extractJSONAndInsert(json, false);
-		
-		
+
 	}
-	
+
 	public void fetchAndInsert(long from, long to) {
 		if (to < from) {
 			return;
 		}
 		extractJSONAndInsert(fetchFromTo(from, to), false);
-		
+
 	}
-	
+
 	public void fetchAndInsertRoomsList(long from, long to) {
 		extractJSONAndInsert(fetchFromTo(from, to), true);
 	}
@@ -92,7 +97,7 @@ public class FetchOccupancyDataJSON {
 			JSONArray sourceArray = new JSONArray(jsonSource);
 			int lengthSourceArray = sourceArray.length();
 			int countRoom = 0;
-			
+
 			for (int i = 0; i < lengthSourceArray; ++i) {
 				JSONArray subArray = sourceArray.getJSONArray(i);
 				int subArrayLength = subArray.length();
@@ -127,11 +132,11 @@ public class FetchOccupancyDataJSON {
 			} else {
 				return null;
 			}
-			
+
 			if (!updateRooms) {
 				return uid;
 			}
-			
+
 			// first fetch and insert the room from the other webservice
 			FetchRoomsDetails frd = new FetchRoomsDetails(DB_URL, DB_USER,
 					DB_PASSWORD);
@@ -204,23 +209,26 @@ public class FetchOccupancyDataJSON {
 		}
 		try {
 			int nbOccupancy = array.length();
-			int count  = 0;
+			int count = 0;
 			for (int i = 0; i < nbOccupancy; ++i) {
 				JSONObject occupancy = array.getJSONObject(i);
 				long tsStart = 0;
 				long tsEnd = 0;
 				if (occupancy.has(KEY_OCCUPANCY_START)) {
-					tsStart = Long.parseLong(occupancy.getString(KEY_OCCUPANCY_START));
-					
+					tsStart = Long.parseLong(occupancy
+							.getString(KEY_OCCUPANCY_START));
+
 					if (occupancy.has(KEY_OCCUPANCY_LENGTH)) {
-						int length = Integer.parseInt(occupancy.getString(KEY_OCCUPANCY_LENGTH));
+						int length = Integer.parseInt(occupancy
+								.getString(KEY_OCCUPANCY_LENGTH));
 						tsEnd = tsStart + length * FRTimes.ONE_MIN_IN_MS;
 					}
 				}
-				
+
 				if (tsStart != 0 && tsEnd != 0 && tsStart < tsEnd) {
 					FRPeriod period = new FRPeriod(tsStart, tsEnd, false);
-					if (server.insertOccupancy(period, OCCUPANCY_TYPE.ROOM, uid, null)) {
+					if (server.insertOccupancy(period, OCCUPANCY_TYPE.ROOM,
+							uid, null)) {
 						count++;
 					}
 				}
@@ -250,15 +258,16 @@ public class FetchOccupancyDataJSON {
 	private String fetchFromTo(long from, long to) {
 		String timestampStringFrom = FRTimes.convertTimeStampInString(from);
 		String timestampStringTo = FRTimes.convertTimeStampInString(to);
-		return fetch(URL_DATA + timestampStringFrom + "/to/" + timestampStringTo);
+		return fetch(URL_DATA + timestampStringFrom + "/to/"
+				+ timestampStringTo);
 	}
-	
+
 	private String fetch(long timestamp) {
 		String timestampString = FRTimes.convertTimeStampInString(timestamp);
 		return fetch(URL_DATA + timestampString);
-		
+
 	}
-	
+
 	private String fetch(String URL) {
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpGet request;
