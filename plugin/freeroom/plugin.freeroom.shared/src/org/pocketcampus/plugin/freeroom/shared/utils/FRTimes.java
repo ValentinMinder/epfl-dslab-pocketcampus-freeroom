@@ -497,7 +497,7 @@ public class FRTimes {
 			return getNextValidPeriodDuringDay(period);
 		}
 	}
-	
+
 	/**
 	 * Round the timestamps of a given FRRequest.
 	 * 
@@ -584,15 +584,39 @@ public class FRTimes {
 		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(period.getTimeStampStart());
 
-		if (cal.get(Calendar.HOUR) < FRTimes.LAST_HOUR_CHECK) {
-			cal.set(Calendar.HOUR, FRTimes.LAST_HOUR_CHECK);
+		while (cal.get(Calendar.HOUR_OF_DAY) < FRTimes.LAST_HOUR_CHECK) {
+			cal.roll(Calendar.HOUR_OF_DAY, true);
 		}
 
 		period.setTimeStampEnd(cal.getTimeInMillis());
 
 		return period;
 	}
-	
+
+	/**
+	 * Get a valid period with start at the first hour of current day and end at
+	 * the end of the current day, if we are before the end of the day.
+	 * Otherwise, it will return the whole next day (from the start hour till
+	 * the end hour).
+	 * 
+	 * @return a valid period covering the whole day.
+	 */
+	public static FRPeriod getNextValidPeriodWholeDay() {
+		FRPeriod period = FRTimes.getNextValidPeriod();
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(period.getTimeStampStart());
+
+		cal.set(Calendar.HOUR_OF_DAY, FRTimes.FIRST_HOUR_CHECK);
+		cal.set(Calendar.MINUTE, 0);
+		period.setTimeStampStart(cal.getTimeInMillis());
+
+		cal.set(Calendar.HOUR_OF_DAY, FRTimes.LAST_HOUR_CHECK);
+		cal.set(Calendar.MINUTE, 0);
+		period.setTimeStampEnd(cal.getTimeInMillis());
+
+		return period;
+	}
+
 	/**
 	 * Round to the nearest half hour before : if the minutes are less than
 	 * 30min, we round to the previous full hour, otherwise we round the half
@@ -745,23 +769,22 @@ public class FRTimes {
 		long tsEnd = roundSAndMSToZero(period.getTimeStampEnd());
 		long minStart = tsStart % ONE_HOUR_IN_MS;
 		long minEnd = tsEnd % ONE_HOUR_IN_MS;
-		
-		//round to the previous hour
+
+		// round to the previous hour
 		tsStart -= minStart;
-		
+
 		Calendar mCalendar = Calendar.getInstance();
 		mCalendar.setTimeInMillis(tsEnd);
 		int hourEnd = mCalendar.get(Calendar.HOUR_OF_DAY);
-		
-		//if we are not a full hour, take the next hour is possible
+
+		// if we are not a full hour, take the next hour is possible
 		if (minEnd != 0) {
 			hourEnd = Math.min(LAST_HOUR_CHECK, hourEnd + 1);
 			mCalendar.set(Calendar.HOUR_OF_DAY, hourEnd);
 			mCalendar.set(Calendar.MINUTE, 0);
 			tsEnd = mCalendar.getTimeInMillis();
 		}
-		
-		
+
 		return new FRPeriod(tsStart, tsEnd, false);
 	}
 }

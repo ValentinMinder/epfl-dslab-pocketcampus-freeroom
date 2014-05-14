@@ -522,7 +522,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			// TODO: remove this line.
 			timeOut = FRTimes.ONE_SEC_IN_MS * 15;
 			if (req == null || req.isOutDated(timeOut)) {
-				initDefaultRequest(true);
+				initDefaultRequest(false);
 			} else {
 				u.logV("existing request will be reused");
 			}
@@ -1371,13 +1371,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * You may call <code>refresh</code> in order to actually send it to the
 	 * server.
 	 * 
-	 * @param useFavorites
+	 * @param forceUseFavorites
 	 *            if the constructor of the request should consider the
 	 *            favorites or not
 	 */
-	private void initDefaultRequest(boolean useFavorites) {
+	private void initDefaultRequest(boolean forceUseFavorites) {
 		u.logV("generating and setting a new default request");
-		mModel.setFRRequestDetails(validRequest(useFavorites), false);
+		mModel.setFRRequestDetails(validRequest(forceUseFavorites), false);
 	}
 
 	/**
@@ -1385,36 +1385,75 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * check all the favorites for the next valid period, otherwise or if there
 	 * are not.
 	 * 
-	 * @param useFavorites
+	 * @param forceUseFavorites
 	 *            if it should consider the favorites or not
 	 * @return a valid and default request, based or nor on the favorites.
 	 */
-	private FRRequestDetails validRequest(boolean useFavorites) {
+	private FRRequestDetails validRequest(boolean forceUseFavorites) {
 		OrderMapListFew<String, List<FRRoom>, FRRoom> set = mModel
 				.getFavorites();
-		FRRequestDetails details = null;
-		// if there are no favorites or we dont want to use them.
-		if (set.isEmpty() || !useFavorites) {
-			// NO FAV = check all free rooms
-			// TODO change group accordingly, set to 1 by default and for
-			// testing purpose
 
-			details = new FRRequestDetails(FRTimes.getNextValidPeriod(), true,
-					new ArrayList<String>(1), true, false, false,
-					new SetArrayList<FRRoom>(), 1);
+		// we choose the period according to settings in model.
+		FRPeriod period = null;
+		HomeBehaviourTime time = mModel.getHomeBehaviourTime();
+		if (time.equals(HomeBehaviourTime.CURRENT_TIME)) {
+			period = FRTimes.getNextValidPeriod();
+		} else if (time.equals(HomeBehaviourTime.UP_TO_END_OF_DAY)) {
+			period = FRTimes.getNextValidPeriodTillEndOfDay();
+		} else if (time.equals(HomeBehaviourTime.WHOLE_DAY)) {
+			period = FRTimes.getNextValidPeriodWholeDay();
 		} else {
-			// FAV: check occupancy of ALL favs
-			ArrayList<String> array = new ArrayList<String>(set.size());
-
-			addAllFavoriteToCollection(array, AddCollectionCaller.SEARCH, true);
-
-			// TODO change group accordingly, set to 1 by default and for
-			// testing purpose
-
-			details = new FRRequestDetails(FRTimes.getNextValidPeriod(), false,
-					array, false, true, false, new SetArrayList<FRRoom>(), 1);
+			u.logE("unknown time behavior: ");
+			u.logE(time.name());
+			u.logE("going for default value");
+			period = FRTimes.getNextValidPeriod();
 		}
-		return details;
+		System.out.println(period);
+		System.out.println(FRTimes.validCalendarsString(period));
+
+		// we choose the request according to the model settings
+		HomeBehaviourRoom room = mModel.getHomeBehaviourRoom();
+		// if there are favorites and we want: to force their usage, despite of
+		// model settings, or the model ask for favorites.
+		if (forceUseFavorites || room.equals(HomeBehaviourRoom.FAVORITES)
+				|| room.equals(HomeBehaviourRoom.FAVORITES_ONLY_FREE)) {
+			if (!set.isEmpty()) {
+
+				// FAV: check occupancy of ALL favs
+				ArrayList<String> array = new ArrayList<String>(set.size());
+
+				addAllFavoriteToCollection(array, AddCollectionCaller.SEARCH,
+						true);
+
+				// if we want only free favorites.
+				boolean onlyFree = room
+						.equals(HomeBehaviourRoom.FAVORITES_ONLY_FREE);
+				// TODO change group accordingly, set to 1 by default and for
+				// testing purpose
+				return new FRRequestDetails(period, onlyFree, array, false,
+						true, false, new SetArrayList<FRRoom>(), 1);
+			} else {
+				u.logV("no favorites in model: going for any free room");
+				room = HomeBehaviourRoom.ANYFREEROOM;
+			}
+		}
+
+		if (room.equals(HomeBehaviourRoom.LASTREQUEST)) {
+			// TODO
+			u.logD("last request is not operational now");
+			room = HomeBehaviourRoom.ANYFREEROOM;
+		}
+
+		if (!room.equals(HomeBehaviourRoom.ANYFREEROOM)) {
+			u.logE("unknown room behavior: ");
+			u.logE(room.name());
+			u.logE("going for any free room");
+		}
+		// any free room behavior
+		// TODO change group accordingly, set to 1 by default and for
+		// testing purpose
+		return new FRRequestDetails(period, true, new ArrayList<String>(1),
+				true, false, false, new SetArrayList<FRRoom>(), 1);
 	}
 
 	/**
