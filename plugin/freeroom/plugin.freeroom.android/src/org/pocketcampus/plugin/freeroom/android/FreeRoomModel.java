@@ -59,6 +59,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private final String timeLanguageIDKey = "timeLanguageIDKey";
 	private final String displayTimePrefixIDKey = "displayTimePrefixIDKey";
 	private final String minutesRequestTimeOutIDKey = "minutesRequestTimeOutIDKey";
+	private final String previousRequestNumberIDKey = "previousRequestNumberIDKey";
+	private final String previousRequestWeeksIDKey = "previousRequestWeeksIDKey";
 
 	public final int COLOR_CHECK_OCCUPANCY_DEFAULT = Color.WHITE;
 	public final int COLOR_CHECK_OCCUPANCY_FREE = Color.GREEN;
@@ -105,6 +107,10 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 				displayTimePrefix);
 		minutesRequestTimeOut = preferences.getInt(minutesRequestTimeOutIDKey,
 				minutesRequestTimeOut);
+		previousRequestWeeks = preferences.getInt(previousRequestWeeksIDKey,
+				previousRequestWeeks);
+		previousRequestNumber = preferences.getInt(previousRequestNumberIDKey,
+				previousRequestNumber);
 		occupancyByBuilding = new OrderMapListFew<String, List<?>, Occupancy>(
 				30);
 		this.context = context;
@@ -222,6 +228,64 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		this.minutesRequestTimeOut = minutesRequestTimeOut;
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putInt(minutesRequestTimeOutIDKey, minutesRequestTimeOut);
+		editor.commit();
+	}
+
+	/**
+	 * # weeks before a previous requests are deleted.
+	 * <p>
+	 * Default: 15 weeks (1 semester run).
+	 */
+	private int previousRequestWeeks = 15;
+
+	/**
+	 * # weeks before a previous requests are deleted.
+	 * 
+	 * @return the previousRequestWeeks
+	 */
+	public int getPreviousRequestWeeks() {
+		return previousRequestWeeks;
+	}
+
+	/**
+	 * # weeks before a previous requests are deleted.
+	 * 
+	 * @param previousRequestWeeks
+	 *            the previousRequestWeeks to set
+	 */
+	public void setPreviousRequestWeeks(int previousRequestWeeks) {
+		this.previousRequestWeeks = previousRequestWeeks;
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putInt(previousRequestWeeksIDKey, previousRequestWeeks);
+		editor.commit();
+	}
+
+	/**
+	 * # of previous request before previous requests are deleted.
+	 * <p>
+	 * Default: 100 requests.
+	 */
+	private int previousRequestNumber = 100;
+
+	/**
+	 * # of previous request before previous requests are deleted.
+	 * 
+	 * @return the previousRequestNumber
+	 */
+	public int getPreviousRequestNumber() {
+		return previousRequestNumber;
+	}
+
+	/**
+	 * # of previous request before previous requests are deleted.
+	 * 
+	 * @param previousRequestNumber
+	 *            the previousRequestNumber to set
+	 */
+	public void setPreviousRequestNumber(int previousRequestNumber) {
+		this.previousRequestNumber = previousRequestNumber;
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putInt(previousRequestNumberIDKey, previousRequestNumber);
 		editor.commit();
 	}
 
