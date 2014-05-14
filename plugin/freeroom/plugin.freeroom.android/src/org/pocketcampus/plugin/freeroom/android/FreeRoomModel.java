@@ -58,8 +58,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private final String anonymIDKey = "anonymIDKey";
 	private final String timeLanguageIDKey = "timeLanguageIDKey";
 	private final String displayTimePrefixIDKey = "displayTimePrefixIDKey";
-
-	private int minutesRequestTimeOut = 5;
+	private final String minutesRequestTimeOutIDKey = "minutesRequestTimeOutIDKey";
 
 	public final int COLOR_CHECK_OCCUPANCY_DEFAULT = Color.WHITE;
 	public final int COLOR_CHECK_OCCUPANCY_FREE = Color.GREEN;
@@ -104,6 +103,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 				timeLanguageIDKey, timeLanguage.name()));
 		displayTimePrefix = preferences.getBoolean(displayTimePrefixIDKey,
 				displayTimePrefix);
+		minutesRequestTimeOut = preferences.getInt(minutesRequestTimeOutIDKey,
+				minutesRequestTimeOut);
 		occupancyByBuilding = new OrderMapListFew<String, List<?>, Occupancy>(
 				30);
 		this.context = context;
@@ -138,6 +139,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * Stores the timeLanguage parameters.
+	 * <p>
+	 * Default: TimeLanguage.DEFAULT (will choose your language if defined, or
+	 * english otherwise).
 	 */
 	private TimeLanguage timeLanguage = TimeLanguage.DEFAULT;
 
@@ -165,6 +169,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * Stores the displayTimePrefix parameters.
+	 * <p>
+	 * Default: true.
 	 */
 	private boolean displayTimePrefix = true;
 
@@ -191,6 +197,15 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
+	 * # minutes before a request becomes invalid for refreshing.
+	 * <p>
+	 * Default: 5 minutes.
+	 */
+	private int minutesRequestTimeOut = 5;
+
+	/**
+	 * # minutes before a request becomes invalid for refreshing.
+	 * 
 	 * @return the minutesRequestTimeOut
 	 */
 	public int getMinutesRequestTimeOut() {
@@ -198,11 +213,16 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
+	 * # minutes before a request becomes invalid for refreshing.
+	 * 
 	 * @param minutesRequestTimeOut
 	 *            the minutesRequestTimeOut to set
 	 */
 	public void setMinutesRequestTimeOut(int minutesRequestTimeOut) {
 		this.minutesRequestTimeOut = minutesRequestTimeOut;
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putInt(minutesRequestTimeOutIDKey, minutesRequestTimeOut);
+		editor.commit();
 	}
 
 	// ********** START OF "WHO'S WORKING THERE" PART **********
