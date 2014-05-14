@@ -57,6 +57,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	private final String anonymIDKey = "anonymIDKey";
 	private final String homeBehaviourRoomIDKey = "homeBehaviourRoomIDKey";
+	private final String homeBehaviourTimeIDKey = "homeBehaviourTimeIDKey";
 	private final String timeLanguageIDKey = "timeLanguageIDKey";
 	private final String displayTimePrefixIDKey = "displayTimePrefixIDKey";
 	private final String minutesRequestTimeOutIDKey = "minutesRequestTimeOutIDKey";
@@ -136,9 +137,15 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * Stores the default behavior at launch time.
+	 * <p>
+	 * Favorites: the favorites occupancy, free or not. <br>
+	 * Favorites only free: the favorites that are free <br>
+	 * Any free room: all the free rooms<br>
+	 * Lastrequest: replay last request (regarding of room, NOT time: default
+	 * param for time will be used!). <br>
 	 */
 	public enum HomeBehaviourRoom {
-		FAVORITES, ANYFREEROOM, LASTREQUEST;
+		FAVORITES, FAVORITES_ONLY_FREE, ANYFREEROOM, LASTREQUEST;
 	}
 
 	/**
@@ -168,6 +175,46 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	public HomeBehaviourRoom getHomeBehaviourRoom() {
 		return this.homeBehaviourRoom;
+	}
+
+	/**
+	 * Stores the default behavior at launch time.
+	 * <p>
+	 * Current time: request for current hour (or two) <br>
+	 * Up to end of day: current hour up to last hour <br>
+	 * Whole day: from first to last hour checkable. <br>
+	 */
+	public enum HomeBehaviourTime {
+		CURRENT_TIME, UP_TO_END_OF_DAY, WHOLE_DAY;
+	}
+
+	/**
+	 * Stores the homeBehaviourTime parameters.
+	 * <p>
+	 * Default: HomeBehaviourTime.CURRENT_TIME
+	 */
+	private HomeBehaviourTime homeBehaviourTime = HomeBehaviourTime.CURRENT_TIME;
+
+	/**
+	 * Set the homeBehaviourTime parameters.
+	 * 
+	 * @param next
+	 *            the new homeBehaviourTime parameters.
+	 */
+	public void setHomeBehaviourTime(HomeBehaviourTime next) {
+		this.homeBehaviourTime = next;
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putString(homeBehaviourTimeIDKey, homeBehaviourTime.name());
+		editor.commit();
+	}
+
+	/**
+	 * Retrieves the homeBehaviourTime parameters.
+	 * 
+	 * @return the current homeBehaviourTime parameters.
+	 */
+	public HomeBehaviourTime getHomeBehaviourTime() {
+		return this.homeBehaviourTime;
 	}
 
 	/**
