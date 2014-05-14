@@ -71,6 +71,16 @@ public class FetchOccupancyDataJSON {
 	public void fetchAndInsert(long timestamp) {
 		String json = readFromFile("src" + File.separator + "freeroomjson");
 		extractJSONAndInsert(json);
+		
+		
+	}
+	
+	public void fetchAndInsert(long from, long to) {
+		if (to < from) {
+			return;
+		}
+		
+		
 	}
 
 	private void extractJSONAndInsert(String jsonSource) {
@@ -80,7 +90,6 @@ public class FetchOccupancyDataJSON {
 			int countRoom = 0;
 			
 			for (int i = 0; i < lengthSourceArray; ++i) {
-				int countOccupancy = 0;
 				JSONArray subArray = sourceArray.getJSONArray(i);
 				int subArrayLength = subArray.length();
 
@@ -91,8 +100,7 @@ public class FetchOccupancyDataJSON {
 					String uid = extractAndInsertRoom(room);
 					if (uid != null) {
 						countRoom++;
-						countOccupancy = extractAndInsertOccupancies(occupancy, uid);
-						System.out.println(countOccupancy + " occupancies inserted for room " + uid);
+						extractAndInsertOccupancies(occupancy, uid);
 					}
 				}
 
@@ -230,13 +238,23 @@ public class FetchOccupancyDataJSON {
 		}
 	}
 
+	private String fetchFromTo(long from, long to) {
+		String timestampStringFrom = FRTimes.convertTimeStampInString(from);
+		String timestampStringTo = FRTimes.convertTimeStampInString(to);
+		return fetch(URL_DATA + timestampStringFrom + "/to/" + timestampStringTo);
+	}
+	
 	private String fetch(long timestamp) {
 		String timestampString = FRTimes.convertTimeStampInString(timestamp);
-		System.out.println("Start fetching for ... " + timestampString);
+		return fetch(URL_DATA + timestampString);
+		
+	}
+	
+	private String fetch(String URL) {
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpGet request;
 		try {
-			request = new HttpGet(URL_DATA + timestampString);
+			request = new HttpGet(URL);
 			request.addHeader("Accept", "application/json");
 
 			HttpResponse response = client.execute(request);
