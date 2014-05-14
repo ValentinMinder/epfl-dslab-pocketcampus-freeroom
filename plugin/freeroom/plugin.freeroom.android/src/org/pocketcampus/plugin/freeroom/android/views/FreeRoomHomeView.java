@@ -302,6 +302,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	/* ACTIONS FOR THE ACTION BAR */
 	/**
+	 * Action to open the settings.
+	 */
+	private Action settings = new Action() {
+		public void performAction(View view) {
+			mParamDialog.show();
+		}
+
+		public int getDrawable() {
+			return R.drawable.ic_menu_settings;
+		}
+	};
+	/**
 	 * Action to perform a customized search, by showing the search dialog.
 	 */
 	private Action search = new Action() {
@@ -623,6 +635,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				getApplicationContext(), mModel.getOccupancyResults(),
 				mController, this);
 		mExpListView.setAdapter(mExpListAdapter);
+		addActionToActionBar(settings);
 		addActionToActionBar(refresh);
 		addActionToActionBar(editFavorites);
 		addActionToActionBar(search);
@@ -1245,7 +1258,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Settings"); // TODO: string
-		builder.setIcon(R.drawable.details_white_50);
+		builder.setIcon(R.drawable.ic_dialog_settings);
 
 		// Get the AlertDialog from create()
 		mParamDialog = builder.create();
