@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for the parameters dialog. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/background_light"
+    android:orientation="vertical" >
+
+    <!-- Scroll View for the whole layout! -->
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@android:color/background_light"
+        android:orientation="vertical" >
+
+        <!-- scroll view unique child -->
+
+        <LinearLayout
+            android:id="@+id/freeroom_layout_dialog_param_main"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:orientation="vertical" >
+
+            <!-- Title for Home Screen Behavior -->
+
+            <TextView
+                android:id="@+id/freeroom_layout_dialog_param_home_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Home screen behavior"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/black" />
+
+            <!-- Data for Home Screen Behavior -->
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="vertical"
+                android:paddingLeft="10dp" >
+
+                <!-- Subtitle for Automatic search at Launch -->
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Automatic search at launch."
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <!-- Room range for auto-search -->
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rooms range"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black" />
+
+                <RadioGroup
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp" >
+
+                    <!-- to chose to display the favorites -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_home_fav"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Favorites (default)"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <!-- to chose to display any free room -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_home_any"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Any free room."
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+                </RadioGroup>
+
+                <!-- Time range for auto-search -->
+
+                <TextView
+                    android:id="@+id/freeroom_layout_dialog_param_home_text_spec"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Time range."
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black" />
+
+                <RadioGroup
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp" >
+
+                    <!-- Current hour search (default) -->
+
+                    <RadioButton
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Only current hour (default)"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <!-- Remaining day -->
+
+                    <RadioButton
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Up to end of current day."
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <!-- Whole day -->
+
+                    <RadioButton
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Whole current day."
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <!-- Title for format/local options. -->
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Formats and locale options."
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/black" />
+
+            <!-- Data for format/local options. -->
+
+            <LinearLayout
+                android:id="@+id/freeroom_layout_dialog_param_time_language"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="vertical"
+                android:paddingLeft="10dp" >
+
+                <!-- Subtitle for time/date formatting -->
+
+                <TextView
+                    android:id="@+id/freeroom_layout_dialog_param_time_language_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Time and date formatting."
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <RadioGroup
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp" >
+
+                    <!-- Default option. -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_time_language_def"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Default settings."
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <!-- English formatting. -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_time_language_en"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="English formatting."
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <!-- French formatting. -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_time_language_fr"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="French formatting."
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+                </RadioGroup>
+
+                <!-- Example of formatting according to selection -->
+
+                <TextView
+                    android:id="@+id/freeroom_layout_dialog_param_time_language_example"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="mock text example"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+
+            <!-- Title for expirations -->
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Expirations delays."
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/black" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="vertical"
+                android:paddingLeft="10dp" >
+
+                <TextView
+                    android:id="@+id/freeroom_layout_dialog_param_timeout_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Timeout refresh expiry"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/freeroom_layout_dialog_param_timeout_text_spec"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Number of minutes before the request on home screen is expired and the default home screen behavior is used again."
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Numbers"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Previous request history."
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Keep previous request for at most # weeks:"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Numbers"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Keep at most # previous requests:"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Numbers"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0 means DON&apos;T KEEP HISTORY. First condition to be reached will erase the request."
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+
+            <!-- Advanced options for -->
+
+            <CheckBox
+                android:id="@+id/freeroom_layout_dialog_param_dev_check"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Advanced options"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/black" />
+
+            <!-- Removable layout for advanced params. -->
+
+            <LinearLayout
+                android:id="@+id/freeroom_layout_dialog_param_dev_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="vertical"
+                android:paddingLeft="30dp" >
+
+                <CheckBox
+                    android:id="@+id/freeroom_layout_dialog_param_dev_horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="i have a large screen, try to use more horizontal space (on search view)"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black" />
+
+                <CheckBox
+                    android:id="@+id/freeroom_layout_dialog_param_dev_prev"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="i have a big screen, use more vertical space on search view for previous requests."
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black" />
+
+                <CheckBox
+                    android:id="@+id/freeroom_layout_dialog_param_dev_prefix"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="i have a very tiny screen, avoid prefix on search view"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

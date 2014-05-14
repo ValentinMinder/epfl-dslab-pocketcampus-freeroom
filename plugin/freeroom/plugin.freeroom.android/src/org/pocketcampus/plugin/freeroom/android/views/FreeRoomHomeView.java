@@ -222,6 +222,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Dialog that holds the WARNING Dialog.
 	 */
 	private AlertDialog mWarningDialog;
+	/**
+	 * View that holds the PARAM dialog content, defined in xml in layout
+	 * folder.
+	 */
+	private View mParamView;
+	/**
+	 * Dialog that holds the PARAM Dialog.
+	 */
+	private AlertDialog mParamDialog;
 
 	/* UI ELEMENTS FOR ALL DIALOGS */
 	/* UI ELEMENTS FOR DIALOGS - INFO ROOM */
@@ -620,6 +629,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initAddRoomDialog();
 		initShareDialog();
 		initWarningDialog();
+		initParamDialog();
 	}
 
 	/**
@@ -1223,6 +1233,40 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mWarningDialog.getWindow().addFlags(
 				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		mWarningDialog.getWindow().setAttributes(lp);
+	}
+
+	/**
+	 * Inits the dialog to display the parameters.
+	 */
+	private void initParamDialog() {
+		// Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Settings"); //TODO: string
+		builder.setIcon(R.drawable.details_white_50);
+
+		// Get the AlertDialog from create()
+		mParamDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mParamDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.FILL_PARENT;
+		lp.height = LayoutParams.WRAP_CONTENT;
+		mParamDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mParamDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mParamDialog.getWindow().setAttributes(lp);
+
+		mParamView = mLayoutInflater.inflate(
+				R.layout.freeroom_layout_dialog_param, null);
+
+		// these work perfectly
+		mParamView.setMinimumWidth((int) (activityWidth * 0.95f));
+
+		mParamDialog.setView(mParamView);
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
