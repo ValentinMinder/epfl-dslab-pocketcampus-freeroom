@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.freeroom.data;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,7 +10,6 @@ import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.Scanner;
 
 import org.apache.http.HttpException;
@@ -30,6 +27,13 @@ import org.pocketcampus.plugin.freeroom.server.utils.FetchRoomsDetails;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
+/**
+	Fetch, insert, update rooms and/or occupancies from the ISA webservice
+ * 
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ *         Valentin MINDER <valentin.minder@epfl.ch>
+ * 
+ */
 public class FetchOccupancyDataJSON {
 	private final String URL_DATA = "https://isatest.epfl.ch/services/timetable/reservations/";
 
