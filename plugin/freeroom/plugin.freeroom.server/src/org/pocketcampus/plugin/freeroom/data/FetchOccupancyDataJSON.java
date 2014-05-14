@@ -70,7 +70,7 @@ public class FetchOccupancyDataJSON {
 
 	public void fetchAndInsert(long timestamp) {
 		String json = readFromFile("src" + File.separator + "freeroomjson");
-		extractJSONAndInsert(json);
+		extractJSONAndInsert(json, false);
 		
 		
 	}
@@ -79,11 +79,15 @@ public class FetchOccupancyDataJSON {
 		if (to < from) {
 			return;
 		}
-		
+		extractJSONAndInsert(fetchFromTo(from, to), false);
 		
 	}
+	
+	public void fetchAndInsertRoomsList(long from, long to) {
+		extractJSONAndInsert(fetchFromTo(from, to), true);
+	}
 
-	private void extractJSONAndInsert(String jsonSource) {
+	private void extractJSONAndInsert(String jsonSource, boolean updateRooms) {
 		try {
 			JSONArray sourceArray = new JSONArray(jsonSource);
 			int lengthSourceArray = sourceArray.length();
@@ -97,7 +101,7 @@ public class FetchOccupancyDataJSON {
 					JSONObject room = subArray.getJSONObject(0);
 					JSONArray occupancy = subArray.getJSONArray(1);
 
-					String uid = extractAndInsertRoom(room);
+					String uid = extractAndInsertRoom(room, updateRooms);
 					if (uid != null) {
 						countRoom++;
 						extractAndInsertOccupancies(occupancy, uid);
@@ -111,7 +115,7 @@ public class FetchOccupancyDataJSON {
 		}
 	}
 
-	private String extractAndInsertRoom(JSONObject room) {
+	private String extractAndInsertRoom(JSONObject room, boolean updateRooms) {
 		if (room == null) {
 			return null;
 		}
@@ -123,6 +127,11 @@ public class FetchOccupancyDataJSON {
 			} else {
 				return null;
 			}
+			
+			if (!updateRooms) {
+				return uid;
+			}
+			
 			// first fetch and insert the room from the other webservice
 			FetchRoomsDetails frd = new FetchRoomsDetails(DB_URL, DB_USER,
 					DB_PASSWORD);
