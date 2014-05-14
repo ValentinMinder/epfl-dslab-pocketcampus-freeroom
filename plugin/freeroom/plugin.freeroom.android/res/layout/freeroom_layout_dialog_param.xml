@@ -131,6 +131,7 @@
                     <!-- Current hour search (default) -->
 
                     <RadioButton
+                        android:id="@+id/freeroom_layout_param_home_time_current"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:onClick="onHomeBehaviourTimeSetCurrent"
@@ -141,6 +142,7 @@
                     <!-- Remaining day -->
 
                     <RadioButton
+                        android:id="@+id/freeroom_layout_param_home_time_end"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:onClick="onHomeBehaviourTimeSetEndOfDay"
@@ -151,6 +153,7 @@
                     <!-- Whole day -->
 
                     <RadioButton
+                        android:id="@+id/freeroom_layout_param_home_time_whole"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:onClick="onHomeBehaviourTimeSetWholeDay"

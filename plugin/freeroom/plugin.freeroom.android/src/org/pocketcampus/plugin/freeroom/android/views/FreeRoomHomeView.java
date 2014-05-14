@@ -46,6 +46,7 @@ import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -1316,12 +1317,84 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		mParamDialog.setView(mParamView);
 
-		// TODO: fill with the real value from model!
+		// fill with the real value from model!
+		initParamDialogData();
+		// when dismissing, make a new search with (new) default value
+		mParamDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				initDefaultRequest(false);
+				refresh();
+			}
+		});
+	}
+
+	private void initParamDialogData() {
 		mParamDialogRefreshTimeFormatExample();
+
+		int id;
+		RadioButton rd;
+
+		HomeBehaviourRoom room = mModel.getHomeBehaviourRoom();
+		switch (room) {
+		case ANYFREEROOM:
+			id = R.id.freeroom_layout_param_home_any;
+			break;
+		case FAVORITES:
+			id = R.id.freeroom_layout_param_home_fav;
+			break;
+		case FAVORITES_ONLY_FREE:
+			id = R.id.freeroom_layout_param_home_favfree;
+			break;
+		case LASTREQUEST:
+			id = R.id.freeroom_layout_param_home_last;
+			break;
+		default:
+			id = R.id.freeroom_layout_param_home_fav;
+			break;
+		}
+		rd = (RadioButton) mParamView.findViewById(id);
+		rd.setChecked(true);
+
+		HomeBehaviourTime time = mModel.getHomeBehaviourTime();
+		switch (time) {
+		case CURRENT_TIME:
+			id = R.id.freeroom_layout_param_home_time_current;
+			break;
+		case UP_TO_END_OF_DAY:
+			id = R.id.freeroom_layout_param_home_time_end;
+			break;
+		case WHOLE_DAY:
+			id = R.id.freeroom_layout_param_home_time_whole;
+			break;
+		default:
+			id = R.id.freeroom_layout_param_home_time_current;
+			break;
+		}
+		rd = (RadioButton) mParamView.findViewById(id);
+		rd.setChecked(true);
+
+		TimeLanguage tl = mModel.getTimeLanguage();
+		switch (tl) {
+		case DEFAULT:
+			id = R.id.freeroom_layout_param_time_language_def;
+			break;
+		case ENGLISH:
+			id = R.id.freeroom_layout_param_time_language_en;
+			break;
+		case FRENCH:
+			id = R.id.freeroom_layout_param_time_language_fr;
+			break;
+		default:
+			id = R.id.freeroom_layout_param_time_language_def;
+			break;
+		}
+		rd = (RadioButton) mParamView.findViewById(id);
+		rd.setChecked(true);
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
-
 		if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
 			System.out
 					.println("TOuch outside the dialog ******************** ");
