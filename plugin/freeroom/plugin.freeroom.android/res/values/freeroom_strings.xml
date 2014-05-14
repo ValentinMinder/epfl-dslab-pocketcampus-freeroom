@@ -19,12 +19,16 @@
     <string name="freeroom_connection_error_happened">"We cannot fetch FreeRoom data right now, because of a network error. Either you are not connected to the Internet, or the pocketcampus server is unreachable or down."</string>
     <!-- These 2 are default and locale/language-dependent: should be translated -->
     <string name="freeroom_pattern_day_format_default">"EEE MMM d"</string>
-    <string name="freeroom_pattern_hour_format_default">"h:mm a"</string>
+    <string name="freeroom_pattern_hour_format_long_default">"hh:mm a"</string>
+    <string name="freeroom_pattern_hour_format_short_default">"h a"</string>
     <!-- These 4 are constants and should NEVER be translated -->
     <string name="freeroom_pattern_day_format_english">"EEE MMM d"</string>
-    <string name="freeroom_pattern_hour_format_english">"h:mm a"</string>
+    <string name="freeroom_pattern_hour_format_long_english">"hh:mm a"</string>
+    <string name="freeroom_pattern_hour_format_short_english">"h a"</string>
     <string name="freeroom_pattern_day_format_french">"EEE d MMM"</string>
-    <string name="freeroom_pattern_hour_format_french">"HH:mm"</string>
+    <string name="freeroom_pattern_hour_format_long_french">"HH:mm"</string>
+    <string name="freeroom_pattern_hour_format_short_french">"H'h'"</string>
+
     <!-- following... -->
     <string name="freeroom_title_main_title">"FreeRoom: Home"</string>
     <string name="freeroom_search_today">"today"</string>

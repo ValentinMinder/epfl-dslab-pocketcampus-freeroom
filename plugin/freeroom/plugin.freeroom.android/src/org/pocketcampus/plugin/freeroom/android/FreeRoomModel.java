@@ -22,6 +22,7 @@ import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
+import org.pocketcampus.plugin.freeroom.android.utils.FRTimesClient;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
@@ -51,10 +52,11 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Keys to persistent storage
 	 */
 	private final String PREF_USER_DETAILS_KEY = "KEY_USER_DETAILS";
-	/**
-	 * key for the anonymous and unique ID of the user.
+	/*
+	 * Keys for the parameters.
 	 */
 	private final String anonymIDKey = "anonymIDKey";
+	private final String timeLanguageIDKey = "timeLanguageIDKey";
 	private int minutesRequestTimeOut = 5;
 
 	public final int COLOR_CHECK_OCCUPANCY_DEFAULT = Color.WHITE;
@@ -76,6 +78,10 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private List<WorkingOccupancy> listWorkingOccupancies = new ArrayList<WorkingOccupancy>();
 
 	private Context context;
+	/**
+	 * Storage for basic preferences, parameters and so on.
+	 */
+	private SharedPreferences preferences;
 
 	// NEW INTERFACE as of 2104.04.04.
 	private OrderMapListFew<String, List<?>, Occupancy> occupancyByBuilding;
@@ -90,6 +96,10 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 *            is the Application Context.
 	 */
 	public FreeRoomModel(Context context) {
+		preferences = context.getSharedPreferences(PREF_USER_DETAILS_KEY,
+				Context.MODE_PRIVATE);
+		timeLanguage = TimeLanguage.valueOf(preferences.getString(
+				timeLanguageIDKey, timeLanguage.name()));
 		occupancyByBuilding = new OrderMapListFew<String, List<?>, Occupancy>(
 				30);
 		this.context = context;
@@ -111,6 +121,44 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
+	 * Declaration of TimeLanguage type supported.
+	 * <p>
+	 * Default will choose the one translated in your language, if any. If the
+	 * application is not translated, it will choose English formatting.
+	 * Otherwise, it's useful to force using other language formatting (you may
+	 * have your device in English but still want European formatting).
+	 */
+	public enum TimeLanguage {
+		DEFAULT, ENGLISH, FRENCH;
+	}
+
+	/**
+	 * Stores the timeLanguage parameters.
+	 */
+	private TimeLanguage timeLanguage = TimeLanguage.DEFAULT;
+
+	/**
+	 * Set the timeLanguage parameters.
+	 * 
+	 * @param tl
+	 *            the new timeLanguage parameters.
+	 */
+	public void setTimeLanguage(TimeLanguage tl) {
+		this.timeLanguage = tl;
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putString(timeLanguageIDKey, timeLanguage.name());
+		editor.commit();
+	}
+
+	/**
+	 * Retrieves the timeLanguage parameters.
+	 * 
+	 * @return the current timeLanguage parameters.
+	 */
+	public TimeLanguage getTimeLanguage() {
+		return this.timeLanguage;
+	}
+
 	 * @return the minutesRequestTimeOut
 	 */
 	public int getMinutesRequestTimeOut() {
@@ -810,5 +858,56 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	public FRPeriod getOverAllTreatedPeriod() {
 		return overAllTreatedPeriod;
+	}
+
+	/**
+	 * Return a <code>FRTimesClient</code> with the given context and formatters
+	 * ready depending on the language or parameters chosen in model.
+	 * 
+	 * @param context
+	 *            application context for getString
+	 * @return a FRTimesClient with appropriate context and formatters.
+	 */
+	public FRTimesClient getFRTimesClient(Context context) {
+		return getFRTimesClient(context, timeLanguage);
+	}
+
+	/**
+	 * Return a <code>FRTimesClient</code> with the given context and formatters
+	 * ready depending on the language or parameters chosen in model.
+	 * <p>
+	 * You should usually call the method WITHOUT the timeLanguage, and the
+	 * model use the one selected in parameters.
+	 * 
+	 * @param context
+	 *            application context for getString
+	 * @param timeLanguage
+	 *            the language chosen (may be default).
+	 * @return a FRTimesClient with appropriate context and formatters.
+	 */
+	public FRTimesClient getFRTimesClient(Context context,
+			TimeLanguage timeLanguage) {
+		if (timeLanguage.equals(TimeLanguage.ENGLISH)) {
+			return new FRTimesClient(
+					context,
+					context.getString(R.string.freeroom_pattern_day_format_english),
+					context.getString(R.string.freeroom_pattern_hour_format_long_english),
+					context.getString(R.string.freeroom_pattern_hour_format_short_english));
+		}
+
+		if (timeLanguage.equals(TimeLanguage.FRENCH)) {
+			return new FRTimesClient(
+					context,
+					context.getString(R.string.freeroom_pattern_day_format_french),
+					context.getString(R.string.freeroom_pattern_hour_format_long_french),
+					context.getString(R.string.freeroom_pattern_hour_format_short_french));
+		}
+
+		// default
+		return new FRTimesClient(
+				context,
+				context.getString(R.string.freeroom_pattern_day_format_default),
+				context.getString(R.string.freeroom_pattern_hour_format_long_default),
+				context.getString(R.string.freeroom_pattern_hour_format_short_default));
 	}
 }

@@ -347,7 +347,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Get and cast the controller and model
 		mController = (FreeRoomController) controller;
 		mModel = (FreeRoomModel) controller.getModel();
-		times = new FRTimesClient(this);
+		times = mModel.getFRTimesClient(this);
 		u = new FRUtilsClient(this);
 
 		// Setup the layout
@@ -1399,7 +1399,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				title = getString(R.string.freeroom_home_info_rooms);
 			}
 			FRPeriod period = mModel.getOverAllTreatedPeriod();
-			setTitle(title + times.generateShortTimeSummary(period));
+			setTitle(title + times.generateShortTimeSummary(period, true));
 			subtitle = times.generateFullTimeSummary(period);
 
 			// if the info dialog is opened, we update the CORRECT occupancy
@@ -1697,8 +1697,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private int endHourSelected = -1;
 	private int endMinSelected = -1;
 
-	private SimpleDateFormat dateFormat;
-	private SimpleDateFormat timeFormat;
 	private LinearLayout mOptionalLineLinearLayoutWrapper;
 	private LinearLayout mOptionalLineLinearLayoutWrapperIn;
 	private LinearLayout mOptionalLineLinearLayoutContainer;
@@ -1713,7 +1711,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_wrapper_in);
 
 		selectedRooms = new SetArrayList<FRRoom>();
-		formatters();
 
 		// createSuggestionsList();
 		// addAllFavsToAutoComplete();
@@ -1727,13 +1724,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// UIConstructInputBar();
 
 		reset();
-	}
-
-	private void formatters() {
-		dateFormat = new SimpleDateFormat(
-				getString(R.string.freeroom_pattern_day_format_default));
-		timeFormat = new SimpleDateFormat(
-				getString(R.string.freeroom_pattern_hour_format_default));
 	}
 
 	private void UIConstructPickers() {
@@ -2373,7 +2363,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// creating selected time
 		Calendar selected = Calendar.getInstance();
 		selected.setTimeInMillis(prepareFRFrPeriod().getTimeStampStart());
-		showDatePicker.setText(times.getDateText(selected, dateFormat));
+		showDatePicker.setText(times.getDateText(selected));
 
 		mDatePickerDialog.updateDate(yearSelected, monthSelected,
 				dayOfMonthSelected);
@@ -2390,9 +2380,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * else, the <code>PickerDialog</code> will reopen with the new value.
 	 */
 	private void updateStartTimePickerAndButton() {
-		showStartTimePicker.setText(generateTime(
-				getString(R.string.freeroom_selectstartHour),
-				prepareFRFrPeriod().getTimeStampStart()));
+		showStartTimePicker.setText(times.generateTime(
+				getString(R.string.freeroom_selectstartHour), true, times
+						.generateShortTimeSummary(prepareFRFrPeriod()
+								.getTimeStampStart(), false)));
 		mTimePickerStartDialog.updateTime(startHourSelected, startMinSelected);
 	}
 
@@ -2407,9 +2398,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * else, the <code>PickerDialog</code> will reopen with the new value.
 	 */
 	private void updateEndTimePickerAndButton() {
-		showEndTimePicker.setText(generateTime(
-				getString(R.string.freeroom_selectendHour), prepareFRFrPeriod()
-						.getTimeStampEnd()));
+		showEndTimePicker.setText(times.generateTime(
+				getString(R.string.freeroom_selectendHour), true, times
+						.generateShortTimeSummary(prepareFRFrPeriod()
+								.getTimeStampEnd(), false)));
 		if (endHourSelected >= FRTimes.LAST_HOUR_CHECK
 				|| (endHourSelected == FRTimes.LAST_HOUR_CHECK - 1 && endMinSelected != 0)) {
 			addHourButton.setEnabled(false);
@@ -2417,26 +2409,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			addHourButton.setEnabled(true);
 		}
 		mTimePickerEndDialog.updateTime(endHourSelected, endMinSelected);
-	}
-
-	/**
-	 * Generates the start and end time summary. On small screens, specific
-	 * start and end are not written.
-	 * 
-	 * @param prefix
-	 *            eg. "start"
-	 * @param time
-	 *            in milliseconds, time to display
-	 * @return a formatted time with an optional prefix.
-	 */
-	private String generateTime(String prefix, long time) {
-		String returned = "";
-		if (activityWidth < 480) {
-			returned = timeFormat.format(new Date(time));
-		} else {
-			returned = prefix + " " + timeFormat.format(new Date(time));
-		}
-		return returned;
 	}
 
 	/**

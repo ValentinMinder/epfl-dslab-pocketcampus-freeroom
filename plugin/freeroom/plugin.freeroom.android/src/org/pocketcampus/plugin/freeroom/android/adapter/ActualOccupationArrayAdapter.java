@@ -1,12 +1,11 @@
 package org.pocketcampus.plugin.freeroom.android.adapter;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
+import org.pocketcampus.plugin.freeroom.android.utils.FRTimesClient;
 import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
@@ -74,15 +73,9 @@ public class ActualOccupationArrayAdapter<T> extends
 
 		final ActualOccupation mActualOccupation = data.get(index);
 		TextView tv = vholder.getTextView();
-		String s = "";
 		FRPeriod mFrPeriod = mActualOccupation.getPeriod();
-		Date start = new Date(mFrPeriod.getTimeStampStart());
-		Date end = new Date(mFrPeriod.getTimeStampEnd());
-
-		SimpleDateFormat sdf = new SimpleDateFormat(
-				context.getString(R.string.freeroom_pattern_hour_format_default));
-		s += sdf.format(start) + "-" + sdf.format(end) + " ";
-		tv.setText(s);
+		tv.setText(FRTimesClient.getInstance().generateShortTimeSummary(
+				mFrPeriod, false));
 		// displayed text is minimal: only hours
 		// free/occupied: it's known by color
 		// user occupancy: indication by the occupation image
