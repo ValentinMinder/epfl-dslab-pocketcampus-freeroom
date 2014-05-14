@@ -46,7 +46,6 @@ public class FetchOccupancyDataJSON {
 	private final String KEY_OCCUPANCY_LENGTH = "duration";
 	private final String KEY_OCCUPANCY_ROOMS = "rooms";
 
-
 	private ConnectionManager connMgr = null;
 	private String DB_URL;
 	private String DB_USER;
@@ -68,12 +67,26 @@ public class FetchOccupancyDataJSON {
 
 	}
 
+	/**
+	 * Fetch and insert in the database the occupancy for the given timestamp
+	 * 
+	 * @param timestamp
+	 *            At what time to fetch
+	 */
 	public void fetchAndInsert(long timestamp) {
-//		String json = readFromFile("src" + File.separator + "freeroomjson");
+		// String json = readFromFile("src" + File.separator + "freeroomjson");
 		extractJSONAndInsert(fetch(timestamp), false);
 
 	}
 
+	/**
+	 * Fetch and insert in the database the occupancy during a certain period
+	 * 
+	 * @param from
+	 *            The start of the period
+	 * @param to
+	 *            The end of the period
+	 */
 	public void fetchAndInsert(long from, long to) {
 		if (to < from) {
 			return;
@@ -82,10 +95,28 @@ public class FetchOccupancyDataJSON {
 
 	}
 
+	/**
+	 * Fetch and insert in the database the rooms occupied during a given
+	 * period.
+	 * 
+	 * @param from
+	 *            The start of the period
+	 * @param to
+	 *            The end of the period
+	 */
 	public void fetchAndInsertRoomsList(long from, long to) {
 		extractJSONAndInsert(fetchFromTo(from, to), true);
 	}
 
+	/**
+	 * Parse the json page and insert the data contained in the database
+	 * 
+	 * @param jsonSource
+	 *            The JSON to parse
+	 * @param updateRooms
+	 *            true if this method should also update/insert rooms, false
+	 *            otherwise
+	 */
 	private void extractJSONAndInsert(String jsonSource, boolean updateRooms) {
 		try {
 			JSONArray sourceArray = new JSONArray(jsonSource);
@@ -114,6 +145,17 @@ public class FetchOccupancyDataJSON {
 		}
 	}
 
+	/**
+	 * Parse the given JSON representing a room and eventually update/insert it
+	 * into the database, depending of the argument updateRooms.
+	 * 
+	 * @param room
+	 *            The JSON describing the room
+	 * @param updateRooms
+	 *            true if you want to update/insert the room in the database,
+	 *            false if you just want to get the UID
+	 * @return The unique id (UID) of the room
+	 */
 	private String extractAndInsertRoom(JSONObject room, boolean updateRooms) {
 		if (room == null) {
 			return null;
@@ -193,6 +235,12 @@ public class FetchOccupancyDataJSON {
 
 	}
 
+	/**
+	 * Parse and insert occupancies contained in the argument into the database
+	 * @param array The array containing the occupancies for the given room
+	 * @param uid The unique ID (UID) representing the rooms of the occupancies
+	 * @return The number of occupancies extracted and inserted into the database
+	 */
 	private int extractAndInsertOccupancies(JSONArray array, String uid) {
 		if (array == null || uid == null) {
 			return 0;
@@ -249,6 +297,12 @@ public class FetchOccupancyDataJSON {
 		}
 	}
 
+	/**
+	 * Fetch JSON page from ISA webservice during a given period
+	 * @param from The start of the period
+	 * @param to The end of the period
+	 * @return The JSON page fetched
+	 */
 	private String fetchFromTo(long from, long to) {
 		String timestampStringFrom = FRTimes.convertTimeStampInString(from);
 		String timestampStringTo = FRTimes.convertTimeStampInString(to);
@@ -256,12 +310,22 @@ public class FetchOccupancyDataJSON {
 				+ timestampStringTo);
 	}
 
+	/**
+	 * Fetch JSON page from ISA webservice for a given day
+	 * @param timestamp The day to fetch
+	 * @return The JSON page fetched
+	 */
 	private String fetch(long timestamp) {
 		String timestampString = FRTimes.convertTimeStampInString(timestamp);
 		return fetch(URL_DATA + timestampString);
 
 	}
 
+	/**
+	 * Fetch a JSON page at a given URL
+	 * @param URL The URL to fetch
+	 * @return The JSON page located at the given URL, null if none
+	 */
 	private String fetch(String URL) {
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpGet request;
