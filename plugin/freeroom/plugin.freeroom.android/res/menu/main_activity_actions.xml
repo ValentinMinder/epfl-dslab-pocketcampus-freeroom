@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/freeroom_action_search"
+        android:icon="@drawable/magnify2x06"
+        android:title="@string/freeroom_search_title"/>
+    <item
+        android:id="@+id/freeroom_action_favorites"
+        android:icon="@drawable/star2x28"
+        android:title="@string/freeroom_dialog_fav_title"/>
+    <item
+        android:id="@+id/freeroom_action_settings"
+        android:icon="@drawable/ic_menu_settings"
+        android:title="@string/freeroom_dialog_settings_title"/>
+    <item
+        android:id="@+id/freeroom_action_refresh"
+        android:icon="@drawable/refresh2x01"
+        android:title="@string/freeroom_refresh"/>
+
+</menu>

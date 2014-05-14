@@ -17,6 +17,7 @@
     <string name="freeroom_error_internal_error">"PocketCampus tried to connect to FreeRoom servers, but the server had an internal error (500 INTERNAL ERROR)."</string>
     <string name="freeroom_error_unknown_error">"PocketCampus tried to connect to FreeRoom servers, but the server replied unsuccessfully with an unknown error code."</string>
     <string name="freeroom_connection_error_happened">"We cannot fetch FreeRoom data right now, because of a network error. Either you are not connected to the Internet, or the pocketcampus server is unreachable or down."</string>
+    <string name="freeroom_refresh">Refresh</string>
     <!-- These 2 are default and locale/language-dependent: should be translated -->
     <string name="freeroom_pattern_day_format_default">"EEE MMM d"</string>
     <string name="freeroom_pattern_hour_format_long_default">"hh:mm a"</string>
@@ -101,6 +102,7 @@
     <string name="freeroom_dialog_add_room_title">"Add rooms"</string>
     <string name="freeroom_dialog_add_room_add">"Add"</string>
     <string name="freeroom_dialog_add_room_init">"Please select room by typing first letters."</string>
+    <string name="freeroom_dialog_settings_title">Settings</string>
     <string name="freeroom_urisearch_error_basis">"The URI you followed was not treated."</string>
     <string name="freeroom_urisearch_error_URINotUnderstood">"The URI was not understood and nothing happened."</string>
     <string name="freeroom_urisearch_error_URINotSupported">"The URI format may be corrupted or not supported by this version."</string>

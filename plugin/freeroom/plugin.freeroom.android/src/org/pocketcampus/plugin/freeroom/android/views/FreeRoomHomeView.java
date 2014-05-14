@@ -1,10 +1,8 @@
 package org.pocketcampus.plugin.freeroom.android.views;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -56,6 +54,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -341,13 +342,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	};
 
 	/**
-	 * Action to refresh the view (it sends the same stored request again).
+	 * Action to refresh the data (it sends the same stored request again if not
+	 * outdated, or generates a new request).
 	 * <p>
 	 * TODO: useful? useless ? delete !
 	 */
 	private Action refresh = new Action() {
 		public void performAction(View view) {
-			refresh();
+			defaultMainStart();
 		}
 
 		public int getDrawable() {
@@ -360,6 +362,36 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return FreeRoomController.class;
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle presses on the action bar items
+		switch (item.getItemId()) {
+		case R.id.freeroom_action_search:
+			mSearchDialog.show();
+			return true;
+		case R.id.freeroom_action_favorites:
+			mFavoritesDialog.show();
+			return true;
+		case R.id.freeroom_action_refresh:
+			// refresh if no timeout, otherwise new default request.
+			defaultMainStart();
+			return true;
+		case R.id.freeroom_action_settings:
+			mParamDialog.show();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override
