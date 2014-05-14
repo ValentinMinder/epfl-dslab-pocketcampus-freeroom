@@ -77,8 +77,10 @@ public class FetchOccupancyDataJSON {
 		try {
 			JSONArray sourceArray = new JSONArray(jsonSource);
 			int lengthSourceArray = sourceArray.length();
-			int count = 0;
+			int countRoom = 0;
+			
 			for (int i = 0; i < lengthSourceArray; ++i) {
+				int countOccupancy = 0;
 				JSONArray subArray = sourceArray.getJSONArray(i);
 				int subArrayLength = subArray.length();
 
@@ -88,13 +90,14 @@ public class FetchOccupancyDataJSON {
 
 					String uid = extractAndInsertRoom(room);
 					if (uid != null) {
-						count++;
-						extractAndInsertOccupancies(occupancy, uid);
+						countRoom++;
+						countOccupancy = extractAndInsertOccupancies(occupancy, uid);
+						System.out.println(countOccupancy + " occupancies inserted for room " + uid);
 					}
 				}
 
 			}
-			System.out.println(count + " rooms inserted");
+			System.out.println(countRoom + " rooms inserted");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -174,17 +177,17 @@ public class FetchOccupancyDataJSON {
 
 	}
 
-	private void extractAndInsertOccupancies(JSONArray array, String uid) {
+	private int extractAndInsertOccupancies(JSONArray array, String uid) {
 		if (array == null || uid == null) {
-			return;
+			return 0;
 		}
 
 		if (array.length() == 0) {
-			return;
+			return 0;
 		}
 		try {
 			int nbOccupancy = array.length();
-
+			int count  = 0;
 			for (int i = 0; i < nbOccupancy; ++i) {
 				JSONObject occupancy = array.getJSONObject(i);
 				long tsStart = 0;
@@ -200,12 +203,15 @@ public class FetchOccupancyDataJSON {
 				
 				if (tsStart != 0 && tsEnd != 0 && tsStart < tsEnd) {
 					FRPeriod period = new FRPeriod(tsStart, tsEnd, false);
-					server.insertOccupancy(period, OCCUPANCY_TYPE.ROOM, uid, null);
+					if (server.insertOccupancy(period, OCCUPANCY_TYPE.ROOM, uid, null)) {
+						count++;
+					}
 				}
 			}
+			return count;
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return 0;
 		}
 	}
 
