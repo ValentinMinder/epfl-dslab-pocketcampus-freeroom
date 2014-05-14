@@ -25,7 +25,9 @@ import org.json.JSONObject;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
+import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl.OCCUPANCY_TYPE;
 import org.pocketcampus.plugin.freeroom.server.utils.FetchRoomsDetails;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 public class FetchOccupancyDataJSON {
@@ -38,6 +40,12 @@ public class FetchOccupancyDataJSON {
 	private final String KEY_CAPACITY = "capacity";
 	private final String KEY_CAPACITY_EXTRA = "extraCapacity";
 	private final String KEY_DINCAT = "typeDIN";
+
+	private final String KEY_OCCUPANCY = "meetingType";
+	private final String KEY_OCCUPANCY_START = "startDateTime";
+	private final String KEY_OCCUPANCY_LENGTH = "duration";
+	private final String KEY_OCCUPANCY_ROOMS = "rooms";
+	
 
 	private ConnectionManager connMgr = null;
 	private String DB_URL;
@@ -78,9 +86,10 @@ public class FetchOccupancyDataJSON {
 					JSONObject room = subArray.getJSONObject(0);
 					JSONArray occupancy = subArray.getJSONArray(1);
 
-					if (extractAndInsertRoom(room)) {
+					String uid = extractAndInsertRoom(room);
+					if (uid != null) {
 						count++;
-						extractAndInsertOccupancies(occupancy);
+						extractAndInsertOccupancies(occupancy, uid);
 					}
 				}
 
@@ -91,9 +100,9 @@ public class FetchOccupancyDataJSON {
 		}
 	}
 
-	private boolean extractAndInsertRoom(JSONObject room) {
+	private String extractAndInsertRoom(JSONObject room) {
 		if (room == null) {
-			return false;
+			return null;
 		}
 
 		try {
@@ -101,13 +110,13 @@ public class FetchOccupancyDataJSON {
 			if (room.has(KEY_UID)) {
 				uid = room.getString(KEY_UID);
 			} else {
-				return false;
+				return null;
 			}
 			// first fetch and insert the room from the other webservice
 			FetchRoomsDetails frd = new FetchRoomsDetails(DB_URL, DB_USER,
 					DB_PASSWORD);
 			if (!frd.fetchRoomDetailInDB(uid)) {
-				return false;
+				return null;
 			}
 
 			// from this webservice
@@ -157,17 +166,46 @@ public class FetchOccupancyDataJSON {
 			}
 			// if we are there, it means the fetch of the rooms details
 			// succeeded
-			return true;
+			return uid;
 		} catch (SQLException | JSONException e) {
 			e.printStackTrace();
-			return false;
+			return null;
 		}
 
 	}
 
-	private void extractAndInsertOccupancies(JSONArray array) {
-		if (array == null) {
+	private void extractAndInsertOccupancies(JSONArray array, String uid) {
+		if (array == null || uid == null) {
 			return;
+		}
+
+		if (array.length() == 0) {
+			return;
+		}
+		try {
+			int nbOccupancy = array.length();
+
+			for (int i = 0; i < nbOccupancy; ++i) {
+				JSONObject occupancy = array.getJSONObject(i);
+				long tsStart = 0;
+				long tsEnd = 0;
+				if (occupancy.has(KEY_OCCUPANCY_START)) {
+					tsStart = Long.parseLong(occupancy.getString(KEY_OCCUPANCY_START));
+					
+					if (occupancy.has(KEY_OCCUPANCY_LENGTH)) {
+						int length = Integer.parseInt(occupancy.getString(KEY_OCCUPANCY_LENGTH));
+						tsEnd = tsStart + length * FRTimes.ONE_MIN_IN_MS;
+					}
+				}
+				
+				if (tsStart != 0 && tsEnd != 0 && tsStart < tsEnd) {
+					FRPeriod period = new FRPeriod(tsStart, tsEnd, false);
+					server.insertOccupancy(period, OCCUPANCY_TYPE.ROOM, uid, null);
+				}
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
