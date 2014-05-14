@@ -57,6 +57,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	private final String anonymIDKey = "anonymIDKey";
 	private final String timeLanguageIDKey = "timeLanguageIDKey";
+	private final String displayTimePrefixIDKey = "displayTimePrefixIDKey";
+
 	private int minutesRequestTimeOut = 5;
 
 	public final int COLOR_CHECK_OCCUPANCY_DEFAULT = Color.WHITE;
@@ -100,6 +102,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 				Context.MODE_PRIVATE);
 		timeLanguage = TimeLanguage.valueOf(preferences.getString(
 				timeLanguageIDKey, timeLanguage.name()));
+		displayTimePrefix = preferences.getBoolean(displayTimePrefixIDKey,
+				displayTimePrefix);
 		occupancyByBuilding = new OrderMapListFew<String, List<?>, Occupancy>(
 				30);
 		this.context = context;
@@ -159,6 +163,34 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return this.timeLanguage;
 	}
 
+	/**
+	 * Stores the displayTimePrefix parameters.
+	 */
+	private boolean displayTimePrefix = true;
+
+	/**
+	 * Set the displayTimePrefix parameters.
+	 * 
+	 * @param next
+	 *            the new displayTimePrefix parameters.
+	 */
+	public void setDisplayTimePrefix(boolean next) {
+		this.displayTimePrefix = next;
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putBoolean(displayTimePrefixIDKey, displayTimePrefix);
+		editor.commit();
+	}
+
+	/**
+	 * Retrieves the displayTimePrefix parameters.
+	 * 
+	 * @return the current displayTimePrefix parameters.
+	 */
+	public boolean getDisplayTimePrefix() {
+		return this.displayTimePrefix;
+	}
+
+	/**
 	 * @return the minutesRequestTimeOut
 	 */
 	public int getMinutesRequestTimeOut() {
