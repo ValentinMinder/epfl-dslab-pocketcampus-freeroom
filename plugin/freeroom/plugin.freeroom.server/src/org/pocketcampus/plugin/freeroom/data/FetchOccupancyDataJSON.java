@@ -11,6 +11,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.logging.Level;
+
+import microsoft.exchange.webservices.data.LogicalOperator;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
@@ -143,7 +146,6 @@ public class FetchOccupancyDataJSON {
 				}
 
 			}
-			System.out.println(countRoom + " rooms inserted");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -331,6 +333,7 @@ public class FetchOccupancyDataJSON {
 	 * @return The JSON page located at the given URL, null if none
 	 */
 	private String fetch(String URL) {
+		server.log(Level.INFO, "Starting fetching data from ISA webservice");
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpGet request;
 		try {
@@ -349,11 +352,10 @@ public class FetchOccupancyDataJSON {
 				while ((line = reader.readLine()) != null) {
 					jsonBuffer.append(line);
 				}
-				System.out.println("Successfully fetched from server");
+				server.log(Level.INFO, "Successfully fetched data from ISA webservice");
 				return jsonBuffer.toString();
 			} else {
-				System.err.println("Error while fetching ,status  "
-						+ response.getStatusLine().getStatusCode());
+				server.log(Level.WARNING, "Error while fetching from ISA webservice, status " + response.getStatusLine().getStatusCode());
 			}
 		} catch (URISyntaxException e) {
 			e.printStackTrace();

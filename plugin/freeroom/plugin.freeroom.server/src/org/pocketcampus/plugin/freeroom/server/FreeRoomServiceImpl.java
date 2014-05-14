@@ -137,6 +137,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 //		fodj.fetchAndInsert(System.currentTimeMillis());
 	}
 
+	public void log(Level level, String message) {
+		log(LOG_SIDE.SERVER, level, message);
+	}
 	/**
 	 * Logging function, time of the log will be set to the current timestamp.
 	 * 
