@@ -41,8 +41,8 @@ Double layout stores a background for fancy colorful borders
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_toLeftOf="@id/freeroom_layout_dialog_info_share"
-            android:text="18:00 PM - 19:00 PM"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="on Wed May 24 from 14:00 PM to 15:00 PM"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black" />
     </RelativeLayout>
 
@@ -64,8 +64,8 @@ Double layout stores a background for fancy colorful borders
         android:paddingLeft="7dip"
         android:paddingRight="7dip"
         android:paddingTop="5dip"
-        android:text="text"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="mock text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/black" />
 
 </LinearLayout>
