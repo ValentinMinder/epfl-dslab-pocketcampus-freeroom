@@ -63,6 +63,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			.getName());
 	private SimpleDateFormat dateLogFormat = new SimpleDateFormat(
 			"MMM dd,yyyy HH:mm");
+	
+	private String DB_URL;
+	private String DB_USER;
+	private String DB_PASSWORD;
 
 	// be careful when changing this, it might lead to invalid data already
 	// stored !
@@ -80,22 +84,20 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ... V2");
 		logger.setLevel(Level.INFO);
+		
+		DB_URL = PC_SRV_CONFIG.getString("DB_URL") + "?allowMultiQueries=true";
+		DB_USER = PC_SRV_CONFIG.getString("DB_USERNAME");
+		DB_PASSWORD = PC_SRV_CONFIG.getString("DB_PASSWORD");
 
 		try {
-			connMgr = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL")
-					+ "?allowMultiQueries=true",
-					PC_SRV_CONFIG.getString("DB_USERNAME"),
-					PC_SRV_CONFIG.getString("DB_PASSWORD"));
+			connMgr = new ConnectionManager(DB_URL, DB_USER, DB_PASSWORD);
 		} catch (ServerException e) {
 			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"Server cannot connect to the database");
 			e.printStackTrace();
 		}
 
-		mExchangeService = new ExchangeServiceImpl(
-				PC_SRV_CONFIG.getString("DB_URL") + "?allowMultiQueries=true",
-				PC_SRV_CONFIG.getString("DB_USERNAME"),
-				PC_SRV_CONFIG.getString("DB_PASSWORD"), this);
+		mExchangeService = new ExchangeServiceImpl(DB_URL, DB_USER, DB_PASSWORD, this);
 
 		// update ewa : should be done periodically...
 		boolean updateEWA = false;
@@ -110,10 +112,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		boolean updateRoomsDetails = false;
 		if (updateRoomsDetails) {
 			FetchRoomsDetails details = new FetchRoomsDetails(
-					PC_SRV_CONFIG.getString("DB_URL")
-							+ "?allowMultiQueries=true",
-					PC_SRV_CONFIG.getString("DB_USERNAME"),
-					PC_SRV_CONFIG.getString("DB_PASSWORD"));
+					DB_URL, DB_USER, DB_PASSWORD);
 			System.out.println(details.fetchRoomsIntoDB()
 					+ " rooms inserted/updated");
 		}
@@ -125,10 +124,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		// .fetchAndInsert(System.currentTimeMillis()
 		// + FRTimes.ONE_DAY_IN_MS);
 
-		new FetchOccupancyDataJSON(PC_SRV_CONFIG.getString("DB_URL")
-				+ "?allowMultiQueries=true",
-				PC_SRV_CONFIG.getString("DB_USERNAME"),
-				PC_SRV_CONFIG.getString("DB_PASSWORD"), this)
+		new FetchOccupancyDataJSON(DB_URL, DB_USER, DB_PASSWORD, this)
 				.fetchAndInsert(System.currentTimeMillis());
 	}
 

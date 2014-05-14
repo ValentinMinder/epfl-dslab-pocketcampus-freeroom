@@ -97,11 +97,11 @@ public class FetchRoomsDetails {
 	 * Fetch and insert a particular room in the database.
 	 * @param uid The unique identifier of the room to fetch
 	 */
-	public void fetchRoomDetailInDB(String uid) {
+	public boolean fetchRoomDetailInDB(String uid) {
 		if (uid == null) {
-			return;
+			return false;
 		}
-		insertIntoDBRoomDetail(fetchRoomDetail(uid));
+		return insertIntoDBRoomDetail(fetchRoomDetail(uid));
 	}
 	
 	/**
@@ -218,6 +218,10 @@ public class FetchRoomsDetails {
 	 * @return true if the room has been successfully inserted
 	 */
 	private boolean insertIntoDBRoomDetail(JSONObject room) {
+		if (room == null) {
+			return false;
+		}
+		
 		Connection conn = null;
 		try {
 			conn = connMgr.getConnection();
@@ -362,13 +366,11 @@ public class FetchRoomsDetails {
 				query.setNull(24, Types.CHAR);
 			}
 
-			query.executeUpdate();
+			return query.executeUpdate() > 0;
 		} catch (SQLException | JSONException e) {
 			e.printStackTrace();
 			return false;
 		}
-
-		return true;
 	}
 
 	/**
