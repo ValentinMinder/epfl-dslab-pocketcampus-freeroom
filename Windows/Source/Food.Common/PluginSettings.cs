@@ -10,7 +10,7 @@ namespace PocketCampus.Food
     /// <summary>
     /// Concrete, storage-backed implementation of IPluginSettings.
     /// </summary>
-    public sealed class PluginSettings : SettingsBase, IPluginSettings
+    public sealed class PluginSettings : SettingsBase<PluginSettings>, IPluginSettings
     {
         /// <summary>
         /// Gets or sets the current price target.
@@ -57,14 +57,14 @@ namespace PocketCampus.Food
 
 
         /// <summary>
-        /// Sets the default values for all settings.
+        /// Gets the default values for all settings.
         /// </summary>
-        protected override SettingsDefaultValues GetDefaultValues()
+        protected override SettingsDefaultValues<PluginSettings> GetDefaultValues()
         {
             return new SettingsDefaultValues<PluginSettings>
             {
                 { x => x.PriceTarget, () => PriceTarget.Student },
-                { x => x.MaximumBudget, () => 50.0 }, // this is too much, but it ensures no dish is hidden by default
+                { x => x.MaximumBudget, () => 50.0 }, // this is too much, but it ensures no meal is hidden by default
                 { x => x.DisplayedMealTypes, () => EnumEx.GetValues<MealType>() }
             };
         }

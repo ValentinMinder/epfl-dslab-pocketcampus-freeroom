@@ -12,7 +12,7 @@ namespace PocketCampus.Transport
     /// <summary>
     /// Plugin-specific settings.
     /// </summary>
-    public sealed class PluginSettings : SettingsBase, IPluginSettings
+    public sealed class PluginSettings : SettingsBase<PluginSettings>, IPluginSettings
     {
         /// <summary>
         /// Gets or sets a value indicating whether to sort the stations
@@ -43,7 +43,7 @@ namespace PocketCampus.Transport
         /// <summary>
         /// Gets the settings default values.
         /// </summary>
-        protected override SettingsDefaultValues GetDefaultValues()
+        protected override SettingsDefaultValues<PluginSettings> GetDefaultValues()
         {
             return new SettingsDefaultValues<PluginSettings>
             {

@@ -10,7 +10,7 @@ namespace PocketCampus.Map
     /// <summary>
     /// Settings for the map plugin.
     /// </summary>
-    public sealed class PluginSettings : SettingsBase, IPluginSettings
+    public sealed class PluginSettings : SettingsBase<PluginSettings>, IPluginSettings
     {
         /// <summary>
         /// Gets or sets a value indicating whether the map should display and use the user's position.
@@ -31,7 +31,7 @@ namespace PocketCampus.Map
         /// <summary>
         /// Gets the default values of the settings.
         /// </summary>
-        protected override SettingsDefaultValues GetDefaultValues()
+        protected override SettingsDefaultValues<PluginSettings> GetDefaultValues()
         {
             return new SettingsDefaultValues<PluginSettings>
             {

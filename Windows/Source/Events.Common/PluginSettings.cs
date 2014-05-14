@@ -10,7 +10,7 @@ namespace PocketCampus.Events
     /// <summary>
     /// Settings for the Events plugin.
     /// </summary>
-    public sealed class PluginSettings : SettingsBase, IPluginSettings
+    public sealed class PluginSettings : SettingsBase<PluginSettings>, IPluginSettings
     {
         /// <summary>
         /// Gets or sets the stored user tickets.
@@ -94,7 +94,7 @@ namespace PocketCampus.Events
         /// <summary>
         /// Gets the default values of the settings.
         /// </summary>
-        protected override SettingsDefaultValues GetDefaultValues()
+        protected override SettingsDefaultValues<PluginSettings> GetDefaultValues()
         {
             return new SettingsDefaultValues<PluginSettings>
             {

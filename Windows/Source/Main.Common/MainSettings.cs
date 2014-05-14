@@ -10,7 +10,7 @@ namespace PocketCampus.Main
     /// <summary>
     /// Contains various application-level settings.
     /// </summary>
-    public sealed class MainSettings : SettingsBase, IMainSettings
+    public sealed class MainSettings : SettingsBase<MainSettings>, IMainSettings
     {
         /// <summary>
         /// Gets or sets a value indicating whether the user is authenticated.
@@ -77,7 +77,7 @@ namespace PocketCampus.Main
         /// <summary>
         /// Gets the default values.
         /// </summary>
-        protected override SettingsDefaultValues GetDefaultValues()
+        protected override SettingsDefaultValues<MainSettings> GetDefaultValues()
         {
             return new SettingsDefaultValues<MainSettings>
             {
