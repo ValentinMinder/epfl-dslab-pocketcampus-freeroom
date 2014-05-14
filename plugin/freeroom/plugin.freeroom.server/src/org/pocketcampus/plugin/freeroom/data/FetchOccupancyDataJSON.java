@@ -69,8 +69,8 @@ public class FetchOccupancyDataJSON {
 	}
 
 	public void fetchAndInsert(long timestamp) {
-		String json = readFromFile("src" + File.separator + "freeroomjson");
-		extractJSONAndInsert(json, false);
+//		String json = readFromFile("src" + File.separator + "freeroomjson");
+		extractJSONAndInsert(fetch(timestamp), false);
 
 	}
 
