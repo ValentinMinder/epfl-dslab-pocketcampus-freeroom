@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.freeroom.data;
 import java.util.Calendar;
 
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
+import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeServiceImpl;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
@@ -36,6 +37,9 @@ public class PeriodicallyUpdate implements Runnable {
 		long yesterday = mCalendar.getTimeInMillis() - FRTimes.ONE_DAY_IN_MS;
 		long tomorrow = mCalendar.getTimeInMillis() + FRTimes.ONE_DAY_IN_MS;
 		fodj.fetchAndInsert(yesterday, tomorrow);
+		
+		ExchangeServiceImpl exchange = new ExchangeServiceImpl(DB_URL, DB_USER, DB_PASSWORD, server);
+		exchange.updateEWAOccupancyFromTo(yesterday, tomorrow);
 	}
 
 }
