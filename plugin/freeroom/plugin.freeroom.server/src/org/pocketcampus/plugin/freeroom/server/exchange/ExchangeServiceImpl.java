@@ -17,27 +17,29 @@ import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
- * This class is used to fetch data and insert it into the database from the EWA platform.
+ * This class is used to fetch data and insert it into the database from the EWA
+ * platform.
  * 
  * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 public class ExchangeServiceImpl {
-	
+
 	private ConnectionManager connMgr = null;
 	private FreeRoomServiceImpl server = null;
-	
-	public ExchangeServiceImpl(String db_url, String username, String passwd, FreeRoomServiceImpl server) {
+
+	public ExchangeServiceImpl(String db_url, String username, String passwd,
+			FreeRoomServiceImpl server) {
 		try {
 			connMgr = new ConnectionManager(db_url, username, passwd);
 			this.server = server;
 		} catch (ServerException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Reset all the exchange ids to NULL.
 	 * 
@@ -161,11 +163,12 @@ public class ExchangeServiceImpl {
 
 	/**
 	 * Retrieves the occupancies from Exchange for all the rooms that have an
-	 * EWAid set. It calls updateEWAOccupancy with a default time window.
+	 * EWAid set. It calls updateEWAOccupancy with a default time window of 2
+	 * weeks.
 	 * 
 	 * @return true if successful for all the rooms, false if an error occured.
 	 */
-	public boolean updateEWAOccupancy() {
+	public boolean updateEWAOccupancy2Weeks() {
 		// TODO: for now, we update from now to one week
 		// to be set to same window as permitted by server and clients
 		long timeStampStart = System.currentTimeMillis()
@@ -173,6 +176,19 @@ public class ExchangeServiceImpl {
 		long timeStampEnd = System.currentTimeMillis() + FRTimes.ONE_WEEK_IN_MS;
 		FRPeriod mFrPeriod = new FRPeriod(timeStampStart, timeStampEnd, false);
 		return updateEWAOccupancy(mFrPeriod);
+	}
+
+	/**
+	 * Retrieves the occupancies from Exchange for all the rooms that have an
+	 * EWAid set. It calls updateEWAOccupancy with time window defined by from
+	 * et to arguments.
+	 * 
+	 * @param from The start of the period to update
+	 * @param to The end of the period to update
+	 * @return true if successful for all the rooms, false if an error occured.
+	 */
+	public boolean updateEWAOccupancyFromTo(long from, long to) {
+		return updateEWAOccupancy(new FRPeriod(from, to, false));
 	}
 
 	/**
@@ -210,14 +226,15 @@ public class ExchangeServiceImpl {
 					query = conn.prepareStatement(b.toString());
 
 					for (int i = 0, j = 0; i < length; i++, j = 3 * i) {
-						//TODO DELETE
+						// TODO DELETE
 						FRPeriod mPeriod = occupied.get(i);
 						query.setString(j + 1, uid);
 						query.setLong(j + 2, mPeriod.getTimeStampStart());
 						query.setLong(j + 3, mPeriod.getTimeStampEnd());
-						server.insertOccupancy(mPeriod, OCCUPANCY_TYPE.ROOM, room.getUid(), null);
+						server.insertOccupancy(mPeriod, OCCUPANCY_TYPE.ROOM,
+								room.getUid(), null);
 					}
-//					query.execute();
+					// query.execute();
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 					return false;
