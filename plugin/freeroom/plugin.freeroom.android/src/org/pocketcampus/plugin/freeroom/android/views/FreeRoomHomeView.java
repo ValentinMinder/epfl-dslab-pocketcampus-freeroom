@@ -731,7 +731,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void initInfoDialog() {
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("room name");
+		builder.setTitle("Mock text");
 		builder.setIcon(R.drawable.ic_action_view_as_list);
 		builder.setPositiveButton(
 				getString(R.string.freeroom_dialog_info_share), null);
@@ -766,7 +766,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onShow(DialogInterface dialog) {
-
+				// TODO: tracker:
 			}
 		});
 	}

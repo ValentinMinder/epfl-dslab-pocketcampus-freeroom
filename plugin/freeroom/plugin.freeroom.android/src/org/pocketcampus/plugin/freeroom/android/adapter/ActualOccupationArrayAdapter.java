@@ -103,10 +103,16 @@ public class ActualOccupationArrayAdapter<T> extends
 					homeView.displayShareDialog(mPeriod, mRoom);
 				}
 			};
+			// share icon clickable
 			ivshare.setOnClickListener(ocl);
+			// whole line clickable
 			convertView.setOnClickListener(ocl);
 		} else {
 			ivshare.setImageResource(R.drawable.ic_action_share_disabled);
+			// share icon non clickable
+			ivshare.setOnClickListener(null);
+			// whole line non clickable
+			convertView.setOnClickListener(null);
 		}
 
 		int color = free ? mModel.COLOR_CHECK_OCCUPANCY_FREE
