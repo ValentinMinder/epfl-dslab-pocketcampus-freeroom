@@ -87,6 +87,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.markupartist.android.widget.ActionBar.Action;
+import com.taig.pmc.PopupMenuCompat;
 
 /**
  * <code>FreeRoomHomeView</code> is the main <code>View</code>, it's the entry
@@ -304,7 +305,23 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	/* ACTIONS FOR THE ACTION BAR */
 	/**
+	 * Action to open the overflow actions.
+	 * <p>
+	 * ALL the actions are in overflow, even if already visible.
+	 */
+	private Action overflow = new Action() {
+		public void performAction(View view) {
+			showPopupMenuCompat(view);
+		}
+
+		public int getDrawable() {
+			return R.drawable.ic_action_overflow;
+		}
+	};
+	/**
 	 * Action to open the settings.
+	 * <p>
+	 * Only added conditionally. Otherwise, go through menu or overflow action.
 	 */
 	private Action settings = new Action() {
 		public void performAction(View view) {
@@ -330,6 +347,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	/**
 	 * Action to edit the user's favorites, by showing the favorites dialog.
+	 * <p>
+	 * Only added conditionally. Otherwise, go through menu or overflow action.
 	 */
 	private Action editFavorites = new Action() {
 		public void performAction(View view) {
@@ -347,6 +366,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * outdated, or generates a new request).
 	 * <p>
 	 * TODO: useful? useless ? delete !
+	 * <p>
+	 * Only added conditionally. Otherwise, go through menu or overflow action.
 	 */
 	private Action refresh = new Action() {
 		public void performAction(View view) {
@@ -371,6 +392,19 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_activity_actions, menu);
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	public void showPopupMenuCompat(View v) {
+		PopupMenuCompat menu = PopupMenuCompat.newInstance(this, v);
+		menu.inflate(R.menu.main_activity_actions);
+		menu.setOnMenuItemClickListener(new PopupMenuCompat.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				return onOptionsItemSelected(item);
+			}
+		});
+
+		menu.show();
 	}
 
 	@Override
@@ -668,10 +702,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				getApplicationContext(), mModel.getOccupancyResults(),
 				mController, this);
 		mExpListView.setAdapter(mExpListAdapter);
-		addActionToActionBar(settings);
-		addActionToActionBar(refresh);
-		addActionToActionBar(editFavorites);
+		boolean space = false; // TODO: how to get space?
+		if (space) {
+			addActionToActionBar(settings);
+			addActionToActionBar(refresh);
+			addActionToActionBar(editFavorites);
+		}
 		addActionToActionBar(search);
+		addActionToActionBar(overflow);
 		initInfoDialog();
 		initSearchDialog();
 		initFavoritesDialog();
