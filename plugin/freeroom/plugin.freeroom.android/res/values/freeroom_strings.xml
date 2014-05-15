@@ -118,6 +118,7 @@
 
     <string name="freeroom_results_room_header_reduce">"reduce"</string>
     <string name="freeroom_results_room_header_more">"more"</string>
+
     <!-- No need to translate these layout img identificators -->
     <string name="freeroom_layout_roomslist_img_fav">fav icon</string>
     <string name="freeroom_layout_roomslist_img_map">map icon</string>
@@ -126,7 +127,10 @@
     <string name="freeroom_layout_roomslist_img_people">people icon</string>
     <string name="freeroom_layout_roomslist_img_triangle">triangle icon</string>
     <string name="freeroom_layout_building_header_show_more_img">show more icon</string>
-    <string name="freeroom_layout_search_next_hour_img">to next hour</string>
-    <string name="freeroom_layout_search_last_hour_img">to last hour</string>
+    <string name="freeroom_layout_search_first_hour_img">first</string>
+    <string name="freeroom_layout_search_prev_hour_img">prev</string>
+    <string name="freeroom_layout_search_expand_collapse_hour_img">first/last</string>
+    <string name="freeroom_layout_search_next_hour_img">next</string>
+    <string name="freeroom_layout_search_last_hour_img">last</string>
 
 </resources>

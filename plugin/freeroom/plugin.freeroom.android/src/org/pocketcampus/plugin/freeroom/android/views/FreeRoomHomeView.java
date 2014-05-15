@@ -2340,10 +2340,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						.findViewById(R.id.freeroom_layout_dialog_search_upper_first);
 				LinearLayout header_2nd = (LinearLayout) mSearchView
 						.findViewById(R.id.freeroom_layout_dialog_search_upper_second);
+				LinearLayout header_3rd = (LinearLayout) mSearchView
+						.findViewById(R.id.freeroom_layout_dialog_search_upper_third);
 				header_1st.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
 				header_1st.getLayoutParams().width = LayoutParams.FILL_PARENT;
 				header_2nd.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
 				header_2nd.getLayoutParams().width = LayoutParams.FILL_PARENT;
+				header_3rd.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
+				header_3rd.getLayoutParams().width = LayoutParams.FILL_PARENT;
 			}
 		}
 	}

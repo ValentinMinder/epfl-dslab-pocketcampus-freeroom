@@ -48,8 +48,6 @@
                         android:background="@android:color/background_light"
                         android:orientation="horizontal" >
 
-                        <!-- Button that display the date selected, with picker associated to set specific date -->
-
                         <Button
                             android:id="@+id/freeroom_layout_dialog_search_date"
                             android:layout_width="0dp"
@@ -59,6 +57,18 @@
                             android:text="date"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@android:color/black" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/freeroom_layout_dialog_search_upper_second"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="10"
+                        android:background="@android:color/background_light"
+                        android:orientation="horizontal" >
+
+                        <!-- Button that display the date selected, with picker associated to set specific date -->
+
 
                         <!-- Button that display the start hour selected, with picker associated to set specific hour -->
 
@@ -73,15 +83,6 @@
                             android:textColor="@android:color/black" />
 
                         <!-- Button that display the end hour selected, with picker associated to set specific hour -->
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/freeroom_layout_dialog_search_upper_second"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="10"
-                        android:background="@android:color/background_light"
-                        android:orientation="horizontal" >
 
                         <Button
                             android:id="@+id/freeroom_layout_dialog_search_hour_end"
@@ -90,6 +91,54 @@
                             android:layout_gravity="right"
                             android:layout_weight="4"
                             android:text="h_f"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@android:color/black" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/freeroom_layout_dialog_search_upper_third"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="10"
+                        android:background="@android:color/background_light"
+                        android:orientation="horizontal" >
+
+                        <!-- Image button to switch start hour to the first hour possible -->
+
+                        <ImageButton
+                            android:id="@+id/freeroom_layout_dialog_search_hour_start_toend"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="right"
+                            android:layout_weight="3"
+                            android:contentDescription="@string/freeroom_layout_search_first_hour_img"
+                            android:src="@drawable/ic_action_previous"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@android:color/black" />
+
+                        <!-- Image button to switch start hour to previous hour -->
+
+                        <ImageButton
+                            android:id="@+id/freeroom_layout_dialog_search_hour_start_plus"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="right"
+                            android:layout_weight="3"
+                            android:contentDescription="@string/freeroom_layout_search_prev_hour_img"
+                            android:src="@drawable/ic_action_rewind"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@android:color/black" />
+
+                        <!-- Image button to switch start/end hour to first/last hour, and reverse to current -->
+
+                        <ImageButton
+                            android:id="@+id/freeroom_layout_dialog_search_hour_end_start_collapse_extand"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="right"
+                            android:layout_weight="6"
+                            android:contentDescription="@string/freeroom_layout_search_expand_collapse_hour_img"
+                            android:src="@drawable/ic_action_previous_next"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@android:color/black" />
 
