@@ -215,33 +215,57 @@ public class FRUtilsClient {
 	}
 
 	/**
-	 * Summarize as a String the content of a collection of rooms.
-	 * <p>
-	 * TODO: limit and prefix in parameters.
+	 * Summarize as a String the content of a collection of rooms, with default
+	 * prefix and limit.
 	 * 
 	 * @param collec
 	 *            a collection of FRRoom.
-	 * @return a string summary limited in size.
+	 * @return a string summary of the collection.
 	 */
 	public String getSummaryTextFromCollection(Collection<FRRoom> collec) {
+		int limit = 50;
+		return getSummaryTextFromCollection(
+				collec,
+				context.getString(R.string.freeroom_check_occupancy_search_text_selected_rooms),
+				limit);
+	}
+
+	/**
+	 * Summarize as a String the content of a collection of rooms, with default
+	 * prefix and limit.
+	 * 
+	 * @param collec
+	 *            a collection of FRRoom.
+	 * @param prefix
+	 *            the prefix to display before the collection (can be left empty
+	 *            or null for no display)
+	 * @param limit
+	 *            maximal length to return (negative value: no limit).
+	 * @return a string summary of the collection, starting by the prefix and
+	 *         limited in size.
+	 */
+	private String getSummaryTextFromCollection(Collection<FRRoom> collec,
+			String prefix, int limit) {
+		if (limit < 0) {
+			limit = Integer.MAX_VALUE;
+		}
+		if (prefix == null) {
+			prefix = "";
+		}
 		Iterator<FRRoom> iter = collec.iterator();
-		StringBuffer buffer = new StringBuffer(collec.size() * 5);
+		StringBuffer buffer = new StringBuffer(Math.min(prefix.length()
+				+ collec.size() * 7, limit) + 10);
 		FRRoom room = null;
-		// TODO: limit and prefix in parameters.
-		buffer.append(context
-				.getString(R.string.freeroom_check_occupancy_search_text_selected_rooms)
-				+ " ");
+		buffer.append(prefix);
 		boolean empty = true;
-		while (iter.hasNext()) {
+		while (iter.hasNext() && buffer.length() < limit) {
 			empty = false;
 			room = iter.next();
 			buffer.append(room.getDoorCode() + ", ");
 		}
 		buffer.setLength(buffer.length() - 2);
-		// TODO: limit and prefix in parameters.
-		int MAX = 100;
-		if (buffer.length() > MAX) {
-			buffer.setLength(MAX);
+		if (buffer.length() > limit) {
+			buffer.setLength(limit);
 			buffer.append("...");
 		}
 		String result = "";
