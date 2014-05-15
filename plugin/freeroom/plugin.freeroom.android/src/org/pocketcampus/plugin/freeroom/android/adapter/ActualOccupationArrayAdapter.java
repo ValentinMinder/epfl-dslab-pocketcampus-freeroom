@@ -93,7 +93,7 @@ public class ActualOccupationArrayAdapter<T> extends
 
 		final ImageView ivshare = vholder.getImageViewShare();
 		if (free) {
-			ivshare.setImageResource(R.drawable.share);
+			ivshare.setImageResource(R.drawable.ic_action_share);
 			OnClickListener ocl = new OnClickListener() {
 
 				@Override
@@ -106,6 +106,7 @@ public class ActualOccupationArrayAdapter<T> extends
 			ivshare.setOnClickListener(ocl);
 			convertView.setOnClickListener(ocl);
 		} else {
+			// TODO: share disabled
 			ivshare.setImageResource(R.drawable.share_disabled);
 		}
 

@@ -956,7 +956,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				null);
 		builder.setNeutralButton(
 				getString(R.string.freeroom_dialog_share_button_server), null);
-		builder.setIcon(R.drawable.share_white_50);
+		builder.setIcon(R.drawable.ic_action_share);
 
 		// Get the AlertDialog from create()
 		mShareDialog = builder.create();
@@ -1737,7 +1737,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			shareImageView.setClickable(true);
 			shareImageView.setEnabled(true);
 			if (shareImageView instanceof ImageView) {
-				((ImageView) shareImageView).setImageResource(R.drawable.share);
+				((ImageView) shareImageView)
+						.setImageResource(R.drawable.ic_action_share);
 			}
 			shareImageView.setOnClickListener(new OnClickListener() {
 				@Override
@@ -1751,6 +1752,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			shareImageView.setEnabled(false);
 
 			if (shareImageView instanceof ImageView) {
+				// TODO image share disabled
 				((ImageView) shareImageView)
 						.setImageResource(R.drawable.share_disabled);
 			}

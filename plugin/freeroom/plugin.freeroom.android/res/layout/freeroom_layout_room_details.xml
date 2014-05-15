@@ -30,7 +30,7 @@
         android:layout_gravity="right"
         android:layout_marginRight="5dip"
         android:contentDescription="@string/freeroom_layout_roomslist_img_share"
-        android:src="@drawable/share" />
+        android:src="@drawable/ic_action_share" />
 
     <!-- Image to show how many people are working there -->
 

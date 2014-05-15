@@ -33,7 +33,7 @@ Double layout stores a background for fancy colorful borders
             android:layout_gravity="right"
             android:layout_marginRight="7dip"
             android:contentDescription="@string/freeroom_layout_roomslist_img_share"
-            android:src="@drawable/share" />
+            android:src="@drawable/ic_action_share" />
 
         <TextView
             android:id="@+id/freeroom_layout_dialog_info_period"

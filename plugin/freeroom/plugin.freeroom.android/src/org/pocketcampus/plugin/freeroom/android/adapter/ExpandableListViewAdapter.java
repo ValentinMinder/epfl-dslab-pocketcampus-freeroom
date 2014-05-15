@@ -344,9 +344,9 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 					roomNumber));
 
 			if (ev.isGroupExpanded(groupPosition)) {
-				iv.setImageResource(R.drawable.arrow_up);
+				iv.setImageResource(R.drawable.ic_action_collapse);
 			} else {
-				iv.setImageResource(R.drawable.arrow_down);
+				iv.setImageResource(R.drawable.ic_action_expand);
 			}
 
 		} else {
@@ -355,13 +355,13 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			if (data.getAvailable(groupPosition)) {
 				more.setText(context
 						.getString(R.string.freeroom_results_room_header_reduce));
-				iv.setImageResource(R.drawable.arrow_up);
+				iv.setImageResource(R.drawable.ic_action_collapse);
 			} else {
 				// else, if not everything available, arrow down to see more
 				more.setText(context
 						.getString(R.string.freeroom_results_room_header_more)
 						+ ": " + data.getChildCountNonAvailable(groupPosition));
-				iv.setImageResource(R.drawable.arrow_down);
+				iv.setImageResource(R.drawable.ic_action_expand);
 			}
 		}
 	}

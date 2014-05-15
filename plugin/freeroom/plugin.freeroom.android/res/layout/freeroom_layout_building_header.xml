@@ -28,7 +28,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="5dip"
         android:contentDescription="@string/freeroom_layout_building_header_show_more_img"
-        android:src="@drawable/arrow_down" />
+        android:src="@drawable/ic_action_expand" />
 
     <!-- Text to display the number of rooms available, or how many are left to display (reduce/extend) -->
 
