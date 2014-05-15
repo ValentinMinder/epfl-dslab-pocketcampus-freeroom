@@ -424,10 +424,13 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
+	 * TODO: Deprecated method!
+	 * <p>
 	 * Sort a given set of rooms by its buildings, the returning map maps
 	 * building's name to the list of rooms in this buildings. This also add's a
 	 * category named Favorites that contains all the favorites if boolean
 	 * wantFavoritesList is true
+	 * <p>
 	 **/
 	public TreeMap<String, List<FRRoom>> sortFRRoomsByBuildingsAndFavorites(
 			Set<FRRoom> rooms, boolean wantFavoritesList) {
