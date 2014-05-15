@@ -1044,6 +1044,25 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
+	 * Remove a request from the previous request, and save the previous
+	 * request.
+	 * 
+	 * @param position
+	 *            position of request to delete.
+	 * @return true if successful
+	 */
+	public boolean removeRequest(int position) {
+		// ensure favorites structure exists.
+		getPreviousRequest();
+		try {
+			previousRequestDetails.remove(position);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return savePreviousRequest();
+	}
+
+	/**
 	 * Stores the whole period treated by the last FRReply received from server.
 	 */
 	private FRPeriod overAllTreatedPeriod = null;
