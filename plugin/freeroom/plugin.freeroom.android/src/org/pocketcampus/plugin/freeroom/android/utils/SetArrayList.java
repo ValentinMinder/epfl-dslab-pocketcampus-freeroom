@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.freeroom.android.utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -25,8 +26,12 @@ import java.util.Set;
  * @param <E>
  *            the type of object to use
  */
-public class SetArrayList<E> implements List<E>, Set<E> {
+public class SetArrayList<E> implements List<E>, Set<E>, Serializable {
 
+	/**
+	 * Auto generated serialVersionUID
+	 */
+	private static final long serialVersionUID = -5637544010891474998L;
 	private List<E> internalList;
 	private Set<E> internalSet;
 

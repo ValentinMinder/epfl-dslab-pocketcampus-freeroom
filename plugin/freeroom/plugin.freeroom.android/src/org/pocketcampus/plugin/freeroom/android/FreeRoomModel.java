@@ -1039,7 +1039,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public boolean addPreviousRequest(FRRequestDetails request) {
 		// ensure favorites structure exists.
 		getPreviousRequest();
-		return previousRequestDetails.add(request);
+		previousRequestDetails.add(request);
+		return savePreviousRequest();
 	}
 
 	/**
