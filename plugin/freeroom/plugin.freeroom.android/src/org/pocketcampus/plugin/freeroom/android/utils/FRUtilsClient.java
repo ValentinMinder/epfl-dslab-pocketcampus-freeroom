@@ -187,22 +187,31 @@ public class FRUtilsClient {
 		}
 		// TODO: for production, remove UID (it's useful for debugging for the
 		// moment)
-		if (mFrRoom.isSetUid()) {
-			// uniq UID must be 1201XXUID, with XX filled with 0 such that
-			// it has 10 digit
-			// the prefix "1201" indiquates that it's a EPFL room (not a phone,
-			// a computer)
-			String communUID = "1201";
-			String roomUID = mFrRoom.getUid();
-			for (int i = roomUID.length() + 1; i <= 6; i++) {
-				communUID += "0";
-			}
-			communUID += roomUID;
+		boolean printUID = false;
+		if (mFrRoom.isSetUid() && printUID) {
 			builder.append(" / "
 					+ context.getString(R.string.freeroom_dialog_info_uniqID)
-					+ ": " + communUID);
+					+ ": " + getUIDString(mFrRoom));
 		}
 		return builder.toString();
+	}
+
+	/**
+	 * Return the uniq UID as a String, formatted like be 1201XXUID, with XX
+	 * filled with 0 such that it has 10 digit, he prefix "1201" indicates that
+	 * it's a EPFL room (not a phone, a computer, ...)
+	 * 
+	 * @param mFrRoom
+	 * @return
+	 */
+	public String getUIDString(FRRoom mFrRoom) {
+		String communUID = "1201";
+		String roomUID = mFrRoom.getUid();
+		for (int i = roomUID.length() + 1; i <= 6; i++) {
+			communUID += "0";
+		}
+		communUID += roomUID;
+		return communUID;
 	}
 
 	/**
