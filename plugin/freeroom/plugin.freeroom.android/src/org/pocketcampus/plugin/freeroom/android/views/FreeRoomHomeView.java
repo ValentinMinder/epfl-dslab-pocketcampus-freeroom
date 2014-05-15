@@ -1738,7 +1738,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			shareImageView.setEnabled(true);
 			if (shareImageView instanceof ImageView) {
 				((ImageView) shareImageView)
-						.setImageResource(R.drawable.ic_action_share);
+						.setImageResource(R.drawable.ic_action_share_enabled);
 			}
 			shareImageView.setOnClickListener(new OnClickListener() {
 				@Override
@@ -1752,9 +1752,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			shareImageView.setEnabled(false);
 
 			if (shareImageView instanceof ImageView) {
-				// TODO image share disabled
 				((ImageView) shareImageView)
-						.setImageResource(R.drawable.share_disabled);
+						.setImageResource(R.drawable.ic_action_share_disabled);
 			}
 		}
 	}
