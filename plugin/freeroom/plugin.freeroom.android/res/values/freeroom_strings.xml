@@ -35,9 +35,9 @@
 
     <!-- following... -->
     <string name="freeroom_title_main_title">"FreeRoom: Home"</string>
-    <string name="freeroom_search_today">"today"</string>
-    <string name="freeroom_search_yesterday">"yesterday"</string>
-    <string name="freeroom_search_tomorrow">"tomorrow"</string>
+    <string name="freeroom_search_today">"Today"</string>
+    <string name="freeroom_search_yesterday">"Yesterday"</string>
+    <string name="freeroom_search_tomorrow">"Tomorrow"</string>
     <string name="freeroom_search_title">"New search"</string>
     <string name="freeroom_search_search">"Search"</string>
     <string name="freeroom_search_reset">"Reset"</string>
@@ -58,9 +58,6 @@
     <string name="freeroom_please_wait">"Please wait while results are being updated"</string>
     <string name="freeroom_check_occupancy_search_text_no_selected_rooms">"No selected rooms."</string>
     <string name="freeroom_check_occupancy_search_text_selected_rooms">"Selected room(s): "</string>
-    <string name="freeroom_check_occupancy_result_onthe">"on"</string>
-    <string name="freeroom_check_occupancy_result_from">"from"</string>
-    <string name="freeroom_check_occupancy_result_to">"to"</string>
     <string name="freeroom_check_occupancy_search_inputbarhint">"Type in for searching a specific room"</string>
     <string name="freeroom_result_group_favorites">"Favorites"</string>
     <string name="freeroom_home_please_wait">"Please wait while results are refreshed"</string>

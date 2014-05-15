@@ -112,9 +112,11 @@ public class FRTimesClient {
 	/**
 	 * Generates a string summary of a given period of time.
 	 * <p>
-	 * eg: "Wednesday Apr 24 from 9am to 12pm"
-	 * 
-	 * todo do agin
+	 * eg: "Wednesday Apr 24 9:00 AM - 12 PM"
+	 * <p>
+	 * It reuses getDateText for the date, with yesterday/today/tomorrow strings.
+	 * <p>
+	 * It reuses generateShortTimeSummary for time, with veryshort set to false.
 	 * 
 	 * @param period
 	 *            the period of time
@@ -122,27 +124,11 @@ public class FRTimesClient {
 	 */
 	public String generateFullTimeSummary(FRPeriod period) {
 		StringBuilder build = new StringBuilder(100);
-		Date endDate = new Date(period.getTimeStampEnd());
-		Date startDate = new Date(period.getTimeStampStart());
-		SimpleDateFormat day_month = new SimpleDateFormat(day_pattern);
-		SimpleDateFormat hour_min = new SimpleDateFormat(hour_pattern_long);
-
+		Calendar selected = Calendar.getInstance();
+		selected.setTimeInMillis(period.getTimeStampEnd());
+		build.append(getDateText(selected));
 		build.append(" ");
-		// TODO: if date is today, use "today" instead of specifying date
-		build.append(context
-				.getString(R.string.freeroom_check_occupancy_result_onthe));
-		build.append(" ");
-		build.append(day_month.format(startDate));
-		build.append(" ");
-		build.append(context
-				.getString(R.string.freeroom_check_occupancy_result_from));
-		build.append(" ");
-		build.append(hour_min.format(startDate));
-		build.append(" ");
-		build.append(context
-				.getString(R.string.freeroom_check_occupancy_result_to));
-		build.append(" ");
-		build.append(hour_min.format(endDate));
+		build.append(generateShortTimeSummary(period, false));
 		return build.toString();
 	}
 
@@ -168,7 +154,7 @@ public class FRTimesClient {
 		SimpleDateFormat hour_min = new SimpleDateFormat(patern);
 
 		build.append(hour_min.format(startDate));
-		build.append(" - ");
+		build.append("-");
 		build.append(hour_min.format(endDate));
 		return build.toString();
 	}
