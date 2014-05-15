@@ -18,6 +18,9 @@
     <string name="freeroom_error_unknown_error">"PocketCampus tried to connect to FreeRoom servers, but the server replied unsuccessfully with an unknown error code."</string>
     <string name="freeroom_connection_error_happened">"We cannot fetch FreeRoom data right now, because of a network error. Either you are not connected to the Internet, or the pocketcampus server is unreachable or down."</string>
     <string name="freeroom_refresh">Refresh</string>
+    <string name="freeroom_about">About</string>
+    <string name="freeroom_help">Help</string>
+
     <!-- These 2 are default and locale/language-dependent: should be translated -->
     <string name="freeroom_pattern_day_format_default">"EEE MMM d"</string>
     <string name="freeroom_pattern_hour_format_long_default">"hh:mm a"</string>

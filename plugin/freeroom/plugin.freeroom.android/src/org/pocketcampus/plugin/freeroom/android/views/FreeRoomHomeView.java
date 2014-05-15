@@ -424,6 +424,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		case R.id.freeroom_action_settings:
 			mParamDialog.show();
 			return true;
+		case R.id.freeroom_action_help:
+			// TODO: do something
+			return true;
+		case R.id.freeroom_action_about:
+			// TODO: do something
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
