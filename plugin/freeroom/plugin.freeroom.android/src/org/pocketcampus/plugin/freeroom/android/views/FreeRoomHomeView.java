@@ -732,7 +732,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("room name");
-		builder.setIcon(R.drawable.details_white_50);
+		builder.setIcon(R.drawable.ic_action_view_as_list);
 		builder.setPositiveButton(
 				getString(R.string.freeroom_dialog_info_share), null);
 		builder.setNegativeButton(
