@@ -118,9 +118,9 @@ public class ExpandableListViewFavoriteAdapter extends
 		final boolean isFav = mModel.isFavorite(room);
 
 		if (isFav) {
-			star.setImageResource(android.R.drawable.star_big_on);
+			star.setImageResource(R.drawable.ic_action_favorite_enabled);
 		} else {
-			star.setImageResource(android.R.drawable.star_big_off);
+			star.setImageResource(R.drawable.ic_action_favorite_disabled);
 		}
 
 		star.setOnClickListener(new OnClickListener() {
