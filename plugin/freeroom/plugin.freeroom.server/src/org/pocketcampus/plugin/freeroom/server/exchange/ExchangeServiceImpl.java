@@ -188,6 +188,9 @@ public class ExchangeServiceImpl {
 	 * @return true if successful for all the rooms, false if an error occured.
 	 */
 	public boolean updateEWAOccupancyFromTo(long from, long to) {
+		if (to < from) {
+			return false;
+		}
 		return updateEWAOccupancy(new FRPeriod(from, to, false));
 	}
 
