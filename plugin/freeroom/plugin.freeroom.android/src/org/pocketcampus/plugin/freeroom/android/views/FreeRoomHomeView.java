@@ -329,7 +329,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		public int getDrawable() {
-			return R.drawable.ic_menu_settings;
+			return R.drawable.ic_action_settings;
 		}
 	};
 	/**
@@ -341,7 +341,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		public int getDrawable() {
-			return R.drawable.magnify2x06;
+			return R.drawable.ic_action_search;
 		}
 	};
 
@@ -357,7 +357,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		public int getDrawable() {
-			return R.drawable.star2x28;
+			return R.drawable.ic_action_important;
 		}
 	};
 
@@ -375,7 +375,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		public int getDrawable() {
-			return R.drawable.refresh2x01;
+			return R.drawable.ic_action_refresh;
 		}
 	};
 
@@ -774,7 +774,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.freeroom_dialog_fav_title));
-		builder.setIcon(R.drawable.star2x28);
+		builder.setIcon(R.drawable.ic_action_important);
 		builder.setPositiveButton(getString(R.string.freeroom_dialog_fav_add),
 				null);
 		builder.setNegativeButton(
@@ -1087,7 +1087,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				null);
 		builder.setNeutralButton(getString(R.string.freeroom_search_reset),
 				null);
-		builder.setIcon(R.drawable.magnify2x06);
+		builder.setIcon(R.drawable.ic_action_search);
 
 		// Get the AlertDialog from create()
 
@@ -1329,7 +1329,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Settings"); // TODO: string
-		builder.setIcon(R.drawable.ic_dialog_settings);
+		builder.setIcon(R.drawable.ic_action_settings);
 
 		// Get the AlertDialog from create()
 		mParamDialog = builder.create();

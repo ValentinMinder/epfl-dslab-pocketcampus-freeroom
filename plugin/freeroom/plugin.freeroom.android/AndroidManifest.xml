@@ -14,13 +14,13 @@
 
     <application
         android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext"
-        android:icon="@drawable/building2x177"
+        android:icon="@drawable/freeroom_normal_icon"
         android:label="@string/app_name"
         android:theme="@style/PocketCampusTheme" >
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView"
-            android:icon="@drawable/building2x177"
+            android:icon="@drawable/freeroom_normal_icon"
             android:label="@string/freeroom_plugin_title"
             android:launchMode="singleTask"
             android:screenOrientation="nosensor" >

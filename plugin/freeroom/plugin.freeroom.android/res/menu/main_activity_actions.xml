@@ -7,19 +7,19 @@ plus ALL in menu options (for device with a menu button)
 
     <item
         android:id="@+id/freeroom_action_search"
-        android:icon="@drawable/magnify2x06"
+        android:icon="@drawable/ic_action_search"
         android:title="@string/freeroom_search_title"/>
     <item
         android:id="@+id/freeroom_action_favorites"
-        android:icon="@drawable/star2x28"
+        android:icon="@drawable/ic_action_important"
         android:title="@string/freeroom_dialog_fav_title"/>
     <item
         android:id="@+id/freeroom_action_settings"
-        android:icon="@drawable/ic_menu_settings"
+        android:icon="@drawable/ic_action_settings"
         android:title="@string/freeroom_dialog_settings_title"/>
     <item
         android:id="@+id/freeroom_action_refresh"
-        android:icon="@drawable/refresh2x01"
+        android:icon="@drawable/ic_action_refresh"
         android:title="@string/freeroom_refresh"/>
 
 </menu>
