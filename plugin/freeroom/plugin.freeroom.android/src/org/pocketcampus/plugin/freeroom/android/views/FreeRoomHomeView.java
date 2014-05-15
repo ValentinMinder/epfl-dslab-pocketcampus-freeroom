@@ -257,17 +257,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private LinearLayout searchDialogUpperLinearLayout;
 	/**
-	 * Main layout of the search dialog.
-	 */
-	private LinearLayout searchDialogMainLinearLayout;
-	/**
 	 * Stores the height available
 	 */
 	private int searchDialogMainLayoutHeightAvailable = 0;
 	/**
 	 * Stores if the screen is too small
 	 */
-	private boolean searchDialogHasHeightExtenstionProblem = false;
+	private boolean searchDialogHasHeightExtenstionProblem = true;
 	/**
 	 * Ratio of dialog that should be occupied with searches input when NOT
 	 * displaying previous request.
@@ -277,7 +273,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Ratio of dialog that should be occupied with searches input when
 	 * displaying previous request.
 	 */
-	private double searchDialogExtended = 0.70;
+	private double searchDialogExtended = 0.10;
 	/**
 	 * Stores if the previous search has been hidden (the rest is more
 	 * extended).
@@ -1206,52 +1202,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		searchDialogUpperLinearLayout = (LinearLayout) mSearchDialog
 				.findViewById(R.id.freeroom_layout_dialog_search_scroll_main);
-		searchDialogMainLinearLayout = (LinearLayout) mSearchDialog
-				.findViewById(R.id.freeroom_layout_dialog_search_main);
 
 		initSearch();
-	}
-
-	/**
-	 * Finds if the available height in the search popup is not enough to store
-	 * the layout, in order the minimize it's size.
-	 * <p>
-	 * TODO: this method has an issue and never work on 1st time! The mock
-	 * filling seems not to be working regarding to the mesurements.
-	 * 
-	 * @return true if no problem
-	 */
-	private boolean findIfHeightProblem() {
-		// TODO: seems useless regarding the issue
-		searchDialogUpperLinearLayout
-				.setLayoutParams(new LinearLayout.LayoutParams(
-						LinearLayout.LayoutParams.FILL_PARENT, 1700));
-		searchDialogUpperLinearLayout
-				.setLayoutParams(new LinearLayout.LayoutParams(
-						LinearLayout.LayoutParams.FILL_PARENT,
-						LinearLayout.LayoutParams.WRAP_CONTENT));
-		FRRequestDetails request = validRequest(true);
-		request.setAny(false);
-		request.setFav(true);
-		request.setUser(true);
-		SetArrayList<FRRoom> set = new SetArrayList<FRRoom>(100);
-		List<String> uidList = new ArrayList<String>(100);
-		for (int i = 0; i < 100; i++) {
-			set.add(new FRRoom("BC898989", i + "123"));
-			uidList.add(i + "123");
-		}
-		request.setUidNonFav(set);
-		request.setUidList(uidList);
-		fillSearchDialog(request);
-		mSearchDialog.show();
-		// TODO: seems useless regarding the issue
-		searchDialogUpperLinearLayout.refreshDrawableState();
-		searchDialogUpperLinearLayout.getDrawableState();
-		searchDialogMainLayoutHeightAvailable = searchDialogMainLinearLayout
-				.getMeasuredHeight();
-		boolean toreturn = (searchDialogUpperLinearLayout.getMeasuredHeight() > (searchDialogExtended * searchDialogMainLayoutHeightAvailable));
-		fillSearchDialog();
-		return toreturn;
 	}
 
 	/**
@@ -1259,11 +1211,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * some change if necessary.
 	 */
 	private void displaySearchDialog() {
-		if (findIfHeightProblem()) {
-			searchDialogHasHeightExtenstionProblem = true;
-		}
 		fillSearchDialog();
 		if (!mModel.getPreviousRequest().isEmpty()) {
+			searchDialogMainLayoutHeightAvailable = Math.max(
+					mSearchView.getMeasuredHeight(), mSearchView.getHeight());
 			searchDialogMissSpaceExtendChangeState(false);
 		} else {
 			searchDialogUpperLinearLayout
@@ -2375,7 +2326,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			// favButton.setWidth(widthPopup / 3);
 			userDefButton.setHeight(LayoutParams.FILL_PARENT);
 			// userDefButton.setWidth(widthPopup / 3);
-		}	
+
+			searchDialogHasHeightExtenstionProblem = false;
+		}
 	}
 
 	// TODO: the InputBar is not used so far
