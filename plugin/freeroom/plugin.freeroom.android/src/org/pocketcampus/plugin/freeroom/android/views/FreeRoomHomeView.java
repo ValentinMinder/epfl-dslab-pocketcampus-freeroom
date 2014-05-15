@@ -80,6 +80,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -1834,16 +1835,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		userDefButton.setEnabled(enabled);
 		freeButton.setEnabled(enabled);
 		mOptionalLineLinearLayoutContainer
-				.removeView(mOptionalLineLinearLayoutWrapper);
+				.removeView(mOptionalLineLinearLayoutWrapperFirst);
 		if (enabled) {
 			mOptionalLineLinearLayoutContainer
-					.addView(mOptionalLineLinearLayoutWrapper);
+					.addView(mOptionalLineLinearLayoutWrapperFirst);
 		}
-		mOptionalLineLinearLayoutWrapper
-				.removeView(mOptionalLineLinearLayoutWrapperIn);
+		mOptionalLineLinearLayoutContainer
+				.removeView(mOptionalLineLinearLayoutWrapperSecond);
 		if (request.isUser()) {
-			mOptionalLineLinearLayoutWrapper
-					.addView(mOptionalLineLinearLayoutWrapperIn);
+			mOptionalLineLinearLayoutContainer
+					.addView(mOptionalLineLinearLayoutWrapperSecond);
 			selectedRooms.addAll(request.getUidNonFav());
 			mSummarySelectedRoomsTextViewSearchMenu.setText(u
 					.getSummaryTextFromCollection(selectedRooms));
@@ -1949,18 +1950,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private int endHourSelected = -1;
 	private int endMinSelected = -1;
 
-	private LinearLayout mOptionalLineLinearLayoutWrapper;
-	private LinearLayout mOptionalLineLinearLayoutWrapperIn;
 	private LinearLayout mOptionalLineLinearLayoutContainer;
+	private LinearLayout mOptionalLineLinearLayoutWrapperFirst;
+	private LinearLayout mOptionalLineLinearLayoutWrapperSecond;
 
 	private void initSearch() {
 
-		mOptionalLineLinearLayoutWrapper = (LinearLayout) mSearchDialog
-				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_wrapper);
 		mOptionalLineLinearLayoutContainer = (LinearLayout) mSearchDialog
 				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_container);
-		mOptionalLineLinearLayoutWrapperIn = (LinearLayout) mSearchView
-				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_wrapper_in);
+		mOptionalLineLinearLayoutWrapperFirst = (LinearLayout) mSearchDialog
+				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_wrapper_1st);
+		mOptionalLineLinearLayoutWrapperSecond = (LinearLayout) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_wrapper_2nd);
 
 		selectedRooms = new SetArrayList<FRRoom>();
 
@@ -2105,8 +2106,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// TODO: add/remove
 		// mGlobalSubLayout.removeView(mAutoCompleteSuggestionInputBarElement);
 		// mGlobalSubLayout.removeView(mSummarySelectedRoomsTextView);
-		mOptionalLineLinearLayoutWrapper
-				.removeView(mOptionalLineLinearLayoutWrapperIn);
+		mOptionalLineLinearLayoutWrapperFirst
+				.removeView(mOptionalLineLinearLayoutWrapperSecond);
 		selectedRooms.clear();
 		userDefButton.setChecked(false);
 		mSummarySelectedRoomsTextView.setText(u
@@ -2125,9 +2126,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onClick(View v) {
 				if (specButton.isChecked()) {
 					mOptionalLineLinearLayoutContainer
-							.removeView(mOptionalLineLinearLayoutWrapper);
+							.removeView(mOptionalLineLinearLayoutWrapperFirst);
 					mOptionalLineLinearLayoutContainer
-							.addView(mOptionalLineLinearLayoutWrapper);
+							.addView(mOptionalLineLinearLayoutWrapperFirst);
 				}
 				specButton.setChecked(true);
 				anyButton.setChecked(false);
@@ -2157,7 +2158,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onClick(View v) {
 				if (anyButton.isChecked()) {
 					mOptionalLineLinearLayoutContainer
-							.removeView(mOptionalLineLinearLayoutWrapper);
+							.removeView(mOptionalLineLinearLayoutWrapperSecond);
+					mOptionalLineLinearLayoutContainer
+							.removeView(mOptionalLineLinearLayoutWrapperFirst);
 				}
 				specButton.setChecked(false);
 				resetUserDefined();
@@ -2202,10 +2205,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					specButton.setChecked(true);
 					freeButton.setChecked(false);
 					// TODO: init and use the data.
-					mOptionalLineLinearLayoutWrapper
-							.removeView(mOptionalLineLinearLayoutWrapperIn);
-					mOptionalLineLinearLayoutWrapper
-							.addView(mOptionalLineLinearLayoutWrapperIn);
+					mOptionalLineLinearLayoutContainer
+							.removeView(mOptionalLineLinearLayoutWrapperSecond);
+					mOptionalLineLinearLayoutContainer
+							.addView(mOptionalLineLinearLayoutWrapperSecond);
 					mSummarySelectedRoomsTextViewSearchMenu.setText(u
 							.getSummaryTextFromCollection(selectedRooms));
 					displayAddRoomDialog(AddRoomCaller.SEARCH);
@@ -2325,31 +2328,54 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		// on vertical screens, choose fav and choose user-def are vertically
-		// aligned
-		// on horizontal screens, there are horizontally aligned.
-		if (activityHeight > activityWidth) {
+		// for landscape device, mainly tablet, some layout are programatically
+		// changed to horizontal values.
+		if (activityHeight < activityWidth) {
+			LinearLayout header_main = (LinearLayout) mSearchView
+					.findViewById(R.id.freeroom_layout_dialog_search_upper_main);
+			header_main.setOrientation(LinearLayout.HORIZONTAL);
+			LinearLayout header_1st = (LinearLayout) mSearchView
+					.findViewById(R.id.freeroom_layout_dialog_search_upper_first);
+			LinearLayout header_2nd = (LinearLayout) mSearchView
+					.findViewById(R.id.freeroom_layout_dialog_search_upper_second);
+			LinearLayout header_3rd = (LinearLayout) mSearchView
+					.findViewById(R.id.freeroom_layout_dialog_search_upper_third);
+			LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(0,
+					LinearLayout.LayoutParams.FILL_PARENT);
+			p.weight = 1;
+
+			header_1st.setLayoutParams(p);
+			header_2nd.setLayoutParams(p);
+			header_3rd.setLayoutParams(p);
+
+			RadioGroup rg = (RadioGroup) mSearchView
+					.findViewById(R.id.freeroom_layout_dialog_search_any_vs_spec);
+			rg.setOrientation(RadioGroup.HORIZONTAL);
+			RadioGroup.LayoutParams q = new RadioGroup.LayoutParams(
+					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+			rg.setLayoutParams(q);
+
+			// int widthPopup = ???
+			// cannot get the width of the popup correctly
+			// so item will just be one after the other, no rule
+			// and no regularization of the layout
+
+			anyButton.setHeight(LayoutParams.FILL_PARENT);
+			// anyButton.setWidth(widthPopup / 2);
+			specButton.setHeight(LayoutParams.FILL_PARENT);
+			// specButton.setWidth(widthPopup / 2);
+
 			LinearLayout mLinearLayout = (LinearLayout) mSearchDialog
-					.findViewById(R.id.freeroom_layout_dialog_search_opt_line_semi);
-			mLinearLayout.setOrientation(LinearLayout.VERTICAL);
-			if (activityWidth <= 480) {
-				LinearLayout header_main = (LinearLayout) mSearchView
-						.findViewById(R.id.freeroom_layout_dialog_search_upper_main);
-				header_main.setOrientation(LinearLayout.VERTICAL);
-				LinearLayout header_1st = (LinearLayout) mSearchView
-						.findViewById(R.id.freeroom_layout_dialog_search_upper_first);
-				LinearLayout header_2nd = (LinearLayout) mSearchView
-						.findViewById(R.id.freeroom_layout_dialog_search_upper_second);
-				LinearLayout header_3rd = (LinearLayout) mSearchView
-						.findViewById(R.id.freeroom_layout_dialog_search_upper_third);
-				header_1st.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
-				header_1st.getLayoutParams().width = LayoutParams.FILL_PARENT;
-				header_2nd.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
-				header_2nd.getLayoutParams().width = LayoutParams.FILL_PARENT;
-				header_3rd.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
-				header_3rd.getLayoutParams().width = LayoutParams.FILL_PARENT;
-			}
-		}
+					.findViewById(R.id.freeroom_layout_dialog_search_opt_line_wrapper_1st);
+			mLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+			freeButton.setHeight(LayoutParams.FILL_PARENT);
+			// freeButton.setWidth(widthPopup / 3);
+			favButton.setHeight(LayoutParams.FILL_PARENT);
+			// favButton.setWidth(widthPopup / 3);
+			userDefButton.setHeight(LayoutParams.FILL_PARENT);
+			// userDefButton.setWidth(widthPopup / 3);
+		}	
 	}
 
 	// TODO: the InputBar is not used so far
@@ -2568,7 +2594,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		anyButton.setChecked(true);
 		mOptionalLineLinearLayoutContainer
-				.removeView(mOptionalLineLinearLayoutWrapper);
+				.removeView(mOptionalLineLinearLayoutWrapperSecond);
+		mOptionalLineLinearLayoutContainer
+				.removeView(mOptionalLineLinearLayoutWrapperFirst);
+
 		specButton.setChecked(false);
 		favButton.setChecked(false);
 		userDefButton.setChecked(false);
