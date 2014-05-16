@@ -43,11 +43,12 @@
   <ItemGroup>
     <Compile Include="AppInitializer.cs" />
     <Compile Include="AuthenticationRequest.cs" />
+    <Compile Include="AuthenticationStatus.cs" />
     <Compile Include="IMainSettings.cs" />
     <Compile Include="MainSettings.cs" />
+    <Compile Include="Models\AuthenticationRequestStatus.cs" />
     <Compile Include="Models\AuthenticationSessionResponse.cs" />
     <Compile Include="Models\AuthenticationTokenResponse.cs" />
-    <Compile Include="Models\AuthenticationStatus.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\IRatingService.cs" />

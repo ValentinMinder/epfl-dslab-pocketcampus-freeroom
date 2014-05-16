@@ -198,10 +198,10 @@ George Candea</value>
   <data name="AboutWebsiteHeader" xml:space="preserve">
     <value>website</value>
   </data>
-  <data name="YouAreAuthenticatedAs" xml:space="preserve">
+  <data name="AuthenticatedMessage" xml:space="preserve">
     <value>you are logged in as</value>
   </data>
-  <data name="YouAreNotAuthenticated" xml:space="preserve">
+  <data name="NotAuthenticatedMessage" xml:space="preserve">
     <value>you are not logged in</value>
   </data>
   <data name="PagesHeader" xml:space="preserve">
@@ -236,5 +236,8 @@ George Candea</value>
   </data>
   <data name="UseColoredTileExplanation" xml:space="preserve">
     <value>disable this if the colored image doesn't look good on your start screen background</value>
+  </data>
+  <data name="TemporarilyAuthenticatedMessage" xml:space="preserve">
+    <value>your credentials will be forgotten when the app becomes inactive</value>
   </data>
 </root>

@@ -147,11 +147,11 @@ namespace PocketCampus.Main.ViewModels
         /// </summary>
         private void OpenPlugin( IPlugin plugin )
         {
-            if ( !plugin.RequiresAuthentication || _settings.IsAuthenticated )
+            if ( !plugin.RequiresAuthentication || _settings.AuthenticationStatus != AuthenticationStatus.NotAuthenticated )
             {
                 plugin.NavigateTo( _navigationService );
             }
-            else if ( !_settings.IsAuthenticated )
+            else if ( _settings.AuthenticationStatus == AuthenticationStatus.NotAuthenticated )
             {
                 var authRequest = new AuthenticationRequest( true, () => plugin.NavigateTo( _navigationService ) );
                 _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );

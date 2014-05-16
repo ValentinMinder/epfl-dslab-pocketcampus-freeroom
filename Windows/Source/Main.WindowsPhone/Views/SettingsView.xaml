@@ -30,7 +30,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -47,49 +46,81 @@
                        Style="{StaticResource AppTextTitleStyle}" />
         </Border>
 
-        <!-- "You are not connected" -->
-        <TextBlock Grid.Row="2"
-                   Text="{Binding Resources.YouAreNotAuthenticated, Source={StaticResource Strings}}"
-                   Style="{StaticResource PhoneTextNormalStyle}"
-                   Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToOppositeVisibility}}"
-                   Margin="24,20,24,10" />
-
-        <!-- "You are connected as" -->
-        <StackPanel Orientation="Horizontal"
-                    Grid.Row="2"
-                    Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToVisibility}}"
+        <!-- Not authenticated -->
+        <StackPanel Grid.Row="2"
+                    Visibility="{Binding Settings.AuthenticationStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=NotAuthenticated}"
                     Margin="24,20,24,10">
-            <TextBlock Text="{Binding Resources.YouAreAuthenticatedAs, Source={StaticResource Strings}}"
-                       Style="{StaticResource PhoneTextNormalStyle}"
-                       Margin="0" />
+            <!-- Text -->
+            <TextBlock Text="{Binding Resources.NotAuthenticatedMessage, Source={StaticResource Strings}}"
+                       Style="{StaticResource PhoneTextNormalStyle}" />
 
-            <TextBlock Text="{Binding Settings.UserName}"
-                       Style="{StaticResource PhoneTextNormalStyle}"
-                       FontFamily="{StaticResource PhoneFontFamilyBold}"
-                       Margin="6,0" />
+            <!-- "Log on" button -->
+            <Button Content="{Binding Resources.LogIn, Source={StaticResource Strings}}"
+                    Command="{Binding LogInCommand}"
+                    HorizontalAlignment="Left"
+                    Margin="-12,0"
+                    MinWidth="300" />
         </StackPanel>
 
-        <!-- "Log on" button -->
-        <Button Grid.Row="3"
-                Content="{Binding Resources.LogIn, Source={StaticResource Strings}}"
-                Command="{Binding LogInCommand}"
-                Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToOppositeVisibility}}"
-                HorizontalAlignment="Left"
-                Margin="12,0"
-                MinWidth="300" />
+        <!-- Authenticated temporarily -->
+        <StackPanel Grid.Row="2" 
+                    Visibility="{Binding Settings.AuthenticationStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=AuthenticatedTemporarily}"
+                    Margin="24,20,24,10">
+            <!-- Text -->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Resources.AuthenticatedMessage, Source={StaticResource Strings}}"
+                           Style="{StaticResource PhoneTextNormalStyle}"
+                           Margin="0" />
 
-        <!-- "Log off" button -->
-        <Button Grid.Row="3"
-                Content="{Binding Resources.LogOff, Source={StaticResource Strings}}"
-                Command="{Binding LogOffCommand}"
-                Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToVisibility}}"
-                HorizontalAlignment="Left"
-                Margin="12,0"
-                MinWidth="300" />
+                <TextBlock Text="{Binding Settings.UserName}"
+                           Style="{StaticResource PhoneTextNormalStyle}"
+                           FontFamily="{StaticResource PhoneFontFamilyBold}"
+                           Margin="6,0" />
+            </StackPanel>
+
+            <!-- Temporary explanation text -->
+            <TextBlock Text="{Binding Resources.TemporarilyAuthenticatedMessage, Source={StaticResource Strings}}"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource PhoneTextSubtleStyle}"
+                       Margin="0" />
+
+
+            <!-- "Log off" button -->
+            <Button Content="{Binding Resources.LogOff, Source={StaticResource Strings}}"
+                    Command="{Binding LogOffCommand}"
+                    HorizontalAlignment="Left"
+                    Margin="-12,0"
+                    MinWidth="300" />
+        </StackPanel>
+
+        <!-- Authenticated -->
+        <StackPanel Grid.Row="2"
+                    Visibility="{Binding Settings.AuthenticationStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=Authenticated}"
+                    Margin="24,20,24,10">
+            <!-- Text -->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Resources.AuthenticatedMessage, Source={StaticResource Strings}}"
+                           Style="{StaticResource PhoneTextNormalStyle}"
+                           Margin="0" />
+
+                <TextBlock Text="{Binding Settings.UserName}"
+                           Style="{StaticResource PhoneTextNormalStyle}"
+                           FontFamily="{StaticResource PhoneFontFamilyBold}"
+                           Margin="6,0" />
+            </StackPanel>
+
+            <!-- "Log off" button -->
+            <Button Content="{Binding Resources.LogOff, Source={StaticResource Strings}}"
+                    Command="{Binding LogOffCommand}"
+                    HorizontalAlignment="Left"
+                    Margin="-12,0"
+                    MinWidth="300" />
+        </StackPanel>
+
 
         <!-- "Use colored tile" checkbox & explanation -->
         <CheckBox x:Name="UseColoredTileBox"
-                  Grid.Row="4"
+                  Grid.Row="3"
                   Margin="12,30">
             <StackPanel>
                 <TextBlock Text="{Binding Resources.UseColoredTile, Source={StaticResource Strings}}"

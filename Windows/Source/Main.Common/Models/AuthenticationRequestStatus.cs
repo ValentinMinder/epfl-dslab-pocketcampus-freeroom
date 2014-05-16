@@ -10,7 +10,7 @@ namespace PocketCampus.Main.Models
     /// Status for authentication requests.
     /// </summary>
     [ThriftEnum]
-    public enum AuthenticationStatus
+    public enum AuthenticationRequestStatus
     {
         /// <summary>
         /// The request completed successfully.

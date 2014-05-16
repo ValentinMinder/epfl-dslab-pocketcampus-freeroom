@@ -28,9 +28,9 @@ namespace PocketCampus.Main.ViewModels.Design
                 set { }
             }
 
-            public bool IsAuthenticated
+            public AuthenticationStatus AuthenticationStatus
             {
-                get { return true; }
+                get { return AuthenticationStatus.AuthenticatedTemporarily; }
                 set { }
             }
 

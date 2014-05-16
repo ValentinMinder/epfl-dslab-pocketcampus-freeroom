@@ -201,10 +201,10 @@ George Candea</value>
   <data name="AboutWebsiteHeader" xml:space="preserve">
     <value>site web</value>
   </data>
-  <data name="YouAreAuthenticatedAs" xml:space="preserve">
+  <data name="AuthenticatedMessage" xml:space="preserve">
     <value>vous êtes connecté en tant que</value>
   </data>
-  <data name="YouAreNotAuthenticated" xml:space="preserve">
+  <data name="NotAuthenticatedMessage" xml:space="preserve">
     <value>vous n'êtes pas connecté</value>
   </data>
   <data name="PagesHeader" xml:space="preserve">
@@ -239,5 +239,8 @@ George Candea</value>
   </data>
   <data name="UseColoredTileExplanation" xml:space="preserve">
     <value>désactivez cette option si la tuile colorée rend mal sur votre fond d'écran démarrer</value>
+  </data>
+  <data name="TemporarilyAuthenticatedMessage" xml:space="preserve">
+    <value>vos identifiants seront oubliés quand l'application deviendra inactive</value>
   </data>
 </root>

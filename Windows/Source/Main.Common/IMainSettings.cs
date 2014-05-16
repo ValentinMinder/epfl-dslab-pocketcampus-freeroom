@@ -8,14 +8,14 @@ using PocketCampus.Common;
 namespace PocketCampus.Main
 {
     /// <summary>
-    /// Contains various application-level settings.
+    /// Contains application-level settings.
     /// </summary>
     public interface IMainSettings : IServerSettings
     {
         /// <summary>
-        /// Gets or sets a value indicating whether the user is authenticated.
+        /// Gets or sets the user's authentication status.
         /// </summary>
-        bool IsAuthenticated { get; set; }
+        AuthenticationStatus AuthenticationStatus { get; set; }
 
         /// <summary>
         /// Gets or sets the GASPAR username (or the SCIPER number), if the user is authenticated.

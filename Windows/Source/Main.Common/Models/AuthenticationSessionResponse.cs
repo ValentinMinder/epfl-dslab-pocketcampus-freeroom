@@ -16,7 +16,7 @@ namespace PocketCampus.Main.Models
         /// The request's status.
         /// </summary>
         [ThriftField( 2, true, "statusCode" )]
-        public AuthenticationStatus Status { get; set; }
+        public AuthenticationRequestStatus Status { get; set; }
 
         /// <summary>
         /// The authentication session.

@@ -45,35 +45,23 @@ namespace PocketCampus.Main.Services
         public async Task<T> ExecuteAsync<T>( Func<Task<T>> attempt )
             where T : class
         {
-            string session = _mainSettings.Session;
-
-            if ( session == null )
+            if ( _mainSettings.Session == null )
             {
                 var tokenResponse = await _authenticationService.GetTokenAsync();
-                if ( tokenResponse.Status != AuthenticationStatus.Success )
+                if ( tokenResponse.Status != AuthenticationRequestStatus.Success )
                 {
                     if ( await _authenticator.AuthenticateAsync( _mainSettings.UserName, _mainSettings.Password, tokenResponse.Token ) )
                     {
                         var sessionResponse = await _authenticationService.GetSessionAsync( tokenResponse.Token );
 
-                        if ( sessionResponse.Status == AuthenticationStatus.Success )
+                        if ( sessionResponse.Status == AuthenticationRequestStatus.Success )
                         {
-                            session = sessionResponse.Session;
-
-                            // if we're not authenticated, the user doesn't want to be remembered
-                            if ( _mainSettings.IsAuthenticated )
-                            {
-                                _mainSettings.Session = session;
-                            }
-                            else
-                            {
-                                _mainSettings.UserName = null;
-                                _mainSettings.Password = null;
-                            }
+                            _mainSettings.Session = sessionResponse.Session;
                         }
                     }
                     else
                     {
+                        _mainSettings.AuthenticationStatus = AuthenticationStatus.NotAuthenticated;
                         return null;
                     }
                 }
@@ -98,20 +86,11 @@ namespace PocketCampus.Main.Services
                 if ( await _authenticator.AuthenticateAsync( _mainSettings.UserName, _mainSettings.Password, token.AuthenticationKey ) )
                 {
                     session = await authenticator.GetSessionAsync( token );
-
-                    // if we're not authenticated, the user doesn't want to be remembered
-                    if ( _mainSettings.IsAuthenticated )
-                    {
-                        SaveSession( typeof( TViewModel ), session );
-                    }
-                    else
-                    {
-                        _mainSettings.UserName = null;
-                        _mainSettings.Password = null;
-                    }
+                    SaveSession( typeof( TViewModel ), session );
                 }
                 else
                 {
+                    _mainSettings.AuthenticationStatus = AuthenticationStatus.NotAuthenticated;
                     return default( TResult );
                 }
             }

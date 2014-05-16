@@ -59,7 +59,7 @@ namespace PocketCampus.Main.ViewModels
         /// </summary>
         private async Task ExecuteLogOffCommand()
         {
-            Settings.IsAuthenticated = false;
+            Settings.AuthenticationStatus = AuthenticationStatus.NotAuthenticated;
             Settings.UserName = null;
             Settings.Password = null;
             Settings.Session = null;

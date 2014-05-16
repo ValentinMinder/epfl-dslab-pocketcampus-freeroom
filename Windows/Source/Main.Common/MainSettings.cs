@@ -8,16 +8,16 @@ using PocketCampus.Common;
 namespace PocketCampus.Main
 {
     /// <summary>
-    /// Contains various application-level settings.
+    /// Contains application-level settings.
     /// </summary>
     public sealed class MainSettings : SettingsBase<MainSettings>, IMainSettings
     {
         /// <summary>
-        /// Gets or sets a value indicating whether the user is authenticated.
+        /// Gets or sets the user's authentication status.
         /// </summary>
-        public bool IsAuthenticated
+        public AuthenticationStatus AuthenticationStatus
         {
-            get { return Get<bool>(); }
+            get { return Get<AuthenticationStatus>(); }
             set { Set( value ); }
         }
 
@@ -83,7 +83,7 @@ namespace PocketCampus.Main
             {
                 { x => x.Configuration, () => new ServerConfiguration( "https", 4433, "Camipro", "Directory", "Events", "Food", "IsAcademia", 
                                                                                       "Map", "Moodle", "News", "Satellite", "Transport" ) },
-                { x => x.IsAuthenticated, () => false },
+                { x => x.AuthenticationStatus, () => AuthenticationStatus.NotAuthenticated },
                 { x => x.UserName, () => null },
                 { x => x.Password, () => null },
                 { x => x.Session, () => null },

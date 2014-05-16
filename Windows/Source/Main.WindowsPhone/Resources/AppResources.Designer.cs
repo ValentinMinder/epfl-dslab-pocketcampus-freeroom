@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PocketCampus.Main.Resources
-{
-
-
+namespace PocketCampus.Main.Resources {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -182,6 +182,15 @@ namespace PocketCampus.Main.Resources
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to you are logged in as.
+        /// </summary>
+        public static string AuthenticatedMessage {
+            get {
+                return ResourceManager.GetString("AuthenticatedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Authenticating....
         /// </summary>
         public static string Authenticating {
@@ -301,6 +310,15 @@ namespace PocketCampus.Main.Resources
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to you are not logged in.
+        /// </summary>
+        public static string NotAuthenticatedMessage {
+            get {
+                return ResourceManager.GetString("NotAuthenticatedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to POCKETCAMPUS EPFL.
         /// </summary>
         public static string PagesHeader {
@@ -364,6 +382,15 @@ namespace PocketCampus.Main.Resources
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to your credentials will be forgotten when the app becomes inactive.
+        /// </summary>
+        public static string TemporarilyAuthenticatedMessage {
+            get {
+                return ResourceManager.GetString("TemporarilyAuthenticatedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to use colored application tile.
         /// </summary>
         public static string UseColoredTile {
@@ -378,24 +405,6 @@ namespace PocketCampus.Main.Resources
         public static string UseColoredTileExplanation {
             get {
                 return ResourceManager.GetString("UseColoredTileExplanation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to you are logged in as.
-        /// </summary>
-        public static string YouAreAuthenticatedAs {
-            get {
-                return ResourceManager.GetString("YouAreAuthenticatedAs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to you are not logged in.
-        /// </summary>
-        public static string YouAreNotAuthenticated {
-            get {
-                return ResourceManager.GetString("YouAreNotAuthenticated", resourceCulture);
             }
         }
     }

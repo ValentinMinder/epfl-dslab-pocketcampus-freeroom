@@ -125,7 +125,7 @@ namespace PocketCampus.Main.ViewModels
             try
             {
                 var tokenResponse = await _authenticationService.GetTokenAsync();
-                if ( tokenResponse.Status != AuthenticationStatus.Success )
+                if ( tokenResponse.Status != AuthenticationRequestStatus.Success )
                 {
                     throw new Exception( "An error occurred while getting a token." );
                 }
@@ -133,14 +133,14 @@ namespace PocketCampus.Main.ViewModels
                 if ( await _authenticator.AuthenticateAsync( UserName, Password, tokenResponse.Token ) )
                 {
                     var sessionResponse = await _authenticationService.GetSessionAsync( tokenResponse.Token );
-                    if ( sessionResponse.Status != AuthenticationStatus.Success )
+                    if ( sessionResponse.Status != AuthenticationRequestStatus.Success )
                     {
                         throw new Exception( "An error occurred while getting a session." );
                     }
 
                     _settings.Session = sessionResponse.Session;
 
-                    _settings.IsAuthenticated = SaveCredentials;
+                    _settings.AuthenticationStatus = SaveCredentials ? AuthenticationStatus.Authenticated : AuthenticationStatus.AuthenticatedTemporarily;
                     _settings.UserName = UserName;
                     _settings.Password = Password;
                     authOk = true;
