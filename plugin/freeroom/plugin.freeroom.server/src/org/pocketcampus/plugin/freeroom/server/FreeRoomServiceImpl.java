@@ -137,7 +137,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 //		fodj.fetchAndInsertRoomsList(startSemester, endSemester);
 //		fodj.fetchAndInsert(System.currentTimeMillis());
 		
-		new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD, this)).start();
+//		new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD, this)).start();
 	}
 
 	public void log(Level level, String message) {
