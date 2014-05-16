@@ -115,6 +115,24 @@ public class ActualOccupationArrayAdapter<T> extends
 			convertView.setOnClickListener(null);
 		}
 
+		// TODO: remove this: only for message test!
+		OnClickListener ocl2 = new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				FRPeriod mPeriod = mActualOccupation.getPeriod();
+				FRRoom mRoom = mModel.getDisplayedOccupancy().getRoom();
+				if (mActualOccupation.isSetUserMessages()) {
+					System.out
+							.println("actual occupation array adapdter - line 126");
+					System.out.println(mRoom.getDoorCode());
+					System.out.println(mPeriod.getTimeStampStart());
+					System.out.println(mPeriod.getTimeStampEnd());
+					System.out.println(mActualOccupation.getUserMessages());
+				}
+			}
+		};
+		convertView.setOnClickListener(ocl2);
+
 		int color = free ? mModel.COLOR_CHECK_OCCUPANCY_FREE
 				: mModel.COLOR_CHECK_OCCUPANCY_OCCUPIED;
 		convertView.setBackgroundColor(color);
