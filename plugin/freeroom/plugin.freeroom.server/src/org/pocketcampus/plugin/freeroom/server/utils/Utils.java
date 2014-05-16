@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.freeroom.server.utils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -7,6 +9,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +35,27 @@ public class Utils {
 			"9313", "9054", "9055", "4911", "4913", "4914", "4915", "3014",
 			"3137", "3208", "3623", "3624", "3625", "3702", "3738");
 	
+	private static final String FILENAME_FORBIDDEN_WORDS = "src" + File.separator + "forbiddenWords.txt";
+	private static ArrayList<String> forbiddenWords = null;
+	
+	//TODO eventually find a better way to store/access such things
+	private static void loadForbiddenWords() {
+		if (forbiddenWords != null) {
+			return ;
+		}
+		
+		try {
+			Scanner sc = new Scanner(new File(FILENAME_FORBIDDEN_WORDS));
+			forbiddenWords = new ArrayList<String>();
+			while (sc.hasNextLine()) {
+				String line = sc.nextLine();
+				forbiddenWords.add(line.toLowerCase());
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			forbiddenWords = new ArrayList<String>();
+		} 		
+	}
 	
 	/**
 	 * Extract the building from the doorCode
@@ -120,5 +144,28 @@ public class Utils {
 
 	public static int determineGroupAccessRoom(String uid) {
 		return mediacomList.contains(uid) ? GROUP_STUDENT : GROUP_STAFF;
+	}
+
+	/**
+	 * Check if the given message is good
+	 * @param userMessage The message to check
+	 * @return true if the sentence does not contain any of the blacklisted word, false otherwise (even if null)
+	 */
+	public static boolean checkUserMessage(String userMessage) {
+		if (userMessage == null) {
+			return false;
+		}
+		
+		loadForbiddenWords();
+		
+		String lowerCaseMessage = userMessage.toLowerCase();
+		//split received message into words, and check each word 
+		String[] words = lowerCaseMessage.split("\\s+");
+		for (String w : words) {
+			if (forbiddenWords.contains(w)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

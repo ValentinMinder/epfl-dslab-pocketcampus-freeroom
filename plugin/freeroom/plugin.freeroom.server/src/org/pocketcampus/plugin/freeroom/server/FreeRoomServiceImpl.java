@@ -204,6 +204,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			// round user occupancy to a full hour
 			period.setTimeStampStart(FRTimes
 					.roundToNearestHalfHourBefore(period.getTimeStampStart()));
+			if (!Utils.checkUserMessage(userMessage)) {
+				return false;
+			}
 		}
 
 		boolean inserted = insertOccupancyAndCheckOccupancy(period, uid, type,
