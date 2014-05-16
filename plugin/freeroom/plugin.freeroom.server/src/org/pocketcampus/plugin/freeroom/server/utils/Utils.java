@@ -149,7 +149,7 @@ public class Utils {
 	/**
 	 * Check if the given message is good
 	 * @param userMessage The message to check
-	 * @return true if null or the sentence does not contain any of the blacklisted word, false otherwise
+	 * @return true if null or1 the sentence does not contain any of the blacklisted word, false otherwise
 	 */
 	public static boolean checkUserMessage(String userMessage) {
 		if (userMessage == null) {

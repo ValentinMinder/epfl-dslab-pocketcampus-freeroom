@@ -205,6 +205,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			period.setTimeStampStart(FRTimes
 					.roundToNearestHalfHourBefore(period.getTimeStampStart()));
 			if (!Utils.checkUserMessage(userMessage)) {
+				log(Level.INFO, "Getting wrong user message : " + userMessage);
 				return false;
 			}
 		}
@@ -352,11 +353,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					String prevRoom = checkMultipleSubmissionUserOccupancy(
 							hourSharpBefore + i * FRTimes.ONE_HOUR_IN_MS, uid,
 							hash);
-					if ((prevRoom != null && !prevRoom.equals(uid))
-							|| prevRoom == null) {
-						insertCheckOccupancyInDB(uid, hourSharpBefore + i
-								* FRTimes.ONE_HOUR_IN_MS, hash, prevRoom,
-								userMessage);
+					String prevMessage = getLastMessage(hourSharpBefore + i
+							* FRTimes.ONE_HOUR_IN_MS, uid, hash);
+
+					// if first insertion or update of room
+					insertUpdateCheckOccupancy(uid, hourSharpBefore + i
+							* FRTimes.ONE_HOUR_IN_MS, hash, prevRoom,
+							prevMessage, userMessage);
+					if (prevRoom == null
+							|| (prevRoom != null && !prevRoom.equals(uid))) {
 						overallInsertion = overallInsertion
 								&& insertOccupancyInDB(uid, hourSharpBefore + i
 										* FRTimes.ONE_HOUR_IN_MS,
@@ -381,6 +386,41 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 	}
 
+	private String getLastMessage(long tsStart, String uid, String hash) {
+		String checkRequest = "SELECT COUNT(*) AS count, co.message "
+				+ "FROM `fr-checkOccupancy` co "
+				+ "WHERE co.timestampStart = ? AND co.hash = ? AND co.message IS NOT NULL ";
+
+		Connection connectBDD;
+		try {
+			connectBDD = connMgr.getConnection();
+			PreparedStatement checkQuery = connectBDD
+					.prepareStatement(checkRequest);
+
+			checkQuery.setLong(1, tsStart);
+			checkQuery.setString(2, hash);
+
+			ResultSet checkResult = checkQuery.executeQuery();
+			if (checkResult.next()) {
+				int count = checkResult.getInt("count");
+				if (count == 0) {
+					return null;
+				} else {
+					return checkResult.getString("message");
+				}
+			} else {
+				return null;
+			}
+
+		} catch (SQLException e) {
+			log(LOG_SIDE.SERVER, Level.SEVERE,
+					"SQL error when getting message of user occupancy start = "
+							+ tsStart + " uid = " + uid + " hash = " + hash);
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	/**
 	 * Insert an entry in the database which is used to deny multiple submits of
 	 * user occupancies. It should not be called without pre-checking. If you
@@ -397,8 +437,37 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            checkOccupancy table (if one) null otherwise
 	 */
 	// TODO test if usermessage change, there is no problem with count
+	private void insertUpdateCheckOccupancy(String uid, long tsStart,
+			String hash, String prevRoom, String prevMessage, String userMessage) {
+		/**
+		 * different cases : first insertion : prevRoom == null change of room,
+		 * NOT message : prevRoom != null && !prevRoom.equals(uid) change of
+		 * room, AND message : prevRoom != null && !prevRoom.equals(uid) no
+		 * change of room, BUT message : prevRoom != null &&
+		 * prevRoom.equals(uid) &&
+		 */
+
+		if (prevRoom == null) {
+			// first insertion, no problem with duplicate key
+			insertCheckOccupancyInDB(uid, tsStart, hash, userMessage);
+		} else {
+			String duplicateMessage = null;
+
+			if (userMessage == null) {
+				// no new message, take the old one
+				duplicateMessage = prevMessage;
+			} else {
+				// new message, use the new one
+				duplicateMessage = userMessage;
+			}
+			updateCheckOccupancyInDB(uid, prevRoom, tsStart, hash,
+					duplicateMessage, !prevRoom.equals(uid));
+		}
+
+	}
+
 	private void insertCheckOccupancyInDB(String uid, long tsStart,
-			String hash, String prevRoom, String userMessage) {
+			String hash, String message) {
 		String insertRequest = "INSERT INTO `fr-checkOccupancy` (uid, timestampStart, hash, message) "
 				+ "VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE uid = ?";
 
@@ -411,8 +480,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			insertQuery.setString(1, uid);
 			insertQuery.setLong(2, tsStart);
 			insertQuery.setString(3, hash);
-			if (userMessage != null) {
-				insertQuery.setString(4, userMessage);
+			if (message != null) {
+				insertQuery.setString(4, message);
 			} else {
 				insertQuery.setNull(4, Types.CHAR);
 			}
@@ -420,8 +489,44 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			int update = insertQuery.executeUpdate();
 
 			if (update > 1) {
-				// we have updated the current row, thus we also need to adjust
-				// the count value in fr-occupancy table
+				// should not happen
+				log(Level.SEVERE,
+						"Inserting occupancy but duplicate key, and duplicate key shouldn t be there for uid = "
+								+ uid
+								+ " hash = "
+								+ hash
+								+ " tsStar = "
+								+ tsStart);
+			}
+
+		} catch (SQLException e) {
+			log(LOG_SIDE.SERVER, Level.SEVERE,
+					"SQL error when writing check Occupancy for uid = " + uid
+							+ " hash = " + hash + " start = " + tsStart);
+			e.printStackTrace();
+		}
+	}
+
+	private void updateCheckOccupancyInDB(String uid, String prevRoom,
+			long tsStart, String hash, String message, boolean updateCount) {
+
+		String insertRequest = "UPDATE `fr-checkOccupancy` SET uid = ?, message = ? "
+				+ "WHERE uid = ? AND timestampStart = ?";
+
+		Connection connectBDD;
+		try {
+			connectBDD = connMgr.getConnection();
+			PreparedStatement insertQuery = connectBDD
+					.prepareStatement(insertRequest);
+
+			insertQuery.setString(1, uid);
+			insertQuery.setString(2, message);
+			insertQuery.setString(3, prevRoom);
+			insertQuery.setLong(4, tsStart);
+
+			insertQuery.executeUpdate();
+
+			if (updateCount) {
 				decrementUserOccupancyCount(prevRoom, tsStart);
 			}
 
@@ -819,6 +924,20 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 		return result;
+	}
+
+	// TODO maybe bug if room occupancy end after 00 and user occupation reisze
+	// ?
+	public void getUserMessageDraft() {
+		String req = "SELECT * FROM `fr-checkOccupancy` WHERE timestamp matches ";
+
+		/*
+		 * create function in OccupancySorted which add messages to matched
+		 * ActualOccupation étant donné que chaque userOccupancx est stocké par
+		 * heure pleine et dure une heure on peut considérer uniquement la
+		 * recherche ou le timestampStart des check est compris dans une
+		 * actualOccupation de user should only be one match
+		 */
 	}
 
 	/**
