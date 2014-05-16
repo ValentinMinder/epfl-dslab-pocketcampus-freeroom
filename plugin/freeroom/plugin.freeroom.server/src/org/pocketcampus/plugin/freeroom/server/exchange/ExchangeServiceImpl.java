@@ -181,7 +181,7 @@ public class ExchangeServiceImpl {
 	/**
 	 * Retrieves the occupancies from Exchange for all the rooms that have an
 	 * EWAid set. It calls updateEWAOccupancy with time window defined by from
-	 * et to arguments.
+	 * and to arguments.
 	 * 
 	 * @param from The start of the period to update
 	 * @param to The end of the period to update

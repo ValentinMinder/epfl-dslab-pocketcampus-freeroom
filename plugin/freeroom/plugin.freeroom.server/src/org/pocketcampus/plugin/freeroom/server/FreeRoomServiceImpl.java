@@ -101,7 +101,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				DB_PASSWORD, this);
 
 		// update ewa : should be done periodically...
-		boolean updateEWA = false;
+		boolean updateEWA = true;
 		if (updateEWA) {
 			if (mExchangeService.updateEWAOccupancy2Weeks()) {
 				System.out.println("EWA data succesfully updated!");

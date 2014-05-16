@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -28,6 +29,7 @@ import microsoft.exchange.webservices.data.TimeWindow;
 import microsoft.exchange.webservices.data.WebCredentials;
 
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
+import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 public class ExchangeEntry {
 	private String gasparUserName = "juweber";
@@ -197,15 +199,21 @@ public class ExchangeEntry {
 				if (attendeeAvailability.getErrorCode() == ServiceError.NoError) {
 					for (CalendarEvent calendarEvent : attendeeAvailability
 							.getCalendarEvents()) {
+
+						Date ts = calendarEvent.getStartTime();
+						long timestamp = ts.getTime();
+						Calendar mCalendar = Calendar.getInstance();
+						mCalendar.setTimeInMillis(timestamp);
+						long offset = (mCalendar.get(Calendar.ZONE_OFFSET) + mCalendar.get(Calendar.DST_OFFSET)) / (60 * 1000);
 						FRPeriod mFrPeriod2 = new FRPeriod(calendarEvent
-								.getStartTime().getTime(), calendarEvent
-								.getEndTime().getTime(), false);
-						System.out.println(calendarEvent
-								.getStartTime() + "/" + calendarEvent
-								.getEndTime());
-						System.out.println(calendarEvent
-								.getStartTime().getTime() + "/" + calendarEvent
-								.getEndTime().getTime());
+								.getStartTime().getTime() - offset * FRTimes.ONE_MIN_IN_MS, calendarEvent
+								.getEndTime().getTime() - offset * FRTimes.ONE_MIN_IN_MS, false);
+//						System.out.println(calendarEvent
+//								.getStartTime() + "/" + calendarEvent
+//								.getEndTime());
+//						System.out.println(calendarEvent
+//								.getStartTime().getTime() + "/" + calendarEvent
+//								.getEndTime().getTime());
 						list.add(mFrPeriod2);
 					}
 				}

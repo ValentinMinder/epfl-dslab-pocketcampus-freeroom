@@ -140,7 +140,7 @@ public class FetchOccupancyDataJSON {
 					String uid = extractAndInsertRoom(room, updateRooms);
 					if (uid != null) {
 						countRoom++;
-						extractAndInsertOccupancies(occupancy, uid);
+						//extractAndInsertOccupancies(occupancy, uid);
 					}
 				}
 
@@ -332,7 +332,7 @@ public class FetchOccupancyDataJSON {
 	 * @return The JSON page located at the given URL, null if none
 	 */
 	private String fetch(String URL) {
-		server.log(Level.INFO, "Starting fetching data from ISA webservice");
+		server.log(Level.INFO, "Starting fetching data from ISA webservice for URL " + URL);
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpGet request;
 		try {
