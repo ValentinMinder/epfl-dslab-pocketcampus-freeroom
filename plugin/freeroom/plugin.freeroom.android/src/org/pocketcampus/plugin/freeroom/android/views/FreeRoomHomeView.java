@@ -723,14 +723,19 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				getApplicationContext(), mModel.getOccupancyResults(),
 				mController, this);
 		mExpListView.setAdapter(mExpListAdapter);
-		boolean space = false; // TODO: how to get space?
-		if (space) {
+
+		// search action is always there.
+		addActionToActionBar(search);
+		// on tablet, put all the actions, without the overflow.
+		if (isLandscape()) {
+			addActionToActionBar(editFavorites);
 			addActionToActionBar(settings);
 			addActionToActionBar(refresh);
-			addActionToActionBar(editFavorites);
+		} else {
+			// on phones, put all the other actions in the action overflow.
+			addActionToActionBar(overflow);
 		}
-		addActionToActionBar(search);
-		addActionToActionBar(overflow);
+
 		initInfoDialog();
 		initSearchDialog();
 		initFavoritesDialog();
@@ -2474,7 +2479,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		// for landscape device, mainly tablet, some layout are programatically
 		// changed to horizontal values.
-		if (activityHeight < activityWidth) {
+		if (isLandscape()) {
 			LinearLayout header_main = (LinearLayout) mSearchView
 					.findViewById(R.id.freeroom_layout_dialog_search_upper_main);
 			header_main.setOrientation(LinearLayout.HORIZONTAL);
@@ -2522,6 +2527,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			searchDialogHasHeightExtenstionProblem = false;
 		}
+	}
+
+	/**
+	 * Check if the height is smaller than the width of the displayed screen.
+	 * <p>
+	 * As the plugin is NOT sensible to landscape mode, this will ONLY occur on
+	 * tablets.
+	 * 
+	 * @return true if landscape.
+	 */
+	private boolean isLandscape() {
+		return (activityHeight < activityWidth);
 	}
 
 	// TODO: the InputBar is not used so far
