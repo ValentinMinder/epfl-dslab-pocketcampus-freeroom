@@ -140,7 +140,7 @@ public class FetchOccupancyDataJSON {
 					String uid = extractAndInsertRoom(room, updateRooms);
 					if (uid != null) {
 						countRoom++;
-						//extractAndInsertOccupancies(occupancy, uid);
+						extractAndInsertOccupancies(occupancy, uid);
 					}
 				}
 

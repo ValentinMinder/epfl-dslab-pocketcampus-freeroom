@@ -101,7 +101,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				DB_PASSWORD, this);
 
 		// update ewa : should be done periodically...
-		boolean updateEWA = true;
+		boolean updateEWA = false;
 		if (updateEWA) {
 			if (mExchangeService.updateEWAOccupancy2Weeks()) {
 				System.out.println("EWA data succesfully updated!");
@@ -133,7 +133,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		long startSemester = mCalendar.getTimeInMillis();
 		mCalendar.set(2014, 07, 01, 8, 0);
 		long endSemester = mCalendar.getTimeInMillis();
-		fodj.fetchAndInsertRoomsList(startSemester, endSemester);
+//		fodj.fetchAndInsertRoomsList(startSemester, endSemester);
 //		fodj.fetchAndInsert(System.currentTimeMillis());
 	}
 
