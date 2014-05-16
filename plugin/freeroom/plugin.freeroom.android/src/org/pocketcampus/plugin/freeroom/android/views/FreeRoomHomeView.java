@@ -695,6 +695,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			request = new FRRequestDetails(period, false, uidList, false,
 					false, true, uidNonFav, 1);
 			mModel.setFRRequestDetails(request, !empty);
+			mPrevRequestAdapter.notifyDataSetChanged();
 			refresh();
 		}
 	}
@@ -1156,6 +1157,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onShow(DialogInterface dialog) {
 				searchButton.setEnabled(auditSubmit() == 0);
 				initPreviousTitle();
+				fillSearchDialog();
 			}
 		});
 		// this is necessary o/w buttons don't exists!
@@ -1269,6 +1271,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mPrevRequestAdapter.notifyDataSetChanged();
 		if (mModel.getPreviousRequest().isEmpty()) {
 			initPreviousTitle();
+			displaySearchDialog();
 		}
 	}
 
@@ -1298,7 +1301,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * some change if necessary.
 	 */
 	private void displaySearchDialog() {
-		fillSearchDialog();
 		if (!mModel.getPreviousRequest().isEmpty()) {
 			searchDialogMainLayoutHeightAvailable = Math.max(
 					mSearchView.getMeasuredHeight(), mSearchView.getHeight());
@@ -1579,6 +1581,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void initDefaultRequest(boolean forceUseFavorites) {
 		u.logV("generating and setting a new default request");
 		mModel.setFRRequestDetails(validRequest(forceUseFavorites), false);
+		mPrevRequestAdapter.notifyDataSetChanged();
 	}
 
 	/**
@@ -2789,6 +2792,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		FRRequestDetails details = new FRRequestDetails(period,
 				freeButton.isChecked(), mUIDList, any, fav, user, userDef, 1);
 		mModel.setFRRequestDetails(details, save);
+		mPrevRequestAdapter.notifyDataSetChanged();
 		refresh();
 		mSearchDialog.dismiss();
 

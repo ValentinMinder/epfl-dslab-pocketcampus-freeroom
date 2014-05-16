@@ -588,6 +588,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * Set the currently displayed request.
+	 * <p>
+	 * Make sure you call a notify method on the previous request adapter.
 	 * 
 	 * @param request
 	 *            next currently displayed request.
