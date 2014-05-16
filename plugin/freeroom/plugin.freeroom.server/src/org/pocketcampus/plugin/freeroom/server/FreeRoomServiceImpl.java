@@ -197,6 +197,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (type == OCCUPANCY_TYPE.USER && hash == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Hash is null when inserting user occupancy");
+			return false;
 		}
 
 		if (type == OCCUPANCY_TYPE.USER) {
