@@ -244,7 +244,7 @@ public class FRUtilsClient {
 	 * @return a string summary of the collection, starting by the prefix and
 	 *         limited in size.
 	 */
-	private String getSummaryTextFromCollection(Collection<FRRoom> collec,
+	public String getSummaryTextFromCollection(Collection<FRRoom> collec,
 			String prefix, int limit) {
 		if (limit < 0) {
 			limit = Integer.MAX_VALUE;

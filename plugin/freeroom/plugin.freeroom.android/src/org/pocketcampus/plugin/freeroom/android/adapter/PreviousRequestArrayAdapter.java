@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.freeroom.android.adapter;
 import java.util.List;
 
 import org.pocketcampus.plugin.freeroom.R;
+import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
 import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
 
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * Adpater for previous request display, with play, edit and remove options.
@@ -22,11 +24,12 @@ import android.widget.ImageView;
  * @param <T>
  *            used by FRRequestDetails.
  */
-public class PreviousRequestArrayAdapter<T> extends ArrayAdapter<T> {
+public class PreviousRequestArrayAdapter<T> extends
+		ArrayAdapter<FRRequestDetails> {
 	private FreeRoomHomeView caller;
 
 	public PreviousRequestArrayAdapter(FreeRoomHomeView caller,
-			Context context, int row, int label, List<T> items) {
+			Context context, int row, int label, List<FRRequestDetails> items) {
 		super(context, row, label, items);
 		this.caller = caller;
 	}
@@ -42,7 +45,7 @@ public class PreviousRequestArrayAdapter<T> extends ArrayAdapter<T> {
 				caller.onPlayRequestClickListener(position);
 			}
 		});
-		
+
 		ImageView removeRequest = (ImageView) row
 				.findViewById(R.id.freeroom_layout_prev_req_remove);
 
@@ -53,6 +56,10 @@ public class PreviousRequestArrayAdapter<T> extends ArrayAdapter<T> {
 			}
 		});
 
+		TextView tv = (TextView) row
+				.findViewById(R.id.freeroom_layout_prev_req_text);
+		FRRequestDetails req = super.getItem(position);
+		tv.setText(caller.FRRequestToString(req));
 		return (row);
 	}
 }

@@ -7,6 +7,8 @@ import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
+import android.content.Context;
+
 /**
  * <code>FRRequestDetails</code> is an extension of the legacy shared
  * <code>FRRequest</code> that is able to store the state of the search UI, in
@@ -87,28 +89,6 @@ public class FRRequestDetails extends FRRequest {
 	public FRRequestDetails(FRRequest other) {
 		super(other);
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public String toString() {
-		// TODO: should be better!!!
-		StringBuilder build = new StringBuilder(100);
-		build.append(FRTimesClient.getInstance().generateShortTimeSummary(
-				super.getPeriod(), true));
-		build.append(" ");
-		if (isAny()) {
-			build.append("any free room");
-		} else {
-			build.append("specified rooms: ");
-			if (isFav()) {
-				build.append("favorites ");
-			}
-			if (isUser()) {
-				build.append("user-defined: ");
-				build.append(getUidNonFav());
-			}
-		}
-		return build.toString();
 	}
 
 	/**

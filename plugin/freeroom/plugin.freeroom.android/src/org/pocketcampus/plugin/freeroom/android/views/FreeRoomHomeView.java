@@ -1222,6 +1222,43 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
+	 * Generates a String summary of a FRRequestDetails with compatible time and
+	 * collections.
+	 * 
+	 * @param req
+	 *            the request to summarize
+	 * @return summary of the request
+	 */
+	public String FRRequestToString(FRRequestDetails req) {
+		StringBuilder build = new StringBuilder(100);
+		build.append(times.generateShortTimeSummary(req.getPeriod(), true));
+		build.append(" ");
+		int max = 50;
+
+		if (req.isAny()) {
+			build.append(getString(R.string.freeroom_search_any));
+		} else {
+			build.append(getString(R.string.freeroom_search_spec));
+			build.append(": ");
+			if (req.isFav()) {
+				build.append(getString(R.string.freeroom_search_favorites));
+				build.append("; ");
+			}
+			if (req.isOnlyFreeRooms()) {
+				build.append(getString(R.string.freeroom_search_only_free));
+				build.append("; ");
+			}
+			if (req.isUser()) {
+				build.append(getString(R.string.freeroom_search_userdef));
+				build.append(u.getSummaryTextFromCollection(req.getUidNonFav(),
+						"", max));
+			}
+		}
+		build.setLength(max);
+		return build.toString();
+	}
+
+	/**
 	 * When a Previous Request item is clicked on "remove".
 	 * 
 	 * @param position
