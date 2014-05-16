@@ -8,7 +8,6 @@ import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.req.AutoCompleteRequestASyncTask;
-import org.pocketcampus.plugin.freeroom.android.req.CheckWhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.android.req.FRRequestASyncTask;
 import org.pocketcampus.plugin.freeroom.android.req.ImWorkingRequestASyncTask;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
@@ -190,55 +189,6 @@ public class FreeRoomController extends PluginController implements
 		Toast.makeText(this,
 				getString(R.string.freeroom_share_server_conflict),
 				Toast.LENGTH_LONG).show();
-	}
-
-	/**
-	 * Stores the prepared request for future sending to the server.
-	 */
-	private WhoIsWorkingRequest whoIsWorkingRequest = null;
-
-	/**
-	 * Stores a <code>WhoIsWorkingRequest</code> for future use.
-	 * 
-	 * This is should be used before changing activity, and you can call the
-	 * corresponding method (same name without "prepare").
-	 * 
-	 * @param request
-	 *            the <code>WhoIsWorkingRequest</code> to store.
-	 */
-	public void prepareCheckWhoIsWorking(WhoIsWorkingRequest request) {
-		this.whoIsWorkingRequest = request;
-	}
-
-	/**
-	 * Sends the ALREADY prepared <code>WhoIsWorkingRequest</code> to the
-	 * server.
-	 * 
-	 * @param view
-	 *            the holder <code>IFreeRoomView</code> calling.
-	 */
-	public void checkWhoIsWorking(IFreeRoomView view) {
-		if (whoIsWorkingRequest != null) {
-			new CheckWhoIsWorkingRequest(view).start(this, mClient,
-					whoIsWorkingRequest);
-			whoIsWorkingRequest = null;
-		} else {
-			Log.e(this.getClass().toString(),
-					"request not defined in controller!");
-		}
-	}
-
-	/**
-	 * Sets the <code>WhoIsWorkingReply</code> results received from the server
-	 * in the model.
-	 * 
-	 * @param result
-	 *            the <code>WhoIsWorkingReply</code> from the server.
-	 */
-	public void setWhoIsWorkingReply(WhoIsWorkingReply result) {
-		List<WorkingOccupancy> listWorkingOccupancies = result
-				.getTheyAreWorking();
-		mModel.setListWorkingOccupancies(listWorkingOccupancies);
 	}
 
 	// NEW INTERFACE as of 2104.04.04.
