@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
@@ -369,7 +370,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			mFavoritesAdapter.notifyDataSetChanged();
 			mFavoritesDialog.show();
 		}
-
+		
 		public int getDrawable() {
 			return R.drawable.ic_action_important;
 		}

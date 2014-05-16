@@ -21,16 +21,15 @@ import java.util.logging.Logger;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
-import org.pocketcampus.plugin.freeroom.data.FetchOccupancyData;
-import org.pocketcampus.plugin.freeroom.data.FetchOccupancyDataJSON;
 import org.pocketcampus.plugin.freeroom.data.FetchRoomsDetails;
-import org.pocketcampus.plugin.freeroom.data.PeriodicallyUpdate;
 import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeServiceImpl;
 import org.pocketcampus.plugin.freeroom.server.utils.OccupancySorted;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
+import org.pocketcampus.plugin.freeroom.shared.AutoCompleteUserMessageReply;
+import org.pocketcampus.plugin.freeroom.shared.AutoCompleteUserMessageRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRReply;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
@@ -40,8 +39,6 @@ import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.LogMessage;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
-import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
-import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
@@ -1313,12 +1310,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return null;
 	}
 
-	@Override
-	public WhoIsWorkingReply whoIsWorking(WhoIsWorkingRequest request)
-			throws TException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	/**
 	 * Pre-format the message for logging
@@ -1351,6 +1343,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		log(LOG_SIDE.ANDROID, Level.WARNING,
 				formatPathMessageLogAndroid(arg0.getMessage(), arg0.getPath()),
 				arg0.getTimestamp());
+	}
+
+	@Override
+	public AutoCompleteUserMessageReply autoCompleteUserMessage(
+			AutoCompleteUserMessageRequest arg0) throws TException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
