@@ -74,8 +74,8 @@ public class ActualOccupationArrayAdapter<T> extends
 		final ActualOccupation mActualOccupation = data.get(index);
 		TextView tv = vholder.getTextView();
 		FRPeriod mFrPeriod = mActualOccupation.getPeriod();
-		tv.setText(FRTimesClient.getInstance().generateShortTimeSummary(
-				mFrPeriod, false));
+		tv.setText(FRTimesClient.getInstance().formatTimePeriod(mFrPeriod,
+				false, false));
 		// displayed text is minimal: only hours
 		// free/occupied: it's known by color
 		// user occupancy: indication by the occupation image

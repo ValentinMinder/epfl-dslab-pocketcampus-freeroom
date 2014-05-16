@@ -1068,6 +1068,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	public void displayShareDialog(final FRPeriod mPeriod, final FRRoom mRoom) {
+
 		mShareDialog.hide();
 		mShareDialog.show();
 
@@ -1312,7 +1313,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	public String FRRequestToString(FRRequestDetails req) {
 		StringBuilder build = new StringBuilder(100);
-		build.append(times.generateShortTimeSummary(req.getPeriod(), true));
+		build.append(times.formatTimePeriod(req.getPeriod(), true, false));
 		build.append(" ");
 		int max = 50;
 
@@ -1819,8 +1820,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				title = getString(R.string.freeroom_home_info_rooms);
 			}
 			FRPeriod period = mModel.getOverAllTreatedPeriod();
-			setTitle(title + times.generateShortTimeSummary(period, true));
-			subtitle = times.generateFullTimeSummary(period);
+			setTitle(title + times.formatTimePeriod(period, false, false));
+			subtitle = times.formatFullDateFullTimePeriod(period);
 
 			// if the info dialog is opened, we update the CORRECT occupancy
 			// with the new data.
@@ -1952,8 +1953,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					.findViewById(R.id.freeroom_layout_dialog_info_period);
 			if (mOccupancy.isSetTreatedPeriod()
 					&& mOccupancy.getTreatedPeriod() != null) {
-				periodTextView.setText(times.generateFullTimeSummary(mOccupancy
-						.getTreatedPeriod()));
+				periodTextView.setText(times
+						.formatFullDateFullTimePeriod(mOccupancy
+								.getTreatedPeriod()));
 			} else {
 				// TODO: error coming from server ??
 				periodTextView.setText("Error: cannot display period");
@@ -2875,7 +2877,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// creating selected time
 		Calendar selected = Calendar.getInstance();
 		selected.setTimeInMillis(prepareFRFrPeriod().getTimeStampStart());
-		showDatePicker.setText(times.getDateText(selected));
+		showDatePicker.setText(times.formatFullDate(selected));
 
 		mDatePickerDialog.updateDate(yearSelected, monthSelected,
 				dayOfMonthSelected);
@@ -2892,10 +2894,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * else, the <code>PickerDialog</code> will reopen with the new value.
 	 */
 	private void updateStartTimePickerAndButton() {
-		showStartTimePicker.setText(times.generateTime(
+		showStartTimePicker.setText(times.generateTimeSummaryWithPrefix(
 				getString(R.string.freeroom_selectstartHour), true, times
-						.generateShortTimeSummary(prepareFRFrPeriod()
-								.getTimeStampStart(), false)));
+						.formatTime(prepareFRFrPeriod().getTimeStampStart(),
+								false)));
 		mTimePickerStartDialog.updateTime(startHourSelected, startMinSelected);
 	}
 
@@ -2910,10 +2912,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * else, the <code>PickerDialog</code> will reopen with the new value.
 	 */
 	private void updateEndTimePickerAndButton() {
-		showEndTimePicker.setText(times.generateTime(
-				getString(R.string.freeroom_selectendHour), true, times
-						.generateShortTimeSummary(prepareFRFrPeriod()
-								.getTimeStampEnd(), false)));
+		showEndTimePicker
+				.setText(times.generateTimeSummaryWithPrefix(
+						getString(R.string.freeroom_selectendHour), true, times
+								.formatTime(prepareFRFrPeriod()
+										.getTimeStampEnd(), false)));
 		if (endHourSelected >= FRTimes.LAST_HOUR_CHECK
 				|| (endHourSelected == FRTimes.LAST_HOUR_CHECK - 1 && endMinSelected != 0)) {
 			addHourButton.setEnabled(false);
@@ -3225,9 +3228,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		long now = System.currentTimeMillis();
 		FRPeriod period = new FRPeriod(now, now + FRTimes.ONE_HOUR_IN_MS, false);
 		String text = "";
-		text += times.generateFullTimeSummary(period) + "\n";
-		text += times.generateShortTimeSummary(period, false) + "\n";
-		text += times.generateShortTimeSummary(period, true);
+		text += times.formatFullDateFullTimePeriod(period) + "\n";
+		text += times.formatTimePeriod(period, false, true) + "\n";
+		text += times.formatTimePeriod(period, true, false);
 		tv.setText(text);
 	}
 }

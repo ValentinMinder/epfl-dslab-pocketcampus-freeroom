@@ -127,7 +127,7 @@ public class FRUtilsClient {
 		// TODO: which period to use ?
 		// in case of specified in request, we should use the personalized
 		// period
-		textBuilder.append(FRTimesClient.getInstance().generateFullTimeSummary(
+		textBuilder.append(FRTimesClient.getInstance().formatFullDateFullTimePeriod(
 				mPeriod)
 				+ ". ");
 		textBuilder.append(context

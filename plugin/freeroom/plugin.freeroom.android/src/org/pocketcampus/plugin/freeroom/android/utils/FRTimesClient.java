@@ -1,8 +1,10 @@
 package org.pocketcampus.plugin.freeroom.android.utils;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
@@ -75,19 +77,20 @@ public class FRTimesClient {
 	}
 
 	/**
-	 * Generates the summary of a selected date.
+	 * Return the appropriated formatted summary of a selected date.
+	 * <p>
+	 * Formatting is Locale-dependent: it will use the device language settings<br>
+	 * English format: Saturday, May 17, 2014 <br>
+	 * French format: samedi 17 mai 2014 <br>
 	 * <p>
 	 * Instead of the usual format "Wed 24 May", the date is summarize to
 	 * "today", "yesterday", "tomorrow" when relevant.
 	 * 
 	 * @param selected
-	 *            the selected time
-	 * @param sdf
-	 *            the chosen formatter for date
-	 * @return a printable summary of the date.
+	 *            the selected time as a calendar
+	 * @return a well-formatted DATE summary of the date.
 	 */
-	public String getDateText(Calendar selected) {
-		SimpleDateFormat sdf = new SimpleDateFormat(day_pattern);
+	public String formatFullDate(Calendar selected) {
 		// creating now time reference
 		Calendar now = Calendar.getInstance();
 		// creating tomorrow time reference
@@ -104,83 +107,113 @@ public class FRTimesClient {
 		} else if (FRTimes.compareCalendars(yesterday, selected)) {
 			return context.getString(R.string.freeroom_search_yesterday);
 		} else {
-			// default case: eg. "Wed May 24"
-			return sdf.format(selected.getTime());
+			// Formatting will use the device language settings:
+			// English format: Saturday, May 17, 2014
+			// French format: samedi 17 mai 2014
+			// TODO: overide default settings
+			DateFormat df;
+			df = DateFormat.getDateInstance(DateFormat.FULL, Locale.FRENCH);
+			df = DateFormat.getDateInstance(DateFormat.FULL, Locale.ENGLISH);
+			df = DateFormat.getDateInstance(DateFormat.FULL);
+			return df.format(selected.getTime());
 		}
 	}
 
 	/**
-	 * Generates a string summary of a given period of time.
+	 * Return the appropriated formatted DATE AND TIME summary of the period.
 	 * <p>
-	 * eg: "Wednesday Apr 24 9:00 AM - 12 PM"
+	 * eg: "Wednesday, Apr 24, 2014, 9:00 AM - 12:00 PM"
 	 * <p>
-	 * It reuses getDateText for the date, with yesterday/today/tomorrow strings.
+	 * Date formatting (specified in {@link formatFullDate})<br>
+	 * Formatting is Locale-dependent: it will use the device language settings<br>
+	 * English format: Saturday, May 17, 2014 <br>
+	 * French format: samedi 17 mai 2014 <br>
+	 * Instead of the usual format "Wed 24 May", the date is summarize to
+	 * "today", "yesterday", "tomorrow" when relevant.
 	 * <p>
-	 * It reuses generateShortTimeSummary for time, with veryshort set to false.
+	 * Time formatting (specified in {@link generateShortTimeSummary})
 	 * 
 	 * @param period
 	 *            the period of time
-	 * @return a string summary of a given period of time.
+	 * @return a well-formatted DATE AND TIME summary of the period.
 	 */
-	public String generateFullTimeSummary(FRPeriod period) {
+	public String formatFullDateFullTimePeriod(FRPeriod period) {
 		StringBuilder build = new StringBuilder(100);
 		Calendar selected = Calendar.getInstance();
 		selected.setTimeInMillis(period.getTimeStampEnd());
-		build.append(getDateText(selected));
-		build.append(" ");
-		build.append(generateShortTimeSummary(period, false));
+		build.append(formatFullDate(selected));
+		build.append(", ");
+		build.append(formatTimePeriod(period, false, false));
 		return build.toString();
 	}
 
 	/**
-	 * Generates a short string summary of a given period of time.
+	 * Return the appropriated formatted TIME summary of the period.
 	 * <p>
-	 * eg: "9:00 AM - 12:00 PM ", or "9 AM - 12 PM" for shorter.
+	 * Example of formatting: "9:00 AM - 12:00 PM"<br>
+	 * With space disabled: eg: "9:00 AM-12:00 PM"
+	 * <p>
+	 * Time formatting: "9:00 PM", "21:00"<br>
+	 * With veryshort enabled: "9PM", "21h"
+	 * <p>
+	 * Choosing between 9:00 PM and 21:00 is done by default user settings.
 	 * 
 	 * @param period
 	 *            the period of time
 	 * @param veryshort
 	 *            if the string returned should be even shorter.
-	 * @return a string summary of a given period of time.
+	 * @param spaces
+	 *            if a space should be put between the two period.
+	 * @return a well-formatted TIME summary of the period.
 	 */
-	public String generateShortTimeSummary(FRPeriod period, boolean veryshort) {
+	public String formatTimePeriod(FRPeriod period, boolean veryshort,
+			boolean spaces) {
 		StringBuilder build = new StringBuilder(100);
-		Date endDate = new Date(period.getTimeStampEnd());
-		Date startDate = new Date(period.getTimeStampStart());
-		String patern = hour_pattern_long;
-		if (veryshort) {
-			patern = hour_pattern_short;
+		build.append(formatTime(period.getTimeStampStart(), veryshort));
+		if (spaces) {
+			build.append(" - ");
+		} else {
+			build.append("-");
 		}
-		SimpleDateFormat hour_min = new SimpleDateFormat(patern);
-
-		build.append(hour_min.format(startDate));
-		build.append("-");
-		build.append(hour_min.format(endDate));
+		build.append(formatTime(period.getTimeStampEnd(), veryshort));
 		return build.toString();
 	}
 
 	/**
-	 * Generates a short string summary of a given point of time.
+	 * Return the appropriated formatted TIME summary of the given time.
 	 * <p>
-	 * eg: "9:00 AM", or "9 AM" for shorter.
+	 * eg: "9:00 AM"
+	 * <p>
+	 * Time formatting: "9:00 PM", "21:00"<br>
+	 * With veryshort enabled: "9PM", "21h"
+	 * <p>
+	 * Choosing between 9:00 PM and 21:00 is done by default user settings.
 	 * 
-	 * @param period
-	 *            the period of time
+	 * @param time
+	 *            the point of time given
 	 * @param veryshort
 	 *            if the string returned should be even shorter.
-	 * @return a string summary of a given period of time.
+	 * @return a well-formatted TIME summary of the given time.
 	 */
-	public String generateShortTimeSummary(long time, boolean veryshort) {
-		StringBuilder build = new StringBuilder(100);
+	public String formatTime(long time, boolean veryshort) {
 		Date startDate = new Date(time);
-		String patern = hour_pattern_long;
-		if (veryshort) {
-			patern = hour_pattern_short;
-		}
-		SimpleDateFormat hour_min = new SimpleDateFormat(patern);
 
-		build.append(hour_min.format(startDate));
-		return build.toString();
+		if (veryshort) {
+			// default: 21h
+			String pattern = "H'h'";
+			android.text.format.DateFormat.getTimeFormat(context);
+			if (!android.text.format.DateFormat.is24HourFormat(context)) {
+				// if we want am/pm: 9PM
+				pattern = "ha";
+			}
+			SimpleDateFormat hour_min = new SimpleDateFormat(pattern);
+			return hour_min.format(startDate);
+		} else {
+			java.text.DateFormat df = android.text.format.DateFormat
+					.getTimeFormat(context);
+			return df.format(startDate);
+		}
+
 	}
 
 	/**
@@ -191,16 +224,17 @@ public class FRTimesClient {
 	 *            eg. "start"
 	 * @param displayPrefix
 	 *            if the prefix should be printed.
-	 * @param time
+	 * @param timeSummary
 	 *            time to display as a formatted string
 	 * @return a formatted time with an optional prefix.
 	 */
-	public String generateTime(String prefix, boolean displayPrefix, String time) {
+	public String generateTimeSummaryWithPrefix(String prefix,
+			boolean displayPrefix, String timeSummary) {
 		String returned = "";
 		if (displayPrefix) {
-			returned = prefix + " " + time;
+			returned = prefix + " " + timeSummary;
 		} else {
-			returned = time;
+			returned = timeSummary;
 		}
 		return returned;
 	}
