@@ -276,7 +276,7 @@ public class FetchOccupancyDataJSON {
 				if (tsStart != 0 && tsEnd != 0 && tsStart < tsEnd) {
 					FRPeriod period = new FRPeriod(tsStart, tsEnd, false);
 					if (server.insertOccupancy(period, OCCUPANCY_TYPE.ROOM,
-							uid, null)) {
+							uid, null, null)) {
 						count++;
 					}
 				}

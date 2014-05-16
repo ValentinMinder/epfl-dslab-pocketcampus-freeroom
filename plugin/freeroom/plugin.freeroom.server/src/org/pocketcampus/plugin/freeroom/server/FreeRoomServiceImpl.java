@@ -115,13 +115,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			System.out.println(details.fetchRoomsIntoDB()
 					+ " rooms inserted/updated");
 		}
-		
-//		new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD, this)).start();
+
+		// new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
+		// this)).start();
 	}
 
 	public void log(Level level, String message) {
 		log(LOG_SIDE.SERVER, level, message);
 	}
+
 	/**
 	 * Logging function, time of the log will be set to the current timestamp.
 	 * 
@@ -174,7 +176,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * @return true if the occupancy has been well inserted, false otherwise.
 	 */
 	public boolean insertOccupancy(FRPeriod period, OCCUPANCY_TYPE type,
-			String uid, String hash) {
+			String uid, String hash, String userMessage) {
 		if (period == null || type == null || uid == null) {
 			log(LOG_SIDE.SERVER,
 					Level.WARNING,
@@ -202,9 +204,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					.roundToNearestHalfHourBefore(period.getTimeStampStart()));
 		}
 
-
 		boolean inserted = insertOccupancyAndCheckOccupancy(period, uid, type,
-				hash);
+				hash, userMessage);
 		log(LOG_SIDE.SERVER, Level.INFO,
 				"Inserting occupancy " + type.toString() + " for room " + uid
 						+ " : " + inserted);
@@ -282,7 +283,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *         database, false otherwise.
 	 */
 	private boolean insertOccupancyAndCheckOccupancy(FRPeriod period,
-			String uid, OCCUPANCY_TYPE typeToInsert, String hash) {
+			String uid, OCCUPANCY_TYPE typeToInsert, String hash, String userMessage) {
 
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
@@ -348,7 +349,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					if ((prevRoom != null && !prevRoom.equals(uid))
 							|| prevRoom == null) {
 						insertCheckOccupancyInDB(uid, hourSharpBefore + i
-								* FRTimes.ONE_HOUR_IN_MS, hash, prevRoom);
+								* FRTimes.ONE_HOUR_IN_MS, hash, prevRoom, userMessage);
 						overallInsertion = overallInsertion
 								&& insertOccupancyInDB(uid, hourSharpBefore + i
 										* FRTimes.ONE_HOUR_IN_MS,
@@ -388,10 +389,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            The uid of the previous room beeing stored in the
 	 *            checkOccupancy table (if one) null otherwise
 	 */
+	//TODO test if usermessage change, there is no problem with count 
 	private void insertCheckOccupancyInDB(String uid, long tsStart,
-			String hash, String prevRoom) {
-		String insertRequest = "INSERT INTO `fr-checkOccupancy` (uid, timestampStart, hash) "
-				+ "VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE uid = ?";
+			String hash, String prevRoom, String userMessage) {
+		String insertRequest = "INSERT INTO `fr-checkOccupancy` (uid, timestampStart, hash, message) "
+				+ "VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE uid = ?";
 
 		Connection connectBDD;
 		try {
@@ -402,7 +404,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			insertQuery.setString(1, uid);
 			insertQuery.setLong(2, tsStart);
 			insertQuery.setString(3, hash);
-			insertQuery.setString(4, uid);
+			insertQuery.setString(4, userMessage);
+			insertQuery.setString(5, uid);
 			int update = insertQuery.executeUpdate();
 
 			if (update > 1) {
@@ -1239,10 +1242,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		WorkingOccupancy work = request.getWork();
 		FRPeriod period = work.getPeriod();
-
+		String userMessage = (work.isSetMessage() && work.getMessage() != null) ? work.getMessage() : null;
 		FRRoom room = work.getRoom();
 		boolean success = insertOccupancy(period, OCCUPANCY_TYPE.USER,
-				room.getUid(), request.getHash());
+				room.getUid(), request.getHash(), userMessage);
 		log(LOG_SIDE.SERVER, Level.INFO, "ImWorkingThere request for room "
 				+ room.getDoorCode() + " : " + success);
 		if (success) {
@@ -1309,8 +1312,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 		return null;
 	}
-
-
 
 	/**
 	 * Pre-format the message for logging

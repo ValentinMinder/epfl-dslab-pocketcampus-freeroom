@@ -235,7 +235,7 @@ public class ExchangeServiceImpl {
 						query.setLong(j + 2, mPeriod.getTimeStampStart());
 						query.setLong(j + 3, mPeriod.getTimeStampEnd());
 						server.insertOccupancy(mPeriod, OCCUPANCY_TYPE.ROOM,
-								room.getUid(), null);
+								room.getUid(), null, null);
 					}
 					// query.execute();
 				} catch (SQLException e1) {
