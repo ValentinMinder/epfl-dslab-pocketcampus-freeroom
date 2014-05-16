@@ -51,8 +51,10 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -2961,11 +2963,23 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private int auditSubmit() {
 		String error = auditSubmitString();
+		TextView tv = (TextView) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_validation);
 		if (!error.equals("")) {
-			showErrorDialog(error);
+			// print errors in textView
+			tv.setText("Request is invalid.\n" + error);
+			tv.setTextColor(Color.WHITE);
+			tv.setBackgroundColor(Color.BLACK);
+			tv.setVisibility(View.VISIBLE);
 			return 1;
+		} else {
+			tv.setTextColor(Color.BLACK);
+			tv.setBackgroundColor(Color.WHITE);
+			// no text, not displayed
+			tv.setText("");
+			tv.setVisibility(View.GONE);
+			return 0;
 		}
-		return 0;
 	}
 
 	private String auditSubmitString() {
@@ -2973,28 +2987,29 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		if (selectedRooms == null
 				|| (!anyButton.isChecked() && !favButton.isChecked()
 						&& userDefButton.isChecked() && selectedRooms.isEmpty())) {
-			ret += "Cannot select empty selected room\n";
+			ret += "\nSelected rooms are empty, please add some room or select other options.";
 		}
 
 		if (anyButton.isChecked()
 				&& (favButton.isChecked() || userDefButton.isChecked())) {
-			ret += "Cannot select any with fav or user-def\n";
+			ret += "\nAny free room is incompatbile with favorites and specified room.";
 		}
 		if (!anyButton.isChecked() && !favButton.isChecked()
 				&& !userDefButton.isChecked()) {
-			ret += "Cannot select none of any, fav and user-defined\n";
+			ret += "\nAt least one of any free room, favorites or specified room must be chosen.";
 		}
 		boolean isFavEmpty = mModel.getFavorites().isEmpty();
 		if (favButton.isChecked() && isFavEmpty) {
 			if (!userDefButton.isChecked()) {
-				ret += "Cannot select only favorites with empty favorites list.\n";
+				ret += "\nYou have no favorites: favorites button don't work, you can't select only this.";
 			} else if (userDefButton.isChecked() && selectedRooms.isEmpty()) {
-				ret += "Cannot select favorites with empty favorites list and user-defined list with empty specific room.\n";
+				ret += "\nYou have no favorites: favorites button don't work, you can't select only this.";
+				ret += "\nSelected rooms are empty, please add some room or select other options.";
 			}
 		}
 		// we dont allow query all the room, including non-free
 		if (anyButton.isChecked() && !freeButton.isChecked()) {
-			ret += "Cannot check the occupancy againts all the room. Only free room are allowed if you want all the rooms.\n";
+			ret += "\nAny free room must check only free room and is incompatible with non-free rooms.";
 		}
 		return ret + auditTimesString();
 	}

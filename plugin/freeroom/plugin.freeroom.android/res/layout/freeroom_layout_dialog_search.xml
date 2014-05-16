@@ -309,6 +309,14 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/freeroom_layout_dialog_search_validation"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Request: valid."
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
@@ -320,7 +328,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@android:color/background_light"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:padding="4dp" >
 
         <!-- subtitle for previous searches -->
 
