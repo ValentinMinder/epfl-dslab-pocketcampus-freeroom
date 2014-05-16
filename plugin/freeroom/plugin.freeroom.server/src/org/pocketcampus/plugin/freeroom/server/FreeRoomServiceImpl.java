@@ -118,18 +118,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			System.out.println(details.fetchRoomsIntoDB()
 					+ " rooms inserted/updated");
 		}
-
-//
-//		FetchOccupancyDataJSON fodj = new FetchOccupancyDataJSON(DB_URL,
-//				DB_USER, DB_PASSWORD, this);
-//		Calendar mCalendar = Calendar.getInstance();
-//		mCalendar.set(2014, 01, 18, 8, 0);
-//		System.out.println(mCalendar);
-//		long startSemester = mCalendar.getTimeInMillis();
-//		mCalendar.set(2014, 07, 01, 8, 0);
-//		long endSemester = mCalendar.getTimeInMillis();
-//		fodj.fetchAndInsertRoomsList(startSemester, endSemester);
-//		fodj.fetchAndInsert(System.currentTimeMillis());
 		
 //		new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD, this)).start();
 	}

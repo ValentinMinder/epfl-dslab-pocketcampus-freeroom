@@ -3,15 +3,6 @@ namespace java org.pocketcampus.plugin.freeroom.shared
 
 const i32 HTTP_UPDATED = 299
 
-enum FRDay {
-	Monday; Tuesday; Wednesday; Thursday; Friday; Saturday; Sunday;
-}
-
-struct FRCourse {
-	1: required string courseID;
-	2: required string courseName;
-}
-
 struct FRRoom{
 	1: required string doorCode;
 	2: required string uid;
@@ -40,17 +31,13 @@ struct FRRoom{
 struct FRPeriod {
 	1: required i64 timeStampStart;
 	2: required i64 timeStampEnd;
-	
+	//TODO todelete
 	10: required bool recurrent;
-	11: optional i64 firstOccurancy;
-	12: optional i32 step;
-	13: optional i64 lastOccurancy;
 }
 
 struct WorkingOccupancy {
 	1: required FRPeriod period;
 	2: required FRRoom room;
-	3: optional FRCourse course;
 	40: optional string message;
 }
 
@@ -70,6 +57,7 @@ struct ActualOccupation {
 	//TO DELETE
 	3: optional i32 probableOccupation; // if we want to do CFF-style
 	4: optional double ratioOccupation;
+	5: optional list<string> userMessages;
 }
 
 // the occupancy of a room: periods are usually each hour
@@ -117,6 +105,17 @@ struct AutoCompleteReply {
 	4: optional map<string, list<FRRoom>> listRoom;
 }
 
+struct AutoCompleteUserMessageRequest {
+	1: required FRPeriod period;
+	2: required FRRoom room;
+	3: required string constraint;
+}
+
+struct AutoCompleteUserMessageReply {
+	1: required i32 status;
+	2: required string statusComment; 
+	3: optional list<string> messages;
+}
 struct ImWorkingRequest {
 	1: required WorkingOccupancy work;
 //This hash must be unique across all sessions and time
@@ -126,18 +125,6 @@ struct ImWorkingRequest {
 struct ImWorkingReply {
 	1: required i32 status;
 	2: required string statusComment;
-}
-
-struct WhoIsWorkingRequest {
-	1: required FRPeriod period;
-	2: optional FRCourse course;
-	3: optional string constraint;
-}
-
-struct WhoIsWorkingReply {
-	1: required i32 status;
-	2: required string statusComment;
-	3: optional list<WorkingOccupancy> theyAreWorking;
 }
 
 struct LogMessage {
@@ -154,11 +141,11 @@ service FreeRoomService {
 	// autocomplete for searching for a room
 	AutoCompleteReply autoCompleteRoom(1: AutoCompleteRequest request);
 	
+	//autocomplete of user messages
+	AutoCompleteUserMessageReply autoCompleteUserMessage(1: AutoCompleteUserMessageRequest request);
+	
 	// indicate that i'm going to work there
 	ImWorkingReply indicateImWorking(1: ImWorkingRequest request);
-	
-	// who is working at this time, this subject?
-	WhoIsWorkingReply whoIsWorking(1: WhoIsWorkingRequest request);
 	
 	//used to log critical bug that alter user experience
 	void logSevere(1: LogMessage log);

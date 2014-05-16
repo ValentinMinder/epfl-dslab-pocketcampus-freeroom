@@ -28,18 +28,21 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
   private static final org.apache.thrift.protocol.TField AVAILABLE_FIELD_DESC = new org.apache.thrift.protocol.TField("available", org.apache.thrift.protocol.TType.BOOL, (short)2);
   private static final org.apache.thrift.protocol.TField PROBABLE_OCCUPATION_FIELD_DESC = new org.apache.thrift.protocol.TField("probableOccupation", org.apache.thrift.protocol.TType.I32, (short)3);
   private static final org.apache.thrift.protocol.TField RATIO_OCCUPATION_FIELD_DESC = new org.apache.thrift.protocol.TField("ratioOccupation", org.apache.thrift.protocol.TType.DOUBLE, (short)4);
+  private static final org.apache.thrift.protocol.TField USER_MESSAGES_FIELD_DESC = new org.apache.thrift.protocol.TField("userMessages", org.apache.thrift.protocol.TType.LIST, (short)5);
 
   private FRPeriod period; // required
   private boolean available; // required
   private int probableOccupation; // required
   private double ratioOccupation; // required
+  private List<String> userMessages; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     PERIOD((short)1, "period"),
     AVAILABLE((short)2, "available"),
     PROBABLE_OCCUPATION((short)3, "probableOccupation"),
-    RATIO_OCCUPATION((short)4, "ratioOccupation");
+    RATIO_OCCUPATION((short)4, "ratioOccupation"),
+    USER_MESSAGES((short)5, "userMessages");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -62,6 +65,8 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
           return PROBABLE_OCCUPATION;
         case 4: // RATIO_OCCUPATION
           return RATIO_OCCUPATION;
+        case 5: // USER_MESSAGES
+          return USER_MESSAGES;
         default:
           return null;
       }
@@ -118,6 +123,9 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.RATIO_OCCUPATION, new org.apache.thrift.meta_data.FieldMetaData("ratioOccupation", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.USER_MESSAGES, new org.apache.thrift.meta_data.FieldMetaData("userMessages", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ActualOccupation.class, metaDataMap);
   }
@@ -147,6 +155,13 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
     this.available = other.available;
     this.probableOccupation = other.probableOccupation;
     this.ratioOccupation = other.ratioOccupation;
+    if (other.isSetUserMessages()) {
+      List<String> __this__userMessages = new ArrayList<String>();
+      for (String other_element : other.userMessages) {
+        __this__userMessages.add(other_element);
+      }
+      this.userMessages = __this__userMessages;
+    }
   }
 
   public ActualOccupation deepCopy() {
@@ -162,6 +177,7 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
     this.probableOccupation = 0;
     setRatioOccupationIsSet(false);
     this.ratioOccupation = 0.0;
+    this.userMessages = null;
   }
 
   public FRPeriod getPeriod() {
@@ -257,6 +273,45 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
     __isset_bit_vector.set(__RATIOOCCUPATION_ISSET_ID, value);
   }
 
+  public int getUserMessagesSize() {
+    return (this.userMessages == null) ? 0 : this.userMessages.size();
+  }
+
+  public java.util.Iterator<String> getUserMessagesIterator() {
+    return (this.userMessages == null) ? null : this.userMessages.iterator();
+  }
+
+  public void addToUserMessages(String elem) {
+    if (this.userMessages == null) {
+      this.userMessages = new ArrayList<String>();
+    }
+    this.userMessages.add(elem);
+  }
+
+  public List<String> getUserMessages() {
+    return this.userMessages;
+  }
+
+  public ActualOccupation setUserMessages(List<String> userMessages) {
+    this.userMessages = userMessages;
+    return this;
+  }
+
+  public void unsetUserMessages() {
+    this.userMessages = null;
+  }
+
+  /** Returns true if field userMessages is set (has been assigned a value) and false otherwise */
+  public boolean isSetUserMessages() {
+    return this.userMessages != null;
+  }
+
+  public void setUserMessagesIsSet(boolean value) {
+    if (!value) {
+      this.userMessages = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case PERIOD:
@@ -291,6 +346,14 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
       }
       break;
 
+    case USER_MESSAGES:
+      if (value == null) {
+        unsetUserMessages();
+      } else {
+        setUserMessages((List<String>)value);
+      }
+      break;
+
     }
   }
 
@@ -307,6 +370,9 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
 
     case RATIO_OCCUPATION:
       return Double.valueOf(getRatioOccupation());
+
+    case USER_MESSAGES:
+      return getUserMessages();
 
     }
     throw new IllegalStateException();
@@ -327,6 +393,8 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
       return isSetProbableOccupation();
     case RATIO_OCCUPATION:
       return isSetRatioOccupation();
+    case USER_MESSAGES:
+      return isSetUserMessages();
     }
     throw new IllegalStateException();
   }
@@ -380,6 +448,15 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
         return false;
     }
 
+    boolean this_present_userMessages = true && this.isSetUserMessages();
+    boolean that_present_userMessages = true && that.isSetUserMessages();
+    if (this_present_userMessages || that_present_userMessages) {
+      if (!(this_present_userMessages && that_present_userMessages))
+        return false;
+      if (!this.userMessages.equals(that.userMessages))
+        return false;
+    }
+
     return true;
   }
 
@@ -406,6 +483,11 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
     builder.append(present_ratioOccupation);
     if (present_ratioOccupation)
       builder.append(ratioOccupation);
+
+    boolean present_userMessages = true && (isSetUserMessages());
+    builder.append(present_userMessages);
+    if (present_userMessages)
+      builder.append(userMessages);
 
     return builder.toHashCode();
   }
@@ -454,6 +536,16 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
     }
     if (isSetRatioOccupation()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.ratioOccupation, typedOther.ratioOccupation);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetUserMessages()).compareTo(typedOther.isSetUserMessages());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetUserMessages()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.userMessages, typedOther.userMessages);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -507,6 +599,23 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 5: // USER_MESSAGES
+          if (field.type == org.apache.thrift.protocol.TType.LIST) {
+            {
+              org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
+              this.userMessages = new ArrayList<String>(_list0.size);
+              for (int _i1 = 0; _i1 < _list0.size; ++_i1)
+              {
+                String _elem2; // required
+                _elem2 = iprot.readString();
+                this.userMessages.add(_elem2);
+              }
+              iprot.readListEnd();
+            }
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -543,6 +652,20 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
       oprot.writeDouble(this.ratioOccupation);
       oprot.writeFieldEnd();
     }
+    if (this.userMessages != null) {
+      if (isSetUserMessages()) {
+        oprot.writeFieldBegin(USER_MESSAGES_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.userMessages.size()));
+          for (String _iter3 : this.userMessages)
+          {
+            oprot.writeString(_iter3);
+          }
+          oprot.writeListEnd();
+        }
+        oprot.writeFieldEnd();
+      }
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -573,6 +696,16 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
       if (!first) sb.append(", ");
       sb.append("ratioOccupation:");
       sb.append(this.ratioOccupation);
+      first = false;
+    }
+    if (isSetUserMessages()) {
+      if (!first) sb.append(", ");
+      sb.append("userMessages:");
+      if (this.userMessages == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.userMessages);
+      }
       first = false;
     }
     sb.append(")");

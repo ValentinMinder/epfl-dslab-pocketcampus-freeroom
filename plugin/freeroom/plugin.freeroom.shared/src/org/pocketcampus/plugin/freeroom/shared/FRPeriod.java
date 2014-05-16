@@ -27,25 +27,16 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
   private static final org.apache.thrift.protocol.TField TIME_STAMP_START_FIELD_DESC = new org.apache.thrift.protocol.TField("timeStampStart", org.apache.thrift.protocol.TType.I64, (short)1);
   private static final org.apache.thrift.protocol.TField TIME_STAMP_END_FIELD_DESC = new org.apache.thrift.protocol.TField("timeStampEnd", org.apache.thrift.protocol.TType.I64, (short)2);
   private static final org.apache.thrift.protocol.TField RECURRENT_FIELD_DESC = new org.apache.thrift.protocol.TField("recurrent", org.apache.thrift.protocol.TType.BOOL, (short)10);
-  private static final org.apache.thrift.protocol.TField FIRST_OCCURANCY_FIELD_DESC = new org.apache.thrift.protocol.TField("firstOccurancy", org.apache.thrift.protocol.TType.I64, (short)11);
-  private static final org.apache.thrift.protocol.TField STEP_FIELD_DESC = new org.apache.thrift.protocol.TField("step", org.apache.thrift.protocol.TType.I32, (short)12);
-  private static final org.apache.thrift.protocol.TField LAST_OCCURANCY_FIELD_DESC = new org.apache.thrift.protocol.TField("lastOccurancy", org.apache.thrift.protocol.TType.I64, (short)13);
 
   private long timeStampStart; // required
   private long timeStampEnd; // required
   private boolean recurrent; // required
-  private long firstOccurancy; // required
-  private int step; // required
-  private long lastOccurancy; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     TIME_STAMP_START((short)1, "timeStampStart"),
     TIME_STAMP_END((short)2, "timeStampEnd"),
-    RECURRENT((short)10, "recurrent"),
-    FIRST_OCCURANCY((short)11, "firstOccurancy"),
-    STEP((short)12, "step"),
-    LAST_OCCURANCY((short)13, "lastOccurancy");
+    RECURRENT((short)10, "recurrent");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -66,12 +57,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
           return TIME_STAMP_END;
         case 10: // RECURRENT
           return RECURRENT;
-        case 11: // FIRST_OCCURANCY
-          return FIRST_OCCURANCY;
-        case 12: // STEP
-          return STEP;
-        case 13: // LAST_OCCURANCY
-          return LAST_OCCURANCY;
         default:
           return null;
       }
@@ -115,10 +100,7 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
   private static final int __TIMESTAMPSTART_ISSET_ID = 0;
   private static final int __TIMESTAMPEND_ISSET_ID = 1;
   private static final int __RECURRENT_ISSET_ID = 2;
-  private static final int __FIRSTOCCURANCY_ISSET_ID = 3;
-  private static final int __STEP_ISSET_ID = 4;
-  private static final int __LASTOCCURANCY_ISSET_ID = 5;
-  private BitSet __isset_bit_vector = new BitSet(6);
+  private BitSet __isset_bit_vector = new BitSet(3);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -129,12 +111,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.RECURRENT, new org.apache.thrift.meta_data.FieldMetaData("recurrent", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
-    tmpMap.put(_Fields.FIRST_OCCURANCY, new org.apache.thrift.meta_data.FieldMetaData("firstOccurancy", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
-    tmpMap.put(_Fields.STEP, new org.apache.thrift.meta_data.FieldMetaData("step", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.LAST_OCCURANCY, new org.apache.thrift.meta_data.FieldMetaData("lastOccurancy", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRPeriod.class, metaDataMap);
   }
@@ -165,9 +141,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     this.timeStampStart = other.timeStampStart;
     this.timeStampEnd = other.timeStampEnd;
     this.recurrent = other.recurrent;
-    this.firstOccurancy = other.firstOccurancy;
-    this.step = other.step;
-    this.lastOccurancy = other.lastOccurancy;
   }
 
   public FRPeriod deepCopy() {
@@ -182,12 +155,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     this.timeStampEnd = 0;
     setRecurrentIsSet(false);
     this.recurrent = false;
-    setFirstOccurancyIsSet(false);
-    this.firstOccurancy = 0;
-    setStepIsSet(false);
-    this.step = 0;
-    setLastOccurancyIsSet(false);
-    this.lastOccurancy = 0;
   }
 
   public long getTimeStampStart() {
@@ -259,75 +226,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     __isset_bit_vector.set(__RECURRENT_ISSET_ID, value);
   }
 
-  public long getFirstOccurancy() {
-    return this.firstOccurancy;
-  }
-
-  public FRPeriod setFirstOccurancy(long firstOccurancy) {
-    this.firstOccurancy = firstOccurancy;
-    setFirstOccurancyIsSet(true);
-    return this;
-  }
-
-  public void unsetFirstOccurancy() {
-    __isset_bit_vector.clear(__FIRSTOCCURANCY_ISSET_ID);
-  }
-
-  /** Returns true if field firstOccurancy is set (has been assigned a value) and false otherwise */
-  public boolean isSetFirstOccurancy() {
-    return __isset_bit_vector.get(__FIRSTOCCURANCY_ISSET_ID);
-  }
-
-  public void setFirstOccurancyIsSet(boolean value) {
-    __isset_bit_vector.set(__FIRSTOCCURANCY_ISSET_ID, value);
-  }
-
-  public int getStep() {
-    return this.step;
-  }
-
-  public FRPeriod setStep(int step) {
-    this.step = step;
-    setStepIsSet(true);
-    return this;
-  }
-
-  public void unsetStep() {
-    __isset_bit_vector.clear(__STEP_ISSET_ID);
-  }
-
-  /** Returns true if field step is set (has been assigned a value) and false otherwise */
-  public boolean isSetStep() {
-    return __isset_bit_vector.get(__STEP_ISSET_ID);
-  }
-
-  public void setStepIsSet(boolean value) {
-    __isset_bit_vector.set(__STEP_ISSET_ID, value);
-  }
-
-  public long getLastOccurancy() {
-    return this.lastOccurancy;
-  }
-
-  public FRPeriod setLastOccurancy(long lastOccurancy) {
-    this.lastOccurancy = lastOccurancy;
-    setLastOccurancyIsSet(true);
-    return this;
-  }
-
-  public void unsetLastOccurancy() {
-    __isset_bit_vector.clear(__LASTOCCURANCY_ISSET_ID);
-  }
-
-  /** Returns true if field lastOccurancy is set (has been assigned a value) and false otherwise */
-  public boolean isSetLastOccurancy() {
-    return __isset_bit_vector.get(__LASTOCCURANCY_ISSET_ID);
-  }
-
-  public void setLastOccurancyIsSet(boolean value) {
-    __isset_bit_vector.set(__LASTOCCURANCY_ISSET_ID, value);
-  }
-
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case TIME_STAMP_START:
@@ -354,30 +252,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
       }
       break;
 
-    case FIRST_OCCURANCY:
-      if (value == null) {
-        unsetFirstOccurancy();
-      } else {
-        setFirstOccurancy((Long)value);
-      }
-      break;
-
-    case STEP:
-      if (value == null) {
-        unsetStep();
-      } else {
-        setStep((Integer)value);
-      }
-      break;
-
-    case LAST_OCCURANCY:
-      if (value == null) {
-        unsetLastOccurancy();
-      } else {
-        setLastOccurancy((Long)value);
-      }
-      break;
-
     }
   }
 
@@ -391,15 +265,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
 
     case RECURRENT:
       return Boolean.valueOf(isRecurrent());
-
-    case FIRST_OCCURANCY:
-      return Long.valueOf(getFirstOccurancy());
-
-    case STEP:
-      return Integer.valueOf(getStep());
-
-    case LAST_OCCURANCY:
-      return Long.valueOf(getLastOccurancy());
 
     }
     throw new IllegalStateException();
@@ -418,12 +283,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
       return isSetTimeStampEnd();
     case RECURRENT:
       return isSetRecurrent();
-    case FIRST_OCCURANCY:
-      return isSetFirstOccurancy();
-    case STEP:
-      return isSetStep();
-    case LAST_OCCURANCY:
-      return isSetLastOccurancy();
     }
     throw new IllegalStateException();
   }
@@ -468,33 +327,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
         return false;
     }
 
-    boolean this_present_firstOccurancy = true && this.isSetFirstOccurancy();
-    boolean that_present_firstOccurancy = true && that.isSetFirstOccurancy();
-    if (this_present_firstOccurancy || that_present_firstOccurancy) {
-      if (!(this_present_firstOccurancy && that_present_firstOccurancy))
-        return false;
-      if (this.firstOccurancy != that.firstOccurancy)
-        return false;
-    }
-
-    boolean this_present_step = true && this.isSetStep();
-    boolean that_present_step = true && that.isSetStep();
-    if (this_present_step || that_present_step) {
-      if (!(this_present_step && that_present_step))
-        return false;
-      if (this.step != that.step)
-        return false;
-    }
-
-    boolean this_present_lastOccurancy = true && this.isSetLastOccurancy();
-    boolean that_present_lastOccurancy = true && that.isSetLastOccurancy();
-    if (this_present_lastOccurancy || that_present_lastOccurancy) {
-      if (!(this_present_lastOccurancy && that_present_lastOccurancy))
-        return false;
-      if (this.lastOccurancy != that.lastOccurancy)
-        return false;
-    }
-
     return true;
   }
 
@@ -516,21 +348,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     builder.append(present_recurrent);
     if (present_recurrent)
       builder.append(recurrent);
-
-    boolean present_firstOccurancy = true && (isSetFirstOccurancy());
-    builder.append(present_firstOccurancy);
-    if (present_firstOccurancy)
-      builder.append(firstOccurancy);
-
-    boolean present_step = true && (isSetStep());
-    builder.append(present_step);
-    if (present_step)
-      builder.append(step);
-
-    boolean present_lastOccurancy = true && (isSetLastOccurancy());
-    builder.append(present_lastOccurancy);
-    if (present_lastOccurancy)
-      builder.append(lastOccurancy);
 
     return builder.toHashCode();
   }
@@ -569,36 +386,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     }
     if (isSetRecurrent()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.recurrent, typedOther.recurrent);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetFirstOccurancy()).compareTo(typedOther.isSetFirstOccurancy());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetFirstOccurancy()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.firstOccurancy, typedOther.firstOccurancy);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetStep()).compareTo(typedOther.isSetStep());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetStep()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.step, typedOther.step);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetLastOccurancy()).compareTo(typedOther.isSetLastOccurancy());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetLastOccurancy()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.lastOccurancy, typedOther.lastOccurancy);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -644,30 +431,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 11: // FIRST_OCCURANCY
-          if (field.type == org.apache.thrift.protocol.TType.I64) {
-            this.firstOccurancy = iprot.readI64();
-            setFirstOccurancyIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 12: // STEP
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.step = iprot.readI32();
-            setStepIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 13: // LAST_OCCURANCY
-          if (field.type == org.apache.thrift.protocol.TType.I64) {
-            this.lastOccurancy = iprot.readI64();
-            setLastOccurancyIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -701,21 +464,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     oprot.writeFieldBegin(RECURRENT_FIELD_DESC);
     oprot.writeBool(this.recurrent);
     oprot.writeFieldEnd();
-    if (isSetFirstOccurancy()) {
-      oprot.writeFieldBegin(FIRST_OCCURANCY_FIELD_DESC);
-      oprot.writeI64(this.firstOccurancy);
-      oprot.writeFieldEnd();
-    }
-    if (isSetStep()) {
-      oprot.writeFieldBegin(STEP_FIELD_DESC);
-      oprot.writeI32(this.step);
-      oprot.writeFieldEnd();
-    }
-    if (isSetLastOccurancy()) {
-      oprot.writeFieldBegin(LAST_OCCURANCY_FIELD_DESC);
-      oprot.writeI64(this.lastOccurancy);
-      oprot.writeFieldEnd();
-    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -736,24 +484,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     sb.append("recurrent:");
     sb.append(this.recurrent);
     first = false;
-    if (isSetFirstOccurancy()) {
-      if (!first) sb.append(", ");
-      sb.append("firstOccurancy:");
-      sb.append(this.firstOccurancy);
-      first = false;
-    }
-    if (isSetStep()) {
-      if (!first) sb.append(", ");
-      sb.append("step:");
-      sb.append(this.step);
-      first = false;
-    }
-    if (isSetLastOccurancy()) {
-      if (!first) sb.append(", ");
-      sb.append("lastOccurancy:");
-      sb.append(this.lastOccurancy);
-      first = false;
-    }
     sb.append(")");
     return sb.toString();
   }

@@ -21,22 +21,22 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupancy, WorkingOccupancy._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("WorkingOccupancy");
+public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<AutoCompleteUserMessageRequest, AutoCompleteUserMessageRequest._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("AutoCompleteUserMessageRequest");
 
   private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.STRUCT, (short)1);
   private static final org.apache.thrift.protocol.TField ROOM_FIELD_DESC = new org.apache.thrift.protocol.TField("room", org.apache.thrift.protocol.TType.STRUCT, (short)2);
-  private static final org.apache.thrift.protocol.TField MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("message", org.apache.thrift.protocol.TType.STRING, (short)40);
+  private static final org.apache.thrift.protocol.TField CONSTRAINT_FIELD_DESC = new org.apache.thrift.protocol.TField("constraint", org.apache.thrift.protocol.TType.STRING, (short)3);
 
   private FRPeriod period; // required
   private FRRoom room; // required
-  private String message; // required
+  private String constraint; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     PERIOD((short)1, "period"),
     ROOM((short)2, "room"),
-    MESSAGE((short)40, "message");
+    CONSTRAINT((short)3, "constraint");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -55,8 +55,8 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
           return PERIOD;
         case 2: // ROOM
           return ROOM;
-        case 40: // MESSAGE
-          return MESSAGE;
+        case 3: // CONSTRAINT
+          return CONSTRAINT;
         default:
           return null;
       }
@@ -105,55 +105,57 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRPeriod.class)));
     tmpMap.put(_Fields.ROOM, new org.apache.thrift.meta_data.FieldMetaData("room", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRRoom.class)));
-    tmpMap.put(_Fields.MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("message", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.CONSTRAINT, new org.apache.thrift.meta_data.FieldMetaData("constraint", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(WorkingOccupancy.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(AutoCompleteUserMessageRequest.class, metaDataMap);
   }
 
-  public WorkingOccupancy() {
+  public AutoCompleteUserMessageRequest() {
   }
 
-  public WorkingOccupancy(
+  public AutoCompleteUserMessageRequest(
     FRPeriod period,
-    FRRoom room)
+    FRRoom room,
+    String constraint)
   {
     this();
     this.period = period;
     this.room = room;
+    this.constraint = constraint;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public WorkingOccupancy(WorkingOccupancy other) {
+  public AutoCompleteUserMessageRequest(AutoCompleteUserMessageRequest other) {
     if (other.isSetPeriod()) {
       this.period = new FRPeriod(other.period);
     }
     if (other.isSetRoom()) {
       this.room = new FRRoom(other.room);
     }
-    if (other.isSetMessage()) {
-      this.message = other.message;
+    if (other.isSetConstraint()) {
+      this.constraint = other.constraint;
     }
   }
 
-  public WorkingOccupancy deepCopy() {
-    return new WorkingOccupancy(this);
+  public AutoCompleteUserMessageRequest deepCopy() {
+    return new AutoCompleteUserMessageRequest(this);
   }
 
   @Override
   public void clear() {
     this.period = null;
     this.room = null;
-    this.message = null;
+    this.constraint = null;
   }
 
   public FRPeriod getPeriod() {
     return this.period;
   }
 
-  public WorkingOccupancy setPeriod(FRPeriod period) {
+  public AutoCompleteUserMessageRequest setPeriod(FRPeriod period) {
     this.period = period;
     return this;
   }
@@ -177,7 +179,7 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
     return this.room;
   }
 
-  public WorkingOccupancy setRoom(FRRoom room) {
+  public AutoCompleteUserMessageRequest setRoom(FRRoom room) {
     this.room = room;
     return this;
   }
@@ -197,27 +199,27 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
     }
   }
 
-  public String getMessage() {
-    return this.message;
+  public String getConstraint() {
+    return this.constraint;
   }
 
-  public WorkingOccupancy setMessage(String message) {
-    this.message = message;
+  public AutoCompleteUserMessageRequest setConstraint(String constraint) {
+    this.constraint = constraint;
     return this;
   }
 
-  public void unsetMessage() {
-    this.message = null;
+  public void unsetConstraint() {
+    this.constraint = null;
   }
 
-  /** Returns true if field message is set (has been assigned a value) and false otherwise */
-  public boolean isSetMessage() {
-    return this.message != null;
+  /** Returns true if field constraint is set (has been assigned a value) and false otherwise */
+  public boolean isSetConstraint() {
+    return this.constraint != null;
   }
 
-  public void setMessageIsSet(boolean value) {
+  public void setConstraintIsSet(boolean value) {
     if (!value) {
-      this.message = null;
+      this.constraint = null;
     }
   }
 
@@ -239,11 +241,11 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
       }
       break;
 
-    case MESSAGE:
+    case CONSTRAINT:
       if (value == null) {
-        unsetMessage();
+        unsetConstraint();
       } else {
-        setMessage((String)value);
+        setConstraint((String)value);
       }
       break;
 
@@ -258,8 +260,8 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
     case ROOM:
       return getRoom();
 
-    case MESSAGE:
-      return getMessage();
+    case CONSTRAINT:
+      return getConstraint();
 
     }
     throw new IllegalStateException();
@@ -276,8 +278,8 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
       return isSetPeriod();
     case ROOM:
       return isSetRoom();
-    case MESSAGE:
-      return isSetMessage();
+    case CONSTRAINT:
+      return isSetConstraint();
     }
     throw new IllegalStateException();
   }
@@ -286,12 +288,12 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof WorkingOccupancy)
-      return this.equals((WorkingOccupancy)that);
+    if (that instanceof AutoCompleteUserMessageRequest)
+      return this.equals((AutoCompleteUserMessageRequest)that);
     return false;
   }
 
-  public boolean equals(WorkingOccupancy that) {
+  public boolean equals(AutoCompleteUserMessageRequest that) {
     if (that == null)
       return false;
 
@@ -313,12 +315,12 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
         return false;
     }
 
-    boolean this_present_message = true && this.isSetMessage();
-    boolean that_present_message = true && that.isSetMessage();
-    if (this_present_message || that_present_message) {
-      if (!(this_present_message && that_present_message))
+    boolean this_present_constraint = true && this.isSetConstraint();
+    boolean that_present_constraint = true && that.isSetConstraint();
+    if (this_present_constraint || that_present_constraint) {
+      if (!(this_present_constraint && that_present_constraint))
         return false;
-      if (!this.message.equals(that.message))
+      if (!this.constraint.equals(that.constraint))
         return false;
     }
 
@@ -339,21 +341,21 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
     if (present_room)
       builder.append(room);
 
-    boolean present_message = true && (isSetMessage());
-    builder.append(present_message);
-    if (present_message)
-      builder.append(message);
+    boolean present_constraint = true && (isSetConstraint());
+    builder.append(present_constraint);
+    if (present_constraint)
+      builder.append(constraint);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(WorkingOccupancy other) {
+  public int compareTo(AutoCompleteUserMessageRequest other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    WorkingOccupancy typedOther = (WorkingOccupancy)other;
+    AutoCompleteUserMessageRequest typedOther = (AutoCompleteUserMessageRequest)other;
 
     lastComparison = Boolean.valueOf(isSetPeriod()).compareTo(typedOther.isSetPeriod());
     if (lastComparison != 0) {
@@ -375,12 +377,12 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetMessage()).compareTo(typedOther.isSetMessage());
+    lastComparison = Boolean.valueOf(isSetConstraint()).compareTo(typedOther.isSetConstraint());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetMessage()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.message, typedOther.message);
+    if (isSetConstraint()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.constraint, typedOther.constraint);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -418,9 +420,9 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 40: // MESSAGE
+        case 3: // CONSTRAINT
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.message = iprot.readString();
+            this.constraint = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -450,12 +452,10 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
       this.room.write(oprot);
       oprot.writeFieldEnd();
     }
-    if (this.message != null) {
-      if (isSetMessage()) {
-        oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
-        oprot.writeString(this.message);
-        oprot.writeFieldEnd();
-      }
+    if (this.constraint != null) {
+      oprot.writeFieldBegin(CONSTRAINT_FIELD_DESC);
+      oprot.writeString(this.constraint);
+      oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -463,7 +463,7 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("WorkingOccupancy(");
+    StringBuilder sb = new StringBuilder("AutoCompleteUserMessageRequest(");
     boolean first = true;
 
     sb.append("period:");
@@ -481,16 +481,14 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
       sb.append(this.room);
     }
     first = false;
-    if (isSetMessage()) {
-      if (!first) sb.append(", ");
-      sb.append("message:");
-      if (this.message == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.message);
-      }
-      first = false;
+    if (!first) sb.append(", ");
+    sb.append("constraint:");
+    if (this.constraint == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.constraint);
     }
+    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -502,6 +500,9 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
     }
     if (room == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'room' was not present! Struct: " + toString());
+    }
+    if (constraint == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'constraint' was not present! Struct: " + toString());
     }
   }
 

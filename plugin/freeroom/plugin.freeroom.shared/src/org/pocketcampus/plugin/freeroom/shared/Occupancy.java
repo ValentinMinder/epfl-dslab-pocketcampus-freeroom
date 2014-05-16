@@ -657,14 +657,14 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
         case 2: // OCCUPANCY
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-              this.occupancy = new ArrayList<ActualOccupation>(_list0.size);
-              for (int _i1 = 0; _i1 < _list0.size; ++_i1)
+              org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
+              this.occupancy = new ArrayList<ActualOccupation>(_list4.size);
+              for (int _i5 = 0; _i5 < _list4.size; ++_i5)
               {
-                ActualOccupation _elem2; // required
-                _elem2 = new ActualOccupation();
-                _elem2.read(iprot);
-                this.occupancy.add(_elem2);
+                ActualOccupation _elem6; // required
+                _elem6 = new ActualOccupation();
+                _elem6.read(iprot);
+                this.occupancy.add(_elem6);
               }
               iprot.readListEnd();
             }
@@ -734,9 +734,9 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
       oprot.writeFieldBegin(OCCUPANCY_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.occupancy.size()));
-        for (ActualOccupation _iter3 : this.occupancy)
+        for (ActualOccupation _iter7 : this.occupancy)
         {
-          _iter3.write(oprot);
+          _iter7.write(oprot);
         }
         oprot.writeListEnd();
       }
