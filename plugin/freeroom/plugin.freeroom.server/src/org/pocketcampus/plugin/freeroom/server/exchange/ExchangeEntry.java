@@ -206,8 +206,8 @@ public class ExchangeEntry {
 						mCalendar.setTimeInMillis(timestamp);
 						long offset = (mCalendar.get(Calendar.ZONE_OFFSET) + mCalendar.get(Calendar.DST_OFFSET)) / (60 * 1000);
 						FRPeriod mFrPeriod2 = new FRPeriod(calendarEvent
-								.getStartTime().getTime() - offset * FRTimes.ONE_MIN_IN_MS, calendarEvent
-								.getEndTime().getTime() - offset * FRTimes.ONE_MIN_IN_MS, false);
+								.getStartTime().getTime() + offset * FRTimes.ONE_MIN_IN_MS, calendarEvent
+								.getEndTime().getTime() + offset * FRTimes.ONE_MIN_IN_MS, false);
 //						System.out.println(calendarEvent
 //								.getStartTime() + "/" + calendarEvent
 //								.getEndTime());
