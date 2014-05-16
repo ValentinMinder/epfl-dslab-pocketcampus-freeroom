@@ -4700,8 +4700,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "446"
             endingLineNumber = "446"
-            landmarkName = "@implementation MapUtils"
-            landmarkType = "3">
+            landmarkName = "+tilePathToCH1903:tileSize:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
