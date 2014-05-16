@@ -528,6 +528,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	@Override
 	protected void handleIntent(Intent intent) {
+		// on resuming, u may have gone null, go direct start.
+		if (u == null) {
+			defaultMainStart();
+			return;
+		}
 		u.logV("Starting the app: handling an Intent");
 		// Intent and/or action seems to be null in some cases... so we just
 		// skip these cases and launch the default settings.
@@ -623,8 +628,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * new request but use this one instead.
 	 */
 	private void defaultMainStart() {
-		u.logV("Starting in default mode.");
 		if (mController != null && mModel != null) {
+			u.logV("Starting in default mode.");
 			FRRequestDetails req = mModel.getFRRequestDetails();
 			// if no previous request or it's outdated
 			long timeOut = mModel.getMinutesRequestTimeOut()
@@ -639,7 +644,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			refresh();
 			u.logV("Successful start in default mode: wait for server response.");
 		} else {
-			u.logE("Controller or Model not defined: cannot start default mode.");
+			System.err.println("Controller or Model not defined: cannot start default mode.");
 		}
 	}
 
