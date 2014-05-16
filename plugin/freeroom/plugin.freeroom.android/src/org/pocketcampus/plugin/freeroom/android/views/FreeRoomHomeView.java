@@ -1415,8 +1415,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 *            message to display.
 	 */
 	private void showErrorDialog(String text) {
-		mErrorDialog.setMessage(text);
-		mErrorDialog.show();
+		// error dialog may be null at init time!
+		if (mErrorDialog != null) {
+			mErrorDialog.setMessage(text);
+			mErrorDialog.show();
+		}
 	}
 
 	/**
@@ -2855,31 +2858,27 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * @return 0 if times are valids, positive integer otherwise
 	 */
 	private int auditTimes() {
+		return auditTimesString().equals("") ? 0 : 1;
+	}
+
+	/**
+	 * Check that the times set are valid, according to the shared definition.
+	 * 
+	 * @return the errors
+	 */
+	private String auditTimesString() {
 		// NOT EVEN SET, we don't bother checking
 		if (yearSelected == -1 || monthSelected == -1
 				|| dayOfMonthSelected == -1) {
-			return 1;
+			return "error time";
 		}
 		if (startHourSelected == -1 || endHourSelected == -1
 				|| startMinSelected == -1 || endMinSelected == -1) {
-			return 1;
+			return "error time";
 		}
 
 		// IF SET, we use the shared method checking the prepared period
-
-		String errors = FRTimes.validCalendarsString(prepareFRFrPeriod());
-		if (errors.equals("")) {
-			return 0;
-		}
-
-		Toast.makeText(
-				getApplicationContext(),
-				"Please review the time, should be between Mo-Fr 8am-7pm.\n"
-						+ "The end should also be after the start, and at least 5 minutes.",
-				Toast.LENGTH_LONG).show();
-		Toast.makeText(getApplicationContext(),
-				"Errors remaining: \n" + errors, Toast.LENGTH_LONG).show();
-		return 1;
+		return FRTimes.validCalendarsString(prepareFRFrPeriod());
 	}
 
 	/**
@@ -2890,32 +2889,43 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 *         something else otherwise.
 	 */
 	private int auditSubmit() {
+		String error = auditSubmitString();
+		if (!error.equals("")) {
+			showErrorDialog(error);
+			return 1;
+		}
+		return 0;
+	}
+
+	private String auditSubmitString() {
+		String ret = "";
 		if (selectedRooms == null
 				|| (!anyButton.isChecked() && !favButton.isChecked()
 						&& userDefButton.isChecked() && selectedRooms.isEmpty())) {
-			return 1;
+			ret += "Cannot select empty selected room\n";
 		}
 
 		if (anyButton.isChecked()
 				&& (favButton.isChecked() || userDefButton.isChecked())) {
-			return 1;
+			ret += "Cannot select any with fav or user-def\n";
 		}
 		if (!anyButton.isChecked() && !favButton.isChecked()
 				&& !userDefButton.isChecked()) {
-			return 1;
+			ret += "Cannot select none of any, fav and user-defined\n";
 		}
 		boolean isFavEmpty = mModel.getFavorites().isEmpty();
-		if (favButton.isChecked()
-				&& isFavEmpty
-				&& (!userDefButton.isChecked() || (userDefButton.isChecked() && selectedRooms
-						.isEmpty()))) {
-			return 1;
+		if (favButton.isChecked() && isFavEmpty) {
+			if (!userDefButton.isChecked()) {
+				ret += "Cannot select only favorites with empty favorites list.\n";
+			} else if (userDefButton.isChecked() && selectedRooms.isEmpty()) {
+				ret += "Cannot select favorites with empty favorites list and user-defined list with empty specific room.\n";
+			}
 		}
 		// we dont allow query all the room, including non-free
 		if (anyButton.isChecked() && !freeButton.isChecked()) {
-			return 1;
+			ret += "Cannot check the occupancy againts all the room. Only free room are allowed if you want all the rooms.\n";
 		}
-		return auditTimes();
+		return ret + auditTimesString();
 	}
 
 	@Override

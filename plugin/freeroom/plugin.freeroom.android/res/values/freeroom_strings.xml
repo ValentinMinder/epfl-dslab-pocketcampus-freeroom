@@ -100,7 +100,7 @@
     <string name="freeroom_dialog_warn_cancel">"Cancel"</string>
     <string name="freeroom_dialog_warn_confirm">"Confirm"</string>
     <string name="freeroom_dialog_error_title">"Error"</string>
-    <string name="freeroom_dialog_error_dismiss">"Cancel"</string>
+    <string name="freeroom_dialog_error_dismiss">"Dismiss"</string>
     <string name="freeroom_dialog_add_room_title">"Add rooms"</string>
     <string name="freeroom_dialog_add_room_add">"Add"</string>
     <string name="freeroom_dialog_add_room_init">"Please select room by typing first letters."</string>
