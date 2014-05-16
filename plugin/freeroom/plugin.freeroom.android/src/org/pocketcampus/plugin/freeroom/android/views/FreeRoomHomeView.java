@@ -62,6 +62,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
@@ -260,6 +261,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * previous searches).
 	 */
 	private LinearLayout searchDialogUpperLinearLayout;
+	/**
+	 * Authorize the change of date for search dialog.
+	 */
+	private boolean changeDateAuthorized = false;
 	/**
 	 * Stores the height available
 	 */
@@ -2105,7 +2110,22 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
+				// TODO do that correctly according to group change.
+				if (changeDateAuthorized) {
+					mDatePickerDialog.show();
+				} else {
+					changeDateAuthorized = true;
+					showErrorDialog("Changing the current date has been disabled FOR STUDENTS. Blocking this feature was requested by official EPFL Services.");
+				}
+			}
+		});
+
+		showDatePicker.setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View v) {
 				mDatePickerDialog.show();
+				return true;
 			}
 		});
 
@@ -2707,6 +2727,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	private void reset() {
+		// TODO do that correctly according to group change.
+		changeDateAuthorized = false;
+
 		searchButton.setEnabled(false);
 
 		// // reset the list of selected rooms
