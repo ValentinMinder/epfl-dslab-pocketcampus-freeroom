@@ -1,0 +1,58 @@
+package org.pocketcampus.plugin.freeroom.android.adapter;
+
+import java.util.List;
+
+import org.pocketcampus.plugin.freeroom.R;
+import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
+
+import android.content.Context;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+
+/**
+ * Adpater for previous request display, with play, edit and remove options.
+ * 
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
+ * 
+ * @param <T>
+ *            used by FRRequestDetails.
+ */
+public class PreviousRequestArrayAdapter<T> extends ArrayAdapter<T> {
+	private FreeRoomHomeView caller;
+
+	public PreviousRequestArrayAdapter(FreeRoomHomeView caller,
+			Context context, int row, int label, List<T> items) {
+		super(context, row, label, items);
+		this.caller = caller;
+	}
+
+	public View getView(final int position, View convertView, ViewGroup parent) {
+		View row = super.getView(position, convertView, parent);
+		ImageView playRequest = (ImageView) row
+				.findViewById(R.id.freeroom_layout_prev_req_play);
+
+		playRequest.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				caller.onPlayRequestClickListener(position);
+			}
+		});
+		
+		ImageView removeRequest = (ImageView) row
+				.findViewById(R.id.freeroom_layout_prev_req_remove);
+
+		removeRequest.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				caller.onRemoveRequestClickListener(position);
+			}
+		});
+
+		return (row);
+	}
+}

@@ -23,6 +23,7 @@ import org.pocketcampus.plugin.freeroom.android.adapter.ActualOccupationArrayAda
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewFavoriteAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.FRRoomSuggestionArrayAdapter;
+import org.pocketcampus.plugin.freeroom.android.adapter.PreviousRequestArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
 import org.pocketcampus.plugin.freeroom.android.utils.FRTimesClient;
@@ -279,6 +280,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * extended).
 	 */
 	private boolean searchDialogExtendMoreTriggered = false;
+	/**
+	 * Text for "Previous request"
+	 */
+	private String textTitlePrevious = "mock text";
 
 	/* UI ELEMENTS FOR DIALOGS - FAVORITES */
 
@@ -1116,7 +1121,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mSearchView.setMinimumHeight((int) (activityHeight * 0.8f));
 
 		mSearchDialog.setView(mSearchView);
-		final String textTitlePrevious = getString(R.string.freeroom_search_previous_search);
+		textTitlePrevious = getString(R.string.freeroom_search_previous_search);
 		prevSearchTitle = (TextView) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_prev_search_title);
 		prevSearchTitle.setOnClickListener(new OnClickListener() {
@@ -1173,9 +1178,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// display the previous searches
 		mSearchPreviousListView = (ListView) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_prev_search_list);
-		ArrayAdapter<FRRequestDetails> adapter = new ArrayAdapter<FRRequestDetails>(
-				this, R.layout.sdk_list_entry, R.id.sdk_list_entry_text,
-				mModel.getPreviousRequest());
+		ArrayAdapter<FRRequestDetails> adapter = new PreviousRequestArrayAdapter<FRRequestDetails>(
+				this, this, R.layout.freeroom_layout_list_prev_req,
+				R.id.freeroom_layout_prev_req_text, mModel.getPreviousRequest());
 		mSearchPreviousListView.setAdapter(adapter);
 		mSearchPreviousListView
 				.setOnItemClickListener(new OnItemClickListener() {
@@ -1183,20 +1188,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int arg2, long arg3) {
-						FRRequestDetails req = mModel.getPreviousRequest().get(
-								arg2);
-						if (req != null) {
-							fillSearchDialog(req);
-						}
-
-						searchDialogExtendMoreTriggered = true;
-						if (searchDialogHasHeightExtenstionProblem) {
-							prevSearchTitle
-									.setText(textTitlePrevious
-											+ ": "
-											+ getString(R.string.freeroom_search_previous_show));
-						}
-						searchDialogMissSpaceExtendChangeState(false);
+						onFillRequestClickListeners(arg2);
 					}
 				});
 
@@ -1204,6 +1196,31 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				.findViewById(R.id.freeroom_layout_dialog_search_scroll_main);
 
 		initSearch();
+	}
+
+	public void onPlayRequestClickListener(int position) {
+		if (onFillRequestClickListeners(position)) {
+			prepareSearchQuery(false);
+		}
+	}
+	
+	public void onRemoveRequestClickListener(int position) {
+		mModel.removeRequest(position);
+	}
+
+	private boolean onFillRequestClickListeners(int position) {
+		searchDialogExtendMoreTriggered = true;
+		if (searchDialogHasHeightExtenstionProblem) {
+			prevSearchTitle.setText(textTitlePrevious + ": "
+					+ getString(R.string.freeroom_search_previous_show));
+		}
+		searchDialogMissSpaceExtendChangeState(false);
+		FRRequestDetails req = mModel.getPreviousRequest().get(position);
+		if (req != null) {
+			fillSearchDialog(req);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -2194,7 +2211,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				prepareSearchQuery();
+				prepareSearchQuery(true);
 			}
 		});
 
@@ -2674,7 +2691,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	/**
 	 * Prepare the actual query to send and set it in the controller
 	 */
-	private void prepareSearchQuery() {
+	private void prepareSearchQuery(boolean save) {
 		FRPeriod period = prepareFRFrPeriod();
 
 		List<String> mUIDList = new ArrayList<String>(selectedRooms.size());
@@ -2701,7 +2718,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// purpose
 		FRRequestDetails details = new FRRequestDetails(period,
 				freeButton.isChecked(), mUIDList, any, fav, user, userDef, 1);
-		mModel.setFRRequestDetails(details, true);
+		mModel.setFRRequestDetails(details, save);
 		refresh();
 		mSearchDialog.dismiss();
 
