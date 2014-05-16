@@ -86,7 +86,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.markupartist.android.widget.ActionBar.Action;
 import com.taig.pmc.PopupMenuCompat;
@@ -305,13 +304,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * 
 	 */
 	private enum AddRoomCaller {
-		FAVORITES, SEARCH;
+		FAVORITES, SEARCH, UNDEF;
 	}
 
 	/**
 	 * Stores the last caller of the ADDROOM dialog.
 	 */
-	private AddRoomCaller lastCaller = null;
+	private AddRoomCaller lastCaller = AddRoomCaller.UNDEF;
 
 	/* ACTIONS FOR THE ACTION BAR */
 	/**
@@ -932,6 +931,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onShow(DialogInterface dialog) {
 				// searchButton.setEnabled(auditSubmit() == 0);
+			}
+		});
+
+		mAddRoomDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				if (AddRoomCaller.SEARCH.equals(lastCaller)) {
+					searchButton.setEnabled(auditSubmit() == 0);
+				}
 			}
 		});
 
@@ -2197,18 +2206,27 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	private void resetUserDefined() {
-		// TODO: add/remove
-		// mGlobalSubLayout.removeView(mAutoCompleteSuggestionInputBarElement);
-		// mGlobalSubLayout.removeView(mSummarySelectedRoomsTextView);
-		mOptionalLineLinearLayoutWrapperFirst
+		mOptionalLineLinearLayoutContainer
 				.removeView(mOptionalLineLinearLayoutWrapperSecond);
 		selectedRooms.clear();
-		userDefButton.setChecked(false);
+
 		mSummarySelectedRoomsTextView.setText(u
 				.getSummaryTextFromCollection(selectedRooms));
 		mSummarySelectedRoomsTextViewSearchMenu.setText(u
 				.getSummaryTextFromCollection(selectedRooms));
 		mAutoCompleteSuggestionInputBarElement.setInputText("");
+
+		if (mModel.getFavorites().isEmpty() && !favButton.isChecked()) {
+			userDefButton.setChecked(true);
+			mOptionalLineLinearLayoutContainer
+					.addView(mOptionalLineLinearLayoutWrapperSecond);
+			displayAddRoomDialog(AddRoomCaller.SEARCH);
+			searchButton.setEnabled(false);
+		} else {
+			userDefButton.setChecked(false);
+			favButton.setChecked(true);
+			searchButton.setEnabled(auditSubmit() == 0);
+		}
 	}
 
 	private void UIConstructButton() {
@@ -2235,12 +2253,23 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				userDefButton.setEnabled(enabled);
 				freeButton.setEnabled(enabled);
 
-				// TODO: is this great ? this guarantees that search is always
-				// available, but requires two steps to remove the fav (ass
-				// user-def, remove fav)
-				favButton.setChecked(true);
-
-				searchButton.setEnabled(auditSubmit() == 0);
+				// if you don't have favs, ask you to enter some rooms
+				// if you have favs, auto-select it, ... but it requires two
+				// steps to remove the fav (add user-def, remove fav)
+				if (mModel.getFavorites().isEmpty()) {
+					mOptionalLineLinearLayoutContainer
+							.removeView(mOptionalLineLinearLayoutWrapperSecond);
+					mOptionalLineLinearLayoutContainer
+							.addView(mOptionalLineLinearLayoutWrapperSecond);
+					userDefButton.setChecked(true);
+					displayAddRoomDialog(AddRoomCaller.SEARCH);
+					// as it's user-defined, we dont check for search button
+					// enabled now
+					searchButton.setEnabled(false);
+				} else {
+					favButton.setChecked(true);
+					searchButton.setEnabled(auditSubmit() == 0);
+				}
 			}
 		});
 
@@ -2294,11 +2323,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				if (userDefButton.isChecked()) {
+				if (userDefButton.isChecked() || !favButton.isChecked()) {
+					if (userDefButton.isChecked()) {
+						resetUserDefined();
+					}
+					userDefButton.setChecked(true);
+
 					anyButton.setChecked(false);
 					specButton.setChecked(true);
 					freeButton.setChecked(false);
-					// TODO: init and use the data.
+
 					mOptionalLineLinearLayoutContainer
 							.removeView(mOptionalLineLinearLayoutWrapperSecond);
 					mOptionalLineLinearLayoutContainer
@@ -2306,15 +2340,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					mSummarySelectedRoomsTextViewSearchMenu.setText(u
 							.getSummaryTextFromCollection(selectedRooms));
 					displayAddRoomDialog(AddRoomCaller.SEARCH);
-				} else if (!favButton.isChecked()) {
-					userDefButton.setChecked(true);
-					anyButton.setChecked(false);
-					specButton.setChecked(true);
-					freeButton.setChecked(false);
+					searchButton.setEnabled(false);
 				} else {
 					resetUserDefined();
+					searchButton.setEnabled(auditSubmit() == 0);
 				}
-				searchButton.setEnabled(auditSubmit() == 0);
 			}
 		});
 
