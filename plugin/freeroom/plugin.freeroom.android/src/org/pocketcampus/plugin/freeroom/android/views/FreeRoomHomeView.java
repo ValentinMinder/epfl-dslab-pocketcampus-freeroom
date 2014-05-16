@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
@@ -54,7 +53,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -306,6 +304,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	/* UI ELEMENTS FOR DIALOGS - SHARE */
 
+	/**
+	 * TextView summarizing the share intent/text/information that will be sent
+	 * to friend/server.
+	 */
+	private TextView mShareDialogTextViewSummarySharing;
+	/**
+	 * EditText to share the activity/work the user is doing.
+	 */
+	private EditText mShareDialogEditTextMessageWorking;
+
 	/* OTHER UTILS */
 	/**
 	 * Enum to have types and store the last caller of the "Add" dialog.
@@ -372,7 +380,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			mFavoritesAdapter.notifyDataSetChanged();
 			mFavoritesDialog.show();
 		}
-		
+
 		public int getDrawable() {
 			return R.drawable.ic_action_important;
 		}
@@ -1021,30 +1029,61 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
+		mShareDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				// TODO remove text + empty spinner
+			}
+		});
+
+		mShareDialogTextViewSummarySharing = (TextView) mShareView
+				.findViewById(R.id.freeroom_layout_dialog_share_textBasic);
+
+		mShareDialogEditTextMessageWorking = (EditText) mShareView
+				.findViewById(R.id.freeroom_layout_dialog_share_text_edit);
+
 		mShareDialog.setView(mShareView);
 
+	}
+
+	/**
+	 * Notify when the EditText (Message-Working) is updated to generate the
+	 * summary and dimiss the keyboard.
+	 * 
+	 * @param mPeriod
+	 *            period selected.
+	 * @param mRoom
+	 *            room selected.
+	 */
+	private void shareDialogEditTextMessageWorkingUpdated(
+			final FRPeriod mPeriod, final FRRoom mRoom) {
+		String text = mShareDialogEditTextMessageWorking.getText().toString();
+		if (text == null || text.length() == 0) {
+			text = "...";
+		}
+		mShareDialogTextViewSummarySharing.setText(u.wantToShare(mPeriod,
+				mRoom, text));
+		dismissSoftKeyBoard(mShareDialogTextViewSummarySharing);
 	}
 
 	public void displayShareDialog(final FRPeriod mPeriod, final FRRoom mRoom) {
 		mShareDialog.hide();
 		mShareDialog.show();
 
-		final TextView tv = (TextView) mShareView
-				.findViewById(R.id.freeroom_layout_dialog_share_textBasic);
-		tv.setText(u.wantToShare(mPeriod, mRoom, ""));
+		mShareDialogTextViewSummarySharing.setText(u.wantToShare(mPeriod,
+				mRoom, "..."));
 
-		final EditText ed = (EditText) mShareView
-				.findViewById(R.id.freeroom_layout_dialog_share_text_edit);
-		ed.setOnEditorActionListener(new OnEditorActionListener() {
+		mShareDialogEditTextMessageWorking
+				.setOnEditorActionListener(new OnEditorActionListener() {
 
-			@Override
-			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
-				tv.setText(u.wantToShare(mPeriod, mRoom, ed.getText()
-						.toString()));
-				dismissSoftKeyBoard(arg0);
-				return true;
-			}
-		});
+					@Override
+					public boolean onEditorAction(TextView arg0, int arg1,
+							KeyEvent arg2) {
+						shareDialogEditTextMessageWorkingUpdated(mPeriod, mRoom);
+						return true;
+					}
+				});
 
 		Button shareWithServer = mShareDialog
 				.getButton(DialogInterface.BUTTON_NEUTRAL);
@@ -1052,7 +1091,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				share(mPeriod, mRoom, false, ed.getText().toString());
+				share(mPeriod, mRoom, false, mShareDialogEditTextMessageWorking
+						.getText().toString());
 				mShareDialog.dismiss();
 			}
 		});
@@ -1063,18 +1103,26 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				share(mPeriod, mRoom, true, ed.getText().toString());
+				share(mPeriod, mRoom, true, mShareDialogEditTextMessageWorking
+						.getText().toString());
 				mShareDialog.dismiss();
 			}
 		});
 
-		Spinner spinner = (Spinner) mShareView
+		final Spinner spinner = (Spinner) mShareView
 				.findViewById(R.id.freeroom_layout_dialog_share_spinner_course);
 		// Create an ArrayAdapter using the string array and a default spinner
 		// layout
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-				this, R.array.planets_array,
-				android.R.layout.simple_spinner_item);
+		// TODO: get that from the occupancy data... ++ string
+		ArrayList<String> suggest = new ArrayList<String>();
+		// 1st result is the "title"
+		suggest.add("others' activity");
+		// TODO: get this from the selected occupancy...
+		suggest.add("SwEng");
+		suggest.add("NetSec");
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, suggest);
 		// Specify the layout to use when the list of choices appears
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the mFavoritesAdapter to the spinner
@@ -1085,14 +1133,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
-				// TODO do something with that
-				System.out.println("selected" + arg0.getItemAtPosition(arg2));
+				// item 0 is the title
+				if (arg2 != 0) {
+					mShareDialogEditTextMessageWorking.setText(arg0
+							.getItemAtPosition(arg2).toString());
+				}
+				shareDialogEditTextMessageWorkingUpdated(mPeriod, mRoom);
+				spinner.setSelection(0);
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO find out how is this relevant
-				System.out.println("nothing selected!");
+				// do nothing.
 			}
 
 		});
@@ -1975,6 +2027,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void share(FRPeriod mPeriod, FRRoom mRoom, boolean withFriends,
 			String toShare) {
 		WorkingOccupancy work = new WorkingOccupancy(mPeriod, mRoom);
+		CheckBox mShareDialogCheckBoxShareMessageServer = (CheckBox) mShareDialog
+				.findViewById(R.id.freeroom_layout_dialog_share_checkbox_server);
+		if (mShareDialogCheckBoxShareMessageServer.isChecked()
+				&& toShare != null && toShare != "") {
+			work.setMessage(toShare);
+		}
 		ImWorkingRequest request = new ImWorkingRequest(work,
 				mModel.getAnonymID());
 		mController.prepareImWorking(request);

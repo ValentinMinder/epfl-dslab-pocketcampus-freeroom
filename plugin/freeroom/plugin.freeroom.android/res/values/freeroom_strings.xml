@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="planets_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
-    </string-array>
     <!-- \&#8230; is the replacement char for ... -->
     <string name="freeroom_plugin_title">"FreeRoom"</string>
     <string name="freeroom_error_bad_request">"PocketCampus tried to connect to FreeRoom servers, but the request sent by your client could not be handled by the server (400 BAD REQUEST)."</string>
@@ -68,7 +58,8 @@
     <string name="freeroom_home_info_free_rooms">"Free rooms "</string>
     <string name="freeroom_share_iwillbe">"I will be"</string>
     <string name="freeroom_share_in_room">"in room"</string>
-    <string name="freeroom_share_please_come">"Please come and join me."</string>
+    <string name="freeroom_share_please_come">"Please come and join me. "</string>
+    <string name="freeroom_share_working_on">"I will be working on "</string>
     <string name="freeroom_share_ref_pocket">"(This was sent with pocketcampus.org)"</string>
     <string name="freeroom_share_CopyClipBoard">"Copy to clipboard"</string>
     <string name="freeroom_share_copied_ClipBoard">"Copied to clipboard"</string>
@@ -79,11 +70,11 @@
     <string name="freeroom_share_server_conflict">"A conflict occurred, and your working indication was not taken into account, sorry :/"</string>
     <string name="freeroom_share_intent_title">"Share your location\&#8230;"</string>
     <string name="freeroom_dialog_share_title">"Share your location\&#8230;"</string>
-    <string name="freeroom_dialog_share_textedit_hint">"Type an optional message ONLY for your friends \&#8230;"</string>
-    <string name="freeroom_dialog_share_checkbox_msg">"share what you\&apos;re doing with server"</string>
+    <string name="freeroom_dialog_share_textedit_hint">"your activity (optional)"</string>
+    <string name="freeroom_dialog_share_checkbox_msg">"share your activity with server"</string>
     <string name="freeroom_dialog_share_button_friends">"share with friends"</string>
     <string name="freeroom_dialog_share_button_server">"share only with server"</string>
-    <string name="freeroom_dialog_share_disclaimer">"Your location is shared with server in both cases. It\&apos;s done to know approximately how many people are in the room in order to display better results. Your personnal message is NEVER shared to anyone else and is optionnal."</string>
+    <string name="freeroom_dialog_share_disclaimer">"Your location is shared anonymously with server in both cases. It\&apos;s done to know approximately how many people are in the room in order to display better results."</string>
     <string name="freeroom_dialog_info_type">"Type"</string>
     <string name="freeroom_dialog_info_capacity">"Capacity"</string>
     <string name="freeroom_dialog_info_places">"places"</string>

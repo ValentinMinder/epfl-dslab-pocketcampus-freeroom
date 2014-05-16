@@ -130,10 +130,11 @@ public class FRUtilsClient {
 		textBuilder.append(FRTimesClient.getInstance().generateFullTimeSummary(
 				mPeriod)
 				+ ". ");
-		if (toShare.length() == 0) {
+		textBuilder.append(context
+				.getString(R.string.freeroom_share_please_come));
+		if (toShare.length() != 0) {
 			textBuilder.append(context
-					.getString(R.string.freeroom_share_please_come));
-		} else {
+					.getString(R.string.freeroom_share_working_on));
 			textBuilder.append(toShare);
 		}
 		return textBuilder.toString();
