@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.IsAcademia.Models;
@@ -19,9 +20,9 @@ namespace PocketCampus.IsAcademia.Services
 
         }
 
-        public Task<ScheduleResponse> GetScheduleAsync( ScheduleRequest request )
+        public Task<ScheduleResponse> GetScheduleAsync( ScheduleRequest request, CancellationToken cancellationToken )
         {
-            return CallAsync<ScheduleRequest, ScheduleResponse>( x => x.GetScheduleAsync, request );
+            return CallAsync<ScheduleRequest, CancellationToken, ScheduleResponse>( x => x.GetScheduleAsync, request, cancellationToken );
         }
     }
 }

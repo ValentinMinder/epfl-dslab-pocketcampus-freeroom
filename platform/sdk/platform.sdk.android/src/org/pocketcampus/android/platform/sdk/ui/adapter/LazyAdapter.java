@@ -166,7 +166,8 @@ public class LazyAdapter extends BaseAdapter {
         		} else if(contentData instanceof String) {
         			imgUrl = (String) contentData;
         		}
-    			imageLoader.displayImage(imgUrl, (ImageView) containerView, options);
+        		if(View.VISIBLE == ((ImageView) containerView).getVisibility())
+        			imageLoader.displayImage(imgUrl, (ImageView) containerView, options);
         	}
         }
 

@@ -46,9 +46,10 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		public TypeOfService tos;
 		public LocalCredentials credentials;
 	}*/
-	public static class TokenCookieComplex {
+	public static class TokenCredentialsComplex {
 		public String token;
-		public String cookie;
+		public String username;
+		public String password;
 	}
 	
 	/**

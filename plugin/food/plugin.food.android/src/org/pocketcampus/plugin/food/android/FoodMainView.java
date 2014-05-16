@@ -121,6 +121,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		StandardLayout sl = new StandardLayout(this);
 		setContentView(sl);
 
+		setActionBarTitle(getString(R.string.food_plugin_title));
 	}
 
 
@@ -711,6 +712,9 @@ public class FoodMainView extends PluginView implements IFoodView {
 			break;
 		case TOO_EARLY:
 			Toast.makeText(getApplicationContext(), getString(R.string.food_toast_tooearly), Toast.LENGTH_SHORT).show();
+			break;
+		case MEAL_IN_DISTANT_PAST:
+			Toast.makeText(getApplicationContext(), getString(R.string.food_toast_toolate), Toast.LENGTH_SHORT).show();
 			break;
 		case VALID:
 			Toast.makeText(getApplicationContext(), getString(R.string.food_toast_thanksforvote), Toast.LENGTH_SHORT).show();

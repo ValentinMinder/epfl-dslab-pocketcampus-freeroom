@@ -28,9 +28,9 @@ public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryReques
   private static final org.apache.thrift.protocol.TField DIRECTORY_SESSION_FIELD_DESC = new org.apache.thrift.protocol.TField("directorySession", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField RESULT_SET_COOKIE_FIELD_DESC = new org.apache.thrift.protocol.TField("resultSetCookie", org.apache.thrift.protocol.TType.STRING, (short)3);
 
-  public String query; // required
-  public String directorySession; // required
-  public ByteBuffer resultSetCookie; // required
+  private String query; // required
+  private String directorySession; // required
+  private ByteBuffer resultSetCookie; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

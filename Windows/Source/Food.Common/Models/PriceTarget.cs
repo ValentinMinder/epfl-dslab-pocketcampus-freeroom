@@ -9,38 +9,33 @@ namespace PocketCampus.Food.Models
     /// <summary>
     /// Price targets for meals.
     /// </summary>
-    [ThriftEnum( "PriceTarget" )]
+    [ThriftEnum]
     public enum PriceTarget
     {
         /// <summary>
         /// Students. (Bachelor or Master)
         /// </summary>
-        [ThriftEnumMember( "STUDENT", 1 )]
-        Student,
+        Student = 1,
 
         /// <summary>
         /// PhD students. (not postdocs)
         /// </summary>
-        [ThriftEnumMember( "PHD_STUDENT", 2 )]
-        PhDStudent,
+        PhDStudent = 2,
 
         /// <summary>
-        /// Staff (e.g. professors, secretaries)
+        /// Staff.
         /// </summary>
-        [ThriftEnumMember( "STAFF", 3 )]
-        Staff,
+        Staff = 3,
 
         /// <summary>
         /// Visitors.
         /// </summary>
-        [ThriftEnumMember( "VISITOR", 4 )]
-        Visitor,
+        Visitor = 4,
 
         /// <summary>
         /// All.
         /// This is generally used on its own, implying that there is no subsidy.
         /// </summary>
-        [ThriftEnumMember( "ALL", 5 )]
-        All
+        All = 5
     }
 }

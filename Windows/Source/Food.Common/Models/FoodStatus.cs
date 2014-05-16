@@ -9,19 +9,17 @@ namespace PocketCampus.Food.Models
     /// <summary>
     /// The possible response statuses of the food request.
     /// </summary>
-    [ThriftEnum( "FoodStatusCode" )]
+    [ThriftEnum]
     public enum FoodStatus
     {
         /// <summary>
         /// The request completed successfully.
         /// </summary>
-        [ThriftEnumMember( "OK", 200 )]
-        Success,
+        Success = 200,
 
         /// <summary>
         /// A network error occurred on the server while executing the request.
         /// </summary>
-        [ThriftEnumMember( "NETWORK_ERROR", 404 )]
-        NetworkError
+        NetworkError = 404
     }
 }

@@ -33,6 +33,7 @@
         <Setter Property="shell:SystemTray.IsVisible" Value="True" />
         <Setter Property="shell:SystemTray.BackgroundColor" Value="{StaticResource AppHeaderBackgroundColor}" />
         <Setter Property="shell:SystemTray.ForegroundColor" Value="{StaticResource AppHeaderForegroundColor}" />
+        <Setter Property="Padding" Value="0,-1,0,0" />
     </Style>
 
     <Style x:Key="AppTextHeaderStyle" TargetType="TextBlock" BasedOn="{StaticResource PhoneTextTitle3Style}">

@@ -119,8 +119,8 @@ namespace PocketCampus.Camipro.ViewModels
                     Session = new SessionId { CamiproCookie = session.Cookie }
                 };
 
-                var accountInfo = await _camiproService.GetAccountInfoAsync( _lastRequest );
-                var ebankingInfo = await _camiproService.GetEBankingInfoAsync( _lastRequest );
+                var accountInfo = await _camiproService.GetAccountInfoAsync( _lastRequest, token );
+                var ebankingInfo = await _camiproService.GetEBankingInfoAsync( _lastRequest, token );
 
                 if ( accountInfo.Status == ResponseStatus.NetworkError || ebankingInfo.Status == ResponseStatus.NetworkError )
                 {

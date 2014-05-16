@@ -11,7 +11,7 @@ import org.pocketcampus.android.platform.sdk.core.GlobalContext;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel.LocalCredentials;
-import org.pocketcampus.plugin.authentication.android.AuthenticationModel.TokenCookieComplex;
+import org.pocketcampus.plugin.authentication.android.AuthenticationModel.TokenCredentialsComplex;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationController;
 import org.pocketcampus.plugin.authentication.android.req.AuthenticateTokenWithTequilaRequest;
 import org.pocketcampus.plugin.authentication.android.req.GetPcSessionRequest;
@@ -424,9 +424,10 @@ public class AuthenticationController extends PluginController implements IAuthe
 	}
 
 	public void authenticateToken() {
-		TokenCookieComplex tc = new TokenCookieComplex();
-		tc.cookie = mModel.getTequilaCookie();
+		TokenCredentialsComplex tc = new TokenCredentialsComplex();
 		tc.token = mModel.getTequilaToken();
+		tc.username = mModel.getGasparUsername();
+		tc.password = mModel.getTempGasparPassword();
 		new AuthenticateTokenWithTequilaRequest().start(this, threadSafeClient, tc);
 	}
 	

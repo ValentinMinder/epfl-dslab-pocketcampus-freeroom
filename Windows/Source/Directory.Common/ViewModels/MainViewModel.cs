@@ -3,9 +3,7 @@
 // File author: Solal Pirelli
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using PocketCampus.Directory.Models;
 using PocketCampus.Directory.Services;
@@ -20,17 +18,28 @@ namespace PocketCampus.Directory.ViewModels
     [LogId( "/directory" )]
     public sealed class MainViewModel : DataViewModel<ViewPersonRequest>
     {
+        private const int MinimumQueryLengthForRefresh = 3;
+
         private readonly IDirectoryService _directoryService;
         private readonly INavigationService _navigationService;
         private readonly ViewPersonRequest _request;
 
+        private string _query;
         private bool _isLoadingMoreResults;
         private ObservableCollection<Person> _searchResults;
         private bool _anySearchResults;
 
         private sbyte[] _currentPaginationToken;
-        private string _currentQuery;
 
+
+        /// <summary>
+        /// Gets or sets the current query.
+        /// </summary>
+        public string Query
+        {
+            get { return _query; }
+            set { SetProperty( ref _query, value ); OnQueryChanged(); }
+        }
 
         /// <summary>
         /// Gets a value indicating whether more results are being loaded.
@@ -60,20 +69,12 @@ namespace PocketCampus.Directory.ViewModels
         }
 
         /// <summary>
-        /// Gets the auto-complete provider for people names.
-        /// </summary>
-        public Func<string, Task<IEnumerable<string>>> SearchAutoCompleteProvider
-        {
-            get { return ProvideSearchSuggestionsAsync; }
-        }
-
-        /// <summary>
         /// Gets the command executed to search for people.
         /// </summary>
         [LogId( "Search" )]
-        public AsyncCommand<string> SearchCommand
+        public AsyncCommand SearchCommand
         {
-            get { return GetAsyncCommand<string>( SearchAsync ); }
+            get { return GetAsyncCommand( () => SearchAsync( Query, true ) ); }
         }
 
         [LogId( "SearchForMore" )]
@@ -109,7 +110,7 @@ namespace PocketCampus.Directory.ViewModels
         {
             if ( _request.Name != null )
             {
-                await SearchAsync( _request.Name );
+                await SearchAsync( _request.Name, true );
                 if ( _searchResults.Count == 1 )
                 {
                     _navigationService.PopBackStack();
@@ -120,32 +121,14 @@ namespace PocketCampus.Directory.ViewModels
         }
 
         /// <summary>
-        /// Asynchronously provides search suggestions for the specified query.
-        /// </summary>
-        private async Task<IEnumerable<string>> ProvideSearchSuggestionsAsync( string query )
-        {
-            // no pagination token, it's just search suggestions
-            var response = await _directoryService.SearchAsync( new SearchRequest { Query = query } );
-
-            if ( response.Status == SearchStatus.Success )
-            {
-                return response.Results
-                               .Select( p => p.FirstName )
-                               .Concat( response.Results.Select( p => p.LastName ) )
-                               .Distinct()
-                               .OrderBy( s => s );
-            }
-            return new string[0];
-        }
-
-        /// <summary>
         /// Asynchronously searches for people with the specified query.
         /// </summary>
-        private Task SearchAsync( string query )
+        private Task SearchAsync( string query, bool navigateToSingleResult )
         {
             return TryExecuteAsync( async token =>
             {
-                var response = await _directoryService.SearchAsync( new SearchRequest { Query = query } );
+                var request = new SearchRequest { Query = query };
+                var response = await _directoryService.SearchAsync( request, token );
 
                 if ( response.Status != SearchStatus.Success )
                 {
@@ -154,12 +137,11 @@ namespace PocketCampus.Directory.ViewModels
 
                 if ( !token.IsCancellationRequested )
                 {
-                    _currentQuery = query;
                     _currentPaginationToken = response.PaginationToken;
                     SearchResults = new ObservableCollection<Person>( response.Results );
                     AnySearchResults = SearchResults.Count > 0;
 
-                    if ( SearchResults.Count == 1 )
+                    if ( navigateToSingleResult && SearchResults.Count == 1 )
                     {
                         ViewPersonCommand.Execute( SearchResults[0] );
                     }
@@ -179,10 +161,10 @@ namespace PocketCampus.Directory.ViewModels
             {
                 var request = new SearchRequest
                 {
-                    Query = _currentQuery,
+                    Query = this.Query,
                     PaginationToken = _currentPaginationToken
                 };
-                var response = await _directoryService.SearchAsync( request );
+                var response = await _directoryService.SearchAsync( request, CurrentCancellationToken );
 
                 if ( response.Status == SearchStatus.Success && !token.IsCancellationRequested )
                 {
@@ -200,6 +182,14 @@ namespace PocketCampus.Directory.ViewModels
             }
 
             IsLoadingMoreResults = false;
+        }
+
+        private async void OnQueryChanged()
+        {
+            if ( Query.Length >= MinimumQueryLengthForRefresh )
+            {
+                await SearchAsync( Query, false );
+            }
         }
     }
 }

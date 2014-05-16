@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.News.Models;
@@ -18,14 +19,14 @@ namespace PocketCampus.News.Services
         {
         }
 
-        public Task<FeedsResponse> GetFeedsAsync( FeedsRequest request )
+        public Task<FeedsResponse> GetFeedsAsync( FeedsRequest request, CancellationToken cancellationToken )
         {
-            return CallAsync<FeedsRequest, FeedsResponse>( x => x.GetFeedsAsync, request );
+            return CallAsync<FeedsRequest, CancellationToken, FeedsResponse>( x => x.GetFeedsAsync, request, cancellationToken );
         }
 
-        public Task<FeedItemContentResponse> GetFeedItemContentAsync( FeedItemContentRequest request )
+        public Task<FeedItemContentResponse> GetFeedItemContentAsync( FeedItemContentRequest request, CancellationToken cancellationToken )
         {
-            return CallAsync<FeedItemContentRequest, FeedItemContentResponse>( x => x.GetFeedItemContentAsync, request );
+            return CallAsync<FeedItemContentRequest, CancellationToken, FeedItemContentResponse>( x => x.GetFeedItemContentAsync, request, cancellationToken );
         }
     }
 }

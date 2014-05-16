@@ -9,75 +9,64 @@ namespace PocketCampus.Food.Models
     /// <summary>
     /// The types of meals.
     /// </summary>
-    [ThriftEnum( "MealType" )]
+    [ThriftEnum]
     public enum MealType
     {
         /// <summary>
         /// Unknown type.
         /// This is used when data is missing, or a bug occurred somewhere.
         /// </summary>
-        [ThriftEnumMember( "UNKNOWN", 1 )]
-        Unknown,
+        Unknown = 1,
 
         /// <summary>
         /// Fish.
         /// </summary>
-        [ThriftEnumMember( "FISH", 2 )]
-        Fish,
+        Fish = 2,
 
         /// <summary>
         /// Meat.
         /// </summary>
-        [ThriftEnumMember( "MEAT", 3 )]
-        Meat,
+        Meat = 3,
 
         /// <summary>
         /// Poultry, e.g. chicken or turkey.
         /// </summary>
-        [ThriftEnumMember( "POULTRY", 4 )]
-        Poultry,
+        Poultry = 4,
 
         /// <summary>
         /// Vegetarian.
         /// </summary>
-        [ThriftEnumMember( "VEGETARIAN", 5 )]
-        Vegetarian,
+        Vegetarian = 5,
 
         /// <summary>
         /// "Green Fork" label.
         /// Meals with this type are healthy and balanced.
         /// </summary>
-        [ThriftEnumMember( "GREEN_FORK", 6 )]
-        GreenFork,
+        GreenFork = 6,
 
         /// <summary>
         /// Pasta.
         /// </summary>
-        [ThriftEnumMember( "PASTA", 7 )]
-        Pasta,
+        Pasta = 7,
 
         /// <summary>
-        /// Pizza. (including various forms of vegetarian pizza, e.g. röstipizza)
+        /// Pizza. (including e.g. röstipizza)
         /// </summary>
-        [ThriftEnumMember( "PIZZA", 8 )]
-        Pizza,
+        Pizza = 8,
 
         /// <summary>
         /// Thai.
         /// </summary>
-        [ThriftEnumMember( "THAI", 9 )]
-        Thai,
+        Thai = 9,
 
         /// <summary>
         /// Indian.
         /// </summary>
-        [ThriftEnumMember( "INDIAN", 10 )]
-        Indian,
+        Indian = 10,
 
         /// <summary>
         /// Lebanese.
         /// </summary>
-        [ThriftEnumMember( "LEBANESE", 11 )]
-        Lebanese
+        Lebanese = 11
     }
 }

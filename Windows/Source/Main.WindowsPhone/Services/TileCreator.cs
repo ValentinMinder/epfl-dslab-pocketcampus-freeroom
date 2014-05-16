@@ -8,8 +8,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ImageTools;
-using ImageTools.IO.Png;
 using Microsoft.Phone.Shell;
 using PocketCampus.Common;
 
@@ -20,6 +18,7 @@ namespace PocketCampus.Main.Services
     /// </summary>
     public sealed class TileCreator : ITileCreator
     {
+        // N.B. if (when?) adding notification counts to these tiles, the sizes become 130x202 and 70x110 respectively (margins will have to change)
         private const double TileIconSize = 202;
         private const double SmallTileIconSize = 110;
 
@@ -40,10 +39,13 @@ namespace PocketCampus.Main.Services
 
             var uri = new Uri( "/Views/Redirect.xaml?" + PluginKey + "=" + wpPlugin.Id, UriKind.Relative );
 
-            if ( !ShellTile.ActiveTiles.Any( t => t.NavigationUri == uri ) )
+            var existingTile = ShellTile.ActiveTiles.FirstOrDefault( t => t.NavigationUri == uri );
+            if ( existingTile != null )
             {
-                ShellTile.Create( uri, data, false );
+                existingTile.Delete();
             }
+
+            ShellTile.Create( uri, data, false );
         }
 
         /// <summary>
@@ -75,7 +77,7 @@ namespace PocketCampus.Main.Services
 
                 using ( var stream = store.CreateFile( fileName ) )
                 {
-                    new PngEncoder().Encode( bitmap.ToImage(), stream );
+                    new PngWriter( stream, bitmap ).Write();
                 }
             }
 

@@ -20,7 +20,6 @@
     </LinearLayout>
 
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/relativeLayout1"
         style="@style/Dialog.Middle"
         android:layout_width="fill_parent"

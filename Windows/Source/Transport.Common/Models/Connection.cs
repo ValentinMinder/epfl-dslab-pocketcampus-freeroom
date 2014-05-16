@@ -36,7 +36,7 @@ namespace PocketCampus.Transport.Models
         /// </summary>
         [ThriftField( 6, false, "departureTime" )]
         [ThriftConverter( typeof( ThriftJavaDateConverter ) )]
-        public DateTime DepartureTime { get; set; }
+        public DateTime? DepartureTime { get; set; }
 
         /// <summary>
         /// The connection's departure position, if any.
@@ -52,7 +52,7 @@ namespace PocketCampus.Transport.Models
         /// </summary>
         [ThriftField( 8, false, "arrivalTime" )]
         [ThriftConverter( typeof( ThriftJavaDateConverter ) )]
-        public DateTime ArrivalTime { get; set; }
+        public DateTime? ArrivalTime { get; set; }
 
         /// <summary>
         /// The connection's arrival position, if any.
