@@ -35,17 +35,14 @@ public class FRTimesClient {
 	 */
 	private static FRTimesClient instance;
 	/**
-	 * Pattern for day formatting.
+	 * Storing the chosen locale, overriding system locale.
 	 */
-	private String day_pattern;
+	private Locale locale;
 	/**
-	 * Pattern for hour formatting, long format (8:00 AM/8h00).
+	 * Pattern for the DATE format, if wanting to override locale (is set to
+	 * null or empty if using the locale).
 	 */
-	private String hour_pattern_long;
-	/**
-	 * Pattern for hour formatting, long format (8 AM/8h)
-	 */
-	private String hour_pattern_short;
+	private String daypattern;
 
 	/**
 	 * Constructor.
@@ -55,13 +52,11 @@ public class FRTimesClient {
 	 * @param context
 	 *            context of the application.
 	 */
-	public FRTimesClient(Context context, String day, String hour_long,
-			String hour_short) {
+	public FRTimesClient(Context context, Locale locale, String daypattern) {
 		this.context = context;
 		instance = this;
-		this.day_pattern = day;
-		this.hour_pattern_long = hour_long;
-		this.hour_pattern_short = hour_short;
+		this.locale = locale;
+		this.daypattern = daypattern;
 	}
 
 	/**
@@ -81,10 +76,16 @@ public class FRTimesClient {
 	 * <p>
 	 * Formatting is Locale-dependent: it will use the device language settings<br>
 	 * English format: Saturday, May 17, 2014 <br>
-	 * French format: samedi 17 mai 2014 <br>
+	 * French format: samedi, 17 mai 2014 <br>
 	 * <p>
 	 * Instead of the usual format "Wed 24 May", the date is summarize to
 	 * "today", "yesterday", "tomorrow" when relevant.
+	 * <p>
+	 * Formatting can be changed, if it has been overridden, it will look like:
+	 * <br>
+	 * English format on French language: samedi, mai 17, 2014 <br>
+	 * French format on English language: Saturday, 17 May 2014 <br>
+	 * IT AFFECTS ONLY FORMATTING, NEVER THE LANGUAGE !!! <br>
 	 * 
 	 * @param selected
 	 *            the selected time as a calendar
@@ -107,14 +108,16 @@ public class FRTimesClient {
 		} else if (FRTimes.compareCalendars(yesterday, selected)) {
 			return context.getString(R.string.freeroom_search_yesterday);
 		} else {
-			// Formatting will use the device language settings:
+			// Formatting will use the device language settings
+			// if it has been overridden, it will these one:
 			// English format: Saturday, May 17, 2014
-			// French format: samedi 17 mai 2014
-			// TODO: overide default settings
-			DateFormat df;
-			df = DateFormat.getDateInstance(DateFormat.FULL, Locale.FRENCH);
-			df = DateFormat.getDateInstance(DateFormat.FULL, Locale.ENGLISH);
-			df = DateFormat.getDateInstance(DateFormat.FULL);
+			// French format: samedi, 17 mai 2014
+			// IT AFFECTS ONLY FORMATTING, NEVER THE LANGUAGE !!!
+			if (daypattern != null && daypattern != "") {
+				SimpleDateFormat sdf = new SimpleDateFormat(daypattern, locale);
+				return sdf.format(selected.getTime());
+			}
+			DateFormat df = DateFormat.getDateInstance(DateFormat.FULL, locale);
 			return df.format(selected.getTime());
 		}
 	}

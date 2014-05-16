@@ -3225,12 +3225,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		times = mModel.getFRTimesClient(this);
 		TextView tv = (TextView) mParamView
 				.findViewById(R.id.freeroom_layout_dialog_param_time_language_example);
-		long now = System.currentTimeMillis();
-		FRPeriod period = new FRPeriod(now, now + FRTimes.ONE_HOUR_IN_MS, false);
-		String text = "";
-		text += times.formatFullDateFullTimePeriod(period) + "\n";
-		text += times.formatTimePeriod(period, false, true) + "\n";
-		text += times.formatTimePeriod(period, true, false);
-		tv.setText(text);
+		long now = System.currentTimeMillis() + FRTimes.ONE_WEEK_IN_MS;
+		Calendar selected = Calendar.getInstance();
+		selected.setTimeInMillis(now);
+		tv.setText(times.formatFullDate(selected));
 	}
 }

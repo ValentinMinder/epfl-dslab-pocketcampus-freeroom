@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -1118,27 +1119,27 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	private FRTimesClient getFRTimesClient(Context context,
 			TimeLanguage timeLanguage) {
-		if (timeLanguage.equals(TimeLanguage.ENGLISH)) {
-			return new FRTimesClient(
-					context,
-					context.getString(R.string.freeroom_pattern_day_format_english),
-					context.getString(R.string.freeroom_pattern_hour_format_long_english),
-					context.getString(R.string.freeroom_pattern_hour_format_short_english));
-		}
+
+		// Formatting will use the device language settings
+		// if it has been overridden, it will these one:
+		// English format: Saturday, May 17, 2014
+		// French format: samedi, 17 mai 2014
+
+		// IT AFFECTS ONLY FORMATTING, NEVER THE LANGUAGE !!!
+
+		Locale defaultLocale = Locale.getDefault();
 
 		if (timeLanguage.equals(TimeLanguage.FRENCH)) {
-			return new FRTimesClient(
-					context,
-					context.getString(R.string.freeroom_pattern_day_format_french),
-					context.getString(R.string.freeroom_pattern_hour_format_long_french),
-					context.getString(R.string.freeroom_pattern_hour_format_short_french));
+			return new FRTimesClient(context, defaultLocale,
+					"EEEE, d MMMM yyyy");
+		}
+
+		if (timeLanguage.equals(TimeLanguage.ENGLISH)) {
+			return new FRTimesClient(context, defaultLocale,
+					"EEEE, MMMM d, yyyy");
 		}
 
 		// default
-		return new FRTimesClient(
-				context,
-				context.getString(R.string.freeroom_pattern_day_format_default),
-				context.getString(R.string.freeroom_pattern_hour_format_long_default),
-				context.getString(R.string.freeroom_pattern_hour_format_short_default));
+		return new FRTimesClient(context, Locale.getDefault(), null);
 	}
 }
