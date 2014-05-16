@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -971,7 +972,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/* STORAGE OF PREV. REQUEST */
 
-	private List<FRRequestDetails> previousRequestDetails;
+	private LinkedList<FRRequestDetails> previousRequestDetails;
 	private String PREV_REQ_FILENAME = "freeroom_prev_req_file.dat";
 
 	/**
@@ -981,8 +982,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	private boolean retrievePreviousRequest() {
 		Object read = readObjectFromFile(PREV_REQ_FILENAME);
-		if (read instanceof List<?>) {
-			previousRequestDetails = (List<FRRequestDetails>) read;
+		if (read instanceof LinkedList<?>) {
+			previousRequestDetails = (LinkedList<FRRequestDetails>) read;
 			return true;
 		} else {
 			return false;
@@ -1025,7 +1026,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * @return true if written to file successful.
 	 */
 	public boolean resetPreviousRequest() {
-		previousRequestDetails = new ArrayList<FRRequestDetails>(10);
+		previousRequestDetails = new LinkedList<FRRequestDetails>();
 		return savePreviousRequest();
 	}
 
@@ -1039,7 +1040,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public boolean addPreviousRequest(FRRequestDetails request) {
 		// ensure favorites structure exists.
 		getPreviousRequest();
-		previousRequestDetails.add(request);
+		// adding at the start!
+		previousRequestDetails.addFirst(request);
 		return savePreviousRequest();
 	}
 
