@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -283,7 +284,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *         database, false otherwise.
 	 */
 	private boolean insertOccupancyAndCheckOccupancy(FRPeriod period,
-			String uid, OCCUPANCY_TYPE typeToInsert, String hash, String userMessage) {
+			String uid, OCCUPANCY_TYPE typeToInsert, String hash,
+			String userMessage) {
 
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
@@ -349,7 +351,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					if ((prevRoom != null && !prevRoom.equals(uid))
 							|| prevRoom == null) {
 						insertCheckOccupancyInDB(uid, hourSharpBefore + i
-								* FRTimes.ONE_HOUR_IN_MS, hash, prevRoom, userMessage);
+								* FRTimes.ONE_HOUR_IN_MS, hash, prevRoom,
+								userMessage);
 						overallInsertion = overallInsertion
 								&& insertOccupancyInDB(uid, hourSharpBefore + i
 										* FRTimes.ONE_HOUR_IN_MS,
@@ -389,7 +392,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            The uid of the previous room beeing stored in the
 	 *            checkOccupancy table (if one) null otherwise
 	 */
-	//TODO test if usermessage change, there is no problem with count 
+	// TODO test if usermessage change, there is no problem with count
 	private void insertCheckOccupancyInDB(String uid, long tsStart,
 			String hash, String prevRoom, String userMessage) {
 		String insertRequest = "INSERT INTO `fr-checkOccupancy` (uid, timestampStart, hash, message) "
@@ -404,7 +407,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			insertQuery.setString(1, uid);
 			insertQuery.setLong(2, tsStart);
 			insertQuery.setString(3, hash);
-			insertQuery.setString(4, userMessage);
+			if (userMessage != null) {
+				insertQuery.setString(4, userMessage);
+			} else {
+				insertQuery.setNull(4, Types.CHAR);
+			}
 			insertQuery.setString(5, uid);
 			int update = insertQuery.executeUpdate();
 
@@ -1242,7 +1249,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		WorkingOccupancy work = request.getWork();
 		FRPeriod period = work.getPeriod();
-		String userMessage = (work.isSetMessage() && work.getMessage() != null) ? work.getMessage() : null;
+		String userMessage = (work.isSetMessage() && work.getMessage() != null) ? work
+				.getMessage() : null;
 		FRRoom room = work.getRoom();
 		boolean success = insertOccupancy(period, OCCUPANCY_TYPE.USER,
 				room.getUid(), request.getHash(), userMessage);
