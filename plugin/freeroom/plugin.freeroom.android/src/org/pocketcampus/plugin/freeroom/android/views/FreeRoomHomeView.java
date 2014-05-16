@@ -227,9 +227,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private AlertDialog mShareDialog;
 	/**
-	 * Dialog that holds the WARNING Dialog.
+	 * Dialog that holds the WARNING Dialog (with two button: confirm/cancel).
 	 */
 	private AlertDialog mWarningDialog;
+	/**
+	 * Dialog that holds the ERROR Dialog (with one button: dismiss)
+	 */
+	private AlertDialog mErrorDialog;
 	/**
 	 * View that holds the PARAM dialog content, defined in xml in layout
 	 * folder.
@@ -729,6 +733,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initAddRoomDialog();
 		initShareDialog();
 		initWarningDialog();
+		initErrorDialog();
 		initParamDialog();
 	}
 
@@ -1367,6 +1372,51 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mWarningDialog.getWindow().addFlags(
 				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		mWarningDialog.getWindow().setAttributes(lp);
+	}
+
+	private void initErrorDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.freeroom_dialog_error_title));
+		builder.setIcon(R.drawable.ic_action_error);
+		builder.setNeutralButton(R.string.freeroom_dialog_error_dismiss, null);
+
+		// Get the AlertDialog from create()
+		mErrorDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mErrorDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.WRAP_CONTENT;
+		lp.height = LayoutParams.WRAP_CONTENT;
+		mErrorDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mErrorDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mErrorDialog.getWindow().setAttributes(lp);
+
+		// reset the message when dismiss
+		// (to avoid showing with previous message!)
+		mErrorDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				mErrorDialog.setMessage("");
+
+			}
+		});
+	}
+
+	/**
+	 * Show the error dialog with the given message.
+	 * 
+	 * @param text
+	 *            message to display.
+	 */
+	private void showErrorDialog(String text) {
+		mErrorDialog.setMessage(text);
+		mErrorDialog.show();
 	}
 
 	/**
