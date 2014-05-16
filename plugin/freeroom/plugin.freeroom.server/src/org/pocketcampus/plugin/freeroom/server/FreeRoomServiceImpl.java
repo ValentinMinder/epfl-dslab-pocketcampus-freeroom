@@ -119,21 +119,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					+ " rooms inserted/updated");
 		}
 
-		// new FetchOccupancyData(PC_SRV_CONFIG.getString("DB_URL")
-		// + "?allowMultiQueries=true",
-		// PC_SRV_CONFIG.getString("DB_USERNAME"),
-		// PC_SRV_CONFIG.getString("DB_PASSWORD"), this)
-		// .fetchAndInsert(System.currentTimeMillis()
-		// + FRTimes.ONE_DAY_IN_MS);
-
-		FetchOccupancyDataJSON fodj = new FetchOccupancyDataJSON(DB_URL,
-				DB_USER, DB_PASSWORD, this);
-		Calendar mCalendar = Calendar.getInstance();
-		mCalendar.set(2014, 01, 18, 8, 0);
-		System.out.println(mCalendar);
-		long startSemester = mCalendar.getTimeInMillis();
-		mCalendar.set(2014, 07, 01, 8, 0);
-		long endSemester = mCalendar.getTimeInMillis();
+//
+//		FetchOccupancyDataJSON fodj = new FetchOccupancyDataJSON(DB_URL,
+//				DB_USER, DB_PASSWORD, this);
+//		Calendar mCalendar = Calendar.getInstance();
+//		mCalendar.set(2014, 01, 18, 8, 0);
+//		System.out.println(mCalendar);
+//		long startSemester = mCalendar.getTimeInMillis();
+//		mCalendar.set(2014, 07, 01, 8, 0);
+//		long endSemester = mCalendar.getTimeInMillis();
 //		fodj.fetchAndInsertRoomsList(startSemester, endSemester);
 //		fodj.fetchAndInsert(System.currentTimeMillis());
 		
