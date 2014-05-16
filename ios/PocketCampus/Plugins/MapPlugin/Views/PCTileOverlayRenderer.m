@@ -177,9 +177,10 @@
             [self canDrawMapRect:mapRect zoomScale:zoomScale];
             return;
         }
+        CGFloat alpha = [self.pcScreenTileOverlay supportsCameraHeading:self.pcScreenTileOverlay.mapView.camera.heading] ? self.pcScreenTileOverlay.desiredAlpha : 0.0;
         UIImage* croppedImage = [self.pcScreenTileOverlay croppedImageFromCurrentlyVisibleMapRectImage:image forMapRect:mapRect zoomScale:zoomScale];
         UIGraphicsPushContext(context);
-        [croppedImage drawInRect:[self rectForMapRect:mapRect] blendMode:kCGBlendModeNormal alpha:self.pcScreenTileOverlay.desiredAlpha];
+        [croppedImage drawInRect:[self rectForMapRect:mapRect] blendMode:kCGBlendModeNormal alpha:alpha];
         CGContextSetRGBStrokeColor(context, 1.0, 0.5, 1.0, 1.0);
         UIGraphicsPopContext();
     }

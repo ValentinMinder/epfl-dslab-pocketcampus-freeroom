@@ -51,4 +51,11 @@
  */
 - (UIImage*)croppedImageFromCurrentlyVisibleMapRectImage:(UIImage*)image forMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale;
 
+@optional
+
+/**
+ * No implementation assusmes that all headings are supported
+ */
+- (BOOL)supportsCameraHeading:(CLLocationDirection)heading;
+
 @end

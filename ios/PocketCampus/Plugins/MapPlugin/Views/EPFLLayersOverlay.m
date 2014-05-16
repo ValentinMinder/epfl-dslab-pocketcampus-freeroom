@@ -99,6 +99,10 @@ static double const kFloorLevelsMaxAltitude = 1200.0;
     return finalImage;
 }
 
+- (BOOL)supportsCameraHeading:(CLLocationDirection)heading {
+    return [PCUtils double:heading isEqualToDouble:0.0 epsilon:2.0];
+}
+
 #pragma mark - PCTileOverlay overrides
 
 - (NSInteger)defaultFloorLevel {
