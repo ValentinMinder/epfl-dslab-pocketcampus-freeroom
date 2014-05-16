@@ -24,6 +24,7 @@ import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerE
 import org.pocketcampus.plugin.freeroom.data.FetchOccupancyData;
 import org.pocketcampus.plugin.freeroom.data.FetchOccupancyDataJSON;
 import org.pocketcampus.plugin.freeroom.data.FetchRoomsDetails;
+import org.pocketcampus.plugin.freeroom.data.PeriodicallyUpdate;
 import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeServiceImpl;
 import org.pocketcampus.plugin.freeroom.server.utils.OccupancySorted;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
@@ -135,6 +136,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		long endSemester = mCalendar.getTimeInMillis();
 //		fodj.fetchAndInsertRoomsList(startSemester, endSemester);
 //		fodj.fetchAndInsert(System.currentTimeMillis());
+		
+		new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD, this)).start();
 	}
 
 	public void log(Level level, String message) {
@@ -219,6 +222,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			period.setTimeStampStart(FRTimes
 					.roundToNearestHalfHourBefore(period.getTimeStampStart()));
 		}
+
 
 		boolean inserted = insertOccupancyAndCheckOccupancy(period, uid, type,
 				hash);

@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.freeroom.data;
 
 import java.util.Calendar;
+import java.util.logging.Level;
 
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
 import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeServiceImpl;
@@ -31,6 +32,7 @@ public class PeriodicallyUpdate implements Runnable {
 
 	@Override
 	public void run() {
+		server.log(Level.INFO, "Starting update of data from ISA");
 		FetchOccupancyDataJSON fodj = new FetchOccupancyDataJSON(DB_URL,
 				DB_USER, DB_PASSWORD, server);
 		Calendar mCalendar = Calendar.getInstance();
@@ -38,6 +40,7 @@ public class PeriodicallyUpdate implements Runnable {
 		long tomorrow = mCalendar.getTimeInMillis() + 2*FRTimes.ONE_DAY_IN_MS;
 		fodj.fetchAndInsert(yesterday, tomorrow);
 		
+		server.log(Level.INFO, "Starting update of data from Exchange");
 		ExchangeServiceImpl exchange = new ExchangeServiceImpl(DB_URL, DB_USER, DB_PASSWORD, server);
 		exchange.updateEWAOccupancyFromTo(yesterday, tomorrow);
 	}

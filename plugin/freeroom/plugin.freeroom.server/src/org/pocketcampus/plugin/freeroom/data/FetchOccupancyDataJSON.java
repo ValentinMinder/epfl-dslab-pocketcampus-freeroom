@@ -168,7 +168,8 @@ public class FetchOccupancyDataJSON {
 
 		try {
 			String uid = null;
-			if (room.has(KEY_UID)) {
+			//TODO check this
+			if (room.has(KEY_UID) && !room.getString(KEY_UID).equals("null")) {
 				uid = room.getString(KEY_UID);
 			} else {
 				return null;
