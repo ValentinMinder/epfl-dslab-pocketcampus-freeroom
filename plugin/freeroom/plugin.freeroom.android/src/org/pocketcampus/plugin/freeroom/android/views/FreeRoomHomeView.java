@@ -284,6 +284,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Text for "Previous request"
 	 */
 	private String textTitlePrevious = "mock text";
+	/**
+	 * Array adapter for previous FRRequest.
+	 */
+	private ArrayAdapter<FRRequestDetails> mPrevRequestAdapter;
 
 	/* UI ELEMENTS FOR DIALOGS - FAVORITES */
 
@@ -1151,16 +1155,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onShow(DialogInterface dialog) {
 				searchButton.setEnabled(auditSubmit() == 0);
-				if (mModel.getPreviousRequest().isEmpty()) {
-					prevSearchTitle.setText("");
-				} else if (searchDialogHasHeightExtenstionProblem) {
-					prevSearchTitle
-							.setText(textTitlePrevious
-									+ ": "
-									+ getString(R.string.freeroom_search_previous_show));
-				} else {
-					prevSearchTitle.setText(textTitlePrevious);
-				}
+				initPreviousTitle();
 			}
 		});
 		// this is necessary o/w buttons don't exists!
@@ -1178,10 +1173,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// display the previous searches
 		mSearchPreviousListView = (ListView) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_prev_search_list);
-		ArrayAdapter<FRRequestDetails> adapter = new PreviousRequestArrayAdapter<FRRequestDetails>(
+		mPrevRequestAdapter = new PreviousRequestArrayAdapter<FRRequestDetails>(
 				this, this, R.layout.freeroom_layout_list_prev_req,
 				R.id.freeroom_layout_prev_req_text, mModel.getPreviousRequest());
-		mSearchPreviousListView.setAdapter(adapter);
+		mSearchPreviousListView.setAdapter(mPrevRequestAdapter);
 		mSearchPreviousListView
 				.setOnItemClickListener(new OnItemClickListener() {
 
@@ -1198,16 +1193,54 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initSearch();
 	}
 
+	/**
+	 * Inits the title for previous request, with empty value if none, with
+	 * "show" if not displayed, of "prev request otherwise.
+	 */
+	private void initPreviousTitle() {
+		if (mModel.getPreviousRequest().isEmpty()) {
+			prevSearchTitle.setText("");
+		} else if (searchDialogHasHeightExtenstionProblem) {
+			prevSearchTitle.setText(textTitlePrevious + ": "
+					+ getString(R.string.freeroom_search_previous_show));
+		} else {
+			prevSearchTitle.setText(textTitlePrevious);
+		}
+	}
+
+	/**
+	 * When a Previous Request item is clicked on "play".
+	 * 
+	 * @param position
+	 *            position of the item to replay
+	 */
 	public void onPlayRequestClickListener(int position) {
 		if (onFillRequestClickListeners(position)) {
+			// request wont be stored
 			prepareSearchQuery(false);
 		}
 	}
-	
+
+	/**
+	 * When a Previous Request item is clicked on "remove".
+	 * 
+	 * @param position
+	 *            position of the item to remove
+	 */
 	public void onRemoveRequestClickListener(int position) {
 		mModel.removeRequest(position);
+		mPrevRequestAdapter.notifyDataSetChanged();
+		if (mModel.getPreviousRequest().isEmpty()) {
+			initPreviousTitle();
+		}
 	}
 
+	/**
+	 * Fill the search menus with the selected previous request.
+	 * 
+	 * @param position
+	 *            position of the item to use to refill.
+	 */
 	private boolean onFillRequestClickListeners(int position) {
 		searchDialogExtendMoreTriggered = true;
 		if (searchDialogHasHeightExtenstionProblem) {
