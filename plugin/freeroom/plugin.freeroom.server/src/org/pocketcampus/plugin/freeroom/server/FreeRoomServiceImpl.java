@@ -56,6 +56,8 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private final int LIMIT_AUTOCOMPLETE = 50;
+	private final int LENGTH_USERMESSAGE = 30;
+	
 	private ConnectionManager connMgr;
 	private ExchangeServiceImpl mExchangeService;
 	private Logger logger = Logger.getLogger(FreeRoomServiceImpl.class
@@ -246,6 +248,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					.roundToNearestHalfHourBefore(period.getTimeStampStart()));
 			if (!Utils.checkUserMessage(userMessage)) {
 				log(Level.INFO, "Getting wrong user message : " + userMessage);
+				return false;
+			} else if (userMessage != null && userMessage.length() > LENGTH_USERMESSAGE) {
+				log(Level.INFO, "User message is too long, length = " + userMessage.length());
 				return false;
 			}
 		}
@@ -1281,8 +1286,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (success) {
 			return new ImWorkingReply(HttpURLConnection.HTTP_OK, "");
 		} else {
-			return new ImWorkingReply(HttpURLConnection.HTTP_CONFLICT,
-					"User already said he was working there");
+			return new ImWorkingReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					" ");
 		}
 	}	
 
@@ -1303,7 +1308,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		} else {
 			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
 		}
-		
+		//TODO remove duplicate
 		FRPeriod period = request.getPeriod();
 //		period.setTimeStampStart(FRTimes
 //				.roundToNearestHalfHourBefore(period.getTimeStampStart()));
