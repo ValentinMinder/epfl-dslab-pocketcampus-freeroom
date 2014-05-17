@@ -1467,16 +1467,58 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	@Override
 	public AutoCompleteUserMessageReply autoCompleteUserMessage(
-			AutoCompleteUserMessageRequest arg0) throws TException {
+			AutoCompleteUserMessageRequest request) throws TException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public WhoIsWorkingReply getUserMessages(WhoIsWorkingRequest arg0)
+	public WhoIsWorkingReply getUserMessages(WhoIsWorkingRequest request)
 			throws TException {
-		// TODO Auto-generated method stub
+		if (request == null) {
+			log(LOG_SIDE.SERVER, Level.WARNING,
+					"Receiving null WhoIsWorkingRequest");
+			return new WhoIsWorkingReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"WhoIsWorkingRequest is null");
+		}
+
+		WhoIsWorkingReply reply = checkWhoIsWorkingRequest(request);
+		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
+			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
+			return reply;
+		} else {
+			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
+		}
 		return null;
+	}
+	
+	private WhoIsWorkingReply checkWhoIsWorkingRequest(WhoIsWorkingRequest request) {
+		WhoIsWorkingReply reply = new WhoIsWorkingReply();
+		int status = HttpURLConnection.HTTP_OK;
+		String statusComment = "WhoIsWorkingRequest : ";
+
+		if (request == null) {
+			status = HttpURLConnection.HTTP_BAD_REQUEST;
+			statusComment = "WhoIsWorkingRequest is null;";
+		} else {
+			if (!request.isSetRoomUID() || request.getRoomUID() == null) {
+				status = HttpURLConnection.HTTP_BAD_REQUEST;
+				statusComment += "room ID  is null;";
+			}
+
+			if (!request.isSetPeriod() || request.getPeriod() == null) {
+				status = HttpURLConnection.HTTP_BAD_REQUEST;
+				statusComment += "FRPeriod is not set;";
+			}
+		}
+
+		reply.setStatus(status);
+		if (status != HttpURLConnection.HTTP_OK) {
+			reply.setStatusComment(statusComment);
+		} else {
+			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
+		}
+		return reply;
 	}
 
 }

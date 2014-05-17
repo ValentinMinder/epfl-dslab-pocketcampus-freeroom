@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS `fr-occupancy` (
 ) CHARSET=latin1;
 
 -- This table is used to avoid multiple submission by a single client of user occupancies 
+-- and to store messages from users
 CREATE TABLE IF NOT EXISTS `fr-checkOccupancy` (
 	`uid` char(255) NOT NULL,
 	`timestampStart` bigint(20) NOT NULL,
