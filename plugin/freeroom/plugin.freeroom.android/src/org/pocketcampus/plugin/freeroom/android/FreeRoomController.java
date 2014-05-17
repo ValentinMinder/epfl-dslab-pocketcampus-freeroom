@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.freeroom.android;
 
+import java.util.Iterator;
+
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.R;
@@ -239,6 +241,13 @@ public class FreeRoomController extends PluginController implements
 		// mModel.setListWorkingOccupancies(listWorkingOccupancies);
 
 		// new methods with new thrift
+		if (result.isSetMessages()) {
+			Iterator<String> iter = result.getMessagesIterator();
+			System.out.println("Recieved message client side: ");
+			while (iter.hasNext()) {
+				System.out.println(iter.next());
+			}
+		}
 	}
 
 	// NEW INTERFACE as of 2104.04.04.
