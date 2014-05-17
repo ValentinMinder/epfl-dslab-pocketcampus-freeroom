@@ -1487,8 +1487,44 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		log(LOG_SIDE.SERVER, Level.INFO,
 				"Autocomplete of user message : " + request.getConstraint());
 
-		String constraint = request.getConstraint();
-		return null;
+		String constraint = request.getConstraint().replaceAll("\\s+", "");
+		String uid = request.getRoom().getUid();
+		FRPeriod period = request.getPeriod();
+		//TODO change getUserMessage with FRRoom, not only uid to be more consistent
+		//TODO check valid period
+		String requestSQL = "SELECT co.message "
+				+ "FROM `fr-checkOccupancy` co "
+				+ "WHERE co.uid = ? AND co.timestampStart >= ? AND co.timestampEnd <= ? " +
+				"AND LOWER(co.message) LIKE (?) ORDER BY co.message ASC";
+		
+		
+		try {
+			ArrayList<String> messages = new ArrayList<String>();
+			
+			Connection connectBDD = connMgr.getConnection();
+
+			PreparedStatement query = connectBDD.prepareStatement(requestSQL);
+			query.setString(1, uid);
+			query.setLong(2, period.getTimeStampStart());
+			query.setLong(3, period.getTimeStampEnd());
+			query.setString(4, "%" + constraint.toLowerCase() + "%");
+			
+			ResultSet result = query.executeQuery();
+			
+			
+			while (result.next()) {
+				messages.add(result.getString("message"));
+			}
+			
+			reply.setMessages(messages);
+		} catch (SQLException e) {;
+			e.printStackTrace();
+			log(LOG_SIDE.SERVER, Level.SEVERE,
+					"SQL error when autocompleting user message for uid = " + uid + " period = " + period + " constraint = " + constraint);
+			return new AutoCompleteUserMessageReply(HttpURLConnection.HTTP_INTERNAL_ERROR, "Error when autocompleting");
+		}
+		
+		return reply;
 	}
 	
 	
