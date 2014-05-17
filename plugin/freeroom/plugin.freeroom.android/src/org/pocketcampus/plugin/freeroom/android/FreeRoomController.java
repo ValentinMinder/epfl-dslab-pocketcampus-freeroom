@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.freeroom.android;
 
-import java.util.List;
-
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.R;
@@ -20,7 +18,6 @@ import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
-import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 
 import android.util.Log;
 import android.widget.Toast;
@@ -236,9 +233,12 @@ public class FreeRoomController extends PluginController implements
 	 *            the <code>WhoIsWorkingReply</code> from the server.
 	 */
 	public void setWhoIsWorkingReply(WhoIsWorkingReply result) {
-		List<WorkingOccupancy> listWorkingOccupancies = result
-				.getTheyAreWorking();
-		mModel.setListWorkingOccupancies(listWorkingOccupancies);
+		// old method with old thrift
+		// List<WorkingOccupancy> listWorkingOccupancies = result
+		// .getTheyAreWorking();
+		// mModel.setListWorkingOccupancies(listWorkingOccupancies);
+
+		// new methods with new thrift
 	}
 
 	// NEW INTERFACE as of 2104.04.04.
