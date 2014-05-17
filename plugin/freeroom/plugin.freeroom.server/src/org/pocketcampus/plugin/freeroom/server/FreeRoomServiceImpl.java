@@ -123,6 +123,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		// new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
 		// this)).start();
 	}
+	
+
+	// for test purposes ONLY
+	public FreeRoomServiceImpl(ConnectionManager conn) {
+		System.out.println("Starting TEST FreeRoom plugin server ...");
+		connMgr = conn;
+	}
 
 	public void log(Level level, String message) {
 		log(LOG_SIDE.SERVER, level, message);
@@ -213,7 +220,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			}
 		}
 
-		boolean inserted = insertOccupancyAndCheckOccupancy(period, uid, type,
+		boolean inserted = insertOccupancyAndCheckOccupancyInDB(period, uid, type,
 				hash, userMessage);
 		log(LOG_SIDE.SERVER, Level.INFO,
 				"Inserting occupancy " + type.toString() + " for room " + uid
@@ -221,59 +228,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return inserted;
 
 	}
-
-	/**
-	 * This method checks whether the user has already submitted something for
-	 * the same period, which is not allowed.
-	 * 
-	 * @param period
-	 *            When the user submits its occupancy
-	 * @param room
-	 *            The room in which the user occupancy will be counted
-	 * @param hash
-	 *            The hash must be unique for each user and shouldn't depends on
-	 *            time.
-	 * @return true if the user occupancy is allowed and can be stored, false
-	 *         otherwise.
-	 */
-	// TODO eventually do not user exact timestamp but allow margin even in
-	// queries ?
-	private String checkMultipleSubmissionUserOccupancy(long tsStart,
-			String uid, String hash) {
-		String checkRequest = "SELECT COUNT(*) AS count, co.uid "
-				+ "FROM `fr-checkOccupancy` co "
-				+ "WHERE co.timestampStart = ? AND hash = ?";
-
-		Connection connectBDD;
-		try {
-			connectBDD = connMgr.getConnection();
-			PreparedStatement checkQuery = connectBDD
-					.prepareStatement(checkRequest);
-
-			checkQuery.setLong(1, tsStart);
-			checkQuery.setString(2, hash);
-
-			ResultSet checkResult = checkQuery.executeQuery();
-			if (checkResult.next()) {
-				int count = checkResult.getInt("count");
-				if (count == 0) {
-					return null;
-				} else {
-					return checkResult.getString("uid");
-				}
-			} else {
-				return null;
-			}
-
-		} catch (SQLException e) {
-			log(LOG_SIDE.SERVER, Level.SEVERE,
-					"SQL error when checking multiple submissions of user occupancy start = "
-							+ tsStart + " uid = " + uid);
-			e.printStackTrace();
-			return null;
-		}
-	}
-
+	
 	/**
 	 * Insert an occupancy in the database. It checks if there are no overlaps
 	 * between rooms occupancies.
@@ -291,7 +246,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * @return Return true if the occupancy has been successfully stored in the
 	 *         database, false otherwise.
 	 */
-	private boolean insertOccupancyAndCheckOccupancy(FRPeriod period,
+	private boolean insertOccupancyAndCheckOccupancyInDB(FRPeriod period,
 			String uid, OCCUPANCY_TYPE typeToInsert, String hash,
 			String userMessage) {
 
@@ -353,14 +308,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				for (int i = 0; i < numberHours; ++i) {
 					// also insert in the check table to prevent further submit
 					// during the same period from the same user
-					String prevRoom = checkMultipleSubmissionUserOccupancy(
+					String prevRoom = getLastUID(
 							hourSharpBefore + i * FRTimes.ONE_HOUR_IN_MS, uid,
 							hash);
 					String prevMessage = getLastMessage(hourSharpBefore + i
 							* FRTimes.ONE_HOUR_IN_MS, uid, hash);
 
 					// if first insertion or update of room
-					insertUpdateCheckOccupancy(uid, hourSharpBefore + i
+					insertOrUpdateCheckOccupancy(uid, hourSharpBefore + i
 							* FRTimes.ONE_HOUR_IN_MS, hash, prevRoom,
 							prevMessage, userMessage);
 					if (prevRoom == null
@@ -388,6 +343,60 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return false;
 		}
 	}
+
+	/**
+	 * This method checks whether the user has already submitted something for
+	 * the same period, which is not allowed.
+	 * 
+	 * @param period
+	 *            When the user submits its occupancy
+	 * @param room
+	 *            The room in which the user occupancy will be counted
+	 * @param hash
+	 *            The hash must be unique for each user and shouldn't depends on
+	 *            time.
+	 * @return true if the user occupancy is allowed and can be stored, false
+	 *         otherwise.
+	 */
+	// TODO eventually do not user exact timestamp but allow margin even in
+	// queries ?
+	private String getLastUID(long tsStart,
+			String uid, String hash) {
+		String checkRequest = "SELECT COUNT(*) AS count, co.uid "
+				+ "FROM `fr-checkOccupancy` co "
+				+ "WHERE co.timestampStart = ? AND hash = ?";
+
+		Connection connectBDD;
+		try {
+			connectBDD = connMgr.getConnection();
+			PreparedStatement checkQuery = connectBDD
+					.prepareStatement(checkRequest);
+
+			checkQuery.setLong(1, tsStart);
+			checkQuery.setString(2, hash);
+
+			ResultSet checkResult = checkQuery.executeQuery();
+			if (checkResult.next()) {
+				int count = checkResult.getInt("count");
+				if (count == 0) {
+					return null;
+				} else {
+					return checkResult.getString("uid");
+				}
+			} else {
+				return null;
+			}
+
+		} catch (SQLException e) {
+			log(LOG_SIDE.SERVER, Level.SEVERE,
+					"SQL error when checking multiple submissions of user occupancy start = "
+							+ tsStart + " uid = " + uid);
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+
 
 	private String getLastMessage(long tsStart, String uid, String hash) {
 		String checkRequest = "SELECT COUNT(*) AS count, co.message "
@@ -440,7 +449,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            checkOccupancy table (if one) null otherwise
 	 */
 	// TODO test if usermessage change, there is no problem with count
-	private void insertUpdateCheckOccupancy(String uid, long tsStart,
+	private void insertOrUpdateCheckOccupancy(String uid, long tsStart,
 			String hash, String prevRoom, String prevMessage, String userMessage) {
 
 		if (prevRoom == null) {
@@ -629,12 +638,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			e.printStackTrace();
 			return false;
 		}
-	}
-
-	// for test purposes ONLY
-	public FreeRoomServiceImpl(ConnectionManager conn) {
-		System.out.println("Starting TEST FreeRoom plugin server ...");
-		connMgr = conn;
 	}
 
 	/**
