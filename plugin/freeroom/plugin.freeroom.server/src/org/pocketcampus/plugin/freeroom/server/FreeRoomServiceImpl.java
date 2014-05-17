@@ -926,20 +926,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return result;
 	}
 
-	// TODO maybe bug if room occupancy end after 00 and user occupation reisze
-	// ?
-	public void getUserMessageDraft() {
-		String req = "SELECT * FROM `fr-checkOccupancy` WHERE timestamp matches ";
-
-		/*
-		 * create function in OccupancySorted which add messages to matched
-		 * ActualOccupation étant donné que chaque userOccupancx est stocké par
-		 * heure pleine et dure une heure on peut considérer uniquement la
-		 * recherche ou le timestampStart des check est compris dans une
-		 * actualOccupation de user should only be one match
-		 */
-	}
-
 	/**
 	 * Return the occupancies of the specified list of rooms.
 	 * 
