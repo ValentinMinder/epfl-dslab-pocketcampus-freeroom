@@ -570,7 +570,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			long tsStart, String hash, String message, boolean updateCount) {
 
 		String insertRequest = "UPDATE `fr-checkOccupancy` SET uid = ?, message = ? "
-				+ "WHERE uid = ? AND timestampStart = ?";
+				+ "WHERE uid = ? AND timestampStart = ? AND hash = ?";
 
 		Connection connectBDD;
 		try {
@@ -582,6 +582,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			insertQuery.setString(2, message);
 			insertQuery.setString(3, prevRoom);
 			insertQuery.setLong(4, tsStart);
+			insertQuery.setString(5, hash);
 
 			insertQuery.executeUpdate();
 
