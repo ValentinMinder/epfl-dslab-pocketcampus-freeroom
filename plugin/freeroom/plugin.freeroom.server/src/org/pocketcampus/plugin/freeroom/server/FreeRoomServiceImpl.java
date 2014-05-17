@@ -1469,9 +1469,65 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	@Override
 	public AutoCompleteUserMessageReply autoCompleteUserMessage(
 			AutoCompleteUserMessageRequest request) throws TException {
-		// TODO Auto-generated method stub
+		if (request == null) {
+			log(LOG_SIDE.SERVER, Level.WARNING,
+					"Receiving null AutoCompleteUserMessageRequest");
+			return new AutoCompleteUserMessageReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"AutocompleteUserMessageRequest is null");
+		}
+
+		AutoCompleteUserMessageReply reply = checkAutoCompleteUserMessageRequest(request);
+		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
+			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
+			return reply;
+		} else {
+			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
+		}
+
+		log(LOG_SIDE.SERVER, Level.INFO,
+				"Autocomplete of user message : " + request.getConstraint());
+
+		String constraint = request.getConstraint();
 		return null;
 	}
+	
+	
+	private AutoCompleteUserMessageReply checkAutoCompleteUserMessageRequest(
+			AutoCompleteUserMessageRequest request) {
+		AutoCompleteUserMessageReply reply = new AutoCompleteUserMessageReply();
+		int status = HttpURLConnection.HTTP_OK;
+		String statusComment = "AutoCompleteUserMessageRequest : ";
+
+		if (request == null) {
+			status = HttpURLConnection.HTTP_BAD_REQUEST;
+			statusComment = "AutoCompleteUserMessageRequest is null;";
+		} else {
+			if (!request.isSetConstraint() || request.getConstraint() == null) {
+				status = HttpURLConnection.HTTP_BAD_REQUEST;
+				statusComment += "Constraint is null;";
+			}
+
+			if (!request.isSetRoom() || request.getRoom() == null) {
+				status = HttpURLConnection.HTTP_BAD_REQUEST;
+				statusComment += "Room is not set;";
+			}
+			
+			if (!request.isSetPeriod() || request.getPeriod() == null) {
+				status = HttpURLConnection.HTTP_BAD_REQUEST;
+				statusComment += "FRPeriod is not set;";
+			}
+		}
+
+		reply.setStatus(status);
+		if (status != HttpURLConnection.HTTP_OK) {
+			reply.setStatusComment(statusComment);
+		} else {
+			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
+		}
+		return reply;
+	}
+
+	
 
 	@Override
 	public WhoIsWorkingReply getUserMessages(WhoIsWorkingRequest request)
