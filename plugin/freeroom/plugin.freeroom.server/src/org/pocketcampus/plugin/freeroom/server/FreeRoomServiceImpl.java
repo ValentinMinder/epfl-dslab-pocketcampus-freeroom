@@ -1506,11 +1506,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			Connection connectBDD = connMgr.getConnection();
 			//for now we only take into account one hour period
 			String requestMessages = "SELECT co.message FROM `fr-checkOccupancy` co " +
-					"WHERE co.timestampStart >= ? AND co.timestampEnd <= ? ORDER BY co.message ASC";
+					"WHERE co.uid = ? co.timestampStart >= ? AND co.timestampEnd <= ? ORDER BY co.message ASC";
 			
 			PreparedStatement query = connectBDD.prepareStatement(requestMessages);
-			query.setLong(1, period.getTimeStampStart());
+			query.setString(1, uid);
 			query.setLong(2, period.getTimeStampStart());
+			query.setLong(3, period.getTimeStampStart());
 			
 			ResultSet result = query.executeQuery();
 			
