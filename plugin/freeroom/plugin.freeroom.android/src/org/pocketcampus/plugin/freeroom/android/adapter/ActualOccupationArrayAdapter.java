@@ -10,6 +10,7 @@ import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -105,8 +106,27 @@ public class ActualOccupationArrayAdapter<T> extends
 			};
 			// share icon clickable
 			ivshare.setOnClickListener(ocl);
+			
+			// TODO: do better!
+			final String roomUID = "fakeuid";
+			// TODO: do better
+
+			// TODO: asker whoisworking test to send to controller!
+			OnClickListener ocl_line = new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					WhoIsWorkingRequest req = new WhoIsWorkingRequest(roomUID,
+							mActualOccupation.getPeriod());
+					mController.prepareCheckWhoIsWorking(req);
+					mController.checkWhoIsWorking(homeView);
+				}
+			};
+			convertView.setOnClickListener(ocl_line);
+
+			// TODO: uncomment this
 			// whole line clickable
-			convertView.setOnClickListener(ocl);
+			// convertView.setOnClickListener(ocl);
 		} else {
 			ivshare.setImageResource(R.drawable.ic_action_share_disabled);
 			// share icon non clickable

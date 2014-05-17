@@ -9,6 +9,7 @@ import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 
 import android.content.Context;
 import android.content.Intent;
@@ -197,7 +198,23 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			}
 		};
 		people.setOnClickListener(ocl);
-		convertView.setOnClickListener(ocl);
+
+		// TODO: asker whoisworking test to send to controller!
+		OnClickListener ocl_line = new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				WhoIsWorkingRequest req = new WhoIsWorkingRequest(uid,
+						occupancy.getTreatedPeriod());
+				mController.prepareCheckWhoIsWorking(req);
+				mController.checkWhoIsWorking(homeView);
+			}
+		};
+		convertView.setOnClickListener(ocl_line);
+
+		// TODO: uncomment this (or put the listener better, dont go behind
+		// other images...)
+		// convertView.setOnClickListener(ocl);
 
 		convertView.setBackgroundColor(mModel.getColor(occupancy));
 		return convertView;
