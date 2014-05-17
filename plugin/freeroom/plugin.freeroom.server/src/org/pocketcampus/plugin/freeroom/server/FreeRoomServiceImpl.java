@@ -556,7 +556,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 		String updateRequest = "UPDATE `fr-occupancy` co SET co.count = co.count - 1 "
-				+ "WHERE co.uid = ? AND co.timestampStart = ?";
+				+ "WHERE co.uid = ? AND co.timestampStart = ? AND count >= 1";
 
 		Connection connectBDD;
 		try {
@@ -567,9 +567,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			insertQuery.setString(1, uid);
 			insertQuery.setLong(2, tsStart);
 			int update = insertQuery.executeUpdate();
-
-			System.out.println(update + " rooms updated (decrement)");
-
 		} catch (SQLException e) {
 			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"SQL error when updating (decrement by one) user occupancy for uid = "
