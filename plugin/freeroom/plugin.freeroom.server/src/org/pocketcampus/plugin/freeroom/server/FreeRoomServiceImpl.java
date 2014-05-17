@@ -57,7 +57,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private final int LIMIT_AUTOCOMPLETE = 50;
 	private final int LENGTH_USERMESSAGE = 30;
-	
+
 	private ConnectionManager connMgr;
 	private ExchangeServiceImpl mExchangeService;
 	private Logger logger = Logger.getLogger(FreeRoomServiceImpl.class
@@ -122,7 +122,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		// new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
 		// this)).start();
 	}
-	
 
 	// for test purposes ONLY
 	public FreeRoomServiceImpl(ConnectionManager conn) {
@@ -133,7 +132,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public void log(Level level, String message) {
 		log(LOG_SIDE.SERVER, level, message);
 	}
-	
+
 	/**
 	 * Log Severe messages coming from external clients such as android.
 	 */
@@ -153,7 +152,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				formatPathMessageLogAndroid(arg0.getMessage(), arg0.getPath()),
 				arg0.getTimestamp());
 	}
-	
+
 	/**
 	 * Pre-format the message for logging
 	 * 
@@ -249,21 +248,23 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			if (!Utils.checkUserMessage(userMessage)) {
 				log(Level.INFO, "Getting wrong user message : " + userMessage);
 				return false;
-			} else if (userMessage != null && userMessage.length() > LENGTH_USERMESSAGE) {
-				log(Level.INFO, "User message is too long, length = " + userMessage.length());
+			} else if (userMessage != null
+					&& userMessage.length() > LENGTH_USERMESSAGE) {
+				log(Level.INFO, "User message is too long, length = "
+						+ userMessage.length());
 				return false;
 			}
 		}
 
-		boolean inserted = insertOccupancyAndCheckOccupancyInDB(period, uid, type,
-				hash, userMessage);
+		boolean inserted = insertOccupancyAndCheckOccupancyInDB(period, uid,
+				type, hash, userMessage);
 		log(LOG_SIDE.SERVER, Level.INFO,
 				"Inserting occupancy " + type.toString() + " for room " + uid
 						+ " : " + inserted);
 		return inserted;
 
 	}
-	
+
 	/**
 	 * Insert an occupancy in the database. It checks if there are no overlaps
 	 * between rooms occupancies.
@@ -343,9 +344,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				for (int i = 0; i < numberHours; ++i) {
 					// also insert in the check table to prevent further submit
 					// during the same period from the same user
-					String prevRoom = getLastUID(
-							hourSharpBefore + i * FRTimes.ONE_HOUR_IN_MS, uid,
-							hash);
+					String prevRoom = getLastUID(hourSharpBefore + i
+							* FRTimes.ONE_HOUR_IN_MS, uid, hash);
 					String prevMessage = getLastMessage(hourSharpBefore + i
 							* FRTimes.ONE_HOUR_IN_MS, uid, hash);
 
@@ -355,6 +355,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							prevMessage, userMessage);
 					if (prevRoom == null
 							|| (prevRoom != null && !prevRoom.equals(uid))) {
+						// we increment the counter only if this is the first
+						// insertion (prevRoom == null) or if we change the
+						// room, in that case the counter for the new room has
+						// to be incremented, the old one has been taken care of
+						// in the previous method
 						overallInsertion = overallInsertion
 								&& insertOccupancyInDB(uid, hourSharpBefore + i
 										* FRTimes.ONE_HOUR_IN_MS,
@@ -390,13 +395,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * @param hash
 	 *            The hash must be unique for each user and shouldn't depends on
 	 *            time.
-	 * @return true if the user occupancy is allowed and can be stored, false
-	 *         otherwise.
+	 * @return The previous UID or null if none
 	 */
 	// TODO eventually do not user exact timestamp but allow margin even in
 	// queries ?
-	private String getLastUID(long tsStart,
-			String uid, String hash) {
+	private String getLastUID(long tsStart, String uid, String hash) {
 		String checkRequest = "SELECT COUNT(*) AS count, co.uid "
 				+ "FROM `fr-checkOccupancy` co "
 				+ "WHERE co.timestampStart = ? AND hash = ?";
@@ -430,8 +433,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return null;
 		}
 	}
-
-
 
 	private String getLastMessage(long tsStart, String uid, String hash) {
 		String checkRequest = "SELECT COUNT(*) AS count, co.message "
@@ -505,7 +506,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 	}
-
+//TODO javaodc with new methods def.
 	private void insertCheckOccupancyInDB(String uid, long tsStart,
 			String hash, String message) {
 		String insertRequest = "INSERT INTO `fr-checkOccupancy` (uid, timestampStart, timestampEnd, hash, message) "
@@ -550,12 +551,20 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	/**
 	 * Update checkOccupancy attributs
-	 * @param uid The new uid 
-	 * @param prevRoom The previous uid to be updated
-	 * @param tsStart The timestamp of the record to update
-	 * @param hash The hash of the record to update
-	 * @param message The new message
-	 * @param updateCount If we should also decrement the count in occupancy table for the old uid
+	 * 
+	 * @param uid
+	 *            The new uid
+	 * @param prevRoom
+	 *            The previous uid to be updated
+	 * @param tsStart
+	 *            The timestamp of the record to update
+	 * @param hash
+	 *            The hash of the record to update
+	 * @param message
+	 *            The new message
+	 * @param updateCount
+	 *            If we should also decrement the count in occupancy table for
+	 *            the old uid
 	 */
 	private void updateCheckOccupancyInDB(String uid, String prevRoom,
 			long tsStart, String hash, String message, boolean updateCount) {
@@ -614,9 +623,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			insertQuery.setString(1, uid);
 			insertQuery.setLong(2, tsStart);
 			int update = insertQuery.executeUpdate();
-			
+
 			if (update == 0) {
-				log(Level.WARNING, "Cannot decrement count of user occupancy for uid = " + uid + " tsStart = " + tsStart);
+				log(Level.WARNING,
+						"Cannot decrement count of user occupancy for uid = "
+								+ uid + " tsStart = " + tsStart);
 				return false;
 			}
 			return true;
@@ -1076,7 +1087,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"AutocompleteRequest is null");
 		}
 
-		AutoCompleteReply reply = CheckRequests.checkAutoCompleteRequest(request);
+		AutoCompleteReply reply = CheckRequests
+				.checkAutoCompleteRequest(request);
 		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
 			return reply;
@@ -1196,11 +1208,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (request == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Receiving null AutoCompleteUserMessageRequest");
-			return new AutoCompleteUserMessageReply(HttpURLConnection.HTTP_BAD_REQUEST,
+			return new AutoCompleteUserMessageReply(
+					HttpURLConnection.HTTP_BAD_REQUEST,
 					"AutocompleteUserMessageRequest is null");
 		}
 
-		AutoCompleteUserMessageReply reply = CheckRequests.checkAutoCompleteUserMessageRequest(request);
+		AutoCompleteUserMessageReply reply = CheckRequests
+				.checkAutoCompleteUserMessageRequest(request);
 		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
 			return reply;
@@ -1208,23 +1222,23 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
 		}
 
-		log(LOG_SIDE.SERVER, Level.INFO,
-				"Autocomplete of user message : " + request.getConstraint());
+		log(LOG_SIDE.SERVER, Level.INFO, "Autocomplete of user message : "
+				+ request.getConstraint());
 
 		String constraint = request.getConstraint().replaceAll("\\s+", "");
 		String uid = request.getRoom().getUid();
 		FRPeriod period = request.getPeriod();
-		//TODO change getUserMessage with FRRoom, not only uid to be more consistent
-		//TODO check valid period
+		// TODO change getUserMessage with FRRoom, not only uid to be more
+		// consistent
+		// TODO check valid period
 		String requestSQL = "SELECT co.message "
 				+ "FROM `fr-checkOccupancy` co "
-				+ "WHERE co.uid = ? AND co.timestampStart >= ? AND co.timestampEnd <= ? " +
-				"AND LOWER(co.message) LIKE (?) ORDER BY co.message ASC";
-		
-		
+				+ "WHERE co.uid = ? AND co.timestampStart >= ? AND co.timestampEnd <= ? "
+				+ "AND LOWER(co.message) LIKE (?) ORDER BY co.message ASC";
+
 		try {
 			ArrayList<String> messages = new ArrayList<String>();
-			
+
 			Connection connectBDD = connMgr.getConnection();
 
 			PreparedStatement query = connectBDD.prepareStatement(requestSQL);
@@ -1232,22 +1246,26 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			query.setLong(2, period.getTimeStampStart());
 			query.setLong(3, period.getTimeStampEnd());
 			query.setString(4, "%" + constraint.toLowerCase() + "%");
-			
+
 			ResultSet result = query.executeQuery();
-			
-			
+
 			while (result.next()) {
 				messages.add(result.getString("message"));
 			}
-			
+
 			reply.setMessages(messages);
-		} catch (SQLException e) {;
+		} catch (SQLException e) {
+			;
 			e.printStackTrace();
 			log(LOG_SIDE.SERVER, Level.SEVERE,
-					"SQL error when autocompleting user message for uid = " + uid + " period = " + period + " constraint = " + constraint);
-			return new AutoCompleteUserMessageReply(HttpURLConnection.HTTP_INTERNAL_ERROR, "Error when autocompleting");
+					"SQL error when autocompleting user message for uid = "
+							+ uid + " period = " + period + " constraint = "
+							+ constraint);
+			return new AutoCompleteUserMessageReply(
+					HttpURLConnection.HTTP_INTERNAL_ERROR,
+					"Error when autocompleting");
 		}
-		
+
 		return reply;
 	}
 
@@ -1281,15 +1299,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		FRRoom room = work.getRoom();
 		boolean success = insertOccupancy(period, OCCUPANCY_TYPE.USER,
 				room.getUid(), request.getHash(), userMessage);
+		// TODO maybe change return value, to match more cases
 		log(LOG_SIDE.SERVER, Level.INFO, "ImWorkingThere request for room "
 				+ room.getDoorCode() + " : " + success);
 		if (success) {
 			return new ImWorkingReply(HttpURLConnection.HTTP_OK, "");
 		} else {
-			return new ImWorkingReply(HttpURLConnection.HTTP_BAD_REQUEST,
-					" ");
+			return new ImWorkingReply(HttpURLConnection.HTTP_BAD_REQUEST, " ");
 		}
-	}	
+	}
 
 	@Override
 	public WhoIsWorkingReply getUserMessages(WhoIsWorkingRequest request)
@@ -1301,50 +1319,53 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"WhoIsWorkingRequest is null");
 		}
 
-		WhoIsWorkingReply reply = CheckRequests.checkWhoIsWorkingRequest(request);
+		WhoIsWorkingReply reply = CheckRequests
+				.checkWhoIsWorkingRequest(request);
 		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
 			return reply;
 		} else {
 			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
 		}
-		//TODO remove duplicate
+		// TODO remove duplicate
 		FRPeriod period = request.getPeriod();
-//		period.setTimeStampStart(FRTimes
-//				.roundToNearestHalfHourBefore(period.getTimeStampStart()));
-		
-		List<String> listMessages = getUserMessages(period, request.getRoomUID());
+		// period.setTimeStampStart(FRTimes
+		// .roundToNearestHalfHourBefore(period.getTimeStampStart()));
+
+		List<String> listMessages = getUserMessages(period,
+				request.getRoomUID());
 		reply.setMessages(listMessages);
 		return null;
 	}
-	
+
 	private List<String> getUserMessages(FRPeriod period, String uid) {
 		try {
 			ArrayList<String> messages = new ArrayList<String>();
 			Connection connectBDD = connMgr.getConnection();
-			//for now we only take into account one hour period
-			String requestMessages = "SELECT co.message FROM `fr-checkOccupancy` co " +
-					"WHERE co.uid = ? co.timestampStart >= ? AND co.timestampEnd <= ? ORDER BY co.message ASC";
-			
-			PreparedStatement query = connectBDD.prepareStatement(requestMessages);
+			// for now we only take into account one hour period
+			String requestMessages = "SELECT co.message FROM `fr-checkOccupancy` co "
+					+ "WHERE co.uid = ? AND co.timestampStart >= ? AND co.timestampEnd <= ? ORDER BY co.message ASC";
+
+			PreparedStatement query = connectBDD
+					.prepareStatement(requestMessages);
 			query.setString(1, uid);
 			query.setLong(2, period.getTimeStampStart());
 			query.setLong(3, period.getTimeStampStart());
-			
+
 			ResultSet result = query.executeQuery();
-			
+
 			while (result.next()) {
 				messages.add(result.getString("message"));
 			}
 			return messages;
-		} catch (SQLException e) {;
+		} catch (SQLException e) {
+			;
 			e.printStackTrace();
 			log(LOG_SIDE.SERVER, Level.SEVERE,
-					"SQL error when getting user messages for period = " + period + " uid = " + uid);
+					"SQL error when getting user messages for period = "
+							+ period + " uid = " + uid);
 			return new ArrayList<String>();
 		}
 	}
-	
-
 
 }
