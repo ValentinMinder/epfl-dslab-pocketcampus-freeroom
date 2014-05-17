@@ -644,7 +644,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			refresh();
 			u.logV("Successful start in default mode: wait for server response.");
 		} else {
-			System.err.println("Controller or Model not defined: cannot start default mode.");
+			System.err
+					.println("Controller or Model not defined: cannot start default mode.");
 		}
 	}
 
@@ -1979,8 +1980,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			ListView roomOccupancyListView = (ListView) mInfoRoomView
 					.findViewById(R.id.freeroom_layout_dialog_info_roomOccupancy);
 			mInfoActualOccupationAdapter = new ActualOccupationArrayAdapter<ActualOccupation>(
-					getApplicationContext(), mOccupancy.getOccupancy(),
-					mController, this);
+					getApplicationContext(), mOccupancy, mController, this);
 			roomOccupancyListView.setAdapter(mInfoActualOccupationAdapter);
 
 			TextView detailsTextView = (TextView) mInfoRoomView

@@ -10,6 +10,7 @@ import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 
 import android.content.Context;
@@ -38,17 +39,19 @@ import android.widget.TextView;
 public class ActualOccupationArrayAdapter<T> extends
 		ArrayAdapter<ActualOccupation> {
 	private Context context;
+	private Occupancy occupancy;
 	private List<ActualOccupation> data;
 	// hold the caller view for colors updates.
 	private FreeRoomModel mModel;
 	private FreeRoomController mController;
 	private FreeRoomHomeView homeView;
 
-	public ActualOccupationArrayAdapter(Context c, List<ActualOccupation> data,
+	public ActualOccupationArrayAdapter(Context c, Occupancy occupancy,
 			FreeRoomController mController, FreeRoomHomeView homeView) {
-		super(c, R.layout.sdk_list_entry, R.id.sdk_list_entry_text, data);
+		super(c, R.layout.sdk_list_entry, R.id.sdk_list_entry_text, occupancy.getOccupancy());
 		this.context = c;
-		this.data = data;
+		this.data = occupancy.getOccupancy();
+		this.occupancy = occupancy;
 		this.mController = mController;
 		this.homeView = homeView;
 		this.mModel = (FreeRoomModel) mController.getModel();
@@ -108,7 +111,7 @@ public class ActualOccupationArrayAdapter<T> extends
 			ivshare.setOnClickListener(ocl);
 			
 			// TODO: do better!
-			final String roomUID = "fakeuid";
+			final String roomUID = occupancy.getRoom().getUid();
 			// TODO: do better
 
 			// TODO: asker whoisworking test to send to controller!
