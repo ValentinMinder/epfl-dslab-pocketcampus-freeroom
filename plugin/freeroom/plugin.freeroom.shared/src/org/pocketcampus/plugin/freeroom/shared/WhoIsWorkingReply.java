@@ -26,17 +26,17 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
 
   private static final org.apache.thrift.protocol.TField STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("status", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField STATUS_COMMENT_FIELD_DESC = new org.apache.thrift.protocol.TField("statusComment", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField THEY_ARE_WORKING_FIELD_DESC = new org.apache.thrift.protocol.TField("theyAreWorking", org.apache.thrift.protocol.TType.LIST, (short)3);
+  private static final org.apache.thrift.protocol.TField MESSAGES_FIELD_DESC = new org.apache.thrift.protocol.TField("messages", org.apache.thrift.protocol.TType.LIST, (short)3);
 
   private int status; // required
   private String statusComment; // required
-  private List<WorkingOccupancy> theyAreWorking; // required
+  private List<String> messages; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     STATUS((short)1, "status"),
     STATUS_COMMENT((short)2, "statusComment"),
-    THEY_ARE_WORKING((short)3, "theyAreWorking");
+    MESSAGES((short)3, "messages");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -55,8 +55,8 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
           return STATUS;
         case 2: // STATUS_COMMENT
           return STATUS_COMMENT;
-        case 3: // THEY_ARE_WORKING
-          return THEY_ARE_WORKING;
+        case 3: // MESSAGES
+          return MESSAGES;
         default:
           return null;
       }
@@ -107,9 +107,9 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.STATUS_COMMENT, new org.apache.thrift.meta_data.FieldMetaData("statusComment", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.THEY_ARE_WORKING, new org.apache.thrift.meta_data.FieldMetaData("theyAreWorking", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.MESSAGES, new org.apache.thrift.meta_data.FieldMetaData("messages", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, WorkingOccupancy.class))));
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(WhoIsWorkingReply.class, metaDataMap);
   }
@@ -137,12 +137,12 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
     if (other.isSetStatusComment()) {
       this.statusComment = other.statusComment;
     }
-    if (other.isSetTheyAreWorking()) {
-      List<WorkingOccupancy> __this__theyAreWorking = new ArrayList<WorkingOccupancy>();
-      for (WorkingOccupancy other_element : other.theyAreWorking) {
-        __this__theyAreWorking.add(new WorkingOccupancy(other_element));
+    if (other.isSetMessages()) {
+      List<String> __this__messages = new ArrayList<String>();
+      for (String other_element : other.messages) {
+        __this__messages.add(other_element);
       }
-      this.theyAreWorking = __this__theyAreWorking;
+      this.messages = __this__messages;
     }
   }
 
@@ -155,7 +155,7 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
     setStatusIsSet(false);
     this.status = 0;
     this.statusComment = null;
-    this.theyAreWorking = null;
+    this.messages = null;
   }
 
   public int getStatus() {
@@ -205,42 +205,42 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
     }
   }
 
-  public int getTheyAreWorkingSize() {
-    return (this.theyAreWorking == null) ? 0 : this.theyAreWorking.size();
+  public int getMessagesSize() {
+    return (this.messages == null) ? 0 : this.messages.size();
   }
 
-  public java.util.Iterator<WorkingOccupancy> getTheyAreWorkingIterator() {
-    return (this.theyAreWorking == null) ? null : this.theyAreWorking.iterator();
+  public java.util.Iterator<String> getMessagesIterator() {
+    return (this.messages == null) ? null : this.messages.iterator();
   }
 
-  public void addToTheyAreWorking(WorkingOccupancy elem) {
-    if (this.theyAreWorking == null) {
-      this.theyAreWorking = new ArrayList<WorkingOccupancy>();
+  public void addToMessages(String elem) {
+    if (this.messages == null) {
+      this.messages = new ArrayList<String>();
     }
-    this.theyAreWorking.add(elem);
+    this.messages.add(elem);
   }
 
-  public List<WorkingOccupancy> getTheyAreWorking() {
-    return this.theyAreWorking;
+  public List<String> getMessages() {
+    return this.messages;
   }
 
-  public WhoIsWorkingReply setTheyAreWorking(List<WorkingOccupancy> theyAreWorking) {
-    this.theyAreWorking = theyAreWorking;
+  public WhoIsWorkingReply setMessages(List<String> messages) {
+    this.messages = messages;
     return this;
   }
 
-  public void unsetTheyAreWorking() {
-    this.theyAreWorking = null;
+  public void unsetMessages() {
+    this.messages = null;
   }
 
-  /** Returns true if field theyAreWorking is set (has been assigned a value) and false otherwise */
-  public boolean isSetTheyAreWorking() {
-    return this.theyAreWorking != null;
+  /** Returns true if field messages is set (has been assigned a value) and false otherwise */
+  public boolean isSetMessages() {
+    return this.messages != null;
   }
 
-  public void setTheyAreWorkingIsSet(boolean value) {
+  public void setMessagesIsSet(boolean value) {
     if (!value) {
-      this.theyAreWorking = null;
+      this.messages = null;
     }
   }
 
@@ -262,11 +262,11 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
       }
       break;
 
-    case THEY_ARE_WORKING:
+    case MESSAGES:
       if (value == null) {
-        unsetTheyAreWorking();
+        unsetMessages();
       } else {
-        setTheyAreWorking((List<WorkingOccupancy>)value);
+        setMessages((List<String>)value);
       }
       break;
 
@@ -281,8 +281,8 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
     case STATUS_COMMENT:
       return getStatusComment();
 
-    case THEY_ARE_WORKING:
-      return getTheyAreWorking();
+    case MESSAGES:
+      return getMessages();
 
     }
     throw new IllegalStateException();
@@ -299,8 +299,8 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
       return isSetStatus();
     case STATUS_COMMENT:
       return isSetStatusComment();
-    case THEY_ARE_WORKING:
-      return isSetTheyAreWorking();
+    case MESSAGES:
+      return isSetMessages();
     }
     throw new IllegalStateException();
   }
@@ -336,12 +336,12 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
         return false;
     }
 
-    boolean this_present_theyAreWorking = true && this.isSetTheyAreWorking();
-    boolean that_present_theyAreWorking = true && that.isSetTheyAreWorking();
-    if (this_present_theyAreWorking || that_present_theyAreWorking) {
-      if (!(this_present_theyAreWorking && that_present_theyAreWorking))
+    boolean this_present_messages = true && this.isSetMessages();
+    boolean that_present_messages = true && that.isSetMessages();
+    if (this_present_messages || that_present_messages) {
+      if (!(this_present_messages && that_present_messages))
         return false;
-      if (!this.theyAreWorking.equals(that.theyAreWorking))
+      if (!this.messages.equals(that.messages))
         return false;
     }
 
@@ -362,10 +362,10 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
     if (present_statusComment)
       builder.append(statusComment);
 
-    boolean present_theyAreWorking = true && (isSetTheyAreWorking());
-    builder.append(present_theyAreWorking);
-    if (present_theyAreWorking)
-      builder.append(theyAreWorking);
+    boolean present_messages = true && (isSetMessages());
+    builder.append(present_messages);
+    if (present_messages)
+      builder.append(messages);
 
     return builder.toHashCode();
   }
@@ -398,12 +398,12 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetTheyAreWorking()).compareTo(typedOther.isSetTheyAreWorking());
+    lastComparison = Boolean.valueOf(isSetMessages()).compareTo(typedOther.isSetMessages());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetTheyAreWorking()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.theyAreWorking, typedOther.theyAreWorking);
+    if (isSetMessages()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.messages, typedOther.messages);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -440,17 +440,16 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // THEY_ARE_WORKING
+        case 3: // MESSAGES
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list30 = iprot.readListBegin();
-              this.theyAreWorking = new ArrayList<WorkingOccupancy>(_list30.size);
-              for (int _i31 = 0; _i31 < _list30.size; ++_i31)
+              org.apache.thrift.protocol.TList _list34 = iprot.readListBegin();
+              this.messages = new ArrayList<String>(_list34.size);
+              for (int _i35 = 0; _i35 < _list34.size; ++_i35)
               {
-                WorkingOccupancy _elem32; // required
-                _elem32 = new WorkingOccupancy();
-                _elem32.read(iprot);
-                this.theyAreWorking.add(_elem32);
+                String _elem36; // required
+                _elem36 = iprot.readString();
+                this.messages.add(_elem36);
               }
               iprot.readListEnd();
             }
@@ -484,14 +483,14 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
       oprot.writeString(this.statusComment);
       oprot.writeFieldEnd();
     }
-    if (this.theyAreWorking != null) {
-      if (isSetTheyAreWorking()) {
-        oprot.writeFieldBegin(THEY_ARE_WORKING_FIELD_DESC);
+    if (this.messages != null) {
+      if (isSetMessages()) {
+        oprot.writeFieldBegin(MESSAGES_FIELD_DESC);
         {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.theyAreWorking.size()));
-          for (WorkingOccupancy _iter33 : this.theyAreWorking)
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.messages.size()));
+          for (String _iter37 : this.messages)
           {
-            _iter33.write(oprot);
+            oprot.writeString(_iter37);
           }
           oprot.writeListEnd();
         }
@@ -518,13 +517,13 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
       sb.append(this.statusComment);
     }
     first = false;
-    if (isSetTheyAreWorking()) {
+    if (isSetMessages()) {
       if (!first) sb.append(", ");
-      sb.append("theyAreWorking:");
-      if (this.theyAreWorking == null) {
+      sb.append("messages:");
+      if (this.messages == null) {
         sb.append("null");
       } else {
-        sb.append(this.theyAreWorking);
+        sb.append(this.messages);
       }
       first = false;
     }

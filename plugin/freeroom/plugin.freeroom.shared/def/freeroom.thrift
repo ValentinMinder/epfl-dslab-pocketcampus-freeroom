@@ -57,7 +57,6 @@ struct ActualOccupation {
 	//TO DELETE
 	3: optional i32 probableOccupation; // if we want to do CFF-style
 	4: optional double ratioOccupation;
-	5: optional list<string> userMessages;
 }
 
 // the occupancy of a room: periods are usually each hour
@@ -127,6 +126,17 @@ struct ImWorkingReply {
 	2: required string statusComment;
 }
 
+struct WhoIsWorkingRequest {
+	1: required string roomUID;
+	2: required FRPeriod period;
+}
+
+struct WhoIsWorkingReply {
+	1: required i32 status;
+	2: required string statusComment;
+	3: optional list<string> messages;
+}
+
 struct LogMessage {
 	1: required i64 timestamp;
 	//path beeing the path to the class where it failed
@@ -146,6 +156,8 @@ service FreeRoomService {
 	
 	// indicate that i'm going to work there
 	ImWorkingReply indicateImWorking(1: ImWorkingRequest request);
+	
+	WhoIsWorkingReply getUserMessages(1: WhoIsWorkingRequest request);
 	
 	//used to log critical bug that alter user experience
 	void logSevere(1: LogMessage log);

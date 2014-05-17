@@ -435,13 +435,13 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
         case 2: // FORBIDDEN_ROOMS_UID
           if (field.type == org.apache.thrift.protocol.TType.SET) {
             {
-              org.apache.thrift.protocol.TSet _set21 = iprot.readSetBegin();
-              this.forbiddenRoomsUID = new HashSet<String>(2*_set21.size);
-              for (int _i22 = 0; _i22 < _set21.size; ++_i22)
+              org.apache.thrift.protocol.TSet _set17 = iprot.readSetBegin();
+              this.forbiddenRoomsUID = new HashSet<String>(2*_set17.size);
+              for (int _i18 = 0; _i18 < _set17.size; ++_i18)
               {
-                String _elem23; // required
-                _elem23 = iprot.readString();
-                this.forbiddenRoomsUID.add(_elem23);
+                String _elem19; // required
+                _elem19 = iprot.readString();
+                this.forbiddenRoomsUID.add(_elem19);
               }
               iprot.readSetEnd();
             }
@@ -485,9 +485,9 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
         oprot.writeFieldBegin(FORBIDDEN_ROOMS_UID_FIELD_DESC);
         {
           oprot.writeSetBegin(new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.STRING, this.forbiddenRoomsUID.size()));
-          for (String _iter24 : this.forbiddenRoomsUID)
+          for (String _iter20 : this.forbiddenRoomsUID)
           {
-            oprot.writeString(_iter24);
+            oprot.writeString(_iter20);
           }
           oprot.writeSetEnd();
         }

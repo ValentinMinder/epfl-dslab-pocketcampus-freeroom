@@ -40,6 +40,8 @@ import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.LogMessage;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
@@ -1466,6 +1468,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	@Override
 	public AutoCompleteUserMessageReply autoCompleteUserMessage(
 			AutoCompleteUserMessageRequest arg0) throws TException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public WhoIsWorkingReply getUserMessages(WhoIsWorkingRequest arg0)
+			throws TException {
 		// TODO Auto-generated method stub
 		return null;
 	}

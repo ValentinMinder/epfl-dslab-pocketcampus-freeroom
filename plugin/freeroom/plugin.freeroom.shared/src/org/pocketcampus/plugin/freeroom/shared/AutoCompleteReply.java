@@ -452,26 +452,26 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
         case 4: // LIST_ROOM
           if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
-              org.apache.thrift.protocol.TMap _map25 = iprot.readMapBegin();
-              this.listRoom = new HashMap<String,List<FRRoom>>(2*_map25.size);
-              for (int _i26 = 0; _i26 < _map25.size; ++_i26)
+              org.apache.thrift.protocol.TMap _map21 = iprot.readMapBegin();
+              this.listRoom = new HashMap<String,List<FRRoom>>(2*_map21.size);
+              for (int _i22 = 0; _i22 < _map21.size; ++_i22)
               {
-                String _key27; // required
-                List<FRRoom> _val28; // required
-                _key27 = iprot.readString();
+                String _key23; // required
+                List<FRRoom> _val24; // required
+                _key23 = iprot.readString();
                 {
-                  org.apache.thrift.protocol.TList _list29 = iprot.readListBegin();
-                  _val28 = new ArrayList<FRRoom>(_list29.size);
-                  for (int _i30 = 0; _i30 < _list29.size; ++_i30)
+                  org.apache.thrift.protocol.TList _list25 = iprot.readListBegin();
+                  _val24 = new ArrayList<FRRoom>(_list25.size);
+                  for (int _i26 = 0; _i26 < _list25.size; ++_i26)
                   {
-                    FRRoom _elem31; // required
-                    _elem31 = new FRRoom();
-                    _elem31.read(iprot);
-                    _val28.add(_elem31);
+                    FRRoom _elem27; // required
+                    _elem27 = new FRRoom();
+                    _elem27.read(iprot);
+                    _val24.add(_elem27);
                   }
                   iprot.readListEnd();
                 }
-                this.listRoom.put(_key27, _val28);
+                this.listRoom.put(_key23, _val24);
               }
               iprot.readMapEnd();
             }
@@ -510,14 +510,14 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
         oprot.writeFieldBegin(LIST_ROOM_FIELD_DESC);
         {
           oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.LIST, this.listRoom.size()));
-          for (Map.Entry<String, List<FRRoom>> _iter32 : this.listRoom.entrySet())
+          for (Map.Entry<String, List<FRRoom>> _iter28 : this.listRoom.entrySet())
           {
-            oprot.writeString(_iter32.getKey());
+            oprot.writeString(_iter28.getKey());
             {
-              oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, _iter32.getValue().size()));
-              for (FRRoom _iter33 : _iter32.getValue())
+              oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, _iter28.getValue().size()));
+              for (FRRoom _iter29 : _iter28.getValue())
               {
-                _iter33.write(oprot);
+                _iter29.write(oprot);
               }
               oprot.writeListEnd();
             }

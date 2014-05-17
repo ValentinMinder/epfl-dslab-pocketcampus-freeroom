@@ -524,26 +524,26 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
         case 3: // OCCUPANCY_OF_ROOMS
           if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
-              org.apache.thrift.protocol.TMap _map12 = iprot.readMapBegin();
-              this.occupancyOfRooms = new HashMap<String,List<Occupancy>>(2*_map12.size);
-              for (int _i13 = 0; _i13 < _map12.size; ++_i13)
+              org.apache.thrift.protocol.TMap _map8 = iprot.readMapBegin();
+              this.occupancyOfRooms = new HashMap<String,List<Occupancy>>(2*_map8.size);
+              for (int _i9 = 0; _i9 < _map8.size; ++_i9)
               {
-                String _key14; // required
-                List<Occupancy> _val15; // required
-                _key14 = iprot.readString();
+                String _key10; // required
+                List<Occupancy> _val11; // required
+                _key10 = iprot.readString();
                 {
-                  org.apache.thrift.protocol.TList _list16 = iprot.readListBegin();
-                  _val15 = new ArrayList<Occupancy>(_list16.size);
-                  for (int _i17 = 0; _i17 < _list16.size; ++_i17)
+                  org.apache.thrift.protocol.TList _list12 = iprot.readListBegin();
+                  _val11 = new ArrayList<Occupancy>(_list12.size);
+                  for (int _i13 = 0; _i13 < _list12.size; ++_i13)
                   {
-                    Occupancy _elem18; // required
-                    _elem18 = new Occupancy();
-                    _elem18.read(iprot);
-                    _val15.add(_elem18);
+                    Occupancy _elem14; // required
+                    _elem14 = new Occupancy();
+                    _elem14.read(iprot);
+                    _val11.add(_elem14);
                   }
                   iprot.readListEnd();
                 }
-                this.occupancyOfRooms.put(_key14, _val15);
+                this.occupancyOfRooms.put(_key10, _val11);
               }
               iprot.readMapEnd();
             }
@@ -590,14 +590,14 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
         oprot.writeFieldBegin(OCCUPANCY_OF_ROOMS_FIELD_DESC);
         {
           oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.LIST, this.occupancyOfRooms.size()));
-          for (Map.Entry<String, List<Occupancy>> _iter19 : this.occupancyOfRooms.entrySet())
+          for (Map.Entry<String, List<Occupancy>> _iter15 : this.occupancyOfRooms.entrySet())
           {
-            oprot.writeString(_iter19.getKey());
+            oprot.writeString(_iter15.getKey());
             {
-              oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, _iter19.getValue().size()));
-              for (Occupancy _iter20 : _iter19.getValue())
+              oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, _iter15.getValue().size()));
+              for (Occupancy _iter16 : _iter15.getValue())
               {
-                _iter20.write(oprot);
+                _iter16.write(oprot);
               }
               oprot.writeListEnd();
             }

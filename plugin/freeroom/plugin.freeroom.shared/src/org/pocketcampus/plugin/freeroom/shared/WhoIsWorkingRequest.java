@@ -24,19 +24,16 @@ import org.slf4j.LoggerFactory;
 public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorkingRequest, WhoIsWorkingRequest._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("WhoIsWorkingRequest");
 
-  private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-  private static final org.apache.thrift.protocol.TField COURSE_FIELD_DESC = new org.apache.thrift.protocol.TField("course", org.apache.thrift.protocol.TType.STRUCT, (short)2);
-  private static final org.apache.thrift.protocol.TField CONSTRAINT_FIELD_DESC = new org.apache.thrift.protocol.TField("constraint", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField ROOM_UID_FIELD_DESC = new org.apache.thrift.protocol.TField("roomUID", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.STRUCT, (short)2);
 
+  private String roomUID; // required
   private FRPeriod period; // required
-  private FRCourse course; // required
-  private String constraint; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    PERIOD((short)1, "period"),
-    COURSE((short)2, "course"),
-    CONSTRAINT((short)3, "constraint");
+    ROOM_UID((short)1, "roomUID"),
+    PERIOD((short)2, "period");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -51,12 +48,10 @@ public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorking
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // PERIOD
+        case 1: // ROOM_UID
+          return ROOM_UID;
+        case 2: // PERIOD
           return PERIOD;
-        case 2: // COURSE
-          return COURSE;
-        case 3: // CONSTRAINT
-          return CONSTRAINT;
         default:
           return null;
       }
@@ -101,12 +96,10 @@ public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorking
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+    tmpMap.put(_Fields.ROOM_UID, new org.apache.thrift.meta_data.FieldMetaData("roomUID", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.PERIOD, new org.apache.thrift.meta_data.FieldMetaData("period", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRPeriod.class)));
-    tmpMap.put(_Fields.COURSE, new org.apache.thrift.meta_data.FieldMetaData("course", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRCourse.class)));
-    tmpMap.put(_Fields.CONSTRAINT, new org.apache.thrift.meta_data.FieldMetaData("constraint", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(WhoIsWorkingRequest.class, metaDataMap);
   }
@@ -115,9 +108,11 @@ public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorking
   }
 
   public WhoIsWorkingRequest(
+    String roomUID,
     FRPeriod period)
   {
     this();
+    this.roomUID = roomUID;
     this.period = period;
   }
 
@@ -125,14 +120,11 @@ public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorking
    * Performs a deep copy on <i>other</i>.
    */
   public WhoIsWorkingRequest(WhoIsWorkingRequest other) {
+    if (other.isSetRoomUID()) {
+      this.roomUID = other.roomUID;
+    }
     if (other.isSetPeriod()) {
       this.period = new FRPeriod(other.period);
-    }
-    if (other.isSetCourse()) {
-      this.course = new FRCourse(other.course);
-    }
-    if (other.isSetConstraint()) {
-      this.constraint = other.constraint;
     }
   }
 
@@ -142,9 +134,32 @@ public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorking
 
   @Override
   public void clear() {
+    this.roomUID = null;
     this.period = null;
-    this.course = null;
-    this.constraint = null;
+  }
+
+  public String getRoomUID() {
+    return this.roomUID;
+  }
+
+  public WhoIsWorkingRequest setRoomUID(String roomUID) {
+    this.roomUID = roomUID;
+    return this;
+  }
+
+  public void unsetRoomUID() {
+    this.roomUID = null;
+  }
+
+  /** Returns true if field roomUID is set (has been assigned a value) and false otherwise */
+  public boolean isSetRoomUID() {
+    return this.roomUID != null;
+  }
+
+  public void setRoomUIDIsSet(boolean value) {
+    if (!value) {
+      this.roomUID = null;
+    }
   }
 
   public FRPeriod getPeriod() {
@@ -171,56 +186,16 @@ public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorking
     }
   }
 
-  public FRCourse getCourse() {
-    return this.course;
-  }
-
-  public WhoIsWorkingRequest setCourse(FRCourse course) {
-    this.course = course;
-    return this;
-  }
-
-  public void unsetCourse() {
-    this.course = null;
-  }
-
-  /** Returns true if field course is set (has been assigned a value) and false otherwise */
-  public boolean isSetCourse() {
-    return this.course != null;
-  }
-
-  public void setCourseIsSet(boolean value) {
-    if (!value) {
-      this.course = null;
-    }
-  }
-
-  public String getConstraint() {
-    return this.constraint;
-  }
-
-  public WhoIsWorkingRequest setConstraint(String constraint) {
-    this.constraint = constraint;
-    return this;
-  }
-
-  public void unsetConstraint() {
-    this.constraint = null;
-  }
-
-  /** Returns true if field constraint is set (has been assigned a value) and false otherwise */
-  public boolean isSetConstraint() {
-    return this.constraint != null;
-  }
-
-  public void setConstraintIsSet(boolean value) {
-    if (!value) {
-      this.constraint = null;
-    }
-  }
-
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
+    case ROOM_UID:
+      if (value == null) {
+        unsetRoomUID();
+      } else {
+        setRoomUID((String)value);
+      }
+      break;
+
     case PERIOD:
       if (value == null) {
         unsetPeriod();
@@ -229,35 +204,16 @@ public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorking
       }
       break;
 
-    case COURSE:
-      if (value == null) {
-        unsetCourse();
-      } else {
-        setCourse((FRCourse)value);
-      }
-      break;
-
-    case CONSTRAINT:
-      if (value == null) {
-        unsetConstraint();
-      } else {
-        setConstraint((String)value);
-      }
-      break;
-
     }
   }
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
+    case ROOM_UID:
+      return getRoomUID();
+
     case PERIOD:
       return getPeriod();
-
-    case COURSE:
-      return getCourse();
-
-    case CONSTRAINT:
-      return getConstraint();
 
     }
     throw new IllegalStateException();
@@ -270,12 +226,10 @@ public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorking
     }
 
     switch (field) {
+    case ROOM_UID:
+      return isSetRoomUID();
     case PERIOD:
       return isSetPeriod();
-    case COURSE:
-      return isSetCourse();
-    case CONSTRAINT:
-      return isSetConstraint();
     }
     throw new IllegalStateException();
   }
@@ -293,30 +247,21 @@ public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorking
     if (that == null)
       return false;
 
+    boolean this_present_roomUID = true && this.isSetRoomUID();
+    boolean that_present_roomUID = true && that.isSetRoomUID();
+    if (this_present_roomUID || that_present_roomUID) {
+      if (!(this_present_roomUID && that_present_roomUID))
+        return false;
+      if (!this.roomUID.equals(that.roomUID))
+        return false;
+    }
+
     boolean this_present_period = true && this.isSetPeriod();
     boolean that_present_period = true && that.isSetPeriod();
     if (this_present_period || that_present_period) {
       if (!(this_present_period && that_present_period))
         return false;
       if (!this.period.equals(that.period))
-        return false;
-    }
-
-    boolean this_present_course = true && this.isSetCourse();
-    boolean that_present_course = true && that.isSetCourse();
-    if (this_present_course || that_present_course) {
-      if (!(this_present_course && that_present_course))
-        return false;
-      if (!this.course.equals(that.course))
-        return false;
-    }
-
-    boolean this_present_constraint = true && this.isSetConstraint();
-    boolean that_present_constraint = true && that.isSetConstraint();
-    if (this_present_constraint || that_present_constraint) {
-      if (!(this_present_constraint && that_present_constraint))
-        return false;
-      if (!this.constraint.equals(that.constraint))
         return false;
     }
 
@@ -327,20 +272,15 @@ public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorking
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
+    boolean present_roomUID = true && (isSetRoomUID());
+    builder.append(present_roomUID);
+    if (present_roomUID)
+      builder.append(roomUID);
+
     boolean present_period = true && (isSetPeriod());
     builder.append(present_period);
     if (present_period)
       builder.append(period);
-
-    boolean present_course = true && (isSetCourse());
-    builder.append(present_course);
-    if (present_course)
-      builder.append(course);
-
-    boolean present_constraint = true && (isSetConstraint());
-    builder.append(present_constraint);
-    if (present_constraint)
-      builder.append(constraint);
 
     return builder.toHashCode();
   }
@@ -353,32 +293,22 @@ public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorking
     int lastComparison = 0;
     WhoIsWorkingRequest typedOther = (WhoIsWorkingRequest)other;
 
+    lastComparison = Boolean.valueOf(isSetRoomUID()).compareTo(typedOther.isSetRoomUID());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetRoomUID()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.roomUID, typedOther.roomUID);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetPeriod()).compareTo(typedOther.isSetPeriod());
     if (lastComparison != 0) {
       return lastComparison;
     }
     if (isSetPeriod()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.period, typedOther.period);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetCourse()).compareTo(typedOther.isSetCourse());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetCourse()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.course, typedOther.course);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetConstraint()).compareTo(typedOther.isSetConstraint());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetConstraint()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.constraint, typedOther.constraint);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -400,25 +330,17 @@ public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorking
         break;
       }
       switch (field.id) {
-        case 1: // PERIOD
+        case 1: // ROOM_UID
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.roomUID = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 2: // PERIOD
           if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
             this.period = new FRPeriod();
             this.period.read(iprot);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 2: // COURSE
-          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.course = new FRCourse();
-            this.course.read(iprot);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 3: // CONSTRAINT
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.constraint = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -438,24 +360,15 @@ public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorking
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    if (this.roomUID != null) {
+      oprot.writeFieldBegin(ROOM_UID_FIELD_DESC);
+      oprot.writeString(this.roomUID);
+      oprot.writeFieldEnd();
+    }
     if (this.period != null) {
       oprot.writeFieldBegin(PERIOD_FIELD_DESC);
       this.period.write(oprot);
       oprot.writeFieldEnd();
-    }
-    if (this.course != null) {
-      if (isSetCourse()) {
-        oprot.writeFieldBegin(COURSE_FIELD_DESC);
-        this.course.write(oprot);
-        oprot.writeFieldEnd();
-      }
-    }
-    if (this.constraint != null) {
-      if (isSetConstraint()) {
-        oprot.writeFieldBegin(CONSTRAINT_FIELD_DESC);
-        oprot.writeString(this.constraint);
-        oprot.writeFieldEnd();
-      }
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -466,6 +379,14 @@ public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorking
     StringBuilder sb = new StringBuilder("WhoIsWorkingRequest(");
     boolean first = true;
 
+    sb.append("roomUID:");
+    if (this.roomUID == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.roomUID);
+    }
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("period:");
     if (this.period == null) {
       sb.append("null");
@@ -473,32 +394,15 @@ public class WhoIsWorkingRequest implements org.apache.thrift.TBase<WhoIsWorking
       sb.append(this.period);
     }
     first = false;
-    if (isSetCourse()) {
-      if (!first) sb.append(", ");
-      sb.append("course:");
-      if (this.course == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.course);
-      }
-      first = false;
-    }
-    if (isSetConstraint()) {
-      if (!first) sb.append(", ");
-      sb.append("constraint:");
-      if (this.constraint == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.constraint);
-      }
-      first = false;
-    }
     sb.append(")");
     return sb.toString();
   }
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    if (roomUID == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'roomUID' was not present! Struct: " + toString());
+    }
     if (period == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'period' was not present! Struct: " + toString());
     }

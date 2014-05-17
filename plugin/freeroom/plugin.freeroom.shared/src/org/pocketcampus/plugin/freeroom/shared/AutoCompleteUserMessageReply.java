@@ -443,13 +443,13 @@ public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<Aut
         case 3: // MESSAGES
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list34 = iprot.readListBegin();
-              this.messages = new ArrayList<String>(_list34.size);
-              for (int _i35 = 0; _i35 < _list34.size; ++_i35)
+              org.apache.thrift.protocol.TList _list30 = iprot.readListBegin();
+              this.messages = new ArrayList<String>(_list30.size);
+              for (int _i31 = 0; _i31 < _list30.size; ++_i31)
               {
-                String _elem36; // required
-                _elem36 = iprot.readString();
-                this.messages.add(_elem36);
+                String _elem32; // required
+                _elem32 = iprot.readString();
+                this.messages.add(_elem32);
               }
               iprot.readListEnd();
             }
@@ -488,9 +488,9 @@ public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<Aut
         oprot.writeFieldBegin(MESSAGES_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.messages.size()));
-          for (String _iter37 : this.messages)
+          for (String _iter33 : this.messages)
           {
-            oprot.writeString(_iter37);
+            oprot.writeString(_iter33);
           }
           oprot.writeListEnd();
         }
