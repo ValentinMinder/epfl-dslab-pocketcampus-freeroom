@@ -441,13 +441,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	// TODO test if usermessage change, there is no problem with count
 	private void insertUpdateCheckOccupancy(String uid, long tsStart,
 			String hash, String prevRoom, String prevMessage, String userMessage) {
-		/**
-		 * different cases : first insertion : prevRoom == null change of room,
-		 * NOT message : prevRoom != null && !prevRoom.equals(uid) change of
-		 * room, AND message : prevRoom != null && !prevRoom.equals(uid) no
-		 * change of room, BUT message : prevRoom != null &&
-		 * prevRoom.equals(uid) &&
-		 */
 
 		if (prevRoom == null) {
 			// first insertion, no problem with duplicate key
@@ -510,6 +503,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 	}
 
+	/**
+	 * Update checkOccupancy attributs
+	 * @param uid The new uid 
+	 * @param prevRoom The previous uid to be updated
+	 * @param tsStart The timestamp of the record to update
+	 * @param hash The hash of the record to update
+	 * @param message The new message
+	 * @param updateCount If we should also decrement the count in occupancy table for the old uid
+	 */
 	private void updateCheckOccupancyInDB(String uid, String prevRoom,
 			long tsStart, String hash, String message, boolean updateCount) {
 
@@ -532,7 +534,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			if (updateCount) {
 				decrementUserOccupancyCount(prevRoom, tsStart);
 			}
-
 		} catch (SQLException e) {
 			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"SQL error when writing check Occupancy for uid = " + uid
@@ -549,10 +550,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            The room to update
 	 * @param tsStart
 	 *            The period to update
+	 * @return true if successfully decremented
 	 */
-	private void decrementUserOccupancyCount(String uid, long tsStart) {
+	private boolean decrementUserOccupancyCount(String uid, long tsStart) {
 		if (uid == null) {
-			return;
+			return false;
 		}
 
 		String updateRequest = "UPDATE `fr-occupancy` co SET co.count = co.count - 1 "
@@ -567,11 +569,18 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			insertQuery.setString(1, uid);
 			insertQuery.setLong(2, tsStart);
 			int update = insertQuery.executeUpdate();
+			
+			if (update == 0) {
+				log(Level.WARNING, "Cannot decrement count of user occupancy for uid = " + uid + " tsStart = " + tsStart);
+				return false;
+			}
+			return true;
 		} catch (SQLException e) {
 			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"SQL error when updating (decrement by one) user occupancy for uid = "
 							+ uid + " start = " + tsStart);
 			e.printStackTrace();
+			return false;
 		}
 	}
 
