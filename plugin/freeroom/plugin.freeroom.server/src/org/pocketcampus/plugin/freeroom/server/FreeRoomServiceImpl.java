@@ -24,6 +24,7 @@ import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.freeroom.data.FetchRoomsDetails;
 import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeServiceImpl;
+import org.pocketcampus.plugin.freeroom.server.utils.CheckRequests;
 import org.pocketcampus.plugin.freeroom.server.utils.OccupancySorted;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
@@ -649,7 +650,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"FRRequest is null");
 		}
 
-		FRReply reply = checkFRRequest(request);
+		FRReply reply = CheckRequests.checkFRRequest(request);
 		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
 			return reply;
@@ -699,39 +700,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return reply;
 	}
 
-	private FRReply checkFRRequest(FRRequest request) {
-		FRReply reply = new FRReply();
-		int status = HttpURLConnection.HTTP_OK;
-		String statusComment = "FRRequest : ";
-
-		if (request == null) {
-			status = HttpURLConnection.HTTP_BAD_REQUEST;
-			statusComment = "FRRequest is null;";
-		} else {
-			if (!request.isSetPeriod() || request.getPeriod() == null) {
-				status = HttpURLConnection.HTTP_BAD_REQUEST;
-				statusComment += "FRPeriod is null;";
-			}
-
-			if (!request.isSetOnlyFreeRooms()) {
-				status = HttpURLConnection.HTTP_BAD_REQUEST;
-				statusComment += "boolean onlyFreeRooms is not set;";
-			}
-
-			if (!request.isSetUserGroup()) {
-				status = HttpURLConnection.HTTP_BAD_REQUEST;
-				statusComment += "User group is not set;";
-			}
-		}
-
-		reply.setStatus(status);
-		if (status != HttpURLConnection.HTTP_OK) {
-			reply.setStatusComment(statusComment);
-		} else {
-			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
-		}
-		return reply;
-	}
+	
 
 	/**
 	 * The HashMap is organized by the following relation(building -> list of
@@ -1198,7 +1167,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"AutocompleteRequest is null");
 		}
 
-		AutoCompleteReply reply = checkAutoCompleteRequest(request);
+		AutoCompleteReply reply = CheckRequests.checkAutoCompleteRequest(request);
 		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
 			return reply;
@@ -1312,35 +1281,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return reply;
 	}
 
-	private AutoCompleteReply checkAutoCompleteRequest(
-			AutoCompleteRequest request) {
-		AutoCompleteReply reply = new AutoCompleteReply();
-		int status = HttpURLConnection.HTTP_OK;
-		String statusComment = "AutoCompleteRequest : ";
-
-		if (request == null) {
-			status = HttpURLConnection.HTTP_BAD_REQUEST;
-			statusComment = "AutoCompleteRequest is null;";
-		} else {
-			if (!request.isSetConstraint() || request.getConstraint() == null) {
-				status = HttpURLConnection.HTTP_BAD_REQUEST;
-				statusComment += "Constraint is null;";
-			}
-
-			if (!request.isSetUserGroup()) {
-				status = HttpURLConnection.HTTP_BAD_REQUEST;
-				statusComment += "User group is not set;";
-			}
-		}
-
-		reply.setStatus(status);
-		if (status != HttpURLConnection.HTTP_OK) {
-			reply.setStatusComment(statusComment);
-		} else {
-			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
-		}
-		return reply;
-	}
+	
 
 	/**
 	 * The client can specify a user occupancy during a given period, multiple
@@ -1357,7 +1298,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"ImWorkingReply is null");
 		}
 
-		ImWorkingReply reply = checkImWorkingRequest(request);
+		ImWorkingReply reply = CheckRequests.checkImWorkingRequest(request);
 		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
 			return reply;
@@ -1382,62 +1323,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 	}
 
-	private ImWorkingReply checkImWorkingRequest(ImWorkingRequest request) {
-		ImWorkingReply reply = new ImWorkingReply();
-		int status = HttpURLConnection.HTTP_OK;
-		String statusComment = "ImWorkingRequest : ";
-
-		if (request == null) {
-			status = HttpURLConnection.HTTP_BAD_REQUEST;
-			statusComment = "ImWorkingRequest is null;";
-		} else {
-			if (!request.isSetWork() || request.getWork() == null) {
-				status = HttpURLConnection.HTTP_BAD_REQUEST;
-				statusComment += "work (WorkingOccupancy) is null;";
-			}
-
-			if (!request.isSetHash() || request.getHash() == null) {
-				status = HttpURLConnection.HTTP_BAD_REQUEST;
-				statusComment += "Hash is not set;";
-			}
-
-			String workCheck = checkWorkingOccupancy(request.getWork());
-			if (workCheck != null) {
-				status = HttpURLConnection.HTTP_BAD_REQUEST;
-				statusComment += workCheck;
-			}
-		}
-
-		reply.setStatus(status);
-		if (status != HttpURLConnection.HTTP_OK) {
-			reply.setStatusComment(statusComment);
-		} else {
-			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
-		}
-		return reply;
-	}
-
-	private String checkWorkingOccupancy(WorkingOccupancy work) {
-		boolean error = false;
-		String comment = "WorkingOccupancy ";
-		if (work == null) {
-			comment += "is null;";
-			error = true;
-		}
-
-		if (!work.isSetPeriod() || work.getPeriod() == null) {
-			comment += "FRPeriod is not set;";
-		}
-
-		if (!work.isSetRoom() || work.getRoom() == null) {
-			comment += "FRRoom is not set;";
-		}
-
-		if (error) {
-			return comment;
-		}
-		return null;
-	}
+	
 
 	/**
 	 * Pre-format the message for logging
@@ -1482,7 +1368,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"AutocompleteUserMessageRequest is null");
 		}
 
-		AutoCompleteUserMessageReply reply = checkAutoCompleteUserMessageRequest(request);
+		AutoCompleteUserMessageReply reply = CheckRequests.checkAutoCompleteUserMessageRequest(request);
 		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
 			return reply;
@@ -1532,44 +1418,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		
 		return reply;
 	}
-	
-	
-	private AutoCompleteUserMessageReply checkAutoCompleteUserMessageRequest(
-			AutoCompleteUserMessageRequest request) {
-		AutoCompleteUserMessageReply reply = new AutoCompleteUserMessageReply();
-		int status = HttpURLConnection.HTTP_OK;
-		String statusComment = "AutoCompleteUserMessageRequest : ";
-
-		if (request == null) {
-			status = HttpURLConnection.HTTP_BAD_REQUEST;
-			statusComment = "AutoCompleteUserMessageRequest is null;";
-		} else {
-			if (!request.isSetConstraint() || request.getConstraint() == null) {
-				status = HttpURLConnection.HTTP_BAD_REQUEST;
-				statusComment += "Constraint is null;";
-			}
-
-			if (!request.isSetRoom() || request.getRoom() == null) {
-				status = HttpURLConnection.HTTP_BAD_REQUEST;
-				statusComment += "Room is not set;";
-			}
-			
-			if (!request.isSetPeriod() || request.getPeriod() == null) {
-				status = HttpURLConnection.HTTP_BAD_REQUEST;
-				statusComment += "FRPeriod is not set;";
-			}
-		}
-
-		reply.setStatus(status);
-		if (status != HttpURLConnection.HTTP_OK) {
-			reply.setStatusComment(statusComment);
-		} else {
-			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
-		}
-		return reply;
-	}
-
-	
 
 	@Override
 	public WhoIsWorkingReply getUserMessages(WhoIsWorkingRequest request)
@@ -1581,7 +1429,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"WhoIsWorkingRequest is null");
 		}
 
-		WhoIsWorkingReply reply = checkWhoIsWorkingRequest(request);
+		WhoIsWorkingReply reply = CheckRequests.checkWhoIsWorkingRequest(request);
 		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
 			return reply;
@@ -1625,33 +1473,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 	}
 	
-	private WhoIsWorkingReply checkWhoIsWorkingRequest(WhoIsWorkingRequest request) {
-		WhoIsWorkingReply reply = new WhoIsWorkingReply();
-		int status = HttpURLConnection.HTTP_OK;
-		String statusComment = "WhoIsWorkingRequest : ";
 
-		if (request == null) {
-			status = HttpURLConnection.HTTP_BAD_REQUEST;
-			statusComment = "WhoIsWorkingRequest is null;";
-		} else {
-			if (!request.isSetRoomUID() || request.getRoomUID() == null) {
-				status = HttpURLConnection.HTTP_BAD_REQUEST;
-				statusComment += "room ID  is null;";
-			}
-
-			if (!request.isSetPeriod() || request.getPeriod() == null) {
-				status = HttpURLConnection.HTTP_BAD_REQUEST;
-				statusComment += "FRPeriod is not set;";
-			}
-		}
-
-		reply.setStatus(status);
-		if (status != HttpURLConnection.HTTP_OK) {
-			reply.setStatusComment(statusComment);
-		} else {
-			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
-		}
-		return reply;
-	}
 
 }
