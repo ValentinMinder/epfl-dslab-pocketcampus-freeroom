@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `fr-occupancy` (
 CREATE TABLE IF NOT EXISTS `fr-checkOccupancy` (
 	`uid` char(255) NOT NULL,
 	`timestampStart` bigint(20) NOT NULL,
+	`timestampEnd` bigint(20) NOT NULL,
 	`hash` char(255) NOT NULL,
 	`message` varchar(255) DEFAULT NULL,
 	PRIMARY KEY (`timestampStart`, `hash`),

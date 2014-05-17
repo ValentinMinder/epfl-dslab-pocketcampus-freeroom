@@ -470,8 +470,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private void insertCheckOccupancyInDB(String uid, long tsStart,
 			String hash, String message) {
-		String insertRequest = "INSERT INTO `fr-checkOccupancy` (uid, timestampStart, hash, message) "
-				+ "VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE uid = ?";
+		String insertRequest = "INSERT INTO `fr-checkOccupancy` (uid, timestampStart, timestampEnd, hash, message) "
+				+ "VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE uid = ?";
 
 		Connection connectBDD;
 		try {
@@ -481,13 +481,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 			insertQuery.setString(1, uid);
 			insertQuery.setLong(2, tsStart);
-			insertQuery.setString(3, hash);
+			insertQuery.setLong(3, tsStart + FRTimes.ONE_HOUR_IN_MS);
+			insertQuery.setString(4, hash);
 			if (message != null) {
-				insertQuery.setString(4, message);
+				insertQuery.setString(5, message);
 			} else {
-				insertQuery.setNull(4, Types.CHAR);
+				insertQuery.setNull(5, Types.CHAR);
 			}
-			insertQuery.setString(5, uid);
+			insertQuery.setString(6, uid);
 			int update = insertQuery.executeUpdate();
 
 			if (update > 1) {
@@ -1489,7 +1490,34 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		} else {
 			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
 		}
+		
+		FRPeriod period = request.getPeriod();
+//		period.setTimeStampStart(FRTimes
+//				.roundToNearestHalfHourBefore(period.getTimeStampStart()));
+		
+		List<String> listMessages = getUserMessages(period, request.getRoomUID());
+		reply.setMessages(listMessages);
 		return null;
+	}
+	
+	private List<String> getUserMessages(FRPeriod period, String uid) {
+		try {
+			ArrayList<String> messages = new ArrayList<String>();
+			Connection connectBDD = connMgr.getConnection();
+			//for now we only take into account one hour period
+			String requestMessages = "SELECT * FROM `fr-checkOccupancy` co " +
+					"WHERE co.timestampStart <= ? AND co.timestampEnd >= ?";
+			
+			PreparedStatement query = connectBDD.prepareStatement(requestMessages);
+			query.setLong(1, period.getTimeStampStart());
+			query.setLong(2, period.getTimeStampStart());
+			return messages;
+		} catch (SQLException e) {;
+			e.printStackTrace();
+			log(LOG_SIDE.SERVER, Level.SEVERE,
+					"SQL error when getting user messages for period = " + period + " uid = " + uid);
+			return new ArrayList<String>();
+		}
 	}
 	
 	private WhoIsWorkingReply checkWhoIsWorkingRequest(WhoIsWorkingRequest request) {
