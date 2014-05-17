@@ -36,13 +36,13 @@ public class PeriodicallyUpdate implements Runnable {
 		FetchOccupancyDataJSON fodj = new FetchOccupancyDataJSON(DB_URL,
 				DB_USER, DB_PASSWORD, server);
 		Calendar mCalendar = Calendar.getInstance();
-		long yesterday = mCalendar.getTimeInMillis() - 2*FRTimes.ONE_DAY_IN_MS;
-		long tomorrow = mCalendar.getTimeInMillis() + 2*FRTimes.ONE_DAY_IN_MS;
-		fodj.fetchAndInsert(yesterday, tomorrow);
+		long start = mCalendar.getTimeInMillis() - 2*FRTimes.ONE_WEEK_IN_MS;
+		long end = mCalendar.getTimeInMillis() + 2*FRTimes.ONE_WEEK_IN_MS;
+		fodj.fetchAndInsert(start, end);
 		
 		server.log(Level.INFO, "Starting update of data from Exchange");
 		ExchangeServiceImpl exchange = new ExchangeServiceImpl(DB_URL, DB_USER, DB_PASSWORD, server);
-		exchange.updateEWAOccupancyFromTo(yesterday, tomorrow);
+		exchange.updateEWAOccupancyFromTo(start, end);
 	}
 
 }
