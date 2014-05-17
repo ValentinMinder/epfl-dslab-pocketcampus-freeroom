@@ -1335,7 +1335,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		List<String> listMessages = getUserMessages(period,
 				request.getRoomUID());
 		reply.setMessages(listMessages);
-		return null;
+		return reply;
 	}
 
 	private List<String> getUserMessages(FRPeriod period, String uid) {
