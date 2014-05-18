@@ -35,12 +35,6 @@ struct FRPeriod {
 	10: required bool recurrent;
 }
 
-struct WorkingOccupancy {
-	1: required FRPeriod period;
-	2: required FRRoom room;
-	40: optional string message;
-}
-
 // NOTE ABOUT REPLY STATUS
 // it's compliant with standard HTTP status code
 // currently used in all request - reply scheme:
@@ -115,6 +109,18 @@ struct AutoCompleteUserMessageReply {
 	2: required string statusComment; 
 	3: optional list<string> messages;
 }
+
+struct WorkingOccupancy {
+	1: required FRPeriod period;
+	2: required FRRoom room;
+	40: optional string message;
+}
+
+struct MessageFrequency {
+	1: required string message;
+	2: required i32 frequency;
+}
+
 struct ImWorkingRequest {
 	1: required WorkingOccupancy work;
 //This hash must be unique across all sessions and time
@@ -135,8 +141,9 @@ struct WhoIsWorkingReply {
 	1: required i32 status;
 	2: required string statusComment;
 	//map a message to the number of time it appears
-	3: optional map<string, i32> messages;
+	3: optional list<MessageFrequency> messages;
 }
+
 
 struct LogMessage {
 	1: required i64 timestamp;

@@ -26,11 +26,11 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
 
   private static final org.apache.thrift.protocol.TField STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("status", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField STATUS_COMMENT_FIELD_DESC = new org.apache.thrift.protocol.TField("statusComment", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField MESSAGES_FIELD_DESC = new org.apache.thrift.protocol.TField("messages", org.apache.thrift.protocol.TType.MAP, (short)3);
+  private static final org.apache.thrift.protocol.TField MESSAGES_FIELD_DESC = new org.apache.thrift.protocol.TField("messages", org.apache.thrift.protocol.TType.LIST, (short)3);
 
   private int status; // required
   private String statusComment; // required
-  private Map<String,Integer> messages; // required
+  private List<MessageFrequency> messages; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -108,9 +108,8 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
     tmpMap.put(_Fields.STATUS_COMMENT, new org.apache.thrift.meta_data.FieldMetaData("statusComment", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.MESSAGES, new org.apache.thrift.meta_data.FieldMetaData("messages", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
-            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING), 
-            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32))));
+        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MessageFrequency.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(WhoIsWorkingReply.class, metaDataMap);
   }
@@ -139,17 +138,9 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
       this.statusComment = other.statusComment;
     }
     if (other.isSetMessages()) {
-      Map<String,Integer> __this__messages = new HashMap<String,Integer>();
-      for (Map.Entry<String, Integer> other_element : other.messages.entrySet()) {
-
-        String other_element_key = other_element.getKey();
-        Integer other_element_value = other_element.getValue();
-
-        String __this__messages_copy_key = other_element_key;
-
-        Integer __this__messages_copy_value = other_element_value;
-
-        __this__messages.put(__this__messages_copy_key, __this__messages_copy_value);
+      List<MessageFrequency> __this__messages = new ArrayList<MessageFrequency>();
+      for (MessageFrequency other_element : other.messages) {
+        __this__messages.add(new MessageFrequency(other_element));
       }
       this.messages = __this__messages;
     }
@@ -218,18 +209,22 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
     return (this.messages == null) ? 0 : this.messages.size();
   }
 
-  public void putToMessages(String key, int val) {
-    if (this.messages == null) {
-      this.messages = new HashMap<String,Integer>();
-    }
-    this.messages.put(key, val);
+  public java.util.Iterator<MessageFrequency> getMessagesIterator() {
+    return (this.messages == null) ? null : this.messages.iterator();
   }
 
-  public Map<String,Integer> getMessages() {
+  public void addToMessages(MessageFrequency elem) {
+    if (this.messages == null) {
+      this.messages = new ArrayList<MessageFrequency>();
+    }
+    this.messages.add(elem);
+  }
+
+  public List<MessageFrequency> getMessages() {
     return this.messages;
   }
 
-  public WhoIsWorkingReply setMessages(Map<String,Integer> messages) {
+  public WhoIsWorkingReply setMessages(List<MessageFrequency> messages) {
     this.messages = messages;
     return this;
   }
@@ -271,7 +266,7 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
       if (value == null) {
         unsetMessages();
       } else {
-        setMessages((Map<String,Integer>)value);
+        setMessages((List<MessageFrequency>)value);
       }
       break;
 
@@ -446,19 +441,18 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
           }
           break;
         case 3: // MESSAGES
-          if (field.type == org.apache.thrift.protocol.TType.MAP) {
+          if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TMap _map34 = iprot.readMapBegin();
-              this.messages = new HashMap<String,Integer>(2*_map34.size);
-              for (int _i35 = 0; _i35 < _map34.size; ++_i35)
+              org.apache.thrift.protocol.TList _list34 = iprot.readListBegin();
+              this.messages = new ArrayList<MessageFrequency>(_list34.size);
+              for (int _i35 = 0; _i35 < _list34.size; ++_i35)
               {
-                String _key36; // required
-                int _val37; // required
-                _key36 = iprot.readString();
-                _val37 = iprot.readI32();
-                this.messages.put(_key36, _val37);
+                MessageFrequency _elem36; // required
+                _elem36 = new MessageFrequency();
+                _elem36.read(iprot);
+                this.messages.add(_elem36);
               }
-              iprot.readMapEnd();
+              iprot.readListEnd();
             }
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -494,13 +488,12 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
       if (isSetMessages()) {
         oprot.writeFieldBegin(MESSAGES_FIELD_DESC);
         {
-          oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.I32, this.messages.size()));
-          for (Map.Entry<String, Integer> _iter38 : this.messages.entrySet())
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.messages.size()));
+          for (MessageFrequency _iter37 : this.messages)
           {
-            oprot.writeString(_iter38.getKey());
-            oprot.writeI32(_iter38.getValue());
+            _iter37.write(oprot);
           }
-          oprot.writeMapEnd();
+          oprot.writeListEnd();
         }
         oprot.writeFieldEnd();
       }
