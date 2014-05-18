@@ -1,10 +1,13 @@
 package org.pocketcampus.plugin.freeroom.android.views;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
@@ -53,7 +56,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -761,6 +767,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initWarningDialog();
 		initErrorDialog();
 		initParamDialog();
+		System.out.println(getConfig(false));
 	}
 
 	/**
@@ -3234,5 +3241,188 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		Calendar selected = Calendar.getInstance();
 		selected.setTimeInMillis(now);
 		tv.setText(times.formatFullDate(selected));
+	}
+
+	// FOR BETA/DEV
+
+	/**
+	 * Return a String representation of device / build / settings.
+	 * <p>
+	 * It's useful for debugging remote device (beta-testers) and understand
+	 * their reports.
+	 * 
+	 * @param forUser
+	 *            true if designed for user display, false if for server
+	 *            sending.
+	 * @return a String representation of device / build / settings.
+	 */
+	public String getConfig(boolean forUser) {
+		Locale locale = Locale.getDefault();
+		Locale english = Locale.ENGLISH;
+		// if the user locale is not english
+		// we print to him to information in his language.
+		boolean printUserLocale = true;
+		if (locale.equals(english) || locale.equals(Locale.UK)
+				|| locale.equals(Locale.US)) {
+			printUserLocale = false;
+		}
+		if (!forUser) {
+			printUserLocale = false;
+		}
+
+		StringBuilder config = new StringBuilder(500);
+		String s = "\n";
+		String l = "/";
+
+		// basic device information
+		config.append("*** Device information ***" + s);
+		config.append("Brand: " + Build.BRAND + s);
+		config.append("Model: " + Build.MODEL + s);
+		if (forUser) {
+			config.append("Android version: " + Build.VERSION.RELEASE);
+			config.append(" (SDK " + Build.VERSION.SDK + ")" + s);
+		}
+
+		config.append("Mesured screen size: " + activityHeight + "x"
+				+ activityWidth + s);
+
+		config.append("*** Preferences ***" + s);
+
+		// locale name
+		if (forUser) {
+			config.append("Language: ");
+		} else {
+			config.append("Locale: ");
+			config.append("[" + locale.toString() + "]" + s);
+		}
+		config.append(locale.getDisplayName(english));
+		if (printUserLocale) {
+			config.append(" [" + locale.getDisplayName(locale) + "]");
+		}
+		config.append(s);
+
+		if (!forUser) {
+			// language
+			config.append("Language: ");
+			config.append(locale.getLanguage() + l);
+			config.append(locale.getISO3Language() + l);
+			config.append(locale.getDisplayLanguage(english));
+			if (printUserLocale) {
+				config.append("(" + locale.getDisplayLanguage(locale) + ")");
+			}
+
+			String var = locale.getVariant();
+			if (var != null && !var.equals("")) {
+				config.append(l + "Variant:" + locale.getVariant() + l);
+				config.append(locale.getDisplayVariant(english));
+				if (printUserLocale) {
+					config.append("(" + locale.getDisplayVariant(locale) + ")");
+				}
+			}
+			config.append(s);
+			// country
+			config.append("Country: ");
+			config.append(locale.getCountry() + l);
+			config.append(locale.getISO3Country() + l);
+			config.append(locale.getDisplayCountry(english));
+			if (printUserLocale) {
+				config.append("(" + locale.getDisplayCountry(locale) + ")");
+			}
+			config.append(s);
+		}
+
+		// time
+		Date nowd = new Date(System.currentTimeMillis());
+		config.append("Local time: " + nowd.toLocaleString() + s);
+
+		if (!forUser) {
+			config.append("*** TIME ***" + s);
+			config.append("Default time: " + nowd + s);
+			config.append("GMT time: " + nowd.toGMTString() + s);
+			long now = System.currentTimeMillis();
+
+			// test android formatting
+			config.append("Time/system: " + now + s);
+			config.append("Is 24h format: " + DateFormat.is24HourFormat(this)
+					+ s);
+			java.text.DateFormat df = android.text.format.DateFormat
+					.getTimeFormat(this);
+			String time = df.format(nowd);
+			java.text.DateFormat dd = android.text.format.DateFormat
+					.getDateFormat(this);
+			String date = dd.format(nowd);
+			config.append("Android formatting: " + date + " // " + time + s);
+			char[] mmddyyyy = DateFormat.getDateFormatOrder(this);
+			config.append("DD/MM/YYYY format: " + Arrays.toString(mmddyyyy) + s);
+
+			// test our own times methods
+			config.append("times.formatTime(false): "
+					+ times.formatTime(now, false) + s);
+			config.append("times.formatTime(true): "
+					+ times.formatTime(now, true) + s);
+
+			// one week shift
+			now += FRTimes.ONE_WEEK_IN_MS;
+			Calendar selected = Calendar.getInstance();
+			FRPeriod period = new FRPeriod(now, now + 2
+					* FRTimes.ONE_HOUR_IN_MS, false);
+			selected.setTimeInMillis(now);
+			config.append("times.formatFullDate(): "
+					+ times.formatFullDate(selected) + s);
+			config.append("times.formatFullDateFullTimePeriod: "
+					+ times.formatFullDateFullTimePeriod(period) + s);
+		}
+
+		if (!forUser) {
+			config.append("*** Other settings ***" + s);
+
+			config.append("ANDROID_ID: "
+					+ Secure.getString(getContentResolver(), Secure.ANDROID_ID)
+					+ s);
+			config.append("Proxy: "
+					+ Secure.getString(getContentResolver(), Secure.HTTP_PROXY)
+					+ s);
+			config.append("Input method: "
+					+ Secure.getString(getContentResolver(),
+							Secure.DEFAULT_INPUT_METHOD) + s);
+			config.append("Wifi ON: "
+					+ Secure.getString(getContentResolver(), Secure.WIFI_ON)
+					+ s);
+			config.append("Network pref: "
+					+ Secure.getString(getContentResolver(),
+							Secure.NETWORK_PREFERENCE) + s);
+			config.append("Non market apps: "
+					+ Secure.getString(getContentResolver(),
+							Secure.INSTALL_NON_MARKET_APPS) + s);
+			config.append("ADB enabled: "
+					+ Secure.getString(getContentResolver(), Secure.ADB_ENABLED)
+					+ s);
+
+			// hardware informations
+			config.append("*** Other hardware informations ***" + s);
+			config.append("Version.Codename: " + Build.VERSION.CODENAME + s);
+			config.append("Version.Incremental: " + Build.VERSION.INCREMENTAL
+					+ s);
+			config.append("Version.SKK_int: " + Build.VERSION.SDK_INT + s);
+			config.append("Board: " + Build.BOARD + s);
+			config.append("Bootloader: " + Build.BOOTLOADER + s);
+			config.append("CPU1: " + Build.CPU_ABI + s);
+			config.append("CPU2: " + Build.CPU_ABI2 + s);
+			config.append("Device:" + Build.DEVICE + s);
+			config.append("Display: " + Build.DISPLAY + s);
+			config.append("Fingerprint: " + Build.FINGERPRINT + s);
+			config.append("Hardware: " + Build.HARDWARE + s);
+			config.append("Host: " + Build.HOST + s);
+			config.append("ID: " + Build.ID + s);
+			config.append("Manufacturer: " + Build.MANUFACTURER + s);
+			config.append("Product: " + Build.PRODUCT + s);
+			config.append("Radio: " + Build.RADIO + s);
+			config.append("Tags: " + Build.TAGS + s);
+			config.append("Time of build: " + Build.TIME + s);
+			config.append("Type: " + Build.TYPE + s);
+			config.append("User: " + Build.USER + s);
+		}
+
+		return config.toString();
 	}
 }
