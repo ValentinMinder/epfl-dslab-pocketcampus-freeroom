@@ -1054,7 +1054,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			String logMessage = "uidList=" + uidList + ",onlyFreeRooms="
 					+ onlyFreeRooms + ",tsStart=" + tsStart + ",tsEnd=" + tsEnd
 					+ ",userGroup=" + userGroup;
-			log(Level.INFO, formatServerLogInfo("getOccupancyOfSpecificRoom", logMessage));
+			log(Level.INFO,
+					formatServerLogInfo("getOccupancyOfSpecificRoom",
+							logMessage));
 		} catch (SQLException e) {
 			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"SQL error of occupancy of specific list of rooms "
@@ -1420,8 +1422,39 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	@Override
 	public boolean registerUserSettings(RegisterUser user) throws TException {
-		System.out.println(user.getConfig());
-		return false;
-	}
+		if (user == null) {
+			return false;
+		}
+		
+		if (user.getEmail() == null) {
+			return false;
+		}
+		
+		if (user.getConfig() == null) {
+			return false;
+		}
+		
+		try {
+			Connection connectBDD = connMgr.getConnection();
+			// for now we only take into account one hour period
+			String insertReq = "INSERT INTO `fr-betaconfig`(email, config) VALUES(?,?)";
+			PreparedStatement query = connectBDD.prepareStatement(insertReq);
 
+			query.setString(1, user.getEmail());
+			query.setString(2, user.getConfig());
+
+			query.executeUpdate();
+			log(Level.INFO, formatServerLogInfo("registerUserSettings", "email=" + user.getEmail() + "config==null?" + (user.getConfig() == null)))
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log(LOG_SIDE.SERVER,
+					Level.SEVERE,
+					"SQL error when inserting user config email="
+							+ user.getEmail() + "config == null ? "
+							+ (user.getConfig() == null));
+			//special case, we let the user test the app anyway
+			return true;
+		}
+	}
 }
