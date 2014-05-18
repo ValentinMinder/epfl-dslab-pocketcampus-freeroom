@@ -12,12 +12,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 
 /**
@@ -301,7 +303,7 @@ public class Utils {
 		}
 	};
 
-	public static HashMap<String, Integer> removeGroupMessages(List<String> listMessages) {
+	public static ArrayList<MessageFrequency> removeGroupMessages(List<String> listMessages) {
 		if (listMessages == null) {
 			return null;
 		}
@@ -316,7 +318,17 @@ public class Utils {
 				answer.put(lowerCaseMessage, count + 1);
 			}
 		}
-		return answer;
+		return convertMapToListMessageFrequency(answer);
 	}
 
+	public static ArrayList<MessageFrequency> convertMapToListMessageFrequency(HashMap<String, Integer> map) {
+		ArrayList<MessageFrequency> answer = new ArrayList<MessageFrequency>();
+		
+		for (Entry<String, Integer> e : map.entrySet()) {
+			answer.add(new MessageFrequency(e.getKey(), e.getValue()));
+		}
+		
+		Collections.sort(answer);
+		return answer;
+	}
 }

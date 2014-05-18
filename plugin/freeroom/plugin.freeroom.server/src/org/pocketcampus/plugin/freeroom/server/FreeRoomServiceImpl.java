@@ -118,7 +118,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			System.out.println(details.fetchRoomsIntoDB()
 					+ " rooms inserted/updated");
 		}
-
 		// new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
 		// this)).start();
 	}
