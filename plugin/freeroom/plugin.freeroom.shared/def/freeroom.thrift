@@ -155,8 +155,6 @@ struct LogMessage {
 struct RegisterUser {
 	// epfl account
 	1: required string email;
-	// uniq anonym ID in submit message: not anonym there for beta. 
-	2: required string freeroomID;
 	3: required string config;
 }
 

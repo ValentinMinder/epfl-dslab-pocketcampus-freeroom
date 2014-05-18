@@ -39,6 +39,7 @@ import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.LogMessage;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.RegisterUser;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
@@ -1415,6 +1416,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							+ period + " uid = " + uid);
 			return null;
 		}
+	}
+
+	@Override
+	public boolean registerUserSettings(RegisterUser user) throws TException {
+		System.out.println(user.getConfig());
+		return false;
 	}
 
 }

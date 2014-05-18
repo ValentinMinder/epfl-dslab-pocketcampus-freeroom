@@ -25,17 +25,14 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("RegisterUser");
 
   private static final org.apache.thrift.protocol.TField EMAIL_FIELD_DESC = new org.apache.thrift.protocol.TField("email", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField FREEROOM_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("freeroomID", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField CONFIG_FIELD_DESC = new org.apache.thrift.protocol.TField("config", org.apache.thrift.protocol.TType.STRING, (short)3);
 
   private String email; // required
-  private String freeroomID; // required
   private String config; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     EMAIL((short)1, "email"),
-    FREEROOM_ID((short)2, "freeroomID"),
     CONFIG((short)3, "config");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -53,8 +50,6 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
       switch(fieldId) {
         case 1: // EMAIL
           return EMAIL;
-        case 2: // FREEROOM_ID
-          return FREEROOM_ID;
         case 3: // CONFIG
           return CONFIG;
         default:
@@ -103,8 +98,6 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.EMAIL, new org.apache.thrift.meta_data.FieldMetaData("email", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.FREEROOM_ID, new org.apache.thrift.meta_data.FieldMetaData("freeroomID", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.CONFIG, new org.apache.thrift.meta_data.FieldMetaData("config", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -116,12 +109,10 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
 
   public RegisterUser(
     String email,
-    String freeroomID,
     String config)
   {
     this();
     this.email = email;
-    this.freeroomID = freeroomID;
     this.config = config;
   }
 
@@ -131,9 +122,6 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
   public RegisterUser(RegisterUser other) {
     if (other.isSetEmail()) {
       this.email = other.email;
-    }
-    if (other.isSetFreeroomID()) {
-      this.freeroomID = other.freeroomID;
     }
     if (other.isSetConfig()) {
       this.config = other.config;
@@ -147,7 +135,6 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
   @Override
   public void clear() {
     this.email = null;
-    this.freeroomID = null;
     this.config = null;
   }
 
@@ -172,30 +159,6 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
   public void setEmailIsSet(boolean value) {
     if (!value) {
       this.email = null;
-    }
-  }
-
-  public String getFreeroomID() {
-    return this.freeroomID;
-  }
-
-  public RegisterUser setFreeroomID(String freeroomID) {
-    this.freeroomID = freeroomID;
-    return this;
-  }
-
-  public void unsetFreeroomID() {
-    this.freeroomID = null;
-  }
-
-  /** Returns true if field freeroomID is set (has been assigned a value) and false otherwise */
-  public boolean isSetFreeroomID() {
-    return this.freeroomID != null;
-  }
-
-  public void setFreeroomIDIsSet(boolean value) {
-    if (!value) {
-      this.freeroomID = null;
     }
   }
 
@@ -233,14 +196,6 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
       }
       break;
 
-    case FREEROOM_ID:
-      if (value == null) {
-        unsetFreeroomID();
-      } else {
-        setFreeroomID((String)value);
-      }
-      break;
-
     case CONFIG:
       if (value == null) {
         unsetConfig();
@@ -256,9 +211,6 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
     switch (field) {
     case EMAIL:
       return getEmail();
-
-    case FREEROOM_ID:
-      return getFreeroomID();
 
     case CONFIG:
       return getConfig();
@@ -276,8 +228,6 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
     switch (field) {
     case EMAIL:
       return isSetEmail();
-    case FREEROOM_ID:
-      return isSetFreeroomID();
     case CONFIG:
       return isSetConfig();
     }
@@ -306,15 +256,6 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
         return false;
     }
 
-    boolean this_present_freeroomID = true && this.isSetFreeroomID();
-    boolean that_present_freeroomID = true && that.isSetFreeroomID();
-    if (this_present_freeroomID || that_present_freeroomID) {
-      if (!(this_present_freeroomID && that_present_freeroomID))
-        return false;
-      if (!this.freeroomID.equals(that.freeroomID))
-        return false;
-    }
-
     boolean this_present_config = true && this.isSetConfig();
     boolean that_present_config = true && that.isSetConfig();
     if (this_present_config || that_present_config) {
@@ -335,11 +276,6 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
     builder.append(present_email);
     if (present_email)
       builder.append(email);
-
-    boolean present_freeroomID = true && (isSetFreeroomID());
-    builder.append(present_freeroomID);
-    if (present_freeroomID)
-      builder.append(freeroomID);
 
     boolean present_config = true && (isSetConfig());
     builder.append(present_config);
@@ -363,16 +299,6 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
     }
     if (isSetEmail()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.email, typedOther.email);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetFreeroomID()).compareTo(typedOther.isSetFreeroomID());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetFreeroomID()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.freeroomID, typedOther.freeroomID);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -411,13 +337,6 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // FREEROOM_ID
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.freeroomID = iprot.readString();
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
         case 3: // CONFIG
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.config = iprot.readString();
@@ -445,11 +364,6 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
       oprot.writeString(this.email);
       oprot.writeFieldEnd();
     }
-    if (this.freeroomID != null) {
-      oprot.writeFieldBegin(FREEROOM_ID_FIELD_DESC);
-      oprot.writeString(this.freeroomID);
-      oprot.writeFieldEnd();
-    }
     if (this.config != null) {
       oprot.writeFieldBegin(CONFIG_FIELD_DESC);
       oprot.writeString(this.config);
@@ -472,14 +386,6 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("freeroomID:");
-    if (this.freeroomID == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.freeroomID);
-    }
-    first = false;
-    if (!first) sb.append(", ");
     sb.append("config:");
     if (this.config == null) {
       sb.append("null");
@@ -495,9 +401,6 @@ public class RegisterUser implements org.apache.thrift.TBase<RegisterUser, Regis
     // check for required fields
     if (email == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'email' was not present! Struct: " + toString());
-    }
-    if (freeroomID == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'freeroomID' was not present! Struct: " + toString());
     }
     if (config == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'config' was not present! Struct: " + toString());
