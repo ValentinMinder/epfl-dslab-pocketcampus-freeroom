@@ -1347,8 +1347,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (listMessages == null) {
 			return new WhoIsWorkingReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
 					HttpURLConnection.HTTP_INTERNAL_ERROR + "");
+		} else {
+			reply.setMessages(Utils.removeGroupMessages(listMessages));
 		}
-		reply.setMessages(listMessages);
+		
 		return reply;
 	}
 

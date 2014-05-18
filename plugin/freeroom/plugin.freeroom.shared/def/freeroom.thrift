@@ -134,7 +134,8 @@ struct WhoIsWorkingRequest {
 struct WhoIsWorkingReply {
 	1: required i32 status;
 	2: required string statusComment;
-	3: optional list<string> messages;
+	//map a message to the number of time it appears
+	3: optional map<string, i32> messages;
 }
 
 struct LogMessage {

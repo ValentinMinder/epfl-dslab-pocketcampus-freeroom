@@ -301,4 +301,22 @@ public class Utils {
 		}
 	};
 
+	public static HashMap<String, Integer> removeGroupMessages(List<String> listMessages) {
+		if (listMessages == null) {
+			return null;
+		}
+		
+		HashMap<String, Integer> answer = new HashMap<String, Integer>();
+		for (String message : listMessages) {
+			String lowerCaseMessage = message.toLowerCase();
+			Integer count = answer.get(lowerCaseMessage);
+			if (lowerCaseMessage == null) {
+				answer.put(lowerCaseMessage, 1);
+			} else {
+				answer.put(lowerCaseMessage, count + 1);
+			}
+		}
+		return answer;
+	}
+
 }
