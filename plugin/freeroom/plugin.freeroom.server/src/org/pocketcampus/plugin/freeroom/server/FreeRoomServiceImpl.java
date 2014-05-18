@@ -743,6 +743,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					tsStart, tsEnd, group);
 		}
 
+		if (occupancies == null) {
+			return new FRReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
+					HttpURLConnection.HTTP_INTERNAL_ERROR + "");
+		}
+		
 		occupancies = Utils.sortRooms(occupancies);
 		reply.setOccupancyOfRooms(occupancies);
 
@@ -763,7 +768,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            The end of the period, should be rounded, see public
 	 *            getOccupancy
 	 * @return A HashMap organized as follows (building -> list of free rooms in
-	 *         the building)
+	 *         the building), null if an error occured
 	 */
 	private HashMap<String, List<Occupancy>> getOccupancyOfAnyFreeRoom(
 			boolean onlyFreeRooms, long tsStart, long tsEnd, int userGroup) {
@@ -817,6 +822,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				log(LOG_SIDE.SERVER, Level.SEVERE,
 						"SQL error for occupancy of any free room, start = "
 								+ tsStart + " end = " + tsEnd);
+				return null;
 			}
 		} else {
 			log(LOG_SIDE.SERVER, Level.WARNING,
@@ -840,7 +846,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            The end of the period, should be rounded, see public
 	 *            getOccupancy
 	 * @return A HashMap organized as follows (building -> list of rooms in the
-	 *         building)
+	 *         building), null if an error occured
 	 */
 	private HashMap<String, List<Occupancy>> getOccupancyOfSpecificRoom(
 			List<String> uidList, boolean onlyFreeRooms, long tsStart,
@@ -1038,6 +1044,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"SQL error of occupancy of specific list of rooms "
 							+ uidList + " start = " + tsStart + " end = "
 							+ tsEnd);
+			return null;
 		}
 		return result;
 	}
