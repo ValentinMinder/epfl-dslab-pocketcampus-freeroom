@@ -152,6 +152,14 @@ struct LogMessage {
 	3: required string message;
 }
 
+struct RegisterUser {
+	// epfl account
+	1: required string email;
+	// uniq anonym ID in submit message: not anonym there for beta. 
+	2: required string freeroomID;
+	3: required string config;
+}
+
 service FreeRoomService {
 	// new feature, (merge of the two above)
 	FRReply getOccupancy(1: FRRequest request);
@@ -171,4 +179,6 @@ service FreeRoomService {
 	void logSevere(1: LogMessage log);
 	
 	void logWarning(1: LogMessage log);
+	
+	bool registerUserSettings(1: RegisterUser user);
 }
