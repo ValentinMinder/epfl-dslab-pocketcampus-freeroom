@@ -3399,6 +3399,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * @return a String representation of device / build / settings.
 	 */
 	public String getConfig(boolean forUser) {
+		boolean moreDetails = false;
+
 		Locale locale = Locale.getDefault();
 		Locale english = Locale.ENGLISH;
 		// if the user locale is not english
@@ -3420,10 +3422,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		config.append("*** Device information ***" + s);
 		config.append("Brand: " + Build.BRAND + s);
 		config.append("Model: " + Build.MODEL + s);
-		if (forUser) {
-			config.append("Android version: " + Build.VERSION.RELEASE);
-			config.append(" (SDK " + Build.VERSION.SDK + ")" + s);
-		}
+		config.append("Android version: " + Build.VERSION.RELEASE);
+		config.append(" (SDK " + Build.VERSION.SDK + ")" + s);
 
 		config.append("Mesured screen size: " + activityHeight + "x"
 				+ activityWidth + s);
@@ -3515,7 +3515,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					+ times.formatFullDateFullTimePeriod(period) + s);
 		}
 
-		if (!forUser) {
+		if (!forUser && moreDetails) {
 			config.append("*** Other settings ***" + s);
 
 			config.append("ANDROID_ID: "
@@ -3539,6 +3539,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			config.append("ADB enabled: "
 					+ Secure.getString(getContentResolver(), Secure.ADB_ENABLED)
 					+ s);
+		}
+		if (!forUser && moreDetails) {
 
 			// hardware informations
 			config.append("*** Other hardware informations ***" + s);
