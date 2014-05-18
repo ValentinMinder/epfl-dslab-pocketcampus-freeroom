@@ -65,6 +65,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private final String minutesRequestTimeOutIDKey = "minutesRequestTimeOutIDKey";
 	private final String previousRequestNumberIDKey = "previousRequestNumberIDKey";
 	private final String previousRequestWeeksIDKey = "previousRequestWeeksIDKey";
+	private final String registeredUserIDKey = "registeredUserIDKey";
 
 	public final int COLOR_CHECK_OCCUPANCY_DEFAULT = Color.WHITE;
 	public final int COLOR_CHECK_OCCUPANCY_FREE = Color.GREEN;
@@ -119,6 +120,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 				previousRequestWeeks);
 		previousRequestNumber = preferences.getInt(previousRequestNumberIDKey,
 				previousRequestNumber);
+		registeredUser = preferences.getBoolean(displayTimePrefixIDKey,
+				registeredUser);
 		occupancyByBuilding = new OrderMapListFew<String, List<?>, Occupancy>(
 				30);
 		this.context = context;
@@ -377,6 +380,35 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putInt(previousRequestNumberIDKey, previousRequestNumber);
 		editor.commit();
+	}
+
+	/**
+	 * Stores the registeredUser parameters.
+	 * <p>
+	 * Default: true.
+	 */
+	private boolean registeredUser = false;
+
+	/**
+	 * Set the registeredUser parameters.
+	 * 
+	 * @param next
+	 *            the new registeredUser parameters.
+	 */
+	public void setRegisteredUser(boolean next) {
+		this.registeredUser = next;
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putBoolean(registeredUserIDKey, registeredUser);
+		editor.commit();
+	}
+
+	/**
+	 * Retrieves the registeredUser parameters.
+	 * 
+	 * @return the current registeredUser parameters.
+	 */
+	public boolean getRegisteredUser() {
+		return this.registeredUser;
 	}
 
 	// ********** START OF "WHO'S WORKING THERE" PART **********

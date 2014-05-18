@@ -11,6 +11,7 @@ import org.pocketcampus.plugin.freeroom.android.req.AutoCompleteRequestASyncTask
 import org.pocketcampus.plugin.freeroom.android.req.CheckWhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.android.req.FRRequestASyncTask;
 import org.pocketcampus.plugin.freeroom.android.req.ImWorkingRequestASyncTask;
+import org.pocketcampus.plugin.freeroom.android.req.RegisterASyncTask;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRReply;
@@ -19,6 +20,7 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
+import org.pocketcampus.plugin.freeroom.shared.RegisterUser;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 
@@ -274,5 +276,30 @@ public class FreeRoomController extends PluginController implements
 	public void sendFRRequest(IFreeRoomView view) {
 		new FRRequestASyncTask(view).start(this, mClient,
 				mModel.getFRRequestDetails());
+	}
+
+	/**
+	 * Register a user to the server.
+	 * 
+	 * @param request
+	 * @param view
+	 */
+	public void sendRegisterUser(RegisterUser request, IFreeRoomView view) {
+		(new RegisterASyncTask(view)).start(this, mClient, request);
+	}
+
+	/**
+	 * When a user is registered into the server.
+	 * <p>
+	 * If the server accept the registration, set it the model, so that the user
+	 * is not required to register afterwards.
+	 * 
+	 * @param reply
+	 *            true if accepted
+	 */
+	public void registeredUser(Boolean reply) {
+		if (reply.booleanValue()) {
+			mModel.setRegisteredUser(true);
+		}
 	}
 }
