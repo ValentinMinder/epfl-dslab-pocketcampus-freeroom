@@ -135,4 +135,16 @@ public class FreeRoomCopyClipBoard extends FreeRoomAbstractView implements
 	public void refreshOccupancies() {
 		// WE DO NOTHING!
 	}
+
+	@Override
+	public void errorRegister(String string) {
+		// TODO beta test only
+		// WE DO NOTHING!
+	}
+
+	@Override
+	public void validateRegister() {
+		// TODO beta test only
+		// WE DO NOTHING!
+	}
 }

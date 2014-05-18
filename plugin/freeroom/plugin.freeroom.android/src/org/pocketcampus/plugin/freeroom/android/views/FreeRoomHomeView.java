@@ -934,13 +934,28 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * <p>
 	 * TODO: beta-only
 	 */
-	public void validateRegistration() {
+	private void validateRegistration() {
 		LinearLayout before = (LinearLayout) mWelcomeView
 				.findViewById(R.id.freeroom_layout_dialog_welcome_before);
 		LinearLayout after = (LinearLayout) mWelcomeView
 				.findViewById(R.id.freeroom_layout_dialog_welcome_after);
 		after.setVisibility(LinearLayout.VISIBLE);
 		before.setVisibility(LinearLayout.GONE);
+	}
+
+	@Override
+	public void errorRegister(String string) {
+		// TODO beta-test only.
+		Button registerUserBeta = (Button) mWelcomeView
+				.findViewById(R.id.freeroom_layout_dialog_welcome_register);
+		registerUserBeta.setEnabled(true);
+		showErrorDialog(string);
+	}
+
+	@Override
+	public void validateRegister() {
+		// TODO beta-test only.
+		validateRegistration();
 	}
 
 	/**

@@ -3,8 +3,6 @@ package org.pocketcampus.plugin.freeroom.android.req;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
-import org.pocketcampus.plugin.freeroom.shared.FRReply;
-import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 import org.pocketcampus.plugin.freeroom.shared.RegisterUser;
 
@@ -29,20 +27,27 @@ public class RegisterASyncTask extends
 	}
 
 	@Override
-	protected Boolean runInBackground(Iface clientInterface, RegisterUser request)
-			throws Exception {
+	protected Boolean runInBackground(Iface clientInterface,
+			RegisterUser request) throws Exception {
 		return clientInterface.registerUserSettings(request);
 	}
 
 	@Override
 	protected void onResult(FreeRoomController mController, Boolean reply) {
 		mController.registeredUser(reply);
+		if (reply.booleanValue()) {
+			callerView.validateRegister();
+		} else {
+			callerView.errorRegister("Server reject! Please try again...\nIf it happen more than once, please contact us!");
+		}
+
 	}
 
 	@Override
 	protected void onError(FreeRoomController mController, Exception e) {
 		callerView.networkErrorHappened();
 		callerView.anyError();
+		callerView.errorRegister("Network transmission. Please try again...\nPlease check your connectivity to the internet.");
 		e.printStackTrace();
 	}
 }

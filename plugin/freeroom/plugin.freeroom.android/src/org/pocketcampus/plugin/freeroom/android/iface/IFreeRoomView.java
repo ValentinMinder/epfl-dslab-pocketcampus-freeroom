@@ -23,4 +23,10 @@ public interface IFreeRoomView extends IAbstractFreeRoomView {
 
 	void refreshOccupancies();
 
+	// TODO: beta-test only
+	void errorRegister(String string);
+
+	// TODO: beta-test only
+	void validateRegister();
+
 }
