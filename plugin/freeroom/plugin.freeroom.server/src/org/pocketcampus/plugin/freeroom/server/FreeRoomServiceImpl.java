@@ -207,7 +207,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * Whenever you need to insert an occupancy you should call this one. The
 	 * start of a user occupancy should be a full hour (e.g 10h00). Timestamps
 	 * may be modified before insertion in the following ways : seconds and
-	 * milliseconds are set to 0, users occupancies are rounded to a full hour.
+	 * milliseconds are set to 0, users occupancies are rounded to a half hour before.
 	 * 
 	 * @param period
 	 *            The period of the occupancy
@@ -243,8 +243,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		if (type == OCCUPANCY_TYPE.USER) {
 			// round user occupancy to a full hour
-			period.setTimeStampStart(FRTimes
-					.roundToNearestHalfHourBefore(period.getTimeStampStart()));
+//			period.setTimeStampStart(FRTimes
+//					.roundToNearestHalfHourBefore(period.getTimeStampStart()));
+			period.setTimeStampStart(FRTimes.roundHourBefore(period.getTimeStampStart()));
 			if (!Utils.checkUserMessage(userMessage)) {
 				log(Level.INFO, "Getting wrong user message : " + userMessage);
 				return false;
