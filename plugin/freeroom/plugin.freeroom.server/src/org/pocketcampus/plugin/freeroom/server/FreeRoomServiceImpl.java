@@ -1444,7 +1444,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			query.setString(2, user.getConfig());
 
 			query.executeUpdate();
-			log(Level.INFO, formatServerLogInfo("registerUserSettings", "email=" + user.getEmail() + "config==null?" + (user.getConfig() == null)))
+			log(Level.INFO, formatServerLogInfo("registerUserSettings", "email=" + user.getEmail() + "config==null?" + (user.getConfig() == null)));
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
