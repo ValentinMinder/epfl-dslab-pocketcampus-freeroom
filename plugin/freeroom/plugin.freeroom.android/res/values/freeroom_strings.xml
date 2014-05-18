@@ -117,7 +117,7 @@
     <string name="freeroom_welcome_expl">"In order to make this beta test work, we need you to register with your EPFL email address."</string>
     <string name="freeroom_welcome_email">"firstname.lastname@epfl.ch"</string>
     <string name="freeroom_welcome_register">"Register !"</string>
-    <string name="freeroom_welcome_disclaimer">"By clicking &apos;Validate&apos;, some anonymous data about your device and settings will be sent to the server, in order to better understand user experience. This sharing will happend ONLY ONCE and all the rest of the usage of the app will be 100% anonymous. The following data will be shared with the server :"</string>
+    <string name="freeroom_welcome_disclaimer">"By clicking &apos;Register&apos;, some anonymous data about your device and settings will be sent to the server, in order to better understand user experience. This sharing will happend ONLY ONCE and all the rest of the usage of the app will be 100% anonymous. The following data will be shared with the server :"</string>
     <string name="freeroom_welcome_success">"Registration is successful!"</string>
     <string name="freeroom_welcome_welcome">"You can now use freeroom. If you experience ANY issue, including crash, bug, abnormal behavior, misleading or not clear user interface, spelling errors or any other things, feel free to complete the google doc form your recieve per mail or send us an email at:"</string>
     <string name="freeroom_welcome_dismiss">"OK, Let's try!"</string>
