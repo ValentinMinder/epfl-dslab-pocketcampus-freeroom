@@ -120,7 +120,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 				previousRequestWeeks);
 		previousRequestNumber = preferences.getInt(previousRequestNumberIDKey,
 				previousRequestNumber);
-		registeredUser = preferences.getBoolean(displayTimePrefixIDKey,
+		registeredUser = preferences.getBoolean(registeredUserIDKey,
 				registeredUser);
 		occupancyByBuilding = new OrderMapListFew<String, List<?>, Occupancy>(
 				30);
