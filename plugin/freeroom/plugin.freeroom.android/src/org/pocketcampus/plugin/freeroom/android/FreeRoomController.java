@@ -18,6 +18,7 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 
@@ -235,17 +236,19 @@ public class FreeRoomController extends PluginController implements
 	 *            the <code>WhoIsWorkingReply</code> from the server.
 	 */
 	public void setWhoIsWorkingReply(WhoIsWorkingReply result) {
-		// old method with old thrift
+		// TODO: remove old methods/storage in model.
 		// List<WorkingOccupancy> listWorkingOccupancies = result
 		// .getTheyAreWorking();
 		// mModel.setListWorkingOccupancies(listWorkingOccupancies);
 
-		// new methods with new thrift
+		// TODO: test printing
 		if (result.isSetMessages()) {
-			Iterator<String> iter = result.getMessagesIterator();
+			Iterator<MessageFrequency> iter = result.getMessagesIterator();
 			System.out.println("Recieved message client side: ");
 			while (iter.hasNext()) {
-				System.out.println(iter.next());
+				MessageFrequency mf = iter.next();
+				System.out
+						.println(mf.getMessage() + "/ x " + mf.getFrequency());
 			}
 		}
 	}

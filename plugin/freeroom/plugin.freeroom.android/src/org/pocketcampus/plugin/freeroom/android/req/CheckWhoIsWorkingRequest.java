@@ -34,8 +34,6 @@ public class CheckWhoIsWorkingRequest
 	@Override
 	protected WhoIsWorkingReply runInBackground(Iface client,
 			WhoIsWorkingRequest param) throws Exception {
-		// TODO: change thrift name to be more consistent!!!
-		// client.whoIsWorking(param);
 		return client.getUserMessages(param);
 	}
 
