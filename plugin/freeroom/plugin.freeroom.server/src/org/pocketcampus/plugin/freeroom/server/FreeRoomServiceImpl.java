@@ -506,7 +506,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 	}
-//TODO javaodc with new methods def.
+
+	// TODO javaodc with new methods def.
 	private void insertCheckOccupancyInDB(String uid, long tsStart,
 			String hash, String message) {
 		String insertRequest = "INSERT INTO `fr-checkOccupancy` (uid, timestampStart, timestampEnd, hash, message) "
@@ -1335,10 +1336,24 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		List<String> listMessages = getUserMessages(period,
 				request.getRoomUID());
+		if (listMessages == null) {
+			return new WhoIsWorkingReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
+					HttpURLConnection.HTTP_INTERNAL_ERROR + "");
+		}
 		reply.setMessages(listMessages);
 		return reply;
 	}
 
+	/**
+	 * Get the list of messages for a given period and a given room
+	 * 
+	 * @param period
+	 *            The period of the search
+	 * @param uid
+	 *            The room of the search
+	 * @return A list of messages with the messages or empty list if none, null
+	 *         if an error occured
+	 */
 	private List<String> getUserMessages(FRPeriod period, String uid) {
 		try {
 			ArrayList<String> messages = new ArrayList<String>();
@@ -1365,7 +1380,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"SQL error when getting user messages for period = "
 							+ period + " uid = " + uid);
-			return new ArrayList<String>();
+			return null;
 		}
 	}
 
