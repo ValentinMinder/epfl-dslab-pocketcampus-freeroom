@@ -40,6 +40,7 @@ import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.RegisterUser;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRStruct;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
@@ -250,6 +251,19 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Dialog that holds the PARAM Dialog.
 	 */
 	private AlertDialog mParamDialog;
+	/**
+	 * View that holds the WELCOME dialog content, defined in xml in layout
+	 * folder.
+	 * <p>
+	 * TODO: beta-only
+	 */
+	private View mWelcomeView;
+	/**
+	 * Dialog that holds the WELCOME Dialog.
+	 * <p>
+	 * TODO: beta-only
+	 */
+	private AlertDialog mWelcomeDialog;
 
 	/* UI ELEMENTS FOR ALL DIALOGS */
 	/* UI ELEMENTS FOR DIALOGS - INFO ROOM */
@@ -767,7 +781,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initWarningDialog();
 		initErrorDialog();
 		initParamDialog();
-		System.out.println(getConfig(false));
+		initWelcomeDialog();
+		if (!mModel.getRegisteredUser()) {
+			mWelcomeDialog.show();
+		}
 	}
 
 	/**
@@ -814,6 +831,116 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				// TODO: tracker:
 			}
 		});
+	}
+
+	/**
+	 * Inits the dialog to diplay the information about a room.
+	 * <p>
+	 * TODO: beta-only
+	 */
+	private void initWelcomeDialog() {
+		// Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.freeroom_welcome_title));
+		builder.setIcon(R.drawable.ic_action_about);
+		builder.setNeutralButton(getString(R.string.freeroom_welcome_dismiss),
+				null);
+
+		// Get the AlertDialog from create()
+		mWelcomeDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mWelcomeDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.FILL_PARENT;
+		lp.height = LayoutParams.WRAP_CONTENT;
+		mWelcomeDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mWelcomeDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mWelcomeDialog.getWindow().setAttributes(lp);
+
+		mWelcomeView = mLayoutInflater.inflate(
+				R.layout.freeroom_layout_dialog_welcome, null);
+
+		// these work perfectly
+		mWelcomeView.setMinimumWidth((int) (activityWidth * 0.9f));
+		mWelcomeView.setMinimumHeight((int) (activityHeight * 0.8f));
+
+		mWelcomeDialog.setView(mWelcomeView);
+		mWelcomeDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface arg0) {
+				if (!mModel.getRegisteredUser()) {
+					mWelcomeDialog.show();
+					showErrorDialog(getString(R.string.freeroom_welcome_error));
+				}
+			}
+		});
+
+		TextView configText = (TextView) mWelcomeView
+				.findViewById(R.id.freeroom_layout_dialog_welcome_config);
+		configText.setText(getConfig(true));
+
+		final EditText emailText = (EditText) mWelcomeView
+				.findViewById(R.id.freeroom_layout_dialog_welcome_email);
+		final Button registerUserBeta = (Button) mWelcomeView
+				.findViewById(R.id.freeroom_layout_dialog_welcome_register);
+
+		final IFreeRoomView view = this;
+		registerUserBeta.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				String email = emailText.getText().toString();
+				if (validEmail(email)) {
+					RegisterUser req = new RegisterUser(email, mModel
+							.getAnonymID(), getConfig(false));
+					mController.sendRegisterUser(req, view);
+					registerUserBeta
+							.setText(getString(R.string.freeroom_welcome_submitting));
+					registerUserBeta.setEnabled(false);
+					dismissSoftKeyBoard(arg0);
+				}
+			}
+		});
+	}
+
+	/**
+	 * Tries to validate an email. If error, display an error message in a
+	 * dialog.
+	 * <p>
+	 * TODO: beta-only
+	 * 
+	 * @param email
+	 *            the email to test
+	 * @return true if email is well-formed.
+	 */
+	private boolean validEmail(String email) {
+		if (u.validEmail(email)) {
+			return true;
+		} else {
+			showErrorDialog(getString(R.string.freeroom_welcome_invalid_mail));
+			return false;
+		}
+	}
+
+	/**
+	 * To be called when the server validates the registration, to change the
+	 * display of the welcome popup.
+	 * <p>
+	 * TODO: beta-only
+	 */
+	public void validateRegistration() {
+		LinearLayout before = (LinearLayout) mWelcomeView
+				.findViewById(R.id.freeroom_layout_dialog_welcome_before);
+		LinearLayout after = (LinearLayout) mWelcomeView
+				.findViewById(R.id.freeroom_layout_dialog_welcome_after);
+		after.setVisibility(LinearLayout.VISIBLE);
+		before.setVisibility(LinearLayout.GONE);
 	}
 
 	/**

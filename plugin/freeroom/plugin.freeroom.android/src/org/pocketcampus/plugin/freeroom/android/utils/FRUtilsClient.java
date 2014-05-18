@@ -127,9 +127,8 @@ public class FRUtilsClient {
 		// TODO: which period to use ?
 		// in case of specified in request, we should use the personalized
 		// period
-		textBuilder.append(FRTimesClient.getInstance().formatFullDateFullTimePeriod(
-				mPeriod)
-				+ ". ");
+		textBuilder.append(FRTimesClient.getInstance()
+				.formatFullDateFullTimePeriod(mPeriod) + ". ");
 		textBuilder.append(context
 				.getString(R.string.freeroom_share_please_come));
 		if (toShare.length() != 0) {
@@ -277,6 +276,19 @@ public class FRUtilsClient {
 			result = buffer.toString();
 		}
 		return result;
+	}
+
+	/**
+	 * Checks if a email is an epfl well-formatted adress.
+	 * <p>
+	 * No spaces, only alphanum + "-" + "." for username, with end @epfl.ch
+	 * 
+	 * @param email
+	 *            the email to check.
+	 * @return if the check is succesful.
+	 */
+	public boolean validEmail(String email) {
+		return email.matches("^[a-zA-Z0-9-]+[.][a-zA-Z0-9-]+@epfl[.]ch$");
 	}
 
 }
