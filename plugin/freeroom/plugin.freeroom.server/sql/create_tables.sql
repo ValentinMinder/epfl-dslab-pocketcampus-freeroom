@@ -58,3 +58,10 @@ CREATE TABLE IF NOT EXISTS `fr-checkOccupancy` (
 	PRIMARY KEY (`timestampStart`, `hash`),
 	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist` (`uid`) ON DELETE CASCADE
 ) CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `fr-betaconfig` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `config` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
