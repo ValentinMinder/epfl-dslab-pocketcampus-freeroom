@@ -20,6 +20,7 @@ import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.freeroom.data.FetchRoomsDetails;
+import org.pocketcampus.plugin.freeroom.data.PeriodicallyUpdate;
 import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeServiceImpl;
 import org.pocketcampus.plugin.freeroom.server.utils.CheckRequests;
 import org.pocketcampus.plugin.freeroom.server.utils.OccupancySorted;
@@ -165,6 +166,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return path + " / " + message;
 	}
 
+	private String formatServerLogInfo(String method, String arguments) {
+
+		return "ACTION=" + method + " / ARGS=" + arguments;
+	}
+
 	/**
 	 * Logging function, time of the log will be set to the current timestamp.
 	 * 
@@ -206,7 +212,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * Whenever you need to insert an occupancy you should call this one. The
 	 * start of a user occupancy should be a full hour (e.g 10h00). Timestamps
 	 * may be modified before insertion in the following ways : seconds and
-	 * milliseconds are set to 0, users occupancies are rounded to a half hour before.
+	 * milliseconds are set to 0, users occupancies are rounded to a half hour
+	 * before.
 	 * 
 	 * @param period
 	 *            The period of the occupancy
@@ -242,9 +249,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		if (type == OCCUPANCY_TYPE.USER) {
 			// round user occupancy to a full hour
-//			period.setTimeStampStart(FRTimes
-//					.roundToNearestHalfHourBefore(period.getTimeStampStart()));
-			period.setTimeStampStart(FRTimes.roundHourBefore(period.getTimeStampStart()));
+			// period.setTimeStampStart(FRTimes
+			// .roundToNearestHalfHourBefore(period.getTimeStampStart()));
+			period.setTimeStampStart(FRTimes.roundHourBefore(period
+					.getTimeStampStart()));
 			if (!Utils.checkUserMessage(userMessage)) {
 				log(Level.INFO, "Getting wrong user message : " + userMessage);
 				return false;
@@ -747,7 +755,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return new FRReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
 					HttpURLConnection.HTTP_INTERNAL_ERROR + "");
 		}
-		
+
 		occupancies = Utils.sortRooms(occupancies);
 		reply.setOccupancyOfRooms(occupancies);
 
@@ -772,8 +780,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 */
 	private HashMap<String, List<Occupancy>> getOccupancyOfAnyFreeRoom(
 			boolean onlyFreeRooms, long tsStart, long tsEnd, int userGroup) {
-		log(LOG_SIDE.SERVER, Level.INFO,
-				"Requesting occupancy of any free rooms");
+
 		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
 		if (onlyFreeRooms) {
 			Connection connectBDD;
@@ -815,6 +822,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					return new HashMap<String, List<Occupancy>>();
 				}
 
+				String logMessage = "onlyFreeRooms=" + onlyFreeRooms
+						+ ",tsStart=" + tsStart + ",tsEnd=" + tsEnd
+						+ ",userGroup=" + userGroup;
+				log(Level.INFO,
+						formatServerLogInfo("getOccupancyOfAnyFreeRoom",
+								logMessage));
 				return getOccupancyOfSpecificRoom(uidsList, onlyFreeRooms,
 						tsStart, tsEnd, userGroup);
 			} catch (SQLException e) {
@@ -858,8 +871,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 		uidList = Utils.removeDuplicate(uidList);
-		log(LOG_SIDE.SERVER, Level.INFO,
-				"Requesting occupancy of specific list of rooms " + uidList);
 
 		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
 		int numberOfRooms = uidList.size();
@@ -1039,6 +1050,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							result);
 				}
 			}
+			String logMessage = "uidList=" + uidList + ",onlyFreeRooms="
+					+ onlyFreeRooms + ",tsStart=" + tsStart + ",tsEnd=" + tsEnd
+					+ ",userGroup=" + userGroup;
+			log(Level.INFO, formatServerLogInfo("getOccupancyOfSpecificRoom", logMessage));
 		} catch (SQLException e) {
 			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"SQL error of occupancy of specific list of rooms "
@@ -1104,9 +1119,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		} else {
 			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
 		}
-
-		log(LOG_SIDE.SERVER, Level.INFO,
-				"Autocomplete of " + request.getConstraint());
 
 		String constraint = request.getConstraint();
 
@@ -1199,6 +1211,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					+ HttpURLConnection.HTTP_OK);
 			reply.setListRoom(Utils.sortRoomsByBuilding(rooms));
 
+			String logMessage = "constraint=" + constraint + ",forbiddenRooms="
+					+ forbiddenRooms;
+			log(Level.INFO, formatServerLogInfo("autoCompleteRoom", logMessage));
 		} catch (SQLException e) {
 			reply = new AutoCompleteReply(
 					HttpURLConnection.HTTP_INTERNAL_ERROR, ""
@@ -1231,9 +1246,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
 		}
 
-		log(LOG_SIDE.SERVER, Level.INFO, "Autocomplete of user message : "
-				+ request.getConstraint());
-
 		String constraint = request.getConstraint().replaceAll("\\s+", "");
 		String uid = request.getRoom().getUid();
 		FRPeriod period = request.getPeriod();
@@ -1262,6 +1274,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				messages.add(result.getString("message"));
 			}
 
+			String logMessage = "constraint=" + constraint;
+			log(Level.INFO,
+					formatServerLogInfo("autoCompleteUserMessage", logMessage));
 			reply.setMessages(messages);
 		} catch (SQLException e) {
 			;
@@ -1309,9 +1324,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		boolean success = insertOccupancy(period, OCCUPANCY_TYPE.USER,
 				room.getUid(), request.getHash(), userMessage);
 		// TODO maybe change return value, to match more cases
-		log(LOG_SIDE.SERVER, Level.INFO, "ImWorkingThere request for room "
-				+ room.getDoorCode() + " : " + success);
 		if (success) {
+			String logMessage = "start=" + period.getTimeStampStart() + ",end="
+					+ period.getTimeStampEnd() + ",uid= " + room.getUid()
+					+ ",hash=" + request.getHash() + ",userMessage="
+					+ userMessage;
+			log(Level.INFO,
+					formatServerLogInfo("indicateImWorking", logMessage));
 			return new ImWorkingReply(HttpURLConnection.HTTP_OK, "");
 		} else {
 			return new ImWorkingReply(HttpURLConnection.HTTP_BAD_REQUEST, " ");
@@ -1336,8 +1355,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		} else {
 			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
 		}
-		// TODO remove duplicate
+
 		FRPeriod period = request.getPeriod();
+
+		// TODO remove duplicate
 		// period.setTimeStampStart(FRTimes
 		// .roundToNearestHalfHourBefore(period.getTimeStampStart()));
 
@@ -1348,8 +1369,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					HttpURLConnection.HTTP_INTERNAL_ERROR + "");
 		} else {
 			reply.setMessages(Utils.removeGroupMessages(listMessages));
+			String logMessage = "uid=" + request.getRoomUID() + ",start="
+					+ period.getTimeStampStart() + ",end="
+					+ period.getTimeStampEnd();
+			log(Level.INFO, formatServerLogInfo("getUserMessages", logMessage));
 		}
-		
 		return reply;
 	}
 
