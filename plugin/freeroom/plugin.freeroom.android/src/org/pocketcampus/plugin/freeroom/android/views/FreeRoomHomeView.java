@@ -897,8 +897,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onClick(View arg0) {
 				String email = emailText.getText().toString();
 				if (validEmail(email)) {
-					RegisterUser req = new RegisterUser(email, mModel
-							.getAnonymID(), getConfig(false));
+					RegisterUser req = new RegisterUser(email, getConfig(false));
 					mController.sendRegisterUser(req, view);
 					registerUserBeta
 							.setText(getString(R.string.freeroom_welcome_submitting));
