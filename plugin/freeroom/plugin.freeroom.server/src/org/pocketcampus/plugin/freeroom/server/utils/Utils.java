@@ -308,9 +308,10 @@ public class Utils {
 		
 		HashMap<String, Integer> answer = new HashMap<String, Integer>();
 		for (String message : listMessages) {
+			System.out.println("pushded");
 			String lowerCaseMessage = message.toLowerCase();
 			Integer count = answer.get(lowerCaseMessage);
-			if (lowerCaseMessage == null) {
+			if (count == null) {
 				answer.put(lowerCaseMessage, 1);
 			} else {
 				answer.put(lowerCaseMessage, count + 1);
