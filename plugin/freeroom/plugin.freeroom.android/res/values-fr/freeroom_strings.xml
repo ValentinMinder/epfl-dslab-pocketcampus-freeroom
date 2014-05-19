@@ -61,8 +61,8 @@
     <string name="freeroom_search_only_free">"Salles libres uniquement"</string>
     <string name="freeroom_search_favorites">"Favoris"</string>
     <string name="freeroom_search_userdef">"Liste choisie"</string>
-    <string name="freeroom_search_userdef_reset">"Réinitialiser"</string>
-    <string name="freeroom_search_userdef_add">"Ajouter"</string>
+    <string name="freeroom_search_userdef_reset">"Effacer"</string>
+    <string name="freeroom_search_userdef_add">"Ajout"</string>
     <string name="freeroom_search_userdef_edit">"Editer"</string>
     <string name="freeroom_search_time_summary">"Période sélectionnée"</string>
     <string name="freeroom_search_date_disabled">"Changer la date ne sera pas possible dans la version finale. Si vous voulez la changer pour tester, pressez longuement sur le bouton pour la date, fermez la pop-up et pressez à nouveau. "</string>
