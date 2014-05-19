@@ -20,26 +20,26 @@
 
     <!-- HOME results -->
     <plurals name="freeroom_results_room_header">
-        <item quantity="one">"%d room"</item>
-        <item quantity="other">"%d rooms"</item>
+        <item quantity="one">"%d salle"</item>
+        <item quantity="other">"%d salles"</item>
     </plurals>
 
-    <string name="freeroom_results_room_header_reduce">"reduce"</string>
-    <string name="freeroom_results_room_header_more">"more"</string>
-    <string name="freeroom_result_group_favorites">"Favorites"</string>
+    <string name="freeroom_results_room_header_reduce">"réduire"</string>
+    <string name="freeroom_results_room_header_more">"plus"</string>
+    <string name="freeroom_result_group_favorites">"Favoris"</string>
 
     <!-- HOME menus -->
-    <string name="freeroom_refresh">Refresh</string>
-    <string name="freeroom_about">About</string>
-    <string name="freeroom_help">Help</string>
+    <string name="freeroom_refresh">Actualiser</string>
+    <string name="freeroom_about">A propos</string>
+    <string name="freeroom_help">Aide</string>
 
     <!-- ERRORS -->
-    <string name="freeroom_error_bad_request">"PocketCampus tried to connect to FreeRoom servers, but the request sent by your client could not be handled by the server (400 BAD REQUEST)."</string>
-    <string name="freeroom_error_internal_error">"PocketCampus tried to connect to FreeRoom servers, but the server had an internal error (500 INTERNAL ERROR)."</string>
-    <string name="freeroom_error_unknown_error">"PocketCampus tried to connect to FreeRoom servers, but the server replied unsuccessfully with an unknown error code."</string>
-    <string name="freeroom_error_please_report">"This is NOT the intended behavior of the app! Please report it to us at freeroom.epfl@gmail.com, including a description of what you were doing on the app. Thanks in advance :)"</string>
-    <string name="freeroom_error_please_try_again">"Please try again. Please note that the beta version ONLY works on EPFL network (wifi, VPN or wired). If it continues to appear, please contact us at freeroom.epfl@gmail.com! Thanks in advance! :)"</string>
-    <string name="freeroom_connection_error_happened">"We cannot fetch FreeRoom data right now, because of a network error. Either you are not connected to the Internet, or the pocketcampus server is unreachable or down."</string>
+    <string name="freeroom_error_bad_request">"PocketCampus a essayé de se connecter au serveur FreeRoom, mais la requête envoyée est invalide (400 BAD REQUEST)."</string>
+    <string name="freeroom_error_internal_error">"PocketCampus a essayé de se connecter au serveur FreeRoom, mais le server a eu une erreur interne (500 INTERNAL ERROR)."</string>
+    <string name="freeroom_error_unknown_error">"PocketCampus a essayé de se connecter au serveur FreeRoom, mais le serveur a répondu avec un code d\'erreur inconnu."</string>
+    <string name="freeroom_error_please_report">"Ce comportement n\'est PAS normal, veuillez s.v.p reporter le bug à freeroom.epfl@gmail.com en incluant une description des étapes menants au bug. Merci d'avance :)"</string>
+    <string name="freeroom_error_please_try_again">"Veuillez essayer à nouveau. Notez que la version beta ne fonctionne que sur le réseau de l\'epfl (wifi, VPN ou cablé). Si cela persiste, merci de nous contacter à freeroom.epfl@gmail.com. Merci d'avance :)"</string>
+    <string name="freeroom_connection_error_happened">"Nous ne pouvons pas récupérer les données maintenant due à une erreur de réseau. Vous n\'êtes soit pas connecté ou le serveur PocketCampus est hors-service / inatteignable."</string>
     <string name="freeroom_connection_error_happened">"Nous ne pouvons pas récupérer les données FreeRoom maintenant, car vous n\'êtes pas connecté à Internet."</string>
 
     <!-- SEARCH dialog -->
