@@ -2138,17 +2138,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		favButton.setEnabled(enabled);
 		userDefButton.setEnabled(enabled);
 		freeButton.setEnabled(enabled);
-		mOptionalLineLinearLayoutContainer
-				.removeView(mOptionalLineLinearLayoutWrapperFirst);
+		mOptionalLineLinearLayoutWrapperFirst.setVisibility(View.GONE);
 		if (enabled) {
-			mOptionalLineLinearLayoutContainer
-					.addView(mOptionalLineLinearLayoutWrapperFirst);
+			mOptionalLineLinearLayoutWrapperFirst.setVisibility(View.VISIBLE);
 		}
-		mOptionalLineLinearLayoutContainer
-				.removeView(mOptionalLineLinearLayoutWrapperSecond);
+		mOptionalLineLinearLayoutWrapperSecond.setVisibility(View.GONE);
 		if (request.isUser()) {
-			mOptionalLineLinearLayoutContainer
-					.addView(mOptionalLineLinearLayoutWrapperSecond);
+			mOptionalLineLinearLayoutWrapperSecond.setVisibility(View.VISIBLE);
 			selectedRooms.addAll(request.getUidNonFav());
 			mSummarySelectedRoomsTextViewSearchMenu.setText(u
 					.getSummaryTextFromCollection(selectedRooms));
@@ -2260,14 +2256,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private int endHourSelected = -1;
 	private int endMinSelected = -1;
 
-	private LinearLayout mOptionalLineLinearLayoutContainer;
 	private LinearLayout mOptionalLineLinearLayoutWrapperFirst;
 	private LinearLayout mOptionalLineLinearLayoutWrapperSecond;
 
 	private void initSearch() {
 
-		mOptionalLineLinearLayoutContainer = (LinearLayout) mSearchDialog
-				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_container);
 		mOptionalLineLinearLayoutWrapperFirst = (LinearLayout) mSearchDialog
 				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_wrapper_1st);
 		mOptionalLineLinearLayoutWrapperSecond = (LinearLayout) mSearchView
@@ -2435,8 +2428,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	private void resetUserDefined() {
-		mOptionalLineLinearLayoutContainer
-				.removeView(mOptionalLineLinearLayoutWrapperSecond);
+		mOptionalLineLinearLayoutWrapperSecond.setVisibility(View.GONE);
+
 		selectedRooms.clear();
 
 		mSummarySelectedRoomsTextView.setText(u
@@ -2447,8 +2440,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		if (mModel.getFavorites().isEmpty() && !favButton.isChecked()) {
 			userDefButton.setChecked(true);
-			mOptionalLineLinearLayoutContainer
-					.addView(mOptionalLineLinearLayoutWrapperSecond);
+			mOptionalLineLinearLayoutWrapperSecond.setVisibility(View.VISIBLE);
+
 			displayAddRoomDialog(AddRoomCaller.SEARCH);
 			searchButton.setEnabled(false);
 		} else {
@@ -2466,10 +2459,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				if (specButton.isChecked()) {
-					mOptionalLineLinearLayoutContainer
-							.removeView(mOptionalLineLinearLayoutWrapperFirst);
-					mOptionalLineLinearLayoutContainer
-							.addView(mOptionalLineLinearLayoutWrapperFirst);
+					mOptionalLineLinearLayoutWrapperFirst
+							.setVisibility(View.VISIBLE);
+
 				}
 				specButton.setChecked(true);
 				anyButton.setChecked(false);
@@ -2486,10 +2478,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				// if you have favs, auto-select it, ... but it requires two
 				// steps to remove the fav (add user-def, remove fav)
 				if (mModel.getFavorites().isEmpty()) {
-					mOptionalLineLinearLayoutContainer
-							.removeView(mOptionalLineLinearLayoutWrapperSecond);
-					mOptionalLineLinearLayoutContainer
-							.addView(mOptionalLineLinearLayoutWrapperSecond);
+					mOptionalLineLinearLayoutWrapperSecond
+							.setVisibility(View.VISIBLE);
+
 					userDefButton.setChecked(true);
 					displayAddRoomDialog(AddRoomCaller.SEARCH);
 					// as it's user-defined, we dont check for search button
@@ -2509,10 +2500,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				if (anyButton.isChecked()) {
-					mOptionalLineLinearLayoutContainer
-							.removeView(mOptionalLineLinearLayoutWrapperSecond);
-					mOptionalLineLinearLayoutContainer
-							.removeView(mOptionalLineLinearLayoutWrapperFirst);
+					mOptionalLineLinearLayoutWrapperFirst
+							.setVisibility(View.GONE);
+					mOptionalLineLinearLayoutWrapperSecond
+							.setVisibility(View.GONE);
 				}
 				specButton.setChecked(false);
 				resetUserDefined();
@@ -2562,10 +2553,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					specButton.setChecked(true);
 					freeButton.setChecked(false);
 
-					mOptionalLineLinearLayoutContainer
-							.removeView(mOptionalLineLinearLayoutWrapperSecond);
-					mOptionalLineLinearLayoutContainer
-							.addView(mOptionalLineLinearLayoutWrapperSecond);
+					mOptionalLineLinearLayoutWrapperSecond
+							.setVisibility(View.VISIBLE);
+
 					mSummarySelectedRoomsTextViewSearchMenu.setText(u
 							.getSummaryTextFromCollection(selectedRooms));
 					displayAddRoomDialog(AddRoomCaller.SEARCH);
@@ -2967,10 +2957,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		resetTimes();
 
 		anyButton.setChecked(true);
-		mOptionalLineLinearLayoutContainer
-				.removeView(mOptionalLineLinearLayoutWrapperSecond);
-		mOptionalLineLinearLayoutContainer
-				.removeView(mOptionalLineLinearLayoutWrapperFirst);
+		mOptionalLineLinearLayoutWrapperFirst.setVisibility(View.GONE);
+		mOptionalLineLinearLayoutWrapperSecond.setVisibility(View.GONE);
 
 		specButton.setChecked(false);
 		favButton.setChecked(false);
