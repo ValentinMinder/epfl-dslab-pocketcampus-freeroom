@@ -128,6 +128,14 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@android:color/black" />
             </LinearLayout>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/freeroom_authors"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@android:color/darker_gray" />
         </LinearLayout>
     </ScrollView>
 

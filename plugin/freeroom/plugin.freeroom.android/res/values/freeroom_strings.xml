@@ -205,4 +205,7 @@
     <string name="freeroom_layout_prev_req_delete_img">delete</string>
     <string name="freeroom_layout_separator_dark">separator</string>
 
+    <!-- TODO: translate -->
+    <string name="freeroom_authors">"This beta-plugin in pocketcampus is the result of a semester project with DSLAB.\nAuthors:\nJulien WEBER\nValentin MINDER\nThanks to Silviu ANDRICA, Loic GARDIOL, Amer CHAMSEDDINE for their support and advices."</string>
+
 </resources>
