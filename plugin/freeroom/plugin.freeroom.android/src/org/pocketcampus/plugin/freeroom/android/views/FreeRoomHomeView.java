@@ -279,6 +279,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private TextView prevSearchTitle;
 	/**
+	 * Button to come back to up of search page.
+	 */
+	private Button goUpHomeButton;
+	/**
 	 * Authorize the change of date for search dialog.
 	 */
 	private boolean changeDateAuthorized = false;
@@ -1411,11 +1415,24 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				R.layout.freeroom_layout_search_header,
 				mSearchPreviousListView, false);
 		mSearchPreviousListView.addHeaderView(header, null, false);
+		ViewGroup footer = (ViewGroup) mLayoutInflater.inflate(
+				R.layout.freeroom_layout_search_footer,
+				mSearchPreviousListView, false);
+		mSearchPreviousListView.addFooterView(footer, null, false);
 		mSearchPreviousListView.setAdapter(mPrevRequestAdapter);
 
 		textTitlePrevious = getString(R.string.freeroom_search_previous_search);
 		prevSearchTitle = (TextView) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_prev_search_title);
+		// go home: useful for very long lists to go back up.
+		goUpHomeButton = (Button) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_footer_home);
+		goUpHomeButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mSearchPreviousListView.smoothScrollToPosition(0);
+			}
+		});
 
 		mSummarySelectedRoomsTextViewSearchMenu = (TextView) mSearchDialog
 				.findViewById(R.id.freeroom_layout_dialog_search_text_summary);
@@ -1434,9 +1451,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		if (mModel.getPreviousRequest().isEmpty()) {
 			prevSearchTitle.setText("");
 			prevSearchTitle.setVisibility(View.GONE);
+			goUpHomeButton.setVisibility(View.GONE);
 		} else {
 			prevSearchTitle.setText(textTitlePrevious);
 			prevSearchTitle.setVisibility(View.VISIBLE);
+			goUpHomeButton.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -1512,6 +1531,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 *            position of the item to use to refill.
 	 */
 	public boolean onFillRequestClickListeners(int position) {
+		mSearchPreviousListView.smoothScrollToPosition(0);
 		FRRequestDetails req = mModel.getPreviousRequest().get(position);
 		if (req != null) {
 			fillSearchDialog(req);
@@ -2661,7 +2681,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		// for landscape device, mainly tablet, some layout are programatically
+		// for landscape device, mainly tablet, some layout are programmatically
 		// changed to horizontal values.
 		if (isLandscape()) {
 			LinearLayout header_main = (LinearLayout) mSearchView
@@ -2708,6 +2728,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			// favButton.setWidth(widthPopup / 3);
 			userDefButton.setHeight(LayoutParams.FILL_PARENT);
 			// userDefButton.setWidth(widthPopup / 3);
+		} else {
+			anyButton.setWidth(android.view.ViewGroup.LayoutParams.FILL_PARENT);
+			specButton
+					.setWidth(android.view.ViewGroup.LayoutParams.FILL_PARENT);
+			favButton.setWidth(android.view.ViewGroup.LayoutParams.FILL_PARENT);
+			userDefButton
+					.setWidth(android.view.ViewGroup.LayoutParams.FILL_PARENT);
+			freeButton
+					.setWidth(android.view.ViewGroup.LayoutParams.FILL_PARENT);
 		}
 	}
 

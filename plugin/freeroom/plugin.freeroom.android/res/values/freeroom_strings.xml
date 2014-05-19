@@ -207,5 +207,7 @@
 
     <!-- TODO: translate -->
     <string name="freeroom_authors">"This beta-plugin in pocketcampus is the result of a semester project with DSLAB.\nAuthors:\nJulien WEBER\nValentin MINDER\nThanks to Silviu ANDRICA, Loic GARDIOL, Amer CHAMSEDDINE for their support and advices."</string>
+    <!-- French: Haut -->
+    <string name="freeroom_dialog_search_footer_home">"Home"</string>
 
 </resources>

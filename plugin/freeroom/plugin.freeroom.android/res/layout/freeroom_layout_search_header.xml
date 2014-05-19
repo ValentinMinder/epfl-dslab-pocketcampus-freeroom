@@ -168,6 +168,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
+            android:paddingRight="10dp"
             android:text="@string/freeroom_search_any"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black" />
@@ -179,6 +180,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
+            android:paddingRight="10dp"
             android:text="@string/freeroom_search_spec"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black" />
@@ -209,6 +211,7 @@
                 android:id="@+id/freeroom_layout_dialog_search_fav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingRight="10dp"
                 android:text="@string/freeroom_search_favorites"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
@@ -219,6 +222,7 @@
                 android:id="@+id/freeroom_layout_dialog_search_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingRight="10dp"
                 android:text="@string/freeroom_search_userdef"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
@@ -229,6 +233,7 @@
                 android:id="@+id/freeroom_layout_dialog_search_non_free"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingRight="10dp"
                 android:text="@string/freeroom_search_only_free"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
