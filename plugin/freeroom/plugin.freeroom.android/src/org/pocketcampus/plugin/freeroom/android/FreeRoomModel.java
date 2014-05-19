@@ -72,9 +72,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private final String groupAccessIDKey = "groupAccessIDKey";
 
 	public final int COLOR_CHECK_OCCUPANCY_DEFAULT = Color.WHITE;
-	public final int COLOR_CHECK_OCCUPANCY_FREE = Color.GREEN;
-	public final int COLOR_CHECK_OCCUPANCY_OCCUPIED = Color.RED;
-	public final int COLOR_CHECK_OCCUPANCY_ATLEASTONCE = Color.YELLOW;
+	public final int COLOR_CHECK_OCCUPANCY_FREE = Color.rgb(97, 215, 18);
+	public final int COLOR_CHECK_OCCUPANCY_OCCUPIED = Color.rgb(215, 20, 20);
+	public final int COLOR_CHECK_OCCUPANCY_ATLEASTONCE = Color.rgb(236, 244, 7);
 
 	/**
 	 * 
