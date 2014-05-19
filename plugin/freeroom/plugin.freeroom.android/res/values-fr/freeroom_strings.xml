@@ -8,15 +8,15 @@
 
     <!-- HOME TITLES -->
     <string name="freeroom_title_main_title">"FreeRoom: Home"</string>
-    <string name="freeroom_home_info_rooms">"Occupancies "</string>
-    <string name="freeroom_home_info_free_rooms">"Free rooms "</string>
+    <string name="freeroom_home_info_rooms">"Occupations "</string>
+    <string name="freeroom_home_info_free_rooms">"Free Rooms "</string>
 
     <!-- HOME SUBTITLES -->
-    <string name="freeroom_please_wait">"Please wait while results are being updated"</string>
-    <string name="freeroom_home_please_wait">"Please wait while results are refreshed"</string>
-    <string name="freeroom_home_init_please_wait">"Initialization, please wait!"</string>
-    <string name="freeroom_home_error_sorry">"An error occurred, no results to display. Sorry! ;)"</string>
-    <string name="freeroom_home_error_no_results">"No results: no rooms seem to be free with your selection."</string>
+    <string name="freeroom_please_wait">"Veuillez attendre s.v.p, les résultats sont en cours de chargement"</string>
+    <string name="freeroom_home_please_wait">"Veuillez attendre s.v.p les résultats sont actualisés"</string>
+    <string name="freeroom_home_init_please_wait">"Initialisation, veuillez attendre s.v.p"</string>
+    <string name="freeroom_home_error_sorry">"Une erreur est survenue, pas de résultats à afficher, désolé ;-)"</string>
+    <string name="freeroom_home_error_no_results">"Pas de résultats, aucune salle ne semble être libre avec votre sélection"</string>
 
     <!-- HOME results -->
     <plurals name="freeroom_results_room_header">
