@@ -114,21 +114,23 @@ public class FRUtilsClient {
 		// "i am, now, " instead of
 		// time
 		StringBuilder textBuilder = new StringBuilder(100);
-		textBuilder.append(context.getString(R.string.freeroom_share_iwillbe)
-				+ " ");
-		textBuilder.append(context.getString(R.string.freeroom_share_in_room)
-				+ " ");
+		textBuilder.append(context.getString(R.string.freeroom_share_iwillbe));
+		textBuilder.append(" ");
+		textBuilder.append(context.getString(R.string.freeroom_share_in_room));
+		textBuilder.append(" ");
 		if (mRoom.isSetDoorCodeAlias()) {
 			textBuilder.append(mRoom.getDoorCodeAlias() + " ("
 					+ mRoom.getDoorCode() + ")");
 		} else {
 			textBuilder.append(mRoom.getDoorCode());
 		}
-		// TODO: which period to use ?
-		// in case of specified in request, we should use the personalized
-		// period
+		textBuilder.append(", ");
+
+		// TODO: which period to use ? in case of specified in request, we
+		// should use the personalized period
 		textBuilder.append(FRTimesClient.getInstance()
-				.formatFullDateFullTimePeriod(mPeriod) + ". ");
+				.formatFullDateFullTimePeriod(mPeriod));
+		textBuilder.append(". ");
 		textBuilder.append(context
 				.getString(R.string.freeroom_share_please_come));
 		if (toShare.length() != 0) {
