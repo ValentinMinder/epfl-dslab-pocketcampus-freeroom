@@ -198,9 +198,10 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			}
 		};
 		people.setOnClickListener(ocl);
+		tv.setOnClickListener(ocl);
 
 		// TODO: asker whoisworking test to send to controller!
-		OnClickListener ocl_line = new OnClickListener() {
+		OnClickListener ocl_checkWorking = new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -210,11 +211,9 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 				mController.checkWhoIsWorking(homeView);
 			}
 		};
-		convertView.setOnClickListener(ocl_line);
-
-		// TODO: uncomment this (or put the listener better, dont go behind
-		// other images...)
-		// convertView.setOnClickListener(ocl);
+		// if you want people image to check who is working for a longer period,
+		// uncomment this
+		// people.setOnClickListener(ocl_checkWorking);
 
 		convertView.setBackgroundColor(mModel.getColor(occupancy));
 		return convertView;
