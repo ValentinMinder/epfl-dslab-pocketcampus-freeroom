@@ -1426,15 +1426,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (user == null) {
 			return false;
 		}
-		
+
 		if (user.getEmail() == null) {
 			return false;
 		}
-		
+
 		if (user.getConfig() == null) {
 			return false;
 		}
-		
+
 		try {
 			Connection connectBDD = connMgr.getConnection();
 			// for now we only take into account one hour period
@@ -1445,7 +1445,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			query.setString(2, user.getConfig());
 
 			query.executeUpdate();
-			log(Level.INFO, formatServerLogInfo("registerUserSettings", "email=" + user.getEmail() + "config==null?" + (user.getConfig() == null)));
+			log(Level.INFO,
+					formatServerLogInfo("registerUserSettings",
+							"email=" + user.getEmail() + "config==null?"
+									+ (user.getConfig() == null)));
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1454,7 +1457,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"SQL error when inserting user config email="
 							+ user.getEmail() + "config == null ? "
 							+ (user.getConfig() == null));
-			//special case, we let the user test the app anyway
+			// special case, we let the user test the app anyway
 			return true;
 		}
 	}
