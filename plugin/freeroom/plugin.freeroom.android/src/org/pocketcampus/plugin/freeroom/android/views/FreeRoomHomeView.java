@@ -279,37 +279,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private TextView prevSearchTitle;
 	/**
-	 * Layout of the first part, the search input (without the second part,
-	 * previous searches).
-	 */
-	private LinearLayout searchDialogUpperLinearLayout;
-	/**
 	 * Authorize the change of date for search dialog.
 	 */
 	private boolean changeDateAuthorized = false;
-	/**
-	 * Stores the height available
-	 */
-	private int searchDialogMainLayoutHeightAvailable = 0;
-	/**
-	 * Stores if the screen is too small
-	 */
-	private boolean searchDialogHasHeightExtenstionProblem = true;
-	/**
-	 * Ratio of dialog that should be occupied with searches input when NOT
-	 * displaying previous request.
-	 */
-	private double searchDialogNonExtended = 0.90;
-	/**
-	 * Ratio of dialog that should be occupied with searches input when
-	 * displaying previous request.
-	 */
-	private double searchDialogExtended = 0.10;
-	/**
-	 * Stores if the previous search has been hidden (the rest is more
-	 * extended).
-	 */
-	private boolean searchDialogExtendMoreTriggered = false;
 	/**
 	 * Text for "Previous request"
 	 */
@@ -400,7 +372,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private Action search = new Action() {
 		public void performAction(View view) {
-			displaySearchDialog();
+			mSearchDialog.show();
 		}
 
 		public int getDrawable() {
@@ -1435,7 +1407,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				this, this, R.layout.freeroom_layout_list_prev_req,
 				R.id.freeroom_layout_prev_req_text, mModel.getPreviousRequest());
 
-		ViewGroup header = (ViewGroup) mLayoutInflater.inflate(R.layout.freeroom_layout_search_header,
+		ViewGroup header = (ViewGroup) mLayoutInflater.inflate(
+				R.layout.freeroom_layout_search_header,
 				mSearchPreviousListView, false);
 		mSearchPreviousListView.addHeaderView(header, null, false);
 		mSearchPreviousListView.setAdapter(mPrevRequestAdapter);
@@ -1443,37 +1416,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		textTitlePrevious = getString(R.string.freeroom_search_previous_search);
 		prevSearchTitle = (TextView) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_prev_search_title);
-		prevSearchTitle.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO: change this: all scrollable!
-				searchDialogMissSpaceExtendChangeState(searchDialogExtendMoreTriggered);
-				if (searchDialogHasHeightExtenstionProblem) {
-					if (searchDialogExtendMoreTriggered) {
-						prevSearchTitle
-								.setText(textTitlePrevious
-										+ ": "
-										+ getString(R.string.freeroom_search_previous_hide));
-					} else {
-						prevSearchTitle
-								.setText(textTitlePrevious
-										+ ": "
-										+ getString(R.string.freeroom_search_previous_show));
-					}
-				}
-				searchDialogExtendMoreTriggered = !searchDialogExtendMoreTriggered;
-			}
-		});
 
 		mSummarySelectedRoomsTextViewSearchMenu = (TextView) mSearchDialog
 				.findViewById(R.id.freeroom_layout_dialog_search_text_summary);
 		// the view will be removed or the text changed, no worry
 		mSummarySelectedRoomsTextViewSearchMenu
 				.setText(getString(R.string.freeroom_add_rooms_empty));
-
-		searchDialogUpperLinearLayout = (LinearLayout) mSearchDialog
-				.findViewById(R.id.freeroom_layout_dialog_search_main_added);
 
 		initSearch();
 	}
@@ -1485,11 +1433,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void initPreviousTitle() {
 		if (mModel.getPreviousRequest().isEmpty()) {
 			prevSearchTitle.setText("");
-		} else if (searchDialogHasHeightExtenstionProblem) {
-			prevSearchTitle.setText(textTitlePrevious + ": "
-					+ getString(R.string.freeroom_search_previous_show));
+			prevSearchTitle.setVisibility(View.GONE);
 		} else {
 			prevSearchTitle.setText(textTitlePrevious);
+			prevSearchTitle.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -1554,7 +1501,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mPrevRequestAdapter.notifyDataSetChanged();
 		if (mModel.getPreviousRequest().isEmpty()) {
 			initPreviousTitle();
-			displaySearchDialog();
+			mSearchDialog.show();
 		}
 	}
 
@@ -1565,56 +1512,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 *            position of the item to use to refill.
 	 */
 	public boolean onFillRequestClickListeners(int position) {
-		searchDialogExtendMoreTriggered = true;
-		if (searchDialogHasHeightExtenstionProblem) {
-			prevSearchTitle.setText(textTitlePrevious + ": "
-					+ getString(R.string.freeroom_search_previous_show));
-		}
-		searchDialogMissSpaceExtendChangeState(false);
 		FRRequestDetails req = mModel.getPreviousRequest().get(position);
 		if (req != null) {
 			fillSearchDialog(req);
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Display the search dialog and checks the compatibility of the UI and make
-	 * some change if necessary.
-	 */
-	private void displaySearchDialog() {
-		if (!mModel.getPreviousRequest().isEmpty()) {
-			searchDialogMainLayoutHeightAvailable = Math.max(
-					mSearchView.getMeasuredHeight(), mSearchView.getHeight());
-			searchDialogMissSpaceExtendChangeState(false);
-		} else {
-			searchDialogUpperLinearLayout
-					.setLayoutParams(new LinearLayout.LayoutParams(
-							LinearLayout.LayoutParams.FILL_PARENT,
-							LinearLayout.LayoutParams.WRAP_CONTENT));
-		}
-		mSearchDialog.show();
-	}
-
-	/**
-	 * Modify the height of the upper layout of the search dialog in order to
-	 * show/hide the previous requests.
-	 * 
-	 * @param lessExtend
-	 */
-	private void searchDialogMissSpaceExtendChangeState(boolean lessExtend) {
-		if (searchDialogHasHeightExtenstionProblem) {
-			int height = (int) (searchDialogNonExtended * searchDialogMainLayoutHeightAvailable);
-
-			if (lessExtend) {
-				height = (int) (searchDialogExtended * searchDialogMainLayoutHeightAvailable);
-			}
-			searchDialogUpperLinearLayout
-					.setLayoutParams(new LinearLayout.LayoutParams(
-							LinearLayout.LayoutParams.FILL_PARENT, height));
-			searchDialogUpperLinearLayout.refreshDrawableState();
-		}
 	}
 
 	private void initWarningDialog() {
@@ -2805,8 +2708,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			// favButton.setWidth(widthPopup / 3);
 			userDefButton.setHeight(LayoutParams.FILL_PARENT);
 			// userDefButton.setWidth(widthPopup / 3);
-
-			searchDialogHasHeightExtenstionProblem = false;
 		}
 	}
 
