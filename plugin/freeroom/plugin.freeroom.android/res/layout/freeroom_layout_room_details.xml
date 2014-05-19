@@ -7,18 +7,6 @@
     android:orientation="horizontal"
     android:padding="2dip" >
 
-    <!-- TextView to hold the time period -->
-    
-    <TextView
-        android:id="@+id/freeroom_layout_details_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="5dip"
-        android:text="mock room name"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/black" />
-
     <!-- Image to say you're going to work there -->
 
     <ImageView
@@ -28,20 +16,58 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_gravity="right"
-        android:layout_marginRight="5dip"
         android:contentDescription="@string/freeroom_layout_roomslist_img_share"
         android:src="@drawable/ic_action_share" />
+
+    <ImageView
+        android:id="@+id/freeroom_layout_details_separator_1"
+        android:layout_width="3dp"
+        android:layout_height="27dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="4dp"
+        android:layout_toLeftOf="@id/freeroom_layout_details_share"
+        android:contentDescription="@string/freeroom_layout_separator_dark"
+        android:gravity="center"
+        android:src="@drawable/separator_grey" />
 
     <!-- Image to show how many people are working there -->
 
     <ImageView
         android:id="@+id/freeroom_layout_details_people"
-        android:layout_width="35dip"
-        android:layout_height="35dip"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="5dip"
-        android:layout_toLeftOf="@id/freeroom_layout_details_share"
+        android:layout_toLeftOf="@id/freeroom_layout_details_separator_1"
         android:contentDescription="@string/freeroom_layout_roomslist_img_people"
+        android:gravity="center"
         android:src="@drawable/occupation_unknown" />
+
+    <ImageView
+        android:id="@+id/freeroom_layout_details_separator_2"
+        android:layout_width="3dp"
+        android:layout_height="27dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="4dp"
+        android:layout_toLeftOf="@id/freeroom_layout_details_people"
+        android:contentDescription="@string/freeroom_layout_separator_dark"
+        android:gravity="center"
+        android:src="@drawable/separator_grey" />
+
+    <!-- TextView to hold the time period -->
+
+    <TextView
+        android:id="@+id/freeroom_layout_details_text"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_toLeftOf="@id/freeroom_layout_details_separator_2"
+        android:gravity="left|center_vertical"
+        android:maxLines="1"
+        android:text="mock time data"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/black" />
 
 </RelativeLayout>

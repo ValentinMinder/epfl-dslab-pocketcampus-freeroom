@@ -24,7 +24,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:padding="6dip"
             android:selectAllOnFocus="true"
             android:text="I will be in room ... (mock text) "
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -39,7 +38,7 @@
             android:layout_gravity="left"
             android:hint="@string/freeroom_dialog_share_textedit_hint"
             android:imeOptions="actionSend"
-            android:padding="6dip"
+            android:maxLines="1"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
 
@@ -49,6 +48,7 @@
             android:id="@+id/freeroom_layout_dialog_share_checkbox_server"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="@string/freeroom_dialog_share_checkbox_msg"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
@@ -69,7 +69,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:padding="6dip"
             android:text="@string/freeroom_dialog_share_disclaimer"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/darker_gray" />

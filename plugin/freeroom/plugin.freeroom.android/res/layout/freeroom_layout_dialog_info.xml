@@ -7,10 +7,9 @@ Double layout stores a background for fancy colorful borders
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_margin="4dp"
     android:background="@android:color/background_light"
     android:orientation="vertical"
-    android:padding="4dp" >
+    android:padding="5dp" >
 
     <!-- headers for title and close button -->
 
@@ -61,9 +60,7 @@ Double layout stores a background for fancy colorful borders
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:paddingLeft="7dip"
-        android:paddingRight="7dip"
-        android:paddingTop="5dip"
+        android:paddingTop="5dp"
         android:text="mock text"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/black" />

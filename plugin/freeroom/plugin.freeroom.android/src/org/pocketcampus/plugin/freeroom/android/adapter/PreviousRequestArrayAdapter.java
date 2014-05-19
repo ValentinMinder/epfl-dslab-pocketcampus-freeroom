@@ -36,16 +36,8 @@ public class PreviousRequestArrayAdapter<T> extends
 
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View row = super.getView(position, convertView, parent);
-		ImageView playRequest = (ImageView) row
-				.findViewById(R.id.freeroom_layout_prev_req_play);
 
-		playRequest.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				caller.onPlayRequestClickListener(position);
-			}
-		});
-
+		// remove click listener
 		ImageView removeRequest = (ImageView) row
 				.findViewById(R.id.freeroom_layout_prev_req_remove);
 
@@ -56,10 +48,28 @@ public class PreviousRequestArrayAdapter<T> extends
 			}
 		});
 
-		TextView tv = (TextView) row
+		// edit click listener
+		ImageView editRequest = (ImageView) row
+				.findViewById(R.id.freeroom_layout_prev_req_edit);
+
+		editRequest.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				caller.onFillRequestClickListeners(position);
+			}
+		});
+
+		// play click listener
+		TextView requestTextView = (TextView) row
 				.findViewById(R.id.freeroom_layout_prev_req_text);
 		FRRequestDetails req = super.getItem(position);
-		tv.setText(caller.FRRequestToString(req));
+		requestTextView.setText(caller.FRRequestToString(req));
+		requestTextView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				caller.onPlayRequestClickListener(position);
+			}
+		});
 		return (row);
 	}
 }

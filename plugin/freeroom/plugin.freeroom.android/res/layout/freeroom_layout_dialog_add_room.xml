@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:background="@android:color/background_light"
     android:orientation="vertical"
-    android:padding="4dp" >
+    android:padding="5dp" >
 
     <!-- headers for title and close button -->
 
@@ -22,8 +22,11 @@
         <TextView
             android:id="@+id/freeroom_layout_dialog_add_room_summary"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_weight="10"
+            android:gravity="top"
+            android:maxLines="2"
+            android:lines="2"
             android:text="@string/freeroom_dialog_add_room_init"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
@@ -33,10 +36,10 @@
         <Button
             android:id="@+id/freeroom_layout_dialog_add_room_done"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_weight="5"
             android:text="@string/freeroom_dialog_add_room_add"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/black" />
     </LinearLayout>
 

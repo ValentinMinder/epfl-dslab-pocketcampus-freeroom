@@ -1,37 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
-
-    <!-- Correction on arrow image: brightness +75 -->
-
-    <ImageView
-        android:id="@+id/freeroom_layout_prev_req_play"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_gravity="center_vertical"
-        android:contentDescription="@string/freeroom_layout_prev_req_replay_img"
-        android:padding="2dp"
-        android:src="@drawable/ic_action_play"
-        android:visibility="visible" >
-    </ImageView>
-
-    <ImageView
-        android:id="@+id/freeroom_layout_prev_req_edit"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_gravity="center_vertical"
-        android:contentDescription="@string/freeroom_layout_prev_req_edit_img"
-        android:padding="2dp"
-        android:src="@drawable/ic_action_edit"
-        android:visibility="visible" >
-    </ImageView>
 
     <ImageView
         android:id="@+id/freeroom_layout_prev_req_remove"
         android:layout_width="35dp"
         android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:layout_gravity="center_vertical"
         android:contentDescription="@string/freeroom_layout_prev_req_delete_img"
         android:padding="2dp"
@@ -39,14 +17,56 @@
         android:visibility="visible" >
     </ImageView>
 
+    <ImageView
+        android:id="@+id/freeroom_layout_prev_req_separator_1"
+        android:layout_width="3dp"
+        android:layout_height="27dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="4dp"
+        android:layout_toLeftOf="@id/freeroom_layout_prev_req_remove"
+        android:contentDescription="@string/freeroom_layout_separator_dark"
+        android:gravity="center"
+        android:src="@drawable/separator_grey" />
+
+    <ImageView
+        android:id="@+id/freeroom_layout_prev_req_edit"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center_vertical"
+        android:layout_toLeftOf="@id/freeroom_layout_prev_req_separator_1"
+        android:contentDescription="@string/freeroom_layout_prev_req_edit_img"
+        android:padding="2dp"
+        android:src="@drawable/ic_action_edit"
+        android:visibility="visible" >
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/freeroom_layout_prev_req_separator_2"
+        android:layout_width="3dp"
+        android:layout_height="27dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="4dp"
+        android:layout_toLeftOf="@id/freeroom_layout_prev_req_edit"
+        android:contentDescription="@string/freeroom_layout_separator_dark"
+        android:gravity="center"
+        android:src="@drawable/separator_grey" />
+
     <TextView
         android:id="@+id/freeroom_layout_prev_req_text"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center_vertical"
+        android:layout_toLeftOf="@id/freeroom_layout_prev_req_separator_2"
+        android:drawableLeft="@drawable/ic_action_next_item"
+        android:gravity="left|center_vertical"
+        android:maxLines="2"
         android:padding="2dp"
         android:text="mock text"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/black" />
 
-</LinearLayout>
+</RelativeLayout>

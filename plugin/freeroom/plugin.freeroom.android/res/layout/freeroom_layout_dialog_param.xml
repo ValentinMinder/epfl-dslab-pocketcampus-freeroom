@@ -6,7 +6,7 @@
     android:layout_height="fill_parent"
     android:background="@android:color/background_light"
     android:orientation="vertical"
-    android:padding="10dp" >
+    android:padding="5dp" >
 
     <!-- Scroll View for the whole layout! -->
 

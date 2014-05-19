@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/background_light"
             android:orientation="vertical"
-            android:padding="10dp" >
+            android:padding="5dp" >
 
             <TextView
                 android:id="@+id/freeroom_layout_dialog_welcome_title"

@@ -837,6 +837,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setIcon(R.drawable.ic_action_view_as_list);
+		// erased when calling the intended method to show the details
+		builder.setTitle("Mock title");
 		builder.setPositiveButton(
 				getString(R.string.freeroom_dialog_info_share), null);
 		builder.setNegativeButton(
@@ -1463,15 +1465,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				this, this, R.layout.freeroom_layout_list_prev_req,
 				R.id.freeroom_layout_prev_req_text, mModel.getPreviousRequest());
 		mSearchPreviousListView.setAdapter(mPrevRequestAdapter);
-		mSearchPreviousListView
-				.setOnItemClickListener(new OnItemClickListener() {
-
-					@Override
-					public void onItemClick(AdapterView<?> arg0, View arg1,
-							int arg2, long arg3) {
-						onFillRequestClickListeners(arg2);
-					}
-				});
 
 		searchDialogUpperLinearLayout = (LinearLayout) mSearchDialog
 				.findViewById(R.id.freeroom_layout_dialog_search_scroll_main);
@@ -1565,7 +1558,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * @param position
 	 *            position of the item to use to refill.
 	 */
-	private boolean onFillRequestClickListeners(int position) {
+	public boolean onFillRequestClickListeners(int position) {
 		searchDialogExtendMoreTriggered = true;
 		if (searchDialogHasHeightExtenstionProblem) {
 			prevSearchTitle.setText(textTitlePrevious + ": "

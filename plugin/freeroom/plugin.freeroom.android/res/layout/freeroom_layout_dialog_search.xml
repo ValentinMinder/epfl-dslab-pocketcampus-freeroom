@@ -6,7 +6,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/background_light"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="4dp" >
 
     <!-- First part (search input) -->
 
@@ -27,8 +28,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/background_light"
-                android:orientation="vertical"
-                android:padding="4dp" >
+                android:orientation="vertical" >
 
                 <TextView
                     android:id="@+id/freeroom_layout_dialog_search_time_summary"
@@ -282,12 +282,12 @@
                             <Button
                                 android:id="@+id/freeroom_layout_dialog_search_user_add"
                                 android:layout_width="0dp"
-                                android:layout_height="fill_parent"
+                                android:layout_height="45dp"
                                 android:layout_gravity="bottom"
                                 android:layout_weight="5"
                                 android:drawableLeft="@drawable/ic_action_new"
                                 android:text="@string/freeroom_search_userdef_add"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
                                 android:textColor="@android:color/black" />
 
                             <!-- Button to edit chosen rooms -->
@@ -295,12 +295,12 @@
                             <Button
                                 android:id="@+id/freeroom_layout_dialog_search_user_edit"
                                 android:layout_width="0dp"
-                                android:layout_height="fill_parent"
+                                android:layout_height="45dp"
                                 android:layout_gravity="bottom"
                                 android:layout_weight="5"
                                 android:drawableLeft="@drawable/ic_action_edit"
                                 android:text="@string/freeroom_search_userdef_edit"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
                                 android:textColor="@android:color/black" />
 
                             <!-- Button to remove ALL chosen rooms -->
@@ -308,12 +308,12 @@
                             <Button
                                 android:id="@+id/freeroom_layout_dialog_search_user_reset"
                                 android:layout_width="0dp"
-                                android:layout_height="fill_parent"
+                                android:layout_height="45dp"
                                 android:layout_gravity="bottom"
                                 android:layout_weight="5"
                                 android:drawableLeft="@drawable/ic_action_remove"
                                 android:text="@string/freeroom_search_userdef_reset"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
                                 android:textColor="@android:color/black" />
                         </LinearLayout>
                     </LinearLayout>
@@ -337,8 +337,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@android:color/background_light"
-        android:orientation="vertical"
-        android:padding="4dp" >
+        android:orientation="vertical" >
 
         <!-- subtitle for previous searches -->
 
