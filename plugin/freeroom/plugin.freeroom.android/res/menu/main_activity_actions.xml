@@ -5,10 +5,11 @@ plus ALL in menu options (for device with a menu button)
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item
-        android:id="@+id/freeroom_action_search"
-        android:icon="@drawable/ic_action_search"
-        android:title="@string/freeroom_search_title"/>
+    <!-- Search menu is always visible, therefore not in menu! -->
+    <!-- <item -->
+    <!-- android:id="@+id/freeroom_action_search" -->
+    <!-- android:icon="@drawable/ic_action_search" -->
+    <!-- android:title="@string/freeroom_search_title"/> -->
     <item
         android:id="@+id/freeroom_action_favorites"
         android:icon="@drawable/ic_action_important"
@@ -21,13 +22,14 @@ plus ALL in menu options (for device with a menu button)
         android:id="@+id/freeroom_action_refresh"
         android:icon="@drawable/ic_action_refresh"
         android:title="@string/freeroom_refresh"/>
-    <item
-        android:id="@+id/freeroom_action_help"
-        android:icon="@drawable/ic_action_help"
-        android:title="@string/freeroom_help"/>
-    <item
-        android:id="@+id/freeroom_action_about"
-        android:icon="@drawable/ic_action_about"
-        android:title="@string/freeroom_about"/>
+    <!-- Help and about item dont exists now (and probably wont exists at all) -->
+    <!-- <item -->
+    <!-- android:id="@+id/freeroom_action_help" -->
+    <!-- android:icon="@drawable/ic_action_help" -->
+    <!-- android:title="@string/freeroom_help"/> -->
+    <!-- <item -->
+    <!-- android:id="@+id/freeroom_action_about" -->
+    <!-- android:icon="@drawable/ic_action_about" -->
+    <!-- android:title="@string/freeroom_about"/> -->
 
 </menu>

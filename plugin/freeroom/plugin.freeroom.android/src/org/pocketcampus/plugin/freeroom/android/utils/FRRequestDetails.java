@@ -2,12 +2,9 @@ package org.pocketcampus.plugin.freeroom.android.utils;
 
 import java.util.List;
 
-import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
-
-import android.content.Context;
 
 /**
  * <code>FRRequestDetails</code> is an extension of the legacy shared
@@ -30,14 +27,11 @@ public class FRRequestDetails extends FRRequest {
 	 */
 	private final long time = System.currentTimeMillis();
 
-	private FRRequest req = null;
 	private boolean any = false;
 	private boolean fav = true;
 	private boolean user = false;
 	private SetArrayList<FRRoom> uidNonFav = null;
 
-	// TODO change group accordingly, set to 1 by default and for testing
-	// purpose
 	public FRRequestDetails(FRPeriod period, boolean onlyFreeRooms,
 			List<String> uidList, boolean any, boolean fav, boolean user,
 			SetArrayList<FRRoom> uidNonFav, int userGroup) {
@@ -80,16 +74,17 @@ public class FRRequestDetails extends FRRequest {
 		this.uidNonFav = uidNonFav;
 	}
 
-	public FRRequestDetails(FRPeriod period, boolean onlyFreeRooms,
-			List<String> uidList, int userGroup) {
-		super(period, onlyFreeRooms, uidList, userGroup);
-		// TODO Auto-generated constructor stub
-	}
+	// TODO: bad constructors, see if there are really needed ??
+	// public FRRequestDetails(FRPeriod period, boolean onlyFreeRooms,
+	// List<String> uidList, int userGroup) {
+	// super(period, onlyFreeRooms, uidList, userGroup);
+	// // TODO Auto-generated constructor stub
+	// }
 
-	public FRRequestDetails(FRRequest other) {
-		super(other);
-		// TODO Auto-generated constructor stub
-	}
+	// public FRRequestDetails(FRRequest other) {
+	// super(other);
+	// // TODO Auto-generated constructor stub
+	// }
 
 	/**
 	 * Checks if the request is outdated. It checks if it has been generated

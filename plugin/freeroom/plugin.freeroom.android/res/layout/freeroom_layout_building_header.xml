@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginLeft="35dip"
-        android:text="name"
+        android:text="MOCK name"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/black" />
 
@@ -38,7 +38,7 @@
         android:layout_height="fill_parent"
         android:layout_marginRight="5dip"
         android:layout_toLeftOf="@id/freeroom_layout_building_header_show_more"
-        android:text="exp/red"
+        android:text="MOCK exp/red"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/black" />
 

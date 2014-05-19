@@ -41,7 +41,7 @@ Double layout stores a background for fancy colorful borders
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_toLeftOf="@id/freeroom_layout_dialog_info_share"
-            android:text="Today 14:00 PM - 15:00 PM"
+            android:text="MOCK Today 14:00 PM - 15:00 PM"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black" />
     </RelativeLayout>

@@ -38,7 +38,7 @@ public class RegisterASyncTask extends
 		if (reply.booleanValue()) {
 			callerView.validateRegister();
 		} else {
-			callerView.errorRegister("Server reject! Please try again...\nIf it happen more than once, please contact us!");
+			callerView.errorRegister(false);
 		}
 
 	}
@@ -47,7 +47,7 @@ public class RegisterASyncTask extends
 	protected void onError(FreeRoomController mController, Exception e) {
 		callerView.networkErrorHappened();
 		callerView.anyError();
-		callerView.errorRegister("Network transmission. Please try again...\nPlease check your connectivity to the internet.");
+		callerView.errorRegister(true);
 		e.printStackTrace();
 	}
 }

@@ -377,19 +377,19 @@ public class FRTimes {
 		// we limit the first hour checkable
 		if (startHour < FIRST_HOUR_CHECK) {
 			buffer.append("Start time cannot be before " + FIRST_HOUR_CHECK
-					+ " am .\n");
+					+ " AM .\n");
 		}
 
 		// we limit the last hour checkable
 		// case > 19h
 		if (endHour > LAST_HOUR_CHECK) {
 			buffer.append("End time cannot be after " + LAST_HOUR_CHECK
-					+ " am .\n");
+					+ " PM .\n");
 		}
 		// case 19h00
 		if (endHour == LAST_HOUR_CHECK && endMinutes != 0) {
 			buffer.append("End time cannot be after " + LAST_HOUR_CHECK
-					+ " am .\n");
+					+ " PM .\n");
 		}
 
 		// It's redundant, no message

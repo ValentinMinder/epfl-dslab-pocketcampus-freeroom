@@ -350,6 +350,23 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	/* ACTIONS FOR THE ACTION BAR */
 	/**
+	 * Action to open the beta registration.
+	 * <p>
+	 * TODO: beta only (may change to about menu?)
+	 */
+	private Action betaRegister = new Action() {
+		public void performAction(View view) {
+			if (mModel.getRegisteredUser()) {
+				validateRegistration();
+			}
+			mWelcomeDialog.show();
+		}
+
+		public int getDrawable() {
+			return R.drawable.ic_action_about;
+		}
+	};
+	/**
 	 * Action to open the overflow actions.
 	 * <p>
 	 * ALL the actions are in overflow, even if already visible.
@@ -433,9 +450,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu items for use in the action bar
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main_activity_actions, menu);
+		// on portrait devices, we have both overflow and menu with same
+		// options.
+		// on landscape devices, non is available.
+		if (!isLandscape()) {
+			// Inflate the menu items, the same as in overflow action bar
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.main_activity_actions, menu);
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -456,9 +478,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
-		case R.id.freeroom_action_search:
-			mSearchDialog.show();
-			return true;
+		// search is not in menu, already always in action bar!
+		// case R.id.freeroom_action_search:
+		// mSearchDialog.show();
+		// return true;
 		case R.id.freeroom_action_favorites:
 			mFavoritesDialog.show();
 			return true;
@@ -469,12 +492,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		case R.id.freeroom_action_settings:
 			mParamDialog.show();
 			return true;
-		case R.id.freeroom_action_help:
-			// TODO: do something
-			return true;
-		case R.id.freeroom_action_about:
-			// TODO: do something
-			return true;
+			// these case are not handled: probably wont exist at all
+			// case R.id.freeroom_action_help:
+			// // TODO: do something
+			// return true;
+			// case R.id.freeroom_action_about:
+			// // TODO: do something
+			// return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -664,8 +688,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			refresh();
 			u.logV("Successful start in default mode: wait for server response.");
 		} else {
-			System.err
-					.println("Controller or Model not defined: cannot start default mode.");
+			// CANT LOG using utils because null after a while.
+			Log.e("defaultmainstart",
+					"Controller or Model not defined: cannot start default mode.");
 		}
 	}
 
@@ -698,8 +723,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					+ getString(R.string.freeroom_urisearch_error_AutoComplete_precond);
 		} else {
 			mSearchByUriTriggered = true;
-			// TODO: group
-			AutoCompleteRequest req = new AutoCompleteRequest(constraint, 1);
+			// if the URI is triggered, we want to give access to the room!
+			// Room with URI/PUBLIC EPFL QR Code have access right <= 10
+			// use the user access rights or 10 if not sufficient.
+			// this has NO security issue as other autocomplete wont have these
+			// special rights!
+			AutoCompleteRequest req = new AutoCompleteRequest(constraint,
+					Math.max(mModel.getGroupAccess(), 10));
 			mController.autoCompleteBuilding(this, req);
 			return "";
 		}
@@ -736,9 +766,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				uidList.add(room.getUid());
 				uidNonFav.add(room);
 			}
-			// TODO: usergroup
 			request = new FRRequestDetails(period, false, uidList, false,
-					false, true, uidNonFav, 1);
+					false, true, uidNonFav, mModel.getGroupAccess());
 			mModel.setFRRequestDetails(request, !empty);
 			mPrevRequestAdapter.notifyDataSetChanged();
 			refresh();
@@ -749,6 +778,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	@Override
 	public void initializeView() {
+		// TODO: beta-only: authorize the user to enter non-today request.
+		mModel.setAdvancedTime(true);
+		// TODO: beta-only: authorize the user to check EWA room (Exchange) in
+		// BC, IN and CO.
+		mModel.setGroupAccess(10);
+
 		// retrieve display dimensions
 		Rect displayRectangle = new Rect();
 		Window window = this.getWindow();
@@ -768,7 +803,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			addActionToActionBar(editFavorites);
 			addActionToActionBar(settings);
 			addActionToActionBar(refresh);
+			// TODO: beta only
+			addActionToActionBar(betaRegister);
 		} else {
+			// TODO: beta only
+			addActionToActionBar(betaRegister);
 			// on phones, put all the other actions in the action overflow.
 			addActionToActionBar(overflow);
 		}
@@ -781,9 +820,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initWarningDialog();
 		initErrorDialog();
 		initParamDialog();
+
+		// TODO: beta only
 		initWelcomeDialog();
 		if (!mModel.getRegisteredUser()) {
 			mWelcomeDialog.show();
+		} else {
+			validateRegistration();
 		}
 	}
 
@@ -793,7 +836,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void initInfoDialog() {
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Mock text");
 		builder.setIcon(R.drawable.ic_action_view_as_list);
 		builder.setPositiveButton(
 				getString(R.string.freeroom_dialog_info_share), null);
@@ -943,12 +985,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	@Override
-	public void errorRegister(String string) {
+	public void errorRegister(boolean transmissionError) {
+
 		// TODO beta-test only.
 		Button registerUserBeta = (Button) mWelcomeView
 				.findViewById(R.id.freeroom_layout_dialog_welcome_register);
 		registerUserBeta.setEnabled(true);
-		showErrorDialog(string);
+		registerUserBeta.setText(getString(R.string.freeroom_welcome_register));
+		String string = getString(R.string.freeroom_welcome_validate_network_error);
+		if (!transmissionError) {
+			string = getString(R.string.freeroom_welcome_validate_reject);
+			showErrorDialog(string);
+		}
 	}
 
 	@Override
@@ -1271,10 +1319,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// TODO: get that from the occupancy data... ++ string
 		ArrayList<String> suggest = new ArrayList<String>();
 		// 1st result is the "title"
-		suggest.add("others' activity");
+		suggest.add(getString(R.string.freeroom_share_others_activity));
 		// TODO: get this from the selected occupancy...
-		suggest.add("SwEng");
-		suggest.add("NetSec");
+		// suggest.add("SwEng");
+		// suggest.add("NetSec");
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, suggest);
@@ -1367,6 +1415,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
+				// TODO: change this: all scrollable!
 				searchDialogMissSpaceExtendChangeState(searchDialogExtendMoreTriggered);
 				if (searchDialogHasHeightExtenstionProblem) {
 					if (searchDialogExtendMoreTriggered) {
@@ -1404,7 +1453,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mSummarySelectedRoomsTextViewSearchMenu = (TextView) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_text_summary);
 		// the view will be removed or the text changed, no worry
-		mSummarySelectedRoomsTextViewSearchMenu.setText("empty");
+		mSummarySelectedRoomsTextViewSearchMenu
+				.setText(getString(R.string.freeroom_add_rooms_empty));
 
 		// display the previous searches
 		mSearchPreviousListView = (ListView) mSearchView
@@ -1431,7 +1481,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	/**
 	 * Inits the title for previous request, with empty value if none, with
-	 * "show" if not displayed, of "prev request otherwise.
+	 * "show" if not displayed, or "prev request" otherwise.
 	 */
 	private void initPreviousTitle() {
 		if (mModel.getPreviousRequest().isEmpty()) {
@@ -1657,7 +1707,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void initParamDialog() {
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Settings"); // TODO: string
+		builder.setTitle(getString(R.string.freeroom_settings_title));
 		builder.setIcon(R.drawable.ic_action_settings);
 
 		// Get the AlertDialog from create()
@@ -1714,9 +1764,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		case FAVORITES_ONLY_FREE:
 			id = R.id.freeroom_layout_param_home_favfree;
 			break;
-		case LASTREQUEST:
-			id = R.id.freeroom_layout_param_home_last;
-			break;
+		// TODO dont work now
+		// case LASTREQUEST:
+		// id = R.id.freeroom_layout_param_home_last;
+		// break;
 		default:
 			id = R.id.freeroom_layout_param_home_fav;
 			break;
@@ -1761,10 +1812,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		rd.setChecked(true);
 	}
 
+	/**
+	 * TODO: this doesn't get triggered !!!
+	 */
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-			System.out
-					.println("TOuch outside the dialog ******************** ");
+			System.out.println("touch outside dialog");
 			mSearchDialog.dismiss();
 		}
 		return false;
@@ -1780,7 +1833,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			// TODO: override menu button
+			// warning: this doesn't work if not initialized!
+			// null pointer exception
+			// menu button has no effect!
+			// menu.show();
+			return true;
+		}
 		// Override back button
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			boolean flag = false;
@@ -1914,10 +1974,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				// if we want only free favorites.
 				boolean onlyFree = room
 						.equals(HomeBehaviourRoom.FAVORITES_ONLY_FREE);
-				// TODO change group accordingly, set to 1 by default and for
-				// testing purpose
 				return new FRRequestDetails(period, onlyFree, array, false,
-						true, false, new SetArrayList<FRRoom>(), 1);
+						true, false, new SetArrayList<FRRoom>(),
+						mModel.getGroupAccess());
 			} else {
 				u.logV("no favorites in model: going for any free room");
 				room = HomeBehaviourRoom.ANYFREEROOM;
@@ -1936,10 +1995,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			u.logE("going for any free room");
 		}
 		// any free room behavior
-		// TODO change group accordingly, set to 1 by default and for
-		// testing purpose
 		return new FRRequestDetails(period, true, new ArrayList<String>(1),
-				true, false, false, new SetArrayList<FRRoom>(), 1);
+				true, false, false, new SetArrayList<FRRoom>(),
+				mModel.getGroupAccess());
 	}
 
 	/**
@@ -1962,8 +2020,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		setTitle();
 		String subtitle = "";
 		if (mModel.getOccupancyResults().isEmpty()) {
-			// TODO: popup with no results message ?
+			// popup with no results message
 			subtitle = getString(R.string.freeroom_home_error_no_results);
+			showErrorDialog(subtitle);
 		} else {
 			FRRequest request = mModel.getFRRequestDetails();
 
@@ -2036,7 +2095,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		if (ad.getGroupCount() <= 4 || ad.getChildrenTotalCount() <= 10) {
 			System.out.println("i wanted to expand");
 			// TODO: this cause troubles in performance when first launch
-			for (int i = 0; i < ad.getGroupCount(); i++) {
+			for (int i = ad.getGroupCount() - 1; i >= 0; i--) {
 				ev.expandGroup(i);
 			}
 		}
@@ -2112,7 +2171,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 								.getTreatedPeriod()));
 			} else {
 				// TODO: error coming from server ??
-				periodTextView.setText("Error: cannot display period");
+				periodTextView.setText("ERROR-PERIOD");
 			}
 
 			ImageView iv = (ImageView) mInfoRoomView
@@ -2210,7 +2269,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void shareWithFriends(FRPeriod mPeriod, FRRoom mRoom, String toShare) {
 		String sharing = u.wantToShare(mPeriod, mRoom, toShare);
 		sharing += " \n" + getString(R.string.freeroom_share_ref_pocket);
-		Log.v(this.getClass().getName() + "-share", "sharing:" + sharing);
+		u.logV("sharing:" + sharing);
 		Intent sendIntent = new Intent();
 		sendIntent.setAction(Intent.ACTION_SEND);
 		sendIntent.putExtra(Intent.EXTRA_TEXT, sharing);
@@ -2312,6 +2371,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// First allow the user to select a date
 		showDatePicker = (Button) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_date);
+		// disable and don't display the button if the user don't have the right
+		// to use it.
+		boolean dateEditable = mModel.getAdvancedTime();
+		showDatePicker.setEnabled(dateEditable);
+		if (!dateEditable) {
+			showDatePicker.setVisibility(View.GONE);
+		}
 		mDatePickerDialog = new DatePickerDialog(this,
 				new DatePickerDialog.OnDateSetListener() {
 
@@ -2336,7 +2402,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					mDatePickerDialog.show();
 				} else {
 					changeDateAuthorized = true;
-					showErrorDialog("Changing the current date has been disabled FOR STUDENTS. Blocking this feature was requested by official EPFL Services.");
+					showErrorDialog(getString(R.string.freeroom_search_date_disabled));
 				}
 			}
 		});
@@ -2779,7 +2845,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 									.getInputText();
 							dismissSoftKeyBoard(v);
 							AutoCompleteRequest request = new AutoCompleteRequest(
-									query, 1);
+									query, mModel.getGroupAccess());
 							mController.autoCompleteBuilding(view, request);
 						}
 
@@ -2796,10 +2862,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 								.getInputText();
 						if (query.length() >= 2) {
 							dismissSoftKeyBoard(v);
-							// TODO change group accordingly, set to 1 by
-							// default and for testing purpose
 							AutoCompleteRequest request = new AutoCompleteRequest(
-									query, 1);
+									query, mModel.getGroupAccess());
 							mController.autoCompleteBuilding(view, request);
 						}
 					}
@@ -2825,12 +2889,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							mAutoCompleteSuggestionInputBarElement
 									.setButtonText("");
 							if (text.length() >= 2) {
-								// TODO change group accordingly, set to 1 by
-								// default and for testing purpose
-								// remove this if you don't want auto-complete
+								// TODO remove this if you don't want
+								// auto-complete
 								// without pressing the button
 								AutoCompleteRequest request = new AutoCompleteRequest(
-										text, 1);
+										text, mModel.getGroupAccess());
 								mController.autoCompleteBuilding(view, request);
 							}
 						}
@@ -3127,10 +3190,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		boolean any = anyButton.isChecked();
 		boolean fav = favButton.isChecked();
 		boolean user = userDefButton.isChecked();
-		// TODO change group accordingly, set to 1 by default and for testing
-		// purpose
 		FRRequestDetails details = new FRRequestDetails(period,
-				freeButton.isChecked(), mUIDList, any, fav, user, userDef, 1);
+				freeButton.isChecked(), mUIDList, any, fav, user, userDef,
+				mModel.getGroupAccess());
 		mModel.setFRRequestDetails(details, save);
 		mPrevRequestAdapter.notifyDataSetChanged();
 		refresh();
@@ -3157,15 +3219,44 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// NOT EVEN SET, we don't bother checking
 		if (yearSelected == -1 || monthSelected == -1
 				|| dayOfMonthSelected == -1) {
-			return "error time";
+			return "ERROR: date not set";
 		}
 		if (startHourSelected == -1 || endHourSelected == -1
 				|| startMinSelected == -1 || endMinSelected == -1) {
-			return "error time";
+			return "ERROR: time not set";
 		}
 
 		// IF SET, we use the shared method checking the prepared period
-		return FRTimes.validCalendarsString(prepareFRFrPeriod());
+		FRPeriod period = prepareFRFrPeriod();
+		String errorsTime = FRTimes.validCalendarsString(period);
+		boolean isValid = errorsTime.equals("") ? true : false;
+		TextView tv = (TextView) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_time_summary);
+		if (isValid) {
+			// time summary ?
+			char limit = isLandscape() ? ' ' : '\n';
+			tv.setText(getString(R.string.freeroom_search_time_summary) + limit
+					+ times.formatFullDateFullTimePeriod(period));
+			tv.setVisibility(View.VISIBLE);
+			return errorsTime;
+		} else {
+			tv.setVisibility(View.GONE);
+			tv.setText("");
+			// display generic time errors, depending on the rights of the user.
+			boolean advancedTime = true;
+			if (advancedTime) {
+				return getString(
+						R.string.freeroom_search_invalid_time_advanced,
+						FRTimes.FIRST_HOUR_CHECK, FRTimes.LAST_HOUR_CHECK,
+						FRTimes.MIN_MINUTE_INTERVAL,
+						FRTimes.MAXIMAL_WEEKS_IN_PAST,
+						FRTimes.MAXIMAL_WEEKS_IN_FUTURE);
+			} else {
+				return getString(R.string.freeroom_search_invalid_time_basic,
+						FRTimes.FIRST_HOUR_CHECK, FRTimes.LAST_HOUR_CHECK,
+						FRTimes.MIN_MINUTE_INTERVAL);
+			}
+		}
 	}
 
 	/**
@@ -3181,7 +3272,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				.findViewById(R.id.freeroom_layout_dialog_search_validation);
 		if (!error.equals("")) {
 			// print errors in textView
-			tv.setText("Request is invalid.\n" + error);
+			tv.setText(getString(R.string.freeroom_search_invalid_request)
+					+ error);
 			tv.setTextColor(Color.WHITE);
 			tv.setBackgroundColor(Color.BLACK);
 			tv.setVisibility(View.VISIBLE);
@@ -3189,9 +3281,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		} else {
 			tv.setTextColor(Color.BLACK);
 			tv.setBackgroundColor(Color.WHITE);
-			// no text, not displayed
-			tv.setText("");
-			tv.setVisibility(View.GONE);
+			// valid request
+			tv.setText(getString(R.string.freeroom_search_valid_request));
+			// tv.setVisibility(View.GONE);
 			return 0;
 		}
 	}
@@ -3201,29 +3293,29 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		if (selectedRooms == null
 				|| (!anyButton.isChecked() && !favButton.isChecked()
 						&& userDefButton.isChecked() && selectedRooms.isEmpty())) {
-			ret += "\nSelected rooms are empty, please add some room or select other options.";
+			ret += getString(R.string.freeroom_search_check_empty_select);
 		}
 
 		if (anyButton.isChecked()
 				&& (favButton.isChecked() || userDefButton.isChecked())) {
-			ret += "\nAny free room is incompatbile with favorites and specified room.";
+			ret += getString(R.string.freeroom_search_check_any_incompat);
 		}
 		if (!anyButton.isChecked() && !favButton.isChecked()
 				&& !userDefButton.isChecked()) {
-			ret += "\nAt least one of any free room, favorites or specified room must be chosen.";
+			ret += getString(R.string.freeroom_search_check_at_least);
 		}
 		boolean isFavEmpty = mModel.getFavorites().isEmpty();
 		if (favButton.isChecked() && isFavEmpty) {
 			if (!userDefButton.isChecked()) {
-				ret += "\nYou have no favorites: favorites button don't work, you can't select only this.";
+				ret += getString(R.string.freeroom_search_check_empty_fav);
 			} else if (userDefButton.isChecked() && selectedRooms.isEmpty()) {
-				ret += "\nYou have no favorites: favorites button don't work, you can't select only this.";
-				ret += "\nSelected rooms are empty, please add some room or select other options.";
+				ret += getString(R.string.freeroom_search_check_empty_fav);
+				ret += getString(R.string.freeroom_search_check_empty_select);
 			}
 		}
 		// we dont allow query all the room, including non-free
 		if (anyButton.isChecked() && !freeButton.isChecked()) {
-			ret += "\nAny free room must check only free room and is incompatible with non-free rooms.";
+			ret += getString(R.string.freeroom_search_check_any_must_be_free);
 		}
 		return ret + auditTimesString();
 	}
@@ -3473,41 +3565,41 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		// time
-		Date nowd = new Date(System.currentTimeMillis());
-		config.append("Local time: " + nowd.toLocaleString() + s);
+		long nowAsLong = mModel.getRegisteredTime();
+		Date nowAsDate = new Date(nowAsLong);
+		config.append("Local time/format: " + nowAsDate.toLocaleString() + s);
 
 		if (!forUser) {
 			config.append("*** TIME ***" + s);
-			config.append("Default time: " + nowd + s);
-			config.append("GMT time: " + nowd.toGMTString() + s);
-			long now = System.currentTimeMillis();
+			config.append("Default time: " + nowAsDate.toString() + s);
+			config.append("GMT time: " + nowAsDate.toGMTString() + s);
 
 			// test android formatting
-			config.append("Time/system: " + now + s);
+			config.append("Time/milliseconds: " + nowAsLong + s);
 			config.append("Is 24h format: " + DateFormat.is24HourFormat(this)
 					+ s);
 			java.text.DateFormat df = android.text.format.DateFormat
 					.getTimeFormat(this);
-			String time = df.format(nowd);
+			String time = df.format(nowAsDate);
 			java.text.DateFormat dd = android.text.format.DateFormat
 					.getDateFormat(this);
-			String date = dd.format(nowd);
+			String date = dd.format(nowAsDate);
 			config.append("Android formatting: " + date + " // " + time + s);
 			char[] mmddyyyy = DateFormat.getDateFormatOrder(this);
 			config.append("DD/MM/YYYY format: " + Arrays.toString(mmddyyyy) + s);
 
 			// test our own times methods
 			config.append("times.formatTime(false): "
-					+ times.formatTime(now, false) + s);
+					+ times.formatTime(nowAsLong, false) + s);
 			config.append("times.formatTime(true): "
-					+ times.formatTime(now, true) + s);
+					+ times.formatTime(nowAsLong, true) + s);
 
 			// one week shift
-			now += FRTimes.ONE_WEEK_IN_MS;
+			nowAsLong += FRTimes.ONE_WEEK_IN_MS;
 			Calendar selected = Calendar.getInstance();
-			FRPeriod period = new FRPeriod(now, now + 2
+			FRPeriod period = new FRPeriod(nowAsLong, nowAsLong + 2
 					* FRTimes.ONE_HOUR_IN_MS, false);
-			selected.setTimeInMillis(now);
+			selected.setTimeInMillis(nowAsLong);
 			config.append("times.formatFullDate(): "
 					+ times.formatFullDate(selected) + s);
 			config.append("times.formatFullDateFullTimePeriod: "
@@ -3546,7 +3638,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			config.append("Version.Codename: " + Build.VERSION.CODENAME + s);
 			config.append("Version.Incremental: " + Build.VERSION.INCREMENTAL
 					+ s);
-			config.append("Version.SKK_int: " + Build.VERSION.SDK_INT + s);
+			config.append("Version.SDK_int: " + Build.VERSION.SDK_INT + s);
 			config.append("Board: " + Build.BOARD + s);
 			config.append("Bootloader: " + Build.BOOTLOADER + s);
 			config.append("CPU1: " + Build.CPU_ABI + s);
@@ -3567,5 +3659,41 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		return config.toString();
+	}
+
+	/**
+	 * TODO: Beta only
+	 */
+	@Override
+	public void networkErrorHappened() {
+		showErrorDialog(getString(R.string.freeroom_connection_error_happened)
+				+ "\n" + getString(R.string.freeroom_error_please_try_again));
+	}
+
+	/**
+	 * TODO: Beta only
+	 */
+	@Override
+	public void freeRoomServerBadRequest() {
+		showErrorDialog(getString(R.string.freeroom_error_bad_request) + "\n"
+				+ getString(R.string.freeroom_error_please_report));
+	}
+
+	/**
+	 * TODO: Beta only
+	 */
+	@Override
+	public void freeRoomServersInternalError() {
+		showErrorDialog(getString(R.string.freeroom_error_internal_error)
+				+ "\n" + getString(R.string.freeroom_error_please_report));
+	}
+
+	/**
+	 * TODO: Beta only
+	 */
+	@Override
+	public void freeRoomServersUnknownError() {
+		showErrorDialog(getString(R.string.freeroom_error_unknown_error) + "\n"
+				+ getString(R.string.freeroom_error_please_report));
 	}
 }

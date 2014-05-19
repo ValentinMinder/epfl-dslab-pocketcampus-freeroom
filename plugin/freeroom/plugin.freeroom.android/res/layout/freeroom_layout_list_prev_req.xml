@@ -11,6 +11,7 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_gravity="center_vertical"
+        android:contentDescription="@string/freeroom_layout_prev_req_replay_img"
         android:padding="2dp"
         android:src="@drawable/ic_action_play"
         android:visibility="visible" >
@@ -21,6 +22,7 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_gravity="center_vertical"
+        android:contentDescription="@string/freeroom_layout_prev_req_edit_img"
         android:padding="2dp"
         android:src="@drawable/ic_action_edit"
         android:visibility="visible" >
@@ -31,6 +33,7 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_gravity="center_vertical"
+        android:contentDescription="@string/freeroom_layout_prev_req_delete_img"
         android:padding="2dp"
         android:src="@drawable/ic_action_remove"
         android:visibility="visible" >

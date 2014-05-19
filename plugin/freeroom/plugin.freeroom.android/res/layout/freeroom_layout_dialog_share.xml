@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:background="@android:color/background_light"
         android:orientation="vertical"
         android:padding="5dp" >
@@ -26,7 +26,7 @@
             android:layout_gravity="left"
             android:padding="6dip"
             android:selectAllOnFocus="true"
-            android:text="I will be in room ... "
+            android:text="I will be in room ... (mock text) "
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
 
@@ -52,11 +52,13 @@
             android:text="@string/freeroom_dialog_share_checkbox_msg" />
 
         <!-- spinner to choose the course you're going to work on -->
+        <!-- TODO: gone while not finished -->
 
         <Spinner
             android:id="@+id/freeroom_layout_dialog_share_spinner_course"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <!-- Disclaimer that explains what is shared to the server and why. -->
 

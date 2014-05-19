@@ -49,11 +49,19 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/black" />
 
+                <TextView
+                    android:id="@+id/freeroom_layout_dialog_welcome_expl_further"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/freeroom_welcome_expl_further"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/darker_gray" />
+
                 <EditText
                     android:id="@+id/freeroom_layout_dialog_welcome_email"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/freeroom_welcome_email"
+                    android:hint="@string/freeroom_welcome_email_pattern"
                     android:imeOptions="actionSend"
                     android:inputType="textEmailAddress"
                     android:maxLength="60"
@@ -81,7 +89,7 @@
                     android:id="@+id/freeroom_layout_dialog_welcome_config"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="mock data"
+                    android:text="mock text, data are gathered at runtime"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@android:color/darker_gray" />
             </LinearLayout>
@@ -113,10 +121,10 @@
                     android:textColor="@android:color/black" />
 
                 <TextView
-                    android:id="@+id/freeroom_layout_dialog_welcome_regexpl"
+                    android:id="@+id/freeroom_layout_dialog_welcome_email_contact"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="valentin.minder@epfl.ch"
+                    android:text="@string/freeroom_welcome_email_contact"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@android:color/black" />
             </LinearLayout>

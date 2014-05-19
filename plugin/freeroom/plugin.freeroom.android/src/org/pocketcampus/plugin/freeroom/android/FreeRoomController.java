@@ -94,10 +94,6 @@ public class FreeRoomController extends PluginController implements
 			Log.e(callingClass,
 					"server complains about a bad request from the client");
 			caller.freeRoomServerBadRequest();
-			Toast.makeText(
-					getApplicationContext(),
-					"server complains about a bad request from the client"
-							+ statusComment, Toast.LENGTH_LONG).show();
 		} else if (status == 500) {
 			Log.e(callingClass, "server had an internal error");
 			caller.freeRoomServersInternalError();

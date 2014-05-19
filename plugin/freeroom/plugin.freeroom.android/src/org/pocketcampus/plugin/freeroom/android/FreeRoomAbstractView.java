@@ -42,6 +42,9 @@ public abstract class FreeRoomAbstractView extends PluginView implements
 				Toast.LENGTH_LONG).show();
 	}
 
+	/**
+	 * TODO: may not appear in final version ! >> basic error.
+	 */
 	@Override
 	public void freeRoomServerBadRequest() {
 		Toast.makeText(getApplicationContext(),
@@ -49,6 +52,9 @@ public abstract class FreeRoomAbstractView extends PluginView implements
 				Toast.LENGTH_SHORT).show();
 	}
 
+	/**
+	 * TODO: may not appear in final version ! >> basic error.
+	 */
 	@Override
 	public void freeRoomServersInternalError() {
 		Toast.makeText(
@@ -58,6 +64,9 @@ public abstract class FreeRoomAbstractView extends PluginView implements
 				Toast.LENGTH_SHORT).show();
 	}
 
+	/**
+	 * TODO: may not appear in final version ! >> basic error.
+	 */
 	@Override
 	public void freeRoomServersUnknownError() {
 		Toast.makeText(

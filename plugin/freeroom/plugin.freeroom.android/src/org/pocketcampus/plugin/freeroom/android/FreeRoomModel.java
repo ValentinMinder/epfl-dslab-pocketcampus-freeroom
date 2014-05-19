@@ -65,7 +65,11 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private final String minutesRequestTimeOutIDKey = "minutesRequestTimeOutIDKey";
 	private final String previousRequestNumberIDKey = "previousRequestNumberIDKey";
 	private final String previousRequestWeeksIDKey = "previousRequestWeeksIDKey";
+	private final String timePickersPrefIDKey = "timePickersPrefIDKey";
+	private final String registeredTimeIDKey = "registeredTimeIDKey";
 	private final String registeredUserIDKey = "registeredUserIDKey";
+	private final String advancedTimeIDKey = "advancedTimeIDKey";
+	private final String groupAccessIDKey = "groupAccessIDKey";
 
 	public final int COLOR_CHECK_OCCUPANCY_DEFAULT = Color.WHITE;
 	public final int COLOR_CHECK_OCCUPANCY_FREE = Color.GREEN;
@@ -124,6 +128,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 				registeredUser);
 		occupancyByBuilding = new OrderMapListFew<String, List<?>, Occupancy>(
 				30);
+		// generates the anonym ID at first launch time
+		getAnonymID();
+		groupAccess = preferences.getInt(groupAccessIDKey, groupAccess);
+		registeredTime = preferences.getLong(registeredTimeIDKey,
+				registeredTime);
+		timePickersPref = TimePickersPref.valueOf(preferences.getString(
+				timePickersPrefIDKey, timePickersPref.name()));
+		advancedTime = preferences.getBoolean(advancedTimeIDKey, advancedTime);
 		this.context = context;
 	}
 
@@ -231,6 +243,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * application is not translated, it will choose English formatting.
 	 * Otherwise, it's useful to force using other language formatting (you may
 	 * have your device in English but still want European formatting).
+	 * <p>
+	 * Note: English formatting is understood there as US format.
 	 */
 	public enum TimeLanguage {
 		DEFAULT, ENGLISH, FRENCH;
@@ -383,9 +397,132 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
+	 * Stores the advancedTime parameters.
+	 * <p>
+	 * Default: false.
+	 */
+	private boolean advancedTime = false;
+
+	/**
+	 * Set the advancedTime parameters.
+	 * 
+	 * @param next
+	 *            the new advancedTime parameters.
+	 */
+	public void setAdvancedTime(boolean next) {
+		this.advancedTime = next;
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putBoolean(advancedTimeIDKey, advancedTime);
+		editor.commit();
+	}
+
+	/**
+	 * Retrieves the advancedTime parameters.
+	 * 
+	 * @return the current advancedTime parameters.
+	 */
+	public boolean getAdvancedTime() {
+		return this.advancedTime;
+	}
+
+	/**
+	 * Stores the registeredTime parameters.
+	 * <p>
+	 * Default: 0.
+	 */
+	private long registeredTime = 0;
+
+	/**
+	 * Set the registeredTime parameters.
+	 * 
+	 * @param next
+	 *            the new registeredTime parameters.
+	 */
+	private void setRegisteredTime(long next) {
+		this.registeredTime = next;
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putLong(registeredTimeIDKey, registeredTime);
+		editor.commit();
+	}
+
+	/**
+	 * Declaration of TimePickersPref type supported.
+	 */
+	public enum TimePickersPref {
+		PICKERS, ARROWS, BOTH;
+	}
+
+	/**
+	 * Stores the timeLanguage parameters.
+	 * <p>
+	 * Default: TimeLanguage.PICKERS
+	 */
+	private TimePickersPref timePickersPref = TimePickersPref.PICKERS;
+
+	/**
+	 * Set the timePickersPref parameters.
+	 * 
+	 * @param tl
+	 *            the new timePickersPref parameters.
+	 */
+	public void setTimePickersPref(TimePickersPref tl) {
+		this.timePickersPref = tl;
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putString(timePickersPrefIDKey, timePickersPref.name());
+		editor.commit();
+	}
+
+	/**
+	 * Retrieves the timePickersPref parameters.
+	 * 
+	 * @return the current timePickersPref parameters.
+	 */
+	public TimePickersPref getTimePickersPref() {
+		return this.timePickersPref;
+	}
+
+	/**
+	 * Stores the group access the user is registered for.
+	 * <p>
+	 * Default: 1. (groupe 1).
+	 */
+	private int groupAccess = 1;
+
+	/**
+	 * Retrieve the group access the user is registered for.
+	 * 
+	 * @return the previousRequestNumber
+	 */
+	public int getGroupAccess() {
+		return groupAccess;
+	}
+
+	/**
+	 * Set the group access the user is registered for.
+	 * 
+	 * @param previousRequestNumber
+	 *            the previousRequestNumber to set
+	 */
+	public void setGroupAccess(int groupAccess) {
+		this.groupAccess = groupAccess;
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putInt(groupAccessIDKey, groupAccess);
+		editor.commit();
+	}
+
+	/**
+	 * Retrieves the registeredTime parameters.
+	 * 
+	 * @return the current registeredTime parameters.
+	 */
+	public long getRegisteredTime() {
+		return this.registeredTime;
+	}
+
+	/**
 	 * Stores the registeredUser parameters.
 	 * <p>
-	 * Default: true.
+	 * Default: false.
 	 */
 	private boolean registeredUser = false;
 
@@ -725,8 +862,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * @return the 32-char unique and anonymous device-identifier.
 	 */
 	public String getAnonymID() {
-		SharedPreferences preferences = context.getSharedPreferences(
-				PREF_USER_DETAILS_KEY, Context.MODE_PRIVATE);
 		String anonymID = preferences.getString(anonymIDKey, null);
 		if (anonymID != null) {
 			return anonymID;
@@ -753,13 +888,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	private String generateAnonymID() {
 		// time in millis as a string
-		String anonymID = ((Long) System.currentTimeMillis()).toString();
+		long time = System.currentTimeMillis();
+		setRegisteredTime(time);
+		String timeAsString = time + "";
 
 		// random string to complete to 32 chars
-		anonymID += new BigInteger(130, new SecureRandom())
-				.toString(32 - anonymID.length());
-
-		return anonymID;
+		return timeAsString
+				+ new BigInteger(130, new SecureRandom())
+						.toString(32 - timeAsString.length());
 	}
 
 	/* INTERACTION WITH FILESYSTEM */
