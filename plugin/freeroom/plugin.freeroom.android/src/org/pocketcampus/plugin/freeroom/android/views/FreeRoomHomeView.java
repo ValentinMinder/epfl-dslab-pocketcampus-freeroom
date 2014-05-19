@@ -71,6 +71,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
@@ -1410,6 +1411,35 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mSearchView.setMinimumHeight((int) (activityHeight * 0.8f));
 
 		mSearchDialog.setView(mSearchView);
+
+		mSearchDialog.setOnShowListener(new OnShowListener() {
+
+			@Override
+			public void onShow(DialogInterface dialog) {
+				searchButton.setEnabled(auditSubmit() == 0);
+				initPreviousTitle();
+				fillSearchDialog();
+			}
+		});
+		// this is necessary o/w buttons don't exists!
+		mSearchDialog.hide();
+		mSearchDialog.show();
+		mSearchDialog.dismiss();
+		resetButton = mSearchDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+		searchButton = mSearchDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+
+		// display the previous searches
+		mSearchPreviousListView = (ListView) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_prev_search_list);
+		mPrevRequestAdapter = new PreviousRequestArrayAdapter<FRRequestDetails>(
+				this, this, R.layout.freeroom_layout_list_prev_req,
+				R.id.freeroom_layout_prev_req_text, mModel.getPreviousRequest());
+
+		ViewGroup header = (ViewGroup) mLayoutInflater.inflate(R.layout.freeroom_layout_search_header,
+				mSearchPreviousListView, false);
+		mSearchPreviousListView.addHeaderView(header, null, false);
+		mSearchPreviousListView.setAdapter(mPrevRequestAdapter);
+
 		textTitlePrevious = getString(R.string.freeroom_search_previous_search);
 		prevSearchTitle = (TextView) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_prev_search_title);
@@ -1436,38 +1466,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		mSearchDialog.setOnShowListener(new OnShowListener() {
-
-			@Override
-			public void onShow(DialogInterface dialog) {
-				searchButton.setEnabled(auditSubmit() == 0);
-				initPreviousTitle();
-				fillSearchDialog();
-			}
-		});
-		// this is necessary o/w buttons don't exists!
-		mSearchDialog.hide();
-		mSearchDialog.show();
-		mSearchDialog.dismiss();
-		resetButton = mSearchDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
-		searchButton = mSearchDialog.getButton(DialogInterface.BUTTON_POSITIVE);
-
-		mSummarySelectedRoomsTextViewSearchMenu = (TextView) mSearchView
+		mSummarySelectedRoomsTextViewSearchMenu = (TextView) mSearchDialog
 				.findViewById(R.id.freeroom_layout_dialog_search_text_summary);
 		// the view will be removed or the text changed, no worry
 		mSummarySelectedRoomsTextViewSearchMenu
 				.setText(getString(R.string.freeroom_add_rooms_empty));
 
-		// display the previous searches
-		mSearchPreviousListView = (ListView) mSearchView
-				.findViewById(R.id.freeroom_layout_dialog_search_prev_search_list);
-		mPrevRequestAdapter = new PreviousRequestArrayAdapter<FRRequestDetails>(
-				this, this, R.layout.freeroom_layout_list_prev_req,
-				R.id.freeroom_layout_prev_req_text, mModel.getPreviousRequest());
-		mSearchPreviousListView.setAdapter(mPrevRequestAdapter);
-
 		searchDialogUpperLinearLayout = (LinearLayout) mSearchDialog
-				.findViewById(R.id.freeroom_layout_dialog_search_scroll_main);
+				.findViewById(R.id.freeroom_layout_dialog_search_main_added);
 
 		initSearch();
 	}
