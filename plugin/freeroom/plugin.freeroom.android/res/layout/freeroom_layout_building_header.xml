@@ -27,9 +27,8 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/freeroom_layout_roomslist_separator_1"
         android:layout_width="3dp"
-        android:layout_height="27dp"
+        android:layout_height="22dp"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"

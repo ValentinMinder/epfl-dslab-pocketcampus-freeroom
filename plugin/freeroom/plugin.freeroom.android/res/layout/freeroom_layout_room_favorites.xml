@@ -8,17 +8,29 @@
     android:orientation="horizontal"
     android:padding="2dip" >
 
-    <!-- TextView to hold the name of the room -->
+    <!-- Image to display and add/remove favorites -->
 
-    <TextView
-        android:id="@+id/freeroom_layout_favlist_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="10dip"
-        android:text="mcok room name"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/black" />
+    <ImageView
+        android:id="@+id/freeroom_layout_favlist_fav"
+        android:layout_width="35dip"
+        android:layout_height="35dip"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/freeroom_layout_roomslist_img_fav"
+        android:src="@drawable/ic_action_remove" />
+
+    <ImageView
+        android:id="@+id/freeroom_layout_favlist_separator_1"
+        android:layout_width="3dp"
+        android:layout_height="27dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="4dp"
+        android:layout_toLeftOf="@id/freeroom_layout_favlist_fav"
+        android:contentDescription="@string/freeroom_layout_separator_dark"
+        android:gravity="center"
+        android:src="@drawable/separator_grey" />
 
     <!-- Image to show the room on the map -->
 
@@ -26,23 +38,35 @@
         android:id="@+id/freeroom_layout_favlist_map"
         android:layout_width="35dip"
         android:layout_height="35dip"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_gravity="right"
-        android:layout_marginRight="5dip"
+        android:layout_toLeftOf="@id/freeroom_layout_favlist_separator_1"
         android:contentDescription="@string/freeroom_layout_roomslist_img_map"
         android:src="@drawable/map_normal_icon" />
 
-    <!-- Image to display and add/remove favorites -->
-
     <ImageView
-        android:id="@+id/freeroom_layout_favlist_fav"
-        android:layout_width="35dip"
-        android:layout_height="35dip"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="5dip"
+        android:id="@+id/freeroom_layout_favlist_separator_2"
+        android:layout_width="3dp"
+        android:layout_height="27dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="4dp"
         android:layout_toLeftOf="@id/freeroom_layout_favlist_map"
-        android:contentDescription="@string/freeroom_layout_roomslist_img_fav"
-        android:src="@drawable/ic_action_half_important" />
+        android:contentDescription="@string/freeroom_layout_separator_dark"
+        android:gravity="center"
+        android:src="@drawable/separator_grey" />
+
+    <!-- TextView to hold the name of the room -->
+
+    <TextView
+        android:id="@+id/freeroom_layout_favlist_text"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left"
+        android:layout_toLeftOf="@id/freeroom_layout_favlist_separator_2"
+        android:text="mock room name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/black" />
 
 </RelativeLayout>
