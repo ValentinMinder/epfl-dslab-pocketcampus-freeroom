@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -261,6 +262,8 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 					.findViewById(R.id.freeroom_layout_building_header_show_more));
 			vholder.setTextViewMore((TextView) convertView
 					.findViewById(R.id.freeroom_layout_building_header_show_more_txt));
+			vholder.setRelativeLayoutMore((RelativeLayout) convertView
+					.findViewById(R.id.freeroom_layout_building_header_show_more_header));
 			convertView.setTag(vholder);
 		} else {
 			vholder = (ViewHolderGroup) convertView.getTag();
@@ -271,8 +274,8 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		tv.setText(text);
 
 		final TextView more = vholder.getTextViewMore();
-
 		final ImageView iv = vholder.getImageView();
+		final RelativeLayout rel = vholder.getRelativeLayoutMore();
 		final ExpandableListView v = ((ExpandableListView) parent);
 		final ExpandableListViewAdapter<T> adapter = this;
 
@@ -306,11 +309,9 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			}
 		};
 		if (data.isOverLimit(groupPosition)) {
-			more.setOnClickListener(clickLongList);
-			iv.setOnClickListener(clickLongList);
+			rel.setOnClickListener(clickLongList);
 		} else {
-			more.setOnClickListener(clickShortList);
-			iv.setOnClickListener(clickShortList);
+			rel.setOnClickListener(clickShortList);
 		}
 
 		if (v.isGroupExpanded(groupPosition)) {
@@ -472,6 +473,7 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		private TextView tv = null;
 		private ImageView iv = null;
 		private TextView more = null;
+		private RelativeLayout moreRL = null;
 
 		public void setTextView(TextView tv) {
 			this.tv = tv;
@@ -495,6 +497,14 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 
 		public TextView getTextViewMore() {
 			return this.more;
+		}
+
+		public void setRelativeLayoutMore(RelativeLayout rl) {
+			this.moreRL = rl;
+		}
+
+		public RelativeLayout getRelativeLayoutMore() {
+			return this.moreRL;
 		}
 
 	}
