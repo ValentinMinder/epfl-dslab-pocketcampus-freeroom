@@ -43,34 +43,34 @@
     <string name="freeroom_connection_error_happened">"Nous ne pouvons pas récupérer les données FreeRoom maintenant, car vous n\'êtes pas connecté à Internet."</string>
 
     <!-- SEARCH dialog -->
-    <string name="freeroom_search_title">"New search"</string>
+    <string name="freeroom_search_title">"Nouvelle recherche"</string>
 
     <!-- SEARCH: TIMES -->
-    <string name="freeroom_search_today">"Today"</string>
-    <string name="freeroom_search_yesterday">"Yesterday"</string>
-    <string name="freeroom_search_tomorrow">"Tomorrow"</string>
-    <string name="freeroom_selectstartHour">"Start"</string>
-    <string name="freeroom_selectendHour">"End"</string>
+    <string name="freeroom_search_today">"Aujourd\'hui"</string>
+    <string name="freeroom_search_yesterday">"Hier"</string>
+    <string name="freeroom_search_tomorrow">"Demain"</string>
+    <string name="freeroom_selectstartHour">"Début"</string>
+    <string name="freeroom_selectendHour">"Fin"</string>
 
     <!-- SEARCH: buttons/checkbox/radio -->
-    <string name="freeroom_search_search">"Search"</string>
-    <string name="freeroom_search_reset">"Reset"</string>
-    <string name="freeroom_search_cancel">"Cancel"</string>
-    <string name="freeroom_search_any">"Any free room"</string>
-    <string name="freeroom_search_spec">"Choose rooms"</string>
-    <string name="freeroom_search_only_free">"Only free rooms"</string>
-    <string name="freeroom_search_favorites">"Favorites"</string>
-    <string name="freeroom_search_userdef">"Specified list"</string>
-    <string name="freeroom_search_userdef_reset">"Reset"</string>
-    <string name="freeroom_search_userdef_add">"Add"</string>
-    <string name="freeroom_search_userdef_edit">"Edit"</string>
-    <string name="freeroom_search_time_summary">"Time selected:"</string>
-    <string name="freeroom_search_date_disabled">"Changing the current date will be disabled in the final version. If you want to change it to test, long click on the date button or dismiss this dialog and click the button again. "</string>
+    <string name="freeroom_search_search">"Recherche"</string>
+    <string name="freeroom_search_reset">"Réinitialiser"</string>
+    <string name="freeroom_search_cancel">"Annuler"</string>
+    <string name="freeroom_search_any">"N\importe quelle salle"</string>
+    <string name="freeroom_search_spec">"Choisissez les salles"</string>
+    <string name="freeroom_search_only_free">"Salles libres uniquement"</string>
+    <string name="freeroom_search_favorites">"Favoris"</string>
+    <string name="freeroom_search_userdef">"Liste choisie"</string>
+    <string name="freeroom_search_userdef_reset">"Réinitialiser"</string>
+    <string name="freeroom_search_userdef_add">"Ajouter"</string>
+    <string name="freeroom_search_userdef_edit">"Editer"</string>
+    <string name="freeroom_search_time_summary">"Période sélectionné"</string>
+    <string name="freeroom_search_date_disabled">"Changer la date ne sera pas possible dans la version finale. Si vous voulez la changer pour tester, pressez longuement sur le bouton pour la date, fermez la pop-up et pressez à nouveau. "</string>
 
     <!-- PREVIOUS SEARCHES -->
-    <string name="freeroom_search_previous_search">"Previous searches"</string>
-    <string name="freeroom_search_previous_show">"show"</string>
-    <string name="freeroom_search_previous_hide">"hide"</string>
+    <string name="freeroom_search_previous_search">"Recherches précédentes"</string>
+    <string name="freeroom_search_previous_show">"montrer"</string>
+    <string name="freeroom_search_previous_hide">"cacher"</string>
 
     <!-- SEARCH: request validation -->
     <string name="freeroom_search_invalid_time_basic">"\nTime selection is invalid: only academic hours (%1$d-%2$d) are valid. The period must be of at least %3$d minutes."</string>
