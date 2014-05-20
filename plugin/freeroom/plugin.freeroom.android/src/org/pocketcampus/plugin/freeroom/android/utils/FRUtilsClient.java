@@ -259,16 +259,18 @@ public class FRUtilsClient {
 				+ collec.size() * 7, limit) + 10);
 		FRRoom room = null;
 		buffer.append(prefix);
-		boolean empty = true;
+		boolean empty = !iter.hasNext();
 		while (iter.hasNext() && buffer.length() < limit) {
-			empty = false;
 			room = iter.next();
-			buffer.append(room.getDoorCode() + ", ");
+			String name = room.getDoorCode();
+			if (room.isSetDoorCodeAlias()) {
+				name = room.getDoorCodeAlias();
+			}
+			buffer.append(name + ", ");
 		}
 		buffer.setLength(buffer.length() - 2);
-		if (buffer.length() > limit) {
-			buffer.setLength(limit);
-			buffer.append("...");
+		if (iter.hasNext()) {
+			buffer.append(", ...");
 		}
 		String result = "";
 		if (empty) {

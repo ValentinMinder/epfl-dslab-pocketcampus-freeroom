@@ -209,4 +209,9 @@
     <!-- French: Haut -->
     <string name="freeroom_dialog_search_footer_home">"Home"</string>
 
+    <!-- NEW -->
+    <string name="freeroom_dialog_edit_room_title">"Edit selection"</string>
+    <string name="freeroom_dialog_edit_room_add_other">"Add others"</string>
+    <string name="freeroom_dialog_edit_room_done">"Done"</string>
+
 </resources>

@@ -25,6 +25,7 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.TimeLanguage;
 import org.pocketcampus.plugin.freeroom.android.adapter.ActualOccupationArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewFavoriteAdapter;
+import org.pocketcampus.plugin.freeroom.android.adapter.FRRoomRemoveArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.FRRoomSuggestionArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.PreviousRequestArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
@@ -227,6 +228,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private AlertDialog mAddRoomDialog;
 	/**
+	 * View that holds the EDITROOM dialog content, defined in xml in layout
+	 * folder.
+	 */
+	private View mEditRoomView;
+	/**
+	 * AlertDialog that holds the EDITROOM dialog.
+	 */
+	private AlertDialog mEditRoomDialog;
+	/**
 	 * View that holds the SHARE dialog content, defined in xml in layout
 	 * folder.
 	 */
@@ -298,6 +308,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	/* UI ELEMENTS FOR DIALOGS - FAVORITES */
 
 	/* UI ELEMENTS FOR DIALOGS - ADDROOM */
+
+	/**
+	 * Adpater for selected room.
+	 */
+	private ArrayAdapter<FRRoom> selectedRoomArrayAdapter;
 
 	/* UI ELEMENTS FOR DIALOGS - SHARE */
 
@@ -793,6 +808,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initSearchDialog();
 		initFavoritesDialog();
 		initAddRoomDialog();
+		initEditRoomDialog();
 		initShareDialog();
 		initWarningDialog();
 		initErrorDialog();
@@ -1169,6 +1185,96 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	}
 
+	private ListView selectedListView;
+
+	private void initEditRoomDialog() {
+		// Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.freeroom_dialog_edit_room_title));
+		builder.setIcon(R.drawable.ic_action_edit);
+
+		// Get the AlertDialog from create()
+		mEditRoomDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mEditRoomDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.FILL_PARENT;
+		lp.height = LayoutParams.WRAP_CONTENT;
+		mEditRoomDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mEditRoomDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mEditRoomDialog.getWindow().setAttributes(lp);
+
+		mEditRoomView = mLayoutInflater.inflate(
+				R.layout.freeroom_layout_dialog_edit_room, null);
+		// these work perfectly
+		mEditRoomView.setMinimumWidth((int) (activityWidth * 0.9f));
+		mEditRoomView.setMinimumHeight((int) (activityHeight * 0.8f));
+
+		mEditRoomDialog.setView(mEditRoomView);
+
+		selectedListView = (ListView) mEditRoomView
+				.findViewById(R.id.freeroom_layout_dialog_edit_room_list);
+		selectedRoomArrayAdapter = new FRRoomRemoveArrayAdapter<FRRoom>(this,
+				getApplicationContext(), R.layout.freeroom_layout_room_edit,
+				R.id.freeroom_layout_selected_text, selectedRooms);
+		selectedListView.setAdapter(selectedRoomArrayAdapter);
+		selectedListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				selectedRoomArrayAdapter.remove(selectedRoomArrayAdapter
+						.getItem(arg2));
+			}
+		});
+		selectedListView.refreshDrawableState();
+
+		mEditRoomDialog.setOnShowListener(new OnShowListener() {
+
+			@Override
+			public void onShow(DialogInterface dialog) {
+				selectedRoomArrayAdapter.notifyDataSetChanged();
+			}
+		});
+
+		mEditRoomDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				dimissAddRoomDialog();
+				searchButton.setEnabled(auditSubmit() == 0);
+			}
+		});
+
+		Button bt_done = (Button) mEditRoomView
+				.findViewById(R.id.freeroom_layout_dialog_edit_room_done);
+		bt_done.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				dismissSoftKeyBoard(v);
+				mEditRoomDialog.dismiss();
+				dimissAddRoomDialog();
+			}
+		});
+
+		Button bt_more = (Button) mEditRoomView
+				.findViewById(R.id.freeroom_layout_dialog_edit_room_add);
+		bt_more.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mEditRoomDialog.dismiss();
+				displayAddRoomDialog(AddRoomCaller.SEARCH);
+			}
+		});
+	}
+
 	private void initShareDialog() {
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -1522,6 +1628,19 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			initPreviousTitle();
 			mSearchDialog.show();
 		}
+	}
+
+	/**
+	 * When a Selected Room item is clicked on "remove".
+	 * 
+	 * @param position
+	 *            position of the item to remove
+	 */
+	public void onRemoveRoomClickListener(int position) {
+		// TODO: issue, this gets black hole in the list ?!?!?
+		selectedRoomArrayAdapter.remove(selectedRoomArrayAdapter
+				.getItem(position));
+		selectedListView.refreshDrawableState();
 	}
 
 	/**
@@ -2708,8 +2827,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				// TODO: display something else! Edit, not adding!!!
-				displayAddRoomDialog(AddRoomCaller.SEARCH);
+				mEditRoomDialog.show();
 			}
 		});
 
