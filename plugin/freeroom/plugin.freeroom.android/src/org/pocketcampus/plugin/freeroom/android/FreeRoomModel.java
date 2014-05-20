@@ -994,24 +994,42 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public OrderMapListFew<String, List<FRRoom>, FRRoom> getFavorites() {
 		if (favorites == null) {
 			if (!retrieveFavorites()) {
-				resetFavorites();
+				initFavorites();
 			}
 		}
 		return favorites;
 	}
 
 	/**
-	 * Reset the favorites structure to an empty structure and save it to file.
-	 * Useful when a bug appear, when changing structures during updates, or
-	 * simply at first launch of the app.
+	 * Init the favorites structure to an empty structure and save it to file.
+	 * Useful only at first launch.
 	 * <p>
-	 * Call getFavorites in usual mode, this is reserved for particular uses.
+	 * NOTE that this function affects a NEW structures, so it will change
+	 * reference, therefore ALL UI based on this will become invalid!
+	 * 
+	 * @return true if written to file successful.
+	 */
+	private boolean initFavorites() {
+		favorites = new OrderMapListFew<String, List<FRRoom>, FRRoom>(50);
+		favorites.setAvailableLimit(Integer.MAX_VALUE);
+		return saveFavorites();
+	}
+
+	/**
+	 * Reset the favorites structure by the clearing the EXISTING structure and
+	 * save it to file.
+	 * 
+	 * <p>
+	 * Note: calling this if the structure don't exists now, it will create a
+	 * new one using {@link #initFavorites()}.
 	 * 
 	 * @return true if written to file successful.
 	 */
 	public boolean resetFavorites() {
-		favorites = new OrderMapListFew<String, List<FRRoom>, FRRoom>(50);
-		favorites.setAvailableLimit(Integer.MAX_VALUE);
+		if (favorites == null) {
+			initFavorites();
+		}
+		favorites.clear();
 		return saveFavorites();
 	}
 
