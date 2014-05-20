@@ -88,8 +88,8 @@
     <string name="freeroom_dialog_share_title">"Partagez votre position\&#8230;"</string>
     <string name="freeroom_dialog_share_textedit_hint">"votre activité (optionnel)"</string>
     <string name="freeroom_dialog_share_checkbox_msg">"partagez votre activité avec le serveur"</string>
-    <string name="freeroom_dialog_share_button_friends">"partagez avec vos amis"</string>
-    <string name="freeroom_dialog_share_button_server">"partagez uniquement avec le serveur"</string>
+    <string name="freeroom_dialog_share_button_friends">"avec vos amis"</string>
+    <string name="freeroom_dialog_share_button_server">"avec le serveur"</string>
     <string name="freeroom_dialog_share_disclaimer">"Votre position est partagée anonymement avec le serveur dans les deux cas. C'est utilisé pour savoir combien de personnes se trouvent dans la salle pour pouvoir afficher de meilleurs résultats."</string>
     <string name="freeroom_share_others_activity">"Autres activités"</string>
 
@@ -98,7 +98,7 @@
     <string name="freeroom_share_iwillbe">"Je serai"</string>
     <string name="freeroom_share_in_room">"dans la salle"</string>
     <string name="freeroom_share_please_come">"Rejoignez-moi. "</string>
-    <string name="freeroom_share_working_on">"Je vais travailler sur "</string>
+    <string name="freeroom_share_working_on">"Je travaillerai sur "</string>
     <string name="freeroom_share_ref_pocket">"(Envoyé depuis pocketcampus.org)"</string>
 
     <!-- SHARE: copy to clipboard -->
