@@ -56,7 +56,7 @@
     <string name="freeroom_search_search">"Recherche"</string>
     <string name="freeroom_search_reset">"Réinitialiser"</string>
     <string name="freeroom_search_cancel">"Annuler"</string>
-    <string name="freeroom_search_any">"N\'importe quelle salle"</string>
+    <string name="freeroom_search_any">"N\'importe quelle salle libre"</string>
     <string name="freeroom_search_spec">"Choisissez les salles"</string>
     <string name="freeroom_search_only_free">"Salles libres uniquement"</string>
     <string name="freeroom_search_favorites">"Favoris"</string>
@@ -73,38 +73,38 @@
     <string name="freeroom_search_previous_hide">"cacher"</string>
 
     <!-- SEARCH: request validation -->
-    <string name="freeroom_search_invalid_time_basic">"\nTime selection is invalid: only academic hours (%1$d-%2$d) are valid. The period must be of at least %3$d minutes."</string>
-    <string name="freeroom_search_invalid_time_advanced">"\nTime selection is invalid: only weekdays (MON-FRI) and academic hours (%1$d-%2$d) are valid. The period must be of at least %3$d minutes. You can't check further than %4$d weeks in the past, and %5$d weeks in the future."</string>
-    <string name="freeroom_search_invalid_request">"Invalid request: "</string>
-    <string name="freeroom_search_valid_request">"Valid request."</string>
-    <string name="freeroom_search_check_empty_select">"\nSelected rooms are empty, please add some room or select other options."</string>
-    <string name="freeroom_search_check_any_incompat">"\nAny free room is incompatbile with favorites and specified room."</string>
-    <string name="freeroom_search_check_at_least">"\nAt least one of any free room, favorites or specified room must be chosen."</string>
-    <string name="freeroom_search_check_empty_fav">"\nYou have no favorites: favorites button don't work, you can't select only this."</string>
-    <string name="freeroom_search_check_any_must_be_free">"\nAny free room must check only free room and is incompatible with non-free rooms."</string>
+    <string name="freeroom_search_invalid_time_basic">"\nLa période sélectionnée est invalide: uniquement les heures académiques (%1$d-%2$d) sont valides. La période doit être d\'au moins %3$d minutes."</string>
+    <string name="freeroom_search_invalid_time_advanced">"\nLa période sélectionnée est invalide. Uniquement les jours de la semaine (LUN-VEN) et les heures académiques (%1$d-%2$d) sont valides. La période doit être d\'au moins %3$d minutes. Vous ne pouvez pas rechercher plus de %4$d semaines dans le passé, et %5$d semaines dans le futur."</string>
+    <string name="freeroom_search_invalid_request">"Requête invalide: "</string>
+    <string name="freeroom_search_valid_request">"Requête valide."</string>
+    <string name="freeroom_search_check_empty_select">"\nLa liste des salles sélectionnées est vide, veuillez s.v.p en ajouter ou sélectionner d'autres options."</string>
+    <string name="freeroom_search_check_any_incompat">"\nN\'importe quelle salle libre est incompatible avec les favoris ou la liste des salles choisies."</string>
+    <string name="freeroom_search_check_at_least">"\nAu moins une des options suivantes doit être choisi : N\'importe quelle salle libre, favoris ou liste choisie."</string>
+    <string name="freeroom_search_check_empty_fav">"\nVous n\'avez pas de favoris: le bouton favoris ne fonctionne pas, vous ne pouvez pas sélectionner uniquement cette option."</string>
+    <string name="freeroom_search_check_any_must_be_free">"\nN\'importe quelle salle libre doit être utilisé avec l'option salles libres uniquement."</string>
 
     <!-- SHARE -->
     <!-- SHARE: dialog -->
-    <string name="freeroom_dialog_share_title">"Share your location\&#8230;"</string>
-    <string name="freeroom_dialog_share_textedit_hint">"your activity (optional)"</string>
-    <string name="freeroom_dialog_share_checkbox_msg">"share your activity with server"</string>
-    <string name="freeroom_dialog_share_button_friends">"share with friends"</string>
-    <string name="freeroom_dialog_share_button_server">"share only with server"</string>
-    <string name="freeroom_dialog_share_disclaimer">"Your location is shared anonymously with server in both cases. It\&apos;s done to know approximately how many people are in the room in order to display better results."</string>
-    <string name="freeroom_share_others_activity">"Others' activity"</string>
+    <string name="freeroom_dialog_share_title">"Partagez votre position\&#8230;"</string>
+    <string name="freeroom_dialog_share_textedit_hint">"votre activité (optionnel)"</string>
+    <string name="freeroom_dialog_share_checkbox_msg">"partagez votre activité avec le serveur"</string>
+    <string name="freeroom_dialog_share_button_friends">"partagez avec vos amis"</string>
+    <string name="freeroom_dialog_share_button_server">"partagez uniquement avec le serveur"</string>
+    <string name="freeroom_dialog_share_disclaimer">"Votre position est partagée anonymement avec le serveur dans les deux cas. C'est utilisé pour savoir combien de personnes se trouvent dans la salle pour pouvoir afficher de meilleurs résultats."</string>
+    <string name="freeroom_share_others_activity">"Autres activités"</string>
 
     <!-- SHARE: text construction -->
-    <string name="freeroom_share_intent_title">"Share your location\&#8230;"</string>
-    <string name="freeroom_share_iwillbe">"I will be"</string>
-    <string name="freeroom_share_in_room">"in room"</string>
-    <string name="freeroom_share_please_come">"Please come and join me. "</string>
-    <string name="freeroom_share_working_on">"I will be working on "</string>
-    <string name="freeroom_share_ref_pocket">"(This was sent with pocketcampus.org)"</string>
+    <string name="freeroom_share_intent_title">"Partagez votre position\&#8230;"</string>
+    <string name="freeroom_share_iwillbe">"Je serai"</string>
+    <string name="freeroom_share_in_room">"dans la salle"</string>
+    <string name="freeroom_share_please_come">"Rejoignez-moi. "</string>
+    <string name="freeroom_share_working_on">"Je vais travaillé sur "</string>
+    <string name="freeroom_share_ref_pocket">"(Envoyé depuis pocketcampus.org)"</string>
 
     <!-- SHARE: copy to clipboard -->
-    <string name="freeroom_share_CopyClipBoard">"Copy to clipboard"</string>
-    <string name="freeroom_share_copied_ClipBoard">"Copied to clipboard"</string>
-    <string name="freeroom_share_copied_ClipBoard_error">"Error while copying to clipboard"</string>
+    <string name="freeroom_share_CopyClipBoard">"Copier dans le presse-papier"</string>
+    <string name="freeroom_share_copied_ClipBoard">"Copié dans le presse-papier"</string>
+    <string name="freeroom_share_copied_ClipBoard_error">"Erreur pendant la copie dans le presse-papier"</string>
 
     <!-- SHARE: server interaction -->
     <string name="freeroom_share_server_basis">"Your working indication was succcessfully"</string>
