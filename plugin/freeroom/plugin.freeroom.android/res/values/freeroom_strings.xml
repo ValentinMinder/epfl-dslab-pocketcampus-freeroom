@@ -65,12 +65,10 @@
     <string name="freeroom_search_userdef_add">"Add"</string>
     <string name="freeroom_search_userdef_edit">"Edit"</string>
     <string name="freeroom_search_time_summary">"Time selected:"</string>
-    <string name="freeroom_search_date_disabled">"Changing the current date will be disabled in the final version. If you want to change it to test, long click on the date button or dismiss this dialog and click the button again. "</string>
+    <string name="freeroom_search_date_disabled">"Changing the current date will be disabled in the final version. To change it to test, long click on the date button, or dismiss this dialog and click the button again. "</string>
 
     <!-- PREVIOUS SEARCHES -->
     <string name="freeroom_search_previous_search">"Previous searches"</string>
-    <string name="freeroom_search_previous_show">"show"</string>
-    <string name="freeroom_search_previous_hide">"hide"</string>
 
     <!-- SEARCH: request validation -->
     <string name="freeroom_search_invalid_time_basic">"\nTime selection is invalid: only academic hours (%1$d-%2$d) are valid. The period must be of at least %3$d minutes."</string>
@@ -143,7 +141,7 @@
     <string name="freeroom_dialog_add_room_init">"Please select room by typing first letters."</string>
     <string name="freeroom_check_occupancy_search_text_no_selected_rooms">"No selected rooms."</string>
     <string name="freeroom_check_occupancy_search_text_selected_rooms">"Selected room(s): "</string>
-    <string name="freeroom_check_occupancy_search_inputbarhint">"Type in for searching a specific room"</string>
+    <string name="freeroom_check_occupancy_search_inputbarhint">"Room name"</string>
 
     <!-- Edit room -->
     <string name="freeroom_dialog_edit_room_title">"Edit selection"</string>
@@ -187,7 +185,7 @@
     <string name="freeroom_welcome_email_pattern">"firstname.lastname@epfl.ch"</string>
     <string name="freeroom_welcome_email_contact">"freeroom.epfl@gmail.com"</string>
     <string name="freeroom_welcome_register">"Register !"</string>
-    <string name="freeroom_welcome_disclaimer">"By clicking 'Register' (only for beta-test), we will send to the server your device configuration (see below) to help us fix the bug you may report. The usage of the entire app is completely ANONYMOUS and does not depend on your email address."</string>
+    <string name="freeroom_welcome_disclaimer">"By clicking 'Register' (only for beta-test!), we will send to the server your device configuration (see below) to help us fix the bug you may report. The usage of the entire app is completely ANONYMOUS and does not depend on your email address."</string>
     <string name="freeroom_welcome_success">"Registration is successful!"</string>
     <string name="freeroom_welcome_welcome">"You can now use freeroom. If you experience ANY issue, including crash, bug, abnormal behavior, misleading or not clear user interface, spelling errors or any other things, feel free to complete the google doc form your receive per mail or send us an email at:"</string>
     <string name="freeroom_welcome_dismiss">"OK, Let's try!"</string>

@@ -9,7 +9,7 @@
     <!-- HOME TITLES -->
     <string name="freeroom_title_main_title">"FreeRoom: Home"</string>
     <string name="freeroom_home_info_rooms">"Occupations "</string>
-    <string name="freeroom_home_info_free_rooms">"Free Rooms "</string>
+    <string name="freeroom_home_info_free_rooms">"Salles libres "</string>
 
     <!-- HOME SUBTITLES -->
     <string name="freeroom_please_wait">"Veuillez attendre s.v.p, les résultats sont en cours de chargement"</string>
@@ -39,7 +39,7 @@
     <string name="freeroom_error_unknown_error">"PocketCampus a essayé de se connecter au serveur FreeRoom, mais le serveur a répondu avec un code d\'erreur inconnu."</string>
     <string name="freeroom_error_please_report">"Ce comportement n\'est PAS normal, veuillez s.v.p reporter le bug à freeroom.epfl@gmail.com en incluant une description des étapes menants au bug. Merci d'avance :)"</string>
     <string name="freeroom_error_please_try_again">"Veuillez essayer à nouveau. Notez que la version beta ne fonctionne que sur le réseau de l\'epfl (wifi, VPN ou cablé). Si cela persiste, merci de nous contacter à freeroom.epfl@gmail.com. Merci d'avance :)"</string>
-    <string name="freeroom_connection_error_happened">"Nous ne pouvons pas récupérer les données maintenant due à une erreur de réseau. Vous n\'êtes soit pas connecté ou le serveur PocketCampus est hors-service / inatteignable."</string>
+    <string name="freeroom_connection_error_happened">"Nous ne pouvons pas récupérer les données maintenant, dû à une erreur de réseau. Vous n\'êtes pas connecté, ou alors le serveur PocketCampus est hors-service / inatteignable."</string>
     <string name="freeroom_connection_error_happened">"Nous ne pouvons pas récupérer les données FreeRoom maintenant, car vous n\'êtes pas connecté à Internet."</string>
 
     <!-- SEARCH dialog -->
@@ -57,21 +57,19 @@
     <string name="freeroom_search_search">"Recherche"</string>
     <string name="freeroom_search_reset">"Réinitialiser"</string>
     <string name="freeroom_search_cancel">"Annuler"</string>
-    <string name="freeroom_search_any">"N\'importe quelle salle libre"</string>
-    <string name="freeroom_search_spec">"Choisissez les salles"</string>
+    <string name="freeroom_search_any">"Toutes les salles libres"</string>
+    <string name="freeroom_search_spec">"Choisir les salles"</string>
     <string name="freeroom_search_only_free">"Salles libres uniquement"</string>
     <string name="freeroom_search_favorites">"Favoris"</string>
     <string name="freeroom_search_userdef">"Liste choisie"</string>
     <string name="freeroom_search_userdef_reset">"Effacer"</string>
     <string name="freeroom_search_userdef_add">"Ajouter"</string>
     <string name="freeroom_search_userdef_edit">"Editer"</string>
-    <string name="freeroom_search_time_summary">"Période sélectionnée"</string>
-    <string name="freeroom_search_date_disabled">"Changer la date ne sera pas possible dans la version finale. Si vous voulez la changer pour tester, pressez longuement sur le bouton pour la date, fermez la pop-up et pressez à nouveau. "</string>
+    <string name="freeroom_search_time_summary">"Période sélectionnée: "</string>
+    <string name="freeroom_search_date_disabled">"Changer la date ne sera pas possible dans la version finale. Pour la changer pour tester, presser longuement sur le bouton pour la date, ou fermer cette fenêtre et presser à nouveau. "</string>
 
     <!-- PREVIOUS SEARCHES -->
-    <string name="freeroom_search_previous_search">"Recherches précédentes"</string>
-    <string name="freeroom_search_previous_show">"montrer"</string>
-    <string name="freeroom_search_previous_hide">"cacher"</string>
+    <string name="freeroom_search_previous_search">"Recherches précédentes: "</string>
 
     <!-- SEARCH: request validation -->
     <string name="freeroom_search_invalid_time_basic">"\nLa période sélectionnée est invalide: uniquement les heures académiques (%1$d-%2$d) sont valides. La période doit être d\'au moins %3$d minutes."</string>
@@ -92,7 +90,7 @@
     <string name="freeroom_dialog_share_button_friends">"avec vos amis"</string>
     <string name="freeroom_dialog_share_button_server">"avec le serveur"</string>
     <string name="freeroom_dialog_share_disclaimer">"Votre position est partagée anonymement avec le serveur dans les deux cas. C'est utilisé pour savoir combien de personnes se trouvent dans la salle pour pouvoir afficher de meilleurs résultats."</string>
-    <string name="freeroom_share_others_activity">"Autres activités"</string>
+    <string name="freeroom_share_others_activity">"Activités d'utilisateurs"</string>
 
     <!-- SHARE: text construction -->
     <string name="freeroom_share_intent_title">"Partagez votre position\&#8230;"</string>
@@ -103,14 +101,14 @@
     <string name="freeroom_share_ref_pocket">"(Envoyé depuis pocketcampus.org)"</string>
 
     <!-- SHARE: copy to clipboard -->
-    <string name="freeroom_share_CopyClipBoard">"Copier dans le presse-papier"</string>
+    <string name="freeroom_share_CopyClipBoard">"Copier"</string>
     <string name="freeroom_share_copied_ClipBoard">"Copié dans le presse-papier"</string>
     <string name="freeroom_share_copied_ClipBoard_error">"Erreur pendant la copie dans le presse-papier"</string>
 
     <!-- SHARE: server interaction -->
-    <string name="freeroom_share_server_basis">"Ton activité a bien été enregistrée"</string>
-    <string name="freeroom_share_server_submitted">"envoyé !"</string>
-    <string name="freeroom_share_server_updated">"mis à jour !"</string>
+    <string name="freeroom_share_server_basis">"Votre activité a bien été "</string>
+    <string name="freeroom_share_server_submitted">"enregistrée !"</string>
+    <string name="freeroom_share_server_updated">"mise à jour !"</string>
     <string name="freeroom_share_server_conflict">"Un conflit est survenue et votre activité n\'a pas été prise en compte, désolé :/"</string>
 
     <!-- INFO about a ROOM -->
@@ -120,13 +118,13 @@
     <string name="freeroom_dialog_info_surface">"Surface"</string>
     <string name="freeroom_dialog_info_sqm">"m2"</string>
     <string name="freeroom_dialog_info_uniqID">"Identifiant unique"</string>
-    <string name="freeroom_dialog_info_share">"Partager ma position"</string>
+    <string name="freeroom_dialog_info_share">"Partager la position"</string>
 
     <!-- FAVORITES -->
     <string name="freeroom_dialog_fav_title">"Favoris"</string>
     <string name="freeroom_dialog_fav_add">"Ajouter"</string>
     <string name="freeroom_dialog_fav_close">"Fermer"</string>
-    <string name="freeroom_dialog_fav_reset">"Réinitialiser"</string>
+    <string name="freeroom_dialog_fav_reset">"Effacer"</string>
     <string name="freeroom_dialog_warn_title">"Attention"</string>
     <string name="freeroom_dialog_warn_delete_fav_text">"Etes-vous sur de vouloir supprimer tous vos favoris ? Cette action est irréversible."</string>
     <string name="freeroom_dialog_warn_cancel">"Annuler"</string>
@@ -143,8 +141,8 @@
     <string name="freeroom_dialog_add_room_add">"Ajouter"</string>
     <string name="freeroom_dialog_add_room_init">"Sélectionnez les salles en tapant les premiers caractères."</string>
     <string name="freeroom_check_occupancy_search_text_no_selected_rooms">"Pas de salles sélectionnées."</string>
-    <string name="freeroom_check_occupancy_search_text_selected_rooms">"Salles séletionnées: "</string>
-    <string name="freeroom_check_occupancy_search_inputbarhint">"Ecrire ici pour chercher une salle spécifique"</string>
+    <string name="freeroom_check_occupancy_search_text_selected_rooms">"Salles sélectionnées: "</string>
+    <string name="freeroom_check_occupancy_search_inputbarhint">"Nom de salle"</string>
 
     <!-- edit room -->
     <string name="freeroom_dialog_edit_room_title">"Modifier"</string>
@@ -174,14 +172,14 @@
     <string name="freeroom_settings_current">"Heure courante (par défaut)"</string>
     <string name="freeroom_settings_end_day">"Jusqu\'à la fin de la journée"</string>
     <string name="freeroom_settings_whole_day">"Toute la journée"</string>
-    <string name="freeroom_settings_format">"Formats and locale options"</string>
-    <string name="freeroom_settings_date">"Date formatting"</string>
-    <string name="freeroom_settings_date_default">"Default settings"</string>
-    <string name="freeroom_settings_date_US">"US/English format"</string>
-    <string name="freeroom_settings_date_EU">"French/European format"</string>
+    <string name="freeroom_settings_format">"Formats et options locales"</string>
+    <string name="freeroom_settings_date">"Format des dates"</string>
+    <string name="freeroom_settings_date_default">"Règlage par défaut"</string>
+    <string name="freeroom_settings_date_US">"format anglais/américain"</string>
+    <string name="freeroom_settings_date_EU">"format français/européen"</string>
 
     <!-- WELCOME: beta-only -->
-    <string name="freeroom_authors">"Ce plugin en beta-test dans pocketcampus est le résultat d\'un projet de semestre dans le labo DSLAB.\nAuteurs:\nJulien WEBER\nValentin MINDER\nMerci à Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE pour leur support et conseils."</string>
+    <string name="freeroom_authors">"Ce plugin en beta-test dans pocketcampus est le résultat d\'un projet de semestre dans le labo DSLAB.\nAuteurs:\nJulien WEBER\nValentin MINDER\nMerci à Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE pour leurs précieux conseils."</string>
     <string name="freeroom_welcome_title">"Bienvenue !"</string>
     <string name="freeroom_welcome_subtitle">"Merci de tester FreeRoom ! :)"</string>
     <string name="freeroom_welcome_expl">"Pour que cette beta fonctionne, nous avons besoin de votre email epfl, UNE seule fois."</string>
@@ -189,13 +187,13 @@
     <string name="freeroom_welcome_email_pattern">"prénom.nom@epfl.ch"</string>
     <string name="freeroom_welcome_email_contact">"freeroom.epfl@gmail.com"</string>
     <string name="freeroom_welcome_register">"S\'enregistrer !"</string>
-    <string name="freeroom_welcome_disclaimer">"En cliquant sur s\'enregistrer (uniquement pour la beta), nous allons envoyer des informations sur votre configuration (voir ci-après) pour nous aider à résoudre les problèmes que vous pourriez nous soumettre. L\'utilisation de l\'application est complètement ANONYME et ne dépend pas de votre adresse email."</string>
+    <string name="freeroom_welcome_disclaimer">"En cliquant sur s\'enregistrer (uniquement pour la beta!), nous allons envoyer des informations sur votre configuration (voir ci-après) pour nous aider à résoudre les problèmes que vous pourriez nous soumettre. L\'utilisation de l\'application est complètement ANONYME et ne dépend pas de votre adresse email."</string>
     <string name="freeroom_welcome_success">"Vous avez bien été enregistré !"</string>
     <string name="freeroom_welcome_welcome">"Vous pouvez maintenant utiliser FreeRoom. Si vous rencontrez un problème, y compris un crash, bug, comportement anormal ou peu clair, erreurs de traduction ou autre, n\'hésitez pas à nous contacter via le formulaire google envoyé par email, ou écrivez-nous à:"</string>
-    <string name="freeroom_welcome_dismiss">"OK, Je veux essayer !"</string>
-    <string name="freeroom_welcome_submitting">"Soumission au serveur, veuillez patienter !"</string>
-    <string name="freeroom_welcome_error">"Vous devez être enregistré avec votre adresse email epfl pour pouvoir tester cette application. Veuillez réessayer et attendez que le serveur confirme. Si vous pensez qu\'il s\'agit d\'une erreur ou que vous n\'arrivez pas à vous enregistrer, merci de nous écrire à freeroom.epfl@gmail.com"</string>
-    <string name="freeroom_welcome_invalid_mail">"Email invalide !\nMerci d\'utiliser votre email epfl ayant pour format prénom.nom@epfl.ch sans espace ou caractère spécial.\nSi vous pensez que c'est une erreur ou que vous n\'arrivez pas à vous enregistrer, merci de nous écrire un email à \nfreeroom.epfl@gmail.com"</string>
+    <string name="freeroom_welcome_dismiss">"OK, je veux essayer !"</string>
+    <string name="freeroom_welcome_submitting">"Transmission en cours, veuillez patienter !"</string>
+    <string name="freeroom_welcome_error">"Vous devez être enregistré avec votre adresse email EPFL pour pouvoir tester cette application. Veuillez réessayer et attendez que le serveur confirme. Si vous pensez qu\'il s\'agit d\'une erreur ou que vous n\'arrivez pas à vous enregistrer, merci de nous écrire à freeroom.epfl@gmail.com"</string>
+    <string name="freeroom_welcome_invalid_mail">"Email invalide !\nMerci d\'utiliser votre email epfl ayant pour format \nprénom.nom@epfl.ch\n sans espace ou caractère spécial.\nSi vous pensez que c'est une erreur ou que vous n\'arrivez pas à vous enregistrer, merci de nous écrire un email à \nfreeroom.epfl@gmail.com"</string>
     <string name="freeroom_welcome_validate_network_error">"Erreur réseau, merci de réessayer et de vérifier votre connection internet."</string>
     <string name="freeroom_welcome_validate_reject">"Le serveur a rejeté votre enregistrement !Merci de réessayer.\nSi cela persiste, merci de nous contacter à\nfreeroom.epfl@gmail.com !"</string>
 
