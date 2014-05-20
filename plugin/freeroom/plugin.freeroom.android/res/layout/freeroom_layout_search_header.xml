@@ -350,7 +350,7 @@
                 android:layout_height="45dp"
                 android:layout_gravity="bottom"
                 android:layout_weight="5"
-                android:drawableLeft="@drawable/ic_action_remove"
+                android:drawableLeft="@drawable/ic_action_trash_bin"
                 android:text="@string/freeroom_search_userdef_reset"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@android:color/black" />
