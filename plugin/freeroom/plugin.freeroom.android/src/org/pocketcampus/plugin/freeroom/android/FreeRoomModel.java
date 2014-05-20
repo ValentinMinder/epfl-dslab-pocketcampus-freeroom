@@ -371,9 +371,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	/**
 	 * # of previous request before previous requests are deleted.
 	 * <p>
-	 * Default: 100 requests.
+	 * Default: 20 requests.
 	 */
-	private int previousRequestNumber = 100;
+	private int previousRequestNumber = 20;
 
 	/**
 	 * # of previous request before previous requests are deleted.

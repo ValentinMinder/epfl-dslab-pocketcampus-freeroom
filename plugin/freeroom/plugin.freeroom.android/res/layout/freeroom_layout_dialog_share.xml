@@ -30,6 +30,7 @@
             android:textColor="@android:color/black" />
 
         <!-- Edit text for additional personalized text for friends only -->
+        <!-- Max length is also 30 on server-side! -->
 
         <EditText
             android:id="@+id/freeroom_layout_dialog_share_text_edit"
@@ -39,6 +40,7 @@
             android:hint="@string/freeroom_dialog_share_textedit_hint"
             android:imeOptions="actionSend"
             android:maxLines="1"
+            android:maxLength="30"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
 
