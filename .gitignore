@@ -15,7 +15,7 @@ server/PocketCampusServer/*
 
 #FreeRoom team changes 
 .settings/
-log/*.log
+*.log
 
 local.properties
 *~
