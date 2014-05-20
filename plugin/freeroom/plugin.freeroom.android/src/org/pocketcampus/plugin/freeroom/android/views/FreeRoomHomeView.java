@@ -1559,7 +1559,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onShow(DialogInterface dialog) {
 				searchButton.setEnabled(auditSubmit() == 0);
 				initPreviousTitle();
-				fillSearchDialog();
+				reset();
 			}
 		});
 		// this is necessary o/w buttons don't exists!
@@ -1714,6 +1714,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mSearchPreviousListView.smoothScrollToPosition(0);
 		FRRequestDetails req = mModel.getPreviousRequest().get(position);
 		if (req != null) {
+			reset();
 			fillSearchDialog(req);
 			return true;
 		}
@@ -2299,8 +2300,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 	}
 
+	/**
+	 * DONT CALL IT! Call {@link #reset()} instead.
+	 * 
+	 * @param request
+	 */
 	private void fillSearchDialog(final FRRequestDetails request) {
-		reset();
 		resetTimes(request.getPeriod());
 		anyButton.setChecked(request.isAny());
 		specButton.setChecked(!request.isAny());
@@ -3321,6 +3326,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		freeButton.setEnabled(enabled);
 		// show the buttons
 		updateDateTimePickersAndButtons();
+		fillSearchDialog(validRequest(false));
 	}
 
 	/**
