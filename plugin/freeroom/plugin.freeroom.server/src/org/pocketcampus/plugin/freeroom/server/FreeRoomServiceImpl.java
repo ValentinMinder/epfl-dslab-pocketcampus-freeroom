@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.freeroom.server;
 
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,15 +14,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
-import org.pocketcampus.plugin.freeroom.data.FetchRoomsDetails;
-import org.pocketcampus.plugin.freeroom.data.PeriodicallyUpdate;
-import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeServiceImpl;
 import org.pocketcampus.plugin.freeroom.server.utils.CheckRequests;
 import org.pocketcampus.plugin.freeroom.server.utils.OccupancySorted;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
@@ -65,7 +66,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			.getName());
 	private SimpleDateFormat dateLogFormat = new SimpleDateFormat(
 			"MMM dd,yyyy HH:mm");
-
+	private final String PATH_LOG_PATTERN = "./log/freeroom%g.log";
+	//total size of log can be MAX_BYTES_PER_LOGFILE * MAX_LOGFILES
+	private final int MAX_BYTES_PER_LOGFILE = 4 * 1000 * 1000; 
+	private final int MAX_LOGFILES = 200;
 	private String DB_URL;
 	private String DB_USER;
 	private String DB_PASSWORD;
@@ -86,7 +90,22 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ... V2");
 		logger.setLevel(Level.INFO);
+		FileHandler logHandler = null;
+		try {
+			logHandler = new FileHandler(PATH_LOG_PATTERN, MAX_BYTES_PER_LOGFILE, MAX_LOGFILES, true);
+			SimpleFormatter logFormatter = new SimpleFormatter();
+			logHandler.setFormatter(logFormatter);
+		} catch (SecurityException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		if (logHandler != null) {
+			logger.addHandler(logHandler);
 
+		}
+		
 		DB_URL = PC_SRV_CONFIG.getString("DB_URL") + "?allowMultiQueries=true";
 		DB_USER = PC_SRV_CONFIG.getString("DB_USERNAME");
 		DB_PASSWORD = PC_SRV_CONFIG.getString("DB_PASSWORD");

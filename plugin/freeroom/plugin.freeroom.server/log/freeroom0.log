@@ -1,0 +1,80 @@
+May 20, 2014 7:28:57 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:28 : ACTION=insertOccupancy / ARGS=type=USER,uid=9055,start=1400580000000,end=1400583600000,userMessage=blackface / RETURN=true
+May 20, 2014 7:28:57 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:28 : ACTION=indicateImWorking / ARGS=start=1400580000000,end=1400583600000,uid= 9055,hash=14002772933864572iheedf6a6f91bgga681gf7f5dcg,userMessage=blackface / RETURN=NA
+May 20, 2014 7:28:57 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:28 : ACTION=getOccupancyOfSpecificRoom / ARGS=uidList=[9055],onlyFreeRooms=false,tsStart=1400580000000,tsEnd=1400583600000,userGroup=10 / RETURN=NA
+May 20, 2014 7:34:59 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:34 : ACTION=getOccupancyOfSpecificRoom / ARGS=uidList=[9055],onlyFreeRooms=false,tsStart=1400580000000,tsEnd=1400583600000,userGroup=10 / RETURN=NA
+May 20, 2014 7:35:03 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:10 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=insertOccupancy / ARGS=type=USER,uid=9055,start=1400580000000,end=1400583600000,userMessage=blackfaceb ghef / RETURN=true
+May 20, 2014 7:35:10 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=indicateImWorking / ARGS=start=1400580000000,end=1400583600000,uid= 9055,hash=14002772933864572iheedf6a6f91bgga681gf7f5dcg,userMessage=blackfaceb ghef / RETURN=NA
+May 20, 2014 7:35:10 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getOccupancyOfSpecificRoom / ARGS=uidList=[9055],onlyFreeRooms=false,tsStart=1400580000000,tsEnd=1400583600000,userGroup=10 / RETURN=NA
+May 20, 2014 7:35:12 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:12 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:12 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:13 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:13 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:13 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:13 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:14 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:14 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:14 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:14 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:15 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:15 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:15 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:16 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:16 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:16 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:16 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:17 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:17 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:20 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=insertOccupancy / ARGS=type=USER,uid=9055,start=1400580000000,end=1400583600000,userMessage=blackfaceb ghef / RETURN=true
+May 20, 2014 7:35:20 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=indicateImWorking / ARGS=start=1400580000000,end=1400583600000,uid= 9055,hash=14002772933864572iheedf6a6f91bgga681gf7f5dcg,userMessage=blackfaceb ghef / RETURN=NA
+May 20, 2014 7:35:21 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getOccupancyOfSpecificRoom / ARGS=uidList=[9055],onlyFreeRooms=false,tsStart=1400580000000,tsEnd=1400583600000,userGroup=10 / RETURN=NA
+May 20, 2014 7:35:23 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:24 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:24 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400580000000,end=1400583600000 / RETURN=NA
+May 20, 2014 7:35:31 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getOccupancyOfSpecificRoom / ARGS=uidList=[9055],onlyFreeRooms=false,tsStart=1400652000000,tsEnd=1400655600000,userGroup=10 / RETURN=NA
+May 20, 2014 7:35:40 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getOccupancyOfSpecificRoom / ARGS=uidList=[9055],onlyFreeRooms=false,tsStart=1400652000000,tsEnd=1400670000000,userGroup=10 / RETURN=NA
+May 20, 2014 7:35:51 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getUserMessages / ARGS=uid=9055,start=1400655600000,end=1400659200000 / RETURN=NA
+May 20, 2014 7:35:58 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=insertOccupancy / ARGS=type=USER,uid=9055,start=1400655600000,end=1400659200000,userMessage=blackfaceb ghefft vhtf / RETURN=true
+May 20, 2014 7:35:58 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=indicateImWorking / ARGS=start=1400655600000,end=1400659200000,uid= 9055,hash=14002772933864572iheedf6a6f91bgga681gf7f5dcg,userMessage=blackfaceb ghefft vhtf / RETURN=NA
+May 20, 2014 7:35:58 PM org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl log
+INFO: [SERVER] May 20,2014 19:35 : ACTION=getOccupancyOfSpecificRoom / ARGS=uidList=[9055],onlyFreeRooms=false,tsStart=1400652000000,tsEnd=1400670000000,userGroup=10 / RETURN=NA
