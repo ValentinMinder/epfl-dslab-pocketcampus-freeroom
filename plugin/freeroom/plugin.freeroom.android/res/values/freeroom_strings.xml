@@ -43,6 +43,7 @@
 
     <!-- SEARCH dialog -->
     <string name="freeroom_search_title">"New search"</string>
+    <string name="freeroom_dialog_search_footer_home">"Home"</string>
 
     <!-- SEARCH: TIMES -->
     <string name="freeroom_search_today">"Today"</string>
@@ -132,6 +133,9 @@
     <string name="freeroom_dialog_error_title">"Error"</string>
     <string name="freeroom_dialog_error_dismiss">"Dismiss"</string>
 
+    <!-- Add favorites -->
+    <string name="freeroom_dialog_add_favorites_title">"Add favorites"</string>
+
     <!-- ADD ROOM -->
     <string name="freeroom_dialog_add_room_title">"Add rooms"</string>
     <string name="freeroom_add_rooms_empty">"Selected rooms: empty"</string>
@@ -141,6 +145,10 @@
     <string name="freeroom_check_occupancy_search_text_selected_rooms">"Selected room(s): "</string>
     <string name="freeroom_check_occupancy_search_inputbarhint">"Type in for searching a specific room"</string>
 
+    <!-- Edit room -->
+    <string name="freeroom_dialog_edit_room_title">"Edit selection"</string>
+    <string name="freeroom_dialog_edit_room_add_other">"Add others"</string>
+    <string name="freeroom_dialog_edit_room_done">"Done"</string>
     <!-- BY URI SEARCH -->
     <string name="freeroom_urisearch_error_basis">"The URI you followed was not treated."</string>
     <string name="freeroom_urisearch_error_URINotUnderstood">"The URI was not understood and nothing happened."</string>
@@ -171,6 +179,7 @@
     <string name="freeroom_settings_date_EU">"French/European format"</string>
 
     <!-- WELCOME: beta-only -->
+    <string name="freeroom_authors">"This beta-plugin in pocketcampus is the result of a semester project with DSLAB.\nAuthors:\nJulien WEBER\nValentin MINDER\nThanks to Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE for their support and advices."</string>
     <string name="freeroom_welcome_title">"Welcome!"</string>
     <string name="freeroom_welcome_subtitle">"Thanks for testing FREEROOM ! :)"</string>
     <string name="freeroom_welcome_expl">"In order to make this beta test work, we need you to register ONCE with your EPFL email address."</string>
@@ -204,22 +213,13 @@
     <string name="freeroom_layout_prev_req_delete_img">delete</string>
     <string name="freeroom_layout_separator_dark">separator</string>
 
-    <!-- TODO: translate -->
-    <string name="freeroom_authors">"This beta-plugin in pocketcampus is the result of a semester project with DSLAB.\nAuthors:\nJulien WEBER\nValentin MINDER\nThanks to Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE for their support and advices."</string>
-    <!-- French: Haut -->
-    <string name="freeroom_dialog_search_footer_home">"Home"</string>
-
-    <!-- NEW -->
-    <string name="freeroom_dialog_edit_room_title">"Edit selection"</string>
-    <string name="freeroom_dialog_edit_room_add_other">"Add others"</string>
-    <string name="freeroom_dialog_edit_room_done">"Done"</string>
-
-    <!-- NEW NEW -->
-    <string name="freeroom_dialog_add_favorites_title">"Add favorites"</string>
+    <!-- Working there dialog -->
     <string name="freeroom_share_server_bad_words">"Rejected request: your message contains forbidden words."</string>
     <string name="freeroom_whoIsWorking_title">"Working there &#8230;"</string>
     <string name="freeroom_whoIsWorking_disclaimer">"These indications come from users input. The authors, Pocketcampus, DSLAB and EPFL are not responsible for what the users may have written."</string>
     <string name="freeroom_whoIsWorking_wait">"Please wait, results are refreshed &#8230;"</string>
     <string name="freeroom_whoIsWorking_undefined">"Undefined"</string>
-    
+
+    <!-- NEW: add there -->
+
 </resources>

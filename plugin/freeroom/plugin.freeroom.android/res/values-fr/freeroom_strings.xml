@@ -44,6 +44,7 @@
 
     <!-- SEARCH dialog -->
     <string name="freeroom_search_title">"Nouvelle recherche"</string>
+    <string name="freeroom_dialog_search_footer_home">"Haut"</string>
 
     <!-- SEARCH: TIMES -->
     <string name="freeroom_search_today">"Aujourd\'hui"</string>
@@ -133,6 +134,9 @@
     <string name="freeroom_dialog_error_title">"Erreur"</string>
     <string name="freeroom_dialog_error_dismiss">"Fermer"</string>
 
+    <!-- Add favorites -->
+    <string name="freeroom_dialog_add_favorites_title">"Ajouter favoris"</string>
+
     <!-- ADD ROOM -->
     <string name="freeroom_dialog_add_room_title">"Ajouter des salles"</string>
     <string name="freeroom_add_rooms_empty">"Salles sélectionnées : vide"</string>
@@ -141,6 +145,11 @@
     <string name="freeroom_check_occupancy_search_text_no_selected_rooms">"Pas de salles sélectionnées."</string>
     <string name="freeroom_check_occupancy_search_text_selected_rooms">"Salles séletionnées: "</string>
     <string name="freeroom_check_occupancy_search_inputbarhint">"Ecrire ici pour chercher une salle spécifique"</string>
+
+    <!-- edit room -->
+    <string name="freeroom_dialog_edit_room_title">"Modifier"</string>
+    <string name="freeroom_dialog_edit_room_add_other">"Ajouter"</string>
+    <string name="freeroom_dialog_edit_room_done">"Terminé"</string>
 
     <!-- BY URI SEARCH -->
     <string name="freeroom_urisearch_error_basis">"L\'URL suivie n'a pas été traitée."</string>
@@ -172,6 +181,7 @@
     <string name="freeroom_settings_date_EU">"French/European format"</string>
 
     <!-- WELCOME: beta-only -->
+    <string name="freeroom_authors">"Ce plugin en beta-test dans pocketcampus est le résultat d\'un projet de semestre dans le labo DSLAB.\nAuteurs:\nJulien WEBER\nValentin MINDER\nMerci à Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE pour leur support et conseils."</string>
     <string name="freeroom_welcome_title">"Bienvenue !"</string>
     <string name="freeroom_welcome_subtitle">"Merci de tester FreeRoom ! :)"</string>
     <string name="freeroom_welcome_expl">"Pour que cette beta fonctionne, nous avons besoin de votre email epfl, UNE seule fois."</string>
@@ -206,6 +216,13 @@
     <string name="freeroom_layout_prev_req_edit_img">edit</string>
     <string name="freeroom_layout_prev_req_delete_img">delete</string>
 
-    <string name="freeroom_authors">"Ce plugin en beta-test dans pocketcampus est le résultat d\'un projet de semestre dans le labo DSLAB.\nAuteurs:\nJulien WEBER\nValentin MINDER\nMerci à Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE pour leur support et conseils."</string>
-    <string name="freeroom_dialog_search_footer_home">"Haut"</string>
+    <!-- Working there dialog -->
+    <string name="freeroom_share_server_bad_words">"Requête rejetée: le message contient des mots interdits."</string>
+    <string name="freeroom_whoIsWorking_title">"Travaillant ici &#8230;"</string>
+    <string name="freeroom_whoIsWorking_disclaimer">"Note: Ces indications proviennent des utilisateurs. Les auteurs, Pocketcampus, DSLAB et l'EPFL ne sont pas responsable des actions des utilisateurs."</string>
+    <string name="freeroom_whoIsWorking_wait">"Veuillez attendre, les résultats sont mis à jour &#8230;"</string>
+    <string name="freeroom_whoIsWorking_undefined">"Indéfini"</string>
+
+    <!-- NEW: add there -->
+
 </resources>
