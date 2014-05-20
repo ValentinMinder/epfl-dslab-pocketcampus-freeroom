@@ -197,7 +197,6 @@
     <string name="freeroom_layout_building_header_show_more_img">show more icon</string>
     <string name="freeroom_layout_search_first_hour_img">first</string>
     <string name="freeroom_layout_search_prev_hour_img">prev</string>
-    <string name="freeroom_layout_search_expand_collapse_hour_img">first/last</string>
     <string name="freeroom_layout_search_next_hour_img">next</string>
     <string name="freeroom_layout_search_last_hour_img">last</string>
     <string name="freeroom_layout_prev_req_replay_img">replay</string>

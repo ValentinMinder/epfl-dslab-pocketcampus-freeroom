@@ -94,11 +94,24 @@
                 android:layout_gravity="right"
                 android:layout_weight="3"
                 android:contentDescription="@string/freeroom_layout_search_first_hour_img"
-                android:src="@drawable/ic_action_previous"
+                android:src="@drawable/ic_action_hour_down_down"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
 
             <!-- Image button to switch start hour to previous hour -->
+
+            <ImageButton
+                android:id="@+id/freeroom_layout_dialog_search_hour_start_minus"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right"
+                android:layout_weight="3"
+                android:contentDescription="@string/freeroom_layout_search_prev_hour_img"
+                android:src="@drawable/ic_action_hour_down"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+
+            <!-- Image button to switch start hour to next hour -->
 
             <ImageButton
                 android:id="@+id/freeroom_layout_dialog_search_hour_start_plus"
@@ -106,21 +119,21 @@
                 android:layout_height="fill_parent"
                 android:layout_gravity="right"
                 android:layout_weight="3"
-                android:contentDescription="@string/freeroom_layout_search_prev_hour_img"
-                android:src="@drawable/ic_action_rewind"
+                android:contentDescription="@string/freeroom_layout_search_next_hour_img"
+                android:src="@drawable/ic_action_hour_up"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
 
-            <!-- Image button to switch start/end hour to first/last hour, and reverse to current -->
+            <!-- Image button to switch end hour to previous hour -->
 
             <ImageButton
-                android:id="@+id/freeroom_layout_dialog_search_hour_end_start_collapse_extand"
+                android:id="@+id/freeroom_layout_dialog_search_hour_end_minus"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="right"
-                android:layout_weight="6"
-                android:contentDescription="@string/freeroom_layout_search_expand_collapse_hour_img"
-                android:src="@drawable/ic_action_previous_next"
+                android:layout_weight="3"
+                android:contentDescription="@string/freeroom_layout_search_prev_hour_img"
+                android:src="@drawable/ic_action_hour_down"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
 
@@ -133,7 +146,7 @@
                 android:layout_gravity="right"
                 android:layout_weight="3"
                 android:contentDescription="@string/freeroom_layout_search_next_hour_img"
-                android:src="@drawable/ic_action_fast_forward"
+                android:src="@drawable/ic_action_hour_up"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
 
@@ -146,7 +159,7 @@
                 android:layout_gravity="right"
                 android:layout_weight="3"
                 android:contentDescription="@string/freeroom_layout_search_last_hour_img"
-                android:src="@drawable/ic_action_next"
+                android:src="@drawable/ic_action_hour_up_up"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
         </LinearLayout>
