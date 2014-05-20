@@ -37,7 +37,7 @@ public class PeriodicallyUpdate implements Runnable {
 				DB_USER, DB_PASSWORD, server);
 		Calendar mCalendar = Calendar.getInstance();
 		long start = mCalendar.getTimeInMillis() - 2*FRTimes.ONE_WEEK_IN_MS;
-		long end = mCalendar.getTimeInMillis() + 2*FRTimes.ONE_WEEK_IN_MS;
+		long end = mCalendar.getTimeInMillis() + 3*FRTimes.ONE_WEEK_IN_MS;
 		fodj.fetchAndInsert(start, end);
 		
 		server.log(Level.INFO, "Starting update of data from Exchange");
