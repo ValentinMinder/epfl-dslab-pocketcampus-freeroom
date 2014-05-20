@@ -217,5 +217,8 @@
     <!-- NEW NEW -->
     <string name="freeroom_dialog_add_favorites_title">"Add favorites"</string>
     <string name="freeroom_share_server_bad_words">"Rejected request: your message contains forbidden words."</string>
+    <string name="freeroom_whoIsWorking_title">"Working there &#8230;"</string>
+    <string name="freeroom_whoIsWorking_disclaimer">"These indications come from users input. The authors, Pocketcampus, DSLAB and EPFL are not responsible for what the users may have written."</string>
+    <string name="freeroom_whoIsWorking_wait">"Please wait, results are refreshed &#8230;"</string>
 
 </resources>

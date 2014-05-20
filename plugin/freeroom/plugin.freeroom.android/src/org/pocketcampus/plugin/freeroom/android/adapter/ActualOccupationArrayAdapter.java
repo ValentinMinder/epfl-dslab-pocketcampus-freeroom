@@ -48,7 +48,8 @@ public class ActualOccupationArrayAdapter<T> extends
 
 	public ActualOccupationArrayAdapter(Context c, Occupancy occupancy,
 			FreeRoomController mController, FreeRoomHomeView homeView) {
-		super(c, R.layout.sdk_list_entry, R.id.sdk_list_entry_text, occupancy.getOccupancy());
+		super(c, R.layout.sdk_list_entry, R.id.sdk_list_entry_text, occupancy
+				.getOccupancy());
 		this.context = c;
 		this.data = occupancy.getOccupancy();
 		this.occupancy = occupancy;
@@ -109,7 +110,7 @@ public class ActualOccupationArrayAdapter<T> extends
 			};
 			// share icon clickable
 			ivshare.setOnClickListener(ocl);
-			
+
 			// TODO: do better!
 			final String roomUID = occupancy.getRoom().getUid();
 			// TODO: do better
@@ -123,9 +124,20 @@ public class ActualOccupationArrayAdapter<T> extends
 							mActualOccupation.getPeriod());
 					mController.prepareCheckWhoIsWorking(req);
 					mController.checkWhoIsWorking(homeView);
+					homeView.displayWorkingDialog(occupancy.getRoom(),
+							mActualOccupation.getPeriod());
 				}
 			};
-			convertView.setOnClickListener(ocl_line);
+
+			if (mActualOccupation.isSetProbableOccupation()
+					&& mActualOccupation.getProbableOccupation() > 0) {
+				convertView.setOnClickListener(ocl_line);
+				tv.setCompoundDrawablesWithIntrinsicBounds(
+						R.drawable.ic_action_next_item, 0, 0, 0);
+			} else {
+				tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_empty,
+						0, 0, 0);
+			}
 
 			// TODO: uncomment this
 			// whole line clickable

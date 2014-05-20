@@ -29,6 +29,7 @@ import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewAdapte
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewFavoriteAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.FRRoomRemoveArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.FRRoomSuggestionArrayAdapter;
+import org.pocketcampus.plugin.freeroom.android.adapter.MessageFrequencyArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.PreviousRequestArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
@@ -42,6 +43,7 @@ import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.RegisterUser;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
@@ -287,6 +289,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * TODO: beta-only
 	 */
 	private AlertDialog mWelcomeDialog;
+	/**
+	 * View that holds the ImWorking dialog content, defined in xml in layout
+	 * folder.
+	 */
+	private View mImWorkingView;
+	/**
+	 * Dialog that holds the ImWorking Dialog.
+	 */
+	private AlertDialog mImWorkingDialog;
 
 	/* UI ELEMENTS FOR ALL DIALOGS */
 	/* UI ELEMENTS FOR DIALOGS - INFO ROOM */
@@ -339,6 +350,23 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private EditText mShareDialogEditTextMessageWorking;
 
 	/* OTHER UTILS */
+
+	/**
+	 * Time summary in "working there" dialog.
+	 */
+	private TextView workingTimeSummary;
+	/**
+	 * Disclaimer/please wait in "working there" dialog.
+	 */
+	private TextView workingDisclaimer;
+	/**
+	 * List of displayed working message.
+	 */
+	private List<MessageFrequency> workingMessageList;
+	/**
+	 * Adpater for message and their frequency.
+	 */
+	private ArrayAdapter<MessageFrequency> workingMessageAdapter;
 
 	/* ACTIONS FOR THE ACTION BAR */
 	/**
@@ -814,6 +842,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initWarningDialog();
 		initErrorDialog();
 		initParamDialog();
+		initImWorkingDialog();
 
 		// TODO: beta only
 		initWelcomeDialog();
@@ -872,7 +901,94 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
-	 * Inits the dialog to diplay the information about a room.
+	 * Inits the dialog to show what people are doing.
+	 */
+	private void initImWorkingDialog() {
+		// Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setIcon(R.drawable.ic_action_view_as_list);
+		// erased when calling the intended method to show the details
+		builder.setTitle(getString(R.string.freeroom_whoIsWorking_title));
+
+		// Get the AlertDialog from create()
+		mImWorkingDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mImWorkingDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.FILL_PARENT;
+		lp.height = LayoutParams.WRAP_CONTENT;
+		mImWorkingDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mImWorkingDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mImWorkingDialog.getWindow().setAttributes(lp);
+
+		mImWorkingView = mLayoutInflater.inflate(
+				R.layout.freeroom_layout_dialog_working, null);
+
+		// these work perfectly
+		// mImWorkingView.setMinimumWidth((int) (activityWidth * 0.9f));
+		// mImWorkingView.setMinimumHeight((int) (activityHeight * 0.8f));
+
+		workingTimeSummary = (TextView) mImWorkingView
+				.findViewById(R.id.freeroom_layout_dialog_working_time);
+		workingDisclaimer = (TextView) mImWorkingView
+				.findViewById(R.id.freeroom_layout_dialog_working_disclaimer);
+
+		mImWorkingDialog.setView(mImWorkingView);
+		mImWorkingDialog.setOnShowListener(new OnShowListener() {
+
+			@Override
+			public void onShow(DialogInterface dialog) {
+				workingDisclaimer.setText(R.string.freeroom_whoIsWorking_wait);
+			}
+		});
+
+		ListView lv = (ListView) mImWorkingView
+				.findViewById(R.id.freeroom_layout_dialog_working_time_list);
+		workingMessageList = mModel.getListMessageFrequency();
+		workingMessageAdapter = new MessageFrequencyArrayAdapter<MessageFrequency>(
+				this, getApplicationContext(),
+				R.layout.freeroom_layout_message,
+				R.id.freeroom_layout_message_text, workingMessageList);
+		lv.setAdapter(workingMessageAdapter);
+
+		mImWorkingDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				workingMessageList.clear();
+				workingMessageAdapter.notifyDataSetInvalidated();
+			}
+		});
+	}
+
+	/**
+	 * Display the working dialog with the given room and period.
+	 * 
+	 * @param room
+	 *            room displayed
+	 * @param period
+	 *            period displayed
+	 */
+	public void displayWorkingDialog(FRRoom room, FRPeriod period) {
+		mImWorkingDialog.show();
+		mImWorkingDialog.setTitle(FRUtilsClient.formatRoom(room));
+		workingTimeSummary.setText(times.formatFullDateFullTimePeriod(period));
+	}
+
+	@Override
+	public void workingMessageUpdated() {
+		workingDisclaimer
+				.setText(getString(R.string.freeroom_whoIsWorking_disclaimer));
+		workingMessageAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * Inits the welcome dialog
 	 * <p>
 	 * TODO: beta-only
 	 */
@@ -2250,13 +2366,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			mInfoRoomDialog.show();
 
 			final FRRoom mRoom = mOccupancy.getRoom();
-			String text = mRoom.getDoorCode();
-			if (mRoom.isSetDoorCodeAlias()) {
-				// alias is displayed IN PLACE of the official name
-				// the official name can be found in bottom of dialog
-				text = mRoom.getDoorCodeAlias();
-			}
-			mInfoRoomDialog.setTitle(text);
+			mInfoRoomDialog.setTitle(FRUtilsClient.formatRoom(mRoom));
 
 			TextView periodTextView = (TextView) mInfoRoomView
 					.findViewById(R.id.freeroom_layout_dialog_info_period);

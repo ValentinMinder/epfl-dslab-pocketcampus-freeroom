@@ -252,21 +252,7 @@ public class FreeRoomController extends PluginController implements
 	 *            the <code>WhoIsWorkingReply</code> from the server.
 	 */
 	public void setWhoIsWorkingReply(WhoIsWorkingReply result) {
-		// TODO: remove old methods/storage in model.
-		// List<WorkingOccupancy> listWorkingOccupancies = result
-		// .getTheyAreWorking();
-		// mModel.setListWorkingOccupancies(listWorkingOccupancies);
-
-		// TODO: test printing
-		if (result.isSetMessages()) {
-			Iterator<MessageFrequency> iter = result.getMessagesIterator();
-			System.out.println("Recieved message client side: ");
-			while (iter.hasNext()) {
-				MessageFrequency mf = iter.next();
-				System.out
-						.println(mf.getMessage() + "/ x " + mf.getFrequency());
-			}
-		}
+		 mModel.setListMessageFrequency(result.getMessages());
 	}
 
 	// NEW INTERFACE as of 2104.04.04.

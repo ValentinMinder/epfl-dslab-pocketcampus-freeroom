@@ -29,6 +29,7 @@ import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.utils.SetArrayList;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 
@@ -88,7 +89,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Storing the <code>WorkingOccupancy</code> of people who indicate their
 	 * are going to work there.
 	 */
-	private List<WorkingOccupancy> listWorkingOccupancies = new ArrayList<WorkingOccupancy>();
+	private List<MessageFrequency> listMessageFrequency = new ArrayList<MessageFrequency>();
 
 	private Context context;
 	/**
@@ -555,11 +556,23 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Stores a list of <code>WorkingOccupancy</code> to represent what others
 	 * are doing.
 	 * 
-	 * @param listWorkingOccupancies
+	 * @param listMessageFrequency
 	 */
-	public void setListWorkingOccupancies(
-			List<WorkingOccupancy> listWorkingOccupancies) {
-		this.listWorkingOccupancies = listWorkingOccupancies;
+	public void setListMessageFrequency(
+			List<MessageFrequency> listMessageFrequency) {
+		Iterator<MessageFrequency> iter = this.listMessageFrequency.iterator();
+		System.out.println("there:");
+		while (iter.hasNext()) {
+			System.out.println(iter.next());
+		}
+		iter = listMessageFrequency.iterator();
+		System.out.println("added:");
+		while (iter.hasNext()) {
+			System.out.println(iter.next());
+		}
+		this.listMessageFrequency.clear();
+		this.listMessageFrequency.addAll(listMessageFrequency);
+		mListeners.workingMessageUpdated();
 	}
 
 	/**
@@ -567,8 +580,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * 
 	 * @return
 	 */
-	public List<WorkingOccupancy> getListWorkingOccupancies() {
-		return listWorkingOccupancies;
+	public List<MessageFrequency> getListMessageFrequency() {
+		return listMessageFrequency;
 	}
 
 	// ********** END OF "WHO'S WORKING THERE" PART **********

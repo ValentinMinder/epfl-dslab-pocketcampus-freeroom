@@ -301,6 +301,16 @@ public class FRUtilsClient {
 		return query.trim().length() >= MIN_QUERY_LENGTH;
 	}
 
+	/**
+	 * Returns the string user-friendly common representation.
+	 * <p>
+	 * alias is displayed IN PLACE of the official name, the official name can
+	 * be found in bottom of INFO dialog
+	 * 
+	 * @param room
+	 *            given room
+	 * @return string user-friendly common representation.
+	 */
 	public static String formatRoom(FRRoom room) {
 		if (room.isSetDoorCodeAlias() && room.getDoorCodeAlias() != null) {
 			return room.getDoorCodeAlias();

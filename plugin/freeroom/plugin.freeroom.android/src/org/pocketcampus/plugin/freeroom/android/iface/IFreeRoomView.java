@@ -22,6 +22,8 @@ public interface IFreeRoomView extends IAbstractFreeRoomView {
 	void initializeView();
 
 	void refreshOccupancies();
+	
+	void workingMessageUpdated();
 
 	// TODO: beta-test only
 	void errorRegister(boolean transmissionError);

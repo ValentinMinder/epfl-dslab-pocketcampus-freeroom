@@ -147,4 +147,9 @@ public class FreeRoomCopyClipBoard extends FreeRoomAbstractView implements
 		// TODO beta test only
 		// WE DO NOTHING!
 	}
+
+	@Override
+	public void workingMessageUpdated() {
+		// WE DO NOTHING!
+	}
 }
