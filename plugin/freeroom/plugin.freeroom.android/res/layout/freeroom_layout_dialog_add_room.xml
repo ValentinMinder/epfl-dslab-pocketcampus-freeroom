@@ -17,17 +17,14 @@
         android:background="@android:color/background_light"
         android:orientation="horizontal" >
 
-        <!-- Summary of selected rooms -->
+         <!-- Button to go out (adding done) -->
 
-        <TextView
-            android:id="@+id/freeroom_layout_dialog_add_room_summary"
+        <Button
+            android:id="@+id/freeroom_layout_dialog_add_room_edit"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="10"
-            android:gravity="top"
-            android:maxLines="2"
-            android:lines="2"
-            android:text="@string/freeroom_dialog_add_room_init"
+            android:layout_weight="5"
+            android:text="@string/freeroom_dialog_edit_room_title"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
 
@@ -38,8 +35,8 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="5"
-            android:text="@string/freeroom_dialog_add_room_add"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/freeroom_dialog_edit_room_done"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
     </LinearLayout>
 

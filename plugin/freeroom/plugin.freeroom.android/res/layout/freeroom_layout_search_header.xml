@@ -365,7 +365,7 @@
         android:layout_height="wrap_content"
         android:text="Request: (mock text)"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/darker_gray" />
 
     <!-- subtitle for previous searches -->
 
@@ -373,8 +373,9 @@
         android:id="@+id/freeroom_layout_dialog_search_prev_search_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
         android:text="@string/freeroom_search_previous_search"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/darker_gray" />
 
 </LinearLayout>

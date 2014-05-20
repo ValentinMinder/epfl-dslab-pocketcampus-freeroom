@@ -214,4 +214,7 @@
     <string name="freeroom_dialog_edit_room_add_other">"Add others"</string>
     <string name="freeroom_dialog_edit_room_done">"Done"</string>
 
+    <!-- NEW NEW -->
+    <string name="freeroom_dialog_add_favorites_title">"Add favorites"</string>
+
 </resources>

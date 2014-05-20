@@ -268,7 +268,7 @@ public class FRUtilsClient {
 			}
 			buffer.append(name + ", ");
 		}
-		buffer.setLength(Math.max(0,buffer.length() - 2));
+		buffer.setLength(Math.max(0, buffer.length() - 2));
 		if (iter.hasNext()) {
 			buffer.append(", ...");
 		}
@@ -293,6 +293,19 @@ public class FRUtilsClient {
 	 */
 	public boolean validEmail(String email) {
 		return email.matches("^[a-zA-Z0-9-]+[.][a-zA-Z0-9-]+@epfl[.]ch$");
+	}
+
+	public final int MIN_QUERY_LENGTH = 2;
+
+	public boolean validQuery(String query) {
+		return query.trim().length() >= MIN_QUERY_LENGTH;
+	}
+
+	public static String formatRoom(FRRoom room) {
+		if (room.isSetDoorCodeAlias() && room.getDoorCodeAlias() != null) {
+			return room.getDoorCodeAlias();
+		}
+		return room.getDoorCode();
 	}
 
 }

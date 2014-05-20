@@ -221,6 +221,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private AlertDialog mFavoritesDialog;
 	/**
+	 * View that holds the ADDFavorites dialog content, defined in xml in layout
+	 * folder.
+	 */
+	private View mAddFavoritesView;
+	/**
+	 * AlertDialog that holds the ADDFavorites dialog.
+	 */
+	private AlertDialog mAddFavoritesDialog;
+
+	/**
 	 * View that holds the ADDROOM dialog content, defined in xml in layout
 	 * folder.
 	 */
@@ -329,18 +339,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private EditText mShareDialogEditTextMessageWorking;
 
 	/* OTHER UTILS */
-	/**
-	 * Enum to have types and store the last caller of the "Add" dialog.
-	 * 
-	 */
-	private enum AddRoomCaller {
-		FAVORITES, SEARCH, UNDEF;
-	}
-
-	/**
-	 * Stores the last caller of the ADDROOM dialog.
-	 */
-	private AddRoomCaller lastCaller = AddRoomCaller.UNDEF;
 
 	/* ACTIONS FOR THE ACTION BAR */
 	/**
@@ -809,6 +807,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initInfoDialog();
 		initSearchDialog();
 		initFavoritesDialog();
+		initAddFavoritesDialog();
 		initAddRoomDialog();
 		initEditRoomDialog();
 		initShareDialog();
@@ -1071,9 +1070,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				if (!mAddRoomDialog.isShowing()) {
-					displayAddRoomDialog(AddRoomCaller.FAVORITES);
-				}
+				mAddFavoritesDialog.show();
 			}
 		});
 
@@ -1094,27 +1091,72 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mFavoritesAdapter.notifyDataSetChanged();
 	}
 
-	private void displayAddRoomDialog(AddRoomCaller calling) {
-		mAddRoomDialog.show();
-		// TODO: reset the data ? the text input, the selected room ?
-		lastCaller = calling;
+	private void dimissAddRoomDialog() {
+		mSummarySelectedRoomsTextViewSearchMenu.setText(u
+				.getSummaryTextFromCollection(selectedRooms));
+		searchButton.setEnabled(auditSubmit() == 0);
+
+		// Iterator<FRRoom> iter = selectedRooms.iterator();
+		// while (iter.hasNext()) {
+		// FRRoom mRoom = iter.next();
+		// // TODO: add all in batch!
+		// mModel.addFavorite(mRoom);
+		// }
+		// mFavoritesAdapter.notifyDataSetChanged();
+		// resetUserDefined(true);
+
 	}
 
-	private void dimissAddRoomDialog() {
-		if (lastCaller.equals(AddRoomCaller.FAVORITES)) {
-			Iterator<FRRoom> iter = selectedRooms.iterator();
-			while (iter.hasNext()) {
-				FRRoom mRoom = iter.next();
-				// TODO: add all in batch!
-				mModel.addFavorite(mRoom);
+	private void initAddFavoritesDialog() {
+		// Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.freeroom_dialog_add_favorites_title));
+		builder.setIcon(R.drawable.ic_action_new);
+
+		// Get the AlertDialog from create()
+		mAddFavoritesDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mAddFavoritesDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.FILL_PARENT;
+		lp.height = LayoutParams.WRAP_CONTENT;
+		mAddFavoritesDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mAddFavoritesDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mAddFavoritesDialog.getWindow().setAttributes(lp);
+
+		mAddFavoritesView = mLayoutInflater.inflate(
+				R.layout.freeroom_layout_dialog_add_favorites_room, null);
+		// these work perfectly
+		mAddFavoritesView.setMinimumWidth((int) (activityWidth * 0.9f));
+		// mAddRoomView.setMinimumHeight((int) (activityHeight * 0.8f));
+
+		mAddFavoritesDialog.setView(mAddFavoritesView);
+
+		mAddFavoritesDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				mAutoCompleteAddFavoritesArrayListFRRoom.clear();
+				mAddFavoritesAdapter.notifyDataSetInvalidated();
+				mAutoCompleteAddRoomArrayListFRRoom.clear();
+				mAddRoomAdapter.notifyDataSetInvalidated();
+				mAutoCompleteAddRoomInputBarElement.setInputText("");
+				mAutoCompleteAddFavoritesInputBarElement.setInputText("");
 			}
-			mFavoritesAdapter.notifyDataSetChanged();
-			resetUserDefined(true);
-		} else if (lastCaller.equals(AddRoomCaller.SEARCH)) {
-			// we do nothing: reset will be done at search time
-			mSummarySelectedRoomsTextViewSearchMenu.setText(u
-					.getSummaryTextFromCollection(selectedRooms));
-		}
+		});
+
+		mAutoCompleteAddFavoritesArrayListFRRoom = new ArrayList<FRRoom>(50);
+
+		UIConstructAddFavoritesInputBar();
+		LinearLayout ll = (LinearLayout) mAddFavoritesView
+				.findViewById(R.id.freeroom_layout_dialog_add_favorites_layout_main);
+		ll.addView(mAutoCompleteAddFavoritesInputBarElement);
+		createAddFavoritesSuggestionsList();
 	}
 
 	private void initAddRoomDialog() {
@@ -1158,9 +1200,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onDismiss(DialogInterface dialog) {
-				if (AddRoomCaller.SEARCH.equals(lastCaller)) {
-					searchButton.setEnabled(auditSubmit() == 0);
-				}
+				mSummarySelectedRoomsTextViewSearchMenu.setText(u
+						.getSummaryTextFromCollection(selectedRooms));
+				searchButton.setEnabled(auditSubmit() == 0);
+				mAutoCompleteAddFavoritesArrayListFRRoom.clear();
+				mAddFavoritesAdapter.notifyDataSetInvalidated();
+				mAutoCompleteAddRoomArrayListFRRoom.clear();
+				mAddRoomAdapter.notifyDataSetInvalidated();
+				mAutoCompleteAddRoomInputBarElement.setInputText("");
+				mAutoCompleteAddFavoritesInputBarElement.setInputText("");
 			}
 		});
 
@@ -1176,14 +1224,24 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		mSummarySelectedRoomsTextView = (TextView) mAddRoomView
-				.findViewById(R.id.freeroom_layout_dialog_add_room_summary);
+		Button bt_edit = (Button) mAddRoomView
+				.findViewById(R.id.freeroom_layout_dialog_add_room_edit);
+		bt_edit.setOnClickListener(new OnClickListener() {
 
-		UIConstructInputBar();
+			@Override
+			public void onClick(View v) {
+				dismissSoftKeyBoard(v);
+				mAddRoomDialog.dismiss();
+				mEditRoomDialog.show();
+				dimissAddRoomDialog();
+			}
+		});
+
+		UIConstructAddRoomInputBar();
 		LinearLayout ll = (LinearLayout) mAddRoomView
 				.findViewById(R.id.freeroom_layout_dialog_add_layout_main);
-		ll.addView(mAutoCompleteSuggestionInputBarElement);
-		createSuggestionsList();
+		ll.addView(mAutoCompleteAddRoomInputBarElement);
+		createAddRoomSuggestionsList();
 
 	}
 
@@ -1249,7 +1307,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onDismiss(DialogInterface dialog) {
 				dimissAddRoomDialog();
-				searchButton.setEnabled(auditSubmit() == 0);
+
 			}
 		});
 
@@ -1260,7 +1318,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				dismissSoftKeyBoard(v);
-				mEditRoomDialog.dismiss();
 				dimissAddRoomDialog();
 			}
 		});
@@ -1272,7 +1329,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				mEditRoomDialog.dismiss();
-				displayAddRoomDialog(AddRoomCaller.SEARCH);
+				mAddRoomDialog.show();
 			}
 		});
 	}
@@ -2318,13 +2375,25 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	// ** REUSED FROM SCRATCH FROM FreeRoomSearchView ** //
 	private SetArrayList<FRRoom> selectedRooms;
 
-	private ListView mAutoCompleteSuggestionListView;
-	private List<FRRoom> mAutoCompleteSuggestionArrayListFRRoom;
+	private ListView mAutoCompleteAddRoomListView;
+	private List<FRRoom> mAutoCompleteAddRoomArrayListFRRoom;
 
 	/** The input bar to make the search */
-	private InputBarElement mAutoCompleteSuggestionInputBarElement;
+	private InputBarElement mAutoCompleteAddRoomInputBarElement;
 	/** Adapter for the <code>mListView</code> */
-	private FRRoomSuggestionArrayAdapter<FRRoom> mAdapter;
+	private FRRoomSuggestionArrayAdapter<FRRoom> mAddRoomAdapter;
+
+	/**
+	 * FAVORITES
+	 */
+
+	private ListView mAutoCompleteAddFavoritesListView;
+	private List<FRRoom> mAutoCompleteAddFavoritesArrayListFRRoom;
+
+	/** The input bar to make the search */
+	private InputBarElement mAutoCompleteAddFavoritesInputBarElement;
+	/** Adapter for the <code>mListView</code> */
+	private FRRoomSuggestionArrayAdapter<FRRoom> mAddFavoritesAdapter;
 
 	private DatePickerDialog mDatePickerDialog;
 	private TimePickerDialog mTimePickerStartDialog;
@@ -2365,7 +2434,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private boolean upToEndSelected = false;
 
-	private TextView mSummarySelectedRoomsTextView;
 	private TextView mSummarySelectedRoomsTextViewSearchMenu;
 
 	private int yearSelected = -1;
@@ -2390,7 +2458,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		// createSuggestionsList();
 		// addAllFavsToAutoComplete();
-		mAutoCompleteSuggestionArrayListFRRoom = new ArrayList<FRRoom>(10);
+		mAutoCompleteAddRoomArrayListFRRoom = new ArrayList<FRRoom>(10);
 		resetTimes();
 
 		UIConstructPickers();
@@ -2556,11 +2624,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void resetUserDefined(boolean itsTheEnd) {
 		selectedRooms.clear();
 
-		mSummarySelectedRoomsTextView.setText(u
-				.getSummaryTextFromCollection(selectedRooms));
 		mSummarySelectedRoomsTextViewSearchMenu.setText(u
 				.getSummaryTextFromCollection(selectedRooms));
-		mAutoCompleteSuggestionInputBarElement.setInputText("");
+		mAutoCompleteAddRoomInputBarElement.setInputText("");
 
 		if (!itsTheEnd) {
 			searchButton.setEnabled(auditSubmit() == 0);
@@ -2598,7 +2664,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							.setVisibility(View.VISIBLE);
 
 					userDefButton.setChecked(true);
-					displayAddRoomDialog(AddRoomCaller.SEARCH);
+					mAddRoomDialog.show();
 					// as it's user-defined, we dont check for search button
 					// enabled now
 					searchButton.setEnabled(false);
@@ -2674,7 +2740,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 					mSummarySelectedRoomsTextViewSearchMenu.setText(u
 							.getSummaryTextFromCollection(selectedRooms));
-					displayAddRoomDialog(AddRoomCaller.SEARCH);
+					mAddRoomDialog.show();
 					searchButton.setEnabled(false);
 				} else {
 					resetUserDefined(false);
@@ -2810,7 +2876,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				displayAddRoomDialog(AddRoomCaller.SEARCH);
+				mAddRoomDialog.show();
 			}
 		});
 
@@ -2910,30 +2976,31 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		return (activityHeight < activityWidth);
 	}
 
-	// TODO: the InputBar is not used so far
-	private void UIConstructInputBar() {
+	private void UIConstructAddRoomInputBar() {
 		final IFreeRoomView view = this;
 
-		mAutoCompleteSuggestionInputBarElement = new InputBarElement(
+		mAutoCompleteAddRoomInputBarElement = new InputBarElement(
 				this,
 				null,
 				getString(R.string.freeroom_check_occupancy_search_inputbarhint));
-		mAutoCompleteSuggestionInputBarElement
+		mAutoCompleteAddRoomInputBarElement
 				.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 
 		// click on magnify glass on the keyboard
-		mAutoCompleteSuggestionInputBarElement
+		mAutoCompleteAddRoomInputBarElement
 				.setOnEditorActionListener(new OnEditorActionListener() {
 					@Override
 					public boolean onEditorAction(TextView v, int actionId,
 							KeyEvent event) {
 						if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-							String query = mAutoCompleteSuggestionInputBarElement
+							String query = mAutoCompleteAddRoomInputBarElement
 									.getInputText();
-							dismissSoftKeyBoard(v);
-							AutoCompleteRequest request = new AutoCompleteRequest(
-									query, mModel.getGroupAccess());
-							mController.autoCompleteBuilding(view, request);
+							if (u.validQuery(query)) {
+								dismissSoftKeyBoard(v);
+								AutoCompleteRequest request = new AutoCompleteRequest(
+										query, mModel.getGroupAccess());
+								mController.autoCompleteBuilding(view, request);
+							}
 						}
 
 						return true;
@@ -2941,13 +3008,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				});
 
 		// click on BUTTON magnify glass on the inputbar
-		mAutoCompleteSuggestionInputBarElement
+		mAutoCompleteAddRoomInputBarElement
 				.setOnButtonClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						String query = mAutoCompleteSuggestionInputBarElement
+						String query = mAutoCompleteAddRoomInputBarElement
 								.getInputText();
-						if (query.length() >= 2) {
+						if (u.validQuery(query)) {
 							dismissSoftKeyBoard(v);
 							AutoCompleteRequest request = new AutoCompleteRequest(
 									query, mModel.getGroupAccess());
@@ -2956,26 +3023,28 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					}
 				});
 
-		mAdapter = new FRRoomSuggestionArrayAdapter<FRRoom>(
+		mAddRoomAdapter = new FRRoomSuggestionArrayAdapter<FRRoom>(
 				getApplicationContext(),
-				mAutoCompleteSuggestionArrayListFRRoom, mModel);
+				R.layout.freeroom_layout_list_room_add_room,
+				R.id.freeroom_layout_list_room_add_room,
+				mAutoCompleteAddRoomArrayListFRRoom, mModel, false);
 
-		mAutoCompleteSuggestionInputBarElement
+		mAutoCompleteAddRoomInputBarElement
 				.setOnKeyPressedListener(new OnKeyPressedListener() {
 					@Override
 					public void onKeyPressed(String text) {
-						mAutoCompleteSuggestionListView.setAdapter(mAdapter);
+						mAutoCompleteAddRoomListView
+								.setAdapter(mAddRoomAdapter);
 
-						if (mAutoCompleteSuggestionInputBarElement
-								.getInputText().length() == 0) {
-							mAutoCompleteSuggestionInputBarElement
+						if (mAutoCompleteAddRoomInputBarElement.getInputText()
+								.length() == 0) {
+							mAutoCompleteAddRoomInputBarElement
 									.setButtonText(null);
-							mAutoCompleteSuggestionListView.invalidate();
-							addAllFavsToAutoComplete();
+							mAutoCompleteAddRoomListView.invalidate();
 						} else {
-							mAutoCompleteSuggestionInputBarElement
+							mAutoCompleteAddRoomInputBarElement
 									.setButtonText("");
-							if (text.length() >= 2) {
+							if (u.validQuery(text)) {
 								// TODO remove this if you don't want
 								// auto-complete
 								// without pressing the button
@@ -2988,12 +3057,87 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				});
 	}
 
-	private void addAllFavsToAutoComplete() {
-		mAutoCompleteSuggestionArrayListFRRoom.clear();
-		addAllFavoriteToCollection(mAutoCompleteSuggestionArrayListFRRoom,
-				AddCollectionCaller.ADDALLFAV, false);
+	private void UIConstructAddFavoritesInputBar() {
+		final IFreeRoomView view = this;
 
-		mAdapter.notifyDataSetChanged();
+		mAutoCompleteAddFavoritesInputBarElement = new InputBarElement(
+				this,
+				null,
+				getString(R.string.freeroom_check_occupancy_search_inputbarhint));
+		mAutoCompleteAddFavoritesInputBarElement
+				.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+		// click on magnify glass on the keyboard
+		mAutoCompleteAddFavoritesInputBarElement
+				.setOnEditorActionListener(new OnEditorActionListener() {
+					@Override
+					public boolean onEditorAction(TextView v, int actionId,
+							KeyEvent event) {
+						if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+							String query = mAutoCompleteAddRoomInputBarElement
+									.getInputText();
+							if (u.validQuery(query)) {
+								dismissSoftKeyBoard(v);
+								AutoCompleteRequest request = new AutoCompleteRequest(
+										query, mModel.getGroupAccess());
+
+								// request.setForbiddenRoomsUID(forbiddenRoomsUID);
+								mController.autoCompleteBuilding(view, request);
+							}
+						}
+
+						return true;
+					}
+				});
+
+		// click on BUTTON magnify glass on the inputbar
+		mAutoCompleteAddFavoritesInputBarElement
+				.setOnButtonClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						String query = mAutoCompleteAddRoomInputBarElement
+								.getInputText();
+						if (u.validQuery(query)) {
+							dismissSoftKeyBoard(v);
+							AutoCompleteRequest request = new AutoCompleteRequest(
+									query, mModel.getGroupAccess());
+							mController.autoCompleteBuilding(view, request);
+						}
+					}
+				});
+
+		mAddFavoritesAdapter = new FRRoomSuggestionArrayAdapter<FRRoom>(
+				getApplicationContext(),
+				R.layout.freeroom_layout_list_room_add_fav,
+				R.id.freeroom_layout_list_room_add_fav,
+				mAutoCompleteAddFavoritesArrayListFRRoom, mModel, true);
+
+		mAutoCompleteAddFavoritesInputBarElement
+				.setOnKeyPressedListener(new OnKeyPressedListener() {
+					@Override
+					public void onKeyPressed(String text) {
+						mAutoCompleteAddFavoritesListView
+								.setAdapter(mAddFavoritesAdapter);
+
+						if (mAutoCompleteAddFavoritesInputBarElement
+								.getInputText().length() == 0) {
+							mAutoCompleteAddFavoritesInputBarElement
+									.setButtonText(null);
+							mAutoCompleteAddFavoritesListView.invalidate();
+						} else {
+							mAutoCompleteAddFavoritesInputBarElement
+									.setButtonText("");
+							if (u.validQuery(text)) {
+								// TODO remove this if you don't want
+								// auto-complete
+								// without pressing the button
+								AutoCompleteRequest request = new AutoCompleteRequest(
+										text, mModel.getGroupAccess());
+								mController.autoCompleteBuilding(view, request);
+							}
+						}
+					}
+				});
 	}
 
 	private enum AddCollectionCaller {
@@ -3041,26 +3185,25 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	/**
 	 * Initialize the autocomplete suggestion list
 	 */
-	private void createSuggestionsList() {
-		mAutoCompleteSuggestionListView = new LabeledListViewElement(this);
-		mAutoCompleteSuggestionInputBarElement
-				.addView(mAutoCompleteSuggestionListView);
+	private void createAddRoomSuggestionsList() {
+		mAutoCompleteAddRoomListView = new LabeledListViewElement(this);
+		mAutoCompleteAddRoomInputBarElement
+				.addView(mAutoCompleteAddRoomListView);
 
-		mAutoCompleteSuggestionListView
+		mAutoCompleteAddRoomListView
 				.setOnItemClickListener(new OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> adapter, View view,
 							int pos, long id) {
 
-						FRRoom room = mAutoCompleteSuggestionArrayListFRRoom
+						FRRoom room = mAutoCompleteAddRoomArrayListFRRoom
 								.get(pos);
 						addRoomToCheck(room);
 						searchButton.setEnabled(auditSubmit() == 0);
 						// refresh the autocomplete, such that selected rooms
 						// are not displayed
-						if (mAutoCompleteSuggestionInputBarElement
-								.getInputText().length() == 0) {
-							addAllFavsToAutoComplete();
+						if (mAutoCompleteAddRoomInputBarElement.getInputText()
+								.length() == 0) {
 						} else {
 							autoCompletedUpdated();
 						}
@@ -3070,14 +3213,47 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						// rooms in the same building
 					}
 				});
-		mAutoCompleteSuggestionListView.setAdapter(mAdapter);
+		mAutoCompleteAddRoomListView.setAdapter(mAddRoomAdapter);
+	}
+
+	/**
+	 * Initialize the autocomplete suggestion list
+	 */
+	private void createAddFavoritesSuggestionsList() {
+		mAutoCompleteAddFavoritesListView = new LabeledListViewElement(this);
+		mAutoCompleteAddFavoritesInputBarElement
+				.addView(mAutoCompleteAddFavoritesListView);
+
+		mAutoCompleteAddFavoritesListView
+				.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> adapter, View view,
+							int pos, long id) {
+
+						FRRoom room = mAutoCompleteAddFavoritesArrayListFRRoom
+								.get(pos);
+						if (mModel.isFavorite(room)) {
+							mModel.removeFavorite(room);
+						} else {
+							mModel.addFavorite(room);
+						}
+						// refresh the autocomplete, such that selected rooms
+						// are not displayed
+						autoCompletedUpdated();
+
+						// WE DONT REMOVE the text in the input bar
+						// INTENTIONNALLY: user may want to select multiple
+						// rooms in the same building
+					}
+				});
+		mAutoCompleteAddFavoritesListView.setAdapter(mAddFavoritesAdapter);
 	}
 
 	private void addRoomToCheck(FRRoom room) {
 		// we only add if it already contains the room
 		if (!selectedRooms.contains(room)) {
 			selectedRooms.add(room);
-			mSummarySelectedRoomsTextView.setText(u
+			mSummarySelectedRoomsTextViewSearchMenu.setText(u
 					.getSummaryTextFromCollection(selectedRooms));
 
 		} else {
@@ -3120,7 +3296,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// mSummarySelectedRoomsTextView
 		// .setText(getString(R.string.freeroom_check_occupancy_search_text_no_selected_rooms));
 		//
-		mAutoCompleteSuggestionArrayListFRRoom.clear();
+		mAutoCompleteAddRoomArrayListFRRoom.clear();
 
 		resetTimes();
 
@@ -3366,7 +3542,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			tv.setVisibility(View.VISIBLE);
 			return 1;
 		} else {
-			tv.setTextColor(Color.BLACK);
+			tv.setTextColor(Color.DKGRAY);
 			tv.setBackgroundColor(Color.WHITE);
 			// valid request
 			tv.setText(getString(R.string.freeroom_search_valid_request));
@@ -3409,8 +3585,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	@Override
 	public void autoCompletedUpdated() {
-		mAdapter.notifyDataSetInvalidated();
-		mAutoCompleteSuggestionArrayListFRRoom.clear();
+		mAddRoomAdapter.notifyDataSetInvalidated();
+		mAddFavoritesAdapter.notifyDataSetInvalidated();
+		mAutoCompleteAddRoomArrayListFRRoom.clear();
+		mAutoCompleteAddFavoritesArrayListFRRoom.clear();
 
 		// TODO: adapt to use the new version of autocomplete mapped by building
 		Iterator<List<FRRoom>> iter = mModel.getAutoComplete().values()
@@ -3426,16 +3604,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				FRRoom room = iterroom.next();
 				// rooms that are already selected are not displayed...
 				if (!selectedRooms.contains(room)) {
-					mAutoCompleteSuggestionArrayListFRRoom.add(room);
+					mAutoCompleteAddRoomArrayListFRRoom.add(room);
 				}
+				mAutoCompleteAddFavoritesArrayListFRRoom.add(room);
 			}
 		}
 
 		if (mSearchByUriTriggered) {
-			searchByUriMakeRequest(mAutoCompleteSuggestionArrayListFRRoom);
+			searchByUriMakeRequest(mAutoCompleteAddRoomArrayListFRRoom);
 		}
 
-		mAdapter.notifyDataSetChanged();
+		mAddRoomAdapter.notifyDataSetChanged();
+		mAddFavoritesAdapter.notifyDataSetChanged();
 	}
 
 	@Override

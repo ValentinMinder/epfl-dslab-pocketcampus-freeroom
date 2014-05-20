@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
+import org.pocketcampus.plugin.freeroom.android.utils.FRUtilsClient;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 import android.content.Context;
@@ -32,51 +33,33 @@ public class FRRoomSuggestionArrayAdapter<T> extends ArrayAdapter<FRRoom> {
 	private List<FRRoom> data;
 	// hold the caller view for colors updates.
 	private FreeRoomModel mModel;
+	private int ressourceText;
+	private boolean favorites;
 
-	public FRRoomSuggestionArrayAdapter(Context c, List<FRRoom> data,
-			FreeRoomModel model) {
-		super(c, R.layout.sdk_list_entry, R.id.sdk_list_entry_text, data);
+	public FRRoomSuggestionArrayAdapter(Context c, int ressource,
+			int ressourceText, List<FRRoom> data, FreeRoomModel model, boolean favorites) {
+		super(c, ressource, ressourceText, data);
 		this.context = c;
 		this.data = data;
 		this.mModel = model;
+		this.ressourceText = ressourceText;
+		this.favorites = favorites;
 	}
 
 	@Override
 	public View getView(int index, View convertView, ViewGroup parent) {
-		ViewHolder vholder = null;
-		if (convertView == null) {
-			convertView = LayoutInflater.from(context).inflate(
-					R.layout.freeroom_layout_room_empty, null);
-			vholder = new ViewHolder();
-			vholder.setTextView((TextView) convertView
-					.findViewById(R.id.freeroom_layout_empty_text));
-			convertView.setTag(vholder);
-		} else {
-			vholder = (ViewHolder) convertView.getTag();
+		View row = super.getView(index, convertView, parent);
+		TextView tv = (TextView) row.findViewById(ressourceText);
+		FRRoom room = data.get(index);
+		tv.setText(FRUtilsClient.formatRoom(room));
+		
+		if (favorites) {
+			if (mModel.isFavorite(room)) {
+				tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite_enabled, 0, 0, 0);
+			} else {
+				tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite_disabled, 0, 0, 0);
+			}
 		}
-
-		final FRRoom mFrRoom = data.get(index);
-		TextView tv = vholder.getTextView();
-		tv.setText(mFrRoom.getDoorCode());
-
-		return convertView;
+		return row;
 	}
-
-	/**
-	 * Class used to keep a view, it saves ressources by avoiding multiple
-	 * inflate and findViewById operations.
-	 * 
-	 */
-	private class ViewHolder {
-		private TextView tv = null;
-
-		public void setTextView(TextView tv) {
-			this.tv = tv;
-		}
-
-		public TextView getTextView() {
-			return this.tv;
-		}
-	}
-
 }
