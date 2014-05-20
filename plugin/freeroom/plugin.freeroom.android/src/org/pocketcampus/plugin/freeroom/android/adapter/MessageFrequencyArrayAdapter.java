@@ -3,16 +3,14 @@ package org.pocketcampus.plugin.freeroom.android.adapter;
 import java.util.List;
 
 import org.pocketcampus.plugin.freeroom.R;
-import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
 import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
 
+import android.R.color;
 import android.content.Context;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -45,7 +43,16 @@ public class MessageFrequencyArrayAdapter<T> extends
 		TextView frequencyTextView = (TextView) row
 				.findViewById(R.id.freeroom_layout_message_number);
 		MessageFrequency req = super.getItem(position);
-		messageTextView.setText(req.getMessage());
+		String message = req.getMessage();
+		// no message: sharing without message -> display grey "undefined"
+		if (message != null && message == "") {
+			messageTextView.setText(caller
+					.getString(R.string.freeroom_whoIsWorking_undefined));
+			messageTextView.setTextColor(color.darker_gray);
+		} else {
+			messageTextView.setText(req.getMessage());
+			messageTextView.setTextColor(color.black);
+		}
 		frequencyTextView.setText(req.getFrequency() + " x");
 		return (row);
 	}

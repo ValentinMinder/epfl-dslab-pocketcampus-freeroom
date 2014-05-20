@@ -220,5 +220,6 @@
     <string name="freeroom_whoIsWorking_title">"Working there &#8230;"</string>
     <string name="freeroom_whoIsWorking_disclaimer">"These indications come from users input. The authors, Pocketcampus, DSLAB and EPFL are not responsible for what the users may have written."</string>
     <string name="freeroom_whoIsWorking_wait">"Please wait, results are refreshed &#8230;"</string>
-
+    <string name="freeroom_whoIsWorking_undefined">"Undefined"</string>
+    
 </resources>
