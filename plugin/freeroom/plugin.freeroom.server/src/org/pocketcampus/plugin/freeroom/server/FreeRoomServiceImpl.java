@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.freeroom.server;
 
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.sql.Connection;
@@ -16,7 +17,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
@@ -66,7 +66,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			.getName());
 	private SimpleDateFormat dateLogFormat = new SimpleDateFormat(
 			"MMM dd,yyyy HH:mm");
-	private final String PATH_LOG_PATTERN = "./log/freeroom%g.log";
+	private final String LOG_FOLDER = "log";
+	private final String PATH_LOG_PATTERN = "./" + LOG_FOLDER + "/freeroom%g.log";
 	//total size of log can be MAX_BYTES_PER_LOGFILE * MAX_LOGFILES
 	private final int MAX_BYTES_PER_LOGFILE = 4 * 1000 * 1000; 
 	private final int MAX_LOGFILES = 200;
@@ -89,6 +90,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ... V2");
+		createLogFolder();
 		logger.setLevel(Level.INFO);
 		FileHandler logHandler = null;
 		try {
@@ -127,6 +129,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		connMgr = conn;
 	}
 
+	private void createLogFolder() {
+		File folder = new File("./" + LOG_FOLDER);
+		if (!folder.exists()) {
+			folder.mkdir();
+		}
+	}
+	
 	public void log(Level level, String message) {
 		log(LOG_SIDE.SERVER, level, message);
 	}
