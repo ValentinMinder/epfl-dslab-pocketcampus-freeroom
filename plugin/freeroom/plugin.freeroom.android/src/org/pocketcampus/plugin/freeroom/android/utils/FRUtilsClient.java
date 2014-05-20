@@ -268,7 +268,7 @@ public class FRUtilsClient {
 			}
 			buffer.append(name + ", ");
 		}
-		buffer.setLength(buffer.length() - 2);
+		buffer.setLength(Math.max(0,buffer.length() - 2));
 		if (iter.hasNext()) {
 			buffer.append(", ...");
 		}
