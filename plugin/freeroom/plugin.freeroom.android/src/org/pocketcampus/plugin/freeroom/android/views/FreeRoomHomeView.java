@@ -1107,7 +1107,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				mModel.addFavorite(mRoom);
 			}
 			mFavoritesAdapter.notifyDataSetChanged();
-			resetUserDefined();
+			resetUserDefined(true);
 		} else if (lastCaller.equals(AddRoomCaller.SEARCH)) {
 			// we do nothing: reset will be done at search time
 			mSummarySelectedRoomsTextViewSearchMenu.setText(u
@@ -1899,11 +1899,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				mFavoritesDialog.dismiss();
 				flag = true;
 			}
-			selectedRooms.clear();
-			if (flag) {
-				resetUserDefined();
-				return true;
-			}
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -2552,9 +2547,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		});
 	}
 
-	private void resetUserDefined() {
-		mOptionalLineLinearLayoutWrapperSecond.setVisibility(View.GONE);
-
+	/**
+	 * 
+	 * @param itsTheEnd
+	 *            true if the request is already send, avoid to recheck the
+	 *            validity.
+	 */
+	private void resetUserDefined(boolean itsTheEnd) {
 		selectedRooms.clear();
 
 		mSummarySelectedRoomsTextView.setText(u
@@ -2563,15 +2562,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				.getSummaryTextFromCollection(selectedRooms));
 		mAutoCompleteSuggestionInputBarElement.setInputText("");
 
-		if (mModel.getFavorites().isEmpty() && !favButton.isChecked()) {
-			userDefButton.setChecked(true);
-			mOptionalLineLinearLayoutWrapperSecond.setVisibility(View.VISIBLE);
-
-			displayAddRoomDialog(AddRoomCaller.SEARCH);
-			searchButton.setEnabled(false);
-		} else {
-			userDefButton.setChecked(false);
-			favButton.setChecked(true);
+		if (!itsTheEnd) {
 			searchButton.setEnabled(auditSubmit() == 0);
 		}
 	}
@@ -2631,7 +2622,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							.setVisibility(View.GONE);
 				}
 				specButton.setChecked(false);
-				resetUserDefined();
+				resetUserDefined(false);
 
 				boolean enabled = false;
 				favButton.setEnabled(enabled);
@@ -2670,7 +2661,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onClick(View v) {
 				if (userDefButton.isChecked() || !favButton.isChecked()) {
 					if (userDefButton.isChecked()) {
-						resetUserDefined();
+						resetUserDefined(false);
 					}
 					userDefButton.setChecked(true);
 
@@ -2686,7 +2677,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					displayAddRoomDialog(AddRoomCaller.SEARCH);
 					searchButton.setEnabled(false);
 				} else {
-					resetUserDefined();
+					resetUserDefined(false);
 					searchButton.setEnabled(auditSubmit() == 0);
 				}
 			}
@@ -2735,7 +2726,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				// TODO: code 
+				// TODO: code
 				System.out.println("down to start");
 			}
 		});
@@ -2747,7 +2738,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				// TODO: code 
+				// TODO: code
 				System.out.println("down start");
 			}
 		});
@@ -2759,7 +2750,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				// TODO: code 
+				// TODO: code
 				System.out.println("up start");
 			}
 		});
@@ -2771,7 +2762,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				// TODO: code 
+				// TODO: code
 				System.out.println("down end");
 			}
 		});
@@ -2839,13 +2830,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				resetUserDefined();
+				resetUserDefined(false);
 			}
 		});
 
 		// for landscape device, mainly tablet, some layout are programmatically
 		// changed to horizontal values, and weighted more logically.
-		// XML IS ALWAYS DESIGNED FOR PHONES, as it's probably more than 97% of users.
+		// XML IS ALWAYS DESIGNED FOR PHONES, as it's probably more than 97% of
+		// users.
 		// tablets are changing their layout here.
 		if (isLandscape()) {
 			LinearLayout header_main = (LinearLayout) mSearchView
@@ -3291,7 +3283,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		refresh();
 		mSearchDialog.dismiss();
 
-		resetUserDefined(); // cleans the selectedRooms of userDefined
+		resetUserDefined(true); // cleans the selectedRooms of userDefined
 	}
 
 	/**
