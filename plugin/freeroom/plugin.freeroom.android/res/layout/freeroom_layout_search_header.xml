@@ -261,7 +261,7 @@
                 android:layout_height="45dp"
                 android:layout_gravity="bottom"
                 android:layout_weight="5"
-                android:drawableLeft="@drawable/ic_action_new"
+                android:drawableLeft="@drawable/ic_action_new_grey"
                 android:text="@string/freeroom_search_userdef_add"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@android:color/black" />
