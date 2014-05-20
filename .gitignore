@@ -35,3 +35,7 @@ TestResults/
 # WP app
 Windows/Source/Main.WindowsPhone/analytics.xml
 Windows/Source/Map.WindowsPhone/MapTokens.txt
+
+*.1
+
+*.lck
