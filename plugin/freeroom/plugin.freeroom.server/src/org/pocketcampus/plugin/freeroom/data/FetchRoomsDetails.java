@@ -370,7 +370,10 @@ public class FetchRoomsDetails {
 			}
 
 			return query.executeUpdate() > 0;
-		} catch (SQLException | JSONException e) {
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		} catch (JSONException e) {
 			e.printStackTrace();
 			return false;
 		}

@@ -136,9 +136,9 @@ public class Utils {
 	 * @return The list with unique ids without duplicates
 	 */
 	public static List<String> removeDuplicate(List<String> uidList) {
-		HashSet<String> uidSet = new HashSet<>();
+		HashSet<String> uidSet = new HashSet<String>();
 		uidSet.addAll(uidList);
-		return new ArrayList<>(uidSet);
+		return new ArrayList<String>(uidSet);
 	}
 
 	public static boolean checkValidUID(String uid) {

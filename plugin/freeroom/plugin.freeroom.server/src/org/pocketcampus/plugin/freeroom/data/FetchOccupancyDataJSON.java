@@ -234,7 +234,10 @@ public class FetchOccupancyDataJSON {
 			// if we are there, it means the fetch of the rooms details
 			// succeeded
 			return uid;
-		} catch (SQLException | JSONException e) {
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -357,11 +360,8 @@ public class FetchOccupancyDataJSON {
 			} else {
 				server.log(Level.WARNING, "Error while fetching from ISA webservice, status " + response.getStatusLine().getStatusCode());
 			}
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		} catch (HttpException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			//TODO compile and merge script does not like URISyntaxException and HttpException
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;

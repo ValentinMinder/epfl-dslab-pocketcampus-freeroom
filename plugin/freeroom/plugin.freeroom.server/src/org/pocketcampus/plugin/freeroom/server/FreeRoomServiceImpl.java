@@ -265,7 +265,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			period.setTimeStampStart(FRTimes.roundHourBefore(period
 					.getTimeStampStart()));
 			if (!Utils.checkUserMessage(userMessage)) {
-				log(Level.INFO, "Getting wrong user message : " + userMessage);
+				log(Level.WARNING, "Getting wrong user message : " + userMessage);
 				return false;
 			} else if (userMessage != null
 					&& userMessage.length() > LENGTH_USERMESSAGE) {
