@@ -40,12 +40,14 @@ public class FRRoomRemoveArrayAdapter<T> extends ArrayAdapter<FRRoom> {
 		ImageView removeRoom = (ImageView) row
 				.findViewById(R.id.freeroom_layout_selected_remove);
 
-		removeRoom.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				caller.onRemoveRoomClickListener(position);
-			}
-		});
+		// there is already a clicklistener for the whole line, and removing
+		// from here cause an UI issue.
+		// removeRoom.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// caller.onRemoveRoomClickListener(position);
+		// }
+		// });
 
 		// play click listener
 		TextView roomName = (TextView) row

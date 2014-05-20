@@ -29,7 +29,8 @@
         android:layout_toLeftOf="@id/freeroom_layout_selected_remove"
         android:contentDescription="@string/freeroom_layout_separator_dark"
         android:gravity="center"
-        android:src="@drawable/separator_grey" />
+        android:src="@drawable/separator_grey"
+        android:visibility="invisible" />
 
     <!-- TextView to hold the name of the room -->
 
