@@ -67,9 +67,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private SimpleDateFormat dateLogFormat = new SimpleDateFormat(
 			"MMM dd,yyyy HH:mm");
 	private final String LOG_FOLDER = "log";
-	private final String PATH_LOG_PATTERN = "./" + LOG_FOLDER + "/freeroom%g.log";
-	//total size of log can be MAX_BYTES_PER_LOGFILE * MAX_LOGFILES
-	private final int MAX_BYTES_PER_LOGFILE = 4 * 1000 * 1000; 
+	private final String PATH_LOG_PATTERN = "./" + LOG_FOLDER
+			+ "/freeroom%g.log";
+	// total size of log can be MAX_BYTES_PER_LOGFILE * MAX_LOGFILES
+	private final int MAX_BYTES_PER_LOGFILE = 4 * 1000 * 1000;
 	private final int MAX_LOGFILES = 200;
 	private String DB_URL;
 	private String DB_USER;
@@ -94,7 +95,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		logger.setLevel(Level.INFO);
 		FileHandler logHandler = null;
 		try {
-			logHandler = new FileHandler(PATH_LOG_PATTERN, MAX_BYTES_PER_LOGFILE, MAX_LOGFILES, true);
+			logHandler = new FileHandler(PATH_LOG_PATTERN,
+					MAX_BYTES_PER_LOGFILE, MAX_LOGFILES, true);
 			SimpleFormatter logFormatter = new SimpleFormatter();
 			logHandler.setFormatter(logFormatter);
 		} catch (SecurityException e1) {
@@ -102,12 +104,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		if (logHandler != null) {
 			logger.addHandler(logHandler);
 
 		}
-		
+
 		DB_URL = PC_SRV_CONFIG.getString("DB_URL") + "?allowMultiQueries=true";
 		DB_USER = PC_SRV_CONFIG.getString("DB_USERNAME");
 		DB_PASSWORD = PC_SRV_CONFIG.getString("DB_PASSWORD");
@@ -135,7 +137,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			folder.mkdir();
 		}
 	}
-	
+
 	public void log(Level level, String message) {
 		log(LOG_SIDE.SERVER, level, message);
 	}
@@ -175,11 +177,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private String formatServerLogInfo(String method, String arguments) {
 		return formatServerLogInfo(method, arguments, "NA");
-		
+
 	}
-	
-	private String formatServerLogInfo(String method, String arguments, String answer) {
-		return "ACTION=" + method + " / ARGS=" + arguments + " / RETURN=" + answer;
+
+	private String formatServerLogInfo(String method, String arguments,
+			String answer) {
+		return "ACTION=" + method + " / ARGS=" + arguments + " / RETURN="
+				+ answer;
 	}
 
 	/**
@@ -218,6 +222,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						+ " : " + message);
 	}
 
+	public boolean insertOccupancy(FRPeriod period, OCCUPANCY_TYPE type,
+			String uid, String hash, String userMessage) {
+		return insertOccupancyDetailedReply(period, type, uid, hash,
+				userMessage) == HttpURLConnection.HTTP_OK;
+	}
+
 	/**
 	 * This method's job is to ensure the data are stored in a proper way.
 	 * Whenever you need to insert an occupancy you should call this one. The
@@ -232,10 +242,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            Type of the occupancy (for instance user or room occupancy)
 	 * @param room
 	 *            The room, the object has to contains the UID
-	 * @return true if the occupancy has been well inserted, false otherwise.
+	 * @return int error code defined by HttpURLConnection, OK insertion is
+	 *         successful, BAD_REQUEST, argument required is (are) null, or
+	 *         length of the message is too long, PRECON_FAILED if the message
+	 *         of the user contains forbidden words, INTERNAL_ERROR if the
+	 *         server failed
 	 */
-	public boolean insertOccupancy(FRPeriod period, OCCUPANCY_TYPE type,
-			String uid, String hash, String userMessage) {
+	public int insertOccupancyDetailedReply(FRPeriod period,
+			OCCUPANCY_TYPE type, String uid, String hash, String userMessage) {
 		if (period == null || type == null || uid == null) {
 			log(LOG_SIDE.SERVER,
 					Level.WARNING,
@@ -244,7 +258,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							+ " type = "
 							+ (type == null)
 							+ " room = " + (uid == null));
-			return false;
+			return HttpURLConnection.HTTP_BAD_REQUEST;
 		}
 		// putting seconds and milliseconds to zero
 		period.setTimeStampStart(FRTimes.roundSAndMSToZero(period
@@ -255,7 +269,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (type == OCCUPANCY_TYPE.USER && hash == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Hash is null when inserting user occupancy");
-			return false;
+			return HttpURLConnection.HTTP_BAD_REQUEST;
 		}
 
 		if (type == OCCUPANCY_TYPE.USER) {
@@ -265,13 +279,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			period.setTimeStampStart(FRTimes.roundHourBefore(period
 					.getTimeStampStart()));
 			if (!Utils.checkUserMessage(userMessage)) {
-				log(Level.WARNING, "Getting wrong user message : " + userMessage);
-				return false;
+				log(Level.WARNING, "Getting wrong user message : "
+						+ userMessage);
+				return HttpURLConnection.HTTP_PRECON_FAILED;
 			} else if (userMessage != null
 					&& userMessage.length() > LENGTH_USERMESSAGE) {
 				log(Level.INFO, "User message is too long, length = "
 						+ userMessage.length());
-				return false;
+				return HttpURLConnection.HTTP_BAD_REQUEST;
 			}
 		}
 
@@ -285,7 +300,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 								+ period.getTimeStampStart() + ",end="
 								+ period.getTimeStampEnd() + ",userMessage="
 								+ userMessage, inserted + ""));
-		return inserted;
+		return inserted ? HttpURLConnection.HTTP_OK
+				: HttpURLConnection.HTTP_INTERNAL_ERROR;
 
 	}
 
@@ -891,7 +907,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		String logMessage = "uidList=" + uidList + ",onlyFreeRooms="
 				+ onlyFreeRooms + ",tsStart=" + tsStart + ",tsEnd=" + tsEnd
 				+ ",userGroup=" + userGroup;
-		
+
 		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
 		int numberOfRooms = uidList.size();
 		// formatting for the query
@@ -1070,7 +1086,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							result);
 				}
 			}
-			
+
 			log(Level.INFO,
 					formatServerLogInfo("getOccupancyOfSpecificRoom",
 							logMessage));
@@ -1341,20 +1357,19 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		String userMessage = (work.isSetMessage() && work.getMessage() != null) ? work
 				.getMessage() : null;
 		FRRoom room = work.getRoom();
-		boolean success = insertOccupancy(period, OCCUPANCY_TYPE.USER,
+		int code = insertOccupancyDetailedReply(period, OCCUPANCY_TYPE.USER,
 				room.getUid(), request.getHash(), userMessage);
 		// TODO maybe change return value, to match more cases
-		if (success) {
+		if (code == HttpURLConnection.HTTP_OK) {
 			String logMessage = "start=" + period.getTimeStampStart() + ",end="
 					+ period.getTimeStampEnd() + ",uid= " + room.getUid()
 					+ ",hash=" + request.getHash() + ",userMessage="
 					+ userMessage;
 			log(Level.INFO,
 					formatServerLogInfo("indicateImWorking", logMessage));
-			return new ImWorkingReply(HttpURLConnection.HTTP_OK, "");
-		} else {
-			return new ImWorkingReply(HttpURLConnection.HTTP_BAD_REQUEST, " ");
 		}
+		return new ImWorkingReply(code, " ");
+
 	}
 
 	@Override
