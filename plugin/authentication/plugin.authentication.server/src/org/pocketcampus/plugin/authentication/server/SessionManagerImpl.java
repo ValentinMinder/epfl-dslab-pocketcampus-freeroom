@@ -1,10 +1,19 @@
 package org.pocketcampus.plugin.authentication.server;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
+import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.commons.lang3.StringUtils;
+import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
+import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+
+import ch.epfl.tequila.client.model.TequilaPrincipal;
 
 /**
  * SessionManager to manage PC sessions.
@@ -13,56 +22,98 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SessionManagerImpl implements SessionManager {
 
-	private final static long SESSION_VALIDITY = 86400000; // 1 day
-
-	private static class User {
-		private String gaspar;
-		private String sciper;
-		private long lastAccess;
-		public User(String gaspar, String sciper) {
-			this.gaspar = gaspar;
-			this.sciper = sciper;
-			touch();
-		}
-		public String getGaspar() {
-			return gaspar;
-		}
-		public String getSciper() {
-			return sciper;
-		}
-		public void touch() {
-			lastAccess = System.currentTimeMillis();
-		}
-	}
+	private final static long TIMEOUT_INTERVAL = 3600; // 1 hour
+	private final static long EXPIRY_INTERVAL = 30 * 24 * 3600; // 1 month
 	
-	private Map<String, User> sessions;
+	private ConnectionManager mConnectionManager;
 	
 	public SessionManagerImpl() {
-		sessions = new ConcurrentHashMap<String, User>();
+		try {
+			this.mConnectionManager = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
+					PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
+			new Thread(getCleaner()).start();
+		} catch (ServerException e) {
+			e.printStackTrace();
+		}
 
-		new Thread(getCleaner()).start();
 	}
 	
-	public String insert(String gaspar, String sciper) {
+	private long getNow() {
+		return System.currentTimeMillis() / 1000;
+	}
+
+	@Override
+	public String insert(TequilaPrincipal principal, boolean rememberMe) {
 		String id = UUID.randomUUID().toString();
-		sessions.put(id, new User(gaspar, sciper));
-		return id;
+		PreparedStatement sqlStm = null;
+		long now = getNow();
+		try {
+			sqlStm = mConnectionManager.getConnection().prepareStatement("REPLACE INTO `authsessions` (`sessionid`, `expiry`, `timeout`, `clienthost`, `office`, `phone`, `status`, `firstname`, `where`, `requesthost`, `version`, `unit`, `sciper`, `title`, `gaspar`, `email`, `category`, `lastname`, `authorig`, `unixid`, `groupid`, `authstrength`) VALUES (" + StringUtils.repeat(", ?", 22).substring(2) + ")");
+			sqlStm.setString(1, id);
+			sqlStm.setLong(2, now + EXPIRY_INTERVAL); // 0 = never expires
+			sqlStm.setLong(3, rememberMe ? 0 : now + TIMEOUT_INTERVAL); // 0 = never times out
+			sqlStm.setString(4, principal.getHost());
+			sqlStm.setString(5, principal.getAttribute("office"));
+			sqlStm.setString(6, principal.getAttribute("phone"));
+			sqlStm.setString(7, principal.getAttribute("status"));
+			sqlStm.setString(8, principal.getAttribute("firstname"));
+			sqlStm.setString(9, principal.getAttribute("where"));
+			sqlStm.setString(10, principal.getAttribute("requesthost"));
+			sqlStm.setString(11, principal.getAttribute("version"));
+			sqlStm.setString(12, principal.getAttribute("unit"));
+			sqlStm.setString(13, principal.getAttribute("uniqueid"));
+			sqlStm.setString(14, principal.getAttribute("title"));
+			sqlStm.setString(15, principal.getAttribute("username"));
+			sqlStm.setString(16, principal.getAttribute("email"));
+			sqlStm.setString(17, principal.getAttribute("categorie"));
+			sqlStm.setString(18, principal.getAttribute("name"));
+			sqlStm.setString(19, principal.getAttribute("authorig"));
+			sqlStm.setString(20, principal.getAttribute("unixid"));
+			sqlStm.setString(21, principal.getAttribute("groupid"));
+			sqlStm.setString(22, principal.getAttribute("authstrength"));
+			sqlStm.executeUpdate();
+			return id;
+		} catch (SQLException e) {
+			System.out.println("[auth] Problem in insert");
+			return null;
+		} finally {
+			try {
+				if (sqlStm != null)
+					sqlStm.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
-	public String getGaspar(String sessionId) {
-		User u = sessions.get(sessionId);
-		if(u == null)
+	@Override
+	public List<String> getFields(String sessionId, List<String> fields) {
+		touch(sessionId);
+		PreparedStatement sqlStm = null;
+		try {
+			sqlStm = mConnectionManager.getConnection().prepareStatement("SELECT " + StringUtils.join(fields, ", ") + " FROM `authsessions` WHERE `sessionid` = ?");
+			sqlStm.setString(1, sessionId);
+			ResultSet rs = sqlStm.executeQuery();
+			while(rs.next()) {
+				List<String> res = new LinkedList<String>();
+				for(int i = 1; i <= fields.size(); i++)
+					res.add(rs.getString(i));
+				return res;
+			}
 			return null;
-		u.touch();
-		return u.getGaspar();
-	}
-	
-	public String getSciper(String sessionId) {
-		User u = sessions.get(sessionId);
-		if(u == null)
+		} catch (SQLException e) {
+			System.out.println("[auth] Problem with select user");
+			e.printStackTrace();
 			return null;
-		u.touch();
-		return u.getSciper();
+		} finally {
+			try {
+				if (sqlStm != null)
+					sqlStm.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 	
 	private Runnable getCleaner() {
@@ -70,24 +121,54 @@ public class SessionManagerImpl implements SessionManager {
 			public void run() {
 				while(true) {
 					try {
-						Thread.sleep(60000);
-					} catch (InterruptedException e) {
+						Thread.sleep(60 * 1000); // 1 minute
+						cleanup();
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					int cleaned = 0,  stored = 0;
-					for(Iterator<Entry<String, User>> ri = sessions.entrySet().iterator(); ri.hasNext();) {
-						Entry<String, User> re = ri.next();
-						if(re.getValue().lastAccess < System.currentTimeMillis() - SESSION_VALIDITY) {
-							ri.remove();
-							cleaned++;
-						} else {
-							stored++;
-						}
-					}
-					System.out.println("[auth] cleaned up " + cleaned + " sessions; " + stored + " in memory.");
 				}
 			}
 		};
 	}
+
+	private void touch(String sessionId) {
+		PreparedStatement sqlStm = null;
+		try {
+			sqlStm = mConnectionManager.getConnection().prepareStatement("UPDATE `authsessions` SET `timeout` = ? WHERE `sessionid` = ? AND `timeout` <> 0");
+			sqlStm.setLong(1, getNow() + TIMEOUT_INTERVAL);
+			sqlStm.setString(2, sessionId);
+			sqlStm.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[auth] Problem with updating timeout");
+		} finally {
+			try {
+				if (sqlStm != null)
+					sqlStm.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
+	private void cleanup() {
+		PreparedStatement sqlStm = null;
+		long now = getNow();
+		try {
+			sqlStm = mConnectionManager.getConnection().prepareStatement("DELETE FROM `authsessions` WHERE (`expiry` <> 0 AND `expiry` < ?) OR (`timeout` <> 0 AND `timeout` < ?)");
+			sqlStm.setLong(1, now);
+			sqlStm.setLong(2, now);
+			sqlStm.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[auth] Problem while cleaning up");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (sqlStm != null)
+					sqlStm.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 }
