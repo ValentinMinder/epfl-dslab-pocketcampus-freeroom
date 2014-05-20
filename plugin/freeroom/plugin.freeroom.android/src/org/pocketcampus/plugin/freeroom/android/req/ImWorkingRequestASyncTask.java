@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.freeroom.android.req;
 
+import java.net.HttpURLConnection;
+
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
@@ -55,6 +57,8 @@ public class ImWorkingRequestASyncTask extends
 			Log.v(this.getClass().toString(), "server replied successfully: updated");
 			// in case of update
 			mController.updateImWorking(reply);
+		} else if (status == HttpURLConnection.HTTP_PRECON_FAILED){
+			mController.badWordsImWorking(reply);
 		} else if (status == 409) {
 			// in case of conflict with the same user.
 			mController.conflictImWorking(reply);

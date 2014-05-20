@@ -185,9 +185,27 @@ public class FreeRoomController extends PluginController implements
 				"You already submitted something for this period of time, "
 						+ "you request was denied by the server "
 						+ "(conflict)");
-		Toast.makeText(this,
-				getString(R.string.freeroom_share_server_conflict),
-				Toast.LENGTH_LONG).show();
+		if (mModel.isOnlyServer()) {
+			Toast.makeText(this,
+					getString(R.string.freeroom_share_server_conflict),
+					Toast.LENGTH_LONG).show();
+		}
+	}
+
+	/**
+	 * "Tells the user" that the message was rejected because of a bad word.
+	 * 
+	 * @param reply
+	 *            the reply from the server
+	 */
+	public void badWordsImWorking(ImWorkingReply reply) {
+		Log.v("controller-imWorking-predCondFailed",
+				"User submitted a bad word!");
+		if (mModel.isOnlyServer()) {
+			Toast.makeText(this,
+					getString(R.string.freeroom_share_server_bad_words),
+					Toast.LENGTH_LONG).show();
+		}
 	}
 
 	/**

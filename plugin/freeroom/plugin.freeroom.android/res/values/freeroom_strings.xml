@@ -216,5 +216,6 @@
 
     <!-- NEW NEW -->
     <string name="freeroom_dialog_add_favorites_title">"Add favorites"</string>
+    <string name="freeroom_share_server_bad_words">"Rejected request: your message contains forbidden words."</string>
 
 </resources>
