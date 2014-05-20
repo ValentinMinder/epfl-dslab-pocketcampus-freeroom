@@ -61,7 +61,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center_vertical"
         android:layout_toLeftOf="@id/freeroom_layout_prev_req_separator_2"
-        android:drawableLeft="@drawable/ic_action_next_item"
+        android:drawableLeft="@drawable/sdk_arrow_mini_icon"
         android:gravity="left|center_vertical"
         android:maxLines="2"
         android:padding="2dp"
