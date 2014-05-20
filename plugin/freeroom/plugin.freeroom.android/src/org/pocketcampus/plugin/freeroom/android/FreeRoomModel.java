@@ -26,6 +26,7 @@ import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
 import org.pocketcampus.plugin.freeroom.android.utils.FRTimesClient;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
+import org.pocketcampus.plugin.freeroom.android.utils.SetArrayList;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
@@ -1161,7 +1162,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/* STORAGE OF PREV. REQUEST */
 
-	private LinkedList<FRRequestDetails> previousRequestDetails;
+	private SetArrayList<FRRequestDetails> previousRequestDetails;
 	private String PREV_REQ_FILENAME = "freeroom_prev_req_file.dat";
 
 	/**
@@ -1171,8 +1172,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	private boolean retrievePreviousRequest() {
 		Object read = readObjectFromFile(PREV_REQ_FILENAME);
-		if (read instanceof LinkedList<?>) {
-			previousRequestDetails = (LinkedList<FRRequestDetails>) read;
+		if (read instanceof SetArrayList<?>) {
+			previousRequestDetails = (SetArrayList<FRRequestDetails>) read;
 			return true;
 		} else {
 			return false;
@@ -1205,17 +1206,34 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * Reset the previous request structure to an empty structure and save it to
-	 * file. Useful when a bug appear, when changing structures during updates,
-	 * or simply at first launch of the app.
+	 * Reset the EXISTING previous request structure to an empty structure and
+	 * save it to file.
 	 * <p>
-	 * Call getPreviousRequest in usual mode, this is reserved for particular
-	 * uses.
+	 * Note: calling this if the structure don't exists now, it will create a
+	 * new one.
 	 * 
 	 * @return true if written to file successful.
 	 */
 	public boolean resetPreviousRequest() {
-		previousRequestDetails = new LinkedList<FRRequestDetails>();
+		if (previousRequestDetails == null) {
+			initPreviousRequest();
+		}
+		previousRequestDetails.clear();
+		return savePreviousRequest();
+	}
+
+	/**
+	 * Init the previous request structure to a NEW empty structure and save it
+	 * to file. Useful only at first launch.
+	 * <p>
+	 * NOTE that this function affects a NEW structures, so it will change
+	 * reference, therefore ALL UI based on this will become invalid!
+	 * 
+	 * @return true if written to file successful.
+	 */
+	private boolean initPreviousRequest() {
+		previousRequestDetails = new SetArrayList<FRRequestDetails>(
+				getPreviousRequestNumber(), true);
 		return savePreviousRequest();
 	}
 
@@ -1226,11 +1244,21 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 *            request to add to previous request.
 	 * @return true if successful
 	 */
-	public boolean addPreviousRequest(FRRequestDetails request) {
+	private boolean addPreviousRequest(FRRequestDetails request) {
 		// ensure favorites structure exists.
 		getPreviousRequest();
+		// if the request was already present, we remove it.
+		if (previousRequestDetails.contains(request)) {
+			System.out.println(request);
+			System.out.println("doublon");
+			previousRequestDetails.remove(request);
+		}
 		// adding at the start!
 		previousRequestDetails.addFirst(request);
+		// if too much elements, we remove the end.
+		while (previousRequestDetails.size() > getPreviousRequestNumber()) {
+			previousRequestDetails.removeLast();
+		}
 		return savePreviousRequest();
 	}
 

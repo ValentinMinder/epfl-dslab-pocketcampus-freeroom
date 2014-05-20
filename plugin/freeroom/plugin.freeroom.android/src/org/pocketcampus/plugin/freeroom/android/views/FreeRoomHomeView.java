@@ -1573,8 +1573,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	public void onPlayRequestClickListener(int position) {
 		if (onFillRequestClickListeners(position)) {
-			// request wont be stored
-			prepareSearchQuery(false);
+			// request we will be stored
+			// it will actually come at the first place and be deleted from it's
+			// original place
+			prepareSearchQuery(true);
 		}
 	}
 

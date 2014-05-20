@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.freeroom.android.utils;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
@@ -98,4 +99,106 @@ public class FRRequestDetails extends FRRequest {
 		return (time - System.currentTimeMillis()) > timeout;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		// we dont check WHOLE super-type, only interested things!
+		// int result = super.hashCode();
+		int result = 1;
+		// from super-type: we check only hours and is only free rooms.
+		result = prime * result + (super.isOnlyFreeRooms() ? 1231 : 1237);
+		FRPeriod period = this.getPeriod();
+
+		Calendar calendar_s = Calendar.getInstance();
+		Calendar calendar_e = Calendar.getInstance();
+
+		calendar_s.setTimeInMillis(period.getTimeStampStart());
+		calendar_e.setTimeInMillis(period.getTimeStampEnd());
+		result = prime * result + calendar_s.get(Calendar.HOUR_OF_DAY);
+		result = prime * result + calendar_e.get(Calendar.HOUR_OF_DAY);
+
+		// from legacy generated hashcode
+		result = prime * result + (any ? 1231 : 1237);
+		result = prime * result + (fav ? 1231 : 1237);
+		result = prime * result
+				+ ((uidNonFav == null) ? 0 : uidNonFav.hashCode());
+		result = prime * result + (user ? 1231 : 1237);
+		System.out.println(this);
+		System.out.println(any + " " + fav + " " + user + " "
+				+ calendar_s.get(Calendar.HOUR_OF_DAY) + " "
+				+ calendar_e.get(Calendar.HOUR_OF_DAY));
+		System.out.println(result);
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		// removed from generated equals: we dont check at WHOLE super-type
+		// if (!super.equals(obj)) {
+		// return false;
+		// }
+		// generated equals
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		FRRequestDetails other = (FRRequestDetails) obj;
+		// added to check super-type, only particular info
+		// added to generated equals
+		if (other.isOnlyFreeRooms() != this.isOnlyFreeRooms()) {
+			return false;
+		}
+		FRPeriod period_1 = other.getPeriod();
+		FRPeriod period_2 = this.getPeriod();
+		Calendar calendar_1_s = Calendar.getInstance();
+		Calendar calendar_1_e = Calendar.getInstance();
+		Calendar calendar_2_s = Calendar.getInstance();
+		Calendar calendar_2_e = Calendar.getInstance();
+
+		calendar_1_s.setTimeInMillis(period_1.getTimeStampStart());
+		calendar_1_e.setTimeInMillis(period_1.getTimeStampEnd());
+		calendar_2_s.setTimeInMillis(period_2.getTimeStampStart());
+		calendar_2_e.setTimeInMillis(period_2.getTimeStampEnd());
+
+		if (calendar_1_s.get(Calendar.HOUR_OF_DAY) != calendar_2_s
+				.get(Calendar.HOUR_OF_DAY)) {
+			return false;
+		}
+		if (calendar_1_e.get(Calendar.HOUR_OF_DAY) != calendar_2_e
+				.get(Calendar.HOUR_OF_DAY)) {
+			return false;
+		}
+
+		// generated equals
+		if (any != other.any) {
+			return false;
+		}
+		if (fav != other.fav) {
+			return false;
+		}
+		if (uidNonFav == null) {
+			if (other.uidNonFav != null) {
+				return false;
+			}
+		} else if (!uidNonFav.equals(other.uidNonFav)) {
+			return false;
+		}
+		if (user != other.user) {
+			return false;
+		}
+		return true;
+	}
 }

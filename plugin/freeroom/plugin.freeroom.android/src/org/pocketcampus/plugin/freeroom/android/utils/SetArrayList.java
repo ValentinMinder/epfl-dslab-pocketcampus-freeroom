@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
@@ -40,6 +41,15 @@ public class SetArrayList<E> implements List<E>, Set<E>, Serializable {
 		internalSet = new HashSet<E>(i);
 	}
 
+	public SetArrayList(int i, boolean linkedList) {
+		if (linkedList) {
+			internalList = new LinkedList<E>();
+		} else {
+			internalList = new ArrayList<E>(i);
+		}
+		internalSet = new HashSet<E>(i);
+	}
+
 	public SetArrayList() {
 		internalList = new ArrayList<E>();
 		internalSet = new HashSet<E>();
@@ -53,6 +63,32 @@ public class SetArrayList<E> implements List<E>, Set<E>, Serializable {
 	@Override
 	public void add(int arg0, E arg1) {
 		addBool(arg0, arg1);
+	}
+
+	/**
+	 * Add an element at the first place. Optimized if you have a linkedlist as
+	 * an internal structure.
+	 */
+	public void addFirst(E arg1) {
+		if (internalList instanceof LinkedList<?>) {
+			((LinkedList<E>) internalList).addFirst(arg1);
+			internalSet.add(arg1);
+		} else {
+			add(0, arg1);
+		}
+	}
+
+	/**
+	 * Removes the last element. Optimized if you have a linkedlist as an
+	 * internal structure.
+	 */
+	public void removeLast() {
+		if (internalList instanceof LinkedList<?>) {
+			E e = ((LinkedList<E>) internalList).removeLast();
+			internalSet.remove(e);
+		} else {
+			remove(internalList.size() - 1);
+		}
 	}
 
 	private boolean addBool(int arg0, E arg1) {
@@ -201,5 +237,69 @@ public class SetArrayList<E> implements List<E>, Set<E>, Serializable {
 			build.append(e);
 		}
 		return build.toString();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		// removed from generated equals
+		// we dont care about the order, only the content!
+		// content of set and list must be the same all the time
+		// result = prime * result
+		// + ((internalList == null) ? 0 : internalList.hashCode());
+		result = prime * result
+				+ ((internalSet == null) ? 0 : internalSet.hashCode());
+		System.out.println(this);
+		System.out.println(result);
+		return result;
+	}
+
+	/**
+	 * Checks if two sets contains the same object. Reuse the equals method from
+	 * legacy java Set.
+	 */
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		SetArrayList other = (SetArrayList) obj;
+		if (internalList == null) {
+			if (other.internalList != null) {
+				return false;
+			}
+			// removed from generated equals
+			// we dont care about the order, only the content!
+			// content of set and list must be the same all the time
+
+			// } else if (!internalList.equals(other.internalList)) {
+			// return false;
+		}
+		if (internalSet == null) {
+			if (other.internalSet != null) {
+				return false;
+			}
+		} else if (!internalSet.equals(other.internalSet)) {
+			return false;
+		}
+		return true;
 	}
 }
