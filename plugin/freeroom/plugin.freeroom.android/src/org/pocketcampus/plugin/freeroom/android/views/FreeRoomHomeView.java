@@ -5,9 +5,11 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
@@ -750,7 +752,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			FRPeriod period = FRTimes.getNextValidPeriodTillEndOfDay();
 			FRRequestDetails request = null;
 			List<String> uidList = new ArrayList<String>();
-			SetArrayList<FRRoom> uidNonFav = new SetArrayList<FRRoom>();
+			Set<FRRoom> uidNonFav = new HashSet<FRRoom>();
 			// TODO: find a simpler and more efficient way ?
 			Iterator<FRRoom> iter = collection.iterator();
 			while (iter.hasNext()) {
@@ -2013,8 +2015,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				boolean onlyFree = room
 						.equals(HomeBehaviourRoom.FAVORITES_ONLY_FREE);
 				return new FRRequestDetails(period, onlyFree, array, false,
-						true, false, new SetArrayList<FRRoom>(),
-						mModel.getGroupAccess());
+						true, false, null, mModel.getGroupAccess());
 			} else {
 				u.logV("no favorites in model: going for any free room");
 				room = HomeBehaviourRoom.ANYFREEROOM;
@@ -2034,8 +2035,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 		// any free room behavior
 		return new FRRequestDetails(period, true, new ArrayList<String>(1),
-				true, false, false, new SetArrayList<FRRoom>(),
-				mModel.getGroupAccess());
+				true, false, false, null, mModel.getGroupAccess());
 	}
 
 	/**
@@ -3261,8 +3261,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			addAllFavoriteToCollection(mUIDList, AddCollectionCaller.SEARCH,
 					true);
 		}
-		SetArrayList<FRRoom> userDef = new SetArrayList<FRRoom>(
-				selectedRooms.size());
+		Set<FRRoom> userDef = new HashSet<FRRoom>(selectedRooms.size());
 		if (userDefButton.isChecked()) {
 			Iterator<FRRoom> iter = selectedRooms.iterator();
 			while (iter.hasNext()) {
@@ -3270,6 +3269,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				userDef.add(room);
 				mUIDList.add(room.getUid());
 			}
+		}
+		if (userDef.isEmpty()) {
+			userDef = null;
 		}
 
 		boolean any = anyButton.isChecked();

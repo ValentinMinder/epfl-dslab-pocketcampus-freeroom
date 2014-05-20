@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.freeroom.android.utils;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
@@ -31,11 +32,11 @@ public class FRRequestDetails extends FRRequest {
 	private boolean any = false;
 	private boolean fav = true;
 	private boolean user = false;
-	private SetArrayList<FRRoom> uidNonFav = null;
+	private Set<FRRoom> uidNonFav = null;
 
 	public FRRequestDetails(FRPeriod period, boolean onlyFreeRooms,
 			List<String> uidList, boolean any, boolean fav, boolean user,
-			SetArrayList<FRRoom> uidNonFav, int userGroup) {
+			Set<FRRoom> uidNonFav, int userGroup) {
 		super(period, onlyFreeRooms, uidList, userGroup);
 		this.any = any;
 		this.fav = fav;
@@ -67,11 +68,11 @@ public class FRRequestDetails extends FRRequest {
 		this.user = user;
 	}
 
-	public SetArrayList<FRRoom> getUidNonFav() {
+	public Set<FRRoom> getUidNonFav() {
 		return uidNonFav;
 	}
 
-	public void setUidNonFav(SetArrayList<FRRoom> uidNonFav) {
+	public void setUidNonFav(Set<FRRoom> uidNonFav) {
 		this.uidNonFav = uidNonFav;
 	}
 
