@@ -2724,7 +2724,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		});
 
 		// for landscape device, mainly tablet, some layout are programmatically
-		// changed to horizontal values.
+		// changed to horizontal values, and weighted more logically.
+		// XML IS ALWAYS DESIGNED FOR PHONES, as it's probably more than 97% of users.
+		// tablets are changing their layout here.
 		if (isLandscape()) {
 			LinearLayout header_main = (LinearLayout) mSearchView
 					.findViewById(R.id.freeroom_layout_dialog_search_upper_main);
@@ -2743,6 +2745,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			header_2nd.setLayoutParams(p);
 			header_3rd.setLayoutParams(p);
 
+			// radio group and chexbox group made horizontal
+			// all 5 buttons made fillparent verticallly.
 			RadioGroup rg = (RadioGroup) mSearchView
 					.findViewById(R.id.freeroom_layout_dialog_search_any_vs_spec);
 			rg.setOrientation(RadioGroup.HORIZONTAL);
@@ -2750,35 +2754,35 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 			rg.setLayoutParams(q);
 
-			// int widthPopup = ???
-			// cannot get the width of the popup correctly
-			// so item will just be one after the other, no rule
-			// and no regularization of the layout
-
 			anyButton.setHeight(LayoutParams.FILL_PARENT);
-			// anyButton.setWidth(widthPopup / 2);
 			specButton.setHeight(LayoutParams.FILL_PARENT);
-			// specButton.setWidth(widthPopup / 2);
 
 			LinearLayout mLinearLayout = (LinearLayout) mSearchDialog
 					.findViewById(R.id.freeroom_layout_dialog_search_opt_line_wrapper_1st);
 			mLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
 			freeButton.setHeight(LayoutParams.FILL_PARENT);
-			// freeButton.setWidth(widthPopup / 3);
 			favButton.setHeight(LayoutParams.FILL_PARENT);
-			// favButton.setWidth(widthPopup / 3);
 			userDefButton.setHeight(LayoutParams.FILL_PARENT);
-			// userDefButton.setWidth(widthPopup / 3);
-		} else {
-			anyButton.setWidth(android.view.ViewGroup.LayoutParams.FILL_PARENT);
-			specButton
-					.setWidth(android.view.ViewGroup.LayoutParams.FILL_PARENT);
-			favButton.setWidth(android.view.ViewGroup.LayoutParams.FILL_PARENT);
-			userDefButton
-					.setWidth(android.view.ViewGroup.LayoutParams.FILL_PARENT);
-			freeButton
-					.setWidth(android.view.ViewGroup.LayoutParams.FILL_PARENT);
+
+			// Layouts to change the horizontal weight
+			// They have ONLY ONE CHILD: Children cannot have weight
+			LinearLayout anyButtonLayout = (LinearLayout) mSearchDialog
+					.findViewById(R.id.freeroom_layout_dialog_search_any_layout);
+			LinearLayout specButtonLayout = (LinearLayout) mSearchDialog
+					.findViewById(R.id.freeroom_layout_dialog_search_spec_layout);
+			LinearLayout favButtonLayout = (LinearLayout) mSearchDialog
+					.findViewById(R.id.freeroom_layout_dialog_search_fav_layout);
+			LinearLayout userDefButtonLayout = (LinearLayout) mSearchDialog
+					.findViewById(R.id.freeroom_layout_dialog_search_user_layout);
+			LinearLayout freeButtonLayout = (LinearLayout) mSearchDialog
+					.findViewById(R.id.freeroom_layout_dialog_search_non_free_layout);
+
+			anyButtonLayout.setLayoutParams(p);
+			specButtonLayout.setLayoutParams(p);
+			favButtonLayout.setLayoutParams(p);
+			userDefButtonLayout.setLayoutParams(p);
+			freeButtonLayout.setLayoutParams(p);
 		}
 	}
 

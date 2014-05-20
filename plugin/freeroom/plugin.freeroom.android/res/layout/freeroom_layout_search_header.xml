@@ -174,29 +174,49 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <!-- Button to choose any free room -->
+        <!-- Layout to change the horizontal weight when hoizontal mode (tablet) -->
+        <!-- ONLY ONE CHILD: Children cannot have weight -->
 
-        <RadioButton
-            android:id="@+id/freeroom_layout_dialog_search_any"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/freeroom_layout_dialog_search_any_layout"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
-            android:paddingRight="10dp"
-            android:text="@string/freeroom_search_any"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black" />
+            android:orientation="vertical" >
 
-        <!-- Button to choose specific rooms -->
+            <!-- Button to choose any free room -->
 
-        <RadioButton
-            android:id="@+id/freeroom_layout_dialog_search_spec"
-            android:layout_width="wrap_content"
+            <RadioButton
+                android:id="@+id/freeroom_layout_dialog_search_any"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:paddingRight="10dp"
+                android:text="@string/freeroom_search_any"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <!-- Layout to change the horizontal weight when hoizontal mode (tablet) -->
+        <!-- ONLY ONE CHILD: Children cannot have weight -->
+
+        <LinearLayout
+            android:id="@+id/freeroom_layout_dialog_search_spec_layout"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
-            android:paddingRight="10dp"
-            android:text="@string/freeroom_search_spec"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black" />
+            android:orientation="vertical" >
+
+            <!-- Button to choose specific rooms -->
+
+            <RadioButton
+                android:id="@+id/freeroom_layout_dialog_search_spec"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:paddingRight="10dp"
+                android:text="@string/freeroom_search_spec"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
     </RadioGroup>
 
     <!-- LANDSCAPE: this gets horizontal -->
@@ -209,38 +229,68 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <!-- Button to choose your favorites -->
+        <!-- Layout to change the horizontal weight when hoizontal mode (tablet) -->
+        <!-- ONLY ONE CHILD: Children cannot have weight -->
 
-        <CheckBox
-            android:id="@+id/freeroom_layout_dialog_search_fav"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/freeroom_layout_dialog_search_fav_layout"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingRight="10dp"
-            android:text="@string/freeroom_search_favorites"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black" />
+            android:orientation="vertical" >
 
-        <!-- Button to choose specific user-defined rooms (open a menu to choose them) -->
+            <!-- Button to choose your favorites -->
 
-        <CheckBox
-            android:id="@+id/freeroom_layout_dialog_search_user"
-            android:layout_width="wrap_content"
+            <CheckBox
+                android:id="@+id/freeroom_layout_dialog_search_fav"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:text="@string/freeroom_search_favorites"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <!-- Layout to change the horizontal weight when hoizontal mode (tablet) -->
+        <!-- ONLY ONE CHILD: Children cannot have weight -->
+
+        <LinearLayout
+            android:id="@+id/freeroom_layout_dialog_search_user_layout"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingRight="10dp"
-            android:text="@string/freeroom_search_userdef"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black" />
+            android:orientation="vertical" >
 
-        <!-- Button to choose whether non-free rooms should be displayed -->
+            <!-- Button to choose specific user-defined rooms (open a menu to choose them) -->
 
-        <CheckBox
-            android:id="@+id/freeroom_layout_dialog_search_non_free"
-            android:layout_width="wrap_content"
+            <CheckBox
+                android:id="@+id/freeroom_layout_dialog_search_user"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:text="@string/freeroom_search_userdef"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <!-- Layout to change the horizontal weight when hoizontal mode (tablet) -->
+        <!-- ONLY ONE CHILD: Children cannot have weight -->
+
+        <LinearLayout
+            android:id="@+id/freeroom_layout_dialog_search_non_free_layout"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingRight="10dp"
-            android:text="@string/freeroom_search_only_free"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black" />
+            android:orientation="vertical" >
+
+            <!-- Button to choose whether non-free rooms should be displayed -->
+
+            <CheckBox
+                android:id="@+id/freeroom_layout_dialog_search_non_free"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:text="@string/freeroom_search_only_free"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
     </LinearLayout>
 
     <!-- optionnal layout that appear only when "user-defined list	" is checked -->
