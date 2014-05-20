@@ -88,7 +88,7 @@
             <!-- Image button to switch start hour to the first hour possible -->
 
             <ImageButton
-                android:id="@+id/freeroom_layout_dialog_search_hour_start_toend"
+                android:id="@+id/freeroom_layout_dialog_search_hour_start_tostart"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="right"

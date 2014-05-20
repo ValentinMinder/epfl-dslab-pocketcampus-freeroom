@@ -2233,7 +2233,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private Button userDefEditButton;
 	private Button userDefAddButton;
 	private Button userDefResetButton;
-	private ImageButton addHourButton;
+	private ImageButton downToStartHourButton;
+	private ImageButton downStartHourButton;
+	private ImageButton upStartHourButton;
+	private ImageButton downEndHourButton;
+	private ImageButton upEndHourButton;
 	private ImageButton upToEndHourButton;
 
 	/**
@@ -2603,21 +2607,69 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		addHourButton = (ImageButton) mSearchView
-				.findViewById(R.id.freeroom_layout_dialog_search_hour_end_plus);
-		addHourButton.setEnabled(true);
-		addHourButton.setOnClickListener(new OnClickListener() {
+		downToStartHourButton = (ImageButton) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_hour_start_tostart);
+		downToStartHourButton.setEnabled(true);
+		downToStartHourButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				if (endHourSelected <= 18) {
+				// TODO: code 
+				System.out.println("down to start");
+			}
+		});
+
+		downStartHourButton = (ImageButton) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_hour_start_minus);
+		downStartHourButton.setEnabled(true);
+		downStartHourButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO: code 
+				System.out.println("down start");
+			}
+		});
+
+		upStartHourButton = (ImageButton) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_hour_start_plus);
+		upStartHourButton.setEnabled(true);
+		upStartHourButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO: code 
+				System.out.println("up start");
+			}
+		});
+
+		downEndHourButton = (ImageButton) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_hour_end_minus);
+		downEndHourButton.setEnabled(true);
+		downEndHourButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO: code 
+				System.out.println("down end");
+			}
+		});
+
+		upEndHourButton = (ImageButton) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_hour_end_plus);
+		upEndHourButton.setEnabled(true);
+		upEndHourButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (endHourSelected <= FRTimes.LAST_HOUR_CHECK - 1) {
 					endHourSelected += 1;
 					updateEndTimePickerAndButton();
 					mTimePickerEndDialog.updateTime(endHourSelected,
 							endMinSelected);
 				}
-				if (endHourSelected >= 19) {
-					addHourButton.setEnabled(false);
+				if (endHourSelected >= FRTimes.LAST_HOUR_CHECK) {
+					upEndHourButton.setEnabled(false);
 				}
 			}
 		});
@@ -3052,9 +3104,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 										.getTimeStampEnd(), false)));
 		if (endHourSelected >= FRTimes.LAST_HOUR_CHECK
 				|| (endHourSelected == FRTimes.LAST_HOUR_CHECK - 1 && endMinSelected != 0)) {
-			addHourButton.setEnabled(false);
+			upEndHourButton.setEnabled(false);
 		} else {
-			addHourButton.setEnabled(true);
+			upEndHourButton.setEnabled(true);
 		}
 		mTimePickerEndDialog.updateTime(endHourSelected, endMinSelected);
 	}
