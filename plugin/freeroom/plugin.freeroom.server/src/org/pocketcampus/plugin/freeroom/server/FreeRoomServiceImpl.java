@@ -61,7 +61,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private final int LENGTH_USERMESSAGE = 30;
 
 	private ConnectionManager connMgr;
-	private ExchangeServiceImpl mExchangeService;
 	private Logger logger = Logger.getLogger(FreeRoomServiceImpl.class
 			.getName());
 	private SimpleDateFormat dateLogFormat = new SimpleDateFormat(
@@ -99,29 +98,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"Server cannot connect to the database");
 			e.printStackTrace();
 		}
-
-		mExchangeService = new ExchangeServiceImpl(DB_URL, DB_USER,
-				DB_PASSWORD, this);
-
-		// update ewa : should be done periodically...
-		boolean updateEWA = false;
-		if (updateEWA) {
-			if (mExchangeService.updateEWAOccupancy2Weeks()) {
-				System.out.println("EWA data succesfully updated!");
-			} else {
-				System.err.println("EWA data couldn't be completely loaded!");
-			}
-		}
-
-		boolean updateRoomsDetails = false;
-		if (updateRoomsDetails) {
-			FetchRoomsDetails details = new FetchRoomsDetails(DB_URL, DB_USER,
-					DB_PASSWORD);
-			System.out.println(details.fetchRoomsIntoDB()
-					+ " rooms inserted/updated");
-		}
-		 new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
-		 this)).start();
+		// new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
+		// this)).start();
 	}
 
 	// for test purposes ONLY
@@ -168,8 +146,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	}
 
 	private String formatServerLogInfo(String method, String arguments) {
-
-		return "ACTION=" + method + " / ARGS=" + arguments;
+		return formatServerLogInfo(method, arguments, "NA");
+		
+	}
+	
+	private String formatServerLogInfo(String method, String arguments, String answer) {
+		return "ACTION=" + method + " / ARGS=" + arguments + " / RETURN=" + answer;
 	}
 
 	/**
@@ -267,9 +249,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		boolean inserted = insertOccupancyAndCheckOccupancyInDB(period, uid,
 				type, hash, userMessage);
-		log(LOG_SIDE.SERVER, Level.INFO,
-				"Inserting occupancy " + type.toString() + " for room " + uid
-						+ " : " + inserted);
+		log(LOG_SIDE.SERVER,
+				Level.INFO,
+				formatServerLogInfo(
+						"insertOccupancy",
+						"type=" + type.toString() + ",uid=" + uid + ",start="
+								+ period.getTimeStampStart() + ",end="
+								+ period.getTimeStampEnd() + ",userMessage="
+								+ userMessage, inserted + ""));
 		return inserted;
 
 	}
@@ -873,6 +860,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		uidList = Utils.removeDuplicate(uidList);
 
+		String logMessage = "uidList=" + uidList + ",onlyFreeRooms="
+				+ onlyFreeRooms + ",tsStart=" + tsStart + ",tsEnd=" + tsEnd
+				+ ",userGroup=" + userGroup;
+		
 		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
 		int numberOfRooms = uidList.size();
 		// formatting for the query
@@ -1051,9 +1042,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							result);
 				}
 			}
-			String logMessage = "uidList=" + uidList + ",onlyFreeRooms="
-					+ onlyFreeRooms + ",tsStart=" + tsStart + ",tsEnd=" + tsEnd
-					+ ",userGroup=" + userGroup;
+			
 			log(Level.INFO,
 					formatServerLogInfo("getOccupancyOfSpecificRoom",
 							logMessage));
