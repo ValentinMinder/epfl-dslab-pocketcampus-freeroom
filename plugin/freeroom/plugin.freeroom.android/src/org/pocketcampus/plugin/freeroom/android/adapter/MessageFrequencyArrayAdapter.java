@@ -8,6 +8,7 @@ import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
 
 import android.R.color;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -45,15 +46,15 @@ public class MessageFrequencyArrayAdapter<T> extends
 		MessageFrequency req = super.getItem(position);
 		String message = req.getMessage();
 		// no message: sharing without message -> display grey "undefined"
-		if (message != null && message == "") {
+		if (message != null && message.equals("")) {
 			messageTextView.setText(caller
 					.getString(R.string.freeroom_whoIsWorking_undefined));
-			messageTextView.setTextColor(color.darker_gray);
+			messageTextView.setTextColor(Color.RED);
 		} else {
 			messageTextView.setText(req.getMessage());
-			messageTextView.setTextColor(color.black);
+			messageTextView.setTextColor(Color.BLACK);
 		}
-		frequencyTextView.setText(req.getFrequency() + " x");
+		frequencyTextView.setText("x " + req.getFrequency());
 		return (row);
 	}
 }
