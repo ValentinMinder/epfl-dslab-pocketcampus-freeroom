@@ -192,7 +192,7 @@ public class OccupancySorted {
 			if (!actual.isAvailable() && !previousIsRoom && tsPerRoom > tsStart) {
 				ActualOccupation lastOccupation = resultList.remove(resultList
 						.size() - 1);
-				countFree = Math.min(0, countFree - 1);
+				countFree = Math.max(0, countFree - 1);
 				FRPeriod previousPeriod = lastOccupation.getPeriod();
 				if (tsStart - previousPeriod.getTimeStampStart() > FRTimes.MIN_PERIOD) {
 					FRPeriod newPeriod = new FRPeriod(
