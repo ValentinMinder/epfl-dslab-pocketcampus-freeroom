@@ -254,12 +254,19 @@ public class FRUtilsClient {
 		if (prefix == null) {
 			prefix = "";
 		}
+		if (collec == null || collec.isEmpty()) {
+			return context
+					.getString(R.string.freeroom_check_occupancy_search_text_no_selected_rooms);
+		}
 		Iterator<FRRoom> iter = collec.iterator();
 		StringBuffer buffer = new StringBuffer(Math.min(prefix.length()
 				+ collec.size() * 7, limit) + 10);
 		FRRoom room = null;
-		buffer.append(prefix);
-		boolean empty = !iter.hasNext();
+		if (prefix != null && prefix.length() != 0) {
+			buffer.append(collec.size());
+			buffer.append(" ");
+			buffer.append(prefix);
+		}
 		while (iter.hasNext() && buffer.length() < limit) {
 			room = iter.next();
 			String name = room.getDoorCode();
@@ -272,14 +279,7 @@ public class FRUtilsClient {
 		if (iter.hasNext()) {
 			buffer.append(", ...");
 		}
-		String result = "";
-		if (empty) {
-			result = context
-					.getString(R.string.freeroom_check_occupancy_search_text_no_selected_rooms);
-		} else {
-			result = buffer.toString();
-		}
-		return result;
+		return buffer.toString();
 	}
 
 	/**

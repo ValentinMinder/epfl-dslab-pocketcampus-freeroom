@@ -76,7 +76,7 @@
     <string name="freeroom_search_invalid_time_advanced">"\nTime selection is invalid: only weekdays (MON-FRI) and academic hours (%1$d-%2$d) are valid. The period must be of at least %3$d minutes. You can't check further than %4$d weeks in the past, and %5$d weeks in the future."</string>
     <string name="freeroom_search_invalid_request">"Invalid request: "</string>
     <string name="freeroom_search_valid_request">"Valid request."</string>
-    <string name="freeroom_search_check_empty_select">"\nSelected rooms are empty, please add some room or select other options."</string>
+    <string name="freeroom_search_check_empty_select">"\nSelected rooms are empty, please add some or select other options."</string>
     <string name="freeroom_search_check_any_incompat">"\nAny free room is incompatbile with favorites and specified room."</string>
     <string name="freeroom_search_check_at_least">"\nAt least one of any free room, favorites or specified room must be chosen."</string>
     <string name="freeroom_search_check_empty_fav">"\nYou have no favorites: favorites button don't work, you can't select only this."</string>
@@ -141,7 +141,7 @@
     <string name="freeroom_dialog_add_room_add">"Add"</string>
     <string name="freeroom_dialog_add_room_init">"Please select room by typing first letters."</string>
     <string name="freeroom_check_occupancy_search_text_no_selected_rooms">"No selected rooms."</string>
-    <string name="freeroom_check_occupancy_search_text_selected_rooms">"Selected room(s): "</string>
+    <string name="freeroom_check_occupancy_search_text_selected_rooms">"selected room(s): "</string>
     <string name="freeroom_check_occupancy_search_inputbarhint">"Room name"</string>
 
     <!-- Edit room -->

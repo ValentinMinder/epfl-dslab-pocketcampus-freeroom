@@ -142,7 +142,7 @@
     <string name="freeroom_dialog_add_room_add">"Ajouter"</string>
     <string name="freeroom_dialog_add_room_init">"Sélectionnez les salles en tapant les premiers caractères."</string>
     <string name="freeroom_check_occupancy_search_text_no_selected_rooms">"Pas de salles sélectionnées."</string>
-    <string name="freeroom_check_occupancy_search_text_selected_rooms">"Salles sélectionnées: "</string>
+    <string name="freeroom_check_occupancy_search_text_selected_rooms">"salle(s) sélect.: "</string>
     <string name="freeroom_check_occupancy_search_inputbarhint">"Nom de salle"</string>
 
     <!-- edit room -->

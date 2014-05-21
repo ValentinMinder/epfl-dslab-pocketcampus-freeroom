@@ -525,7 +525,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * <p>
 	 * Default: false.
 	 */
-	private boolean registeredUser = false;
+	private boolean registeredUser = true 	;
 
 	/**
 	 * Set the registeredUser parameters.
@@ -986,7 +986,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 			favorites = (OrderMapListFew<String, List<FRRoom>, FRRoom>) read;
 			return true;
 		} else {
-			return false;
+			return initFavorites();
 		}
 	}
 
@@ -1190,7 +1190,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 			previousRequestDetails = (SetArrayList<FRRequestDetails>) read;
 			return true;
 		} else {
-			return false;
+			return initPreviousRequest();
 		}
 	}
 

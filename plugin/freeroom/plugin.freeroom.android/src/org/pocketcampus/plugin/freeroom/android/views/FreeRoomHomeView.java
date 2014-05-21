@@ -1768,7 +1768,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		StringBuilder build = new StringBuilder(100);
 		build.append(times.formatTimePeriod(req.getPeriod(), true, false));
 		build.append(" ");
-		int max = 50;
+		// it's the max size of the collections of room. but the textview has a
+		// maxlength of 2 lines anyway, so we dont really care...
+		int max = 150;
 
 		if (req.isAny()) {
 			build.append(getString(R.string.freeroom_search_any));
@@ -1782,9 +1784,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				build.append("; ");
 			}
 			if (req.isUser()) {
-				build.append(u.getSummaryTextFromCollection(req.getUidNonFav(),
-						"", max));
-				build.append("(" + req.getUidNonFav().size() + ")");
+				if (req.getUidNonFav() != null) {
+					build.append("[" + req.getUidNonFav().size() + "] : ");
+					build.append(u.getSummaryTextFromCollection(
+							req.getUidNonFav(), "", max));
+				}
 			}
 		}
 		return build.toString();
@@ -3602,9 +3606,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				mUIDList.add(room.getUid());
 			}
 		}
-		if (userDef.isEmpty()) {
-			userDef = null;
-		}
 
 		boolean any = anyButton.isChecked();
 		boolean fav = favButton.isChecked();
@@ -3698,7 +3699,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			tv.setVisibility(View.VISIBLE);
 			return 1;
 		} else {
-			tv.setTextColor(Color.DKGRAY);
+			tv.setTextColor(Color.LTGRAY);
 			tv.setBackgroundColor(Color.WHITE);
 			// valid request
 			tv.setText(getString(R.string.freeroom_search_valid_request));
@@ -3710,8 +3711,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private String auditSubmitString() {
 		String ret = "";
 		if (selectedRooms == null
-				|| (!anyButton.isChecked() && !favButton.isChecked()
-						&& userDefButton.isChecked() && selectedRooms.isEmpty())) {
+				|| (!anyButton.isChecked() && userDefButton.isChecked() && selectedRooms
+						.isEmpty())) {
 			ret += getString(R.string.freeroom_search_check_empty_select);
 		}
 
@@ -3727,9 +3728,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		if (favButton.isChecked() && isFavEmpty) {
 			if (!userDefButton.isChecked()) {
 				ret += getString(R.string.freeroom_search_check_empty_fav);
-			} else if (userDefButton.isChecked() && selectedRooms.isEmpty()) {
-				ret += getString(R.string.freeroom_search_check_empty_fav);
-				ret += getString(R.string.freeroom_search_check_empty_select);
 			}
 		}
 		// we dont allow query all the room, including non-free
