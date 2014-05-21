@@ -24,34 +24,28 @@ import org.slf4j.LoggerFactory;
 public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, TransportTrip._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("TransportTrip");
 
-  private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField LINK_FIELD_DESC = new org.apache.thrift.protocol.TField("link", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField __UNUSED_FIELD_DESC = new org.apache.thrift.protocol.TField("_UNUSED", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField DEPARTURE_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("departureTime", org.apache.thrift.protocol.TType.I64, (short)3);
   private static final org.apache.thrift.protocol.TField ARRIVAL_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("arrivalTime", org.apache.thrift.protocol.TType.I64, (short)4);
   private static final org.apache.thrift.protocol.TField FROM_FIELD_DESC = new org.apache.thrift.protocol.TField("from", org.apache.thrift.protocol.TType.STRUCT, (short)5);
   private static final org.apache.thrift.protocol.TField TO_FIELD_DESC = new org.apache.thrift.protocol.TField("to", org.apache.thrift.protocol.TType.STRUCT, (short)6);
   private static final org.apache.thrift.protocol.TField PARTS_FIELD_DESC = new org.apache.thrift.protocol.TField("parts", org.apache.thrift.protocol.TType.LIST, (short)7);
-  private static final org.apache.thrift.protocol.TField FARES_FIELD_DESC = new org.apache.thrift.protocol.TField("fares", org.apache.thrift.protocol.TType.LIST, (short)8);
 
-  public String id; // required
-  public String link; // required
-  public long departureTime; // required
-  public long arrivalTime; // required
-  public TransportStation from; // required
-  public TransportStation to; // required
-  public List<TransportConnection> parts; // required
-  public List<Fare> fares; // required
+  private String _UNUSED; // required
+  private long departureTime; // required
+  private long arrivalTime; // required
+  private TransportStation from; // required
+  private TransportStation to; // required
+  private List<TransportConnection> parts; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ID((short)1, "id"),
-    LINK((short)2, "link"),
+    __UNUSED((short)1, "_UNUSED"),
     DEPARTURE_TIME((short)3, "departureTime"),
     ARRIVAL_TIME((short)4, "arrivalTime"),
     FROM((short)5, "from"),
     TO((short)6, "to"),
-    PARTS((short)7, "parts"),
-    FARES((short)8, "fares");
+    PARTS((short)7, "parts");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -66,10 +60,8 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // ID
-          return ID;
-        case 2: // LINK
-          return LINK;
+        case 1: // __UNUSED
+          return __UNUSED;
         case 3: // DEPARTURE_TIME
           return DEPARTURE_TIME;
         case 4: // ARRIVAL_TIME
@@ -80,8 +72,6 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
           return TO;
         case 7: // PARTS
           return PARTS;
-        case 8: // FARES
-          return FARES;
         default:
           return null;
       }
@@ -129,24 +119,19 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.LINK, new org.apache.thrift.meta_data.FieldMetaData("link", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.__UNUSED, new org.apache.thrift.meta_data.FieldMetaData("_UNUSED", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.DEPARTURE_TIME, new org.apache.thrift.meta_data.FieldMetaData("departureTime", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.ARRIVAL_TIME, new org.apache.thrift.meta_data.FieldMetaData("arrivalTime", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.FROM, new org.apache.thrift.meta_data.FieldMetaData("from", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class)));
     tmpMap.put(_Fields.TO, new org.apache.thrift.meta_data.FieldMetaData("to", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class)));
-    tmpMap.put(_Fields.PARTS, new org.apache.thrift.meta_data.FieldMetaData("parts", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.PARTS, new org.apache.thrift.meta_data.FieldMetaData("parts", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportConnection.class))));
-    tmpMap.put(_Fields.FARES, new org.apache.thrift.meta_data.FieldMetaData("fares", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Fare.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(TransportTrip.class, metaDataMap);
   }
@@ -155,20 +140,22 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
   }
 
   public TransportTrip(
-    String id,
+    String _UNUSED,
     long departureTime,
     long arrivalTime,
     TransportStation from,
-    TransportStation to)
+    TransportStation to,
+    List<TransportConnection> parts)
   {
     this();
-    this.id = id;
+    this._UNUSED = _UNUSED;
     this.departureTime = departureTime;
     setDepartureTimeIsSet(true);
     this.arrivalTime = arrivalTime;
     setArrivalTimeIsSet(true);
     this.from = from;
     this.to = to;
+    this.parts = parts;
   }
 
   /**
@@ -177,11 +164,8 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
   public TransportTrip(TransportTrip other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    if (other.isSetId()) {
-      this.id = other.id;
-    }
-    if (other.isSetLink()) {
-      this.link = other.link;
+    if (other.isSet_UNUSED()) {
+      this._UNUSED = other._UNUSED;
     }
     this.departureTime = other.departureTime;
     this.arrivalTime = other.arrivalTime;
@@ -198,13 +182,6 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
       }
       this.parts = __this__parts;
     }
-    if (other.isSetFares()) {
-      List<Fare> __this__fares = new ArrayList<Fare>();
-      for (Fare other_element : other.fares) {
-        __this__fares.add(new Fare(other_element));
-      }
-      this.fares = __this__fares;
-    }
   }
 
   public TransportTrip deepCopy() {
@@ -213,8 +190,7 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
 
   @Override
   public void clear() {
-    this.id = null;
-    this.link = null;
+    this._UNUSED = null;
     setDepartureTimeIsSet(false);
     this.departureTime = 0;
     setArrivalTimeIsSet(false);
@@ -222,54 +198,29 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
     this.from = null;
     this.to = null;
     this.parts = null;
-    this.fares = null;
   }
 
-  public String getId() {
-    return this.id;
+  public String get_UNUSED() {
+    return this._UNUSED;
   }
 
-  public TransportTrip setId(String id) {
-    this.id = id;
+  public TransportTrip set_UNUSED(String _UNUSED) {
+    this._UNUSED = _UNUSED;
     return this;
   }
 
-  public void unsetId() {
-    this.id = null;
+  public void unset_UNUSED() {
+    this._UNUSED = null;
   }
 
-  /** Returns true if field id is set (has been assigned a value) and false otherwise */
-  public boolean isSetId() {
-    return this.id != null;
+  /** Returns true if field _UNUSED is set (has been assigned a value) and false otherwise */
+  public boolean isSet_UNUSED() {
+    return this._UNUSED != null;
   }
 
-  public void setIdIsSet(boolean value) {
+  public void set_UNUSEDIsSet(boolean value) {
     if (!value) {
-      this.id = null;
-    }
-  }
-
-  public String getLink() {
-    return this.link;
-  }
-
-  public TransportTrip setLink(String link) {
-    this.link = link;
-    return this;
-  }
-
-  public void unsetLink() {
-    this.link = null;
-  }
-
-  /** Returns true if field link is set (has been assigned a value) and false otherwise */
-  public boolean isSetLink() {
-    return this.link != null;
-  }
-
-  public void setLinkIsSet(boolean value) {
-    if (!value) {
-      this.link = null;
+      this._UNUSED = null;
     }
   }
 
@@ -406,60 +357,13 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
     }
   }
 
-  public int getFaresSize() {
-    return (this.fares == null) ? 0 : this.fares.size();
-  }
-
-  public java.util.Iterator<Fare> getFaresIterator() {
-    return (this.fares == null) ? null : this.fares.iterator();
-  }
-
-  public void addToFares(Fare elem) {
-    if (this.fares == null) {
-      this.fares = new ArrayList<Fare>();
-    }
-    this.fares.add(elem);
-  }
-
-  public List<Fare> getFares() {
-    return this.fares;
-  }
-
-  public TransportTrip setFares(List<Fare> fares) {
-    this.fares = fares;
-    return this;
-  }
-
-  public void unsetFares() {
-    this.fares = null;
-  }
-
-  /** Returns true if field fares is set (has been assigned a value) and false otherwise */
-  public boolean isSetFares() {
-    return this.fares != null;
-  }
-
-  public void setFaresIsSet(boolean value) {
-    if (!value) {
-      this.fares = null;
-    }
-  }
-
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case ID:
+    case __UNUSED:
       if (value == null) {
-        unsetId();
+        unset_UNUSED();
       } else {
-        setId((String)value);
-      }
-      break;
-
-    case LINK:
-      if (value == null) {
-        unsetLink();
-      } else {
-        setLink((String)value);
+        set_UNUSED((String)value);
       }
       break;
 
@@ -503,24 +407,13 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
       }
       break;
 
-    case FARES:
-      if (value == null) {
-        unsetFares();
-      } else {
-        setFares((List<Fare>)value);
-      }
-      break;
-
     }
   }
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case ID:
-      return getId();
-
-    case LINK:
-      return getLink();
+    case __UNUSED:
+      return get_UNUSED();
 
     case DEPARTURE_TIME:
       return Long.valueOf(getDepartureTime());
@@ -537,9 +430,6 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
     case PARTS:
       return getParts();
 
-    case FARES:
-      return getFares();
-
     }
     throw new IllegalStateException();
   }
@@ -551,10 +441,8 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
     }
 
     switch (field) {
-    case ID:
-      return isSetId();
-    case LINK:
-      return isSetLink();
+    case __UNUSED:
+      return isSet_UNUSED();
     case DEPARTURE_TIME:
       return isSetDepartureTime();
     case ARRIVAL_TIME:
@@ -565,8 +453,6 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
       return isSetTo();
     case PARTS:
       return isSetParts();
-    case FARES:
-      return isSetFares();
     }
     throw new IllegalStateException();
   }
@@ -584,21 +470,12 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
     if (that == null)
       return false;
 
-    boolean this_present_id = true && this.isSetId();
-    boolean that_present_id = true && that.isSetId();
-    if (this_present_id || that_present_id) {
-      if (!(this_present_id && that_present_id))
+    boolean this_present__UNUSED = true && this.isSet_UNUSED();
+    boolean that_present__UNUSED = true && that.isSet_UNUSED();
+    if (this_present__UNUSED || that_present__UNUSED) {
+      if (!(this_present__UNUSED && that_present__UNUSED))
         return false;
-      if (!this.id.equals(that.id))
-        return false;
-    }
-
-    boolean this_present_link = true && this.isSetLink();
-    boolean that_present_link = true && that.isSetLink();
-    if (this_present_link || that_present_link) {
-      if (!(this_present_link && that_present_link))
-        return false;
-      if (!this.link.equals(that.link))
+      if (!this._UNUSED.equals(that._UNUSED))
         return false;
     }
 
@@ -647,15 +524,6 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
         return false;
     }
 
-    boolean this_present_fares = true && this.isSetFares();
-    boolean that_present_fares = true && that.isSetFares();
-    if (this_present_fares || that_present_fares) {
-      if (!(this_present_fares && that_present_fares))
-        return false;
-      if (!this.fares.equals(that.fares))
-        return false;
-    }
-
     return true;
   }
 
@@ -663,15 +531,10 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_id = true && (isSetId());
-    builder.append(present_id);
-    if (present_id)
-      builder.append(id);
-
-    boolean present_link = true && (isSetLink());
-    builder.append(present_link);
-    if (present_link)
-      builder.append(link);
+    boolean present__UNUSED = true && (isSet_UNUSED());
+    builder.append(present__UNUSED);
+    if (present__UNUSED)
+      builder.append(_UNUSED);
 
     boolean present_departureTime = true;
     builder.append(present_departureTime);
@@ -698,11 +561,6 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
     if (present_parts)
       builder.append(parts);
 
-    boolean present_fares = true && (isSetFares());
-    builder.append(present_fares);
-    if (present_fares)
-      builder.append(fares);
-
     return builder.toHashCode();
   }
 
@@ -714,22 +572,12 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
     int lastComparison = 0;
     TransportTrip typedOther = (TransportTrip)other;
 
-    lastComparison = Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
+    lastComparison = Boolean.valueOf(isSet_UNUSED()).compareTo(typedOther.isSet_UNUSED());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.id, typedOther.id);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetLink()).compareTo(typedOther.isSetLink());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetLink()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.link, typedOther.link);
+    if (isSet_UNUSED()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this._UNUSED, typedOther._UNUSED);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -784,16 +632,6 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetFares()).compareTo(typedOther.isSetFares());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetFares()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.fares, typedOther.fares);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     return 0;
   }
 
@@ -811,16 +649,9 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
         break;
       }
       switch (field.id) {
-        case 1: // ID
+        case 1: // __UNUSED
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.id = iprot.readString();
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 2: // LINK
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.link = iprot.readString();
+            this._UNUSED = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -860,32 +691,14 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
         case 7: // PARTS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list12 = iprot.readListBegin();
-              this.parts = new ArrayList<TransportConnection>(_list12.size);
-              for (int _i13 = 0; _i13 < _list12.size; ++_i13)
+              org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
+              this.parts = new ArrayList<TransportConnection>(_list4.size);
+              for (int _i5 = 0; _i5 < _list4.size; ++_i5)
               {
-                TransportConnection _elem14; // required
-                _elem14 = new TransportConnection();
-                _elem14.read(iprot);
-                this.parts.add(_elem14);
-              }
-              iprot.readListEnd();
-            }
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 8: // FARES
-          if (field.type == org.apache.thrift.protocol.TType.LIST) {
-            {
-              org.apache.thrift.protocol.TList _list15 = iprot.readListBegin();
-              this.fares = new ArrayList<Fare>(_list15.size);
-              for (int _i16 = 0; _i16 < _list15.size; ++_i16)
-              {
-                Fare _elem17; // required
-                _elem17 = new Fare();
-                _elem17.read(iprot);
-                this.fares.add(_elem17);
+                TransportConnection _elem6; // required
+                _elem6 = new TransportConnection();
+                _elem6.read(iprot);
+                this.parts.add(_elem6);
               }
               iprot.readListEnd();
             }
@@ -914,17 +727,10 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.id != null) {
-      oprot.writeFieldBegin(ID_FIELD_DESC);
-      oprot.writeString(this.id);
+    if (this._UNUSED != null) {
+      oprot.writeFieldBegin(__UNUSED_FIELD_DESC);
+      oprot.writeString(this._UNUSED);
       oprot.writeFieldEnd();
-    }
-    if (this.link != null) {
-      if (isSetLink()) {
-        oprot.writeFieldBegin(LINK_FIELD_DESC);
-        oprot.writeString(this.link);
-        oprot.writeFieldEnd();
-      }
     }
     oprot.writeFieldBegin(DEPARTURE_TIME_FIELD_DESC);
     oprot.writeI64(this.departureTime);
@@ -943,32 +749,16 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
       oprot.writeFieldEnd();
     }
     if (this.parts != null) {
-      if (isSetParts()) {
-        oprot.writeFieldBegin(PARTS_FIELD_DESC);
+      oprot.writeFieldBegin(PARTS_FIELD_DESC);
+      {
+        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.parts.size()));
+        for (TransportConnection _iter7 : this.parts)
         {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.parts.size()));
-          for (TransportConnection _iter18 : this.parts)
-          {
-            _iter18.write(oprot);
-          }
-          oprot.writeListEnd();
+          _iter7.write(oprot);
         }
-        oprot.writeFieldEnd();
+        oprot.writeListEnd();
       }
-    }
-    if (this.fares != null) {
-      if (isSetFares()) {
-        oprot.writeFieldBegin(FARES_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.fares.size()));
-          for (Fare _iter19 : this.fares)
-          {
-            _iter19.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
+      oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -979,23 +769,13 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
     StringBuilder sb = new StringBuilder("TransportTrip(");
     boolean first = true;
 
-    sb.append("id:");
-    if (this.id == null) {
+    sb.append("_UNUSED:");
+    if (this._UNUSED == null) {
       sb.append("null");
     } else {
-      sb.append(this.id);
+      sb.append(this._UNUSED);
     }
     first = false;
-    if (isSetLink()) {
-      if (!first) sb.append(", ");
-      sb.append("link:");
-      if (this.link == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.link);
-      }
-      first = false;
-    }
     if (!first) sb.append(", ");
     sb.append("departureTime:");
     sb.append(this.departureTime);
@@ -1020,34 +800,22 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
       sb.append(this.to);
     }
     first = false;
-    if (isSetParts()) {
-      if (!first) sb.append(", ");
-      sb.append("parts:");
-      if (this.parts == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.parts);
-      }
-      first = false;
+    if (!first) sb.append(", ");
+    sb.append("parts:");
+    if (this.parts == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.parts);
     }
-    if (isSetFares()) {
-      if (!first) sb.append(", ");
-      sb.append("fares:");
-      if (this.fares == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.fares);
-      }
-      first = false;
-    }
+    first = false;
     sb.append(")");
     return sb.toString();
   }
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (id == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'id' was not present! Struct: " + toString());
+    if (_UNUSED == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field '_UNUSED' was not present! Struct: " + toString());
     }
     // alas, we cannot check 'departureTime' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'arrivalTime' because it's a primitive and you chose the non-beans generator.
@@ -1056,6 +824,9 @@ public class TransportTrip implements org.apache.thrift.TBase<TransportTrip, Tra
     }
     if (to == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'to' was not present! Struct: " + toString());
+    }
+    if (parts == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'parts' was not present! Struct: " + toString());
     }
   }
 

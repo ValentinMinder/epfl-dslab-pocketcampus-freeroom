@@ -6,19 +6,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.thrift.TException;
-import org.pocketcampus.plugin.transport.shared.QueryDepartureResult;
-import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
-import org.pocketcampus.plugin.transport.shared.TransportConnection;
-import org.pocketcampus.plugin.transport.shared.TransportService;
-import org.pocketcampus.plugin.transport.shared.TransportStation;
-import org.pocketcampus.plugin.transport.shared.TransportStationType;
-import org.pocketcampus.plugin.transport.shared.TransportTrip;
+import org.pocketcampus.plugin.transport.shared.*;
 
 import de.schildbach.pte.NetworkProvider.WalkSpeed;
 import de.schildbach.pte.SbbProvider;
-import de.schildbach.pte.dto.Location;
 import de.schildbach.pte.dto.LocationType;
-import de.schildbach.pte.dto.NearbyStationsResult;
 
 /**
  * This is the server side implementation of the transport plugin. It handles
@@ -30,13 +22,13 @@ import de.schildbach.pte.dto.NearbyStationsResult;
 public class TransportServiceImpl implements TransportService.Iface {
 	/** Public Transport information provider */
 	private SbbProvider mSbbProvider;
-	
+
 	/**
 	 * Used by getTrips
 	 * Number of milliseconds that should be deduced from current timestamp when requesting schedules,
 	 * so that results can contain departures that just left or are leaving.
 	 */
-	private final long NUMBER_MS_IN_PAST_GET_TRIPS_REQUEST = 3*60*1000; //3 min
+	private final long NUMBER_MS_IN_PAST_GET_TRIPS_REQUEST = 3 * 60 * 1000; // 3 min
 
 	/**
 	 * Constructor. Initializes the provider with the api key.
@@ -46,54 +38,6 @@ public class TransportServiceImpl implements TransportService.Iface {
 				"YJpyuPISerpXNNRTo50fNMP0yVu7L6IMuOaBgS0Xz89l3f6I3WhAjnto4kS9oz1");
 
 		System.out.println("Transport started.");
-
-		// testing getLocationsFromIDs
-		// ArrayList<Integer> l = new ArrayList<Integer>();
-		// l.add(new Integer(8501214));
-		// l.add(new Integer(8501215));
-		// l.add(new Integer(8501216));
-		// l.add(new Integer(8501217));
-		// l.add(new Integer(8501218));
-		// l.add(new Integer(8504221));
-		//
-		// try {
-		// for(TransportStation loc : getLocationsFromIDs(l)){
-		// if(loc != null)
-		// System.out.println(loc.name);
-		// else
-		// System.out.println("no corresponding station was found");
-		// }
-		// } catch (TException e) {
-		// System.out.println("something very bad happend, you probably gonna die");
-		// }
-
-		//try {
-			// //System.out.println(autocomplete("Neuchatel").get(0).id);
-			//QueryTripsResult res = getTrips("EPFL", "Neuchatel");
-			//res.toString();
-			// QueryTripsResult res = getTripsFromStationsIDs("8501214",
-			// "8504221");
-			// System.out.println("from "+ res.from.name + " to " +
-			// res.to.name);
-			// for(TransportTrip tt : res.connections){
-			// System.out.println(new Date(tt.departureTime));
-			// }
-			// // EPFL -> Neuchatel
-			//
-			//
-			//
-			// testing newDepartures
-			// QueryDepartureResult q = nextDepartures("8501214");
-			// for(StationDepartures s :q.stationDepartures){
-			// for(Departure d : s.departures){
-			// System.out.println(d.destination + " with " + d.line + " at " +
-			// (new Date(d.plannedTime)).toString());
-			// }
-			// }
-		//} catch (TException e1) {
-			//e1.printStackTrace();
-		//}
-
 	}
 
 	/**
@@ -119,9 +63,8 @@ public class TransportServiceImpl implements TransportService.Iface {
 		for (de.schildbach.pte.dto.Location location : sbbCompletions) {
 			// this is to get only Stations and nothing else
 			if (location.type == LocationType.STATION)
-				completions.add(new TransportStation(TransportStationType.ANY,
-						location.id, location.lat, location.lon,
-						location.place, location.name));
+				completions.add(new TransportStation(location.lat, location.lon,
+						location.name));
 		}
 
 		return completions;
@@ -154,93 +97,6 @@ public class TransportServiceImpl implements TransportService.Iface {
 	}
 
 	/**
-	 * DOES NOT WORK FOR NOW, SHOULD TRY WITH THE UPDATE OF THE SCHILDBACH SDK
-	 * Returns a TransportStation list with the stations corresponding to the
-	 * integers id list of the param if an id has not been found, the
-	 * corresponding TransportStation in the result will be null DOES NOT WORK
-	 * FOR NOW, SHOULD TRY WITH THE UPDATE OF THE SCHILDBACH SDK
-	 * 
-	 * @param ids
-	 *            List of stations ids.
-	 * @return List of <code>TransportStation</code>
-	 */
-	@Override
-	public List<TransportStation> getLocationsFromIDs(List<Integer> ids)
-			throws TException {
-		ArrayList<TransportStation> locations = new ArrayList<TransportStation>();
-
-		try {
-			for (Integer inte : ids) {
-				de.schildbach.pte.dto.Location sLocation = new de.schildbach.pte.dto.Location(
-						de.schildbach.pte.dto.LocationType.STATION,
-						inte.intValue());
-				NearbyStationsResult res = mSbbProvider.queryNearbyStations(
-						sLocation, 100000, 5);
-
-				if (res != null) {
-					boolean found = false;
-
-					List<TransportStation> ts_list = SchildbachToPCConverter
-							.convertSchToPC(res.stations);
-					System.out.println(res.stations.size());
-					for (TransportStation loc : ts_list) {
-						if (loc.id == inte.intValue()) {
-							System.out.println(loc);
-							found = true;
-							locations.add(loc);
-							break;
-						}
-
-					}
-
-					if (!found) {
-						locations.add(null);
-						System.out.println(inte.intValue()
-								+ " has not been found");
-					}
-				} else {
-					System.out.println(res);
-				}
-			}
-
-		} catch (IOException e) {
-			System.out.println("IO Exception with schildbach");
-		}
-		return locations;
-	}
-
-	/**
-	 * Get all the next departure from a specific station. Useful specially for
-	 * one line station like bus stops.
-	 * 
-	 * @param IDStation
-	 *            The id of the station
-	 * @return Special object containing all the next departures with some
-	 *         information
-	 */
-	@Override
-	public QueryDepartureResult nextDepartures(String IDStation)
-			throws TException {
-
-		if (IDStation == null) {
-			return null;
-		}
-
-		QueryDepartureResult nextDepartures = null;
-
-		try {
-
-			nextDepartures = SchildbachToPCConverter
-					.convertSchToPC(mSbbProvider.queryDepartures(
-							Integer.parseInt(IDStation), 5, false));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return nextDepartures;
-	}
-
-	/**
 	 * Asks the provider how to get from A to B at present time. Calls a private
 	 * method.
 	 * 
@@ -253,32 +109,11 @@ public class TransportServiceImpl implements TransportService.Iface {
 	 */
 	@Override
 	public QueryTripsResult getTrips(String from, String to) throws TException {
-		//requesting in past so that user can also see trips are leaving now or just left
-		long now = (new Date()).getTime() - NUMBER_MS_IN_PAST_GET_TRIPS_REQUEST; 
+		// requesting in past so that user can also see trips are leaving now or just left
+		long now = (new Date()).getTime() - NUMBER_MS_IN_PAST_GET_TRIPS_REQUEST;
 		QueryTripsResult result = getTripsFromSchildbach(from, to, now, true);
 		return result;
 
-	}
-
-	/**
-	 * Asks the provider how to get from A to B at a specific time. Allows to
-	 * set the direction of the Trip. Calls a private method.
-	 * 
-	 * @param from
-	 *            Departure station (A)
-	 * @param to
-	 *            Arrival station (B)
-	 * @param isDeparture
-	 *            the direction of your trip. True for A -> B and False for B ->
-	 *            A
-	 * @return Specific object converted from the Schildbach sdk containing all
-	 *         the trip informations
-	 */
-	@Override
-	public QueryTripsResult getTripsAtTime(String from, String to, long time,
-			boolean isDeparture) throws TException {
-
-		return getTripsFromSchildbach(from, to, time, isDeparture);
 	}
 
 	/**
@@ -331,19 +166,13 @@ public class TransportServiceImpl implements TransportService.Iface {
 			if (tripResults.getConnections() != null) {
 				for (TransportTrip tt : tripResults.getConnections()) {
 					for (TransportConnection tc : tt.getParts()) {
-						tc.setFootIsSet(true);
 
-						if (tc.foot == false) {
-							tc.setArrivalTimeIsSet(true);
-							tc.setDepartureTimeIsSet(true);
-							tc.setLineIsSet(true);
-
-						} else {
-							tc.setMinIsSet(true);
-						}
+						tc.setArrivalTimeIsSet(true);
+						tc.setDepartureTimeIsSet(true);
+						tc.setLineIsSet(true);
 					}
 				}
-			} else if (tripResults.from == null && tripResults.to == null) {
+			} else if (tripResults.getFrom() == null && tripResults.getTo() == null) {
 				tripResults = null;
 			}
 		} catch (IOException e) {
@@ -352,57 +181,4 @@ public class TransportServiceImpl implements TransportService.Iface {
 
 		return tripResults;
 	}
-
-	/**
-	 * Asks the provider how to get from A to B at present time. Using station
-	 * IDs instead of their names
-	 * 
-	 * @param fromID
-	 *            ID of the Departure station
-	 * @param toID
-	 *            ID of the Arrival station
-	 * @return Specific object converted from the Schildbach sdk containing all
-	 *         the trip informations
-	 */
-	@Override
-	public QueryTripsResult getTripsFromStationsIDs(String fromID, String toID)
-			throws TException {
-
-		de.schildbach.pte.dto.Location fromLoc = null, viaLoc = null, toLoc = null;
-		fromLoc = new Location(LocationType.STATION, Integer.parseInt(fromID));
-		toLoc = new Location(LocationType.STATION, Integer.parseInt(toID));
-
-		QueryTripsResult tripResults = null;
-		try {
-			String products = (String) null;
-			WalkSpeed walkSpeed = WalkSpeed.NORMAL;
-			tripResults = SchildbachToPCConverter.convertSchToPC(mSbbProvider
-					.queryConnections(fromLoc, viaLoc, toLoc, new Date(), true,
-							products, walkSpeed));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		if (tripResults.getConnections() != null) {
-			for (TransportTrip tt : tripResults.getConnections()) {
-				for (TransportConnection tc : tt.getParts()) {
-					tc.setFootIsSet(true);
-
-					if (tc.foot == false) {
-						tc.setArrivalTimeIsSet(true);
-						tc.setDepartureTimeIsSet(true);
-						tc.setLineIsSet(true);
-
-					} else {
-						tc.setMinIsSet(true);
-					}
-				}
-			}
-		} else if (tripResults.from == null && tripResults.to == null) {
-			tripResults = null;
-		}
-
-		return tripResults;
-	}
-
 }
