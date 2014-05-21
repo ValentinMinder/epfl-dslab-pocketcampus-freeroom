@@ -33,24 +33,26 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 public class Utils {
 	public static final int GROUP_STUDENT = 1;
 	public static final int GROUP_STAFF = 20;
-	
-	public static final List<String> mediacomList = Arrays.asList( "875", "876", "9001", "877", "878",
-			"880", "1884", "1886", "1887", "1888", "1895", "1835", "1898",
-			"1837", "1891", "1896", "2043", "2044", "2045", "2046", "2047",
-			"2124", "2125", "2126", "2127", "12205", "12206", "12207", "12208",
-			"9208", "9209", "9210", "9275", "9276", "9277", "9278", "9281",
-			"9313", "9054", "9055", "4911", "4913", "4914", "4915", "3014",
-			"3137", "3208", "3623", "3624", "3625", "3702", "3738");
-	
-	private static final String FILENAME_FORBIDDEN_WORDS = "src" + File.separator + "forbiddenWords.txt";
+
+	public static final List<String> mediacomList = Arrays.asList("875", "876",
+			"9001", "877", "878", "880", "1884", "1886", "1887", "1888",
+			"1895", "1835", "1898", "1837", "1891", "1896", "2043", "2044",
+			"2045", "2046", "2047", "2124", "2125", "2126", "2127", "12205",
+			"12206", "12207", "12208", "9208", "9209", "9210", "9275", "9276",
+			"9277", "9278", "9281", "9313", "9054", "9055", "4911", "4913",
+			"4914", "4915", "3014", "3137", "3208", "3623", "3624", "3625",
+			"3702", "3738");
+
+	private static final String FILENAME_FORBIDDEN_WORDS = "src"
+			+ File.separator + "forbiddenWords.txt";
 	private static ArrayList<String> forbiddenWords = null;
-	
-	//TODO eventually find a better way to store/access such things
+
+	// TODO eventually find a better way to store/access such things
 	private static void loadForbiddenWords() {
 		if (forbiddenWords != null) {
-			return ;
+			return;
 		}
-		
+
 		try {
 			Scanner sc = new Scanner(new File(FILENAME_FORBIDDEN_WORDS));
 			forbiddenWords = new ArrayList<String>();
@@ -61,9 +63,9 @@ public class Utils {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			forbiddenWords = new ArrayList<String>();
-		} 		
+		}
 	}
-	
+
 	/**
 	 * Extract the building from the doorCode
 	 * 
@@ -101,7 +103,8 @@ public class Utils {
 	 * 
 	 * @param rooms
 	 *            The rooms to sort
-	 * @return The HashMap as defined above, an empty HashMap is rooms is null or is empty
+	 * @return The HashMap as defined above, an empty HashMap is rooms is null
+	 *         or is empty
 	 */
 	public static Map<String, List<FRRoom>> sortRoomsByBuilding(
 			List<FRRoom> rooms) {
@@ -132,7 +135,9 @@ public class Utils {
 
 	/**
 	 * Remove duplicates in a list of rooms
-	 * @param uidList The list to check
+	 * 
+	 * @param uidList
+	 *            The list to check
 	 * @return The list with unique ids without duplicates
 	 */
 	public static List<String> removeDuplicate(List<String> uidList) {
@@ -142,8 +147,7 @@ public class Utils {
 	}
 
 	public static boolean checkValidUID(String uid) {
-		Pattern mUIDPattern = Pattern
-				.compile("^[0-9]+$");
+		Pattern mUIDPattern = Pattern.compile("^[0-9]+$");
 		Matcher mMatcher = mUIDPattern.matcher(uid);
 
 		return mMatcher.matches();
@@ -155,18 +159,21 @@ public class Utils {
 
 	/**
 	 * Check if the given message is good
-	 * @param userMessage The message to check
-	 * @return true if null or1 the sentence does not contain any of the blacklisted word, false otherwise
+	 * 
+	 * @param userMessage
+	 *            The message to check
+	 * @return true if null or1 the sentence does not contain any of the
+	 *         blacklisted word, false otherwise
 	 */
 	public static boolean checkUserMessage(String userMessage) {
 		if (userMessage == null) {
 			return true;
 		}
-		
+
 		loadForbiddenWords();
-		
+
 		String lowerCaseMessage = userMessage.toLowerCase();
-		//split received message into words, and check each word 
+		// split received message into words, and check each word
 		String[] words = lowerCaseMessage.split("\\s+");
 		for (String w : words) {
 			if (forbiddenWords.contains(w)) {
@@ -175,7 +182,7 @@ public class Utils {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * The HashMap is organized by the following relation(building -> list of
 	 * rooms) and each list of rooms is sorted independently. Sort the rooms
@@ -303,31 +310,35 @@ public class Utils {
 		}
 	};
 
-	public static ArrayList<MessageFrequency> removeGroupMessages(List<String> listMessages) {
+	public static ArrayList<MessageFrequency> removeGroupMessages(
+			List<String> listMessages) {
 		if (listMessages == null) {
 			return null;
 		}
-		
+
 		HashMap<String, Integer> answer = new HashMap<String, Integer>();
 		for (String message : listMessages) {
-			String lowerCaseMessage = message.toLowerCase();
-			Integer count = answer.get(lowerCaseMessage);
-			if (count == null) {
-				answer.put(lowerCaseMessage, 1);
-			} else {
-				answer.put(lowerCaseMessage, count + 1);
+			if (message != null) {
+				String lowerCaseMessage = message.toLowerCase();
+				Integer count = answer.get(lowerCaseMessage);
+				if (count == null) {
+					answer.put(lowerCaseMessage, 1);
+				} else {
+					answer.put(lowerCaseMessage, count + 1);
+				}
 			}
 		}
 		return convertMapToListMessageFrequency(answer);
 	}
 
-	public static ArrayList<MessageFrequency> convertMapToListMessageFrequency(HashMap<String, Integer> map) {
+	public static ArrayList<MessageFrequency> convertMapToListMessageFrequency(
+			HashMap<String, Integer> map) {
 		ArrayList<MessageFrequency> answer = new ArrayList<MessageFrequency>();
-		
+
 		for (Entry<String, Integer> e : map.entrySet()) {
 			answer.add(new MessageFrequency(e.getKey(), e.getValue()));
 		}
-		
+
 		Collections.sort(answer);
 		return answer;
 	}

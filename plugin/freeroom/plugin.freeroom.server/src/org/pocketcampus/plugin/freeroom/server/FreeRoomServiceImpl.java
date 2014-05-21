@@ -541,6 +541,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// new message, use the new one
 				duplicateMessage = userMessage;
 			}
+
+			if (duplicateMessage == null) {
+				duplicateMessage = "";
+			}
 			updateCheckOccupancyInDB(uid, prevRoom, tsStart, hash,
 					duplicateMessage, !prevRoom.equals(uid));
 		}
@@ -550,6 +554,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	// TODO javaodc with new methods def.
 	private void insertCheckOccupancyInDB(String uid, long tsStart,
 			String hash, String message) {
+		if (message == null) {
+			message = "";
+		}
 		String insertRequest = "INSERT INTO `fr-checkOccupancy` (uid, timestampStart, timestampEnd, hash, message) "
 				+ "VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE uid = ?";
 
