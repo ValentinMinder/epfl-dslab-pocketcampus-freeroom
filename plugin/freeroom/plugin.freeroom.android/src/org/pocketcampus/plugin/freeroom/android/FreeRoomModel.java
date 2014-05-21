@@ -11,12 +11,12 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
@@ -31,7 +31,6 @@ import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
-import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -675,17 +674,19 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public void setOccupancyResults(
 			Map<String, List<Occupancy>> occupancyOfRooms) {
 		occupancyByBuilding.clear();
-		Set<String> keySet = occupancyOfRooms.keySet();
+		// keys are ordered!
+		TreeSet<String> keySetOrder = new TreeSet<String>(
+				occupancyOfRooms.keySet());
 		List<String> buildings = getOrderedBuildings();
 		for (String building : buildings) {
 			List<Occupancy> list = occupancyOfRooms.get(building);
 			if (list != null) {
-				keySet.remove(building);
+				keySetOrder.remove(building);
 				occupancyByBuilding.put(building, list);
 			}
 		}
 
-		for (String key : keySet) {
+		for (String key : keySetOrder) {
 			occupancyByBuilding.put(key, occupancyOfRooms.get(key));
 		}
 		mListeners.occupancyResultsUpdated();
