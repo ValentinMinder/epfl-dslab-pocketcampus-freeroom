@@ -40,7 +40,7 @@
     <string name="freeroom_error_please_report">"Ce comportement n\'est PAS normal, veuillez s.v.p reporter le bug à freeroom.epfl@gmail.com en incluant une description des étapes menants au bug. Merci d'avance :)"</string>
     <string name="freeroom_error_please_try_again">"Veuillez essayer à nouveau. Notez que la version beta ne fonctionne que sur le réseau de l\'epfl (wifi, VPN ou cablé). Si cela persiste, merci de nous contacter à freeroom.epfl@gmail.com. Merci d'avance :)"</string>
     <string name="freeroom_connection_error_happened">"Nous ne pouvons pas récupérer les données maintenant, dû à une erreur de réseau. Vous n\'êtes pas connecté, ou alors le serveur PocketCampus est hors-service / inatteignable."</string>
-    <string name="freeroom_connection_error_happened">"Nous ne pouvons pas récupérer les données FreeRoom maintenant, car vous n\'êtes pas connecté à Internet."</string>
+<!--     <string name="freeroom_connection_error_happened">"Nous ne pouvons pas récupérer les données FreeRoom maintenant, car vous n\'êtes pas connecté à Internet."</string> -->
 
     <!-- SEARCH dialog -->
     <string name="freeroom_search_title">"Nouvelle recherche"</string>

@@ -13,7 +13,7 @@
 
 chdir(dirname(__FILE__));
 
-$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Satellite", "Map", "Bikes", "Directory", "PushNotif", "Sunrise", "Events", "QAforum");
+$plugins_to_merge = array("Dashboard", "Authentication", "Map", "FreeRoom");
 
 $libs_to_export = array(
 		"android-support-v4.jar",
@@ -22,7 +22,8 @@ $libs_to_export = array(
 		"libGoogleAnalytics.jar", 
 		"osmdroid-android-3.0.3.jar", 
 		"servlet-api-3.0.jar", "slf4j-api-1.6.2.jar", 
-		"universal-image-loader-1.8.0.jar");
+		"universal-image-loader-1.8.0.jar", "joda-time-2.3.jar",
+		"PopupMenuCompatLib.jar");
 
 $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
@@ -343,7 +344,7 @@ function copyr($source, $dest) {
 	$dir = dir($source);
 	while (false !== $entry = $dir->read()) {
 		// Skip pointers
-		if ($entry == '.' || $entry == '..') {
+		if ($entry == '.' || $entry == '..' || $entry == 'tests') {
 			continue;
 		}
 

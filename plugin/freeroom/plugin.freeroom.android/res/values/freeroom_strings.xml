@@ -220,5 +220,6 @@
     <string name="freeroom_whoIsWorking_undefined">"Not precised"</string>
 
     <!-- NEW: add there -->
-
+	<string name="freeroom_layout_search_expand_collapse_hour_img">first/last</string>
+	<string name="freeroom_layout_roomslist_img_triangle">triangle icon</string>
 </resources>
