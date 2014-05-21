@@ -13,7 +13,7 @@
 
 chdir(dirname(__FILE__));
 
-$plugins_to_merge = array("FreeRoom");
+$plugins_to_merge = array("FreeRoom", "Camipro", "Moodle", "Food", "Transport", "News", "Satellite", "Map", "Bikes", "Directory", "PushNotif", "MyEdu", "Events", "QAforum");
 
 $libs_to_export = array(
 		"backport-util-concurrent-3.1.jar", "bcprov-jdk15-146.jar", 
@@ -29,7 +29,7 @@ $libs_to_export = array(
 		"log4j-1.2.16.jar", 
 		"mail.jar", "mysql-connector-java-5.1.15-bin.jar", 
 		"servlet-api-3.0.jar", "slf4j-api-1.6.2.jar", "slf4j-simple-1.6.2.jar", 
-		"unboundid-ldapsdk-se.jar", "EWSJavaAPI_1.2.jar");
+		"unboundid-ldapsdk-se.jar");
 
 $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
@@ -205,7 +205,7 @@ function copyr($source, $dest) {
 	$dir = dir($source);
 	while (false !== $entry = $dir->read()) {
 		// Skip pointers
-		if ($entry == '.' || $entry == '..' || $entry == 'tests') {
+		if ($entry == '.' || $entry == '..') {
 			continue;
 		}
 
