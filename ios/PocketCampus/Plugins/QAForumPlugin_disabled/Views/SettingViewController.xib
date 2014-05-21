@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4488.2" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment version="1552" defaultVersion="1296" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3715.3"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingViewController">
+            <connections>
+                <outlet property="bnConfirm" destination="93" id="144"/>
+                <outlet property="bnDeutsch" destination="24" id="97"/>
+                <outlet property="bnFrench" destination="7" id="23"/>
+                <outlet property="bnItalian" destination="27" id="98"/>
+                <outlet property="bnLiving" destination="48" id="101"/>
+                <outlet property="bnOther" destination="49" id="102"/>
+                <outlet property="bnStudy" destination="47" id="100"/>
+                <outlet property="bnTravel" destination="46" id="99"/>
+                <outlet property="bn_English" destination="4" id="22"/>
+                <outlet property="labLang" destination="15" id="141"/>
+                <outlet property="labNotif" destination="70" id="143"/>
+                <outlet property="labTopic" destination="38" id="142"/>
+                <outlet property="tvIterval" destination="78" id="138"/>
+                <outlet property="view" destination="1" id="3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4">
+                    <rect key="frame" x="46" y="51" width="73" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="73" id="66"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="EN">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="bnEnglishAction:" destination="-1" eventType="touchUpInside" id="103"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7">
+                    <rect key="frame" x="200" y="51" width="73" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="73" id="67"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="FR">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="bnFrenchAction:" destination="-1" eventType="touchUpInside" id="104"/>
+                    </connections>
+                </button>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Preferred Language" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="15">
+                    <rect key="frame" x="0.0" y="20" width="321" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.81215266770000005" green="0.83641581629999995" blue="0.80635923620000005" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="21"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="18"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="24">
+                    <rect key="frame" x="46" y="89" width="73" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="DE">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="bnDeutsch:" destination="-1" eventType="touchUpInside" id="105"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="27">
+                    <rect key="frame" x="200" y="89" width="73" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="IT">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="bnItalianAction:" destination="-1" eventType="touchUpInside" id="106"/>
+                    </connections>
+                </button>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Preferred Topics" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="38">
+                    <rect key="frame" x="0.0" y="127" width="321" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.81215266770000005" green="0.83641581629999995" blue="0.80635923620000005" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="39"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="18"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Notification Interval" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="70">
+                    <rect key="frame" x="0.0" y="232" width="321" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.81215266770000005" green="0.83641581629999995" blue="0.80635923620000005" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="71"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="18"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="46">
+                    <rect key="frame" x="46" y="156" width="73" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="Travel">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="bnTravelAction:" destination="-1" eventType="touchUpInside" id="107"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="47">
+                    <rect key="frame" x="200" y="156" width="73" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="Study">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="bnStudyAction:" destination="-1" eventType="touchUpInside" id="108"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="48">
+                    <rect key="frame" x="46" y="194" width="73" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="Living">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="bnLivingAction:" destination="-1" eventType="touchUpInside" id="109"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="49">
+                    <rect key="frame" x="200" y="194" width="73" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="Other">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="bnOtherAction:" destination="-1" eventType="touchUpInside" id="110"/>
+                    </connections>
+                </button>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="78">
+                    <rect key="frame" x="102" y="261" width="117" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="117" id="91"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="140"/>
+                    </connections>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="93">
+                    <rect key="frame" x="102" y="518" width="117" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="Confirm">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="bnConfirmAction:" destination="-1" eventType="touchUpInside" id="111"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="4" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="46" id="6"/>
+                <constraint firstItem="7" firstAttribute="baseline" secondItem="4" secondAttribute="baseline" id="9"/>
+                <constraint firstItem="15" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" symbolic="YES" id="17"/>
+                <constraint firstItem="15" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="20"/>
+                <constraint firstItem="24" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="26"/>
+                <constraint firstItem="27" firstAttribute="baseline" secondItem="24" secondAttribute="baseline" id="31"/>
+                <constraint firstItem="27" firstAttribute="leading" secondItem="7" secondAttribute="leading" id="37"/>
+                <constraint firstItem="38" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="43"/>
+                <constraint firstItem="46" firstAttribute="leading" secondItem="48" secondAttribute="leading" id="52"/>
+                <constraint firstItem="46" firstAttribute="baseline" secondItem="47" secondAttribute="baseline" id="53"/>
+                <constraint firstItem="48" firstAttribute="baseline" secondItem="49" secondAttribute="baseline" id="55"/>
+                <constraint firstItem="47" firstAttribute="leading" secondItem="27" secondAttribute="leading" id="57"/>
+                <constraint firstItem="47" firstAttribute="leading" secondItem="49" secondAttribute="leading" id="58"/>
+                <constraint firstItem="46" firstAttribute="leading" secondItem="24" secondAttribute="leading" id="61"/>
+                <constraint firstItem="46" firstAttribute="trailing" secondItem="48" secondAttribute="trailing" id="62"/>
+                <constraint firstItem="47" firstAttribute="trailing" secondItem="49" secondAttribute="trailing" id="63"/>
+                <constraint firstItem="46" firstAttribute="trailing" secondItem="24" secondAttribute="trailing" id="64"/>
+                <constraint firstItem="47" firstAttribute="trailing" secondItem="27" secondAttribute="trailing" id="65"/>
+                <constraint firstItem="24" firstAttribute="trailing" secondItem="4" secondAttribute="trailing" id="68"/>
+                <constraint firstItem="27" firstAttribute="trailing" secondItem="7" secondAttribute="trailing" id="69"/>
+                <constraint firstItem="70" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="75"/>
+                <constraint firstItem="78" firstAttribute="centerX" secondItem="70" secondAttribute="centerX" id="92"/>
+                <constraint firstAttribute="bottom" secondItem="93" secondAttribute="bottom" constant="20" symbolic="YES" id="94"/>
+                <constraint firstItem="24" firstAttribute="top" secondItem="4" secondAttribute="bottom" constant="8" symbolic="YES" id="123"/>
+                <constraint firstItem="38" firstAttribute="top" secondItem="24" secondAttribute="bottom" constant="8" symbolic="YES" id="127"/>
+                <constraint firstItem="46" firstAttribute="top" secondItem="38" secondAttribute="bottom" constant="8" symbolic="YES" id="130"/>
+                <constraint firstItem="48" firstAttribute="top" secondItem="46" secondAttribute="bottom" constant="8" symbolic="YES" id="135"/>
+                <constraint firstItem="70" firstAttribute="top" secondItem="48" secondAttribute="bottom" constant="8" symbolic="YES" id="136"/>
+                <constraint firstItem="78" firstAttribute="top" secondItem="70" secondAttribute="bottom" constant="8" symbolic="YES" id="137"/>
+                <constraint firstItem="38" firstAttribute="trailing" secondItem="70" secondAttribute="trailing" id="146"/>
+                <constraint firstItem="93" firstAttribute="leading" secondItem="78" secondAttribute="leading" id="147"/>
+                <constraint firstItem="38" firstAttribute="trailing" secondItem="15" secondAttribute="trailing" id="148"/>
+                <constraint firstAttribute="trailing" secondItem="7" secondAttribute="trailing" constant="47" id="150"/>
+                <constraint firstItem="4" firstAttribute="top" secondItem="1" secondAttribute="top" constant="51" id="151"/>
+                <constraint firstItem="15" firstAttribute="centerX" secondItem="1" secondAttribute="centerX" id="152"/>
+                <constraint firstItem="78" firstAttribute="trailing" secondItem="93" secondAttribute="trailing" id="153"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+</document>

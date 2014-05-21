@@ -1,22 +1,35 @@
-/* 
-  Localizable.strings
-  PocketCampus
-
-  Created by Loïc Gardiol on 01.03.12.
-  Copyright (c) 2012 EPFL. All rights reserved.
-*/
+// Created by Loïc Gardiol on 01.03.12.
 
 "PluginName" = "Annuaire";
 "SearchFieldPlaceholder" = "Nom ou sciper";
 "SearchNoResult" = "Aucun résultat\nEssayez avec l'orthographe exacte (accents)";
 "OfficeLabel" = "bureau";
-"(showOnMap)" = "(voir sur le plan)";
 "NoContactSelected" = "Aucun contact séléctionné";
 "PhotoButtonTitle" = "Photo";
 "Details" = "Détails";
+"LoadingPersonInfo" = "Chargement des informations sur la personne";
 "NoResultPCUnknownViewControllerLoad" = "Désolé, cette personne n'a pas pu\nêtre trouvée dans l'annuaire de l'EPFL.";
+
+"PrivatePhone" = "Tél. privé";
+"OfficePhone" = "Tél. EPFL";
+"Email" = "Email";
+"Webpage" = "Page web";
+"EPFLWebpage" = "Page web EPFL";
+"Office" = "Bureau";
+"EPFLOffice" = "Bureau EPFL";
+"Sciper" = "Sciper";
+"TapToSeeOnMap" = "voir sur le plan";
+
+"AddToExistingContact" = "Ajouter à un contact existant";
+"AddToExistingContactError" = "Désolé, ce contact n'a pas pu être mis à jour.";
+"CreateNewContact" = "Créer un nouveau contact";
+"UpdatedContact" = "Contact fusionné";
 
 /* Accessiblity */
 
-"SearchBar" = "Barre de recherche";
-"SearchResults" = "Résultats de la recherche";
+"ShowInfoAboutThisPerson" = "Affiche les informations sur cette personne.";
+"ShowsOptionsToExportToContacts" = "Affiche des options pour exporter vers les contacts";
+"CallsThisNumber" = "Appelle ce numéro";
+"SendsAnEmail" = "Envoie un email";
+"OpensInBrowser" = "Ouvre dans le navigateur";
+"ShowsOnMap" = "Affiche sur le plan";

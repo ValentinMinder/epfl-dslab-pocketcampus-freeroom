@@ -26,14 +26,15 @@
         <!-- Converters -->
         <com:EnumToLocalizedStringConverter x:Key="EnumToString"
                                             Strings="{StaticResource Strings}" />
+        <com:EmailNotRequestedToVisibilityConverter x:Key="NoEmailRequestToVisibility" />
         <my:DoubleToBrushConverter x:Key="MoneyToBrush" />
-        <my:EmailNotRequestedToVisibilityConverter x:Key="NoEmailRequestToVisibility" />
 
         <!-- Transaction item template -->
         <DataTemplate x:Key="TransactionTemplate">
             <!-- Double-grid system to ensure the transaction description takes as much space as possible
                  instead of being cut off by the dates -->
-            <Grid Margin="0,8">
+            <Grid Margin="0,12"
+                  Height="60">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -54,11 +55,11 @@
                     <TextBlock Grid.Column="1"
                                Text="{Binding Amount, StringFormat='{}{0:0.00} CHF'}"
                                Style="{StaticResource PhoneTextNormalStyle}"
-                               FontFamily="{StaticResource PhoneFontFamilySemiBold}"
-                               Foreground="{Binding Amount, Converter={StaticResource MoneyToBrush}}" />
+                               Foreground="{Binding Amount, Converter={StaticResource MoneyToBrush}}"  />
                 </Grid>
 
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="1"
+                      VerticalAlignment="Top">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
@@ -92,114 +93,147 @@
                      Foreground="{StaticResource AppHeaderForegroundBrush}">
             <!-- Account part (balance and transaction) -->
             <phone:PivotItem Header="{Binding Resources.AccountHeader, Source={StaticResource Strings}}"
-                             Margin="0,20,0,0">
+                             Padding="0,-4,0,0">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="45" />
+                        <RowDefinition Height="34" />
+                        <RowDefinition Height="37" />
+                        <RowDefinition Height="37" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
                     <!-- Current balance -->
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Bottom">
                         <TextBlock Text="{Binding Resources.CurrentBalance, Source={StaticResource Strings}}"
-                                   Style="{StaticResource PhoneTextLargeStyle}" />
+                                   Style="{StaticResource PhoneTextLargeStyle}"
+                                   Margin="12,0,0,0" />
                         <TextBlock Text="{Binding AccountInfo.Balance, StringFormat='{}{0:0.00} CHF'}"
                                    Style="{StaticResource PhoneTextLargeStyle}"
-                                   FontWeight="Bold"
-                                   Margin="-10,0,0,0"
-                                   Foreground="{Binding AccountInfo.Balance, Converter={StaticResource MoneyToBrush}}" />
+                                   Foreground="{Binding AccountInfo.Balance, Converter={StaticResource MoneyToBrush}}"
+                                   Margin="0" />
                     </StackPanel>
 
                     <!-- Last month -->
                     <StackPanel Grid.Row="1"
-                                Orientation="Horizontal">
+                                Orientation="Horizontal"
+                                VerticalAlignment="Bottom">
                         <TextBlock Text="{Binding Resources.MonthSpending, Source={StaticResource Strings}}"
-                                   Style="{StaticResource PhoneTextSubtleStyle}" />
+                                   Style="{StaticResource PhoneTextSubtleStyle}"
+                                   Margin="12,0,6,0" />
                         <TextBlock Text="{Binding EbankingInfo.CardStatistics.MonthTotal, StringFormat='{}{0:0.00} CHF'}"
                                    Style="{StaticResource PhoneTextNormalStyle}"
-                                   Margin="-4,0,0,0" />
+                                   Margin="0" />
                     </StackPanel>
 
                     <!-- Three months total -->
                     <StackPanel Grid.Row="2"
-                                Orientation="Horizontal">
+                                Orientation="Horizontal"
+                                VerticalAlignment="Bottom">
                         <TextBlock Text="{Binding Resources.ThreeMonthsSpendingTotal, Source={StaticResource Strings}}"
-                                   Style="{StaticResource PhoneTextSubtleStyle}" />
+                                   Style="{StaticResource PhoneTextSubtleStyle}"
+                                   Margin="12,0,6,0" />
                         <TextBlock Text="{Binding EbankingInfo.CardStatistics.ThreeMonthsTotal, StringFormat='{}{0:0.00} CHF'}"
                                    Style="{StaticResource PhoneTextNormalStyle}"
-                                   Margin="-4,0,0,0" />
+                                   Margin="0" />
                     </StackPanel>
 
                     <!-- Three months average -->
                     <StackPanel Grid.Row="3"
-                            Orientation="Horizontal">
+                                Orientation="Horizontal"
+                                VerticalAlignment="Bottom">
                         <TextBlock Text="{Binding Resources.ThreeMonthsSpendingAverage, Source={StaticResource Strings}}"
-                                   Style="{StaticResource PhoneTextSubtleStyle}" />
+                                   Style="{StaticResource PhoneTextSubtleStyle}"
+                                   Margin="12,0,6,0" />
                         <TextBlock Text="{Binding EbankingInfo.CardStatistics.ThreeMonthsAverage, StringFormat='{}{0:0.00} CHF'}"
                                    Style="{StaticResource PhoneTextNormalStyle}"
-                                   Margin="-4,0,0,0" />
+                                   Margin="0" />
                     </StackPanel>
 
-                    <!-- Transactions-->
-                    <ScrollViewer Grid.Row="4"
-                                  Margin="0,30,0,0">
-                        <ItemsControl ItemsSource="{Binding AccountInfo.Transactions}"
-                                      ItemTemplate="{StaticResource TransactionTemplate}" />
-                    </ScrollViewer>
+                    <!-- Transactions -->
+                    <ItemsControl Grid.Row="4"
+                                  ItemsSource="{Binding AccountInfo.Transactions}"
+                                  ItemTemplate="{StaticResource TransactionTemplate}"
+                                  Style="{StaticResource ScrollingItemsControlStyle}"
+                                  Margin="0,40,0,0" />
                 </Grid>
             </phone:PivotItem>
 
 
             <!-- E-banking part -->
             <phone:PivotItem Header="{Binding Resources.EbankingHeader, Source={StaticResource Strings}}"
-                             Margin="0,20,0,0">
-                <StackPanel>
+                             Padding="0,7,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="31" />
+                        <RowDefinition Height="37" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="38" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="44" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    
                     <!-- Payment type -->
                     <TextBlock Text="{Binding Resources.EbankingPaymentType, Source={StaticResource Strings}}"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               Margin="12,0,12,5" />
+                               Style="{StaticResource PhoneTextNormalStyle}" />
 
                     <!-- Account name -->
-                    <TextBlock Text="{Binding Resources.EbankingAccountName, Source={StaticResource Strings}}"
-                               Style="{StaticResource PhoneTextSubtleStyle}" />
-                    <TextBlock Text="{Binding EbankingInfo.PaymentInfo.AccountName}"
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding Resources.EbankingAccountName, Source={StaticResource Strings}}"
+                               Style="{StaticResource PhoneTextSubtleStyle}"
+                               VerticalAlignment="Bottom" />
+                    <TextBlock Grid.Row="2"
+                               Text="{Binding EbankingInfo.PaymentInfo.AccountName}"
                                Style="{StaticResource PhoneTextNormalStyle}"
-                               FontSize="22" />
+                               FontSize="{StaticResource PhoneFontSizeMedium}"
+                               LineHeight="37"
+                               Margin="12,0" />
 
                     <!-- Account number -->
-                    <TextBlock Text="{Binding Resources.EbankingAccountNumber, Source={StaticResource Strings}}"
-                               Style="{StaticResource PhoneTextSubtleStyle}" />
-                    <TextBlock Text="{Binding EbankingInfo.PaymentInfo.AccountNumber}"
+                    <TextBlock Grid.Row="3"
+                               Text="{Binding Resources.EbankingAccountNumber, Source={StaticResource Strings}}"
+                               Style="{StaticResource PhoneTextSubtleStyle}"
+                               VerticalAlignment="Bottom" />
+                    <TextBlock Grid.Row="4"
+                               Text="{Binding EbankingInfo.PaymentInfo.AccountNumber}"
                                Style="{StaticResource PhoneTextNormalStyle}"
-                               FontSize="22" />
+                               FontSize="{StaticResource PhoneFontSizeMedium}" />
 
                     <!-- Reference number -->
-                    <TextBlock Text="{Binding Resources.EbankingReferenceNumber, Source={StaticResource Strings}}"
-                               Style="{StaticResource PhoneTextSubtleStyle}" />
-                    <TextBlock Text="{Binding EbankingInfo.PaymentInfo.ReferenceNumber}"
+                    <TextBlock Grid.Row="5"
+                               Text="{Binding Resources.EbankingReferenceNumber, Source={StaticResource Strings}}"
+                               Style="{StaticResource PhoneTextSubtleStyle}"
+                               VerticalAlignment="Bottom" />
+                    <TextBlock Grid.Row="6"
+                               Text="{Binding EbankingInfo.PaymentInfo.ReferenceNumber}"
                                Style="{StaticResource PhoneTextNormalStyle}"
-                               FontSize="22" />
+                               FontSize="{StaticResource PhoneFontSizeMedium}" />
 
                     <!-- Various warnings -->
-                    <TextBlock Text="{Binding Resources.EbankingWarning, Source={StaticResource Strings}}"
+                    <TextBlock Grid.Row="7"
+                               Text="{Binding Resources.EbankingWarning, Source={StaticResource Strings}}"
                                TextWrapping="Wrap"
                                Style="{StaticResource PhoneTextSubtleStyle}"
-                               Margin="13,20" />
+                               LineHeight="37"
+                               Margin="12,20" />
 
                     <!-- 'Request e-mail with info' button -->
-                    <Button Command="{Binding RequestEbankingEmailCommand}"
+                    <Button Grid.Row="8"
+                            Command="{Binding RequestEbankingEmailCommand}"
                             Content="{Binding Resources.RequestEbankingEmail, Source={StaticResource Strings}}"
-                            Visibility="{Binding EmailStatus, Converter={StaticResource NoEmailRequestToVisibility}}"
-                            Margin="0,20" />
+                            Visibility="{Binding EmailStatus, Converter={StaticResource NoEmailRequestToVisibility}}" />
 
                     <!-- E-mail status text -->
-                    <TextBlock Text="{Binding EmailStatus, Converter={StaticResource EnumToString}}"
+                    <TextBlock Grid.Row="8"
+                               Text="{Binding EmailStatus, Converter={StaticResource EnumToString}}"
+                               TextWrapping="Wrap"
                                Style="{StaticResource PhoneTextNormalStyle}"
-                               TextWrapping="Wrap" />
-                </StackPanel>
+                               Margin="12,20" />
+                </Grid>
             </phone:PivotItem>
         </phone:Pivot>
 
@@ -209,7 +243,7 @@
 
     <!-- App bar -->
     <bar:Bindable.ApplicationBar>
-        <bar:BindableApplicationBar>
+        <bar:BindableApplicationBar Mode="Minimized">
             <!-- Refresh button -->
             <bar:BindableApplicationBarButton Command="{Binding RefreshCommand}"
                                               Text="{Binding Resources.RefreshButton, Source={StaticResource Strings}}"

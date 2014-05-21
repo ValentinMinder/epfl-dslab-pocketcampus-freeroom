@@ -6,16 +6,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
 using PocketCampus.Transport.Services;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Transport.ViewModels
 {
     /// <summary>
     /// ViewModel that allows the user to add a station.
     /// </summary>
-    [PageLogId( "/transport/addstation" )]
+    [LogId( "/transport/addStation" )]
     public sealed class AddStationViewModel : DataViewModel<NoParameter>
     {
         private readonly ITransportService _transportService;
@@ -25,7 +25,7 @@ namespace PocketCampus.Transport.ViewModels
         /// <summary>
         /// Gets the auto-complete provider for station names.
         /// </summary>
-        public Func<string, Task<IEnumerable<object>>> AutoCompleteProvider
+        public Func<string, Task<IEnumerable<string>>> AutoCompleteProvider
         {
             get { return ProvideAutoComplete; }
         }
@@ -33,7 +33,7 @@ namespace PocketCampus.Transport.ViewModels
         /// <summary>
         /// Gets the command executed to add a station.
         /// </summary>
-        [CommandLogId( "Add" )]
+        [LogId( "Add" )]
         public AsyncCommand<string> AddCommand
         {
             get { return GetAsyncCommand<string>( AddAsync ); }
@@ -54,9 +54,9 @@ namespace PocketCampus.Transport.ViewModels
         /// <summary>
         /// Provides auto-complete for station names.
         /// </summary>
-        private async Task<IEnumerable<object>> ProvideAutoComplete( string query )
+        private async Task<IEnumerable<string>> ProvideAutoComplete( string query )
         {
-            var suggestions = await _transportService.GetSuggestionsAsync( query );
+            var suggestions = await _transportService.GetSuggestionsAsync( query, CurrentCancellationToken );
             return suggestions.Select( s => s.Name );
         }
 
@@ -65,9 +65,9 @@ namespace PocketCampus.Transport.ViewModels
         /// </summary>
         private Task AddAsync( string stationName )
         {
-            return TryExecuteAsync( async _ =>
+            return TryExecuteAsync( async token =>
             {
-                var station = ( await _transportService.GetStationsAsync( new[] { stationName } ) )[0];
+                var station = ( await _transportService.GetStationsAsync( new[] { stationName }, token ) )[0];
                 _pluginSettings.Stations.Add( station );
                 _navigationService.NavigateBack();
             } );

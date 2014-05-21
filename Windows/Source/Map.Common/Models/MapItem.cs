@@ -53,7 +53,7 @@ namespace PocketCampus.Map.Models
         /// The floor the item is on.
         /// </summary>
         [ThriftField( 7, false, "floor" )]
-        public int Floor { get; set; }
+        public int? Floor { get; set; }
 
         /// <summary>
         /// The category of the item.

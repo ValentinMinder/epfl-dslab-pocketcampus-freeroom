@@ -3,12 +3,12 @@ package org.pocketcampus.plugin.camipro.android;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pocketcampus.plugin.camipro.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleSeparatedLayout;
+import org.pocketcampus.plugin.camipro.R;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
 import org.pocketcampus.plugin.camipro.shared.Transaction;
 
@@ -27,7 +27,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 
 /**
@@ -72,11 +71,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		mLayout.hideFirstTitle();
 		mLayout.hideSecondTitle();
 
-		ActionBar a = getActionBar();
-		if (a != null) {
-			RefreshAction refresh = new RefreshAction();
-			a.addAction(refresh, 0);
-		}
+		addActionToActionBar(new RefreshAction(), 0);
 	}
 
 	/**

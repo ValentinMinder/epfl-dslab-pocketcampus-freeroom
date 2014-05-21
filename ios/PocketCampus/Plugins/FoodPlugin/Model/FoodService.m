@@ -1,25 +1,69 @@
-//
-//  FoodService.m
-//  PocketCampus
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
+
+
+
 //  Created by Loïc Gardiol on 05.03.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import "FoodService.h"
+
+#import "PCPersistenceManager.h"
+
+NSString* const kFoodFavoritesRestaurantsUpdatedNotification = @"kFavoritesRestaurantsUpdatedNotification";
+
+NSInteger kFoodDefaultUnknownUserPriceTarget = PriceTarget_ALL;
+
+static NSTimeInterval kFoodRequestCacheValidity = 10800.0; //3 hours;
+
+static NSString* const kFavoriteRestaurantIds = @"favoriteRestaurantIds";
+
+@interface FoodService ()
+
+@property (nonatomic, strong) NSMutableSet* favoriteRestaurantIds; //set of NSNumber int64_t
+
+@end
 
 @implementation FoodService
 
 static FoodService* instance __weak = nil;
+
+#pragma mark - Init
 
 - (id)init {
     @synchronized(self) {
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"FoodService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"food"];
+        self = [super initWithServiceName:@"food" thriftServiceClientClassName:NSStringFromClass(FoodServiceClient.class)];
         if (self) {
             instance = self;
+            instance.userPriceTarget = PriceTarget_ALL;
         }
         return self;
     }
@@ -38,99 +82,112 @@ static FoodService* instance __weak = nil;
     }
 }
 
-- (id)thriftServiceClientInstance {
-    return [[FoodServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
+#pragma mark - Favorite restaurants
+
+- (void)initFavorites {
+    if (!self.favoriteRestaurantIds) { //first try to get it from persistent storage
+        self.favoriteRestaurantIds = [(NSSet*)[PCPersistenceManager objectForKey:kFavoriteRestaurantIds pluginName:@"food"] mutableCopy];
+    }
+    if (!self.favoriteRestaurantIds) { //if not present in persistent storage, create set
+        self.favoriteRestaurantIds = [NSMutableSet set];
+    }
 }
 
-- (void)getMealsWithDelegate:(id)delegate {    
+- (BOOL)persistFavorites {
+    if (!self.favoriteRestaurantIds) {
+        return YES;
+    }
+    return [PCPersistenceManager saveObject:self.favoriteRestaurantIds forKey:kFavoriteRestaurantIds pluginName:@"food"];
+}
+
+- (NSNumber*)nsNumberForRestaurantId:(int64_t)restaurantId {
+    return [NSNumber numberWithInteger:(NSInteger)restaurantId];
+}
+
+- (void)addFavoriteRestaurant:(EpflRestaurant*)restaurant {
+    [PCUtils throwExceptionIfObject:restaurant notKindOfClass:[EpflRestaurant class]];
+    [self initFavorites];
+    [self.favoriteRestaurantIds addObject:[self nsNumberForRestaurantId:restaurant.rId]];
+    [self persistFavorites];
+    NSNotification* notif = [NSNotification notificationWithName:kFoodFavoritesRestaurantsUpdatedNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotification:notif];
+
+}
+
+- (void)removeFavoritRestaurant:(EpflRestaurant*)restaurant {
+    [PCUtils throwExceptionIfObject:restaurant notKindOfClass:[EpflRestaurant class]];
+    [self initFavorites];
+    [self.favoriteRestaurantIds removeObject:[self nsNumberForRestaurantId:restaurant.rId]];
+    [self persistFavorites];
+    NSNotification* notif = [NSNotification notificationWithName:kFoodFavoritesRestaurantsUpdatedNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotification:notif];
+}
+
+- (NSSet*)allFavoriteRestaurantIds {
+    [self initFavorites];
+    return self.favoriteRestaurantIds;
+}
+
+- (BOOL)isRestaurantFavorite:(EpflRestaurant*)restaurant {
+    [self initFavorites];
+    return [self.favoriteRestaurantIds containsObject:[self nsNumberForRestaurantId:restaurant.rId]];
+}
+
+#pragma mark - Service methods
+
+- (void)getFoodForRequest:(FoodRequest*)request delegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
-    operation.skipCache = YES;
-    operation.cacheValidity = 3600*24;
-    operation.serviceClientSelector = @selector(getMeals);
-    operation.delegateDidReturnSelector = @selector(getMealsDidReturn:);
-    operation.delegateDidFailSelector = @selector(getMealsFailed);
+    __weak __typeof(self) weakSelf = self;
+    operation.keepInCacheBlock = ^BOOL(void* result) {
+        FoodResponse* response = (__bridge id)result;
+        if (response.statusCode == FoodStatusCode_OK) {
+            weakSelf.userPriceTarget = response.userStatus;
+            weakSelf.pictureUrlForMealType = response.mealTypePictureUrls;
+            return YES;
+        }
+        return NO;
+    };
+    operation.cacheValidityInterval = kFoodRequestCacheValidity;
+    operation.skipCache = YES; //use getFoodFromCacheForRequest:
+    operation.serviceClientSelector = @selector(getFood:);
+    operation.delegateDidReturnSelector = @selector(getFoodForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getFoodFailedForRequest:);
+    [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
-- (NSArray*)getFromCacheMeals {
+- (void)voteForRequest:(VoteRequest*)request delegate:(id)delegate {
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.keepInCache = NO;
+    operation.serviceClientSelector = @selector(vote:);
+    operation.delegateDidReturnSelector = @selector(voteForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(voteFailedForRequest:);
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    [self.operationQueue addOperation:operation];
+}
+
+#pragma Cached versions
+
+- (FoodResponse*)getFoodFromCacheForRequest:(FoodRequest*)request {
     ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
-    operation.serviceClientSelector = @selector(getMeals);
-    operation.delegateDidReturnSelector = @selector(getMealsDidReturn:);
-    operation.delegateDidFailSelector = @selector(getMealsFailed);
+    operation.cacheValidityInterval = kFoodRequestCacheValidity;
+    operation.serviceClientSelector = @selector(getFood:);
+    operation.delegateDidReturnSelector = @selector(getFoodForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getFoodFailedForRequest:);
+    [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    return [operation cachedResponseObjectEvenIfStale:YES];
-}
-
-- (void)getRestaurantsWithDelegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getRestaurants);
-    operation.delegateDidReturnSelector = @selector(getRestaurantsDidReturn:);
-    operation.delegateDidFailSelector = @selector(getRestaurantsFailed);
-    operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
-}
-
-- (void)getSandwichesWithDelegate:(id)delegate; {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getSandwiches);
-    operation.delegateDidReturnSelector = @selector(getSandwichesDidReturn:);
-    operation.delegateDidFailSelector = @selector(getSandwichesFailed);
-    operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
-}
-
-- (void)getRating:(Meal*)meal delegate:(id)delegate {
-    if (![meal isKindOfClass:[Meal class]]) {
-        @throw [NSException exceptionWithName:@"bad meal" reason:@"meal is either nil or not of class Meal" userInfo:nil];
+    FoodResponse* response = [operation cachedResponseObjectEvenIfStale:NO];
+    if (response) {
+        self.pictureUrlForMealType = response.mealTypePictureUrls;
+        self.userPriceTarget = response.userStatus;
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getRating:);
-    operation.delegateDidReturnSelector = @selector(getRatingFor:didReturn:);
-    operation.delegateDidFailSelector = @selector(getRatingFailedFor:);
-    [operation addObjectArgument:meal];
-    operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    return response;
 }
 
-- (void)hasVoted:(NSString*)deviceId delegate:(id)delegate {
-    if (![deviceId isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad deviceId" reason:@"deviceId is either nil or not of class NSString" userInfo:nil];
-    }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(hasVoted:);
-    operation.delegateDidReturnSelector = @selector(hasVotedFor:didReturn:);
-    operation.delegateDidFailSelector = @selector(hasVotedFailedFor:);
-    [operation addObjectArgument:deviceId];
-    operation.returnType = ReturnTypeBool;
-    [operationQueue addOperation:operation];
-}
-
-- (void)getRatingsWithDelegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getRatings);
-    operation.delegateDidReturnSelector = @selector(getRatingsDidReturn:);
-    operation.delegateDidFailSelector = @selector(getRatingsFailed);
-    operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
-}
-
-- (void)setRatingForMeal:(Id)mealId rating:(double)rating deviceId:(NSString*)deviceId delegate:(id)delegate {
-    //Id is primitive type (long long), rating is primitive (double) => cannot be checked
-    if (![deviceId isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad deviceId" reason:@"deviceId is either nil or not of class NSString" userInfo:nil];
-    }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(setRating:::);
-    operation.delegateDidReturnSelector = @selector(setRatingForMeal:rating:deviceId:didReturn:);
-    operation.delegateDidFailSelector = @selector(setRatingFailedForMeal:rating:deviceId:);
-    [operation addLongLongArgument:mealId];
-    [operation addDoubleArgument:rating];
-    [operation addObjectArgument:deviceId];
-    operation.returnType = ReturnTypeInt;
-    [operationQueue addOperation:operation];
-}
+#pragma mark - Dealloc
 
 - (void)dealloc
 {

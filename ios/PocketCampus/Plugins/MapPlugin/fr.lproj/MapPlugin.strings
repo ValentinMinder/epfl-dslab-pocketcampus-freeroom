@@ -1,26 +1,26 @@
-/* 
-  Localizable.strings
-  PocketCampus
-
-  Created by Loïc Gardiol on 01.03.12.
-  Copyright (c) 2012 EPFL. All rights reserved.
-*/
+// Created by Loïc Gardiol on 01.03.12.
 
 "PluginName" = "Plan";
-"CenterOnEPFL" = "Centrer sur l'EPFL";
-"CenterOnResults" = "Centrer sur les résultats";
 "SearchPlaceholder" = "Bâtiment, salle, personne, ...";
 "RemoveElements" = "Effacer les résultats";
 "ShowBuildingsInterior" = "Aff. l'int. des bâtiments";
 "HideBuildingsInterior" = "Masquer l'int. des bâtiments";
 "NoResult" = "Aucun résultat";
 "TooManyResults" = "Trop de résultats";
-"NarrowSearch" = "Précisez votre recherche.";
+"CannotDisplayOnMap" = "Impossible de les afficher sur le plan";
+"PickFromList" = "Liste des résultats";
 "Floor" = "Étage";
+"floor" = "étage";
 "Details" = "Détails";
+"AllSearchResults" = "Tous les résultats";
+"ClearHistory" = "Effacer l'historique";
 
 /* Accessibility */
 
 "FloorUp" = "Étage supérieur";
 "FloorDown" = "Étage inférieur";
 "Other" = "Autres";
+"ShowsAllSearchResultsForSearchWithFormat" = "Affiche la liste de tous les résultats pour la recherche '%@'.";
+"CenterOnEPFL" = "Centrer sur l'EPFL";
+"CentersMapToSeelWholeEPFLCampus" = "Centre le plan pour voir tout le campus de l'EPFL.";
+"ShowsPersonsDetails" = "Affiche plus d'informations sur cette personne.";

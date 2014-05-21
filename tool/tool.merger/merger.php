@@ -17,7 +17,7 @@ $plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "F
 
 $libs_to_export = array(
 		"android-support-v4.jar",
-		"commons-io-2.0.1.jar", "commons-lang-2.6.jar", 
+		"commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar", 
 		"gcm.jar", 
 		"libGoogleAnalytics.jar", 
 		"osmdroid-android-3.0.3.jar", 

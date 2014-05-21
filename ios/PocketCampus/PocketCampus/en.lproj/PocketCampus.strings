@@ -1,10 +1,4 @@
-/* 
-  Localizable.strings
-  PocketCampus
-
-  Created by Loïc Gardiol on 01.03.12.
-  Copyright (c) 2012 EPFL. All rights reserved.
-*/
+// Created by Loïc Gardiol on 01.03.12.
 
 "HomeViewControllerTitle" = "PocketCampus EPFL";
 "ConnectionToServerTimedOut" = "Cannot connect to server.\nCheck your internet connection.";
@@ -14,6 +8,7 @@
 "ServerErrorShort" = "Sorry, an error occured"; 
 "Cancel" = "Cancel";
 "Error" = "Error";
+"Loading" = "Loading";
 "Loading..." = "Loading...";
 "Help" = "Help";
 "Settings" = "Settings";
@@ -24,10 +19,13 @@
 "Settings" = "Settings";
 "LastUpdate" = "Last update";
 "LastUpdateNever" = "Last update: never";
+"Recents" = "Recents";
 "Clear" = "Clear";
 "MainMenu" = "Main menu";
-"EditMainMenu" = "Edit main menu";
+"EditMainMenu" = "Customize main menu";
 "RestoreDefaultMainMenu" = "Default main menu";
+"Misc" = "Misc";
+"Usage" = "Usage";
 "Close" = "Close";
 "RatePCAppStore" = "Rate on App Store";
 "RatePCAppStoreSubtitle" = "Many thanks in advance :)";
@@ -37,3 +35,26 @@
 "ActionNotSupportedYet" = "This action is not supported yet";
 "Send" = "Send";
 "By" = "By";
+"SearchNoun" = "Search";
+"CrashReports" = "Crash reports";
+"SendAutomatically" = "Send automatically";
+"CrashReportsExplanations" = "Crash reports are anonymous and help us improve PocketCampus.";
+"Now" = "Now";
+"yes" = "yes";
+"no" = "no";
+"UnknownError" = "Sorry, an error occured.";
+"UnknownErrorTryRefresh" = "Sorry, an error occured.\nTry to refresh.";
+"Today" = "Today";
+"All" = "All";
+"Favorites" = "Favorites";
+"Attention" = "Attention";
+
+//Accessbility
+
+"MainMenu" = "Main menu";
+"ClosesSettings" = "Closes settings.";
+"RecentSearchWithFormat" = "Recent search: '%@'";
+"SearchesForWithFormat" = "Searches for '%@'.";
+"ClearsHistoryOfRecentSearches" = "Clears history of recent searches.";
+"ShowMaster" = "Show left column";
+"HideMaster" = "Hide left column";

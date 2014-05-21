@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import org.pocketcampus.platform.sdk.shared.HttpClient;
+import org.pocketcampus.platform.sdk.server.HttpClient;
 import org.pocketcampus.plugin.satellite.server.BeerMenuImpl;
 import org.pocketcampus.plugin.satellite.shared.*;
 

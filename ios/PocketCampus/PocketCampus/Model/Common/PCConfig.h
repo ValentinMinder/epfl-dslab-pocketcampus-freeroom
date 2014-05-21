@@ -1,74 +1,129 @@
-//
-//  PCConfig.h
-//  PocketCampus
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
+
+
+
+
+
 //  Created by Loïc Gardiol on 22.01.13.
-//  Copyright (c) 2013 EPFL. All rights reserved.
-//
+
+
 
 #import <Foundation/Foundation.h>
 
 
 /*
- * Note on PocketCampus configation
+ * PocketCampus configuration
  *
  * Configuration is of the form key-value.
  *
  * Values are populated into the defaults [PCConfig defaults] in the follow order of *overriding* priority (i overrides i+1):
  *
- * 1) Key-values found in "Application Support/<bundle_identifier>/Config.plist" (for DEV purposes)
- * 2) Fetched from server with address http://pocketcampus.epfl.ch/backend/get_config.php
- * 3) Key-values found in bundle file Config.plist
+ * 1. Key-values found in "Application Support/<bundle_identifier>/Config.plist" (for DEV purposes)
+ * 2. Key-values fetched from server with address http://pocketcampus.epfl.ch/backend/get_config.php
+ * 3. Server key-values persisted from previous fetch (2.) (persisted in Application Support/<bundle_identifier>/ConfigFromServer.plist)
+ * 4. Key-values found in bundle file Config.plist
  *
- * First, keys from Config.plist are loaded, then any key-value pair returned by the server
- * overrides those and finally the ones in Application Support override those again.
+ * First, keys from Config.plist are loaded, then from cached ConfigFromServer.plist overrides then,
+ * then any key-value pair returned by the server overrides those and finally the ones in Application Support override those again.
  */
 
 
 /*
- * Keys of [PCConfig defaults]
+ * Keys of [PCConfig defaults] that should NOT be modified by user
  * Those are the keys that must be used in Config.plist (see above)
- * IMPORTANT: __unused compiler flags are put to suppress "unused" warning (variables ARE actually used).
  */
 
-static NSString* PC_CONFIG_SERVER_PROTOCOL_KEY __unused = @"SERVER_PROTOCOL";
+extern NSString* const PC_CONFIG_SERVER_PROTOCOL_KEY;
 
-static NSString* PC_CONFIG_SERVER_ADDRESS_KEY __unused = @"SERVER_ADDRESS";
+extern NSString* const PC_CONFIG_SERVER_ADDRESS_KEY;
 
-static NSString* PC_CONFIG_SERVER_PORT_KEY __unused = @"SERVER_PORT";
+extern NSString* const PC_CONFIG_SERVER_PORT_KEY;
 
-static NSString* PC_CONFIG_SERVER_URI_KEY __unused = @"SERVER_URI";
+extern NSString* const PC_CONFIG_SERVER_URI_KEY;
 
-static NSString* PC_CONFIG_ENABLED_PLUGINS_ARRAY_KEY __unused = @"ENABLED_PLUGINS";
+extern NSString* const PC_CONFIG_ENABLED_PLUGINS_ARRAY_KEY;
 
-static NSString* PC_CONFIG_ALLOW_MEALS_MULTI_VOTES_KEY __unused = @"ALLOW_MEALS_MULTI_VOTES";
+extern NSString* const PC_CONFIG_ALLOW_MEALS_MULTI_VOTES_KEY;
 
-static NSString* PC_CONFIG_GAN_ENABLED_KEY __unused = @"GA_ENABLED"; //GAN is Google Analytics
+extern NSString* const PC_CONFIG_GAN_ENABLED_KEY; //GAN is Google Analytics
 
-static NSString* PC_CONFIG_GAN_TRACKING_CODE_KEY __unused = @"GA_TRACKING_CODE";
+extern NSString* const PC_CONFIG_GAN_TRACKING_CODE_KEY;
 
+extern NSString* const PC_CONFIG_CRASHLYTICS_ENABLED_KEY;
+
+extern NSString* const PC_CONFIG_CRASHLYTICS_APIKEY_KEY;
+
+extern NSString* const PC_CONFIG_FOOD_RATINGS_ENABLED;
+
+
+/*
+ * Keys of [PCConfig defaults] that can be modified by user ("settings")
+ */
+
+extern NSString* const PC_USER_CONFIG_CRASHLYTICS_ENABLED_KEY; //Default: YES
 
 /*
  * Indications on which config steps were successfull
  * Keys for booleans values stored in defaults as well
  */
 
-static NSString* PC_CONFIG_LOADED_FROM_BUNDLE_KEY __unused = @"CONFIG_LOADED_FROM_BUNDLE";
+extern NSString* const PC_CONFIG_LOADED_FROM_BUNDLE_KEY; //4.
 
-static NSString* PC_CONFIG_LOADED_FROM_SERVER_KEY __unused = @"CONFIG_LOADED_FROM_SERVER";
+extern NSString* const PC_CONFIG_LOADED_FROM_PERSISTED_SERVER_CONFIG_KEY; //3.
 
-static NSString* PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT __unused = @"CONFIG_LOADED_FROM_APP_SUPPORT";
+extern NSString* const PC_CONFIG_LOADED_FROM_SERVER_KEY; //2.
+
+extern NSString* const PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT; //1.
 
 /*
  * Constants
  */
 
-static NSInteger PC_PROD_GAN_DISPATCH_PERIOD_SEC __unused = 10; // The constant is used in AppDelegate when starting the GAN tracker
+extern NSInteger const PC_PROD_GAN_DISPATCH_PERIOD_SEC; // The constant is used in AppDelegate when starting the GAN tracker
+
+extern NSString* const PC_PROD_APP_VERSION_KEY;
+
+/*
+ * This notification is posted *once* on default notifications center, when the config has finished loading
+ */
+extern NSString* const kPCConfigDidFinishLoadingNotification;
 
 
 @interface PCConfig : NSObject
 
-+ (void)initConfig;
+/*
+ * Starts the config loading in background.
+ * Posts kPCConfigDidFinishLoadingNotificationName when finished
+ */
++ (void)loadConfigAsynchronously;
+
++ (BOOL)isLoaded;
 
 + (NSUserDefaults*)defaults;
 

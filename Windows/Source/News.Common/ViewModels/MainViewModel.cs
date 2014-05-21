@@ -2,20 +2,21 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
 using PocketCampus.News.Models;
 using PocketCampus.News.Services;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.News.ViewModels
 {
     /// <summary>
     /// The main ViewModel.
     /// </summary>
-    [PageLogId( "/news" )]
+    [LogId( "/news" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private readonly INewsService _feedsService;
@@ -35,7 +36,7 @@ namespace PocketCampus.News.ViewModels
         /// <summary>
         /// Gets the command executed to view a feed item.
         /// </summary>
-        [CommandLogId( "OpenNewsItem" )]
+        [LogId( "OpenNewsItem" )]
         public Command<FeedItem> ViewFeedItemCommand
         {
             get { return GetCommand<FeedItem>( _navigationService.NavigateTo<FeedItemViewModel, FeedItem> ); }
@@ -59,11 +60,21 @@ namespace PocketCampus.News.ViewModels
         {
             if ( force )
             {
-                var feeds = await _feedsService.GetFeedsAsync( CultureInfo.CurrentUICulture.TwoLetterISOLanguageName );
+                var request = new FeedsRequest
+                {
+                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+                    IncludeGeneralFeed = true
+                };
+                var response = await _feedsService.GetFeedsAsync( request, token );
+
+                if ( response.Status != ResponseStatus.Success )
+                {
+                    throw new Exception( "A server error occurred while fetching news feeds." );
+                }
 
                 if ( !token.IsCancellationRequested )
                 {
-                    Feeds = feeds;
+                    Feeds = response.Feeds;
                 }
             }
         }

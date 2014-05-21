@@ -30,6 +30,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -51,13 +52,13 @@
                    Text="{Binding Resources.YouAreNotAuthenticated, Source={StaticResource Strings}}"
                    Style="{StaticResource PhoneTextNormalStyle}"
                    Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToOppositeVisibility}}"
-                   Margin="12,20" />
+                   Margin="24,20,24,10" />
 
         <!-- "You are connected as" -->
         <StackPanel Orientation="Horizontal"
                     Grid.Row="2"
                     Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToVisibility}}"
-                    Margin="12,20">
+                    Margin="24,20,24,10">
             <TextBlock Text="{Binding Resources.YouAreAuthenticatedAs, Source={StaticResource Strings}}"
                        Style="{StaticResource PhoneTextNormalStyle}"
                        Margin="0" />
@@ -70,10 +71,11 @@
 
         <!-- "Log on" button -->
         <Button Grid.Row="3"
-                Content="{Binding Resources.LogOn, Source={StaticResource Strings}}"
-                Command="{Binding LogOnCommand}"
+                Content="{Binding Resources.LogIn, Source={StaticResource Strings}}"
+                Command="{Binding LogInCommand}"
                 Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToOppositeVisibility}}"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Left"
+                Margin="12,0"
                 MinWidth="300" />
 
         <!-- "Log off" button -->
@@ -81,7 +83,23 @@
                 Content="{Binding Resources.LogOff, Source={StaticResource Strings}}"
                 Command="{Binding LogOffCommand}"
                 Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToVisibility}}"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Left"
+                Margin="12,0"
                 MinWidth="300" />
+
+        <!-- "Use colored tile" checkbox & explanation -->
+        <CheckBox x:Name="UseColoredTileBox"
+                  Grid.Row="4"
+                  Margin="12,30">
+            <StackPanel>
+                <TextBlock Text="{Binding Resources.UseColoredTile, Source={StaticResource Strings}}"
+                           Style="{StaticResource PhoneTextNormalStyle}"
+                           Margin="0" />
+                <TextBlock Text="{Binding Resources.UseColoredTileExplanation, Source={StaticResource Strings}}"
+                           TextWrapping="Wrap"
+                           Style="{StaticResource PhoneTextSubtleStyle}"
+                           Margin="0" />
+            </StackPanel>
+        </CheckBox>
     </Grid>
 </comControls:BasePage>

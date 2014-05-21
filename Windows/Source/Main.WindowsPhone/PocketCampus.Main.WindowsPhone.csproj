@@ -95,6 +95,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="ApplicationSettings.cs" />
+    <Compile Include="Converters.cs" />
+    <Compile Include="PngWriter.cs" />
+    <Compile Include="PocketCampusUriMapper.cs" />
     <Compile Include="Resources\AppResources.fr.Designer.cs">
       <DependentUpon>AppResources.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -107,9 +110,7 @@
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\PhoneService.cs" />
     <Compile Include="Services\PluginLoader.cs" />
-    <Compile Include="MainSettings.cs" />
     <Compile Include="Controls\OrientationChangingFrame.cs" />
-    <Compile Include="Services\FrameNavigationService.cs" />
     <Compile Include="Services\HttpClient.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -181,8 +182,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Settings.png" />
-    <Content Include="Assets\Tiles\IconicTileMedium.png" />
-    <Content Include="Assets\Tiles\IconicTileSmall.png" />
+    <Content Include="Assets\Tiles\ColoredMedium.png" />
+    <Content Include="Assets\Tiles\ColoredSmall.png" />
+    <Content Include="Assets\Tiles\WhiteMedium.png" />
+    <Content Include="Assets\Tiles\WhiteSmall.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\AppResources.fr.resx">
@@ -213,6 +216,10 @@
       <Project>{E6A845B2-EEDD-4D20-9895-3BB187C15E81}</Project>
       <Name>PocketCampus.Directory.WindowsPhone</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Events.WindowsPhone\PocketCampus.Events.WindowsPhone.csproj">
+      <Project>{248C6CF6-C940-42E4-AC38-C31F3726DD44}</Project>
+      <Name>PocketCampus.Events.WindowsPhone</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Main.Common\PocketCampus.Main.Common.csproj">
       <Project>{A1A50035-9654-49C2-AFA4-F21B25F7C3B7}</Project>
       <Name>PocketCampus.Main.Common</Name>
@@ -229,10 +236,6 @@
       <Project>{832B58A2-F7FE-4325-ACD8-4952479A6EE0}</Project>
       <Name>PocketCampus.Moodle.WindowsPhone</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mvvm\PocketCampus.Mvvm.csproj">
-      <Project>{53C14BDB-427E-492E-8BDC-B329D8737D17}</Project>
-      <Name>PocketCampus.Mvvm</Name>
-    </ProjectReference>
     <ProjectReference Include="..\News.WindowsPhone\PocketCampus.News.WindowsPhone.csproj">
       <Project>{45C81E94-8197-4805-9575-E1EBC960C6E9}</Project>
       <Name>PocketCampus.News.WindowsPhone</Name>
@@ -241,9 +244,9 @@
       <Project>{F71288EE-9889-4A8E-ABA3-4727AF3D15B2}</Project>
       <Name>PocketCampus.Satellite.WindowsPhone</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Schedule.WindowsPhone\PocketCampus.Schedule.WindowsPhone.csproj">
+    <ProjectReference Include="..\IsAcademia.WindowsPhone\PocketCampus.IsAcademia.WindowsPhone.csproj">
       <Project>{9B1BD61F-84F8-4876-9249-B2B6CC9D9E05}</Project>
-      <Name>PocketCampus.Schedule.WindowsPhone</Name>
+      <Name>PocketCampus.IsAcademia.WindowsPhone</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transport.WindowsPhone\PocketCampus.Transport.WindowsPhone.csproj">
       <Project>{1E86AD7A-26C3-4B45-9029-6F2FDBC40B78}</Project>
@@ -255,8 +258,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\BindableApplicationBar.1.1.0.0\lib\wp8\BindableApplicationBar.dll</HintPath>
     </Reference>
-    <Reference Include="GoogleAnalytics">
-      <HintPath>..\..\packages\GoogleAnalyticsSDK.1.1.01\lib\windowsphone8\GoogleAnalytics.dll</HintPath>
+    <Reference Include="GoogleAnalytics, Version=1.2.1.32939, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\GoogleAnalyticsSDK.1.2.01\lib\windowsphone8\GoogleAnalytics.dll</HintPath>
+    </Reference>
+    <Reference Include="GoogleAnalytics.Core">
+      <HintPath>..\..\packages\GoogleAnalyticsSDK.1.2.01\lib\windowsphone8\GoogleAnalytics.Core.dll</HintPath>
     </Reference>
     <Reference Include="JeffWilcox.PhoneThemeManager, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -268,16 +275,24 @@
     </Reference>
     <Reference Include="System.Net.Http, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.18\lib\sl4-windowsphone71\System.Net.Http.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.20\lib\sl4-windowsphone71\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinMvvm, Version=0.9.1.14986, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\ThinMvvm.0.9.1\lib\portable-net45+wp8+win8\ThinMvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinMvvm.WindowsPhone, Version=0.9.1.14987, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\ThinMvvm.WindowsPhone.0.9.1\lib\wp8\ThinMvvm.WindowsPhone.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />
-  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" />
+  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
 </Project>

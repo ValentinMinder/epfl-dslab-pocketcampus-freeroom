@@ -1,5 +1,9 @@
 package org.pocketcampus.plugin.events.android;
 
+import static org.pocketcampus.android.platform.sdk.utils.SetUtils.*;
+import static org.pocketcampus.android.platform.sdk.utils.MapUtils.*;
+import static org.pocketcampus.android.platform.sdk.utils.DialogUtils.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -113,6 +117,8 @@ public class EventsMainView extends PluginView implements IEventsView {
 		setContentView(R.layout.events_main);
 		mList = (ListView) findViewById(R.id.events_main_list);
 		displayingList = true;
+		
+		setActionBarTitle(getString(R.string.events_plugin_title));
 	}
 	
 
@@ -160,7 +166,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if(displayingList)
+		if(displayingList && mList != null)
 			scrollState = new ScrollStateSaver(mList);
 	}
 	
@@ -250,11 +256,11 @@ public class EventsMainView extends PluginView implements IEventsView {
 		// Action bar update
 		removeAllActionsFromActionBar();
 		if(!thisEventPool.isDisableFilterByCateg()) {
-			Map<Integer, String> subMap = subMap(Constants.EVENTS_CATEGS, categsInRS);
+			final Map<Integer, String> subMap = subMap(Constants.EVENTS_CATEGS, categsInRS);
 			if(subMap.size() > 0) {
-				addActionToActionBar(buildActionMultiChoiceDialog(this, 
-						subMap, R.drawable.events_filter, "Filter by category", filteredCategs,
-						new MultiChoiceHandler<Integer>() {
+				addActionToActionBar(new Action() {
+					public void performAction(View view) {
+						showMultiChoiceDialog(EventsMainView.this, subMap, "Filter by category", filteredCategs, new MultiChoiceHandler<Integer>() {
 							public void saveSelection(Integer t, boolean isChecked) {
 								if(isChecked)
 									filteredCategs.add(t);
@@ -262,16 +268,20 @@ public class EventsMainView extends PluginView implements IEventsView {
 									filteredCategs.remove(t);
 								updateDisplay(true);
 							}
-						}
-				));
+						});
+					}
+					public int getDrawable() {
+						return R.drawable.events_filter;
+					}
+				});
 			}
 		}
 		if(!thisEventPool.isDisableFilterByTags()) {
-			Map<String, String> subMap = subMap(Constants.EVENTS_TAGS, tagsInRS);
+			final Map<String, String> subMap = subMap(Constants.EVENTS_TAGS, tagsInRS);
 			if(subMap.size() > 0) {
-				addActionToActionBar(buildActionMultiChoiceDialog(this,
-						subMap, R.drawable.events_tags, "Filter by areas", filteredTags,
-						new MultiChoiceHandler<String>() {
+				addActionToActionBar(new Action() {
+					public void performAction(View view) {
+						showMultiChoiceDialog(EventsMainView.this, subMap, "Filter by areas", filteredTags, new MultiChoiceHandler<String>() {
 							public void saveSelection(String t, boolean isChecked) {
 								if(isChecked)
 									filteredTags.add(t);
@@ -279,22 +289,30 @@ public class EventsMainView extends PluginView implements IEventsView {
 									filteredTags.remove(t);
 								updateDisplay(true);
 							}
-						}
-				));
+						});
+					}
+					public int getDrawable() {
+						return R.drawable.events_tags;
+					}
+				});
 			}
 		}
 		if(thisEventPool.isEnableScan()) {
 			addActionToActionBar(scanBarcodeAction);
 		}
 		if(thisEventPool.isSendStarredItems()) {
-			addActionToActionBar(buildActionTextInputDialog(this, R.drawable.events_email, 
-					"Send by email", "Email address to send starred items", "OK", 
-					new TextInputHandler() {
+			addActionToActionBar(new Action() {
+				public void performAction(View view) {
+					showInputDialog(EventsMainView.this, "Send by email", "Email address to send starred items", "OK", new TextInputHandler() {
 						public void gotText(String s) {
 							mController.sendFavoritesByEmail(EventsMainView.this, eventPoolId, s);
 						}
-					}
-			));
+					});
+				}
+				public int getDrawable() {
+					return R.drawable.events_email;
+				}
+			});
 		}
 		
 		updateDisplay(false);
@@ -489,15 +507,17 @@ public class EventsMainView extends PluginView implements IEventsView {
 		}*/
 		if(eventPoolId == Constants.CONTAINER_EVENT_ID) { // settings thingy
 			MenuItem periodMenu = menu.add("Choose period");
-			periodMenu.setOnMenuItemClickListener(buildMenuListenerSingleChoiceDialog(this,
-					Constants.EVENTS_PERIODS, "Choose period", mModel.getPeriod(), 
-					new SingleChoiceHandler<Integer>() {
+			periodMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					showSingleChoiceDialog(EventsMainView.this, Constants.EVENTS_PERIODS, "Choose period", mModel.getPeriod(), new SingleChoiceHandler<Integer>() {
 						public void saveSelection(Integer t) {
 							mModel.setPeriod(t);
 							mController.refreshEventPool(EventsMainView.this, eventPoolId, fetchPast, false);
 						}
-					}
-			));
+					});
+					return true;
+				}
+			});
 			MenuItem pastMenu = menu.add(fetchPast ? "View upcoming events" : "View past events");
 			pastMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {

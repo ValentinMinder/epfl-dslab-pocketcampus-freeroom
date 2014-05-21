@@ -42,8 +42,7 @@ public class MultiListAdapter extends BaseAdapter {
     }  
   
     public int getViewTypeCount() {  
-        // assume that headers count as one, then total all sections  
-        int total = 0;  
+        int total = 1; // hack: should be 0: set to 1 so that if we have 0 sub-adapters, we still return >0; if we don't do that the app crashes: a list cannot have 0 cell TYPES.  
         for(Adapter adapter : this.sections.values())  
             total += adapter.getViewTypeCount();  
         return total;  

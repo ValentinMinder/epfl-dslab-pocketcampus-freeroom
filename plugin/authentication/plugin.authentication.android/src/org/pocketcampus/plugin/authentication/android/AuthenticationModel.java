@@ -46,9 +46,10 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		public TypeOfService tos;
 		public LocalCredentials credentials;
 	}*/
-	public static class TokenCookieComplex {
+	public static class TokenCredentialsComplex {
 		public String token;
-		public String cookie;
+		public String username;
+		public String password;
 	}
 	
 	/**
@@ -71,6 +72,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	private String serviceName;
 	private List<String> serviceAccess;
 	private boolean fromBrowser;
+	private boolean selfAuth;
 	
 	private String tequilaCookie;
 	private String tempPassword;
@@ -107,6 +109,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		setServiceAllowedLevel("CAMIPRO WS", 1);
 		setServiceAllowedLevel("Moodle", 1);
 		setServiceAllowedLevel("QAforum", 1);
+		setServiceAllowedLevel("authentication@pocketcampus", 1);
 		//setServiceAllowedLevel("moodle", 1);
 		//setServiceAllowedLevel("camipro", 1);
 		//setServiceAllowedLevel("isacademia", 1);
@@ -152,6 +155,13 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	}
 	public void setFromBrowser(boolean value) {
 		fromBrowser = value;
+	}
+	
+	public boolean getSelfAuth() {
+		return selfAuth;
+	}
+	public void setSelfAuth(boolean b) {
+		selfAuth = b;
 	}
 
 	public String getTequilaCookie() {

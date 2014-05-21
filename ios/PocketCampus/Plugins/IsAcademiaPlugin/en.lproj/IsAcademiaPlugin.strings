@@ -1,0 +1,19 @@
+
+"PluginName" = "IS-Academia";
+"MySchedule" = "My schedule";
+"CourseDetailsActionSheetWithFormat" = "%@\n\n%@\n%@"; //<periodType> \n\n <name>\n<timeString>
+"CourseDetailsAndRoomsActionSheetWithFormat" = "%@\n\n%@\n%@\n\n Rooms:\n(tap to see on map)"; //<periodType> \n\n <name>\n<timeString>
+"Lecture" = "Lecture";
+"Exercises" = "Exercise session";
+"Lab" = "Lab";
+"Project" = "Project";
+"OralExam" = "Oral exam";
+"WrittenExam" = "Written exam";
+"IsAcademiaServerUnreachableTryLater" = "IS-Academia seems to be down.\nPlease try again later.";
+"IsAcademiaServerProblemTryLater" = "IS-Academia seems to have a problem right now.\nPlease try again later.";
+"NoCourseOnThatDay" = "No course on that day";
+"NoCourseToday" = "No course today";
+
+//Accessibility
+"PeriodViewAccessiblityLabelWithFormat" = "%@: %@. Room: %@"; //<start time>, <name>, <room>
+"PeriodViewAccessiblityHint" = "Shows more information about this event.";

@@ -37,7 +37,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -47,68 +46,69 @@
                        Style="{StaticResource AppTextTitle2Style}" />
         </Border>
 
-        <!-- Search box & texts background -->
-        <Rectangle Grid.Row="1"
-                   Grid.RowSpan="2"
-                   Fill="{StaticResource AppSecondaryHeaderBackgroundBrush}" />
+        <!-- Search box & info/error messages -->
+        <Border Grid.Row="1"
+                Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+            <StackPanel>
+                <!-- Search box -->
+                <comControls:SearchBox Grid.Row="1"
+                                       SearchCommand="{Binding SearchProvider.SearchCommand}" />
 
-        <!-- Search box -->
-        <comControls:SearchBox Grid.Row="1"
-                               AutoCompleteProvider="{Binding SearchProvider.AutoCompleteProvider}"
-                               SearchCommand="{Binding SearchProvider.SearchCommand}" />
+                <!-- "No search results" text -->
+                <TextBlock Grid.Row="2"
+                           Text="{Binding Resources.SearchNoResults, Source={StaticResource Strings}}"
+                           Style="{StaticResource AppTextSecondaryHeaderStyle}"
+                           TextWrapping="Wrap"
+                           Margin="24,-16,24,0"
+                           Visibility="{Binding SearchProvider.AnySearchResults, Converter={StaticResource BoolToOppositeVisibility}}" />
 
+                <!-- "Searching" text -->
+                <TextBlock Grid.Row="2"
+                           Text="{Binding Resources.Searching, Source={StaticResource Strings}}"
+                           Style="{StaticResource AppTextSecondaryHeaderStyle}"
+                           TextWrapping="Wrap"
+                           Margin="24,-16,24,0"
+                           Visibility="{Binding SearchProvider.IsLoading, Converter={StaticResource BoolToVisibility}}" />
 
-        <!-- "No search results" text -->
-        <TextBlock Grid.Row="2"
-                   Text="{Binding Resources.SearchNoResults, Source={StaticResource Strings}}"
-                   Style="{StaticResource AppTextSecondaryHeaderStyle}"
-                   TextWrapping="Wrap"
-                   Visibility="{Binding SearchProvider.AnySearchResults, Converter={StaticResource BoolToOppositeVisibility}}" />
+                <!-- "Error while searching" text -->
+                <TextBlock Grid.Row="2"
+                           Text="{Binding Resources.SearchError, Source={StaticResource Strings}}"
+                           Style="{StaticResource AppTextSecondaryHeaderStyle}"
+                           TextWrapping="Wrap"
+                           Margin="24,-16,24,0"
+                           Visibility="{Binding SearchProvider.HasError, Converter={StaticResource BoolToVisibility}}" />
 
-        <!-- "Searching" text -->
-        <TextBlock Grid.Row="2"
-                   Text="{Binding Resources.Searching, Source={StaticResource Strings}}"
-                   Style="{StaticResource AppTextSecondaryHeaderStyle}"
-                   TextWrapping="Wrap"
-                   Visibility="{Binding SearchProvider.IsLoading, Converter={StaticResource BoolToVisibility}}" />
-
-        <!-- "Error while searching" text -->
-        <TextBlock Grid.Row="2"
-                   Text="{Binding Resources.SearchError, Source={StaticResource Strings}}"
-                   Style="{StaticResource AppTextSecondaryHeaderStyle}"
-                   TextWrapping="Wrap"
-                   Visibility="{Binding SearchProvider.HasError, Converter={StaticResource BoolToVisibility}}" />
-
-        <!-- "Network error while searching" text -->
-        <TextBlock Grid.Row="2"
-                   Text="{Binding Resources.SearchNetworkError, Source={StaticResource Strings}}"
-                   Style="{StaticResource AppTextSecondaryHeaderStyle}"
-                   TextWrapping="Wrap"
-                   Visibility="{Binding SearchProvider.HasNetworkError, Converter={StaticResource BoolToVisibility}}" />
+                <!-- "Network error while searching" text -->
+                <TextBlock Grid.Row="2"
+                           Text="{Binding Resources.SearchNetworkError, Source={StaticResource Strings}}"
+                           Style="{StaticResource AppTextSecondaryHeaderStyle}"
+                           TextWrapping="Wrap"
+                           Margin="24,-16,24,0"
+                           Visibility="{Binding SearchProvider.HasNetworkError, Converter={StaticResource BoolToVisibility}}" />
+            </StackPanel>
+        </Border>
 
         <!-- Map -->
-        <myControls:EpflMap Grid.Row="3"
+        <myControls:EpflMap Grid.Row="2"
                             Properties="{Binding Properties}"
                             Layers="{Binding MapLayers}"
                             PinnedLocations="{Binding SearchProvider.SearchResults}" />
 
         <!-- Buildings level selector -->
         <myControls:NumericUpDown Grid.Row="3"
-                                  Minimum="0"
-                                  Maximum="8"
+                                  Minimum="-4"
+                                  Maximum="9"
                                   Value="{Binding Properties.BuildingsLevel, Mode=TwoWay}"
-                                  Width="50"
+                                  Width="40"
+                                  Height="140"
+                                  Margin="0,0,0,-1"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Bottom" />
-
-        <!-- Loading and error -->
-        <comControls:LoadingAndError Grid.Row="1"
-                                     Grid.RowSpan="3" />
     </Grid>
 
     <!-- App bar -->
     <bar:Bindable.ApplicationBar>
-        <bar:BindableApplicationBar>
+        <bar:BindableApplicationBar Mode="Minimized">
             <!-- "Center on campus" button -->
             <bar:BindableApplicationBarButton Command="{Binding CenterOnCampusCommand}"
                                               Text="{Binding Resources.CenterOnCampusButton, Source={StaticResource Strings}}"

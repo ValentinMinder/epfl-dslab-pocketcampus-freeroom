@@ -9,8 +9,9 @@ using System.Xml;
 using System.Xml.Serialization;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
+using PocketCampus.Main.Models;
 using PocketCampus.Main.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Main.Services
 {
@@ -22,20 +23,91 @@ namespace PocketCampus.Main.Services
         private readonly IMainSettings _mainSettings;
         private readonly INavigationService _navigationService;
         private readonly ITequilaAuthenticator _authenticator;
+        private readonly IAuthenticationService _authenticationService;
 
         private bool _isRetrying;
-
 
         /// <summary>
         /// Creates a new SecureRequestHandler.
         /// </summary>
-        public SecureRequestHandler( IMainSettings mainSettings, INavigationService navigationService, ITequilaAuthenticator authenticator )
+        public SecureRequestHandler( IMainSettings mainSettings, INavigationService navigationService,
+                                     ITequilaAuthenticator authenticator, IAuthenticationService authenticationService )
         {
             _mainSettings = mainSettings;
             _navigationService = navigationService;
             _authenticator = authenticator;
+            _authenticationService = authenticationService;
         }
 
+
+        /// <summary>
+        /// Asynchronously executes the specified request for the specified ViewModel type.
+        /// The request asynchronously returns a boolean indicating whether the authentication succeeded.
+        /// </summary>
+        public async Task ExecuteAsync<TViewModel>( Func<Task<bool>> attempt )
+            where TViewModel : IViewModel<NoParameter>
+        {
+            string session = _mainSettings.Session;
+
+            if ( session == null )
+            {
+                var tokenResponse = await _authenticationService.GetTokenAsync();
+                if ( tokenResponse.Status != AuthenticationStatus.Success )
+                {
+                    if ( await _authenticator.AuthenticateAsync( _mainSettings.UserName, _mainSettings.Password, tokenResponse.Token ) )
+                    {
+                        var sessionResponse = await _authenticationService.GetSessionAsync( tokenResponse.Token );
+
+                        if ( sessionResponse.Status == AuthenticationStatus.Success )
+                        {
+                            session = sessionResponse.Session;
+
+                            // if we're not authenticated, the user doesn't want to be remembered
+                            if ( _mainSettings.IsAuthenticated )
+                            {
+                                _mainSettings.Session = session;
+                            }
+                            else
+                            {
+                                _mainSettings.UserName = null;
+                                _mainSettings.Password = null;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if ( session == null )
+            {
+                // Authenticate, and then go to this plugin if it succeeds
+                // but go back to whatever was the previous plugin rather than to this one if it doesn't
+                var authRequest = new AuthenticationRequest( true, () => _navigationService.NavigateTo<TViewModel>() );
+                _navigationService.PopBackStack();
+                _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
+                return;
+            }
+
+
+            if ( !( await attempt() ) )
+            {
+                if ( _isRetrying )
+                {
+                    throw new Exception( "An error occurred while authenticating with HTTP headers." );
+                }
+
+                _isRetrying = true;
+                _mainSettings.Session = null;
+
+                try
+                {
+                    await ExecuteAsync<TViewModel>( attempt );
+                }
+                finally
+                {
+                    _isRetrying = false;
+                }
+            }
+        }
 
         /// <summary>
         /// Asynchronously executes the specified request, with the specified authenticator, for the specified ViewModel type.
@@ -54,15 +126,25 @@ namespace PocketCampus.Main.Services
                 if ( await _authenticator.AuthenticateAsync( _mainSettings.UserName, _mainSettings.Password, token.AuthenticationKey ) )
                 {
                     session = await authenticator.GetSessionAsync( token );
-                    SaveSession( typeof( TViewModel ), session );
+
+                    // if we're not authenticated, the user doesn't want to be remembered
+                    if ( _mainSettings.IsAuthenticated )
+                    {
+                        SaveSession( typeof( TViewModel ), session );
+                    }
+                    else
+                    {
+                        _mainSettings.UserName = null;
+                        _mainSettings.Password = null;
+                    }
                 }
                 else
                 {
                     // Authenticate, and then go to this plugin if it succeeds
                     // but go back to whatever was the previous plugin rather than to this one if it doesn't
+                    var authRequest = new AuthenticationRequest( true, () => _navigationService.NavigateTo<TViewModel>() );
                     _navigationService.PopBackStack();
-                    _navigationService.NavigateToDialog<AuthenticationViewModel>();
-                    _navigationService.NavigateTo<TViewModel>();
+                    _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
                     return;
                 }
             }
@@ -71,15 +153,20 @@ namespace PocketCampus.Main.Services
             {
                 if ( _isRetrying )
                 {
-                    throw new Exception( "The refresh failed twice in a row." );
+                    throw new Exception( "An error occurred while performing two-step authentication." );
                 }
 
                 _isRetrying = true;
                 SaveSession( typeof( TViewModel ), (TSession) null );
 
-                await ExecuteAsync<TViewModel, TToken, TSession>( authenticator, attempt );
-
-                _isRetrying = false;
+                try
+                {
+                    await ExecuteAsync<TViewModel, TToken, TSession>( authenticator, attempt );
+                }
+                finally
+                {
+                    _isRetrying = false;
+                }
             }
         }
 
@@ -131,7 +218,10 @@ namespace PocketCampus.Main.Services
             {
                 return default( T );
             }
-            return (T) new XmlSerializer( typeof( T ) ).Deserialize( new StringReader( serialized ) );
+            using ( var reader = new StringReader( serialized ) )
+            {
+                return (T) new XmlSerializer( typeof( T ) ).Deserialize( reader );
+            }
         }
 
         /// <summary>
@@ -144,14 +234,14 @@ namespace PocketCampus.Main.Services
                 return "";
             }
 
-            var writer = new StringWriter();
-            // Ensure that the BOM isn't saved - weird, but it works
-            var emptyNs = new XmlSerializerNamespaces( new[]
+            using ( var writer = new StringWriter() )
             {
-                new XmlQualifiedName( "", "" ),
-            } );
-            new XmlSerializer( session.GetType() ).Serialize( writer, session, emptyNs );
-            return writer.ToString();
+                // Ensure that the BOM isn't saved - weird, but it works
+                var emptyNs = new XmlSerializerNamespaces( new[] { new XmlQualifiedName( "", "" ) } );
+
+                new XmlSerializer( session.GetType() ).Serialize( writer, session, emptyNs );
+                return writer.ToString();
+            }
         }
     }
 }

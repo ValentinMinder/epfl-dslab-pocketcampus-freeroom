@@ -1,0 +1,56 @@
+PODS:
+  - AFNetworking (2.2.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.2.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.2.3):
+    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (2.2.3)
+  - AFNetworking/Security (2.2.3)
+  - AFNetworking/Serialization (2.2.3)
+  - AFNetworking/UIKit (2.2.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - CDZQRScanningViewController (1.0.7)
+  - GoogleAnalytics-iOS-SDK (3.0.6)
+  - JTTargetActionBlock (1.0.0)
+  - MBProgressHUD (0.8)
+  - NSTimer-Blocks (0.0.1)
+  - SSKeychain (1.2.2)
+  - TapkuLibrary (0.3.4)
+  - TUSafariActivity (1.0.0)
+
+DEPENDENCIES:
+  - AFNetworking (~> 2.0)
+  - CDZQRScanningViewController
+  - GoogleAnalytics-iOS-SDK (~> 3.0)
+  - JTTargetActionBlock
+  - MBProgressHUD
+  - NSTimer-Blocks
+  - SSKeychain (~> 1.2)
+  - TapkuLibrary (from `git@github.com:loicgardiol/tapkulibrary.git`)
+  - TUSafariActivity
+
+EXTERNAL SOURCES:
+  TapkuLibrary:
+    :git: git@github.com:loicgardiol/tapkulibrary.git
+
+SPEC CHECKSUMS:
+  AFNetworking: ae513199cca79e9d7af2708ccabe2ed075550c42
+  CDZQRScanningViewController: 8a4eff67b0b9adf54bc19fc87f7c071be368e6a3
+  GoogleAnalytics-iOS-SDK: 16dfcc0c4491148bf372edc85a8470cc405ffb72
+  JTTargetActionBlock: dc683c971f7b6ff875012f81e570b9ed15171c7b
+  MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
+  NSTimer-Blocks: 5b1ac1e6f4fb733b41521ac449077c431413be69
+  SSKeychain: 3d0b76c87e7b062a7ad1631a825fddec84367d44
+  TapkuLibrary: 4ed05848ca4926c39f1da29d41695c1c516dcb1d
+  TUSafariActivity: bd9da588f5f9136ba445d89f8f86b6dccf4d46ba
+
+COCOAPODS: 0.32.1

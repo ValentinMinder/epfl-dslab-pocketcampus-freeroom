@@ -3,8 +3,8 @@ package org.pocketcampus.plugin.moodle.android.req;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.moodle.android.MoodleController;
 import org.pocketcampus.plugin.moodle.android.MoodleModel;
+import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.shared.CoursesListReply;
-import org.pocketcampus.plugin.moodle.shared.MoodleRequest;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Iface;
 
 /**
@@ -17,31 +17,41 @@ import org.pocketcampus.plugin.moodle.shared.MoodleService.Iface;
  * @author Amer <amer.chamseddine@epfl.ch>
  *
  */
-public class CoursesListRequest extends Request<MoodleController, Iface, MoodleRequest, CoursesListReply> {
+public class CoursesListRequest extends Request<MoodleController, Iface, Object, CoursesListReply> {
 
+	private IMoodleView caller;
+	
+	public CoursesListRequest(IMoodleView caller) {
+		this.caller = caller;
+	}
+	
 	@Override
-	protected CoursesListReply runInBackground(Iface client, MoodleRequest param) throws Exception {
-		return client.getCoursesList(param);
+	protected CoursesListReply runInBackground(Iface client, Object param) throws Exception {
+		return client.getCoursesListAPI("dummy");
 	}
 
 	@Override
 	protected void onResult(MoodleController controller, CoursesListReply result) {
-		if(result.getIStatus() == 404) {
-			((MoodleModel) controller.getModel()).getListenersToNotify().moodleServersDown();
-		} else if(result.getIStatus() == 407) {
-			controller.notLoggedIn();
-		} else if(result.getIStatus() == 200) {
+		if(result.getIStatus() == 200) {
 			((MoodleModel) controller.getModel()).setCourses(result.getICourses());
-			//if(!foundInCache())
-				keepInCache();
-			/*else
-				refreshAsWell();*/
+			
+			keepInCache();
+			
+		} else if(result.getIStatus() == 407) {
+			caller.notLoggedIn();
+			
+		} else {
+			caller.moodleServersDown();
+			
 		}
 	}
 
 	@Override
 	protected void onError(MoodleController controller, Exception e) {
-		controller.getModel().notifyNetworkError();
+		if(foundInCache())
+			caller.networkErrorCacheExists();
+		else
+			caller.networkErrorHappened();
 		e.printStackTrace();
 	}
 	

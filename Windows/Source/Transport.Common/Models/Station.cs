@@ -18,14 +18,14 @@ namespace PocketCampus.Transport.Models
         /// </summary>
         [ThriftField( 3, false, "latitude" )]
         [ThriftConverter( typeof( SchildbachCoordinateConverter ) )]
-        public double Latitude { get; set; }
+        public double? Latitude { get; set; }
 
         /// <summary>
         /// The station's longitude.
         /// </summary>
         [ThriftField( 4, false, "longitude" )]
         [ThriftConverter( typeof( SchildbachCoordinateConverter ) )]
-        public double Longitude { get; set; }
+        public double? Longitude { get; set; }
 
         /// <summary>
         /// The station's name.
@@ -43,7 +43,7 @@ namespace PocketCampus.Transport.Models
         /// </remarks>
         public GeoPosition Position
         {
-            get { return new GeoPosition( Latitude, Longitude ); }
+            get { return new GeoPosition( Latitude.Value, Longitude.Value ); }
         }
     }
 }

@@ -7,17 +7,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
 using PocketCampus.Transport.Models;
 using PocketCampus.Transport.Services;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Transport.ViewModels
 {
     /// <summary>
     /// The main ViewModel.
     /// </summary>
-    [PageLogId( "/transport" )]
+    [LogId( "/transport" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private static readonly string[] DefaultStations = { "EPFL", "Lausanne-Flon" };
@@ -72,7 +72,7 @@ namespace PocketCampus.Transport.ViewModels
         /// <summary>
         /// Gets the command executed to add a station.
         /// </summary>
-        [CommandLogId( "AddStation" )]
+        [LogId( "AddStation" )]
         public Command AddStationCommand
         {
             get { return GetCommand( _navigationService.NavigateTo<AddStationViewModel> ); }
@@ -81,7 +81,7 @@ namespace PocketCampus.Transport.ViewModels
         /// <summary>
         /// Gets the command executed to remove a station.
         /// </summary>
-        [CommandLogId( "RemoveStation" )]
+        [LogId( "RemoveStation" )]
         public Command<Station> RemoveStationCommand
         {
             get { return GetCommand<Station>( RemoveStation ); }
@@ -90,7 +90,7 @@ namespace PocketCampus.Transport.ViewModels
         /// <summary>
         /// Gets the command executed to view the settings.
         /// </summary>
-        [CommandLogId( "OpenSettings" )]
+        [LogId( "OpenSettings" )]
         public Command ViewSettingsCommand
         {
             get { return GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
@@ -127,7 +127,7 @@ namespace PocketCampus.Transport.ViewModels
         {
             if ( Settings.Stations.Count == 0 )
             {
-                var defaultStations = await _transportService.GetStationsAsync( DefaultStations );
+                var defaultStations = await _transportService.GetStationsAsync( DefaultStations, token );
                 foreach ( var station in defaultStations )
                 {
                     Settings.Stations.Add( station );
@@ -151,7 +151,7 @@ namespace PocketCampus.Transport.ViewModels
             }
 
             var stations = Settings.Stations.Where( s => s != SelectedStation ).ToArray();
-            var trips = await Task.WhenAll( stations.Select( s => _transportService.GetTripsAsync( SelectedStation.Name, s.Name ) ) );
+            var trips = await Task.WhenAll( stations.Select( s => _transportService.GetTripsAsync( SelectedStation.Name, s.Name, token ) ) );
 
             if ( !token.IsCancellationRequested )
             {

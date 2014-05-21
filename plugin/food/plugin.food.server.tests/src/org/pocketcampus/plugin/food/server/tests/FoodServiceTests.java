@@ -7,11 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Set;
-import java.util.HashSet;
 
 import org.pocketcampus.plugin.food.server.*;
 import org.pocketcampus.plugin.food.shared.*;
+import org.pocketcampus.plugin.map.shared.MapItem;
 
 import org.joda.time.*;
 
@@ -21,25 +20,34 @@ import org.joda.time.*;
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public final class FoodServiceTests {
-	// getFood returns the menu returned by MealList
+	// getFood returns the menu returned by MealList, with picture
 	@Test
 	public void getFoodWorks() throws Exception {
-		Menu mealList = getTestMealList();
-		FoodServiceImpl service = new FoodServiceImpl(getTestDeviceDatabase(), getTestRatingDatabase(), getTestMealList());
+		Menu menu = getTestMenu();
+		PictureSource source = getTestPictureSource();
+		RestaurantLocator locator = getTestRestaurantLocator();
+		FoodServiceImpl service = new FoodServiceImpl(getTestRatingDatabase(), menu, source, locator);
 
 		FoodResponse response = service.getFood(new FoodRequest());
 
-		assertEquals(mealList.get(MealTime.LUNCH, LocalDate.now()).getMenu(), response.getMenu());
+		List<EpflRestaurant> restaurants = menu.get(MealTime.LUNCH, LocalDate.now()).getMenu();
+		for (EpflRestaurant restaurant : restaurants) {
+			restaurant.setRPictureUrl(source.forRestaurant(restaurant.getRName()));
+			restaurant.setRLocation(locator.findByName(restaurant.getRName()));
+		}
+
+		assertEquals(restaurants, response.getMenu());
 	}
 
 	// getFood sets the ratings on the meals
 	@Test
 	public void mealRatingsAreSet() throws Exception {
 		RatingDatabase ratingDatabase = getTestRatingDatabase();
-		FoodServiceImpl service = new FoodServiceImpl(getTestDeviceDatabase(), ratingDatabase, getTestMealList());
-		ratingDatabase.vote(3, 3);
-		ratingDatabase.vote(12, 2);
-		ratingDatabase.vote(12, 5);
+		FoodServiceImpl service = new FoodServiceImpl(ratingDatabase, getTestMenu(),
+				getTestPictureSource(), getTestRestaurantLocator());
+		ratingDatabase.vote("A", 3, 3);
+		ratingDatabase.vote("B", 12, 2);
+		ratingDatabase.vote("C", 12, 5);
 
 		FoodResponse response = service.getFood(new FoodRequest());
 		List<EpflRestaurant> menu = response.getMenu();
@@ -56,10 +64,11 @@ public final class FoodServiceTests {
 	@Test
 	public void restaurantRatingsAreSet() throws Exception {
 		RatingDatabase ratingDatabase = getTestRatingDatabase();
-		FoodServiceImpl service = new FoodServiceImpl(getTestDeviceDatabase(), ratingDatabase, getTestMealList());
-		ratingDatabase.vote(3, 3);
-		ratingDatabase.vote(11, 2);
-		ratingDatabase.vote(12, 5);
+		FoodServiceImpl service = new FoodServiceImpl(ratingDatabase, getTestMenu(),
+				getTestPictureSource(), getTestRestaurantLocator());
+		ratingDatabase.vote("A", 3, 3);
+		ratingDatabase.vote("B", 11, 2);
+		ratingDatabase.vote("C", 12, 5);
 
 		FoodResponse response = service.getFood(new FoodRequest());
 		List<EpflRestaurant> menu = response.getMenu();
@@ -72,10 +81,23 @@ public final class FoodServiceTests {
 		assertEquals(3.5, r2.getRatingValue(), Double.MIN_VALUE);
 	}
 
+	// meal pictures are set in the reply
+	@Test
+	public void mealPicturesAreSet() throws Exception {
+		PictureSource source = getTestPictureSource();
+		FoodServiceImpl service = new FoodServiceImpl(getTestRatingDatabase(), getTestMenu(),
+				source, getTestRestaurantLocator());
+
+		FoodResponse response = service.getFood(new FoodRequest());
+
+		assertEquals(source.getMealTypePictures(), response.getMealTypePictureUrls());
+	}
+
 	// voting works
 	@Test
 	public void voteWorks() throws Exception {
-		FoodServiceImpl service = new FoodServiceImpl(getTestDeviceDatabase(), getTestRatingDatabase(), getTestMealList());
+		FoodServiceImpl service = new FoodServiceImpl(getTestRatingDatabase(), getTestMenu(),
+				getTestPictureSource(), getTestRestaurantLocator());
 
 		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 10, 29, 11, 00).getMillis());
 		VoteResponse response = service.vote(new VoteRequest(11, 4.0, "12345"));
@@ -87,8 +109,9 @@ public final class FoodServiceTests {
 	@Test
 	public void voteUsesRatingsDatabase() throws Exception {
 		RatingDatabase ratingDatabase = getTestRatingDatabase();
-		Menu mealList = getTestMealList();
-		FoodServiceImpl service = new FoodServiceImpl(getTestDeviceDatabase(), ratingDatabase, mealList);
+		Menu mealList = getTestMenu();
+		FoodServiceImpl service = new FoodServiceImpl(ratingDatabase, mealList,
+				getTestPictureSource(), getTestRestaurantLocator());
 
 		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 10, 29, 12, 30).getMillis());
 		service.vote(new VoteRequest(11, 4.0, "12345"));
@@ -98,22 +121,11 @@ public final class FoodServiceTests {
 		assertEquals(new EpflRating(4.0, 1), menu.get(1).getRMeals().get(0).getMRating());
 	}
 
-	// voting adds an entry into the device database
-	@Test
-	public void voteUsesDeviceDatabase() throws Exception {
-		DeviceDatabase deviceDatabase = getTestDeviceDatabase();
-		FoodServiceImpl service = new FoodServiceImpl(deviceDatabase, getTestRatingDatabase(), getTestMealList());
-
-		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 10, 29, 12, 30).getMillis());
-		service.vote(new VoteRequest(11, 4.0, "12345"));
-
-		assertTrue(deviceDatabase.hasVotedToday("12345"));
-	}
-
 	// voting twice returns ALREADY_VOTED
 	@Test
 	public void voteTwiceReturnsAlreadyVoted() throws Exception {
-		FoodServiceImpl service = new FoodServiceImpl(getTestDeviceDatabase(), getTestRatingDatabase(), getTestMealList());
+		FoodServiceImpl service = new FoodServiceImpl(getTestRatingDatabase(), getTestMenu(),
+				getTestPictureSource(), getTestRestaurantLocator());
 
 		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 10, 29, 12, 30).getMillis());
 		service.vote(new VoteRequest(11, 4.0, "12345"));
@@ -125,7 +137,8 @@ public final class FoodServiceTests {
 	// voting before 11am returns TOO_EARLY
 	@Test
 	public void voteBefore11isTooEarly() throws Exception {
-		FoodServiceImpl service = new FoodServiceImpl(getTestDeviceDatabase(), getTestRatingDatabase(), getTestMealList());
+		FoodServiceImpl service = new FoodServiceImpl(getTestRatingDatabase(), getTestMenu(),
+				getTestPictureSource(), getTestRestaurantLocator());
 
 		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 10, 29, 10, 59).getMillis());
 		VoteResponse response = service.vote(new VoteRequest(11, 4.0, "12345"));
@@ -136,7 +149,8 @@ public final class FoodServiceTests {
 	// voting twice (different device ID) on the same day
 	@Test
 	public void voteWithDifferentIdOnSameDayWorks() throws Exception {
-		FoodServiceImpl service = new FoodServiceImpl(getTestDeviceDatabase(), getTestRatingDatabase(), getTestMealList());
+		FoodServiceImpl service = new FoodServiceImpl(getTestRatingDatabase(), getTestMenu(),
+				getTestPictureSource(), getTestRestaurantLocator());
 
 		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 10, 29, 12, 30).getMillis());
 		service.vote(new VoteRequest(11, 4.0, "12345"));
@@ -145,33 +159,17 @@ public final class FoodServiceTests {
 		assertEquals(SubmitStatus.VALID, response.getSubmitStatus());
 	}
 
-	private static DeviceDatabase getTestDeviceDatabase() {
-		final Set<String> HAVE_VOTED = new HashSet<String>();
-
-		return new DeviceDatabase() {
-			@Override
-			public void vote(String deviceId) {
-				HAVE_VOTED.add(deviceId);
-			}
-
-			@Override
-			public boolean hasVotedToday(String deviceId) {
-				return HAVE_VOTED.contains(deviceId);
-			}
-		};
-	}
-
 	private static RatingDatabase getTestRatingDatabase() {
 		final Map<Long, EpflRating> RATINGS = new HashMap<Long, EpflRating>();
 
 		return new RatingDatabase() {
 			@Override
-			public void insertMenu(List<EpflRestaurant> menu) {
+			public void insertMenu(List<EpflRestaurant> menu, LocalDate date, MealTime time) throws Exception {
 				// nothing
 			}
 
 			@Override
-			public void vote(long mealId, double rating) {
+			public SubmitStatus vote(String deviceId, long mealId, double rating) {
 				if (RATINGS.containsKey(mealId)) {
 					EpflRating r = RATINGS.get(mealId);
 					int voteCount = r.getVoteCount() + 1;
@@ -179,6 +177,7 @@ public final class FoodServiceTests {
 				} else {
 					RATINGS.put(mealId, new EpflRating(rating, 1));
 				}
+				return SubmitStatus.VALID;
 			}
 
 			@Override
@@ -203,7 +202,7 @@ public final class FoodServiceTests {
 		};
 	}
 
-	private static Menu getTestMealList() {
+	private static Menu getTestMenu() {
 		return new Menu() {
 			@Override
 			public FoodResponse get(MealTime time, LocalDate date) throws Exception {
@@ -227,5 +226,29 @@ public final class FoodServiceTests {
 
 	private static EpflMeal makeMeal(long id) {
 		return new EpflMeal(id, "M" + id, "D" + id, new HashMap<PriceTarget, Double>(), Arrays.asList(new MealType[0]), null).setMRating(new EpflRating(0.0, 0));
+	}
+
+	private static PictureSource getTestPictureSource() {
+		final Map<MealType, String> mealTypePictures = new HashMap<MealType, String>();
+		return new PictureSource() {
+			@Override
+			public Map<MealType, String> getMealTypePictures() {
+				return mealTypePictures;
+			}
+
+			@Override
+			public String forRestaurant(String restaurantName) {
+				return "PICTURE_" + restaurantName;
+			}
+		};
+	}
+
+	private static RestaurantLocator getTestRestaurantLocator() {
+		return new RestaurantLocator() {
+			@Override
+			public MapItem findByName(String restaurantName) {
+				return new MapItem(restaurantName, "", 0, 0, 0, 0);
+			}
+		};
 	}
 }

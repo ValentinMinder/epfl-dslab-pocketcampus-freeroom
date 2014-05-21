@@ -11,7 +11,11 @@
 "Login" = "Connexion";
 "Logout" = "Déconnexion";
 "LoggedInExplanationLong" = "Votre mot de passe est stocké de manière\nsécurisée dans le trousseau iOS.\n\n";
-"GasparAccountRequiredFor" = "Votre compte Gaspar est requis pour\ncertains services comme Moodle ou Camipro.\n\nVotre mot de passe sera stocké de\nmanière sécurisée dans le trousseau iOS.";
-"LoggedInAs" = "Connecté en tant que";
+"GasparAccountRequiredFor" = "Votre compte Gaspar est requis pour\ncertains services comme Camipro, Moodle ou IS-Academia.\n\nVotre mot de passe sera stocké de\nmanière sécurisée dans le trousseau iOS.";
+"LoggedInAsWithFormat" = "Connecté en tant que «%@»";
 "UsernameCannotBeEmpty" = "Le nom d'utilisateur ne peut pas être vide.";
 "PasswordCannotBeEmpty" = "Le mot de passe ne peut pas être vide.";
+
+//Accessibility
+"StartsAuthenticationProcess" = "Démarre le processus d'authentification.";
+"PleaseFirstIndicateBothUsernamePassword" = "Veuillez tout d'abord entrer votre nom d'utilisateur et mot de passe Gaspar.";

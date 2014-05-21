@@ -1,59 +1,91 @@
-//
-//  FoodService.h
-//  PocketCampus
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
 //  Created by Loïc Gardiol on 05.03.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
 
 #import "Service.h"
 
 #import "food.h"
 
+#import "FoodModelAdditions.h"
+
+extern NSString* const kFoodFavoritesRestaurantsUpdatedNotification;
+
+extern NSInteger kFoodDefaultUnknownUserPriceTarget;
+
 @interface FoodService : Service<ServiceProtocol>
+
+- (void)addFavoriteRestaurant:(EpflRestaurant*)restaurant;
+- (void)removeFavoritRestaurant:(EpflRestaurant*)restaurant;
+- (NSSet*)allFavoriteRestaurantIds; //set of NSNumber of int64_t of restaurant that are favorite
+- (BOOL)isRestaurantFavorite:(EpflRestaurant*)restaurant;
+
 
 /*
  food service methods
  
  - (NSArray *) getMeals;  // throws TException
- - (NSArray *) getRestaurants;  // throws TException
- - (NSArray *) getSandwiches;  // throws TException
- - (Rating *) getRating: (Meal *) meal;  // throws TException
- - (BOOL) hasVoted: (NSString *) deviceId;  // throws TException
  - (NSDictionary *) getRatings;  // throws TException
- - (int) setRating: (Id) mealId : (double) rating : (NSString *) deviceId;  // throws TException
+ - (int) setRating: (int64_t) mealId : (double) rating : (NSString *) deviceId;  // throws TException
+ - (FoodResponse *) getFood: (FoodRequest *) foodReq;  // throws TException
+ - (VoteResponse *) vote: (VoteRequest *) voteReq;  // throws TException
 */
 
-- (void)getMealsWithDelegate:(id)delegate;
-- (void)getRestaurantsWithDelegate:(id)delegate;
-- (void)getSandwichesWithDelegate:(id)delegate;
-- (void)getRating:(Meal*)meal delegate:(id)delegate;
-- (void)hasVoted:(NSString*)deviceId delegate:(id)delegate;
-- (void)getRatingsWithDelegate:(id)delegate;
-- (void)setRatingForMeal:(Id)mealId rating:(double)rating deviceId:(NSString*)deviceId delegate:(id)delegate;
+- (void)getFoodForRequest:(FoodRequest*)request delegate:(id)delegate;
+
+/*
+ * Set after any successfull getFoodForRequest:delegate: (nil before that)
+ */
+@property (nonatomic, strong) NSDictionary* pictureUrlForMealType;
+
+/*
+ * Set after any successfull getFoodForRequest:delegate:
+ * Default: PriceTarget_ALL
+ */
+@property (nonatomic) NSInteger userPriceTarget; //PriceTarget enum value
+
+
+- (void)voteForRequest:(VoteRequest*)request delegate:(id)delegate;
+
 
 /* Cached versions */
 
-- (NSArray*)getFromCacheMeals;
+- (FoodResponse*)getFoodFromCacheForRequest:(FoodRequest*)request;
+
 
 @end
 
 @protocol FoodServiceDelegate <ServiceDelegate>
 
 @optional
-- (void)getMealsDidReturn:(NSArray*)meals;
-- (void)getMealsFailed;
-- (void)getRestaurantsDidReturn:(NSArray*)restaurants;
-- (void)getRestaurantsFailed;
-- (void)getSandwichesDidReturn:(NSArray*)sandwiches;
-- (void)getSandwichesFailed;
-- (void)getRatingFor:(Meal*)meal didReturn:(Rating*)rating;
-- (void)getRatingFailedFor:(Meal*)meal;
-- (void)hasVotedFor:(NSString*)deviceId didReturn:(BOOL)hasVoted;
-- (void)hasVotedFailedFor:(NSString*)deviceId;
-- (void)getRatingsDidReturn:(NSDictionary*)ratings;
-- (void)getRatingsFailed;
-- (void)setRatingForMeal:(Id)mealId rating:(double)rating deviceId:(NSString*)deviceId didReturn:(int)status;
-- (void)setRatingFailedForMeal:(Id)mealId rating:(double)rating deviceId:(NSString*)deviceId;
+
+- (void)getFoodForRequest:(FoodRequest*)request didReturn:(FoodResponse*)response;
+- (void)getFoodFailedForRequest:(FoodRequest *)request;
+- (void)voteForRequest:(VoteRequest*)request didReturn:(VoteResponse*)response;
+- (void)voteFailedForRequest:(VoteRequest*)request;
 
 @end

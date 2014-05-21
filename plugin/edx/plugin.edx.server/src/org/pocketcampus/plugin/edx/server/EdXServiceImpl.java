@@ -35,7 +35,6 @@ import org.apache.thrift.TException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.pocketcampus.platform.sdk.shared.utils.Callback;
 import org.pocketcampus.platform.sdk.shared.utils.Cookie;
 import org.pocketcampus.plugin.edx.shared.EdXService;
 import org.pocketcampus.plugin.edx.shared.EdxCourse;
@@ -557,6 +556,7 @@ public class EdXServiceImpl implements EdXService.Iface {
 		Participant checkParticipant(String partiRef, StudyRoom roomToNotify) {
 			synchronized(this) {
 				if(!containsKey(partiRef)) {
+					System.out.println("              NEW PARTI " + partiRef);
 					Participant parti = new Participant(partiRef, roomToNotify);
 					put(partiRef, parti);
 					return parti;
@@ -572,6 +572,7 @@ public class EdXServiceImpl implements EdXService.Iface {
 		StudyRoom checkRoom(String roomRef) {
 			synchronized(this) {
 				if(!containsKey(roomRef)) {
+					System.out.println("              NEW ROOM " + roomRef);
 					StudyRoom room = new StudyRoom();
 					put(roomRef, room);
 					return room;
@@ -684,7 +685,8 @@ public class EdXServiceImpl implements EdXService.Iface {
 							pi.remove();
 						}
 					}
-					if(re.getValue().participants.size() == 0 && re.getValue().messages.size() == 0) {
+					//if(re.getValue().participants.size() == 0 && re.getValue().messages.size() == 0) {
+					if(!re.getValue().participants.entrySet().iterator().hasNext() && !re.getValue().messages.iterator().hasNext()) {
 						System.out.println("               CLEANING UP    Room " + re.getKey());
 						ri.remove();
 					}

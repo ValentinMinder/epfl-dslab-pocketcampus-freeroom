@@ -20,12 +20,11 @@
             android:label="@string/directory_plugin_name"
             android:screenOrientation="nosensor"
              android:icon="@drawable/directory_icon"
-            android:name="org.pocketcampus.plugin.directory.android.DirectorySearchView" >
+            android:name="org.pocketcampus.plugin.directory.android.DirectoryMainView"
+            android:windowSoftInputMode="stateVisible" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
             </intent-filter>
             
@@ -37,7 +36,8 @@
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
 				<data android:scheme="pocketcampus" 
-				    android:host="directory.plugin.pocketcampus.org"   />
+				    android:host="directory.plugin.pocketcampus.org" 
+				    android:path="/query"  />
 			</intent-filter>
                         
                         
@@ -46,10 +46,35 @@
             
             
         </activity>
-        <activity android:name="org.pocketcampus.plugin.directory.android.DirectoryResultListView" 
-            android:screenOrientation="nosensor">
-        </activity>
 
+        
+        
+        
+		<activity
+		     android:name="org.pocketcampus.plugin.directory.android.DirectoryPersonView"
+             android:icon="@drawable/directory_icon"
+            android:label="@string/directory_plugin_name"
+			android:screenOrientation="nosensor"
+			 android:theme="@android:style/Theme.Dialog"
+            android:windowSoftInputMode="stateHidden" 			 >
+			
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="pocketcampus" 
+				    android:host="directory.plugin.pocketcampus.org" 
+				    android:path="/view"  />
+				<data android:scheme="pocketcampus" 
+				    android:host="directory.plugin.pocketcampus.org" 
+				    android:path="/search"  />
+								
+			</intent-filter>			
+			    
+		</activity>
+        
+        
+        
         <service
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.directory.android.DirectoryController" >

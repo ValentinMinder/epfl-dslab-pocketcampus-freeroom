@@ -37,6 +37,8 @@ public class GlobalContext extends Application {
 	private RequestActivityListener mRequestActivityListener;
 	private String pushNotifToken = null;
 	
+	private SdkStore store = null;
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -47,6 +49,8 @@ public class GlobalContext extends Application {
 		Tracker.getInstance().start(getApplicationContext());
 		
 		mPluginInfoList = new HashMap<String, PluginInfo>();
+		
+		store = new SdkStore(this);
 		
 		loadPluginManifests();
 	}
@@ -115,13 +119,21 @@ public class GlobalContext extends Application {
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		ctx.startActivity(intent);
 	}
-	
+
 	public void setPushNotifToken(String tok) {
 		pushNotifToken = tok;
 	}
 	
 	public String getPushNotifToken() {
 		return pushNotifToken;
+	}
+
+	public void setPcSessionId(String s, boolean permanently) {
+		store.setPcSessionId(s, permanently);
+	}
+	
+	public String getPcSessionId() {
+		return store.getPcSessionId();
 	}
 
 	public void incrementRequestCounter() {

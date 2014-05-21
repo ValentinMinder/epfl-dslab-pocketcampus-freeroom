@@ -80,7 +80,7 @@ public class PushNotifDataStore {
 			sqlStm.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-			System.out.println("[pushnotif] Problem in updating token");
+			System.out.println("[pushnotif] Problem in deleting token");
 			return false;
 		} finally {
 			try {

@@ -1,7 +1,3 @@
-/* 
-  Localizable.strings
-  PocketCampus
-*/
 
 "PluginName" = "Push notifications";
 "PushNotifsAlertTitleWithFormat" = "Push notifications for %@";

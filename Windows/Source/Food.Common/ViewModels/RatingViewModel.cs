@@ -1,21 +1,20 @@
-// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using PocketCampus.Common.Services;
 using PocketCampus.Food.Models;
 using PocketCampus.Food.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Food.ViewModels
 {
     /// <summary>
     /// The ViewModel that lets the user rate meals.
     /// </summary>
-    [PageLogId( "/food/rating" )]
-    public sealed class RatingViewModel : DataViewModel<RatingInfo>
+    [LogId( "/food/rating" )]
+    public sealed class RatingViewModel : DataViewModel<Meal>
     {
         private const int MinRatingHour = 11;
 
@@ -24,10 +23,8 @@ namespace PocketCampus.Food.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IDeviceIdentifier _deviceIdentifier;
 
-        private RatingStatus _status;
+        private VoteStatus _status;
         private UserRating _rating;
-
-        private MealTime _mealTime;
 
         /// <summary>
         /// Gets the meal to be rated.
@@ -35,9 +32,9 @@ namespace PocketCampus.Food.ViewModels
         public Meal Meal { get; private set; }
 
         /// <summary>
-        /// Gets the rating status.
+        /// Gets the vote status.
         /// </summary>
-        public RatingStatus Status
+        public VoteStatus Status
         {
             get { return _status; }
             private set { SetProperty( ref _status, value ); }
@@ -55,10 +52,10 @@ namespace PocketCampus.Food.ViewModels
         /// <summary>
         /// Gets the command executed to rate the meal.
         /// </summary>
-        [CommandLogId( "Rate" )]
+        [LogId( "Rate" )]
         public Command RateCommand
         {
-            get { return GetCommand( Rate, () => Status == RatingStatus.Ok && !IsLoading ); }
+            get { return GetCommand( Rate, () => !IsLoading ); }
         }
 
 
@@ -67,39 +64,18 @@ namespace PocketCampus.Food.ViewModels
         /// </summary>
         public RatingViewModel( IFoodService foodService, IPluginSettings pluginSettings,
                                 INavigationService navigationService, IDeviceIdentifier deviceIdentifier,
-                                RatingInfo info )
+                                Meal meal )
         {
             _foodService = foodService;
             _pluginSettings = pluginSettings;
             _navigationService = navigationService;
             _deviceIdentifier = deviceIdentifier;
 
+            Meal = meal;
             Rating = UserRating.Neutral;
-
-            Meal = info.Meal;
-            _mealTime = info.MealTime;
-
-            if ( DateTime.Now.Hour < MinRatingHour )
-            {
-                Status = RatingStatus.TooEarly;
-            }
-            else if ( DateTime.Now - _pluginSettings.LastVotes[info.MealTime] < TimeSpan.FromDays( 1 ) )
-            {
-                Status = RatingStatus.AlreadyVotedToday;
-            }
-            else if ( DateTime.Now - info.MealDate > TimeSpan.FromDays( 1 ) )
-            {
-                Status = RatingStatus.MealFromThePast;
-            }
-            else if ( info.MealDate - DateTime.Now > TimeSpan.FromDays( 1 ) )
-            {
-                Status = RatingStatus.MealFromTheFuture;
-            }
-            else
-            {
-                Status = RatingStatus.Ok;
-            }
+            Status = VoteStatus.Success;
         }
+
 
         /// <summary>
         /// Rates the meal.
@@ -115,21 +91,16 @@ namespace PocketCampus.Food.ViewModels
                 var request = new VoteRequest { DeviceId = _deviceIdentifier.Current, MealId = Meal.Id, RatingValue = value };
                 var response = await _foodService.VoteAsync( request );
 
-                if ( response.Status == VoteStatus.AlreadyVoted )
-                {
-                    Status = RatingStatus.AlreadyVotedToday;
-                }
-                else if ( response.Status == VoteStatus.TooEarly )
-                {
-                    Status = RatingStatus.TooEarly;
-                }
-                else
+                if ( response.Status == VoteStatus.Success )
                 {
                     Meal.Rating = UpdateRating( Meal.Rating, value );
                     Meal.Restaurant.Rating = UpdateRating( Meal.Restaurant.Rating, value );
 
-                    _pluginSettings.LastVotes[_mealTime] = DateTime.Now;
                     _navigationService.NavigateBack();
+                }
+                else
+                {
+                    Status = response.Status;
                 }
             } );
         }

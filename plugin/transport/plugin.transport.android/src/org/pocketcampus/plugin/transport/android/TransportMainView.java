@@ -66,8 +66,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 	/** The plugin model. */
 	private TransportModel mModel;
 	/* Layout */
-	/** The <code>ActionBar</code>. */
-	private ActionBar mActionBar;
 	/** Refresh action in the action bar. */
 	private RefreshAction mRefreshAction;
 	/** Change direction action in the action bar. */
@@ -234,11 +232,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * Retrieves the action bar and adds a refresh action to it.
 	 */
 	private void setUpActionBar() {
-		mActionBar = getActionBar();
-		if (mActionBar != null) {
-			mRefreshAction = new RefreshAction();
-			mActionBar.addAction(mRefreshAction, 0);
-		}
+		addActionToActionBar(new RefreshAction(), 0);
 	}
 
 	/**
@@ -252,11 +246,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 		// If no stations set, display a button that redirects to the add
 		// view of the plugin
 		if (prefs == null || prefs.isEmpty()) {
-			if (mActionBar == null) {
-				mActionBar = getActionBar();
-			}
 			if (mDirectionAction != null) {
-				mActionBar.removeAction(mDirectionAction);
+				removeActionFromActionBar(mDirectionAction);
 			}
 			ButtonElement addButton = new ButtonElement(this, getResources()
 					.getString(R.string.transport_add_station));
@@ -346,14 +337,11 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void connectionsUpdated(QueryTripsResult result) {
-		if (mActionBar != null) {
-			mActionBar = getActionBar();
-		}
 		if (mDirectionAction == null) {
 			mDirectionAction = new ChangeDirectionAction();
 		}
-		mActionBar.removeAction(mDirectionAction);
-		mActionBar.addAction(mDirectionAction, 0);
+		removeActionFromActionBar(mDirectionAction);
+		addActionToActionBar(mDirectionAction, 0);
 
 		HashMap<String, List<TransportTrip>> mDisplayedLocations = mModel
 				.getFavoriteStations();

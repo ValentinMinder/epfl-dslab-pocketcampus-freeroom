@@ -1,141 +1,105 @@
-//
-//  Service.h
-//  PocketCampus
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
+
+
+
 //  Created by Loïc Gardiol on 28.02.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import <Foundation/Foundation.h>
 
-#import "THTTPClient.h"
-#import "TBinaryProtocol.h"
-
-#import "ASIHTTPRequest.h"
+#import "ServiceRequest.h"
 
 @protocol ServiceDelegate <NSObject>
 
-- (void)serviceConnectionToServerTimedOut;
+- (void)serviceConnectionToServerFailed;
 
 @end
 
 @protocol ServiceProtocol <NSObject>
 
+/*
+ * Conforming services must implement this method and implement a weak singleton.
+ * i.e. only one instance can live a time, but it can be relased.
+ * This can be done with a dispatch_once and a weak static instance pointer.
+ */
 @required
-+ (id)sharedInstanceToRetain; //MUST be retained !!!
-- (id)thriftServiceClientInstance; //to implement : must return a thrift client (ex. TransportServiceClient)
++ (id)sharedInstanceToRetain;
 
 @end
 
 
-@interface Service : NSObject<ASIHTTPRequestDelegate> {
-    NSString* serviceName;
-    NSString* serverAddressWithPort; //example 128.178.0.1:9090
-    NSURL* serverURL; //full URL with service extension (example ../v3r1/transport/)
-    TBinaryProtocol* thriftProtocol;
-    NSOperationQueue* operationQueue;
-    id thriftClient;
-    dispatch_semaphore_t semaphore;
-    ASIHTTPRequest* checkServerRequest;
-    BOOL serverIsReachable;
-}
+/*
+ * Abstract class
+ * Plugin services should sublcass it and conform to ServiceProtocol
+ */
+@interface Service : NSObject
 
-@property (readonly) NSOperationQueue* operationQueue;
-@property (readonly) TBinaryProtocol* thriftProtocol;
-@property BOOL serviceWillBeReleased;
+@property (nonatomic, readonly) NSString* serviceName;
+
+@property (nonatomic, readonly) NSString* thriftServiceClientClassName;
+
+/*
+ * Full URL of service. Initialized automatically at init, using [PCConfig default].
+ * For e.g. : https://pocketcampus.epfl.ch:4433/v3r1/news
+ */
+@property (nonatomic, readonly) NSURL* serviceURL;
+
+/*
+ * Queue on which ServiceRequest (NSOperation) are scheduled.
+ * You can add to this queue any NSOperation related to the service.
+ */
+@property (nonatomic, readonly) NSOperationQueue* operationQueue;
+
+/*
+ * Pass nil thriftServiceClientClassName if your service does not talk to a thrift server
+ */
+- (id)initWithServiceName:(NSString*)serviceName thriftServiceClientClassName:(NSString*)thriftServiceClientClassName;
+
+/*
+ * Returns nil if thriftServiceClientClassName passed at init is invalid or nil
+ */
+- (id)thriftServiceClientInstance;
+- (id)thriftServiceClientInstanceWithCustomTimeoutInterval:(NSTimeInterval)timeoutInterval;
+
+- (id)thriftProtocolInstance;
+- (id)thriftProtocolInstanceWithCustomTimeoutInterval:(NSTimeInterval)timeoutInterval;
 
 
-- (id)initWithServiceName:(NSString*)serviceName;
-+ (NSTimeInterval)requestTimeoutInterval;
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate;
 - (void)cancelAllOperations;
-- (id)thriftProtocolInstance;
 
-- (BOOL)serverIsReachable;
-- (NSString*) serviceName;
-
-@end
-
-typedef enum {
-    ReturnTypeNotSet = 0,
-    ReturnTypeObject,
-    ReturnTypeBool,
-    ReturnTypeChar,
-    ReturnTypeUnsignedChar,
-    ReturnTypeDouble,
-    ReturnTypeFloat,
-    ReturnTypeInt,
-    ReturnTypeUnsignedInt,
-    ReturnTypeLong,
-    ReturnTypeUnsignedLong,
-    ReturnTypeLongLong,
-    ReturnTypeUnsignedLongLong,
-    ReturnTypeShort,
-    ReturnTypeUnsignedShort
-} ReturnType;
-
-/*----------------------------------------------------------------------------------------------------------*/
-
-@interface NSOperationWithDelegate : NSOperation {
-    BOOL executing;
-    BOOL finished;
-    BOOL canceled;
-}
-
-@property (assign) id delegate;
-@property SEL delegateDidReturnSelector;
-@property SEL delegateDidFailSelector;
-
-- (id)initWithDelegate:(id)delegate;
-- (BOOL)delegateRespondsToSelector:(SEL)selector;
-
-@end
-
-@interface ServiceRequest : NSOperationWithDelegate {
-    NSMutableArray* arguments;
-    NSTimer* timeoutTimer;
-    NSTimeInterval customTimeout;
-    NSString* hashCode;
-    id thriftServiceClient;
-}
-
-@property (retain) id thriftServiceClient;
-@property BOOL timedOut;
-@property BOOL shouldRestart; //will be checked if server availaility returns NO. If shouldRestart==YES, operation will be restarted
-@property NSTimeInterval customTimeout;
-@property BOOL keepInCache;
-@property BOOL skipCache;
-@property BOOL returnEvenStaleCacheIfServerIsUnreachable;
-@property NSTimeInterval cacheValidity;
-@property SEL serviceClientSelector;
-@property ReturnType returnType;
-@property NSUInteger nbTrimmedArgumentsFromLeftInDelegateCall;
-@property (nonatomic, assign) Service* service;
-
-
-- (id)initWithThriftServiceClient:(id)serviceClient service:(Service*)service delegate:(id)delegate_;
-
-- (id)initForCachedResponseOnlyWithService:(Service*)service_;
-- (id)cachedResponseObjectEvenIfStale:(BOOL)evenIfStale;
-
-- (void)addObjectArgument:(id)object;
-
-- (void)addBoolArgument:(BOOL)val;
-- (void)addCharArgument:(char)val;
-- (void)addUnsignedCharArgument:(unsigned char)val;
-- (void)addDoubleArgument:(double)val;
-- (void)addFloatArgument:(float)val;
-- (void)addIntArgument:(int)val;
-- (void)addUnsignedIntArgument:(unsigned int)val;
-- (void)addLongArgument:(long)val;
-- (void)addUnsignedLongArgument:(unsigned long) val;
-- (void)addLongLongArgument:(long long)val;
-- (void)addUnsignedLongLongArgument:(unsigned long long)val;
-- (void)addShortArgument:(short)val;
-- (void)addUnsignedShortArgument:(unsigned short)val;
-
-- (void)checkPrimariesAndScheduleTimeoutTimer;
-- (void)finishAndRelease; //protected, should not be called by other classes
-- (void)didTimeout;
+/*
+ * Returns a URL request pointing to raw service
+ * You can then add parameters to this request, corresponding
+ * to the action you want to execute.
+ * WARNING: you must NOT remove the request headers.
+ */
+- (NSMutableURLRequest*)pcProxiedRequest;
 
 @end

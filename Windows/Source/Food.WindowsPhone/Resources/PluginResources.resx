@@ -126,34 +126,34 @@
   <data name="MaximumBudget" xml:space="preserve">
     <value>My budget is</value>
   </data>
-  <data name="MealTypes_Fish" xml:space="preserve">
+  <data name="MealType_Fish" xml:space="preserve">
     <value>Fish</value>
   </data>
-  <data name="MealTypes_GreenFork" xml:space="preserve">
+  <data name="MealType_GreenFork" xml:space="preserve">
     <value>Green Fork</value>
   </data>
-  <data name="MealTypes_Lebanese" xml:space="preserve">
+  <data name="MealType_Lebanese" xml:space="preserve">
     <value>Lebanese</value>
   </data>
-  <data name="MealTypes_Meat" xml:space="preserve">
+  <data name="MealType_Meat" xml:space="preserve">
     <value>Meat</value>
   </data>
-  <data name="MealTypes_Pasta" xml:space="preserve">
+  <data name="MealType_Pasta" xml:space="preserve">
     <value>Pasta</value>
   </data>
-  <data name="MealTypes_Pizza" xml:space="preserve">
+  <data name="MealType_Pizza" xml:space="preserve">
     <value>Pizza</value>
   </data>
-  <data name="MealTypes_Poultry" xml:space="preserve">
+  <data name="MealType_Poultry" xml:space="preserve">
     <value>Poultry</value>
   </data>
-  <data name="MealTypes_Indian" xml:space="preserve">
+  <data name="MealType_Indian" xml:space="preserve">
     <value>Indian</value>
   </data>
-  <data name="MealTypes_Thai" xml:space="preserve">
+  <data name="MealType_Thai" xml:space="preserve">
     <value>Thaï</value>
   </data>
-  <data name="MealTypes_Vegetarian" xml:space="preserve">
+  <data name="MealType_Vegetarian" xml:space="preserve">
     <value>Vegetarian</value>
   </data>
   <data name="PriceTarget_PhDStudent" xml:space="preserve">
@@ -187,49 +187,53 @@
     <value>refresh</value>
   </data>
   <data name="HalfPrice" xml:space="preserve">
-    <value>1/2 portion :</value>
+    <value>1/2</value>
+    <comment>Must be VERY short</comment>
   </data>
   <data name="MainViewTitle" xml:space="preserve">
     <value>Menus</value>
   </data>
-  <data name="NoVotesCast" xml:space="preserve">
-    <value>no votes</value>
+  <data name="ViewRestaurantOnMap" xml:space="preserve">
+    <value>view on map</value>
+  </data>
+  <data name="UnknownPrice" xml:space="preserve">
+    <value>unknown price</value>
+  </data>
+  <data name="MealTypeFilterExplanation" xml:space="preserve">
+    <value>tap a meal type to show / hide it</value>
   </data>
   <data name="ManyVotesCast" xml:space="preserve">
     <value>{0} votes</value>
   </data>
+  <data name="NoVotesCast" xml:space="preserve">
+    <value>no votes</value>
+  </data>
   <data name="OneVoteCast" xml:space="preserve">
     <value>1 vote</value>
   </data>
-  <data name="RatingStatus_AlreadyVotedToday" xml:space="preserve">
-    <value>You have already rated a meal today.</value>
-  </data>
-  <data name="RatingStatus_MealFromTheFuture" xml:space="preserve">
-    <value>Future meals cannot be rated.</value>
-  </data>
-  <data name="RatingStatus_MealFromThePast" xml:space="preserve">
-    <value>Past meals cannot be rated.</value>
-  </data>
-  <data name="RatingStatus_Ok" xml:space="preserve">
-    <value> </value>
-    <comment>Must be empty</comment>
-  </data>
-  <data name="RatingStatus_TooEarly" xml:space="preserve">
-    <value>It's too early to rate meals.</value>
-  </data>
   <data name="RateButton" xml:space="preserve">
-    <value>rate</value>
+    <value>vote</value>
   </data>
   <data name="RateMealButton" xml:space="preserve">
-    <value>rate</value>
+    <value>vote</value>
   </data>
-  <data name="ViewRestaurantOnMap" xml:space="preserve">
-    <value>view on map</value>
+  <data name="VoteStatus_AlreadyVoted" xml:space="preserve">
+    <value>You have already rated a meal for this meal date and time.</value>
+  </data>
+  <data name="VoteStatus_TooEarly" xml:space="preserve">
+    <value>Future meals cannot be rated.</value>
+  </data>
+  <data name="VoteStatus_MealInDistantPast" xml:space="preserve">
+    <value>Meals too far in the past cannot be rated.</value>
+  </data>
+  <data name="VoteStatus_Success" xml:space="preserve">
+    <value />
+    <comment>Must be empty</comment>
   </data>
   <data name="RatingViewTitle" xml:space="preserve">
-    <value>rate</value>
+    <value>rate a meal</value>
   </data>
-  <data name="UnknownPrice" xml:space="preserve">
-    <value>unknown price</value>
+  <data name="SatisfactionPercentage" xml:space="preserve">
+    <value>satisfaction</value>
   </data>
 </root>

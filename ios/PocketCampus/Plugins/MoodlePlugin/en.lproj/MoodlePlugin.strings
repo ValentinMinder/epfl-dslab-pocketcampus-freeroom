@@ -3,6 +3,7 @@
 "MyCourses" = "My courses";
 "MoodleDown" = "Sorry, Moodle servers are down.\nPlease try again later.";
 "MoodleNoCourse" = "You do not seem to be registered\nin any Moodle course.";
+"MoodleNoFavorites" = "No favorites\nTap the star in the document view to add a favorite";
 "MoodleEmptyCourse" = "No document";
 "MoodleCourses" = "Courses";
 "MoodleWeek" = "Week";
@@ -10,11 +11,31 @@
 "MoodleCurrentWeek" = "Current week";
 "Saved" = "saved ";
 "LoadingCourseList" = "Loading course list...";
-"LoadingCourse" = "Loading course, might last 1 min...";
+"LoadingCourse" = "Loading course...";
 "ErrorWhileDownloadingFile" = "Sorry, an error occured while downloading the file.\n\nCheck your internet connection.";
 "FileCouldNotBeDisplayedTryOpenIn" = "This file cannot be displayed.\nTry the action button.";
 "Sorry" = "Sorry";
 "NoActionForThisFile" = "No action is available for this file.";
 "DownloadingFile" = "Downloading file...";
-"DeleteFileFromCacheQuestion" = "Delete file from local storage ?\nYou'll have to download it again to read it.";
+"DeleteFileFromCacheQuestion" = "Delete file from local storage ?\nYou will have to download it again to read it.";
 "ImpossibleDeleteFile" = "Sorry, an error occured while deleting file.";
+
+
+//MoodleSettingsViewController
+"MoodleSettings" = "Moodle settings";
+"KeepDocsPosition" = "Restore reading position";
+"KeepDocsPositionExplanation" = "When enabled, documents automatically open where you leave them off.";
+"DeleteAllDownloadedDocuments" = "Delete all downloaded documents";
+"DownloadedDocumentsCurrentlyUsingBytesWithFormat" = "Downloaded documents are currently using %@ of space.";
+"Computing" = "Calculating";
+"NoDownloadedDocuments" = "No downloaded documents.";
+"AllDocsWillBeDeletedExplanation" = "All documents of all courses will be deleted.\nYou will need to download them again to read them.";
+"DeleteAll" = "Delete all";
+
+
+//Accessibility
+"ShowsDocumentsForThisCourse" = "Shows documents for this course.";
+"DocumentDescriptionWithFormat" = "%@, '%@' file, downloaded: %@";
+"AddDocumentToFavorites" = "Add this document to favorites";
+"RemoveDocumentFromFavorites" = "Remove this document from favorites";
+"DeleteDocumentFromLocalStorage" = "Delete this document from local storage";

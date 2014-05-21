@@ -13,7 +13,8 @@ import org.apache.thrift.TEnum;
 public enum IsaStatusCode implements org.apache.thrift.TEnum {
   OK(200),
   NETWORK_ERROR(404),
-  INVALID_SESSION(407);
+  INVALID_SESSION(407),
+  ISA_ERROR(418);
 
   private final int value;
 
@@ -40,6 +41,8 @@ public enum IsaStatusCode implements org.apache.thrift.TEnum {
         return NETWORK_ERROR;
       case 407:
         return INVALID_SESSION;
+      case 418:
+        return ISA_ERROR;
       default:
         return null;
     }

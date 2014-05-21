@@ -7,12 +7,18 @@
 	<key>SERVER_ADDRESS</key>
 	<string>pocketcampus.epfl.ch</string>
 	<key>SERVER_PORT</key>
-	<string>443</string>
+	<string>4433</string>
 	<key>SERVER_URI</key>
 	<string>v3r1</string>
-	<key>GA_TRACKING_CODE</key>
-	<string>UA-22135241-3</string>
 	<key>GA_ENABLED</key>
+	<true/>
+	<key>GA_TRACKING_CODE</key>
+	<string>UA-22135241-5</string>
+	<key>CRASHLYTICS_ENABLED</key>
+	<true/>
+	<key>CRASHLYTICS_APIKEY</key>
+	<string>5501169cb5b463b5f215a0033b2c4d4f5f214bd7</string>
+	<key>FOOD_RATINGS_ENABLED</key>
 	<true/>
 </dict>
 </plist>

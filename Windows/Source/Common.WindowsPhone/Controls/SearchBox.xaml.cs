@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Phone.Controls;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Common.Controls
 {
@@ -22,14 +22,14 @@ namespace PocketCampus.Common.Controls
         /// <summary>
         /// Asynchronously provides auto-complete suggestions from a query.
         /// </summary>
-        public Func<string, Task<IEnumerable<object>>> AutoCompleteProvider
+        public Func<string, Task<IEnumerable<string>>> AutoCompleteProvider
         {
-            get { return (Func<string, Task<IEnumerable<object>>>) GetValue( AutoCompleteProviderProperty ); }
+            get { return (Func<string, Task<IEnumerable<string>>>) GetValue( AutoCompleteProviderProperty ); }
             set { SetValue( AutoCompleteProviderProperty, value ); }
         }
 
         public static readonly DependencyProperty AutoCompleteProviderProperty =
-            DependencyProperty.Register( "AutoCompleteProvider", typeof( Func<string, Task<IEnumerable<object>>> ), typeof( SearchBox ), new PropertyMetadata( null ) );
+            DependencyProperty.Register( "AutoCompleteProvider", typeof( Func<string, Task<IEnumerable<string>>> ), typeof( SearchBox ), new PropertyMetadata( null ) );
         #endregion
 
         #region SearchCommand DependencyProperty
@@ -116,6 +116,11 @@ namespace PocketCampus.Common.Controls
 
         private async void Box_Populating( object sender, PopulatingEventArgs e )
         {
+            if ( AutoCompleteProvider == null )
+            {
+                return;
+            }
+
             e.Cancel = true;
             try
             {

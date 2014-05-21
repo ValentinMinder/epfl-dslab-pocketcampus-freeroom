@@ -2,6 +2,9 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using ThriftSharp;
 
 namespace PocketCampus.Directory.Models
@@ -23,12 +26,6 @@ namespace PocketCampus.Directory.Models
         /// </summary>
         [ThriftField( 2, true, "lastName" )]
         public string LastName { get; set; }
-
-        /// <summary>
-        /// The person's SCIPER number.
-        /// </summary>
-        [ThriftField( 3, true, "sciper" )]
-        public string SciperNumber { get; set; }
 
         /// <summary>
         /// The person's e-mail address, if it's visible.
@@ -61,12 +58,6 @@ namespace PocketCampus.Directory.Models
         public string Office { get; set; }
 
         /// <summary>
-        /// The person's GASPAR identifier, if it's visible.
-        /// </summary>
-        [ThriftField( 9, false, "gaspar" )]
-        public string GasparIdentifier { get; set; }
-
-        /// <summary>
         /// The organizational units to which the person belongs (e.g. IN-BA3, DSLAB).
         /// </summary>
         [ThriftField( 10, false, "OrganisationalUnit" )]
@@ -88,6 +79,32 @@ namespace PocketCampus.Directory.Models
         public string FullName
         {
             get { return FirstName + " " + LastName; }
+        }
+
+
+        /// <summary>
+        /// Parses a person from key/value pairs.
+        /// </summary>
+        public static Person Parse( IDictionary<string, string> pairs )
+        {
+            var person = new Person();
+            var typeInfo = typeof( Person ).GetTypeInfo();
+
+            foreach ( var pair in pairs )
+            {
+                var prop = typeInfo.DeclaredProperties.FirstOrDefault( p =>
+                {
+                    var attr = p.GetCustomAttribute<ThriftFieldAttribute>();
+                    return attr != null && attr.Name == pair.Key;
+                } );
+                // thankfully there are only strings in this class, apart from units
+                if ( prop != null && prop.PropertyType == typeof( string ) )
+                {
+                    prop.SetValue( person, pair.Value );
+                }
+            }
+
+            return person;
         }
     }
 }

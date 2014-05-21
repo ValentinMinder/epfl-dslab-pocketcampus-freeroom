@@ -12,13 +12,13 @@ namespace PocketCampus.Camipro.Models
     /// <remarks>
     /// Not in the Thrift interface (it uses undocumented constants).
     /// </remarks>
-    [ThriftEnum( "_" )]
+    [ThriftEnum]
     public enum ResponseStatus
     {
         /// <summary>
         /// The request completed successfully.
         /// </summary>
-        Ok = 200,
+        Success = 200,
 
         /// <summary>
         /// A network error occurred while executing the request.

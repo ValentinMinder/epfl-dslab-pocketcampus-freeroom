@@ -120,17 +120,18 @@
   <data name="AddAsContactButton" xml:space="preserve">
     <value>Add contact</value>
   </data>
+  <data name="LoadingMoreResults" xml:space="preserve">
+    <value>Loading more results...</value>
+    <comment>In system tray; must be short.</comment>
+  </data>
   <data name="NoSearchResults" xml:space="preserve">
-    <value>No result was found. Please check your spelling.</value>
+    <value>No result found. Please check your spelling.</value>
   </data>
   <data name="PagesHeader" xml:space="preserve">
     <value>Directory</value>
   </data>
   <data name="PersonEmail" xml:space="preserve">
-    <value>E-mail address</value>
-  </data>
-  <data name="PersonGaspar" xml:space="preserve">
-    <value>GASPAR identifier</value>
+    <value>E-mail</value>
   </data>
   <data name="PersonOffice" xml:space="preserve">
     <value>Office</value>
@@ -140,9 +141,6 @@
   </data>
   <data name="PersonPrivatePhone" xml:space="preserve">
     <value>Private phone</value>
-  </data>
-  <data name="PersonSciper" xml:space="preserve">
-    <value>SCIPER number</value>
   </data>
   <data name="PersonUnits" xml:space="preserve">
     <value>Units</value>

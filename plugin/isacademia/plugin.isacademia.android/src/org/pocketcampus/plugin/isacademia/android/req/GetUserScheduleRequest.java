@@ -1,8 +1,8 @@
 package org.pocketcampus.plugin.isacademia.android.req;
 
 import org.pocketcampus.android.platform.sdk.io.Request;
-import org.pocketcampus.plugin.isacademia.android.IsacademiaController;
-import org.pocketcampus.plugin.isacademia.android.IsacademiaModel;
+import org.pocketcampus.plugin.isacademia.android.IsAcademiaController;
+import org.pocketcampus.plugin.isacademia.android.IsAcademiaModel;
 import org.pocketcampus.plugin.isacademia.shared.IsaRequest;
 import org.pocketcampus.plugin.isacademia.shared.IsacademiaService.Iface;
 import org.pocketcampus.plugin.isacademia.shared.IsaScheduleReply;
@@ -16,7 +16,7 @@ import org.pocketcampus.plugin.isacademia.shared.IsaScheduleReply;
  * @author Amer <amer.chamseddine@epfl.ch>
  *
  */
-public class GetUserScheduleRequest extends Request<IsacademiaController, Iface, IsaRequest, IsaScheduleReply> {
+public class GetUserScheduleRequest extends Request<IsAcademiaController, Iface, IsaRequest, IsaScheduleReply> {
 
 	@Override
 	protected IsaScheduleReply runInBackground(Iface client, IsaRequest param) throws Exception {
@@ -24,18 +24,18 @@ public class GetUserScheduleRequest extends Request<IsacademiaController, Iface,
 	}
 
 	@Override
-	protected void onResult(IsacademiaController controller, IsaScheduleReply result) {
+	protected void onResult(IsAcademiaController controller, IsaScheduleReply result) {
 		if(result.getIStatus() == 404) {
-			((IsacademiaModel) controller.getModel()).getListenersToNotify().isaServersDown();
+			((IsAcademiaModel) controller.getModel()).getListenersToNotify().isaServersDown();
 		} else if(result.getIStatus() == 407) {
 			controller.notLoggedIn();
 		} else if(result.getIStatus() == 200) {
-			((IsacademiaModel) controller.getModel()).setSchedule(result.getISeances());
+			((IsAcademiaModel) controller.getModel()).setSchedule(result.getISeances());
 		}
 	}
 
 	@Override
-	protected void onError(IsacademiaController controller, Exception e) {
+	protected void onError(IsAcademiaController controller, Exception e) {
 		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
 	}

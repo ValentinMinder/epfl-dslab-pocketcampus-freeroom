@@ -1,52 +1,76 @@
-//
-//  HelpViewController.m
-//  PocketCampus
-//
-//  Created by Loïc Gardiol on 26.05.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
 
-#import "GANTracker.h"
+
+
+
+//  Created by Loïc Gardiol on 26.05.12.
+
 
 #import "TransportHelpViewController.h"
 
-#import "PCValues.h"
+@interface TransportHelpViewController ()
+
+@property (nonatomic, assign) IBOutlet UIWebView* webView;
+
+@end
 
 @implementation TransportHelpViewController
 
-@synthesize webView;
+#pragma mark - Init
 
-- (id)initWithHTMLFilePath:(NSString*)htmlFilePath_;
+- (id)init
 {
     self = [super initWithNibName:@"TransportHelpView" bundle:nil];
     if (self) {
-        htmlFilePath = [htmlFilePath_ retain];
+        self.gaiScreenName = @"/transport/help";
+        self.title = NSLocalizedStringFromTable(@"TransportHelp", @"TransportPlugin", nil);
     }
     return self;
 }
+
+#pragma mark - UIViewController overrides
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/help" withError:NULL];
-	self.title = NSLocalizedStringFromTable(@"TransportHelp", @"TransportPlugin", nil);
-    self.view.backgroundColor = [PCValues backgroundColor1];
-    webView.backgroundColor = [UIColor clearColor];
-    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismissViewController)];
-    self.navigationItem.rightBarButtonItem = doneButton;
-    [doneButton release];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
+    self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStylePlain;
     NSError* error = nil;
-    NSString* htmlString = [NSString stringWithContentsOfFile:htmlFilePath encoding:NSUTF8StringEncoding error:&error];
+    NSString* htmlString = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TransportHelp" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
     if (!error) {
-        [webView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@""]];
+        [self.webView loadHTMLString:htmlString baseURL:nil];
     }
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -54,26 +78,17 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //<= iOS5
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+#pragma mark - Actions
+
+- (void)donePressed {
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
-/* IBActions */
-
-- (IBAction)dismissViewController {
-    if ([self.presentingViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) { // >= iOS 5.0
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
-    } else {
-        [self.presentingViewController dismissModalViewControllerAnimated:YES];
-    }
-}
+#pragma mark - Dealloc
 
 - (void)dealloc {
-    webView.delegate = nil;
-    [webView stopLoading];
-    [htmlFilePath release];
-    [super dealloc];
+    self.webView.delegate = nil;
+    [self.webView stopLoading];
 }
 
 @end

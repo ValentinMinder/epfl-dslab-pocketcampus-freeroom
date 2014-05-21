@@ -2,8 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
-using Microsoft.Phone.Tasks;
+using PocketCampus.Common;
 using PocketCampus.Common.Services;
 
 namespace PocketCampus.Main.Services
@@ -18,7 +17,7 @@ namespace PocketCampus.Main.Services
         /// </summary>
         public void NavigateTo( string url )
         {
-            new WebBrowserTask { Uri = new Uri( url, UriKind.Absolute ) }.Show();
+            LauncherEx.Launch( url );
         }
     }
 }

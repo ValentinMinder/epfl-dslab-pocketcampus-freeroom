@@ -1,10 +1,35 @@
-//
-//  MapUtils.m
-//  PocketCampus
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
+
+
+
 //  Created by Loïc Gardiol on 13.04.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import "MapUtils.h"
 
@@ -76,6 +101,18 @@ double WGStoCHy(double lat, double lng) {
     return y;
 }
 
+/*
+ * http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
+ */
+
+double tilex2long(int x, int z) {
+	return x / pow(2.0, z) * 360.0 - 180;
+}
+
+double tiley2lat(int y, int z) {
+	double n = M_PI - 2.0 * M_PI * y / pow(2.0, z);
+	return 180.0 / M_PI * atan(0.5 * (exp(n) - exp(-n)));
+}
 
 @implementation MapUtils
 
@@ -85,57 +122,47 @@ double WGStoCHy(double lat, double lng) {
     return image;
 }
 
-+ (NSArray*)mapItemAnnotationsThatShouldBeDisplayed:(NSArray*)annotations forQuery:(NSString*)query {
-    if (annotations == nil || ![annotations isKindOfClass:[NSArray class]]) {
-        @throw [NSException exceptionWithName:@"bad argument annotations in mapItemAnnotationsThatShouldBeDisplayed:for:Query:" reason:@"annotations is not kind of class NSAarray" userInfo:nil];
-    }
-    
-    if (query == nil || ![query isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad argument query in mapItemAnnotationsThatShouldBeDisplayed:for:Query:" reason:@"query is not kind of class NSString" userInfo:nil];
-    }
++ (NSArray*)mapItemsThatShouldBeDisplayed:(NSArray*)allMapItems forQuery:(NSString*)query {
+    [PCUtils throwExceptionIfObject:allMapItems notKindOfClass:[NSArray class]];
+    [PCUtils throwExceptionIfObject:query notKindOfClass:[NSString class]];
     
     NSString* lowerQuery = [query lowercaseString];
     NSString* lowerQueryWithoutSpace = [lowerQuery stringByReplacingOccurrencesOfString:@" " withString:@""];
     
-    NSMutableArray* retAnnotations = [NSMutableArray array];
+    NSMutableArray* mapItemsToDisplay = [NSMutableArray array];
     
     NSError* error = NULL;
     
-    for (id<MKAnnotation> annotation in annotations) {
-        if ([annotation isKindOfClass:[MapItemAnnotation class]]) {
-            MapItemAnnotation* mapItemAnnotation = (MapItemAnnotation*)annotation;
-            if(mapItemAnnotation.title == nil) {
-                continue;
-            }
-            NSString* lowerTitle = [mapItemAnnotation.title lowercaseString];
-            NSString* lowerTitleWithoutSpace = [lowerTitle stringByReplacingOccurrencesOfString:@" " withString:@""];
-            
-            //NSLog(@"lower title : %@, lowerTitleWithoutSpace : %@", lowerTitle, lowerQueryWithoutSpace);
-            
-            NSRange titleRange = NSMakeRange(0, [lowerTitle length]);
-            
-            if ([lowerTitle isEqualToString:lowerQuery] || [lowerTitleWithoutSpace isEqualToString:lowerQueryWithoutSpace]) {
-                [retAnnotations addObject:mapItemAnnotation];
-                return retAnnotations;
-            }
-            
-            { //separation block
-                NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"^Auditoire %@$", lowerQuery] options:NSRegularExpressionCaseInsensitive error:&error];
-                NSRegularExpression* regexWithoutSpace = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"^Auditoire %@$", lowerQueryWithoutSpace] options:NSRegularExpressionCaseInsensitive error:&error];
-                if ([regex numberOfMatchesInString:lowerTitle options:0 range:titleRange] > 0 || [regexWithoutSpace numberOfMatchesInString:lowerTitle options:0 range:titleRange] > 0) {
-                    [retAnnotations addObject:mapItemAnnotation];
-                    return retAnnotations;
-                }
-            }
-            
+    for (MapItem* mapItem in allMapItems) {
+        if (![mapItem isKindOfClass:[MapItem class]]) {
+            continue;
         }
+        NSString* lowerTitle = [mapItem.title lowercaseString];
+        NSString* lowerTitleWithoutSpace = [lowerTitle stringByReplacingOccurrencesOfString:@" " withString:@""];
+        
+        //NSLog(@"lower title : %@, lowerTitleWithoutSpace : %@", lowerTitle, lowerQueryWithoutSpace);
+        
+        NSRange titleRange = NSMakeRange(0, [lowerTitle length]);
+        
+        if ([lowerTitle isEqualToString:lowerQuery] || [lowerTitleWithoutSpace isEqualToString:lowerQueryWithoutSpace]) {
+            [mapItemsToDisplay addObject:mapItem];
+            return mapItemsToDisplay;
+        }
+        
+        { //separation block
+            NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"^Auditoire %@$", lowerQuery] options:NSRegularExpressionCaseInsensitive error:&error];
+            NSRegularExpression* regexWithoutSpace = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"^Auditoire %@$", lowerQueryWithoutSpace] options:NSRegularExpressionCaseInsensitive error:&error];
+            if ([regex numberOfMatchesInString:lowerTitle options:0 range:titleRange] > 0 || [regexWithoutSpace numberOfMatchesInString:lowerTitle options:0 range:titleRange] > 0) {
+                [mapItemsToDisplay addObject:mapItem];
+                return mapItemsToDisplay;
+            }
+        }
+        
     }
     
-    //TODO rest
+    mapItemsToDisplay = [allMapItems mutableCopy];
     
-    retAnnotations = [annotations mutableCopy];
-    
-    return retAnnotations;
+    return mapItemsToDisplay;
 }
 
 + (id<MKAnnotation>)annotationThatShouldBeSelectedOnMapView:(MKMapView*)mapView forQuery:(NSString*)query {
@@ -156,7 +183,7 @@ double WGStoCHy(double lat, double lng) {
              
     }
     
-    return [mapView.annotations objectAtIndex:0]; //otherwise select first one
+    return [mapView.annotations firstObject]; //otherwise select first one
 }
 
 + (NSInteger)levelToSelectForRoomName:(NSString*)roomName {
@@ -235,10 +262,8 @@ double WGStoCHy(double lat, double lng) {
 }
 
 + (NSArray*)mapItemAnnotations:(NSArray*)annotations {
-    if (annotations == nil || ![annotations isKindOfClass:[NSArray class]]) {
-        @throw [NSException exceptionWithName:@"bad annotations argument in mapItemAnnotations:" reason:@"annotations is not kind of class NSArray" userInfo:nil];
-    }
-    NSMutableArray* mapItemAnnotations = [NSMutableArray arrayWithCapacity:annotations.count-1]; //usually, all annotations except user location. Size will adapt if not the case
+    [PCUtils throwExceptionIfObject:annotations notKindOfClass:[NSArray class]];
+    NSMutableArray* mapItemAnnotations = [NSMutableArray arrayWithCapacity:(annotations.count > 0 ? annotations.count-1 : annotations.count)]; //usually, all annotations except user location. Size will adapt if not the case
     for (id<MKAnnotation> annotation in annotations) {
         if ([annotation isKindOfClass:[MapItemAnnotation class]]) {
             [mapItemAnnotations addObject:annotation];
@@ -289,7 +314,7 @@ double WGStoCHy(double lat, double lng) {
 }
 
 + (MKCoordinateRegion)regionToFitMapItemAnnotations:(NSArray*)annotations {
-    int count = annotations.count;
+    NSUInteger count = annotations.count;
     if (count == 0) {
         return MKCoordinateRegionMake(CLLocationCoordinate2DMake(0, 0), MKCoordinateSpanMake(0, 0));
     }
@@ -299,7 +324,7 @@ double WGStoCHy(double lat, double lng) {
     MKMapPoint points[count]; //C array of MKMapPoint struct
     for( int i=0; i<count; i++ ) //load points C array by converting coordinates to points
     {
-        CLLocationCoordinate2D coordinate = [(id <MKAnnotation>)[annotations objectAtIndex:i] coordinate];
+        CLLocationCoordinate2D coordinate = [(id <MKAnnotation>)annotations[i] coordinate];
         points[i] = MKMapPointForCoordinate(coordinate);
     }
     //create MKMapRect from array of MKMapPoint
@@ -408,6 +433,37 @@ double WGStoCHy(double lat, double lng) {
     bbox.end_y = WGStoCHy(bottomRightWGS.latitude, bottomRightWGS.longitude);
     return bbox;
     
+}
+
++ (CH1903BBox)tilePathToCH1903:(MKTileOverlayPath)tilePath tileSize:(CGSize)tileSize {
+    double lat = tiley2lat(tilePath.y, tilePath.z);
+    double lon = tilex2long(tilePath.x, tilePath.z);
+    
+    CLLocationDegrees latSpan = (360.0*cos(lat * M_PI / 180.0)) / (double)(pow(2,tilePath.z));
+    CLLocationDegrees lonSpan = (360.0*cos(lon * M_PI / 180.0)) / (double)(pow(2,tilePath.z));
+    
+    lat -= latSpan/2.0;
+    lon += lonSpan/2.0;
+    
+    MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(lat, lon), MKCoordinateSpanMake(latSpan, lonSpan));
+    
+    MKMapRect mapRect = MKMapRectForCoordinateRegion(region);
+    
+    return [self WGStoCH1903:mapRect];
+}
+
+MKMapRect MKMapRectForCoordinateRegion(MKCoordinateRegion region) {
+    MKMapPoint a = MKMapPointForCoordinate(CLLocationCoordinate2DMake(
+                                                                      region.center.latitude + region.span.latitudeDelta / 2,
+                                                                      region.center.longitude - region.span.longitudeDelta / 2));
+    MKMapPoint b = MKMapPointForCoordinate(CLLocationCoordinate2DMake(
+                                                                      region.center.latitude - region.span.latitudeDelta / 2,
+                                                                      region.center.longitude + region.span.longitudeDelta / 2));
+    return MKMapRectMake(MIN(a.x,b.x), MIN(a.y,b.y), ABS(a.x-b.x), ABS(a.y-b.y));
+}
+
+NSString* NSStringFromMKTileOverlayPath(MKTileOverlayPath path) {
+    return [NSString stringWithFormat:@"x:%ld, y:%ld, z:%ld, contentScaleFactor:%f", path.x, path.y, path.z, path.contentScaleFactor];
 }
 
 @end

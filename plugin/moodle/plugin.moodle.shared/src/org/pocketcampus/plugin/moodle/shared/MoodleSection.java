@@ -30,11 +30,11 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
   private static final org.apache.thrift.protocol.TField I_END_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("iEndDate", org.apache.thrift.protocol.TType.I64, (short)4);
   private static final org.apache.thrift.protocol.TField I_CURRENT_FIELD_DESC = new org.apache.thrift.protocol.TField("iCurrent", org.apache.thrift.protocol.TType.BOOL, (short)5);
 
-  public List<MoodleResource> iResources; // required
-  public String iText; // required
-  public long iStartDate; // required
-  public long iEndDate; // required
-  public boolean iCurrent; // required
+  private List<MoodleResource> iResources; // required
+  private String iText; // required
+  private long iStartDate; // required
+  private long iEndDate; // required
+  private boolean iCurrent; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

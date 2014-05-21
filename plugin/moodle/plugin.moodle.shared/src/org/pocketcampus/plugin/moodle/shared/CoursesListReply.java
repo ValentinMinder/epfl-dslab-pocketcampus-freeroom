@@ -27,8 +27,8 @@ public class CoursesListReply implements org.apache.thrift.TBase<CoursesListRepl
   private static final org.apache.thrift.protocol.TField I_COURSES_FIELD_DESC = new org.apache.thrift.protocol.TField("iCourses", org.apache.thrift.protocol.TType.LIST, (short)1);
   private static final org.apache.thrift.protocol.TField I_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("iStatus", org.apache.thrift.protocol.TType.I32, (short)2);
 
-  public List<MoodleCourse> iCourses; // required
-  public int iStatus; // required
+  private List<MoodleCourse> iCourses; // required
+  private int iStatus; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

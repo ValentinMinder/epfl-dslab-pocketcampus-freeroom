@@ -4,8 +4,8 @@
 
 using System.Windows;
 using PocketCampus.Common.Controls;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Map.Controls
 {
@@ -68,7 +68,7 @@ namespace PocketCampus.Map.Controls
         /// <summary>
         /// Gets the command executed to increase the value.
         /// </summary>
-        [CommandLogId( "IncreaseFloor" )]
+        [LogId( "IncreaseFloor" )]
         public Command IncreaseCommand
         {
             get { return GetCommand( () => Value++, () => Value < Maximum ); }
@@ -77,7 +77,7 @@ namespace PocketCampus.Map.Controls
         /// <summary>
         /// Gets the command executed to decrease the value.
         /// </summary>
-        [CommandLogId( "DecreaseFloor" )]
+        [LogId( "DecreaseFloor" )]
         public Command DecreaseCommand
         {
             get { return GetCommand( () => Value--, () => Value > Minimum ); }

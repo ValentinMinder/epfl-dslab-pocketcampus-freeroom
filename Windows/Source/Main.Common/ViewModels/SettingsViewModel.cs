@@ -5,15 +5,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Main.ViewModels
 {
     /// <summary>
     /// The settings ViewModel.
     /// </summary>
-    [PageLogId( "/dashboard/settings" )]
+    [LogId( "/dashboard/settings" )]
     public sealed class SettingsViewModel : ViewModel<NoParameter>
     {
         private readonly ITequilaAuthenticator _authenticator;
@@ -27,16 +27,16 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the command executed to log on.
         /// </summary>
-        [CommandLogId( "LogOn" )]
-        public Command LogOnCommand
+        [LogId( "LogIn" )]
+        public Command LogInCommand
         {
-            get { return GetCommand( _navigationService.NavigateTo<AuthenticationViewModel> ); }
+            get { return GetCommand( () => _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( new AuthenticationRequest( false ) ) ); }
         }
 
         /// <summary>
         /// Gets the command executed to log off.
         /// </summary>
-        [CommandLogId( "LogOff" )]
+        [LogId( "LogOff" )]
         public AsyncCommand LogOffCommand
         {
             get { return GetAsyncCommand( ExecuteLogOffCommand ); }
@@ -62,6 +62,7 @@ namespace PocketCampus.Main.ViewModels
             Settings.IsAuthenticated = false;
             Settings.UserName = null;
             Settings.Password = null;
+            Settings.Session = null;
             Settings.Sessions = new Dictionary<string, string>();
             await _authenticator.LogOffAsync();
         }

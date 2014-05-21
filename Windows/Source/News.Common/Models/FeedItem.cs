@@ -14,14 +14,14 @@ namespace PocketCampus.News.Models
     /// The content is not a member because it's often very large; downloading everything
     /// is too long and consumes too muchbandwidth.
     /// </remarks>
-    [ThriftStruct( "NewsItem" )]
+    [ThriftStruct( "NewsFeedItem" )]
     public sealed class FeedItem
     {
         /// <summary>
         /// The item's ID.
         /// </summary>
-        [ThriftField( 1, true, "newsItemId" )]
-        public long Id { get; set; }
+        [ThriftField( 1, true, "itemId" )]
+        public int Id { get; set; }
 
         /// <summary>
         /// The item's title.
@@ -30,23 +30,19 @@ namespace PocketCampus.News.Models
         public string Title { get; set; }
 
         /// <summary>
-        /// The item's URL.
-        /// </summary>
-        [ThriftField( 3, true, "link" )]
-        public string Url { get; set; }
-
-        /// <summary>
         /// The item's publication date.
         /// </summary>
-        [ThriftField( 5, true, "pubDate" )]
+        [ThriftField( 3, true, "date" )]
         [ThriftConverter( typeof( ThriftJavaDateConverter ) )]
         public DateTime Date { get; set; }
 
         /// <summary>
         /// The item's image, if any.
         /// </summary>
-        [ThriftField( 6, false, "imageUrl" )]
-        [ThriftConverter( typeof( StringToOnlineImageConverter ) )]
-        public OnlineImage Image { get; set; }
+        /// <remarks>
+        /// Contains {x} and {y} tokens to change its size
+        /// </remarks>
+        [ThriftField( 4, false, "imageUrl" )]
+        public string ImageUrl { get; set; }
     }
 }

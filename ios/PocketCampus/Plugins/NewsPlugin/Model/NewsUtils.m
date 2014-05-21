@@ -1,12 +1,35 @@
-//
-//  NewsUtils.m
-//  PocketCampus
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
 //  Created by Loïc Gardiol on 05.05.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
 
 #import "NewsUtils.h"
+
+#import "NewsModelAdditions.h"
 
 static NSTimeInterval kOneWeekSeconds = 604800.0;
 
@@ -14,36 +37,25 @@ static NSTimeInterval kOneMonthSeconds = 2592000;
 
 @implementation NewsUtils
 
-+ (NSArray*)eliminateDuplicateNewsItemsInArray:(NSArray*)newsItems {
++ (NSArray*)newsFeedItemsSectionsSortedByDate:(NSArray*)newsFeedItems makeItemsUnique:(BOOL)makeItemsUnique {
     
-    if (newsItems.count == 0) {
-        return newsItems;
+    newsFeedItems = [newsFeedItems sortedArrayUsingSelector:@selector(compareDateToNewsFeedItem:)];
+    if (makeItemsUnique) {
+        NSMutableOrderedSet* uniqueNewsFeedItems = [NSMutableOrderedSet orderedSetWithCapacity:newsFeedItems.count];
+        for (NewsFeedItem* item in [newsFeedItems reverseObjectEnumerator]) {
+            [uniqueNewsFeedItems insertObject:item atIndex:0]; //reverse-back
+        }
+        newsFeedItems = [uniqueNewsFeedItems array];
     }
     
-    /*
-     * Array is browsed in reverse order so that if a news appears twice (IC feed then EPFL All News feed)
-     * we take the one from the first feed => earliest time it appeared, so that user does not see later
-     * a news he already read coming back to the top.
-     */
-    
-    NSMutableOrderedSet* set = [NSMutableOrderedSet orderedSet];
-    
-    for (int i = newsItems.count-1; i>=0; i--) {
-        [set addObject:newsItems[i]];
-    }
-    
-    return [[[set array] reverseObjectEnumerator] allObjects]; //returns reversed array
-}
-
-+ (NSArray*)newsItemsSectionsSortedByDate:(NSArray*)newsItems {
     NSMutableArray* sections = [NSMutableArray arrayWithCapacity:4];
     for (int i = 0; i<4; i++) {
         sections[i] = [NSMutableArray array];
     }
     NSDate* nowDate = [NSDate date];
     NSDateComponents* todayComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:nowDate];
-    for (NewsItem* item in newsItems) {
-        NSDate* itemDate = [NSDate dateWithTimeIntervalSince1970:item.pubDate/1000.0];
+    for (NewsFeedItem* item in newsFeedItems) {
+        NSDate* itemDate = [NSDate dateWithTimeIntervalSince1970:item.date/1000.0];
         NSDateComponents* itemComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:itemDate];
         if ([itemComps isEqual:todayComps]) {
             [sections[0] addObject:item];
@@ -56,13 +68,6 @@ static NSTimeInterval kOneMonthSeconds = 2592000;
         }
     }
     return sections;
-}
-
-+ (NSString*)dateLocaleStringForTimestamp:(NSTimeInterval)timestamp {
-    NSDate* date = [NSDate dateWithTimeIntervalSince1970:timestamp];
-    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
-    formatter.dateStyle = NSDateFormatterMediumStyle;
-    return [formatter stringFromDate:date];
 }
 
 + (NSString*)htmlReplaceWidthWith100PercentInContent:(NSString*)content ifWidthHeigherThan:(NSInteger)maxWidth {

@@ -1,11 +1,8 @@
-/* 
-  Localizable.strings
-  PocketCampus
-*/
 
 "PluginName" = "Events";
 "LoadingEventPool" = "Loading elements...";
 "Favorites" = "Favorites";
+"ScanAQRCode" = "Scan a QR code";
 "QRCodeErrorMessage" = "This QRCode is not supported or an error occured during the scan. Please try again.";
 "UserNotRegistered" = "Please scan first your own private QR code.";
 "ExchangeContactErrorMessage" = "An error occured during the contact exchange. Please try again.";
@@ -18,7 +15,7 @@
 "NoResultPCUnknownViewControllerLoad" = "Impossible to find this person.";
 "Filter" = "Filter";
 "FilterByTags" = "Filter by tags";
-"FilterByTagsWithFormat" = "Filter by tags (%d/%d)";
+"FilterByTagsWithFormat" = "Filter by tags (%d sel.)";
 "SelectAtLeastOneTag" = "Please select at least one tag";
 "SelectAll" = "Select all";
 "DeselectAll" = "Deselect all";
@@ -42,3 +39,9 @@
 "PastEvents" = "Past events";
 "PastEventsShort" = "Past events";
 "ShowPastEventsFor..." = "Show past events back to";
+
+//Accessibility
+"PresentationOptions" = "Presentation options";
+"AddEventToFavorites" = "Add this event to favorites";
+"RemoveEventFromFavorites" = "Remove this event from favorites";
+"ScanACode" = "Scan a code";

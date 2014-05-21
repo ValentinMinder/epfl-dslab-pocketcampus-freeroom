@@ -2,8 +2,9 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Collections.Generic;
 using PocketCampus.Common;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 using PocketCampus.Transport.Services;
 using PocketCampus.Transport.ViewModels;
 
@@ -45,5 +46,10 @@ namespace PocketCampus.Transport
         {
             navigationService.NavigateTo<MainViewModel>();
         }
+
+        /// <summary>
+        /// This plugin does not handle external navigation.
+        /// </summary>
+        public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService ) { }
     }
 }

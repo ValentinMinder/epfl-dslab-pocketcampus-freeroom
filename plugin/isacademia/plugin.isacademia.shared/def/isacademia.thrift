@@ -1,13 +1,39 @@
 namespace java org.pocketcampus.plugin.isacademia.shared
 namespace csharp org.pocketcampus.plugin.isacademia.shared
 
+/**
+
+From Tim:
+
+Here is the list of possible class types
+
+LIP_TP TP
+LIP_ORAL Oral
+LIP_COURS Cours
+LIP_LABO Labo
+LIP_RTP Rapport de TP
+LIP_ECRIT Ecrit
+LIP_EXERCICE Exercices
+LIP_CC Pendant le semestre
+LIP_AUTRE_REPRISE  Autre (reprise)
+LIP_PROJET Projet
+LIP_ECRIT_ORAL Ecrit & Oral
+LIP_SYNTHESE Synthèse
+LIP_ATELIER Atelier
+LIP_MEM Mémoire
+LIP_EXP Exposé
+
+**/
+
 typedef i64 timestamp
 
 enum StudyPeriodType {
 	LECTURE,
 	EXERCISES,
 	LAB,
-	PROJECT
+	PROJECT,
+  ORAL_EXAM,
+  WRITTEN_EXAM
 }
 
 struct StudyPeriod {
@@ -24,7 +50,6 @@ struct StudyDay {
 }
 
 struct ScheduleRequest {
-  1: required string sessionId;
   // default is current week
   2: optional timestamp weekStart;
   // default is "fr"
@@ -37,19 +62,9 @@ enum IsaStatusCode {
   // A network error occurred
   NETWORK_ERROR = 404,
   // The provided session is invalid
-  INVALID_SESSION = 407
-}
-
-struct IsaTokenResponse {
-  // Required if the request completed successfully
-  1: optional string tequilaToken;
-  2: required IsaStatusCode statusCode;
-}
-
-struct IsaSessionResponse {
-  // Required if the request completed successfully
-  1: optional string sessionId;
-  2: required IsaStatusCode statusCode;
+  INVALID_SESSION = 407,
+  // An error occured within IS-Academia
+  ISA_ERROR = 418
 }
 
 struct ScheduleResponse {
@@ -59,7 +74,5 @@ struct ScheduleResponse {
 }
 
 service IsAcademiaService {
-    IsaTokenResponse getIsaTequilaToken();
-    IsaSessionResponse getIsaSessionId(1: string tequilaToken);
     ScheduleResponse getSchedule(1: ScheduleRequest req);
 }

@@ -25,11 +25,6 @@ exception NoPictureFound{
 	1: string message;
 }
 
-struct DirectoryToken {
-	1: required string iTequilaKey;
-	2: optional string loginCookie;
-}
-
 struct DirectoryRequest {
 	1: required string query;
 	2: optional string directorySession;
@@ -47,7 +42,5 @@ service DirectoryService {
 	string getProfilePicture(1: string sciper) throws (1: NoPictureFound npf);
 	list<string> autocomplete(1:string constraint);
 	
-	DirectoryToken getTequilaTokenForDirectory();
-	string getDirectorySession(1: DirectoryToken dirToken);
 	DirectoryResponse searchDirectory(1: DirectoryRequest req);
 }

@@ -7,8 +7,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
 using PocketCampus.Common.Controls;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Food.Controls
 {
@@ -31,10 +31,21 @@ namespace PocketCampus.Food.Controls
             DependencyProperty.Register( "Value", typeof( DateTime ), typeof( DayPicker ), new PropertyMetadata( DateTime.Now ) );
         #endregion
 
+        #region TextStyle DependencyProperty
+        public Style TextStyle
+        {
+            get { return (Style) GetValue( TextStyleProperty ); }
+            set { SetValue( TextStyleProperty, value ); }
+        }
+
+        public static readonly DependencyProperty TextStyleProperty =
+            DependencyProperty.Register( "TextStyle", typeof( Style ), typeof( DayPicker ), new PropertyMetadata( null ) );
+        #endregion
+
         /// <summary>
         /// Gets the command executed to select the previous day.
         /// </summary>
-        [CommandLogId( "PreviousDay" )]
+        [LogId( "PreviousDay" )]
         public Command PreviousCommand
         {
             get { return GetCommand( () => Value = Value.AddDays( -1 ) ); }
@@ -43,7 +54,7 @@ namespace PocketCampus.Food.Controls
         /// <summary>
         /// Gets the command executed to select the next day.
         /// </summary>
-        [CommandLogId( "NextDay" )]
+        [LogId( "NextDay" )]
         public Command NextCommand
         {
             get { return GetCommand( () => Value = Value.AddDays( 1 ) ); }

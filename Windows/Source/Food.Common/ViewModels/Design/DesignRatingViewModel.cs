@@ -1,11 +1,11 @@
-// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
 using System.Collections.Generic;
 using System.Windows.Input;
 using PocketCampus.Food.Models;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 // Design data for RatingViewModel
 
@@ -28,7 +28,7 @@ namespace PocketCampus.Food.ViewModels.Design
                     Description = @"Jardinière de légumes
 Riz parfumé
 Buffet de salades",
-                    MealTypes = new[] { MealTypes.Thai },
+                    MealTypes = new[] { MealType.Thai },
                     Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 9.50 },
                                                                  { PriceTarget.Visitor, 12.00 },
                                                                  { PriceTarget.PhDStudent, 9.50 },
@@ -44,9 +44,9 @@ Buffet de salades",
             }
         }
 
-        public RatingStatus Status
+        public VoteStatus Status
         {
-            get { return RatingStatus.AlreadyVotedToday; }
+            get { return VoteStatus.AlreadyVoted; }
         }
 
         public UserRating Rating
@@ -56,7 +56,7 @@ Buffet de salades",
 
         public ICommand VoteCommand
         {
-            get { return new Command( () => { }, () => Status == RatingStatus.Ok ); }
+            get { return new Command( this, () => { } ); }
         }
 #endif
     }

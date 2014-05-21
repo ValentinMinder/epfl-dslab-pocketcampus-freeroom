@@ -1,10 +1,7 @@
 package org.pocketcampus.plugin.isacademia.server;
 
 import java.security.*;
-import java.util.List;
-import java.util.Scanner;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
@@ -14,13 +11,11 @@ import org.apache.http.conn.*;
 import org.apache.http.conn.ssl.*;
 import org.apache.http.*;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.scheme.*;
-import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.SingleClientConnManager;
 import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.*;
+import org.apache.http.util.EntityUtils;
 
 /**
  * Implementation of HttpsClient.
@@ -42,41 +37,13 @@ public class HttpsClientImpl implements HttpsClient {
 	}
 
 	@Override
-	public HttpResult get(String url, Charset charset, List<Cookie> cookies) throws Exception {
+	public String get(String url, Charset charset) throws Exception {
 		ClientConnectionManager cm = new SingleClientConnManager(SCHEME_REGISTRY);
 		AbstractHttpClient client = new DefaultHttpClient(cm);
 
-		BasicCookieStore cookieStore = new BasicCookieStore();
-		for (Cookie cookie : cookies) {
-			cookieStore.addCookie(cookie);
-		}
-		client.setCookieStore(cookieStore);
-
 		HttpGet get = new HttpGet(url);
-		HttpContext context = new BasicHttpContext();
-		HttpResponse response = client.execute(get, context);
-		String content = read(response.getEntity().getContent(), charset);
-		String redirectedUrl = getRedirectedUrl(context);
-		return new HttpResult(cookieStore.getCookies(), redirectedUrl, content);
-	}
-
-	private static String read(InputStream stream, Charset charset) {
-		Scanner scanner = null;
-		try {
-			scanner = new Scanner(stream, charset.name());
-			scanner.useDelimiter("\\A"); // \A = "beginning of input boundary"
-			return scanner.hasNext() ? scanner.next() : "";
-		} finally {
-			if (scanner != null) {
-				scanner.close();
-			}
-		}
-	}
-
-	private static String getRedirectedUrl(HttpContext context) {
-		HttpUriRequest currentReq = (HttpUriRequest) context.getAttribute(ExecutionContext.HTTP_REQUEST);
-		HttpHost currentHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
-		return currentReq.getURI().isAbsolute() ? currentReq.getURI().toString() : (currentHost.toURI() + currentReq.getURI());
+		HttpResponse response = client.execute(get);
+		return EntityUtils.toString(response.getEntity(), charset.toString());
 	}
 
 	private static class InsecureSocketFactory extends SSLSocketFactory {

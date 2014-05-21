@@ -6,15 +6,15 @@ using PocketCampus.Common.Services;
 using PocketCampus.Directory.Models;
 using PocketCampus.Directory.Services;
 using PocketCampus.Map;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Directory.ViewModels
 {
     /// <summary>
     /// The person ViewModel, used to provide details about one person.
     /// </summary>
-    [PageLogId( "/directory/person" )]
+    [LogId( "/directory/person" )]
     public sealed class PersonViewModel : ViewModel<Person>
     {
         private readonly IBrowserService _browserService;
@@ -30,7 +30,7 @@ namespace PocketCampus.Directory.ViewModels
         /// <summary>
         /// Gets the command executed to show the person's office on a map.
         /// </summary>
-        [CommandLogId( "ViewOffice" )]
+        [LogId( "ViewOffice" )]
         public Command ViewOfficeCommand
         {
             get { return GetCommand( () => Messenger.Send( new MapSearchRequest( Person.Office ) ) ); }
@@ -39,7 +39,7 @@ namespace PocketCampus.Directory.ViewModels
         /// <summary>
         /// Gets the command executed to open the person's website.
         /// </summary>
-        [CommandLogId( "ViewWebsite" )]
+        [LogId( "ViewWebsite" )]
         public Command OpenWebsiteCommand
         {
             get { return GetCommand( () => _browserService.NavigateTo( Person.Website ) ); }
@@ -48,7 +48,7 @@ namespace PocketCampus.Directory.ViewModels
         /// <summary>
         /// Gets the command executed to compose an e-mail to the person.
         /// </summary>
-        [CommandLogId( "SendEmail" )]
+        [LogId( "SendEmail" )]
         public Command SendEmailCommand
         {
             get { return GetCommand( () => _emailService.ComposeEmail( Person.EmailAddress ) ); }
@@ -57,7 +57,7 @@ namespace PocketCampus.Directory.ViewModels
         /// <summary>
         /// Gets the command executed to call the person.
         /// </summary>
-        [CommandLogId( "Call" )]
+        [LogId( "Call" )]
         public Command<string> CallCommand
         {
             get { return GetCommand<string>( num => _phoneService.Call( Person.FullName, num ), _ => _phoneService.CanCall ); }
@@ -66,7 +66,7 @@ namespace PocketCampus.Directory.ViewModels
         /// <summary>
         /// Gets the command executed to add the person as a contact.
         /// </summary>
-        [CommandLogId( "CreateNewContact" )]
+        [LogId( "CreateNewContact" )]
         public Command AddAsContactCommand
         {
             get { return GetCommand( () => _contactsService.AddAsContact( Person ) ); }

@@ -86,7 +86,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Controls\HtmlTextBlock.cs" />
     <Compile Include="Converters.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Resources\PluginResources.fr.Designer.cs">
@@ -117,10 +116,6 @@
       <Project>{F780F0DD-8A14-4E72-9525-A11D792CBFAB}</Project>
       <Name>PocketCampus.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mvvm\PocketCampus.Mvvm.csproj">
-      <Project>{53C14BDB-427E-492E-8BDC-B329D8737D17}</Project>
-      <Name>PocketCampus.Mvvm</Name>
-    </ProjectReference>
     <ProjectReference Include="..\News.Common\PocketCampus.News.Common.csproj">
       <Project>{3E4ADE30-7398-4612-A390-B68BF6175620}</Project>
       <Name>PocketCampus.News.Common</Name>
@@ -137,12 +132,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\NewsIcon.png" />
     <Content Include="Assets\OpenExternal.png" />
     <Content Include="Assets\Refresh.png" />
-    <Content Include="Assets\NewsSmallIcon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Assets\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\FeedItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -157,9 +154,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\BindableApplicationBar.1.1.0.0\lib\wp8\BindableApplicationBar.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack-PCL, Version=1.4.6.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ThinMvvm, Version=0.9.1.14986, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\HtmlAgilityPack-PCL.1.4.6\lib\HtmlAgilityPack-PCL.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.0.9.1\lib\portable-net45+wp8+win8\ThinMvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinMvvm.WindowsPhone, Version=0.9.1.14987, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\ThinMvvm.WindowsPhone.0.9.1\lib\wp8\ThinMvvm.WindowsPhone.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

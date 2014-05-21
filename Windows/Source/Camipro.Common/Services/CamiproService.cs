@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Camipro.Models;
 using PocketCampus.Common.Services;
@@ -13,7 +14,7 @@ namespace PocketCampus.Camipro.Services
 {
     public sealed class CamiproService : ThriftServiceImplementation<ICamiproService>, ICamiproService
     {
-        public CamiproService( IServerConfiguration config )
+        public CamiproService( IServerAccess config )
             : base( config.CreateCommunication( "camipro" ) )
         {
         }
@@ -28,14 +29,14 @@ namespace PocketCampus.Camipro.Services
             return CallAsync<TequilaToken, CamiproSession>( x => x.GetSessionAsync, token );
         }
 
-        public Task<AccountInfo> GetAccountInfoAsync( CamiproRequest request )
+        public Task<AccountInfo> GetAccountInfoAsync( CamiproRequest request, CancellationToken cancellationToken )
         {
-            return CallAsync<CamiproRequest, AccountInfo>( x => x.GetAccountInfoAsync, request );
+            return CallAsync<CamiproRequest, CancellationToken, AccountInfo>( x => x.GetAccountInfoAsync, request, cancellationToken );
         }
 
-        public Task<EbankingInfo> GetEBankingInfoAsync( CamiproRequest request )
+        public Task<EbankingInfo> GetEBankingInfoAsync( CamiproRequest request, CancellationToken cancellationToken )
         {
-            return CallAsync<CamiproRequest, EbankingInfo>( x => x.GetEBankingInfoAsync, request );
+            return CallAsync<CamiproRequest, CancellationToken, EbankingInfo>( x => x.GetEBankingInfoAsync, request, cancellationToken );
         }
 
         public Task<MailRequestResult> RequestEBankingEMailAsync( CamiproRequest request )

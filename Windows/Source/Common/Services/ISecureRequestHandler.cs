@@ -4,15 +4,25 @@
 
 using System;
 using System.Threading.Tasks;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Common.Services
 {
     /// <summary>
-    /// Handles requests that require two-step authentication.
+    /// Handles requests that require authentication.
     /// </summary>
     public interface ISecureRequestHandler
     {
+        /// <summary>
+        /// Asynchronously executes the specified request for the specified ViewModel type.
+        /// The request asynchronously returns a boolean indicating whether the authentication succeeded.
+        /// </summary>
+        /// <remarks>
+        /// For use with the new, HTTP header based authentication.
+        /// </remarks>
+        Task ExecuteAsync<TViewModel>( Func<Task<bool>> attempt )
+            where TViewModel : IViewModel<NoParameter>;
+
         /// <summary>
         /// Asynchronously executes the specified request, with the specified authenticator, for the specified ViewModel type.
         /// The request asynchronously returns a boolean indicating whether the authentication succeeded.

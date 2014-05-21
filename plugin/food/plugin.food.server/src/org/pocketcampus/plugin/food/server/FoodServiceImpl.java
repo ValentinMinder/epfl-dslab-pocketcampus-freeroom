@@ -1,52 +1,45 @@
 package org.pocketcampus.plugin.food.server;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
+
+import org.pocketcampus.platform.sdk.server.CachingProxy;
+import org.pocketcampus.platform.sdk.server.HttpClientImpl;
+import org.pocketcampus.plugin.food.shared.*;
 
 import org.apache.thrift.TException;
-import org.pocketcampus.platform.sdk.shared.CachingProxy;
-import org.pocketcampus.platform.sdk.shared.CachingProxy.CacheValidator;
-import org.pocketcampus.platform.sdk.shared.HttpClientImpl;
-import org.pocketcampus.plugin.food.shared.*;
 import org.joda.time.*;
+
+import com.unboundid.ldap.sdk.*;
 
 /**
  * Provides information about the meals, and allows users to rate them.
  */
 public class FoodServiceImpl implements FoodService.Iface {
-	private static final Hours VOTING_MIN = Hours.hours(11);
-	private static final Hours CACHE_DURATION = Hours.ONE;
+	private static final Days PAST_VOTE_MAX_DAYS = Days.days(5);
+	private static final Duration MENU_CACHE_DURATION = Duration.standardHours(1);
+	private static final Duration PICTURES_CACHE_DURATION = Duration.standardDays(1);
+	private static final Duration LOCATIONS_CACHE_DURATION = Duration.standardDays(1);
 
-	private static final String MEAL_PICS_FOLDER_URL = "http://pocketcampus.epfl.ch/backend/meal-pics/";
-	private static final Map<MealType, String> MEAL_TYPE_PICTURE_URLS = new HashMap<MealType, String>();
-
-	private final DeviceDatabase _deviceDatabase;
 	private final RatingDatabase _ratingDatabase;
-	private final Menu _mealList;
+	private final Menu _menu;
+	private final PictureSource _pictureSource;
+	private final RestaurantLocator _locator;
 
-	static {
-		for (MealType type : MealType.values()) {
-			MEAL_TYPE_PICTURE_URLS.put(type, MEAL_PICS_FOLDER_URL + type + ".png");
-			// => e.g. URL for PIZZA is http://pocketcampus.epfl.ch/backend/meal-pics/PIZZA.png
-		}
-	}
-
-	public FoodServiceImpl(DeviceDatabase deviceDatabase, RatingDatabase ratingDatabase, Menu mealList) {
-		_deviceDatabase = deviceDatabase;
+	public FoodServiceImpl(RatingDatabase ratingDatabase, Menu menu,
+			PictureSource pictureSource, RestaurantLocator locator) {
 		_ratingDatabase = ratingDatabase;
-		_mealList = mealList;
+		_menu = menu;
+		_pictureSource = pictureSource;
+		_locator = locator;
 	}
 
 	public FoodServiceImpl() {
-		this(new DeviceDatabaseImpl(), new RatingDatabaseImpl(),
-				CachingProxy.create(new MenuImpl(new HttpClientImpl()), new CacheValidator() {
-					@Override
-					public boolean isValid(DateTime lastGenerationDate) {
-						return Days.daysBetween(lastGenerationDate, DateTime.now()) == Days.ZERO
-								&& Hours.hoursBetween(lastGenerationDate, DateTime.now()).isLessThan(CACHE_DURATION);
-					}
-				}));
+		this(new RatingDatabaseImpl(PAST_VOTE_MAX_DAYS),
+				CachingProxy.create(new MenuImpl(new HttpClientImpl()), MENU_CACHE_DURATION, true),
+				CachingProxy.create(new PictureSourceImpl(), PICTURES_CACHE_DURATION, false),
+				CachingProxy.create(new RestaurantLocatorImpl(), LOCATIONS_CACHE_DURATION, false));
 	}
 
 	@Override
@@ -61,16 +54,28 @@ public class FoodServiceImpl implements FoodService.Iface {
 		}
 
 		FoodResponse response = null;
-
 		try {
-			response = _mealList.get(time, date);
+			response = _menu.get(time, date);
 		} catch (Exception e) {
 			throw new TException("An exception occurred while getting the menu", e);
 		}
-		_ratingDatabase.insertMenu(response.getMenu());
-		_ratingDatabase.setRatings(response.getMenu());
+		try {
+			_ratingDatabase.insertMenu(response.getMenu(), date, time);
+			_ratingDatabase.setRatings(response.getMenu());
+		} catch (Exception e) {
+			throw new TException("An exception occurred while inserting and fetching the ratings", e);
+		}
 
-		return response.setMealTypePictureUrls(MEAL_TYPE_PICTURE_URLS);
+		for (EpflRestaurant restaurant : response.getMenu()) {
+			restaurant.setRPictureUrl(_pictureSource.forRestaurant(restaurant.getRName()));
+			restaurant.setRLocation(_locator.findByName(restaurant.getRName()));
+		}
+
+		if (foodReq.isSetUserGaspar()) {
+			response.setUserStatus(getPriceTarget(foodReq.getUserGaspar()));
+		}
+
+		return response.setMealTypePictureUrls(_pictureSource.getMealTypePictures());
 	}
 
 	@Override
@@ -80,20 +85,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 				throw new Exception("Invalid rating.");
 			}
 
-			if (_deviceDatabase.hasVotedToday(voteReq.getDeviceId())) {
-				return new VoteResponse(SubmitStatus.ALREADY_VOTED);
-			}
-
-			if (DateTime.now().getHourOfDay() < VOTING_MIN.getHours()) {
-				return new VoteResponse(SubmitStatus.TOO_EARLY);
-			}
-
-			_ratingDatabase.vote(voteReq.getMealId(), voteReq.getRating());
-			_deviceDatabase.vote(voteReq.getDeviceId());
-
-			return new VoteResponse(SubmitStatus.VALID);
-		} catch (Exception _) {
-			return new VoteResponse(SubmitStatus.ERROR);
+			return new VoteResponse( _ratingDatabase.vote(voteReq.getDeviceId(), voteReq.getMealId(), voteReq.getRating()));
+		} catch (Exception e) {
+			throw new TException("An error occurred during a vote", e);
 		}
 	}
 
@@ -103,6 +97,41 @@ public class FoodServiceImpl implements FoodService.Iface {
 		}
 
 		return new LocalDate(timestamp);
+	}
+
+	// TODO extract this to a common LDAP service used everytime we need it, not just in food
+	private static PriceTarget getPriceTarget(String sciper) {
+		List<PriceTarget> classes = new LinkedList<PriceTarget>();
+		try {
+			LDAPConnection ldap = new LDAPConnection();
+			ldap.connect("ldap.epfl.ch", 389);
+			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + sciper + ")(uniqueidentifier=" + sciper
+					+ "))", (String[]) null);
+			for (SearchResultEntry e : searchResult.getSearchEntries()) {
+				String os = e.getAttributeValue("organizationalStatus");
+				if ("Etudiant".equals(os)) {
+					String uc = e.getAttributeValue("userClass");
+					if ("Doctorant".equals(uc)) {
+						classes.add(PriceTarget.PHD_STUDENT);
+					} else {
+						classes.add(PriceTarget.STUDENT);
+					}
+				} else if ("Personnel".equals(os)) {
+					classes.add(PriceTarget.STAFF);
+				} else {
+					classes.add(PriceTarget.VISITOR);
+				}
+			}
+		} catch (LDAPException e) {
+			e.printStackTrace();
+		}
+		if (classes.contains(PriceTarget.STUDENT))
+			return PriceTarget.STUDENT;
+		if (classes.contains(PriceTarget.PHD_STUDENT))
+			return PriceTarget.PHD_STUDENT;
+		if (classes.contains(PriceTarget.STAFF))
+			return PriceTarget.STAFF;
+		return PriceTarget.VISITOR;
 	}
 
 	// OLD STUFF - DO NOT TOUCH

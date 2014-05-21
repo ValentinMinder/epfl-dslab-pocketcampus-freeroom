@@ -5,8 +5,8 @@ import java.util.List;
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.isacademia.shared.TequilaToken;
-import org.pocketcampus.plugin.isacademia.android.iface.IIsacademiaModel;
-import org.pocketcampus.plugin.isacademia.android.iface.IIsacademiaView;
+import org.pocketcampus.plugin.isacademia.android.iface.IIsAcademiaModel;
+import org.pocketcampus.plugin.isacademia.android.iface.IIsAcademiaView;
 import org.pocketcampus.plugin.isacademia.shared.IsaCourse;
 import org.pocketcampus.plugin.isacademia.shared.IsaExam;
 import org.pocketcampus.plugin.isacademia.shared.IsaSeance;
@@ -26,7 +26,7 @@ import android.content.SharedPreferences.Editor;
  * @author Amer <amer.chamseddine@epfl.ch>
  *
  */
-public class IsacademiaModel extends PluginModel implements IIsacademiaModel {
+public class IsAcademiaModel extends PluginModel implements IIsAcademiaModel {
 	
 	/**
 	 * Some constants.
@@ -42,7 +42,7 @@ public class IsacademiaModel extends PluginModel implements IIsacademiaModel {
 	/**
 	 * Reference to the Views that need to be notified when the stored data changes.
 	 */
-	IIsacademiaView mListeners = (IIsacademiaView) getListeners();
+	IIsAcademiaView mListeners = (IIsAcademiaView) getListeners();
 	
 	/**
 	 * Member variables containing required data for the plugin.
@@ -67,7 +67,7 @@ public class IsacademiaModel extends PluginModel implements IIsacademiaModel {
 	 * 
 	 * @param context is the Application Context.
 	 */
-	public IsacademiaModel(Context context) {
+	public IsAcademiaModel(Context context) {
 		iStorage = context.getSharedPreferences(ISA_STORAGE_NAME, 0);
 		isacademiaCookie = iStorage.getString(ISA_COOKIE_KEY, null);
 	}
@@ -139,13 +139,13 @@ public class IsacademiaModel extends PluginModel implements IIsacademiaModel {
 	 */
 	@Override
 	protected Class<? extends IView> getViewInterface() {
-		return IIsacademiaView.class;
+		return IIsAcademiaView.class;
 	}
 
 	/**
 	 * Returns the registered listeners to by notified.
 	 */
-	public IIsacademiaView getListenersToNotify() {
+	public IIsAcademiaView getListenersToNotify() {
 		return mListeners;
 	}
 	

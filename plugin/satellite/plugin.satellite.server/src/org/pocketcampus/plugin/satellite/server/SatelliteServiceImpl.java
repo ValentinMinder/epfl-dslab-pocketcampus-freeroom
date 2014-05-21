@@ -2,8 +2,8 @@ package org.pocketcampus.plugin.satellite.server;
 
 import org.apache.thrift.TException;
 
-import org.pocketcampus.platform.sdk.shared.CachingProxy;
-import org.pocketcampus.platform.sdk.shared.HttpClientImpl;
+import org.pocketcampus.platform.sdk.server.CachingProxy;
+import org.pocketcampus.platform.sdk.server.HttpClientImpl;
 import org.pocketcampus.plugin.satellite.shared.*;
 
 import org.joda.time.Duration;
@@ -14,6 +14,8 @@ import org.joda.time.Duration;
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public final class SatelliteServiceImpl implements SatelliteService.Iface {
+	private static final Duration MENU_CACHE_DURATION = Duration.standardDays(1);
+	
 	private final BeerMenu _beerMenu;
 
 	public SatelliteServiceImpl(BeerMenu beerMenu) {
@@ -21,7 +23,7 @@ public final class SatelliteServiceImpl implements SatelliteService.Iface {
 	}
 
 	public SatelliteServiceImpl() {
-		this(CachingProxy.create(new BeerMenuImpl(new HttpClientImpl()), Duration.standardDays(1)));
+		this(CachingProxy.create(new BeerMenuImpl(new HttpClientImpl()), MENU_CACHE_DURATION, false));
 	}
 
 	@Override

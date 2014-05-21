@@ -6,17 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
 using PocketCampus.Satellite.Models;
 using PocketCampus.Satellite.Services;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Satellite.ViewModels
 {
     /// <summary>
     /// The main (and only) ViewModel.
     /// </summary>
-    [PageLogId( "/satellite" )]
+    [LogId( "/satellite" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private readonly ISatelliteService _beerService;
@@ -49,8 +49,8 @@ namespace PocketCampus.Satellite.ViewModels
         {
             if ( force )
             {
-                var beersResponse = await _beerService.GetBeersAsync();
-                if ( beersResponse.Status != BeerMenuStatus.Ok )
+                var beersResponse = await _beerService.GetBeersAsync( token );
+                if ( beersResponse.Status != BeerMenuStatus.Success )
                 {
                     throw new Exception( "An error occurred on the Satellite server-side." );
                 }

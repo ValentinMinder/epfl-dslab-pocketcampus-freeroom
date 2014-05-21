@@ -22,7 +22,8 @@ $plugin_name = "FreeRoom";
 
 $thrift_bin = "binaries/thrift-linux-0.7.0";
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-	$thrift_bin = "binaries/thrift-win-0.7.0.exe";
+	$cwd = getcwd();
+	$thrift_bin = "$cwd/binaries/thrift-win-0.7.0.exe";
 } elseif (strtoupper(substr(PHP_OS, 0, 6)) === 'DARWIN') {
 	$thrift_bin = "binaries/thrift-mac-0.7.0";
 }

@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.isacademia.server;
 
-import java.io.ByteArrayInputStream;
+import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.ArrayList;
@@ -9,49 +10,41 @@ import java.util.HashMap;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import javax.xml.parsers.*;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import org.pocketcampus.plugin.isacademia.server.HttpsClient.HttpResult;
 import org.pocketcampus.plugin.isacademia.shared.*;
+import org.pocketcampus.platform.sdk.server.XElement;
 
-import org.apache.http.cookie.Cookie;
 import org.joda.time.*;
 import org.joda.time.format.*;
 
 /**
  * Retrieves a student's schedule from IS-Academia.
  * 
- * @author Solal Pirelli <solal.pirelli@epfl.ch>
+ * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public final class ScheduleImpl implements Schedule {
-	private static final String ISA_SCHEDULE_URL = "https://isa.epfl.ch/service/certified/student/timetable/period";
+	private static final String ISA_SCHEDULE_URL = PC_SRV_CONFIG.getString("ISA_SCHEDULE_URL");
 	// The encoding of IS-Academia's schedule API.
 	private static final Charset ISA_CHARSET = Charset.forName("ISO-8859-1");
+	// The time zone for the IS-Academia replies
+	private static final DateTimeZone ISA_TIME_ZONE = DateTimeZone.forID("Europe/Zurich");
 	// The parameters of IS-Academia's API.
 	private static final String URL_FROM_PARAMETER = "from", URL_TO_PARAMETER = "to", URL_SCIPER_PARAMETER = "sciper";
 	// The date format for IS-Academia's API.
 	private static final String URL_PARAMETER_FORMAT = "dd.MM.yyyy";
 
-	// The separator for the request key in a Tequila URL
-//	private static final String TEQUILA_URL_KEY_SEPARATOR = "requestkey=";
-
-	// The properties of the cookie for IS-Academia
-//	private static final String ISA_COOKIE_NAME = "JSESSIONID";
-//	private static final String ISA_COOKIE_DOMAIN = "isa.epfl.ch";
-//	private static final String COOKIE_PATH_ALL = "/";
-
 	// The default language for localized text.
 	private static final String DEFAULT_LANGUAGE = "en";
+	// The language for room names (names in other languages may have problems)
+	private static final String ROOM_NAME_LANGUAGE = "fr";
 
 	// The format of dates in IS-Academia's XML.
-	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy");
+	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy").withZone(ISA_TIME_ZONE);
 	// The format of times in IS-Academia's XML.
-	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormat.forPattern("HH:mm");
+	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormat.forPattern("HH:mm").withZone(ISA_TIME_ZONE);
 
 	// The various element and attribute names in IS-Academia's XML.
+	private static final String STATUS_ATTRIBUTE = "status";
+	private static final String STATUS_OK_VALUE = "Terminé";
 	private static final String STUDY_PERIOD_TAG = "study-period";
 	private static final String DATE_ELEMENT = "date";
 	private static final String START_TIME_ELEMENT = "startTime";
@@ -81,56 +74,46 @@ public final class ScheduleImpl implements Schedule {
 
 	@Override
 	public ScheduleResponse get(LocalDate weekBeginning, String language, String sciper) throws Exception {
+		if (sciper == null) {
+			return new ScheduleResponse(IsaStatusCode.INVALID_SESSION);
+		}
+
 		LocalDate weekEnd = weekBeginning.plusDays(6);
 		String url = ISA_SCHEDULE_URL
 				+ "?" + URL_FROM_PARAMETER + "=" + weekBeginning.toString(URL_PARAMETER_FORMAT)
 				+ "&" + URL_TO_PARAMETER + "=" + weekEnd.toString(URL_PARAMETER_FORMAT)
 				+ "&" + URL_SCIPER_PARAMETER + "=" + sciper;
 
-		List<Cookie> cookies = new ArrayList<Cookie>();
-//		BasicClientCookie isaCookie = new BasicClientCookie(ISA_COOKIE_NAME, token.getSessionId());
-//		isaCookie.setDomain(ISA_COOKIE_DOMAIN);
-//		isaCookie.setPath(COOKIE_PATH_ALL);
-//		cookies.add(isaCookie);
-
-		String xml = null;
+		XElement rootElem = null;
 		try {
-			HttpResult result = _client.get(url, ISA_CHARSET, cookies);
-
-			if (!result.url.contains(ISA_SCHEDULE_URL)) {
-				return new ScheduleResponse(IsaStatusCode.INVALID_SESSION);
-			}
-
-			xml = result.content;
+			String xml = _client.get(url, ISA_CHARSET);
+			rootElem = XElement.parse(xml);
 		} catch (Exception e) {
 			return new ScheduleResponse(IsaStatusCode.NETWORK_ERROR);
 		}
 
-		Element xdoc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-				.parse(new ByteArrayInputStream(xml.getBytes()))
-				.getDocumentElement();
+		if (!STATUS_OK_VALUE.equals(rootElem.attribute(STATUS_ATTRIBUTE))) {
+			return new ScheduleResponse(IsaStatusCode.ISA_ERROR);
+		}
 
 		List<StudyPeriod> periods = new ArrayList<StudyPeriod>();
 
-		// I'm not sure this is needed, but everybody does it
-		xdoc.normalize();
-
-		for (Node periodNode : getNodes(xdoc, STUDY_PERIOD_TAG)) {
+		for (XElement periodElem : rootElem.children(STUDY_PERIOD_TAG)) {
 			StudyPeriod period = new StudyPeriod();
 
-			LocalDate periodDate = LocalDate.parse(getText(periodNode, DATE_ELEMENT), DATE_FORMATTER);
-			LocalTime startTime = LocalTime.parse(getText(periodNode, START_TIME_ELEMENT), TIME_FORMATTER);
-			LocalTime endTime = LocalTime.parse(getText(periodNode, END_TIME_ELEMENT), TIME_FORMATTER);
-			period.setStartTime(periodDate.toDateTime(startTime, DateTimeZone.UTC).getMillis());
-			period.setEndTime(periodDate.toDateTime(endTime, DateTimeZone.UTC).getMillis());
+			LocalDate periodDate = LocalDate.parse(periodElem.elementText(DATE_ELEMENT), DATE_FORMATTER);
+			LocalTime startTime = LocalTime.parse(periodElem.elementText(START_TIME_ELEMENT), TIME_FORMATTER);
+			LocalTime endTime = LocalTime.parse(periodElem.elementText(END_TIME_ELEMENT), TIME_FORMATTER);
+			period.setStartTime(periodDate.toDateTime(startTime, ISA_TIME_ZONE).getMillis());
+			period.setEndTime(periodDate.toDateTime(endTime, ISA_TIME_ZONE).getMillis());
 
-			period.setPeriodType(STUDY_PERIOD_TYPES.get(getLocalizedText(getNode(periodNode, PERIOD_TYPE_ELEMENT), DEFAULT_LANGUAGE)));
+			period.setPeriodType(STUDY_PERIOD_TYPES.get(getLocalizedText(periodElem.child(PERIOD_TYPE_ELEMENT), DEFAULT_LANGUAGE)));
 
-			period.setName(getLocalizedText(getNode(getNode(periodNode, COURSE_ELEMENT), NAME_ELEMENT), language));
+			period.setName(getLocalizedText(periodElem.child(COURSE_ELEMENT).child(NAME_ELEMENT), language));
 
 			List<String> rooms = new ArrayList<String>();
-			for (Node roomNode : getNodes((Element) periodNode, ROOM_ELEMENT)) {
-				rooms.add(getLocalizedText(roomNode, language));
+			for (XElement roomElem : periodElem.children(ROOM_ELEMENT)) {
+				rooms.add(removeExtraSpaces(getLocalizedText(roomElem, ROOM_NAME_LANGUAGE)));
 			}
 			period.setRooms(rooms);
 
@@ -145,41 +128,34 @@ public final class ScheduleImpl implements Schedule {
 		// First, add all days of the working week; we want to display them even if they're empty
 		for (int n = 0; n < 5; n++) {
 			LocalDate date = weekBegin.plusDays(n);
-			days.put(date, new StudyDay(date.toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(), new ArrayList<StudyPeriod>()));
+			days.put(date, new StudyDay(date.toDateTimeAtStartOfDay(ISA_TIME_ZONE).getMillis(), new ArrayList<StudyPeriod>()));
 		}
 
 		// Then add periods to them, adding new days as needed
 		for (StudyPeriod period : periods) {
 			LocalDate date = new LocalDate(period.getStartTime());
-			if (days.containsKey(date)) {
-				days.get(date).addToPeriods(period);
-			} else {
-				days.put(date, new StudyDay(date.toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(), new ArrayList<StudyPeriod>()));
+			if (!days.containsKey(date)) {
+				days.put(date, new StudyDay(date.toDateTimeAtStartOfDay(ISA_TIME_ZONE).getMillis(), new ArrayList<StudyPeriod>()));
 			}
+			days.get(date).addToPeriods(period);
 		}
 
 		return new ArrayList<StudyDay>(days.values());
 	}
 
-	/** Gets the text from the specified child of the specified XML node. */
-	private static String getText(Node node, String elementName) {
-		return ((Element) node).getElementsByTagName(elementName).item(0).getTextContent().trim();
-	}
-
 	/** Gets the text from the specified XML node containing text nodes tagged with languages. */
-	private static String getLocalizedText(Node node, String language)
+	private static String getLocalizedText(XElement elem, String language)
 	{
-		NodeList children = ((Element) node).getElementsByTagName(TEXT_TAG);
 		String defaultResult = null;
 		String result = null;
-		for (int n = 0; n < children.getLength(); n++) {
-			Element child = (Element) children.item(n);
-			String childLang = child.getAttribute(LANGUAGE_ATTRIBUTE);
-			String text = child.getTextContent().trim();
-			if (childLang.equals(language)) {
+		for (XElement textElem : elem.children(TEXT_TAG)) {
+			String text = textElem.text();
+			String textLang = textElem.attribute(LANGUAGE_ATTRIBUTE);
+
+			if (textLang.equals(language)) {
 				result = text;
 				break;
-			} else if (childLang.equals(DEFAULT_LANGUAGE) || defaultResult == null) {
+			} else if (textLang.equals(DEFAULT_LANGUAGE) || defaultResult == null) {
 				defaultResult = text;
 			}
 		}
@@ -187,18 +163,22 @@ public final class ScheduleImpl implements Schedule {
 		return result == null ? defaultResult : result;
 	}
 
-	/** Gets the child node with the specified name from the specified parent XML node. */
-	private static Node getNode(Node parent, String name) {
-		return ((Element) parent).getElementsByTagName(name).item(0);
-	}
-
-	/** Like getElementsByTagName, but returns an iterable class instead of a NodeList. */
-	private static List<Node> getNodes(Element parent, String name) {
-		NodeList nodes = parent.getElementsByTagName(name);
-		List<Node> retVal = new ArrayList<Node>(nodes.getLength());
-		for (int n = 0; n < nodes.getLength(); n++) {
-			retVal.add(nodes.item(n));
+	/** Removes consecutive spaces in the specified string. */
+	private static String removeExtraSpaces(String text) {
+		StringBuilder builder = new StringBuilder();
+		boolean wasSpace = false;
+		for (char c : text.toCharArray()) {
+			if (Character.isSpaceChar(c)) {
+				wasSpace = true;
+			} else {
+				if (wasSpace) {
+					builder.append(' ');
+					wasSpace = false;
+				}
+				builder.append(c);
+			}
 		}
-		return retVal;
+
+		return builder.toString();
 	}
 }

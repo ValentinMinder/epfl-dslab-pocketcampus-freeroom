@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.Satellite.Models;
@@ -13,15 +14,15 @@ namespace PocketCampus.Satellite.Services
 {
     public sealed class SatelliteService : ThriftServiceImplementation<ISatelliteService>, ISatelliteService
     {
-        public SatelliteService( IServerConfiguration config )
-            : base( config.CreateCommunication( "satellite" ) )
+        public SatelliteService( IServerAccess access )
+            : base( access.CreateCommunication( "satellite" ) )
         {
 
         }
 
-        public Task<BeersResponse> GetBeersAsync()
+        public Task<BeersResponse> GetBeersAsync( CancellationToken cancellationToken )
         {
-            return CallAsync<BeersResponse>( x => x.GetBeersAsync );
+            return CallAsync<CancellationToken, BeersResponse>( x => x.GetBeersAsync, cancellationToken );
         }
     }
 }

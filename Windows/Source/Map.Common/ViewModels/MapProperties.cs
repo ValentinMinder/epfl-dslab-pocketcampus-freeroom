@@ -3,7 +3,7 @@
 // File author: Solal Pirelli
 
 using PocketCampus.Common;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Map.ViewModels
 {

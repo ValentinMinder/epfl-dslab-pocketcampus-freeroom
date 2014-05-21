@@ -8,7 +8,6 @@
                       xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:my="clr-namespace:PocketCampus.News"
-                      xmlns:myControls="clr-namespace:PocketCampus.News.Controls"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       mc:Ignorable="d">
@@ -23,9 +22,9 @@
         <my:LocalizedStrings x:Key="Strings" />
 
         <!-- Converters -->
-        <my:OnlineImageDisplayConverter x:Key="ImageDisplay"
-                                        Width="460"
-                                        Height="300" />
+        <my:ImageDisplayConverter x:Key="ImageDisplay"
+                                  Width="480"
+                                  Height="300" />
     </comControls:BasePage.Resources>
 
     <!-- Main grid -->
@@ -36,32 +35,43 @@
         </Grid.RowDefinitions>
 
         <!-- Page header -->
-        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
-            <TextBlock Text="{Binding Resources.FeedItemViewTitle, Source={StaticResource Strings}}"
-                       Style="{StaticResource AppTextTitle2Style}" />
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}"
+                Visibility="{Binding ItemContent, Converter={StaticResource NonNullToVisibility}}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Resources.FeedItemViewTitle, Source={StaticResource Strings}}"
+                           Style="{StaticResource AppTextTitle2Style}"
+                           Margin="12,6,0,6" />
+                
+                <TextBlock Text=" - "
+                           Style="{StaticResource AppTextTitle2Style}"
+                           VerticalAlignment="Center"
+                           Margin="0" />
+                
+                <TextBlock Text="{Binding ItemContent.FeedName}"
+                           Style="{StaticResource AppTextTitle2Style}"
+                           Margin="0,6,12,6" />
+            </StackPanel>
         </Border>
 
         <ScrollViewer Grid.Row="1">
             <StackPanel>
                 <!-- Title -->
                 <Border Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
-                    <TextBlock Text="{Binding Item.Title}"
+                    <TextBlock Text="{Binding ItemContent.Title}"
+                               TextWrapping="Wrap"
                                Style="{StaticResource AppTextSecondaryHeaderStyle}"
-                               TextWrapping="Wrap" />
+                               Margin="24,4,24,10" />
                 </Border>
 
-                <!-- Publish date -->
-                <TextBlock Text="{Binding Item.Date, StringFormat='f'}"
-                           Style="{StaticResource PhoneTextSubtleStyle}"
-                           Margin="12,6"/>
-
                 <!-- Image -->
-                <Image Source="{Binding Item.Image, Converter={StaticResource ImageDisplay}}"
-                       Stretch="None"
-                       Margin="0,10" />
+                <Image Source="{Binding ItemContent.ImageUrl, Converter={StaticResource ImageDisplay}}"
+                       Width="480"
+                       MaxHeight="300"
+                       Stretch="Uniform" />
 
                 <!-- Content -->
-                <myControls:HtmlTextBlock Html="{Binding ItemContent}" />
+                <comControls:HtmlTextBlock Html="{Binding ItemContent.Content}"
+                                           Margin="12,4,12,95" />
             </StackPanel>
         </ScrollViewer>
 
@@ -72,6 +82,11 @@
     <!-- App bar -->
     <bar:Bindable.ApplicationBar>
         <bar:BindableApplicationBar Mode="Minimized">
+            <!-- "Refresh" button -->
+            <bar:BindableApplicationBarButton Command="{Binding RefreshCommand}"
+                                              Text="{Binding Resources.RefreshButton, Source={StaticResource Strings}}"
+                                              IconUri="/Assets/Refresh.png" />
+            <!-- "Open in browser" button -->
             <bar:BindableApplicationBarButton Command="{Binding OpenInBrowserCommand}"
                                               Text="{Binding Resources.OpenInBrowserButton, Source={StaticResource Strings}}"
                                               IconUri="/Assets/OpenExternal.png" />

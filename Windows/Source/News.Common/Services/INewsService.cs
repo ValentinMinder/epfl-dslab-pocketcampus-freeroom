@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.News.Models;
 using ThriftSharp;
@@ -15,15 +16,15 @@ namespace PocketCampus.News.Services
     public interface INewsService
     {
         /// <summary>
-        /// Asynchronously gets all EPFL news feeds.
+        /// Asynchronously gets all available feeds.
         /// </summary>
-        [ThriftMethod( "getFeeds" )]
-        Task<Feed[]> GetFeedsAsync( [ThriftParameter( 1, "language" )] string language );
+        [ThriftMethod( "getAllFeeds" )]
+        Task<FeedsResponse> GetFeedsAsync( [ThriftParameter( 1, "request" )] FeedsRequest request, CancellationToken cancellationToken );
 
         /// <summary>
-        /// Asynchronously gets the content of a feed item as HTML.
+        /// Asynchronously gets the content of a feed item.
         /// </summary>
-        [ThriftMethod( "getNewsItemContent" )]
-        Task<string> GetFeedItemContentAsync( [ThriftParameter( 1, "newsItemId" )] long id );
+        [ThriftMethod( "getFeedItemContent" )]
+        Task<FeedItemContentResponse> GetFeedItemContentAsync( [ThriftParameter( 1, "request" )] FeedItemContentRequest request, CancellationToken cancellationToken );
     }
 }

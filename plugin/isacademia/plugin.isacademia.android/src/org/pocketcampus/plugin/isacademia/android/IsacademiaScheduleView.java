@@ -8,7 +8,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.plugin.isacademia.android.iface.IIsacademiaView;
+import org.pocketcampus.plugin.isacademia.android.iface.IIsAcademiaView;
 import org.pocketcampus.plugin.isacademia.shared.IsaSeance;
 
 import com.markupartist.android.widget.ActionBar;
@@ -33,16 +33,16 @@ import android.widget.Toast;
  * @author Amer <amer.chamseddine@epfl.ch>
  * 
  */
-public class IsacademiaScheduleView extends PluginView implements IIsacademiaView {
+public class IsAcademiaScheduleView extends PluginView implements IIsAcademiaView {
 
-	private IsacademiaController mController;
-	private IsacademiaModel mModel;
+	private IsAcademiaController mController;
+	private IsAcademiaModel mModel;
 
 	private StandardTitledLayout mLayout;
 	
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
-		return IsacademiaController.class;
+		return IsAcademiaController.class;
 	}
 
 	@Override
@@ -51,8 +51,8 @@ public class IsacademiaScheduleView extends PluginView implements IIsacademiaVie
 		Tracker.getInstance().trackPageView("isacademia");
 		
 		// Get and cast the controller and model
-		mController = (IsacademiaController) controller;
-		mModel = (IsacademiaModel) controller.getModel();
+		mController = (IsAcademiaController) controller;
+		mModel = (IsAcademiaModel) controller.getModel();
 
 		// Setup the layout
 		mLayout = new StandardTitledLayout(this);

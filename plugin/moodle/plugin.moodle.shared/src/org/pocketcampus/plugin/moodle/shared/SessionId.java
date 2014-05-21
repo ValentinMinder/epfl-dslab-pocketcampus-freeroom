@@ -27,8 +27,8 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
   private static final org.apache.thrift.protocol.TField TOS_FIELD_DESC = new org.apache.thrift.protocol.TField("tos", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField MOODLE_COOKIE_FIELD_DESC = new org.apache.thrift.protocol.TField("moodleCookie", org.apache.thrift.protocol.TType.STRING, (short)3);
 
-  public int tos; // required
-  public String moodleCookie; // required
+  private int tos; // required
+  private String moodleCookie; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

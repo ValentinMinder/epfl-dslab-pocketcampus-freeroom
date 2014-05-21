@@ -27,8 +27,8 @@ public class TequilaToken implements org.apache.thrift.TBase<TequilaToken, Tequi
   private static final org.apache.thrift.protocol.TField I_TEQUILA_KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("iTequilaKey", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField LOGIN_COOKIE_FIELD_DESC = new org.apache.thrift.protocol.TField("loginCookie", org.apache.thrift.protocol.TType.STRING, (short)2);
 
-  public String iTequilaKey; // required
-  public String loginCookie; // required
+  private String iTequilaKey; // required
+  private String loginCookie; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

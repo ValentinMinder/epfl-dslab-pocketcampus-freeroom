@@ -143,8 +143,8 @@
   <data name="LogOff" xml:space="preserve">
     <value>log off</value>
   </data>
-  <data name="LogOn" xml:space="preserve">
-    <value>log on</value>
+  <data name="LogIn" xml:space="preserve">
+    <value>log in</value>
   </data>
   <data name="FirstRunCaption" xml:space="preserve">
     <value>Welcome!</value>
@@ -160,14 +160,14 @@ Our privacy policy is simple: Your data and location are not stored or transmitt
   <data name="AboutPageTitle" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="AuthenticationStatus_Error" xml:space="preserve">
+  <data name="AuthenticationAttemptStatus_Error" xml:space="preserve">
     <value>An error occurred while connecting to Tequila. Please try again later.</value>
   </data>
-  <data name="AuthenticationStatus_NotAuthenticated" xml:space="preserve">
+  <data name="AuthenticationAttemptStatus_NotAuthenticated" xml:space="preserve">
     <value />
     <comment>Must be empty</comment>
   </data>
-  <data name="AuthenticationStatus_WrongCredentials" xml:space="preserve">
+  <data name="AuthenticationAttemptStatus_WrongCredentials" xml:space="preserve">
     <value>Your credentials are invalid. Please verify them.</value>
   </data>
   <data name="Authenticating" xml:space="preserve">
@@ -182,23 +182,15 @@ Our privacy policy is simple: Your data and location are not stored or transmitt
   <data name="AboutPrivacyPolicy" xml:space="preserve">
     <value>privacy policy</value>
   </data>
-  <data name="AboutAppVersion" xml:space="preserve">
-    <value>version</value>
-  </data>
   <data name="AboutDevelopers" xml:space="preserve">
     <value>Solal Pirelli
 Amer Chamseddine
 Loïc Gardiol
-Silviu Andrica</value>
+Silviu Andrica
+George Candea</value>
   </data>
   <data name="AboutDevelopersHeader" xml:space="preserve">
     <value>developers</value>
-  </data>
-  <data name="AboutSupervisor" xml:space="preserve">
-    <value>Prof. George Candea</value>
-  </data>
-  <data name="AboutSupervisorHeader" xml:space="preserve">
-    <value>supervisor</value>
   </data>
   <data name="AboutWebsite" xml:space="preserve">
     <value>http://pocketcampus.epfl.ch</value>
@@ -226,5 +218,23 @@ Silviu Andrica</value>
   </data>
   <data name="AboutRateAppButton" xml:space="preserve">
     <value>rate us on the Store</value>
+  </data>
+  <data name="AboutContact" xml:space="preserve">
+    <value>support.epfl@pocketcampus.org</value>
+  </data>
+  <data name="AboutContactHeader" xml:space="preserve">
+    <value>contact &amp; support</value>
+  </data>
+  <data name="AboutOrganizationName" xml:space="preserve">
+    <value>PocketCampus.Org</value>
+  </data>
+  <data name="AuthenticationSaveCredentials" xml:space="preserve">
+    <value>remember me</value>
+  </data>
+  <data name="UseColoredTile" xml:space="preserve">
+    <value>use colored application tile</value>
+  </data>
+  <data name="UseColoredTileExplanation" xml:space="preserve">
+    <value>disable this if the colored image doesn't look good on your start screen background</value>
   </data>
 </root>

@@ -2,8 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
-using System.Collections.Generic;
 using PocketCampus.Food.Models;
 
 namespace PocketCampus.Food
@@ -27,11 +25,6 @@ namespace PocketCampus.Food
         /// <summary>
         /// Gets or sets the food type filters set by the user.
         /// </summary>
-        MealTypes[] DisplayedMealTypes { get; set; }
-
-        /// <summary>
-        /// Gets the dates at which the last vote for a meal at that time was cast.
-        /// </summary>
-        Dictionary<MealTime, DateTime> LastVotes { get; set; }
+        MealType[] DisplayedMealTypes { get; set; }
     }
 }

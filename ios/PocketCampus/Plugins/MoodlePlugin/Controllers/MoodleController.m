@@ -1,18 +1,45 @@
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
+
 
 #import "MoodleController.h"
 
 #import "MoodleCoursesListViewController.h"
 
-#import "ObjectArchiver.h"
+#import "PCPersistenceManager.h"
 
-#import "PluginSplitViewController.h"
+#import "MoodleService.h"
 
-#import "PCUtils.h"
+#import "MoodleModelAdditions.h"
 
-@interface MoodleController ()
+@interface MoodleController ()<UISplitViewControllerDelegate>
 
 @property (nonatomic, strong) MoodleService* moodleService;
-@property (nonatomic, strong) TequilaToken* tequilaToken;
 
 @end
 
@@ -20,22 +47,27 @@
 
 static MoodleController* instance __weak = nil;
 
-static BOOL initObserversDone = NO;
-static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
+#pragma mark - Init
 
-- (id)init
-{
++ (void)initialize {
+    //initializing default settings
+    NSUserDefaults* defaults = [PCPersistenceManager defaultsForPluginName:@"moodle"];
+    if (![defaults objectForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey]) {
+        [defaults setObject:@YES forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
+    }
+}
+
+- (id)init {
     @synchronized(self) {
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"MoodleController cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
         self = [super init];
         if (self) {
-            [[self class] deleteSessionIfNecessary];
             MoodleCoursesListViewController* coursesListViewController = [[MoodleCoursesListViewController alloc] init];
             
             if ([PCUtils isIdiomPad]) {
-                UINavigationController* navController =  [[UINavigationController alloc] initWithRootViewController:coursesListViewController];
+                PCNavigationController* navController =  [[PCNavigationController alloc] initWithRootViewController:coursesListViewController];
                 UIViewController* emptyDetailViewController = [[UIViewController alloc] init]; //splash view controller will be returned by coursesListViewController as PluginSplitViewControllerDelegate
                 PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:emptyDetailViewController];
                 splitViewController.pluginIdentifier = [[self class] identifierName];
@@ -53,6 +85,8 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     }
 }
 
+#pragma mark - PluginController
+
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
@@ -66,105 +100,15 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     }
 }
 
-+ (void)deleteSessionIfNecessary {
-    NSNumber* deleteSession = (NSNumber*)[ObjectArchiver objectForKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
-    if (deleteSession && [deleteSession boolValue]) {
-        NSLog(@"-> Delayed logout notification on Moodle now applied : deleting sessionId");
-        [[MoodleService sharedInstanceToRetain] deleteSession];
-        [ObjectArchiver saveObject:nil forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
-    }
-}
-
 + (void)initObservers {
-    @synchronized(self) {
-        if (initObserversDone) {
-            return;
-        }
-        [[NSNotificationCenter defaultCenter] addObserverForName:[AuthenticationService logoutNotificationName] object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-            NSNumber* delayed = [notification.userInfo objectForKey:[AuthenticationService delayedUserInfoKey]];
-            if ([delayed boolValue]) {
-                NSLog(@"-> Moodle received %@ notification delayed", [AuthenticationService logoutNotificationName]);
-                [ObjectArchiver saveObject:[NSNumber numberWithBool:YES] forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
-            } else {
-                NSLog(@"-> Moodle received %@ notification", [AuthenticationService logoutNotificationName]);
-                MoodleService* moodleService = [MoodleService sharedInstanceToRetain];
-                [moodleService deleteSession]; //removing stored session
-                [moodleService deleteAllDownloadedResources]; //removing all downloaded Moodle files
-                moodleService = nil;
-                [ObjectArchiver deleteAllCachedObjectsForPluginName:@"moodle"];
-                [[MainController publicController] requestLeavePlugin:@"Moodle"];
-            }
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+            [[MoodleService sharedInstanceToRetain] deleteAllDownloadedMoodleResources]; //removing all downloaded Moodle files
+            [PCPersistenceManager deleteCacheForPluginName:@"moodle"];
+            [[MainController publicController] requestLeavePlugin:@"Moodle"];
         }];
-        initObserversDone = YES;
-    }
-}
-
-#pragma mark - Login observers management
-
-- (void)addLoginObserver:(id)observer successBlock:(VoidBlock)successBlock
-      userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(VoidBlock)failureBlock {
-    
-    [super addLoginObserver:observer successBlock:successBlock userCancelledBlock:userCancelledblock failureBlock:failureBlock];
-    if (!super.authenticationStarted) {
-        super.authenticationStarted = YES;
-        self.moodleService = [MoodleService sharedInstanceToRetain];
-        [self.moodleService getTequilaTokenForMoodleDelegate:self];
-    }
-}
-
-- (void)removeLoginObserver:(id)observer {
-    [super removeLoginObserver:observer];
-    if ([self.loginObservers count] == 0) {
-        [self.moodleService cancelOperationsForDelegate:self]; //abandon login attempt if no more observer interested
-    }
-}
-
-#pragma mark - MyEduServiceDelegate
-
-- (void)getTequilaTokenForMoodleDidReturn:(TequilaToken *)tequilaKey {
-    self.tequilaToken = tequilaKey;
-    if (self.mainSplitViewController) {
-        [self.authController authToken:tequilaKey.iTequilaKey presentationViewController:self.mainSplitViewController delegate:self];
-    } else {
-        [self.authController authToken:tequilaKey.iTequilaKey presentationViewController:self.mainNavigationController delegate:self];
-    }
-}
-
-- (void)getTequilaTokenForMoodleFailed {
-    [self cleanAndNotifyFailureToObservers];
-}
-
-- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken *)aTequilaKey didReturn:(MoodleSession *)aSessionId {
-    MoodleSession* session = [[MoodleSession alloc] initWithMoodleCookie:aSessionId.moodleCookie];
-    [self.moodleService saveSession:session];
-    [self cleanAndNotifySuccessToObservers];
-}
-
-- (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken *)aTequilaKey {
-    [self cleanAndNotifyFailureToObservers];
-}
-
-- (void)serviceConnectionToServerTimedOut {
-    [super cleanAndNotifyConnectionToServerTimedOutToObservers];
-}
-
-#pragma mark - AuthenticationCallbackDelegate
-
-- (void)authenticationSucceeded {
-    if (!self.tequilaToken) {
-        NSLog(@"-> ERROR : no tequilaToken saved after successful authentication");
-        return;
-    }
-    [self.moodleService getSessionIdForServiceWithTequilaKey:self.tequilaToken delegate:self];;
-}
-
-- (void)userCancelledAuthentication {
-    [self.moodleService deleteSession];
-    [self cleanAndNotifyUserCancelledToObservers];
-}
-
-- (void)invalidToken {
-    [self.moodleService getTequilaTokenForMoodleDelegate:self]; //restart to get new token
+    });
 }
 
 #pragma mark - PluginControllerProtocol
@@ -177,10 +121,6 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     return @"Moodle";
 }
 
-- (NSString*)localizedStringForKey:(NSString*)key {
-    return NSLocalizedStringFromTable(key, [[self class] identifierName], @"");
-}
-
 #pragma mark - UISplitViewControllerDelegate
 
 - (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {
@@ -190,10 +130,10 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     return NO;
 }
 
+#pragma mark - Dealloc
+
 - (void)dealloc
 {
-    [self.moodleService cancelOperationsForDelegate:self];
-    [[self class] deleteSessionIfNecessary];
     @synchronized(self) {
         instance = nil;
     }

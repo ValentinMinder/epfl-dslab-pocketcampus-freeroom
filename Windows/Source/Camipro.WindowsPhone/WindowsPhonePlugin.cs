@@ -2,11 +2,10 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using PocketCampus.Camipro.Resources;
 using PocketCampus.Camipro.ViewModels;
 using PocketCampus.Common;
-using PocketCampus.Common.Services;
+using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Camipro
 {
@@ -24,19 +23,11 @@ namespace PocketCampus.Camipro
         }
 
         /// <summary>
-        /// Gets the plugin's icon.
+        /// Gets the key of the plugin's icon in the application resources.
         /// </summary>
-        public Uri Icon
+        public string IconKey
         {
-            get { return new Uri( "/Assets/CamiproIcon.png", UriKind.Relative ); }
-        }
-
-        /// <summary>
-        /// Gets the plugin's small icon.
-        /// </summary>
-        public Uri SmallIcon
-        {
-            get { return new Uri( "/Assets/CamiproSmallIcon.png", UriKind.Relative ); }
+            get { return "CamiproIcon"; }
         }
 
         /// <summary>

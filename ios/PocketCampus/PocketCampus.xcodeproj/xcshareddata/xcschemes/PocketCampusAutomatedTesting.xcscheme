@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "0510"
+   version = "1.7">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "exec &gt; /tmp/automated_test.log.txt 2&gt;&amp;1&#10;&#10;echo &quot;Running as ${USER}|${USERNAME}|${HOME}&quot;&#10;&#10;COMPILE_OUTPUT_FILE=&quot;/tmp/PocketCampus.compile.out&quot;&#10;xcodebuild -workspace ${SRCROOT}/PocketCampus.xcworkspace/ -scheme PocketCampus -sdk iphonesimulator -configuration Debug clean build &gt; ${COMPILE_OUTPUT_FILE} 2&gt;&amp;1&#10;&#10;APP_PATH=`cat ${COMPILE_OUTPUT_FILE} | grep &quot;setenv BUILT_PRODUCTS_DIR&quot; | tr -s &apos; &apos; | cut -f 4 -d &apos; &apos;`&#10;if [ -z &quot;${APP_PATH}&quot; ]&#10;then&#10;    APP_PATH=`cat ${COMPILE_OUTPUT_FILE} | grep &quot;export BUILT_PRODUCTS_DIR&quot; | cut -f 2 -d &apos;=&apos;`&#10;fi&#10;&#10;echo &quot;APP_PATH=${APP_PATH}&quot;&#10;echo &quot;App ${EXECUTABLE_FOLDER_PATH}&quot;&#10;APP=&quot;${APP_PATH}/${EXECUTABLE_FOLDER_PATH}&quot;&#10;#APP=&quot;${EXECUTABLE_FOLDER_PATH}&quot;&#10;echo &quot;Full path to app is ${APP}&quot;&#10;&#10;rm -rf /tmp/${EXECUTABLE_FOLDER_PATH}&#10;cp -r ${APP} /tmp&#10;&#10;SCRIPT_NAME=&quot;PocketCampusAutoMonkey.js&quot;&#10;SCRIPT_PATH=&quot;${SRCROOT}/AutomationScripts/${SCRIPT_NAME}&quot;&#10;cp ${SCRIPT_PATH} /tmp/${SCRIPT_NAME}&#10;&#10;OUTPUT_DIR=&quot;/tmp/PocketCampusAutomatedTesting&quot;&#10;rm -rf ${OUTPUT_DIR}&#10;mkdir ${OUTPUT_DIR}&#10;&#10;${SRCROOT}/AutomationScripts/runTests.sh &quot;${EXECUTABLE_FOLDER_PATH}&quot; &quot;/tmp/${SCRIPT_NAME}&quot; &quot;${OUTPUT_DIR}&quot;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "3219EF4B14FCDE4900A271CD"
+                     BuildableName = "PocketCampus.app"
+                     BlueprintName = "PocketCampus"
+                     ReferencedContainer = "container:PocketCampus.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3219EF4B14FCDE4900A271CD"
+               BuildableName = "PocketCampus.app"
+               BlueprintName = "PocketCampus"
+               ReferencedContainer = "container:PocketCampus.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      buildConfiguration = "Debug">
+      <Testables>
+      </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "3219EF4B14FCDE4900A271CD"
+            BuildableName = "PocketCampus.app"
+            BlueprintName = "PocketCampus"
+            ReferencedContainer = "container:PocketCampus.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
+   </TestAction>
+   <LaunchAction
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      buildConfiguration = "Debug"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      allowLocationSimulation = "YES">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "3219EF4B14FCDE4900A271CD"
+            BuildableName = "PocketCampus.app"
+            BlueprintName = "PocketCampus"
+            ReferencedContainer = "container:PocketCampus.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <AdditionalOptions>
+      </AdditionalOptions>
+   </LaunchAction>
+   <ProfileAction
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      buildConfiguration = "Debug"
+      debugDocumentVersioning = "YES">
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-w -t /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Instruments/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate -e /Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus/AutomationScripts/News.js"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Debug"
+      revealArchiveInOrganizer = "NO">
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "">
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
+   </ArchiveAction>
+</Scheme>

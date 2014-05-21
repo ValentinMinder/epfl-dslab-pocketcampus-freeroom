@@ -7,8 +7,7 @@
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone">
     <!-- Main grid -->
-    <Grid x:Name="LayoutRoot"
-          Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+    <Grid x:Name="LayoutRoot">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
@@ -18,27 +17,29 @@
         <!-- "Previous" button -->
         <Button Command="{Binding PreviousCommand}"
                 BorderThickness="0"
-                Padding="0">
+                Margin="0,-6"
+                Padding="12,6">
             <TextBlock Text="◀"
                        TextOptions.DisplayColorEmoji="False"
-                       Style="{StaticResource AppTextSecondaryHeaderStyle}"
+                       Style="{Binding TextStyle}"
                        Margin="0" />
         </Button>
 
         <!-- Current day -->
         <TextBlock Grid.Column="1"
                    Text="{Binding Value, StringFormat='M'}"
-                   Style="{StaticResource AppTextSecondaryHeaderStyle}"
+                   Style="{Binding TextStyle}"
                    TextAlignment="Center" />
 
         <!-- "Next" button -->
         <Button Grid.Column="2"
                 Command="{Binding NextCommand}"
                 BorderThickness="0"
-                Padding="0">
+                Margin="0,-6"
+                Padding="12,6">
             <TextBlock Text="▶"
                        TextOptions.DisplayColorEmoji="False"
-                       Style="{StaticResource AppTextSecondaryHeaderStyle}"
+                       Style="{Binding TextStyle}"
                        Margin="0" />
         </Button>
     </Grid>

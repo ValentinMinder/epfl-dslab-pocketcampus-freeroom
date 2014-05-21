@@ -5,6 +5,8 @@
 // Design data for the SettingsViewModel
 
 using System.Collections.Generic;
+using System.ComponentModel;
+using PocketCampus.Common;
 namespace PocketCampus.Main.ViewModels.Design
 {
     public sealed class DesignSettingsViewModel
@@ -17,6 +19,12 @@ namespace PocketCampus.Main.ViewModels.Design
             public bool IsFirstRun
             {
                 get { return false; }
+                set { }
+            }
+
+            public ServerConfiguration Configuration
+            {
+                get { return new ServerConfiguration( "https", 4433, "Moodle", "Food" ); }
                 set { }
             }
 
@@ -38,11 +46,20 @@ namespace PocketCampus.Main.ViewModels.Design
                 set { }
             }
 
+            public string Session
+            {
+                get { return null; }
+                set { }
+            }
+
             public Dictionary<string, string> Sessions
             {
                 get { return null; }
                 set { }
             }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            public void IgnoreAboveEvent() { PropertyChanged( null, null ); }
         }
 #endif
     }

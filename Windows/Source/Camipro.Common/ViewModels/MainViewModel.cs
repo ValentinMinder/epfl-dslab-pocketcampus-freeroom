@@ -8,16 +8,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Camipro.Models;
 using PocketCampus.Camipro.Services;
+using PocketCampus.Common;
 using PocketCampus.Common.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Camipro.ViewModels
 {
     /// <summary>
     /// The main (and only) ViewModel.
     /// </summary>
-    [PageLogId( "/camipro" )]
+    [LogId( "/camipro" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private readonly ICamiproService _camiproService;
@@ -59,7 +60,7 @@ namespace PocketCampus.Camipro.ViewModels
         /// <summary>
         /// Gets the command executed to request an e-mail with e-banking information.
         /// </summary>
-        [CommandLogId( "RequestEmail" )]
+        [LogId( "RequestEmail" )]
         public AsyncCommand RequestEbankingEmailCommand
         {
             get { return GetAsyncCommand( RequestEbankingEmailAsync ); }
@@ -83,7 +84,7 @@ namespace PocketCampus.Camipro.ViewModels
             try
             {
                 var result = await _camiproService.RequestEBankingEMailAsync( _lastRequest );
-                if ( result.Status != ResponseStatus.Ok )
+                if ( result.Status != ResponseStatus.Success )
                 {
                     throw new Exception( "Server error while requesting an e-banking e-mail." );
                 }
@@ -118,8 +119,8 @@ namespace PocketCampus.Camipro.ViewModels
                     Session = new SessionId { CamiproCookie = session.Cookie }
                 };
 
-                var accountInfo = await _camiproService.GetAccountInfoAsync( _lastRequest );
-                var ebankingInfo = await _camiproService.GetEBankingInfoAsync( _lastRequest );
+                var accountInfo = await _camiproService.GetAccountInfoAsync( _lastRequest, token );
+                var ebankingInfo = await _camiproService.GetEBankingInfoAsync( _lastRequest, token );
 
                 if ( accountInfo.Status == ResponseStatus.NetworkError || ebankingInfo.Status == ResponseStatus.NetworkError )
                 {

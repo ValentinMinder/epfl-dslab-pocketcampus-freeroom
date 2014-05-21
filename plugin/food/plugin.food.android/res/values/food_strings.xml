@@ -1,65 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- General -->
     <string name="food_plugin_title">Food</string>
-    <string name="food_menu_meals">Meals</string>
-    <string name="food_menu_sandwiches">Sandwiches</string>
-    <string name="food_menu_suggestions">Suggestions</string>
-    <string name="food_menu_settings">Preferences</string>
-	<string name="food_network_error">Could not connect.</string>
-	<string name="food_meals_request_error">Unable to update meals!</string>
+    <string name="food_no_menus">No menus</string>
+    
+    
+    
+	<string name="food_menu_view_other_day">View other day menus</string>
+	<string name="food_menu_view_lunch_menus">View lunch menus</string>
+	<string name="food_menu_view_evening_menus">View evening menus</string>
 	
-	<string name="food_displaying_from_cache">Displaying meals from cache</string>
-    
-    <!-- Restaurants -->
-    <string name="food_by_restaurants">Restaurants</string>
+	<string name="food_dialog_resto">Filter by restaurant</string>
+	<string name="food_dialog_types">Filter by types</string>
+	<string name="food_dialog_prices">Show prices for</string>
+	<string name="food_dialog_vote">Vote</string>
+	
+	<string name="food_title_lunch_menus">Lunch menus on</string>
+	<string name="food_title_evening_menus">Evening menus on</string>
 
-    <!-- Meals -->
-    <string name="food_no_menus">No menus.</string>
-    <string name="food_no_menus_week_end">No menus during the weekend.</string>
-    <string name="food_loading">Loading menus...</string>
+	<string name="food_text_satisfaction">satisfaction</string>
+	<string name="food_text_vote">vote</string>
+	<string name="food_text_votes">votes</string>
+	<string name="food_text_novotes">no votes</string>
+					
+	<string name="food_button_vote_inline">vote</string>
+	<string name="food_button_seemap_inline">see on map</string>
+	<string name="food_button_vote">Vote</string>
+	<string name="food_button_send">Send</string>
+	<string name="food_button_googletranslate">Send to Google Translate</string>
+	<string name="food_button_copytext">Copy text to clipboard</string>
+						
+	<string name="food_toast_nogoogletranslate">Please install Google Translate</string>
+	<string name="food_toast_vote_noselection">Please select one of the smileys</string>
+	<string name="food_toast_copied">Copied to clipboard</string>
+	<string name="food_toast_alreadyvoted">Already voted</string>
+	<string name="food_toast_tooearly">Too early</string>
+	<string name="food_toast_toolate">Too late</string>	
+	<string name="food_toast_thanksforvote">Thanks for your vote</string>
+							
+	<string name="food_enum_STUDENT">Student</string>
+	<string name="food_enum_PHD_STUDENT">PhD student</string>
+	<string name="food_enum_STAFF">Staff</string>
+	<string name="food_enum_VISITOR">Visitor</string>
 
-    <!-- Menu Dialog -->
-    <string name="food_menu_dialog_firstButton">Rate it!</string>
-    <string name="food_menu_dialog_secondButton">Cancel</string>
-    <string name="food_menu_dialog_thirdButton">Go there</string>
-
-    <!-- Ratings -->
-    <string name="food_by_ratings">Ratings</string>
-    <string name="food_rating_valid">Thanks for your vote!</string>
-    <string name="food_rating_already_voted">You can only vote once a day.</string>
-    <string name="food_rating_too_early">You can\'t vote yet!</string>
-    <string name="food_rating_error">An error occurred while submitting the rating. Try again!</string>
-
-    <!-- Rating Dialog -->
-    <string name="food_rating_nb_votes_singular">vote</string>
-    <string name="food_rating_nb_votes_plural">votes</string>
-    <string name="food_rating_dialog_title">Rate it!</string>
-    <string name="food_rating_dialog_OK">Ok</string>
-    <string name="food_rating_dialog_cancel">Cancel</string>
-    
-    <!-- Sandwiches -->
-    <string name="food_by_sandwiches">Sandwiches</string>
-    <string name="food_no_sandwiches">No sandwiches</string>
-
-    <!-- Suggestions -->
-    <string name="food_by_suggestions">Suggestions</string>
-    <string name="food_suggestions_nothing_found">No suggestions found</string>
-    <string name="food_suggestions_meat">Meat</string>
-    <string name="food_suggestions_fish">Fish</string>
-    <string name="food_suggestions_beef">Beef</string>
-    <string name="food_suggestions_pasta">Pasta</string>
-    <string name="food_suggestions_rice">Rice</string>
-    <string name="food_suggestions_horse">Horse</string>
-    <string name="food_suggestions_vege">Vegetarian</string>
-    <string name="food_suggestions_porc">Porc</string>
-    <string name="food_suggestions_chicken">Chicken</string>
-    <string name="food_suggestions_pizza">Pizza</string>
-    <string name="food_suggestions_ok">See Suggestions</string>
-    <string name="food_suggestions_test">Test</string>
-    <string name="food_suggestions_notag">No existing Tag</string>
-
-    <!-- Preferences -->
-    <string name="food_preferences">Preferences</string>
+	<string name="food_enum_FISH">Fish</string>
+	<string name="food_enum_MEAT">Meat</string>
+	<string name="food_enum_POULTRY">Chicken</string>
+	<string name="food_enum_VEGETARIAN">Vegetarian</string>
+	<string name="food_enum_GREEN_FORK">Green fork</string>
+	<string name="food_enum_PASTA">Pasta</string>
+	<string name="food_enum_PIZZA">Pizza</string>
+	<string name="food_enum_THAI">Thaï</string>
+	<string name="food_enum_INDIAN">Indian</string>
+	<string name="food_enum_LEBANESE">Lebanese</string>
+	
 </resources>

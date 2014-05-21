@@ -1,160 +1,191 @@
-//
-//  CoursesListViewController.m
-//  PocketCampus
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
 //  Created by Loïc Gardiol on 04.12.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
 
 #import "MoodleCoursesListViewController.h"
-
-#import "PCRefreshControl.h"
 
 #import "MoodleController.h"
 
 #import "PCCenterMessageCell.h"
 
-#import "GANTracker.h"
-
 #import "MoodleCourseSectionsViewController.h"
 
 #import "MoodleSplashDetailViewController.h"
 
-#import "PCUtils.h"
+#import "MoodleService.h"
 
-@interface MoodleCoursesListViewController ()
+#import "PluginSplitViewController.h"
 
-@property (nonatomic, strong) MoodleService* moodleService;
-@property (nonatomic, strong) NSArray* courses;
-@property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
+#import "PCTableViewCellAdditions.h"
 
-@end
+#import "MoodleSettingsViewController.h"
+
 
 static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 
-static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
+@interface MoodleCoursesListViewController ()<PCMasterSplitDelegate, MoodleServiceDelegate>
+
+@property (nonatomic, strong) MoodleService* moodleService;
+@property (nonatomic, strong) NSArray* courses;
+@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+@property (nonatomic, strong) UIPopoverController* settingsPopover;
+
+@end
 
 @implementation MoodleCoursesListViewController
 
 - (id)init
 {
-    self = [super initWithNibName:@"MoodleCoursesListView" bundle:nil];
+    self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
+        self.gaiScreenName = @"/moodle";
         self.title = NSLocalizedStringFromTable(@"MyCourses", @"MoodlePlugin", nil);
         self.moodleService = [MoodleService sharedInstanceToRetain];
-        self.courses = [self.moodleService getFromCacheCourseListReply].iCourses;
-        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self pluginName:@"moodle" refreshedDataIdentifier:@"moodleCoursesList"];
-        [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
+        self.courses = [self.moodleService getFromCacheCoursesList].iCourses;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle" withError:NULL];
+    
+    UIBarButtonItem* settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SettingsBarButton"] style:UIBarButtonItemStyleBordered target:self action:@selector(settingsButtonPressed)];
+    settingsButton.accessibilityLabel = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
+    
+    self.navigationItem.rightBarButtonItem = settingsButton;
+    
+    PCTableViewAdditions* tableViewAdditions = [PCTableViewAdditions new];
+    self.tableView = tableViewAdditions;
+    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+        return floorf([PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault]*1.3);
+    };
+    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:@"coursesList"]];
+    [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.courses || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
+    [self trackScreen];
+    if (!self.courses || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (NSUInteger)supportedInterfaceOrientations //iOS 6
+- (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskAllButUpsideDown;
     
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
-{
-    return UIInterfaceOrientationIsLandscape(interfaceOrientation) || (UIInterfaceOrientationPortrait);
-}
-
-#pragma mark - refresh control
+#pragma mark - Refresh control
 
 - (void)refresh {
     [self.moodleService cancelOperationsForDelegate:self]; //cancel before retrying
-    [self.pcRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingCourseList", @"MoodlePlugin", nil)];
+    [self.lgRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingCourseList", @"MoodlePlugin", nil)];
     [self startGetCoursesListRequest];
 }
 
 - (void)startGetCoursesListRequest {
-    VoidBlock successBlock = ^{
-        [self.moodleService getCoursesList:[self.moodleService createMoodleRequestWithCourseId:0] withDelegate:self];
-    };
-    if ([self.moodleService lastSession]) {
-        successBlock();
+    [self.moodleService getCoursesListWithDelegate:self];
+}
+
+#pragma mark - Buttons actions
+
+- (void)settingsButtonPressed {
+    [self trackAction:@"OpenSettings"];
+    MoodleSettingsViewController* settingsViewController = [[MoodleSettingsViewController alloc] init];
+    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:settingsViewController];
+    if (self.splitViewController) {
+        if (!self.settingsPopover) {
+            self.settingsPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
+        }
+        [self.settingsPopover togglePopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
     } else {
-        NSLog(@"-> No saved session, loggin in...");
-        [[MoodleController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
-            [self.pcRefreshControl endRefreshing];
-        } failureBlock:^{
-            [self error];
-        }];
+        [self presentViewController:navController animated:YES completion:NULL];
     }
 }
 
-#pragma mark - PCMasterSplitDelegate /* used on iPad */
+#pragma mark - PCMasterSplitDelegate (used on iPad only)
 
 - (UIViewController*)detailViewControllerThatShouldBeDisplayed {
     MoodleSplashDetailViewController* detailViewController = [[MoodleSplashDetailViewController alloc] init];
-    return detailViewController;
+    return [[PCNavigationController alloc] initWithRootViewController:detailViewController];
 }
 
 #pragma mark - MoodleServiceDelegate
 
-- (void)getCoursesList:(MoodleRequest *)aMoodleRequest didReturn:(CoursesListReply *)coursesListReply {
-    switch (coursesListReply.iStatus) {
+- (void)getCoursesListForDummy:(NSString *)dummy didReturn:(CoursesListReply *)reply {
+    switch (reply.iStatus) {
         case 200:
-            self.courses = coursesListReply.iCourses;
-            [self.moodleService saveToCacheCourseListReply:coursesListReply];
+            self.courses = reply.iCourses;
             [self.tableView reloadData];
-            [self.pcRefreshControl endRefreshing];
-            [self.pcRefreshControl markRefreshSuccessful];
+            [self.lgRefreshControl endRefreshingAndMarkSuccessful];
             break;
         case 407:
-            [self.moodleService deleteSession];
-            [self startGetCoursesListRequest];
+        {
+            __weak __typeof(self) weakSelf = self;
+            [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
+                [weakSelf startGetCoursesListRequest];
+            } userCancelled:^{
+                [weakSelf.lgRefreshControl endRefreshing];
+            } failure:^{
+                [weakSelf error];
+            }];
             break;
+        }
         case 405:
             [self error];
             break;
         case 404:
         {
-            [self.pcRefreshControl endRefreshing];
+            [self.lgRefreshControl endRefreshing];
             UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
+            break;
         }
         default:
-            [self getCoursesListFailed:aMoodleRequest];
+            [self getCoursesListFailedForDummy:dummy];
             break;
     }
 }
 
-- (void)getCoursesListFailed:(MoodleRequest *)aMoodleRequest {
+- (void)getCoursesListFailedForDummy:(NSString *)dummy {
     [self error];
 }
 
 - (void)error {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil);
     [PCUtils showServerErrorAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil)];
 }
 
-- (void)serviceConnectionToServerTimedOut {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil)];
 }
 
 #pragma mark - UITableViewDelegate
@@ -181,17 +212,22 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
             return cell;
         }
     }
-    
+    NSString* const identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"CourseCell"];
     MoodleCourse* course = self.courses[indexPath.row];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kMoodleCourseListCell];
+    PCTableViewCellAdditions *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kMoodleCourseListCell];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:18.0];
+        cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         cell.textLabel.numberOfLines = 2;
         cell.textLabel.adjustsFontSizeToFitWidth = YES;
+        [cell setAccessibilityHintBlock:^NSString *{
+            return NSLocalizedStringFromTable(@"ShowsDocumentsForThisCourse", @"MoodlePlugin", nil);
+        }];
+        [cell setAccessibilityTraitsBlock:^UIAccessibilityTraits{
+            return UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
+        }];
     }
     
     cell.textLabel.text = course.iTitle;
@@ -217,9 +253,10 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
     return 1;
 }
 
-#pragma mark - dealloc
+#pragma mark - Dealloc
 
 - (void)dealloc {
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [self.moodleService cancelOperationsForDelegate:self];
 }
 

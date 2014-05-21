@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.News.Models;
@@ -13,26 +14,19 @@ namespace PocketCampus.News.Services
 {
     public sealed class NewsService : ThriftServiceImplementation<INewsService>, INewsService
     {
-        private const string FeedNamePrefix = "EPFL ";
-
-        public NewsService( IServerConfiguration config )
-            : base( config.CreateCommunication( "news" ) )
+        public NewsService( IServerAccess access )
+            : base( access.CreateCommunication( "news" ) )
         {
         }
 
-        public async Task<Feed[]> GetFeedsAsync( string language )
+        public Task<FeedsResponse> GetFeedsAsync( FeedsRequest request, CancellationToken cancellationToken )
         {
-            var feeds = await CallAsync<string, Feed[]>( x => x.GetFeedsAsync, language );
-            foreach ( var feed in feeds )
-            {
-                feed.Name = feed.Name.Replace( FeedNamePrefix, "" );
-            }
-            return feeds;
+            return CallAsync<FeedsRequest, CancellationToken, FeedsResponse>( x => x.GetFeedsAsync, request, cancellationToken );
         }
 
-        public Task<string> GetFeedItemContentAsync( long id )
+        public Task<FeedItemContentResponse> GetFeedItemContentAsync( FeedItemContentRequest request, CancellationToken cancellationToken )
         {
-            return CallAsync<long, string>( x => x.GetFeedItemContentAsync, id );
+            return CallAsync<FeedItemContentRequest, CancellationToken, FeedItemContentResponse>( x => x.GetFeedItemContentAsync, request, cancellationToken );
         }
     }
 }

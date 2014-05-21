@@ -10,15 +10,15 @@ using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Map.Models;
 using PocketCampus.Map.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Map.ViewModels
 {
     /// <summary>
     /// The main ViewModel, with the map and search functionality.
     /// </summary>
-    [PageLogId( "/map" )]
+    [LogId( "/map" )]
     public sealed class MainViewModel : DataViewModel<MapSearchRequest>
     {
         // The default zoom level.
@@ -67,7 +67,7 @@ namespace PocketCampus.Map.ViewModels
         /// <summary>
         /// Gets the command executed to center the map on the campus.
         /// </summary>
-        [CommandLogId( "CenterOnCampus" )]
+        [LogId( "CenterOnCampus" )]
         public Command CenterOnCampusCommand
         {
             get { return GetCommand( CenterOnCampus ); }
@@ -76,7 +76,7 @@ namespace PocketCampus.Map.ViewModels
         /// <summary>
         /// Gets the command executed to center the map on the user's position.
         /// </summary>
-        [CommandLogId( "CenterOnSelf" )]
+        [LogId( "CenterOnSelf" )]
         public ICommand CenterOnPositionCommand
         {
             get { return GetCommand( CenterOnPosition, () => _settings.UseGeolocation ); }
@@ -85,7 +85,7 @@ namespace PocketCampus.Map.ViewModels
         /// <summary>
         /// Gets the command executed to show the settings page.
         /// </summary>
-        [CommandLogId( "OpenSettings" )]
+        [LogId( "OpenSettings" )]
         public Command ViewSettingsCommand
         {
             get { return GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
@@ -129,7 +129,7 @@ namespace PocketCampus.Map.ViewModels
                 //layers = layers.Where( l => l.CanDisplay );
                 //foreach ( var layer in layers )
                 //{
-                //    layer.Items = await _mapService.GetLayerItemsAsync( layer.Id );
+                //    layer.Items = await _mapService.GetLayerItemsAsync( layer.Id, token );
                 //    foreach ( var item in layer.Items )
                 //    {
                 //        item.ImageUrl = "http://pocketcampus.epfl.ch/" + layer.ImageUrl;

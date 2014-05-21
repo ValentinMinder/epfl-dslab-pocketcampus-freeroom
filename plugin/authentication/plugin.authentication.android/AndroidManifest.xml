@@ -42,6 +42,7 @@
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
 				<data android:scheme="https" android:host="tequila.epfl.ch" android:path="/cgi-bin/tequila/requestauth" />
+				<data android:scheme="https" android:host="tequila.epfl.ch" android:path="/tequila/auth" />
 			</intent-filter>			
 			    
 <!-- 			Communication with Tequila     -->

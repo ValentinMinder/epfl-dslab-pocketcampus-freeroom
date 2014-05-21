@@ -7,14 +7,6 @@
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
                                Height="44" Width="120">
-    <!-- Control resources -->
-    <comControls:ObservableControl.Resources>
-        <!-- A very simple button without any border or background -->
-        <ControlTemplate x:Key="SimpleButton" TargetType="Button">
-            <ContentPresenter />
-        </ControlTemplate>
-    </comControls:ObservableControl.Resources>
-
     <!-- Main grid -->
     <Grid x:Name="LayoutRoot">
         <Grid.ColumnDefinitions>
@@ -29,21 +21,15 @@
 
         <!-- "Lunch" button -->
         <Button Command="{Binding SetLunchCommand}"
-                Template="{StaticResource SimpleButton}">
-            <Image Source="/Assets/Lunch.png"
-                   Width="32"
-                   Height="32"
-                   Margin="2" />
+                Style="{StaticResource SimpleButtonStyle}">
+            <ContentControl Template="{StaticResource LunchIcon}" />
         </Button>
 
         <!-- "Dinner" button -->
         <Button Grid.Column="1"
                 Command="{Binding SetDinnerCommand}"
-                Template="{StaticResource SimpleButton}">
-            <Image Source="/Assets/Dinner.png"
-                   Width="32"
-                   Height="32"
-                   Margin="2" />
+                Style="{StaticResource SimpleButtonStyle}">
+            <ContentControl Template="{StaticResource DinnerIcon}" />
         </Button>
 
         <!-- Visual states to move the 'selected' underlay -->

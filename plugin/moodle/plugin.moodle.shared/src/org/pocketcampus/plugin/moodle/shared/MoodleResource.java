@@ -27,8 +27,8 @@ public class MoodleResource implements org.apache.thrift.TBase<MoodleResource, M
   private static final org.apache.thrift.protocol.TField I_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("iName", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField I_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("iUrl", org.apache.thrift.protocol.TType.STRING, (short)2);
 
-  public String iName; // required
-  public String iUrl; // required
+  private String iName; // required
+  private String iUrl; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

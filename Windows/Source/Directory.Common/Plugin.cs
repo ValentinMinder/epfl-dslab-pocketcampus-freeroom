@@ -2,10 +2,12 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Collections.Generic;
 using PocketCampus.Common;
+using PocketCampus.Directory.Models;
 using PocketCampus.Directory.Services;
 using PocketCampus.Directory.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Directory
 {
@@ -14,6 +16,10 @@ namespace PocketCampus.Directory
     /// </summary>
     public class Plugin : IPlugin
     {
+        private const string SearchQuery = "search";
+        private const string SearchQueryParameter = "q";
+        private const string ViewPersonQuery = "view";
+
         /// <summary>
         /// Gets the plugin's ID.
         /// </summary>
@@ -43,7 +49,24 @@ namespace PocketCampus.Directory
         /// </summary>
         public void NavigateTo( INavigationService navigationService )
         {
-            navigationService.NavigateTo<MainViewModel>();
+            navigationService.NavigateTo<MainViewModel, ViewPersonRequest>( new ViewPersonRequest() );
+        }
+
+        /// <summary>
+        /// Navigates to the plugin from an external source, with a destination and parameters.
+        /// </summary>
+        public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService )
+        {
+            switch ( destination )
+            {
+                case SearchQuery:
+                    navigationService.NavigateTo<MainViewModel, ViewPersonRequest>( new ViewPersonRequest( parameters[SearchQueryParameter] ) );
+                    break;
+
+                case ViewPersonQuery:
+                    navigationService.NavigateTo<PersonViewModel, Person>( Person.Parse( parameters ) );
+                    break;
+            }
         }
     }
 }

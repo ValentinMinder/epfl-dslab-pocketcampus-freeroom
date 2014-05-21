@@ -32,13 +32,13 @@ public class MoodleAssignment implements org.apache.thrift.TBase<MoodleAssignmen
   private static final org.apache.thrift.protocol.TField I_DUE_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("iDueDate", org.apache.thrift.protocol.TType.I64, (short)6);
   private static final org.apache.thrift.protocol.TField I_GRADE_FIELD_DESC = new org.apache.thrift.protocol.TField("iGrade", org.apache.thrift.protocol.TType.STRING, (short)7);
 
-  public int iId; // required
-  public String iTitle; // required
-  public String iDesc; // required
-  public MoodleCourse iCourse; // required
-  public long iPostingDate; // required
-  public long iDueDate; // required
-  public String iGrade; // required
+  private int iId; // required
+  private String iTitle; // required
+  private String iDesc; // required
+  private MoodleCourse iCourse; // required
+  private long iPostingDate; // required
+  private long iDueDate; // required
+  private String iGrade; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.Directory.Models;
@@ -13,19 +14,14 @@ namespace PocketCampus.Directory.Services
 {
     public sealed class DirectoryService : ThriftServiceImplementation<IDirectoryService>, IDirectoryService
     {
-        public DirectoryService( IServerConfiguration config )
-            : base( config.CreateCommunication( "directory" ) )
+        public DirectoryService( IServerAccess access )
+            : base( access.CreateCommunication( "directory" ) )
         {
         }
 
-        public Task<Person[]> SearchPeopleAsync( string query )
+        public Task<SearchResponse> SearchAsync( SearchRequest request, CancellationToken cancellationToken )
         {
-            return CallAsync<string, Person[]>( x => x.SearchPeopleAsync, query );
-        }
-
-        public Task<string[]> SearchPartialMatchesAsync( string query )
-        {
-            return CallAsync<string, string[]>( x => x.SearchPartialMatchesAsync, query );
+            return CallAsync<SearchRequest, CancellationToken, SearchResponse>( x => x.SearchAsync, request, cancellationToken );
         }
     }
 }

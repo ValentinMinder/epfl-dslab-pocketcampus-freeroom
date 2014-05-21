@@ -1,1118 +1,730 @@
 package org.pocketcampus.plugin.food.android;
 
+import static org.pocketcampus.android.platform.sdk.utils.SetUtils.*;
+import static org.pocketcampus.android.platform.sdk.utils.MapUtils.*;
+import static org.pocketcampus.android.platform.sdk.utils.DialogUtils.*;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TimeZone;
 
 import org.pocketcampus.plugin.food.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
-import org.pocketcampus.android.platform.sdk.ui.dialog.MenuDialog;
-import org.pocketcampus.android.platform.sdk.ui.dialog.RatingDialog;
-import org.pocketcampus.android.platform.sdk.ui.element.RatableView;
-import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewConstructor;
-import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewLabeler;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.RatableExpandableListViewElement;
-import org.pocketcampus.android.platform.sdk.ui.list.RatableListViewElement;
-import org.pocketcampus.plugin.food.android.iface.IFoodMainView;
-import org.pocketcampus.plugin.food.android.iface.IFoodModel;
-import org.pocketcampus.plugin.food.shared.Meal;
+import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
+import org.pocketcampus.android.platform.sdk.ui.adapter.MultiListAdapter;
+import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuated;
+import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuator;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.android.platform.sdk.utils.Preparated;
+import org.pocketcampus.android.platform.sdk.utils.Preparator;
+import org.pocketcampus.android.platform.sdk.utils.ScrollStateSaver;
+import org.pocketcampus.plugin.food.android.FoodController.AMeal;
+import org.pocketcampus.plugin.food.android.FoodController.AResto;
+import org.pocketcampus.plugin.food.android.iface.IFoodView;
+import org.pocketcampus.plugin.food.shared.MealTime;
+import org.pocketcampus.plugin.food.shared.MealType;
+import org.pocketcampus.plugin.food.shared.PriceTarget;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
+import org.pocketcampus.plugin.map.shared.MapItem;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
-import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 /**
  * The Main View of the Food plugin, first displayed when accessing Food.
  * 
  * Displays menus by restaurants, preferences, suggestions and ratings
  * 
- * @author Elodie <elodienilane.triponez@epfl.ch>
- * @author Oriane <oriane.rodriguez@epfl.ch>
+ * @author Amer <amer@accandme.com>
  * 
  */
-public class FoodMainView extends PluginView implements IFoodMainView {
-	/** Main Activity */
-	private Activity mActivity;
+public class FoodMainView extends PluginView implements IFoodView {
 
-	/* MVC */
-	/** The controller that does the interface between Model and View */
+	
+	public static final String MAP_KEY_MEAL_OBJ = "MAP_KEY_MEAL_OBJ";
+
 	private FoodController mController;
-	/** The corresponding model */
-	private IFoodModel mModel;
+	private FoodModel mModel;
+	
+	private boolean displayingList;
+	
 
-	/* Layout */
-	/** A simple full screen layout */
-	private StandardTitledLayout mLayout;
-
-	/** The main list with menus */
-	private RatableExpandableListViewElement mExpandableList;
-
-	/** The main list with suggestions and ratings */
-	private RatableListViewElement mList;
-
-	/* Constants */
-	/** Code used to make a request to the suggestions activity */
-	private final int SUGGESTIONS_REQUEST_CODE = 1;
-
-	/* Listeners */
-	/** Listener for when you click on a line in the list */
-	private OnItemClickListener mOnLineClickListener;
-
-	/** Listener for when you click on a rating in the list */
-	private OnItemClickListener mOnRatingClickListener;
-
-	/** The action shown in action bar to toggle menus by restaurants or ratings */
-	private ShowAllAction mShowAllMenusAction;
-	/** The action shown in action bar to toggle menus by restaurants or ratings */
-	private ShowByRestaurantOrRatingsAction mShowMenusOrRatingAction;
-	/** The action shown in action bar when suggestions are displayed */
-	private ShowBySuggestionsAction mShowSuggestionsAction;
-
-	/**
-	 * Keeps in memory whether we are coming back from choosing restaurant
-	 * preferences.
-	 */
-	private boolean backFromPreferences;
-
-	/**
-	 * Defines what the main controller is for this view.
-	 */
+	private Set<Long> restosInRS = new HashSet<Long>();
+	private Set<MealType> typesInRS = new HashSet<MealType>();
+	
+	Map<MealType, List<AMeal>> mealsByTypes;
+	
+	Set<Long> filteredRestos = new HashSet<Long>();
+	Set<MealType> filteredTypes = new HashSet<MealType>();
+	
+	Long foodDay = null; // today
+	MealTime foodTime = MealTime.LUNCH;
+	
+	ListView mList;
+	ScrollStateSaver scrollState;
+		
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return FoodController.class;
 	}
 
-	/**
-	 * Called once the view is connected to the controller. If you don't
-	 * implement <code>getMainControllerClass()</code> then the controller given
-	 * here will simply be <code>null</code>.
-	 */
 	@Override
-	protected void onDisplay(Bundle savedInstanceState,
-			PluginController controller) {
-		// Tracker
-		Tracker.getInstance().trackPageView("food");
-
-		Log.d("ACTIVITY", "onDisplay");
-		mActivity = this;
+	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
+		
 		// Get and cast the controller and model
 		mController = (FoodController) controller;
 		mModel = (FoodModel) controller.getModel();
 
-		// Ugly, but works for now
-		backFromPreferences = false;
+		setContentView(R.layout.food_main);
+		mList = (ListView) findViewById(R.id.food_main_list);
+		displayingList = false;
+		StandardLayout sl = new StandardLayout(this);
+		setContentView(sl);
 
-		// The StandardLayout is a RelativeLayout with a TextView in its center.
-		mLayout = new StandardTitledLayout(this);
-		mLayout.hideTitle();
-
-		// The ActionBar is added automatically when you call setContentView
-		setContentView(mLayout);
-
-		mExpandableList = new RatableExpandableListViewElement(this);
-
-		mList = new RatableListViewElement(this);
-
-		// We need to force the display before asking the controller for the
-		// data,
-		// as the controller may take some time to get it.
-		displayData();
+		setActionBarTitle(getString(R.string.food_plugin_title));
 	}
 
-	/**
-	 * Called when this view is accessed after already having been initialized
-	 * before
-	 */
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		Log.d("ACTIVITY", "onRestart");
-		if (backFromPreferences) {
-			refreshDisplay();
-		}
-	}
 
 	/**
-	 * Initiates request for the restaurant and meal data, as well as whether
-	 * the user has already voted today.
-	 */
-	private void displayData() {
-		mLayout.setText(getResources().getString(R.string.food_loading));
-		mController.getMeals();
-	}
-
-	/**
-	 * Refreshes the display after some changes, e.g. preferences or suggestions
-	 */
-	private void refreshDisplay() {
-		showMenusByRestaurants();
-		backFromPreferences = false;
-	}
-
-	/**
-	 * Main Food Options menu contains access to Meals by restaurants, ratings,
-	 * Suggestions and Settings
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.food_main, menu);
-		return true;
-	}
-
-	/**
-	 * Decides what happens when the options menu is opened and an option is
-	 * chosen (what view to display)
-	 */
-	@Override
-	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		if (item.getItemId() == R.id.food_by_suggestions) {
-			// Extras to add to the Intent
-			List<Meal> meals = mModel.getMealsByRatings();
-			Vector<Meal> mealsV = new Vector<Meal>();
-			mealsV.addAll(meals);
-
-			// Intent to start the SuggestionsView
-			Intent suggestions = new Intent(getApplicationContext(),
-					FoodSuggestionsView.class);
-			suggestions.putExtra("org.pocketcampus.suggestions.meals", mealsV);
-			startActivityForResult(suggestions, SUGGESTIONS_REQUEST_CODE);
-
-		} else if (item.getItemId() == R.id.food_by_settings) {
-			backFromPreferences = true;
-			Intent settings = new Intent(getApplicationContext(),
-					FoodPreferencesView.class);
-			startActivity(settings);
-		}
-		return true;
-	}
-
-	/**
-	 * Not used
-	 */
-	public void restaurantsUpdated() {
-	}
-
-	/**
-	 * Called when the list of menus has been updated. Displays the view by
-	 * restaurants.
-	 */
-	@Override
-	public void menusUpdated() {
-		showMenusByRestaurants();
-	}
-
-	/**
-	 * Creates a menu dialog for a particular meal. Contains the title of the
-	 * menu with the restaurant at which it is available, as well as the
-	 * content, and buttons to vote for the meal
+	 * Handles the intent that was used to start this plugin.
 	 * 
-	 * @param meal
-	 *            the meal for which to create a dialog
+	 * We need to read the Extras.
 	 */
-	public void menuDialog(Meal meal) {
-		// Create the Builder for the Menu dialog
-		MenuDialog.Builder b = new MenuDialog.Builder(mActivity);
-		b.setCanceledOnTouchOutside(true);
+	@Override
+	protected void handleIntent(Intent aIntent) {
+		
+		mController.refreshFood(this, foodDay, foodTime, false);
 
-		// Set different values for the dialog
-		b.setTitle(meal.getName() + " @ " + meal.getRestaurant().getName());
-		b.setDescription(meal.getMealDescription());
-		b.setRating(mModel.getHasVoted(), (float) 0.0, meal.getRating()
-				.getNumberOfVotes());
+		
+		
+		//Tracker
+		//if(eventPoolId == Constants.CONTAINER_EVENT_ID) Tracker.getInstance().trackPageView("food");
+		//else Tracker.getInstance().trackPageView("food/" + eventPoolId + "/subevents");
+	}
 
-		b.setFirstButton(R.string.food_menu_dialog_firstButton,
-				new MenuDialogListener(b, meal));
-		b.setSecondButton(R.string.food_menu_dialog_secondButton,
-				new MenuDialogListener(b, meal));
+	/**
+	 * This is called when the Activity is resumed.
+	 * 
+	 * If the user presses back on the Authentication window,
+	 * This Activity is resumed but we do not have the
+	 * credentials. In this case we close the Activity.
+	 */
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if(displayingList && scrollState != null) {
+			scrollState.restore(mList);
+		}
+	}
 
-		// Create the dialog and display it
-		MenuDialog dialog = b.create();
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if(displayingList)
+			scrollState = new ScrollStateSaver(mList);
+	}
+	
+	
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.clear();
+		MenuItem pickDateMenu = menu.add(getString(R.string.food_menu_view_other_day));
+		pickDateMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				Calendar c = Calendar.getInstance();
+				DatePickerDialog dpd = new DatePickerDialog(FoodMainView.this, new OnDateSetListener() {
+					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+						if(!view.isShown())
+							return; // bug in Jely Bean: http://stackoverflow.com/questions/11444238/jelly-bean-datepickerdialog-is-there-a-way-to-cancel
+						try {
+							DateFormat df = new SimpleDateFormat("yyyy-M-d'T'HH:mm:ss'Z'", Locale.US);
+							df.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+							foodDay = df.parse(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + "T12:00:00Z").getTime();
+							mController.refreshFood(FoodMainView.this, foodDay, foodTime, false);
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+					}
+				}, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+				dpd.show();
+				return true;
+			}
+		});
+		MenuItem pickTimeMenu = menu.add(foodTime == MealTime.DINNER ? getString(R.string.food_menu_view_lunch_menus) : getString(R.string.food_menu_view_evening_menus));
+		pickTimeMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				foodTime = (foodTime == MealTime.DINNER ? MealTime.LUNCH : MealTime.DINNER);
+				mController.refreshFood(FoodMainView.this, foodDay, foodTime, false);
+				return true;
+			}
+		});
+		return true;
+	}
+
+	
+
+
+
+	@Override
+	public void foodUpdated() {
+		
+		//System.out.println("foodUpdated # of meals " + mModel.getMeals().size());
+		
+		mealsByTypes = new HashMap<MealType, List<AMeal>>();
+		Set<Long> newRestosInRS = new HashSet<Long>();
+		Set<MealType> newTypesInRS = new HashSet<MealType>();
+		for(AMeal m : mModel.getMeals().values()) {
+			newRestosInRS.add(m.resto);
+			newTypesInRS.addAll(m.types);
+			for(MealType t : m.types) {
+				if(!mealsByTypes.containsKey(t))
+					mealsByTypes.put(t, new LinkedList<AMeal>());
+				mealsByTypes.get(t).add(m);
+			}
+		}
+		
+		restosInRS = newRestosInRS;
+		typesInRS = newTypesInRS;
+		
+
+		
+		updateDisplay(true);
+		
+	}
+	
+	private void updateFilters() {
+		filteredRestos = difference(restosInRS, mModel.getDislikedRestos());
+		filteredTypes = difference(typesInRS, mModel.getDislikedTypes());
+		
+	}
+	
+	private void updateActionBar() {
+		removeAllActionsFromActionBar();
+		final Map<Long, String> subMapRestos = subMap(mController.getRestoNames(), restosInRS);
+		final int restoFilterIcon = (difference(restosInRS, filteredRestos).size() == 0 ? R.drawable.food_filter : R.drawable.food_filter_sel);
+		if(subMapRestos.size() > 0) {
+			addActionToActionBar(new Action() {
+				public void performAction(View view) {
+					showMultiChoiceDialogSbN(FoodMainView.this, subMapRestos, getString(R.string.food_dialog_resto), filteredRestos, new MultiChoiceHandler<Long>() {
+						public void saveSelection(Long t, boolean isChecked) {
+							if(isChecked)
+								mModel.removeDislikedResto(t);
+							else
+								mModel.addDislikedResto(t);
+							updateDisplay(true);
+						}
+					});
+				}
+				public int getDrawable() {
+					return restoFilterIcon;
+				}
+			});
+		}
+		final Map<MealType, String> subMapTypes = subMap(mController.getTypeNames(), typesInRS);
+		final int typeFilterIcon = (difference(typesInRS, filteredTypes).size() == 0 ? R.drawable.food_tags : R.drawable.food_tags_sel);
+		if(subMapTypes.size() > 0) {
+			addActionToActionBar(new Action() {
+				public void performAction(View view) {
+					showMultiChoiceDialog(FoodMainView.this, subMapTypes, getString(R.string.food_dialog_types), filteredTypes, new MultiChoiceHandler<MealType>() {
+						public void saveSelection(MealType t, boolean isChecked) {
+							if(isChecked)
+								mModel.removeDislikedType(t);
+							else
+								mModel.addDislikedType(t);
+							updateDisplay(true);
+						}
+					});
+				}
+				public int getDrawable() {
+					return typeFilterIcon;
+				}
+			});
+		}
+		
+	}
+	
+	private void updateDisplay(boolean saveScroll) {
+
+		updateFilters();
+		updateActionBar();
+		
+		if(saveScroll && displayingList)
+			scrollState = new ScrollStateSaver(mList);
+		
+		Set<AMeal> dislikedMeals = new HashSet<AMeal>();
+		for(MealType typ : mModel.getDislikedTypes()) {
+			List<AMeal> typeMeals = mealsByTypes.get(typ);
+			if(typeMeals == null) // if tag becomes empty (shorter period selected)
+				continue; // then skip it
+			dislikedMeals.addAll(typeMeals);
+		}
+		
+		Map<Long, List<AMeal>> mealsByResto = new HashMap<Long, List<AMeal>>();
+		
+		
+		for(AMeal m : difference(mModel.getMeals().values(), dislikedMeals)) {
+			if(!mealsByResto.containsKey(m.resto))
+				mealsByResto.put(m.resto, new LinkedList<AMeal>());
+			mealsByResto.get(m.resto).add(m);
+		}
+		
+		
+		//SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.food_list_header);
+		MultiListAdapter adapter = new MultiListAdapter();
+		List<AResto> restoList = new ArrayList<AResto>(mController.getRestos().values());
+		Collections.sort(restoList, getRestoComp4sort());
+		for(AResto r : restoList) {
+			if(!filteredRestos.contains(r.id))
+				continue;
+			List<AMeal> categEvents = mealsByResto.get(r.id);
+			if(categEvents == null) // if category becomes empty (filtering by tags)
+				continue; // then skip it
+			
+			Preparated<AResto> pH = new Preparated<AResto>(Arrays.asList(new AResto[] {r}), new Preparator<AResto>() {
+				public int[] resources() {
+					return new int[] { R.id.food_list_header_title, R.id.food_list_header_satisfaction, R.id.food_list_header_map };
+				}
+				public Object content(int res, final AResto e) {
+					switch (res) {
+					case R.id.food_list_header_title:
+						return e.name;
+					case R.id.food_list_header_satisfaction:
+						return e.satisfaction;
+					case R.id.food_list_header_map:
+						return new Actuated(getString(R.string.food_button_seemap_inline), new Actuator() {
+							public void triggered() {
+								showOnMap(e.location);
+							}
+						});
+					default:
+						return null;
+					}
+				}
+				public void finalize(Map<String, Object> map, AResto item) {
+					map.put(LazyAdapter.NOT_SELECTABLE, "1");
+				}
+			});
+			adapter.addSection(new LazyAdapter(this, pH.getMap(), R.layout.food_list_header_row, pH.getKeys(), pH.getResources()));
+			
+			
+			Collections.sort(categEvents, getMealComp4sort());
+			Preparated<AMeal> p = new Preparated<AMeal>(categEvents, new Preparator<AMeal>() {
+				public int[] resources() {
+					return new int[] { R.id.food_title, R.id.food_description, R.id.food_thumbnail, R.id.food_price, R.id.food_meal_satisfaction, R.id.food_meal_vote };
+				}
+				public Object content(int res, final AMeal e) {
+					switch (res) {
+					case R.id.food_title:
+						return e.name;
+					case R.id.food_description:
+						return e.desc;
+					case R.id.food_thumbnail:
+						return mController.getMealTypePicUrls().get(e.types.get(0));
+					case R.id.food_price:
+						return new Actuated(e.price, new Actuator() {
+							public void triggered() {
+								promptUserStatus();
+							}
+						});
+					case R.id.food_meal_satisfaction:
+						return e.satisfaction;
+					case R.id.food_meal_vote:
+						return new Actuated(getString(R.string.food_button_vote_inline), new Actuator() {
+							public void triggered() {
+								voteFor(e);
+								//Toast.makeText(getApplicationContext(), "You are trying to vote -- I know", Toast.LENGTH_SHORT).show();
+							}
+						});
+					default:
+						return null;
+					}
+				}
+				public void finalize(Map<String, Object> map, AMeal item) {
+					map.put(MAP_KEY_MEAL_OBJ, item);
+				}
+			});
+			adapter.addSection(new LazyAdapter(this, p.getMap(), R.layout.food_list_row, p.getKeys(), p.getResources()));
+			
+			
+		}
+		
+		if(mModel.getMeals().size() == 0) {
+			displayingList = false;
+			StandardLayout sl = new StandardLayout(this);
+			sl.setText(getString(R.string.food_no_menus));
+			setContentView(sl);
+		} else {
+			if(!displayingList) {
+				setContentView(R.layout.food_main);
+				mList = (ListView) findViewById(R.id.food_main_list);
+				displayingList = true;
+			}
+			TextView headerTitle = (TextView) findViewById(R.id.food_header_title);
+			//TextView headerDate = (TextView) findViewById(R.id.food_header_date);
+			DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(this);
+			String t = (foodTime == MealTime.DINNER ? getString(R.string.food_title_evening_menus) : getString(R.string.food_title_lunch_menus));
+			String d = (dateFormat.format(new Date(foodDay == null ? System.currentTimeMillis() : foodDay)));
+			headerTitle.setText(t + " " + d);
+			//headerDate.setText("");
+			mList.setAdapter(adapter);
+			//mList.setCacheColorHint(Color.TRANSPARENT);
+			//mList.setFastScrollEnabled(true);
+			//mList.setScrollingCacheEnabled(false);
+			//mList.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
+			//mList.setDivider(null);
+			//mList.setDividerHeight(0);
+			
+			mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
+			
+			mList.setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					Object o = arg0.getItemAtPosition(arg2);
+					if(o instanceof Map<?, ?>) {
+						Object obj = ((Map<?, ?>) o).get(MAP_KEY_MEAL_OBJ);
+						if(obj != null && obj instanceof AMeal) {
+							mealMenu((AMeal) obj);
+						}
+					} else {
+						Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+			
+			if(scrollState != null)
+				scrollState.restore(mList);
+			
+		}
+	}
+	
+	private void sendToGoogleTranslate(String str) {
+		try{
+			Intent i = new Intent();
+			i.setAction(Intent.ACTION_SEND);
+			i.putExtra(Intent.EXTRA_TEXT, str);
+			i.setComponent(new ComponentName("com.google.android.apps.translate", "com.google.android.apps.translate.TranslateActivity"));
+			startActivity(i);
+		} catch(Exception e) {
+			Toast.makeText(getApplicationContext(), getString(R.string.food_toast_nogoogletranslate), Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	private void showOnMap(MapItem mapItem) {
+		try{
+			Intent i = new Intent();
+			i.setAction(Intent.ACTION_VIEW);
+			i.setData(Uri.parse("pocketcampus://map.plugin.pocketcampus.org/search"));
+			i.putExtra("MapElement", mapItem);
+			startActivity(i);
+		} catch(Exception e) {
+			// Should never happen
+			Toast.makeText(getApplicationContext(), "The Map plugin is not installed??", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	private void promptUserStatus() {
+		Map<PriceTarget, String> priceTargets = new HashMap<PriceTarget, String>();
+		for(PriceTarget t : PriceTarget.values()) {
+			if(t == PriceTarget.ALL)
+				continue;
+			priceTargets.put(t, mController.translateEnum(t.name()));
+		}
+		showSingleChoiceDialog(this, priceTargets, getString(R.string.food_dialog_prices), mModel.getUserStatus(), new SingleChoiceHandler<PriceTarget>() {
+			public void saveSelection(PriceTarget t) {
+				mModel.setUserStatus(t);
+				mController.refreshFood(FoodMainView.this, foodDay, foodTime, false);
+			}
+		});
+	}
+
+	private void voteFor(final AMeal e) {
+		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		View titleV = inflater.inflate(R.layout.sdk_actionbar_dialog, null);
+		((TextView) titleV.findViewById(R.id.actionbar_title)).setText(getString(R.string.food_dialog_vote));
+		//v.setOnClickListener()
+		final View bodyV = inflater.inflate(R.layout.food_vote_view, null);
+		((TextView) bodyV.findViewById(R.id.food_dialog_h1)).setText(mController.getRestos().get(e.resto).name);
+		((TextView) bodyV.findViewById(R.id.food_dialog_h2)).setText(e.name);
+		final ImageView im1 = (ImageView) bodyV.findViewById(R.id.food_smiley_sad);
+		final ImageView im2 = (ImageView) bodyV.findViewById(R.id.food_smiley_soso);
+		final ImageView im3 = (ImageView) bodyV.findViewById(R.id.food_smiley_happy);
+		im1.setClickable(true);
+		im2.setClickable(true);
+		im3.setClickable(true);
+		im1.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//Toast.makeText(getApplicationContext(), "Click!!", Toast.LENGTH_SHORT).show();
+				bodyV.setTag((Double) 0.0);
+				Resources res = getResources();
+				im1.setBackgroundColor(res.getColor(R.color.epfl_official_red));
+				im2.setBackgroundColor(res.getColor(R.color.transparent));
+				im3.setBackgroundColor(res.getColor(R.color.transparent));
+				bodyV.invalidate();
+			}
+		});
+		im2.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//Toast.makeText(getApplicationContext(), "Click!!", Toast.LENGTH_SHORT).show();
+				bodyV.setTag((Double) 0.5);
+				Resources res = getResources();
+				im1.setBackgroundColor(res.getColor(R.color.transparent));
+				im2.setBackgroundColor(res.getColor(R.color.epfl_official_red));
+				im3.setBackgroundColor(res.getColor(R.color.transparent));
+				bodyV.invalidate();
+			}
+		});
+		im3.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//Toast.makeText(getApplicationContext(), "Click!!", Toast.LENGTH_SHORT).show();
+				bodyV.setTag((Double) 1.0);
+				Resources res = getResources();
+				im1.setBackgroundColor(res.getColor(R.color.transparent));
+				im2.setBackgroundColor(res.getColor(R.color.transparent));
+				im3.setBackgroundColor(res.getColor(R.color.epfl_official_red));
+				bodyV.invalidate();
+			}
+		});
+		AlertDialog dialog = new AlertDialog.Builder(this)
+				.setCustomTitle(titleV)
+				.setInverseBackgroundForced(true)
+				.setPositiveButton(getString(R.string.food_button_send), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface arg0, int arg1) {
+						Object o = bodyV.getTag();
+						if(o != null && o instanceof Double) {
+							//Toast.makeText(getApplicationContext(), "Voting " + o, Toast.LENGTH_SHORT).show();
+							mController.sendVoteReq(FoodMainView.this, e.id, (Double) o);
+						} else {
+							Toast.makeText(getApplicationContext(), getString(R.string.food_toast_vote_noselection), Toast.LENGTH_SHORT).show();
+						}
+					}
+				})
+				.setView(bodyV)
+				.create();
+		dialog.setCanceledOnTouchOutside(true);
 		dialog.show();
 	}
+	
+	private void mealMenu(final AMeal m) {
+		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-	/**
-	 * Called when the ratings have been updated. Refreshes the view with the
-	 * new ratings.
-	 */
-	@Override
-	public void ratingsUpdated() {
-		Log.d("RATING", "All Ratings updated");
-		if (mExpandableList.getAdapter() != null) {
-			mExpandableList.notifyDataSetChanged();
-		}
-		if (mList.getAdapter() != null) {
-			mList.notifyDataSetChanged();
-		}
+		View titleV = inflater.inflate(R.layout.sdk_actionbar_dialog, null);
+		((TextView) titleV.findViewById(R.id.actionbar_title)).setText(m.name);
+		
+		AlertDialog dialog = new AlertDialog.Builder(this)
+				.setCustomTitle(titleV)
+				.setAdapter(new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, 
+						new String[] {getString(R.string.food_button_vote), getString(R.string.food_button_googletranslate), getString(R.string.food_button_copytext)}), 
+						new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						switch(arg1) {
+						case 0:
+							voteFor(m);
+							break;
+						case 1:
+							sendToGoogleTranslate(m.name + " " + m.desc);
+							break;
+						case 2:
+							android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+						    clipboard.setText(m.name + " " + m.desc);
+							Toast.makeText(getApplicationContext(), getString(R.string.food_toast_copied), Toast.LENGTH_SHORT).show();
+							break;
+						default:
+							Toast.makeText(getApplicationContext(), arg1, Toast.LENGTH_SHORT).show();
+							break;
+						}
+						
+					}
+					
+				})
+				.setInverseBackgroundForced(true)
+				.create();
+		dialog.setCanceledOnTouchOutside(true);
+		dialog.show();
+		
 	}
+	
+	/*
+	private void updateDisplay(boolean saveScroll) {
 
-	/**
-	 * Creates a rating dialog for a particular meal.
-	 * 
-	 * @param meal
-	 *            the meal for which to create the rating dialog
-	 */
-	public void ratingDialog(Meal meal, long rating) {
-		if (!mModel.getHasVoted()) {
-			// Create the Builder for the Rating dialog
-			RatingDialog.Builder b = new RatingDialog.Builder(mActivity);
+		List<EpflRestaurant> meals;
 
-			// Set different values for the dialog
-			b.setTitle(R.string.food_rating_dialog_title);
-			b.setOkButton(R.string.food_rating_dialog_OK,
-					new RatingDialogListener(b, meal, rating));
-			b.setCancelButton(R.string.food_rating_dialog_cancel,
-					new RatingDialogListener());
-
-			// Create the dialog and display it
-			RatingDialog dialog = b.create();
-			dialog.show();
+		if(saveScroll && displayingList)
+			scrollState = new ScrollStateSaver(mList);
+		
+		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.food_list_header);
+		
+		Preparated<EpflRestaurant> p = new Preparated<EpflRestaurant>(meals, new Preparator<EpflRestaurant>() {
+			public int[] resources() {
+				return new int[] { R.id.food_title, R.id.food_speaker, R.id.food_thumbnail, R.id.food_time, R.id.food_fav_star };
+			}
+			public Object content(int res, final EpflRestaurant e) {
+				switch (res) {
+				case R.id.food_title:
+					return e.getCourseTitle();
+				case R.id.food_speaker:
+					return e.getCourseId();
+				case R.id.food_thumbnail:
+					return null;
+				case R.id.food_time:
+					return null;
+				case R.id.food_fav_star:
+					return R.drawable.sdk_transparent;
+				default:
+					return null;
+				}
+			}
+			public void finalize(Map<String, Object> map, EpflRestaurant item) {
+				map.put(MAP_KEY_COURSEID, item.getCourseId());
+			}
+		});
+		adapter.addSection("Courses", new LazyAdapter(this, p.getMap(), 
+				R.layout.food_list_row, p.getKeys(), p.getResources()));
+		
+		
+		if(userCourses.size() == 0) {
+			displayingList = false;
+			StandardLayout sl = new StandardLayout(this);
+			sl.setText(getResources().getString(R.string.food_no_menus));
+			setContentView(sl);
 		} else {
-			Toast.makeText(
-					this,
-					getResources()
-							.getString(R.string.food_rating_already_voted),
-					Toast.LENGTH_SHORT).show();
+			if(!displayingList) {
+				setContentView(R.layout.food_main);
+				mList = (ListView) findViewById(R.id.food_main_list);
+				displayingList = true;
+			}
+			mList.setAdapter(adapter);
+			//mList.setCacheColorHint(Color.TRANSPARENT);
+			//mList.setFastScrollEnabled(true);
+			//mList.setScrollingCacheEnabled(false);
+			//mList.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
+			//mList.setDivider(null);
+			//mList.setDividerHeight(0);
+			
+			mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
+			
+			mList.setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					Object o = arg0.getItemAtPosition(arg2);
+					if(o instanceof Map<?, ?>) {
+						Intent i = new Intent(FoodMainView.this, FoodCourseView.class);
+						i.putExtra(FoodCourseView.EXTRAS_KEY_COURSEID, ((Map<?, ?>) o).get(MAP_KEY_COURSEID).toString());
+						FoodMainView.this.startActivity(i);
+					} else {
+						Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+			
+			if(scrollState != null)
+				scrollState.restore(mList);
+			
 		}
 	}
-
-	/**
-	 * Called after a vote has been cast by a user to check whether it was
-	 * successful.
-	 * 
-	 * @param status
-	 *            what the server returned upon submitting the rating
-	 */
-	@Override
-	public void ratingSubmitted(SubmitStatus status) {
-		Log.d("RATING", "One Rating updated");
-
-		// Toast with the status
-		if (status.equals(SubmitStatus.VALID)) {
-			Log.d("RATING", "Valid");
-			Toast.makeText(this, R.string.food_rating_valid, Toast.LENGTH_SHORT)
-					.show();
-			// Update the Ratings
-			mController.getRatings();
-			mModel.setHasVoted(true);
-		} else if (status.equals(SubmitStatus.ALREADY_VOTED)) {
-			Log.d("RATING", "Already Voted");
-			Toast.makeText(this, R.string.food_rating_already_voted,
-					Toast.LENGTH_SHORT).show();
-		} else if (status.equals(SubmitStatus.TOO_EARLY)) {
-			Log.d("RATING", "Too Early");
-			Toast.makeText(this, R.string.food_rating_too_early,
-					Toast.LENGTH_SHORT).show();
-		} else if (status.equals(SubmitStatus.ERROR)) {
-			Log.d("RATING", "Error");
-			Toast.makeText(this, R.string.food_rating_error, Toast.LENGTH_SHORT)
-					.show();
-		}
+	*/
+	
+	public static Comparator<AMeal> getMealComp4sort() {
+		return new Comparator<AMeal>() {
+			public int compare(AMeal lhs, AMeal rhs) {
+				return lhs.name.compareTo(rhs.name);
+			}
+		};
 	}
+	public static Comparator<AResto> getRestoComp4sort() {
+		return new Comparator<AResto>() {
+			public int compare(AResto lhs, AResto rhs) {
+				return lhs.name.compareTo(rhs.name);
+			}
+		};
+	}
+	
 
-	/**
-	 * Displays a toast when an error happens upon contacting the server
-	 */
+	
+	
+	
+	
+
+	
+	
 	@Override
 	public void networkErrorHappened() {
+		Toast.makeText(getApplicationContext(), getString(R.string.sdk_connection_error_happened), Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	public void networkErrorCacheExists() {
+		Toast.makeText(getApplicationContext(), getString(R.string.sdk_connection_no_cache_yes), Toast.LENGTH_SHORT).show();
+		mController.refreshFood(this, foodDay, foodTime, true);
 	}
 
-	/**
-	 * Sets the listeners for when you click on a view, when you are displaying
-	 * menus by restaurants.
-	 * 
-	 * @param mealHashMap
-	 *            the <code>HashMap</code> containing the daily menus
-	 */
-	public void setHashMapOnClickListeners(
-			final HashMap<String, Vector<Meal>> mealHashMap) {
-		// Create Listeners
-		mOnLineClickListener = new OnItemClickListener() {
-
-			/**
-			 * Defines what is to be performed when the user clicks on an
-			 * element of the mensu list
-			 */
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View v,
-					int positionInSection, long arg3) {
-
-				final Meal meal = mealHashMap.get(v.getTag()).get(
-						positionInSection);
-				// Tracker
-				Tracker.getInstance()
-						.trackPageView("food/menus/dialog/" + meal);
-				menuDialog(meal);
-			}
-		};
-
-		mOnRatingClickListener = new OnItemClickListener() {
-
-			/**
-			 * Defines what is to be performed when the user clicks on a Rating
-			 * Bar in the list
-			 */
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View okButton,
-					int positionInSection, long rating) {
-
-				final Meal meal = mealHashMap.get(okButton.getTag()).get(
-						positionInSection);
-
-				// Tracker
-				Tracker.getInstance().trackPageView(
-						"food/menus/dialog/rating/" + meal);
-
-				ratingDialog(meal, rating);
-			}
-		};
+	@Override
+	public void foodServersDown() {
+		Toast.makeText(getApplicationContext(), getString(R.string.sdk_upstream_server_down), Toast.LENGTH_SHORT).show();
 	}
 
-	/**
-	 * Set the listeners for when you click on a view, when you are displaying a
-	 * simple list of menus.
-	 * 
-	 * @param mealList
-	 *            the corresponding list of menus
-	 */
-	public void setListOnClickListeners(final List<Meal> mealList,
-			RatableListViewElement l) {
-		// Create Listeners
-		mOnLineClickListener = new OnItemClickListener() {
-
-			/**
-			 * Defines what is to be performed when the user clicks on an
-			 * element of the menus list
-			 */
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View v,
-					int position, long arg3) {
-
-				final Meal meal = mealList.get(position);
-
-				// Tracker
-				Tracker.getInstance().trackPageView(
-						"food/ratingsORsuggestions/dialog/" + meal);
-				menuDialog(meal);
-			}
-		};
-
-		mOnRatingClickListener = new OnItemClickListener() {
-
-			/**
-			 * Defines what is to be performed when the user clicks on a
-			 * RatingBar in the list view
-			 */
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View okButton,
-					int position, long rating) {
-
-				final Meal meal = mealList.get(position);
-
-				// Tracker
-				Tracker.getInstance().trackPageView(
-						"food/ratingsORsuggestions/dialog/rating" + meal);
-				ratingDialog(meal, rating);
-			}
-		};
-
-		l.setOnLineClickListener(mOnLineClickListener);
-		l.setOnRatingClickListener(mOnRatingClickListener);
-
-	}
-
-	/**
-	 * Shows menus sorted by Restaurants.
-	 */
-	public void showMenusByRestaurants() {
-		final HashMap<String, Vector<Meal>> mealHashMap = mModel
-				.getMealsByRestaurants(this);
-		if (mealHashMap != null) {
-
-			// Removes everything
-			removeAllActionsFromActionBar();
-
-			// Add the action bar's button to expand all menus
-			if (mShowAllMenusAction == null) {
-				mShowAllMenusAction = new ShowAllAction();
-			} else {
-				mShowAllMenusAction.setIsShown(false);
-			}
-			addActionToActionBar(mShowAllMenusAction, 0);
-
-			// Add the action bar's button to show menus sorted by ratings
-			if (mShowMenusOrRatingAction == null
-					|| !mShowMenusOrRatingAction.isShown()) {
-				mShowMenusOrRatingAction = new ShowByRestaurantOrRatingsAction();
-			} else {
-				mShowMenusOrRatingAction.setIsRestaurant(true);
-			}
-			addActionToActionBar(mShowMenusOrRatingAction, 1);
-
-			// Iterate over the different restaurant menus
-			mLayout.removeFillerView();
-
-			if (!mealHashMap.isEmpty()) {
-
-				// Filtering restaurant that the user doesn't want to display
-				mExpandableList = new RatableExpandableListViewElement(this,
-						mealHashMap, mMealLabeler, mMealsViewConstructor);
-
-				setHashMapOnClickListeners(mealHashMap);
-
-				// Hide the text that says the list is empty
-				mLayout.hideText();
-				// Set the title to Restaurants
-				mLayout.setTitle(this.getString(R.string.food_by_restaurants));
-				// Add the list containing the meals
-				mLayout.addFillerView(mExpandableList);
-			} else {
-				// Set the centered text to empty menus
-				Date today = new Date();
-				int day = today.getDay();
-				Log.d("FOOD", "Day is " + day);
-				if (day == 0 || day == 6) {
-					mLayout.setText(getString(R.string.food_no_menus_week_end));
-				} else {
-					mLayout.setText(getString(R.string.food_no_menus));
-				}
-				// Hide the title as there is no content
-				mLayout.hideTitle();
-			}
-		}
-	}
-
-	/**
-	 * Shows menus sorted by Ratings.
-	 */
-	public void showMenusByRatings() {
-		List<Meal> mealsByRatings = mModel.getMealsByRatings();
-
-		// Remove the action bar's button to expand all menus
-		removeActionFromActionBar(mShowAllMenusAction);
-
-		// Add the action bar's button to show the menus sorted by restaurants
-		if (mShowMenusOrRatingAction == null) {
-			mShowMenusOrRatingAction = new ShowByRestaurantOrRatingsAction();
-		}
-		mShowMenusOrRatingAction.setIsRestaurant(false);
-
-		if (mealsByRatings != null && !mealsByRatings.isEmpty()) {
-			mLayout.removeFillerView();
-
-			// Create a new list by ratings
-			mList = new RatableListViewElement(this, mealsByRatings,
-					mMealWithRestaurantLabeler);
-
-			setListOnClickListeners(mealsByRatings, mList);
-
-			// Hide the text that says the list is empty
-			mLayout.hideText();
-			mLayout.setTitle(getString(R.string.food_by_ratings));
-			mLayout.addFillerView(mList);
-		} else {
-			mLayout.removeFillerView();
-			Date today = new Date();
-			int day = today.getDay();
-			Log.d("FOOD", "Day is " + day);
-			if (day == 0 || day == 6) {
-				mLayout.setText(getString(R.string.food_no_menus_week_end));
-			} else {
-				mLayout.setText(getString(R.string.food_no_menus));
-			}
-			mLayout.hideTitle();
-		}
-	}
-
-	/**
-	 * Shows menus sorted by Suggestions.
-	 * 
-	 * @param mealsBySuggestions
-	 *            the list coming from the suggestions activity that has to be
-	 *            displayed
-	 */
-	public void showMenusBySuggestions(ArrayList<Meal> mealsBySuggestions) {
-		removeOtherActions();
-
-		if (mLayout == null) {
-			mLayout = new StandardTitledLayout(this);
-		}
-
-		mShowSuggestionsAction = new ShowBySuggestionsAction();
-		removeAllActionsFromActionBar();
-		addActionToActionBar(mShowSuggestionsAction);
-
-		if (mealsBySuggestions != null && !mealsBySuggestions.isEmpty()) {
-			mLayout.removeFillerView();
-			mList = new RatableListViewElement(this, mealsBySuggestions,
-					mMealWithRestaurantLabeler);
-
-			setListOnClickListeners(mealsBySuggestions, mList);
-
-			// Hide the text that says the list is empty
-			mLayout.hideText();
-			mLayout.setTitle(getString(R.string.food_by_suggestions));
-			mLayout.addFillerView(mList);
-		} else {
-			Date today = new Date();
-			int day = today.getDay();
-			Log.d("FOOD", "Day is " + day);
-			if (day == 0 || day == 6) {
-				mLayout.removeFillerView();
-				mLayout.setText(getString(R.string.food_no_menus_week_end));
-			} else {
-				mLayout.removeFillerView();
-				mLayout.setText(getString(R.string.food_no_menus));
-			}
-			mLayout.hideTitle();
-		}
-	}
-
-	/**
-	 * Removes the button in the action bar to toggle menus by restaurant or
-	 * ratings.
-	 */
-	public void removeOtherActions() {
-
-		removeAllActionsFromActionBar();
-
-		// // Remove the expand action
-		// mActionBar.removeActionAt(0);
-		//
-		// if (mShowMenusOrRatingAction.isShown()) {
-		//
-		// // Remove the restaurants/ratings action
-		// mActionBar.removeActionAt(1);
-		// if (mShowMenusOrRatingAction != null) {
-		// mShowMenusOrRatingAction.setShown(false);
-		// }
-		// }
-	}
-
-	/**
-	 * Called when one of the Menu Dialog buttons is clicked.
-	 * 
-	 */
-	private class MenuDialogListener implements DialogInterface.OnClickListener {
-		/** Builder for the dialog */
-		private MenuDialog.Builder builder;
-		/** The meal for which the dialog was displayed */
-		private Meal meal;
-
-		/** Constructor */
-		public MenuDialogListener(MenuDialog.Builder b, Meal m) {
-			builder = b;
-			meal = m;
-		}
-
-		/**
-		 * Defines what is to be performed when the user clicks on the dialog
-		 * buttons. (rate, cancel)
-		 */
-		@Override
-		public void onClick(DialogInterface dialog, int code) {
-			switch (code) {
-			case DialogInterface.BUTTON1:
-				// Tracker
-				Tracker.getInstance().trackPageView("food/dialog/button/rate");
-				// Rate it
-				float rating = builder.getSubmittedRating();
-				dialog.dismiss();
-				mController.setRating((float) rating, meal);
-				break;
-
-			case DialogInterface.BUTTON2:
-				Tracker.getInstance()
-						.trackPageView("food/dialog/button/cancel");
-				// Cancel
-				dialog.dismiss();
-				break;
-
-			case DialogInterface.BUTTON3:
-				// Not defined
-				dialog.dismiss();
-				break;
-
-			default:
-				break;
-			}
-		}
-
-	}
-
-	/**
-	 * Called when one of the Rating Dialog buttons is clicked.
-	 * 
-	 */
-	private class RatingDialogListener implements
-			DialogInterface.OnClickListener {
-		/** The builder for the rating dialog */
-		private RatingDialog.Builder mBuilder;
-		/** The meal for which the dialog was displayed */
-		private Meal mMeal;
-		/** The rating displayed in the dialog */
-		private float mRating;
-
-		/** Empty constructor. */
-		public RatingDialogListener() {
-		}
-
-		/**
-		 * Constructor
-		 * 
-		 * @param builder
-		 *            the builder for the rating dialog.
-		 * @param meal
-		 *            the meal for which the dialog was displayed.
-		 * @param rating
-		 *            the rating in the dialog.
-		 */
-
-		public RatingDialogListener(RatingDialog.Builder builder, Meal meal,
-				float rating) {
-			mBuilder = builder;
-			mMeal = meal;
-			mRating = rating;
-		}
-
-		/**
-		 * Defines what is to be performed when the user click on the dialog
-		 * buttons (positive or negative).
-		 */
-		@Override
-		public void onClick(DialogInterface dialog, int code) {
-			switch (code) {
-
-			case DialogInterface.BUTTON_POSITIVE:
-				Tracker.getInstance().trackPageView(
-						"food/dialog/rating/button/rate");
-				mRating = mBuilder.getSubmittedRating();
-				Log.d("RATING", "Rating submitted : " + mRating);
-				dialog.dismiss();
-				mController.setRating((float) mRating, mMeal);
-				break;
-
-			case DialogInterface.BUTTON_NEGATIVE:
-				Tracker.getInstance().trackPageView(
-						"food/dialog/rating/button/cancel");
-				dialog.dismiss();
-				break;
-
-			default:
-				break;
-			}
-		}
-
-	}
-
-	/**
-	 * Called when coming back from another activity that was called with an
-	 * intent and from which we are expecting a result.
-	 * 
-	 * @param requestCode
-	 *            what request this result corresponds to
-	 * @param resultCode
-	 *            the status of the result
-	 * @param data
-	 *            the information gotten from the activity
-	 */
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		switch (requestCode) {
-		case SUGGESTIONS_REQUEST_CODE: // Result from the Suggestions class
-			Log.d("SUGGESTIONS", "OnActivityResult");
-
-			if (resultCode == Activity.RESULT_OK) {
-				Bundle extras = data.getExtras();
-				if (extras != null) {
-
-					@SuppressWarnings("unchecked")
-					ArrayList<Meal> list = (ArrayList<Meal>) extras
-							.getSerializable("org.pocketcampus.suggestions.meals");
-					Log.d("SUGGESTIONS", "Meals in return : " + list.size());
-
-					showMenusBySuggestions(list);
-
-				} else {
-					Log.d("SUGGESTIONS", "No extras !");
-				}
-			} else {
-				Log.d("SUGGESTIONS", "RESULT_PAS_OK !");
-			}
+	@Override
+	public void voteCastFinished(SubmitStatus status) {
+		switch(status) {
+		case ALREADY_VOTED:
+			Toast.makeText(getApplicationContext(), getString(R.string.food_toast_alreadyvoted), Toast.LENGTH_SHORT).show();
+			break;
+		case TOO_EARLY:
+			Toast.makeText(getApplicationContext(), getString(R.string.food_toast_tooearly), Toast.LENGTH_SHORT).show();
+			break;
+		case MEAL_IN_DISTANT_PAST:
+			Toast.makeText(getApplicationContext(), getString(R.string.food_toast_toolate), Toast.LENGTH_SHORT).show();
+			break;
+		case VALID:
+			Toast.makeText(getApplicationContext(), getString(R.string.food_toast_thanksforvote), Toast.LENGTH_SHORT).show();
+			mController.refreshFood(this, foodDay, foodTime, false);
+			break;
+		default:
 			break;
 		}
+		
 	}
 
-	/**
-	 * The labeler for a meal, to tell how it has to be displayed in a generic
-	 * view.
-	 */
-	IRatableViewLabeler<Meal> mMealLabeler = new IRatableViewLabeler<Meal>() {
-
-		/**
-		 * Returns the title of a meal
-		 * 
-		 * @param meal
-		 *            the meal to be displayed
-		 * @return the title of the meal
-		 */
-		@Override
-		public String getLabel(Meal meal) {
-			return meal.getName();
-		}
-
-		/**
-		 * Returns the description of a meal
-		 * 
-		 * @param meal
-		 *            the meal to be displayed
-		 * @return the description for the meal
-		 */
-		@Override
-		public String getDescription(Meal meal) {
-			return meal.getMealDescription();
-		}
-
-		/**
-		 * Returns the Rating of a meal
-		 * 
-		 * @param meal
-		 *            the meal to be displayed
-		 * @return the current rating for the meal
-		 */
-		@Override
-		public float getRating(Meal meal) {
-			return (float) meal.getRating().getRatingValue();
-		}
-
-		/**
-		 * Returns the Number Of Votes for a meal
-		 * 
-		 * @param meal
-		 *            the meal to be displayed
-		 * @return the number of votes for the meal
-		 */
-		@Override
-		public int getNumberOfVotes(Meal meal) {
-			return meal.getRating().getNumberOfVotes();
-		}
-
-		/**
-		 * Returns the name of the Restaurant the meal is available at.
-		 * 
-		 * @param meal
-		 *            the meal to be displayed
-		 * @return the restaurant at which it is available
-		 */
-		@Override
-		public String getPlaceName(Meal meal) {
-			return meal.getRestaurant().getName();
-		}
-	};
-
-	/**
-	 * The labeler for a meal, to tell how it has to be displayed in a generic
-	 * view.
-	 */
-	IRatableViewLabeler<Meal> mMealWithRestaurantLabeler = new IRatableViewLabeler<Meal>() {
-
-		/**
-		 * Returns the title of a meal
-		 * 
-		 * @param meal
-		 *            the meal to be displayed
-		 * @return the title of the meal
-		 */
-		@Override
-		public String getLabel(Meal meal) {
-			return meal.getName() + " @ " + meal.getRestaurant().getName();
-		}
-
-		/**
-		 * Returns the description of a meal
-		 * 
-		 * @param meal
-		 *            the meal to be displayed
-		 * @return the description for the meal
-		 */
-		@Override
-		public String getDescription(Meal meal) {
-			return meal.getMealDescription();
-		}
-
-		/**
-		 * Returns the Rating of a meal
-		 * 
-		 * @param meal
-		 *            the meal to be displayed
-		 * @return the current rating for the meal
-		 */
-		@Override
-		public float getRating(Meal meal) {
-			return (float) meal.getRating().getRatingValue();
-		}
-
-		/**
-		 * Returns the Number Of Votes for a meal
-		 * 
-		 * @param meal
-		 *            the meal to be displayed
-		 * @return the number of votes for the meal
-		 */
-		@Override
-		public int getNumberOfVotes(Meal meal) {
-			return meal.getRating().getNumberOfVotes();
-		}
-
-		/**
-		 * Returns the name of the Restaurant the meal is available at.
-		 * 
-		 * @param meal
-		 *            the meal to be displayed
-		 * @return the restaurant at which it is available
-		 */
-		@Override
-		public String getPlaceName(Meal meal) {
-			return meal.getRestaurant().getName();
-		}
-	};
-
-	/**
-	 * The constructor for a Meal View to be displayed in the list
-	 */
-	IRatableViewConstructor mMealsViewConstructor = new IRatableViewConstructor() {
-
-		@Override
-		public View getNewView(Object currentObject, Context context,
-				IRatableViewLabeler<? extends Object> labeler, int position) {
-
-			return new RatableView(currentObject, context, labeler,
-					mOnLineClickListener, mOnRatingClickListener, position);
-		}
-	};
-
-	/**
-	 * Display a message saying that there is nothing to display when an error
-	 * occurs while contacting the server.
-	 */
-	@Override
-	public void networkErrorHappened(String message) {
-		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-	}
-
-	/**
-	 * Takes care of showing the "show by restaurants" or "show by ratings"
-	 * button in the Action Bar
-	 * 
-	 * @author Elodie <elodienilane.triponez@epfl.ch>
-	 * @author Oriane <oriane.rodriguez@epfl.ch>
-	 * 
-	 */
-	private class ShowByRestaurantOrRatingsAction implements Action {
-		private boolean mButtonByRestaurants;
-		private boolean mIsShown;
-
-		/**
-		 * The constructor sets the boolean "shown by restaurant" and "is shown"
-		 * to true.
-		 */
-		public ShowByRestaurantOrRatingsAction() {
-			mButtonByRestaurants = true;
-			mIsShown = true;
-		}
-
-		/**
-		 * Returns the resource for the button icon in the action bar.
-		 */
-		@Override
-		public int getDrawable() {
-			if (mButtonByRestaurants) {
-				return R.drawable.food_menus_by_ratings;
-			} else {
-				return R.drawable.food_menus_by_restaurant;
-			}
-		}
-
-		/**
-		 * Defines what is to be performed when the user clicks on the button in
-		 * the action bar
-		 */
-		@Override
-		public void performAction(View view) {
-			mButtonByRestaurants = !mButtonByRestaurants;
-			removeActionFromActionBar(this);
-			if (mButtonByRestaurants)
-				addActionToActionBar(this, 0);
-			else
-				addActionToActionBar(this, 1);
-
-			if (mButtonByRestaurants) {
-				Tracker.getInstance().trackPageView(
-						"food/actionbar/by/restaurants");
-				showMenusByRestaurants();
-			} else {
-				Tracker.getInstance()
-						.trackPageView("food/actionbar/by/ratings");
-				showMenusByRatings();
-			}
-		}
-
-		/**
-		 * Returns whether or not the button in the action bar is shown.
-		 */
-		public boolean isShown() {
-			return mIsShown;
-		}
-
-		/**
-		 * Sets whether the button in the action bar is currently shown.
-		 * 
-		 * @param show
-		 */
-		// public void setShown(boolean show) {
-		// mIsShown = show;
-		// }
-
-		/**
-		 * Set whether the button being shown in the action bar is to show by
-		 * restaurants
-		 * 
-		 * @param isRestaurants
-		 */
-		public void setIsRestaurant(boolean isRestaurants) {
-			mButtonByRestaurants = isRestaurants;
-		}
-	}
-
-	/**
-	 * Takes care of showing the "show by restaurants" or "show by ratings"
-	 * button in the Action Bar
-	 * 
-	 * @author Oriane <oriane.rodriguez@epfl.ch>
-	 * @author Elodie <elodienilane.triponez@epfl.ch>
-	 * 
-	 */
-	private class ShowBySuggestionsAction implements Action {
-
-		/**
-		 * Empty constructor
-		 */
-		ShowBySuggestionsAction() {
-		}
-
-		/**
-		 * Returns the resource for the button icon in the action bar.
-		 */
-		@Override
-		public int getDrawable() {
-			return R.drawable.food_menus_by_suggestions;
-		}
-
-		/**
-		 * Defines what is to be performed when the user clicks on the button in
-		 * the action bar.
-		 */
-		@Override
-		public void performAction(View view) {
-			Tracker.getInstance().trackPageView(
-					"food/actionbar/suggestions/back");
-			removeActionFromActionBar(this);
-			showMenusByRestaurants();
-		}
-	}
-
-	/**
-	 * Opens all restaurants or closes them all.
-	 * 
-	 * @author Oriane <oriane.rodriguez@epfl.ch>
-	 * @author Elodie <elodienilane.triponez@epfl.ch>
-	 * 
-	 */
-	private class ShowAllAction implements Action {
-		/** Everything shown or everything closed. */
-		private boolean mIsAllShown;
-
-		/**
-		 * Empty constructor
-		 */
-		ShowAllAction() {
-			mIsAllShown = false;
-		}
-
-		/**
-		 * Returns the resource for the button icon in the action bar.
-		 */
-		@Override
-		public int getDrawable() {
-			if (mIsAllShown) {
-				return R.drawable.food_menus_collapse;
-			} else {
-				return R.drawable.food_menus_expand;
-			}
-		}
-
-		/**
-		 * Defines what is to be performed when the user clicks on the button in
-		 * the action bar.
-		 */
-		@Override
-		public void performAction(View view) {
-			if (mExpandableList != null
-					&& mExpandableList.getExpandableListAdapter() != null) {
-				int i = 0;
-				int count = mExpandableList.getExpandableListAdapter()
-						.getGroupCount();
-
-				if (mIsAllShown) {
-					// Tracker
-					Tracker.getInstance().trackPageView(
-							"food/actionbar/collapse");
-					while (i < count) {
-						mExpandableList.collapseGroup(i);
-						i++;
-					}
-				} else {
-					// Tracker
-					Tracker.getInstance()
-							.trackPageView("food/actionbar/expand");
-					while (i < count) {
-						mExpandableList.expandGroup(i);
-						i++;
-					}
-				}
-			}
-
-			mIsAllShown = !mIsAllShown;
-			removeActionFromActionBar(0);
-			addActionToActionBar(this, 0);
-		}
-
-		/**
-		 * Sets whether the restaurants are all shown or not.
-		 * 
-		 * @param isShown
-		 */
-		public void setIsShown(boolean isShown) {
-			mIsAllShown = isShown;
-		}
-	}
+	
 }

@@ -5,8 +5,8 @@
 using System;
 using System.Windows;
 using PocketCampus.Common.Controls;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 using PocketCampus.Satellite.Models;
 
 namespace PocketCampus.Satellite.Views
@@ -23,7 +23,7 @@ namespace PocketCampus.Satellite.Views
         {
             var beer = (Beer) ( (FrameworkElement) sender ).DataContext;
             MessageBox.Show( beer.Description, beer.Name, MessageBoxButton.OK );
-            Messenger.Send( new EventLogRequest( "ViewBeerDescription" ) );
+            Messenger.Send( new EventLogRequest( "ViewBeerDescription", beer.Name ) );
         }
     }
 }

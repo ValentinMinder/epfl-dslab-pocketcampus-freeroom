@@ -15,7 +15,7 @@ namespace PocketCampus.Map.Models
         // Parameters are the server number, the level, the zoon level, the X coordinate and the Y coordinate
         private const string Url = "http://plan-epfl-tile{0}.epfl.ch/batiments{1}-merc/{2}/{3:000/000/000}/{4:000/000/000}.png";
         private const int ServerCount = 5;
-        private static readonly Random Random = new Random();
+        private static uint _server = 0;
 
         /// <summary>
         /// Gets an Uri for the tile at the specified X/Y coordinates, zoom level and buildings level.
@@ -23,8 +23,8 @@ namespace PocketCampus.Map.Models
         public static Uri GetUri( int buildingsLevel, int x, int y, int zoomLevel )
         {
             y = FixY( y, zoomLevel );
-            int server = Random.Next( ServerCount );
-            return new Uri( string.Format( Url, server, buildingsLevel, zoomLevel, x, y ), UriKind.Absolute );
+            _server = ( _server + 1 ) % ServerCount;
+            return new Uri( string.Format( Url, _server, buildingsLevel, zoomLevel, x, y ), UriKind.Absolute );
         }
 
         /// <summary>

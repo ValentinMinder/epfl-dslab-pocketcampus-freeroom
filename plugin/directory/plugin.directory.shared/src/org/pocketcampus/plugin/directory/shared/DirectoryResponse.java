@@ -28,9 +28,9 @@ public class DirectoryResponse implements org.apache.thrift.TBase<DirectoryRespo
   private static final org.apache.thrift.protocol.TField RESULTS_FIELD_DESC = new org.apache.thrift.protocol.TField("results", org.apache.thrift.protocol.TType.LIST, (short)2);
   private static final org.apache.thrift.protocol.TField RESULT_SET_COOKIE_FIELD_DESC = new org.apache.thrift.protocol.TField("resultSetCookie", org.apache.thrift.protocol.TType.STRING, (short)3);
 
-  public int status; // required
-  public List<Person> results; // required
-  public ByteBuffer resultSetCookie; // required
+  private int status; // required
+  private List<Person> results; // required
+  private ByteBuffer resultSetCookie; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

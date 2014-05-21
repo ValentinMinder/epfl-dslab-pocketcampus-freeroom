@@ -2,8 +2,12 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
+using System.Windows;
+using System.Windows.Data;
+using Microsoft.Phone.Controls;
 using PocketCampus.Common.Controls;
-using PocketCampus.Transport.Models;
+using ThinMvvm;
 using PocketCampus.Transport.ViewModels;
 
 namespace PocketCampus.Transport.Views
@@ -13,29 +17,38 @@ namespace PocketCampus.Transport.Views
         public MainView()
         {
             InitializeComponent();
+        }
 
-            Loaded += ( _, __ ) =>
+        // HACK: The ListPicker is awful, it can't bind to SelectedItem when the source is null
+        private void StationsPicker_Loaded( object sender, RoutedEventArgs e )
+        {
+            Action bindSelectedItem = () =>
             {
-                var vm = (MainViewModel) DataContext;
-                vm.PropertyChanged += ( ___, e ) =>
+                var binding = new Binding
                 {
-                    if ( e.PropertyName == "SelectedStation" || ( StationsPicker.SelectedItem == null && e.PropertyName == "IsLoading" && !vm.IsLoading ) )
-                    {
-                        if ( vm.SelectedStation != StationsPicker.SelectedItem )
-                        {
-                            StationsPicker.SelectedItem = vm.SelectedStation;
-                        }
-                    }
+                    Path = new PropertyPath( "SelectedStation" ),
+                    Mode = BindingMode.TwoWay
                 };
-
-                StationsPicker.SelectionChanged += ( ___, e ) =>
-                {
-                    if ( e.RemovedItems.Count > 0 )
-                    {
-                        vm.SelectedStation = (Station) e.AddedItems[0];
-                    }
-                };
+                StationsPicker.SetBinding( ListPicker.SelectedItemProperty, binding );
             };
+
+            var vm = (MainViewModel) DataContext;
+            if ( vm.SelectedStation == null )
+            {
+                bool ok = false;
+                vm.ListenToProperty( x => x.SelectedStation, () =>
+                {
+                    if ( !ok )
+                    {
+                        bindSelectedItem();
+                        ok = true;
+                    }
+                } );
+            }
+            else
+            {
+                bindSelectedItem();
+            }
         }
     }
 }

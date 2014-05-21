@@ -2,13 +2,12 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using PocketCampus.Common;
-using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Resources;
 using PocketCampus.Moodle.Services;
 using PocketCampus.Moodle.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
+using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Moodle
 {
@@ -26,19 +25,11 @@ namespace PocketCampus.Moodle
         }
 
         /// <summary>
-        /// Gets the plugin's icon.
+        /// Gets the key of the plugin's icon in the application resources.
         /// </summary>
-        public Uri Icon
+        public string IconKey
         {
-            get { return new Uri( "/Assets/MoodleIcon.png", UriKind.Relative ); }
-        }
-
-        /// <summary>
-        /// Gets the plugin's small icon.
-        /// </summary>
-        public Uri SmallIcon
-        {
-            get { return new Uri( "/Assets/MoodleSmallIcon.png", UriKind.Relative ); }
+            get { return "MoodleIcon"; }
         }
 
         /// <summary>

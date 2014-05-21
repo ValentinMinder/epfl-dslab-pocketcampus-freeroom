@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4488.2" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment version="1552" defaultVersion="1296" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3715.3"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ForumTableCell"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="0.0" reuseIdentifier="ForumTableCell" rowHeight="73" id="2" customClass="ForumTableCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="73"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2" id="9AN-VE-2DT">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="72"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3">
+                        <rect key="frame" x="61" y="13" width="254" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="254" id="149"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="10">
+                        <rect key="frame" x="61" y="42" width="160" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="30"/>
+                            <constraint firstAttribute="width" constant="160" id="101"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.093227365709999996" green="0.2576331657" blue="0.40642936860000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="17">
+                        <rect key="frame" x="237" y="42" width="78" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <accessibility key="accessibilityConfiguration">
+                            <accessibilityTraits key="traits" none="YES"/>
+                        </accessibility>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="78" id="151"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.093227365709999996" green="0.2576331657" blue="0.40642936860000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="12" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="60">
+                        <rect key="frame" x="34" y="25" width="42" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="42" id="63"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.99738919010000004" green="0.01082267642" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="105">
+                        <rect key="frame" x="3" y="20" width="32" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="32" id="116"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+            </tableViewCellContentView>
+            <constraints>
+                <constraint firstItem="17" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="8" symbolic="YES" id="0mr-2X-QEf"/>
+                <constraint firstItem="105" firstAttribute="top" secondItem="2" secondAttribute="top" constant="20" id="1Nh-Z0-aYH"/>
+                <constraint firstItem="3" firstAttribute="leading" secondItem="10" secondAttribute="leading" id="2PY-ga-4lr"/>
+                <constraint firstItem="105" firstAttribute="centerY" secondItem="2" secondAttribute="centerY" id="Ex7-n1-fJd"/>
+                <constraint firstItem="3" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="61" id="HG1-bA-t61"/>
+                <constraint firstItem="10" firstAttribute="baseline" secondItem="17" secondAttribute="baseline" id="Lma-AP-7N5"/>
+                <constraint firstItem="3" firstAttribute="trailing" secondItem="17" secondAttribute="trailing" id="Vf2-dU-bSX"/>
+                <constraint firstItem="10" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="8" symbolic="YES" id="b2e-0g-Vhe"/>
+                <constraint firstItem="105" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="3" id="lmC-Lz-jSH"/>
+                <constraint firstItem="60" firstAttribute="top" secondItem="2" secondAttribute="top" constant="25" id="xhH-fF-BWd"/>
+                <constraint firstItem="3" firstAttribute="top" secondItem="2" secondAttribute="top" constant="13" id="yJw-uT-U2s"/>
+                <constraint firstItem="60" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="34" id="zWp-Ia-G9j"/>
+            </constraints>
+            <connections>
+                <outlet property="content" destination="3" id="159"/>
+                <outlet property="imageView" destination="105" id="163"/>
+                <outlet property="orderNumber" destination="60" id="162"/>
+                <outlet property="time" destination="10" id="160"/>
+                <outlet property="username" destination="17" id="161"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

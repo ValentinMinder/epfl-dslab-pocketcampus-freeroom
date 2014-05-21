@@ -15,7 +15,6 @@ import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
 import org.pocketcampus.plugin.directory.shared.DirectoryRequest;
 import org.pocketcampus.plugin.directory.shared.DirectoryResponse;
 import org.pocketcampus.plugin.directory.shared.DirectoryService;
-import org.pocketcampus.plugin.directory.shared.DirectoryToken;
 import org.pocketcampus.plugin.directory.shared.NoPictureFound;
 import org.pocketcampus.plugin.directory.shared.Person;
 
@@ -155,7 +154,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 					Person duplicatePerson = it.next();
 					
 					if(duplicatePerson.equals(sup)){
-						sup.organisationalUnits.addAll(duplicatePerson.organisationalUnits);
+						sup.getOrganisationalUnits().addAll(duplicatePerson.getOrganisationalUnits());
 						break;
 					}
 				}
@@ -342,7 +341,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 						Person duplicatePerson = it.next();
 						
 						if(duplicatePerson.equals(p)){
-							duplicatePerson.organisationalUnits.addAll(p.organisationalUnits);
+							duplicatePerson.getOrganisationalUnits().addAll(p.getOrganisationalUnits());
 							break;
 						}
 					}
@@ -430,16 +429,6 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			return searchForName("(sn=" +lastName+")");
 		else
 			return searchForName("(&(sn=" +lastName+")(givenName=" + partialFirstName +"*))");
-	}
-
-	@Override
-	public DirectoryToken getTequilaTokenForDirectory() throws TException {
-		return null;
-	}
-
-	@Override
-	public String getDirectorySession(DirectoryToken dirToken) throws TException {
-		return null;
 	}
 
 	@Override
@@ -536,9 +525,9 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 				
 				//no duplicates!
 				if( !results.containsKey(p.getSciper()))
-					results.put(p.sciper, p);
+					results.put(p.getSciper(), p);
 				else{
-					results.get(p.sciper).organisationalUnits.addAll(p.organisationalUnits);
+					results.get(p.getSciper()).getOrganisationalUnits().addAll(p.getOrganisationalUnits());
 				}
 				
 			}

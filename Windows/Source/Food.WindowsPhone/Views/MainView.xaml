@@ -30,114 +30,123 @@
             <my:MealPriceConverter x:Key="MealToPrice"
                                    Settings="{Binding Settings}" />
 
-            <!-- Meal type template -->
-            <DataTemplate x:Key="MealTypeTemplate">
-                <Border Background="{Binding Converter={StaticResource MealTypeToBrush}}"
-                        Margin="0,0,0,5">
-                    <Image Source="{Binding Converter={StaticResource EnumToImage}}"
-                           Width="32" Height="32"
-                           Margin="6,6,4,6" />
-                </Border>
-            </DataTemplate>
-
             <!-- Meal template -->
             <DataTemplate x:Key="MealItemTemplate">
-                <Grid Margin="0,10">
+                <Grid Margin="24,10,24,30"
+                      Width="432">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="100" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                    
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
 
-                    <!-- Types -->
-                    <ItemsControl Grid.RowSpan="3"
-                                  ItemsSource="{Binding MealTypes}"
-                                  ItemTemplate="{StaticResource MealTypeTemplate}"
-                                  Margin="-3,8,2,0" />
+                        <!-- Image -->
+                        <Image Source="{Binding Converter={StaticResource MealToImage}}"
+                               Width="100"
+                               Height="100" />
 
-                    <!-- Name -->
-                    <TextBlock Grid.Column="1"
-                               Text="{Binding Name}"
-                               TextWrapping="Wrap"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               FontSize="24" />
-
-                    <!-- Description -->
-                    <TextBlock Grid.Column="1"
-                               Grid.Row="1"
-                               Text="{Binding Description}"
-                               TextWrapping="Wrap"
-                               Visibility="{Binding Description, Converter={StaticResource StringToVisibility}}"
-                               Style="{StaticResource PhoneTextSubtleStyle}" />
-
-                    <!-- Rating -->
-                    <myControls:RatingDisplay Grid.Column="1"
-                                              Grid.RowSpan="2"
-                                              Grid.Row="2"
-                                              Rating="{Binding Rating}"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"/>
-
-                    <!-- Price -->
-                    <TextBlock Grid.Column="1"
-                               Grid.Row="2"
-                               Text="{Binding Converter={StaticResource MealToPrice}}"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               Foreground="{StaticResource PhoneAccentBrush}"
-                               HorizontalAlignment="Right" />
-
-                    <!-- Half-portion price -->
-                    <StackPanel Grid.Column="2"
-                                Grid.Row="3"
-                                HorizontalAlignment="Right"
-                                Orientation="Horizontal"
-                                Visibility="{Binding HalfPortionPrice, Converter={StaticResource NonNullToVisibility}}">
-                        <TextBlock Text="{Binding Resources.HalfPrice, Source={StaticResource Strings}}"
+                        <!-- Price -->
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding Converter={StaticResource MealToPrice}}"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
                                    Style="{StaticResource PhoneTextNormalStyle}"
                                    Margin="0" />
 
-                        <TextBlock Text="{Binding HalfPortionPrice, StringFormat='{}{0:0.00} CHF'}"
-                                   Style="{StaticResource PhoneTextNormalStyle}"
-                                   Foreground="{StaticResource PhoneAccentBrush}" />
-                    </StackPanel>
+                        <!-- Half-portion price -->
+                        <StackPanel Grid.Row="2"
+                                    Margin="0,10,0,0"
+                                    Visibility="{Binding HalfPortionPrice, Converter={StaticResource NonNullToVisibility}}">
+                            <TextBlock Text="{Binding Resources.HalfPrice, Source={StaticResource Strings}}"
+                                       Style="{StaticResource PhoneTextSubtleStyle}"
+                                       TextAlignment="Center"
+                                       Margin="0" />
 
-                    <!-- Context menu -->
-                    <tool:ContextMenuService.ContextMenu>
-                        <tool:ContextMenu>
-                            <!-- "Rate" button -->
-                            <tool:MenuItem Header="{Binding Resources.RateMealButton, Source={StaticResource Strings}}"
-                                           Command="{Binding DataContext.RateMealCommand, ElementName=LayoutRoot}"
-                                           CommandParameter="{Binding}" />
-                        </tool:ContextMenu>
-                    </tool:ContextMenuService.ContextMenu>
+                            <TextBlock Text="{Binding HalfPortionPrice, Converter={StaticResource PriceToString}}"
+                                       Style="{StaticResource PhoneTextSubtleStyle}"
+                                       TextAlignment="Center"
+                                       Margin="0,-4,0,0" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <!-- Name -->
+                        <TextBlock Text="{Binding Name}"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource PhoneTextLargeStyle}"
+                                   FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                                   Margin="6,0" />
+
+                        <!-- Description -->
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding Description}"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource PhoneTextSubtleStyle}"
+                                   Margin="6"
+                                   Visibility="{Binding Description, Converter={StaticResource StringToVisibility}}"/>
+
+                        <!-- Rating & vote button -->
+                        <StackPanel Grid.Row="2"
+                                    Orientation="Horizontal"
+                                    Margin="-8,0,0,0"
+                                    Visibility="{Binding DataContext.AreRatingsEnabled, ElementName=LayoutRoot, Converter={StaticResource BoolToVisibility}}">
+                            <myControls:RatingDisplay Rating="{Binding Rating}"
+                                                      Foreground="{StaticResource PhoneForegroundBrush}"
+                                                      FontSize="{StaticResource PhoneFontSizeSmall}" />
+                            
+                            <TextBlock Text="-"
+                                       Style="{StaticResource PhoneTextSmallStyle}"
+                                       Margin="-6,0,0,0" />
+                            
+                            <Button Style="{StaticResource SimpleButtonStyle}"
+                                    Content="{Binding Resources.RateMealButton, Source={StaticResource Strings}}"
+                                    Foreground="{StaticResource AppAccentBrush}"
+                                    FontSize="{StaticResource PhoneFontSizeSmall}"
+                                    Opacity="0.75"
+                                    Command="{Binding DataContext.RateMealCommand, ElementName=LayoutRoot}"
+                                    CommandParameter="{Binding}"
+                                    Padding="6,0" />
+                        </StackPanel>
+                    </Grid>
                 </Grid>
             </DataTemplate>
 
             <!-- Restaurant header template -->
             <DataTemplate x:Key="RestaurantHeaderTemplate">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
+                <Grid Background="Transparent"
+                      Margin="24,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    
                     <!-- Name -->
-                    <TextBlock Text="{Binding Name}"
+                    <TextBlock Text="{Binding Restaurant.Name}"
                                TextTrimming="WordEllipsis"
                                Style="{StaticResource PhoneTextLargeStyle}"
                                Foreground="{StaticResource PhoneSubtleBrush}"
-                               Margin="0" />
-
+                               Margin="0,0,12,0" />
+                    
                     <!-- Rating -->
-                    <myControls:RatingDisplay Grid.Column="1"
-                                              Rating="{Binding Rating}"
-                                              Margin="0,0,0,-6"
-                                              VerticalAlignment="Center" />
+                    <myControls:RatingDisplay Grid.Row="1"
+                                              Rating="{Binding Restaurant.Rating}"
+                                              Margin="-12,-4,0,0"
+                                              Foreground="{StaticResource PhoneSubtleBrush}" 
+                                              FontSize="{StaticResource PhoneFontSizeSmall}"
+                                              Visibility="{Binding DataContext.AreRatingsEnabled, ElementName=LayoutRoot, Converter={StaticResource BoolToVisibility}}" />
 
                     <!-- Context menu -->
                     <tool:ContextMenuService.ContextMenu>
@@ -145,7 +154,7 @@
                             <!-- "View on map" button -->
                             <tool:MenuItem Header="{Binding Resources.ViewRestaurantOnMap, Source={StaticResource Strings}}"
                                            Command="{Binding DataContext.ViewMapItemCommand, ElementName=LayoutRoot}"
-                                           CommandParameter="{Binding MapItem}" />
+                                           CommandParameter="{Binding Restaurant}" />
                         </tool:ContextMenu>
                     </tool:ContextMenuService.ContextMenu>
                 </Grid>
@@ -153,9 +162,10 @@
 
             <!-- Restaurant menu item template (for the LongListSelector's jump list) -->
             <DataTemplate x:Key="RestaurantJumpListItemTemplate">
-                <TextBlock Text="{Binding Name}"
+                <TextBlock Text="{Binding Restaurant.Name}"
                            Style="{StaticResource AppTextTitle2Style}"
-                           Margin="30,20" />
+                           Margin="30,20"
+                           Tap="RestaurantItem_Tap" />
             </DataTemplate>
 
             <!-- Jump list style for LongListSelector -->
@@ -188,12 +198,16 @@
             <!-- Meal time selector -->
             <myControls:MealTimePicker Grid.Column="1"
                                        Value="{Binding MealTime, Mode=TwoWay}"
-                                       Margin="5" />
+                                       Margin="16,5" />
         </Grid>
 
         <!-- Meal date selector -->
-        <myControls:DayPicker Grid.Row="1"
-                              Value="{Binding MealDate, Mode=TwoWay}" />
+        <Border Grid.Row="1"
+                Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+            <myControls:DayPicker Value="{Binding MealDate, Mode=TwoWay}"
+                                  TextStyle="{StaticResource AppTextSecondaryHeaderStyle}"
+                                  Margin="10,0" Height="55" />
+        </Border>
 
         <!-- Meal list -->
         <phone:LongListSelector Grid.Row="2"
@@ -201,8 +215,8 @@
                                 ItemTemplate="{StaticResource MealItemTemplate}"
                                 IsGroupingEnabled="True"
                                 GroupHeaderTemplate="{StaticResource RestaurantHeaderTemplate}"
-                                JumpListStyle="{StaticResource JumpListStyle}"
-                                Margin="12,0" />
+                                GroupFooterTemplate="{StaticResource SpacerFooterTemplate}"
+                                JumpListStyle="{StaticResource JumpListStyle}" />
 
         <!-- "No filter results" text -->
         <TextBlock Grid.Row="2"
@@ -224,7 +238,7 @@
 
     <!-- App bar -->
     <bar:Bindable.ApplicationBar>
-        <bar:BindableApplicationBar>
+        <bar:BindableApplicationBar Mode="Minimized">
             <!-- "Refresh" button -->
             <bar:BindableApplicationBarButton Command="{Binding RefreshCommand}"
                                               Text="{Binding Resources.RefreshButton, Source={StaticResource Strings}}"

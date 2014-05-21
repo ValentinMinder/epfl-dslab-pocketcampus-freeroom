@@ -6,33 +6,11 @@ using System;
 using System.Globalization;
 using System.Resources;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace PocketCampus.Common
 {
-    /// <summary>
-    /// Base converter class that adds type safety and reduces the number of parameters
-    /// (since most converters don't use them).
-    /// </summary>
-    public abstract class ValueConverter<TFrom, TTo> : IValueConverter
-    {
-        public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
-        {
-            return Convert( (TFrom) value );
-        }
-
-        public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
-        {
-            return ConvertBack( (TTo) value );
-        }
-
-        protected abstract TTo Convert( TFrom value );
-        protected virtual TFrom ConvertBack( TTo value ) { throw new NotSupportedException(); }
-    }
-
-
     /// <summary>
     /// Converts enums to localized strings.
     /// </summary>
@@ -50,7 +28,7 @@ namespace PocketCampus.Common
 
         private ResourceManager _manager;
 
-        protected override string Convert( Enum value )
+        public override string Convert( Enum value )
         {
             if ( _manager == null )
             {
@@ -64,22 +42,48 @@ namespace PocketCampus.Common
     }
 
     /// <summary>
+    /// Converts an e-mail sending status to a visibility, for a "request e-mail" button: if it hasn't been requested, it's visible.
+    /// </summary>
+    public sealed class EmailNotRequestedToVisibilityConverter : ValueConverter<EmailSendingStatus, Visibility>
+    {
+        public override Visibility Convert( EmailSendingStatus value )
+        {
+            return value == EmailSendingStatus.NoneRequested ? Visibility.Visible : Visibility.Collapsed;
+        }
+    }
+
+    /// <summary>
+    /// Converts an e-mail sending status to a boolean, for the "request e-mail" button: true if it has been requested, false otherwise.
+    /// </summary>
+    public sealed class EmailRequestedToBooleanConverter : ValueConverter<EmailSendingStatus, bool>
+    {
+        public override bool Convert( EmailSendingStatus value )
+        {
+            return value != EmailSendingStatus.NoneRequested;
+        }
+    }
+
+    /// <summary>
     /// Converts doubles to strings and vice-versa.
     /// </summary>
-    /// <remarks>
-    /// Needed because WP apparently can't do it; it probably attempts to use the
-    /// current culture even though the keyboard uses a '.' as its decimal separator.
-    /// </remarks>
     public sealed class DoubleToStringConverter : ValueConverter<double, string>
     {
-        protected override string Convert( double value )
+        public override string Convert( double value )
         {
             return value.ToString( NumberFormatInfo.InvariantInfo );
         }
 
-        protected override double ConvertBack( string value )
+        public override double ConvertBack( string value )
         {
-            return double.Parse( value, NumberFormatInfo.InvariantInfo );
+            try
+            {
+                return double.Parse( value, NumberFormatInfo.InvariantInfo );
+            }
+            catch
+            {
+                // in case some keyboards use a local separator
+                return double.Parse( value, NumberFormatInfo.CurrentInfo );
+            }
         }
     }
 
@@ -88,7 +92,7 @@ namespace PocketCampus.Common
     /// </summary>
     public sealed class EnumToImageSourceConverter : ValueConverter<Enum, ImageSource>
     {
-        protected override ImageSource Convert( Enum value )
+        public override ImageSource Convert( Enum value )
         {
             string enumName = value.GetType().Name;
             string uriString = string.Format( "/Assets/{0}_{1}.png", enumName, value.ToString() );
@@ -101,7 +105,7 @@ namespace PocketCampus.Common
     /// </summary>
     public sealed class GeoLocationStatusToErrorBooleanConverter : ValueConverter<GeoLocationStatus, bool>
     {
-        protected override bool Convert( GeoLocationStatus value )
+        public override bool Convert( GeoLocationStatus value )
         {
             return value == GeoLocationStatus.Error;
         }
@@ -114,12 +118,12 @@ namespace PocketCampus.Common
     {
         public bool IsReversed { get; set; }
 
-        protected override Visibility Convert( bool value )
+        public override Visibility Convert( bool value )
         {
             return ( IsReversed ? !value : value ) ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        protected override bool ConvertBack( Visibility value )
+        public override bool ConvertBack( Visibility value )
         {
             return IsReversed ? value == Visibility.Collapsed : value == Visibility.Visible;
         }
@@ -130,9 +134,12 @@ namespace PocketCampus.Common
     /// </summary>
     public sealed class StringToVisibilityConverter : ValueConverter<string, Visibility>
     {
-        protected override Visibility Convert( string value )
+        public bool IsReversed { get; set; }
+
+        public override Visibility Convert( string value )
         {
-            return string.IsNullOrWhiteSpace( value ) ? Visibility.Collapsed : Visibility.Visible;
+            bool isEmpty = string.IsNullOrWhiteSpace( value );
+            return ( IsReversed ? !isEmpty : isEmpty ) ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 
@@ -141,7 +148,7 @@ namespace PocketCampus.Common
     /// </summary>
     public sealed class NonNullToVisibilityConverter : ValueConverter<object, Visibility>
     {
-        protected override Visibility Convert( object value )
+        public override Visibility Convert( object value )
         {
             return value == null ? Visibility.Collapsed : Visibility.Visible;
         }
@@ -152,7 +159,7 @@ namespace PocketCampus.Common
     /// </summary>
     public sealed class IntegerToVisibilityConverter : ValueConverter<int, Visibility>
     {
-        protected override Visibility Convert( int value )
+        public override Visibility Convert( int value )
         {
             return value == 0 ? Visibility.Collapsed : Visibility.Visible;
         }

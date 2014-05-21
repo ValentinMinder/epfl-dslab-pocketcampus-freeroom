@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Models;
@@ -13,30 +14,20 @@ namespace PocketCampus.Moodle.Services
 {
     public sealed class MoodleService : ThriftServiceImplementation<IMoodleService>, IMoodleService
     {
-        public MoodleService( IServerConfiguration config )
-            : base( config.CreateCommunication( "moodle" ) )
+        public MoodleService( IServerAccess access )
+            : base( access.CreateCommunication( "moodle" ) )
         {
 
         }
 
-        public Task<TequilaToken> GetTokenAsync()
+        public Task<CourseListResponse> GetCoursesAsync( string dummy, CancellationToken cancellationToken )
         {
-            return CallAsync<TequilaToken>( x => x.GetTokenAsync );
+            return CallAsync<string, CancellationToken, CourseListResponse>( x => x.GetCoursesAsync, dummy, cancellationToken );
         }
 
-        public Task<MoodleSession> GetSessionAsync( TequilaToken token )
+        public Task<CourseSectionListResponse> GetCourseSectionsAsync( string courseId, CancellationToken cancellationToken )
         {
-            return CallAsync<TequilaToken, MoodleSession>( x => x.GetSessionAsync, token );
-        }
-
-        public Task<CourseListResponse> GetCoursesAsync( MoodleRequest request )
-        {
-            return CallAsync<MoodleRequest, CourseListResponse>( x => x.GetCoursesAsync, request );
-        }
-
-        public Task<CourseSectionListResponse> GetCourseSectionsAsync( MoodleRequest request )
-        {
-            return CallAsync<MoodleRequest, CourseSectionListResponse>( x => x.GetCourseSectionsAsync, request );
+            return CallAsync<string, CancellationToken, CourseSectionListResponse>( x => x.GetCourseSectionsAsync, courseId, cancellationToken );
         }
     }
 }

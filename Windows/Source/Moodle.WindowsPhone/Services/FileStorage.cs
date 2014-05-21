@@ -53,8 +53,8 @@ namespace PocketCampus.Moodle.Services
         private static async Task<StorageFile> GetFileAsync( CourseFile file, bool create )
         {
             var folder = ApplicationData.Current.LocalFolder;
-            folder = await folder.CreateFolderAsync( FixFolderName( file.Course.Name ), CreationCollisionOption.OpenIfExists );
-            string fileName = FixFileName( file.Name );
+            folder = await folder.CreateFolderAsync( FixName( file.Course.Name, Path.GetInvalidPathChars() ), CreationCollisionOption.OpenIfExists );
+            string fileName = FixName( file.Name, Path.GetInvalidFileNameChars() );
 
             // GetFileAsync throws an exception if the file doesn't exist
             // and there's no API to check for a file's existence
@@ -69,19 +69,12 @@ namespace PocketCampus.Moodle.Services
         }
 
         /// <summary>
-        /// Fixes a folder name by removing invalid characters.
+        /// Fixes a name by removing invalid characters.
         /// </summary>
-        private static string FixFolderName( string name )
+        private static string FixName( string name, char[] invalidChars )
         {
-            return Path.GetInvalidPathChars().Aggregate( name, ( s, c ) => s.Replace( c.ToString(), "" ) );
-        }
-
-        /// <summary>
-        /// Fixes a file name by removing invalid characters.
-        /// </summary>
-        private static string FixFileName( string name )
-        {
-            return Path.GetInvalidFileNameChars().Aggregate( name, ( s, c ) => s.Replace( c.ToString(), "" ) );
+            name = invalidChars.Aggregate( name, ( s, c ) => s.Replace( c.ToString(), "" ) );
+            return string.IsNullOrWhiteSpace( name ) ? name.GetHashCode().ToString() : name; // awful, but better than a crash
         }
     }
 }

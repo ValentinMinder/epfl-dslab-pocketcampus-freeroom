@@ -4,6 +4,7 @@
 
 using System;
 using PocketCampus.Camipro.Models;
+using PocketCampus.Common;
 
 // Design data for MainViewModel.
 
@@ -62,7 +63,7 @@ namespace PocketCampus.Camipro.ViewModels.Design
                         },
                         new Transaction
                         {
-                            Amount = 120.00,
+                            Amount = -7.00,
                             Operation = "Vente",
                             Place = "Compass Hodler 1",
                             Date = new DateTime(2013, 5, 13, 11, 32, 14)
@@ -96,7 +97,7 @@ namespace PocketCampus.Camipro.ViewModels.Design
                             Date = new DateTime(2013, 5, 8, 12, 22, 48)
                         },
                     },
-                    Status = ResponseStatus.Ok
+                    Status = ResponseStatus.Success
                 };
             }
         }
@@ -118,7 +119,7 @@ namespace PocketCampus.Camipro.ViewModels.Design
                         MonthTotal = 186.50,
                         ThreeMonthsTotal = 420.60
                     },
-                    Status = ResponseStatus.Ok
+                    Status = ResponseStatus.Success
                 };
             }
         }

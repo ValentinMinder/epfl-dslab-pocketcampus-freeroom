@@ -11,16 +11,15 @@ using PocketCampus.Common;
 using PocketCampus.Food.Models;
 using PocketCampus.Food.Services;
 using PocketCampus.Map;
-using PocketCampus.Map.Models;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Food.ViewModels
 {
     /// <summary>
     /// The main ViewModel.
     /// </summary>
-    [PageLogId( "/food" )]
+    [LogId( "/food" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         // On startup, lunch is selected if the current hour is less than or equal to this one
@@ -84,6 +83,11 @@ namespace PocketCampus.Food.ViewModels
         }
 
         /// <summary>
+        /// Gets a value indicating whether the ratings are enabled.
+        /// </summary>
+        public bool AreRatingsEnabled { get; private set; }
+
+        /// <summary>
         /// Gets the settings.
         /// </summary>
         public IPluginSettings Settings { get; private set; }
@@ -91,42 +95,47 @@ namespace PocketCampus.Food.ViewModels
         /// <summary>
         /// Gets the command executed to view a restaurant on the map.
         /// </summary>
-        [CommandLogId( "ViewRestaurantOnMap" )]
-        public Command<MapItem> ViewMapItemCommand
+        [LogId( "ViewRestaurantOnMap" )]
+        [LogParameter( "$Param.Name" )]
+        public Command<Restaurant> ViewMapItemCommand
         {
-            get { return GetCommand<MapItem>( item => Messenger.Send( new MapSearchRequest( item ) ) ); }
+            get { return GetCommand<Restaurant>( r => Messenger.Send( new MapSearchRequest( r.MapItem ) ) ); }
         }
 
         /// <summary>
         /// Gets the command executed to show the settings.
         /// </summary>
-        [CommandLogId( "OpenSettings" )]
+        [LogId( "OpenSettings" )]
         public Command ViewSettingsCommand
         {
             get { return GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
         }
 
+
         /// <summary>
         /// Gets the command executed to vote on a meal.
         /// </summary>
-        [CommandLogId( "RateMeal" )]
+        [LogId( "RateMeal" )]
         public Command<Meal> RateMealCommand
         {
-            get { return GetCommand<Meal>( RateMeal ); }
+            get { return GetCommand<Meal>( _navigationService.NavigateTo<RatingViewModel, Meal>, _ => AreRatingsEnabled ); }
         }
 
 
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( INavigationService navigationService, IPluginSettings settings, IFoodService menuService )
+        public MainViewModel( INavigationService navigationService, IFoodService menuService,
+                              IPluginSettings settings, IServerSettings serverSettings )
         {
-            Settings = settings;
             _navigationService = navigationService;
             _menuService = menuService;
 
             _mealDate = DateTime.Now;
             _mealTime = _mealDate.Hour <= LunchLimit ? MealTime.Lunch : MealTime.Dinner;
+
+            AreRatingsEnabled = serverSettings.Configuration.AreFoodRatingsEnabled != 0;
+            Settings = settings;
         }
 
 
@@ -145,25 +154,33 @@ namespace PocketCampus.Food.ViewModels
         {
             if ( force )
             {
-                var req = new FoodRequest
+                var request = new FoodRequest
                 {
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
                     MealTime = MealTime,
                     Date = MealDate
                 };
-                var resp = await _menuService.GetMenusAsync( req );
+                var response = await _menuService.GetMenusAsync( request, token );
 
-                if ( resp.Status != FoodStatus.Ok )
+                if ( response.Status != FoodStatus.Success )
                 {
                     throw new Exception( "An error occurred while fetching the menu on the server." );
                 }
 
-                _fullMenu = resp.Menu;
+                _fullMenu = response.Menu;
+
+                foreach ( var restaurant in _fullMenu )
+                {
+                    foreach ( var meal in restaurant.Meals )
+                    {
+                        meal.Restaurant = restaurant;
+                    }
+                }
             }
 
             // using Any() on Settings.DisplayedDishTypes allows dishes with more than one type to be displayed
             // even if the user doesn't want the second type to appear
-            var forbiddenTypes = EnumEx.GetValues<MealTypes>().Where( type => !Settings.DisplayedMealTypes.Contains( type ) );
+            var forbiddenTypes = EnumEx.GetValues<MealType>().Where( type => !Settings.DisplayedMealTypes.Contains( type ) );
 
             var menu = from restaurant in _fullMenu
                        let meals = from meal in restaurant.Meals
@@ -182,14 +199,6 @@ namespace PocketCampus.Food.ViewModels
                 AnyMeals = _fullMenu.Any();
                 AnyFilterResults = Menu.Any();
             }
-        }
-
-        /// <summary>
-        /// Shows a rating page for the specified meal.
-        /// </summary>
-        private void RateMeal( Meal meal )
-        {
-            _navigationService.NavigateTo<RatingViewModel, RatingInfo>( new RatingInfo( meal, MealTime, MealDate ) );
         }
     }
 }
