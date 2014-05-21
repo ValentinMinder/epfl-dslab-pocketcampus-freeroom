@@ -525,7 +525,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * <p>
 	 * Default: false.
 	 */
-	private boolean registeredUser = true 	;
+	private boolean registeredUser = false;
 
 	/**
 	 * Set the registeredUser parameters.
