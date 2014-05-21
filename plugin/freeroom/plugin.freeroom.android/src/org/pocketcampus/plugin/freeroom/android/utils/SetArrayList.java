@@ -255,8 +255,6 @@ public class SetArrayList<E> implements List<E>, Set<E>, Serializable {
 		// + ((internalList == null) ? 0 : internalList.hashCode());
 		result = prime * result
 				+ ((internalSet == null) ? 0 : internalSet.hashCode());
-		System.out.println(this);
-		System.out.println(result);
 		return result;
 	}
 

@@ -129,11 +129,6 @@ public class FRRequestDetails extends FRRequest {
 		result = prime * result
 				+ ((uidNonFav == null) ? 0 : uidNonFav.hashCode());
 		result = prime * result + (user ? 1231 : 1237);
-		System.out.println(this);
-		System.out.println(any + " " + fav + " " + user + " "
-				+ calendar_s.get(Calendar.HOUR_OF_DAY) + " "
-				+ calendar_e.get(Calendar.HOUR_OF_DAY));
-		System.out.println(result);
 		return result;
 	}
 

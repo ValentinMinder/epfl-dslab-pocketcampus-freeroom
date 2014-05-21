@@ -2168,8 +2168,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			u.logE("going for default value");
 			period = FRTimes.getNextValidPeriod();
 		}
-		System.out.println(period);
-		System.out.println(FRTimes.validCalendarsString(period));
 
 		// we choose the request according to the model settings
 		HomeBehaviourRoom room = mModel.getHomeBehaviourRoom();
@@ -2302,11 +2300,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	public void updateCollapse(ExpandableListView ev,
 			ExpandableListViewAdapter<Occupancy> ad) {
-		System.out.println("check: " + ad.getGroupCount() + "/"
-				+ ad.getChildrenTotalCount()); // TODO delete
+		// TODO delete
+		System.out.println("check: group: " + ad.getGroupCount()
+				+ "/ children total" + ad.getChildrenTotalCount());
 		if (ad.getGroupCount() <= 4 || ad.getChildrenTotalCount() <= 10) {
 			System.out.println("i wanted to expand");
-			// TODO: this cause troubles in performance when first launch
+			// TODO: this cause troubles in performance at first launch
+			// ONLY ON A FEW DEVICES! :/
 			for (int i = ad.getGroupCount() - 1; i >= 0; i--) {
 				ev.expandGroup(i);
 			}
