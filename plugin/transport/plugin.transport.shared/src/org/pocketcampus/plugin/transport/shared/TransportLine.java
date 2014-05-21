@@ -25,15 +25,15 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("TransportLine");
 
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField COLORS_FIELD_DESC = new org.apache.thrift.protocol.TField("colors", org.apache.thrift.protocol.TType.LIST, (short)2);
+  private static final org.apache.thrift.protocol.TField __UNUSED_FIELD_DESC = new org.apache.thrift.protocol.TField("_UNUSED", org.apache.thrift.protocol.TType.LIST, (short)2);
 
-  public String name; // required
-  public List<String> colors; // required
+  private String name; // required
+  private List<String> _UNUSED; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     NAME((short)1, "name"),
-    COLORS((short)2, "colors");
+    __UNUSED((short)2, "_UNUSED");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -50,8 +50,8 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
       switch(fieldId) {
         case 1: // NAME
           return NAME;
-        case 2: // COLORS
-          return COLORS;
+        case 2: // __UNUSED
+          return __UNUSED;
         default:
           return null;
       }
@@ -98,7 +98,7 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.COLORS, new org.apache.thrift.meta_data.FieldMetaData("colors", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.__UNUSED, new org.apache.thrift.meta_data.FieldMetaData("_UNUSED", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -110,11 +110,11 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
 
   public TransportLine(
     String name,
-    List<String> colors)
+    List<String> _UNUSED)
   {
     this();
     this.name = name;
-    this.colors = colors;
+    this._UNUSED = _UNUSED;
   }
 
   /**
@@ -124,12 +124,12 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
     if (other.isSetName()) {
       this.name = other.name;
     }
-    if (other.isSetColors()) {
-      List<String> __this__colors = new ArrayList<String>();
-      for (String other_element : other.colors) {
-        __this__colors.add(other_element);
+    if (other.isSet_UNUSED()) {
+      List<String> __this___UNUSED = new ArrayList<String>();
+      for (String other_element : other._UNUSED) {
+        __this___UNUSED.add(other_element);
       }
-      this.colors = __this__colors;
+      this._UNUSED = __this___UNUSED;
     }
   }
 
@@ -140,7 +140,7 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
   @Override
   public void clear() {
     this.name = null;
-    this.colors = null;
+    this._UNUSED = null;
   }
 
   public String getName() {
@@ -167,42 +167,42 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
     }
   }
 
-  public int getColorsSize() {
-    return (this.colors == null) ? 0 : this.colors.size();
+  public int get_UNUSEDSize() {
+    return (this._UNUSED == null) ? 0 : this._UNUSED.size();
   }
 
-  public java.util.Iterator<String> getColorsIterator() {
-    return (this.colors == null) ? null : this.colors.iterator();
+  public java.util.Iterator<String> get_UNUSEDIterator() {
+    return (this._UNUSED == null) ? null : this._UNUSED.iterator();
   }
 
-  public void addToColors(String elem) {
-    if (this.colors == null) {
-      this.colors = new ArrayList<String>();
+  public void addTo_UNUSED(String elem) {
+    if (this._UNUSED == null) {
+      this._UNUSED = new ArrayList<String>();
     }
-    this.colors.add(elem);
+    this._UNUSED.add(elem);
   }
 
-  public List<String> getColors() {
-    return this.colors;
+  public List<String> get_UNUSED() {
+    return this._UNUSED;
   }
 
-  public TransportLine setColors(List<String> colors) {
-    this.colors = colors;
+  public TransportLine set_UNUSED(List<String> _UNUSED) {
+    this._UNUSED = _UNUSED;
     return this;
   }
 
-  public void unsetColors() {
-    this.colors = null;
+  public void unset_UNUSED() {
+    this._UNUSED = null;
   }
 
-  /** Returns true if field colors is set (has been assigned a value) and false otherwise */
-  public boolean isSetColors() {
-    return this.colors != null;
+  /** Returns true if field _UNUSED is set (has been assigned a value) and false otherwise */
+  public boolean isSet_UNUSED() {
+    return this._UNUSED != null;
   }
 
-  public void setColorsIsSet(boolean value) {
+  public void set_UNUSEDIsSet(boolean value) {
     if (!value) {
-      this.colors = null;
+      this._UNUSED = null;
     }
   }
 
@@ -216,11 +216,11 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
       }
       break;
 
-    case COLORS:
+    case __UNUSED:
       if (value == null) {
-        unsetColors();
+        unset_UNUSED();
       } else {
-        setColors((List<String>)value);
+        set_UNUSED((List<String>)value);
       }
       break;
 
@@ -232,8 +232,8 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
     case NAME:
       return getName();
 
-    case COLORS:
-      return getColors();
+    case __UNUSED:
+      return get_UNUSED();
 
     }
     throw new IllegalStateException();
@@ -248,8 +248,8 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
     switch (field) {
     case NAME:
       return isSetName();
-    case COLORS:
-      return isSetColors();
+    case __UNUSED:
+      return isSet_UNUSED();
     }
     throw new IllegalStateException();
   }
@@ -276,12 +276,12 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
         return false;
     }
 
-    boolean this_present_colors = true && this.isSetColors();
-    boolean that_present_colors = true && that.isSetColors();
-    if (this_present_colors || that_present_colors) {
-      if (!(this_present_colors && that_present_colors))
+    boolean this_present__UNUSED = true && this.isSet_UNUSED();
+    boolean that_present__UNUSED = true && that.isSet_UNUSED();
+    if (this_present__UNUSED || that_present__UNUSED) {
+      if (!(this_present__UNUSED && that_present__UNUSED))
         return false;
-      if (!this.colors.equals(that.colors))
+      if (!this._UNUSED.equals(that._UNUSED))
         return false;
     }
 
@@ -297,10 +297,10 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
     if (present_name)
       builder.append(name);
 
-    boolean present_colors = true && (isSetColors());
-    builder.append(present_colors);
-    if (present_colors)
-      builder.append(colors);
+    boolean present__UNUSED = true && (isSet_UNUSED());
+    builder.append(present__UNUSED);
+    if (present__UNUSED)
+      builder.append(_UNUSED);
 
     return builder.toHashCode();
   }
@@ -323,12 +323,12 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetColors()).compareTo(typedOther.isSetColors());
+    lastComparison = Boolean.valueOf(isSet_UNUSED()).compareTo(typedOther.isSet_UNUSED());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetColors()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.colors, typedOther.colors);
+    if (isSet_UNUSED()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this._UNUSED, typedOther._UNUSED);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -357,16 +357,16 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // COLORS
+        case 2: // __UNUSED
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
               org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-              this.colors = new ArrayList<String>(_list0.size);
+              this._UNUSED = new ArrayList<String>(_list0.size);
               for (int _i1 = 0; _i1 < _list0.size; ++_i1)
               {
                 String _elem2; // required
                 _elem2 = iprot.readString();
-                this.colors.add(_elem2);
+                this._UNUSED.add(_elem2);
               }
               iprot.readListEnd();
             }
@@ -394,11 +394,11 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
       oprot.writeString(this.name);
       oprot.writeFieldEnd();
     }
-    if (this.colors != null) {
-      oprot.writeFieldBegin(COLORS_FIELD_DESC);
+    if (this._UNUSED != null) {
+      oprot.writeFieldBegin(__UNUSED_FIELD_DESC);
       {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.colors.size()));
-        for (String _iter3 : this.colors)
+        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this._UNUSED.size()));
+        for (String _iter3 : this._UNUSED)
         {
           oprot.writeString(_iter3);
         }
@@ -423,11 +423,11 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("colors:");
-    if (this.colors == null) {
+    sb.append("_UNUSED:");
+    if (this._UNUSED == null) {
       sb.append("null");
     } else {
-      sb.append(this.colors);
+      sb.append(this._UNUSED);
     }
     first = false;
     sb.append(")");
@@ -439,8 +439,8 @@ public class TransportLine implements org.apache.thrift.TBase<TransportLine, Tra
     if (name == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'name' was not present! Struct: " + toString());
     }
-    if (colors == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'colors' was not present! Struct: " + toString());
+    if (_UNUSED == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field '_UNUSED' was not present! Struct: " + toString());
     }
   }
 
