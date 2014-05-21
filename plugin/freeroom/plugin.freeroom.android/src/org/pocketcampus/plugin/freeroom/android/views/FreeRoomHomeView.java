@@ -1778,7 +1778,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				build.append("; ");
 			}
 			if (req.isOnlyFreeRooms()) {
-				build.append(getString(R.string.freeroom_search_only_free));
+				build.append(getString(R.string.freeroom_search_only_free_short));
 				build.append("; ");
 			}
 			if (req.isUser()) {
@@ -2862,6 +2862,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					searchButton.setEnabled(false);
 				} else {
 					resetUserDefined(false);
+					mOptionalLineLinearLayoutWrapperSecond
+							.setVisibility(View.GONE);
 					searchButton.setEnabled(auditSubmit() == 0);
 				}
 			}

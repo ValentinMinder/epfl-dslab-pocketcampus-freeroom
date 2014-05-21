@@ -14,7 +14,7 @@
         android:drawableLeft="@drawable/ic_action_collapse"
         android:drawableRight="@drawable/ic_action_collapse"
         android:text="@string/freeroom_dialog_search_footer_home"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/black"
         android:visibility="visible" />
 

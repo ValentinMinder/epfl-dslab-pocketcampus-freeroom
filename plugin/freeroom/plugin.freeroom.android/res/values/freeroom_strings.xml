@@ -59,6 +59,7 @@
     <string name="freeroom_search_any">"Any free room"</string>
     <string name="freeroom_search_spec">"Choose rooms"</string>
     <string name="freeroom_search_only_free">"Only free rooms"</string>
+    <string name="freeroom_search_only_free_short">"free"</string>
     <string name="freeroom_search_favorites">"Favorites"</string>
     <string name="freeroom_search_userdef">"Specified list"</string>
     <string name="freeroom_search_userdef_reset">"Reset"</string>
@@ -216,7 +217,7 @@
     <string name="freeroom_whoIsWorking_title">"Working there &#8230;"</string>
     <string name="freeroom_whoIsWorking_disclaimer">"These indications come from users input. The authors, Pocketcampus, DSLAB and EPFL are not responsible for what the users may have written."</string>
     <string name="freeroom_whoIsWorking_wait">"Please wait, results are refreshed &#8230;"</string>
-    <string name="freeroom_whoIsWorking_undefined">"Undefined"</string>
+    <string name="freeroom_whoIsWorking_undefined">"Not precised"</string>
 
     <!-- NEW: add there -->
 

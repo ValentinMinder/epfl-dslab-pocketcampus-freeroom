@@ -60,6 +60,7 @@
     <string name="freeroom_search_any">"Toutes les salles libres"</string>
     <string name="freeroom_search_spec">"Choisir les salles"</string>
     <string name="freeroom_search_only_free">"Salles libres uniquement"</string>
+    <string name="freeroom_search_only_free_short">"libres"</string>
     <string name="freeroom_search_favorites">"Favoris"</string>
     <string name="freeroom_search_userdef">"Liste choisie"</string>
     <string name="freeroom_search_userdef_reset">"Effacer"</string>
@@ -118,7 +119,7 @@
     <string name="freeroom_dialog_info_surface">"Surface"</string>
     <string name="freeroom_dialog_info_sqm">"m2"</string>
     <string name="freeroom_dialog_info_uniqID">"Identifiant unique"</string>
-    <string name="freeroom_dialog_info_share">"Partager la position"</string>
+    <string name="freeroom_dialog_info_share">"Partager"</string>
 
     <!-- FAVORITES -->
     <string name="freeroom_dialog_fav_title">"Favoris"</string>
