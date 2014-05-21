@@ -26,7 +26,7 @@ public class PluginLauncher {
 	
 	public static void main(String[] args) throws Exception {
 		ServerBase server = new PocketCampusServer();
-		server.start();
+		server.start(args.length > 0 ? args[0] : null);
 	}
 	
 }
