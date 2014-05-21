@@ -282,7 +282,7 @@ public class OccupancySorted {
 		long numberHours = FRTimes.determineNumberHour(start, end);
 
 		for (int i = 0; i < numberHours; ++i) {
-			long minStart = Math.max(hourSharpBefore, hourSharpBefore + i
+			long minStart = Math.max(start, hourSharpBefore + i
 					* FRTimes.ONE_HOUR_IN_MS);
 			long maxEnd = Math.min(hourSharpBefore + (i + 1)
 					* FRTimes.ONE_HOUR_IN_MS, end);

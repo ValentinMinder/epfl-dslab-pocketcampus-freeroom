@@ -934,7 +934,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					+ roomsListQueryFormat
 					+ ") "
 					+ "AND ((uo.timestampEnd <= ? AND uo.timestampEnd >= ? ) "
-					+ "OR (uo.timestampStart <= ? AND uo.timestampStart >= ?)"
+					+ "OR (uo.timestampStart < ? AND uo.timestampStart >= ?)"
 					+ "OR (uo.timestampStart <= ? AND uo.timestampEnd >= ?)) "
 					+ "ORDER BY rl.uid ASC, uo.timestampStart ASC";
 
