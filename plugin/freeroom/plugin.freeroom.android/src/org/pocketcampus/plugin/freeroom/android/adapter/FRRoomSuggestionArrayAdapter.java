@@ -51,7 +51,7 @@ public class FRRoomSuggestionArrayAdapter<T> extends ArrayAdapter<FRRoom> {
 		View row = super.getView(index, convertView, parent);
 		TextView tv = (TextView) row.findViewById(ressourceText);
 		FRRoom room = data.get(index);
-		tv.setText(FRUtilsClient.formatRoom(room));
+		tv.setText(FRUtilsClient.formatFullRoom(room));
 		
 		if (favorites) {
 			if (mModel.isFavorite(room)) {

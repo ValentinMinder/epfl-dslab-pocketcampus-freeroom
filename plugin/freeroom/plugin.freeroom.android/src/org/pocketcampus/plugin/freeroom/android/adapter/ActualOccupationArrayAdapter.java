@@ -148,6 +148,8 @@ public class ActualOccupationArrayAdapter<T> extends
 			ivshare.setOnClickListener(null);
 			// whole line non clickable
 			convertView.setOnClickListener(null);
+			tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_empty, 0,
+					0, 0);
 		}
 
 		int color = free ? mModel.COLOR_CHECK_OCCUPANCY_FREE

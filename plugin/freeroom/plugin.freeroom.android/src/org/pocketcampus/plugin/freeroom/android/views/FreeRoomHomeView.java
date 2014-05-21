@@ -3416,12 +3416,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	private void resetTimes(FRPeriod mFrPeriod) {
-		Calendar today = Calendar.getInstance();
+		// nextValid is today according to nextValidPeriod definition.
+		Calendar nextValid = Calendar.getInstance();
+		nextValid.setTimeInMillis(FRTimes.getNextValidPeriod().getTimeStampStart());
 		Calendar mCalendar = Calendar.getInstance();
 		mCalendar.setTimeInMillis(mFrPeriod.getTimeStampStart());
-		yearSelected = today.get(Calendar.YEAR);
-		monthSelected = today.get(Calendar.MONTH);
-		dayOfMonthSelected = today.get(Calendar.DAY_OF_MONTH);
+		yearSelected = nextValid.get(Calendar.YEAR);
+		monthSelected = nextValid.get(Calendar.MONTH);
+		dayOfMonthSelected = nextValid.get(Calendar.DAY_OF_MONTH);
 		startHourSelected = mCalendar.get(Calendar.HOUR_OF_DAY);
 		startMinSelected = mCalendar.get(Calendar.MINUTE);
 		mCalendar.setTimeInMillis(mFrPeriod.getTimeStampEnd());

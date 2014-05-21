@@ -318,4 +318,22 @@ public class FRUtilsClient {
 		return room.getDoorCode();
 	}
 
+	/**
+	 * Returns the string user-friendly common representation, with the
+	 * precision of of the official name after in bracket, if needed.
+	 * <p>
+	 * alias is displayed IN PLACE of the official name, the official name can
+	 * be found in bottom of INFO dialog
+	 * 
+	 * @param room
+	 *            given room
+	 * @return string user-friendly common representation.
+	 */
+	public static String formatFullRoom(FRRoom room) {
+		if (room.isSetDoorCodeAlias() && room.getDoorCodeAlias() != null) {
+			return room.getDoorCodeAlias() + " (" + room.getDoorCode() + ")";
+		}
+		return room.getDoorCode();
+	}
+
 }
