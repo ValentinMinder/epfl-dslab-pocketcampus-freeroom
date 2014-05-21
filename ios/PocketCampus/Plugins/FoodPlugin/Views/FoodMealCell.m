@@ -400,12 +400,12 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         case SubmitStatus_VALID:
         {
             self.ratingStatus = RatingStatusRated;
-            FoodMealCell* weakSelf __weak = self;
+            __weak __typeof(self) welf = self;
             [NSTimer scheduledTimerWithTimeInterval:1.0 block:^{
-                [weakSelf infoContentViewTapped]; //hide rating controls, not longer need them
+                [welf infoContentViewTapped]; //hide rating controls, not longer need them
             } repeats:NO];
             [NSTimer scheduledTimerWithTimeInterval:1.4 block:^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:kFoodMealCellUserSuccessfullyRatedMealNotification object:weakSelf];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kFoodMealCellUserSuccessfullyRatedMealNotification object:welf];
             } repeats:NO];
             break;
         }

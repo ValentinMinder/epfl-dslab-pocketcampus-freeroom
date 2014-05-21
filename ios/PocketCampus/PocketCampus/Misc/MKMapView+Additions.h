@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,25 +22,20 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+//  Created by Loïc Gardiol on 13.05.14.
 
+@import MapKit;
 
+@interface MKMapView (Additions)
 
-
-
-//  Created by Loïc Gardiol on 11.10.13.
-
-
-
-#import <MapKit/MapKit.h>
-
-/*
- * This overlay is an attempt to use the MKTileOverlay class to simplify the download of tiles (instead of using RemoveOverlayRenderer).
- * This is not working yet, the implementation is not complete.
+/**
+ * Returns visible map rect, *including* portions that might be under navbar/toolbar
  */
+@property (nonatomic, readonly) MKMapRect pc_completeVisibleMapRect;
 
-@interface EPFLTileOverlay2 : MKTileOverlay
+@property (nonatomic, readonly) MKZoomScale pc_zoomScale;
 
 @end

@@ -11,13 +11,14 @@ import org.pocketcampus.android.platform.sdk.core.GlobalContext;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel.LocalCredentials;
-import org.pocketcampus.plugin.authentication.android.AuthenticationModel.TokenCookieComplex;
+import org.pocketcampus.plugin.authentication.android.AuthenticationModel.TokenCredentialsComplex;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationController;
 import org.pocketcampus.plugin.authentication.android.req.AuthenticateTokenWithTequilaRequest;
 import org.pocketcampus.plugin.authentication.android.req.GetPcSessionRequest;
 import org.pocketcampus.plugin.authentication.android.req.GetPcTokenRequest;
 import org.pocketcampus.plugin.authentication.android.req.GetServiceDetailsRequest;
 import org.pocketcampus.plugin.authentication.android.req.LoginToTequilaRequest;
+import org.pocketcampus.plugin.authentication.shared.AuthSessionRequest;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Client;
 
@@ -424,9 +425,10 @@ public class AuthenticationController extends PluginController implements IAuthe
 	}
 
 	public void authenticateToken() {
-		TokenCookieComplex tc = new TokenCookieComplex();
-		tc.cookie = mModel.getTequilaCookie();
+		TokenCredentialsComplex tc = new TokenCredentialsComplex();
 		tc.token = mModel.getTequilaToken();
+		tc.username = mModel.getGasparUsername();
+		tc.password = mModel.getTempGasparPassword();
 		new AuthenticateTokenWithTequilaRequest().start(this, threadSafeClient, tc);
 	}
 	
@@ -475,7 +477,9 @@ public class AuthenticationController extends PluginController implements IAuthe
 	public void tokenAuthenticationFinished() {
 		Log.v("DEBUG", "tokenAuthenticationFinished");
 		if(mModel.getSelfAuth()) {
-			new GetPcSessionRequest().start(this, mClient, mModel.getTequilaToken());
+			AuthSessionRequest req = new AuthSessionRequest(mModel.getTequilaToken());
+			req.setRememberMe(mModel.getStorePassword());
+			new GetPcSessionRequest().start(this, mClient, req);
 		} else {
 			pingBack(mModel.getTequilaToken(), ( mModel.getStorePassword() ? null : "forcereauth" ));
 			stopSelf();

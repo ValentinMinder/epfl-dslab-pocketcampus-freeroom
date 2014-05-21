@@ -68,5 +68,13 @@ typedef struct {
 + (CGPoint)mercatorTileOriginForMapRect:(MKMapRect)mapRect;
 
 + (CH1903BBox)WGStoCH1903:(MKMapRect)mapRect;
++ (CH1903BBox)tilePathToCH1903:(MKTileOverlayPath)tilePath tileSize:(CGSize)tileSize;
+
+double tilex2long(int x, int z);
+double tiley2lat(int y, int z);
+
+MKMapRect MKMapRectForCoordinateRegion(MKCoordinateRegion region);
+
+NSString* NSStringFromMKTileOverlayPath(MKTileOverlayPath path);
 
 @end

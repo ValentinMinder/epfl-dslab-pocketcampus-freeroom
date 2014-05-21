@@ -20,7 +20,13 @@ struct AuthSessionResponse {
   2: required AuthStatusCode statusCode;
 }
 
+struct AuthSessionRequest {
+  1: required string tequilaToken;
+  2: optional bool rememberMe;
+}
+
 service AuthenticationService {
     AuthTokenResponse getAuthTequilaToken();
-    AuthSessionResponse getAuthSessionId(1: string tequilaToken);
+    AuthSessionResponse getAuthSession(1: AuthSessionRequest req); // TODO add logout func
+    AuthSessionResponse getAuthSessionId(1: string tequilaToken); // deprecated
 }

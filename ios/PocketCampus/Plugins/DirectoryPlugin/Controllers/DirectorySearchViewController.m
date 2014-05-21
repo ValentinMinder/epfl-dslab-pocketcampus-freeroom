@@ -418,6 +418,11 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
 - (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.resultsMode == ResultsModeSearch) {
         [self trackAction:@"ViewPerson"];
+        if (indexPath.row >= self.searchResults.count) {
+            //should not be required but crash report shows it can still happen...
+            // https://www.crashlytics.com/pocketcampusorg/ios/apps/org.pocketcampus/issues/536b9213e3de5099ba2d40d0?km_variation=view+new+issue&kme=Clicked+from+Email&kmi=pocketcampus.ios%40gmail.com
+            return;
+        }
         Person* person = self.searchResults[indexPath.row];
         if (self.splitViewController && [person.sciper isEqualToString:self.displayedPerson.sciper]) { //isEqual not implemented in Thrift
             [self.personViewController.navigationController popToRootViewControllerAnimated:YES]; //return to contact info if in map for example

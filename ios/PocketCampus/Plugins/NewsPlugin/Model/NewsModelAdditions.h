@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,23 +22,47 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+//  Created by Loïc Gardiol on 24.04.14.
 
+#import "news.h"
 
+extern NSString* const kNewsFeedItemImageUrlParameterX;
+extern NSString* const kNewsFeedItemImageUrlParameterY;
 
-//  Created by Loïc Gardiol on 06.06.12.
+@interface NewsFeedItem (Additions)
 
+/*
+ * Returns imageUrl where {x} and {y} are replaced
+ * by size.width and size.height respectively.
+ */
+- (NSString*)imageUrlStringForSize:(CGSize)size applyDeviceScreenMultiplyingFactor:(BOOL)applyFactor;
 
-#import <Foundation/Foundation.h>
+- (BOOL)isEqualToNewsFeedItem:(NewsFeedItem*)otherItem;
+- (BOOL)isEqual:(id)object;
+- (NSUInteger)hash;
 
-#import <MapKit/MapKit.h>
+/*
+ * Returns NSOrderedAscending if self.date is more recent than otherItem.date
+ */
+- (NSComparisonResult)compareDateToNewsFeedItem:(NewsFeedItem*)otherItem;
 
-@protocol OverlayWithURLs <MKOverlay>
+@end
 
-- (NSString *)urlForMapRect:(MKMapRect)mapRect andZoomScale:(MKZoomScale)zoomScale;
-- (BOOL)canDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale;
-- (NSString*)identifier;
+@interface NewsFeedItemContent (Additions)
+
+/*
+ * Returns imageUrl where {x} and {y} are replaced
+ * by size.width and size.height respectively.
+ */
+- (NSString*)imageUrlStringForSize:(CGSize)size applyDeviceScreenMultiplyingFactor:(BOOL)applyFactor;
+
+/*
+ * Content without the <img> tag that has src that matches imageUrl
+ * Returns content if imageUrl is nil or in case of failure to find imageUrl
+ */
+@property (nonatomic, readonly, strong) NSString* contentWithoutMainImage;
 
 @end

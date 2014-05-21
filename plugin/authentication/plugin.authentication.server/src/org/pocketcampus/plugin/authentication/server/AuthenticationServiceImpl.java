@@ -1,7 +1,11 @@
 package org.pocketcampus.plugin.authentication.server;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.launcher.server.PocketCampusServer;
+import org.pocketcampus.plugin.authentication.shared.AuthSessionRequest;
 import org.pocketcampus.plugin.authentication.shared.AuthSessionResponse;
 import org.pocketcampus.plugin.authentication.shared.AuthStatusCode;
 import org.pocketcampus.plugin.authentication.shared.AuthTokenResponse;
@@ -21,7 +25,7 @@ import ch.epfl.tequila.client.model.TequilaPrincipal;
  */
 public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 
-	private final SessionManager _manager; // TODO use the DataStore instead
+	private final SessionManager _manager;
 
 	public AuthenticationServiceImpl() {
 		System.out.println("Starting Authentication plugin server ...");
@@ -37,12 +41,27 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	}
 
 	@Override
+	public AuthSessionResponse getAuthSession(AuthSessionRequest req) throws TException {
+		try {
+			TequilaPrincipal principal = PocketCampusServer.authGetTequilaPrincipal(req.getTequilaToken());
+			if(principal == null)
+				return new AuthSessionResponse(AuthStatusCode.NETWORK_ERROR);
+			String session = _manager.insert(principal, req.isRememberMe());
+			return new AuthSessionResponse(AuthStatusCode.OK).setSessionId(session);
+			
+		} catch(SecurityException e) {
+			return new AuthSessionResponse(AuthStatusCode.INVALID_SESSION);
+		}
+	}
+
+	@Override
+	@Deprecated
 	public AuthSessionResponse getAuthSessionId(String tequilaToken) throws TException {
 		try {
 			TequilaPrincipal principal = PocketCampusServer.authGetTequilaPrincipal(tequilaToken);
 			if(principal == null)
 				return new AuthSessionResponse(AuthStatusCode.NETWORK_ERROR);
-			String session = _manager.insert(sanitizeTequilaUsername(principal.getAttribute("username")), principal.getAttribute("uniqueid"));
+			String session = _manager.insert(principal, false);
 			return new AuthSessionResponse(AuthStatusCode.OK).setSessionId(session);
 			
 		} catch(SecurityException e) {
@@ -51,17 +70,38 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	}
 
 	public String getGasparFromSession(String sess) {
-		return _manager.getGaspar(sess);
+		return getFieldFromSession(sess, "`gaspar`");
 	}
 	
 	public String getSciperFromSession(String sess) {
-		return _manager.getSciper(sess);
+		return getFieldFromSession(sess, "`sciper`");
 	}
 	
-	private String sanitizeTequilaUsername(String crap) {
+	public String getFirstNameFromSession(String sess) {
+		return getFieldFromSession(sess, "`firstname`");
+	}
+	
+	public String getLastNameFromSession(String sess) {
+		return getFieldFromSession(sess, "`lastname`");
+	}
+	
+	/**
+	 * Gets any fields/attributes related to the logged in user
+	 * field names must be surrounded by MySQL quotes (`)
+	 * returns null if the session has expired / does not exist
+	 */
+	public List<String> getUserFieldsFromSession(String sess, List<String> fields) {
+		return _manager.getFields(sess, fields);
+	}
+	
+	private String firstValue(String crap) {
 		crap = crap.split("[,]")[0];
-		crap = crap.split("[@]")[0];
 		return crap;
 	}
 
+	private String getFieldFromSession(String sess, String field) {
+		List<String> list = _manager.getFields(sess, Arrays.asList(new String[]{field}));
+		return (list == null ? null : firstValue(list.get(0)));
+	}
+	
 }

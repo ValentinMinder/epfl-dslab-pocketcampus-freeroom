@@ -33,6 +33,7 @@
     #import "LGRefreshControl+PCAdditions.h"
     #import "UIImage+Additions.h"
     #import "NSTimer+Blocks.h"
+    #import "MKMapView+Additions.h"
     #import "UIControl+JTTargetActionBlock.h"
     #import "PCTableViewAdditions.h"
     #import "PCTableViewCellAdditions.h"

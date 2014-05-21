@@ -3,11 +3,11 @@ package org.pocketcampus.plugin.camipro.android;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pocketcampus.plugin.camipro.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.plugin.camipro.R;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
 import org.pocketcampus.plugin.camipro.shared.CardLoadingWithEbankingInfo;
 import org.pocketcampus.plugin.camipro.shared.CardStatistics;
@@ -25,7 +25,6 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 
 /**
@@ -66,11 +65,7 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 		setContentView(mLayout);
 		mLayout.hideTitle();
 
-		ActionBar a = getActionBar();
-		if (a != null) {
-			RefreshAction refresh = new RefreshAction();
-			a.addAction(refresh, 0);
-		}
+		addActionToActionBar(new RefreshAction(), 0);
 		
 		mController.refreshStatsAndLoadingInfo();
 		updateDisplay();

@@ -237,4 +237,11 @@
     }
 }
 
+void PCRoundCGRect(CGRect rect) {
+    rect.origin.x = roundf(rect.origin.x);
+    rect.origin.y = roundf(rect.origin.y);
+    rect.size.width = roundf(rect.size.width);
+    rect.size.height = roundf(rect.size.height);
+}
+
 @end

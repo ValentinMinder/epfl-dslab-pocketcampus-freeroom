@@ -39,8 +39,8 @@ public abstract class ServerBase {
 	private static TProtocolFactory binProtocolFactory = new TBinaryProtocol.Factory();
 	private static TProtocolFactory jsonProtocolFactory = new TJSONProtocol.Factory();
 	
-	public void start() throws Exception {
-		initializeConfig();
+	public void start(String config) throws Exception {
+		initializeConfig(config);
 		
 		Server server = new Server();
 		
@@ -127,7 +127,7 @@ public abstract class ServerBase {
 		server.join();
 	}
 	
-	private void initializeConfig() {
+	private void initializeConfig(String config) {
 		
 		try {
 			
@@ -146,6 +146,15 @@ public abstract class ServerBase {
 			String configFile = "/etc/pocketcampus-server.config";
 			if(new File(configFile).exists()) {
 				PC_SRV_CONFIG.load(new FileInputStream(configFile));
+			}
+			
+			/**
+			* Finally override with config file given as arg.
+			*   This is mainly used for running multiple instances 
+			*   of the server on the same machine.
+			*/
+			if(config != null) {
+				PC_SRV_CONFIG.load(new FileInputStream(config));
 			}
 			
 		} catch (IOException e) {

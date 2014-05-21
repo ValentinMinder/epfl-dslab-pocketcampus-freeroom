@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  */
-package org.pocketcampus.plugin.directory.shared;
+package org.pocketcampus.plugin.authentication.shared;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
@@ -21,19 +21,19 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DirectoryToken implements org.apache.thrift.TBase<DirectoryToken, DirectoryToken._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("DirectoryToken");
+public class AuthSessionRequest implements org.apache.thrift.TBase<AuthSessionRequest, AuthSessionRequest._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("AuthSessionRequest");
 
-  private static final org.apache.thrift.protocol.TField I_TEQUILA_KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("iTequilaKey", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField LOGIN_COOKIE_FIELD_DESC = new org.apache.thrift.protocol.TField("loginCookie", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField TEQUILA_TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("tequilaToken", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField REMEMBER_ME_FIELD_DESC = new org.apache.thrift.protocol.TField("rememberMe", org.apache.thrift.protocol.TType.BOOL, (short)2);
 
-  public String iTequilaKey; // required
-  public String loginCookie; // required
+  private String tequilaToken; // required
+  private boolean rememberMe; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    I_TEQUILA_KEY((short)1, "iTequilaKey"),
-    LOGIN_COOKIE((short)2, "loginCookie");
+    TEQUILA_TOKEN((short)1, "tequilaToken"),
+    REMEMBER_ME((short)2, "rememberMe");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -48,10 +48,10 @@ public class DirectoryToken implements org.apache.thrift.TBase<DirectoryToken, D
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // I_TEQUILA_KEY
-          return I_TEQUILA_KEY;
-        case 2: // LOGIN_COOKIE
-          return LOGIN_COOKIE;
+        case 1: // TEQUILA_TOKEN
+          return TEQUILA_TOKEN;
+        case 2: // REMEMBER_ME
+          return REMEMBER_ME;
         default:
           return null;
       }
@@ -92,113 +92,115 @@ public class DirectoryToken implements org.apache.thrift.TBase<DirectoryToken, D
   }
 
   // isset id assignments
+  private static final int __REMEMBERME_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.I_TEQUILA_KEY, new org.apache.thrift.meta_data.FieldMetaData("iTequilaKey", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.TEQUILA_TOKEN, new org.apache.thrift.meta_data.FieldMetaData("tequilaToken", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.LOGIN_COOKIE, new org.apache.thrift.meta_data.FieldMetaData("loginCookie", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.REMEMBER_ME, new org.apache.thrift.meta_data.FieldMetaData("rememberMe", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(DirectoryToken.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(AuthSessionRequest.class, metaDataMap);
   }
 
-  public DirectoryToken() {
+  public AuthSessionRequest() {
   }
 
-  public DirectoryToken(
-    String iTequilaKey)
+  public AuthSessionRequest(
+    String tequilaToken)
   {
     this();
-    this.iTequilaKey = iTequilaKey;
+    this.tequilaToken = tequilaToken;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public DirectoryToken(DirectoryToken other) {
-    if (other.isSetITequilaKey()) {
-      this.iTequilaKey = other.iTequilaKey;
+  public AuthSessionRequest(AuthSessionRequest other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
+    if (other.isSetTequilaToken()) {
+      this.tequilaToken = other.tequilaToken;
     }
-    if (other.isSetLoginCookie()) {
-      this.loginCookie = other.loginCookie;
-    }
+    this.rememberMe = other.rememberMe;
   }
 
-  public DirectoryToken deepCopy() {
-    return new DirectoryToken(this);
+  public AuthSessionRequest deepCopy() {
+    return new AuthSessionRequest(this);
   }
 
   @Override
   public void clear() {
-    this.iTequilaKey = null;
-    this.loginCookie = null;
+    this.tequilaToken = null;
+    setRememberMeIsSet(false);
+    this.rememberMe = false;
   }
 
-  public String getITequilaKey() {
-    return this.iTequilaKey;
+  public String getTequilaToken() {
+    return this.tequilaToken;
   }
 
-  public DirectoryToken setITequilaKey(String iTequilaKey) {
-    this.iTequilaKey = iTequilaKey;
+  public AuthSessionRequest setTequilaToken(String tequilaToken) {
+    this.tequilaToken = tequilaToken;
     return this;
   }
 
-  public void unsetITequilaKey() {
-    this.iTequilaKey = null;
+  public void unsetTequilaToken() {
+    this.tequilaToken = null;
   }
 
-  /** Returns true if field iTequilaKey is set (has been assigned a value) and false otherwise */
-  public boolean isSetITequilaKey() {
-    return this.iTequilaKey != null;
+  /** Returns true if field tequilaToken is set (has been assigned a value) and false otherwise */
+  public boolean isSetTequilaToken() {
+    return this.tequilaToken != null;
   }
 
-  public void setITequilaKeyIsSet(boolean value) {
+  public void setTequilaTokenIsSet(boolean value) {
     if (!value) {
-      this.iTequilaKey = null;
+      this.tequilaToken = null;
     }
   }
 
-  public String getLoginCookie() {
-    return this.loginCookie;
+  public boolean isRememberMe() {
+    return this.rememberMe;
   }
 
-  public DirectoryToken setLoginCookie(String loginCookie) {
-    this.loginCookie = loginCookie;
+  public AuthSessionRequest setRememberMe(boolean rememberMe) {
+    this.rememberMe = rememberMe;
+    setRememberMeIsSet(true);
     return this;
   }
 
-  public void unsetLoginCookie() {
-    this.loginCookie = null;
+  public void unsetRememberMe() {
+    __isset_bit_vector.clear(__REMEMBERME_ISSET_ID);
   }
 
-  /** Returns true if field loginCookie is set (has been assigned a value) and false otherwise */
-  public boolean isSetLoginCookie() {
-    return this.loginCookie != null;
+  /** Returns true if field rememberMe is set (has been assigned a value) and false otherwise */
+  public boolean isSetRememberMe() {
+    return __isset_bit_vector.get(__REMEMBERME_ISSET_ID);
   }
 
-  public void setLoginCookieIsSet(boolean value) {
-    if (!value) {
-      this.loginCookie = null;
-    }
+  public void setRememberMeIsSet(boolean value) {
+    __isset_bit_vector.set(__REMEMBERME_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case I_TEQUILA_KEY:
+    case TEQUILA_TOKEN:
       if (value == null) {
-        unsetITequilaKey();
+        unsetTequilaToken();
       } else {
-        setITequilaKey((String)value);
+        setTequilaToken((String)value);
       }
       break;
 
-    case LOGIN_COOKIE:
+    case REMEMBER_ME:
       if (value == null) {
-        unsetLoginCookie();
+        unsetRememberMe();
       } else {
-        setLoginCookie((String)value);
+        setRememberMe((Boolean)value);
       }
       break;
 
@@ -207,11 +209,11 @@ public class DirectoryToken implements org.apache.thrift.TBase<DirectoryToken, D
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case I_TEQUILA_KEY:
-      return getITequilaKey();
+    case TEQUILA_TOKEN:
+      return getTequilaToken();
 
-    case LOGIN_COOKIE:
-      return getLoginCookie();
+    case REMEMBER_ME:
+      return Boolean.valueOf(isRememberMe());
 
     }
     throw new IllegalStateException();
@@ -224,10 +226,10 @@ public class DirectoryToken implements org.apache.thrift.TBase<DirectoryToken, D
     }
 
     switch (field) {
-    case I_TEQUILA_KEY:
-      return isSetITequilaKey();
-    case LOGIN_COOKIE:
-      return isSetLoginCookie();
+    case TEQUILA_TOKEN:
+      return isSetTequilaToken();
+    case REMEMBER_ME:
+      return isSetRememberMe();
     }
     throw new IllegalStateException();
   }
@@ -236,30 +238,30 @@ public class DirectoryToken implements org.apache.thrift.TBase<DirectoryToken, D
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof DirectoryToken)
-      return this.equals((DirectoryToken)that);
+    if (that instanceof AuthSessionRequest)
+      return this.equals((AuthSessionRequest)that);
     return false;
   }
 
-  public boolean equals(DirectoryToken that) {
+  public boolean equals(AuthSessionRequest that) {
     if (that == null)
       return false;
 
-    boolean this_present_iTequilaKey = true && this.isSetITequilaKey();
-    boolean that_present_iTequilaKey = true && that.isSetITequilaKey();
-    if (this_present_iTequilaKey || that_present_iTequilaKey) {
-      if (!(this_present_iTequilaKey && that_present_iTequilaKey))
+    boolean this_present_tequilaToken = true && this.isSetTequilaToken();
+    boolean that_present_tequilaToken = true && that.isSetTequilaToken();
+    if (this_present_tequilaToken || that_present_tequilaToken) {
+      if (!(this_present_tequilaToken && that_present_tequilaToken))
         return false;
-      if (!this.iTequilaKey.equals(that.iTequilaKey))
+      if (!this.tequilaToken.equals(that.tequilaToken))
         return false;
     }
 
-    boolean this_present_loginCookie = true && this.isSetLoginCookie();
-    boolean that_present_loginCookie = true && that.isSetLoginCookie();
-    if (this_present_loginCookie || that_present_loginCookie) {
-      if (!(this_present_loginCookie && that_present_loginCookie))
+    boolean this_present_rememberMe = true && this.isSetRememberMe();
+    boolean that_present_rememberMe = true && that.isSetRememberMe();
+    if (this_present_rememberMe || that_present_rememberMe) {
+      if (!(this_present_rememberMe && that_present_rememberMe))
         return false;
-      if (!this.loginCookie.equals(that.loginCookie))
+      if (this.rememberMe != that.rememberMe)
         return false;
     }
 
@@ -270,43 +272,43 @@ public class DirectoryToken implements org.apache.thrift.TBase<DirectoryToken, D
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_iTequilaKey = true && (isSetITequilaKey());
-    builder.append(present_iTequilaKey);
-    if (present_iTequilaKey)
-      builder.append(iTequilaKey);
+    boolean present_tequilaToken = true && (isSetTequilaToken());
+    builder.append(present_tequilaToken);
+    if (present_tequilaToken)
+      builder.append(tequilaToken);
 
-    boolean present_loginCookie = true && (isSetLoginCookie());
-    builder.append(present_loginCookie);
-    if (present_loginCookie)
-      builder.append(loginCookie);
+    boolean present_rememberMe = true && (isSetRememberMe());
+    builder.append(present_rememberMe);
+    if (present_rememberMe)
+      builder.append(rememberMe);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(DirectoryToken other) {
+  public int compareTo(AuthSessionRequest other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    DirectoryToken typedOther = (DirectoryToken)other;
+    AuthSessionRequest typedOther = (AuthSessionRequest)other;
 
-    lastComparison = Boolean.valueOf(isSetITequilaKey()).compareTo(typedOther.isSetITequilaKey());
+    lastComparison = Boolean.valueOf(isSetTequilaToken()).compareTo(typedOther.isSetTequilaToken());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetITequilaKey()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iTequilaKey, typedOther.iTequilaKey);
+    if (isSetTequilaToken()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.tequilaToken, typedOther.tequilaToken);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetLoginCookie()).compareTo(typedOther.isSetLoginCookie());
+    lastComparison = Boolean.valueOf(isSetRememberMe()).compareTo(typedOther.isSetRememberMe());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetLoginCookie()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.loginCookie, typedOther.loginCookie);
+    if (isSetRememberMe()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.rememberMe, typedOther.rememberMe);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -328,16 +330,17 @@ public class DirectoryToken implements org.apache.thrift.TBase<DirectoryToken, D
         break;
       }
       switch (field.id) {
-        case 1: // I_TEQUILA_KEY
+        case 1: // TEQUILA_TOKEN
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.iTequilaKey = iprot.readString();
+            this.tequilaToken = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // LOGIN_COOKIE
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.loginCookie = iprot.readString();
+        case 2: // REMEMBER_ME
+          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
+            this.rememberMe = iprot.readBool();
+            setRememberMeIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -357,17 +360,15 @@ public class DirectoryToken implements org.apache.thrift.TBase<DirectoryToken, D
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.iTequilaKey != null) {
-      oprot.writeFieldBegin(I_TEQUILA_KEY_FIELD_DESC);
-      oprot.writeString(this.iTequilaKey);
+    if (this.tequilaToken != null) {
+      oprot.writeFieldBegin(TEQUILA_TOKEN_FIELD_DESC);
+      oprot.writeString(this.tequilaToken);
       oprot.writeFieldEnd();
     }
-    if (this.loginCookie != null) {
-      if (isSetLoginCookie()) {
-        oprot.writeFieldBegin(LOGIN_COOKIE_FIELD_DESC);
-        oprot.writeString(this.loginCookie);
-        oprot.writeFieldEnd();
-      }
+    if (isSetRememberMe()) {
+      oprot.writeFieldBegin(REMEMBER_ME_FIELD_DESC);
+      oprot.writeBool(this.rememberMe);
+      oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -375,24 +376,20 @@ public class DirectoryToken implements org.apache.thrift.TBase<DirectoryToken, D
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("DirectoryToken(");
+    StringBuilder sb = new StringBuilder("AuthSessionRequest(");
     boolean first = true;
 
-    sb.append("iTequilaKey:");
-    if (this.iTequilaKey == null) {
+    sb.append("tequilaToken:");
+    if (this.tequilaToken == null) {
       sb.append("null");
     } else {
-      sb.append(this.iTequilaKey);
+      sb.append(this.tequilaToken);
     }
     first = false;
-    if (isSetLoginCookie()) {
+    if (isSetRememberMe()) {
       if (!first) sb.append(", ");
-      sb.append("loginCookie:");
-      if (this.loginCookie == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.loginCookie);
-      }
+      sb.append("rememberMe:");
+      sb.append(this.rememberMe);
       first = false;
     }
     sb.append(")");
@@ -401,8 +398,8 @@ public class DirectoryToken implements org.apache.thrift.TBase<DirectoryToken, D
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (iTequilaKey == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iTequilaKey' was not present! Struct: " + toString());
+    if (tequilaToken == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'tequilaToken' was not present! Struct: " + toString());
     }
   }
 
@@ -416,6 +413,8 @@ public class DirectoryToken implements org.apache.thrift.TBase<DirectoryToken, D
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);

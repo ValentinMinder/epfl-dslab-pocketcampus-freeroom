@@ -38,15 +38,11 @@
 @interface NewsUtils : NSObject
 
 /*
- * Will eliminate all duplicates in newsItem, using the definition of equality defined in NewsItem+Comparison
- */
-+ (NSArray*)eliminateDuplicateNewsItemsInArray:(NSArray*)newsItems;
-
-/*
  * Returns an array1 of arrays, in which array1[0] = news from today, array1[1] = news at most 1 week old,
  * array1[2] = news at most 1 month old, array1[3] = older news
+ * If makeItemsUnique is YES, newsFeedItems is first filtered to remove duplicates (using isEqualToNewsFeedItem:). Oldest one are kept.
  */
-+ (NSArray*)newsItemsSectionsSortedByDate:(NSArray*)newsItems;
++ (NSArray*)newsFeedItemsSectionsSortedByDate:(NSArray*)newsFeedItems makeItemsUnique:(BOOL)makeItemsUnique;
 
 + (NSString*)htmlReplaceWidthWith100PercentInContent:(NSString*)content ifWidthHeigherThan:(NSInteger)maxWidth;
 

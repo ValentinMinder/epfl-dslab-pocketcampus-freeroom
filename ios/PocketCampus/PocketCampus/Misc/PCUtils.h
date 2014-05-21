@@ -75,7 +75,10 @@
 
 + (void)throwExceptionIfObject:(id)object notKindOfClass:(Class)class;
 
-
+/**
+ * Applies roundf() to x, y, width, height
+ */
+void PCRoundCGRect(CGRect rect);
 
 
 @end

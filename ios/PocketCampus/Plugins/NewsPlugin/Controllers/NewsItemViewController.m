@@ -45,11 +45,13 @@
 
 #import "TUSafariActivity.h"
 
+#import "NewsModelAdditions.h"
+
 @interface NewsItemViewController ()<NewsServiceDelegate, UIAlertViewDelegate, UIWebViewDelegate>
 
-@property (nonatomic, strong) UIImage* image;
 @property (nonatomic, strong) UIPopoverController* actionsPopover;
-@property (nonatomic, strong) NewsItem* newsItem;
+@property (nonatomic, strong) NewsFeedItem* newsFeedItem;
+@property (nonatomic, strong) NewsFeedItemContent* newsFeedItemContent;
 @property (nonatomic, strong) NewsService* newsService;
 @property (nonatomic, strong) NSURL* urlClicked;
 @property (nonatomic, strong) AFNetworkReachabilityManager* reachabilityManager;
@@ -64,15 +66,15 @@
 
 @implementation NewsItemViewController
 
-- (id)initWithNewsItem:(NewsItem*)newsItem cachedImageOrNil:(UIImage*)image
+- (id)initWithNewsFeedItem:(NewsFeedItem*)newsFeedItem
 {
+    [PCUtils throwExceptionIfObject:newsFeedItem notKindOfClass:[NewsFeedItem class]];
     self = [super initWithNibName:@"NewsItemView" bundle:nil];
     if (self) {
         self.gaiScreenName = @"/news/item";
         self.newsService = [NewsService sharedInstanceToRetain];
-        self.newsItem = newsItem;
-        self.image = image;
-        self.title = [PCUtils isIdiomPad] ? self.newsItem.title : nil;
+        self.newsFeedItem = newsFeedItem;
+        self.title = [PCUtils isIdiomPad] ? self.newsFeedItem.title : nil;
     }
     return self;
 }
@@ -86,10 +88,9 @@
     }
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
+    self.navigationItem.rightBarButtonItem.enabled = NO; //enabled only when NewsFeedItemContent loaded (need link property)
     
     self.webView.scalesPageToFit = NO;
-    
-    [self saveImageToDisk];
     
     [self loadNewsItem];
 }
@@ -103,7 +104,8 @@
     [self.loadingIndicator startAnimating];
     self.centerMessageLabel.hidden = YES;
     self.webView.hidden = YES;
-    [self.newsService getNewsItemContentForId:self.newsItem.newsItemId delegate:self];
+    NewsFeedItemContentRequest* request = [[NewsFeedItemContentRequest alloc] initWithLanguage:[PCUtils userLanguageCode] itemId:self.newsFeedItem.itemId];
+    [self.newsService getFeedItemContentForRequest:request delegate:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -120,7 +122,10 @@
 #pragma mark - Actions
 
 - (void)actionButtonPressed {
-    NSURL* newsItemURL = [NSURL URLWithString:self.newsItem.link];
+    if (!self.newsFeedItemContent) {
+        return;
+    }
+    NSURL* newsItemURL = [NSURL URLWithString:self.newsFeedItemContent.link];
     UIActivity* safariActivity = [TUSafariActivity new];
     UIActivityViewController* viewController = [[UIActivityViewController alloc] initWithActivityItems:@[newsItemURL] applicationActivities:@[safariActivity]];
     viewController.completionHandler = ^(NSString* activityType, BOOL completed) {
@@ -150,75 +155,68 @@
 
 #pragma mark - Image management
 
-- (NSString*)pathForImage {
-    NSString* key = [NSString stringWithFormat:@"newsItemImage-%u", (unsigned int)[self.newsItem.imageUrl hash]];
-    return [PCPersistenceManager pathForKey:key pluginName:@"news" customFileExtension:[self.newsItem.imageUrl pathExtension] isCache:YES];
-}
-
-- (void)saveImageToDisk {
-    if (!self.image) {
-        return;
-    }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:[self pathForImage]]) {
-        return;
-    }
-    NSData* jpgData = UIImageJPEGRepresentation(self.image, 1.0);
-    [jpgData writeToFile:[self pathForImage] atomically:NO];
+- (NSString*)imageUrl {
+    return [self.newsFeedItem imageUrlStringForSize:CGSizeMake(self.webView.frame.size.width, 240.0) applyDeviceScreenMultiplyingFactor:YES];
 }
 
 #pragma mark - NewsServiceDelegate
 
-
-- (void)newsItemContentForId:(int64_t)newsItemId didReturn:(NSString *)content {
-    [self.reachabilityManager stopMonitoring];
-    NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"NewsItem" ofType:@"html"];
-    NSError* error = nil;
-    NSString* html = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
-    if (error) {
-        [self error];
-        return;
-    }
-    
-    html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_FEED_NAME$" withString:self.newsItem.feed];
-    
-    NSDate* date = [NSDate dateWithTimeIntervalSince1970:self.newsItem.pubDate/1000.0];
-    static NSDateFormatter* formatter = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        formatter = [NSDateFormatter new];
-        formatter.dateStyle = NSDateFormatterLongStyle;
-    });
-    
-    NSString* dateString = [formatter stringFromDate:date];
-    html = [html stringByReplacingOccurrencesOfString:@"$NEW_ITEM_PUB_DATE$" withString:dateString];
-    
-    html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_TITLE$" withString:self.newsItem.title];
-    
-    if (self.newsItem.imageUrl) {
-        NSString* imageSrc = self.newsItem.imageUrl;
-        NSString* path = [self pathForImage];
-        if ([[NSFileManager defaultManager] fileExistsAtPath:path]) { //then image was saved to disk (in viewDidLoad)
-            imageSrc = path;
+- (void)getFeedItemContentForRequest:(NewsFeedItemContentRequest *)request didReturn:(NewsFeedItemContentResponse *)response {
+    switch (response.statusCode) {
+        case NewsStatusCode_OK:
+        {
+            [self.reachabilityManager stopMonitoring];
+            
+            self.newsFeedItemContent = response.content;
+            self.navigationItem.rightBarButtonItem.enabled = YES; //can now enable action button as we have link
+            
+            NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"NewsItem" ofType:@"html"];
+            NSError* error = nil;
+            NSString* html = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
+            if (error) {
+                [self getFeedItemContentFailedForRequest:request];
+                return;
+            }
+            
+            html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_FEED_NAME$" withString:self.newsFeedItemContent.feedName];
+            
+            NSDate* date = [NSDate dateWithTimeIntervalSince1970:self.newsFeedItem.date/1000.0];
+            static NSDateFormatter* formatter = nil;
+            static dispatch_once_t onceToken;
+            dispatch_once(&onceToken, ^{
+                formatter = [NSDateFormatter new];
+                formatter.dateStyle = NSDateFormatterLongStyle;
+            });
+            
+            NSString* dateString = [formatter stringFromDate:date];
+            html = [html stringByReplacingOccurrencesOfString:@"$NEW_ITEM_PUB_DATE$" withString:dateString];
+            
+            html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_TITLE$" withString:self.newsFeedItemContent.title];
+            
+            NSString* imageUrl = [self imageUrl];
+            if (imageUrl) {
+                html = [html stringByReplacingOccurrencesOfString:@"$NEW_ITEM_IMAGE_SRC$" withString:imageUrl];
+                html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_IMAGE_DISPLAY_CSS$" withString:@"inline"];
+            } else {
+                html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_IMAGE_DISPLAY_CSS$" withString:@"none"];
+            }
+            html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_CONTENT$" withString:self.newsFeedItemContent.contentWithoutMainImage];
+            
+            html = [NewsUtils htmlReplaceWidthWith100PercentInContent:html ifWidthHeigherThan:self.webView.frame.size.width];
+            
+            [self.webView loadHTMLString:html baseURL:[NSURL fileURLWithPath:@"/"]];
+            self.webView.hidden = NO;
+            [self.loadingIndicator stopAnimating];
+            break;
         }
-        html = [html stringByReplacingOccurrencesOfString:@"$NEW_ITEM_IMAGE_SRC$" withString:imageSrc];
-        html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_IMAGE_DISPLAY_CSS$" withString:@"inline"];
-    } else {
-        html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_IMAGE_DISPLAY_CSS$" withString:@"none"];
+        default:
+            [self getFeedItemContentFailedForRequest:request];
+            break;
     }
-    html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_CONTENT$" withString:content];
     
-    html = [NewsUtils htmlReplaceWidthWith100PercentInContent:html ifWidthHeigherThan:self.webView.frame.size.width];
-    
-    [self.webView loadHTMLString:html baseURL:[NSURL fileURLWithPath:@"/"]];
-    self.webView.hidden = NO;
-    [self.loadingIndicator stopAnimating];
 }
 
-- (void)newsItemContentFailedForId:(int64_t)newsItemId {
-    [self error];
-}
-
-- (void)error {
+- (void)getFeedItemContentFailedForRequest:(NewsFeedItemContentRequest *)request {
     self.webView.hidden = YES;
     [self.loadingIndicator stopAnimating];
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);

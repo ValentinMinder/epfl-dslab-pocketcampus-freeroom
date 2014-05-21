@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,50 +22,39 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+//  Created by Loïc Gardiol on 07.05.14.
 
+@import MapKit;
 
+@class PCTileOverlay;
 
-//  Created by Loïc Gardiol on 28.12.12.
+@protocol PCScreenTileOverlay;
 
+@interface PCTileOverlayRenderer : MKTileOverlayRenderer
 
-#import "NewsItem+Comparison.h"
+- (instancetype)initWithPCTileOverlay:(PCTileOverlay*)overlay;
 
-@implementation NewsItem (Comparison)
+/**
+ * IMPORTANT: when using screen (single) tile overlay (this mode), reloadData MUST be called
+ * when in mapView region changes. PCTileOverlayRendered cannot observe it because
+ * region is not KVO-compliant.
+ */
+- (instancetype)initWithScreenPCTileOverlay:(PCTileOverlay<PCScreenTileOverlay>*)overlay;
 
-- (BOOL)isEqual:(id)object {
-    if (self == object) {
-        return YES;
-    }
-    if (![object isKindOfClass:[self class]]) {
-        return NO;
-    }
-    return [self isEqualToNewsItem:object];
-}
+@property (nonatomic, readonly, weak) PCTileOverlay* pcTileOverlay;
 
-- (BOOL)isEqualToNewsItem:(NewsItem*)newsItem {
-    return [self.title isEqualToString:newsItem.title] || self.newsItemId == newsItem.newsItemId;
-}
+/**
+ * Non-nil only if self was instantiated with initWithScreenPCTileOverlay:
+ */
+@property (nonatomic, readonly, weak) PCTileOverlay<PCScreenTileOverlay>* pcScreenTileOverlay;
 
-- (NSUInteger)hash {
-    NSUInteger hash = 0;
-    hash += [self.title hash];
-    return hash;
-}
-
-- (NSComparisonResult)compare:(NewsItem*)object {
-    if (![object isKindOfClass:[self class]]) {
-        @throw [NSException exceptionWithName:@"Illegal argument" reason:[NSString stringWithFormat:@"cannot compare NewsItem with %@", [object class]] userInfo:nil];
-    }
-    if (self.pubDate < object.pubDate) {
-        return NSOrderedDescending;
-    } else if (self.pubDate > object.pubDate) {
-        return NSOrderedAscending;
-    } else {
-        return NSOrderedSame;
-    }
-}
+/**
+ * Muse be called before self is released if
+ * self was instantiated with initWithScreenPCTileOverlay: (does nothing if not)
+ */
+- (void)cancelScreenTileDownload;
 
 @end
