@@ -393,6 +393,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private Action overflow = new Action() {
 		public void performAction(View view) {
+			// open the legacy options menu: deprecated on new phones.
+			// openOptionsMenu() ;
+			// show the compat popup menu.
 			showPopupMenuCompat(view);
 		}
 
