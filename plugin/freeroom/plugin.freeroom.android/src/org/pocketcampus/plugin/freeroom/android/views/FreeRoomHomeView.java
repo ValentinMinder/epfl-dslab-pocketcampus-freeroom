@@ -2605,9 +2605,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						yearSelected = nYear;
 						monthSelected = nMonthOfYear;
 						dayOfMonthSelected = nDayOfMonth;
-						updateDatePickerAndButton();
-						searchButton.setEnabled(auditSubmit() == 0);
-
+						updateDateTimePickersAndButtons();
 					}
 				}, yearSelected, monthSelected, dayOfMonthSelected);
 
@@ -2669,8 +2667,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							}
 							updateEndTimePickerAndButton();
 						}
-						updateStartTimePickerAndButton();
-						searchButton.setEnabled(auditSubmit() == 0);
+						updateDateTimePickersAndButtons();
 
 					}
 				}, startHourSelected, startMinSelected, true);
@@ -2715,9 +2712,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							upToEndSelected = false;
 							upToEndHourButton.setEnabled(!upToEndSelected);
 						}
-						updateEndTimePickerAndButton();
-						searchButton.setEnabled(auditSubmit() == 0);
-
+						updateDateTimePickersAndButtons();
 					}
 				}, endHourSelected, endMinSelected, true);
 
@@ -2907,8 +2902,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				// TODO: code
-				System.out.println("down to start");
+				startMinSelected = 0;
+				int shift = startHourSelected - FRTimes.FIRST_HOUR_CHECK;
+				startHourSelected = FRTimes.FIRST_HOUR_CHECK;
+				if (!upToEndSelected && shift > 0) {
+					endHourSelected -= shift;
+				}
+				updateDateTimePickersAndButtons();
 			}
 		});
 
@@ -2919,8 +2919,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				// TODO: code
-				System.out.println("down start");
+				if (startHourSelected >= FRTimes.FIRST_HOUR_CHECK - 1) {
+					startHourSelected -= 1;
+					if (!upToEndSelected) {
+						endHourSelected -= 1;
+					}
+				}
+				updateDateTimePickersAndButtons();
 			}
 		});
 
@@ -2931,8 +2936,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				// TODO: code
-				System.out.println("up start");
+				if (startHourSelected <= FRTimes.LAST_HOUR_CHECK - 2) {
+					startHourSelected += 1;
+					if (!upToEndSelected) {
+						endHourSelected = Math.min(endHourSelected + 1,
+								FRTimes.LAST_HOUR_CHECK);
+					}
+				}
+				updateDateTimePickersAndButtons();
 			}
 		});
 
@@ -2943,8 +2954,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				// TODO: code
-				System.out.println("down end");
+				if (endHourSelected >= FRTimes.FIRST_HOUR_CHECK + 2) {
+					endHourSelected -= 1;
+					if (startHourSelected >= endHourSelected) {
+						startHourSelected -= 1;
+					}
+				}
+				upToEndSelected = false;
+				updateDateTimePickersAndButtons();
 			}
 		});
 
@@ -2957,13 +2974,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onClick(View v) {
 				if (endHourSelected <= FRTimes.LAST_HOUR_CHECK - 1) {
 					endHourSelected += 1;
-					updateEndTimePickerAndButton();
-					mTimePickerEndDialog.updateTime(endHourSelected,
-							endMinSelected);
 				}
-				if (endHourSelected >= FRTimes.LAST_HOUR_CHECK) {
-					upEndHourButton.setEnabled(false);
+				if (endHourSelected == FRTimes.LAST_HOUR_CHECK) {
+					endMinSelected = 0;
 				}
+				upToEndSelected = false;
+				updateDateTimePickersAndButtons();
 			}
 		});
 
@@ -2976,12 +2992,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onClick(View v) {
 				endHourSelected = FRTimes.LAST_HOUR_CHECK;
 				endMinSelected = 0;
-				updateEndTimePickerAndButton();
-				mTimePickerEndDialog
-						.updateTime(endHourSelected, endMinSelected);
 				upToEndSelected = true;
-				upToEndHourButton.setEnabled(!upToEndSelected);
-				searchButton.setEnabled(auditSubmit() == 0);
+				updateDateTimePickersAndButtons();
 			}
 		});
 
@@ -3018,8 +3030,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// for landscape device, mainly tablet, some layout are programmatically
 		// changed to horizontal values, and weighted more logically.
 		// XML IS ALWAYS DESIGNED FOR PHONES, as it's probably more than 97% of
-		// users.
-		// tablets are changing their layout here.
+		// users. tablets are changing their layout here.
 		if (isLandscape()) {
 			LinearLayout header_main = (LinearLayout) mSearchView
 					.findViewById(R.id.freeroom_layout_dialog_search_upper_main);
@@ -3453,6 +3464,20 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		updateDatePickerAndButton();
 		updateStartTimePickerAndButton();
 		updateEndTimePickerAndButton();
+		enabledButtons();
+		searchButton.setEnabled(auditSubmit() == 0);
+	}
+
+	private void enabledButtons() {
+		upStartHourButton
+				.setEnabled(startHourSelected <= FRTimes.LAST_HOUR_CHECK - 2);
+		downStartHourButton
+				.setEnabled(startHourSelected > FRTimes.FIRST_HOUR_CHECK);
+
+		upEndHourButton.setEnabled(endHourSelected < FRTimes.LAST_HOUR_CHECK);
+		downEndHourButton
+				.setEnabled(endHourSelected >= FRTimes.FIRST_HOUR_CHECK + 2);
+		upToEndHourButton.setEnabled(!upToEndSelected);
 	}
 
 	/**
