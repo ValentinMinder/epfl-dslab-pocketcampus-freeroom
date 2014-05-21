@@ -2517,6 +2517,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private Button showDatePicker;
 	private Button showStartTimePicker;
 	private Button showEndTimePicker;
+	private Button showStartTimePickerShort;
+	private Button showEndTimePickerShort;
 
 	private RadioButton specButton;
 	private RadioButton anyButton;
@@ -2635,6 +2637,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Then the starting time of the period
 		showStartTimePicker = (Button) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_hour_start);
+		showStartTimePickerShort = (Button) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_hour_start_short);
 		mTimePickerStartDialog = new TimePickerDialog(this,
 				new OnTimeSetListener() {
 
@@ -2672,17 +2676,21 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					}
 				}, startHourSelected, startMinSelected, true);
 
-		showStartTimePicker.setOnClickListener(new OnClickListener() {
+		OnClickListener ocl_start = new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				mTimePickerStartDialog.show();
 			}
-		});
+		};
+		showStartTimePicker.setOnClickListener(ocl_start);
+		showStartTimePickerShort.setOnClickListener(ocl_start);
 
 		// Then the ending time of the period
 		showEndTimePicker = (Button) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_hour_end);
+		showEndTimePickerShort = (Button) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_hour_end_short);
 		mTimePickerEndDialog = new TimePickerDialog(this,
 				new OnTimeSetListener() {
 
@@ -2716,13 +2724,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					}
 				}, endHourSelected, endMinSelected, true);
 
-		showEndTimePicker.setOnClickListener(new OnClickListener() {
+		OnClickListener ocl_end = new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				mTimePickerEndDialog.show();
 			}
-		});
+		};
+		showEndTimePicker.setOnClickListener(ocl_end);
+		showEndTimePickerShort.setOnClickListener(ocl_end);
 	}
 
 	/**
@@ -3512,6 +3522,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * else, the <code>PickerDialog</code> will reopen with the new value.
 	 */
 	private void updateStartTimePickerAndButton() {
+		showStartTimePickerShort.setText(times.formatTime(prepareFRFrPeriod()
+				.getTimeStampStart(), true));
 		showStartTimePicker.setText(times.generateTimeSummaryWithPrefix(
 				getString(R.string.freeroom_selectstartHour), true, times
 						.formatTime(prepareFRFrPeriod().getTimeStampStart(),
@@ -3530,6 +3542,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * else, the <code>PickerDialog</code> will reopen with the new value.
 	 */
 	private void updateEndTimePickerAndButton() {
+		showEndTimePickerShort.setText(times.formatTime(prepareFRFrPeriod()
+				.getTimeStampEnd(), true));
 		showEndTimePicker
 				.setText(times.generateTimeSummaryWithPrefix(
 						getString(R.string.freeroom_selectendHour), true, times

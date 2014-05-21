@@ -111,6 +111,16 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
 
+            <Button
+                android:id="@+id/freeroom_layout_dialog_search_hour_start_short"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right"
+                android:layout_weight="6"
+                android:text="h_s"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+
             <!-- Image button to switch start hour to next hour -->
 
             <ImageButton
@@ -134,6 +144,16 @@
                 android:layout_weight="3"
                 android:contentDescription="@string/freeroom_layout_search_prev_hour_img"
                 android:src="@drawable/ic_action_hour_down"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+
+            <Button
+                android:id="@+id/freeroom_layout_dialog_search_hour_end_short"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right"
+                android:layout_weight="6"
+                android:text="h_e"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
 
