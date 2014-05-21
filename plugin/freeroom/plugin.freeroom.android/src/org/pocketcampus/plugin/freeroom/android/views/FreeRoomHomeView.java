@@ -1773,8 +1773,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		if (req.isAny()) {
 			build.append(getString(R.string.freeroom_search_any));
 		} else {
-			build.append(getString(R.string.freeroom_search_spec));
-			build.append(": ");
 			if (req.isFav()) {
 				build.append(getString(R.string.freeroom_search_favorites));
 				build.append("; ");
@@ -1784,12 +1782,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				build.append("; ");
 			}
 			if (req.isUser()) {
-				build.append(getString(R.string.freeroom_search_userdef));
 				build.append(u.getSummaryTextFromCollection(req.getUidNonFav(),
 						"", max));
+				build.append("(" + req.getUidNonFav().size() + ")");
 			}
 		}
-		build.setLength(max);
 		return build.toString();
 	}
 
