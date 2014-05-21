@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.freeroom.server.utils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -43,8 +42,7 @@ public class Utils {
 			"4914", "4915", "3014", "3137", "3208", "3623", "3624", "3625",
 			"3702", "3738");
 
-	private static final String FILENAME_FORBIDDEN_WORDS = "src"
-			+ File.separator + "forbiddenWords.txt";
+	private static final String FILENAME_FORBIDDEN_WORDS = "forbiddenWords.txt";
 	private static ArrayList<String> forbiddenWords = null;
 
 	// TODO eventually find a better way to store/access such things
@@ -52,18 +50,15 @@ public class Utils {
 		if (forbiddenWords != null) {
 			return;
 		}
+		forbiddenWords = new ArrayList<String>();
 
-		try {
-			Scanner sc = new Scanner(new File(FILENAME_FORBIDDEN_WORDS));
-			forbiddenWords = new ArrayList<String>();
-			while (sc.hasNextLine()) {
-				String line = sc.nextLine();
-				forbiddenWords.add(line.toLowerCase());
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			forbiddenWords = new ArrayList<String>();
+		Scanner sc = new Scanner(
+				Utils.class.getResourceAsStream(FILENAME_FORBIDDEN_WORDS));
+		while (sc.hasNextLine()) {
+			String line = sc.nextLine();
+			forbiddenWords.add(line.toLowerCase());
 		}
+		sc.close();
 	}
 
 	/**
