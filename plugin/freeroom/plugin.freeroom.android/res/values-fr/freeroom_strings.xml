@@ -181,7 +181,7 @@
     <!-- WELCOME: beta-only -->
     <string name="freeroom_authors">"Ce plugin en beta-test dans pocketcampus est le résultat d\'un projet de semestre dans le labo DSLAB.\nAuteurs:\nJulien WEBER\nValentin MINDER\nMerci à Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE pour leurs précieux conseils."</string>
     <string name="freeroom_welcome_title">"Bienvenue !"</string>
-    <string name="freeroom_welcome_subtitle">"Merci de tester FreeRoom ! :)"</string>
+    <string name="freeroom_welcome_subtitle">"Merci de tester FreeRoom!"</string>
     <string name="freeroom_welcome_expl">"Pour que cette beta fonctionne, nous avons besoin de votre email epfl, UNE seule fois."</string>
     <string name="freeroom_welcome_expl_further">"Cette pop-up ne va s\'afficher qu\'une seule fois. Si elle s\'affiche à nouveau, merci de nous contacter à freeroom.epfl@gmail.com"</string>
     <string name="freeroom_welcome_email_pattern">"prénom.nom@epfl.ch"</string>
@@ -217,9 +217,9 @@
     <!-- Working there dialog -->
     <string name="freeroom_share_server_bad_words">"Requête rejetée: le message contient des mots interdits."</string>
     <string name="freeroom_whoIsWorking_title">"Travaillant ici &#8230;"</string>
-    <string name="freeroom_whoIsWorking_disclaimer">"Note: Ces indications proviennent des utilisateurs. Les auteurs, Pocketcampus, DSLAB et l'EPFL ne sont pas responsable des actions des utilisateurs."</string>
+    <string name="freeroom_whoIsWorking_disclaimer">"Note: Ces indications proviennent des utilisateurs. Les auteurs, Pocketcampus, DSLAB et l'EPFL ne sont pas responsables des actions des utilisateurs."</string>
     <string name="freeroom_whoIsWorking_wait">"Veuillez attendre, les résultats sont mis à jour &#8230;"</string>
-    <string name="freeroom_whoIsWorking_undefined">"Indéfini"</string>
+    <string name="freeroom_whoIsWorking_undefined">"Non précisé"</string>
 
     <!-- NEW: add there -->
 

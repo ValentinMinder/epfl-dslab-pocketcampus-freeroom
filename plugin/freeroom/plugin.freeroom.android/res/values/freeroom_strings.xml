@@ -179,7 +179,7 @@
     <!-- WELCOME: beta-only -->
     <string name="freeroom_authors">"This beta-plugin in pocketcampus is the result of a semester project with DSLAB.\nAuthors:\nJulien WEBER\nValentin MINDER\nThanks to Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE for their support and advices."</string>
     <string name="freeroom_welcome_title">"Welcome!"</string>
-    <string name="freeroom_welcome_subtitle">"Thanks for testing FREEROOM ! :)"</string>
+    <string name="freeroom_welcome_subtitle">"Thanks for testing FreeRoom!"</string>
     <string name="freeroom_welcome_expl">"In order to make this beta test work, we need you to register ONCE with your EPFL email address."</string>
     <string name="freeroom_welcome_expl_further">"This screen will appear only once. If it keeps showing, please contact us at freeroom.epfl@gmail.com"</string>
     <string name="freeroom_welcome_email_pattern">"firstname.lastname@epfl.ch"</string>
