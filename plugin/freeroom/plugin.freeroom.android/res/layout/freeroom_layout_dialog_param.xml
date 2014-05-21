@@ -168,7 +168,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/freeroom_settings_format"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:visibility="gone" />
 
             <!-- Data for format/local options. -->
 
@@ -177,7 +178,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/background_light"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:visibility="gone" >
 
                 <!-- Subtitle for time/date formatting -->
 
