@@ -1367,7 +1367,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.freeroom_dialog_edit_room_title));
-		builder.setIcon(R.drawable.ic_action_edit);
+		builder.setIcon(R.drawable.ic_action_edit_light);
 
 		// Get the AlertDialog from create()
 		mEditRoomDialog = builder.create();
@@ -1434,6 +1434,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				dismissSoftKeyBoard(v);
+				mEditRoomDialog.dismiss();
 				dimissAddRoomDialog();
 			}
 		});

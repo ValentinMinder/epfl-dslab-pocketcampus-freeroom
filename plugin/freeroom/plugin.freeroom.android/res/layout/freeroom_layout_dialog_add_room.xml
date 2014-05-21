@@ -17,13 +17,14 @@
         android:background="@android:color/background_light"
         android:orientation="horizontal" >
 
-         <!-- Button to go out (adding done) -->
+        <!-- Button to go out (adding done) -->
 
         <Button
             android:id="@+id/freeroom_layout_dialog_add_room_edit"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="5"
+            android:drawableLeft="@drawable/ic_action_edit"
             android:text="@string/freeroom_dialog_edit_room_title"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
@@ -35,6 +36,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="5"
+            android:drawableLeft="@drawable/ic_action_accept"
             android:text="@string/freeroom_dialog_edit_room_done"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />

@@ -86,8 +86,8 @@
     <string name="freeroom_dialog_share_title">"Share your location\&#8230;"</string>
     <string name="freeroom_dialog_share_textedit_hint">"your activity (optional)"</string>
     <string name="freeroom_dialog_share_checkbox_msg">"share your activity with server"</string>
-    <string name="freeroom_dialog_share_button_friends">"share with friends"</string>
-    <string name="freeroom_dialog_share_button_server">"share only with server"</string>
+    <string name="freeroom_dialog_share_button_friends">"with friends"</string>
+    <string name="freeroom_dialog_share_button_server">"with server"</string>
     <string name="freeroom_dialog_share_disclaimer">"Your location is shared anonymously with server in both cases. It\&apos;s done to know approximately how many people are in the room in order to display better results."</string>
     <string name="freeroom_share_others_activity">"Others' activity"</string>
 

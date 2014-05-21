@@ -40,7 +40,7 @@
                 android:layout_height="fill_parent"
                 android:layout_gravity="right"
                 android:text="date (mock text)"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@android:color/black"
                 android:visibility="visible" />
         </LinearLayout>
@@ -61,7 +61,7 @@
                 android:layout_gravity="right"
                 android:layout_weight="4"
                 android:text="h_s (mock)"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@android:color/black" />
 
             <!-- Button that display the end hour selected, with picker associated to set specific hour -->
@@ -73,7 +73,7 @@
                 android:layout_gravity="right"
                 android:layout_weight="4"
                 android:text="h_f (mock)"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@android:color/black" />
         </LinearLayout>
 
@@ -118,7 +118,7 @@
                 android:layout_gravity="right"
                 android:layout_weight="6"
                 android:text="h_s"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@android:color/black" />
 
             <!-- Image button to switch start hour to next hour -->
@@ -154,7 +154,7 @@
                 android:layout_gravity="right"
                 android:layout_weight="6"
                 android:text="h_e"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@android:color/black" />
 
             <!-- Image button to switch end hour to next hour -->

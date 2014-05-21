@@ -23,8 +23,9 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="5"
+            android:drawableLeft="@drawable/ic_action_new_grey"
             android:text="@string/freeroom_dialog_edit_room_add_other"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
 
         <!-- Button to go out (adding done) -->
@@ -34,8 +35,9 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="5"
+            android:drawableLeft="@drawable/ic_action_accept"
             android:text="@string/freeroom_dialog_edit_room_done"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
     </LinearLayout>
 

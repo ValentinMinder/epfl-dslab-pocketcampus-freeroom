@@ -54,7 +54,7 @@
     <string name="freeroom_selectendHour">"Fin"</string>
 
     <!-- SEARCH: buttons/checkbox/radio -->
-    <string name="freeroom_search_search">"Recherche"</string>
+    <string name="freeroom_search_search">"Rechercher"</string>
     <string name="freeroom_search_reset">"Réinitialiser"</string>
     <string name="freeroom_search_cancel">"Annuler"</string>
     <string name="freeroom_search_any">"Toutes les salles libres"</string>
@@ -86,7 +86,7 @@
     <!-- SHARE: dialog -->
     <string name="freeroom_dialog_share_title">"Partagez votre position\&#8230;"</string>
     <string name="freeroom_dialog_share_textedit_hint">"votre activité (optionnel)"</string>
-    <string name="freeroom_dialog_share_checkbox_msg">"partagez votre activité avec le serveur"</string>
+    <string name="freeroom_dialog_share_checkbox_msg">"partager l'activité avec le serveur"</string>
     <string name="freeroom_dialog_share_button_friends">"avec vos amis"</string>
     <string name="freeroom_dialog_share_button_server">"avec le serveur"</string>
     <string name="freeroom_dialog_share_disclaimer">"Votre position est partagée anonymement avec le serveur dans les deux cas. C'est utilisé pour savoir combien de personnes se trouvent dans la salle pour pouvoir afficher de meilleurs résultats."</string>
@@ -106,10 +106,10 @@
     <string name="freeroom_share_copied_ClipBoard_error">"Erreur pendant la copie dans le presse-papier"</string>
 
     <!-- SHARE: server interaction -->
-    <string name="freeroom_share_server_basis">"Votre activité a bien été "</string>
+    <string name="freeroom_share_server_basis">"L'activité a bien été "</string>
     <string name="freeroom_share_server_submitted">"enregistrée !"</string>
     <string name="freeroom_share_server_updated">"mise à jour !"</string>
-    <string name="freeroom_share_server_conflict">"Un conflit est survenue et votre activité n\'a pas été prise en compte, désolé :/"</string>
+    <string name="freeroom_share_server_conflict">"Un conflit est survenue et l'activité n\'a pas été prise en compte, désolé :/"</string>
 
     <!-- INFO about a ROOM -->
     <string name="freeroom_dialog_info_type">"Type"</string>
@@ -145,9 +145,9 @@
     <string name="freeroom_check_occupancy_search_inputbarhint">"Nom de salle"</string>
 
     <!-- edit room -->
-    <string name="freeroom_dialog_edit_room_title">"Modifier"</string>
+    <string name="freeroom_dialog_edit_room_title">"Editer"</string>
     <string name="freeroom_dialog_edit_room_add_other">"Ajouter"</string>
-    <string name="freeroom_dialog_edit_room_done">"Terminé"</string>
+    <string name="freeroom_dialog_edit_room_done">"Terminer"</string>
 
     <!-- BY URI SEARCH -->
     <string name="freeroom_urisearch_error_basis">"L\'URL suivie n'a pas été traitée."</string>
