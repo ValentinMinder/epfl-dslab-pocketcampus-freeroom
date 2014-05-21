@@ -138,6 +138,11 @@ public abstract class ServerBase {
 			*/
 			PC_SRV_CONFIG.load(this.getClass().getResourceAsStream("pocketcampus-server.config"));
 			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			
 			/**
 			* Then override with config file in absolute path.
 			*   All meaningful params should be overridden
@@ -147,6 +152,11 @@ public abstract class ServerBase {
 			if(new File(configFile).exists()) {
 				PC_SRV_CONFIG.load(new FileInputStream(configFile));
 			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
 			
 			/**
 			* Finally override with config file given as arg.
