@@ -74,8 +74,37 @@ enum AuthStatusCode {
 
 @end
 
+@interface AuthSessionRequest : NSObject <NSCoding> {
+  NSString * __tequilaToken;
+  BOOL __rememberMe;
+
+  BOOL __tequilaToken_isset;
+  BOOL __rememberMe_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=tequilaToken, setter=setTequilaToken:) NSString * tequilaToken;
+@property (nonatomic, getter=rememberMe, setter=setRememberMe:) BOOL rememberMe;
+#endif
+
+- (id) initWithTequilaToken: (NSString *) tequilaToken rememberMe: (BOOL) rememberMe;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (NSString *) tequilaToken;
+- (void) setTequilaToken: (NSString *) tequilaToken;
+- (BOOL) tequilaTokenIsSet;
+
+- (BOOL) rememberMe;
+- (void) setRememberMe: (BOOL) rememberMe;
+- (BOOL) rememberMeIsSet;
+
+@end
+
 @protocol AuthenticationService <NSObject>
 - (AuthTokenResponse *) getAuthTequilaToken;  // throws TException
+- (AuthSessionResponse *) getAuthSession: (AuthSessionRequest *) req;  // throws TException
 - (AuthSessionResponse *) getAuthSessionId: (NSString *) tequilaToken;  // throws TException
 @end
 

@@ -171,6 +171,11 @@ public class GlobalContext extends Application {
 			*/
 			PC_ANDR_CFG.load(getResources().openRawResource(R.raw.pocketcampus));
 			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			
 			/**
 			* Then override with server config.
 			*   The server config file is in the private dir;
@@ -180,6 +185,11 @@ public class GlobalContext extends Application {
 				PC_ANDR_CFG.load(openFileInput("pocketcampus.config"));
 			} catch (FileNotFoundException e) {
 			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
 			
 			/**
 			* Finally override with config file on sdcard.
@@ -191,9 +201,6 @@ public class GlobalContext extends Application {
 				PC_ANDR_CFG.load(new FileInputStream(configFile));
 			}
 			
-			
-			//PC_ANDR_CFG.putStringIfNull("SERVER_PROTO", "http");
-			//PC_ANDR_CFG.store(new FileOutputStream(""), null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

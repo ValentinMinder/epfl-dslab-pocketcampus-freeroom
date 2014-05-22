@@ -18,6 +18,7 @@ import org.pocketcampus.plugin.authentication.android.req.GetPcSessionRequest;
 import org.pocketcampus.plugin.authentication.android.req.GetPcTokenRequest;
 import org.pocketcampus.plugin.authentication.android.req.GetServiceDetailsRequest;
 import org.pocketcampus.plugin.authentication.android.req.LoginToTequilaRequest;
+import org.pocketcampus.plugin.authentication.shared.AuthSessionRequest;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Client;
 
@@ -476,7 +477,9 @@ public class AuthenticationController extends PluginController implements IAuthe
 	public void tokenAuthenticationFinished() {
 		Log.v("DEBUG", "tokenAuthenticationFinished");
 		if(mModel.getSelfAuth()) {
-			new GetPcSessionRequest().start(this, mClient, mModel.getTequilaToken());
+			AuthSessionRequest req = new AuthSessionRequest(mModel.getTequilaToken());
+			req.setRememberMe(mModel.getStorePassword());
+			new GetPcSessionRequest().start(this, mClient, req);
 		} else {
 			pingBack(mModel.getTequilaToken(), ( mModel.getStorePassword() ? null : "forcereauth" ));
 			stopSelf();
