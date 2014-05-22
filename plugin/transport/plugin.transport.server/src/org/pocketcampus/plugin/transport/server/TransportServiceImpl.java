@@ -63,7 +63,7 @@ public class TransportServiceImpl implements TransportService.Iface {
 		for (de.schildbach.pte.dto.Location location : sbbCompletions) {
 			// this is to get only Stations and nothing else
 			if (location.type == LocationType.STATION)
-				completions.add(new TransportStation(location.lat, location.lon,
+				completions.add(new TransportStation(location.id, location.lat, location.lon,
 						location.name));
 		}
 

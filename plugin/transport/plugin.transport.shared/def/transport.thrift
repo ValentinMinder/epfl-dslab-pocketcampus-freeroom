@@ -1,6 +1,9 @@
 namespace java org.pocketcampus.plugin.transport.shared
 
 struct TransportStation {
+	// Don't use; for compatibility purposes only
+	2: required i32 id;
+	
 	// convert lat/lon to double by dividing by 1000000
 	3: required i32 latitude;
 	4: required i32 longitude;
@@ -16,17 +19,28 @@ struct TransportLine {
 struct TransportConnection {
 	1: required TransportStation departure;
 	2: required TransportStation arrival;
-	4: required TransportLine line;
+	// required if not on foot
+	4: optional TransportLine line;
 	// Java timestamp (UNIX in milliseconds)
-	6: required i64 departureTime;
+	// required if not on foot
+	6: optional i64 departureTime;
 	// e.g. platform 4
 	7: optional string departurePosition;
-	8: required i64 arrivalTime;
+	// Java timestamp (UNIX in milliseconds)
+	// required if not on foot
+	8: optional i64 arrivalTime;
+	// e.g. platform 4
 	9: optional string arrivalPosition;
+	
+	11: required bool foot;
+	// required if on foot
+	12: optional i32 footDuration;
 }
 
 struct TransportTrip {
-	1: required string _UNUSED;
+	// Don't use; for compatibility purposes only
+	1: required string id;
+	
 	3: required i64 departureTime;
 	4: required i64 arrivalTime;
 	5: required TransportStation from;

@@ -22,9 +22,11 @@
 
 @implementation TransportStation
 
-- (id) initWithLatitude: (int32_t) latitude longitude: (int32_t) longitude name: (NSString *) name
+- (id) initWithId: (int32_t) id latitude: (int32_t) latitude longitude: (int32_t) longitude name: (NSString *) name
 {
   self = [super init];
+  __id = id;
+  __id_isset = YES;
   __latitude = latitude;
   __latitude_isset = YES;
   __longitude = longitude;
@@ -37,6 +39,11 @@
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
+  if ([decoder containsValueForKey: @"id"])
+  {
+    __id = [decoder decodeInt32ForKey: @"id"];
+    __id_isset = YES;
+  }
   if ([decoder containsValueForKey: @"latitude"])
   {
     __latitude = [decoder decodeInt32ForKey: @"latitude"];
@@ -57,6 +64,10 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
+  if (__id_isset)
+  {
+    [encoder encodeInt32: __id forKey: @"id"];
+  }
   if (__latitude_isset)
   {
     [encoder encodeInt32: __latitude forKey: @"latitude"];
@@ -75,6 +86,23 @@
 {
   [__name release];
   [super dealloc];
+}
+
+- (int32_t) id {
+  return __id;
+}
+
+- (void) setId: (int32_t) id {
+  __id = id;
+  __id_isset = YES;
+}
+
+- (BOOL) idIsSet {
+  return __id_isset;
+}
+
+- (void) unsetId {
+  __id_isset = NO;
 }
 
 - (int32_t) latitude {
@@ -147,6 +175,14 @@
     }
     switch (fieldID)
     {
+      case 2:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setId: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       case 3:
         if (fieldType == TType_I32) {
           int32_t fieldValue = [inProtocol readI32];
@@ -182,6 +218,11 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"TransportStation"];
+  if (__id_isset) {
+    [outProtocol writeFieldBeginWithName: @"id" type: TType_I32 fieldID: 2];
+    [outProtocol writeI32: __id];
+    [outProtocol writeFieldEnd];
+  }
   if (__latitude_isset) {
     [outProtocol writeFieldBeginWithName: @"latitude" type: TType_I32 fieldID: 3];
     [outProtocol writeI32: __latitude];
@@ -205,7 +246,9 @@
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"TransportStation("];
-  [ms appendString: @"latitude:"];
+  [ms appendString: @"id:"];
+  [ms appendFormat: @"%i", __id];
+  [ms appendString: @",latitude:"];
   [ms appendFormat: @"%i", __latitude];
   [ms appendString: @",longitude:"];
   [ms appendFormat: @"%i", __longitude];
@@ -398,7 +441,7 @@
 
 @implementation TransportConnection
 
-- (id) initWithDeparture: (TransportStation *) departure arrival: (TransportStation *) arrival line: (TransportLine *) line departureTime: (int64_t) departureTime departurePosition: (NSString *) departurePosition arrivalTime: (int64_t) arrivalTime arrivalPosition: (NSString *) arrivalPosition
+- (id) initWithDeparture: (TransportStation *) departure arrival: (TransportStation *) arrival line: (TransportLine *) line departureTime: (int64_t) departureTime departurePosition: (NSString *) departurePosition arrivalTime: (int64_t) arrivalTime arrivalPosition: (NSString *) arrivalPosition foot: (BOOL) foot footDuration: (int32_t) footDuration
 {
   self = [super init];
   __departure = [departure retain];
@@ -415,6 +458,10 @@
   __arrivalTime_isset = YES;
   __arrivalPosition = [arrivalPosition retain];
   __arrivalPosition_isset = YES;
+  __foot = foot;
+  __foot_isset = YES;
+  __footDuration = footDuration;
+  __footDuration_isset = YES;
   return self;
 }
 
@@ -456,6 +503,16 @@
     __arrivalPosition = [[decoder decodeObjectForKey: @"arrivalPosition"] retain];
     __arrivalPosition_isset = YES;
   }
+  if ([decoder containsValueForKey: @"foot"])
+  {
+    __foot = [decoder decodeBoolForKey: @"foot"];
+    __foot_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"footDuration"])
+  {
+    __footDuration = [decoder decodeInt32ForKey: @"footDuration"];
+    __footDuration_isset = YES;
+  }
   return self;
 }
 
@@ -488,6 +545,14 @@
   if (__arrivalPosition_isset)
   {
     [encoder encodeObject: __arrivalPosition forKey: @"arrivalPosition"];
+  }
+  if (__foot_isset)
+  {
+    [encoder encodeBool: __foot forKey: @"foot"];
+  }
+  if (__footDuration_isset)
+  {
+    [encoder encodeInt32: __footDuration forKey: @"footDuration"];
   }
 }
 
@@ -640,6 +705,40 @@
   __arrivalPosition_isset = NO;
 }
 
+- (BOOL) foot {
+  return __foot;
+}
+
+- (void) setFoot: (BOOL) foot {
+  __foot = foot;
+  __foot_isset = YES;
+}
+
+- (BOOL) footIsSet {
+  return __foot_isset;
+}
+
+- (void) unsetFoot {
+  __foot_isset = NO;
+}
+
+- (int32_t) footDuration {
+  return __footDuration;
+}
+
+- (void) setFootDuration: (int32_t) footDuration {
+  __footDuration = footDuration;
+  __footDuration_isset = YES;
+}
+
+- (BOOL) footDurationIsSet {
+  return __footDuration_isset;
+}
+
+- (void) unsetFootDuration {
+  __footDuration_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -717,6 +816,22 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 11:
+        if (fieldType == TType_BOOL) {
+          BOOL fieldValue = [inProtocol readBool];
+          [self setFoot: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 12:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setFootDuration: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -773,6 +888,16 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__foot_isset) {
+    [outProtocol writeFieldBeginWithName: @"foot" type: TType_BOOL fieldID: 11];
+    [outProtocol writeBool: __foot];
+    [outProtocol writeFieldEnd];
+  }
+  if (__footDuration_isset) {
+    [outProtocol writeFieldBeginWithName: @"footDuration" type: TType_I32 fieldID: 12];
+    [outProtocol writeI32: __footDuration];
+    [outProtocol writeFieldEnd];
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -793,6 +918,10 @@
   [ms appendFormat: @"%qi", __arrivalTime];
   [ms appendString: @",arrivalPosition:"];
   [ms appendFormat: @"\"%@\"", __arrivalPosition];
+  [ms appendString: @",foot:"];
+  [ms appendFormat: @"%i", __foot];
+  [ms appendString: @",footDuration:"];
+  [ms appendFormat: @"%i", __footDuration];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -801,11 +930,11 @@
 
 @implementation TransportTrip
 
-- (id) initWith_UNUSED: (NSString *) _UNUSED departureTime: (int64_t) departureTime arrivalTime: (int64_t) arrivalTime from: (TransportStation *) from to: (TransportStation *) to parts: (NSArray *) parts
+- (id) initWithId: (NSString *) id departureTime: (int64_t) departureTime arrivalTime: (int64_t) arrivalTime from: (TransportStation *) from to: (TransportStation *) to parts: (NSArray *) parts
 {
   self = [super init];
-  ___UNUSED = [_UNUSED retain];
-  ___UNUSED_isset = YES;
+  __id = [id retain];
+  __id_isset = YES;
   __departureTime = departureTime;
   __departureTime_isset = YES;
   __arrivalTime = arrivalTime;
@@ -822,10 +951,10 @@
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
-  if ([decoder containsValueForKey: @"_UNUSED"])
+  if ([decoder containsValueForKey: @"id"])
   {
-    ___UNUSED = [[decoder decodeObjectForKey: @"_UNUSED"] retain];
-    ___UNUSED_isset = YES;
+    __id = [[decoder decodeObjectForKey: @"id"] retain];
+    __id_isset = YES;
   }
   if ([decoder containsValueForKey: @"departureTime"])
   {
@@ -857,9 +986,9 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  if (___UNUSED_isset)
+  if (__id_isset)
   {
-    [encoder encodeObject: ___UNUSED forKey: @"_UNUSED"];
+    [encoder encodeObject: __id forKey: @"id"];
   }
   if (__departureTime_isset)
   {
@@ -885,32 +1014,32 @@
 
 - (void) dealloc
 {
-  [___UNUSED release];
+  [__id release];
   [__from release];
   [__to release];
   [__parts release];
   [super dealloc];
 }
 
-- (NSString *) _UNUSED {
-  return [[___UNUSED retain] autorelease];
+- (NSString *) id {
+  return [[__id retain] autorelease];
 }
 
-- (void) set_UNUSED: (NSString *) _UNUSED {
-  [_UNUSED retain];
-  [___UNUSED release];
-  ___UNUSED = _UNUSED;
-  ___UNUSED_isset = YES;
+- (void) setId: (NSString *) id {
+  [id retain];
+  [__id release];
+  __id = id;
+  __id_isset = YES;
 }
 
-- (BOOL) _UNUSEDIsSet {
-  return ___UNUSED_isset;
+- (BOOL) idIsSet {
+  return __id_isset;
 }
 
-- (void) unset_UNUSED {
-  [___UNUSED release];
-  ___UNUSED = nil;
-  ___UNUSED_isset = NO;
+- (void) unsetId {
+  [__id release];
+  __id = nil;
+  __id_isset = NO;
 }
 
 - (int64_t) departureTime {
@@ -1028,7 +1157,7 @@
       case 1:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
-          [self set_UNUSED: fieldValue];
+          [self setId: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
@@ -1100,10 +1229,10 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"TransportTrip"];
-  if (___UNUSED_isset) {
-    if (___UNUSED != nil) {
-      [outProtocol writeFieldBeginWithName: @"_UNUSED" type: TType_STRING fieldID: 1];
-      [outProtocol writeString: ___UNUSED];
+  if (__id_isset) {
+    if (__id != nil) {
+      [outProtocol writeFieldBeginWithName: @"id" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __id];
       [outProtocol writeFieldEnd];
     }
   }
@@ -1152,8 +1281,8 @@
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"TransportTrip("];
-  [ms appendString: @"_UNUSED:"];
-  [ms appendFormat: @"\"%@\"", ___UNUSED];
+  [ms appendString: @"id:"];
+  [ms appendFormat: @"\"%@\"", __id];
   [ms appendString: @",departureTime:"];
   [ms appendFormat: @"%qi", __departureTime];
   [ms appendString: @",arrivalTime:"];

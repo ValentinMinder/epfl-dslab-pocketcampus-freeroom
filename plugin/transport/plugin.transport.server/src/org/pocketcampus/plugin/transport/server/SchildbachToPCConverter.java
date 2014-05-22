@@ -39,7 +39,7 @@ public class SchildbachToPCConverter {
 	static protected TransportStation convertSchToPC(
 			de.schildbach.pte.dto.Location s) {
 		if (s != null)
-			return new TransportStation(s.lat,
+			return new TransportStation(s.id, s.lat,
 					s.lon, s.name);
 		else
 			return null;
@@ -96,10 +96,21 @@ public class SchildbachToPCConverter {
 		if (sf instanceof de.schildbach.pte.dto.Connection.Trip) {
 			de.schildbach.pte.dto.Connection.Trip sft = (de.schildbach.pte.dto.Connection.Trip) sf;
 			TransportConnection part = new TransportConnection(
-					convertSchToPC(sf.departure), convertSchToPC(sf.arrival), convertSchToPC(sft.line), sft.departureTime.getTime(), sft.arrivalTime.getTime());
+					convertSchToPC(sf.departure), convertSchToPC(sf.arrival), false);
+			part.setDepartureTime(sft.departureTime.getTime());
+			part.setArrivalTime(sft.arrivalTime.getTime());
+			part.setLine(convertSchToPC(sft.line));
 			part.setDeparturePosition(sft.departurePosition);
 			part.setArrivalPosition(sft.arrivalPosition);
 
+			return part;
+		}
+		else if(sf instanceof de.schildbach.pte.dto.Connection.Footway){
+			de.schildbach.pte.dto.Connection.Footway sft = (de.schildbach.pte.dto.Connection.Footway) sf;
+			TransportConnection part = new TransportConnection(
+					convertSchToPC(sf.departure), convertSchToPC(sf.arrival),  true);
+			part.setFootDuration(sft.min);
+	
 			return part;
 		}
 
