@@ -13,25 +13,32 @@
 
 
 @interface TransportStation : NSObject <NSCoding> {
+  int32_t __id;
   int32_t __latitude;
   int32_t __longitude;
   NSString * __name;
 
+  BOOL __id_isset;
   BOOL __latitude_isset;
   BOOL __longitude_isset;
   BOOL __name_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=id, setter=setId:) int32_t id;
 @property (nonatomic, getter=latitude, setter=setLatitude:) int32_t latitude;
 @property (nonatomic, getter=longitude, setter=setLongitude:) int32_t longitude;
 @property (nonatomic, retain, getter=name, setter=setName:) NSString * name;
 #endif
 
-- (id) initWithLatitude: (int32_t) latitude longitude: (int32_t) longitude name: (NSString *) name;
+- (id) initWithId: (int32_t) id latitude: (int32_t) latitude longitude: (int32_t) longitude name: (NSString *) name;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
+
+- (int32_t) id;
+- (void) setId: (int32_t) id;
+- (BOOL) idIsSet;
 
 - (int32_t) latitude;
 - (void) setLatitude: (int32_t) latitude;
@@ -83,6 +90,8 @@
   NSString * __departurePosition;
   int64_t __arrivalTime;
   NSString * __arrivalPosition;
+  BOOL __foot;
+  int32_t __footDuration;
 
   BOOL __departure_isset;
   BOOL __arrival_isset;
@@ -91,6 +100,8 @@
   BOOL __departurePosition_isset;
   BOOL __arrivalTime_isset;
   BOOL __arrivalPosition_isset;
+  BOOL __foot_isset;
+  BOOL __footDuration_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
@@ -101,9 +112,11 @@
 @property (nonatomic, retain, getter=departurePosition, setter=setDeparturePosition:) NSString * departurePosition;
 @property (nonatomic, getter=arrivalTime, setter=setArrivalTime:) int64_t arrivalTime;
 @property (nonatomic, retain, getter=arrivalPosition, setter=setArrivalPosition:) NSString * arrivalPosition;
+@property (nonatomic, getter=foot, setter=setFoot:) BOOL foot;
+@property (nonatomic, getter=footDuration, setter=setFootDuration:) int32_t footDuration;
 #endif
 
-- (id) initWithDeparture: (TransportStation *) departure arrival: (TransportStation *) arrival line: (TransportLine *) line departureTime: (int64_t) departureTime departurePosition: (NSString *) departurePosition arrivalTime: (int64_t) arrivalTime arrivalPosition: (NSString *) arrivalPosition;
+- (id) initWithDeparture: (TransportStation *) departure arrival: (TransportStation *) arrival line: (TransportLine *) line departureTime: (int64_t) departureTime departurePosition: (NSString *) departurePosition arrivalTime: (int64_t) arrivalTime arrivalPosition: (NSString *) arrivalPosition foot: (BOOL) foot footDuration: (int32_t) footDuration;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -136,17 +149,25 @@
 - (void) setArrivalPosition: (NSString *) arrivalPosition;
 - (BOOL) arrivalPositionIsSet;
 
+- (BOOL) foot;
+- (void) setFoot: (BOOL) foot;
+- (BOOL) footIsSet;
+
+- (int32_t) footDuration;
+- (void) setFootDuration: (int32_t) footDuration;
+- (BOOL) footDurationIsSet;
+
 @end
 
 @interface TransportTrip : NSObject <NSCoding> {
-  NSString * ___UNUSED;
+  NSString * __id;
   int64_t __departureTime;
   int64_t __arrivalTime;
   TransportStation * __from;
   TransportStation * __to;
   NSArray * __parts;
 
-  BOOL ___UNUSED_isset;
+  BOOL __id_isset;
   BOOL __departureTime_isset;
   BOOL __arrivalTime_isset;
   BOOL __from_isset;
@@ -155,7 +176,7 @@
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=_UNUSED, setter=set_UNUSED:) NSString * _UNUSED;
+@property (nonatomic, retain, getter=id, setter=setId:) NSString * id;
 @property (nonatomic, getter=departureTime, setter=setDepartureTime:) int64_t departureTime;
 @property (nonatomic, getter=arrivalTime, setter=setArrivalTime:) int64_t arrivalTime;
 @property (nonatomic, retain, getter=from, setter=setFrom:) TransportStation * from;
@@ -163,14 +184,14 @@
 @property (nonatomic, retain, getter=parts, setter=setParts:) NSArray * parts;
 #endif
 
-- (id) initWith_UNUSED: (NSString *) _UNUSED departureTime: (int64_t) departureTime arrivalTime: (int64_t) arrivalTime from: (TransportStation *) from to: (TransportStation *) to parts: (NSArray *) parts;
+- (id) initWithId: (NSString *) id departureTime: (int64_t) departureTime arrivalTime: (int64_t) arrivalTime from: (TransportStation *) from to: (TransportStation *) to parts: (NSArray *) parts;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 
-- (NSString *) _UNUSED;
-- (void) set_UNUSED: (NSString *) _UNUSED;
-- (BOOL) _UNUSEDIsSet;
+- (NSString *) id;
+- (void) setId: (NSString *) id;
+- (BOOL) idIsSet;
 
 - (int64_t) departureTime;
 - (void) setDepartureTime: (int64_t) departureTime;
