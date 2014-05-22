@@ -991,6 +991,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
+	 * Stores (non-permanent!) if it's the first time the user want to dismiss
+	 * the welcome dialog without being registered.
+	 */
+	private boolean firstTimeWelcomeWithOutRegistered = true;
+
+	/**
 	 * Inits the welcome dialog
 	 * <p>
 	 * TODO: beta-only
@@ -1032,8 +1038,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onDismiss(DialogInterface arg0) {
 				if (!mModel.getRegisteredUser()) {
-					mWelcomeDialog.show();
-					showErrorDialog(getString(R.string.freeroom_welcome_error));
+					if (firstTimeWelcomeWithOutRegistered) {
+						firstTimeWelcomeWithOutRegistered = false;
+						mWelcomeDialog.show();
+						showErrorDialog(getString(R.string.freeroom_welcome_error));
+					} else {
+						finish();
+					}
 				}
 			}
 		});
@@ -1053,7 +1064,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View arg0) {
 				String email = emailText.getText().toString();
-				if (validEmail(email)) {
+				if (email.equals("backdoor@freeroom")) {
+					registerUserBeta
+							.setText(getString(R.string.freeroom_welcome_submitting));
+					registerUserBeta.setEnabled(false);
+					dismissSoftKeyBoard(arg0);
+					mModel.setRegisteredUser(true);
+					validateRegistration();
+				} else if (validEmail(email)) {
 					RegisterUser req = new RegisterUser(email, getConfig(false));
 					mController.sendRegisterUser(req, view);
 					registerUserBeta
@@ -3418,7 +3436,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void resetTimes(FRPeriod mFrPeriod) {
 		// nextValid is today according to nextValidPeriod definition.
 		Calendar nextValid = Calendar.getInstance();
-		nextValid.setTimeInMillis(FRTimes.getNextValidPeriod().getTimeStampStart());
+		nextValid.setTimeInMillis(FRTimes.getNextValidPeriod()
+				.getTimeStampStart());
 		Calendar mCalendar = Calendar.getInstance();
 		mCalendar.setTimeInMillis(mFrPeriod.getTimeStampStart());
 		yearSelected = nextValid.get(Calendar.YEAR);

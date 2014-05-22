@@ -40,7 +40,8 @@
     <string name="freeroom_error_please_report">"Ce comportement n\'est PAS normal, veuillez s.v.p reporter le bug à freeroom.epfl@gmail.com en incluant une description des étapes menants au bug. Merci d'avance :)"</string>
     <string name="freeroom_error_please_try_again">"Veuillez essayer à nouveau. Notez que la version beta ne fonctionne que sur le réseau de l\'epfl (wifi, VPN ou cablé). Si cela persiste, merci de nous contacter à freeroom.epfl@gmail.com. Merci d'avance :)"</string>
     <string name="freeroom_connection_error_happened">"Nous ne pouvons pas récupérer les données maintenant, dû à une erreur de réseau. Vous n\'êtes pas connecté, ou alors le serveur PocketCampus est hors-service / inatteignable."</string>
-<!--     <string name="freeroom_connection_error_happened">"Nous ne pouvons pas récupérer les données FreeRoom maintenant, car vous n\'êtes pas connecté à Internet."</string> -->
+    <!-- <string name="freeroom_connection_error_happened">"Nous ne pouvons pas récupérer les données FreeRoom maintenant, car vous n\'êtes pas connecté à Internet."</string> -->
+
 
     <!-- SEARCH dialog -->
     <string name="freeroom_search_title">"Nouvelle recherche"</string>
@@ -193,7 +194,7 @@
     <string name="freeroom_welcome_welcome">"Vous pouvez maintenant utiliser FreeRoom. Si vous rencontrez un problème, y compris un crash, bug, comportement anormal ou peu clair, erreurs de traduction ou autre, n\'hésitez pas à nous contacter via le formulaire google envoyé par email, ou écrivez-nous à:"</string>
     <string name="freeroom_welcome_dismiss">"OK, je veux essayer !"</string>
     <string name="freeroom_welcome_submitting">"Transmission en cours, veuillez patienter !"</string>
-    <string name="freeroom_welcome_error">"Vous devez être enregistré avec votre adresse email EPFL pour pouvoir tester cette application. Veuillez réessayer et attendez que le serveur confirme. Si vous pensez qu\'il s\'agit d\'une erreur ou que vous n\'arrivez pas à vous enregistrer, merci de nous écrire à freeroom.epfl@gmail.com"</string>
+    <string name="freeroom_welcome_error">"Vous devez être enregistré avec votre adresse email EPFL pour pouvoir tester cette application. Veuillez réessayer et attendez que le serveur confirme. Si vous pensez qu\'il s\'agit d\'une erreur ou que vous n\'arrivez pas à vous enregistrer, merci de nous écrire à freeroom.epfl@gmail.com. Pour fermer l'app presser deux fois le bouton retour."</string>
     <string name="freeroom_welcome_invalid_mail">"Email invalide !\nMerci d\'utiliser votre email epfl ayant pour format \nprénom.nom@epfl.ch\n sans espace ou caractère spécial.\nSi vous pensez que c'est une erreur ou que vous n\'arrivez pas à vous enregistrer, merci de nous écrire un email à \nfreeroom.epfl@gmail.com"</string>
     <string name="freeroom_welcome_validate_network_error">"Erreur réseau, merci de réessayer et de vérifier votre connection internet."</string>
     <string name="freeroom_welcome_validate_reject">"Le serveur a rejeté votre enregistrement !Merci de réessayer.\nSi cela persiste, merci de nous contacter à\nfreeroom.epfl@gmail.com !"</string>
@@ -214,6 +215,7 @@
     <string name="freeroom_layout_prev_req_replay_img">replay</string>
     <string name="freeroom_layout_prev_req_edit_img">edit</string>
     <string name="freeroom_layout_prev_req_delete_img">delete</string>
+    <string name="freeroom_layout_separator_dark">separator</string>
 
     <!-- Working there dialog -->
     <string name="freeroom_share_server_bad_words">"Requête rejetée: le message contient des mots interdits."</string>
