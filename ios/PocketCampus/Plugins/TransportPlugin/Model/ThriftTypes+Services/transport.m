@@ -1534,7 +1534,7 @@
 
 @end
 
-@interface autocomplete_args : NSObject <NSCoding> {
+@interface transport_autocomplete_args : NSObject <NSCoding> {
   NSString * __constraint;
 
   BOOL __constraint_isset;
@@ -1555,7 +1555,7 @@
 
 @end
 
-@implementation autocomplete_args
+@implementation transport_autocomplete_args
 
 - (id) initWithConstraint: (NSString *) constraint
 {
@@ -1666,7 +1666,7 @@
 
 @end
 
-@interface Autocomplete_result : NSObject <NSCoding> {
+@interface Transport_Autocomplete_result : NSObject <NSCoding> {
   NSArray * __success;
 
   BOOL __success_isset;
@@ -1687,7 +1687,7 @@
 
 @end
 
-@implementation Autocomplete_result
+@implementation Transport_Autocomplete_result
 
 - (id) initWithSuccess: (NSArray *) success
 {
@@ -2491,7 +2491,7 @@
     [inProtocol readMessageEnd];
     @throw x;
   }
-  Autocomplete_result * result = [[[Autocomplete_result alloc] init] autorelease];
+  Transport_Autocomplete_result * result = [[[Transport_Autocomplete_result alloc] init] autorelease];
   [result read: inProtocol];
   [inProtocol readMessageEnd];
   if ([result successIsSet]) {
@@ -2679,10 +2679,10 @@
 
 - (void) process_autocomplete_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
 {
-  autocomplete_args * args = [[autocomplete_args alloc] init];
+  transport_autocomplete_args * args = [[transport_autocomplete_args alloc] init];
   [args read: inProtocol];
   [inProtocol readMessageEnd];
-  Autocomplete_result * result = [[Autocomplete_result alloc] init];
+  Transport_Autocomplete_result * result = [[Transport_Autocomplete_result alloc] init];
   [result setSuccess: [mService autocomplete: [args constraint]]];
   [outProtocol writeMessageBeginWithName: @"autocomplete"
                                     type: TMessageType_REPLY
