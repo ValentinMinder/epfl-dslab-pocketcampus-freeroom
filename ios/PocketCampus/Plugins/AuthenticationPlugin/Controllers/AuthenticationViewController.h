@@ -45,7 +45,6 @@ typedef enum {
 
 @interface AuthenticationViewController : UITableViewController
 
-
 @property (nonatomic, weak) id<AuthenticationDelegate> delegate;
 @property (nonatomic, copy) NSString* token;
 

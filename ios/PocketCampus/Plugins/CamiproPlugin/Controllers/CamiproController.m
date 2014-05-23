@@ -42,8 +42,6 @@
 @property (nonatomic, strong) CamiproService* camiproService;
 @property (nonatomic, strong) TequilaToken* tequilaToken;
 
-@property (nonatomic) BOOL persistSession;
-
 @end
 
 @implementation CamiproController
@@ -134,7 +132,7 @@ static CamiproController* instance __weak = nil;
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken *)tequilaKey didReturn:(CamiproSession *)session {
-    [self.camiproService setCamiproSession:session persist:self.persistSession];
+    [self.camiproService setCamiproSession:session persist:YES];
     [self cleanAndNotifySuccessToObservers];
 }
 
@@ -148,12 +146,11 @@ static CamiproController* instance __weak = nil;
 
 #pragma mark - AuthenticationCallbackDelegate
 
-- (void)authenticationSucceededPersistSession:(BOOL)persistSession {
+- (void)authenticationSucceededUserChoseToSavePassword:(BOOL)userChoseToRememberPassword {
     if (!self.tequilaToken) {
         CLSNSLog(@"-> ERROR : no tequilaToken saved after successful authentication");
         return;
     }
-    self.persistSession = persistSession;
     [self.camiproService getSessionIdForServiceWithTequilaKey:self.tequilaToken delegate:self];
 }
 

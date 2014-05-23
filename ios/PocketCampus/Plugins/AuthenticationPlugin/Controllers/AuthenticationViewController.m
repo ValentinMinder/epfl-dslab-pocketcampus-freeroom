@@ -295,8 +295,8 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
     [self.loadingIndicator stopAnimating];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationSucceededPersistSession:)]) {
-            [self.delegate authenticationSucceededPersistSession:self.savePassword];
+        if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationSucceededUserChoseToSavePassword:)]) {
+            [self.delegate authenticationSucceededUserChoseToSavePassword:self.savePassword];
         }
     });
 }

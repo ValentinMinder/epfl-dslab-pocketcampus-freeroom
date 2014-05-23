@@ -55,8 +55,10 @@ extern NSString* const kAuthenticationLogoutNotification;
 
 - (void)getAuthTequilaTokenDidReturn:(AuthTokenResponse*)response;
 - (void)getAuthTequilaTokenFailed;
-- (void)getAuthSessionIdWithToken:(NSString*)tequilaToken didReturn:(AuthSessionResponse*)response;
-- (void)getAuthSessionIdFailedForToken:(NSString*)tequilaToken;
+- (void)getAuthSessionForRequest:(AuthSessionRequest*)request didReturn:(AuthSessionResponse*)response;
+- (void)getAuthSessionFailedForRequest:(AuthSessionRequest*)request;
+- (void)getAuthSessionIdWithToken:(NSString*)tequilaToken didReturn:(AuthSessionResponse*)response __attribute__((deprecated));
+- (void)getAuthSessionIdFailedForToken:(NSString*)tequilaToken __attribute__((deprecated));
 
 @end
 
@@ -73,16 +75,20 @@ extern NSString* const kAuthenticationLogoutNotification;
 + (BOOL)deleteSavedPasswordForUsername:(NSString*)username;
 + (void)enqueueLogoutNotification;
 
-- (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate;
-- (void)authenticateToken:(NSString*)token withTequilaCookie:(NSHTTPCookie*)tequilaCookie delegate:(id)delegate;
+- (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id<AuthenticationServiceDelegate>)delegate;
+- (void)authenticateToken:(NSString*)token withTequilaCookie:(NSHTTPCookie*)tequilaCookie delegate:(id<AuthenticationServiceDelegate>)delegate;
 
 #pragma mark - Service methods
 
-/*- (AuthTokenResponse *) getAuthTequilaToken;  // throws TException
- - (AuthSessionResponse *) getAuthSessionId: (NSString *) tequilaToken;  // throws TException*/
+/*
+ - (AuthTokenResponse *) getAuthTequilaToken;
+ - (AuthSessionResponse *) getAuthSession: (AuthSessionRequest *) req;
+ - (AuthSessionResponse *) getAuthSessionId: (NSString *) tequilaToken; //deprecated
+ */
 
 - (void)getAuthTequilaTokenWithDelegate:(id<AuthenticationServiceDelegate>)delegate;
-- (void)getAuthSessionIdWithTequilaToken:(NSString*)tequilaToken delegate:(id<AuthenticationServiceDelegate>)delegate;
+- (void)getAuthSessionWithRequest:(AuthSessionRequest*)request delegate:(id<AuthenticationServiceDelegate>)delegate;
+- (void)getAuthSessionIdWithTequilaToken:(NSString*)tequilaToken delegate:(id<AuthenticationServiceDelegate>)delegate __attribute__((deprecated));
 
 
 @end
@@ -96,7 +102,7 @@ typedef enum {
 @protocol AuthenticationDelegate
 
 @required
-- (void)authenticationSucceededPersistSession:(BOOL)persistSession;
+- (void)authenticationSucceededUserChoseToSavePassword:(BOOL)userChoseToRememberPassword;
 - (void)authenticationFailedWithReason:(AuthenticationFailureReason)reason;
 
 //- (void)userCancelledAuthentication __attribute__((deprecated));

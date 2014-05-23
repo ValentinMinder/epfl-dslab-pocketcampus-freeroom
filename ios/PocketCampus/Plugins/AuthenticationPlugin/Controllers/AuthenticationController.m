@@ -74,8 +74,6 @@ static AuthenticationController* instanceStrong __strong = nil;
 
 @property (nonatomic, strong) NSString* tequilaToken;
 
-@property (nonatomic) BOOL persistSession;
-
 @end
 
 @implementation AuthenticationController
@@ -157,10 +155,9 @@ static AuthenticationController* instanceStrong __strong = nil;
         self.authenticationViewController.hideGasparUsageAccountMessage = YES;
         self.authenticationViewController.delegate = delegate;
         self.authenticationViewController.token = token;
-        UINavigationController* tmpNavController = [[UINavigationController alloc] initWithRootViewController:self.authenticationViewController]; //so that nav bar is shown
-        tmpNavController.modalPresentationStyle = UIModalPresentationFormSheet;
-        
-        [presentationViewController presentViewController:tmpNavController animated:YES completion:^{
+        PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:self.authenticationViewController]; //so that nav bar is shown
+        navController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [presentationViewController presentViewController:navController animated:YES completion:^{
             [self.authenticationViewController focusOnInput];
         }];
     }
@@ -258,10 +255,10 @@ static AuthenticationController* instanceStrong __strong = nil;
     [self cleanAndNotifyFailureToObservers];
 }
 
-- (void)getAuthSessionIdWithToken:(NSString*)tequilaToken didReturn:(AuthSessionResponse*)response {
+- (void)getAuthSessionForRequest:(AuthSessionRequest *)request didReturn:(AuthSessionResponse *)response {
     switch (response.statusCode) {
         case AuthStatusCode_OK:
-            [self setPocketCampusAuthSessionId:response.sessionId persist:self.persistSession];
+            [self setPocketCampusAuthSessionId:response.sessionId persist:YES];
             [self cleanAndNotifySuccessToObservers];
             break;
         case AuthStatusCode_NETWORK_ERROR:
@@ -277,7 +274,7 @@ static AuthenticationController* instanceStrong __strong = nil;
     }
 }
 
-- (void)getAuthSessionIdFailedForToken:(NSString*)tequilaToken {
+- (void)getAuthSessionFailedForRequest:(AuthSessionRequest *)request {
     [self cleanAndNotifyFailureToObservers];
 }
 
@@ -287,14 +284,14 @@ static AuthenticationController* instanceStrong __strong = nil;
 
 #pragma mark - AuthenticationDelegate
 
-- (void)authenticationSucceededPersistSession:(BOOL)persistSession {
+- (void)authenticationSucceededUserChoseToSavePassword:(BOOL)userChoseToRememberPassword {
     if (!self.tequilaToken) {
         CLSNSLog(@"!! ERROR: authentication succeeded but no saved tequila token. Notifying failure to observers.");
         [self cleanAndNotifyFailureToObservers];
         return;
     }
-    self.persistSession = persistSession;
-    [self.authService getAuthSessionIdWithTequilaToken:self.tequilaToken delegate:self];
+    AuthSessionRequest* request = [[AuthSessionRequest alloc] initWithTequilaToken:self.tequilaToken rememberMe:userChoseToRememberPassword];
+    [self.authService getAuthSessionWithRequest:request delegate:self];
 }
 
 - (void)authenticationFailedWithReason:(AuthenticationFailureReason)reason {
