@@ -6,17 +6,31 @@
   It places the generated files in the appropriate directories
   as per PocketCampus directory structure
   
-  You should specify $plugin_name
-  You can set it to "sdk" to compile the thrift files of the SDK
+  Usage: $0 plugin=<...> platform=<ios|android>
+  (Replace <...> by your plugin name)
+  You can use plugin=sdk to compile the thrift files of the SDK
   
   @Author: Amer C (amer.chamseddine@epfl.ch)
 */
 
 chdir(dirname(__FILE__));
 
-// ARGUMENTS: SET THE PLUGIN NAME HERE (set to "sdk" to compile common thrift definition files)
+// Parsing arguments
+$args_default = [
+  'plugin' => null,
+  'platform' => null
+];
+// Puts CLI args into $args, with default values if necessary
+parse_str(implode('&', array_slice($argv, 1)), $args);
+$args = array_merge($args_default, $args);
 
-$plugin_name = "transport";
+$plugin_name = $args['plugin'];
+$platform = $args['platform'];
+
+if ($plugin_name == null || $platform == null) {
+	echo "Usage: $0 plugin=<...> platform=<ios|android>\n";
+	exit(1);
+}
 
 // LOGIC: DONT TOUCH THE CODE BELOW
 
@@ -37,10 +51,15 @@ if($plugin_name == "sdk") {
 $plugin_shared_dir = "../../$string_plugin/$plugin_name/$string_plugin.$plugin_name.shared";
 
 foreach(glob("$plugin_shared_dir/def/*.thrift") as $def_file) {
-	echo "Compiling $def_file\n";
+	echo "Compiling $def_file for platform $platform\n";
 	// TODO read package name from thrift file and clear corresponding directory
-	system("$thrift_bin --gen java:hashcode,private-members -out $plugin_shared_dir/src $def_file");
-	system("$thrift_bin --gen cocoa -out $plugin_ios_dir $def_file");
+	if ($platform === "ios") {
+		system("$thrift_bin --gen cocoa -out $plugin_ios_dir $def_file");
+	} else if ($platform === "android") {
+		system("$thrift_bin --gen java:hashcode,private-members -out $plugin_shared_dir/src $def_file");
+	} else {
+		echo "ERROR: Platform $platform is incorrect\n";
+	}
 }
 
 ?>
