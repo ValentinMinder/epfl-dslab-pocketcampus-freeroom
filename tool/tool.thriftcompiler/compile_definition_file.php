@@ -28,7 +28,7 @@ $plugin_name = $args['plugin'];
 $platform = $args['platform'];
 
 if ($plugin_name == null || $platform == null) {
-	echo "Usage: $0 plugin=<...> platform=<ios|android>";
+	echo "Usage: $0 plugin=<...> platform=<ios|android>\n";
 	exit(1);
 }
 
