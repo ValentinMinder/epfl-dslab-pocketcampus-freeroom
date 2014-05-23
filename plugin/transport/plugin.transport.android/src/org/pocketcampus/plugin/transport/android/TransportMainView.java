@@ -407,7 +407,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 								.getFrom());
 				TransportTrip t = mDisplayedLocations.get(l).get(0);
 				String to = DestinationFormatter
-						.getNiceName(t.getParts().get(t.getParts().size()-1).arrival.getName());
+						.getNiceName(t.getParts().get(t.getParts().size()-1).getArrival().getName());
 
 				items.add(new PCSectionItem(from + " - " + to));
 				int i = 0;
@@ -424,24 +424,24 @@ public class TransportMainView extends PluginView implements ITransportView {
 								if (!c.getTo().getName()
 										.equals("Ecublens VD, EPFL")) {
 									mDestPrefsEditor.putInt(
-											c.getParts().get(c.getParts().size()-1).arrival.getName(), 
-											c.getParts().get(c.getParts().size()-1).arrival.getId());
+											c.getParts().get(c.getParts().size()-1).getArrival().getName(), 
+											c.getParts().get(c.getParts().size()-1).getArrival().getId());
 									mDestPrefsEditor.commit();
 								}
 							} else {
 								if (!c.getFrom().getName()
 										.equals("Ecublens VD, EPFL")) {
 									mDestPrefsEditor.putInt(
-											c.getParts().get(0).departure.getName(),
-											c.getParts().get(0).departure.getId());
+											c.getParts().get(0).getDeparture().getName(),
+											c.getParts().get(0).getDeparture().getId());
 									mDestPrefsEditor.commit();
 								}
 							}
 							// String representing the type of transport
 							String logo = "";
-							for (TransportConnection p : c.parts) {
-								if (!p.foot && p.line != null) {
-									logo = p.line.getName();
+							for (TransportConnection p : c.getParts()) {
+								if (!p.isFoot() && p.getLine() != null) {
+									logo = p.getLine().getName();
 									break;
 								}
 							}
@@ -449,7 +449,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 							if (mFromEpfl) {
 								PCEntryItem entry = new PCEntryItem(
 										timeString(c.getDepartureTime()), logo,
-										c.getParts().get(c.getParts().size()-1).arrival.getName() + ":"
+										c.getParts().get(c.getParts().size()-1).getArrival().getName() + ":"
 												+ c.getDepartureTime() + ":"
 												+ c.getArrivalTime() + ":"
 												+ c.getId());
@@ -458,7 +458,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 							} else {
 								PCEntryItem entry = new PCEntryItem(
 										timeString(c.getDepartureTime()), logo,
-										c.getParts().get(0).departure.getName() + ":"
+										c.getParts().get(0).getDeparture().getName() + ":"
 												+ c.getDepartureTime() + ":"
 												+ c.getArrivalTime() + ":"
 												+ c.getId());

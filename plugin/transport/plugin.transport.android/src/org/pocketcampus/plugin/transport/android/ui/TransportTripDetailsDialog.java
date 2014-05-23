@@ -63,18 +63,18 @@ public class TransportTripDetailsDialog extends Dialog {
 		formatter.applyPattern("HH:mm");
 
 		HashMap<String, String> partRow;
-		for (TransportConnection part : connection_.parts) {
+		for (TransportConnection part : connection_.getParts()) {
 			partRow = new HashMap<String, String>();
 			String departureTime = "";
-			String departurePlace = part.departure.name;
+			String departurePlace = part.getDeparture().getName();
 			String arrivalTime = "";
-			String arrivalPlace = part.arrival.name;
+			String arrivalPlace = part.getArrival().getName();
 			String line = "";
 			String walkingTime;
 
-			if (part.foot) {
+			if (part.isFoot()) {
 				// Part is a Footway
-				walkingTime = part.getMin() + " "
+				walkingTime = part.getFootDuration() + " "
 						+ getString(R.string.transport_minute_abbrev);
 				line = getString(R.string.transport_by_feet);
 				partRow.put("departureTime", walkingTime);
@@ -83,8 +83,8 @@ public class TransportTripDetailsDialog extends Dialog {
 				// Part is a Trip
 				departureTime = formatter.format(part.getDepartureTime());
 				arrivalTime = formatter.format(part.getArrivalTime());
-				if (part.line != null) {
-					line = TransportFormatter.getNiceName(part.line.name);
+				if (part.getLine() != null) {
+					line = TransportFormatter.getNiceName(part.getLine().getName());
 				}
 
 				partRow.put("departureTime", departureTime);
@@ -120,8 +120,8 @@ public class TransportTripDetailsDialog extends Dialog {
 
 		// Dialog title
 		TextView title = (TextView) findViewById(R.id.transport_title_dialog);
-		title.setText(DestinationFormatter.getNiceName(connection_.from)
-				+ " - " + DestinationFormatter.getNiceName(connection_.to));
+		title.setText(DestinationFormatter.getNiceName(connection_.getFrom())
+				+ " - " + DestinationFormatter.getNiceName(connection_.getTo()));
 	}
 
 	/**
