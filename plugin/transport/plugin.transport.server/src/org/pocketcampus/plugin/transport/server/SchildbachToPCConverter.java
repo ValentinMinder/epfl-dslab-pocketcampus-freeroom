@@ -139,6 +139,12 @@ public class SchildbachToPCConverter {
 		if (matcher.find() && matcher.group(1) != null && matcher.group(1).length() > 0) {
 			return "BBus" + matcher.group(1);
 		}
+		
+		pattern = Pattern.compile("^UMm(\\d)");
+		matcher = pattern.matcher(schildlLineName);
+		if (matcher.find() && matcher.group(1) != null && matcher.group(1).length() > 0) {
+			return "M" + matcher.group(1);
+		}
 
 		pattern = Pattern.compile("^UM(\\d*)");
 		matcher = pattern.matcher(schildlLineName);
