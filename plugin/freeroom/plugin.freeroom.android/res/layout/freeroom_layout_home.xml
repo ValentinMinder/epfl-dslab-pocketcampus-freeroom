@@ -19,6 +19,36 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/black" />
 
+    <!-- Layout to store the konami text input and the "start" button. -->
+    <LinearLayout
+        android:id="@+id/freeroom_layout_home_konami"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <EditText
+            android:id="@+id/freeroom_layout_home_konami_text"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="4"
+            android:imeOptions="actionGo"
+            android:hint="@string/freeroom_konami_typein"
+            android:inputType="textVisiblePassword"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/freeroom_layout_home_konami_confirm"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:drawableRight="@drawable/ic_action_send_now"
+            android:text="@string/freeroom_konami_start"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
     <ExpandableListView
         android:id="@+id/freeroom_layout_home_list"
         android:layout_width="fill_parent"

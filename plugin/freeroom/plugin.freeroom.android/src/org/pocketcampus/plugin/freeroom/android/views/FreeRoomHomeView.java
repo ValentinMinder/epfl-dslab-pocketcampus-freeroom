@@ -76,6 +76,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -801,6 +802,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	@Override
 	public void initializeView() {
+
+		constructKonamiCode();
 		// retrieve display dimensions
 		Rect displayRectangle = new Rect();
 		Window window = this.getWindow();
@@ -812,6 +815,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				getApplicationContext(), mModel.getOccupancyResults(),
 				mController, this);
 		mExpListView.setAdapter(mExpListAdapter);
+		// replay the onTouchEvent on the List to home View.
+		mExpListView.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				onTouchEvent(event);
+				return false;
+			}
+		});
 
 		// search action is always there.
 		addActionToActionBar(search);
@@ -1058,7 +1070,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View arg0) {
 				String email = emailText.getText().toString();
-				if (email.equals("backdoor@freeroom")) {
+				if (email.equals(fct_prefix + "noregister")) {
 					registerUserBeta
 							.setText(getString(R.string.freeroom_welcome_submitting));
 					registerUserBeta.setEnabled(false);
@@ -2056,7 +2068,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			System.out.println("touch outside dialog");
 			mSearchDialog.dismiss();
 		}
-		return false;
+		checkKonamiCode(event);
+		return true;
 	}
 
 	/**
@@ -3182,6 +3195,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 									query, mModel.getGroupAccess());
 							mController.autoCompleteBuilding(view, request);
 						}
+						if (!query.equalsIgnoreCase("ba")) {
+							activateDebug(query);
+						}
 					}
 				});
 
@@ -4141,5 +4157,267 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	public void freeRoomServersUnknownError() {
 		showErrorDialog(getString(R.string.freeroom_error_unknown_error) + "\n"
 				+ getString(R.string.freeroom_error_please_report));
+	}
+
+	/**
+	 * Enum to describe Moves taken into account in Konami Code.
+	 * <p>
+	 * None represent the null action, if the trigger was not long enough.
+	 * 
+	 */
+	private enum KonamiMove {
+		NONE, UP, DOWN, LEFT, RIGHT;
+	}
+
+	/**
+	 * Construct the list of ordered KonamiMove to enter.
+	 */
+	private void constructKonamiCode() {
+		konamiMoveList = new ArrayList<KonamiMove>();
+		konamiMoveList.add(KonamiMove.UP);
+		konamiMoveList.add(KonamiMove.UP);
+		konamiMoveList.add(KonamiMove.DOWN);
+		konamiMoveList.add(KonamiMove.DOWN);
+		konamiMoveList.add(KonamiMove.LEFT);
+		konamiMoveList.add(KonamiMove.RIGHT);
+		konamiMoveList.add(KonamiMove.LEFT);
+		konamiMoveList.add(KonamiMove.RIGHT);
+	}
+
+	/**
+	 * Stores the list of ordered KonamiMove.
+	 */
+	private List<KonamiMove> konamiMoveList;
+	/**
+	 * The minimal coordinate change to trigger a {@link KonamiMove}.
+	 */
+	private int konamiCodeMinChangeCoord = 50;
+	/**
+	 * The maximal time elapsed between two move to trigger a {@link KonamiMove}
+	 */
+	private long konamiCodeMaxTime = 2000;
+
+	/**
+	 * Stores the index to where the KonamiCode list has been triggered.
+	 * <p>
+	 * 0 means no trigger no so far, or trigger reset <br>
+	 * 1-6 means trigger is ongoing <br>
+	 * 7 means konami is triggered <br>
+	 * 8 means konami has been triggered <br>
+	 */
+	private int konamiCodeCurrentIndex = 0;
+	/**
+	 * Stores the X-Coordinate of the start of the move
+	 */
+	private float konamiCodePrevX = 0;
+	/**
+	 * Stores the Y-Coordinate of the start of the move
+	 */
+	private float konamiCodePrevY = 0;
+
+	/**
+	 * Stores the time of end the last triggered {@link KonamiMove}.
+	 */
+	private long konamiCodeLastTimeTriggered = System.currentTimeMillis();
+
+	/**
+	 * Checks an event given by the System to detect a {@link KonamiMove}.
+	 * <p>
+	 * All moves on the screen starts by a {@link MotionEvent#ACTION_DOWN} event
+	 * when the screen is pressed, followed a long list of
+	 * {@link MotionEvent#ACTION_MOVE} when the user moves his finger and ends
+	 * by a {@link MotionEvent#ACTION_UP} event when the user release the
+	 * screen.
+	 * <p>
+	 * To detect a {@link KonamiMove}, we are interested in the difference of
+	 * coordinates between the start {@link MotionEvent#ACTION_DOWN} and the end
+	 * {@link MotionEvent#ACTION_UP} events. If the coordinates change more than
+	 * {@link FreeRoomHomeView#konamiCodeMinChangeCoord}, then a
+	 * {@link KonamiMove} will happen! If it's the next one in the
+	 * {@link FreeRoomHomeView#konamiMoveList} according to
+	 * {@link FreeRoomHomeView#konamiCodeCurrentIndex}, then the index is
+	 * incremented. If not, the index is reset to the start (0).
+	 * 
+	 * @param event
+	 *            a motion event to check.
+	 */
+	private void checkKonamiCode(MotionEvent event) {
+		if (konamiCodeCurrentIndex >= 8) {
+			return;
+		} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			// action down/start: if too much time elapsed, reset
+			if (konamiCodeCurrentIndex != 0) {
+				long elapsed = System.currentTimeMillis()
+						- konamiCodeLastTimeTriggered;
+				if (elapsed > konamiCodeMaxTime) {
+					System.out.println("rst time");
+					konamiCodeCurrentIndex = 0;
+				}
+			}
+			// action down/start: we store the start coordinates
+			konamiCodePrevX = event.getX();
+			konamiCodePrevY = event.getY();
+			return;
+		} else if (event.getAction() == MotionEvent.ACTION_UP) {
+			// action up/end: check the coordinate changes
+			float diffX = event.getX() - konamiCodePrevX;
+			float diffY = event.getY() - konamiCodePrevY;
+			float absX = Math.abs(diffX);
+			float absY = Math.abs(diffY);
+			KonamiMove move = KonamiMove.NONE;
+			System.out.println(event.getX() + "/" + event.getY());
+			System.out.println(konamiCodePrevX + "/" + konamiCodePrevY);
+			System.out.println(diffX + "/" + diffY);
+			if (absX < konamiCodeMinChangeCoord
+					&& absY < konamiCodeMinChangeCoord) {
+				System.out.println("no change sign");
+
+				// if changes are not significant: NONE move.
+			} else if (absY > absX) {
+				// if more change on Y axe: up/down event.
+				if (diffY > 0) {
+					move = KonamiMove.DOWN;
+				} else if (diffY < 0) {
+					move = KonamiMove.UP;
+				}
+			} else {
+				// if more change on X axe: left/right event.
+				if (diffX > 0) {
+					move = KonamiMove.RIGHT;
+				} else if (diffX < 0) {
+					move = KonamiMove.LEFT;
+				}
+			}
+
+			System.out.println(move);
+			if (move.equals(KonamiMove.NONE)) {
+				// none event: reset
+				konamiCodeCurrentIndex = 0;
+				return;
+			} else if (move.equals(konamiMoveList.get(konamiCodeCurrentIndex))) {
+				// next event in the row: sucess
+				// update index and time of last success
+				konamiCodeLastTimeTriggered = System.currentTimeMillis();
+				konamiCodeCurrentIndex++;
+				if (konamiCodeCurrentIndex == 8) {
+					konamiActivateKeyBoard();
+					konamiCodeCurrentIndex++;
+				}
+				return;
+			} else {
+				konamiCodeCurrentIndex = 0;
+				return;
+			}
+		}
+	}
+
+	/**
+	 * Display the input edittext and keyboard to type "ba" and complete konami
+	 * code.
+	 */
+	private void konamiActivateKeyBoard() {
+		final LinearLayout konamiLayout = (LinearLayout) this
+				.findViewById(R.id.freeroom_layout_home_konami);
+		konamiLayout.setVisibility(View.VISIBLE);
+
+		final EditText konamiEditText = (EditText) this
+				.findViewById(R.id.freeroom_layout_home_konami_text);
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(konamiEditText, InputMethodManager.SHOW_IMPLICIT);
+
+		final Button konamiConfirm = (Button) this
+				.findViewById(R.id.freeroom_layout_home_konami_confirm);
+		konamiEditText.setOnEditorActionListener(new OnEditorActionListener() {
+
+			@Override
+			public boolean onEditorAction(TextView v, int actionId,
+					KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_GO) {
+					konamiConfirm.performClick();
+					return true;
+				}
+				return false;
+			}
+		});
+		konamiConfirm.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				activateDebug(konamiEditText.getText().toString());
+				konamiEditText.setText("");
+				dismissSoftKeyBoard(v);
+				konamiLayout.setVisibility(View.GONE);
+			}
+		});
+		konamiConfirm.setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View v) {
+				activateDebug(konamiEditText.getText().toString());
+				return false;
+			}
+		});
+
+	}
+
+	/**
+	 * Konami code as string in English.
+	 */
+	private final static String KonamiCodeEnglish = "UUDDLRLRBA";
+	/**
+	 * Konami code as string in French.
+	 */
+	private final static String KonamiCodeFrench = "hhbbgdgdBA";
+
+	/**
+	 * Prefix for all debug hidden functions.
+	 */
+	private final static String fct_prefix = "debug@jwvm:";
+	private final static String fct_chgdate_on = "changedate=on";
+	private final static String fct_chgdate_off = "changedate=off";
+	private final static String fct_chggrp_on = "changegrp=on";
+	private final static String fct_chggrp_off = "changegrp=off";
+
+	/**
+	 * Activates hidden functionnalities for debug puposes.
+	 */
+	private void activateDebug(String query) {
+		if (query.equalsIgnoreCase("ba")
+				|| query.equalsIgnoreCase(KonamiCodeEnglish)
+				|| query.equalsIgnoreCase(KonamiCodeFrench)) {
+			activateKonamiCode();
+		}
+		if (!query.startsWith(fct_prefix)) {
+			return;
+		} else if (query.equals(fct_prefix + fct_chgdate_on)) {
+			mModel.setAdvancedTime(true);
+			showErrorDialog("Change date activated");
+			initSearchDialog();
+		} else if (query.equals(fct_prefix + fct_chgdate_off)) {
+			mModel.setAdvancedTime(false);
+			showErrorDialog("Change date disabled");
+			initSearchDialog();
+		} else if (query.equals(fct_prefix + fct_chggrp_on)) {
+			mModel.setGroupAccess(Integer.MAX_VALUE);
+			showErrorDialog("Change group access activated");
+		} else if (query.equals(fct_prefix + fct_chggrp_off)) {
+			mModel.setGroupAccess();
+			showErrorDialog("Change group access disabled");
+		}
+	}
+
+	/**
+	 * Activates and display the konami code.
+	 * <p>
+	 * TODO: do something funny!
+	 */
+	private void activateKonamiCode() {
+		// Uri.Builder builder = new Uri.Builder();
+		// builder.scheme("pocketcampus")
+		// .authority("directory.plugin.pocketcampus.org")
+		// .appendPath("search").appendQueryParameter("q", 215256 + "");
+		// Intent i = new Intent(Intent.ACTION_VIEW, builder.build());
+		// startActivity(i);
+		showErrorDialog("konami code activated, well done! Nothing will happen!");
 	}
 }

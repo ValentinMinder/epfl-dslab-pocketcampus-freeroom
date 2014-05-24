@@ -296,9 +296,12 @@ public class FRUtilsClient {
 	}
 
 	public final int MIN_QUERY_LENGTH = 2;
+	private final int MAX_QUERY_LENGTH = 6;
 
 	public boolean validQuery(String query) {
-		return query.trim().length() >= MIN_QUERY_LENGTH;
+		boolean serverPreCond = query.trim().length() >= MIN_QUERY_LENGTH;
+		boolean clientDontCare = query.trim().length() <= MAX_QUERY_LENGTH;
+		return serverPreCond && clientDontCare;
 	}
 
 	/**

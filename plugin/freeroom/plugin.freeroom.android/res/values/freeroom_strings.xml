@@ -222,4 +222,8 @@
     <!-- NEW: add there -->
 	<string name="freeroom_layout_search_expand_collapse_hour_img">first/last</string>
 	<string name="freeroom_layout_roomslist_img_triangle">triangle icon</string>
+	
+	<!-- str -->
+	<string name="freeroom_konami_start">Start</string>
+	<string name="freeroom_konami_typein">Type in&#8230;</string>
 </resources>
