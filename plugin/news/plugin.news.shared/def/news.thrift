@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.news.shared
-namespace csharp org.pocketcampus.plugin.news.shared
 
 // OLD STUFF - DO NOT TOUCH
 struct NewsItem {

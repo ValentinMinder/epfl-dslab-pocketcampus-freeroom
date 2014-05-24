@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.isacademia.shared
-namespace csharp org.pocketcampus.plugin.isacademia.shared
 
 /**
 

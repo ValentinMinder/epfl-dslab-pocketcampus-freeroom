@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.bikes.shared
-namespace csharp org.pocketcampus.plugin.bikes.shared
 
 typedef i32 int
 

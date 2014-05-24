@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.map.shared
-namespace csharp org.pocketcampus.plugin.map.shared
 
 struct MapLayer {
 	1: required string name;

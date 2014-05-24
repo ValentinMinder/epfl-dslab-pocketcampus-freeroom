@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.food.shared
-namespace csharp org.pocketcampus.plugin.food.shared
 
 include "../../../../plugin/map/plugin.map.shared/def/map.thrift"
 

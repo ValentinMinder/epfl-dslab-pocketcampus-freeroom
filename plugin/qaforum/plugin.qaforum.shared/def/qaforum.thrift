@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.qaforum.shared
-namespace csharp org.pocketcampus.plugin.qaforum.shared
 
 struct QATequilaToken {
 	1: required string iTequilaKey;

@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.authentication.shared
-namespace csharp org.pocketcampus.plugin.authentication.shared
 
 enum AuthStatusCode {
   // The request was successful
