@@ -330,6 +330,16 @@ public abstract class PluginView extends Activity {
 	}
 	
 	/**
+	 * Sets home action of ActionBar (action on the left of the title).
+	 * <p>
+	 * Introduced on 2014.05 by freeroom. <br>
+	 * Usable as "return" button, and clearer indication of "where are you".
+	 */
+	protected void setActionBarHomeAction(Action action) {
+		mActionBar.setHomeAction(action);
+	}
+	
+	/**
 	 * Do not setup the ActionBar for this Activity. Must be called before
 	 * <code>setContentView</code>.
 	 * 
