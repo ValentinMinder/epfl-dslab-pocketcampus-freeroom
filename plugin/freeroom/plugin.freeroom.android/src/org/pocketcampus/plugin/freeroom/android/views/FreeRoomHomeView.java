@@ -801,12 +801,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	@Override
 	public void initializeView() {
-		// TODO: beta-only: authorize the user to enter non-today request.
-		mModel.setAdvancedTime(true);
-		// TODO: beta-only: authorize the user to check EWA room (Exchange) in
-		// BC, IN and CO.
-		mModel.setGroupAccess(10);
-
 		// retrieve display dimensions
 		Rect displayRectangle = new Rect();
 		Window window = this.getWindow();
@@ -3066,12 +3060,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// changed to horizontal values, and weighted more logically.
 		// XML IS ALWAYS DESIGNED FOR PHONES, as it's probably more than 97% of
 		// users. tablets are changing their layout here.
+		LinearLayout header_1st = (LinearLayout) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_upper_first);
 		if (isLandscape()) {
 			LinearLayout header_main = (LinearLayout) mSearchView
 					.findViewById(R.id.freeroom_layout_dialog_search_upper_main);
 			header_main.setOrientation(LinearLayout.HORIZONTAL);
-			LinearLayout header_1st = (LinearLayout) mSearchView
-					.findViewById(R.id.freeroom_layout_dialog_search_upper_first);
+
 			LinearLayout header_2nd = (LinearLayout) mSearchView
 					.findViewById(R.id.freeroom_layout_dialog_search_upper_second);
 			LinearLayout header_3rd = (LinearLayout) mSearchView
@@ -3122,6 +3117,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			favButtonLayout.setLayoutParams(p);
 			userDefButtonLayout.setLayoutParams(p);
 			freeButtonLayout.setLayoutParams(p);
+		}
+
+		if (mModel.getAdvancedTime()) {
+			header_1st.setVisibility(View.VISIBLE);
+		} else {
+			header_1st.setVisibility(View.GONE);
 		}
 	}
 

@@ -77,6 +77,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public final int COLOR_CHECK_OCCUPANCY_OCCUPIED = Color.rgb(215, 20, 20);
 	public final int COLOR_CHECK_OCCUPANCY_ATLEASTONCE = Color.rgb(236, 244, 7);
 
+	public final int DEFAULT_GROUP_ACCESS = 10;
+
 	/**
 	 * 
 	 * Reference to the Views that need to be notified when the stored data
@@ -485,9 +487,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	/**
 	 * Stores the group access the user is registered for.
 	 * <p>
-	 * Default: 1. (groupe 1).
+	 * Default: 10. (groupe 10).
 	 */
-	private int groupAccess = 1;
+	private int groupAccess = DEFAULT_GROUP_ACCESS;
 
 	/**
 	 * Retrieve the group access the user is registered for.
@@ -509,6 +511,13 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putInt(groupAccessIDKey, groupAccess);
 		editor.commit();
+	}
+
+	/**
+	 * Set the group access to the default value.
+	 */
+	public void setGroupAccess() {
+		setGroupAccess(DEFAULT_GROUP_ACCESS);
 	}
 
 	/**
