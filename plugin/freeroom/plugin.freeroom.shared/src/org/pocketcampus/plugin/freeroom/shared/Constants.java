@@ -25,4 +25,6 @@ public class Constants {
 
   public static final int HTTP_UPDATED = 299;
 
+  public static final int LENGTH_USERMESSAGE = 50;
+
 }

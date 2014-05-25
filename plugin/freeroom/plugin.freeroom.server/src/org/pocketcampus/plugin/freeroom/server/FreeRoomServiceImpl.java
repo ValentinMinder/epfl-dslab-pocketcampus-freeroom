@@ -31,6 +31,7 @@ import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteUserMessageReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteUserMessageRequest;
+import org.pocketcampus.plugin.freeroom.shared.Constants;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRReply;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
@@ -59,7 +60,6 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private final int LIMIT_AUTOCOMPLETE = 50;
-	private final int LENGTH_USERMESSAGE = 30;
 
 	private ConnectionManager connMgr;
 	private Logger logger = Logger.getLogger(FreeRoomServiceImpl.class
@@ -283,7 +283,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						+ userMessage);
 				return HttpURLConnection.HTTP_PRECON_FAILED;
 			} else if (userMessage != null
-					&& userMessage.length() > LENGTH_USERMESSAGE) {
+					&& userMessage.length() > Constants.LENGTH_USERMESSAGE) {
 				log(Level.INFO, "User message is too long, length = "
 						+ userMessage.length());
 				return HttpURLConnection.HTTP_BAD_REQUEST;
