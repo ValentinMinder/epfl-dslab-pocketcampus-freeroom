@@ -16,10 +16,12 @@ import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
 import org.pocketcampus.plugin.directory.shared.Person;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -123,8 +125,19 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 	}
 
 	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		Rect dialogBounds = new Rect();
+		getWindow().getDecorView().getHitRect(dialogBounds);
 
+		if (!dialogBounds.contains((int) ev.getX(), (int) ev.getY())) {
+			// Tapped outside so we finish the activity
+			this.finish();
+		}
+		return super.dispatchTouchEvent(ev);
+	}
 
+	
 	@Override
 	public void resultListUpdated() {
 		
