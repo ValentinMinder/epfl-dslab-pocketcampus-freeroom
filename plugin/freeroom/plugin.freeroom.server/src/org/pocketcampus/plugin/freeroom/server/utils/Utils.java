@@ -45,7 +45,6 @@ public class Utils {
 	private static final String FILENAME_FORBIDDEN_WORDS = "forbiddenWords.txt";
 	private static ArrayList<String> forbiddenWords = null;
 
-	// TODO eventually find a better way to store/access such things
 	private static void loadForbiddenWords() {
 		if (forbiddenWords != null) {
 			return;

@@ -175,9 +175,8 @@ public class OccupancySorted {
 	// TODO maybe not necessary to distinguish case in case of eq timestamps
 	private void fillGaps() {
 		ArrayList<ActualOccupation> resultList = new ArrayList<ActualOccupation>();
-		long tsPerRoom = timestampStart;
 		boolean previousIsRoom = false;
-		long lastEnd = tsPerRoom;
+		long lastEnd = timestampStart;
 		int countFree = 0;
 		int countOccupied = 0;
 
@@ -189,7 +188,7 @@ public class OccupancySorted {
 			// we want to add a room and the previous added occupation is a user
 			// occupancy and this one end after the room occupancy starts ! it
 			// has to be resized
-			if (!actual.isAvailable() && !previousIsRoom && tsPerRoom > tsStart) {
+			if (!actual.isAvailable() && !previousIsRoom && lastEnd > tsStart) {
 				ActualOccupation lastOccupation = resultList.remove(resultList
 						.size() - 1);
 				countFree = Math.max(0, countFree - 1);
@@ -214,20 +213,19 @@ public class OccupancySorted {
 				actual.setPeriod(newPeriod);
 			}
 
-			if (tsStart - tsPerRoom > FRTimes.MIN_PERIOD) {
+			if (tsStart -lastEnd > FRTimes.MIN_PERIOD) {
 				// We got a free period of time !
 				ArrayList<ActualOccupation> subDivised = cutInStepsPeriod(
-						tsPerRoom, tsStart);
+						lastEnd, tsStart);
 				resultList.addAll(subDivised);
 				countFree += subDivised.size();
 			}
 
 			long actualStart = actual.getPeriod().getTimeStampStart();
-			long actualEnd = actual.getPeriod().getTimeStampEnd();
 
 			// if the period is big enough (it might not be as we resize without
 			// checking when there are a room-user conflict, see above)
-			if (actualEnd - actualStart > FRTimes.MIN_PERIOD) {
+			if (tsEnd - actualStart > FRTimes.MIN_PERIOD) {
 				resultList.add(actual);
 				previousIsRoom = !actual.isAvailable();
 				double ratio = actual.getRatioOccupation();
@@ -245,8 +243,7 @@ public class OccupancySorted {
 					countFree++;
 				}
 
-				tsPerRoom = tsEnd;
-				lastEnd = actual.getPeriod().getTimeStampEnd();
+				lastEnd = tsEnd;
 			}
 
 		}
