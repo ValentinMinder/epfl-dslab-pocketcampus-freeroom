@@ -1411,7 +1411,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		FRRoom room = work.getRoom();
 		int code = insertOccupancyDetailedReply(period, OCCUPANCY_TYPE.USER,
 				room.getUid(), request.getHash(), userMessage);
-		// TODO maybe change return value, to match more cases
+
 		if (code == HttpURLConnection.HTTP_OK) {
 			String logMessage = "start=" + period.getTimeStampStart() + ",end="
 					+ period.getTimeStampEnd() + ",uid= " + room.getUid()
