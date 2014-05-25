@@ -33,8 +33,6 @@
 
 #import "AuthenticationViewController.h"
 
-@class AuthenticationViewController;
-
 @interface PCLoginObserver : NSObject
 
 @property (nonatomic, weak) id observer;

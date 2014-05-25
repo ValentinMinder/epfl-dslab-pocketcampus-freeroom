@@ -26,8 +26,9 @@
  */
 
 
-
 #import "AuthenticationController.h"
+
+#import "AuthenticationViewController2.h"
 
 #pragma mark - PCLoginObserver implementation
 
@@ -60,7 +61,6 @@
 
 @end
 
-
 #pragma mark - AuthenticationController implementation
 
 static AuthenticationController* instance __weak = nil;
@@ -68,7 +68,8 @@ static AuthenticationController* instanceStrong __strong = nil;
 
 @interface AuthenticationController ()<AuthenticationServiceDelegate, AuthenticationDelegate>
 
-@property (nonatomic, strong) AuthenticationViewController* authenticationViewController;
+@property (nonatomic, strong) AuthenticationViewController2* authenticationViewController;
+@property (nonatomic, strong) PCNavigationController* authenticationNavigationController;
 @property (nonatomic, strong) AuthenticationService* authService;
 @property (nonatomic, strong) NSMutableSet* loginObservers;
 
@@ -139,7 +140,7 @@ static AuthenticationController* instanceStrong __strong = nil;
 
 #pragma mark - Standard authentication
 
-- (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationDelegate>)delegate {
+/*- (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationDelegate>)delegate {
     NSString* savedPassword = [AuthenticationService savedPasswordForUsername:[AuthenticationService savedUsername]];
     self.authenticationViewController = [[AuthenticationViewController alloc] init];
     if (savedPassword) {
@@ -162,6 +163,33 @@ static AuthenticationController* instanceStrong __strong = nil;
         }];
     }
     
+}*/
+
+- (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationDelegate>)delegate {
+    NSString* savedUsername = [AuthenticationService savedUsername];
+    NSString* savedPassword = [AuthenticationService savedPasswordForUsername:savedUsername];
+    if (savedUsername && savedPassword) {
+        [self.authService loginToTequilaWithUser:savedUsername password:savedPassword delegate:self];
+    } else {
+        self.authenticationViewController = [[AuthenticationViewController2 alloc] init];
+        self.authenticationViewController.state = AuthenticationViewControllerStateAskCredentials;
+        self.authenticationViewController.showCancelButton = YES;
+        self.authenticationViewController.showSavePasswordSwitch = YES;
+#warning set savepassword switch value
+        self.authenticationViewController.username = savedUsername;
+        self.authenticationViewController.password = savedUsername ? savedPassword : nil; //don't set password if unknown username. Should actually never happen.
+        __weak __typeof(self) welf = self;
+        [self.authenticationViewController setLoginBlock:^(NSString* username, NSString* password, BOOL savePassword) {
+            [welf.authService loginToTequilaWithUser:username password:password delegate:welf];
+            welf.authenticationViewController.state = AuthenticationViewControllerStateLoading;
+#warning save savepassword switch value
+        }];
+        
+        self.authenticationNavigationController = [[PCNavigationController alloc] initWithRootViewController:self.authenticationViewController];
+        [presentationViewController presentViewController:self.authenticationNavigationController animated:YES completion:^{
+            [self.authenticationViewController focusOnInput];
+        }];
+    }
 }
 
 #pragma mark - New-style authentication
@@ -235,6 +263,65 @@ static AuthenticationController* instanceStrong __strong = nil;
 }
 
 #pragma mark - AuthenticationServiceDelegate
+
+- (void)loginToTequilaDidSuceedWithTequilaCookie:(NSHTTPCookie*)tequilaCookie {
+    if (self.authenticationViewController) {
+        NSString* username = self.authenticationViewController.username;
+        NSString* password = self.authenticationViewController.password;
+        if (!username || !password) {
+            CLSNSLog(@"!! ERROR: cannot save credentials because self.authenticationViewController username/passowrd is nil");
+        } else {
+            [AuthenticationService saveUsername:username];
+            if (self.authenticationViewController.savePasswordSwitchValue) {
+                [AuthenticationService savePassword:password forUsername:username];
+            } else {
+                [AuthenticationService deleteSavedPasswordForUsername:username];
+            }
+        }
+    }
+    
+    if (self.token && self.authenticationNavigationController) { //means was presented for in-plugin login
+        [self.authService authenticateToken:self.tequilaToken withTequilaCookie:tequilaCookie delegate:self];
+    } else { //mean user just wanted to login to tequila without loggin in to service. From settings for example.
+        [self.authenticationViewController setState:AuthenticationViewControllerStateLoggedIn animated:YES];
+    }
+}
+
+- (void)loginToTequilaFailedWithReason:(AuthenticationTequilaLoginFailureReason)reason {
+    switch (reason) {
+        case AuthenticationTequilaLoginFailureReasonBadCredentials:
+        {
+            if (self.authenticationViewController) {
+                NSString* username = self.authenticationViewController.username;
+                if (username) {
+                    [AuthenticationService deleteSavedPasswordForUsername:username];
+                }
+                self.authenticationViewController.state = AuthenticationTequilaLoginFailureReasonBadCredentials;
+                [self.authenticationViewController focusOnInput];
+            } else {
+                NSString* username = [AuthenticationService savedUsername];
+                if (username) {
+                    [AuthenticationService deleteSavedPasswordForUsername:username];
+                }
+                UIViewController* rootViewController = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
+                [self authToken:self.tequilaToken presentationViewController:rootViewController delegate:self];
+                self.authenticationViewController.state = AuthenticationViewControllerStateWrongCredentials;
+            }
+            break;
+        }
+        default:
+#warning error handling
+            break;
+    }
+}
+
+- (void)authenticateDidSucceedForToken:(NSString*)token tequilaCookie:(NSHTTPCookie*)tequilaCookie {
+#error WAS HERE
+}
+
+- (void)authenticateFailedForToken:(NSString*)token tequilaCookie:(NSHTTPCookie*)tequilaCookie {
+    
+}
 
 - (void)getAuthTequilaTokenDidReturn:(AuthTokenResponse*)response {
     switch (response.statusCode) {

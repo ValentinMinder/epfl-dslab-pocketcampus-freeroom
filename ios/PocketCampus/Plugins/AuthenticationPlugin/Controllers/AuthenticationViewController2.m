@@ -53,6 +53,7 @@ static NSInteger const kPasswordRowIndex = 1;
 - (id)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
+        self.gaiScreenName = @"/authentication";
         self.savePasswordSwitchValue = YES; //Default
     }
     return self;
@@ -64,9 +65,19 @@ static NSInteger const kPasswordRowIndex = 1;
     [super viewDidLoad];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    //not calling super on purpose, this is to disable the auto-scrolling when getting text fields focus
+    [self trackScreen];
+}
+
 #pragma mark - Public
 
 - (void)setState:(AuthenticationViewControllerState)state {
+    [self setState:state animated:NO];
+}
+
+- (void)setState:(AuthenticationViewControllerState)state animated:(BOOL)animated {
+#warning animated not used
     if (state == _state) {
         return;
     }
@@ -100,8 +111,14 @@ static NSInteger const kPasswordRowIndex = 1;
 }
 
 - (void)setSavePasswordSwitchValue:(BOOL)savePasswordSwitchValue {
-    _savePasswordSwitchValue = savePasswordSwitchValue;
     [self.savePasswordSwitch setOn:savePasswordSwitchValue];
+}
+
+- (BOOL)savePasswordSwitchValue {
+    if (self.savePasswordSwitch) {
+        return self.savePasswordSwitch.isOn;
+    }
+    return YES;
 }
 
 - (void)setUsername:(NSString *)username {
@@ -112,6 +129,14 @@ static NSInteger const kPasswordRowIndex = 1;
 - (void)setPassword:(NSString *)password {
     _password = password;
     self.passwordCell.textField.text = password;
+}
+
+- (void)focusOnInput {
+    if (self.usernameCell.textField.text.length == 0) {
+        [self.usernameCell.textField becomeFirstResponder];
+    } else {
+        [self.passwordCell.textField becomeFirstResponder];
+    }
 }
 
 #pragma mark - Actions and observation
@@ -141,10 +166,6 @@ static NSInteger const kPasswordRowIndex = 1;
     }
 }
 
-- (void)savePasswordSwitchValueChanged {
-    _savePasswordSwitchValue = self.savePasswordSwitch.isOn;
-}
-
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -153,19 +174,20 @@ static NSInteger const kPasswordRowIndex = 1;
         if (self.state == AuthenticationViewControllerStateAskCredentials
             || self.state == AuthenticationViewControllerStateWrongCredentials) {
             if (!self.loginBlock) {
-                CLSNSLog(@"ERROR: User pressed login but loginBlock is nil");
+                CLSNSLog(@"!! ERROR: User pressed login but loginBlock is nil");
                 return;
             }
+            [self trackAction:@"LogIn" contentInfo:(self.savePasswordSwitch.isOn || !self.showSavePasswordSwitch) ? @"SavePasswordYes" : @"SavePasswordNo"];
             //_ because no need to update cells values
             _username = self.usernameCell.textField.text;
             _password = self.passwordCell.textField.text;
-            _savePasswordSwitchValue = self.savePasswordSwitch.isOn;
-            self.loginBlock(self.username, self.password, self.savePasswordSwitchValue);
+            self.loginBlock(self.username, self.password, self.savePasswordSwitch.isOn);
         } else if (self.state == AuthenticationViewControllerStateLoggedIn) {
             if (!self.logoutBlock) {
-                CLSNSLog(@"ERROR: User pressed logout but logoutBlock is nil");
+                CLSNSLog(@"!! ERROR: User pressed logout but logoutBlock is nil");
                 return;
             }
+            [self trackAction:@"LogOut"];
             _username = nil;
             _password = nil;
             self.logoutBlock();
@@ -217,6 +239,7 @@ static NSInteger const kPasswordRowIndex = 1;
                     [self.usernameCell.textField addTarget:self action:@selector(inputsValueChanged) forControlEvents:UIControlEventEditingChanged];
                     self.usernameCell.textField.text = self.username;
                 }
+                self.usernameCell.textField.enabled = (self.state != AuthenticationViewControllerStateLoading);
                 cell = self.usernameCell;
                 break;
             }
@@ -231,6 +254,7 @@ static NSInteger const kPasswordRowIndex = 1;
                     [self.passwordCell.textField addTarget:self action:@selector(inputsValueChanged) forControlEvents:UIControlEventEditingChanged];
                     self.passwordCell.textField.text = self.password;
                 }
+                self.passwordCell.textField.enabled = (self.state != AuthenticationViewControllerStateLoading);
                 cell = self.passwordCell;
                 break;
             }
@@ -258,20 +282,28 @@ static NSInteger const kPasswordRowIndex = 1;
                     return UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
                 }];
                 self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                self.loadingIndicator.hidesWhenStopped = YES;
                 [self.loginCell.contentView addSubview:self.loadingIndicator];
                 self.loadingIndicator.center = CGPointMake(294.0, 22.0);
                 self.loadingIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
             }
             cell = self.loginCell;
+            if (self.state == AuthenticationViewControllerStateLoading) {
+                [self.loadingIndicator startAnimating];
+            } else {
+                [self.loadingIndicator stopAnimating];
+            }
             [self inputsValueChanged]; //make it enable or not
         }
     } else if (indexPath.section == savePasswordSwitchSectionIndex) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         cell.textLabel.text = NSLocalizedStringFromTable(@"SavePassword", @"AuthenticationPlugin", nil);
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.savePasswordSwitch = [[UISwitch alloc] init];
-        self.savePasswordSwitch.on = self.savePasswordSwitchValue;
-        [self.savePasswordSwitch addTarget:self action:@selector(savePasswordSwitchValueChanged) forControlEvents:UIControlEventValueChanged];
+        if (!self.savePasswordSwitch) {
+            self.savePasswordSwitch = [[UISwitch alloc] init];
+            self.savePasswordSwitch.on = self.savePasswordSwitchValue;
+            self.savePasswordSwitch.enabled = (self.state != AuthenticationViewControllerStateLoading);
+        }
         cell.accessoryView = self.savePasswordSwitch;
     } else {
         //unsupported

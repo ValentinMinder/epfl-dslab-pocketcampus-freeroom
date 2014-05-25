@@ -45,6 +45,8 @@ typedef enum {
  */
 @property (nonatomic) AuthenticationViewControllerState state;
 
+- (void)setState:(AuthenticationViewControllerState)state animated:(BOOL)animated;
+
 /**
  * If YES, a Cancel button is set as left nav bar item
  * userTappedCancel is executed when tapped.
@@ -79,7 +81,7 @@ typedef enum {
  *
  * Ignored in user states.
  *
- * Default: YES
+ * Default: YES (YES if showSavePasswordSwitch is NO)
  */
 @property (nonatomic) BOOL savePasswordSwitchValue;
 
@@ -132,5 +134,11 @@ typedef enum {
  * Executed when Done button is tapped
  */
 @property (nonatomic, copy) void (^userTappedDoneBlock)();
+
+/**
+ * Brings up the keyboard for either username or password depending on
+ * what's filled already
+ */
+- (void)focusOnInput;
 
 @end
