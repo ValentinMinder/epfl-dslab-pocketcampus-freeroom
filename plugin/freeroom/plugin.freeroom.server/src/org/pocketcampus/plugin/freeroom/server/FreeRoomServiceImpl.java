@@ -1362,7 +1362,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		WorkingOccupancy work = request.getWork();
 		FRPeriod period = work.getPeriod();
 		String userMessage = (work.isSetMessage() && work.getMessage() != null) ? work
-				.getMessage() : null;
+				.getMessage().trim() : null;
 		FRRoom room = work.getRoom();
 		int code = insertOccupancyDetailedReply(period, OCCUPANCY_TYPE.USER,
 				room.getUid(), request.getHash(), userMessage);
