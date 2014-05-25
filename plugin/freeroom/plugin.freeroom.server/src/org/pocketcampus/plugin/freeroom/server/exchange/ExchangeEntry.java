@@ -38,70 +38,21 @@ public class ExchangeEntry {
 	private String domain = "intranet";
 
 	private static String defaultDomain = "intranet";
-	private static String propertyFile = "src" + File.separator + "local.properties";
+	private static String propertyFile = "src" + File.separator
+			+ "local.properties";
 	private Properties properties = new Properties();
-	
 
 	private static URI EWAURI;
 	// should be new URI("https://ewa.epfl.ch/EWS/Exchange.asmx");
 
 	private static ExchangeService service;
 
-	public static void main(String[] args) {
-		try {
-			EWAURI = new URI("https://ewa.epfl.ch/EWS/Exchange.asmx");
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-
-		// TODO: get the pass from the properties.
-		ExchangeEntry ee = new ExchangeEntry("user", "mdp");
-
-		// test something here...
-	}
-
 	/**
 	 * Default constructor. Use this to specify the password in the text file or
 	 * property file.
 	 */
 	public ExchangeEntry() {
-		// TODO: get the pass from the server properties.
-//		this.gasparUserName = "gaspar";
-//		this.gasparPassword = "mdp";
 		this.domain = ExchangeEntry.defaultDomain;
-		setUp();
-	}
-
-	/**
-	 * Constructor with specified gaspar and password ID. Default domain is
-	 * used.
-	 * 
-	 * @param gaspar
-	 *            epfl ID.
-	 * @param password
-	 *            gaspar password.
-	 */
-	public ExchangeEntry(String gaspar, String password) {
-		this.gasparUserName = gaspar;
-		this.gasparPassword = password;
-		this.domain = ExchangeEntry.defaultDomain;
-		setUp();
-	}
-
-	/**
-	 * Constructor with specified gaspar ID, password and domain.
-	 * 
-	 * @param gaspar
-	 *            epfl ID.
-	 * @param password
-	 *            gaspar password.
-	 * @param domain
-	 *            domain (intranet for students and staff).
-	 */
-	public ExchangeEntry(String gaspar, String password, String domain) {
-		gasparUserName = gaspar;
-		gasparPassword = password;
-		this.domain = domain;
 		setUp();
 	}
 
@@ -115,21 +66,26 @@ public class ExchangeEntry {
 		try {
 			fis = new FileInputStream(propertyFile);
 			properties.load(fis);
-			
-			//TODO default value
+
 			gasparUserName = properties.getProperty("username");
 			gasparPassword = properties.getProperty("password");
 			fis.close();
-			service = new ExchangeService();
 
-			ExchangeCredentials credentials = new WebCredentials(gasparUserName,
-					gasparPassword, domain);
-			service.setCredentials(credentials);
-			try {
-				service.autodiscoverUrl(emailAddress);
-			} catch (Exception e) {
-				e.printStackTrace();
-				service.setUrl(EWAURI);
+			if (gasparUserName != null) {
+
+				service = new ExchangeService();
+
+				ExchangeCredentials credentials = new WebCredentials(
+						gasparUserName, gasparPassword, domain);
+				service.setCredentials(credentials);
+				try {
+					service.autodiscoverUrl(emailAddress);
+				} catch (Exception e) {
+					e.printStackTrace();
+					service.setUrl(EWAURI);
+				}
+			} else {
+				System.err.println("Cannot find property file with gaspar credentials for EWA set up");
 			}
 		} catch (FileNotFoundException e1) {
 			System.err.println("Cannot load property file");
@@ -171,10 +127,13 @@ public class ExchangeEntry {
 	}
 
 	/**
-	 * Retrieves the list of occupancy for a given email and a given time window.
+	 * Retrieves the list of occupancy for a given email and a given time
+	 * window.
 	 * 
-	 * @param email the smtp adress of the contact (must be unique and valide).
-	 * @param mFrPeriod the time window to check.
+	 * @param email
+	 *            the smtp adress of the contact (must be unique and valide).
+	 * @param mFrPeriod
+	 *            the time window to check.
 	 * @return a list of non-available time window.
 	 */
 	public List<FRPeriod> getAvailabilityFromEWAUID(String email,
@@ -204,16 +163,21 @@ public class ExchangeEntry {
 						long timestamp = ts.getTime();
 						Calendar mCalendar = Calendar.getInstance();
 						mCalendar.setTimeInMillis(timestamp);
-						long offset = (mCalendar.get(Calendar.ZONE_OFFSET) + mCalendar.get(Calendar.DST_OFFSET)) / (60 * 1000);
+						long offset = (mCalendar.get(Calendar.ZONE_OFFSET) + mCalendar
+								.get(Calendar.DST_OFFSET)) / (60 * 1000);
 						FRPeriod mFrPeriod2 = new FRPeriod(calendarEvent
-								.getStartTime().getTime() + offset * FRTimes.ONE_MIN_IN_MS, calendarEvent
-								.getEndTime().getTime() + offset * FRTimes.ONE_MIN_IN_MS, false);
-//						System.out.println(calendarEvent
-//								.getStartTime() + "/" + calendarEvent
-//								.getEndTime());
-//						System.out.println(calendarEvent
-//								.getStartTime().getTime() + "/" + calendarEvent
-//								.getEndTime().getTime());
+								.getStartTime().getTime()
+								+ offset
+								* FRTimes.ONE_MIN_IN_MS, calendarEvent
+								.getEndTime().getTime()
+								+ offset
+								* FRTimes.ONE_MIN_IN_MS, false);
+						// System.out.println(calendarEvent
+						// .getStartTime() + "/" + calendarEvent
+						// .getEndTime());
+						// System.out.println(calendarEvent
+						// .getStartTime().getTime() + "/" + calendarEvent
+						// .getEndTime().getTime());
 						list.add(mFrPeriod2);
 					}
 				}

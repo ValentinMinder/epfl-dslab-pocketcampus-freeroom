@@ -22,9 +22,6 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 public class OccupancySorted {
 
-	// TODO put all constants in Utils
-	private final long MARGIN_FOR_ERROR = 60 * 15 * 1000;
-
 	private boolean onlyFreeRooms;
 	private ArrayList<ActualOccupation> mActualOccupations;
 	private FRRoom room;
@@ -171,8 +168,6 @@ public class OccupancySorted {
 	 * occupancy. It also fill the blank time with ActualOccupation in order to
 	 * have a contiguous list of period (with an error of MARGIN_FOR_ERROR)
 	 */
-	// TODO if user from 10 to 11 and course from 10 30 to 11 !
-	// TODO maybe not necessary to distinguish case in case of eq timestamps
 	private void fillGaps() {
 		ArrayList<ActualOccupation> resultList = new ArrayList<ActualOccupation>();
 		boolean previousIsRoom = false;
@@ -180,7 +175,6 @@ public class OccupancySorted {
 		int countFree = 0;
 		int countOccupied = 0;
 
-		// TODO lastEnd, tsPerRoom same thing ?
 		for (ActualOccupation actual : mActualOccupations) {
 			long tsStart = Math.max(timestampStart, actual.getPeriod()
 					.getTimeStampStart());
@@ -248,7 +242,7 @@ public class OccupancySorted {
 
 		}
 
-		if (timestampEnd - lastEnd > MARGIN_FOR_ERROR) {
+		if (timestampEnd - lastEnd > FRTimes.MIN_PERIOD) {
 			ArrayList<ActualOccupation> subDivised = cutInStepsPeriod(lastEnd,
 					timestampEnd);
 			resultList.addAll(subDivised);

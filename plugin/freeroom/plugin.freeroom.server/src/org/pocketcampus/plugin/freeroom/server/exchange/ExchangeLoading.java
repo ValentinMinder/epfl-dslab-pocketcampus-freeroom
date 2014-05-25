@@ -132,7 +132,7 @@ public class ExchangeLoading {
 					.println("invalid name: " + name + " with email:" + email);
 			return false;
 		}
-		//TODO check if null is fine here
+
 		ExchangeServiceImpl exchange = new ExchangeServiceImpl(DB_URL, DB_USERNAME, DB_PASSWORD, null);
 		return exchange.setExchangeData(concatName, email);
 	}

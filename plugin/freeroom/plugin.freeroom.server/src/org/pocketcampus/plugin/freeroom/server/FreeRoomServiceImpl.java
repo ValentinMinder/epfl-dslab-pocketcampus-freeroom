@@ -1333,9 +1333,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		String constraint = request.getConstraint().replaceAll("\\s+", "");
 		String uid = request.getRoom().getUid();
 		FRPeriod period = request.getPeriod();
-		// TODO change getUserMessage with FRRoom, not only uid to be more
-		// consistent
-		// TODO check valid period
+
+		if (period.getTimeStampEnd() < period.getTimeStampStart()) {
+			return new AutoCompleteUserMessageReply(
+					HttpURLConnection.HTTP_BAD_REQUEST,
+					"The end of the period should be after the start");
+		}
+
 		String requestSQL = "SELECT co.message "
 				+ "FROM `fr-checkOccupancy` co "
 				+ "WHERE co.uid = ? AND co.timestampStart >= ? AND co.timestampEnd <= ? "
@@ -1448,7 +1452,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					HttpURLConnection.HTTP_INTERNAL_ERROR + "");
 		} else {
 			reply.setMessages(Utils.removeGroupMessages(listMessages));
-			
+
 			String logMessage = "uid=" + request.getRoomUID() + ",start="
 					+ period.getTimeStampStart() + ",end="
 					+ period.getTimeStampEnd();

@@ -169,7 +169,6 @@ public class ExchangeServiceImpl {
 	 * @return true if successful for all the rooms, false if an error occured.
 	 */
 	public boolean updateEWAOccupancy2Weeks() {
-		// TODO: for now, we update from now to one week
 		// to be set to same window as permitted by server and clients
 		long timeStampStart = System.currentTimeMillis()
 				- FRTimes.ONE_WEEK_IN_MS;
@@ -183,8 +182,10 @@ public class ExchangeServiceImpl {
 	 * EWAid set. It calls updateEWAOccupancy with time window defined by from
 	 * and to arguments.
 	 * 
-	 * @param from The start of the period to update
-	 * @param to The end of the period to update
+	 * @param from
+	 *            The start of the period to update
+	 * @param to
+	 *            The end of the period to update
 	 * @return true if successful for all the rooms, false if an error occured.
 	 */
 	public boolean updateEWAOccupancyFromTo(long from, long to) {
@@ -229,13 +230,15 @@ public class ExchangeServiceImpl {
 					query = conn.prepareStatement(b.toString());
 
 					for (int i = 0, j = 0; i < length; i++, j = 3 * i) {
-						// TODO DELETE
 						FRPeriod mPeriod = occupied.get(i);
 						query.setString(j + 1, uid);
 						query.setLong(j + 2, mPeriod.getTimeStampStart());
 						query.setLong(j + 3, mPeriod.getTimeStampEnd());
-						server.insertOccupancy(mPeriod, OCCUPANCY_TYPE.ROOM,
-								room.getUid(), null, null);
+						if (server != null) {
+							server.insertOccupancy(mPeriod,
+									OCCUPANCY_TYPE.ROOM, room.getUid(), null,
+									null);
+						}
 					}
 					// query.execute();
 				} catch (SQLException e1) {
