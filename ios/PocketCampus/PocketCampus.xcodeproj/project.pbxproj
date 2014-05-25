@@ -88,6 +88,7 @@
 		323676CD16BDD1420004D5AD /* WhiteDisclosureIndicator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676CB16BDD1420004D5AD /* WhiteDisclosureIndicator@2x.png */; };
 		323A913C1640783F007A63D3 /* TopDown1pxShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 323A913B1640783F007A63D3 /* TopDown1pxShadow.png */; };
 		323A913F164078FF007A63D3 /* TopDown1pxShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323A913E164078FF007A63D3 /* TopDown1pxShadow@2x.png */; };
+		323CAC5919324F4800941BB1 /* AuthenticationViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAC5819324F4800941BB1 /* AuthenticationViewController2.m */; };
 		324151CC15373A1700CCFB22 /* MapPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 324151C615373A1700CCFB22 /* MapPlugin.strings */; };
 		324151D515373B5900CCFB22 /* map.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151D415373B5900CCFB22 /* map.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		324151D815373BA300CCFB22 /* MapService.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151D715373BA300CCFB22 /* MapService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -516,6 +517,8 @@
 		323676CB16BDD1420004D5AD /* WhiteDisclosureIndicator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteDisclosureIndicator@2x.png"; sourceTree = "<group>"; };
 		323A913B1640783F007A63D3 /* TopDown1pxShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TopDown1pxShadow.png; sourceTree = "<group>"; };
 		323A913E164078FF007A63D3 /* TopDown1pxShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TopDown1pxShadow@2x.png"; sourceTree = "<group>"; };
+		323CAC5719324F4800941BB1 /* AuthenticationViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController2.h; sourceTree = "<group>"; };
+		323CAC5819324F4800941BB1 /* AuthenticationViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationViewController2.m; sourceTree = "<group>"; };
 		324151C715373A1700CCFB22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MapPlugin.strings; sourceTree = "<group>"; };
 		324151C815373A1700CCFB22 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MapPlugin.strings; sourceTree = "<group>"; };
 		324151CF15373A5B00CCFB22 /* MapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapController.h; sourceTree = "<group>"; };
@@ -1815,6 +1818,8 @@
 				32CCB4B9155520FE00220282 /* AuthenticationController.m */,
 				32A54B7B15B5A8E100A7C882 /* AuthenticationViewController.h */,
 				32A54B7C15B5A8E100A7C882 /* AuthenticationViewController.m */,
+				323CAC5719324F4800941BB1 /* AuthenticationViewController2.h */,
+				323CAC5819324F4800941BB1 /* AuthenticationViewController2.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2861,6 +2866,7 @@
 				324654C7168BA2D400F2782D /* PluginControllerAuthentified.m in Sources */,
 				329C52AE187EE6200045ECB8 /* UISearchBar+Additions.m in Sources */,
 				3244B3E816A36976006A7E37 /* MoodleModelAdditions.m in Sources */,
+				323CAC5919324F4800941BB1 /* AuthenticationViewController2.m in Sources */,
 				324ADABC191A39F6000737E7 /* PCTileOverlayRenderer.m in Sources */,
 				32A77DC316A564460018976F /* UIPopoverController+Additions.m in Sources */,
 				32A77DC616A565600018976F /* UIActionSheet+Additions.m in Sources */,
