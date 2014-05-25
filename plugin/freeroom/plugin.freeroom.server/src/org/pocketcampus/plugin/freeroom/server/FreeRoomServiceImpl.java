@@ -222,6 +222,17 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						+ " : " + message);
 	}
 
+	/**
+	 * See insertOccupancyDetailedReply
+	 * 
+	 * @param period
+	 * @param type
+	 * @param uid
+	 * @param hash
+	 * @param userMessage
+	 * @return true if and only if insertOccupancyDetailedReply with the same
+	 *         arguments return HTTP code 200 (OK)
+	 */
 	public boolean insertOccupancy(FRPeriod period, OCCUPANCY_TYPE type,
 			String uid, String hash, String userMessage) {
 		return insertOccupancyDetailedReply(period, type, uid, hash,
@@ -233,7 +244,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * Whenever you need to insert an occupancy you should call this one. The
 	 * start of a user occupancy should be a full hour (e.g 10h00). Timestamps
 	 * may be modified before insertion in the following ways : seconds and
-	 * milliseconds are set to 0, users occupancies are rounded to a half hour
+	 * milliseconds are set to 0, users occupancies are rounded to a full hour
 	 * before.
 	 * 
 	 * @param period
@@ -246,7 +257,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *         successful, BAD_REQUEST, argument required is (are) null, or
 	 *         length of the message is too long, PRECON_FAILED if the message
 	 *         of the user contains forbidden words, INTERNAL_ERROR if the
-	 *         server failed
+	 *         server failed at some point.
 	 */
 	public int insertOccupancyDetailedReply(FRPeriod period,
 			OCCUPANCY_TYPE type, String uid, String hash, String userMessage) {
@@ -266,6 +277,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		period.setTimeStampEnd(FRTimes.roundSAndMSToZero(period
 				.getTimeStampEnd()));
 
+		// hash is required for user occupancies (avoiding multiple submit from
+		// same user)
 		if (type == OCCUPANCY_TYPE.USER && hash == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Hash is null when inserting user occupancy");
@@ -399,7 +412,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						// insertion (prevRoom == null) or if we change the
 						// room, in that case the counter for the new room has
 						// to be incremented, the old one has been taken care of
-						// in the previous method
+						// in the previous method call
 						overallInsertion = overallInsertion
 								&& insertOccupancyInDB(uid, hourSharpBefore + i
 										* FRTimes.ONE_HOUR_IN_MS,
@@ -437,8 +450,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            time.
 	 * @return The previous UID or null if none
 	 */
-	// TODO eventually do not user exact timestamp but allow margin even in
-	// queries ?
 	private String getLastUID(long tsStart, String uid, String hash) {
 		String checkRequest = "SELECT COUNT(*) AS count, co.uid "
 				+ "FROM `fr-checkOccupancy` co "
@@ -474,6 +485,19 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 	}
 
+	/**
+	 * Get the last message stored for a given user (hash) at a given time and
+	 * for a given room (uid)
+	 * 
+	 * @param tsStart
+	 *            The time of the message
+	 * @param uid
+	 *            The uid of the room
+	 * @param hash
+	 *            The unique identifier for each user
+	 * @return The last message stored for this user and this time and uid, null
+	 *         if none
+	 */
 	private String getLastMessage(long tsStart, String uid, String hash) {
 		String checkRequest = "SELECT COUNT(*) AS count, co.message "
 				+ "FROM `fr-checkOccupancy` co "
@@ -523,15 +547,21 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * @param prevRoom
 	 *            The uid of the previous room beeing stored in the
 	 *            checkOccupancy table (if one) null otherwise
+	 * @param prevMessage
+	 *            The previos message stored or null if none
+	 * 
+	 * @param userMessage
+	 *            The new message to store or null if no updates of the message
+	 *            should be done.
 	 */
-	// TODO test if usermessage change, there is no problem with count
 	private void insertOrUpdateCheckOccupancy(String uid, long tsStart,
 			String hash, String prevRoom, String prevMessage, String userMessage) {
 
 		if (prevRoom == null) {
-			// first insertion, no problem with duplicate key
+			// first insertion, no problem with duplicate key, we insert
 			insertCheckOccupancyInDB(uid, tsStart, hash, userMessage);
 		} else {
+			// otherwise we update the row
 			String duplicateMessage = null;
 
 			if (userMessage == null) {
@@ -542,18 +572,32 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				duplicateMessage = userMessage;
 			}
 
+			// no message stored should be null
 			if (duplicateMessage == null) {
 				duplicateMessage = "";
 			}
+
 			updateCheckOccupancyInDB(uid, prevRoom, tsStart, hash,
 					duplicateMessage, !prevRoom.equals(uid));
 		}
 
 	}
 
-	// TODO javaodc with new methods def.
+	/**
+	 * Insert a new checkOccupancy in the database
+	 * 
+	 * @param uid
+	 *            The room of the occupancy
+	 * @param tsStart
+	 *            The time of the occupancy
+	 * @param hash
+	 *            Which user insert a new occupancy
+	 * @param message
+	 *            The message to store, can be null
+	 */
 	private void insertCheckOccupancyInDB(String uid, long tsStart,
 			String hash, String message) {
+
 		if (message == null) {
 			message = "";
 		}
@@ -570,16 +614,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			insertQuery.setLong(2, tsStart);
 			insertQuery.setLong(3, tsStart + FRTimes.ONE_HOUR_IN_MS);
 			insertQuery.setString(4, hash);
-			if (message != null) {
-				insertQuery.setString(5, message);
-			} else {
-				insertQuery.setNull(5, Types.CHAR);
-			}
+			insertQuery.setString(5, message);
 			insertQuery.setString(6, uid);
 			int update = insertQuery.executeUpdate();
 
 			if (update > 1) {
-				// should not happen
+				// should not happen, it it happens, the method who called this
+				// one has failed to check the state of the database
 				log(Level.SEVERE,
 						"Inserting occupancy but duplicate key, and duplicate key shouldn t be there for uid = "
 								+ uid
@@ -736,7 +777,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	}
 
 	/**
-	 * Get the occupancy of a given period, for a specific list of rooms of for
+	 * Get the occupancy of a given period, for a specific list of rooms or for
 	 * any rooms. See thrift file for further informations about what can be
 	 * requested.
 	 */
@@ -1400,10 +1441,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		FRPeriod period = request.getPeriod();
 
-		// TODO remove duplicate
-		// period.setTimeStampStart(FRTimes
-		// .roundToNearestHalfHourBefore(period.getTimeStampStart()));
-
 		List<String> listMessages = getUserMessages(period,
 				request.getRoomUID());
 		if (listMessages == null) {
@@ -1411,6 +1448,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					HttpURLConnection.HTTP_INTERNAL_ERROR + "");
 		} else {
 			reply.setMessages(Utils.removeGroupMessages(listMessages));
+			
 			String logMessage = "uid=" + request.getRoomUID() + ",start="
 					+ period.getTimeStampStart() + ",end="
 					+ period.getTimeStampEnd();
@@ -1450,7 +1488,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			}
 			return messages;
 		} catch (SQLException e) {
-			;
 			e.printStackTrace();
 			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"SQL error when getting user messages for period = "
@@ -1459,6 +1496,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 	}
 
+	/**
+	 * For BETA, to link a bug report to the configuration of the device
+	 */
 	@Override
 	public boolean registerUserSettings(RegisterUser user) throws TException {
 		System.out.println(user);
