@@ -1501,7 +1501,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 */
 	@Override
 	public boolean registerUserSettings(RegisterUser user) throws TException {
-		System.out.println(user);
 		if (user == null) {
 			return false;
 		}
