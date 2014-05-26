@@ -320,7 +320,7 @@ static AuthenticationController* instance __strong = nil;
         }
     }
     
-    if (self.tequilaToken && self.authenticationNavigationController) { //means was presented for in-plugin login
+    if (self.tequilaToken) { //means was presented for in-plugin login
         [self.authService authenticateToken:self.tequilaToken withTequilaCookie:tequilaCookie delegate:self];
     } else { //mean user just wanted to login to tequila without loggin in to service. From settings for example.
         [self.authenticationViewController setState:AuthenticationViewControllerStateLoggedIn animated:YES];
@@ -349,7 +349,7 @@ static AuthenticationController* instance __strong = nil;
                 if (username) {
                     [AuthenticationService deleteSavedPasswordForUsername:username];
                 }
-                if (self.tequilaToken && self.authenticationNavigationController) { //means was presented for in-plugin login
+                if (self.tequilaToken) {
                     [self startAuthenticationForToken:self.tequilaToken]; //Delete wrong credentials and start again
                 }
                 self.authenticationViewController.password = nil;
@@ -474,7 +474,7 @@ static AuthenticationController* instance __strong = nil;
             }];
         });
     } else {
-        if (self.tequilaToken && self.authenticationNavigationController) { //means was presented for in-plugin login
+        if (self.tequilaToken) {
             [self dismissAuthenticationViewControllerCompletion:^{
                 [self cleanAndNotifyFailureToObservers];
             }];
@@ -558,6 +558,7 @@ static AuthenticationController* instance __strong = nil;
             return message;
         }];
         self.authenticationNavigationController = [[PCNavigationController alloc] initWithRootViewController:self.authenticationViewController];
+        self.authenticationNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
         UIViewController* rootViewController = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
         [rootViewController presentViewController:self.authenticationNavigationController animated:YES completion:^{
             [self.authenticationViewController focusOnInput];

@@ -63,7 +63,6 @@ static NSInteger const kPasswordRowIndex = 1;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.view.backgroundColor = [UIColor whiteColor];
     self.title = [[self class] localizedTitle];
     self.tableView.sectionHeaderHeight = 2.0;
     self.tableView.sectionFooterHeight = 2.0;
@@ -73,6 +72,7 @@ static NSInteger const kPasswordRowIndex = 1;
 - (void)viewWillAppear:(BOOL)animated {
     //not calling super on purpose, this is to disable the auto-scrolling when getting text fields focus
     [self trackScreen];
+    self.navigationController.view.backgroundColor = [UIColor whiteColor];
     [self.tableView reloadData];
 }
 
@@ -87,13 +87,23 @@ static NSInteger const kPasswordRowIndex = 1;
 }
 
 - (void)setState:(AuthenticationViewControllerState)state animated:(BOOL)animated {
-#warning animated not used
     if (state == _state) {
         return;
     }
     _state = state;
     [self recomputeSectionIndices];
-    [self.tableView reloadData];
+    if (animated) {
+        [UIView animateWithDuration:0.4 animations:^{
+            self.tableView.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            [self.tableView reloadData];
+        }];
+        [UIView animateWithDuration:0.4 animations:^{
+            self.tableView.alpha = 1.0;
+        }];
+    } else {
+        [self.tableView reloadData];
+    }
 }
 
 - (void)setShowCancelButton:(BOOL)showCancelButton {
