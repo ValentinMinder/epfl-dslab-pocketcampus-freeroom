@@ -28,8 +28,6 @@
 
 #import "AuthenticationController.h"
 
-#import "AuthenticationViewController2.h"
-
 #pragma mark - PCLoginObserver implementation
 
 @implementation PCLoginObserver
@@ -63,17 +61,17 @@
 
 #pragma mark - AuthenticationController implementation
 
-static AuthenticationController* instance __weak = nil;
-static AuthenticationController* instanceStrong __strong = nil;
+static AuthenticationController* instance __strong = nil;
 
-@interface AuthenticationController ()<AuthenticationServiceDelegate, AuthenticationDelegate>
+@interface AuthenticationController ()<AuthenticationServiceDelegate>
 
 @property (nonatomic, strong) AuthenticationViewController2* authenticationViewController;
 @property (nonatomic, strong) PCNavigationController* authenticationNavigationController;
 @property (nonatomic, strong) AuthenticationService* authService;
+@property (nonatomic, weak) id<AuthenticationControllerDelegate> delegate;
 @property (nonatomic, strong) NSMutableSet* loginObservers;
-
 @property (nonatomic, strong) NSString* tequilaToken;
+@property (atomic) BOOL observerAuthenticationStarted;
 
 @end
 
@@ -92,6 +90,7 @@ static AuthenticationController* instanceStrong __strong = nil;
         self = [super init];
         if (self) {
             instance = self;
+            instance.authService = [AuthenticationService sharedInstanceToRetain];
         }
         return self;
     }
@@ -100,24 +99,15 @@ static AuthenticationController* instanceStrong __strong = nil;
 + (instancetype)sharedInstance {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instanceStrong = [self sharedInstanceToRetain];
+        instance = [[self alloc] init];
     });
-    return instanceStrong;
+    return instance;
 }
 
 #pragma mark - PluginController
 
 + (id)sharedInstanceToRetain {
-    @synchronized (self) {
-        if (instance) {
-            return instance;
-        }
-#if __has_feature(objc_arc)
-        return [[[self class] alloc] init];
-#else
-        return [[[[self class] alloc] init] autorelease];
-#endif
-    }
+    return [self sharedInstance];
 }
 
 + (NSString*)localizedName {
@@ -138,7 +128,9 @@ static AuthenticationController* instanceStrong __strong = nil;
     });
 }
 
-#pragma mark - Standard authentication
+#pragma mark - Public
+
+#pragma mark Standard authentication
 
 /*- (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationDelegate>)delegate {
     NSString* savedPassword = [AuthenticationService savedPasswordForUsername:[AuthenticationService savedUsername]];
@@ -165,39 +157,65 @@ static AuthenticationController* instanceStrong __strong = nil;
     
 }*/
 
-- (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationDelegate>)delegate {
+- (AuthenticationViewController2*)statusViewController {
+    self.tequilaToken = nil;
     NSString* savedUsername = [AuthenticationService savedUsername];
     NSString* savedPassword = [AuthenticationService savedPasswordForUsername:savedUsername];
+    self.authenticationViewController = [[AuthenticationViewController2 alloc] init];
+    
     if (savedUsername && savedPassword) {
-        [self.authService loginToTequilaWithUser:savedUsername password:savedPassword delegate:self];
+        self.authenticationViewController.state = AuthenticationViewControllerStateLoggedIn;
+    } else if (self.pocketCampusAuthSessionId) {
+        self.authenticationViewController.state = AuthenticationViewControllerStateLoggedIn;
     } else {
-        self.authenticationViewController = [[AuthenticationViewController2 alloc] init];
         self.authenticationViewController.state = AuthenticationViewControllerStateAskCredentials;
-        self.authenticationViewController.showCancelButton = YES;
-        self.authenticationViewController.showSavePasswordSwitch = YES;
-#warning set savepassword switch value
-        self.authenticationViewController.username = savedUsername;
-        self.authenticationViewController.password = savedUsername ? savedPassword : nil; //don't set password if unknown username. Should actually never happen.
-        __weak __typeof(self) welf = self;
-        [self.authenticationViewController setLoginBlock:^(NSString* username, NSString* password, BOOL savePassword) {
-            [welf.authService loginToTequilaWithUser:username password:password delegate:welf];
-            welf.authenticationViewController.state = AuthenticationViewControllerStateLoading;
-#warning save savepassword switch value
-        }];
-        
-        self.authenticationNavigationController = [[PCNavigationController alloc] initWithRootViewController:self.authenticationViewController];
-        [presentationViewController presentViewController:self.authenticationNavigationController animated:YES completion:^{
-            [self.authenticationViewController focusOnInput];
-        }];
     }
+    
+    self.authenticationViewController.showCancelButton = NO;
+    self.authenticationViewController.showSavePasswordSwitch = NO;
+    self.authenticationViewController.savePasswordSwitchValue = YES;
+    self.authenticationViewController.username = savedUsername;
+    self.authenticationViewController.password = savedUsername ? savedPassword : nil; //don't set password if unknown username. Should actually never happen.
+    __weak __typeof(self) welf = self;
+    [self.authenticationViewController setLoginBlock:^(NSString* username, NSString* password, BOOL savePassword) {
+        if (!welf.authService) {
+            welf.authService = [AuthenticationService sharedInstanceToRetain];
+        }
+        [welf.authService loginToTequilaWithUser:username password:password delegate:welf];
+        welf.authenticationViewController.state = AuthenticationViewControllerStateLoading;
+        [welf saveSavePasswordSwitchValue:savePassword];
+    }];
+    [self.authenticationViewController setLogoutBlock:^{
+        [AuthenticationService deleteSavedPasswordForUsername:[AuthenticationService savedUsername]];
+        [AuthenticationService saveUsername:nil];
+        [AuthenticationService enqueueLogoutNotification];
+        welf.authenticationViewController.username = nil;
+        welf.authenticationViewController.password = nil;
+        [welf.authenticationViewController setState:AuthenticationViewControllerStateAskCredentials animated:YES];
+    }];
+    [self.authenticationViewController setUserClearedUsernameBlock:^{
+        [AuthenticationService saveUsername:nil];
+    }];
+    return self.authenticationViewController;
 }
 
-#pragma mark - New-style authentication
+- (NSString*)loggedInUsername {
+    NSString* savedUsername = [AuthenticationService savedUsername];
+    NSString* savedPassword = [AuthenticationService savedPasswordForUsername:savedUsername];
+    if (self.pocketCampusAuthSessionId || (savedUsername && savedPassword)) {
+        return savedUsername;
+    }
+    return nil;
+}
+
+- (void)authenticateToken:(NSString*)token delegate:(id<AuthenticationControllerDelegate>)delegate {
+    self.delegate = delegate;
+    [self startAuthenticationForToken:token];
+}
+
+#pragma mark New-style authentication
 
 - (void)addLoginObserver:(id)observer success:(VoidBlock)success userCancelled:(VoidBlock)userCancelled failure:(VoidBlock)failure {
-    if (!instanceStrong) {
-        [NSException raise:@"Illegal use" format:@"you must use [AuthenticationController sharedInstance] instead of [AuthenticationController sharedInstanceToRetain] to be able to use addLoginObserver:..."];
-    }
     @synchronized(self) {
         PCLoginObserver* loginObserver = [[PCLoginObserver alloc] init];
         loginObserver.observer = observer;
@@ -209,8 +227,8 @@ static AuthenticationController* instanceStrong __strong = nil;
             self.loginObservers = [NSMutableSet set];
         }
         [self.loginObservers addObject:loginObserver];
-        if (!self.authService) {
-            self.authService = [AuthenticationService sharedInstanceToRetain];
+        if (!self.observerAuthenticationStarted) {
+            self.observerAuthenticationStarted = YES;
             [self.authService getAuthTequilaTokenWithDelegate:self];
         }
     }
@@ -227,43 +245,48 @@ static AuthenticationController* instanceStrong __strong = nil;
     }
 }
 
-#pragma mark Private
-
-- (void)cleanAndNotifySuccessToObservers {
-    self.authService = nil;
-    self.tequilaToken = nil;
-    @synchronized (self) {
-        for (PCLoginObserver* loginObserver in self.loginObservers) {
-            loginObserver.successBlock();
-        }
-        [self.loginObservers removeAllObjects];
-    }
-}
-
-- (void)cleanAndNotifyUserCancelledToObservers {
-    self.authService = nil;
-    self.tequilaToken = nil;
-    @synchronized (self) {
-        for (PCLoginObserver* loginObserver in self.loginObservers) {
-            loginObserver.userCancelledBlock();
-        }
-        [self.loginObservers removeAllObjects];
-    }
-}
-
-- (void)cleanAndNotifyFailureToObservers {
-    self.authService = nil;
-    self.tequilaToken = nil;
-    @synchronized (self) {
-        for (PCLoginObserver* loginObserver in self.loginObservers) {
-            loginObserver.failureBlock();
-        }
-        [self.loginObservers removeAllObjects];
-    }
-}
-
 #pragma mark - AuthenticationServiceDelegate
 
+/**
+ * Step 0 (new-style authentication only)
+ * Called when new tequila token was successfully requested
+ */
+- (void)getAuthTequilaTokenDidReturn:(AuthTokenResponse*)response {
+    switch (response.statusCode) {
+        case AuthStatusCode_OK:
+        {
+            if (response.tequilaToken) {
+                [self startAuthenticationForToken:response.tequilaToken];
+            } else {
+                [self dismissAuthenticationViewControllerCompletion:^{
+                    [self cleanAndNotifyFailureToObservers];
+                }];
+            }
+            break;
+        }
+        default:
+            [self dismissAuthenticationViewControllerCompletion:^{
+                [self cleanAndNotifyFailureToObservers];
+            }];
+            break;
+    }
+}
+
+/**
+ * Step 0 (new-style authentication only)
+ * Called when new tequila token request failed
+ */
+- (void)getAuthTequilaTokenFailed {
+    [self dismissAuthenticationViewControllerCompletion:^{
+        [self cleanAndNotifyFailureToObservers];
+    }];
+}
+
+/**
+ * Step 1
+ * Called after Tequila has been requested with username & password
+ * and those were correct.
+ */
 - (void)loginToTequilaDidSuceedWithTequilaCookie:(NSHTTPCookie*)tequilaCookie {
     if (self.authenticationViewController) {
         NSString* username = self.authenticationViewController.username;
@@ -280,13 +303,18 @@ static AuthenticationController* instanceStrong __strong = nil;
         }
     }
     
-    if (self.token && self.authenticationNavigationController) { //means was presented for in-plugin login
+    if (self.tequilaToken && self.authenticationNavigationController) { //means was presented for in-plugin login
         [self.authService authenticateToken:self.tequilaToken withTequilaCookie:tequilaCookie delegate:self];
     } else { //mean user just wanted to login to tequila without loggin in to service. From settings for example.
         [self.authenticationViewController setState:AuthenticationViewControllerStateLoggedIn animated:YES];
     }
 }
 
+/**
+ * Step 1
+ * Called after Tequila has been requested with username & password
+ * but the request failed for some reason.
+ */
 - (void)loginToTequilaFailedWithReason:(AuthenticationTequilaLoginFailureReason)reason {
     switch (reason) {
         case AuthenticationTequilaLoginFailureReasonBadCredentials:
@@ -297,79 +325,150 @@ static AuthenticationController* instanceStrong __strong = nil;
                     [AuthenticationService deleteSavedPasswordForUsername:username];
                 }
                 self.authenticationViewController.state = AuthenticationTequilaLoginFailureReasonBadCredentials;
+                self.authenticationViewController.password = nil;
                 [self.authenticationViewController focusOnInput];
             } else {
                 NSString* username = [AuthenticationService savedUsername];
                 if (username) {
                     [AuthenticationService deleteSavedPasswordForUsername:username];
                 }
-                UIViewController* rootViewController = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
-                [self authToken:self.tequilaToken presentationViewController:rootViewController delegate:self];
+                if (self.tequilaToken && self.authenticationNavigationController) { //means was presented for in-plugin login
+                    [self startAuthenticationForToken:self.tequilaToken]; //Delete wrong credentials and start again
+                }
+                self.authenticationViewController.password = nil;
                 self.authenticationViewController.state = AuthenticationViewControllerStateWrongCredentials;
             }
             break;
         }
         default:
-#warning error handling
+            [self serviceConnectionToServerFailed];
             break;
     }
 }
 
+/**
+ * Step 2
+ * Called when self.tequilaToken was successfully authenticated for user
+ * (marked as valid for this user)
+ */
 - (void)authenticateDidSucceedForToken:(NSString*)token tequilaCookie:(NSHTTPCookie*)tequilaCookie {
-#error WAS HERE
-}
-
-- (void)authenticateFailedForToken:(NSString*)token tequilaCookie:(NSHTTPCookie*)tequilaCookie {
-    
-}
-
-- (void)getAuthTequilaTokenDidReturn:(AuthTokenResponse*)response {
-    switch (response.statusCode) {
-        case AuthStatusCode_OK:
-        {
-            self.tequilaToken = response.tequilaToken;
-            UIViewController* rootViewController = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
-            [self authToken:response.tequilaToken presentationViewController:rootViewController delegate:self];
-            break;
+    if (self.delegate) { //old-style authentication
+        dispatch_async(dispatch_get_main_queue(), ^{
+            id<AuthenticationControllerDelegate> delegate = self.delegate;
+            [self cleanAndDismissAuthenticationViewControllerCompletion:NULL];
+            if ([(NSObject*)delegate respondsToSelector:@selector(authenticationSucceeded)]) {
+                [delegate authenticationSucceeded];
+            }
+        });
+    } else { //new-style (PocketCampus session) authentication
+        if (!self.tequilaToken) {
+            CLSNSLog(@"!! ERROR: authentication succeeded but no saved tequila token. Notifying failure to observers.");
+            [self dismissAuthenticationViewControllerCompletion:^{
+                [self cleanAndNotifyFailureToObservers];
+            }];
+            return;
         }
-        default:
-            [self cleanAndNotifyFailureToObservers];
-            break;
+        BOOL savePassword = self.authenticationViewController ? self.authenticationViewController.savePasswordSwitchValue : YES;
+        AuthSessionRequest* request = [[AuthSessionRequest alloc] initWithTequilaToken:self.tequilaToken rememberMe:savePassword];
+        [self.authService getAuthSessionWithRequest:request delegate:self];
     }
 }
 
-- (void)getAuthTequilaTokenFailed {
-    [self cleanAndNotifyFailureToObservers];
+/**
+ * Step 2
+ * Called when self.tequilaToken could NOT be authenticated for user
+ * (network problem or invalid token)
+ */
+- (void)authenticateFailedForToken:(NSString*)token tequilaCookie:(NSHTTPCookie*)tequilaCookie {
+    if (self.delegate) { //old-style authentication
+        dispatch_async(dispatch_get_main_queue(), ^{
+            id<AuthenticationControllerDelegate> delegate = self.delegate;
+            [self cleanAndDismissAuthenticationViewControllerCompletion:^{
+                if ([(NSObject*)delegate respondsToSelector:@selector(authenticationFailedWithReason:)]) {
+                    [delegate authenticationFailedWithReason:AuthenticationFailureReasonInvalidToken];
+                }
+            }];
+        });
+    } else { //new-style (PocketCampus session) authentication
+        [self dismissAuthenticationViewControllerCompletion:^{
+            [self cleanAndNotifyFailureToObservers];
+        }];
+    }
 }
 
+/**
+ * Step 3 (new-style authentication only)
+ * Called when a PocketCampus session was successfully returned by PC server
+ */
 - (void)getAuthSessionForRequest:(AuthSessionRequest *)request didReturn:(AuthSessionResponse *)response {
     switch (response.statusCode) {
         case AuthStatusCode_OK:
+        {
             [self setPocketCampusAuthSessionId:response.sessionId persist:YES];
-            [self cleanAndNotifySuccessToObservers];
+            [self dismissAuthenticationViewControllerCompletion:^{
+                [self cleanAndNotifySuccessToObservers];
+            }];
             break;
+        }
         case AuthStatusCode_NETWORK_ERROR:
-            [self cleanAndNotifyFailureToObservers];
+        {
+            [self dismissAuthenticationViewControllerCompletion:^{
+                [self cleanAndNotifyFailureToObservers];
+            }];
             break;
+        }
         case AuthStatusCode_INVALID_SESSION:
+        {
             [self deletePocketCampusAuthSessionId];
-            [self cleanAndNotifyFailureToObservers];
+            [self dismissAuthenticationViewControllerCompletion:^{
+                [self cleanAndNotifyFailureToObservers];
+            }];
             break;
+        }
         default:
-            [self cleanAndNotifyFailureToObservers];
+        {
+            [self dismissAuthenticationViewControllerCompletion:^{
+                [self cleanAndNotifyFailureToObservers];
+            }];
             break;
+        }
     }
 }
 
+/**
+ * Step 3 (new-style authentication only)
+ * Called when PocketCampus session request failed
+ */
 - (void)getAuthSessionFailedForRequest:(AuthSessionRequest *)request {
-    [self cleanAndNotifyFailureToObservers];
+    [self dismissAuthenticationViewControllerCompletion:^{
+        [self cleanAndNotifyFailureToObservers];
+    }];
 }
 
 - (void)serviceConnectionToServerFailed {
-    [self cleanAndNotifyFailureToObservers];
+    if (self.delegate) {
+        [PCUtils showConnectionToServerTimedOutAlert];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            id<AuthenticationControllerDelegate> delegate = self.delegate;
+            [self cleanAndDismissAuthenticationViewControllerCompletion:^{
+                if ([(NSObject*)delegate respondsToSelector:@selector(serviceConnectionToServerFailed)]) {
+                    [(NSObject*)delegate performSelectorOnMainThread:@selector(serviceConnectionToServerFailed) withObject:nil waitUntilDone:YES];
+                }
+            }];
+        });
+    } else {
+        if (self.tequilaToken && self.authenticationNavigationController) { //means was presented for in-plugin login
+            [self dismissAuthenticationViewControllerCompletion:^{
+                [self cleanAndNotifyFailureToObservers];
+            }];
+        } else {
+            [PCUtils showConnectionToServerTimedOutAlert];
+            self.authenticationViewController.state = AuthenticationViewControllerStateAskCredentials;
+        }
+    }
 }
 
-#pragma mark - AuthenticationDelegate
+/*#pragma mark - AuthenticationDelegate
 
 - (void)authenticationSucceededUserChoseToSavePassword:(BOOL)userChoseToRememberPassword {
     if (!self.tequilaToken) {
@@ -396,10 +495,107 @@ static AuthenticationController* instanceStrong __strong = nil;
             [self cleanAndNotifyFailureToObservers];
             break;
     }
+}*/
+
+#pragma mark - Private
+
+- (void)startAuthenticationForToken:(NSString*)token {
+    [PCUtils throwExceptionIfObject:token notKindOfClass:[NSString class]];
+    [PCUtils throwExceptionIfObject:self.authService notKindOfClass:[AuthenticationService class]]; //must be initialized at this point
+    self.tequilaToken = token;
+    NSString* savedUsername = [AuthenticationService savedUsername];
+    NSString* savedPassword = [AuthenticationService savedPasswordForUsername:savedUsername];
+    if (savedUsername && savedPassword) {
+        [self.authService loginToTequilaWithUser:savedUsername password:savedPassword delegate:self];
+    } else {
+        self.authenticationViewController = [[AuthenticationViewController2 alloc] init];
+        self.authenticationViewController.state = AuthenticationViewControllerStateAskCredentials;
+        self.authenticationViewController.showCancelButton = YES;
+        self.authenticationViewController.showSavePasswordSwitch = YES;
+        self.authenticationViewController.savePasswordSwitchValue = [self savePasswordSwitchValue];
+        self.authenticationViewController.username = savedUsername;
+        self.authenticationViewController.password = savedUsername ? savedPassword : nil; //don't set password if unknown username. Should actually never happen.
+        __weak __typeof(self) welf = self;
+        [self.authenticationViewController setLoginBlock:^(NSString* username, NSString* password, BOOL savePassword) {
+            [welf.authService loginToTequilaWithUser:username password:password delegate:welf];
+            welf.authenticationViewController.state = AuthenticationViewControllerStateLoading;
+            [welf saveSavePasswordSwitchValue:savePassword];
+        }];
+        [self.authenticationViewController setUserTappedCancelBlock:^{
+            [AuthenticationService deleteSavedPasswordForUsername:[AuthenticationService savedUsername]];
+            [welf dismissAuthenticationViewControllerCompletion:^{
+                [welf cleanAndNotifyUserCancelledToObservers];
+                [AuthenticationService enqueueLogoutNotification];
+            }];
+        }];
+        [self.authenticationViewController setUserClearedUsernameBlock:^{
+            [AuthenticationService saveUsername:nil];
+        }];
+        self.authenticationNavigationController = [[PCNavigationController alloc] initWithRootViewController:self.authenticationViewController];
+        UIViewController* rootViewController = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
+        [rootViewController presentViewController:self.authenticationNavigationController animated:YES completion:^{
+            [self.authenticationViewController focusOnInput];
+        }];
+    }
 }
 
-#pragma mark - SessionId persistence
-#pragma mark Private
+- (void)dismissAuthenticationViewControllerCompletion:(void (^)())completion {
+    if (self.authenticationNavigationController) {
+        [self.authenticationNavigationController.presentingViewController dismissViewControllerAnimated:YES completion:completion];
+        self.authenticationNavigationController = nil;
+        self.authenticationViewController = nil;
+    } else {
+        if (completion) {
+            completion();
+        }
+    }
+}
+
+- (void)clean {
+    [self.authService cancelOperationsForDelegate:self];
+    self.tequilaToken = nil;
+    self.delegate = nil;
+}
+
+- (void)cleanAndDismissAuthenticationViewControllerCompletion:(void (^)())completion {
+    [self clean];
+    [self dismissAuthenticationViewControllerCompletion:completion];
+}
+
+- (void)cleanAndNotifySuccessToObservers {
+    [self clean];
+    self.observerAuthenticationStarted = NO;
+    @synchronized (self) {
+        for (PCLoginObserver* loginObserver in self.loginObservers) {
+            loginObserver.successBlock();
+        }
+        [self.loginObservers removeAllObjects];
+    }
+}
+
+- (void)cleanAndNotifyUserCancelledToObservers {
+    [self clean];
+    self.observerAuthenticationStarted = NO;
+    @synchronized (self) {
+        for (PCLoginObserver* loginObserver in self.loginObservers) {
+            loginObserver.userCancelledBlock();
+        }
+        [self.loginObservers removeAllObjects];
+    }
+}
+
+- (void)cleanAndNotifyFailureToObservers {
+    [self clean];
+    self.observerAuthenticationStarted = NO;
+    @synchronized (self) {
+        for (PCLoginObserver* loginObserver in self.loginObservers) {
+            loginObserver.failureBlock();
+        }
+        [self.loginObservers removeAllObjects];
+    }
+}
+
+#pragma mark PocketCamous SessionId persistence
 
 static NSString* const kAuthSessionIdPCConfigKey = @"PocketCampusAuthSessionId";
 
@@ -412,6 +608,8 @@ static NSString* const kAuthSessionIdPCConfigKey = @"PocketCampusAuthSessionId";
 }
 
 - (void)setPocketCampusAuthSessionId:(NSString*)sessionId persist:(BOOL)persist {
+#warning REMOVE
+    persist = NO;
     if (sessionId) {
         [PCUtils throwExceptionIfObject:sessionId notKindOfClass:[NSString class]];
     }
@@ -427,6 +625,42 @@ static NSString* const kAuthSessionIdPCConfigKey = @"PocketCampusAuthSessionId";
 - (void)deletePocketCampusAuthSessionId {
     _pocketCampusAuthSessionId = nil;
     [[PCConfig defaults] removeObjectForKey:kAuthSessionIdPCConfigKey];
+    [[PCConfig defaults] synchronize];
+}
+
+#pragma mark Save password switch value persistence
+
+static NSString* const kSavePasswordBoolKey = @"AuthenticationSavePassword";
+static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; //old key
+
+- (BOOL)savePasswordSwitchValue {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        //check if transferred from PCObjectArchiver to PCConfig default
+        static NSString* const kAuthTransferedPasswordSwitchStateKey = @"AuthTransferedPasswordSwitchState";
+        if (![[PCConfig defaults] boolForKey:kAuthTransferedPasswordSwitchStateKey]) {
+            NSNumber* nsBool = (NSNumber*)[PCPersistenceManager objectForKey:kSavePasswordSwitchStateOldKey pluginName:@"authentication"];
+            if (nsBool) {
+                [[PCConfig defaults] setBool:[nsBool boolValue] forKey:kSavePasswordBoolKey];
+            }
+            [[PCConfig defaults] setBool:YES forKey:kAuthTransferedPasswordSwitchStateKey];
+            [[PCConfig defaults] synchronize];
+        }
+    });
+    NSNumber* boolNb = [[PCConfig defaults] objectForKey:kSavePasswordBoolKey];
+    if (boolNb) {
+        return [boolNb boolValue];
+    }
+    return YES; //default if not specified yet
+}
+
+- (void)saveSavePasswordSwitchValue:(BOOL)savePassword {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        //delete old saved state if any
+        [PCPersistenceManager saveObject:nil forKey:kSavePasswordSwitchStateOldKey pluginName:@"authentication"];
+    });
+    [[PCConfig defaults] setBool:savePassword forKey:kSavePasswordBoolKey];
     [[PCConfig defaults] synchronize];
 }
 

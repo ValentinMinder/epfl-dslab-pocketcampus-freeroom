@@ -37,7 +37,7 @@
 
 #import "PCEditableTableViewCell.h"
 
-#import "AuthenticationViewController.h"
+#import "AuthenticationController.h"
 
 #import "PCAboutViewController.h"
 
@@ -124,7 +124,7 @@ static const int kUsageRow = 0;
                 case 0: //gaspar account
                 {
                     [self trackAction:@"OpenAuthentication"];
-                    AuthenticationViewController* viewController = [[AuthenticationViewController alloc] init];
+                    AuthenticationViewController2* viewController = [[AuthenticationController sharedInstance] statusViewController];
                     [self.navigationController pushViewController:viewController animated:YES];
                     break;
                 }
@@ -238,12 +238,7 @@ static const int kUsageRow = 0;
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = [AuthenticationViewController localizedTitle];
-            NSString* username = [AuthenticationService savedUsername];
-            if (username) {
-                cell.detailTextLabel.text = username;
-            } else {
-                cell.detailTextLabel.text = @"";
-            }
+            cell.detailTextLabel.text = [[AuthenticationController sharedInstance] loggedInUsername];
             break;
         }
         case kMainMenuSection:

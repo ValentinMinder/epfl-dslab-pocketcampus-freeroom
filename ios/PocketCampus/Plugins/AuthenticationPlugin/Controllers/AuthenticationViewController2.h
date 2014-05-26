@@ -39,6 +39,8 @@ typedef enum {
 
 @interface AuthenticationViewController2 : UITableViewController
 
++ (NSString*)localizedTitle;
+
 /**
  * Setting a new state will reload the view to show corresponding UI
  * Default: 0

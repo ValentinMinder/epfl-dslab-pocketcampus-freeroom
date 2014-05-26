@@ -92,20 +92,3 @@ extern NSString* const kAuthenticationLogoutNotification;
 
 
 @end
-
-typedef enum {
-    AuthenticationFailureReasonInvalidToken,
-    AuthenticationFailureReasonUserCancelled,
-    AuthenticationFailureReasonInternalError
-} AuthenticationFailureReason;
-
-@protocol AuthenticationDelegate
-
-@required
-- (void)authenticationSucceededUserChoseToSavePassword:(BOOL)userChoseToRememberPassword;
-- (void)authenticationFailedWithReason:(AuthenticationFailureReason)reason;
-
-//- (void)userCancelledAuthentication __attribute__((deprecated));
-//- (void)invalidToken __attribute__((deprecated));
-
-@end

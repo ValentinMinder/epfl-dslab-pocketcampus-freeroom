@@ -112,7 +112,7 @@
 
 #pragma mark - Public methods
 
-- (void)authenticateSilentlyToken:(NSString*)token_ delegate:(id<AuthenticationDelegate>)delegate_ {
+- (void)authenticateSilentlyToken:(NSString*)token_ delegate:(id)delegate_ {
     self.token = token_;
     if (!delegate_) {
         [NSException raise:@"Illegal argumement" format:@"delegate cannot be nil"];
@@ -295,8 +295,8 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
     [self.loadingIndicator stopAnimating];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationSucceededUserChoseToSavePassword:)]) {
-            [self.delegate authenticationSucceededUserChoseToSavePassword:self.savePassword];
+        if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationSucceeded)]) {
+            [self.delegate authenticationSucceeded];
         }
     });
 }

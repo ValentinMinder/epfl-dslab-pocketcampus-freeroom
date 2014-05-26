@@ -35,9 +35,9 @@
 
 #import "CamiproService.h"
 
-#import "AuthenticationService.h"
+#import "AuthenticationController.h"
 
-@interface CamiproController ()<CamiproServiceDelegate, AuthenticationDelegate>
+@interface CamiproController ()<CamiproServiceDelegate, AuthenticationControllerDelegate>
 
 @property (nonatomic, strong) CamiproService* camiproService;
 @property (nonatomic, strong) TequilaToken* tequilaToken;
@@ -124,7 +124,7 @@ static CamiproController* instance __weak = nil;
 
 - (void)getTequilaTokenForCamiproDidReturn:(TequilaToken *)tequilaKey {
     self.tequilaToken = tequilaKey;
-    [self.authController authToken:tequilaKey.iTequilaKey presentationViewController:self.mainNavigationController delegate:self];
+    [self.authController authenticateToken:tequilaKey.iTequilaKey delegate:self];
 }
 
 - (void)getTequilaTokenForCamiproFailed {
@@ -144,9 +144,9 @@ static CamiproController* instance __weak = nil;
     [super cleanAndNotifyConnectionToServerTimedOutToObservers];
 }
 
-#pragma mark - AuthenticationCallbackDelegate
+#pragma mark - AuthenticationControllerDelegate
 
-- (void)authenticationSucceededUserChoseToSavePassword:(BOOL)userChoseToRememberPassword {
+- (void)authenticationSucceeded {
     if (!self.tequilaToken) {
         CLSNSLog(@"-> ERROR : no tequilaToken saved after successful authentication");
         return;

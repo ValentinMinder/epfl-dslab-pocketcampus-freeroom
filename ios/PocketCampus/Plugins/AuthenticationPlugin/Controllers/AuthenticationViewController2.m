@@ -36,7 +36,7 @@ static NSInteger savePasswordSwitchSectionIndex = -1;
 static NSInteger const kUsernameRowIndex = 0;
 static NSInteger const kPasswordRowIndex = 1;
 
-@interface AuthenticationViewController2 ()
+@interface AuthenticationViewController2 ()<UITextFieldDelegate>
 
 @property (nonatomic, strong) PCEditableTableViewCell* usernameCell;
 @property (nonatomic, strong) PCEditableTableViewCell* passwordCell;
@@ -63,6 +63,11 @@ static NSInteger const kPasswordRowIndex = 1;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.view.backgroundColor = [UIColor whiteColor];
+    self.title = [[self class] localizedTitle];
+    self.tableView.sectionHeaderHeight = 2.0;
+    self.tableView.sectionFooterHeight = 2.0;
+    self.tableView.separatorColor = [UIColor clearColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -71,6 +76,10 @@ static NSInteger const kPasswordRowIndex = 1;
 }
 
 #pragma mark - Public
+
++ (NSString*)localizedTitle {
+    return NSLocalizedStringFromTable(@"GasparAccount", @"AuthenticationPlugin", nil);
+}
 
 - (void)setState:(AuthenticationViewControllerState)state {
     [self setState:state animated:NO];
@@ -82,6 +91,7 @@ static NSInteger const kPasswordRowIndex = 1;
         return;
     }
     _state = state;
+    [self recomputeSectionIndices];
     [self.tableView reloadData];
 }
 
@@ -107,10 +117,15 @@ static NSInteger const kPasswordRowIndex = 1;
 
 - (void)setShowSavePasswordSwitch:(BOOL)showSavePasswordSwitch {
     _showSavePasswordSwitch = showSavePasswordSwitch;
+    [self recomputeSectionIndices];
     [self.tableView reloadData];
 }
 
 - (void)setSavePasswordSwitchValue:(BOOL)savePasswordSwitchValue {
+    if (!self.savePasswordSwitch) {
+        self.savePasswordSwitch = [[UISwitch alloc] init];
+        self.savePasswordSwitch.enabled = (self.state != AuthenticationViewControllerStateLoading);
+    }
     [self.savePasswordSwitch setOn:savePasswordSwitchValue];
 }
 
@@ -154,6 +169,7 @@ static NSInteger const kPasswordRowIndex = 1;
 }
 
 - (void)inputsValueChanged {
+#warning BUG 
     if (self.usernameCell.textField.text.length == 0 || self.passwordCell.textField.text.length == 0) {
         if (self.userClearedUsernameBlock) {
             self.userClearedUsernameBlock();
@@ -164,6 +180,31 @@ static NSInteger const kPasswordRowIndex = 1;
         self.loginCell.textLabel.enabled = YES;
         self.loginCell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top, self.tableView.contentInset.left, self.tableView.contentInset.bottom+220.0, self.tableView.contentInset.right);
+    /*if (textField == passwordTextField) {
+     [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+     }*/
+    
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top, self.tableView.contentInset.left, self.tableView.contentInset.bottom-220.0, self.tableView.contentInset.right);
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField == self.usernameCell.textField) {
+        [self.usernameCell.textField becomeFirstResponder];
+    } else if (textField == self.passwordCell.textField) {
+        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:loginOutButtonSectionIndex]]; //simulate login cell pressed
+    } else {
+        //nothing, unknown
+    }
+    return YES;
 }
 
 #pragma mark - UITableViewDelegate
@@ -211,8 +252,11 @@ static NSInteger const kPasswordRowIndex = 1;
 #pragma mark - UITableViewDataSource
 
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-#warning TODO
+    if (section == credentialsSectionIndex && self.state == AuthenticationViewControllerStateWrongCredentials) {
+        return NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil);
+    }
     return nil;
+#warning TODO
 }
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -235,7 +279,7 @@ static NSInteger const kPasswordRowIndex = 1;
                     self.usernameCell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
                     self.usernameCell.textField.returnKeyType = UIReturnKeyNext;
                     self.usernameCell.textField.clearButtonMode = UITextFieldViewModeAlways;
-                    //self.usernameCell.textField.delegate = self;
+                    self.usernameCell.textField.delegate = self;
                     [self.usernameCell.textField addTarget:self action:@selector(inputsValueChanged) forControlEvents:UIControlEventEditingChanged];
                     self.usernameCell.textField.text = self.username;
                 }
@@ -250,7 +294,7 @@ static NSInteger const kPasswordRowIndex = 1;
                     self.passwordCell.selectionStyle = UITableViewCellSelectionStyleNone;
                     self.passwordCell.textField.secureTextEntry = YES;
                     self.passwordCell.textField.returnKeyType = UIReturnKeyGo;
-                    //self.passwordCell.textField.delegate = self;
+                    self.passwordCell.textField.delegate = self;
                     [self.passwordCell.textField addTarget:self action:@selector(inputsValueChanged) forControlEvents:UIControlEventEditingChanged];
                     self.passwordCell.textField.text = self.password;
                 }
@@ -294,6 +338,8 @@ static NSInteger const kPasswordRowIndex = 1;
                 [self.loadingIndicator stopAnimating];
             }
             [self inputsValueChanged]; //make it enable or not
+            self.loginCell.textLabel.enabled = (self.state != AuthenticationViewControllerStateLoading);
+            self.loginCell.selectionStyle = self.state == AuthenticationViewControllerStateLoading ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleDefault;
         }
     } else if (indexPath.section == savePasswordSwitchSectionIndex) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
@@ -302,8 +348,9 @@ static NSInteger const kPasswordRowIndex = 1;
         if (!self.savePasswordSwitch) {
             self.savePasswordSwitch = [[UISwitch alloc] init];
             self.savePasswordSwitch.on = self.savePasswordSwitchValue;
-            self.savePasswordSwitch.enabled = (self.state != AuthenticationViewControllerStateLoading);
         }
+        self.savePasswordSwitch.enabled = (self.state != AuthenticationViewControllerStateLoading);
+        cell.textLabel.enabled = self.savePasswordSwitch.enabled;
         cell.accessoryView = self.savePasswordSwitch;
     } else {
         //unsupported
