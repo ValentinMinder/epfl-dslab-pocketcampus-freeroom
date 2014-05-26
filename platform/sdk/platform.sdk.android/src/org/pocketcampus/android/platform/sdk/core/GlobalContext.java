@@ -1,5 +1,7 @@
 package org.pocketcampus.android.platform.sdk.core;
 
+import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,10 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
-import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
-
 import org.pocketcampus.R;
+import org.pocketcampus.android.platform.sdk.tracker.GATracker;
+
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
@@ -46,7 +47,7 @@ public class GlobalContext extends Application {
 		initializeConfig();
 		
 		//Starts the Tracker for the google analytics
-		Tracker.getInstance().start(getApplicationContext());
+		GATracker.getInstance().start(getApplicationContext());
 		
 		mPluginInfoList = new HashMap<String, PluginInfo>();
 		
