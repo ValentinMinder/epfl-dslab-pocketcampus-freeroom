@@ -138,6 +138,12 @@ typedef enum {
 @property (nonatomic, copy) void (^userTappedDoneBlock)();
 
 /**
+ * Should return message (or nil) to display below the inputs
+ * based on current state and values of properties of authViewController
+ */
+@property (nonatomic, copy) NSString* (^bottomMessageBlock)(AuthenticationViewController2* authViewController);
+
+/**
  * Brings up the keyboard for either username or password depending on
  * what's filled already
  */

@@ -57,8 +57,6 @@ extern NSString* const kAuthenticationLogoutNotification;
 - (void)getAuthTequilaTokenFailed;
 - (void)getAuthSessionForRequest:(AuthSessionRequest*)request didReturn:(AuthSessionResponse*)response;
 - (void)getAuthSessionFailedForRequest:(AuthSessionRequest*)request;
-- (void)getAuthSessionIdWithToken:(NSString*)tequilaToken didReturn:(AuthSessionResponse*)response __attribute__((deprecated));
-- (void)getAuthSessionIdFailedForToken:(NSString*)tequilaToken __attribute__((deprecated));
 
 @end
 
@@ -88,7 +86,6 @@ extern NSString* const kAuthenticationLogoutNotification;
 
 - (void)getAuthTequilaTokenWithDelegate:(id<AuthenticationServiceDelegate>)delegate;
 - (void)getAuthSessionWithRequest:(AuthSessionRequest*)request delegate:(id<AuthenticationServiceDelegate>)delegate;
-- (void)getAuthSessionIdWithTequilaToken:(NSString*)tequilaToken delegate:(id<AuthenticationServiceDelegate>)delegate __attribute__((deprecated));
 
 
 @end

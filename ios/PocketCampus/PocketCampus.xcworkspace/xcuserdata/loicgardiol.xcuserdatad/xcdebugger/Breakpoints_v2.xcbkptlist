@@ -3604,11 +3604,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "422813172.358287"
+            timestampString = "422833264.767423"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "479"
-            endingLineNumber = "479"
+            startingLineNumber = "496"
+            endingLineNumber = "496"
             landmarkName = "@implementation AuthenticationController"
             landmarkType = "3">
          </BreakpointContent>
@@ -3746,11 +3746,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "422813172.358287"
+            timestampString = "422833264.767423"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "473"
-            endingLineNumber = "473"
+            startingLineNumber = "490"
+            endingLineNumber = "490"
             landmarkName = "@implementation AuthenticationController"
             landmarkType = "3">
          </BreakpointContent>
@@ -4868,11 +4868,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "422812510.222154"
+            timestampString = "422833264.767423"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "291"
-            endingLineNumber = "291"
+            startingLineNumber = "308"
+            endingLineNumber = "308"
             landmarkName = "-loginToTequilaDidSuceedWithTequilaCookie:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4884,11 +4884,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "422812510.222154"
+            timestampString = "422833264.767423"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "319"
-            endingLineNumber = "319"
+            startingLineNumber = "336"
+            endingLineNumber = "336"
             landmarkName = "-loginToTequilaFailedWithReason:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4900,11 +4900,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "422812510.222154"
+            timestampString = "422833264.767423"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "280"
-            endingLineNumber = "280"
+            startingLineNumber = "297"
+            endingLineNumber = "297"
             landmarkName = "-getAuthTequilaTokenFailed"
             landmarkType = "5">
             <Locations>
@@ -4946,11 +4946,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "422813172.358287"
+            timestampString = "422833264.767423"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "383"
-            endingLineNumber = "383"
+            startingLineNumber = "400"
+            endingLineNumber = "400"
             landmarkName = "-authenticateFailedForToken:tequilaCookie:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4962,11 +4962,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "422813172.358287"
+            timestampString = "422833264.767423"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "404"
-            endingLineNumber = "404"
+            startingLineNumber = "421"
+            endingLineNumber = "421"
             landmarkName = "-getAuthSessionForRequest:didReturn:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4978,11 +4978,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "422813172.358287"
+            timestampString = "422833264.767423"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "443"
-            endingLineNumber = "443"
+            startingLineNumber = "460"
+            endingLineNumber = "460"
             landmarkName = "-getAuthSessionFailedForRequest:"
             landmarkType = "5">
             <Locations>
@@ -4993,11 +4993,11 @@
                   symbolName = "-[AuthenticationController getAuthSessionFailedForRequest:]"
                   moduleName = "PocketCampus"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-                  timestampString = "422813172.749441"
+                  timestampString = "422833883.928648"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "443"
-                  endingLineNumber = "443"
+                  startingLineNumber = "460"
+                  endingLineNumber = "460"
                   offsetFromSymbolStart = "79">
                </Location>
                <Location
@@ -5007,11 +5007,11 @@
                   symbolName = "__59-[AuthenticationController getAuthSessionFailedForRequest:]_block_invoke"
                   moduleName = "PocketCampus"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-                  timestampString = "422813172.749578"
+                  timestampString = "422833883.928845"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "443"
-                  endingLineNumber = "443"
+                  startingLineNumber = "460"
+                  endingLineNumber = "460"
                   offsetFromSymbolStart = "18">
                </Location>
             </Locations>
@@ -5024,11 +5024,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "422813172.358287"
+            timestampString = "422833264.767423"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "449"
-            endingLineNumber = "449"
+            startingLineNumber = "466"
+            endingLineNumber = "466"
             landmarkName = "-serviceConnectionToServerFailed"
             landmarkType = "5">
          </BreakpointContent>
@@ -5040,11 +5040,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "422813172.358287"
+            timestampString = "422833264.767423"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "503"
-            endingLineNumber = "503"
+            startingLineNumber = "520"
+            endingLineNumber = "520"
             landmarkName = "-startAuthenticationForToken:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5056,11 +5056,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "422812510.222154"
+            timestampString = "422833264.767423"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "220"
-            endingLineNumber = "220"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
             landmarkName = "-addLoginObserver:success:userCancelled:failure:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5084,15 +5084,31 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationViewController2.m"
-            timestampString = "422813262.916989"
+            timestampString = "422833603.022386"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
+            landmarkName = "-textFieldShouldClear:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationViewController2.m"
+            timestampString = "422833603.022386"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "279"
+            endingLineNumber = "279"
             landmarkName = "-tableView:titleForFooterInSection:"
             landmarkType = "5">
          </BreakpointContent>

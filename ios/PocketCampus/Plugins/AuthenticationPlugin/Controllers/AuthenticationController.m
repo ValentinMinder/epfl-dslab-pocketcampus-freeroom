@@ -172,8 +172,8 @@ static AuthenticationController* instance __strong = nil;
     }
     
     self.authenticationViewController.showCancelButton = NO;
-    self.authenticationViewController.showSavePasswordSwitch = NO;
-    self.authenticationViewController.savePasswordSwitchValue = YES;
+    self.authenticationViewController.showSavePasswordSwitch = YES;
+    self.authenticationViewController.savePasswordSwitchValue = [self savePasswordSwitchValue];
     self.authenticationViewController.username = savedUsername;
     self.authenticationViewController.password = savedUsername ? savedPassword : nil; //don't set password if unknown username. Should actually never happen.
     __weak __typeof(self) welf = self;
@@ -195,6 +195,23 @@ static AuthenticationController* instance __strong = nil;
     }];
     [self.authenticationViewController setUserClearedUsernameBlock:^{
         [AuthenticationService saveUsername:nil];
+    }];
+    [self.authenticationViewController setBottomMessageBlock:^NSString *(AuthenticationViewController2* authViewController) {
+        NSString* message = nil;
+        if (authViewController.state == AuthenticationViewControllerStateLoggedIn) {
+            if ([AuthenticationService areCredentialsSaved]) {
+                message = NSLocalizedStringFromTable(@"PasswordSavedAndPolicy", @"AuthenticationPlugin", nil);
+            } else {
+                message = nil;
+            }
+        } else {
+            if (authViewController.savePasswordSwitchValue) {
+                message = [NSString stringWithFormat:@"%@\n\n%@", NSLocalizedStringFromTable(@"GasparAccountRequiredFor", @"AuthenticationPlugin", nil), NSLocalizedStringFromTable(@"WillSavePasswordAndPolicy", @"AuthenticationPlugin", nil)];
+            } else {
+                message = [NSString stringWithFormat:@"%@\n\n%@", NSLocalizedStringFromTable(@"GasparAccountRequiredFor", @"AuthenticationPlugin", nil), NSLocalizedStringFromTable(@"WillNotSavePasswordAndPolicy", @"AuthenticationPlugin", nil)];
+            }
+        }
+        return message;
     }];
     return self.authenticationViewController;
 }
@@ -324,7 +341,7 @@ static AuthenticationController* instance __strong = nil;
                 if (username) {
                     [AuthenticationService deleteSavedPasswordForUsername:username];
                 }
-                self.authenticationViewController.state = AuthenticationTequilaLoginFailureReasonBadCredentials;
+                self.authenticationViewController.state = AuthenticationViewControllerStateWrongCredentials;
                 self.authenticationViewController.password = nil;
                 [self.authenticationViewController focusOnInput];
             } else {
@@ -530,6 +547,15 @@ static AuthenticationController* instance __strong = nil;
         }];
         [self.authenticationViewController setUserClearedUsernameBlock:^{
             [AuthenticationService saveUsername:nil];
+        }];
+        [self.authenticationViewController setBottomMessageBlock:^NSString *(AuthenticationViewController2* authViewController) {
+            NSString* message = nil;
+            if (authViewController.savePasswordSwitchValue) {
+                message = NSLocalizedStringFromTable(@"WillSavePasswordAndPolicy", @"AuthenticationPlugin", nil);
+            } else {
+                message = NSLocalizedStringFromTable(@"WillNotSavePasswordAndInstructionsAndPolicy", @"AuthenticationPlugin", nil);
+            }
+            return message;
         }];
         self.authenticationNavigationController = [[PCNavigationController alloc] initWithRootViewController:self.authenticationViewController];
         UIViewController* rootViewController = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
