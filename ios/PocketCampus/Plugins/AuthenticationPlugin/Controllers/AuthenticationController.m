@@ -132,31 +132,6 @@ static AuthenticationController* instance __strong = nil;
 
 #pragma mark Standard authentication
 
-/*- (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationDelegate>)delegate {
-    NSString* savedPassword = [AuthenticationService savedPasswordForUsername:[AuthenticationService savedUsername]];
-    self.authenticationViewController = [[AuthenticationViewController alloc] init];
-    if (savedPassword) {
-        self.authenticationViewController.presentationMode = PresentationModeTryHidden;
-        self.authenticationViewController.viewControllerForPresentation = presentationViewController;
-        self.authenticationViewController.showSavePasswordSwitch = YES;
-        self.authenticationViewController.hideGasparUsageAccountMessage = YES;
-        [self.authenticationViewController authenticateSilentlyToken:token delegate:delegate];
-    } else {
-        self.authenticationViewController.presentationMode = PresentationModeModal;
-        self.authenticationViewController.viewControllerForPresentation = presentationViewController;
-        self.authenticationViewController.showSavePasswordSwitch = YES;
-        self.authenticationViewController.hideGasparUsageAccountMessage = YES;
-        self.authenticationViewController.delegate = delegate;
-        self.authenticationViewController.token = token;
-        PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:self.authenticationViewController]; //so that nav bar is shown
-        navController.modalPresentationStyle = UIModalPresentationFormSheet;
-        [presentationViewController presentViewController:navController animated:YES completion:^{
-            [self.authenticationViewController focusOnInput];
-        }];
-    }
-    
-}*/
-
 - (AuthenticationViewController2*)statusViewController {
     self.tequilaToken = nil;
     NSString* savedUsername = [AuthenticationService savedUsername];
@@ -634,8 +609,8 @@ static NSString* const kAuthSessionIdPCConfigKey = @"PocketCampusAuthSessionId";
 }
 
 - (void)setPocketCampusAuthSessionId:(NSString*)sessionId persist:(BOOL)persist {
-#warning REMOVE
-    persist = NO;
+//#warning REMOVE
+    //persist = NO;
     if (sessionId) {
         [PCUtils throwExceptionIfObject:sessionId notKindOfClass:[NSString class]];
     }
