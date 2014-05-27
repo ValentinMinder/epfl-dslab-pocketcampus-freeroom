@@ -37,7 +37,7 @@ typedef enum {
     AuthenticationViewControllerStateLoggedIn
 } AuthenticationViewControllerState;
 
-@interface AuthenticationViewController2 : UITableViewController
+@interface AuthenticationViewController : UITableViewController
 
 + (NSString*)localizedTitle;
 
@@ -140,7 +140,7 @@ typedef enum {
  * Should return message (or nil) to display below the inputs
  * based on current state and values of properties of authViewController
  */
-@property (nonatomic, copy) NSString* (^bottomMessageBlock)(AuthenticationViewController2* authViewController);
+@property (nonatomic, copy) NSString* (^bottomMessageBlock)(AuthenticationViewController* authViewController);
 
 /**
  * Brings up the keyboard for either username or password depending on

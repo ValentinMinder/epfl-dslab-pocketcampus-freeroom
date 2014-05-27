@@ -29,7 +29,7 @@
 
 #import "AuthenticationService.h"
 
-#import "AuthenticationViewController2.h"
+#import "AuthenticationViewController.h"
 
 /**
  * Delegation protocol for standard (old-style) authentication (see below)
@@ -71,7 +71,7 @@ typedef enum {
  * Returns the view controller that shows which user is connected if so,
  * and allows to login/logout without the goal of authenticating a token.
  */
-- (AuthenticationViewController2*)statusViewController;
+- (AuthenticationViewController*)statusViewController;
 
 
 /**

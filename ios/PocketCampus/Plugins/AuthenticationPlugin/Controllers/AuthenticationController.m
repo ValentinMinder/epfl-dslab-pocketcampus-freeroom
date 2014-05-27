@@ -65,7 +65,7 @@ static AuthenticationController* instance __strong = nil;
 
 @interface AuthenticationController ()<AuthenticationServiceDelegate>
 
-@property (nonatomic, strong) AuthenticationViewController2* authenticationViewController;
+@property (nonatomic, strong) AuthenticationViewController* authenticationViewController;
 @property (nonatomic, strong) PCNavigationController* authenticationNavigationController;
 @property (nonatomic, strong) AuthenticationService* authService;
 @property (nonatomic, weak) id<AuthenticationControllerDelegate> delegate;
@@ -132,11 +132,11 @@ static AuthenticationController* instance __strong = nil;
 
 #pragma mark Standard authentication
 
-- (AuthenticationViewController2*)statusViewController {
+- (AuthenticationViewController*)statusViewController {
     self.tequilaToken = nil;
     NSString* savedUsername = [AuthenticationService savedUsername];
     NSString* savedPassword = [AuthenticationService savedPasswordForUsername:savedUsername];
-    self.authenticationViewController = [[AuthenticationViewController2 alloc] init];
+    self.authenticationViewController = [[AuthenticationViewController alloc] init];
     
     if (savedUsername && savedPassword) {
         self.authenticationViewController.state = AuthenticationViewControllerStateLoggedIn;
@@ -170,7 +170,7 @@ static AuthenticationController* instance __strong = nil;
     [self.authenticationViewController setUserClearedUsernameBlock:^{
         [AuthenticationService saveUsername:nil];
     }];
-    [self.authenticationViewController setBottomMessageBlock:^NSString *(AuthenticationViewController2* authViewController) {
+    [self.authenticationViewController setBottomMessageBlock:^NSString *(AuthenticationViewController* authViewController) {
         NSString* message = nil;
         if (authViewController.state == AuthenticationViewControllerStateLoggedIn) {
             if ([AuthenticationService areCredentialsSaved]) {
@@ -502,7 +502,7 @@ static AuthenticationController* instance __strong = nil;
     if (savedUsername && savedPassword) {
         [self.authService loginToTequilaWithUser:savedUsername password:savedPassword delegate:self];
     } else {
-        self.authenticationViewController = [[AuthenticationViewController2 alloc] init];
+        self.authenticationViewController = [[AuthenticationViewController alloc] init];
         self.authenticationViewController.state = AuthenticationViewControllerStateAskCredentials;
         self.authenticationViewController.showCancelButton = YES;
         self.authenticationViewController.showSavePasswordSwitch = YES;
@@ -525,7 +525,7 @@ static AuthenticationController* instance __strong = nil;
         [self.authenticationViewController setUserClearedUsernameBlock:^{
             [AuthenticationService saveUsername:nil];
         }];
-        [self.authenticationViewController setBottomMessageBlock:^NSString *(AuthenticationViewController2* authViewController) {
+        [self.authenticationViewController setBottomMessageBlock:^NSString *(AuthenticationViewController* authViewController) {
             NSString* message = nil;
             if (authViewController.savePasswordSwitchValue) {
                 message = NSLocalizedStringFromTable(@"WillSavePasswordAndPolicy", @"AuthenticationPlugin", nil);

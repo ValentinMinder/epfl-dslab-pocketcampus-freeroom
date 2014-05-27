@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "AuthenticationViewController2.h"
+#import "AuthenticationViewController.h"
 
 #import "PCEditableTableViewCell.h"
 
@@ -36,7 +36,7 @@ static NSInteger savePasswordSwitchSectionIndex = -1;
 static NSInteger const kUsernameRowIndex = 0;
 static NSInteger const kPasswordRowIndex = 1;
 
-@interface AuthenticationViewController2 ()<UITextFieldDelegate>
+@interface AuthenticationViewController ()<UITextFieldDelegate>
 
 @property (nonatomic, strong) PCEditableTableViewCell* usernameCell;
 @property (nonatomic, strong) PCEditableTableViewCell* passwordCell;
@@ -47,7 +47,7 @@ static NSInteger const kPasswordRowIndex = 1;
 
 @end
 
-@implementation AuthenticationViewController2
+@implementation AuthenticationViewController
 
 #pragma mark - Init
 
