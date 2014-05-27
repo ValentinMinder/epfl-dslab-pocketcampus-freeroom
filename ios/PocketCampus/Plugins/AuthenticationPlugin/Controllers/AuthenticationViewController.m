@@ -221,7 +221,7 @@ static NSInteger const kPasswordRowIndex = 1;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == self.usernameCell.textField) {
-        [self.usernameCell.textField becomeFirstResponder];
+        [self.passwordCell.textField becomeFirstResponder];
     } else if (textField == self.passwordCell.textField) {
         [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:loginOutButtonSectionIndex]]; //simulate login cell pressed
     } else {

@@ -3922,13 +3922,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationViewController.m"
-            timestampString = "415183864.317515"
+            timestampString = "422882354.600141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
-            landmarkName = "-authenticateSilentlyToken:delegate:"
-            landmarkType = "5">
+            startingLineNumber = "426"
+            endingLineNumber = "426"
+            landmarkName = "@implementation AuthenticationViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

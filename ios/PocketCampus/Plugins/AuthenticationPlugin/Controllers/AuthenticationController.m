@@ -176,7 +176,7 @@ static AuthenticationController* instance __strong = nil;
             if ([AuthenticationService areCredentialsSaved]) {
                 message = NSLocalizedStringFromTable(@"PasswordSavedAndPolicy", @"AuthenticationPlugin", nil);
             } else {
-                message = nil;
+                message = NSLocalizedStringFromTable(@"PasswordNotSavedAndPolicy", @"AuthenticationPlugin", nil);
             }
         } else {
             if (authViewController.savePasswordSwitchValue) {
