@@ -235,8 +235,9 @@ static NSInteger const kPasswordRowIndex = 1;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == loginOutButtonSectionIndex) {
-        if (self.state == AuthenticationViewControllerStateAskCredentials
-            || self.state == AuthenticationViewControllerStateWrongCredentials) {
+        if (self.loginCell.textLabel.enabled
+            && (self.state == AuthenticationViewControllerStateAskCredentials
+            || self.state == AuthenticationViewControllerStateWrongCredentials)) {
             if (!self.loginBlock) {
                 CLSNSLog(@"!! ERROR: User pressed login but loginBlock is nil");
                 return;

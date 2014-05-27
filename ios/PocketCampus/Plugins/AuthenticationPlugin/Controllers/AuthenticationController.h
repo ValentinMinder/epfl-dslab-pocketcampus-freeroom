@@ -29,8 +29,6 @@
 
 #import "AuthenticationService.h"
 
-#import "AuthenticationViewController.h"
-
 #import "AuthenticationViewController2.h"
 
 /**

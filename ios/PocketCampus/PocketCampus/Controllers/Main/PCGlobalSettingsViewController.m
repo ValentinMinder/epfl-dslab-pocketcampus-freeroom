@@ -242,7 +242,7 @@ static const int kUsageRow = 0;
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text = [AuthenticationViewController localizedTitle];
+            cell.textLabel.text = [AuthenticationViewController2 localizedTitle];
             cell.detailTextLabel.text = [[AuthenticationController sharedInstance] loggedInUsername];
             break;
         }

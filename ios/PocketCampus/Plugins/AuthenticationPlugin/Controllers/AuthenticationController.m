@@ -436,6 +436,9 @@ static AuthenticationController* instance __strong = nil;
     }];
 }
 
+/**
+ * All cases
+ */
 - (void)serviceConnectionToServerFailed {
     if (self.delegate) {
         [PCUtils showConnectionToServerTimedOutAlert];
