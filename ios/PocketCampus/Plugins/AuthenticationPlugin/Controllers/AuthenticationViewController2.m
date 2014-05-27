@@ -43,6 +43,7 @@ static NSInteger const kPasswordRowIndex = 1;
 @property (nonatomic, strong) PCTableViewCellAdditions* loginCell;
 @property (nonatomic, strong) UIActivityIndicatorView* loadingIndicator;
 @property (nonatomic, strong) UISwitch* savePasswordSwitch;
+@property (nonatomic, strong) NSMutableDictionary* showDoneButtonBoolForState;
 
 @end
 
@@ -55,6 +56,7 @@ static NSInteger const kPasswordRowIndex = 1;
     if (self) {
         self.gaiScreenName = @"/authentication";
         self.savePasswordSwitchValue = YES; //Default
+        self.showDoneButtonBoolForState = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -92,6 +94,7 @@ static NSInteger const kPasswordRowIndex = 1;
     }
     _state = state;
     [self recomputeSectionIndices];
+    [self updateDoneButtonVisibility];
     if (animated) {
         [UIView animateWithDuration:0.4 animations:^{
             self.tableView.alpha = 0.0;
@@ -116,13 +119,10 @@ static NSInteger const kPasswordRowIndex = 1;
     }
 }
 
-- (void)setShowDoneButton:(BOOL)showDoneButton {
-    if (showDoneButton) {
-        if (!self.navigationItem.rightBarButtonItem) {
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneTapped)];
-        }
-    } else {
-        self.navigationItem.rightBarButtonItem = nil;
+- (void)setShowDoneButton:(BOOL)showDoneButton forState:(AuthenticationViewControllerState)state {
+    self.showDoneButtonBoolForState[@(state)] = @(showDoneButton);
+    if (state == self.state) {
+        [self updateDoneButtonVisibility];
     }
 }
 
@@ -423,5 +423,14 @@ static NSInteger const kPasswordRowIndex = 1;
     }
 }
 
+- (void)updateDoneButtonVisibility {
+    if ([self.showDoneButtonBoolForState[@(self.state)] boolValue]) {
+        if (!self.navigationItem.rightBarButtonItem) {
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneTapped)];
+        }
+    } else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+}
 
 @end

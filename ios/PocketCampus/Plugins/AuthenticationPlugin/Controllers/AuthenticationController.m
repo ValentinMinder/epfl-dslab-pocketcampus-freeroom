@@ -172,8 +172,7 @@ static AuthenticationController* instance __strong = nil;
     }
     
     self.authenticationViewController.showCancelButton = NO;
-    self.authenticationViewController.showSavePasswordSwitch = YES;
-    self.authenticationViewController.savePasswordSwitchValue = [self savePasswordSwitchValue];
+    self.authenticationViewController.showSavePasswordSwitch = NO;
     self.authenticationViewController.username = savedUsername;
     self.authenticationViewController.password = savedUsername ? savedPassword : nil; //don't set password if unknown username. Should actually never happen.
     __weak __typeof(self) welf = self;

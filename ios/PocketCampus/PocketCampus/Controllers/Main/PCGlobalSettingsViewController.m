@@ -125,6 +125,11 @@ static const int kUsageRow = 0;
                 {
                     [self trackAction:@"OpenAuthentication"];
                     AuthenticationViewController2* viewController = [[AuthenticationController sharedInstance] statusViewController];
+                    [viewController setShowDoneButton:YES forState:AuthenticationViewControllerStateLoggedIn];
+                    __weak __typeof(self) welf = self;
+                    [viewController setUserTappedDoneBlock:^{
+                        [welf.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+                    }];
                     [self.navigationController pushViewController:viewController animated:YES];
                     break;
                 }

@@ -57,11 +57,10 @@ typedef enum {
 @property (nonatomic) BOOL showCancelButton;
 
 /**
- * If YES, a Done button is set as right nav bar item
- * userTappedDoneBlock is executed when tapped
- * Default: NO
+ * Allows to set wether a Done button is visible in right navigation item, for each state.
+ * Default: hidden for all states.
  */
-@property (nonatomic) BOOL showDoneButton;
+- (void)setShowDoneButton:(BOOL)showDoneButton forState:(AuthenticationViewControllerState)state;
 
 /**
  * AuthenticationViewControllerStateAskCredentials,
