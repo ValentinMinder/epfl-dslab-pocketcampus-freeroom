@@ -6,6 +6,12 @@ import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
 
+/**
+ * This class is used to update the rooms list with correct attributes in the database (i.e EWAid)
+  * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ *         Valentin MINDER <valentin.minder@epfl.ch>
+ *
+ */
 public class ExchangeLoading {
 
 	final static String DB_USERNAME = "root";
@@ -13,9 +19,9 @@ public class ExchangeLoading {
 	final static String DBMS_URL = "jdbc:mysql://localhost/?allowMultiQueries=true";
 	final static String DB_URL = "jdbc:mysql://localhost/pocketcampus?allowMultiQueries=true";
 
-	private static String s = File.separator;
-	private static String path = "src" + s + "org" + s + "pocketcampus" + s
-			+ "plugin" + s + "freeroom" + s + "server" + s + "exchange" + s
+	private static String sep = File.separator;
+	private static String path = "src" + sep + "org" + sep + "pocketcampus" + sep
+			+ "plugin" + sep + "freeroom" + sep + "server" + sep + "exchange" + sep
 			+ "EWSRoomsData";
 
 	/**
