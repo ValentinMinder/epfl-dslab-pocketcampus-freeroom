@@ -12,8 +12,6 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -108,8 +106,6 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			vholder = new ViewHolderChild();
 			vholder.setTextView((TextView) convertView
 					.findViewById(R.id.freeroom_layout_roomslist_roomname));
-			vholder.setImageViewMap((ImageView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_map));
 			vholder.setImageViewStar((ImageView) convertView
 					.findViewById(R.id.freeroom_layout_roomslist_fav));
 			vholder.setImageViewShare((ImageView) convertView
@@ -133,25 +129,8 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		}
 
 		final ImageView star = vholder.getImageViewStar();
-		final ImageView map = vholder.getImageViewMap();
 		final ImageView share = vholder.getImageViewShare();
 		final ImageView people = vholder.getImageViewPeople();
-
-		map.setImageResource(R.drawable.map_normal_icon);
-
-		map.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Uri mUri = Uri
-						.parse("pocketcampus://map.plugin.pocketcampus.org/search");
-				Uri.Builder mbuild = mUri.buildUpon().appendQueryParameter("q",
-						doorCode);
-				Intent i = new Intent(Intent.ACTION_VIEW, mbuild.build());
-				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				context.startActivity(i);
-			}
-		});
 
 		final String uid = occupancy.getRoom().getUid();
 		final boolean isFav = mModel.isFavorite(mRoom);
@@ -409,7 +388,6 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 	 */
 	private class ViewHolderChild {
 		private TextView tv = null;
-		private ImageView map = null;
 		private ImageView star = null;
 		private ImageView share = null;
 		private ImageView people = null;
@@ -429,14 +407,6 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 
 		public ImageView getImageViewStar() {
 			return this.star;
-		}
-
-		public void setImageViewMap(ImageView iv) {
-			this.map = iv;
-		}
-
-		public ImageView getImageViewMap() {
-			return this.map;
 		}
 
 		public boolean isStarChecked() {

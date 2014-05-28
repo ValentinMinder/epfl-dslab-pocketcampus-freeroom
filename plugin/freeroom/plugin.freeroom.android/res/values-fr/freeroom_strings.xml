@@ -225,5 +225,8 @@
     <string name="freeroom_whoIsWorking_undefined">"Non précisé"</string>
 
     <!-- NEW: add there -->
+    <string name="freeroom_konami_start">Start</string>
+	<string name="freeroom_konami_typein">Entrer du texte&#8230;</string>
+	<string name="freeroom_error_map_plugin_missing">"Plugin Plan pas installé! Vérifier l'installation de l'application PocketCampus ou du plugin Plan"</string>
 
 </resources>

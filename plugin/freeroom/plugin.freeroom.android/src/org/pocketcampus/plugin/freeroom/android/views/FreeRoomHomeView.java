@@ -2410,15 +2410,40 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				periodTextView.setText("ERROR-PERIOD");
 			}
 
-			ImageView iv = (ImageView) mInfoRoomView
-					.findViewById(R.id.freeroom_layout_dialog_info_share);
-			setShareClickListener(iv, this, mOccupancy);
+			ImageView map = (ImageView) mInfoRoomView
+					.findViewById(R.id.freeroom_layout_dialog_info_map);
+			map.setOnClickListener(new OnClickListener() {
 
-			Button share = mInfoRoomDialog
+				@Override
+				public void onClick(View v) {
+					try {
+						// TODO: when map plugin accepts UID, change by uid
+						// instead of doorcode!
+						Uri mUri = Uri
+								.parse("pocketcampus://map.plugin.pocketcampus.org/search");
+						Uri.Builder mbuild = mUri.buildUpon()
+								.appendQueryParameter("q", mRoom.getDoorCode());
+						Intent i = new Intent(Intent.ACTION_VIEW, mbuild
+								.build());
+						i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(i);
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.err.println("Map plugin not installed ?!?");
+						showErrorDialog(getString(R.string.freeroom_error_map_plugin_missing));
+					}
+				}
+			});
+
+			ImageView shareImageView = (ImageView) mInfoRoomView
+					.findViewById(R.id.freeroom_layout_dialog_info_share);
+			setShareClickListener(shareImageView, this, mOccupancy);
+
+			Button shareButton = mInfoRoomDialog
 					.getButton(AlertDialog.BUTTON_POSITIVE);
-			share.setEnabled(mOccupancy.isIsAtLeastFreeOnce()
+			shareButton.setEnabled(mOccupancy.isIsAtLeastFreeOnce()
 					&& !mOccupancy.isIsAtLeastOccupiedOnce());
-			setShareClickListener(share, this, mOccupancy);
+			setShareClickListener(shareButton, this, mOccupancy);
 
 			ListView roomOccupancyListView = (ListView) mInfoRoomView
 					.findViewById(R.id.freeroom_layout_dialog_info_roomOccupancy);

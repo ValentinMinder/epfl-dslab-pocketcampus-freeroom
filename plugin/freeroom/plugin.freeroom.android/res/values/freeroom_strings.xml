@@ -226,4 +226,5 @@
 	<!-- str -->
 	<string name="freeroom_konami_start">Start</string>
 	<string name="freeroom_konami_typein">Type in&#8230;</string>
+	<string name="freeroom_error_map_plugin_missing">"Map plugin not installed! Please make sure you have the whole PocketCampus or map plugin installed!"</string>
 </resources>

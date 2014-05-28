@@ -17,7 +17,7 @@
         android:layout_alignParentTop="true"
         android:layout_gravity="right"
         android:contentDescription="@string/freeroom_layout_roomslist_img_share"
-        android:src="@drawable/ic_action_share" />
+        android:src="@drawable/ic_action_share_enabled" />
 
     <ImageView
         android:id="@+id/freeroom_layout_details_separator_1"
