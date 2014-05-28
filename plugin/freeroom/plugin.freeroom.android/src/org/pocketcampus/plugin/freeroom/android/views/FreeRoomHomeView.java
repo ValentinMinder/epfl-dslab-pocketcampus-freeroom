@@ -2339,27 +2339,27 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
-	 * Expands all the groups if there are no more than 4 groups or not more
-	 * than 10 results.
+	 * Expands all the groups if there are no more than 3 groups AND not more
+	 * than 7 results.
 	 * <p>
-	 * TODO defines these consts somewhere else
+	 * TODO defines these consts somewhere else <br>
+	 * TODO: move this method in utils.
 	 * 
-	 * @param ev
+	 * @param ev expandable list view
+	 * @param ad expandable list view adapter
 	 */
 	public void updateCollapse(ExpandableListView ev,
 			ExpandableListViewAdapter<Occupancy> ad) {
-		// TODO delete
-		System.out.println("check: group: " + ad.getGroupCount()
-				+ "/ children total" + ad.getChildrenTotalCount());
-		if (ad.getGroupCount() <= 4 || ad.getChildrenTotalCount() <= 10) {
-			System.out.println("i wanted to expand");
-			// TODO: this cause troubles in performance at first launch
-			// ONLY ON A FEW DEVICES! :/
+		int maxChildrenToExpand = 7;
+		int maxGroupToExpand = 3;
+		if (ad.getGroupCount() <= maxGroupToExpand && ad.getChildrenTotalCount() <= maxChildrenToExpand) {
+			// we expand in reverse order for performance reason!
+			// expand all may caus
 			for (int i = ad.getGroupCount() - 1; i >= 0; i--) {
 				ev.expandGroup(i);
 			}
 		}
-		mExpListAdapter.setGroupFocus(-1);
+		ad.setGroupFocus(-1);
 	}
 
 	/**
