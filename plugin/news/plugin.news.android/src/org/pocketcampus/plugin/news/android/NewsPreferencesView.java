@@ -85,6 +85,7 @@ public class NewsPreferencesView extends PluginView {
 		// We need to force the display before asking the controller for the
 		// data, as the controller may take some time to get it.
 		displayData();
+		setActionBarTitle(getString(R.string.news_plugin_title));
 	}
 	
 	@Override

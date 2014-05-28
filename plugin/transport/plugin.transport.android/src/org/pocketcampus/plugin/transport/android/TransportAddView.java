@@ -90,6 +90,7 @@ public class TransportAddView extends PluginView implements ITransportView {
 		displayView();
 		// Create the list of next departures
 		createStationsList();
+		setActionBarTitle(getString(R.string.transport_plugin_name));
 	}
 	
 	@Override

@@ -24,7 +24,6 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.analytics.tracking.android.Tracker;
 import com.markupartist.android.widget.ActionBar.Action;
 
 /**
@@ -64,6 +63,7 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 		mLayout.hideTitle();
 
 		addActionToActionBar(new RefreshAction(), 0);
+		setActionBarTitle(getString(R.string.camipro_plugin_title));
 		
 		mController.refreshStatsAndLoadingInfo();
 		updateDisplay();

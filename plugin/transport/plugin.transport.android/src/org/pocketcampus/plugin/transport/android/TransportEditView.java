@@ -76,6 +76,7 @@ public class TransportEditView extends PluginView {
 		mDestPrefsEditor = mDestPrefs.edit();
 		// Set up the layout
 		setUpLayout();
+		setActionBarTitle(getString(R.string.transport_plugin_name));
 	}
 	
 	@Override

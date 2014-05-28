@@ -118,6 +118,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		// Set up destinations that will be displayed
 		mModel.freeDestinations();
 		setUpDestinations();
+		setActionBarTitle(getString(R.string.transport_plugin_name));
 	}
 
 	/**

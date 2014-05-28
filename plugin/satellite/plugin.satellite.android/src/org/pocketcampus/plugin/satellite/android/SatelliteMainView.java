@@ -60,6 +60,7 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 
 		setContentView(mLayout);
 		loadData();
+		setActionBarTitle(getString(R.string.satellite_plugin_name));
 	}
 	
 	@Override

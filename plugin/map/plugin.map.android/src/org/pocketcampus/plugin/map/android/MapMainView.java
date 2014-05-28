@@ -53,8 +53,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.markupartist.android.widget.ActionBar;
-
 /**
  * Main class for the map plugin.
  * 
@@ -90,9 +88,6 @@ public class MapMainView extends PluginView implements IMapView {
 	private ConcurrentHashMap<MapElementsList, Long> lastRefreshedOverlays_;
 
 	private OnItemGestureListener<MapElement> overlayClickHandler_;
-
-	// UI
-	private ActionBar actionBar_;
 
 	/**
 	 * Overlays which are unconditionally displayed,
@@ -143,6 +138,7 @@ public class MapMainView extends PluginView implements IMapView {
 		//mController.getLayers();
 		
 //		handleSearchIntent(getIntent().getExtras());
+		setActionBarTitle(getString(R.string.map_plugin_title));
 	}
 
 	private void initVariables() {

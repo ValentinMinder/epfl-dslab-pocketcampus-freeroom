@@ -46,6 +46,7 @@ public class BlankMainView extends PluginView implements IBlankView {
 		setContentView(mLayout);
 		mLayout.hideTitle();
 
+		setActionBarTitle(getString(R.string.blank_plugin_title));
 
 	}
 

@@ -65,6 +65,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		setContentView(mLayout);
 		mLayout.hideTitle();
 
+		setActionBarTitle(getString(R.string.moodle_plugin_title));
 	}
 
 	/**

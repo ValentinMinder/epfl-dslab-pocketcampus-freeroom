@@ -69,6 +69,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		mLayout.hideSecondTitle();
 
 		addActionToActionBar(new RefreshAction(), 0);
+		setActionBarTitle(getString(R.string.camipro_plugin_title));
 	}
 
 	/**

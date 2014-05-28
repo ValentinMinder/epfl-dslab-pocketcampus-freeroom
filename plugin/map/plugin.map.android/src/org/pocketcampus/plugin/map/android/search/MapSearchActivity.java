@@ -2,10 +2,10 @@ package org.pocketcampus.plugin.map.android.search;
 
 import java.util.List;
 
-import org.pocketcampus.plugin.map.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.plugin.map.R;
 import org.pocketcampus.plugin.map.android.MapMainController;
 import org.pocketcampus.plugin.map.android.MapMainView;
 import org.pocketcampus.plugin.map.android.MapModel;
@@ -59,6 +59,8 @@ public class MapSearchActivity extends PluginView implements IMapView {
 
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mLayout.addView(inflater.inflate(R.layout.map_search_result, null));
+		
+		setActionBarTitle(getString(R.string.map_plugin_title));
 	}
 
 	/**

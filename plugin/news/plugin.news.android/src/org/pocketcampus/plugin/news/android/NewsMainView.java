@@ -87,6 +87,7 @@ public class NewsMainView extends PluginView implements INewsView {
 		// data,
 		// as the controller may take some time to get it.
 		displayData();
+		setActionBarTitle(getString(R.string.news_plugin_title));
 	}
 	
 	@Override

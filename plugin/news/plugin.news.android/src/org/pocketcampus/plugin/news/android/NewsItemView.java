@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.news.android;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.layout.FeedInformationLayout;
+import org.pocketcampus.plugin.news.R;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -69,6 +70,7 @@ public class NewsItemView extends PluginView {
 		if (mBitmap != null) {
 			mLayout.setImage(mBitmap);
 		}
+		setActionBarTitle(getString(R.string.news_plugin_title));
 	}
 
 	/**

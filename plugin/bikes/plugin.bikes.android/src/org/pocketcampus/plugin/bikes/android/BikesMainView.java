@@ -69,7 +69,8 @@ public class BikesMainView extends PluginView implements IBikesView {
 		mController.getAvailableBikes();
 		mLayout.setText(getString(R.string.bikes_loading));
 
-		setUpActionBar();
+		addActionToActionBar(new RefreshAction(), 0);
+		setActionBarTitle(getString(R.string.bikes_plugin_name));
 
 		oicl = new OnItemClickListener() {
 
@@ -240,13 +241,6 @@ public class BikesMainView extends PluginView implements IBikesView {
 		mList.setLayoutParams(layoutParams);
 		mLayout.addFillerView(mList);
 
-	}
-
-	/**
-	 * Prepare the action bar 
-	 */
-	private void setUpActionBar() {
-		addActionToActionBar(new RefreshAction(), 0);
 	}
 
 	/**

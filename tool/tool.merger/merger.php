@@ -28,7 +28,7 @@ $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
 $path_to_lib_dir = "../../platform/sdk/platform.sdk.shared/lib";
 
-$versionCode = "23";
+$versionCode = "24";
 $versionName = "0.3.$versionCode";
 
 function import_nodes($file, $tag, $doc, $parent_node, $nodes_to_remove) {

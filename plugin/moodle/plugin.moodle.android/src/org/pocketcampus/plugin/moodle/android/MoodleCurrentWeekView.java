@@ -78,6 +78,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 		
 		//addActionToActionBar(new RefreshAction(), 0);
 		addActionToActionBar(new ToggleShowAllAction(), 0);
+		setActionBarTitle(getString(R.string.moodle_plugin_title));
 	}
 
 	/**
