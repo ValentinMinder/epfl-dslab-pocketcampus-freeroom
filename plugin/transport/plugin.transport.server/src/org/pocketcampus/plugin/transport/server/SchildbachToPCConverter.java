@@ -120,7 +120,10 @@ public class SchildbachToPCConverter {
 	// LINE
 	static protected TransportLine convertSchToPC(de.schildbach.pte.dto.Line sl) {
 		ArrayList<String> al = new ArrayList<String>();
-		return new TransportLine(nicerLineName(sl.label), al);
+		System.out.println("Before:"+sl.label);
+		String nicerLine = nicerLineName(sl.label);
+		System.out.println("After:"+nicerLine);
+		return new TransportLine(nicerLine, al);
 	}
 
 	static protected String nicerLineName(String schildlLineName) {
@@ -140,13 +143,13 @@ public class SchildbachToPCConverter {
 			return "BBus" + matcher.group(1);
 		}
 		
-		pattern = Pattern.compile("^UMm(\\d)");
+		pattern = Pattern.compile("^UM(\\d)");
 		matcher = pattern.matcher(schildlLineName);
 		if (matcher.find() && matcher.group(1) != null && matcher.group(1).length() > 0) {
 			return "M" + matcher.group(1);
 		}
 
-		pattern = Pattern.compile("^UM(\\d*)");
+		pattern = Pattern.compile("^BBUS(\\d*)");
 		matcher = pattern.matcher(schildlLineName);
 		if (matcher.find() && matcher.group(1) != null && matcher.group(1).length() > 0) {
 			return "BBus" + matcher.group(1);
