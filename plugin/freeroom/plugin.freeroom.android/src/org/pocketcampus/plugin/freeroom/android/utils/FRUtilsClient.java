@@ -298,6 +298,14 @@ public class FRUtilsClient {
 	public final int MIN_QUERY_LENGTH = 2;
 	private final int MAX_QUERY_LENGTH = 6;
 
+	/**
+	 * Checks if the query is valid for server side and is valid for client-side
+	 * autocomplete (desactivated after too long)
+	 * 
+	 * @param query
+	 *            the string query for autocomplete
+	 * @return true if valid.
+	 */
 	public boolean validQuery(String query) {
 		boolean serverPreCond = query.trim().length() >= MIN_QUERY_LENGTH;
 		boolean clientDontCare = query.trim().length() <= MAX_QUERY_LENGTH;
