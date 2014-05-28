@@ -1393,7 +1393,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "385"
             endingLineNumber = "385"
-            landmarkName = "-cancelAll"
+            landmarkName = "-locationManager:didFailWithError:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1452,11 +1452,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/TransportPlugin/Controllers/TransportNextDeparturesViewController.m"
-            timestampString = "417083541.338803"
+            timestampString = "422997933.922724"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "513"
-            endingLineNumber = "513"
+            startingLineNumber = "520"
+            endingLineNumber = "520"
             landmarkName = "-serviceConnectionToServerFailed"
             landmarkType = "5">
          </BreakpointContent>
@@ -1596,11 +1596,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/TransportPlugin/Controllers/TransportNextDeparturesViewController.m"
-            timestampString = "417083541.338803"
+            timestampString = "422997933.922724"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "421"
-            endingLineNumber = "421"
+            startingLineNumber = "428"
+            endingLineNumber = "428"
             landmarkName = "-updateAll"
             landmarkType = "5">
          </BreakpointContent>
@@ -2195,8 +2195,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "276"
             endingLineNumber = "276"
-            landmarkName = "@implementation TransportService"
-            landmarkType = "3">
+            landmarkName = "-main"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2211,7 +2211,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "514"
             endingLineNumber = "514"
-            landmarkName = "-returnLocationToDelegate:"
+            landmarkName = "-nearestStationFromLocation:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2227,7 +2227,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "313"
             endingLineNumber = "313"
-            landmarkName = "-main"
+            landmarkName = "-checkCancellationAndAdaptDesiredAccuracy"
             landmarkType = "5">
             <Locations>
                <Location
@@ -2287,7 +2287,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "305"
             endingLineNumber = "305"
-            landmarkName = "-main"
+            landmarkName = "-checkCancellationAndAdaptDesiredAccuracy"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2302,9 +2302,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "579"
-            endingLineNumber = "579"
-            landmarkName = "-minimumDistanceBetweenStations"
-            landmarkType = "5">
+            endingLineNumber = "579">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3231,7 +3229,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "333"
             endingLineNumber = "333"
-            landmarkName = "-main"
+            landmarkName = "-cancelAll"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3242,11 +3240,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/TransportPlugin/Controllers/TransportNextDeparturesViewController.m"
-            timestampString = "417083541.338803"
+            timestampString = "422997933.922724"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "244"
-            endingLineNumber = "244"
+            startingLineNumber = "251"
+            endingLineNumber = "251"
             landmarkName = "-refresh"
             landmarkType = "5">
          </BreakpointContent>
