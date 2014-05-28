@@ -132,11 +132,14 @@ public class ActualOccupationArrayAdapter<T> extends
 			if (mActualOccupation.isSetProbableOccupation()
 					&& mActualOccupation.getProbableOccupation() > 0) {
 				convertView.setOnClickListener(ocl_line);
+				// green, and someone registered
 				tv.setCompoundDrawablesWithIntrinsicBounds(
-						R.drawable.ic_action_next_item, 0, 0, 0);
+						R.drawable.ic_dot_green, 0, 0, 0);
 			} else {
-				tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_empty,
+				// green, but nobody registered
+				tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_dot_green,
 						0, 0, 0);
+				convertView.setOnClickListener(null);
 			}
 
 			// TODO: uncomment this
@@ -148,13 +151,10 @@ public class ActualOccupationArrayAdapter<T> extends
 			ivshare.setOnClickListener(null);
 			// whole line non clickable
 			convertView.setOnClickListener(null);
-			tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_empty, 0,
+			tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_dot_red, 0,
 					0, 0);
 		}
 
-		int color = free ? mModel.COLOR_CHECK_OCCUPANCY_FREE
-				: mModel.COLOR_CHECK_OCCUPANCY_OCCUPIED;
-		convertView.setBackgroundColor(color);
 		return convertView;
 	}
 

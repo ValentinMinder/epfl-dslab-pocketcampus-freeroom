@@ -66,6 +66,7 @@
         android:layout_toLeftOf="@id/freeroom_layout_details_separator_2"
         android:gravity="left|center_vertical"
         android:maxLines="1"
+        android:drawableLeft="@drawable/ic_dot_grey"
         android:text="mock time data"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black" />
