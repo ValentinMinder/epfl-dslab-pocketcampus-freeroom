@@ -767,6 +767,36 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
+	 * Get the appropriate drawable image color according to the occupancy.
+	 * 
+	 * @param mOccupancy
+	 * @return
+	 */
+	public int getColorDrawable(Occupancy mOccupancy) {
+		if (mOccupancy == null) {
+			return R.drawable.ic_dot_grey;
+		}
+
+		boolean atLeastOneFree = mOccupancy.isIsAtLeastFreeOnce();
+		boolean atLeastOneOccupied = mOccupancy.isIsAtLeastOccupiedOnce();
+
+		if (atLeastOneFree) {
+			if (atLeastOneOccupied) {
+				return R.drawable.ic_dot_orange;
+			} else {
+				return R.drawable.ic_dot_green;
+			}
+		} else {
+			if (atLeastOneOccupied) {
+				return R.drawable.ic_dot_red;
+			} else {
+				// default
+				return R.drawable.ic_dot_grey;
+			}
+		}
+	}
+
+	/**
 	 * Stores the currently displayed request.
 	 */
 	private FRRequestDetails mFRRequest;

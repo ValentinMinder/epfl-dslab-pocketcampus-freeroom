@@ -91,7 +91,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="left"
         android:layout_toLeftOf="@id/freeroom_layout_roomslist_separator_4"
-        android:drawableLeft="@drawable/ic_action_next_item"
+        android:drawableLeft="@drawable/ic_dot_grey"
         android:gravity="left|center_vertical"
         android:text="text"
         android:textAppearance="?android:attr/textAppearanceLarge"

@@ -195,7 +195,8 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		// uncomment this
 		// people.setOnClickListener(ocl_checkWorking);
 
-		convertView.setBackgroundColor(mModel.getColor(occupancy));
+		tv.setCompoundDrawablesWithIntrinsicBounds(
+				mModel.getColorDrawable(occupancy), 0, 0, 0);
 		return convertView;
 	}
 
