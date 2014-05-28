@@ -14,9 +14,12 @@ Theses methods manages data differently :
 
 For room occupancies : no special treatment is done we store each occupancy whatever the length is as long as it does not overlap a previous ROOM occupancy already stored. It that case we do nothing.
 
-For user occupancies : We consider each user occupancy to be one hour at least, if more the server cut it into chuncks of one hour each. It does not worry about overlap between room and user occupancies as this is taken care later when processing a request for the user.
+For user occupancies : We consider each user occupancy to be one hour at least, if more the server cut it into chunks of one hour each. It does not worry about overlap between room and user occupancies as this is taken care later when processing a request for the user.
+
 
 --------- About getOccupancy ---------
 
-		
-			
+When processing a request for the user, the server gets all the occupancies (room or user) from the database concerned.
+Then we use a class called OccupancySorted that take as input ActualOccupation (class for occupancies) with no particular order for a given room.
+When you're done adding ActualOccupation you can call getOccupancy and it will create for you an Occupancy, sorted by timestamps, periods modified accordingly in case of overlap and blank period filled with user occupancies cut by chunks of one hour (with ratio of people in there = 0.0).
+
