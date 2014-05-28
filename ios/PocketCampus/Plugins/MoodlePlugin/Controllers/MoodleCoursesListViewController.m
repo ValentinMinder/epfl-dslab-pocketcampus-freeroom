@@ -194,6 +194,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     if (self.courses.count == 0) {
         return;
     }
+    [self trackAction:@"ViewCourse"];
     MoodleCourse* course = self.courses[indexPath.row];
     MoodleCourseSectionsViewController* viewController = [[MoodleCourseSectionsViewController alloc] initWithCourse:course];
     [self.navigationController pushViewController:viewController animated:YES];
