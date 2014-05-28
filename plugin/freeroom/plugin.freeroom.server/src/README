@@ -1,0 +1,5 @@
+Some notes about the server.
+
+The server assumes data is stored in a certain way in the database, therefore for inserting occupancies (room or user) there is a method you should call. 
+That is  public int insertOccupancyDetailedReply(FRPeriod period,
+			OCCUPANCY_TYPE type, String uid, String hash, String userMessage);
