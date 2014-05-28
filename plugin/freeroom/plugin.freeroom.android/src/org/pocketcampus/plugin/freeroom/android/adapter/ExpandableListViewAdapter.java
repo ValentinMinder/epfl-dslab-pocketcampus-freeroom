@@ -273,6 +273,11 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 					v.expandGroup(groupPosition);
 				}
 				data.switchAvailable(groupPosition);
+				if (data.getAvailable(groupPosition)) {
+					setGroupFocus(groupPosition);
+				} else {
+					setGroupFocus(-1);
+				}
 				updateClick(more, iv, v, groupPosition);
 				adapter.notifyDataSetChanged();
 			}
