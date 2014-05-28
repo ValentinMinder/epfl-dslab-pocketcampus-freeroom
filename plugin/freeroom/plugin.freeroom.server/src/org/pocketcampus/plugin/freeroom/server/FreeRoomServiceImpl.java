@@ -545,10 +545,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * @param hash
 	 *            The unique hash per user
 	 * @param prevRoom
-	 *            The uid of the previous room beeing stored in the
+	 *            The uid of the previous room being stored in the
 	 *            checkOccupancy table (if one) null otherwise
 	 * @param prevMessage
-	 *            The previos message stored or null if none
+	 *            The previous message stored or null if none
 	 * 
 	 * @param userMessage
 	 *            The new message to store or null if no updates of the message
