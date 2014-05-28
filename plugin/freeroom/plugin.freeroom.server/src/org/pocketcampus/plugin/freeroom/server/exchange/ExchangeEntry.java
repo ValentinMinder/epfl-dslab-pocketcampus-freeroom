@@ -31,9 +31,15 @@ import microsoft.exchange.webservices.data.WebCredentials;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
+/**
+ * 
+  * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ *         Valentin MINDER <valentin.minder@epfl.ch>
+ *
+ */
 public class ExchangeEntry {
-	private String gasparUserName = "juweber";
-	private String gasparPassword = "Dl1kdnrki[kfiur";
+	private String gasparUserName = "";
+	private String gasparPassword = "";
 	private String emailAddress = "julien.weber@epfl.ch";
 	private String domain = "intranet";
 
@@ -154,7 +160,7 @@ public class ExchangeEntry {
 					.getAttendeesAvailability()) {
 				AttendeeInfo attendee = attendees.get(attendeeIndex);
 				attendee.getSmtpAddress();
-				System.out.println(attendee.getSmtpAddress());
+				System.out.println("Getting availability for " + attendee.getSmtpAddress());
 				if (attendeeAvailability.getErrorCode() == ServiceError.NoError) {
 					for (CalendarEvent calendarEvent : attendeeAvailability
 							.getCalendarEvents()) {
@@ -172,12 +178,6 @@ public class ExchangeEntry {
 								.getEndTime().getTime()
 								+ offset
 								* FRTimes.ONE_MIN_IN_MS, false);
-						// System.out.println(calendarEvent
-						// .getStartTime() + "/" + calendarEvent
-						// .getEndTime());
-						// System.out.println(calendarEvent
-						// .getStartTime().getTime() + "/" + calendarEvent
-						// .getEndTime().getTime());
 						list.add(mFrPeriod2);
 					}
 				}
