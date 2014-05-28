@@ -1,6 +1,11 @@
 package org.pocketcampus.plugin.events.android;
 
-import static org.pocketcampus.android.platform.sdk.utils.SetUtils.*;
+import static org.pocketcampus.android.platform.sdk.utils.SetUtils.intersect;
+import static org.pocketcampus.plugin.events.android.EventsController.getEventPoolComp4sort;
+import static org.pocketcampus.plugin.events.android.EventsController.oneItemList;
+import static org.pocketcampus.plugin.events.android.EventsController.simpleDateFormat;
+import static org.pocketcampus.plugin.events.android.EventsController.simpleTimeFormat;
+import static org.pocketcampus.plugin.events.android.EventsMainView.EXTRAS_KEY_EVENTPOOLID;
 
 import java.util.Collections;
 import java.util.Date;
@@ -8,33 +13,29 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.pocketcampus.plugin.events.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
 import org.pocketcampus.android.platform.sdk.ui.adapter.MultiListAdapter;
 import org.pocketcampus.android.platform.sdk.utils.Preparated;
 import org.pocketcampus.android.platform.sdk.utils.Preparator;
 import org.pocketcampus.android.platform.sdk.utils.ScrollStateSaver;
+import org.pocketcampus.plugin.events.R;
 import org.pocketcampus.plugin.events.android.iface.IEventsView;
 import org.pocketcampus.plugin.events.shared.EventItem;
 import org.pocketcampus.plugin.events.shared.EventPool;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
-import static org.pocketcampus.plugin.events.android.EventsController.*;
-import static org.pocketcampus.plugin.events.android.EventsMainView.*;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 /**
  * EventDetailView - View that shows an Event details.
@@ -50,6 +51,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 	public static final String EXTRAS_KEY_EVENTITEMID = "eventItemId";
 	public static final String QUERYSTRING_KEY_EVENTITEMID = "eventItemId";
     public final static String MAP_KEY_EVENTPOOLID = "EVENT_POOL_ID";
+    public final static String MAP_KEY_EVENTPOOLTITLE = "EVENT_POOL_TITLE";
     public final static String MAP_KEY_EVENTPOOLCLICKLINK = "EVENT_POOL_CLICKLINK";  
 	
 	private ListView mList;
@@ -104,13 +106,15 @@ public class EventDetailView extends PluginView implements IEventsView {
 			return;
 		}
 		
-		//Tracker
-		Tracker.getInstance().trackPageView("events/" + eventItemId);
-		
 		mController.refreshEventItem(this, eventItemId, false);
 		eventItemsUpdated(null);
 	}
 
+	@Override
+	protected String screenName() {
+		return "/events/item";
+	}
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -287,10 +291,12 @@ public class EventDetailView extends PluginView implements IEventsView {
 					}
 				}
 				public void finalize(Map<String, Object> map, EventPool item) {
-					if(item.isSetOverrideLink())
+					if(item.isSetOverrideLink()) {
 						map.put(MAP_KEY_EVENTPOOLCLICKLINK, item.getOverrideLink());
-					else
+					} else {
 						map.put(MAP_KEY_EVENTPOOLID, item.getPoolId() + "");
+						map.put(MAP_KEY_EVENTPOOLTITLE, item.getPoolTitle());
+					}
 				}
 			});
 			adapter.addSection( new LazyAdapter(this, p4.getMap(),
@@ -349,9 +355,12 @@ public class EventDetailView extends PluginView implements IEventsView {
 					i.setData(Uri.parse(((Map<?, ?>) o).get(MAP_KEY_EVENTPOOLCLICKLINK).toString()));
 					EventDetailView.this.startActivity(i);
 				} else if(o instanceof Map<?, ?> && ((Map<?, ?>) o).containsKey(MAP_KEY_EVENTPOOLID)) {
+					String eId = ((Map<?, ?>) o).get(MAP_KEY_EVENTPOOLID).toString();
+					String eTitle = ((Map<?, ?>) o).get(MAP_KEY_EVENTPOOLTITLE).toString();
 					Intent i = new Intent(EventDetailView.this, EventsMainView.class);
-					i.putExtra(EXTRAS_KEY_EVENTPOOLID, ((Map<?, ?>) o).get(MAP_KEY_EVENTPOOLID).toString());
+					i.putExtra(EXTRAS_KEY_EVENTPOOLID, eId);
 					EventDetailView.this.startActivity(i);
+					trackEvent("ShowEventPool", eId + "-" + eTitle);
 				} else {
 					Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
 				}

@@ -1,9 +1,8 @@
 package org.pocketcampus.plugin.dashboard.android;
 
-import org.pocketcampus.plugin.dashboard.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
+import org.pocketcampus.plugin.dashboard.R;
 
 import android.os.Bundle;
 import android.text.Html;
@@ -19,8 +18,6 @@ public class AboutView extends PluginView {
 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
-		Tracker.getInstance().trackPageView("dashboard/about");
-		
 		setContentView(R.layout.dashboard_about);
 		
 		// sets the website link with the correct style
@@ -42,4 +39,10 @@ public class AboutView extends PluginView {
 		super.onPause();
 		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 	}
+	
+	@Override
+	protected String screenName() {
+		return "/dashboard/about";
+	}
+	
 }

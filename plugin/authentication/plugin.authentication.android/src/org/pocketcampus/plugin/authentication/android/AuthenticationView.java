@@ -1,9 +1,8 @@
 package org.pocketcampus.plugin.authentication.android;
 
-import org.pocketcampus.plugin.authentication.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
+import org.pocketcampus.plugin.authentication.R;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
 
 import android.content.Intent;
@@ -70,8 +69,6 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	 */
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
-		// Tracker
-		Tracker.getInstance().trackPageView("authentication");
 		
 		// Get and cast the controller and model
 		mController = (AuthenticationController) controller;
@@ -79,6 +76,11 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		
 		// The ActionBar is added automatically when you call setContentView, unless we disable it :-)
 		disableActionBar();
+	}
+	
+	@Override
+	protected String screenName() {
+		return "/authentication";
 	}
 	
 	/**
@@ -256,6 +258,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 				CheckBox storePasswordField = (CheckBox) findViewById(R.id.authentication_staylogged_cb);
 				mModel.setStorePassword(storePasswordField.isChecked());
 				mController.startPreLogin();
+				trackEvent("LogIn", (storePasswordField.isChecked() ? "SavePasswordYes" : "SavePasswordNo"));
 				done();
 			}
 		});
@@ -263,6 +266,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	}
 
 	private void askPermission() {
+		trackEvent("AuthenticateForService", mModel.getServiceName());
 		setContentView(R.layout.authentication_askpermissionpage);
 		TextView serviceName = (TextView) findViewById(R.id.authentication_servicelongname);
 		serviceName.setText(mModel.getServiceName());
@@ -272,6 +276,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		button = (Button) findViewById(R.id.authentication_alwaysallowbutton);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				trackEvent("AlwaysAllow", mModel.getServiceName());
 				mController.allowService(true);
 				done();
 			}
@@ -279,6 +284,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		button = (Button) findViewById(R.id.authentication_allowbutton);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				trackEvent("Allow", mModel.getServiceName());
 				mController.allowService(false);
 				done();
 			}
@@ -286,6 +292,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		button = (Button) findViewById(R.id.authentication_denybutton);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				trackEvent("Deny", mModel.getServiceName());
 				mController.denyService(false);
 				done();
 			}
@@ -293,6 +300,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		button = (Button) findViewById(R.id.authentication_alwaysdenybutton);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				trackEvent("AlwaysDeny", mModel.getServiceName());
 				mController.denyService(true);
 				done();
 			}

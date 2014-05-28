@@ -2,16 +2,15 @@ package org.pocketcampus.plugin.bikes.android;
 
 import java.util.ArrayList;
 
-import org.pocketcampus.plugin.bikes.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEmptyLayoutItem;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryAdapter;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCItem;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCSectionItem;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.plugin.bikes.R;
 import org.pocketcampus.plugin.bikes.android.iface.IBikesView;
 import org.pocketcampus.plugin.bikes.android.ui.BikesStationDialog;
 import org.pocketcampus.plugin.bikes.shared.BikeEmplacement;
@@ -26,7 +25,6 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 
 /**
@@ -58,7 +56,7 @@ public class BikesMainView extends PluginView implements IBikesView {
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 		//Tracker
-		Tracker.getInstance().trackPageView("bikes");
+//		Tracker.getInstance().trackPageView("bikes");
 		
 		// Get and cast the controller and model
 		mController = (BikesController) controller;
@@ -121,7 +119,7 @@ public class BikesMainView extends PluginView implements IBikesView {
 							dialog.show();
 
 //							Tracker
-							Tracker.getInstance().trackPageView("bikes/home/dialog/" + stationsName);
+//							Tracker.getInstance().trackPageView("bikes/home/dialog/" + stationsName);
 							// exiting the loop
 							break;
 						}
@@ -248,11 +246,7 @@ public class BikesMainView extends PluginView implements IBikesView {
 	 * Prepare the action bar 
 	 */
 	private void setUpActionBar() {
-		ActionBar a = getActionBar();
-		if (a != null) {
-			RefreshAction refresh = new RefreshAction();
-			a.addAction(refresh, 0);
-		}
+		addActionToActionBar(new RefreshAction(), 0);
 	}
 
 	/**
@@ -282,7 +276,7 @@ public class BikesMainView extends PluginView implements IBikesView {
 		@Override
 		public void performAction(View view) {
 //			Tracker
-			Tracker.getInstance().trackPageView("bikes/actionbar/refresh");
+//			Tracker.getInstance().trackPageView("bikes/actionbar/refresh");
 			
 			if(mList != null && mLayout != null && mController != null){
 				mList.invalidateViews();
@@ -309,7 +303,7 @@ public class BikesMainView extends PluginView implements IBikesView {
 	@Override
 	public void networkErrorHappened() {
 		//Tracker
-		Tracker.getInstance().trackPageView("bikes/network_error");
+//		Tracker.getInstance().trackPageView("bikes/network_error");
 		
 		mLayout.setText(getString(R.string.bikes_try_again_later));
 	}
@@ -324,4 +318,8 @@ public class BikesMainView extends PluginView implements IBikesView {
 		displayData();
 	}
 
+	@Override
+	protected String screenName() {
+		return "/bikes";
+	}
 }

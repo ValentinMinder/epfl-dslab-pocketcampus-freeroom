@@ -40,23 +40,29 @@ public class GlobalContext extends Application {
 	
 	private SdkStore store = null;
 	
+	public static final String GA_EVENT_CATEG = "UserAction";
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		
-		initializeConfig();
+		store = new SdkStore(this);
+		
+		refresh();
+	}
+	
+	public void refresh() {
+		loadConfig();
+		loadPluginManifests();
 		
 		//Starts the Tracker for the google analytics
 		GATracker.getInstance().start(getApplicationContext());
 		
-		mPluginInfoList = new HashMap<String, PluginInfo>();
-		
-		store = new SdkStore(this);
-		
-		loadPluginManifests();
 	}
 
 	private void loadPluginManifests() {
+		mPluginInfoList = new HashMap<String, PluginInfo>();
+		
 		PackageManager pm = getPackageManager();
 		PluginFilter pluginFilter = new PluginFilter(this);
 		pluginFilter.setActionConstraint("pocketcampus.intent.action.PLUGIN_MAIN");
@@ -161,7 +167,7 @@ public class GlobalContext extends Application {
 		mRequestActivityListener = requestActivityListener;
 	}
 
-	private void initializeConfig() {
+	private void loadConfig() {
 		
 		try {
 			

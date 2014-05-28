@@ -21,10 +21,9 @@ import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.MyLocationOverlay;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.TilesOverlay;
-import org.pocketcampus.plugin.map.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
+import org.pocketcampus.plugin.map.R;
 import org.pocketcampus.plugin.map.android.cache.LayersCache;
 import org.pocketcampus.plugin.map.android.elements.MapElement;
 import org.pocketcampus.plugin.map.android.elements.MapElementsList;
@@ -129,8 +128,6 @@ public class MapMainView extends PluginView implements IMapView {
 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
-		// Tracker
-		Tracker.getInstance().trackPageView("map");
 		
 		mController = (MapMainController) controller;
 		mModel = (MapModel) controller.getModel();
@@ -195,7 +192,7 @@ public class MapMainView extends PluginView implements IMapView {
 		updateOverlays(false);
 		mapView_.postInvalidate();
 		
-		Tracker.getInstance().trackPageView("map/changeLevel" + level);
+		trackEvent("ChangeLevel", "" + level);
 	}
 	
 	/**
@@ -337,6 +334,11 @@ public class MapMainView extends PluginView implements IMapView {
 
 		super.onResume();
 	}
+	
+	@Override
+	protected String screenName() {
+		return "/map";
+	}
 
 	/**
 	 * Disable the location service and the layers refresh
@@ -422,7 +424,6 @@ public class MapMainView extends PluginView implements IMapView {
 				Toast.makeText(this, getResources().getString(R.string.map_compute_position), Toast.LENGTH_LONG).show();
 			}
 			toggleCenterOnUserPosition();
-			Tracker.getInstance().trackPageView("map/menu/togglPosition");
 			return true;
 
 
@@ -436,7 +437,7 @@ public class MapMainView extends PluginView implements IMapView {
 			// Shows the search dialog
 		case R.id.map_search:
 			onSearchRequested();
-			Tracker.getInstance().trackPageView("map/menu/search"); 
+			trackEvent("Search", null);
 			return true;
 			
 //		case R.id.map_clear_path:
@@ -494,6 +495,8 @@ public class MapMainView extends PluginView implements IMapView {
 			myLocationOverlay_.disableMyLocation();
 			myLocationOverlay_.disableFollowLocation();
 			
+			trackEvent("CenterOnSelf", "false");
+			
 			if(DEBUG) {
 				googleLocationOverlay_.disableMyLocation();
 			}
@@ -501,6 +504,8 @@ public class MapMainView extends PluginView implements IMapView {
 		} else {
 			myLocationOverlay_.enableMyLocation();
 			myLocationOverlay_.enableFollowLocation();
+			
+			trackEvent("CenterOnSelf", "true");
 			
 			if(DEBUG) {
 				googleLocationOverlay_.enableMyLocation();

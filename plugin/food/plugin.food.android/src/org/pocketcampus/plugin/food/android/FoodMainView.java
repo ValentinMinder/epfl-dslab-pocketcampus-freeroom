@@ -1,8 +1,10 @@
 package org.pocketcampus.plugin.food.android;
 
-import static org.pocketcampus.android.platform.sdk.utils.SetUtils.*;
-import static org.pocketcampus.android.platform.sdk.utils.MapUtils.*;
-import static org.pocketcampus.android.platform.sdk.utils.DialogUtils.*;
+import static org.pocketcampus.android.platform.sdk.utils.DialogUtils.showMultiChoiceDialog;
+import static org.pocketcampus.android.platform.sdk.utils.DialogUtils.showMultiChoiceDialogSbN;
+import static org.pocketcampus.android.platform.sdk.utils.DialogUtils.showSingleChoiceDialog;
+import static org.pocketcampus.android.platform.sdk.utils.MapUtils.subMap;
+import static org.pocketcampus.android.platform.sdk.utils.SetUtils.difference;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -22,17 +24,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import org.pocketcampus.plugin.food.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
-import org.pocketcampus.android.platform.sdk.ui.adapter.MultiListAdapter;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuated;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuator;
+import org.pocketcampus.android.platform.sdk.ui.adapter.MultiListAdapter;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.android.platform.sdk.utils.DialogUtils.MultiChoiceHandler;
+import org.pocketcampus.android.platform.sdk.utils.DialogUtils.SingleChoiceHandler;
 import org.pocketcampus.android.platform.sdk.utils.Preparated;
 import org.pocketcampus.android.platform.sdk.utils.Preparator;
 import org.pocketcampus.android.platform.sdk.utils.ScrollStateSaver;
+import org.pocketcampus.plugin.food.R;
 import org.pocketcampus.plugin.food.android.FoodController.AMeal;
 import org.pocketcampus.plugin.food.android.FoodController.AResto;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
@@ -40,7 +44,6 @@ import org.pocketcampus.plugin.food.shared.MealTime;
 import org.pocketcampus.plugin.food.shared.MealType;
 import org.pocketcampus.plugin.food.shared.PriceTarget;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
-import org.pocketcampus.plugin.map.shared.MapItem;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -55,15 +58,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 import com.markupartist.android.widget.ActionBar.Action;
@@ -158,6 +161,11 @@ public class FoodMainView extends PluginView implements IFoodView {
 	}
 
 	@Override
+	protected String screenName() {
+		return "/food";
+	}
+	
+	@Override
 	protected void onPause() {
 		super.onPause();
 		if(displayingList)
@@ -180,8 +188,10 @@ public class FoodMainView extends PluginView implements IFoodView {
 						try {
 							DateFormat df = new SimpleDateFormat("yyyy-M-d'T'HH:mm:ss'Z'", Locale.US);
 							df.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
-							foodDay = df.parse(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + "T12:00:00Z").getTime();
+							String day = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+							foodDay = df.parse(day + "T12:00:00Z").getTime();
 							mController.refreshFood(FoodMainView.this, foodDay, foodTime, false);
+							trackEvent("ViewDay", day);
 						} catch (ParseException e) {
 							e.printStackTrace();
 						}
@@ -195,6 +205,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		pickTimeMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				foodTime = (foodTime == MealTime.DINNER ? MealTime.LUNCH : MealTime.DINNER);
+				trackEvent((foodTime == MealTime.DINNER ? "ViewDinner" : "ViewLunch"), null);
 				mController.refreshFood(FoodMainView.this, foodDay, foodTime, false);
 				return true;
 			}
@@ -246,6 +257,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		if(subMapRestos.size() > 0) {
 			addActionToActionBar(new Action() {
 				public void performAction(View view) {
+					trackEvent("FilterByRestaurant", null);
 					showMultiChoiceDialogSbN(FoodMainView.this, subMapRestos, getString(R.string.food_dialog_resto), filteredRestos, new MultiChoiceHandler<Long>() {
 						public void saveSelection(Long t, boolean isChecked) {
 							if(isChecked)
@@ -266,6 +278,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		if(subMapTypes.size() > 0) {
 			addActionToActionBar(new Action() {
 				public void performAction(View view) {
+					trackEvent("FilterByIngredient", null);
 					showMultiChoiceDialog(FoodMainView.this, subMapTypes, getString(R.string.food_dialog_types), filteredTypes, new MultiChoiceHandler<MealType>() {
 						public void saveSelection(MealType t, boolean isChecked) {
 							if(isChecked)
@@ -334,7 +347,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 					case R.id.food_list_header_map:
 						return new Actuated(getString(R.string.food_button_seemap_inline), new Actuator() {
 							public void triggered() {
-								showOnMap(e.location);
+								showOnMap(e);
 							}
 						});
 					default:
@@ -437,11 +450,12 @@ public class FoodMainView extends PluginView implements IFoodView {
 		}
 	}
 	
-	private void sendToGoogleTranslate(String str) {
+	private void sendToGoogleTranslate(AMeal m) {
+		trackEvent("SendToGoogleTranslate", "" + m.id);
 		try{
 			Intent i = new Intent();
 			i.setAction(Intent.ACTION_SEND);
-			i.putExtra(Intent.EXTRA_TEXT, str);
+			i.putExtra(Intent.EXTRA_TEXT, m.name + " " + m.desc);
 			i.setComponent(new ComponentName("com.google.android.apps.translate", "com.google.android.apps.translate.TranslateActivity"));
 			startActivity(i);
 		} catch(Exception e) {
@@ -449,12 +463,13 @@ public class FoodMainView extends PluginView implements IFoodView {
 		}
 	}
 	
-	private void showOnMap(MapItem mapItem) {
+	private void showOnMap(AResto r) {
+		trackEvent("ViewRestaurantOnMap", r.name);
 		try{
 			Intent i = new Intent();
 			i.setAction(Intent.ACTION_VIEW);
 			i.setData(Uri.parse("pocketcampus://map.plugin.pocketcampus.org/search"));
-			i.putExtra("MapElement", mapItem);
+			i.putExtra("MapElement", r.location);
 			startActivity(i);
 		} catch(Exception e) {
 			// Should never happen
@@ -463,6 +478,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 	}
 	
 	private void promptUserStatus() {
+		trackEvent("PromptUserStatus", null);
 		Map<PriceTarget, String> priceTargets = new HashMap<PriceTarget, String>();
 		for(PriceTarget t : PriceTarget.values()) {
 			if(t == PriceTarget.ALL)
@@ -478,6 +494,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 	}
 
 	private void voteFor(final AMeal e) {
+		trackEvent("RateMeal", "" + e.id);
 		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View titleV = inflater.inflate(R.layout.sdk_actionbar_dialog, null);
@@ -564,12 +581,13 @@ public class FoodMainView extends PluginView implements IFoodView {
 							voteFor(m);
 							break;
 						case 1:
-							sendToGoogleTranslate(m.name + " " + m.desc);
+							sendToGoogleTranslate(m);
 							break;
 						case 2:
 							android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 						    clipboard.setText(m.name + " " + m.desc);
 							Toast.makeText(getApplicationContext(), getString(R.string.food_toast_copied), Toast.LENGTH_SHORT).show();
+							trackEvent("CopyToClipboard", "" + m.id);
 							break;
 						default:
 							Toast.makeText(getApplicationContext(), arg1, Toast.LENGTH_SHORT).show();

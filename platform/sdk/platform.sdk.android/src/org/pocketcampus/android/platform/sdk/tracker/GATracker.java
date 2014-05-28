@@ -65,7 +65,9 @@ public class GATracker {
 	 * @param pageView
 	 *            The tag of the page view.
 	 */
-	public void trackPageView(String pageView) {
+	public void sendScreen(String pageView) {
+		if(pageView == null)
+			return;
 		try {
 			// Sending the same screen view hit using MapBuilder.createAppView()
 			mGoogleTracker.send(MapBuilder.createAppView()
@@ -93,8 +95,8 @@ public class GATracker {
 	 *            An integer that you can use to provide numerical data about
 	 *            the user event.
 	 */
-	public void trackEvent(String category, String action, String label,
-			long value) {
+	public void sendEvent(String category, String action, String label,
+			Long value) {
 		try {
 			// MapBuilder.createEvent().build() returns a Map of event fields
 			// and values that are set and sent with the hit.

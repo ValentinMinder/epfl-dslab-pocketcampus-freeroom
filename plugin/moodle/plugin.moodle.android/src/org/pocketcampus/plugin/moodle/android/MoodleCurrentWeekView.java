@@ -5,11 +5,10 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pocketcampus.plugin.moodle.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.plugin.moodle.R;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.shared.MoodleResource;
 import org.pocketcampus.plugin.moodle.shared.MoodleSection;
@@ -23,11 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.markupartist.android.widget.ActionBar.Action;
 
@@ -63,8 +62,6 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
-		//Tracker
-		Tracker.getInstance().trackPageView("moodle/course");
 		
 		// Get and cast the controller and model
 		mController = (MoodleController) controller;
@@ -121,6 +118,11 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 	}
 
 	@Override
+	protected String screenName() {
+		return "/moodle/course";
+	}
+	
+	@Override
 	public void coursesListUpdated() {
 	}
 
@@ -175,6 +177,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 				ResourceInfo resourceInfo = ((ResourceInfo) arg0.getItemAtPosition(arg2));
 				if(resourceInfo.value == null)
 					return;
+				trackEvent("DownloadAndOpenFile", resourceInfo.title);
 				File resourceFile = new File(MoodleController.getLocalPath(resourceInfo.value, false));
 				if(resourceFile.exists()) {
 					openFile(MoodleCurrentWeekView.this, resourceFile);
@@ -350,38 +353,6 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 	}
 
 	/**
-	 * Refreshes moodle
-	 * 
-	 * @author Amer <amer.chamseddine@epfl.ch>
-	 * 
-	 */
-//	private class RefreshAction implements Action {
-//
-//		/**
-//		 * The constructor which doesn't do anything
-//		 */
-//		RefreshAction() {
-//		}
-//
-//		/**
-//		 * Returns the resource for the icon of the button in the action bar
-//		 */
-//		@Override
-//		public int getDrawable() {
-//			return R.drawable.sdk_action_bar_refresh;
-//		}
-//
-//		/**
-//		 * Defines what is to be performed when the user clicks on the button in
-//		 * the action bar
-//		 */
-//		@Override
-//		public void performAction(View view) {
-//			mController.refreshSectionsList(true, courseId);
-//		}
-//	}
-
-	/**
 	 * ToggleShowAllAction
 	 * 
 	 * @author Amer <amer.chamseddine@epfl.ch>
@@ -409,6 +380,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 		 */
 		@Override
 		public void performAction(View view) {
+			trackEvent("ShowCurrentWeek", "" + (current == 0));
 			if(current != 0) {
 				current = 0;
 				sectionsListUpdated();

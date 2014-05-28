@@ -4,11 +4,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pocketcampus.plugin.moodle.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.plugin.moodle.R;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
 
@@ -54,8 +53,6 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
-		//Tracker
-		Tracker.getInstance().trackPageView("moodle");
 		
 		// Get and cast the controller and model
 		mController = (MoodleController) controller;
@@ -68,11 +65,6 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		setContentView(mLayout);
 		mLayout.hideTitle();
 
-//		ActionBar a = getActionBar();
-//		if (a != null) {
-//			RefreshAction refresh = new RefreshAction();
-//			a.addAction(refresh, 0);
-//		}
 	}
 
 	/**
@@ -107,6 +99,11 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 			finish();
 		}*/
 	}
+	
+	@Override
+	protected String screenName() {
+		return "/moodle";
+	}
 
 	@Override
 	public void coursesListUpdated() {
@@ -134,6 +131,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 				i.putExtra("courseId", courseInfo.value);
 				i.putExtra("courseTitle", courseInfo.title);
 				MoodleMainView.this.startActivity(i);
+				trackEvent("ViewCourse", courseInfo.value + "-" + courseInfo.title);
 			}
 		});
 		//lv.setItemsCanFocus(true);
@@ -286,39 +284,5 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		}
 		
 	}
-
-	/**
-	 * Refreshes moodle
-	 * 
-	 * @author Amer <amer.chamseddine@epfl.ch>
-	 * 
-	 */
-//	private class RefreshAction implements Action {
-//
-//		/**
-//		 * The constructor which doesn't do anything
-//		 */
-//		RefreshAction() {
-//		}
-//
-//		/**
-//		 * Returns the resource for the icon of the button in the action bar
-//		 */
-//		@Override
-//		public int getDrawable() {
-//			return R.drawable.sdk_action_bar_refresh;
-//		}
-//
-//		/**
-//		 * Defines what is to be performed when the user clicks on the button in
-//		 * the action bar
-//		 */
-//		@Override
-//		public void performAction(View view) {
-//			//Tracker
-//			Tracker.getInstance().trackPageView("moodle/refresh");
-//			mController.refreshCoursesList(true);
-//		}
-//	}
 
 }

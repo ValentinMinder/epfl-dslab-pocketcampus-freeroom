@@ -6,8 +6,10 @@ import java.io.InputStream;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.pocketcampus.android.platform.sdk.core.GlobalContext;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.dashboard.android.DashboardController;
+import org.pocketcampus.plugin.dashboard.android.DashboardView;
 
 import android.content.Context;
 
@@ -18,6 +20,12 @@ import android.content.Context;
  *
  */
 public class FetchDynamicConfigRequest extends Request<DashboardController, DefaultHttpClient, Context, Boolean> {
+	
+	DashboardView view;
+	
+	public FetchDynamicConfigRequest(DashboardView view) {
+		this.view = view;
+	}
 	
 	@Override
 	protected Boolean runInBackground(DefaultHttpClient client, Context param) throws Exception {
@@ -38,8 +46,12 @@ public class FetchDynamicConfigRequest extends Request<DashboardController, Defa
 
 	@Override
 	protected void onResult(DashboardController controller, Boolean result) {
-		if(!result)
+		if(result) {
+			((GlobalContext) controller.getApplicationContext()).refresh();
+			view.displayPlugins();
+		} else {
 			System.out.println("Could not fetch config file: Bad server response");
+		}
 	}
 	
 	@Override

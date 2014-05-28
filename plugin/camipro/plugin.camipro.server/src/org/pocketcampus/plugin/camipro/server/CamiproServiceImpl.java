@@ -231,6 +231,7 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		Gson gson = new Gson();
 		Cookie cookie = new Cookie();
 		cookie.importFromString(iRequest.getISessionId().getCamiproCookie());
+		System.out.println(iRequest.getISessionId().getCamiproCookie());
 		
 		try {
 			balPage = getPageWithCookie("https://cmp2www.epfl.ch/ws/balance", cookie);
@@ -239,6 +240,9 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 			e.printStackTrace();
 			return new BalanceAndTransactions(404);
 		}
+		System.out.println(balPage);
+		System.out.println(trxPage);
+		System.out.println("===");
 		if(balPage == null || trxPage == null) {
 			System.out.println("not logged in");
 			return new BalanceAndTransactions(407);

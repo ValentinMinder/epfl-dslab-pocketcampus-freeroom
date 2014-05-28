@@ -101,6 +101,7 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			}
 			public void afterTextChanged(Editable s) {
+				trackEvent("Search", null);
 				mController.search(DirectoryMainView.this, s.toString());
 			}
 		});
@@ -152,6 +153,10 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 		super.onPause();
 	}
 	
+	@Override
+	protected String screenName() {
+		return "/directory";
+	}
 	
 	
 	@Override
@@ -223,6 +228,7 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 							builder.scheme("pocketcampus").authority("directory.plugin.pocketcampus.org").appendPath("search").appendQueryParameter("q", ((Person) obj).getSciper());
 							Intent i = new Intent(Intent.ACTION_VIEW, builder.build());
 							startActivity(i);
+							trackEvent("ViewPerson", ((Person) obj).getFirstName() + " " + ((Person) obj).getLastName());
 						}
 					} else {
 						Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();

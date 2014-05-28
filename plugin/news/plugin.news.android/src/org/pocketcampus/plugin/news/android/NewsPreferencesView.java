@@ -5,13 +5,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import org.pocketcampus.plugin.news.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.PreferencesListViewElement;
+import org.pocketcampus.plugin.news.R;
 import org.pocketcampus.plugin.news.android.iface.INewsModel;
 
 import android.app.Activity;
@@ -72,8 +71,6 @@ public class NewsPreferencesView extends PluginView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
-		// Tracker
-		Tracker.getInstance().trackPageView("news/preferences");
 		// Get and cast the model
 		mModel = (NewsModel) controller.getModel();
 
@@ -88,6 +85,11 @@ public class NewsPreferencesView extends PluginView {
 		// We need to force the display before asking the controller for the
 		// data, as the controller may take some time to get it.
 		displayData();
+	}
+	
+	@Override
+	protected String screenName() {
+		return "/news/settings";
 	}
 
 	/**
@@ -146,16 +148,12 @@ public class NewsPreferencesView extends PluginView {
 					int position, long isChecked) {
 
 				if (isChecked == 1) {
-					// Tracker
-					Tracker.getInstance().trackPageView(
-							"news/preferences/add/" + mFeedNames.get(position));
+					trackEvent("AddFeed", mFeedNames.get(position));
 					mNewsPrefsEditor.putBoolean(mFeedNames.get(position), true);
 					Log.d("Prefs", mFeedNames.get(position));
 					mNewsPrefsEditor.commit();
 				} else {
-					Tracker.getInstance().trackPageView(
-							"news/preferences/remove/"
-									+ mFeedNames.get(position));
+					trackEvent("RemoveFeed", mFeedNames.get(position));
 					Log.d("Prefs", mFeedNames.get(position));
 
 					mNewsPrefsEditor.putBoolean(mFeedNames.get(position), false);

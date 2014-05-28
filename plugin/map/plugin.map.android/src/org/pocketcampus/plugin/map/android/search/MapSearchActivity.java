@@ -128,6 +128,7 @@ public class MapSearchActivity extends PluginView implements IMapView {
 	 *            a map element to be displayed.
 	 */
 	private void startMapActivity(MapItem mapItem) {
+		trackEvent("SelectResult", mapItem.getTitle());
 		Intent startMapActivity = new Intent(this, MapMainView.class);
 		startMapActivity.putExtra("MapElement", mapItem);
 		startMapActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -163,5 +164,10 @@ public class MapSearchActivity extends PluginView implements IMapView {
 
 	@Override
 	public void layerItemsUpdated() {
+	}
+	
+	@Override
+	protected String screenName() {
+		return "/map/searchResultsList";
 	}
 }

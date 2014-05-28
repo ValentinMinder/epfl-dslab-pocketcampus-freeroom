@@ -1,10 +1,9 @@
 package org.pocketcampus.plugin.blank.android;
 
-import org.pocketcampus.plugin.blank.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.plugin.blank.R;
 import org.pocketcampus.plugin.blank.android.iface.IBlankView;
 
 import android.os.Bundle;
@@ -36,9 +35,6 @@ public class BlankMainView extends PluginView implements IBlankView {
 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
-		//Tracker
-		Tracker.getInstance().trackPageView("blank");
-		
 		// Get and cast the controller and model
 		mController = (BlankController) controller;
 		mModel = (BlankModel) controller.getModel();
@@ -67,6 +63,11 @@ public class BlankMainView extends PluginView implements IBlankView {
 			// Resumed and lot logged in? go back
 			finish();
 		}*/
+	}
+	
+	@Override
+	protected String screenName() {
+		return "/blank";
 	}
 
 	@Override

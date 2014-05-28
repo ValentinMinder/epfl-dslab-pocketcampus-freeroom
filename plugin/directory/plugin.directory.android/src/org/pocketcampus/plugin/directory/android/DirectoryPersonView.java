@@ -116,6 +116,10 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 		super.onPause();
 	}
 	
+	@Override
+	protected String screenName() {
+		return "/directory/person";
+	}
 	
 	
 	@Override
@@ -187,21 +191,21 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 		if(p.isSetOfficePhoneNumber() || p.isSetPrivatePhoneNumber()) {
 			//ic_menu_call,ic_dialog_dialer
 			String pN = (p.isSetOfficePhoneNumber() ? p.getOfficePhoneNumber() : p.getPrivatePhoneNumber());
-			actions.add(new PersonInteraction(R.drawable.directory_phone, pN, Uri.parse("tel:" + pN)));
+			actions.add(new PersonInteraction(R.drawable.directory_phone, pN, Uri.parse("tel:" + pN), "Call"));
 		}
 		if(p.isSetEmail()) {
 			//ic_dialog_email, ic_menu_send
-			actions.add(new PersonInteraction(R.drawable.directory_mail, p.getEmail(), Uri.parse("mailto:" + p.getEmail())));
+			actions.add(new PersonInteraction(R.drawable.directory_mail, p.getEmail(), Uri.parse("mailto:" + p.getEmail()), "SendEmail"));
 		}
 		if(p.isSetWeb()) {
 			//ic_dialog_info, ic_menu_info_details
-			actions.add(new PersonInteraction(R.drawable.directory_web, p.getWeb(), Uri.parse(p.getWeb())));
+			actions.add(new PersonInteraction(R.drawable.directory_web, p.getWeb(), Uri.parse(p.getWeb()), "ViewWebsite"));
 		}
 		if(p.isSetOffice()) {
 			//ic_dialog_map, ic_menu_compass, ic_menu_mapmode
 			Uri.Builder builder = new Uri.Builder();
 			builder.scheme("pocketcampus").authority("map.plugin.pocketcampus.org").appendPath("search").appendQueryParameter("q", p.getOffice());
-			actions.add(new PersonInteraction(R.drawable.directory_map, p.getOffice(), builder.build()));
+			actions.add(new PersonInteraction(R.drawable.directory_map, p.getOffice(), builder.build(), "ViewOffice"));
 		}
 		
 		
@@ -240,6 +244,7 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 				if(o instanceof Map<?, ?>) {
 					Object obj = ((Map<?, ?>) o).get(MAP_KEY_ACTION_URI);
 					if(obj != null && obj instanceof PersonInteraction) {
+						trackEvent(((PersonInteraction) obj).tracking, ((PersonInteraction) obj).text);
 						Intent i = new Intent(Intent.ACTION_VIEW, ((PersonInteraction) obj).uri);
 						startActivity(i);
 					}
@@ -252,6 +257,7 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 		removeAllActionsFromActionBar();
 		addActionToActionBar(new Action() {
 			public void performAction(View view) {
+				trackEvent("CreateNewContact", null);
 				DirectoryController.importContact(DirectoryPersonView.this, p);
 			}
 			public int getDrawable() {
@@ -267,10 +273,12 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 		int icon;
 		String text;
 		Uri uri;
-		public PersonInteraction(int icon, String text, Uri uri) {
+		String tracking;
+		public PersonInteraction(int icon, String text, Uri uri, String tracking) {
 			this.icon = icon;
 			this.text = text;
 			this.uri = uri;
+			this.tracking = tracking;
 		}
 	}
 	

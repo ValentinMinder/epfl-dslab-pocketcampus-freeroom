@@ -92,4 +92,10 @@ public class NewsItemView extends PluginView {
 			Log.d("NEWSITEMVIEW", "No extras received!");
 		}
 	}
+	
+	@Override
+	protected String screenName() {
+		return "/news/item";
+	}
+	
 }
