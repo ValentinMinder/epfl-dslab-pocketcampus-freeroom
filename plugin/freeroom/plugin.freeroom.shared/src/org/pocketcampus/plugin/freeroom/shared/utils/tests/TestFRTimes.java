@@ -18,6 +18,7 @@ public class TestFRTimes {
 	public void testValidCalendars() {
 
 		Calendar calStart = Calendar.getInstance();
+
 		// 24.03.2014 was a Monday, no problem
 		calStart.set(2014, 02, 24, 9, 0, 0);
 		calStart.set(Calendar.MILLISECOND, 0);
@@ -244,11 +245,5 @@ public class TestFRTimes {
 		}
 
 	}
-	
-	@Test
-	public void testGetNextValidPeriodIsNeededValidPeriod() {
-		// TODO: write this test for many cases!
-	}
-	
 
 }
