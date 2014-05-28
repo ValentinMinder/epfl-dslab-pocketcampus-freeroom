@@ -345,11 +345,11 @@ public class FoodMainView extends PluginView implements IFoodView {
 					case R.id.food_list_header_satisfaction:
 						return e.satisfaction;
 					case R.id.food_list_header_map:
-						return new Actuated(getString(R.string.food_button_seemap_inline), new Actuator() {
+						return e.location != null ? new Actuated(getString(R.string.food_button_seemap_inline), new Actuator() {
 							public void triggered() {
 								showOnMap(e);
 							}
-						});
+						}) : null;
 					default:
 						return null;
 					}

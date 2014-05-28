@@ -43,13 +43,16 @@ public abstract class PluginController extends Service {
 	protected TServiceClient getClient(
 			TServiceClientFactory<? extends TServiceClient> clientFactory,
 			String pluginName) {
+		HttpClient httpInitialClient = getThreadSafeClient();
+		return getClient(httpInitialClient, clientFactory, pluginName);
+	}
+	
+	protected TServiceClient getClient(HttpClient httpInitialClient,
+			TServiceClientFactory<? extends TServiceClient> clientFactory,
+			String pluginName) {
 		TServiceClient client = null;
 		String url = getBackendUrl(pluginName, false);
-
-		System.out.println(url);
 		try {
-			HttpClient httpInitialClient = getThreadSafeClient();
-
 			THttpClient httpClient = new THttpClient(url, httpInitialClient);
 			httpClient.setConnectTimeout(5000);
 			httpClient.setReadTimeout(60000);

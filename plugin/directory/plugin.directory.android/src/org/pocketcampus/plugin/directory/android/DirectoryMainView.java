@@ -101,8 +101,7 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			}
 			public void afterTextChanged(Editable s) {
-				trackEvent("Search", null);
-				mController.search(DirectoryMainView.this, s.toString());
+				performSearchIfNeeded();
 			}
 		});
 		
@@ -113,6 +112,13 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 			}
 		});
 		
+	}
+	
+	private void performSearchIfNeeded() {
+		String s = ((EditText) findViewById(R.id.directory_searchinput)).getText().toString();
+		if(mController.search(this, s)) {
+			trackEvent("Search", s);
+		}
 	}
 	
 
@@ -240,9 +246,8 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 				scrollState.restore(listView);*/
 			
 		}
-		
-		EditText s = (EditText) findViewById(R.id.directory_searchinput);
-		mController.search(this, s.getText().toString());
+
+		performSearchIfNeeded();
 		
 	}
 	

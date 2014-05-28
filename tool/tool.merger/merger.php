@@ -1,27 +1,27 @@
 <?php
 /**
   ANDROID CLIENT MERGER
-  
+
   This script merges the PocketCampus android client
   It transforms all the plugins into a single project
   that you can build using ANT or imoprt it in eclipse
-  
+
   You should specify $plugins_to_merge and $libs_to_export
-  
+
   @Author: Amer C (amer.chamseddine@epfl.ch)
 */
 
 chdir(dirname(__FILE__));
 
-$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Satellite", "Map", "Bikes", "Directory", "PushNotif", "Sunrise", "Events", "QAforum");
+$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Map", "Directory", "PushNotif", "Events"); // ("Satellite", "Bikes", "Sunrise", "QAforum");
 
 $libs_to_export = array(
 		"android-support-v4.jar",
-		"commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar", 
-		"gcm.jar", 
-		"libGoogleAnalytics.jar", 
-		"osmdroid-android-3.0.3.jar", 
-		"servlet-api-3.0.jar", "slf4j-api-1.6.2.jar", 
+		"commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar",
+		"gcm.jar",
+		"libGoogleAnalyticsServices.jar",
+		"osmdroid-android-3.0.3.jar",
+		"servlet-api-3.0.jar", "slf4j-api-1.6.2.jar",
 		"universal-image-loader-1.8.0.jar");
 
 $path_to_plugin_dir = "../../plugin";
@@ -60,7 +60,7 @@ function import_nodes($file, $tag, $doc, $parent_node, $nodes_to_remove) {
 function generate_android_manifest($output_dir, $is_lib){
 	global $plugins_to_merge;
 	global $path_to_plugin_dir;
-	
+
 	global $versionCode;
 	global $versionName;
 
@@ -204,13 +204,13 @@ function generate_project_properties($output_dir, $is_lib, $refs){
 
 function generate_dot_classpath($output_dir){
 	global $libs_to_export;
-	
+
 	$doc = new DOMDocument("1.0", "utf-8");
 	$doc->formatOutput = true;
 
 	$cp = $doc->createElement("classpath");
 	$doc->appendChild($cp);
-	
+
 	$cpe = $doc->createElement("classpathentry");
 	$cp->appendChild($cpe);
 	$cpe->setAttribute("kind", "src");
@@ -252,7 +252,7 @@ function generate_dot_project($output_dir, $project_name){
 
 	$projectDescription = $doc->createElement("projectDescription");
 	$doc->appendChild($projectDescription);
-	
+
 	$name = $doc->createElement("name");
 	$name->appendChild($doc->createTextNode($project_name));
 	$projectDescription->appendChild($name);
@@ -328,7 +328,7 @@ function copyr($source, $dest) {
 	if (is_link($source)) {
 		return symlink(readlink($source), $dest);
 	}
-	
+
 	// Simple copy for a file
 	if (is_file($source)) {
 		return copy($source, $dest);

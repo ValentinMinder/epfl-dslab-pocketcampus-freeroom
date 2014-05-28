@@ -84,6 +84,8 @@ public class GlobalContext extends Application {
 			try {
 				pluginInfo.setMainClassName(activityInfo.name);
 				pluginInfo.setMainPackageName(activityInfo.packageName);
+				
+				pluginInfo.setId(shName);
 
 				pluginInfo.setIcon(resolveInfo.loadIcon(pm));
 				pluginInfo.setLabel(resolveInfo.loadLabel(pm).toString());

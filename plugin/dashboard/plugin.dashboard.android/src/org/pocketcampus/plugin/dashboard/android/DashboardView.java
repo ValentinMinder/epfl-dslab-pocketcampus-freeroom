@@ -163,7 +163,7 @@ public class DashboardView extends PluginView {
 			launcherView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					trackEvent("OpenPlugin", pluginInfo.getLabel());
+					trackEvent("OpenPlugin", pluginInfo.getId());
 					((GlobalContext) mContext.getApplicationContext()).displayPlugin(mContext, pluginInfo);
 				}
 			});
