@@ -92,6 +92,8 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupCollapseListener;
+import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -815,6 +817,22 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				getApplicationContext(), mModel.getOccupancyResults(),
 				mController, this);
 		mExpListView.setAdapter(mExpListAdapter);
+		mExpListView.setOnGroupExpandListener(new OnGroupExpandListener() {
+
+			@Override
+			public void onGroupExpand(int groupPosition) {
+				// when we expand a group, it gets the focus (highlighted)
+				mExpListAdapter.setGroupFocus(groupPosition);
+			}
+		});
+		mExpListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
+
+			@Override
+			public void onGroupCollapse(int groupPosition) {
+				// when we collapse a group, no group has focused (highlight)
+				mExpListAdapter.setGroupFocus(-1);
+			}
+		});
 		// replay the onTouchEvent on the List to home View.
 		mExpListView.setOnTouchListener(new OnTouchListener() {
 
@@ -2341,6 +2359,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				ev.expandGroup(i);
 			}
 		}
+		mExpListAdapter.setGroupFocus(-1);
 	}
 
 	/**

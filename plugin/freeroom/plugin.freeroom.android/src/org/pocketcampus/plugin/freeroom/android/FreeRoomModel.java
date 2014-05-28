@@ -76,6 +76,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public final int COLOR_CHECK_OCCUPANCY_FREE = Color.rgb(97, 215, 18);
 	public final int COLOR_CHECK_OCCUPANCY_OCCUPIED = Color.rgb(215, 20, 20);
 	public final int COLOR_CHECK_OCCUPANCY_ATLEASTONCE = Color.rgb(236, 244, 7);
+	public final int COLOR_HEADER_HIGHLIGHT = Color.YELLOW;
 
 	public final int DEFAULT_GROUP_ACCESS = 10;
 

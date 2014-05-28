@@ -51,6 +51,10 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 	private FreeRoomModel mModel;
 	private FreeRoomController mController;
 	private FreeRoomHomeView homeView;
+	/**
+	 * Stores the group index for which it should be highlighted.
+	 */
+	private int focusedGroup = -1;
 
 	public ExpandableListViewAdapter(Context c,
 			OrderMapListFew<String, List<?>, Occupancy> data,
@@ -295,13 +299,22 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		}
 
 		if (v.isGroupExpanded(groupPosition)) {
-			convertView
-					.setBackgroundColor(mModel.COLOR_CHECK_OCCUPANCY_DEFAULT);
+			tv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+			// if the group is highlighted.
+			if (groupPosition == focusedGroup) {
+				convertView.setBackgroundColor(mModel.COLOR_HEADER_HIGHLIGHT);
+			} else {
+				convertView
+						.setBackgroundColor(mModel.COLOR_CHECK_OCCUPANCY_DEFAULT);
+			}
 		} else {
 			// color of the first child, as it's the less occupied.
 			// the get color method handles null values.
-			convertView.setBackgroundColor(mModel.getColor(getChildObject(
-					groupPosition, 0)));
+			convertView
+					.setBackgroundColor(mModel.COLOR_CHECK_OCCUPANCY_DEFAULT);
+			tv.setCompoundDrawablesWithIntrinsicBounds(
+					mModel.getColorDrawable(getChildObject(groupPosition, 0)),
+					0, 0, 0);
 		}
 		return convertView;
 	}
@@ -380,6 +393,16 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 
 	public void updateHeader(int id, String value) {
 		data.updateKey(id, value);
+	}
+
+	/**
+	 * Change the value of {@link #focusedGroup}.
+	 * <p>
+	 * -1 or any other out of range value: no group highlighted. <br>
+	 * only 1 group is highlighted at a time.
+	 */
+	public void setGroupFocus(int groupPosition) {
+		focusedGroup = groupPosition;
 	}
 
 	/**
