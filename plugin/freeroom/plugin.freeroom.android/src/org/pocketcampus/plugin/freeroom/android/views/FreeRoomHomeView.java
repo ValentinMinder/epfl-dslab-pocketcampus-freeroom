@@ -2345,14 +2345,17 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * TODO defines these consts somewhere else <br>
 	 * TODO: move this method in utils.
 	 * 
-	 * @param ev expandable list view
-	 * @param ad expandable list view adapter
+	 * @param ev
+	 *            expandable list view
+	 * @param ad
+	 *            expandable list view adapter
 	 */
 	public void updateCollapse(ExpandableListView ev,
 			ExpandableListViewAdapter<Occupancy> ad) {
 		int maxChildrenToExpand = 7;
 		int maxGroupToExpand = 3;
-		if (ad.getGroupCount() <= maxGroupToExpand && ad.getChildrenTotalCount() <= maxChildrenToExpand) {
+		if (ad.getGroupCount() <= maxGroupToExpand
+				&& ad.getChildrenTotalCount() <= maxChildrenToExpand) {
 			// we expand in reverse order for performance reason!
 			// expand all may caus
 			for (int i = ad.getGroupCount() - 1; i >= 0; i--) {
