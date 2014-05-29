@@ -775,7 +775,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	public int getColorDrawable(Occupancy mOccupancy) {
 		if (mOccupancy == null) {
-			return R.drawable.ic_dot_grey;
+			return getColoredDotUnknown();
 		}
 
 		boolean atLeastOneFree = mOccupancy.isIsAtLeastFreeOnce();
@@ -783,17 +783,74 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 		if (atLeastOneFree) {
 			if (atLeastOneOccupied) {
-				return R.drawable.ic_dot_orange;
+				return getColoredDotOrange();
 			} else {
-				return R.drawable.ic_dot_green;
+				return getColoredDotGreen();
 			}
 		} else {
 			if (atLeastOneOccupied) {
-				return R.drawable.ic_dot_red;
+				return getColoredDotRed();
 			} else {
 				// default
-				return R.drawable.ic_dot_grey;
+				return getColoredDotUnknown();
 			}
+		}
+	}
+
+	/**
+	 * Stores the color-blind mode (not persistent, not changeable).
+	 */
+	boolean isColorBlindMode = false;
+
+	/**
+	 * Return the "grey" dot, indicating the room occupancy is UNKNOWN,
+	 * according to color preferences.
+	 * 
+	 * @return the dot indicating "UNKNOWN".
+	 */
+	public int getColoredDotUnknown() {
+		return R.drawable.ic_dot_grey;
+	}
+
+	/**
+	 * Return the "red" dot, indicating the room is OCCUPIED, according to color
+	 * preferences.
+	 * 
+	 * @return the dot indicating "OCCUPIED".
+	 */
+	public int getColoredDotRed() {
+		if (isColorBlindMode) {
+			return R.drawable.ic_dot_red_cb;
+		} else {
+			return R.drawable.ic_dot_red;
+		}
+	}
+
+	/**
+	 * Return the "green" dot, indicating the room is FREE, according to color
+	 * preferences.
+	 * 
+	 * @return the dot indicating "FREE".
+	 */
+	public int getColoredDotGreen() {
+		if (isColorBlindMode) {
+			return R.drawable.ic_dot_green_cb;
+		} else {
+			return R.drawable.ic_dot_green;
+		}
+	}
+
+	/**
+	 * Return the "orange" dot, indicating the room is PARTIALLY OCCUPIED,
+	 * according to color preferences.
+	 * 
+	 * @return the dot indicating "PARTIALLY OCCUPIED".
+	 */
+	public int getColoredDotOrange() {
+		if (isColorBlindMode) {
+			return R.drawable.ic_dot_orange_cb;
+		} else {
+			return R.drawable.ic_dot_orange;
 		}
 	}
 
