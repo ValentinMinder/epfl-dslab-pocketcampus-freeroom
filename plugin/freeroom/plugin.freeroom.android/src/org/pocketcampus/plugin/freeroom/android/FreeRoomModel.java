@@ -27,6 +27,7 @@ import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
 import org.pocketcampus.plugin.freeroom.android.utils.FRTimesClient;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.utils.SetArrayList;
+import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
@@ -35,6 +36,7 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 
 /**
  * FreeRoomModel - The Model that stores the data of this plugin.
@@ -736,9 +738,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * TODO: NEW INTERFACE as of 2014.04.04.
-	 * <p>
 	 * Get the appropriate color according to the occupancy.
+	 * <p>
+	 * Deprecated as of 2014.05.25.
 	 * 
 	 * @param mOccupancy
 	 * @return
@@ -768,57 +770,89 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * Get the appropriate drawable image color according to the occupancy.
+	 * Return the appropriate color dot {@link Drawable} according to the
+	 * {@link Occupation} given, and the {@link FreeRoomModel} color settings
+	 * (color-blind).
 	 * 
-	 * @param mOccupancy
-	 * @return
+	 * @param mOccupation
+	 *            occupation for a given room (for multiple periods)
+	 * @return a color dot {@link Drawable}
 	 */
-	public int getColorDrawable(Occupancy mOccupancy) {
+	public int getColoredDotDrawable(Occupancy mOccupancy) {
 		if (mOccupancy == null) {
 			return getColoredDotUnknown();
 		}
 
-		boolean atLeastOneFree = mOccupancy.isIsAtLeastFreeOnce();
-		boolean atLeastOneOccupied = mOccupancy.isIsAtLeastOccupiedOnce();
-
-		if (atLeastOneFree) {
-			if (atLeastOneOccupied) {
+		if (mOccupancy.isIsAtLeastFreeOnce()) {
+			if (mOccupancy.isIsAtLeastOccupiedOnce()) {
 				return getColoredDotOrange();
 			} else {
 				return getColoredDotGreen();
 			}
 		} else {
-			if (atLeastOneOccupied) {
+			if (mOccupancy.isIsAtLeastOccupiedOnce()) {
 				return getColoredDotRed();
 			} else {
-				// default
+				// default: should not appear!
 				return getColoredDotUnknown();
 			}
 		}
 	}
 
 	/**
+	 * Return the correct color dot {@link Drawable} according to the
+	 * {@link ActualOccupation} given, and the {@link FreeRoomModel} color
+	 * settings (color-blind).
+	 * 
+	 * @param mActualOccupation
+	 *            actual occupation for a given period
+	 * @return a color dot {@link Drawable}
+	 */
+	public int getColoredDotDrawable(ActualOccupation mActualOccupation) {
+		if (mActualOccupation == null) {
+			return getColoredDotUnknown();
+		}
+		if (mActualOccupation.isAvailable()) {
+			return getColoredDotGreen();
+		} else {
+			return getColoredDotRed();
+		}
+	}
+
+	/**
 	 * Stores the color-blind mode (not persistent, not changeable).
 	 */
-	boolean isColorBlindMode = false;
+	private boolean isColorBlindMode = false;
 
 	/**
 	 * Return the "grey" dot, indicating the room occupancy is UNKNOWN,
 	 * according to color preferences.
+	 * <p>
+	 * Note: this option is made private because it depends on model settings.
+	 * This should be called only if the color is sure. For the color depending
+	 * of the {@link Occupancy}, call {@link getColorDrawable(Occupancy)} . For
+	 * the color depending of the {@link ActualOccupation}, call
+	 * {@link #getColoredDotDrawable(ActualOccupation)}
 	 * 
 	 * @return the dot indicating "UNKNOWN".
 	 */
-	public int getColoredDotUnknown() {
+	private int getColoredDotUnknown() {
 		return R.drawable.ic_dot_grey;
 	}
 
 	/**
 	 * Return the "red" dot, indicating the room is OCCUPIED, according to color
 	 * preferences.
+	 * <p>
+	 * Note: this option is made private because it depends on model settings.
+	 * This should be called only if the color is sure. For the color depending
+	 * of the {@link Occupancy}, call {@link getColorDrawable(Occupancy)} . For
+	 * the color depending of the {@link ActualOccupation}, call
+	 * {@link #getColoredDotDrawable(ActualOccupation)}
 	 * 
 	 * @return the dot indicating "OCCUPIED".
 	 */
-	public int getColoredDotRed() {
+	private int getColoredDotRed() {
 		if (isColorBlindMode) {
 			return R.drawable.ic_dot_red_cb;
 		} else {
@@ -829,10 +863,16 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	/**
 	 * Return the "green" dot, indicating the room is FREE, according to color
 	 * preferences.
+	 * <p>
+	 * Note: this option is made private because it depends on model settings.
+	 * This should be called only if the color is sure. For the color depending
+	 * of the {@link Occupancy}, call {@link getColorDrawable(Occupancy)} . For
+	 * the color depending of the {@link ActualOccupation}, call
+	 * {@link #getColoredDotDrawable(ActualOccupation)}
 	 * 
 	 * @return the dot indicating "FREE".
 	 */
-	public int getColoredDotGreen() {
+	private int getColoredDotGreen() {
 		if (isColorBlindMode) {
 			return R.drawable.ic_dot_green_cb;
 		} else {
@@ -843,10 +883,16 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	/**
 	 * Return the "orange" dot, indicating the room is PARTIALLY OCCUPIED,
 	 * according to color preferences.
+	 * <p>
+	 * Note: this option is made private because it depends on model settings.
+	 * This should be called only if the color is sure. For the color depending
+	 * of the {@link Occupancy}, call {@link getColorDrawable(Occupancy)} . For
+	 * the color depending of the {@link ActualOccupation}, call
+	 * {@link #getColoredDotDrawable(ActualOccupation)}
 	 * 
 	 * @return the dot indicating "PARTIALLY OCCUPIED".
 	 */
-	public int getColoredDotOrange() {
+	private int getColoredDotOrange() {
 		if (isColorBlindMode) {
 			return R.drawable.ic_dot_orange_cb;
 		} else {

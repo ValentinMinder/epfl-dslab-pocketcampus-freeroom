@@ -134,11 +134,11 @@ public class ActualOccupationArrayAdapter<T> extends
 				convertView.setOnClickListener(ocl_line);
 				// green, and someone registered
 				tv.setCompoundDrawablesWithIntrinsicBounds(
-						mModel.getColoredDotGreen(), 0, 0, 0);
+						mModel.getColoredDotDrawable(mActualOccupation), 0, 0, 0);
 			} else {
 				// green, but nobody registered
 				tv.setCompoundDrawablesWithIntrinsicBounds(
-						mModel.getColoredDotGreen(), 0, 0, 0);
+						mModel.getColoredDotDrawable(mActualOccupation), 0, 0, 0);
 				convertView.setOnClickListener(null);
 			}
 
@@ -152,7 +152,7 @@ public class ActualOccupationArrayAdapter<T> extends
 			// whole line non clickable
 			convertView.setOnClickListener(null);
 			tv.setCompoundDrawablesWithIntrinsicBounds(
-					mModel.getColoredDotRed(), 0, 0, 0);
+					mModel.getColoredDotDrawable(mActualOccupation), 0, 0, 0);
 		}
 
 		return convertView;

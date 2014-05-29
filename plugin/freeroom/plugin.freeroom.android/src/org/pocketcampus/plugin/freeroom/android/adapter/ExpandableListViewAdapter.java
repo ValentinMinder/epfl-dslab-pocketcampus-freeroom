@@ -200,7 +200,7 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		// people.setOnClickListener(ocl_checkWorking);
 
 		tv.setCompoundDrawablesWithIntrinsicBounds(
-				mModel.getColorDrawable(occupancy), 0, 0, 0);
+				mModel.getColoredDotDrawable(occupancy), 0, 0, 0);
 		return convertView;
 	}
 
@@ -318,7 +318,7 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			convertView
 					.setBackgroundColor(mModel.COLOR_CHECK_OCCUPANCY_DEFAULT);
 			tv.setCompoundDrawablesWithIntrinsicBounds(
-					mModel.getColorDrawable(getChildObject(groupPosition, 0)),
+					mModel.getColoredDotDrawable(getChildObject(groupPosition, 0)),
 					0, 0, 0);
 		}
 		return convertView;
