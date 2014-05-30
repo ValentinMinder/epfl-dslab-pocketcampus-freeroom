@@ -1330,6 +1330,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onDismiss(DialogInterface dialog) {
 				mFavoritesAdapter.notifyDataSetChanged();
+
+				// WARNING: BUG FIX
+				// when the favorites are modified (removed) and the parent
+				// group is opened, this cause a NullPointerException on the
+				// main favorites window.
+				ExpandableListView lv = (ExpandableListView) mFavoritesView
+						.findViewById(R.id.freeroom_layout_dialog_fav_list);
+				for (int i = mFavoritesAdapter.getGroupCount() - 1; i >= 0; i--) {
+					lv.collapseGroup(i);
+				}
 				updateFavoritesSummary();
 				autoCompleteCancel();
 				mAutoCompleteAddFavoritesArrayListFRRoom.clear();
