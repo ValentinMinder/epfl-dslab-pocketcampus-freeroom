@@ -66,7 +66,18 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
 
-                    <!-- to chose to display the favorites -->
+                    <!-- to chose to display any free room (default) -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_home_any"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="onHomeBehaviourRoomSetAnyFreeRoom"
+                        android:text="@string/freeroom_settings_any_free"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <!-- to chose to display the favorites (NOT default) -->
 
                     <RadioButton
                         android:id="@+id/freeroom_layout_param_home_fav"
@@ -85,17 +96,6 @@
                         android:layout_height="wrap_content"
                         android:onClick="onHomeBehaviourRoomSetFavoritesFree"
                         android:text="@string/freeroom_settings_free_fav"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@android:color/black" />
-
-                    <!-- to chose to display any free room -->
-
-                    <RadioButton
-                        android:id="@+id/freeroom_layout_param_home_any"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:onClick="onHomeBehaviourRoomSetAnyFreeRoom"
-                        android:text="@string/freeroom_settings_any_free"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@android:color/black" />
 

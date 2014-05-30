@@ -177,9 +177,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	/**
 	 * Stores the default behavior at launch time.
 	 * <p>
-	 * Favorites: the favorites occupancy, free or not. <br>
+	 * Favorites: the favorites occupancy, free or not. (NOT default)<br>
 	 * Favorites only free: the favorites that are free <br>
-	 * Any free room: all the free rooms<br>
+	 * Any free room: all the free rooms (default)<br>
 	 * Lastrequest: replay last request (regarding of room, NOT time: default
 	 * param for time will be used!). <br>
 	 */
@@ -190,9 +190,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	/**
 	 * Stores the homeBehaviourRoom parameters.
 	 * <p>
-	 * Default: HomeBehaviourRoom.FAVORITES.
+	 * Default: HomeBehaviourRoom.ANYFREEROOM (NOT Favorites!!!).
 	 */
-	private HomeBehaviourRoom homeBehaviourRoom = HomeBehaviourRoom.FAVORITES;
+	private HomeBehaviourRoom homeBehaviourRoom = HomeBehaviourRoom.ANYFREEROOM;
 
 	/**
 	 * Set the homeBehaviourRoom parameters.

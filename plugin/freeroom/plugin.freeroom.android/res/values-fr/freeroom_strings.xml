@@ -170,9 +170,9 @@
     <string name="freeroom_settings_home_screen">"Comportement du menu principal"</string>
     <string name="freeroom_settings_automatic">"Recherche automatique au lancement"</string>
     <string name="freeroom_settings_room_range">"Salles à prendre en compte"</string>
-    <string name="freeroom_settings_all_fav">"Tous les favoris (par défaut)"</string>
-    <string name="freeroom_settings_free_fav">"Les salles favoris libres"</string>
-    <string name="freeroom_settings_any_free">"N\'importe quelle salle libre"</string>
+    <string name="freeroom_settings_all_fav">"Toutes les salles favorites"</string>
+    <string name="freeroom_settings_free_fav">"Les salles favorites libres"</string>
+    <string name="freeroom_settings_any_free">"Toutes les salles libres (par défaut)"</string>
     <string name="freeroom_settings_last_req">"Utiliser la recherche précédente"</string>
     <string name="freeroom_settings_time_range">"Période sélectionnée"</string>
     <string name="freeroom_settings_current">"Heure courante (par défaut)"</string>

@@ -167,9 +167,9 @@
     <string name="freeroom_settings_home_screen">"Home screen behavior"</string>
     <string name="freeroom_settings_automatic">"Automatic search at launch"</string>
     <string name="freeroom_settings_room_range">"Rooms range"</string>
-    <string name="freeroom_settings_all_fav">"All favorites rooms (default)"</string>
+    <string name="freeroom_settings_all_fav">"All favorites rooms"</string>
     <string name="freeroom_settings_free_fav">"Free favorites rooms"</string>
-    <string name="freeroom_settings_any_free">"Any free rooms"</string>
+    <string name="freeroom_settings_any_free">"Any free rooms (default)"</string>
     <string name="freeroom_settings_last_req">"Use last request"</string>
     <string name="freeroom_settings_time_range">"Time range"</string>
     <string name="freeroom_settings_current">"Current hour (default)"</string>
