@@ -174,6 +174,13 @@
     <string name="freeroom_settings_current">"Heure courante (par défaut)"</string>
     <string name="freeroom_settings_end_day">"Jusqu\'à la fin de la journée"</string>
     <string name="freeroom_settings_whole_day">"Toute la journée"</string>
+
+    <!-- Color-blind mode -->
+    <string name="freeroom_settings_userpref">"Préférences utilisateur"</string>
+    <string name="freeroom_settings_colorblind">"Apparence des couleurs"</string>
+    <string name="freeroom_settings_colorblindcheck">"Mode daltonien (basic)"</string>
+
+    <!-- Settings: date formatting -->
     <string name="freeroom_settings_format">"Formats et options locales"</string>
     <string name="freeroom_settings_date">"Format des dates"</string>
     <string name="freeroom_settings_date_default">"Règlage par défaut"</string>
@@ -226,7 +233,7 @@
 
     <!-- NEW: add there -->
     <string name="freeroom_konami_start">Start</string>
-	<string name="freeroom_konami_typein">Entrer du texte&#8230;</string>
-	<string name="freeroom_error_map_plugin_missing">"Plugin Plan pas installé! Vérifier l'installation de l'application PocketCampus ou du plugin Plan"</string>
+    <string name="freeroom_konami_typein">Entrer du texte&#8230;</string>
+    <string name="freeroom_error_map_plugin_missing">"Plugin Plan pas installé! Vérifier l'installation de l'application PocketCampus ou du plugin Plan"</string>
 
 </resources>

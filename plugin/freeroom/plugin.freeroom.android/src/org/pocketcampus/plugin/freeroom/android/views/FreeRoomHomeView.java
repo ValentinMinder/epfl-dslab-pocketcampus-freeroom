@@ -3933,6 +3933,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * @param v
 	 *            caller view (not used)
 	 */
+	public void onColorBlindBasicSwitch(View v) {
+		mModel.setColorBlindModeBasicSwitch(((CheckBox) v).isChecked());
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            caller view (not used)
+	 */
 	public void onHomeBehaviourTimeSetWholeDay(View v) {
 		mModel.setHomeBehaviourTime(HomeBehaviourTime.WHOLE_DAY);
 	}

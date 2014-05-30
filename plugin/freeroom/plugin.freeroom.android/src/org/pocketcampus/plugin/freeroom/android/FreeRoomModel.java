@@ -888,6 +888,21 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
+	 * Set the {@link ColorBlindMode} to the switch settings according to the
+	 * checkbox.
+	 * 
+	 * @param bool
+	 *            if the checkbox is checked.
+	 */
+	public void setColorBlindModeBasicSwitch(boolean bool) {
+		if (bool) {
+			setColorBlindMode(ColorBlindMode.DOTS_DISCOLORED);
+		} else {
+			setColorBlindMode(ColorBlindMode.DEFAULT);
+		}
+	}
+
+	/**
 	 * Retrieves the {@link ColorBlindMode}.
 	 * 
 	 * @return the current {@link ColorBlindMode}.

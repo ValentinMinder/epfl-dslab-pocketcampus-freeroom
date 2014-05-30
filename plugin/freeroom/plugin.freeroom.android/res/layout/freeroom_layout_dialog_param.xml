@@ -161,6 +161,45 @@
                 </RadioGroup>
             </LinearLayout>
 
+            <!-- Title for user-pref options. -->
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/freeroom_settings_userpref"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/black" />
+
+            <!-- Data for user-pref options. -->
+
+            <LinearLayout
+                android:id="@+id/freeroom_layout_dialog_param_userpref"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="vertical" >
+
+                <!-- Explanation for color-blind modes -->
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/freeroom_settings_colorblind"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <!-- Checkbox for basic color-blind mode -->
+
+                <CheckBox
+                    android:id="@+id/freeroom_layout_dialog_param_colorblind_basic"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="onColorBlindBasicSwitch"
+                    android:text="@string/freeroom_settings_colorblindcheck"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+
             <!-- Title for format/local options. -->
 
             <TextView

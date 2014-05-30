@@ -171,6 +171,13 @@
     <string name="freeroom_settings_current">"Current hour (default)"</string>
     <string name="freeroom_settings_end_day">"End of current day"</string>
     <string name="freeroom_settings_whole_day">"Whole current day"</string>
+
+    <!-- Color-blind mode -->
+    <string name="freeroom_settings_userpref">"User's preferences"</string>
+    <string name="freeroom_settings_colorblind">"Colors appareance"</string>
+    <string name="freeroom_settings_colorblindcheck">"Basic color-blind mode"</string>
+
+    <!-- Settings: date formatting -->
     <string name="freeroom_settings_format">"Formats and locale options"</string>
     <string name="freeroom_settings_date">"Date formatting"</string>
     <string name="freeroom_settings_date_default">"Default settings"</string>
@@ -220,11 +227,12 @@
     <string name="freeroom_whoIsWorking_undefined">"Not precised"</string>
 
     <!-- NEW: add there -->
-	<string name="freeroom_layout_search_expand_collapse_hour_img">first/last</string>
-	<string name="freeroom_layout_roomslist_img_triangle">triangle icon</string>
-	
-	<!-- str -->
-	<string name="freeroom_konami_start">Start</string>
-	<string name="freeroom_konami_typein">Type in&#8230;</string>
-	<string name="freeroom_error_map_plugin_missing">"Map plugin not installed! Please make sure you have the whole PocketCampus or map plugin installed!"</string>
+    <string name="freeroom_layout_search_expand_collapse_hour_img">first/last</string>
+    <string name="freeroom_layout_roomslist_img_triangle">triangle icon</string>
+
+    <!-- str -->
+    <string name="freeroom_konami_start">Start</string>
+    <string name="freeroom_konami_typein">Type in&#8230;</string>
+    <string name="freeroom_error_map_plugin_missing">"Map plugin not installed! Please make sure you have the whole PocketCampus or map plugin installed!"</string>
+
 </resources>
