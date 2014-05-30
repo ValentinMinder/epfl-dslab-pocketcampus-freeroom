@@ -64,7 +64,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -503,9 +503,9 @@ public class FoodMainView extends PluginView implements IFoodView {
 		final View bodyV = inflater.inflate(R.layout.food_vote_view, null);
 		((TextView) bodyV.findViewById(R.id.food_dialog_h1)).setText(mController.getRestos().get(e.resto).name);
 		((TextView) bodyV.findViewById(R.id.food_dialog_h2)).setText(e.name);
-		final ImageView im1 = (ImageView) bodyV.findViewById(R.id.food_smiley_sad);
-		final ImageView im2 = (ImageView) bodyV.findViewById(R.id.food_smiley_soso);
-		final ImageView im3 = (ImageView) bodyV.findViewById(R.id.food_smiley_happy);
+		final LinearLayout im1 = (LinearLayout) bodyV.findViewById(R.id.food_smiley_sad);
+		final LinearLayout im2 = (LinearLayout) bodyV.findViewById(R.id.food_smiley_soso);
+		final LinearLayout im3 = (LinearLayout) bodyV.findViewById(R.id.food_smiley_happy);
 		im1.setClickable(true);
 		im2.setClickable(true);
 		im3.setClickable(true);
@@ -514,7 +514,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 				//Toast.makeText(getApplicationContext(), "Click!!", Toast.LENGTH_SHORT).show();
 				bodyV.setTag((Double) 0.0);
 				Resources res = getResources();
-				im1.setBackgroundColor(res.getColor(R.color.epfl_official_red));
+				im1.setBackgroundColor(res.getColor(R.color.epfl_corrected_red));
 				im2.setBackgroundColor(res.getColor(R.color.transparent));
 				im3.setBackgroundColor(res.getColor(R.color.transparent));
 				bodyV.invalidate();
@@ -526,7 +526,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 				bodyV.setTag((Double) 0.5);
 				Resources res = getResources();
 				im1.setBackgroundColor(res.getColor(R.color.transparent));
-				im2.setBackgroundColor(res.getColor(R.color.epfl_official_red));
+				im2.setBackgroundColor(res.getColor(R.color.epfl_corrected_red));
 				im3.setBackgroundColor(res.getColor(R.color.transparent));
 				bodyV.invalidate();
 			}
@@ -538,7 +538,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 				Resources res = getResources();
 				im1.setBackgroundColor(res.getColor(R.color.transparent));
 				im2.setBackgroundColor(res.getColor(R.color.transparent));
-				im3.setBackgroundColor(res.getColor(R.color.epfl_official_red));
+				im3.setBackgroundColor(res.getColor(R.color.epfl_corrected_red));
 				bodyV.invalidate();
 			}
 		});

@@ -186,6 +186,7 @@ public class PocketCampusServer extends ServerBase {
 		config.setService(plugin + "@pocketcampus");
 		config.setRequest("name firstname email title unit office phone username uniqueid unixid groupid where categorie");
 		config.setAllows("categorie=epfl-guests");
+		config.setAllows("categorie=Shibboleth");
 		//config.setAuthstrength("2");
 
 		try {

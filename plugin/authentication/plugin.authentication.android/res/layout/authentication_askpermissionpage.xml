@@ -4,7 +4,7 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
     
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout 
     android:id="@+id/authentication_customloginpageLayout"
     style="@style/Dialog"
     android:layout_width="fill_parent"

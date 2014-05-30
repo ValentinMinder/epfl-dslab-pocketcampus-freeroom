@@ -235,156 +235,22 @@ public class AuthenticationController extends PluginController implements IAuthe
 	}
 	
 	private void pingBack(String tequilaToken, String extra) {
-		if(mModel.getFromBrowser()) {
-			if(mModel.getCallbackUrl() != null) {
+		if(mModel.getCallbackUrl() != null) {
+			if(mModel.getFromBrowser()) {
 				Intent intenteye = new Intent(Intent.ACTION_VIEW, Uri.parse(mModel.getCallbackUrl()));
 				intenteye.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 				startActivity(intenteye);
+			} else {
+				Intent intenteye = new Intent("org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED", Uri.parse(mModel.getCallbackUrl()));
+				if(tequilaToken != null)
+					intenteye.putExtra("tequilatoken", tequilaToken); // success
+				if(extra != null)
+					intenteye.putExtra(extra, 1); // user cancelled, user denied, or invalid token (in case of success this could indicate if plugin should not store session; in case of selfAuth for PC this indicates success)
+				startService(intenteye);
 			}
-		} else {
-			Intent intenteye = new Intent("org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED", Uri.parse(mModel.getCallbackUrl()));
-			if(tequilaToken != null)
-				intenteye.putExtra("tequilatoken", tequilaToken); // success
-			if(extra != null)
-				intenteye.putExtra(extra, 1); // user cancelled, user denied, or invalid token (in case of success this could indicate if plugin should not store session; in case of selfAuth for PC this indicates success)
-			startService(intenteye);
 		}
 		mModel.mListeners.shouldFinish();
 	}
-	
-	/**
-	 * Helper function that maps host to TypeOfService.
-	 * 
-	 * It reads the host part of the URL that Tequila
-	 * redirects to after successful authentication,
-	 * and maps it to the corresponding TypeOfService.
-	 * 
-	 * @param aData is the URL that Tequila redirected to.
-	 * @return the corresponding TypeOfService.
-	 */
-	/*public static TypeOfService mapHostToTypeOfService(Uri aData) {
-		if(aData == null)
-			return null;
-		String pcService = aData.getHost();
-		if(pcService == null)
-			return null;
-		if("login.pocketcampus.org".equals(pcService)) {
-			return TypeOfService.SERVICE_POCKETCAMPUS;
-		} else if("moodle.epfl.ch".equals(pcService)) {
-			return TypeOfService.SERVICE_MOODLE;
-		} else if("cmp2www.epfl.ch".equals(pcService)) {
-			return TypeOfService.SERVICE_CAMIPRO;
-		} else {
-			return null;
-		}
-	}*/
-	
-	/**
-	 * Helper function that maps QueryStringParameter to TypeOfService.
-	 * 
-	 * It reads the parameter "service" from the query string of the URI
-	 * of the Intent that was sent by a plugin requesting authentication,
-	 * and maps it to the corresponding TypeOfService.
-	 * 
-	 * @param aData is the URI of the Intent that we received.
-	 * @return the corresponding TypeOfService.
-	 */
-	/*public static TypeOfService mapQueryParameterToTypeOfService(Uri aData) {
-		if(aData == null)
-			return null;
-		String pcService = aData.getQueryParameter("service");
-		if(pcService == null)
-			return null;
-		if("moodle".equals(pcService)) {
-			return TypeOfService.SERVICE_MOODLE;
-		} else if("camipro".equals(pcService)) {
-			return TypeOfService.SERVICE_CAMIPRO;
-		} else if("isacademia".equals(pcService)) {
-			return TypeOfService.SERVICE_ISA;
-		} else {
-			return null;
-		}
-	}*/
-	
-	/**
-	 * Helper function that returns true if the current service is tequila enabled.
-	 */
-	/*public boolean isTequilaEnabledService() {
-		switch(iTypeOfService) {
-		case SERVICE_CAMIPRO:
-		case SERVICE_MOODLE:
-		case SERVICE_POCKETCAMPUS:
-			return true;
-		case SERVICE_ISA:
-			return false;
-		default:
-			throw new RuntimeException("isTequilaEnabledService: Unknown Service");
-		}
-	} */
-
-	/**
-	 * Sets the internal TypeOfService.
-	 */
-	/*public void nSetTypeOfService(TypeOfService tos) {
-		iTypeOfService = tos;
-	}*/
-
-	/**
-	 * Sets the internal LocalCredentials.
-	 */
-	/*public void nSetLocalCredentials(String user, String pass) {
-		iLocalCredentials.username = user;
-		iLocalCredentials.password = pass;
-	}*/
-	
-	/**
-	 * Gets the username from the LocalCredentials.
-	 * 
-	 * If the user types their password incorrectly,
-	 * they will not have to retype their username.
-	 * 
-	 * @return the user's username
-	 */
-	/*public String nGetLastUsername() {
-		return iLocalCredentials.username;
-	}*/
-
-	/**
-	 * Initiates a GetTequilaKeyForServiceRequest.
-	 */
-	/*public void nGetTequilaKey() {
-		new GetTequilaKeyForServiceRequest().start(this, mClient, iTypeOfService);
-	}*/
-	
-	/**
-	 * Initiates a LoginToTequilaRequest.
-	 */
-	
-	/**
-	 * Initiates a AuthenticateTokenWithTequilaRequest.
-	 */
-	
-	/**
-	 * Initiates a GetSessionIdForServiceRequest.
-	 */
-	/*public void nGetSessionId() {
-		new GetSessionIdForServiceRequest().start(this, mClient, mModel.getTequilaKey());
-	}*/
-	
-	/**
-	 * Initiates a GetSessionIdDirectlyFromProviderRequest.
-	 */
-	/*public void nGetSessionIdDirectlyFromProvider() {
-		TOSCredentialsComplex tc = new TOSCredentialsComplex();
-		tc.tos = iTypeOfService;
-		tc.credentials = iLocalCredentials;
-		new GetSessionIdDirectlyFromProviderRequest().start(this, threadSafeClient, tc);
-	}*/
-
-	/*public void logoutFinished() {
-		Log.v("DEBUG", "AuthenticationController::logoutFinished {Shutting down}");
-		stopSelf();
-	}*/
 	
 	private void checkServiceAuthorized() {
 		Log.v("DEBUG", "checkServiceAuthorized");
@@ -462,7 +328,10 @@ public class AuthenticationController extends PluginController implements IAuthe
 
 	public void fetchedServiceDetails() {
 		Log.v("DEBUG", "fetchedServiceDetails");
-		startActualLogin();
+		if(mModel.getNotFromEpfl())
+			openDialog("doshibboleth");
+		else
+			startActualLogin();
 	}
 	
 	public void tequilaLoginFinished(String tequilaCookie) {
@@ -508,8 +377,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 	
 	public void notifyBadCredentials() {
 		Log.v("DEBUG", "notifyBadCredentials");
-		Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_invalid_credentials), Toast.LENGTH_SHORT).show();
-		openDialog(null);
+		openDialog("badcredentials");
 	}
 	
 }

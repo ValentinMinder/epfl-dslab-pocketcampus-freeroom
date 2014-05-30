@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.pocketcampus.R;
+import org.pocketcampus.android.platform.sdk.ui.dialog.StyledDialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class DialogUtils {
@@ -93,26 +95,7 @@ public class DialogUtils {
 		dialog.show();
 	}
 
-	public static void showInputDialog(Context context, String title, String message, String buttonText, final TextInputHandler handler) {
-		final EditText input = new EditText(context);
-
-		AlertDialog dialog = new AlertDialog.Builder(context)
-				.setCustomTitle(buildDialogTitle(context, title))
-			    .setMessage(message)
-			    .setView(input)
-				.setPositiveButton(
-						buttonText, 
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								handler.gotText(input.getText().toString());
-							}
-						})
-				.create();
-		dialog.setCanceledOnTouchOutside(true);
-		dialog.show();
-	}
-	
-	private static View buildDialogTitle(Context con, String title) {
+	public static View buildDialogTitle(Context con, CharSequence title) {
 		LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View v = inflater.inflate(R.layout.sdk_actionbar_dialog, null);
 		TextView tv = (TextView) v.findViewById(R.id.actionbar_title);
@@ -120,6 +103,40 @@ public class DialogUtils {
 		return v;
 	}
 
+	public static void showInputDialog(Context context, String title, String message, String buttonText, final TextInputHandler handler) {
+		final EditText input = new EditText(context);
+        TextView tv = new TextView(context);
+        tv.setText(message);
+        LinearLayout ll = new LinearLayout(context);
+        ll.setOrientation(LinearLayout.VERTICAL);
+        ll.addView(tv);
+        ll.addView(input);
+		
+        StyledDialog.Builder sdb = new StyledDialog.Builder(context);
+        sdb.setTitle(title);
+        sdb.setContentView(ll);
+        sdb.setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+				handler.gotText(input.getText().toString());
+            }
+        });
+        sdb.setCanceledOnTouchOutside(true);
+        sdb.create().show();
+	}
+	
+	public static void alert(Context c, String title, String message) {
+        StyledDialog.Builder sdb = new StyledDialog.Builder(c);
+        sdb.setTitle(title);
+        sdb.setMessage(message);
+        sdb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+            	dialogInterface.dismiss();
+            }
+        });
+        sdb.setCanceledOnTouchOutside(true);
+        sdb.create().show();
+	}
+	
 	private static class Complex <T> {
 		public T t;
 		public String s;
