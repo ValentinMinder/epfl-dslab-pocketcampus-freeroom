@@ -768,7 +768,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 			if (mOccupancy.isIsAtLeastOccupiedOnce()) {
 				return getColorOrange();
 			} else {
-				return getColorRed();
+				return getColorGreen();
 			}
 		} else {
 			if (mOccupancy.isIsAtLeastOccupiedOnce()) {
@@ -993,9 +993,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	private int getColorGreen() {
 		if (isColorBlind()) {
-			return COLOR_GREEN_FREE;
+			return COLOR_GREEN_FREE_CB;
 		}
-		return COLOR_GREEN_FREE_CB;
+		return COLOR_GREEN_FREE;
 	}
 
 	/**
@@ -1006,9 +1006,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	private int getColorRed() {
 		if (isColorBlind()) {
-			return COLOR_RED_OCCUPIED;
+			return COLOR_RED_OCCUPIED_CB;
 		}
-		return COLOR_RED_OCCUPIED_CB;
+		return COLOR_RED_OCCUPIED;
 	}
 
 	/**
@@ -1019,9 +1019,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	private int getColorOrange() {
 		if (isColorBlind()) {
-			return COLOR_ORANGE_ATLEASTONCE;
+			return COLOR_ORANGE_ATLEASTONCE_CB;
 		}
-		return COLOR_ORANGE_ATLEASTONCE_CB;
+		return COLOR_ORANGE_ATLEASTONCE;
 	}
 
 	/**
