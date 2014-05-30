@@ -127,6 +127,8 @@
     <string name="freeroom_dialog_fav_add">"Ajouter"</string>
     <string name="freeroom_dialog_fav_close">"Fermer"</string>
     <string name="freeroom_dialog_fav_reset">"Effacer"</string>
+    <string name="freeroom_dialog_fav_status_fav">"Favoris: "</string>
+    <string name="freeroom_dialog_fav_status_no">"Aucune salle n'a été marquée favorite"</string>
     <string name="freeroom_dialog_warn_title">"Attention"</string>
     <string name="freeroom_dialog_warn_delete_fav_text">"Etes-vous sur de vouloir supprimer tous vos favoris ? Cette action est irréversible."</string>
     <string name="freeroom_dialog_warn_cancel">"Annuler"</string>

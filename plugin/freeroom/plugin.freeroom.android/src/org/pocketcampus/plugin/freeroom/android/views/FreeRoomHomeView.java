@@ -93,6 +93,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ImageButton;
@@ -1209,6 +1210,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onShow(DialogInterface dialog) {
 				mFavoritesAdapter.notifyDataSetChanged();
+				updateFavoritesSummary();
 			}
 		});
 
@@ -1248,9 +1250,34 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		ExpandableListView lv = (ExpandableListView) mFavoritesView
 				.findViewById(R.id.freeroom_layout_dialog_fav_list);
 		mFavoritesAdapter = new ExpandableListViewFavoriteAdapter(this, mModel
-				.getFavorites().keySetOrdered(), mModel.getFavorites(), mModel);
+				.getFavorites().keySetOrdered(), mModel.getFavorites(), mModel,
+				this);
 		lv.setAdapter(mFavoritesAdapter);
 		mFavoritesAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * Updates the favorites summary after something has changed.
+	 * <p>
+	 * Display the number of favorites, or a small message if no favorites.
+	 */
+	public void updateFavoritesSummary() {
+		TextView favoritesSummaryTextView = (TextView) mFavoritesView
+				.findViewById(R.id.freeroom_layout_dialog_fav_status);
+		int count = mFavoritesAdapter.getGroupCount();
+		String text = "";
+		if (count == 0) {
+			text = getString(R.string.freeroom_dialog_fav_status_no);
+		} else {
+			text = getString(R.string.freeroom_dialog_fav_status_fav);
+			int total = 0;
+			for (int i = 0; i < count; i++) {
+				total += mFavoritesAdapter.getChildrenCount(i);
+			}
+			text += getResources().getQuantityString(
+					R.plurals.freeroom_results_room_header, total, total);
+		}
+		favoritesSummaryTextView.setText(text);
 	}
 
 	private void dimissAddRoomDialog() {
@@ -1303,6 +1330,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onDismiss(DialogInterface dialog) {
+				mFavoritesAdapter.notifyDataSetChanged();
+				updateFavoritesSummary();
 				autoCompleteCancel();
 				mAutoCompleteAddFavoritesArrayListFRRoom.clear();
 				mAddFavoritesAdapter.notifyDataSetInvalidated();
@@ -1920,6 +1949,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mWarningDialog.getWindow().addFlags(
 				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		mWarningDialog.getWindow().setAttributes(lp);
+
+		mWarningDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				updateFavoritesSummary();
+				mFavoritesAdapter.notifyDataSetChanged();
+			}
+		});
 	}
 
 	private void initErrorDialog() {

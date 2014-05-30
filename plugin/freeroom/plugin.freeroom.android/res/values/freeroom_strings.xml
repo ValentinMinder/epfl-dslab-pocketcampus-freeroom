@@ -125,6 +125,8 @@
     <string name="freeroom_dialog_fav_add">"Add new"</string>
     <string name="freeroom_dialog_fav_close">"Close"</string>
     <string name="freeroom_dialog_fav_reset">"Reset"</string>
+    <string name="freeroom_dialog_fav_status_fav">"Currently favorite: "</string>
+    <string name="freeroom_dialog_fav_status_no">"No room is currently favorite"</string>
     <string name="freeroom_dialog_warn_title">"Warning"</string>
     <string name="freeroom_dialog_warn_delete_fav_text">"Are you sure you want to delete all your favorites ? This action is not cancellable afterwards."</string>
     <string name="freeroom_dialog_warn_cancel">"Cancel"</string>

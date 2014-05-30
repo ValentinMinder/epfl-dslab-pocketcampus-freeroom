@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
+import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 import android.content.Context;
@@ -32,10 +33,13 @@ import android.widget.TextView;
  */
 public class ExpandableListViewFavoriteAdapter extends
 		ExpandableAbstractListViewAdapter<FRRoom> {
+	
+	FreeRoomHomeView home;
 
 	public ExpandableListViewFavoriteAdapter(Context c, List<String> header,
-			Map<String, List<FRRoom>> data, FreeRoomModel model) {
+			Map<String, List<FRRoom>> data, FreeRoomModel model, FreeRoomHomeView home) {
 		super(c, header, data, model);
+		this.home = home;
 	}
 
 	@Override
@@ -130,9 +134,11 @@ public class ExpandableListViewFavoriteAdapter extends
 				if (isFav) {
 					star.setImageResource(android.R.drawable.star_big_off);
 					mModel.removeFavorite(room);
+					home.updateFavoritesSummary();
 				} else {
 					star.setImageResource(android.R.drawable.star_big_on);
 					mModel.addFavorite(room);
+					home.updateFavoritesSummary();
 				}
 				notifyDataSetChanged();
 			}
