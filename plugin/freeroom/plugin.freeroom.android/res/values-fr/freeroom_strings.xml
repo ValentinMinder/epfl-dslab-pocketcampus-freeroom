@@ -177,8 +177,18 @@
 
     <!-- Color-blind mode -->
     <string name="freeroom_settings_userpref">"Préférences utilisateur"</string>
-    <string name="freeroom_settings_colorblind">"Apparence des couleurs"</string>
-    <string name="freeroom_settings_colorblindcheck">"Mode daltonien (basic)"</string>
+    <string name="freeroom_settings_color">"Apparence des couleurs"</string>
+    <string name="freeroom_settings_colorblindcheck">"Mode daltonien (de base)"</string>
+    <string name="freeroom_settings_color_advanced">"Modes avancés"</string>
+    <string name="freeroom_settings_color_mode_default">"Feux de signalisation (défaut)"</string>
+    <string name="freeroom_settings_color_mode_dots_discolored">"Feux pour daltoniens"</string>
+    <string name="freeroom_settings_color_mode_symbolic">"Symboles sans couleurs"</string>
+    <string name="freeroom_settings_color_mode_symbolic_lines">"Symboles avec lignes colorées"</string>
+    <string name="freeroom_settings_color_mode_symbolic_lines_disc">"Symboles avec lignes pour daltoniens"</string>
+    <string name="freeroom_settings_color_exemple_free">"LIBRE"</string>
+    <string name="freeroom_settings_color_exemple_partoccupied">"PART. OCCUPE"</string>
+    <string name="freeroom_settings_color_exemple_occupied">"OCCUPE"</string>
+    <string name="freeroom_settings_color_exemple_error">"ERREUR"</string>
 
     <!-- Settings: date formatting -->
     <string name="freeroom_settings_format">"Formats et options locales"</string>

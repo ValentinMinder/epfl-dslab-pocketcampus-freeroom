@@ -870,7 +870,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * color-blind colors, with the dots symbol.<br>
 	 * <br>
 	 */
-	private enum ColorBlindMode {
+	public enum ColorBlindMode {
 		DEFAULT, DOTS_DISCOLORED, DOTS_SYMBOL, DOTS_SYMBOL_LINEFULL, DOTS_SYMBOL_LINEFULL_DISCOLORED;
 	}
 

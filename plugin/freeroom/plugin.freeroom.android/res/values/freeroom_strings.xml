@@ -174,8 +174,18 @@
 
     <!-- Color-blind mode -->
     <string name="freeroom_settings_userpref">"User's preferences"</string>
-    <string name="freeroom_settings_colorblind">"Colors appareance"</string>
+    <string name="freeroom_settings_color">"Colors appareance"</string>
     <string name="freeroom_settings_colorblindcheck">"Basic color-blind mode"</string>
+    <string name="freeroom_settings_color_advanced">"Advanced modes"</string>
+    <string name="freeroom_settings_color_mode_default">"Traffic lights (default)"</string>
+    <string name="freeroom_settings_color_mode_dots_discolored">"Color-blind traffic lights"</string>
+    <string name="freeroom_settings_color_mode_symbolic">"Symbolic with no colors"</string>
+    <string name="freeroom_settings_color_mode_symbolic_lines">"Symbolic with colored lines"</string>
+    <string name="freeroom_settings_color_mode_symbolic_lines_disc">"Symbolic with color-blind lines"</string>
+    <string name="freeroom_settings_color_exemple_free">"FREE"</string>
+    <string name="freeroom_settings_color_exemple_partoccupied">"PART. OCCUPIED"</string>
+    <string name="freeroom_settings_color_exemple_occupied">"OCCUPIED"</string>
+    <string name="freeroom_settings_color_exemple_error">"ERROR"</string>
 
     <!-- Settings: date formatting -->
     <string name="freeroom_settings_format">"Formats and locale options"</string>

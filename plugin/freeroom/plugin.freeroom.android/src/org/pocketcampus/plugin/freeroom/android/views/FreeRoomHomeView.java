@@ -21,6 +21,7 @@ import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomAbstractView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
+import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.ColorBlindMode;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.HomeBehaviourRoom;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.HomeBehaviourTime;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.TimeLanguage;
@@ -2015,6 +2016,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	private void initParamDialogData() {
 		mParamDialogRefreshTimeFormatExample();
+		mParamDialogRefreshColorBlindExamples();
 
 		int id;
 		RadioButton rd;
@@ -2058,6 +2060,51 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 		rd = (RadioButton) mParamView.findViewById(id);
 		rd.setChecked(true);
+
+		ColorBlindMode colorBlindMode = mModel.getColorBlindMode();
+		switch (colorBlindMode) {
+		case DEFAULT:
+			id = R.id.freeroom_layout_param_color_default;
+			break;
+		case DOTS_DISCOLORED:
+			id = R.id.freeroom_layout_param_color_default;
+			break;
+		case DOTS_SYMBOL:
+			id = R.id.freeroom_layout_param_color_symbolic;
+			break;
+		case DOTS_SYMBOL_LINEFULL:
+			id = R.id.freeroom_layout_param_color_symbolic_lines;
+			break;
+		case DOTS_SYMBOL_LINEFULL_DISCOLORED:
+			id = R.id.freeroom_layout_param_color_symbolic_lines_disc;
+			break;
+		default:
+			id = R.id.freeroom_layout_param_color_default;
+			break;
+		}
+		rd = (RadioButton) mParamView.findViewById(id);
+		rd.setChecked(true);
+
+		boolean advanced = false;
+		switch (colorBlindMode) {
+		case DEFAULT:
+		case DOTS_DISCOLORED:
+			advanced = false;
+			break;
+		case DOTS_SYMBOL:
+		case DOTS_SYMBOL_LINEFULL:
+		case DOTS_SYMBOL_LINEFULL_DISCOLORED:
+			advanced = true;
+			break;
+		default:
+			advanced = false;
+			break;
+		}
+
+		CheckBox advancedCheckBox = (CheckBox) mParamView
+				.findViewById(R.id.freeroom_layout_dialog_param_colorblind_advanced);
+		advancedCheckBox.setChecked(advanced);
+		onColorBlindAdvancedChecked(advancedCheckBox);
 
 		TimeLanguage tl = mModel.getTimeLanguage();
 		switch (tl) {
@@ -3933,8 +3980,108 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * @param v
 	 *            caller view (not used)
 	 */
-	public void onColorBlindBasicSwitch(View v) {
-		mModel.setColorBlindModeBasicSwitch(((CheckBox) v).isChecked());
+	public void onHomeBehaviourTimeSetWholeDay(View v) {
+		mModel.setHomeBehaviourTime(HomeBehaviourTime.WHOLE_DAY);
+	}
+
+	/**
+	 * Updates the colors example for the accurate {@link ColorBlindMode}.
+	 */
+	private void mParamDialogRefreshColorBlindExamples() {
+		onColorBlindModeChangedUpdateBasicClick();
+
+		FRPeriod period = new FRPeriod(System.currentTimeMillis(),
+				System.currentTimeMillis() + FRTimes.ONE_HOUR_IN_MS, false);
+		FRRoom room = new FRRoom("mock", "1234");
+		List<ActualOccupation> occupancy = new ArrayList<ActualOccupation>(1);
+		List<Occupancy> occupancies = new ArrayList<Occupancy>(4);
+		Occupancy free = new Occupancy(room, occupancy, false, true, period);
+		Occupancy part = new Occupancy(room, occupancy, true, true, period);
+		Occupancy occupied = new Occupancy(room, occupancy, true, false, period);
+		Occupancy error = new Occupancy(room, occupancy, false, false, period);
+		occupancies.add(free);
+		occupancies.add(part);
+		occupancies.add(occupied);
+		occupancies.add(error);
+		List<TextView> textViews = new ArrayList<TextView>(4);
+		mModel.getColoredDotDrawable(free);
+		TextView free_text = (TextView) mParamView
+				.findViewById(R.id.freeroom_layout_dialog_param_advanced_color_ex_free);
+		TextView part_text = (TextView) mParamView
+				.findViewById(R.id.freeroom_layout_dialog_param_advanced_color_ex_part);
+		TextView occupied_text = (TextView) mParamView
+				.findViewById(R.id.freeroom_layout_dialog_param_advanced_color_ex_occ);
+		TextView error_text = (TextView) mParamView
+				.findViewById(R.id.freeroom_layout_dialog_param_advanced_color_ex_err);
+		textViews.add(free_text);
+		textViews.add(part_text);
+		textViews.add(occupied_text);
+		textViews.add(error_text);
+		for (int i = 0; i < 4; i++) {
+			TextView tv = textViews.get(i);
+			Occupancy occ = occupancies.get(i);
+			tv.setBackgroundColor(mModel.getColorLine(occ));
+			tv.setCompoundDrawablesWithIntrinsicBounds(
+					mModel.getColoredDotDrawable(occ), 0, 0, 0);
+		}
+	}
+
+	/**
+	 * Updates the basic selection according to the change of the advanced
+	 * selected {@link ColorBlindMode}.
+	 */
+	private void onColorBlindModeChangedUpdateBasicClick() {
+		CheckBox basicCheckBox = (CheckBox) mParamView
+				.findViewById(R.id.freeroom_layout_dialog_param_colorblind_basic);
+		ColorBlindMode current = mModel.getColorBlindMode();
+		if (current.equals(ColorBlindMode.DOTS_DISCOLORED)
+				|| current
+						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
+			basicCheckBox.setChecked(true);
+		} else {
+			basicCheckBox.setChecked(false);
+		}
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            the checkbox for basic color-blind mode.
+	 */
+	public void onColorBlindBasicChecked(View v) {
+		int id;
+		if (((CheckBox) v).isChecked()) {
+			id = R.id.freeroom_layout_param_color_dots_disc;
+		} else {
+			id = R.id.freeroom_layout_param_color_default;
+		}
+		((RadioButton) mParamView.findViewById(id)).performClick();
+		mParamDialogRefreshColorBlindExamples();
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            the checkbox to choose advanced mode.
+	 */
+	public void onColorBlindAdvancedChecked(View v) {
+		CheckBox advancedCheckBox = (CheckBox) v;
+		CheckBox basicCheckBox = (CheckBox) mParamView
+				.findViewById(R.id.freeroom_layout_dialog_param_colorblind_basic);
+		LinearLayout advancedColor = (LinearLayout) mParamView
+				.findViewById(R.id.freeroom_layout_dialog_param_advanced_color);
+		if (advancedCheckBox.isChecked()) {
+			advancedColor.setVisibility(View.VISIBLE);
+			basicCheckBox.setVisibility(View.GONE);
+		} else {
+			advancedColor.setVisibility(View.GONE);
+			basicCheckBox.setVisibility(View.VISIBLE);
+			onColorBlindModeChangedUpdateBasicClick();
+			onColorBlindBasicChecked(basicCheckBox);
+		}
+		mParamDialogRefreshColorBlindExamples();
 	}
 
 	/**
@@ -3943,8 +4090,53 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * @param v
 	 *            caller view (not used)
 	 */
-	public void onHomeBehaviourTimeSetWholeDay(View v) {
-		mModel.setHomeBehaviourTime(HomeBehaviourTime.WHOLE_DAY);
+	public void onColorBlindModeSetDefault(View v) {
+		mModel.setColorBlindMode(ColorBlindMode.DEFAULT);
+		mParamDialogRefreshColorBlindExamples();
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            caller view (not used)
+	 */
+	public void onColorBlindModeSetDotsDiscolored(View v) {
+		mModel.setColorBlindMode(ColorBlindMode.DOTS_DISCOLORED);
+		mParamDialogRefreshColorBlindExamples();
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            caller view (not used)
+	 */
+	public void onColorBlindModeSetSymbolic(View v) {
+		mModel.setColorBlindMode(ColorBlindMode.DOTS_SYMBOL);
+		mParamDialogRefreshColorBlindExamples();
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            caller view (not used)
+	 */
+	public void onColorBlindModeSetSymbolicLines(View v) {
+		mModel.setColorBlindMode(ColorBlindMode.DOTS_SYMBOL_LINEFULL);
+		mParamDialogRefreshColorBlindExamples();
+	}
+
+	/**
+	 * Listener to change some model parameter/settings.
+	 * 
+	 * @param v
+	 *            caller view (not used)
+	 */
+	public void onColorBlindModeSetSymbolicLinesDiscolored(View v) {
+		mModel.setColorBlindMode(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED);
+		mParamDialogRefreshColorBlindExamples();
 	}
 
 	/**

@@ -184,20 +184,151 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/freeroom_settings_colorblind"
+                    android:text="@string/freeroom_settings_color"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/black" />
 
                 <!-- Checkbox for basic color-blind mode -->
 
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/background_light"
+                    android:orientation="vertical" >
+
+                    <!-- Examples of colors -->
+
+                    <TextView
+                        android:id="@+id/freeroom_layout_dialog_param_advanced_color_ex_free"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_dot_empty"
+                        android:gravity="center_vertical"
+                        android:text="@string/freeroom_settings_color_exemple_free"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/freeroom_layout_dialog_param_advanced_color_ex_part"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_dot_empty"
+                        android:gravity="center_vertical"
+                        android:text="@string/freeroom_settings_color_exemple_partoccupied"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/freeroom_layout_dialog_param_advanced_color_ex_occ"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_dot_empty"
+                        android:gravity="center_vertical"
+                        android:text="@string/freeroom_settings_color_exemple_occupied"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/freeroom_layout_dialog_param_advanced_color_ex_err"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_dot_empty"
+                        android:gravity="center_vertical"
+                        android:text="@string/freeroom_settings_color_exemple_error"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+                </LinearLayout>
+
                 <CheckBox
                     android:id="@+id/freeroom_layout_dialog_param_colorblind_basic"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:onClick="onColorBlindBasicSwitch"
+                    android:onClick="onColorBlindBasicChecked"
                     android:text="@string/freeroom_settings_colorblindcheck"
                     android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black"
+                    android:visibility="visible" />
+
+                <!-- Checkbox to activate advanced modes -->
+
+                <CheckBox
+                    android:id="@+id/freeroom_layout_dialog_param_colorblind_advanced"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="onColorBlindAdvancedChecked"
+                    android:text="@string/freeroom_settings_color_advanced"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@android:color/black" />
+
+                <LinearLayout
+                    android:id="@+id/freeroom_layout_dialog_param_advanced_color"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/background_light"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <RadioGroup
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <!-- default (colored dots) -->
+
+                        <RadioButton
+                            android:id="@+id/freeroom_layout_param_color_default"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="onColorBlindModeSetDefault"
+                            android:text="@string/freeroom_settings_color_mode_default"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@android:color/black" />
+
+                        <!-- Dots discolored -->
+
+                        <RadioButton
+                            android:id="@+id/freeroom_layout_param_color_dots_disc"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="onColorBlindModeSetDotsDiscolored"
+                            android:text="@string/freeroom_settings_color_mode_dots_discolored"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@android:color/black" />
+
+                        <!-- Symbolic -->
+
+                        <RadioButton
+                            android:id="@+id/freeroom_layout_param_color_symbolic"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="onColorBlindModeSetSymbolic"
+                            android:text="@string/freeroom_settings_color_mode_symbolic"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@android:color/black" />
+
+                        <!-- Symbolic with colored lines -->
+
+                        <RadioButton
+                            android:id="@+id/freeroom_layout_param_color_symbolic_lines"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="onColorBlindModeSetSymbolicLines"
+                            android:text="@string/freeroom_settings_color_mode_symbolic_lines"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@android:color/black" />
+
+                        <!-- Symbolic with discolored lines -->
+
+                        <RadioButton
+                            android:id="@+id/freeroom_layout_param_color_symbolic_lines_disc"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="onColorBlindModeSetSymbolicLinesDiscolored"
+                            android:text="@string/freeroom_settings_color_mode_symbolic_lines_disc"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@android:color/black" />
+                    </RadioGroup>
+                </LinearLayout>
             </LinearLayout>
 
             <!-- Title for format/local options. -->
