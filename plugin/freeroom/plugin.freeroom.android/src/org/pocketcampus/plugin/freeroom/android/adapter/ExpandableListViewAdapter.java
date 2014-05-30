@@ -198,7 +198,7 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		// if you want people image to check who is working for a longer period,
 		// uncomment this
 		// people.setOnClickListener(ocl_checkWorking);
-
+		convertView.setBackgroundColor(mModel.getColorLine(occupancy));
 		tv.setCompoundDrawablesWithIntrinsicBounds(
 				mModel.getColoredDotDrawable(occupancy), 0, 0, 0);
 		return convertView;
@@ -307,18 +307,17 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			tv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 			// if the group is highlighted.
 			if (groupPosition == focusedGroup) {
-				convertView.setBackgroundColor(mModel.COLOR_HEADER_HIGHLIGHT);
+				convertView.setBackgroundColor(mModel.getColorHighlight());
 			} else {
-				convertView
-						.setBackgroundColor(mModel.COLOR_CHECK_OCCUPANCY_DEFAULT);
+				convertView.setBackgroundColor(mModel.getColorTransparent());
 			}
 		} else {
 			// color of the first child, as it's the less occupied.
 			// the get color method handles null values.
-			convertView
-					.setBackgroundColor(mModel.COLOR_CHECK_OCCUPANCY_DEFAULT);
-			tv.setCompoundDrawablesWithIntrinsicBounds(
-					mModel.getColoredDotDrawable(getChildObject(groupPosition, 0)),
+			convertView.setBackgroundColor(mModel.getColorLine(getChildObject(
+					groupPosition, 0)));
+			tv.setCompoundDrawablesWithIntrinsicBounds(mModel
+					.getColoredDotDrawable(getChildObject(groupPosition, 0)),
 					0, 0, 0);
 		}
 		return convertView;

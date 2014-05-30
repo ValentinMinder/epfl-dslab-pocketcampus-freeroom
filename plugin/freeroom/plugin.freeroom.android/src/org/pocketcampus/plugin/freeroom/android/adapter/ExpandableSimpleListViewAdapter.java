@@ -98,8 +98,7 @@ public class ExpandableSimpleListViewAdapter extends
 		if (mModel != null) {
 			ExpandableListView v = ((ExpandableListView) parent);
 			if (v.isGroupExpanded(groupPosition)) {
-				convertView
-						.setBackgroundColor(mModel.COLOR_CHECK_OCCUPANCY_DEFAULT);
+				convertView.setBackgroundColor(mModel.getColorTransparent());
 			} else {
 				// convertView.setBackgroundColor(mModel
 				// .getColorOfCheckOccupancyRoom(groupPosition));

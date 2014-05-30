@@ -134,11 +134,13 @@ public class ActualOccupationArrayAdapter<T> extends
 				convertView.setOnClickListener(ocl_line);
 				// green, and someone registered
 				tv.setCompoundDrawablesWithIntrinsicBounds(
-						mModel.getColoredDotDrawable(mActualOccupation), 0, 0, 0);
+						mModel.getColoredDotDrawable(mActualOccupation), 0,
+						R.drawable.ic_action_next_item, 0);
 			} else {
 				// green, but nobody registered
 				tv.setCompoundDrawablesWithIntrinsicBounds(
-						mModel.getColoredDotDrawable(mActualOccupation), 0, 0, 0);
+						mModel.getColoredDotDrawable(mActualOccupation), 0, 0,
+						0);
 				convertView.setOnClickListener(null);
 			}
 
@@ -154,6 +156,7 @@ public class ActualOccupationArrayAdapter<T> extends
 			tv.setCompoundDrawablesWithIntrinsicBounds(
 					mModel.getColoredDotDrawable(mActualOccupation), 0, 0, 0);
 		}
+		convertView.setBackgroundColor(mModel.getColorLine(mActualOccupation));
 
 		return convertView;
 	}

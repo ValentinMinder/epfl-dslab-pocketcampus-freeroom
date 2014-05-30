@@ -73,12 +73,24 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private final String registeredUserIDKey = "registeredUserIDKey";
 	private final String advancedTimeIDKey = "advancedTimeIDKey";
 	private final String groupAccessIDKey = "groupAccessIDKey";
+	private final String colorBlindModeIDKey = "colorBlindModeIDKey";
 
-	public final int COLOR_CHECK_OCCUPANCY_DEFAULT = Color.WHITE;
-	public final int COLOR_CHECK_OCCUPANCY_FREE = Color.rgb(97, 215, 18);
-	public final int COLOR_CHECK_OCCUPANCY_OCCUPIED = Color.rgb(215, 20, 20);
-	public final int COLOR_CHECK_OCCUPANCY_ATLEASTONCE = Color.rgb(236, 244, 7);
-	public final int COLOR_HEADER_HIGHLIGHT = Color.YELLOW;
+	private final int COLOR_TRANSPARENT = Color.TRANSPARENT;
+	private final int COLOR_DEFAULT = Color.WHITE;
+	private final int COLOR_TRANSPARENCY = 128;
+	private final int COLOR_GREEN_FREE = Color.argb(COLOR_TRANSPARENCY, 99,
+			199, 99);
+	private final int COLOR_RED_OCCUPIED = Color.argb(COLOR_TRANSPARENCY, 199,
+			50, 50);
+	private final int COLOR_ORANGE_ATLEASTONCE = Color.argb(COLOR_TRANSPARENCY,
+			255, 170, 10);
+	private final int COLOR_GREEN_FREE_CB = Color.argb(COLOR_TRANSPARENCY, 0,
+			51, 153);
+	private final int COLOR_RED_OCCUPIED_CB = Color.argb(COLOR_TRANSPARENCY,
+			153, 0, 0);
+	private final int COLOR_ORANGE_ATLEASTONCE_CB = Color.argb(
+			COLOR_TRANSPARENCY, 255, 255, 153);
+	private final int COLOR_HEADER_HIGHLIGHT = Color.GRAY;
 
 	public final int DEFAULT_GROUP_ACCESS = 10;
 
@@ -142,6 +154,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		timePickersPref = TimePickersPref.valueOf(preferences.getString(
 				timePickersPrefIDKey, timePickersPref.name()));
 		advancedTime = preferences.getBoolean(advancedTimeIDKey, advancedTime);
+		colorBlindMode = ColorBlindMode.valueOf(preferences.getString(
+				colorBlindModeIDKey, colorBlindMode.name()));
 		this.context = context;
 	}
 
@@ -738,49 +752,67 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * Get the appropriate color according to the occupancy.
-	 * <p>
-	 * Deprecated as of 2014.05.25.
+	 * Return the appropriate color according to the {@link Occupation} given,
+	 * and the {@link FreeRoomModel} color settings ({@link ColorBlindMode}).
 	 * 
-	 * @param mOccupancy
-	 * @return
+	 * @param mOccupation
+	 *            occupation for a given room (for multiple periods)
+	 * @return the appropriate color
 	 */
-	public int getColor(Occupancy mOccupancy) {
-		if (mOccupancy == null) {
-			return COLOR_CHECK_OCCUPANCY_DEFAULT;
+	public int getColorLine(Occupancy mOccupancy) {
+		if (!isColorLineFull()) {
+			return COLOR_TRANSPARENT;
 		}
 
-		boolean atLeastOneFree = mOccupancy.isIsAtLeastFreeOnce();
-		boolean atLeastOneOccupied = mOccupancy.isIsAtLeastOccupiedOnce();
-
-		if (atLeastOneFree) {
-			if (atLeastOneOccupied) {
-				return COLOR_CHECK_OCCUPANCY_ATLEASTONCE;
+		if (mOccupancy.isIsAtLeastFreeOnce()) {
+			if (mOccupancy.isIsAtLeastOccupiedOnce()) {
+				return getColorOrange();
 			} else {
-				return COLOR_CHECK_OCCUPANCY_FREE;
+				return getColorRed();
 			}
 		} else {
-			if (atLeastOneOccupied) {
-				return COLOR_CHECK_OCCUPANCY_OCCUPIED;
+			if (mOccupancy.isIsAtLeastOccupiedOnce()) {
+				return getColorRed();
 			} else {
 				// default
-				return COLOR_CHECK_OCCUPANCY_DEFAULT;
+				return COLOR_DEFAULT;
 			}
 		}
 	}
 
 	/**
-	 * Return the appropriate color dot {@link Drawable} according to the
-	 * {@link Occupation} given, and the {@link FreeRoomModel} color settings
-	 * (color-blind).
+	 * Return the appropriate color according to the {@link ActualOccupation}
+	 * given, and the {@link FreeRoomModel} color settings (
+	 * {@link ColorBlindMode}).
 	 * 
-	 * @param mOccupation
-	 *            occupation for a given room (for multiple periods)
+	 * @param mActualOccupation
+	 *            actual occupation for a given period
+	 * @return the appropriate color
+	 */
+	public int getColorLine(ActualOccupation mActualOccupation) {
+		if (!isColorLineFull()) {
+			return COLOR_TRANSPARENT;
+		}
+
+		if (mActualOccupation.isAvailable()) {
+			return getColorGreen();
+		} else {
+			return getColorRed();
+		}
+	}
+
+	/**
+	 * Return the appropriate color dot {@link Drawable} according to the
+	 * {@link Occupancy} given, and the {@link FreeRoomModel} color settings (
+	 * {@link ColorBlindMode}).
+	 * 
+	 * @param mOccupancy
+	 *            occupancy for a given room (for multiple periods)
 	 * @return a color dot {@link Drawable}
 	 */
 	public int getColoredDotDrawable(Occupancy mOccupancy) {
-		if (mOccupancy == null) {
-			return getColoredDotUnknown();
+		if (!isColorColoredDots()) {
+			return R.drawable.ic_dot_empty;
 		}
 
 		if (mOccupancy.isIsAtLeastFreeOnce()) {
@@ -802,15 +834,15 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	/**
 	 * Return the correct color dot {@link Drawable} according to the
 	 * {@link ActualOccupation} given, and the {@link FreeRoomModel} color
-	 * settings (color-blind).
+	 * settings ({@link ColorBlindMode}).
 	 * 
 	 * @param mActualOccupation
 	 *            actual occupation for a given period
 	 * @return a color dot {@link Drawable}
 	 */
 	public int getColoredDotDrawable(ActualOccupation mActualOccupation) {
-		if (mActualOccupation == null) {
-			return getColoredDotUnknown();
+		if (!isColorColoredDots()) {
+			return R.drawable.ic_dot_empty;
 		}
 		if (mActualOccupation.isAvailable()) {
 			return getColoredDotGreen();
@@ -820,9 +852,162 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * Stores the color-blind mode (not persistent, not changeable).
+	 * Stores the color-blind mode in a local variable (change must be done
+	 * trhough the correct setter to be stored).
 	 */
-	private boolean isColorBlindMode = false;
+	private ColorBlindMode colorBlindMode = ColorBlindMode.DEFAULT;
+
+	/**
+	 * Enum for color-blind modes. Available modes are:
+	 * <p>
+	 * {@link #DEFAULT}: small color-dots on the left.<br>
+	 * {@link #DOTS_DISCOLORED}: color-dots are discolored according to
+	 * color-blind vision. <br>
+	 * {@link #DOTS_SYMBOL}: dots are symbol showing the state. <br>
+	 * {@link #DOTS_SYMBOL_LINEFULL}: the line is fully colored, with the dots
+	 * symbol.<br>
+	 * {@link #DOTS_SYMBOL_LINEFULL_DISCOLORED}: the line is fully colored with
+	 * color-blind colors, with the dots symbol.<br>
+	 * <br>
+	 */
+	private enum ColorBlindMode {
+		DEFAULT, DOTS_DISCOLORED, DOTS_SYMBOL, DOTS_SYMBOL_LINEFULL, DOTS_SYMBOL_LINEFULL_DISCOLORED;
+	}
+
+	/**
+	 * Set the {@link ColorBlindMode} and save it to persistent storage.
+	 * 
+	 * @param colorBlindMode
+	 *            the new {@link ColorBlindMode}
+	 */
+	public void setColorBlindMode(ColorBlindMode colorBlindMode) {
+		this.colorBlindMode = colorBlindMode;
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putString(colorBlindModeIDKey, colorBlindMode.name());
+		editor.commit();
+	}
+
+	/**
+	 * Retrieves the {@link ColorBlindMode}.
+	 * 
+	 * @return the current {@link ColorBlindMode}.
+	 */
+	public ColorBlindMode getColorBlindMode() {
+		return colorBlindMode;
+	}
+
+	/**
+	 * Return true if lines should be colored according to the
+	 * {@link ColorBlindMode}.
+	 * 
+	 * @return true if lines should be colored.
+	 */
+	private boolean isColorLineFull() {
+		if (colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL)
+				|| colorBlindMode
+						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Return true if dots should be displayed in front of room names, according
+	 * to the {@link ColorBlindMode}.
+	 * <p>
+	 * Actually ALL modes display dots now, either a colored one or a symbol.
+	 * 
+	 * @return true if dots should be present.
+	 */
+	private boolean isColorColoredDots() {
+		if (colorBlindMode.equals(ColorBlindMode.DEFAULT)
+				|| colorBlindMode.equals(ColorBlindMode.DOTS_DISCOLORED)
+				|| colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL)
+				|| colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL)
+				|| colorBlindMode
+						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Return true if the current {@link ColorBlindMode} is for color-blind
+	 * people.
+	 * 
+	 * @return
+	 */
+	private boolean isColorBlind() {
+		if (colorBlindMode.equals(ColorBlindMode.DOTS_DISCOLORED)
+				|| colorBlindMode
+						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Return the HIGHLIGHT {@link Color}.
+	 * <p>
+	 * This is constant and DOESN'T depend on the {@link ColorBlindMode} and
+	 * {@link #isColorBlind()} method.
+	 * 
+	 * @return the accurate HIGHLIGHT color.
+	 */
+	public int getColorHighlight() {
+		return COLOR_HEADER_HIGHLIGHT;
+	}
+
+	/**
+	 * Return the TRANSPARENT {@link Color}.
+	 * <p>
+	 * This is constant and DOESN'T depend on the {@link ColorBlindMode} and
+	 * {@link #isColorBlind()} method.
+	 * 
+	 * @return the accurate HIGHLIGHT color.
+	 */
+	public int getColorTransparent() {
+		return COLOR_TRANSPARENT;
+	}
+
+	/**
+	 * Return the GREEN {@link Color} according to the {@link ColorBlindMode}
+	 * and {@link #isColorBlind()} method.
+	 * 
+	 * @return the accurate GREEN color.
+	 */
+	private int getColorGreen() {
+		if (isColorBlind()) {
+			return COLOR_GREEN_FREE;
+		}
+		return COLOR_GREEN_FREE_CB;
+	}
+
+	/**
+	 * Return the RED {@link Color} according to the {@link ColorBlindMode} and
+	 * {@link #isColorBlind()} method.
+	 * 
+	 * @return the accurate RED color.
+	 */
+	private int getColorRed() {
+		if (isColorBlind()) {
+			return COLOR_RED_OCCUPIED;
+		}
+		return COLOR_RED_OCCUPIED_CB;
+	}
+
+	/**
+	 * Return the ORANGE {@link Color} according to the {@link ColorBlindMode}
+	 * and {@link #isColorBlind()} method.
+	 * 
+	 * @return the accurate ORANGE color.
+	 */
+	private int getColorOrange() {
+		if (isColorBlind()) {
+			return COLOR_ORANGE_ATLEASTONCE;
+		}
+		return COLOR_ORANGE_ATLEASTONCE_CB;
+	}
 
 	/**
 	 * Return the "grey" dot, indicating the room occupancy is UNKNOWN,
@@ -837,7 +1022,15 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * @return the dot indicating "UNKNOWN".
 	 */
 	private int getColoredDotUnknown() {
-		return R.drawable.ic_dot_grey;
+		if (colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL)
+				|| colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL)
+				|| colorBlindMode
+						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
+			return R.drawable.ic_dot_grey_symbol;
+		} else {
+			// grey is the same for color-blind and default mode
+			return R.drawable.ic_dot_grey;
+		}
 	}
 
 	/**
@@ -853,8 +1046,13 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * @return the dot indicating "OCCUPIED".
 	 */
 	private int getColoredDotRed() {
-		if (isColorBlindMode) {
+		if (colorBlindMode.equals(ColorBlindMode.DOTS_DISCOLORED)) {
 			return R.drawable.ic_dot_red_cb;
+		} else if (colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL)
+				|| colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL)
+				|| colorBlindMode
+						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
+			return R.drawable.ic_dot_red_symbol;
 		} else {
 			return R.drawable.ic_dot_red;
 		}
@@ -873,8 +1071,13 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * @return the dot indicating "FREE".
 	 */
 	private int getColoredDotGreen() {
-		if (isColorBlindMode) {
+		if (colorBlindMode.equals(ColorBlindMode.DOTS_DISCOLORED)) {
 			return R.drawable.ic_dot_green_cb;
+		} else if (colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL)
+				|| colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL)
+				|| colorBlindMode
+						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
+			return R.drawable.ic_dot_green_symbol;
 		} else {
 			return R.drawable.ic_dot_green;
 		}
@@ -893,8 +1096,13 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * @return the dot indicating "PARTIALLY OCCUPIED".
 	 */
 	private int getColoredDotOrange() {
-		if (isColorBlindMode) {
+		if (colorBlindMode.equals(ColorBlindMode.DOTS_DISCOLORED)) {
 			return R.drawable.ic_dot_orange_cb;
+		} else if (colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL)
+				|| colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL)
+				|| colorBlindMode
+						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
+			return R.drawable.ic_dot_orange_symbol;
 		} else {
 			return R.drawable.ic_dot_orange;
 		}
