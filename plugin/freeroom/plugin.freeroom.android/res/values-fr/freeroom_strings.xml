@@ -142,6 +142,7 @@
     <string name="freeroom_dialog_add_autocomplete_updating">"Actualisation&#8230;"</string>
     <string name="freeroom_dialog_add_autocomplete_uptodate">"A jour!"</string>
     <string name="freeroom_dialog_add_autocomplete_noresult">"Pas de résultat, désolé :p"</string>
+    <string name="freeroom_dialog_add_autocomplete_nomore">"Plus d'autres résultats"</string>
 
     <!-- ADD ROOM -->
     <string name="freeroom_dialog_add_room_title">"Ajouter des salles"</string>

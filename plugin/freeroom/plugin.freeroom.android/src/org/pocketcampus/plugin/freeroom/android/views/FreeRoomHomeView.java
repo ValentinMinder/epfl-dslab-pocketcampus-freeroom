@@ -1322,7 +1322,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				R.layout.freeroom_layout_dialog_add_favorites_room, null);
 		// these work perfectly
 		mAddFavoritesView.setMinimumWidth((int) (activityWidth * 0.9f));
-		// mAddRoomView.setMinimumHeight((int) (activityHeight * 0.8f));
 
 		mAddFavoritesDialog.setView(mAddFavoritesView);
 
@@ -1377,7 +1376,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				R.layout.freeroom_layout_dialog_add_room, null);
 		// these work perfectly
 		mAddRoomView.setMinimumWidth((int) (activityWidth * 0.9f));
-		// mAddRoomView.setMinimumHeight((int) (activityHeight * 0.8f));
 
 		mAddRoomDialog.setView(mAddRoomView);
 		mAddRoomDialog.setOnShowListener(new OnShowListener() {
@@ -1435,7 +1433,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				.findViewById(R.id.freeroom_layout_dialog_add_layout_main);
 		ll.addView(mAutoCompleteAddRoomInputBarElement);
 		createAddRoomSuggestionsList();
-
 	}
 
 	private ListView selectedListView;
@@ -3359,7 +3356,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			dismissSoftKeyBoard(v);
 			AutoCompleteRequest request = new AutoCompleteRequest(query,
 					mModel.getGroupAccess());
-
 			mController.autoCompleteBuilding(this, request);
 		} else {
 			autoCompleteCancel();
@@ -3482,7 +3478,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Initialize the autocomplete suggestion list
 	 */
 	private void createAddRoomSuggestionsList() {
-		mAutoCompleteAddRoomListView = new LabeledListViewElement(this);
+		mAutoCompleteAddRoomListView = new ListView(this);
 		mAutoCompleteAddRoomInputBarElement
 				.addView(mAutoCompleteAddRoomListView);
 
@@ -3491,22 +3487,21 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					@Override
 					public void onItemClick(AdapterView<?> adapter, View view,
 							int pos, long id) {
-
+						// when an item is clicked, the keyboard is dimissed
+						dismissSoftKeyBoard(view);
 						FRRoom room = mAutoCompleteAddRoomArrayListFRRoom
 								.get(pos);
 						addRoomToCheck(room);
 						searchButton.setEnabled(auditSubmit() == 0);
-						// refresh the autocomplete, such that selected rooms
-						// are not displayed
-						if (mAutoCompleteAddRoomInputBarElement.getInputText()
-								.length() == 0) {
-						} else {
-							autoCompletedUpdated();
-						}
 
 						// WE DONT REMOVE the text in the input bar
 						// INTENTIONNALLY: user may want to select multiple
 						// rooms in the same building
+
+						// refresh the autocomplete, such that selected
+						// rooms are not displayed anymore
+						autoCompletedUpdated();
+
 					}
 				});
 		mAutoCompleteAddRoomListView.setAdapter(mAddRoomAdapter);
@@ -3516,7 +3511,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Initialize the autocomplete suggestion list
 	 */
 	private void createAddFavoritesSuggestionsList() {
-		mAutoCompleteAddFavoritesListView = new LabeledListViewElement(this);
+		mAutoCompleteAddFavoritesListView = new ListView(this);
 		mAutoCompleteAddFavoritesInputBarElement
 				.addView(mAutoCompleteAddFavoritesListView);
 
@@ -3525,7 +3520,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					@Override
 					public void onItemClick(AdapterView<?> adapter, View view,
 							int pos, long id) {
-
+						// when an item is clicked, the keyboard is dimissed
+						dismissSoftKeyBoard(view);
 						FRRoom room = mAutoCompleteAddFavoritesArrayListFRRoom
 								.get(pos);
 						if (mModel.isFavorite(room)) {
@@ -3533,13 +3529,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						} else {
 							mModel.addFavorite(room);
 						}
-						// refresh the autocomplete, such that selected rooms
-						// are not displayed
-						autoCompletedUpdated();
 
 						// WE DONT REMOVE the text in the input bar
 						// INTENTIONNALLY: user may want to select multiple
 						// rooms in the same building
+						autoCompletedUpdated();
 					}
 				});
 		mAutoCompleteAddFavoritesListView.setAdapter(mAddFavoritesAdapter);
@@ -3908,6 +3902,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				.setText(getString(R.string.freeroom_dialog_add_autocomplete_updating));
 	}
 
+	/**
+	 * To be called when autocomplete is not lauchable and ask the user to type
+	 * in.
+	 */
 	public void autoCompleteCancel() {
 		TextView tvAutcompletStatusFav = (TextView) mAddFavoritesView
 				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
@@ -3929,7 +3927,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
 		TextView tvAutcompletStatusRoom = (TextView) mAddRoomView
 				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
-		if (mModel.getAutoComplete().values().size() == 0) {
+		boolean emptyResult = (mModel.getAutoComplete().values().size() == 0);
+		if (emptyResult) {
 			tvAutcompletStatusFav
 					.setText(getString(R.string.freeroom_dialog_add_autocomplete_noresult));
 			tvAutcompletStatusRoom
@@ -3958,6 +3957,22 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					mAutoCompleteAddRoomArrayListFRRoom.add(room);
 				}
 				mAutoCompleteAddFavoritesArrayListFRRoom.add(room);
+			}
+		}
+
+		/*
+		 * If there was a non-empty result but all rooms got rejected, we
+		 * display "no more" instead of "up-to-date". Not useful for favorites
+		 * as no room is rejected.
+		 */
+		if (!emptyResult) {
+			if (mAutoCompleteAddRoomArrayListFRRoom.isEmpty()) {
+				tvAutcompletStatusFav
+						.setText(getString(R.string.freeroom_dialog_add_autocomplete_nomore));
+			}
+			if (mAutoCompleteAddFavoritesArrayListFRRoom.isEmpty()) {
+				tvAutcompletStatusRoom
+						.setText(getString(R.string.freeroom_dialog_add_autocomplete_nomore));
 			}
 		}
 

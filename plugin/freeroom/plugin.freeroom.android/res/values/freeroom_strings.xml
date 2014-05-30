@@ -140,6 +140,7 @@
     <string name="freeroom_dialog_add_autocomplete_updating">"Updating&#8230;"</string>
     <string name="freeroom_dialog_add_autocomplete_uptodate">"Up-to-date!"</string>
     <string name="freeroom_dialog_add_autocomplete_noresult">"No result, sorry :p"</string>
+    <string name="freeroom_dialog_add_autocomplete_nomore">"No more results"</string>
 
     <!-- ADD ROOM -->
     <string name="freeroom_dialog_add_room_title">"Add rooms"</string>

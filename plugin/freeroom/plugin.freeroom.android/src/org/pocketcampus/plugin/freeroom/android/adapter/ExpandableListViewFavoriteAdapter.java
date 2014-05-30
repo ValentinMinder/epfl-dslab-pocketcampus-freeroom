@@ -134,12 +134,11 @@ public class ExpandableListViewFavoriteAdapter extends
 				if (isFav) {
 					star.setImageResource(android.R.drawable.star_big_off);
 					mModel.removeFavorite(room);
-					home.updateFavoritesSummary();
 				} else {
 					star.setImageResource(android.R.drawable.star_big_on);
 					mModel.addFavorite(room);
-					home.updateFavoritesSummary();
 				}
+				home.updateFavoritesSummary();
 				notifyDataSetChanged();
 			}
 		});
