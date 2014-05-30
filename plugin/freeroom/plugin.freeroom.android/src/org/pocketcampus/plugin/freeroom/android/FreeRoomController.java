@@ -73,6 +73,7 @@ public class FreeRoomController extends PluginController implements
 
 	public void autoCompleteBuilding(IFreeRoomView view,
 			AutoCompleteRequest request) {
+		mModel.autoCompleteLaunch();
 		new AutoCompleteRequestASyncTask(view).start(this, mClient, request);
 	}
 

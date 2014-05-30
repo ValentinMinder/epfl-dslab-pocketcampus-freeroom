@@ -134,6 +134,10 @@
 
     <!-- Add favorites -->
     <string name="freeroom_dialog_add_favorites_title">"Add favorites"</string>
+    <string name="freeroom_dialog_add_autocomplete_typein">"Type in at least 2 letters&#8230;"</string>
+    <string name="freeroom_dialog_add_autocomplete_updating">"Updating&#8230;"</string>
+    <string name="freeroom_dialog_add_autocomplete_uptodate">"Up-to-date!"</string>
+    <string name="freeroom_dialog_add_autocomplete_noresult">"No result, sorry :p"</string>
 
     <!-- ADD ROOM -->
     <string name="freeroom_dialog_add_room_title">"Add rooms"</string>

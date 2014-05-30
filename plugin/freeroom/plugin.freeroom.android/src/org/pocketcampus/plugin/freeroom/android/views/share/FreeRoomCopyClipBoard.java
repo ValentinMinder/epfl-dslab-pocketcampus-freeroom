@@ -120,6 +120,11 @@ public class FreeRoomCopyClipBoard extends FreeRoomAbstractView implements
 	public void anyError() {
 		// WE DO NOTHING!
 	}
+	
+	@Override
+	public void autoCompleteLaunch() {
+		// WE DO NOTHING!
+	}
 
 	@Override
 	public void autoCompletedUpdated() {

@@ -1736,4 +1736,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		// default
 		return new FRTimesClient(context, Locale.getDefault(), null);
 	}
+
+	public void autoCompleteLaunch() {
+		mListeners.autoCompleteLaunch();
+	}
 }

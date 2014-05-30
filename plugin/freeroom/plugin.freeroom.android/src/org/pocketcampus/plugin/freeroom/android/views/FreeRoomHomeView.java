@@ -1303,6 +1303,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onDismiss(DialogInterface dialog) {
+				autoCompleteCancel();
 				mAutoCompleteAddFavoritesArrayListFRRoom.clear();
 				mAddFavoritesAdapter.notifyDataSetInvalidated();
 				mAutoCompleteAddRoomArrayListFRRoom.clear();
@@ -1362,6 +1363,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onDismiss(DialogInterface dialog) {
+				autoCompleteCancel();
 				mSummarySelectedRoomsTextViewSearchMenu.setText(u
 						.getSummaryTextFromCollection(selectedRooms));
 				searchButton.setEnabled(auditSubmit() == 0);
@@ -3264,12 +3266,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 							String query = mAutoCompleteAddRoomInputBarElement
 									.getInputText();
-							if (u.validQuery(query)) {
-								dismissSoftKeyBoard(v);
-								AutoCompleteRequest request = new AutoCompleteRequest(
-										query, mModel.getGroupAccess());
-								mController.autoCompleteBuilding(view, request);
-							}
+							validAutoCompleteQuery(query, v);
 						}
 
 						return true;
@@ -3283,15 +3280,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					public void onClick(View v) {
 						String query = mAutoCompleteAddRoomInputBarElement
 								.getInputText();
-						if (u.validQuery(query)) {
-							dismissSoftKeyBoard(v);
-							AutoCompleteRequest request = new AutoCompleteRequest(
-									query, mModel.getGroupAccess());
-							mController.autoCompleteBuilding(view, request);
-						}
-						if (!query.equalsIgnoreCase("ba")) {
-							activateDebug(query);
-						}
+						validAutoCompleteQuery(query, v);
 					}
 				});
 
@@ -3308,25 +3297,36 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						mAutoCompleteAddRoomListView
 								.setAdapter(mAddRoomAdapter);
 
-						if (mAutoCompleteAddRoomInputBarElement.getInputText()
-								.length() == 0) {
+						if (!u.validQuery(text)) {
 							mAutoCompleteAddRoomInputBarElement
 									.setButtonText(null);
-							mAutoCompleteAddRoomListView.invalidate();
+							mAddRoomAdapter.notifyDataSetInvalidated();
+							autoCompleteCancel();
 						} else {
 							mAutoCompleteAddRoomInputBarElement
 									.setButtonText("");
-							if (u.validQuery(text)) {
-								// TODO remove this if you don't want
-								// auto-complete
-								// without pressing the button
-								AutoCompleteRequest request = new AutoCompleteRequest(
-										text, mModel.getGroupAccess());
-								mController.autoCompleteBuilding(view, request);
-							}
+							// TODO remove this if you don't want
+							// auto-complete
+							// without pressing the button
+							AutoCompleteRequest request = new AutoCompleteRequest(
+									text, mModel.getGroupAccess());
+							mController.autoCompleteBuilding(view, request);
 						}
 					}
 				});
+	}
+
+	private void validAutoCompleteQuery(String query, View v) {
+		if (u.validQuery(query)) {
+			dismissSoftKeyBoard(v);
+			AutoCompleteRequest request = new AutoCompleteRequest(query,
+					mModel.getGroupAccess());
+
+			mController.autoCompleteBuilding(this, request);
+		} else {
+			autoCompleteCancel();
+		}
+		activateDebug(query);
 	}
 
 	private void UIConstructAddFavoritesInputBar() {
@@ -3348,14 +3348,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 							String query = mAutoCompleteAddRoomInputBarElement
 									.getInputText();
-							if (u.validQuery(query)) {
-								dismissSoftKeyBoard(v);
-								AutoCompleteRequest request = new AutoCompleteRequest(
-										query, mModel.getGroupAccess());
-
-								// request.setForbiddenRoomsUID(forbiddenRoomsUID);
-								mController.autoCompleteBuilding(view, request);
-							}
+							validAutoCompleteQuery(query, v);
 						}
 
 						return true;
@@ -3369,12 +3362,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					public void onClick(View v) {
 						String query = mAutoCompleteAddRoomInputBarElement
 								.getInputText();
-						if (u.validQuery(query)) {
-							dismissSoftKeyBoard(v);
-							AutoCompleteRequest request = new AutoCompleteRequest(
-									query, mModel.getGroupAccess());
-							mController.autoCompleteBuilding(view, request);
-						}
+						validAutoCompleteQuery(query, v);
 					}
 				});
 
@@ -3391,22 +3379,20 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						mAutoCompleteAddFavoritesListView
 								.setAdapter(mAddFavoritesAdapter);
 
-						if (mAutoCompleteAddFavoritesInputBarElement
-								.getInputText().length() == 0) {
+						if (!u.validQuery(text)) {
 							mAutoCompleteAddFavoritesInputBarElement
 									.setButtonText(null);
-							mAutoCompleteAddFavoritesListView.invalidate();
+							mAddFavoritesAdapter.notifyDataSetInvalidated();
+							autoCompleteCancel();
 						} else {
 							mAutoCompleteAddFavoritesInputBarElement
 									.setButtonText("");
-							if (u.validQuery(text)) {
-								// TODO remove this if you don't want
-								// auto-complete
-								// without pressing the button
-								AutoCompleteRequest request = new AutoCompleteRequest(
-										text, mModel.getGroupAccess());
-								mController.autoCompleteBuilding(view, request);
-							}
+							// TODO remove this if you don't want
+							// auto-complete
+							// without pressing the button
+							AutoCompleteRequest request = new AutoCompleteRequest(
+									text, mModel.getGroupAccess());
+							mController.autoCompleteBuilding(view, request);
 						}
 					}
 				});
@@ -3873,11 +3859,49 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	@Override
+	public void autoCompleteLaunch() {
+		TextView tvAutcompletStatusFav = (TextView) mAddFavoritesView
+				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
+		TextView tvAutcompletStatusRoom = (TextView) mAddRoomView
+				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
+		tvAutcompletStatusFav
+				.setText(getString(R.string.freeroom_dialog_add_autocomplete_updating));
+		tvAutcompletStatusRoom
+				.setText(getString(R.string.freeroom_dialog_add_autocomplete_updating));
+	}
+
+	public void autoCompleteCancel() {
+		TextView tvAutcompletStatusFav = (TextView) mAddFavoritesView
+				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
+		TextView tvAutcompletStatusRoom = (TextView) mAddRoomView
+				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
+		tvAutcompletStatusFav
+				.setText(getString(R.string.freeroom_dialog_add_autocomplete_typein));
+		tvAutcompletStatusRoom
+				.setText(getString(R.string.freeroom_dialog_add_autocomplete_typein));
+	}
+
+	@Override
 	public void autoCompletedUpdated() {
 		mAddRoomAdapter.notifyDataSetInvalidated();
 		mAddFavoritesAdapter.notifyDataSetInvalidated();
 		mAutoCompleteAddRoomArrayListFRRoom.clear();
 		mAutoCompleteAddFavoritesArrayListFRRoom.clear();
+		TextView tvAutcompletStatusFav = (TextView) mAddFavoritesView
+				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
+		TextView tvAutcompletStatusRoom = (TextView) mAddRoomView
+				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
+		if (mModel.getAutoComplete().values().size() == 0) {
+			tvAutcompletStatusFav
+					.setText(getString(R.string.freeroom_dialog_add_autocomplete_noresult));
+			tvAutcompletStatusRoom
+					.setText(getString(R.string.freeroom_dialog_add_autocomplete_noresult));
+		} else {
+			tvAutcompletStatusFav
+					.setText(getString(R.string.freeroom_dialog_add_autocomplete_uptodate));
+			tvAutcompletStatusRoom
+					.setText(getString(R.string.freeroom_dialog_add_autocomplete_uptodate));
+		}
 
 		// TODO: adapt to use the new version of autocomplete mapped by building
 		Iterator<List<FRRoom>> iter = mModel.getAutoComplete().values()
@@ -4592,7 +4616,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				activateDebug(konamiEditText.getText().toString());
+				String text = konamiEditText.getText().toString();
+				activateDebug(text);
+				if (text.equalsIgnoreCase("ba")) {
+					activateKonamiCode();
+				}
 				konamiEditText.setText("");
 				dismissSoftKeyBoard(v);
 				konamiLayout.setVisibility(View.GONE);
@@ -4602,7 +4630,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public boolean onLongClick(View v) {
-				activateDebug(konamiEditText.getText().toString());
+				String text = konamiEditText.getText().toString();
+				activateDebug(text);
+				if (text.equalsIgnoreCase("ba")) {
+					activateKonamiCode();
+				}
 				return false;
 			}
 		});
@@ -4631,25 +4663,36 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Activates hidden functionnalities for debug puposes.
 	 */
 	private void activateDebug(String query) {
-		if (query.equalsIgnoreCase("ba")
-				|| query.equalsIgnoreCase(KonamiCodeEnglish)
+		if (query.equalsIgnoreCase(KonamiCodeEnglish)
 				|| query.equalsIgnoreCase(KonamiCodeFrench)) {
 			activateKonamiCode();
 		}
+		if (query.matches("[Dd][Aa][Tt][Ee]")) {
+			mModel.setAdvancedTime(!mModel.getAdvancedTime());
+			initSearchDialog();
+			showErrorDialog("Change date switched");
+		}
+		if (query.matches("[Dd][Ee][Bb][Uu][Gg]")
+				&& !query.startsWith(fct_prefix)) {
+			mModel.setAdvancedTime(true);
+			initSearchDialog();
+			mModel.setGroupAccess(Integer.MAX_VALUE);
+			showErrorDialog("Debug mode activated! Try with great care!");
+		}
 		if (!query.startsWith(fct_prefix)) {
 			return;
-		} else if (query.equals(fct_prefix + fct_chgdate_on)) {
+		} else if (query.equalsIgnoreCase(fct_prefix + fct_chgdate_on)) {
 			mModel.setAdvancedTime(true);
 			showErrorDialog("Change date activated");
 			initSearchDialog();
-		} else if (query.equals(fct_prefix + fct_chgdate_off)) {
+		} else if (query.equalsIgnoreCase(fct_prefix + fct_chgdate_off)) {
 			mModel.setAdvancedTime(false);
 			showErrorDialog("Change date disabled");
 			initSearchDialog();
-		} else if (query.equals(fct_prefix + fct_chggrp_on)) {
+		} else if (query.equalsIgnoreCase(fct_prefix + fct_chggrp_on)) {
 			mModel.setGroupAccess(Integer.MAX_VALUE);
 			showErrorDialog("Change group access activated");
-		} else if (query.equals(fct_prefix + fct_chggrp_off)) {
+		} else if (query.equalsIgnoreCase(fct_prefix + fct_chggrp_off)) {
 			mModel.setGroupAccess();
 			showErrorDialog("Change group access disabled");
 		}

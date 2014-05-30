@@ -15,6 +15,8 @@ package org.pocketcampus.plugin.freeroom.android.iface;
  */
 public interface IFreeRoomView extends IAbstractFreeRoomView {
 
+	void autoCompleteLaunch();
+
 	void autoCompletedUpdated();
 
 	void occupancyResultsUpdated();
@@ -22,7 +24,7 @@ public interface IFreeRoomView extends IAbstractFreeRoomView {
 	void initializeView();
 
 	void refreshOccupancies();
-	
+
 	void workingMessageUpdated();
 
 	// TODO: beta-test only
