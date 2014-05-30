@@ -238,7 +238,7 @@
     <string name="freeroom_whoIsWorking_title">"Working there &#8230;"</string>
     <string name="freeroom_whoIsWorking_disclaimer">"These indications come from users input. The authors, Pocketcampus, DSLAB and EPFL are not responsible for what the users may have written."</string>
     <string name="freeroom_whoIsWorking_wait">"Please wait, results are refreshed &#8230;"</string>
-    <string name="freeroom_whoIsWorking_undefined">"Not precised"</string>
+    <string name="freeroom_whoIsWorking_unknown">"Not indicated"</string>
 
     <!-- NEW: add there -->
     <string name="freeroom_layout_search_expand_collapse_hour_img">first/last</string>

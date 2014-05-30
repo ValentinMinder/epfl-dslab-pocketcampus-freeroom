@@ -243,7 +243,7 @@
     <string name="freeroom_whoIsWorking_title">"Travaillant ici &#8230;"</string>
     <string name="freeroom_whoIsWorking_disclaimer">"Note: Ces indications proviennent des utilisateurs. Les auteurs, Pocketcampus, DSLAB et l'EPFL ne sont pas responsables des actions des utilisateurs."</string>
     <string name="freeroom_whoIsWorking_wait">"Veuillez attendre, les résultats sont mis à jour &#8230;"</string>
-    <string name="freeroom_whoIsWorking_undefined">"Non précisé"</string>
+    <string name="freeroom_whoIsWorking_unknown">"Non indiqué"</string>
 
     <!-- NEW: add there -->
     <string name="freeroom_konami_start">Start</string>

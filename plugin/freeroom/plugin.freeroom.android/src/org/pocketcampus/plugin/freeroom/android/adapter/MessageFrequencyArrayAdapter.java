@@ -48,7 +48,7 @@ public class MessageFrequencyArrayAdapter<T> extends
 		// no message: sharing without message -> display grey "undefined"
 		if (message != null && message.equals("")) {
 			messageTextView.setText(caller
-					.getString(R.string.freeroom_whoIsWorking_undefined));
+					.getString(R.string.freeroom_whoIsWorking_unknown));
 			messageTextView.setTextColor(Color.RED);
 		} else {
 			messageTextView.setText(req.getMessage());
