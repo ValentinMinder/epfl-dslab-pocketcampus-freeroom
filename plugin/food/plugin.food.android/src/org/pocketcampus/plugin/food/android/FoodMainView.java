@@ -100,7 +100,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 	Set<Long> filteredRestos = new HashSet<Long>();
 	Set<MealType> filteredTypes = new HashSet<MealType>();
 	
-	Long foodDay = null; // today
+	Long foodDay;
 	MealTime foodTime = MealTime.LUNCH;
 	
 	ListView mList;
@@ -123,6 +123,8 @@ public class FoodMainView extends PluginView implements IFoodView {
 		displayingList = false;
 		StandardLayout sl = new StandardLayout(this);
 		setContentView(sl);
+		
+		foodDay = getToday();
 
 		setActionBarTitle(getString(R.string.food_plugin_title));
 	}
@@ -138,11 +140,6 @@ public class FoodMainView extends PluginView implements IFoodView {
 		
 		mController.refreshFood(this, foodDay, foodTime, false);
 
-		
-		
-		//Tracker
-		//if(eventPoolId == Constants.CONTAINER_EVENT_ID) Tracker.getInstance().trackPageView("food");
-		//else Tracker.getInstance().trackPageView("food/" + eventPoolId + "/subevents");
 	}
 
 	/**
@@ -181,20 +178,14 @@ public class FoodMainView extends PluginView implements IFoodView {
 		pickDateMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				Calendar c = Calendar.getInstance();
+				c.setTime(new Date(foodDay));
 				DatePickerDialog dpd = new DatePickerDialog(FoodMainView.this, new OnDateSetListener() {
 					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 						if(!view.isShown())
 							return; // bug in Jely Bean: http://stackoverflow.com/questions/11444238/jelly-bean-datepickerdialog-is-there-a-way-to-cancel
-						try {
-							DateFormat df = new SimpleDateFormat("yyyy-M-d'T'HH:mm:ss'Z'", Locale.US);
-							df.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
-							String day = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-							foodDay = df.parse(day + "T12:00:00Z").getTime();
-							mController.refreshFood(FoodMainView.this, foodDay, foodTime, false);
-							trackEvent("ViewDay", day);
-						} catch (ParseException e) {
-							e.printStackTrace();
-						}
+						foodDay = computeFoodDay(year, monthOfYear + 1, dayOfMonth);
+						trackEvent("ViewDay", "" + (foodDay - getToday()) / 1000 / 3600 / 24);
+						mController.refreshFood(FoodMainView.this, foodDay, foodTime, false);
 					}
 				}, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 				dpd.show();
@@ -214,6 +205,23 @@ public class FoodMainView extends PluginView implements IFoodView {
 	}
 
 	
+	
+	private Long computeFoodDay(int year, int month, int day) {
+		try {
+			DateFormat df = new SimpleDateFormat("yyyy-M-d'T'HH:mm:ss'Z'", Locale.US);
+			df.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+			String d = year + "-" + month + "-" + day;
+			return df.parse(d + "T12:00:00Z").getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private long getToday() {
+		Calendar c = Calendar.getInstance();
+		return computeFoodDay(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH));
+	}
 
 
 
@@ -415,10 +423,11 @@ public class FoodMainView extends PluginView implements IFoodView {
 			}
 			TextView headerTitle = (TextView) findViewById(R.id.food_header_title);
 			//TextView headerDate = (TextView) findViewById(R.id.food_header_date);
-			DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(this);
+			//DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(this);
+			DateFormat dateFormat = new SimpleDateFormat("EEE dd", getResources().getConfiguration().locale);
 			String t = (foodTime == MealTime.DINNER ? getString(R.string.food_title_evening_menus) : getString(R.string.food_title_lunch_menus));
-			String d = (dateFormat.format(new Date(foodDay == null ? System.currentTimeMillis() : foodDay)));
-			headerTitle.setText(t + " " + d);
+			String d = (dateFormat.format(new Date(foodDay)));
+			headerTitle.setText(t + " - " + d);
 			//headerDate.setText("");
 			mList.setAdapter(adapter);
 			//mList.setCacheColorHint(Color.TRANSPARENT);
