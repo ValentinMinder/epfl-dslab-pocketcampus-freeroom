@@ -20,7 +20,7 @@ namespace PocketCampus.Food
         /// </summary>
         public string Id
         {
-            get { return "Food"; }
+            get { return "food"; }
         }
 
         /// <summary>

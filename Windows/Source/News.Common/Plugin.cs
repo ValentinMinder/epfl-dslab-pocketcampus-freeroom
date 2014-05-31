@@ -20,7 +20,7 @@ namespace PocketCampus.News
         /// </summary>
         public string Id
         {
-            get { return "News"; }
+            get { return "news"; }
         }
 
         /// <summary>

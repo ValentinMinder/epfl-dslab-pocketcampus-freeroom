@@ -30,7 +30,7 @@ namespace PocketCampus.Events
         /// </summary>
         public string Id
         {
-            get { return "Events"; }
+            get { return "events"; }
         }
 
         /// <summary>

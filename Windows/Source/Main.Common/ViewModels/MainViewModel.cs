@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -119,7 +120,7 @@ namespace PocketCampus.Main.ViewModels
                 }
                 else
                 {
-                    var plugin = Plugins.FirstOrDefault( p => p.Id == _request.PluginName );
+                    var plugin = Plugins.FirstOrDefault( p => p.Id.Equals( _request.PluginName, StringComparison.OrdinalIgnoreCase ) );
                     if ( plugin != null )
                     {
                         _navigationService.PopBackStack();
@@ -139,7 +140,7 @@ namespace PocketCampus.Main.ViewModels
         [Conditional( "RELEASE" )]
         private void FilterPlugins()
         {
-            Plugins = Plugins.Where( p => _settings.Configuration.EnabledPlugins.Contains( p.Id ) ).ToArray();
+            Plugins = Plugins.Where( p => _settings.Configuration.EnabledPlugins.Any( id => id.Equals( p.Id, StringComparison.OrdinalIgnoreCase ) ) ).ToArray();
         }
 
         /// <summary>

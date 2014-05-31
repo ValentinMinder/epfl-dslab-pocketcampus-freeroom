@@ -20,7 +20,7 @@ namespace PocketCampus.Transport
         /// </summary>
         public string Id
         {
-            get { return "Transport"; }
+            get { return "transport"; }
         }
 
         /// <summary>

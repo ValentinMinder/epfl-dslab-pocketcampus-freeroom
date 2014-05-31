@@ -20,7 +20,7 @@ namespace PocketCampus.Camipro
         /// </summary>
         public string Id
         {
-            get { return "Camipro"; }
+            get { return "camipro"; }
         }
 
         /// <summary>

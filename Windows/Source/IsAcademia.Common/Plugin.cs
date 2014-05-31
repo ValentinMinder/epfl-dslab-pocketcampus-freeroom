@@ -20,7 +20,7 @@ namespace PocketCampus.IsAcademia
         /// </summary>
         public string Id
         {
-            get { return "IsAcademia"; }
+            get { return "isacademia"; }
         }
 
         /// <summary>

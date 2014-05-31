@@ -20,7 +20,7 @@ namespace PocketCampus.Satellite
         /// </summary>
         public string Id
         {
-            get { return "Satellite"; }
+            get { return "satellite"; }
         }
 
         /// <summary>

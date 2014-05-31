@@ -25,7 +25,7 @@ namespace PocketCampus.Directory
         /// </summary>
         public string Id
         {
-            get { return "Directory"; }
+            get { return "directory"; }
         }
 
         /// <summary>

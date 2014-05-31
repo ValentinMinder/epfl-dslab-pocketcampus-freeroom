@@ -20,7 +20,7 @@ namespace PocketCampus.Moodle
         /// </summary>
         public string Id
         {
-            get { return "Moodle"; }
+            get { return "moodle"; }
         }
 
         /// <summary>

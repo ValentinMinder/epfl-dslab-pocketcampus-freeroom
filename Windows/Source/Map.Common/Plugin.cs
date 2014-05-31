@@ -23,7 +23,7 @@ namespace PocketCampus.Map
         /// </summary>
         public string Id
         {
-            get { return "Map"; }
+            get { return "map"; }
         }
 
         /// <summary>
