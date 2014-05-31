@@ -13,6 +13,7 @@
     <application
         android:label="@string/app_name"
         android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext"
+        android:icon="@drawable/directory_icon"
         android:theme="@style/PocketCampusTheme" >
 
         <!-- Directory Plugin -->
