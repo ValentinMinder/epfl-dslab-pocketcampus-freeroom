@@ -25,3 +25,6 @@ Then we use a class called OccupancySorted that take as input (there is a method
 When you're done adding ActualOccupation you can call getOccupancy and it will create for you an Occupancy, sorted by timestamps, periods modified accordingly in case of overlap and blank period filled with user occupancies cut by chunks of one hour (with ratio of people in there = 0.0).
 One instance of OccupancySorted can manage one room, no more.
 
+-------- About updating data --------
+
+The server provides a class (PeriodicallyUpdate) which is a Runnable. It updates all rooms occupancies but assumes the table `fr-roomslist` is already filled with the sql located in sql/.
