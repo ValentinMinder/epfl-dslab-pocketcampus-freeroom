@@ -24,8 +24,8 @@ public class FRTimes {
 	public static final long ONE_DAY_IN_MS = ONE_HOUR_IN_MS * 24;
 	public static final long ONE_WEEK_IN_MS = ONE_DAY_IN_MS * 7;
 	public static final long ONE_MONTH_IN_MS = ONE_DAY_IN_MS * 30;
-	public static final long MAXIMAL_WEEKS_IN_FUTURE = 14;
-	public static final long MAXIMAL_WEEKS_IN_PAST = 4;
+	public static final long MAXIMAL_WEEKS_IN_FUTURE = 2;
+	public static final long MAXIMAL_WEEKS_IN_PAST = 1;
 
 	public static final long STEP_OF_OCCUPANCY = ONE_HOUR_IN_MS;
 	public static final long MAX_TIME_IN_FUTURE = ONE_DAY_IN_MS;
