@@ -28,3 +28,7 @@ One instance of OccupancySorted can manage one room, no more.
 -------- About updating data --------
 
 The server provides a class (PeriodicallyUpdate) which is a Runnable. It updates all rooms occupancies but assumes the table `fr-roomslist` is already filled with the sql located in sql/.
+
+If you want to update the details of rooms (`fr-roomslist`) you can do this using the public method in FetchOccupancyDataJSON called public void fetchAndInsertRoomsList(long from, long to);
+It will load the page for rooms occupancies and take all the rooms displayed, our recommandation is to use it with a duration of all semester to be sure all the rooms are presents.
+
