@@ -47,6 +47,7 @@
     <Compile Include="IMainSettings.cs" />
     <Compile Include="MainSettings.cs" />
     <Compile Include="Models\AuthenticationRequestStatus.cs" />
+    <Compile Include="Models\AuthenticationSessionRequest.cs" />
     <Compile Include="Models\AuthenticationSessionResponse.cs" />
     <Compile Include="Models\AuthenticationTokenResponse.cs" />
     <Compile Include="Services\AuthenticationService.cs" />

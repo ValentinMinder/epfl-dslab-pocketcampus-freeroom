@@ -23,7 +23,7 @@ namespace PocketCampus.Main.Services
         /// <summary>
         /// Asynchronously gets a session for the specified token (once it has been authenticated).
         /// </summary>
-        [ThriftMethod( "getAuthSessionId" )]
-        Task<AuthenticationSessionResponse> GetSessionAsync( [ThriftParameter( 1, "tequilaToken" )] string token );
+        [ThriftMethod( "getAuthSession" )]
+        Task<AuthenticationSessionResponse> GetSessionAsync( [ThriftParameter( 1, "req" )] AuthenticationSessionRequest request );
     }
 }

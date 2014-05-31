@@ -74,7 +74,6 @@
         <CheckBox Grid.Row="6"
                   IsChecked="{Binding SaveCredentials, Mode=TwoWay}"
                   Content="{Binding Resources.AuthenticationSaveCredentials, Source={StaticResource Strings}}"
-                  Visibility="{Binding CanSaveCredentials, Converter={StaticResource BoolToVisibility}}"
                   Margin="12,10" />
 
         <!-- Status -->

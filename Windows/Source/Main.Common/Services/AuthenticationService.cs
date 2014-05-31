@@ -20,9 +20,9 @@ namespace PocketCampus.Main.Services
             return CallAsync<AuthenticationTokenResponse>( x => x.GetTokenAsync );
         }
 
-        public Task<AuthenticationSessionResponse> GetSessionAsync( string token )
+        public Task<AuthenticationSessionResponse> GetSessionAsync( AuthenticationSessionRequest request )
         {
-            return CallAsync<string, AuthenticationSessionResponse>( x => x.GetSessionAsync, token );
+            return CallAsync<AuthenticationSessionRequest, AuthenticationSessionResponse>( x => x.GetSessionAsync, request );
         }
     }
 }

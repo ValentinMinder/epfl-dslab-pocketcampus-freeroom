@@ -59,11 +59,6 @@ namespace PocketCampus.Main.ViewModels
         }
 
         /// <summary>
-        /// Gets a value indicating whether the user should be allowed to opt-out of saving credentials.
-        /// </summary>
-        public bool CanSaveCredentials { get; private set; }
-
-        /// <summary>
         /// Gets a value indicating whether authentication is in progress.
         /// </summary>
         public bool IsAuthenticating
@@ -110,7 +105,6 @@ namespace PocketCampus.Main.ViewModels
             _request = request;
 
             SaveCredentials = true;
-            CanSaveCredentials = _request.CanSaveCredentials;
         }
 
 
@@ -132,7 +126,12 @@ namespace PocketCampus.Main.ViewModels
 
                 if ( await _authenticator.AuthenticateAsync( UserName, Password, tokenResponse.Token ) )
                 {
-                    var sessionResponse = await _authenticationService.GetSessionAsync( tokenResponse.Token );
+                    var sessionRequest = new AuthenticationSessionRequest
+                    {
+                        TequilaToken = tokenResponse.Token,
+                        RememberMe = SaveCredentials
+                    };
+                    var sessionResponse = await _authenticationService.GetSessionAsync( sessionRequest );
                     if ( sessionResponse.Status != AuthenticationRequestStatus.Success )
                     {
                         throw new Exception( "An error occurred while getting a session." );

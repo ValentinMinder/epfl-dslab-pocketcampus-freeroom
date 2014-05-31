@@ -142,6 +142,15 @@ namespace PocketCampus.Moodle.ViewModels
             {
                 return false;
             }
+            if ( data.Status == ResponseStatus.AuthenticationError )
+            {
+                _requestHandler.Authenticate<MainViewModel>();
+                return false;
+            }
+            if ( data.Status != ResponseStatus.Success )
+            {
+                throw new Exception( "An error occurred while fetching courses." );
+            }
 
             if ( !token.IsCancellationRequested )
             {

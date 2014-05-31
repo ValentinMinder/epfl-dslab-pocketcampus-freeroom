@@ -154,7 +154,7 @@ namespace PocketCampus.Main.ViewModels
             }
             else if ( _settings.AuthenticationStatus == AuthenticationStatus.NotAuthenticated )
             {
-                var authRequest = new AuthenticationRequest( true, () => plugin.NavigateTo( _navigationService ) );
+                var authRequest = new AuthenticationRequest( () => plugin.NavigateTo( _navigationService ) );
                 _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
             }
         }

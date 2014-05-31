@@ -107,6 +107,10 @@ namespace PocketCampus.IsAcademia.ViewModels
 
         protected override bool HandleData( ScheduleResponse data, CancellationToken token )
         {
+            if ( data == null )
+            {
+                return false;
+            }
             if ( data.Status == ResponseStatus.AuthenticationError )
             {
                 _requestHandler.Authenticate<MainViewModel>();

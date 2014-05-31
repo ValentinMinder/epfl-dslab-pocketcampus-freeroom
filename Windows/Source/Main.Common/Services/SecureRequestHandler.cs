@@ -40,7 +40,7 @@ namespace PocketCampus.Main.Services
 
 
         /// <summary>
-        /// Asynchronously executes the specified request for the specified ViewModel type.
+        /// Asynchronously executes the specified request.
         /// </summary>
         public async Task<T> ExecuteAsync<T>( Func<Task<T>> attempt )
             where T : class
@@ -48,22 +48,26 @@ namespace PocketCampus.Main.Services
             if ( _mainSettings.Session == null )
             {
                 var tokenResponse = await _authenticationService.GetTokenAsync();
-                if ( tokenResponse.Status != AuthenticationRequestStatus.Success )
-                {
-                    if ( await _authenticator.AuthenticateAsync( _mainSettings.UserName, _mainSettings.Password, tokenResponse.Token ) )
-                    {
-                        var sessionResponse = await _authenticationService.GetSessionAsync( tokenResponse.Token );
 
-                        if ( sessionResponse.Status == AuthenticationRequestStatus.Success )
-                        {
-                            _mainSettings.Session = sessionResponse.Session;
-                        }
-                    }
-                    else
+                if ( tokenResponse.Status == AuthenticationRequestStatus.Success
+                  && await _authenticator.AuthenticateAsync( _mainSettings.UserName, _mainSettings.Password, tokenResponse.Token ) )
+                {
+                    var sessionRequest = new AuthenticationSessionRequest
                     {
-                        _mainSettings.AuthenticationStatus = AuthenticationStatus.NotAuthenticated;
-                        return null;
+                        TequilaToken = tokenResponse.Token,
+                        RememberMe = _mainSettings.AuthenticationStatus == AuthenticationStatus.Authenticated
+                    };
+                    var sessionResponse = await _authenticationService.GetSessionAsync( sessionRequest );
+
+                    if ( sessionResponse.Status == AuthenticationRequestStatus.Success )
+                    {
+                        _mainSettings.Session = sessionResponse.Session;
                     }
+                }
+                else
+                {
+                    _mainSettings.AuthenticationStatus = AuthenticationStatus.NotAuthenticated;
+                    return null;
                 }
             }
 
@@ -105,7 +109,7 @@ namespace PocketCampus.Main.Services
         public void Authenticate<TViewModel>()
             where TViewModel : IViewModel<NoParameter>
         {
-            var authRequest = new AuthenticationRequest( true, () => _navigationService.NavigateTo<TViewModel>() );
+            var authRequest = new AuthenticationRequest( () => _navigationService.NavigateTo<TViewModel>() );
             _navigationService.PopBackStack();
             _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
         }
