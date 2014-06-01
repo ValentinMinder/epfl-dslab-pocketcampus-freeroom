@@ -175,11 +175,24 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return path + " / " + message;
 	}
 
+	/**
+	 * Pre-format the message for logging
+	 * @param method The method's name that is logging the message
+	 * @param arguments The args of the method
+	 * @return A string formatted and suitable to logging
+	 */
 	private String formatServerLogInfo(String method, String arguments) {
 		return formatServerLogInfo(method, arguments, "NA");
 
 	}
 
+	/**
+	 * Pre-format the message for logging
+	 * @param method The method'name that is logging the message
+	 * @param arguments The args of the method
+	 * @param answer The return value of the method
+	 * @return A string formatted and suitable to logging
+	 */
 	private String formatServerLogInfo(String method, String arguments,
 			String answer) {
 		return "ACTION=" + method + " / ARGS=" + arguments + " / RETURN="
@@ -245,7 +258,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * start of a user occupancy should be a full hour (e.g 10h00). Timestamps
 	 * may be modified before insertion in the following ways : seconds and
 	 * milliseconds are set to 0, users occupancies are rounded to a full hour
-	 * before.
+	 * before and cut into chunks of one hour if needed.
 	 * 
 	 * @param period
 	 *            The period of the occupancy
