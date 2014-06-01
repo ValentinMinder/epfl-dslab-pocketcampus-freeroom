@@ -67,7 +67,7 @@
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@id/freeroom_layout_roomslist_separator_3"
         android:contentDescription="@string/freeroom_layout_roomslist_img_people"
-        android:src="@drawable/occupation_unknown" />
+        android:src="@drawable/ic_occupation_unknown" />
 
     <ImageView
         android:id="@+id/freeroom_layout_roomslist_separator_4"

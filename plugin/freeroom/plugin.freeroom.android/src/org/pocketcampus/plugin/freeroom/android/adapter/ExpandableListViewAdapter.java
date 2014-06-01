@@ -169,9 +169,9 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 					.getImageFromRatioOccupation(occupancy
 							.getRatioWorstCaseProbableOccupancy()));
 		} else if (occupancy.isIsAtLeastOccupiedOnce()) {
-			people.setImageResource(R.drawable.occupation_occupied);
+			people.setImageResource(R.drawable.ic_occupation_occupied);
 		} else {
-			people.setImageResource(R.drawable.occupation_unknown);
+			people.setImageResource(R.drawable.ic_occupation_unknown);
 		}
 
 		OnClickListener ocl = new OnClickListener() {

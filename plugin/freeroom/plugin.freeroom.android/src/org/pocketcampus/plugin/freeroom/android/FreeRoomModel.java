@@ -1202,22 +1202,22 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		double ratioMed = 0.15;
 		double ratioHighg = 0.20;
 		double ratioHigh = 0.25;
-		int id = R.drawable.occupation_empty;
+		int id = R.drawable.ic_occupation_empty;
 		if (ratio < 0) {
-			id = R.drawable.occupation_unknown;
+			id = R.drawable.ic_occupation_unknown;
 		}
 		if (ratio > ratioLowg) {
-			id = R.drawable.occupation_lowg;
+			id = R.drawable.ic_occupation_lowg;
 			if (ratio > ratioLow) {
-				id = R.drawable.occupation_low;
+				id = R.drawable.ic_occupation_low;
 				if (ratio > ratioMedg) {
-					id = R.drawable.occupation_medg;
+					id = R.drawable.ic_occupation_medg;
 					if (ratio > ratioMed) {
-						id = R.drawable.occupation_med;
+						id = R.drawable.ic_occupation_med;
 						if (ratio > ratioHighg) {
-							id = R.drawable.occupation_highg;
+							id = R.drawable.ic_occupation_highg;
 							if (ratio > ratioHigh) {
-								id = R.drawable.occupation_high;
+								id = R.drawable.ic_occupation_high;
 							}
 						}
 					}

@@ -93,7 +93,7 @@ public class ActualOccupationArrayAdapter<T> extends
 					.getImageFromRatioOccupation(mActualOccupation
 							.getRatioOccupation()));
 		} else {
-			ivpeople.setImageResource(R.drawable.occupation_occupied);
+			ivpeople.setImageResource(R.drawable.ic_occupation_occupied);
 		}
 
 		final ImageView ivshare = vholder.getImageViewShare();
