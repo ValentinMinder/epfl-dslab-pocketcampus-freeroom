@@ -1592,6 +1592,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		mShareDialog.setView(mShareView);
 
+		mShareDialog.show();
+		mShareDialog.hide();
 	}
 
 	/**
@@ -2615,12 +2617,26 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		searchButton.setEnabled(auditSubmit() == 0);
 	}
 
+	/**
+	 * Sends directly a sharing with the server, without going thru the dialog
+	 * and/or asking for a message or a confirmation.
+	 * 
+	 * @param mPeriod
+	 *            the room (location) to share
+	 * @param mRoom
+	 *            the period (of time) to share
+	 */
+	public void directShareWithServer(FRPeriod mPeriod, FRRoom mRoom) {
+		share(mPeriod, mRoom, false, "");
+	}
+
 	private void share(FRPeriod mPeriod, FRRoom mRoom, boolean withFriends,
 			String toShare) {
 		WorkingOccupancy work = new WorkingOccupancy(mPeriod, mRoom);
 		CheckBox mShareDialogCheckBoxShareMessageServer = (CheckBox) mShareDialog
 				.findViewById(R.id.freeroom_layout_dialog_share_checkbox_server);
-		if (mShareDialogCheckBoxShareMessageServer.isChecked()
+		if (mShareDialogCheckBoxShareMessageServer != null
+				&& mShareDialogCheckBoxShareMessageServer.isChecked()
 				&& toShare != null && toShare != "") {
 			work.setMessage(toShare);
 		}

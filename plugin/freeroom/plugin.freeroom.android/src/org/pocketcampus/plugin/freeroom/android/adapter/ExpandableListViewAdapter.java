@@ -164,25 +164,36 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		// only display if necessary (if it's only free)
 		homeView.setShareClickListener(share, homeView, occupancy);
 
+		// direct share to the server by pressing the +1 button.
+		OnClickListener onClickDirectServerShare = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				homeView.directShareWithServer(occupancy.getTreatedPeriod(),
+						mRoom);
+			}
+		};
+
 		if (occupancy.isIsAtLeastFreeOnce()) {
 			people.setImageResource(mModel
 					.getImageFromRatioOccupation(occupancy
 							.getRatioWorstCaseProbableOccupancy()));
+			people.setOnClickListener(onClickDirectServerShare);
 		} else if (occupancy.isIsAtLeastOccupiedOnce()) {
 			people.setImageResource(R.drawable.ic_occupation_occupied);
+			people.setOnClickListener(null);
 		} else {
 			people.setImageResource(R.drawable.ic_occupation_unknown);
+			people.setOnClickListener(null);
 		}
 
-		OnClickListener ocl = new OnClickListener() {
+		OnClickListener onClickOpenDetails = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				mModel.setDisplayedOccupancy(occupancy);
 				homeView.displayInfoDialog();
 			}
 		};
-		people.setOnClickListener(ocl);
-		tv.setOnClickListener(ocl);
+		tv.setOnClickListener(onClickOpenDetails);
 
 		// TODO: asker whoisworking test to send to controller!
 		OnClickListener ocl_checkWorking = new OnClickListener() {

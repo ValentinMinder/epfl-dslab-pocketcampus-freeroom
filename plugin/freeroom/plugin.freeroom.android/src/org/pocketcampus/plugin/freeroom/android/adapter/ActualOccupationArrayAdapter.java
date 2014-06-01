@@ -92,8 +92,17 @@ public class ActualOccupationArrayAdapter<T> extends
 			ivpeople.setImageResource(mModel
 					.getImageFromRatioOccupation(mActualOccupation
 							.getRatioOccupation()));
+			ivpeople.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					homeView.directShareWithServer(
+							mActualOccupation.getPeriod(), occupancy.getRoom());
+				}
+			});
 		} else {
 			ivpeople.setImageResource(R.drawable.ic_occupation_occupied);
+			ivpeople.setOnClickListener(null);
 		}
 
 		final ImageView ivshare = vholder.getImageViewShare();
