@@ -27,7 +27,7 @@
 
     <ImageView
         android:layout_width="3dp"
-        android:layout_height="22dp"
+        android:layout_height="24dp"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
@@ -47,8 +47,8 @@
 
         <ImageView
             android:id="@+id/freeroom_layout_building_header_fav_show_more"
-            android:layout_width="30dip"
-            android:layout_height="30dip"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
             android:layout_alignParentRight="true"
             android:contentDescription="@string/freeroom_layout_building_header_show_more_img"
             android:src="@drawable/ic_action_expand" />

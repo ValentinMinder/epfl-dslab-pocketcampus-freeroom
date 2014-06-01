@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/freeroom_layout_details_share"
-        android:layout_width="35dip"
-        android:layout_height="35dip"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_gravity="right"
@@ -22,7 +22,7 @@
     <ImageView
         android:id="@+id/freeroom_layout_details_separator_1"
         android:layout_width="3dp"
-        android:layout_height="27dp"
+        android:layout_height="24dp"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
@@ -36,8 +36,8 @@
 
     <ImageView
         android:id="@+id/freeroom_layout_details_people"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@id/freeroom_layout_details_separator_1"
         android:contentDescription="@string/freeroom_layout_roomslist_img_people"
@@ -47,7 +47,7 @@
     <ImageView
         android:id="@+id/freeroom_layout_details_separator_2"
         android:layout_width="3dp"
-        android:layout_height="27dp"
+        android:layout_height="24dp"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"

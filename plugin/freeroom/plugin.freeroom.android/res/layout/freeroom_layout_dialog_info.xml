@@ -24,8 +24,8 @@
 
         <ImageView
             android:id="@+id/freeroom_layout_dialog_info_share"
-            android:layout_width="35dip"
-            android:layout_height="35dip"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_gravity="right"
@@ -36,8 +36,8 @@
 
         <ImageView
             android:id="@+id/freeroom_layout_dialog_info_map"
-            android:layout_width="35dip"
-            android:layout_height="35dip"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
             android:layout_alignParentTop="true"
             android:layout_gravity="right"
             android:layout_toLeftOf="@id/freeroom_layout_dialog_info_share"

@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/freeroom_layout_prev_req_remove"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_gravity="center_vertical"
@@ -20,7 +20,7 @@
     <ImageView
         android:id="@+id/freeroom_layout_prev_req_separator_1"
         android:layout_width="3dp"
-        android:layout_height="27dp"
+        android:layout_height="24dp"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
@@ -32,8 +32,8 @@
 
     <ImageView
         android:id="@+id/freeroom_layout_prev_req_edit"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_gravity="center_vertical"
         android:layout_toLeftOf="@id/freeroom_layout_prev_req_separator_1"
         android:contentDescription="@string/freeroom_layout_prev_req_edit_img"
@@ -45,7 +45,7 @@
     <ImageView
         android:id="@+id/freeroom_layout_prev_req_separator_2"
         android:layout_width="3dp"
-        android:layout_height="27dp"
+        android:layout_height="24dp"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
