@@ -100,7 +100,7 @@
     <string name="freeroom_share_in_room">"dans la salle"</string>
     <string name="freeroom_share_please_come">"Rejoignez-moi. "</string>
     <string name="freeroom_share_working_on">"Je travaillerai sur "</string>
-    <string name="freeroom_share_ref_pocket">"(Envoyé depuis pocketcampus.org)"</string>
+    <string name="freeroom_share_ref_pocket">"(Envoyé depuis l'application mobile PocketCampus.org)"</string>
 
     <!-- SHARE: copy to clipboard -->
     <string name="freeroom_share_CopyClipBoard">"Copier"</string>
@@ -205,7 +205,7 @@
     <string name="freeroom_settings_date_EU">"format français/européen"</string>
 
     <!-- WELCOME: beta-only -->
-    <string name="freeroom_authors">"Ce plugin en beta-test dans pocketcampus est le résultat d\'un projet de semestre dans le labo DSLAB.\nAuteurs:\nJulien WEBER\nValentin MINDER\nMerci à Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE pour leurs précieux conseils."</string>
+    <string name="freeroom_authors">"Ce plugin en beta-test dans PocketCampus est le résultat d\'un projet de semestre dans le labo DSLAB.\nAuteurs:\nJulien WEBER\nValentin MINDER\nMerci à Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE pour leurs précieux conseils."</string>
     <string name="freeroom_welcome_title">"Bienvenue !"</string>
     <string name="freeroom_welcome_subtitle">"Merci de tester FreeRoom!"</string>
     <string name="freeroom_welcome_expl">"Pour que cette beta fonctionne, nous avons besoin de votre email epfl, UNE seule fois."</string>
@@ -244,7 +244,7 @@
     <!-- Working there dialog -->
     <string name="freeroom_share_server_bad_words">"Requête rejetée: le message contient des mots interdits."</string>
     <string name="freeroom_whoIsWorking_title">"Travaillant ici &#8230;"</string>
-    <string name="freeroom_whoIsWorking_disclaimer">"Note: Ces indications proviennent des utilisateurs. Les auteurs, Pocketcampus, DSLAB et l'EPFL ne sont pas responsables des actions des utilisateurs."</string>
+    <string name="freeroom_whoIsWorking_disclaimer">"Note: Ces indications proviennent des utilisateurs. Les auteurs, PocketCampus, DSLAB et l'EPFL ne sont pas responsables des actions des utilisateurs."</string>
     <string name="freeroom_whoIsWorking_wait">"Veuillez attendre, les résultats sont mis à jour &#8230;"</string>
     <string name="freeroom_whoIsWorking_unknown">"Non indiqué"</string>
 

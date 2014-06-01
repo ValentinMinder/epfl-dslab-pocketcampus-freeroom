@@ -39,11 +39,11 @@
     <string name="freeroom_error_unknown_error">"PocketCampus tried to connect to FreeRoom servers, but the server replied unsuccessfully with an unknown error code."</string>
     <string name="freeroom_error_please_report">"This is NOT the intended behavior of the app! Please report it to us at freeroom.epfl@gmail.com, including a description of what you were doing on the app. Thanks in advance :)"</string>
     <string name="freeroom_error_please_try_again">"Please try again. Please note that the beta version ONLY works on EPFL network (wifi, VPN or wired). If it continues to appear, please contact us at freeroom.epfl@gmail.com! Thanks in advance! :)"</string>
-    <string name="freeroom_connection_error_happened">"We cannot fetch FreeRoom data right now, because of a network error. Either you are not connected to the Internet, or the pocketcampus server is unreachable or down."</string>
+    <string name="freeroom_connection_error_happened">"We cannot fetch FreeRoom data right now, because of a network error. Either you are not connected to the Internet, or the PocketCampus server is unreachable or down."</string>
 
     <!-- SEARCH dialog -->
     <string name="freeroom_search_title">"New search"</string>
-    <string name="freeroom_dialog_search_footer_home">"Home"</string>
+    <string name="freeroom_dialog_search_footer_home">"Top"</string>
 
     <!-- SEARCH: TIMES -->
     <string name="freeroom_search_today">"Today"</string>
@@ -98,7 +98,7 @@
     <string name="freeroom_share_in_room">"in room"</string>
     <string name="freeroom_share_please_come">"Please come and join me. "</string>
     <string name="freeroom_share_working_on">"I will be working on "</string>
-    <string name="freeroom_share_ref_pocket">"(This was sent with pocketcampus.org)"</string>
+    <string name="freeroom_share_ref_pocket">"(This was sent with mobile app PocketCampus.org)"</string>
 
     <!-- SHARE: copy to clipboard -->
     <string name="freeroom_share_CopyClipBoard">"Copy to clipboard"</string>
@@ -202,7 +202,7 @@
     <string name="freeroom_settings_date_EU">"French/European format"</string>
 
     <!-- WELCOME: beta-only -->
-    <string name="freeroom_authors">"This beta-plugin in pocketcampus is the result of a semester project with DSLAB.\nAuthors:\nJulien WEBER\nValentin MINDER\nThanks to Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE for their support and advices."</string>
+    <string name="freeroom_authors">"This beta-plugin in PocketCampus is the result of a semester project with DSLAB.\nAuthors:\nJulien WEBER\nValentin MINDER\nThanks to Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE for their support and advices."</string>
     <string name="freeroom_welcome_title">"Welcome!"</string>
     <string name="freeroom_welcome_subtitle">"Thanks for testing FreeRoom!"</string>
     <string name="freeroom_welcome_expl">"In order to make this beta test work, we need you to register ONCE with your EPFL email address."</string>
@@ -239,7 +239,7 @@
     <!-- Working there dialog -->
     <string name="freeroom_share_server_bad_words">"Rejected request: your message contains forbidden words."</string>
     <string name="freeroom_whoIsWorking_title">"Working there &#8230;"</string>
-    <string name="freeroom_whoIsWorking_disclaimer">"These indications come from users input. The authors, Pocketcampus, DSLAB and EPFL are not responsible for what the users may have written."</string>
+    <string name="freeroom_whoIsWorking_disclaimer">"These indications come from users input. The authors, PocketCampus, DSLAB and EPFL are not responsible for what the users may have written."</string>
     <string name="freeroom_whoIsWorking_wait">"Please wait, results are refreshed &#8230;"</string>
     <string name="freeroom_whoIsWorking_unknown">"Not indicated"</string>
 
