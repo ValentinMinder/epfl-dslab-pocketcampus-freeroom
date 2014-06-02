@@ -911,9 +911,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mInfoRoomView = mLayoutInflater.inflate(
 				R.layout.freeroom_layout_dialog_info, null);
 
-		// these work perfectly
-		mInfoRoomView.setMinimumWidth((int) (activityWidth * 0.9f));
-		mInfoRoomView.setMinimumHeight((int) (activityHeight * 0.8f));
+		ListView lv = (ListView) mInfoRoomView
+				.findViewById(R.id.freeroom_layout_dialog_info_roomOccupancy);
+
+		ViewGroup header = (ViewGroup) mLayoutInflater.inflate(
+				R.layout.freeroom_layout_dialog_info_header, lv, false);
+		lv.addHeaderView(header, null, false);
+		ViewGroup footer = (ViewGroup) mLayoutInflater.inflate(
+				R.layout.freeroom_layout_dialog_info_footer,
+				mSearchPreviousListView, false);
+		lv.addFooterView(footer, null, false);
 
 		mInfoRoomDialog.setView(mInfoRoomView);
 		mInfoRoomDialog.setOnShowListener(new OnShowListener() {
