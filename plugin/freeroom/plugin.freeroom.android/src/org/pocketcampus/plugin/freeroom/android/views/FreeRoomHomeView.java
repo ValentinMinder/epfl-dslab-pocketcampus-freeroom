@@ -918,8 +918,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				R.layout.freeroom_layout_dialog_info_header, lv, false);
 		lv.addHeaderView(header, null, false);
 		ViewGroup footer = (ViewGroup) mLayoutInflater.inflate(
-				R.layout.freeroom_layout_dialog_info_footer,
-				mSearchPreviousListView, false);
+				R.layout.freeroom_layout_dialog_info_footer, lv, false);
 		lv.addFooterView(footer, null, false);
 
 		mInfoRoomDialog.setView(mInfoRoomView);
@@ -965,11 +964,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// mImWorkingView.setMinimumWidth((int) (activityWidth * 0.9f));
 		// mImWorkingView.setMinimumHeight((int) (activityHeight * 0.8f));
 
-		workingTimeSummary = (TextView) mImWorkingView
-				.findViewById(R.id.freeroom_layout_dialog_working_time);
-		workingDisclaimer = (TextView) mImWorkingView
-				.findViewById(R.id.freeroom_layout_dialog_working_disclaimer);
-
 		mImWorkingDialog.setView(mImWorkingView);
 		mImWorkingDialog.setOnShowListener(new OnShowListener() {
 
@@ -981,6 +975,19 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		ListView lv = (ListView) mImWorkingView
 				.findViewById(R.id.freeroom_layout_dialog_working_time_list);
+
+		ViewGroup header = (ViewGroup) mLayoutInflater.inflate(
+				R.layout.freeroom_layout_dialog_working_header, lv, false);
+		lv.addHeaderView(header, null, false);
+		ViewGroup footer = (ViewGroup) mLayoutInflater.inflate(
+				R.layout.freeroom_layout_dialog_working_footer, lv, false);
+		lv.addFooterView(footer, null, false);
+
+		workingTimeSummary = (TextView) mImWorkingView
+				.findViewById(R.id.freeroom_layout_dialog_working_time);
+		workingDisclaimer = (TextView) mImWorkingView
+				.findViewById(R.id.freeroom_layout_dialog_working_disclaimer);
+
 		workingMessageList = mModel.getListMessageFrequency();
 		workingMessageAdapter = new MessageFrequencyArrayAdapter<MessageFrequency>(
 				this, getApplicationContext(),
