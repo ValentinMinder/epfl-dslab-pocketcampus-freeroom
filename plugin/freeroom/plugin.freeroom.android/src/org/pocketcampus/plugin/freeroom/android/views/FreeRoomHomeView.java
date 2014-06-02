@@ -2209,6 +2209,17 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			reset();
 			return true;
 		}
+
+		// overrides enter button for devices who are equipped with such
+		// hardware button, and launch a search if valid.
+		if (keyCode == KeyEvent.KEYCODE_ENTER) {
+			if (mSearchDialog.isShowing() && !mAddRoomDialog.isShowing()
+					&& !mEditRoomDialog.isShowing() && (auditSubmit() == 0)) {
+				prepareSearchQuery(true);
+				return true;
+			}
+		}
+
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			// TODO: override menu button
 			// warning: this doesn't work if not initialized!
