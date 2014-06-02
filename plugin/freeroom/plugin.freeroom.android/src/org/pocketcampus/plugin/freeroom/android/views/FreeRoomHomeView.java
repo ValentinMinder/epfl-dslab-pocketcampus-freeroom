@@ -321,10 +321,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private Button goUpHomeButton;
 	/**
-	 * Authorize the change of date for search dialog.
-	 */
-	private boolean changeDateAuthorized = false;
-	/**
 	 * Text for "Previous request"
 	 */
 	private String textTitlePrevious = "mock text";
@@ -2808,16 +2804,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	private void UIConstructPickers() {
-		// First allow the user to select a date
+		// First allow the user to select a date, but don't display the date
+		// button if the user don't have the right to use it.
 		showDatePicker = (Button) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_date);
-		// disable and don't display the button if the user don't have the right
-		// to use it.
-		boolean dateEditable = mModel.getAdvancedTime();
-		showDatePicker.setEnabled(dateEditable);
-		if (!dateEditable) {
+		if (!mModel.getAdvancedTime()) {
 			showDatePicker.setVisibility(View.GONE);
 		}
+
 		mDatePickerDialog = new DatePickerDialog(this,
 				new DatePickerDialog.OnDateSetListener() {
 
@@ -2831,26 +2825,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					}
 				}, yearSelected, monthSelected, dayOfMonthSelected);
 
+		// the click listener is always there, even if the button is not
+		// visible.
 		showDatePicker.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				// TODO do that correctly according to group change.
-				if (changeDateAuthorized) {
-					mDatePickerDialog.show();
-				} else {
-					changeDateAuthorized = true;
-					showErrorDialog(getString(R.string.freeroom_search_date_disabled));
-				}
-			}
-		});
-
-		showDatePicker.setOnLongClickListener(new OnLongClickListener() {
-
-			@Override
-			public boolean onLongClick(View v) {
 				mDatePickerDialog.show();
-				return true;
 			}
 		});
 
@@ -3653,9 +3633,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	private void reset() {
-		// TODO do that correctly according to group change.
-		changeDateAuthorized = false;
-
 		searchButton.setEnabled(false);
 
 		// // reset the list of selected rooms
