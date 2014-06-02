@@ -23,7 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="5"
-            android:drawableLeft="@drawable/ic_action_new_grey"
+            android:drawableLeft="@drawable/ic_action_new_small"
             android:text="@string/freeroom_dialog_edit_room_add_other"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="5"
-            android:drawableLeft="@drawable/ic_action_accept"
+            android:drawableLeft="@drawable/ic_action_accept_small"
             android:text="@string/freeroom_dialog_edit_room_done"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
