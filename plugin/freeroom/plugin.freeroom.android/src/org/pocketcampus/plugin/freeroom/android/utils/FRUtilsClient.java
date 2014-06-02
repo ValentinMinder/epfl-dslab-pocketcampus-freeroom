@@ -175,11 +175,20 @@ public class FRUtilsClient {
 				builder.append(mFrRoom.getTypeEN());
 			}
 		}
+		// if capacity is set to 0 => unkwown
+		// if capacity is not set => nothing is printed
 		if (mFrRoom.isSetCapacity()) {
 			builder.append(" / "
 					+ context.getString(R.string.freeroom_dialog_info_capacity)
-					+ ": " + mFrRoom.getCapacity() + " "
-					+ context.getString(R.string.freeroom_dialog_info_places));
+					+ ": ");
+			int cap = mFrRoom.getCapacity();
+			if (cap <= 0) {
+				builder.append(context
+						.getString(R.string.freeroom_dialog_info_capacity_unknown));
+			} else {
+				builder.append(context.getResources().getQuantityString(
+						R.plurals.freeroom_dialog_info_places, cap, cap));
+			}
 		}
 		if (mFrRoom.isSetSurface()) {
 			builder.append(" / "

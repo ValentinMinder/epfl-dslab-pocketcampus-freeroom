@@ -113,7 +113,13 @@
     <!-- INFO about a ROOM -->
     <string name="freeroom_dialog_info_type">"Type"</string>
     <string name="freeroom_dialog_info_capacity">"Capacity"</string>
-    <string name="freeroom_dialog_info_places">"places"</string>
+    <string name="freeroom_dialog_info_capacity_unknown">"unknown"</string>
+
+    <plurals name="freeroom_dialog_info_places">
+        <item quantity="one">"%d place"</item>
+        <item quantity="other">"%d places"</item>
+    </plurals>
+
     <string name="freeroom_dialog_info_surface">"Surface"</string>
     <string name="freeroom_dialog_info_sqm">"sqm"</string>
     <string name="freeroom_dialog_info_uniqID">"Unique UID"</string>
