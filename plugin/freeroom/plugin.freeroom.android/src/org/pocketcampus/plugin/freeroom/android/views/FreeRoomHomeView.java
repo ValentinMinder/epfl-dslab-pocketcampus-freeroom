@@ -2196,6 +2196,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// overrides search button for devices who are equipped with such
+		// hardware button, and launch automatically the search popup.
+		if (keyCode == KeyEvent.KEYCODE_SEARCH) {
+			mSearchDialog.show();
+			return true;
+		}
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			// TODO: override menu button
 			// warning: this doesn't work if not initialized!
