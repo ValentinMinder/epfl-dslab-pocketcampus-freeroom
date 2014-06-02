@@ -481,7 +481,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// on portrait devices, we have both overflow and menu with same
 		// options.
 		// on landscape devices, non is available.
-		if (!isLandscape()) {
+		if (!isLandscapeTabletMode()) {
 			// Inflate the menu items, the same as in overflow action bar
 			MenuInflater inflater = getMenuInflater();
 			inflater.inflate(R.menu.main_activity_actions, menu);
@@ -848,7 +848,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// search action is always there.
 		addActionToActionBar(search);
 		// on tablet, put all the actions, without the overflow.
-		if (isLandscape()) {
+		if (isLandscapeTabletMode()) {
 			addActionToActionBar(editFavorites);
 			addActionToActionBar(settings);
 			addActionToActionBar(refresh);
@@ -3265,7 +3265,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// users. tablets are changing their layout here.
 		LinearLayout header_1st = (LinearLayout) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_upper_first);
-		if (isLandscape()) {
+		if (isLandscapeTabletMode()) {
 			LinearLayout header_main = (LinearLayout) mSearchView
 					.findViewById(R.id.freeroom_layout_dialog_search_upper_main);
 			header_main.setOrientation(LinearLayout.HORIZONTAL);
@@ -3330,15 +3330,29 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
+	 * Minimal width in pixel to trigger landscape mode according to
+	 * {@link #isLandscapeTabletMode()}.
+	 */
+	private int minWidthForLandscapeMode = 480;
+
+	/**
 	 * Check if the height is smaller than the width of the displayed screen.
 	 * <p>
 	 * As the plugin is NOT sensible to landscape mode, this will ONLY occur on
 	 * tablets.
+	 * <p>
+	 * Please note some phones are also wider than higher, even if their are
+	 * very small. To avoid the "landscape tablet mode" to be triggered, we
+	 * check than the witdh is wider than the {@link #minWidthForLandscapeMode}
+	 * constant in pixels, which is not really perfect, but not an issue as
+	 * these phones are low-pixels densities and most recent tablets are medium
+	 * or high-density.
 	 * 
-	 * @return true if landscape.
+	 * @return true if landscape mode should be activated.
 	 */
-	private boolean isLandscape() {
-		return (activityHeight < activityWidth);
+	private boolean isLandscapeTabletMode() {
+		return (activityHeight < activityWidth)
+				&& (activityWidth > minWidthForLandscapeMode);
 	}
 
 	private void UIConstructAddRoomInputBar() {
@@ -3866,7 +3880,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				.findViewById(R.id.freeroom_layout_dialog_search_time_summary);
 		if (isValid) {
 			// time summary ?
-			char limit = isLandscape() ? ' ' : '\n';
+			char limit = isLandscapeTabletMode() ? ' ' : '\n';
 			tv.setText(getString(R.string.freeroom_search_time_summary) + limit
 					+ times.formatFullDateFullTimePeriod(period));
 			tv.setVisibility(View.VISIBLE);
