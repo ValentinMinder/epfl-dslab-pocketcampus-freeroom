@@ -220,15 +220,37 @@ public class PocketCampusServer extends ServerBase {
 		return authGetUserSciperFromReq((HttpServletRequest) TServlet.requestsMap.get(firstArg));
 	}
 	
+	public static List<String> authGetUserAttributes(Object firstArg, List<String> attr) {
+		return authGetUserAttributesFromReq((HttpServletRequest) TServlet.requestsMap.get(firstArg), attr);
+	}
+	
 	public static String authGetUserGasparFromReq(HttpServletRequest req) {
-		return authGetUserAttribute(req, "getGasparFromSession");
+		return callOnAuthPlugin(req, "getGasparFromSession");
 	}
 	
 	public static String authGetUserSciperFromReq(HttpServletRequest req) {
-		return authGetUserAttribute(req, "getSciperFromSession");
+		return callOnAuthPlugin(req, "getSciperFromSession");
 	}
 	
-	private static String authGetUserAttribute(HttpServletRequest req, String func) {
+	public static List<String> authGetUserAttributesFromReq(HttpServletRequest req, List<String> attr) {
+		if(req == null) return null;
+		String pcSessionId = req.getHeader(PcConstants.HTTP_HEADER_AUTH_PCSESSID);
+		if(pcSessionId == null) return null;
+		try {
+			AuthUserDetailsReq dReq = new AuthUserDetailsReq(pcSessionId, attr);
+			AuthUserDetailsResp dResp = (AuthUserDetailsResp) invokeOnPlugin("authentication", "getUserFieldsFromSession", dReq);
+			return dResp.fieldValues;
+		} catch (NoSuchObjectException e) {
+		} catch (SecurityException e) {
+		} catch (IllegalArgumentException e) {
+		} catch (NoSuchMethodException e) {
+		} catch (IllegalAccessException e) {
+		} catch (InvocationTargetException e) {
+		}
+		return null;
+	}
+	
+	private static String callOnAuthPlugin(HttpServletRequest req, String func) {
 		if(req == null) return null;
 		String pcSessionId = req.getHeader(PcConstants.HTTP_HEADER_AUTH_PCSESSID);
 		if(pcSessionId == null) return null;
@@ -242,6 +264,22 @@ public class PocketCampusServer extends ServerBase {
 		} catch (InvocationTargetException e) {
 		}
 		return null;
+	}
+	
+	public static class AuthUserDetailsReq {
+		public String sessionId;
+		public List<String> requestedFields;
+		public AuthUserDetailsReq(String sessionId, List<String> requestedFields) {
+			this.sessionId = sessionId;
+			this.requestedFields = requestedFields;
+		}
+	}
+	
+	public static class AuthUserDetailsResp {
+		public List<String> fieldValues;
+		public AuthUserDetailsResp(List<String> fieldValues) {
+			this.fieldValues = fieldValues;
+		}
 	}
 	
 }
