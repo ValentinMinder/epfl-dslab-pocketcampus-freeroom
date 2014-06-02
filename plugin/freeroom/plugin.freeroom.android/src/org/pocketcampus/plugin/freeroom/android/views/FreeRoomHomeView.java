@@ -331,12 +331,22 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	/* UI ELEMENTS FOR DIALOGS - FAVORITES */
 
+	/**
+	 * TextView for autocomplete status for adding favorites.
+	 */
+	private TextView tvAutcompletStatusFav;
+
 	/* UI ELEMENTS FOR DIALOGS - ADDROOM */
 
 	/**
 	 * Adpater for selected room.
 	 */
 	private ArrayAdapter<FRRoom> selectedRoomArrayAdapter;
+
+	/**
+	 * TextView for autocomplete status for adding room to search.
+	 */
+	private TextView tvAutcompletStatusRoom;
 
 	/* UI ELEMENTS FOR DIALOGS - SHARE */
 
@@ -1335,6 +1345,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		mAddFavoritesDialog.setView(mAddFavoritesView);
 
+		tvAutcompletStatusFav = (TextView) mAddFavoritesView
+				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
+
 		mAddFavoritesDialog.setOnDismissListener(new OnDismissListener() {
 
 			@Override
@@ -1398,6 +1411,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mAddRoomView.setMinimumWidth((int) (activityWidth * 0.9f));
 
 		mAddRoomDialog.setView(mAddRoomView);
+
+		tvAutcompletStatusRoom = (TextView) mAddRoomView
+				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
+
 		mAddRoomDialog.setOnShowListener(new OnShowListener() {
 
 			@Override
@@ -2269,7 +2286,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	@Override
 	public void anyError() {
 		setTitle();
-		setTextSummary(getString(R.string.freeroom_home_error_sorry));
+		String errorMessage = getString(R.string.freeroom_home_error_sorry);
+		setTextSummary(errorMessage);
+		autoCompleteUpdateMessage(errorMessage);
+		workingDisclaimer.setText(errorMessage);
 	}
 
 	/**
@@ -3981,27 +4001,29 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				.setText(getString(R.string.freeroom_dialog_add_autocomplete_typein));
 	}
 
+	/**
+	 * Update the text message in autocomplete status text view
+	 * (updating/up-to-date/error/...)
+	 * 
+	 * @param text
+	 *            the new message to display.
+	 */
+	private void autoCompleteUpdateMessage(CharSequence text) {
+		tvAutcompletStatusFav.setText(text);
+		tvAutcompletStatusRoom.setText(text);
+	}
+
 	@Override
 	public void autoCompletedUpdated() {
 		mAddRoomAdapter.notifyDataSetInvalidated();
 		mAddFavoritesAdapter.notifyDataSetInvalidated();
 		mAutoCompleteAddRoomArrayListFRRoom.clear();
 		mAutoCompleteAddFavoritesArrayListFRRoom.clear();
-		TextView tvAutcompletStatusFav = (TextView) mAddFavoritesView
-				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
-		TextView tvAutcompletStatusRoom = (TextView) mAddRoomView
-				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
 		boolean emptyResult = (mModel.getAutoComplete().values().size() == 0);
 		if (emptyResult) {
-			tvAutcompletStatusFav
-					.setText(getString(R.string.freeroom_dialog_add_autocomplete_noresult));
-			tvAutcompletStatusRoom
-					.setText(getString(R.string.freeroom_dialog_add_autocomplete_noresult));
+			autoCompleteUpdateMessage(getString(R.string.freeroom_dialog_add_autocomplete_noresult));
 		} else {
-			tvAutcompletStatusFav
-					.setText(getString(R.string.freeroom_dialog_add_autocomplete_uptodate));
-			tvAutcompletStatusRoom
-					.setText(getString(R.string.freeroom_dialog_add_autocomplete_uptodate));
+			autoCompleteUpdateMessage(getString(R.string.freeroom_dialog_add_autocomplete_uptodate));
 		}
 
 		// TODO: adapt to use the new version of autocomplete mapped by building

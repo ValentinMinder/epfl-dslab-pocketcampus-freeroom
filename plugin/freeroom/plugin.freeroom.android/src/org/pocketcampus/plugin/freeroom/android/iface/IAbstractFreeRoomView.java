@@ -18,6 +18,14 @@ import org.pocketcampus.android.platform.sdk.core.IView;
  */
 public interface IAbstractFreeRoomView extends IView {
 
+	/**
+	 * Resets all the "updating" status to "error", like in autocomplete, main
+	 * view or working there pop-up. Should be called when any transmission or
+	 * server error occurs. This does NOT take into account which request had an
+	 * error, so if any currently processing request has an issue, it will
+	 * notify the status textview, even if a new one has been launched in the
+	 * mean time.
+	 */
 	void anyError();
 
 	void freeRoomServerBadRequest();
