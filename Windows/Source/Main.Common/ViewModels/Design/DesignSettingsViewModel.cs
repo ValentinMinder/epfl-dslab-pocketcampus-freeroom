@@ -7,12 +7,15 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using PocketCampus.Common;
+
 namespace PocketCampus.Main.ViewModels.Design
 {
     public sealed class DesignSettingsViewModel
     {
 #if DEBUG
         public IMainSettings Settings { get { return new DesignMainSettings(); } }
+
+        public ICredentialsStore Credentials { get { return new DesignCredentialsStore(); } }
 
         private sealed class DesignMainSettings : IMainSettings
         {
@@ -34,18 +37,6 @@ namespace PocketCampus.Main.ViewModels.Design
                 set { }
             }
 
-            public string UserName
-            {
-                get { return "johndoe"; }
-                set { }
-            }
-
-            public string Password
-            {
-                get { return "12345"; }
-                set { }
-            }
-
             public string Session
             {
                 get { return null; }
@@ -55,6 +46,24 @@ namespace PocketCampus.Main.ViewModels.Design
             public Dictionary<string, string> Sessions
             {
                 get { return null; }
+                set { }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            public void IgnoreAboveEvent() { PropertyChanged( null, null ); }
+        }
+
+        private sealed class DesignCredentialsStore : ICredentialsStore
+        {
+            public string UserName
+            {
+                get { return "johndoe"; }
+                set { }
+            }
+
+            public string Password
+            {
+                get { return "12345"; }
                 set { }
             }
 

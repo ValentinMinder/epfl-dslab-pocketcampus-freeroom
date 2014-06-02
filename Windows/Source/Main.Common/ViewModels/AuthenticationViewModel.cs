@@ -4,6 +4,7 @@
 
 using System;
 using System.Threading.Tasks;
+using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Models;
 using PocketCampus.Main.Services;
@@ -23,6 +24,7 @@ namespace PocketCampus.Main.ViewModels
         private readonly IServerAccess _serverAccess;
         private readonly INavigationService _navigationService;
         private readonly IMainSettings _settings;
+        private readonly ICredentialsStore _credentials;
         private readonly AuthenticationRequest _request;
 
         private string _userName;
@@ -94,7 +96,7 @@ namespace PocketCampus.Main.ViewModels
         /// </summary>
         public AuthenticationViewModel( IAuthenticationService authenticationService, ITequilaAuthenticator authenticator,
                                         IServerAccess serverAccess, INavigationService navigationService,
-                                        IMainSettings settings,
+                                        IMainSettings settings, ICredentialsStore credentials,
                                         AuthenticationRequest request )
         {
             _authenticationService = authenticationService;
@@ -102,6 +104,7 @@ namespace PocketCampus.Main.ViewModels
             _serverAccess = serverAccess;
             _navigationService = navigationService;
             _settings = settings;
+            _credentials = credentials;
             _request = request;
 
             SaveCredentials = true;
@@ -140,8 +143,8 @@ namespace PocketCampus.Main.ViewModels
                     _settings.Session = sessionResponse.Session;
 
                     _settings.AuthenticationStatus = SaveCredentials ? AuthenticationStatus.Authenticated : AuthenticationStatus.AuthenticatedTemporarily;
-                    _settings.UserName = UserName;
-                    _settings.Password = Password;
+                    _credentials.UserName = UserName;
+                    _credentials.Password = Password;
                     authOk = true;
                 }
                 else

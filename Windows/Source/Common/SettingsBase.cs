@@ -45,7 +45,7 @@ namespace PocketCampus.Common
         /// </summary>
         protected T Get<T>( [CallerMemberName] string propertyName = "" )
         {
-            SetIfUndefined( propertyName, false );
+            SetIfUndefined( propertyName );
             return _settings.Get<T>( _pluginKey, propertyName );
         }
 
@@ -74,32 +74,9 @@ namespace PocketCampus.Common
 
 
         /// <summary>
-        /// Gets the specified encrypted setting's value.
-        /// The value is decrypted for you.
-        /// Use this for user names, passwords, and other kinds of sensitive data.
-        /// </summary>
-        protected string GetEncrypted( [CallerMemberName] string propertyName = "" )
-        {
-            SetIfUndefined( propertyName, true );
-            return _settings.GetEncrypted( _pluginKey, propertyName );
-        }
-
-        /// <summary>
-        /// Sets the specified encrypted setting's value.
-        /// The value is encrypted for you.
-        /// Use this for user names, passwords, and other kinds of sensitive data.
-        /// </summary>
-        protected void SetEncrypted( string value, [CallerMemberName] string propertyName = "" )
-        {
-            _settings.SetEncrypted( _pluginKey, propertyName, value );
-            OnPropertyChanged( propertyName );
-        }
-
-
-        /// <summary>
         /// If the specified setting is undefined, set it to its default value.
         /// </summary>
-        private void SetIfUndefined( string propertyName, bool encrypted )
+        private void SetIfUndefined( string propertyName )
         {
             if ( _settings.IsDefined( _pluginKey, propertyName ) )
             {
@@ -116,14 +93,7 @@ namespace PocketCampus.Common
                 throw new InvalidOperationException( "No default value found for property " + propertyName );
             }
 
-            if ( encrypted )
-            {
-                SetEncrypted( (string) _defaultValues[propertyName](), propertyName );
-            }
-            else
-            {
-                Set( _defaultValues[propertyName](), propertyName );
-            }
+            Set( _defaultValues[propertyName](), propertyName );
         }
     }
 }

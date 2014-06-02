@@ -72,7 +72,7 @@
                            Style="{StaticResource PhoneTextNormalStyle}"
                            Margin="0" />
 
-                <TextBlock Text="{Binding Settings.UserName}"
+                <TextBlock Text="{Binding Credentials.UserName}"
                            Style="{StaticResource PhoneTextNormalStyle}"
                            FontFamily="{StaticResource PhoneFontFamilyBold}"
                            Margin="6,0" />
@@ -103,7 +103,7 @@
                            Style="{StaticResource PhoneTextNormalStyle}"
                            Margin="0" />
 
-                <TextBlock Text="{Binding Settings.UserName}"
+                <TextBlock Text="{Binding Credentials.UserName}"
                            Style="{StaticResource PhoneTextNormalStyle}"
                            FontFamily="{StaticResource PhoneFontFamilyBold}"
                            Margin="6,0" />

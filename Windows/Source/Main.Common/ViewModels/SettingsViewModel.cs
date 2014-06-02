@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using ThinMvvm;
 using ThinMvvm.Logging;
@@ -23,6 +24,11 @@ namespace PocketCampus.Main.ViewModels
         /// Gets the settings.
         /// </summary>
         public IMainSettings Settings { get; private set; }
+
+        /// <summary>
+        /// Gets the credentials.
+        /// </summary>
+        public ICredentialsStore Credentials { get; private set; }
 
         /// <summary>
         /// Gets the command executed to log on.
@@ -46,9 +52,10 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Creates a new SettingsViewModel.
         /// </summary>
-        public SettingsViewModel( IMainSettings settings, ITequilaAuthenticator authenticator, INavigationService navigationService )
+        public SettingsViewModel( IMainSettings settings, ITequilaAuthenticator authenticator, INavigationService navigationService, ICredentialsStore credentials )
         {
             Settings = settings;
+            Credentials = credentials;
             _authenticator = authenticator;
             _navigationService = navigationService;
         }
@@ -60,10 +67,10 @@ namespace PocketCampus.Main.ViewModels
         private async Task ExecuteLogOffCommand()
         {
             Settings.AuthenticationStatus = AuthenticationStatus.NotAuthenticated;
-            Settings.UserName = null;
-            Settings.Password = null;
             Settings.Session = null;
             Settings.Sessions = new Dictionary<string, string>();
+            Credentials.UserName = null;
+            Credentials.Password = null;
             await _authenticator.LogOffAsync();
         }
     }

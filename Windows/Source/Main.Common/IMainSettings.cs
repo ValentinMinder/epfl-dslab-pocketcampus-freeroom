@@ -18,16 +18,6 @@ namespace PocketCampus.Main
         AuthenticationStatus AuthenticationStatus { get; set; }
 
         /// <summary>
-        /// Gets or sets the GASPAR username (or the SCIPER number), if the user is authenticated.
-        /// </summary>
-        string UserName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the GASPAR password, if the user is authenticated.
-        /// </summary>
-        string Password { get; set; }
-
-        /// <summary>
         /// Gets or sets the saved sessions.
         /// </summary>
         Dictionary<string, string> Sessions { get; set; }

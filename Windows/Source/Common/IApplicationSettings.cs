@@ -24,16 +24,5 @@ namespace PocketCampus.Common
         /// Sets the specified setting's value.
         /// </summary>
         void Set( string pluginName, string key, object value );
-
-
-        /// <summary>
-        /// Gets the specified encrypted setting, as a string value.
-        /// </summary>
-        string GetEncrypted( string pluginName, string key );
-
-        /// <summary>
-        /// Sets the specified setting's value, which is encrypted before being stored.
-        /// </summary>
-        void SetEncrypted( string pluginName, string key, string value );
     }
 }

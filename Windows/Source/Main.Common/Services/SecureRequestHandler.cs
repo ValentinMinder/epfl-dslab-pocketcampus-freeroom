@@ -21,6 +21,7 @@ namespace PocketCampus.Main.Services
     public sealed class SecureRequestHandler : ISecureRequestHandler
     {
         private readonly IMainSettings _mainSettings;
+        private readonly ICredentialsStore _credentials;
         private readonly INavigationService _navigationService;
         private readonly ITequilaAuthenticator _authenticator;
         private readonly IAuthenticationService _authenticationService;
@@ -29,10 +30,11 @@ namespace PocketCampus.Main.Services
         /// <summary>
         /// Creates a new SecureRequestHandler.
         /// </summary>
-        public SecureRequestHandler( IMainSettings mainSettings, INavigationService navigationService,
+        public SecureRequestHandler( IMainSettings mainSettings, ICredentialsStore credentials, INavigationService navigationService,
                                      ITequilaAuthenticator authenticator, IAuthenticationService authenticationService )
         {
             _mainSettings = mainSettings;
+            _credentials = credentials;
             _navigationService = navigationService;
             _authenticator = authenticator;
             _authenticationService = authenticationService;
@@ -50,7 +52,7 @@ namespace PocketCampus.Main.Services
                 var tokenResponse = await _authenticationService.GetTokenAsync();
 
                 if ( tokenResponse.Status == AuthenticationRequestStatus.Success
-                  && await _authenticator.AuthenticateAsync( _mainSettings.UserName, _mainSettings.Password, tokenResponse.Token ) )
+                  && await _authenticator.AuthenticateAsync( _credentials.UserName, _credentials.Password, tokenResponse.Token ) )
                 {
                     var sessionRequest = new AuthenticationSessionRequest
                     {
@@ -87,7 +89,7 @@ namespace PocketCampus.Main.Services
             if ( session == null )
             {
                 var token = await authenticator.GetTokenAsync();
-                if ( await _authenticator.AuthenticateAsync( _mainSettings.UserName, _mainSettings.Password, token.AuthenticationKey ) )
+                if ( await _authenticator.AuthenticateAsync( _credentials.UserName, _credentials.Password, token.AuthenticationKey ) )
                 {
                     session = await authenticator.GetSessionAsync( token );
                     SaveSession( typeof( TViewModel ), session );

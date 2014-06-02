@@ -80,12 +80,10 @@ namespace PocketCampus.Main
         /// </summary>
         protected override void Initialize()
         {
-            // Basic building blocks
             Container.Bind<IHttpClient, HttpClient>();
             Container.Bind<IApplicationSettings, ApplicationSettings>();
             var pluginLoader = Container.Bind<IPluginLoader, PluginLoader>();
 
-            // Single-purpose services with no dependencies
             Container.Bind<Logger, GoogleAnalyticsLogger>();
             Container.Bind<IBrowserService, BrowserService>();
             Container.Bind<IEmailService, EmailService>();
@@ -95,6 +93,7 @@ namespace PocketCampus.Main
             Container.Bind<IDeviceIdentifier, DeviceIdentifier>();
             Container.Bind<IRatingService, RatingService>();
             Container.Bind<ICache, WindowsPhoneCache>();
+            Container.Bind<ICredentialsStore, WindowsPhoneCredentialsStore>();
 
             // URI mapping
             RootFrame.UriMapper = UriMapper = new PocketCampusUriMapper( pluginLoader.GetPlugins() );

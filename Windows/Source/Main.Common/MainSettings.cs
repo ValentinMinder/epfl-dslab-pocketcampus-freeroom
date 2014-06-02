@@ -22,24 +22,6 @@ namespace PocketCampus.Main
         }
 
         /// <summary>
-        /// Gets or sets the GASPAR username (or the SCIPER number).
-        /// </summary>
-        public string UserName
-        {
-            get { return GetEncrypted(); }
-            set { SetEncrypted( value ); }
-        }
-
-        /// <summary>
-        /// Gets or sets the GASPAR password.
-        /// </summary>
-        public string Password
-        {
-            get { return GetEncrypted(); }
-            set { SetEncrypted( value ); }
-        }
-
-        /// <summary>
         /// Gets or sets the saved sessions.
         /// </summary>
         public Dictionary<string, string> Sessions
@@ -84,8 +66,6 @@ namespace PocketCampus.Main
                 { x => x.Configuration, () => new ServerConfiguration( "https", 4433, "Camipro", "Directory", "Events", "Food", "IsAcademia", 
                                                                                       "Map", "Moodle", "News", "Satellite", "Transport" ) },
                 { x => x.AuthenticationStatus, () => AuthenticationStatus.NotAuthenticated },
-                { x => x.UserName, () => null },
-                { x => x.Password, () => null },
                 { x => x.Session, () => null },
                 { x => x.Sessions, () => new Dictionary<string, string>() }
             };
