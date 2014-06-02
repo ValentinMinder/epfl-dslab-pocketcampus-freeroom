@@ -19,18 +19,10 @@
         android:contentDescription="@string/freeroom_layout_roomslist_img_share"
         android:src="@drawable/ic_action_share_enabled" />
 
-    <ImageView
+    <TextView
         android:id="@+id/freeroom_layout_details_separator_1"
-        android:layout_width="3dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="4dp"
-        android:layout_toLeftOf="@id/freeroom_layout_details_share"
-        android:contentDescription="@string/freeroom_layout_separator_dark"
-        android:gravity="center"
-        android:src="@drawable/separator_grey" />
+        style="@style/Vertical_Divider"
+        android:layout_toLeftOf="@id/freeroom_layout_details_share" />
 
     <!-- Image to show how many people are working there -->
 
@@ -44,18 +36,10 @@
         android:gravity="center"
         android:src="@drawable/ic_occupation_unknown" />
 
-    <ImageView
+    <TextView
         android:id="@+id/freeroom_layout_details_separator_2"
-        android:layout_width="3dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="4dp"
-        android:layout_toLeftOf="@id/freeroom_layout_details_people"
-        android:contentDescription="@string/freeroom_layout_separator_dark"
-        android:gravity="center"
-        android:src="@drawable/separator_grey" />
+        style="@style/Vertical_Divider"
+        android:layout_toLeftOf="@id/freeroom_layout_details_people" />
 
     <!-- TextView to hold the time period -->
 
@@ -64,9 +48,9 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_toLeftOf="@id/freeroom_layout_details_separator_2"
+        android:drawableLeft="@drawable/ic_dot_grey"
         android:gravity="left|center_vertical"
         android:maxLines="1"
-        android:drawableLeft="@drawable/ic_dot_grey"
         android:text="mock time data"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black" />

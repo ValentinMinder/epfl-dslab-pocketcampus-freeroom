@@ -19,18 +19,10 @@
         android:contentDescription="@string/freeroom_layout_roomslist_img_fav"
         android:src="@drawable/ic_action_discard" />
 
-    <ImageView
+    <TextView
         android:id="@+id/freeroom_layout_favlist_separator_1"
-        android:layout_width="3dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="4dp"
-        android:layout_toLeftOf="@id/freeroom_layout_favlist_fav"
-        android:contentDescription="@string/freeroom_layout_separator_dark"
-        android:gravity="center"
-        android:src="@drawable/separator_grey" />
+        style="@style/Vertical_Divider"
+        android:layout_toLeftOf="@id/freeroom_layout_favlist_fav" />
 
     <!-- Image to show the room on the map -->
 
@@ -44,18 +36,10 @@
         android:contentDescription="@string/freeroom_layout_roomslist_img_map"
         android:src="@drawable/map_normal_icon" />
 
-    <ImageView
+    <TextView
         android:id="@+id/freeroom_layout_favlist_separator_2"
-        android:layout_width="3dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="4dp"
-        android:layout_toLeftOf="@id/freeroom_layout_favlist_map"
-        android:contentDescription="@string/freeroom_layout_separator_dark"
-        android:gravity="center"
-        android:src="@drawable/separator_grey" />
+        style="@style/Vertical_Divider"
+        android:layout_toLeftOf="@id/freeroom_layout_favlist_map" />
 
     <!-- TextView to hold the name of the room -->
 

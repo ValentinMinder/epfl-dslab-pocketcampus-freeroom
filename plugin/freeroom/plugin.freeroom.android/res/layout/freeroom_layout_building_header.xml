@@ -26,16 +26,7 @@
             android:textColor="@android:color/black" />
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="3dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="4dp"
-        android:contentDescription="@string/freeroom_layout_separator_dark"
-        android:gravity="center"
-        android:src="@drawable/separator_grey" />
+    <TextView style="@style/Vertical_Divider" />
 
     <RelativeLayout
         android:id="@+id/freeroom_layout_building_header_show_more_header"

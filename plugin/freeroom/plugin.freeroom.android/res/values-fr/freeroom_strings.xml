@@ -238,7 +238,6 @@
     <string name="freeroom_layout_prev_req_replay_img">replay</string>
     <string name="freeroom_layout_prev_req_edit_img">edit</string>
     <string name="freeroom_layout_prev_req_delete_img">delete</string>
-    <string name="freeroom_layout_separator_dark">separator</string>
 
     <!-- Working there dialog -->
     <string name="freeroom_share_server_bad_words">"Requête rejetée: le message contient des mots interdits."</string>

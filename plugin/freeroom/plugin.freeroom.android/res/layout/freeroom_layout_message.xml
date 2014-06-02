@@ -19,18 +19,11 @@
         android:src="@drawable/ic_action_discard"
         android:visibility="gone" />
 
-    <ImageView
+    <TextView
         android:id="@+id/freeroom_layout_message_separator_1"
-        android:layout_width="3dp"
-        android:layout_height="11dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="4dp"
+        style="@style/Vertical_Divider"
         android:layout_toLeftOf="@id/freeroom_layout_message_report"
-        android:contentDescription="@string/freeroom_layout_separator_dark"
-        android:gravity="center"
-        android:src="@drawable/separator_grey"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:visibility="gone" />
 
     <!-- TextView to hold the messages -->
@@ -47,18 +40,11 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/black" />
 
-    <ImageView
+    <TextView
         android:id="@+id/freeroom_layout_message_separator_2"
-        android:layout_width="3dp"
-        android:layout_height="11dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="4dp"
+        style="@style/Vertical_Divider"
         android:layout_toLeftOf="@id/freeroom_layout_message_number"
-        android:contentDescription="@string/freeroom_layout_separator_dark"
-        android:gravity="center"
-        android:src="@drawable/separator_grey"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:visibility="visible" />
 
     <TextView

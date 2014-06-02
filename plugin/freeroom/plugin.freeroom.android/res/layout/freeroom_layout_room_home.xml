@@ -21,18 +21,10 @@
         android:contentDescription="@string/freeroom_layout_roomslist_img_share"
         android:src="@drawable/ic_action_share_enabled" />
 
-    <ImageView
+    <TextView
         android:id="@+id/freeroom_layout_roomslist_separator_2"
-        android:layout_width="3dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="4dp"
-        android:layout_toLeftOf="@id/freeroom_layout_roomslist_share"
-        android:contentDescription="@string/freeroom_layout_separator_dark"
-        android:gravity="center"
-        android:src="@drawable/separator_grey" />
+        style="@style/Vertical_Divider"
+        android:layout_toLeftOf="@id/freeroom_layout_roomslist_share" />
 
     <!-- Image to display and add/remove favorites -->
 
@@ -45,18 +37,10 @@
         android:contentDescription="@string/freeroom_layout_roomslist_img_fav"
         android:src="@drawable/ic_action_half_important" />
 
-    <ImageView
+    <TextView
         android:id="@+id/freeroom_layout_roomslist_separator_3"
-        android:layout_width="3dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="4dp"
-        android:layout_toLeftOf="@id/freeroom_layout_roomslist_fav"
-        android:contentDescription="@string/freeroom_layout_separator_dark"
-        android:gravity="center"
-        android:src="@drawable/separator_grey" />
+        style="@style/Vertical_Divider"
+        android:layout_toLeftOf="@id/freeroom_layout_roomslist_fav" />
 
     <!-- Image to show how many people are working there -->
 
@@ -69,18 +53,10 @@
         android:contentDescription="@string/freeroom_layout_roomslist_img_people"
         android:src="@drawable/ic_occupation_unknown" />
 
-    <ImageView
+    <TextView
         android:id="@+id/freeroom_layout_roomslist_separator_4"
-        android:layout_width="3dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="4dp"
-        android:layout_toLeftOf="@id/freeroom_layout_roomslist_people"
-        android:contentDescription="@string/freeroom_layout_separator_dark"
-        android:gravity="center"
-        android:src="@drawable/separator_grey" />
+        style="@style/Vertical_Divider"
+        android:layout_toLeftOf="@id/freeroom_layout_roomslist_people" />
 
     <!-- TextView to hold the name of the room -->
     <!-- There is a small arrow on the left, indicating that a menu can be opened -->

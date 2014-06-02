@@ -18,18 +18,10 @@
         android:contentDescription="@string/freeroom_layout_roomslist_img_fav"
         android:src="@drawable/ic_action_discard" />
 
-    <ImageView
+    <TextView
         android:id="@+id/freeroom_layout_selected_separator_1"
-        android:layout_width="3dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="4dp"
+        style="@style/Vertical_Divider"
         android:layout_toLeftOf="@id/freeroom_layout_selected_remove"
-        android:contentDescription="@string/freeroom_layout_separator_dark"
-        android:gravity="center"
-        android:src="@drawable/separator_grey"
         android:visibility="invisible" />
 
     <!-- TextView to hold the name of the room -->

@@ -17,18 +17,11 @@
         android:visibility="visible" >
     </ImageView>
 
-    <ImageView
+    <TextView
         android:id="@+id/freeroom_layout_prev_req_separator_1"
-        android:layout_width="3dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="4dp"
+        style="@style/Vertical_Divider"
         android:layout_toLeftOf="@id/freeroom_layout_prev_req_remove"
-        android:contentDescription="@string/freeroom_layout_separator_dark"
-        android:gravity="center"
-        android:src="@drawable/separator_grey" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageView
         android:id="@+id/freeroom_layout_prev_req_edit"
@@ -42,18 +35,11 @@
         android:visibility="visible" >
     </ImageView>
 
-    <ImageView
+    <TextView
         android:id="@+id/freeroom_layout_prev_req_separator_2"
-        android:layout_width="3dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="4dp"
+        style="@style/Vertical_Divider"
         android:layout_toLeftOf="@id/freeroom_layout_prev_req_edit"
-        android:contentDescription="@string/freeroom_layout_separator_dark"
-        android:gravity="center"
-        android:src="@drawable/separator_grey" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/freeroom_layout_prev_req_text"
