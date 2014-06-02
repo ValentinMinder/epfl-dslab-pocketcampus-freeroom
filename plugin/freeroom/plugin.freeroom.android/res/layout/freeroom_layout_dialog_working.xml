@@ -7,6 +7,9 @@
     android:orientation="vertical"
     android:padding="5dp" >
 
+    <!-- HEADER is added there programmatically -->
+    <!-- Title (working there...) and exact time -->
+
     <TextView
         android:id="@+id/freeroom_layout_dialog_working_title"
         android:layout_width="fill_parent"
@@ -25,7 +28,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/black" />
 
-    <!-- shows the detailed occupancy of the room -->
+    <!-- shows the message frequency in this room at this time -->
 
     <ListView
         android:id="@+id/freeroom_layout_dialog_working_time_list"
@@ -33,7 +36,8 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <!-- shows the details about the room (size, capacity, ...) -->
+    <!-- FOOTER is added there programmatically -->
+    <!-- State if the results are updating or up-to-date -->
 
     <TextView
         android:id="@+id/freeroom_layout_dialog_working_disclaimer"
