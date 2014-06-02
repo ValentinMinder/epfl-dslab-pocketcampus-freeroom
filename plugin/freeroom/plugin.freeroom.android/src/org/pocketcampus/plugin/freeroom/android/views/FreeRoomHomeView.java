@@ -2591,6 +2591,20 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				periodTextView.setText("ERROR-PERIOD");
 			}
 
+			// people image to replay worst case occupancy and direct share with
+			// server
+			ImageView peopleImageView = (ImageView) mInfoRoomView
+					.findViewById(R.id.freeroom_layout_dialog_info_people);
+			peopleImageView.setImageResource(mModel
+					.getImageFromRatioOccupation(mOccupancy
+							.getRatioWorstCaseProbableOccupancy()));
+			peopleImageView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					directShareWithServer(mOccupancy.getTreatedPeriod(), mRoom);
+				}
+			});
+
 			ImageView map = (ImageView) mInfoRoomView
 					.findViewById(R.id.freeroom_layout_dialog_info_map);
 			map.setOnClickListener(new OnClickListener() {
