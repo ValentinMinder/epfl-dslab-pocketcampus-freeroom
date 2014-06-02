@@ -2246,22 +2246,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			// but in different UI and shapes.
 		}
 
-		// Override back button
+		// Overrides the back button, which is present on all devices.
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			boolean flag = false;
-			if (mInfoRoomDialog.isShowing()) {
-				mInfoRoomDialog.dismiss();
-				flag = true;
-			}
-			if (mSearchDialog.isShowing()) {
-				mSearchDialog.dismiss();
-				flag = true;
-			}
-			if (mFavoritesDialog.isShowing()) {
-				mFavoritesDialog.dismiss();
-				flag = true;
-			}
+			// this is not used so far, as all the popup are automatically
+			// closed by the back button.
 		}
+
+		// all other keys are handled automatically or not handled.
 		return super.onKeyDown(keyCode, event);
 	}
 
