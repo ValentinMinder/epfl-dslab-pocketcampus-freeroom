@@ -2220,6 +2220,24 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		}
 
+		// overrides envelope button for devices who are equipped with such
+		// hardware button, and share the location if the detailled info popup
+		// is displayed and available for the whole period.
+		if (keyCode == KeyEvent.KEYCODE_ENVELOPE) {
+			if (mInfoRoomDialog.isShowing()) {
+				Occupancy mOccupancy = mModel.getDisplayedOccupancy();
+				if (mOccupancy != null && mOccupancy.isIsAtLeastFreeOnce()
+						&& !mOccupancy.isIsAtLeastOccupiedOnce()) {
+					Button shareButton = mInfoRoomDialog
+							.getButton(AlertDialog.BUTTON_POSITIVE);
+					if (shareButton != null && shareButton.isEnabled()) {
+						shareButton.performClick();
+						return true;
+					}
+				}
+			}
+		}
+
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			// TODO: override menu button
 			// warning: this doesn't work if not initialized!
