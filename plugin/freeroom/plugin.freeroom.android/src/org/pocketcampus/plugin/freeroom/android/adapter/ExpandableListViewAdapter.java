@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -116,6 +117,12 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 					.findViewById(R.id.freeroom_layout_roomslist_share));
 			vholder.setImageViewPeople((ImageView) convertView
 					.findViewById(R.id.freeroom_layout_roomslist_people));
+			vholder.setViewSeparator2((TextView) convertView
+					.findViewById(R.id.freeroom_layout_roomslist_separator_2));
+			vholder.setViewSeparator3((TextView) convertView
+					.findViewById(R.id.freeroom_layout_roomslist_separator_3));
+			vholder.setViewSeparator4((TextView) convertView
+					.findViewById(R.id.freeroom_layout_roomslist_separator_4));
 			convertView.setTag(vholder);
 		} else {
 			vholder = (ViewHolderChild) convertView.getTag();
@@ -159,7 +166,6 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 				notifyDataSetChanged();
 			}
 		});
-		vholder.setStarCheck(false);
 
 		// only display if necessary (if it's only free)
 		homeView.setShareClickListener(share, homeView, occupancy);
@@ -212,6 +218,12 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		convertView.setBackgroundColor(mModel.getColorLine(occupancy));
 		tv.setCompoundDrawablesWithIntrinsicBounds(
 				mModel.getColoredDotDrawable(occupancy), 0, 0, 0);
+
+		vholder.setImageViewPeople(people);
+		vholder.setImageViewShare(share);
+		vholder.setImageViewStar(star);
+		vholder.setTextView(tv);
+
 		return convertView;
 	}
 
@@ -259,6 +271,10 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 					.findViewById(R.id.freeroom_layout_building_header_show_more_txt));
 			vholder.setRelativeLayoutMore((RelativeLayout) convertView
 					.findViewById(R.id.freeroom_layout_building_header_show_more_header));
+			vholder.setLinearLayoutLeft((LinearLayout) convertView
+					.findViewById(R.id.freeroom_layout_building_header_title_wrapper));
+			vholder.setViewSeparator((TextView) convertView
+					.findViewById(R.id.freeroom_layout_building_header_separator));
 			convertView.setTag(vholder);
 		} else {
 			vholder = (ViewHolderGroup) convertView.getTag();
@@ -331,6 +347,11 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 					.getColoredDotDrawable(getChildObject(groupPosition, 0)),
 					0, 0, 0);
 		}
+
+		vholder.setImageView(iv);
+		vholder.setTextView(tv);
+		vholder.setTextViewMore(more);
+
 		return convertView;
 	}
 
@@ -430,7 +451,9 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		private ImageView star = null;
 		private ImageView share = null;
 		private ImageView people = null;
-		private boolean starChecked = false;
+		private View viewSeparator2 = null;
+		private View viewSeparator3 = null;
+		private View viewSeparator4 = null;
 
 		public void setTextView(TextView tv) {
 			this.tv = tv;
@@ -448,14 +471,6 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			return this.star;
 		}
 
-		public boolean isStarChecked() {
-			return starChecked;
-		}
-
-		public void setStarCheck(boolean check) {
-			starChecked = check;
-		}
-
 		public ImageView getImageViewShare() {
 			return share;
 		}
@@ -471,6 +486,18 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		public void setImageViewPeople(ImageView iv) {
 			this.people = iv;
 		}
+
+		public void setViewSeparator2(View separator) {
+			this.viewSeparator2 = separator;
+		}
+
+		public void setViewSeparator3(View separator) {
+			this.viewSeparator3 = separator;
+		}
+
+		public void setViewSeparator4(View separator) {
+			this.viewSeparator4 = separator;
+		}
 	}
 
 	/**
@@ -483,6 +510,8 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		private ImageView iv = null;
 		private TextView more = null;
 		private RelativeLayout moreRL = null;
+		private LinearLayout linear = null;
+		private View separator = null;
 
 		public void setTextView(TextView tv) {
 			this.tv = tv;
@@ -516,5 +545,12 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			return this.moreRL;
 		}
 
+		public void setLinearLayoutLeft(LinearLayout ll) {
+			this.linear = ll;
+		}
+
+		public void setViewSeparator(View separator) {
+			this.separator = separator;
+		}
 	}
 }

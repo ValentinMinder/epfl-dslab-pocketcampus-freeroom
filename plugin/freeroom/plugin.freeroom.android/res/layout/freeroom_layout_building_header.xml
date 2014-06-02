@@ -8,6 +8,7 @@
     android:padding="2dip" >
 
     <LinearLayout
+        android:id="@+id/freeroom_layout_building_header_title_wrapper"
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:layout_weight="1"
@@ -26,7 +27,9 @@
             android:textColor="@android:color/black" />
     </LinearLayout>
 
-    <TextView style="@style/Vertical_Divider" />
+    <TextView
+        android:id="@+id/freeroom_layout_building_header_separator"
+        style="@style/Vertical_Divider" />
 
     <RelativeLayout
         android:id="@+id/freeroom_layout_building_header_show_more_header"
