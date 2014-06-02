@@ -2238,14 +2238,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		}
 
+		// this overrides the menu button, which is present on most phone BUT
+		// not all (deprecated). We should never think this is always available.
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			// TODO: override menu button
-			// warning: this doesn't work if not initialized!
-			// null pointer exception
-			// menu button has no effect!
-			// menu.show();
-			return true;
+			// this does nothging special and let the legacy menu to be shown.
+			// it's implemented now to display the same as the overflow button,
+			// but in different UI and shapes.
 		}
+
 		// Override back button
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			boolean flag = false;
