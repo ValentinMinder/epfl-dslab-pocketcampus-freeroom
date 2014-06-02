@@ -2202,6 +2202,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			mSearchDialog.show();
 			return true;
 		}
+
+		// overrides clear button for devices who are equipped with such
+		// hardware button, and clear all the search introduced (reset)
+		if (keyCode == KeyEvent.KEYCODE_CLEAR) {
+			reset();
+			return true;
+		}
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			// TODO: override menu button
 			// warning: this doesn't work if not initialized!
