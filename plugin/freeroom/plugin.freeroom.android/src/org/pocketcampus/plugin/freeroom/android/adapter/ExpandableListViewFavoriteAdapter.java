@@ -33,11 +33,12 @@ import android.widget.TextView;
  */
 public class ExpandableListViewFavoriteAdapter extends
 		ExpandableAbstractListViewAdapter<FRRoom> {
-	
+
 	FreeRoomHomeView home;
 
 	public ExpandableListViewFavoriteAdapter(Context c, List<String> header,
-			Map<String, List<FRRoom>> data, FreeRoomModel model, FreeRoomHomeView home) {
+			Map<String, List<FRRoom>> data, FreeRoomModel model,
+			FreeRoomHomeView home) {
 		super(c, header, data, model);
 		this.home = home;
 	}
@@ -175,16 +176,15 @@ public class ExpandableListViewFavoriteAdapter extends
 
 		TextView tv_expand = vholder.getTextViewExpand();
 		int size = data.get(text).size();
-		if (size > 1) {
-			tv_expand.setText(size + " rooms");
-			// TODO: use R.string.freeroom_results_room_header_rooms
-		} else {
-			tv_expand.setText(size + " room");
-			// TODO: use R.string.freeroom_results_room_header_room
-		}
+		tv_expand.setText(home.getResources().getQuantityString(
+				R.plurals.freeroom_results_room_header, size, size));
 
-		TextView iv_expand = vholder.getTextViewExpand();
-		// TODO: change the arrow up/down depending on collapse/expand
+		ImageView iv_expand = vholder.getImageViewExpand();
+		if (isExpanded) {
+			iv_expand.setImageResource(R.drawable.ic_action_collapse);
+		} else {
+			iv_expand.setImageResource(R.drawable.ic_action_expand);
+		}
 
 		return convertView;
 
