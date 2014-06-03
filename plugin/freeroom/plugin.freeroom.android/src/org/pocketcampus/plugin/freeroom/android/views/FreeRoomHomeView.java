@@ -2355,7 +2355,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * 
 	 */
 	private void setTitle() {
-		setTitle(getString(R.string.freeroom_title_main_title));
+		super.setTitle(getString(R.string.freeroom_title_main_title));
 	}
 
 	/**
@@ -2490,7 +2490,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				title = getString(R.string.freeroom_home_info_rooms);
 			}
 			FRPeriod period = mModel.getOverAllTreatedPeriod();
-			setTitle(title + times.formatTimePeriod(period, false, false));
+			setTitle(title + times.formatTimeSummaryTitle(period));
 			subtitle = times.formatFullDateFullTimePeriod(period);
 
 			// if the info dialog is opened, we update the CORRECT occupancy

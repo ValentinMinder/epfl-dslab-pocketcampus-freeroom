@@ -242,4 +242,23 @@ public class FRTimesClient {
 		return returned;
 	}
 
+	/**
+	 * Return the {@link #formatTimePeriod(FRPeriod, boolean, boolean)} with
+	 * <code>(period, true, false);</code> unless the period is strictly now and
+	 * less or equal to two hours.
+	 * 
+	 * @param period
+	 *            the given period.
+	 * @return the format time period.
+	 */
+	public String formatTimeSummaryTitle(FRPeriod period) {
+		long now = System.currentTimeMillis();
+		if (now > period.getTimeStampStart() - FRTimes.MARGIN_ERROR
+				&& now < period.getTimeStampEnd() + FRTimes.MARGIN_ERROR
+				&& (period.getTimeStampEnd() - period.getTimeStampStart()) <= 2
+						* FRTimes.ONE_HOUR_IN_MS + FRTimes.MARGIN_ERROR) {
+			return context.getString(R.string.freeroom_now);
+		}
+		return formatTimePeriod(period, true, false);
+	}
 }

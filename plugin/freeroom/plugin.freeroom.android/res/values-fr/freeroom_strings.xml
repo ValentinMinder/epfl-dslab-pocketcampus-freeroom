@@ -53,6 +53,7 @@
     <string name="freeroom_search_tomorrow">"Demain"</string>
     <string name="freeroom_selectstartHour">"Début"</string>
     <string name="freeroom_selectendHour">"Fin"</string>
+    <string name="freeroom_now">"maintenant"</string>
 
     <!-- SEARCH: buttons/checkbox/radio -->
     <string name="freeroom_search_search">"Rechercher"</string>
