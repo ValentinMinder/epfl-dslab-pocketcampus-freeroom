@@ -16,7 +16,6 @@ import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.element.InputBarElement;
 import org.pocketcampus.android.platform.sdk.ui.element.OnKeyPressedListener;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomAbstractView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
@@ -40,6 +39,7 @@ import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.utils.SetArrayList;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
+import org.pocketcampus.plugin.freeroom.shared.Constants;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
@@ -93,7 +93,6 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ImageButton;
@@ -596,10 +595,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * <p>
 	 * It supports:
 	 * <p>
-	 * http://occupancy.epfl.ch/content format, with content being the
-	 * autocomplete requet.
+	 * http://occupancy.epfl.ch/content format <br>
+	 * with content being the room requested (exact match).
 	 * <p>
-	 * TODO: pockecampus://
+	 * scheme://freeroom.plugin.pocketcampus.org/service?key=Value <br>
+	 * 
+	 * with scheme could be http, pocketcampus or "" (empty string) <br>
+	 * service could be <br>
+	 * show, with key "id" and value the unique UID (exact match). <br>
+	 * search, with key "name" and value the start of the name (autocomplete,
+	 * not exact match)<br>
+	 * match, with key "name" and value the exactly matched name (room or
+	 * building, but for rooms prefer uids)<br>
 	 * 
 	 * @param intent
 	 *            the intent to handle
@@ -644,15 +651,53 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							errorIntentHandled = searchByUriPrepareArguments(intentUriPathQuery);
 						}
 
-						// using freeroom links.
-						else if (intentScheme.equalsIgnoreCase("pocketcampus")
+						/*
+						 * using freeroom links. accepted formats are
+						 * 
+						 * pocketcampus ://freeroom.plugin.pocketcampus.org/show
+						 * ?id=UID where UID is the EPFL id (with OR without the
+						 * leading 1201XX)
+						 * 
+						 * pocketcampus://freeroom.plugin.pocketcampus.org/search
+						 * ?name=NAM where NAM is the leading characters of the
+						 * room (please note there is a search for NAM* on
+						 * server-side so a search for "CO1" will also give
+						 * "CO123", and a search for "BC" will also give
+						 * "BCH4375", if this room is available)
+						 * 
+						 * pocketcampus://freeroom.plugin.pocketcampus.org/match
+						 * ?name=NAME where NAME is the exact name of the toom
+						 * OR the building (if want all BC rooms without BCH)
+						 */
+						else if ((intentScheme.equalsIgnoreCase("pocketcampus")
+								|| intentScheme.equalsIgnoreCase("http") || intentScheme
+									.equalsIgnoreCase(""))
 								&& intentUriHost
 										.equalsIgnoreCase("freeroom.plugin.pocketcampus.org")) {
-							u.logV("Found a pocketcampus://freeroom.plugin.pocketcampus.org/data URI");
-							u.logV("With room query: \"" + intentUriPathQuery
-									+ "\"");
-							// TODO: do something.
-							errorIntentHandled = "URI NOR supported right now!";
+
+							if ("/show".equals(intentUriPath)
+									&& intentUri.getQueryParameter("id") != null) {
+								String uid = intentUri.getQueryParameter("id");
+								// removing the epfl "room type" identifier, to
+								// keep only the relevant id.
+								if (uid.startsWith("1201")) {
+									uid = uid.substring(4);
+									while (uid.startsWith("0")) {
+										uid = uid.substring(1);
+									}
+								}
+								errorIntentHandled = searchByUriPrepareArguments(uid);
+							} else if ("/search".equals(intentUriPath)
+									&& intentUri.getQueryParameter("name") != null) {
+								// the completion is added THERE (%) because the
+								// autocomplete method is set to "exactmatch"
+								errorIntentHandled = searchByUriPrepareArguments(intentUri
+										.getQueryParameter("name") + "%");
+							} else if ("/match".equals(intentUriPath)
+									&& intentUri.getQueryParameter("name") != null) {
+								errorIntentHandled = searchByUriPrepareArguments(intentUri
+										.getQueryParameter("name"));
+							}
 						} else {
 							u.logE("Unknow URI: \"" + intentUri + "\"");
 						}
@@ -689,7 +734,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 *            the error message to display.
 	 */
 	private void onErrorHandleIntent(String errorMessage) {
-		// TODO: display a popup
+		// display an error message when the intent/uri handling lead to a
+		// problem.
+		showErrorDialog(getString(R.string.freeroom_urisearch_error_basis)
+				+ "\n" + errorMessage + "\n"
+				+ getString(R.string.freeroom_urisearch_error_end));
 		u.logE(getString(R.string.freeroom_urisearch_error_basis));
 		u.logE(errorMessage);
 		u.logE(getString(R.string.freeroom_urisearch_error_end));
@@ -750,20 +799,19 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * @return an empty String if successful, an error message if
 	 */
 	private String searchByUriPrepareArguments(String constraint) {
-		// TODO: constraint in common!!
-		if (constraint.length() < 2) {
+		if (constraint.length() < Constants.MIN_AUTOCOMPL_LENGTH) {
 			return getString(R.string.freeroom_urisearch_error_AutoComplete_error)
 					+ " "
 					+ getString(R.string.freeroom_urisearch_error_AutoComplete_precond);
 		} else {
 			mSearchByUriTriggered = true;
-			// if the URI is triggered, we want to give access to the room!
-			// Room with URI/PUBLIC EPFL QR Code have access right <= 10
-			// use the user access rights or 10 if not sufficient.
-			// this has NO security issue as other autocomplete wont have these
-			// special rights!
+			// if the URI is triggered, we want to give access to the room,
+			// event if the user might no have right to see the room.
 			AutoCompleteRequest req = new AutoCompleteRequest(constraint,
-					Math.max(mModel.getGroupAccess(), 10));
+					Math.max(mModel.getGroupAccess(), Integer.MAX_VALUE));
+			// set to exact match (if you want autocompletion, please add a "%"
+			// to your constraint)
+			req.setExactString(true);
 			mController.autoCompleteBuilding(this, req);
 			return "";
 		}
