@@ -140,15 +140,17 @@ import com.taig.pmc.PopupMenuCompat;
  * <P>
  * Class ordering and organisation: <br>
  * - general shared values, start at {@link #mController} <br>
- * - ActionBar actions, start at {@link #overflow} <br>
- * - Menus handling, start at {@link #onCreateOptionsMenu(Menu)} <br>
  * - general overriden methods/constructor, start at
  * {@link #onDisplay(Bundle, PluginController)} <br>
- * - handling Intents and URIs, start at {@link #handleIntent(Intent)} <br>
  * - main UI initialization, start at {@link #initializeView()} <br>
+ * - ActionBar actions, start at {@link #overflow} <br>
+ * - Menus handling, start at {@link #onCreateOptionsMenu(Menu)} <br>
+ * - handling Intents and URIs, start at {@link #handleIntent(Intent)} <br>
  * - MVC View part, start at {@link #occupancyResultsUpdated()} <br>
  * - common methods, start at {@link #initDefaultRequest(boolean)} <br>
  * 
+ * - autocomplete management, shared by add room and add favorites, start at
+ * {@link #autoCompletedUpdated()}
  * <p>
  * POPUP HANDLING (TODO: not ordered for now!) <br>
  * ... general popups <br>
@@ -193,6 +195,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * FreeRoom model in MVC scheme.
 	 */
 	private FreeRoomModel mModel;
+
 	/**
 	 * Reference to times utility method for client-side.
 	 */
@@ -238,257 +241,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Adapter for the results (to display the occupancies).
 	 */
 	private ExpandableListViewAdapter<Occupancy> mExpListAdapter;
-
-	/* VIEW/DIALOGS FOR ALL ALERTDIALOG */
-	/**
-	 * View that holds the INFO dialog content, defined in xml in layout folder.
-	 */
-	private View mInfoRoomView;
-	/**
-	 * AlertDialog that holds the INFO dialog.
-	 */
-	private AlertDialog mInfoRoomDialog;
-	/**
-	 * View that holds the SEARCH dialog content, defined in xml in layout
-	 * folder.
-	 */
-	private View mSearchView;
-	/**
-	 * Dialog that holds the SEARCH Dialog.
-	 */
-	private AlertDialog mSearchDialog;
-	/**
-	 * View that holds the FAVORITES dialog content, defined in xml in layout
-	 * folder.
-	 */
-	private View mFavoritesView;
-	/**
-	 * AlertDialog that holds the FAVORITES dialog.
-	 */
-	private AlertDialog mFavoritesDialog;
-	/**
-	 * View that holds the ADDFavorites dialog content, defined in xml in layout
-	 * folder.
-	 */
-	private View mAddFavoritesView;
-	/**
-	 * AlertDialog that holds the ADDFavorites dialog.
-	 */
-	private AlertDialog mAddFavoritesDialog;
-
-	/**
-	 * View that holds the ADDROOM dialog content, defined in xml in layout
-	 * folder.
-	 */
-	private View mAddRoomView;
-	/**
-	 * AlertDialog that holds the ADDROOM dialog.
-	 */
-	private AlertDialog mAddRoomDialog;
-	/**
-	 * View that holds the EDITROOM dialog content, defined in xml in layout
-	 * folder.
-	 */
-	private View mEditRoomView;
-	/**
-	 * AlertDialog that holds the EDITROOM dialog.
-	 */
-	private AlertDialog mEditRoomDialog;
-	/**
-	 * View that holds the SHARE dialog content, defined in xml in layout
-	 * folder.
-	 */
-	private View mShareView;
-	/**
-	 * Dialog that holds the SHARE Dialog.
-	 */
-	private AlertDialog mShareDialog;
-	/**
-	 * Dialog that holds the WARNING Dialog (with two button: confirm/cancel).
-	 */
-	private AlertDialog mWarningDialog;
-	/**
-	 * Dialog that holds the ERROR Dialog (with one button: dismiss)
-	 */
-	private AlertDialog mErrorDialog;
-	/**
-	 * View that holds the PARAM dialog content, defined in xml in layout
-	 * folder.
-	 */
-	private View mParamView;
-	/**
-	 * Dialog that holds the PARAM Dialog.
-	 */
-	private AlertDialog mParamDialog;
-	/**
-	 * View that holds the WELCOME dialog content, defined in xml in layout
-	 * folder.
-	 * <p>
-	 * TODO: beta-only
-	 */
-	private View mWelcomeView;
-	/**
-	 * Dialog that holds the WELCOME Dialog.
-	 * <p>
-	 * TODO: beta-only
-	 */
-	private AlertDialog mWelcomeDialog;
-	/**
-	 * View that holds the ImWorking dialog content, defined in xml in layout
-	 * folder.
-	 */
-	private View mImWorkingView;
-	/**
-	 * Dialog that holds the ImWorking Dialog.
-	 */
-	private AlertDialog mImWorkingDialog;
-
-	/* ACTIONS FOR THE ACTION BAR */
-
-	/**
-	 * Action to open the overflow actions.
-	 * <p>
-	 * ALL the actions are in overflow, even if already visible.
-	 */
-	private Action overflow = new Action() {
-		public void performAction(View view) {
-			// open the legacy options menu: deprecated on new phones.
-			// openOptionsMenu() ;
-			// show the compat popup menu.
-			showPopupMenuCompat(view);
-		}
-
-		public int getDrawable() {
-			return R.drawable.ic_action_overflow;
-		}
-	};
-
-	/**
-	 * Action to open the beta registration.
-	 * <p>
-	 * TODO: beta only (may change to about menu?)
-	 */
-	private Action betaRegister = new Action() {
-		public void performAction(View view) {
-			if (mModel.getRegisteredUser()) {
-				validateRegistration();
-			}
-			mWelcomeDialog.show();
-		}
-
-		public int getDrawable() {
-			return R.drawable.ic_action_about;
-		}
-	};
-
-	/**
-	 * Action to open the settings.
-	 * <p>
-	 * Only added conditionally. Otherwise, go through menu or overflow action.
-	 */
-	private Action settings = new Action() {
-		public void performAction(View view) {
-			mParamDialog.show();
-		}
-
-		public int getDrawable() {
-			return R.drawable.ic_action_settings;
-		}
-	};
-	/**
-	 * Action to perform a customized search, by showing the search dialog.
-	 */
-	private Action search = new Action() {
-		public void performAction(View view) {
-			mSearchDialog.show();
-		}
-
-		public int getDrawable() {
-			return R.drawable.ic_action_search;
-		}
-	};
-
-	/**
-	 * Action to edit the user's favorites, by showing the favorites dialog.
-	 * <p>
-	 * Only added conditionally. Otherwise, go through menu or overflow action.
-	 */
-	private Action editFavorites = new Action() {
-		public void performAction(View view) {
-			mFavoritesAdapter.notifyDataSetChanged();
-			mFavoritesDialog.show();
-		}
-
-		public int getDrawable() {
-			return R.drawable.ic_action_important;
-		}
-	};
-
-	/**
-	 * Action to refresh the data (it sends the same stored request again if not
-	 * outdated, or generates a new request).
-	 * <p>
-	 * Please not that it replays the SAME request if it's not outdated, it wont
-	 * generate a new default request!
-	 * <p>
-	 * Only added conditionally. Otherwise, go through menu or overflow action.
-	 */
-	private Action refresh = new Action() {
-		public void performAction(View view) {
-			defaultMainStart();
-		}
-
-		public int getDrawable() {
-			return R.drawable.ic_action_refresh;
-		}
-	};
-
-	/* MENUS */
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// on portrait devices, we have both overflow and menu with same
-		// options.
-		// on landscape devices, non is available.
-		if (!isLandscapeTabletMode()) {
-			// Inflate the menu items, the same as in overflow action bar
-			MenuInflater inflater = getMenuInflater();
-			inflater.inflate(R.menu.main_activity_actions, menu);
-		}
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	public void showPopupMenuCompat(View v) {
-		PopupMenuCompat menu = PopupMenuCompat.newInstance(this, v);
-		menu.inflate(R.menu.main_activity_actions);
-		menu.setOnMenuItemClickListener(new PopupMenuCompat.OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				return onOptionsItemSelected(item);
-			}
-		});
-
-		menu.show();
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle presses on the action bar items
-		switch (item.getItemId()) {
-		case R.id.freeroom_action_favorites:
-			mFavoritesDialog.show();
-			return true;
-		case R.id.freeroom_action_refresh:
-			// refresh if no timeout, otherwise new default request.
-			defaultMainStart();
-			return true;
-		case R.id.freeroom_action_settings:
-			mParamDialog.show();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
 
 	/* MAIN ACTIVITY - OVERRIDEN METHODS */
 
@@ -720,6 +472,153 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 	}
 
+	/* ACTIONS FOR THE ACTION BAR */
+
+	/**
+	 * Action to open the overflow actions.
+	 * <p>
+	 * ALL the actions are in overflow, even if already visible.
+	 */
+	private Action overflow = new Action() {
+		public void performAction(View view) {
+			// open the legacy options menu: deprecated on new phones.
+			// openOptionsMenu() ;
+			// show the compat popup menu.
+			showPopupMenuCompat(view);
+		}
+
+		public int getDrawable() {
+			return R.drawable.ic_action_overflow;
+		}
+	};
+
+	/**
+	 * Action to open the beta registration.
+	 * <p>
+	 * TODO: beta only (may change to about menu?)
+	 */
+	private Action betaRegister = new Action() {
+		public void performAction(View view) {
+			if (mModel.getRegisteredUser()) {
+				validateRegistration();
+			}
+			mWelcomeDialog.show();
+		}
+
+		public int getDrawable() {
+			return R.drawable.ic_action_about;
+		}
+	};
+
+	/**
+	 * Action to open the settings.
+	 * <p>
+	 * Only added conditionally. Otherwise, go through menu or overflow action.
+	 */
+	private Action settings = new Action() {
+		public void performAction(View view) {
+			mParamDialog.show();
+		}
+
+		public int getDrawable() {
+			return R.drawable.ic_action_settings;
+		}
+	};
+	/**
+	 * Action to perform a customized search, by showing the search dialog.
+	 */
+	private Action search = new Action() {
+		public void performAction(View view) {
+			mSearchDialog.show();
+		}
+
+		public int getDrawable() {
+			return R.drawable.ic_action_search;
+		}
+	};
+
+	/**
+	 * Action to edit the user's favorites, by showing the favorites dialog.
+	 * <p>
+	 * Only added conditionally. Otherwise, go through menu or overflow action.
+	 */
+	private Action editFavorites = new Action() {
+		public void performAction(View view) {
+			mFavoritesAdapter.notifyDataSetChanged();
+			mFavoritesDialog.show();
+		}
+
+		public int getDrawable() {
+			return R.drawable.ic_action_important;
+		}
+	};
+
+	/**
+	 * Action to refresh the data (it sends the same stored request again if not
+	 * outdated, or generates a new request).
+	 * <p>
+	 * Please not that it replays the SAME request if it's not outdated, it wont
+	 * generate a new default request!
+	 * <p>
+	 * Only added conditionally. Otherwise, go through menu or overflow action.
+	 */
+	private Action refresh = new Action() {
+		public void performAction(View view) {
+			defaultMainStart();
+		}
+
+		public int getDrawable() {
+			return R.drawable.ic_action_refresh;
+		}
+	};
+
+	/* MENUS */
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// on portrait devices, we have both overflow and menu with same
+		// options.
+		// on landscape devices, non is available.
+		if (!isLandscapeTabletMode()) {
+			// Inflate the menu items, the same as in overflow action bar
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.main_activity_actions, menu);
+		}
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	public void showPopupMenuCompat(View v) {
+		PopupMenuCompat menu = PopupMenuCompat.newInstance(this, v);
+		menu.inflate(R.menu.main_activity_actions);
+		menu.setOnMenuItemClickListener(new PopupMenuCompat.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				return onOptionsItemSelected(item);
+			}
+		});
+
+		menu.show();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle presses on the action bar items
+		switch (item.getItemId()) {
+		case R.id.freeroom_action_favorites:
+			mFavoritesDialog.show();
+			return true;
+		case R.id.freeroom_action_refresh:
+			// refresh if no timeout, otherwise new default request.
+			defaultMainStart();
+			return true;
+		case R.id.freeroom_action_settings:
+			mParamDialog.show();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
 	// HANDLING INTENTS AND URI COMING FROM INSIDE OR OUTSIDE
 
 	/**
@@ -886,33 +785,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
-	 * Constructs the default request and refreshes it.
-	 * <p>
-	 * If a previous request exists and it's not outdated, it wont construct a
-	 * new request but use this one instead.
-	 */
-	private void defaultMainStart() {
-		if (mController != null && mModel != null) {
-			u.logV("Starting in default mode.");
-			FRRequestDetails req = mModel.getFRRequestDetails();
-			// if no previous request or it's outdated
-			long timeOut = mModel.getMinutesRequestTimeOut()
-					* FRTimes.ONE_MIN_IN_MS;
-			if (req == null || req.isOutDated(timeOut)) {
-				initDefaultRequest(false);
-			} else {
-				u.logV("existing request will be reused");
-			}
-			refresh();
-			u.logV("Successful start in default mode: wait for server response.");
-		} else {
-			// CANT LOG using utils because null after a while.
-			Log.e("defaultmainstart",
-					"Controller or Model not defined: cannot start default mode.");
-		}
-	}
-
-	/**
 	 * Stores if a search by URI has been initiated recently, in order for
 	 * auto-complete to automatically launch a new search if triggered, using
 	 * <code>searchByUriMakeRequest</code>
@@ -999,6 +871,33 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	// COMMON METHODS
 
 	/**
+	 * Constructs the default request and refreshes it.
+	 * <p>
+	 * If a previous request exists and it's not outdated, it wont construct a
+	 * new request but use this one instead.
+	 */
+	private void defaultMainStart() {
+		if (mController != null && mModel != null) {
+			u.logV("Starting in default mode.");
+			FRRequestDetails req = mModel.getFRRequestDetails();
+			// if no previous request or it's outdated
+			long timeOut = mModel.getMinutesRequestTimeOut()
+					* FRTimes.ONE_MIN_IN_MS;
+			if (req == null || req.isOutDated(timeOut)) {
+				initDefaultRequest(false);
+			} else {
+				u.logV("existing request will be reused");
+			}
+			refresh();
+			u.logV("Successful start in default mode: wait for server response.");
+		} else {
+			// CANT LOG using utils because null after a while.
+			Log.e("defaultmainstart",
+					"Controller or Model not defined: cannot start default mode.");
+		}
+	}
+
+	/**
 	 * Constructs the default request and sets it in the model for future use.
 	 * You may call <code>refresh</code> in order to actually send it to the
 	 * server.
@@ -1053,8 +952,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				// FAV: check occupancy of ALL favs
 				ArrayList<String> array = new ArrayList<String>(set.size());
 
-				addAllFavoriteToCollection(array, AddCollectionCaller.SEARCH,
-						true);
+				addAllFavoriteToCollection(array, true);
 
 				// if we want only free favorites.
 				boolean onlyFree = room
@@ -1267,6 +1165,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		ad.setGroupFocus(-1);
 	}
 
+	/**
+	 * View that holds the INFO dialog content, defined in xml in layout folder.
+	 */
+	private View mInfoRoomView;
+	/**
+	 * AlertDialog that holds the INFO dialog.
+	 */
+	private AlertDialog mInfoRoomDialog;
+
 	private ActualOccupationArrayAdapter<ActualOccupation> mInfoActualOccupationAdapter;
 
 	/**
@@ -1413,6 +1320,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
+	 * View that holds the ImWorking dialog content, defined in xml in layout
+	 * folder.
+	 */
+	private View mImWorkingView;
+	/**
+	 * Dialog that holds the ImWorking Dialog.
+	 */
+	private AlertDialog mImWorkingDialog;
+
+	/**
 	 * Time summary in "working there" dialog.
 	 */
 	private TextView workingTimeSummary;
@@ -1527,10 +1444,20 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
-	 * Inits the dialog to diplay the favorites.
+	 * View that holds the FAVORITES dialog content, defined in xml in layout
+	 * folder.
 	 */
+	private View mFavoritesView;
+	/**
+	 * AlertDialog that holds the FAVORITES dialog.
+	 */
+	private AlertDialog mFavoritesDialog;
+
 	private ExpandableListViewFavoriteAdapter mFavoritesAdapter;
 
+	/**
+	 * Inits the dialog to diplay the favorites.
+	 */
 	private void initFavoritesDialog() {
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -1645,6 +1572,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/* UI ELEMENTS FOR DIALOGS - SHARE */
+
+	/**
+	 * View that holds the SHARE dialog content, defined in xml in layout
+	 * folder.
+	 */
+	private View mShareView;
+	/**
+	 * Dialog that holds the SHARE Dialog.
+	 */
+	private AlertDialog mShareDialog;
 
 	/**
 	 * TextView summarizing the share intent/text/information that will be sent
@@ -1921,6 +1858,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mShareDialog.show();
 	}
 
+	/**
+	 * Dialog that holds the WARNING Dialog (with two button: confirm/cancel).
+	 */
+	private AlertDialog mWarningDialog;
+
 	private void initWarningDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.freeroom_dialog_warn_title));
@@ -1966,6 +1908,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 	}
+
+	/**
+	 * Dialog that holds the ERROR Dialog (with one button: dismiss)
+	 */
+	private AlertDialog mErrorDialog;
 
 	private void initErrorDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -2023,6 +1970,26 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	// ADD FAVORITES // ADD ROOM //
+
+	/**
+	 * View that holds the ADDFavorites dialog content, defined in xml in layout
+	 * folder.
+	 */
+	private View mAddFavoritesView;
+	/**
+	 * AlertDialog that holds the ADDFavorites dialog.
+	 */
+	private AlertDialog mAddFavoritesDialog;
+
+	/**
+	 * View that holds the ADDROOM dialog content, defined in xml in layout
+	 * folder.
+	 */
+	private View mAddRoomView;
+	/**
+	 * AlertDialog that holds the ADDROOM dialog.
+	 */
+	private AlertDialog mAddRoomDialog;
 
 	/* UI ELEMENTS FOR DIALOGS - ADDROOM */
 
@@ -2135,6 +2102,106 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		createAddFavoritesSuggestionsList();
 	}
 
+	private void UIConstructAddFavoritesInputBar() {
+		final IFreeRoomView view = this;
+
+		mAutoCompleteAddFavoritesInputBarElement = new InputBarElement(
+				this,
+				null,
+				getString(R.string.freeroom_check_occupancy_search_inputbarhint));
+		mAutoCompleteAddFavoritesInputBarElement
+				.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+		// click on magnify glass on the keyboard
+		mAutoCompleteAddFavoritesInputBarElement
+				.setOnEditorActionListener(new OnEditorActionListener() {
+					@Override
+					public boolean onEditorAction(TextView v, int actionId,
+							KeyEvent event) {
+						if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+							String query = mAutoCompleteAddRoomInputBarElement
+									.getInputText();
+							validAutoCompleteQuery(query, v);
+						}
+
+						return true;
+					}
+				});
+
+		// click on BUTTON magnify glass on the inputbar
+		mAutoCompleteAddFavoritesInputBarElement
+				.setOnButtonClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						String query = mAutoCompleteAddRoomInputBarElement
+								.getInputText();
+						validAutoCompleteQuery(query, v);
+					}
+				});
+
+		mAddFavoritesAdapter = new FRRoomSuggestionArrayAdapter<FRRoom>(
+				getApplicationContext(),
+				R.layout.freeroom_layout_list_room_add_fav,
+				R.id.freeroom_layout_list_room_add_fav,
+				mAutoCompleteAddFavoritesArrayListFRRoom, mModel, true);
+
+		mAutoCompleteAddFavoritesInputBarElement
+				.setOnKeyPressedListener(new OnKeyPressedListener() {
+					@Override
+					public void onKeyPressed(String text) {
+						mAutoCompleteAddFavoritesListView
+								.setAdapter(mAddFavoritesAdapter);
+
+						if (!u.validQuery(text)) {
+							mAutoCompleteAddFavoritesInputBarElement
+									.setButtonText(null);
+							autoCompleteCancel();
+						} else {
+							mAutoCompleteAddFavoritesInputBarElement
+									.setButtonText("");
+							// remove this if you don't want
+							// automatic autocomplete
+							// without pressing the button
+							AutoCompleteRequest request = new AutoCompleteRequest(
+									text, mModel.getGroupAccess());
+							mController.autoCompleteBuilding(view, request);
+						}
+					}
+				});
+	}
+
+	/**
+	 * Initialize the autocomplete suggestion list
+	 */
+	private void createAddFavoritesSuggestionsList() {
+		mAutoCompleteAddFavoritesListView = new ListView(this);
+		mAutoCompleteAddFavoritesInputBarElement
+				.addView(mAutoCompleteAddFavoritesListView);
+
+		mAutoCompleteAddFavoritesListView
+				.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> adapter, View view,
+							int pos, long id) {
+						// when an item is clicked, the keyboard is dimissed
+						dismissSoftKeyBoard(view);
+						FRRoom room = mAutoCompleteAddFavoritesArrayListFRRoom
+								.get(pos);
+						if (mModel.isFavorite(room)) {
+							mModel.removeFavorite(room);
+						} else {
+							mModel.addFavorite(room);
+						}
+
+						// WE DONT REMOVE the text in the input bar
+						// INTENTIONNALLY: user may want to select multiple
+						// rooms in the same building
+						autoCompletedUpdated();
+					}
+				});
+		mAutoCompleteAddFavoritesListView.setAdapter(mAddFavoritesAdapter);
+	}
+
 	private void initAddRoomDialog() {
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -2221,6 +2288,130 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		ll.addView(mAutoCompleteAddRoomInputBarElement);
 		createAddRoomSuggestionsList();
 	}
+
+	private void UIConstructAddRoomInputBar() {
+		final IFreeRoomView view = this;
+
+		mAutoCompleteAddRoomInputBarElement = new InputBarElement(
+				this,
+				null,
+				getString(R.string.freeroom_check_occupancy_search_inputbarhint));
+		mAutoCompleteAddRoomInputBarElement
+				.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+		// click on magnify glass on the keyboard
+		mAutoCompleteAddRoomInputBarElement
+				.setOnEditorActionListener(new OnEditorActionListener() {
+					@Override
+					public boolean onEditorAction(TextView v, int actionId,
+							KeyEvent event) {
+						if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+							String query = mAutoCompleteAddRoomInputBarElement
+									.getInputText();
+							validAutoCompleteQuery(query, v);
+						}
+
+						return true;
+					}
+				});
+
+		// click on BUTTON magnify glass on the inputbar
+		mAutoCompleteAddRoomInputBarElement
+				.setOnButtonClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						String query = mAutoCompleteAddRoomInputBarElement
+								.getInputText();
+						validAutoCompleteQuery(query, v);
+					}
+				});
+
+		mAddRoomAdapter = new FRRoomSuggestionArrayAdapter<FRRoom>(
+				getApplicationContext(),
+				R.layout.freeroom_layout_list_room_add_room,
+				R.id.freeroom_layout_list_room_add_room,
+				mAutoCompleteAddRoomArrayListFRRoom, mModel, false);
+
+		mAutoCompleteAddRoomInputBarElement
+				.setOnKeyPressedListener(new OnKeyPressedListener() {
+					@Override
+					public void onKeyPressed(String text) {
+						mAutoCompleteAddRoomListView
+								.setAdapter(mAddRoomAdapter);
+
+						if (!u.validQuery(text)) {
+							mAutoCompleteAddRoomInputBarElement
+									.setButtonText(null);
+							autoCompleteCancel();
+						} else {
+							mAutoCompleteAddRoomInputBarElement
+									.setButtonText("");
+							// remove this if you don't want
+							// automatic autocomplete
+							// without pressing the button
+							AutoCompleteRequest request = new AutoCompleteRequest(
+									text, mModel.getGroupAccess());
+							mController.autoCompleteBuilding(view, request);
+						}
+					}
+				});
+	}
+
+	/**
+	 * Initialize the autocomplete suggestion list
+	 */
+	private void createAddRoomSuggestionsList() {
+		mAutoCompleteAddRoomListView = new ListView(this);
+		mAutoCompleteAddRoomInputBarElement
+				.addView(mAutoCompleteAddRoomListView);
+
+		mAutoCompleteAddRoomListView
+				.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> adapter, View view,
+							int pos, long id) {
+						// when an item is clicked, the keyboard is dimissed
+						dismissSoftKeyBoard(view);
+						FRRoom room = mAutoCompleteAddRoomArrayListFRRoom
+								.get(pos);
+						addRoomToCheck(room);
+						searchButton.setEnabled(auditSubmit() == 0);
+
+						// WE DONT REMOVE the text in the input bar
+						// INTENTIONNALLY: user may want to select multiple
+						// rooms in the same building
+
+						// refresh the autocomplete, such that selected
+						// rooms are not displayed anymore
+						autoCompletedUpdated();
+
+					}
+				});
+		mAutoCompleteAddRoomListView.setAdapter(mAddRoomAdapter);
+	}
+
+	private void addRoomToCheck(FRRoom room) {
+		// we only add if it already contains the room
+		if (!selectedRooms.contains(room)) {
+			selectedRooms.add(room);
+			mSummarySelectedRoomsTextViewSearchMenu.setText(u
+					.getSummaryTextFromCollection(selectedRooms));
+
+		} else {
+			Log.e(this.getClass().toString(),
+					"room cannot be added: already added");
+		}
+	}
+
+	/**
+	 * View that holds the EDITROOM dialog content, defined in xml in layout
+	 * folder.
+	 */
+	private View mEditRoomView;
+	/**
+	 * AlertDialog that holds the EDITROOM dialog.
+	 */
+	private AlertDialog mEditRoomDialog;
 
 	private ListView selectedListView;
 
@@ -2314,172 +2505,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		});
 	}
 
-	private void UIConstructAddRoomInputBar() {
-		final IFreeRoomView view = this;
-
-		mAutoCompleteAddRoomInputBarElement = new InputBarElement(
-				this,
-				null,
-				getString(R.string.freeroom_check_occupancy_search_inputbarhint));
-		mAutoCompleteAddRoomInputBarElement
-				.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-
-		// click on magnify glass on the keyboard
-		mAutoCompleteAddRoomInputBarElement
-				.setOnEditorActionListener(new OnEditorActionListener() {
-					@Override
-					public boolean onEditorAction(TextView v, int actionId,
-							KeyEvent event) {
-						if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-							String query = mAutoCompleteAddRoomInputBarElement
-									.getInputText();
-							validAutoCompleteQuery(query, v);
-						}
-
-						return true;
-					}
-				});
-
-		// click on BUTTON magnify glass on the inputbar
-		mAutoCompleteAddRoomInputBarElement
-				.setOnButtonClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						String query = mAutoCompleteAddRoomInputBarElement
-								.getInputText();
-						validAutoCompleteQuery(query, v);
-					}
-				});
-
-		mAddRoomAdapter = new FRRoomSuggestionArrayAdapter<FRRoom>(
-				getApplicationContext(),
-				R.layout.freeroom_layout_list_room_add_room,
-				R.id.freeroom_layout_list_room_add_room,
-				mAutoCompleteAddRoomArrayListFRRoom, mModel, false);
-
-		mAutoCompleteAddRoomInputBarElement
-				.setOnKeyPressedListener(new OnKeyPressedListener() {
-					@Override
-					public void onKeyPressed(String text) {
-						mAutoCompleteAddRoomListView
-								.setAdapter(mAddRoomAdapter);
-
-						if (!u.validQuery(text)) {
-							mAutoCompleteAddRoomInputBarElement
-									.setButtonText(null);
-							autoCompleteCancel();
-						} else {
-							mAutoCompleteAddRoomInputBarElement
-									.setButtonText("");
-							// remove this if you don't want
-							// automatic autocomplete
-							// without pressing the button
-							AutoCompleteRequest request = new AutoCompleteRequest(
-									text, mModel.getGroupAccess());
-							mController.autoCompleteBuilding(view, request);
-						}
-					}
-				});
-	}
-
-	private void validAutoCompleteQuery(String query, View v) {
-		if (u.validQuery(query)) {
-			dismissSoftKeyBoard(v);
-			AutoCompleteRequest request = new AutoCompleteRequest(query,
-					mModel.getGroupAccess());
-			mController.autoCompleteBuilding(this, request);
-		} else {
-			autoCompleteCancel();
-		}
-		activateDebug(query);
-	}
-
-	private void UIConstructAddFavoritesInputBar() {
-		final IFreeRoomView view = this;
-
-		mAutoCompleteAddFavoritesInputBarElement = new InputBarElement(
-				this,
-				null,
-				getString(R.string.freeroom_check_occupancy_search_inputbarhint));
-		mAutoCompleteAddFavoritesInputBarElement
-				.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-
-		// click on magnify glass on the keyboard
-		mAutoCompleteAddFavoritesInputBarElement
-				.setOnEditorActionListener(new OnEditorActionListener() {
-					@Override
-					public boolean onEditorAction(TextView v, int actionId,
-							KeyEvent event) {
-						if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-							String query = mAutoCompleteAddRoomInputBarElement
-									.getInputText();
-							validAutoCompleteQuery(query, v);
-						}
-
-						return true;
-					}
-				});
-
-		// click on BUTTON magnify glass on the inputbar
-		mAutoCompleteAddFavoritesInputBarElement
-				.setOnButtonClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						String query = mAutoCompleteAddRoomInputBarElement
-								.getInputText();
-						validAutoCompleteQuery(query, v);
-					}
-				});
-
-		mAddFavoritesAdapter = new FRRoomSuggestionArrayAdapter<FRRoom>(
-				getApplicationContext(),
-				R.layout.freeroom_layout_list_room_add_fav,
-				R.id.freeroom_layout_list_room_add_fav,
-				mAutoCompleteAddFavoritesArrayListFRRoom, mModel, true);
-
-		mAutoCompleteAddFavoritesInputBarElement
-				.setOnKeyPressedListener(new OnKeyPressedListener() {
-					@Override
-					public void onKeyPressed(String text) {
-						mAutoCompleteAddFavoritesListView
-								.setAdapter(mAddFavoritesAdapter);
-
-						if (!u.validQuery(text)) {
-							mAutoCompleteAddFavoritesInputBarElement
-									.setButtonText(null);
-							autoCompleteCancel();
-						} else {
-							mAutoCompleteAddFavoritesInputBarElement
-									.setButtonText("");
-							// remove this if you don't want
-							// automatic autocomplete
-							// without pressing the button
-							AutoCompleteRequest request = new AutoCompleteRequest(
-									text, mModel.getGroupAccess());
-							mController.autoCompleteBuilding(view, request);
-						}
-					}
-				});
-	}
-
-	private enum AddCollectionCaller {
-		ADDALLFAV, SEARCH;
-	}
-
 	/**
-	 * Add all the favorites FRRoom to the collection. Caller is needed in order
-	 * to have special condition depending on the caller. The collection will be
+	 * Add all the favorites FRRoom to the collection. The collection will be
 	 * cleared prior to any adding.
 	 * 
 	 * @param collection
 	 *            collection in which you want the favorites to be added.
-	 * @param caller
-	 *            identification of the caller, to provide conditions.
+	 * 
 	 * @param addOnlyUID
 	 *            true to add UID, false to add fully FRRoom object.
 	 */
 	private void addAllFavoriteToCollection(Collection collection,
-			AddCollectionCaller caller, boolean addOnlyUID) {
+			boolean addOnlyUID) {
 		collection.clear();
 		OrderMapListFew<String, List<FRRoom>, FRRoom> set = mModel
 				.getFavorites();
@@ -2487,14 +2524,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		while (iter.hasNext()) {
 			String key = iter.next();
 			Iterator<FRRoom> iter2 = set.get(key).iterator();
-			label: while (iter2.hasNext()) {
+			while (iter2.hasNext()) {
 				FRRoom mRoom = iter2.next();
-				// condition of adding depending on the caller
-				if (caller.equals(AddCollectionCaller.ADDALLFAV)) {
-					if (selectedRooms.contains(mRoom)) {
-						break label;
-					}
-				}
+
 				if (addOnlyUID) {
 					collection.add(mRoom.getUid());
 				} else {
@@ -2504,119 +2536,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 	}
 
-	/**
-	 * Initialize the autocomplete suggestion list
-	 */
-	private void createAddRoomSuggestionsList() {
-		mAutoCompleteAddRoomListView = new ListView(this);
-		mAutoCompleteAddRoomInputBarElement
-				.addView(mAutoCompleteAddRoomListView);
-
-		mAutoCompleteAddRoomListView
-				.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> adapter, View view,
-							int pos, long id) {
-						// when an item is clicked, the keyboard is dimissed
-						dismissSoftKeyBoard(view);
-						FRRoom room = mAutoCompleteAddRoomArrayListFRRoom
-								.get(pos);
-						addRoomToCheck(room);
-						searchButton.setEnabled(auditSubmit() == 0);
-
-						// WE DONT REMOVE the text in the input bar
-						// INTENTIONNALLY: user may want to select multiple
-						// rooms in the same building
-
-						// refresh the autocomplete, such that selected
-						// rooms are not displayed anymore
-						autoCompletedUpdated();
-
-					}
-				});
-		mAutoCompleteAddRoomListView.setAdapter(mAddRoomAdapter);
-	}
-
-	/**
-	 * Initialize the autocomplete suggestion list
-	 */
-	private void createAddFavoritesSuggestionsList() {
-		mAutoCompleteAddFavoritesListView = new ListView(this);
-		mAutoCompleteAddFavoritesInputBarElement
-				.addView(mAutoCompleteAddFavoritesListView);
-
-		mAutoCompleteAddFavoritesListView
-				.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> adapter, View view,
-							int pos, long id) {
-						// when an item is clicked, the keyboard is dimissed
-						dismissSoftKeyBoard(view);
-						FRRoom room = mAutoCompleteAddFavoritesArrayListFRRoom
-								.get(pos);
-						if (mModel.isFavorite(room)) {
-							mModel.removeFavorite(room);
-						} else {
-							mModel.addFavorite(room);
-						}
-
-						// WE DONT REMOVE the text in the input bar
-						// INTENTIONNALLY: user may want to select multiple
-						// rooms in the same building
-						autoCompletedUpdated();
-					}
-				});
-		mAutoCompleteAddFavoritesListView.setAdapter(mAddFavoritesAdapter);
-	}
-
-	private void addRoomToCheck(FRRoom room) {
-		// we only add if it already contains the room
-		if (!selectedRooms.contains(room)) {
-			selectedRooms.add(room);
-			mSummarySelectedRoomsTextViewSearchMenu.setText(u
-					.getSummaryTextFromCollection(selectedRooms));
-
-		} else {
-			Log.e(this.getClass().toString(),
-					"room cannot be added: already added");
-		}
-	}
-
-	@Override
-	public void autoCompleteLaunch() {
-		tvAutcompletStatusFav
-				.setText(getString(R.string.freeroom_dialog_add_autocomplete_updating));
-		tvAutcompletStatusRoom
-				.setText(getString(R.string.freeroom_dialog_add_autocomplete_updating));
-	}
-
-	/**
-	 * To be called when autocomplete is not lauchable and ask the user to type
-	 * in.
-	 */
-	public void autoCompleteCancel() {
-		mAutoCompleteAddFavoritesArrayListFRRoom.clear();
-		mAddFavoritesAdapter.notifyDataSetInvalidated();
-		mAutoCompleteAddRoomArrayListFRRoom.clear();
-		mAddRoomAdapter.notifyDataSetInvalidated();
-
-		tvAutcompletStatusFav
-				.setText(getString(R.string.freeroom_dialog_add_autocomplete_typein));
-		tvAutcompletStatusRoom
-				.setText(getString(R.string.freeroom_dialog_add_autocomplete_typein));
-	}
-
-	/**
-	 * Update the text message in autocomplete status text view
-	 * (updating/up-to-date/error/...)
-	 * 
-	 * @param text
-	 *            the new message to display.
-	 */
-	private void autoCompleteUpdateMessage(CharSequence text) {
-		tvAutcompletStatusFav.setText(text);
-		tvAutcompletStatusRoom.setText(text);
-	}
+	// AUTOCOMPLETE - shared for add room and add favorites
 
 	@Override
 	public void autoCompletedUpdated() {
@@ -2672,7 +2592,65 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mAddFavoritesAdapter.notifyDataSetChanged();
 	}
 
+	private void validAutoCompleteQuery(String query, View v) {
+		if (u.validQuery(query)) {
+			dismissSoftKeyBoard(v);
+			AutoCompleteRequest request = new AutoCompleteRequest(query,
+					mModel.getGroupAccess());
+			mController.autoCompleteBuilding(this, request);
+		} else {
+			autoCompleteCancel();
+		}
+		activateDebug(query);
+	}
+
+	@Override
+	public void autoCompleteLaunch() {
+		tvAutcompletStatusFav
+				.setText(getString(R.string.freeroom_dialog_add_autocomplete_updating));
+		tvAutcompletStatusRoom
+				.setText(getString(R.string.freeroom_dialog_add_autocomplete_updating));
+	}
+
+	/**
+	 * To be called when autocomplete is not lauchable and ask the user to type
+	 * in.
+	 */
+	public void autoCompleteCancel() {
+		mAutoCompleteAddFavoritesArrayListFRRoom.clear();
+		mAddFavoritesAdapter.notifyDataSetInvalidated();
+		mAutoCompleteAddRoomArrayListFRRoom.clear();
+		mAddRoomAdapter.notifyDataSetInvalidated();
+
+		tvAutcompletStatusFav
+				.setText(getString(R.string.freeroom_dialog_add_autocomplete_typein));
+		tvAutcompletStatusRoom
+				.setText(getString(R.string.freeroom_dialog_add_autocomplete_typein));
+	}
+
+	/**
+	 * Update the text message in autocomplete status text view
+	 * (updating/up-to-date/error/...)
+	 * 
+	 * @param text
+	 *            the new message to display.
+	 */
+	private void autoCompleteUpdateMessage(CharSequence text) {
+		tvAutcompletStatusFav.setText(text);
+		tvAutcompletStatusRoom.setText(text);
+	}
+
 	// SEARCH !!! //
+
+	/**
+	 * View that holds the SEARCH dialog content, defined in xml in layout
+	 * folder.
+	 */
+	private View mSearchView;
+	/**
+	 * Dialog that holds the SEARCH Dialog.
+	 */
+	private AlertDialog mSearchDialog;
 
 	/* UI ELEMENTS FOR DIALOGS - SEARCH */
 	/**
@@ -3615,8 +3593,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		List<String> mUIDList = new ArrayList<String>(selectedRooms.size());
 
 		if (favButton.isChecked()) {
-			addAllFavoriteToCollection(mUIDList, AddCollectionCaller.SEARCH,
-					true);
+			addAllFavoriteToCollection(mUIDList, true);
 		}
 		Set<FRRoom> userDef = new HashSet<FRRoom>(selectedRooms.size());
 		if (userDefButton.isChecked()) {
@@ -3876,6 +3853,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	// ******* SETTINGS/PARAMETERS *****///
+	/**
+	 * View that holds the PARAM dialog content, defined in xml in layout
+	 * folder.
+	 */
+	private View mParamView;
+	/**
+	 * Dialog that holds the PARAM Dialog.
+	 */
+	private AlertDialog mParamDialog;
 
 	/**
 	 * Inits the dialog to display the parameters.
@@ -4316,6 +4302,19 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	// WELCOME DIALOF FOR BETA
+	/**
+	 * View that holds the WELCOME dialog content, defined in xml in layout
+	 * folder.
+	 * <p>
+	 * TODO: beta-only
+	 */
+	private View mWelcomeView;
+	/**
+	 * Dialog that holds the WELCOME Dialog.
+	 * <p>
+	 * TODO: beta-only
+	 */
+	private AlertDialog mWelcomeDialog;
 
 	/**
 	 * Stores (non-permanent!) if it's the first time the user want to dismiss
