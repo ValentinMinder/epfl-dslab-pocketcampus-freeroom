@@ -565,10 +565,10 @@ static const NSInteger kOneYearPeriodIndex = 3;
     if (actionSheet == self.filterSelectionActionSheet) {
         
         if (buttonIndex == [self goToCategoryButtonIndex]) {
-            [self trackAction:@"SelectCategory"];
+            [self trackAction:@"ShowCategories"];
             [self presentCategoriesController];
         } else if (buttonIndex == [self filterByTagsButtonIndex]) {
-            [self trackAction:@"SelectTags"];
+            [self trackAction:@"ShowTags"];
             [self presentTagsController];
         } else if (buttonIndex == [self  pastModeButtonIndex]) {
             if (self.pastMode) {
