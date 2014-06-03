@@ -25,10 +25,26 @@ import android.util.Log;
 import android.widget.Toast;
 
 /**
- * FreeRoomController - Main logic for the FreeRoom Plugin.
- * 
+ * FreeRoomController - Main logic for the FreeRoom Plugin - controller part in
+ * MVC scheme.
+ * <p>
  * This class issues requests to the FreeRoom PocketCampus server to get the
- * FreeRoom data of the logged in user.
+ * FreeRoom data for the user.
+ * <p>
+ * This class is organized and ordered as follows: <br>
+ * - communs values, start at {@link #onCreate()}<br>
+ * - handling general replies, start at
+ * {@link #handleReplySuccess(IFreeRoomView, int, String, String, String)} <br>
+ * - occupancy requests, start at {@link #sendFRRequest(IFreeRoomView)} <br>
+ * - autocomplete request, start at
+ * {@link #autoCompleteBuilding(IFreeRoomView, AutoCompleteRequest)}<br>
+ * - imworking request (share with server), start at
+ * {@link #prepareImWorking(ImWorkingRequest)}<br>
+ * - check who is working there, start at
+ * {@link #prepareCheckWhoIsWorking(WhoIsWorkingRequest)}<br>
+ * - register the user to the beta-release, start at
+ * {@link #sendRegisterUser(RegisterUser, IFreeRoomView)}<br>
+ * 
  * 
  * @author FreeRoom Project Team (2014/05)
  * @author Julien WEBER <julien.weber@epfl.ch>
@@ -68,15 +84,7 @@ public class FreeRoomController extends PluginController implements
 		return mModel;
 	}
 
-	public void autoCompleteBuilding(IFreeRoomView view,
-			AutoCompleteRequest request) {
-		mModel.autoCompleteLaunch();
-		new AutoCompleteRequestASyncTask(view).start(this, mClient, request);
-	}
-
-	public void setAutoCompleteResults(AutoCompleteReply result) {
-		mModel.setAutoComplete(result.getListRoom());
-	}
+	// HANDLING GENERAL RESPONSES.
 
 	public void handleReplySuccess(IFreeRoomView caller, int status,
 			String statusComment, String callingClass, String requestClass) {
@@ -102,6 +110,43 @@ public class FreeRoomController extends PluginController implements
 		}
 	}
 
+	// OCCUPANCY REQUEST
+	/**
+	 * Sends the occupancy request stored in the model to the server.
+	 * 
+	 * @param view
+	 *            the caller view
+	 */
+	public void sendFRRequest(IFreeRoomView view) {
+		new FRRequestASyncTask(view).start(this, mClient,
+				mModel.getFRRequestDetails());
+	}
+
+	/**
+	 * Sets the FRReply results received from the server in the model.
+	 * 
+	 * @param result
+	 *            FRReply results received from the server
+	 */
+	public void setOccupancyResults(FRReply result) {
+		mModel.setOverAllTreatedPeriod(result.getOverallTreatedPeriod());
+		mModel.setOccupancyResults(result.getOccupancyOfRooms());
+	}
+
+	// AUTOCOMPLETE
+
+	public void autoCompleteBuilding(IFreeRoomView view,
+			AutoCompleteRequest request) {
+		mModel.autoCompleteLaunch();
+		new AutoCompleteRequestASyncTask(view).start(this, mClient, request);
+	}
+
+	public void setAutoCompleteResults(AutoCompleteReply result) {
+		mModel.setAutoComplete(result.getListRoom());
+	}
+
+	// IMWORKING - SHARE WITH SERVER
+
 	private ImWorkingRequest imWorkingRequest;
 
 	public void prepareImWorking(ImWorkingRequest request) {
@@ -118,6 +163,8 @@ public class FreeRoomController extends PluginController implements
 					"request not defined in controller!");
 		}
 	}
+
+	// IM WORKING - REPLY
 
 	/**
 	 * Tells the user the <code>ImWorkingRequest</code> he submitted was
@@ -207,6 +254,8 @@ public class FreeRoomController extends PluginController implements
 		}
 	}
 
+	// WHO IS WORKING REQUEST
+
 	/**
 	 * Stores the prepared request for future sending to the server.
 	 */
@@ -254,31 +303,12 @@ public class FreeRoomController extends PluginController implements
 		mModel.setListMessageFrequency(result.getMessages());
 	}
 
-	// NEW INTERFACE as of 2104.04.04.
-	/**
-	 * Sets the FRReply results received from the server in the model.
-	 * 
-	 * @param result
-	 *            FRReply results received from the server
-	 */
-	public void setOccupancyResults(FRReply result) {
-		mModel.setOverAllTreatedPeriod(result.getOverallTreatedPeriod());
-		mModel.setOccupancyResults(result.getOccupancyOfRooms());
-	}
-
-	/**
-	 * Sends the occupancy request stored in the model to the server.
-	 * 
-	 * @param view
-	 *            the caller view
-	 */
-	public void sendFRRequest(IFreeRoomView view) {
-		new FRRequestASyncTask(view).start(this, mClient,
-				mModel.getFRRequestDetails());
-	}
+	// USER-REGISTRATION - BETA-ONLY
 
 	/**
 	 * Register a user to the server.
+	 * <p>
+	 * TODO: beta-only
 	 * 
 	 * @param request
 	 * @param view
@@ -292,6 +322,8 @@ public class FreeRoomController extends PluginController implements
 	 * <p>
 	 * If the server accept the registration, set it the model, so that the user
 	 * is not required to register afterwards.
+	 * <p>
+	 * TODO: beta-only
 	 * 
 	 * @param reply
 	 *            true if accepted
