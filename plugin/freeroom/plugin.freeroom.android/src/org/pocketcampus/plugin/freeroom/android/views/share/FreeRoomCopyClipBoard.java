@@ -36,7 +36,7 @@ public class FreeRoomCopyClipBoard extends FreeRoomAbstractView implements
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 		// Tracker
-		Tracker.getInstance().trackPageView("freeroom/share_server");
+		Tracker.getInstance().trackPageView("freeroom/clipboard");
 
 		Intent intent = getIntent();
 		String action = intent.getAction();

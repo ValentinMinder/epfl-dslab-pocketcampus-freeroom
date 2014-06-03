@@ -973,11 +973,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		lv.addFooterView(footer, null, false);
 
 		mInfoRoomDialog.setView(mInfoRoomView);
-		mInfoRoomDialog.setOnShowListener(new OnShowListener() {
 
+		mInfoRoomDialog.setOnShowListener(new OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
-				// TODO: tracker:
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/details");
 			}
 		});
 	}
@@ -1016,11 +1017,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// mImWorkingView.setMinimumHeight((int) (activityHeight * 0.8f));
 
 		mImWorkingDialog.setView(mImWorkingView);
-		mImWorkingDialog.setOnShowListener(new OnShowListener() {
 
+		mImWorkingDialog.setOnShowListener(new OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
 				workingDisclaimer.setText(R.string.freeroom_whoIsWorking_wait);
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/workingthere");
 			}
 		});
 
@@ -1133,6 +1136,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						finish();
 					}
 				}
+			}
+		});
+
+		mWelcomeDialog.setOnShowListener(new OnShowListener() {
+			@Override
+			public void onShow(DialogInterface dialog) {
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/welcome");
 			}
 		});
 
@@ -1266,12 +1277,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mFavoritesView.setMinimumHeight((int) (activityHeight * 0.8f));
 
 		mFavoritesDialog.setView(mFavoritesView);
-		mFavoritesDialog.setOnShowListener(new OnShowListener() {
 
+		mFavoritesDialog.setOnShowListener(new OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
 				mFavoritesAdapter.notifyDataSetChanged();
 				updateFavoritesSummary();
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/favorites");
 			}
 		});
 
@@ -1389,6 +1402,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		tvAutcompletStatusFav = (TextView) mAddFavoritesView
 				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
 
+		mAddFavoritesDialog.setOnShowListener(new OnShowListener() {
+			@Override
+			public void onShow(DialogInterface dialog) {
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/favorites/add");
+			}
+		});
+
 		mAddFavoritesDialog.setOnDismissListener(new OnDismissListener() {
 
 			@Override
@@ -1453,10 +1474,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
 
 		mAddRoomDialog.setOnShowListener(new OnShowListener() {
-
 			@Override
 			public void onShow(DialogInterface dialog) {
-				// searchButton.setEnabled(auditSubmit() == 0);
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/search/add");
 			}
 		});
 
@@ -1555,10 +1576,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		selectedListView.refreshDrawableState();
 
 		mEditRoomDialog.setOnShowListener(new OnShowListener() {
-
 			@Override
 			public void onShow(DialogInterface dialog) {
 				selectedRoomArrayAdapter.notifyDataSetChanged();
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/search/edit");
 			}
 		});
 
@@ -1628,11 +1650,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// these work perfectly
 		mShareView.setMinimumWidth((int) (activityWidth * 0.95f));
 		// mShareView.setMinimumHeight((int) (activityHeight * 0.8f));
-		mShareDialog.setOnShowListener(new OnShowListener() {
 
+		mShareDialog.setOnShowListener(new OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
 				dismissSoftKeyBoard(mShareView);
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/share");
 			}
 		});
 
@@ -1817,14 +1841,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mSearchDialog.setView(mSearchView);
 
 		mSearchDialog.setOnShowListener(new OnShowListener() {
-
 			@Override
 			public void onShow(DialogInterface dialog) {
 				searchButton.setEnabled(auditSubmit() == 0);
 				initPreviousTitle();
 				reset();
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/search");
 			}
 		});
+
 		// this is necessary o/w buttons don't exists!
 		mSearchDialog.hide();
 		mSearchDialog.show();
@@ -2025,6 +2051,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onDismiss(DialogInterface dialog) {
 				updateFavoritesSummary();
 				mFavoritesAdapter.notifyDataSetChanged();
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/warning");
 			}
 		});
 	}
@@ -2058,7 +2086,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onDismiss(DialogInterface dialog) {
 				mErrorDialog.setMessage("");
+			}
+		});
 
+		mErrorDialog.setOnShowListener(new OnShowListener() {
+			@Override
+			public void onShow(DialogInterface dialog) {
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/error");
 			}
 		});
 	}
@@ -2119,6 +2154,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onDismiss(DialogInterface dialog) {
 				initDefaultRequest(false);
 				refresh();
+			}
+		});
+
+		mParamDialog.setOnShowListener(new OnShowListener() {
+			@Override
+			public void onShow(DialogInterface dialog) {
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/settings");
 			}
 		});
 	}
