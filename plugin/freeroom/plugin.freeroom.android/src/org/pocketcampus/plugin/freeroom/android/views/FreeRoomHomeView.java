@@ -137,6 +137,46 @@ import com.taig.pmc.PopupMenuCompat;
  * continues to be as accurate as possible.
  * <p>
  * 
+ * <P>
+ * Class ordering and organisation: <br>
+ * - general shared values, start at {@link #mController} <br>
+ * - ActionBar actions, start at {@link #overflow} <br>
+ * - Menus handling, start at {@link #onCreateOptionsMenu(Menu)} <br>
+ * - general overriden methods/constructor, start at
+ * {@link #onDisplay(Bundle, PluginController)} <br>
+ * - handling Intents and URIs, start at {@link #handleIntent(Intent)} <br>
+ * - main UI initialization, start at {@link #initializeView()} <br>
+ * - MVC View part, start at {@link #occupancyResultsUpdated()} <br>
+ * - common methods, start at {@link #initDefaultRequest(boolean)} <br>
+ * 
+ * <p>
+ * POPUP HANDLING (TODO: not ordered for now!) <br>
+ * ... general popups <br>
+ * - managing the Error popup, start at {@link #initErrorDialog()} <br>
+ * - managing the Settings popup, start at {@link #initParamDialog()} <br>
+ * ... details, share and get shared <br>
+ * - managing the InfoDetail popup, start at {@link #initInfoDialog()} <br>
+ * - managing the Share popup, start at {@link #initShareDialog()} <br>
+ * - managing the WhoIsWorkingThere popup, start at
+ * {@link #initImWorkingDialog()} <br>
+ * ... search-related popups<br>
+ * - managing the Search popup, start at {@link #initSearchDialog()} <br>
+ * - ... managing previous request and replay, start at
+ * {@link #initPreviousTitle()} <br>
+ * - managing the AddRoom popup, start at {@link #initAddRoomDialog()} <br>
+ * - managing the EditRoom popup, start at {@link #initEditRoomDialog()} <br>
+ * ... favorites management popups <br>
+ * - managing the Favorites popup, start at {@link #initFavoritesDialog()} <br>
+ * - managing the AddFavorites popup, start at {@link #initAddFavoritesDialog()}
+ * <br>
+ * - managing the Warning popup, start at {@link #initWarningDialog()} <br>
+ * ... used for beta-only <br>
+ * - managing the Welcome popup, start at {@link #initWelcomeDialog()} <br>
+ * <p>
+ * Other things <br>
+ * - Konami codes detection and hidden debug functions, start at
+ * {@link #constructKonamiCode()} <br>
+ * 
  * @author FreeRoom Project Team (2014/05)
  * @author Julien WEBER <julien.weber@epfl.ch>
  * @author Valentin MINDER <valentin.minder@epfl.ch>
@@ -303,99 +343,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private AlertDialog mImWorkingDialog;
 
-	/* UI ELEMENTS FOR ALL DIALOGS */
-	/* UI ELEMENTS FOR DIALOGS - INFO ROOM */
-
-	/* UI ELEMENTS FOR DIALOGS - SEARCH */
-	/**
-	 * ListView that holds previous searches.
-	 */
-	private ListView mSearchPreviousListView;
-	/**
-	 * TextView to write "previous searches" +show/hide
-	 */
-	private TextView prevSearchTitle;
-	/**
-	 * Button to come back to up of search page.
-	 */
-	private Button goUpHomeButton;
-	/**
-	 * Text for "Previous request"
-	 */
-	private String textTitlePrevious = "mock text";
-	/**
-	 * Array adapter for previous FRRequest.
-	 */
-	private ArrayAdapter<FRRequestDetails> mPrevRequestAdapter;
-
-	/* UI ELEMENTS FOR DIALOGS - FAVORITES */
-
-	/**
-	 * TextView for autocomplete status for adding favorites.
-	 */
-	private TextView tvAutcompletStatusFav;
-
-	/* UI ELEMENTS FOR DIALOGS - ADDROOM */
-
-	/**
-	 * Adpater for selected room.
-	 */
-	private ArrayAdapter<FRRoom> selectedRoomArrayAdapter;
-
-	/**
-	 * TextView for autocomplete status for adding room to search.
-	 */
-	private TextView tvAutcompletStatusRoom;
-
-	/* UI ELEMENTS FOR DIALOGS - SHARE */
-
-	/**
-	 * TextView summarizing the share intent/text/information that will be sent
-	 * to friend/server.
-	 */
-	private TextView mShareDialogTextViewSummarySharing;
-	/**
-	 * EditText to share the activity/work the user is doing.
-	 */
-	private EditText mShareDialogEditTextMessageWorking;
-
-	/* OTHER UTILS */
-
-	/**
-	 * Time summary in "working there" dialog.
-	 */
-	private TextView workingTimeSummary;
-	/**
-	 * Disclaimer/please wait in "working there" dialog.
-	 */
-	private TextView workingDisclaimer;
-	/**
-	 * List of displayed working message.
-	 */
-	private List<MessageFrequency> workingMessageList;
-	/**
-	 * Adpater for message and their frequency.
-	 */
-	private ArrayAdapter<MessageFrequency> workingMessageAdapter;
-
 	/* ACTIONS FOR THE ACTION BAR */
-	/**
-	 * Action to open the beta registration.
-	 * <p>
-	 * TODO: beta only (may change to about menu?)
-	 */
-	private Action betaRegister = new Action() {
-		public void performAction(View view) {
-			if (mModel.getRegisteredUser()) {
-				validateRegistration();
-			}
-			mWelcomeDialog.show();
-		}
 
-		public int getDrawable() {
-			return R.drawable.ic_action_about;
-		}
-	};
 	/**
 	 * Action to open the overflow actions.
 	 * <p>
@@ -413,6 +362,25 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			return R.drawable.ic_action_overflow;
 		}
 	};
+
+	/**
+	 * Action to open the beta registration.
+	 * <p>
+	 * TODO: beta only (may change to about menu?)
+	 */
+	private Action betaRegister = new Action() {
+		public void performAction(View view) {
+			if (mModel.getRegisteredUser()) {
+				validateRegistration();
+			}
+			mWelcomeDialog.show();
+		}
+
+		public int getDrawable() {
+			return R.drawable.ic_action_about;
+		}
+	};
+
 	/**
 	 * Action to open the settings.
 	 * <p>
@@ -475,12 +443,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 	};
 
-	/* MAIN ACTIVITY - OVERRIDEN METHODS */
-
-	@Override
-	protected Class<? extends PluginController> getMainControllerClass() {
-		return FreeRoomController.class;
-	}
+	/* MENUS */
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -527,6 +490,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 	}
 
+	/* MAIN ACTIVITY - OVERRIDEN METHODS */
+
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
@@ -559,6 +524,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		titleLayout.addFillerView(mainLayout);
 	}
 
+	@Override
+	protected Class<? extends PluginController> getMainControllerClass() {
+		return FreeRoomController.class;
+	}
+
 	/**
 	 * This is called when the Activity is resumed.
 	 * 
@@ -574,6 +544,183 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		 * and lot logged in? go back finish(); }
 		 */
 	}
+
+	/**
+	 * This checks the konami code moves.
+	 */
+	public boolean onTouchEvent(MotionEvent event) {
+		checkKonamiCode(event);
+		return true;
+	}
+
+	/**
+	 * Overrides the legacy <code>onKeyDown</code> method in order to override
+	 * some hardware button implementation.
+	 * 
+	 * @param keyCode
+	 *            keycode as specified by overridden method
+	 * @param event
+	 *            event as specified by overridden method
+	 * @return boolean value as specified by overridden method
+	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// overrides search button for devices who are equipped with such
+		// hardware button, and launch automatically the search popup.
+		if (keyCode == KeyEvent.KEYCODE_SEARCH) {
+			mSearchDialog.show();
+			return true;
+		}
+
+		// overrides clear button for devices who are equipped with such
+		// hardware button, and clear all the search introduced (reset)
+		if (keyCode == KeyEvent.KEYCODE_CLEAR) {
+			reset();
+			return true;
+		}
+
+		// overrides enter button for devices who are equipped with such
+		// hardware button, and launch a search if valid.
+		if (keyCode == KeyEvent.KEYCODE_ENTER) {
+			if (mSearchDialog.isShowing() && !mAddRoomDialog.isShowing()
+					&& !mEditRoomDialog.isShowing() && (auditSubmit() == 0)) {
+				prepareSearchQuery(true);
+				return true;
+			}
+		}
+
+		// overrides envelope button for devices who are equipped with such
+		// hardware button, and share the location if the detailled info popup
+		// is displayed and available for the whole period.
+		if (keyCode == KeyEvent.KEYCODE_ENVELOPE) {
+			if (mInfoRoomDialog.isShowing()) {
+				Occupancy mOccupancy = mModel.getDisplayedOccupancy();
+				if (mOccupancy != null && mOccupancy.isIsAtLeastFreeOnce()
+						&& !mOccupancy.isIsAtLeastOccupiedOnce()) {
+					Button shareButton = mInfoRoomDialog
+							.getButton(AlertDialog.BUTTON_POSITIVE);
+					if (shareButton != null && shareButton.isEnabled()) {
+						shareButton.performClick();
+						return true;
+					}
+				}
+			}
+		}
+
+		// this overrides the menu button, which is present on most phone BUT
+		// not all (deprecated). We should never think this is always available.
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			// this does nothging special and let the legacy menu to be shown.
+			// it's implemented now to display the same as the overflow button,
+			// but in different UI and shapes.
+		}
+
+		// Overrides the back button, which is present on all devices.
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			// this is not used so far, as all the popup are automatically
+			// closed by the back button.
+		}
+
+		// all other keys are handled automatically or not handled.
+		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public void anyError() {
+		setTitle();
+		String errorMessage = getString(R.string.freeroom_home_error_sorry);
+		setTextSummary(errorMessage);
+		autoCompleteUpdateMessage(errorMessage);
+		workingDisclaimer.setText(errorMessage);
+	}
+
+	@Override
+	public void refreshOccupancies() {
+		refresh();
+	}
+
+	/* MAIN ACTIVITY - INITIALIZATION */
+
+	@Override
+	public void initializeView() {
+
+		constructKonamiCode();
+		// retrieve display dimensions
+		Rect displayRectangle = new Rect();
+		Window window = this.getWindow();
+		window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
+		activityWidth = displayRectangle.width();
+		activityHeight = displayRectangle.height();
+
+		mExpListAdapter = new ExpandableListViewAdapter<Occupancy>(
+				getApplicationContext(), mModel.getOccupancyResults(),
+				mController, this);
+		mExpListView.setAdapter(mExpListAdapter);
+		mExpListView.setOnGroupExpandListener(new OnGroupExpandListener() {
+
+			@Override
+			public void onGroupExpand(int groupPosition) {
+				// when we expand a group, it gets the focus (highlighted)
+				mExpListAdapter.setGroupFocus(groupPosition);
+			}
+		});
+		mExpListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
+
+			@Override
+			public void onGroupCollapse(int groupPosition) {
+				// when we collapse a group, no group has focused (highlight)
+				mExpListAdapter.setGroupFocus(-1);
+			}
+		});
+		// replay the onTouchEvent on the List to home View.
+		mExpListView.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				onTouchEvent(event);
+				return false;
+			}
+		});
+
+		// search action is always there, on phones AND tablet modes
+		addActionToActionBar(search);
+		// on tablet, put all the actions, without the overflow.
+		if (isLandscapeTabletMode()) {
+			addActionToActionBar(editFavorites);
+			addActionToActionBar(settings);
+			addActionToActionBar(refresh);
+			// TODO: beta only
+			addActionToActionBar(betaRegister);
+		} else {
+			// TODO: beta only
+			addActionToActionBar(betaRegister);
+			// on phones, put all the other actions in the action overflow.
+			addActionToActionBar(overflow);
+		}
+
+		// init all other popup needed!
+		initInfoDialog();
+		initSearchDialog();
+		initFavoritesDialog();
+		initAddFavoritesDialog();
+		initAddRoomDialog();
+		initEditRoomDialog();
+		initShareDialog();
+		initWarningDialog();
+		initErrorDialog();
+		initParamDialog();
+		initImWorkingDialog();
+
+		// TODO: beta only
+		initWelcomeDialog();
+		if (!mModel.getRegisteredUser()) {
+			mWelcomeDialog.show();
+		} else {
+			validateRegistration();
+		}
+	}
+
+	// HANDLING INTENTS AND URI COMING FROM INSIDE OR OUTSIDE
 
 	/**
 	 * Handles an intent for coming from outside, eg. for specific search.
@@ -849,85 +996,278 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 	}
 
-	/* MAIN ACTIVITY - INITIALIZATION */
+	// COMMON METHODS
+
+	/**
+	 * Constructs the default request and sets it in the model for future use.
+	 * You may call <code>refresh</code> in order to actually send it to the
+	 * server.
+	 * 
+	 * @param forceUseFavorites
+	 *            if the constructor of the request should consider the
+	 *            favorites or not
+	 */
+	private void initDefaultRequest(boolean forceUseFavorites) {
+		u.logV("generating and setting a new default request");
+		mModel.setFRRequestDetails(validRequest(forceUseFavorites), false);
+		mPrevRequestAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * Construct a valid and default request. If useFavorites is true, it will
+	 * check all the favorites for the next valid period, otherwise or if there
+	 * are not.
+	 * 
+	 * @param forceUseFavorites
+	 *            if it should consider the favorites or not
+	 * @return a valid and default request, based or nor on the favorites.
+	 */
+	private FRRequestDetails validRequest(boolean forceUseFavorites) {
+		OrderMapListFew<String, List<FRRoom>, FRRoom> set = mModel
+				.getFavorites();
+
+		// we choose the period according to settings in model.
+		FRPeriod period = null;
+		HomeBehaviourTime time = mModel.getHomeBehaviourTime();
+		if (time.equals(HomeBehaviourTime.CURRENT_TIME)) {
+			period = FRTimes.getNextValidPeriod();
+		} else if (time.equals(HomeBehaviourTime.UP_TO_END_OF_DAY)) {
+			period = FRTimes.getNextValidPeriodTillEndOfDay();
+		} else if (time.equals(HomeBehaviourTime.WHOLE_DAY)) {
+			period = FRTimes.getNextValidPeriodWholeDay();
+		} else {
+			u.logE("unknown time behavior: ");
+			u.logE(time.name());
+			u.logE("going for default value");
+			period = FRTimes.getNextValidPeriod();
+		}
+
+		// we choose the request according to the model settings
+		HomeBehaviourRoom room = mModel.getHomeBehaviourRoom();
+		// if there are favorites and we want: to force their usage, despite of
+		// model settings, or the model ask for favorites.
+		if (forceUseFavorites || room.equals(HomeBehaviourRoom.FAVORITES)
+				|| room.equals(HomeBehaviourRoom.FAVORITES_ONLY_FREE)) {
+			if (!set.isEmpty()) {
+
+				// FAV: check occupancy of ALL favs
+				ArrayList<String> array = new ArrayList<String>(set.size());
+
+				addAllFavoriteToCollection(array, AddCollectionCaller.SEARCH,
+						true);
+
+				// if we want only free favorites.
+				boolean onlyFree = room
+						.equals(HomeBehaviourRoom.FAVORITES_ONLY_FREE);
+				return new FRRequestDetails(period, onlyFree, array, false,
+						true, false, null, mModel.getGroupAccess());
+			} else {
+				u.logV("no favorites in model: going for any free room");
+				room = HomeBehaviourRoom.ANYFREEROOM;
+			}
+		}
+
+		if (room.equals(HomeBehaviourRoom.LASTREQUEST)) {
+			// this feature has been disabled => going from default
+			u.logD("last request is not operational now");
+			room = HomeBehaviourRoom.ANYFREEROOM;
+		}
+
+		if (!room.equals(HomeBehaviourRoom.ANYFREEROOM)) {
+			u.logE("unknown room behavior: ");
+			u.logE(room.name());
+			u.logE("going for any free room");
+		}
+		// any free room behavior
+		return new FRRequestDetails(period, true, new ArrayList<String>(1),
+				true, false, false, null, mModel.getGroupAccess());
+	}
+
+	/**
+	 * Minimal width in pixel to trigger landscape mode according to
+	 * {@link #isLandscapeTabletMode()}.
+	 */
+	private int minWidthForLandscapeMode = 480;
+
+	/**
+	 * Check if the height is smaller than the width of the displayed screen.
+	 * <p>
+	 * As the plugin is NOT sensible to landscape mode, this will ONLY occur on
+	 * tablets.
+	 * <p>
+	 * Please note some phones are also wider than higher, even if their are
+	 * very small. To avoid the "landscape tablet mode" to be triggered, we
+	 * check than the witdh is wider than the {@link #minWidthForLandscapeMode}
+	 * constant in pixels, which is not really perfect, but not an issue as
+	 * these phones are low-pixels densities and most recent tablets are medium
+	 * or high-density.
+	 * 
+	 * @return true if landscape mode should be activated.
+	 */
+	private boolean isLandscapeTabletMode() {
+		return (activityHeight < activityWidth)
+				&& (activityWidth > minWidthForLandscapeMode);
+	}
+
+	/**
+	 * Dismiss the keyboard associated with the view.
+	 * 
+	 * @param v
+	 */
+	private void dismissSoftKeyBoard(View v) {
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+	}
+
+	/**
+	 * Asks the controller to send again the request which was already set in
+	 * the model.
+	 * <p>
+	 * Don't call it before setting a request in the model!
+	 */
+	private void refresh() {
+		setTextSummary(getString(R.string.freeroom_home_please_wait));
+		setTitle();
+		// cleans the previous results
+		mModel.getOccupancyResults().clear();
+		mExpListAdapter.notifyDataSetChanged();
+		mController.sendFRRequest(this);
+	}
+
+	/**
+	 * Sets the summary text box to the specified text.
+	 * <p>
+	 * It doesn't need to start by a space, the text view already contains an
+	 * appropriate padding.
+	 * 
+	 * @param text
+	 *            the new summary to be displayed.
+	 */
+	private void setTextSummary(String text) {
+		mTextView.setText(text);
+	}
+
+	/**
+	 * Sets the title to the default value.
+	 * <p>
+	 * same effect as <br>
+	 * <code>String default = getString(R.string.freeroom_title_main_title)</code>
+	 * <br>
+	 * <code>titleLayout.setTitle(defaultTitle);</code>
+	 * 
+	 */
+	private void setTitle() {
+		super.setTitle(getString(R.string.freeroom_title_main_title));
+	}
+
+	/**
+	 * Sets the title to the given value.
+	 * <p>
+	 * same effect as <br>
+	 * <code>titleLayout.setTitle(titleValue);</code>
+	 * 
+	 * @param titleValue
+	 *            the new title
+	 * 
+	 */
+	private void setTitle(String titleValue) {
+		titleLayout.setTitle(titleValue);
+	}
+
+	// MVC INTERFACE
 
 	@Override
-	public void initializeView() {
-
-		constructKonamiCode();
-		// retrieve display dimensions
-		Rect displayRectangle = new Rect();
-		Window window = this.getWindow();
-		window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
-		activityWidth = displayRectangle.width();
-		activityHeight = displayRectangle.height();
-
-		mExpListAdapter = new ExpandableListViewAdapter<Occupancy>(
-				getApplicationContext(), mModel.getOccupancyResults(),
-				mController, this);
-		mExpListView.setAdapter(mExpListAdapter);
-		mExpListView.setOnGroupExpandListener(new OnGroupExpandListener() {
-
-			@Override
-			public void onGroupExpand(int groupPosition) {
-				// when we expand a group, it gets the focus (highlighted)
-				mExpListAdapter.setGroupFocus(groupPosition);
-			}
-		});
-		mExpListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
-
-			@Override
-			public void onGroupCollapse(int groupPosition) {
-				// when we collapse a group, no group has focused (highlight)
-				mExpListAdapter.setGroupFocus(-1);
-			}
-		});
-		// replay the onTouchEvent on the List to home View.
-		mExpListView.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				onTouchEvent(event);
-				return false;
-			}
-		});
-
-		// search action is always there, on phones AND tablet modes
-		addActionToActionBar(search);
-		// on tablet, put all the actions, without the overflow.
-		if (isLandscapeTabletMode()) {
-			addActionToActionBar(editFavorites);
-			addActionToActionBar(settings);
-			addActionToActionBar(refresh);
-			// TODO: beta only
-			addActionToActionBar(betaRegister);
+	public void occupancyResultsUpdated() {
+		setTitle();
+		String subtitle = "";
+		if (mModel.getOccupancyResults().isEmpty()) {
+			// popup with no results message
+			subtitle = getString(R.string.freeroom_home_error_no_results);
+			showErrorDialog(subtitle);
 		} else {
-			// TODO: beta only
-			addActionToActionBar(betaRegister);
-			// on phones, put all the other actions in the action overflow.
-			addActionToActionBar(overflow);
+			FRRequest request = mModel.getFRRequestDetails();
+
+			String title = "";
+			if (request.isOnlyFreeRooms()) {
+				title = getString(R.string.freeroom_home_info_free_rooms);
+			} else {
+				title = getString(R.string.freeroom_home_info_rooms);
+			}
+			FRPeriod period = mModel.getOverAllTreatedPeriod();
+			setTitle(title + times.formatTimeSummaryTitle(period));
+			subtitle = times.formatFullDateFullTimePeriod(period);
+
+			// if the info dialog is opened, we update the CORRECT occupancy
+			// with the new data.
+			if (mInfoRoomDialog.isShowing()) {
+				FRRoom room = mModel.getDisplayedOccupancy().getRoom();
+				List<?> list = mModel.getOccupancyResults().get(
+						mModel.getBuildingKeyLabel(room));
+				Iterator<?> iter = list.iterator();
+				label: while (iter.hasNext()) {
+					Object o = iter.next();
+					if (o instanceof Occupancy) {
+						if (((Occupancy) o).getRoom().getUid()
+								.equals(room.getUid())) {
+							mModel.setDisplayedOccupancy((Occupancy) o);
+							// doesn't work
+							mInfoActualOccupationAdapter.notifyDataSetChanged();
+							// works!
+							displayInfoDialog();
+							break label;
+						}
+					}
+				}
+			}
+
+			// if there's only one result, we display immediately the info
+			// dialog, to get the detailed information (very useful in context
+			// of QR codes)
+			if (mModel.getOccupancyResults().size() == 1) {
+				List<?> list = mModel.getOccupancyResults().get(0);
+				if (list != null && list.size() == 1) {
+					Object elem = list.get(0);
+					if (elem != null && elem instanceof Occupancy) {
+						mModel.setDisplayedOccupancy((Occupancy) elem);
+						displayInfoDialog();
+					}
+				}
+			}
 		}
 
-		initInfoDialog();
-		initSearchDialog();
-		initFavoritesDialog();
-		initAddFavoritesDialog();
-		initAddRoomDialog();
-		initEditRoomDialog();
-		initShareDialog();
-		initWarningDialog();
-		initErrorDialog();
-		initParamDialog();
-		initImWorkingDialog();
+		setTextSummary(subtitle);
+		mExpListAdapter.notifyDataSetChanged();
+		updateCollapse(mExpListView, mExpListAdapter);
 
-		// TODO: beta only
-		initWelcomeDialog();
-		if (!mModel.getRegisteredUser()) {
-			mWelcomeDialog.show();
-		} else {
-			validateRegistration();
-		}
 	}
+
+	/**
+	 * Expands all the groups if there are no more than 3 groups AND not more
+	 * than 7 results.
+	 * <p>
+	 * These constants are defined ONLY there <br>
+	 * 
+	 * @param ev
+	 *            expandable list view
+	 * @param ad
+	 *            expandable list view adapter
+	 */
+	public void updateCollapse(ExpandableListView ev,
+			ExpandableListViewAdapter<Occupancy> ad) {
+		int maxChildrenToExpand = 7;
+		int maxGroupToExpand = 3;
+		if (ad.getGroupCount() <= maxGroupToExpand
+				&& ad.getChildrenTotalCount() <= maxChildrenToExpand) {
+			// we expand in reverse order for performance reason!
+			// expand all may caus
+			for (int i = ad.getGroupCount() - 1; i >= 0; i--) {
+				ev.expandGroup(i);
+			}
+		}
+		ad.setGroupFocus(-1);
+	}
+
+	private ActualOccupationArrayAdapter<ActualOccupation> mInfoActualOccupationAdapter;
 
 	/**
 	 * Inits the dialog to diplay the information about a room.
@@ -982,6 +1322,112 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 	}
+
+	/**
+	 * Display the dialog that provides more info about the occupation of the
+	 * selected room.
+	 */
+	public void displayInfoDialog() {
+		final Occupancy mOccupancy = mModel.getDisplayedOccupancy();
+		if (mOccupancy != null) {
+			mInfoRoomDialog.hide();
+			mInfoRoomDialog.show();
+
+			final FRRoom mRoom = mOccupancy.getRoom();
+			mInfoRoomDialog.setTitle(FRUtilsClient.formatRoom(mRoom));
+
+			TextView periodTextView = (TextView) mInfoRoomView
+					.findViewById(R.id.freeroom_layout_dialog_info_period);
+			if (mOccupancy.isSetTreatedPeriod()
+					&& mOccupancy.getTreatedPeriod() != null) {
+				periodTextView.setText(times
+						.formatFullDateFullTimePeriod(mOccupancy
+								.getTreatedPeriod()));
+			} else {
+				// error coming from server ??
+				periodTextView.setText("period");
+				System.err
+						.println("Unknown or undefined period coming from server");
+			}
+
+			// people image to replay worst case occupancy and direct share with
+			// server
+			ImageView peopleImageView = (ImageView) mInfoRoomView
+					.findViewById(R.id.freeroom_layout_dialog_info_people);
+			peopleImageView.setImageResource(mModel
+					.getImageFromRatioOccupation(mOccupancy
+							.getRatioWorstCaseProbableOccupancy()));
+			peopleImageView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					directShareWithServer(mOccupancy.getTreatedPeriod(), mRoom);
+				}
+			});
+
+			ImageView map = (ImageView) mInfoRoomView
+					.findViewById(R.id.freeroom_layout_dialog_info_map);
+			map.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					try {
+						// TODO: when map plugin accepts UID and not only room
+						// name, change by uid instead of doorcode!
+						Uri mUri = Uri
+								.parse("pocketcampus://map.plugin.pocketcampus.org/search");
+						Uri.Builder mbuild = mUri.buildUpon()
+								.appendQueryParameter("q", mRoom.getDoorCode());
+						Intent i = new Intent(Intent.ACTION_VIEW, mbuild
+								.build());
+						i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(i);
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.err.println("Map plugin not installed ?!?");
+						showErrorDialog(getString(R.string.freeroom_error_map_plugin_missing));
+					}
+				}
+			});
+
+			ImageView shareImageView = (ImageView) mInfoRoomView
+					.findViewById(R.id.freeroom_layout_dialog_info_share);
+			setShareClickListener(shareImageView, this, mOccupancy);
+
+			Button shareButton = mInfoRoomDialog
+					.getButton(AlertDialog.BUTTON_POSITIVE);
+			shareButton.setEnabled(mOccupancy.isIsAtLeastFreeOnce()
+					&& !mOccupancy.isIsAtLeastOccupiedOnce());
+			setShareClickListener(shareButton, this, mOccupancy);
+
+			ListView roomOccupancyListView = (ListView) mInfoRoomView
+					.findViewById(R.id.freeroom_layout_dialog_info_roomOccupancy);
+			mInfoActualOccupationAdapter = new ActualOccupationArrayAdapter<ActualOccupation>(
+					getApplicationContext(), mOccupancy, mController, this);
+			roomOccupancyListView.setAdapter(mInfoActualOccupationAdapter);
+
+			TextView detailsTextView = (TextView) mInfoRoomView
+					.findViewById(R.id.freeroom_layout_dialog_info_details);
+			detailsTextView.setText(u.getInfoFRRoom(mOccupancy.getRoom()));
+			mInfoRoomDialog.show();
+		}
+	}
+
+	/**
+	 * Time summary in "working there" dialog.
+	 */
+	private TextView workingTimeSummary;
+	/**
+	 * Disclaimer/please wait in "working there" dialog.
+	 */
+	private TextView workingDisclaimer;
+	/**
+	 * List of displayed working message.
+	 */
+	private List<MessageFrequency> workingMessageList;
+	/**
+	 * Adpater for message and their frequency.
+	 */
+	private ArrayAdapter<MessageFrequency> workingMessageAdapter;
 
 	/**
 	 * Inits the dialog to show what people are doing.
@@ -1078,162 +1524,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		workingDisclaimer
 				.setText(getString(R.string.freeroom_whoIsWorking_disclaimer));
 		workingMessageAdapter.notifyDataSetChanged();
-	}
-
-	/**
-	 * Stores (non-permanent!) if it's the first time the user want to dismiss
-	 * the welcome dialog without being registered.
-	 */
-	private boolean firstTimeWelcomeWithOutRegistered = true;
-
-	/**
-	 * Inits the welcome dialog
-	 * <p>
-	 * TODO: beta-only
-	 */
-	private void initWelcomeDialog() {
-		// Instantiate an AlertDialog.Builder with its constructor
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(getString(R.string.freeroom_welcome_title));
-		builder.setIcon(R.drawable.ic_action_about);
-		builder.setNeutralButton(getString(R.string.freeroom_welcome_dismiss),
-				null);
-
-		// Get the AlertDialog from create()
-		mWelcomeDialog = builder.create();
-
-		// redefine paramaters to dim screen when displayed
-		WindowManager.LayoutParams lp = mWelcomeDialog.getWindow()
-				.getAttributes();
-		lp.dimAmount = 0.60f;
-		// these doesn't work
-		lp.width = LayoutParams.FILL_PARENT;
-		lp.height = LayoutParams.WRAP_CONTENT;
-		mWelcomeDialog.getWindow().addFlags(
-				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
-		mWelcomeDialog.getWindow().addFlags(
-				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-		mWelcomeDialog.getWindow().setAttributes(lp);
-
-		mWelcomeView = mLayoutInflater.inflate(
-				R.layout.freeroom_layout_dialog_welcome, null);
-
-		// these work perfectly
-		mWelcomeView.setMinimumWidth((int) (activityWidth * 0.9f));
-		mWelcomeView.setMinimumHeight((int) (activityHeight * 0.8f));
-
-		mWelcomeDialog.setView(mWelcomeView);
-		mWelcomeDialog.setOnDismissListener(new OnDismissListener() {
-
-			@Override
-			public void onDismiss(DialogInterface arg0) {
-				if (!mModel.getRegisteredUser()) {
-					if (firstTimeWelcomeWithOutRegistered) {
-						firstTimeWelcomeWithOutRegistered = false;
-						mWelcomeDialog.show();
-						showErrorDialog(getString(R.string.freeroom_welcome_error));
-					} else {
-						finish();
-					}
-				}
-			}
-		});
-
-		mWelcomeDialog.setOnShowListener(new OnShowListener() {
-			@Override
-			public void onShow(DialogInterface dialog) {
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/welcome");
-			}
-		});
-
-		TextView configText = (TextView) mWelcomeView
-				.findViewById(R.id.freeroom_layout_dialog_welcome_config);
-		configText.setText(getConfig(true));
-
-		final EditText emailText = (EditText) mWelcomeView
-				.findViewById(R.id.freeroom_layout_dialog_welcome_email);
-		final Button registerUserBeta = (Button) mWelcomeView
-				.findViewById(R.id.freeroom_layout_dialog_welcome_register);
-
-		final IFreeRoomView view = this;
-		registerUserBeta.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				String email = emailText.getText().toString();
-				if (email.equals(fct_prefix + "noregister")) {
-					registerUserBeta
-							.setText(getString(R.string.freeroom_welcome_submitting));
-					registerUserBeta.setEnabled(false);
-					dismissSoftKeyBoard(arg0);
-					mModel.setRegisteredUser(true);
-					validateRegistration();
-				} else if (validEmail(email)) {
-					RegisterUser req = new RegisterUser(email, getConfig(false));
-					mController.sendRegisterUser(req, view);
-					registerUserBeta
-							.setText(getString(R.string.freeroom_welcome_submitting));
-					registerUserBeta.setEnabled(false);
-					dismissSoftKeyBoard(arg0);
-				}
-			}
-		});
-	}
-
-	/**
-	 * Tries to validate an email. If error, display an error message in a
-	 * dialog.
-	 * <p>
-	 * TODO: beta-only
-	 * 
-	 * @param email
-	 *            the email to test
-	 * @return true if email is well-formed.
-	 */
-	private boolean validEmail(String email) {
-		if (u.validEmail(email)) {
-			return true;
-		} else {
-			showErrorDialog(getString(R.string.freeroom_welcome_invalid_mail));
-			return false;
-		}
-	}
-
-	/**
-	 * To be called when the server validates the registration, to change the
-	 * display of the welcome popup.
-	 * <p>
-	 * TODO: beta-only
-	 */
-	private void validateRegistration() {
-		LinearLayout before = (LinearLayout) mWelcomeView
-				.findViewById(R.id.freeroom_layout_dialog_welcome_before);
-		LinearLayout after = (LinearLayout) mWelcomeView
-				.findViewById(R.id.freeroom_layout_dialog_welcome_after);
-		after.setVisibility(LinearLayout.VISIBLE);
-		before.setVisibility(LinearLayout.GONE);
-	}
-
-	@Override
-	public void errorRegister(boolean transmissionError) {
-
-		// TODO beta-test only.
-		Button registerUserBeta = (Button) mWelcomeView
-				.findViewById(R.id.freeroom_layout_dialog_welcome_register);
-		registerUserBeta.setEnabled(true);
-		registerUserBeta.setText(getString(R.string.freeroom_welcome_register));
-		String string = getString(R.string.freeroom_welcome_validate_network_error);
-		if (!transmissionError) {
-			string = getString(R.string.freeroom_welcome_validate_reject);
-			showErrorDialog(string);
-		}
-	}
-
-	@Override
-	public void validateRegister() {
-		// TODO beta-test only.
-		validateRegistration();
 	}
 
 	/**
@@ -1353,6 +1643,426 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 		favoritesSummaryTextView.setText(text);
 	}
+
+	/* UI ELEMENTS FOR DIALOGS - SHARE */
+
+	/**
+	 * TextView summarizing the share intent/text/information that will be sent
+	 * to friend/server.
+	 */
+	private TextView mShareDialogTextViewSummarySharing;
+	/**
+	 * EditText to share the activity/work the user is doing.
+	 */
+	private EditText mShareDialogEditTextMessageWorking;
+
+	private void initShareDialog() {
+		// Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.freeroom_dialog_share_title));
+		builder.setPositiveButton(
+				getString(R.string.freeroom_dialog_share_button_friends), null);
+		builder.setNegativeButton(getString(R.string.freeroom_search_cancel),
+				null);
+		builder.setNeutralButton(
+				getString(R.string.freeroom_dialog_share_button_server), null);
+		builder.setIcon(R.drawable.ic_action_share);
+
+		// Get the AlertDialog from create()
+		mShareDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mShareDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.FILL_PARENT;
+		lp.height = LayoutParams.FILL_PARENT;
+		mShareDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mShareDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mShareDialog.getWindow().setAttributes(lp);
+
+		mShareView = mLayoutInflater.inflate(
+				R.layout.freeroom_layout_dialog_share, null);
+		// these work perfectly
+		mShareView.setMinimumWidth((int) (activityWidth * 0.95f));
+		// mShareView.setMinimumHeight((int) (activityHeight * 0.8f));
+
+		mShareDialog.setOnShowListener(new OnShowListener() {
+			@Override
+			public void onShow(DialogInterface dialog) {
+				dismissSoftKeyBoard(mShareView);
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/share");
+			}
+		});
+
+		mShareDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				// we dont remove the text, as the user may want to share again
+				// the same text!
+			}
+		});
+
+		mShareDialogTextViewSummarySharing = (TextView) mShareView
+				.findViewById(R.id.freeroom_layout_dialog_share_textBasic);
+
+		mShareDialogEditTextMessageWorking = (EditText) mShareView
+				.findViewById(R.id.freeroom_layout_dialog_share_text_edit);
+
+		mShareDialog.setView(mShareView);
+
+		mShareDialog.show();
+		mShareDialog.hide();
+	}
+
+	/**
+	 * Notify when the EditText (Message-Working) is updated to generate the
+	 * summary and dimiss the keyboard.
+	 * 
+	 * @param mPeriod
+	 *            period selected.
+	 * @param mRoom
+	 *            room selected.
+	 */
+	private void shareDialogEditTextMessageWorkingUpdated(
+			final FRPeriod mPeriod, final FRRoom mRoom) {
+		String text = mShareDialogEditTextMessageWorking.getText().toString();
+		if (text == null || text.length() == 0) {
+			text = "...";
+		}
+		mShareDialogTextViewSummarySharing.setText(u.wantToShare(mPeriod,
+				mRoom, text));
+		dismissSoftKeyBoard(mShareDialogTextViewSummarySharing);
+	}
+
+	/**
+	 * Put a onClickListener on an imageView in order to share the location and
+	 * time when clicking share, if available.
+	 * 
+	 * @param shareImageView
+	 *            the view on which to put the listener
+	 * @param homeView
+	 *            reference to the home view
+	 * @param mOccupancy
+	 *            the holder of data for location and time
+	 */
+	public void setShareClickListener(View shareImageView,
+			final FreeRoomHomeView homeView, final Occupancy mOccupancy) {
+
+		if (!mOccupancy.isIsAtLeastOccupiedOnce()
+				&& mOccupancy.isIsAtLeastFreeOnce()) {
+			shareImageView.setClickable(true);
+			shareImageView.setEnabled(true);
+			if (shareImageView instanceof ImageView) {
+				((ImageView) shareImageView)
+						.setImageResource(R.drawable.ic_action_share_enabled);
+			}
+			shareImageView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					homeView.displayShareDialog(mOccupancy.getTreatedPeriod(),
+							mOccupancy.getRoom());
+				}
+			});
+		} else {
+			shareImageView.setClickable(false);
+			shareImageView.setEnabled(false);
+
+			if (shareImageView instanceof ImageView) {
+				((ImageView) shareImageView)
+						.setImageResource(R.drawable.ic_action_share_disabled);
+			}
+		}
+	}
+
+	/**
+	 * Sends directly a sharing with the server, without going thru the dialog
+	 * and/or asking for a message or a confirmation.
+	 * 
+	 * @param mPeriod
+	 *            the room (location) to share
+	 * @param mRoom
+	 *            the period (of time) to share
+	 */
+	public void directShareWithServer(FRPeriod mPeriod, FRRoom mRoom) {
+		share(mPeriod, mRoom, false, "");
+	}
+
+	private void share(FRPeriod mPeriod, FRRoom mRoom, boolean withFriends,
+			String toShare) {
+		WorkingOccupancy work = new WorkingOccupancy(mPeriod, mRoom);
+		CheckBox mShareDialogCheckBoxShareMessageServer = (CheckBox) mShareDialog
+				.findViewById(R.id.freeroom_layout_dialog_share_checkbox_server);
+		if (mShareDialogCheckBoxShareMessageServer != null
+				&& mShareDialogCheckBoxShareMessageServer.isChecked()
+				&& toShare != null && toShare != "") {
+			work.setMessage(toShare);
+		}
+		ImWorkingRequest request = new ImWorkingRequest(work,
+				mModel.getAnonymID());
+		mController.prepareImWorking(request);
+		mModel.setOnlyServer(!withFriends);
+		mController.ImWorking(this);
+		if (withFriends) {
+			shareWithFriends(mPeriod, mRoom, toShare);
+		}
+	}
+
+	/**
+	 * Construct the Intent to share the location and time with friends. The
+	 * same information is shared with the server at the same time
+	 * 
+	 * @param mPeriod
+	 *            time period
+	 * @param mRoom
+	 *            location
+	 */
+	private void shareWithFriends(FRPeriod mPeriod, FRRoom mRoom, String toShare) {
+		String sharing = u.wantToShare(mPeriod, mRoom, toShare);
+		sharing += " \n" + getString(R.string.freeroom_share_ref_pocket);
+		u.logV("sharing:" + sharing);
+		Intent sendIntent = new Intent();
+		sendIntent.setAction(Intent.ACTION_SEND);
+		sendIntent.putExtra(Intent.EXTRA_TEXT, sharing);
+		// this ensure that our handler, that is handling home-made text types,
+		// will also work. But our won't work outside the app, which is needed,
+		// because it waits for this special type.
+		sendIntent.setType("text/*");
+		startActivity(Intent.createChooser(sendIntent,
+				getString(R.string.freeroom_share_intent_title)));
+	}
+
+	public void displayShareDialog(final FRPeriod mPeriod, final FRRoom mRoom) {
+
+		mShareDialog.hide();
+		mShareDialog.show();
+
+		mShareDialogTextViewSummarySharing.setText(u.wantToShare(mPeriod,
+				mRoom, "..."));
+
+		mShareDialogEditTextMessageWorking
+				.setOnEditorActionListener(new OnEditorActionListener() {
+
+					@Override
+					public boolean onEditorAction(TextView arg0, int arg1,
+							KeyEvent arg2) {
+						shareDialogEditTextMessageWorkingUpdated(mPeriod, mRoom);
+						return true;
+					}
+				});
+
+		Button shareWithServer = mShareDialog
+				.getButton(DialogInterface.BUTTON_NEUTRAL);
+		shareWithServer.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				share(mPeriod, mRoom, false, mShareDialogEditTextMessageWorking
+						.getText().toString());
+				mShareDialog.dismiss();
+			}
+		});
+
+		Button shareWithFriends = mShareDialog
+				.getButton(DialogInterface.BUTTON_POSITIVE);
+		shareWithFriends.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				share(mPeriod, mRoom, true, mShareDialogEditTextMessageWorking
+						.getText().toString());
+				mShareDialog.dismiss();
+			}
+		});
+
+		final Spinner spinner = (Spinner) mShareView
+				.findViewById(R.id.freeroom_layout_dialog_share_spinner_course);
+		// Create an ArrayAdapter using the string array and a default spinner
+		// layout : this is NOT displayed for now!
+		// other's activity are only displayed in the given popup, not there.
+		ArrayList<String> suggest = new ArrayList<String>();
+		// 1st result is the "title"
+		suggest.add(getString(R.string.freeroom_share_others_activity));
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, suggest);
+		// Specify the layout to use when the list of choices appears
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		// Apply the mFavoritesAdapter to the spinner
+		spinner.setAdapter(adapter);
+
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				// item 0 is the title
+				if (arg2 != 0) {
+					mShareDialogEditTextMessageWorking.setText(arg0
+							.getItemAtPosition(arg2).toString());
+				}
+				shareDialogEditTextMessageWorkingUpdated(mPeriod, mRoom);
+				spinner.setSelection(0);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// do nothing.
+			}
+
+		});
+
+		// it's automatically in center of screen!
+		mShareDialog.show();
+	}
+
+	private void initWarningDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.freeroom_dialog_warn_title));
+		builder.setMessage(getString(R.string.freeroom_dialog_warn_delete_fav_text));
+		builder.setIcon(R.drawable.ic_action_warning);
+		builder.setPositiveButton(
+				getString(R.string.freeroom_dialog_warn_confirm),
+				new AlertDialog.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						mModel.resetFavorites();
+						mFavoritesAdapter.notifyDataSetChanged();
+					}
+				});
+		builder.setNegativeButton(
+				getString(R.string.freeroom_dialog_warn_cancel), null);
+
+		// Get the AlertDialog from create()
+		mWarningDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mWarningDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.WRAP_CONTENT;
+		lp.height = LayoutParams.WRAP_CONTENT;
+		mWarningDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mWarningDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mWarningDialog.getWindow().setAttributes(lp);
+
+		mWarningDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				updateFavoritesSummary();
+				mFavoritesAdapter.notifyDataSetChanged();
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/warning");
+			}
+		});
+	}
+
+	private void initErrorDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.freeroom_dialog_error_title));
+		builder.setIcon(R.drawable.ic_action_error);
+		builder.setNeutralButton(R.string.freeroom_dialog_error_dismiss, null);
+
+		// Get the AlertDialog from create()
+		mErrorDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mErrorDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.WRAP_CONTENT;
+		lp.height = LayoutParams.WRAP_CONTENT;
+		mErrorDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mErrorDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mErrorDialog.getWindow().setAttributes(lp);
+
+		// reset the message when dismiss
+		// (to avoid showing with previous message!)
+		mErrorDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				mErrorDialog.setMessage("");
+			}
+		});
+
+		mErrorDialog.setOnShowListener(new OnShowListener() {
+			@Override
+			public void onShow(DialogInterface dialog) {
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/error");
+			}
+		});
+	}
+
+	/**
+	 * Show the error dialog with the given message.
+	 * 
+	 * @param text
+	 *            message to display.
+	 */
+	private void showErrorDialog(String text) {
+		// error dialog may be null at init time!
+		if (mErrorDialog != null) {
+			mErrorDialog.setMessage(text);
+			mErrorDialog.show();
+		}
+	}
+
+	// ADD FAVORITES // ADD ROOM //
+
+	/* UI ELEMENTS FOR DIALOGS - ADDROOM */
+
+	/**
+	 * Adpater for selected room.
+	 */
+	private ArrayAdapter<FRRoom> selectedRoomArrayAdapter;
+
+	/**
+	 * TextView for autocomplete status for adding room to search.
+	 */
+	private TextView tvAutcompletStatusRoom;
+
+	private SetArrayList<FRRoom> selectedRooms;
+
+	private ListView mAutoCompleteAddRoomListView;
+	private List<FRRoom> mAutoCompleteAddRoomArrayListFRRoom;
+
+	/** The input bar to make the search */
+	private InputBarElement mAutoCompleteAddRoomInputBarElement;
+	/** Adapter for the <code>mListView</code> */
+	private FRRoomSuggestionArrayAdapter<FRRoom> mAddRoomAdapter;
+
+	/**
+	 * FAVORITES
+	 */
+	/* UI ELEMENTS FOR DIALOGS - FAVORITES */
+
+	/**
+	 * TextView for autocomplete status for adding favorites.
+	 */
+	private TextView tvAutcompletStatusFav;
+
+	private ListView mAutoCompleteAddFavoritesListView;
+	private List<FRRoom> mAutoCompleteAddFavoritesArrayListFRRoom;
+
+	/** The input bar to make the search */
+	private InputBarElement mAutoCompleteAddFavoritesInputBarElement;
+	/** Adapter for the <code>mListView</code> */
+	private FRRoomSuggestionArrayAdapter<FRRoom> mAddFavoritesAdapter;
 
 	private void initAddFavoritesDialog() {
 		// Instantiate an AlertDialog.Builder with its constructor
@@ -1604,183 +2314,441 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		});
 	}
 
-	private void initShareDialog() {
-		// Instantiate an AlertDialog.Builder with its constructor
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(getString(R.string.freeroom_dialog_share_title));
-		builder.setPositiveButton(
-				getString(R.string.freeroom_dialog_share_button_friends), null);
-		builder.setNegativeButton(getString(R.string.freeroom_search_cancel),
-				null);
-		builder.setNeutralButton(
-				getString(R.string.freeroom_dialog_share_button_server), null);
-		builder.setIcon(R.drawable.ic_action_share);
+	private void UIConstructAddRoomInputBar() {
+		final IFreeRoomView view = this;
 
-		// Get the AlertDialog from create()
-		mShareDialog = builder.create();
+		mAutoCompleteAddRoomInputBarElement = new InputBarElement(
+				this,
+				null,
+				getString(R.string.freeroom_check_occupancy_search_inputbarhint));
+		mAutoCompleteAddRoomInputBarElement
+				.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 
-		// redefine paramaters to dim screen when displayed
-		WindowManager.LayoutParams lp = mShareDialog.getWindow()
-				.getAttributes();
-		lp.dimAmount = 0.60f;
-		// these doesn't work
-		lp.width = LayoutParams.FILL_PARENT;
-		lp.height = LayoutParams.FILL_PARENT;
-		mShareDialog.getWindow().addFlags(
-				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
-		mShareDialog.getWindow().addFlags(
-				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-		mShareDialog.getWindow().setAttributes(lp);
-
-		mShareView = mLayoutInflater.inflate(
-				R.layout.freeroom_layout_dialog_share, null);
-		// these work perfectly
-		mShareView.setMinimumWidth((int) (activityWidth * 0.95f));
-		// mShareView.setMinimumHeight((int) (activityHeight * 0.8f));
-
-		mShareDialog.setOnShowListener(new OnShowListener() {
-			@Override
-			public void onShow(DialogInterface dialog) {
-				dismissSoftKeyBoard(mShareView);
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/share");
-			}
-		});
-
-		mShareDialog.setOnDismissListener(new OnDismissListener() {
-
-			@Override
-			public void onDismiss(DialogInterface dialog) {
-				// we dont remove the text, as the user may want to share again
-				// the same text!
-			}
-		});
-
-		mShareDialogTextViewSummarySharing = (TextView) mShareView
-				.findViewById(R.id.freeroom_layout_dialog_share_textBasic);
-
-		mShareDialogEditTextMessageWorking = (EditText) mShareView
-				.findViewById(R.id.freeroom_layout_dialog_share_text_edit);
-
-		mShareDialog.setView(mShareView);
-
-		mShareDialog.show();
-		mShareDialog.hide();
-	}
-
-	/**
-	 * Notify when the EditText (Message-Working) is updated to generate the
-	 * summary and dimiss the keyboard.
-	 * 
-	 * @param mPeriod
-	 *            period selected.
-	 * @param mRoom
-	 *            room selected.
-	 */
-	private void shareDialogEditTextMessageWorkingUpdated(
-			final FRPeriod mPeriod, final FRRoom mRoom) {
-		String text = mShareDialogEditTextMessageWorking.getText().toString();
-		if (text == null || text.length() == 0) {
-			text = "...";
-		}
-		mShareDialogTextViewSummarySharing.setText(u.wantToShare(mPeriod,
-				mRoom, text));
-		dismissSoftKeyBoard(mShareDialogTextViewSummarySharing);
-	}
-
-	public void displayShareDialog(final FRPeriod mPeriod, final FRRoom mRoom) {
-
-		mShareDialog.hide();
-		mShareDialog.show();
-
-		mShareDialogTextViewSummarySharing.setText(u.wantToShare(mPeriod,
-				mRoom, "..."));
-
-		mShareDialogEditTextMessageWorking
+		// click on magnify glass on the keyboard
+		mAutoCompleteAddRoomInputBarElement
 				.setOnEditorActionListener(new OnEditorActionListener() {
-
 					@Override
-					public boolean onEditorAction(TextView arg0, int arg1,
-							KeyEvent arg2) {
-						shareDialogEditTextMessageWorkingUpdated(mPeriod, mRoom);
+					public boolean onEditorAction(TextView v, int actionId,
+							KeyEvent event) {
+						if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+							String query = mAutoCompleteAddRoomInputBarElement
+									.getInputText();
+							validAutoCompleteQuery(query, v);
+						}
+
 						return true;
 					}
 				});
 
-		Button shareWithServer = mShareDialog
-				.getButton(DialogInterface.BUTTON_NEUTRAL);
-		shareWithServer.setOnClickListener(new OnClickListener() {
+		// click on BUTTON magnify glass on the inputbar
+		mAutoCompleteAddRoomInputBarElement
+				.setOnButtonClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						String query = mAutoCompleteAddRoomInputBarElement
+								.getInputText();
+						validAutoCompleteQuery(query, v);
+					}
+				});
 
-			@Override
-			public void onClick(View v) {
-				share(mPeriod, mRoom, false, mShareDialogEditTextMessageWorking
-						.getText().toString());
-				mShareDialog.dismiss();
-			}
-		});
+		mAddRoomAdapter = new FRRoomSuggestionArrayAdapter<FRRoom>(
+				getApplicationContext(),
+				R.layout.freeroom_layout_list_room_add_room,
+				R.id.freeroom_layout_list_room_add_room,
+				mAutoCompleteAddRoomArrayListFRRoom, mModel, false);
 
-		Button shareWithFriends = mShareDialog
-				.getButton(DialogInterface.BUTTON_POSITIVE);
-		shareWithFriends.setOnClickListener(new OnClickListener() {
+		mAutoCompleteAddRoomInputBarElement
+				.setOnKeyPressedListener(new OnKeyPressedListener() {
+					@Override
+					public void onKeyPressed(String text) {
+						mAutoCompleteAddRoomListView
+								.setAdapter(mAddRoomAdapter);
 
-			@Override
-			public void onClick(View v) {
-				share(mPeriod, mRoom, true, mShareDialogEditTextMessageWorking
-						.getText().toString());
-				mShareDialog.dismiss();
-			}
-		});
+						if (!u.validQuery(text)) {
+							mAutoCompleteAddRoomInputBarElement
+									.setButtonText(null);
+							autoCompleteCancel();
+						} else {
+							mAutoCompleteAddRoomInputBarElement
+									.setButtonText("");
+							// remove this if you don't want
+							// automatic autocomplete
+							// without pressing the button
+							AutoCompleteRequest request = new AutoCompleteRequest(
+									text, mModel.getGroupAccess());
+							mController.autoCompleteBuilding(view, request);
+						}
+					}
+				});
+	}
 
-		final Spinner spinner = (Spinner) mShareView
-				.findViewById(R.id.freeroom_layout_dialog_share_spinner_course);
-		// Create an ArrayAdapter using the string array and a default spinner
-		// layout : this is NOT displayed for now!
-		// other's activity are only displayed in the given popup, not there.
-		ArrayList<String> suggest = new ArrayList<String>();
-		// 1st result is the "title"
-		suggest.add(getString(R.string.freeroom_share_others_activity));
+	private void validAutoCompleteQuery(String query, View v) {
+		if (u.validQuery(query)) {
+			dismissSoftKeyBoard(v);
+			AutoCompleteRequest request = new AutoCompleteRequest(query,
+					mModel.getGroupAccess());
+			mController.autoCompleteBuilding(this, request);
+		} else {
+			autoCompleteCancel();
+		}
+		activateDebug(query);
+	}
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, suggest);
-		// Specify the layout to use when the list of choices appears
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		// Apply the mFavoritesAdapter to the spinner
-		spinner.setAdapter(adapter);
+	private void UIConstructAddFavoritesInputBar() {
+		final IFreeRoomView view = this;
 
-		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+		mAutoCompleteAddFavoritesInputBarElement = new InputBarElement(
+				this,
+				null,
+				getString(R.string.freeroom_check_occupancy_search_inputbarhint));
+		mAutoCompleteAddFavoritesInputBarElement
+				.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				// item 0 is the title
-				if (arg2 != 0) {
-					mShareDialogEditTextMessageWorking.setText(arg0
-							.getItemAtPosition(arg2).toString());
-				}
-				shareDialogEditTextMessageWorkingUpdated(mPeriod, mRoom);
-				spinner.setSelection(0);
-			}
+		// click on magnify glass on the keyboard
+		mAutoCompleteAddFavoritesInputBarElement
+				.setOnEditorActionListener(new OnEditorActionListener() {
+					@Override
+					public boolean onEditorAction(TextView v, int actionId,
+							KeyEvent event) {
+						if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+							String query = mAutoCompleteAddRoomInputBarElement
+									.getInputText();
+							validAutoCompleteQuery(query, v);
+						}
 
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// do nothing.
-			}
+						return true;
+					}
+				});
 
-		});
+		// click on BUTTON magnify glass on the inputbar
+		mAutoCompleteAddFavoritesInputBarElement
+				.setOnButtonClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						String query = mAutoCompleteAddRoomInputBarElement
+								.getInputText();
+						validAutoCompleteQuery(query, v);
+					}
+				});
 
-		// it's automatically in center of screen!
-		mShareDialog.show();
+		mAddFavoritesAdapter = new FRRoomSuggestionArrayAdapter<FRRoom>(
+				getApplicationContext(),
+				R.layout.freeroom_layout_list_room_add_fav,
+				R.id.freeroom_layout_list_room_add_fav,
+				mAutoCompleteAddFavoritesArrayListFRRoom, mModel, true);
+
+		mAutoCompleteAddFavoritesInputBarElement
+				.setOnKeyPressedListener(new OnKeyPressedListener() {
+					@Override
+					public void onKeyPressed(String text) {
+						mAutoCompleteAddFavoritesListView
+								.setAdapter(mAddFavoritesAdapter);
+
+						if (!u.validQuery(text)) {
+							mAutoCompleteAddFavoritesInputBarElement
+									.setButtonText(null);
+							autoCompleteCancel();
+						} else {
+							mAutoCompleteAddFavoritesInputBarElement
+									.setButtonText("");
+							// remove this if you don't want
+							// automatic autocomplete
+							// without pressing the button
+							AutoCompleteRequest request = new AutoCompleteRequest(
+									text, mModel.getGroupAccess());
+							mController.autoCompleteBuilding(view, request);
+						}
+					}
+				});
+	}
+
+	private enum AddCollectionCaller {
+		ADDALLFAV, SEARCH;
 	}
 
 	/**
-	 * Dismiss the keyboard associated with the view.
+	 * Add all the favorites FRRoom to the collection. Caller is needed in order
+	 * to have special condition depending on the caller. The collection will be
+	 * cleared prior to any adding.
 	 * 
-	 * @param v
+	 * @param collection
+	 *            collection in which you want the favorites to be added.
+	 * @param caller
+	 *            identification of the caller, to provide conditions.
+	 * @param addOnlyUID
+	 *            true to add UID, false to add fully FRRoom object.
 	 */
-	private void dismissSoftKeyBoard(View v) {
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+	private void addAllFavoriteToCollection(Collection collection,
+			AddCollectionCaller caller, boolean addOnlyUID) {
+		collection.clear();
+		OrderMapListFew<String, List<FRRoom>, FRRoom> set = mModel
+				.getFavorites();
+		Iterator<String> iter = set.keySetOrdered().iterator();
+		while (iter.hasNext()) {
+			String key = iter.next();
+			Iterator<FRRoom> iter2 = set.get(key).iterator();
+			label: while (iter2.hasNext()) {
+				FRRoom mRoom = iter2.next();
+				// condition of adding depending on the caller
+				if (caller.equals(AddCollectionCaller.ADDALLFAV)) {
+					if (selectedRooms.contains(mRoom)) {
+						break label;
+					}
+				}
+				if (addOnlyUID) {
+					collection.add(mRoom.getUid());
+				} else {
+					collection.add(mRoom);
+				}
+			}
+		}
 	}
+
+	/**
+	 * Initialize the autocomplete suggestion list
+	 */
+	private void createAddRoomSuggestionsList() {
+		mAutoCompleteAddRoomListView = new ListView(this);
+		mAutoCompleteAddRoomInputBarElement
+				.addView(mAutoCompleteAddRoomListView);
+
+		mAutoCompleteAddRoomListView
+				.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> adapter, View view,
+							int pos, long id) {
+						// when an item is clicked, the keyboard is dimissed
+						dismissSoftKeyBoard(view);
+						FRRoom room = mAutoCompleteAddRoomArrayListFRRoom
+								.get(pos);
+						addRoomToCheck(room);
+						searchButton.setEnabled(auditSubmit() == 0);
+
+						// WE DONT REMOVE the text in the input bar
+						// INTENTIONNALLY: user may want to select multiple
+						// rooms in the same building
+
+						// refresh the autocomplete, such that selected
+						// rooms are not displayed anymore
+						autoCompletedUpdated();
+
+					}
+				});
+		mAutoCompleteAddRoomListView.setAdapter(mAddRoomAdapter);
+	}
+
+	/**
+	 * Initialize the autocomplete suggestion list
+	 */
+	private void createAddFavoritesSuggestionsList() {
+		mAutoCompleteAddFavoritesListView = new ListView(this);
+		mAutoCompleteAddFavoritesInputBarElement
+				.addView(mAutoCompleteAddFavoritesListView);
+
+		mAutoCompleteAddFavoritesListView
+				.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> adapter, View view,
+							int pos, long id) {
+						// when an item is clicked, the keyboard is dimissed
+						dismissSoftKeyBoard(view);
+						FRRoom room = mAutoCompleteAddFavoritesArrayListFRRoom
+								.get(pos);
+						if (mModel.isFavorite(room)) {
+							mModel.removeFavorite(room);
+						} else {
+							mModel.addFavorite(room);
+						}
+
+						// WE DONT REMOVE the text in the input bar
+						// INTENTIONNALLY: user may want to select multiple
+						// rooms in the same building
+						autoCompletedUpdated();
+					}
+				});
+		mAutoCompleteAddFavoritesListView.setAdapter(mAddFavoritesAdapter);
+	}
+
+	private void addRoomToCheck(FRRoom room) {
+		// we only add if it already contains the room
+		if (!selectedRooms.contains(room)) {
+			selectedRooms.add(room);
+			mSummarySelectedRoomsTextViewSearchMenu.setText(u
+					.getSummaryTextFromCollection(selectedRooms));
+
+		} else {
+			Log.e(this.getClass().toString(),
+					"room cannot be added: already added");
+		}
+	}
+
+	@Override
+	public void autoCompleteLaunch() {
+		tvAutcompletStatusFav
+				.setText(getString(R.string.freeroom_dialog_add_autocomplete_updating));
+		tvAutcompletStatusRoom
+				.setText(getString(R.string.freeroom_dialog_add_autocomplete_updating));
+	}
+
+	/**
+	 * To be called when autocomplete is not lauchable and ask the user to type
+	 * in.
+	 */
+	public void autoCompleteCancel() {
+		mAutoCompleteAddFavoritesArrayListFRRoom.clear();
+		mAddFavoritesAdapter.notifyDataSetInvalidated();
+		mAutoCompleteAddRoomArrayListFRRoom.clear();
+		mAddRoomAdapter.notifyDataSetInvalidated();
+
+		tvAutcompletStatusFav
+				.setText(getString(R.string.freeroom_dialog_add_autocomplete_typein));
+		tvAutcompletStatusRoom
+				.setText(getString(R.string.freeroom_dialog_add_autocomplete_typein));
+	}
+
+	/**
+	 * Update the text message in autocomplete status text view
+	 * (updating/up-to-date/error/...)
+	 * 
+	 * @param text
+	 *            the new message to display.
+	 */
+	private void autoCompleteUpdateMessage(CharSequence text) {
+		tvAutcompletStatusFav.setText(text);
+		tvAutcompletStatusRoom.setText(text);
+	}
+
+	@Override
+	public void autoCompletedUpdated() {
+		mAddRoomAdapter.notifyDataSetInvalidated();
+		mAddFavoritesAdapter.notifyDataSetInvalidated();
+		mAutoCompleteAddRoomArrayListFRRoom.clear();
+		mAutoCompleteAddFavoritesArrayListFRRoom.clear();
+		boolean emptyResult = (mModel.getAutoComplete().values().size() == 0);
+		if (emptyResult) {
+			autoCompleteUpdateMessage(getString(R.string.freeroom_dialog_add_autocomplete_noresult));
+		} else {
+			autoCompleteUpdateMessage(getString(R.string.freeroom_dialog_add_autocomplete_uptodate));
+		}
+
+		// FIXME: adapt to use the new version of autocomplete mapped by
+		// building
+		Iterator<List<FRRoom>> iter = mModel.getAutoComplete().values()
+				.iterator();
+		while (iter.hasNext()) {
+			List<FRRoom> list = iter.next();
+			Iterator<FRRoom> iterroom = list.iterator();
+			while (iterroom.hasNext()) {
+				FRRoom room = iterroom.next();
+				// rooms that are already selected are not displayed...
+				if (!selectedRooms.contains(room)) {
+					mAutoCompleteAddRoomArrayListFRRoom.add(room);
+				}
+				mAutoCompleteAddFavoritesArrayListFRRoom.add(room);
+			}
+		}
+
+		/*
+		 * If there was a non-empty result but all rooms got rejected, we
+		 * display "no more" instead of "up-to-date". Not useful for favorites
+		 * as no room is rejected.
+		 */
+		if (!emptyResult) {
+			if (mAutoCompleteAddRoomArrayListFRRoom.isEmpty()) {
+				tvAutcompletStatusRoom
+						.setText(getString(R.string.freeroom_dialog_add_autocomplete_nomore));
+			}
+			if (mAutoCompleteAddFavoritesArrayListFRRoom.isEmpty()) {
+				tvAutcompletStatusFav
+						.setText(getString(R.string.freeroom_dialog_add_autocomplete_nomore));
+			}
+		}
+
+		if (mSearchByUriTriggered) {
+			searchByUriMakeRequest(mAutoCompleteAddRoomArrayListFRRoom);
+		}
+
+		mAddRoomAdapter.notifyDataSetChanged();
+		mAddFavoritesAdapter.notifyDataSetChanged();
+	}
+
+	// SEARCH !!! //
+
+	/* UI ELEMENTS FOR DIALOGS - SEARCH */
+	/**
+	 * ListView that holds previous searches.
+	 */
+	private ListView mSearchPreviousListView;
+	/**
+	 * TextView to write "previous searches" +show/hide
+	 */
+	private TextView prevSearchTitle;
+	/**
+	 * Button to come back to up of search page.
+	 */
+	private Button goUpHomeButton;
+	/**
+	 * Text for "Previous request"
+	 */
+	private String textTitlePrevious = "mock text";
+	/**
+	 * Array adapter for previous FRRequest.
+	 */
+	private ArrayAdapter<FRRequestDetails> mPrevRequestAdapter;
+
+	private DatePickerDialog mDatePickerDialog;
+	private TimePickerDialog mTimePickerStartDialog;
+	private TimePickerDialog mTimePickerEndDialog;
+
+	private Button showDatePicker;
+	private Button showStartTimePicker;
+	private Button showEndTimePicker;
+	private Button showStartTimePickerShort;
+	private Button showEndTimePickerShort;
+
+	private RadioButton specButton;
+	private RadioButton anyButton;
+	private CheckBox favButton;
+	private CheckBox userDefButton;
+	/**
+	 * TRUE: "only free rooms" FALSE: "allow non-free rooms"
+	 */
+	private CheckBox freeButton;
+
+	private Button searchButton;
+	private Button resetButton;
+
+	private Button userDefEditButton;
+	private Button userDefAddButton;
+	private Button userDefResetButton;
+	private ImageButton downToStartHourButton;
+	private ImageButton downStartHourButton;
+	private ImageButton upStartHourButton;
+	private ImageButton downEndHourButton;
+	private ImageButton upEndHourButton;
+	private ImageButton upToEndHourButton;
+
+	/**
+	 * Stores if the "up to end" button has been trigged.
+	 * <p>
+	 * If yes, the endHour don't follow anymore the startHour when you change
+	 * it. It will be disabled when you change manually the endHour to a value
+	 * under the maximal hour.
+	 */
+	private boolean upToEndSelected = false;
+
+	private TextView mSummarySelectedRoomsTextViewSearchMenu;
+
+	private int yearSelected = -1;
+	private int monthSelected = -1;
+	private int dayOfMonthSelected = -1;
+	private int startHourSelected = -1;
+	private int startMinSelected = -1;
+	private int endHourSelected = -1;
+	private int endMinSelected = -1;
+
+	private LinearLayout mOptionalLineLinearLayoutWrapperFirst;
+	private LinearLayout mOptionalLineLinearLayoutWrapperSecond;
 
 	/**
 	 * Inits the dialog to diplay the information about a room.
@@ -1881,1013 +2849,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		initSearch();
 	}
-
-	/**
-	 * Inits the title for previous request, with empty value if none, with
-	 * "show" if not displayed, or "prev request" otherwise.
-	 */
-	private void initPreviousTitle() {
-		if (mModel.getPreviousRequest().isEmpty()) {
-			prevSearchTitle.setText("");
-			prevSearchTitle.setVisibility(View.GONE);
-			goUpHomeButton.setVisibility(View.GONE);
-		} else {
-			prevSearchTitle.setText(textTitlePrevious);
-			prevSearchTitle.setVisibility(View.VISIBLE);
-			goUpHomeButton.setVisibility(View.VISIBLE);
-		}
-	}
-
-	/**
-	 * When a Previous Request item is clicked on "play".
-	 * 
-	 * @param position
-	 *            position of the item to replay
-	 */
-	public void onPlayRequestClickListener(int position) {
-		if (onFillRequestClickListeners(position)) {
-			// request we will be stored
-			// it will actually come at the first place and be deleted from it's
-			// original place
-			prepareSearchQuery(true);
-		}
-	}
-
-	/**
-	 * Generates a String summary of a FRRequestDetails with compatible time and
-	 * collections.
-	 * 
-	 * @param req
-	 *            the request to summarize
-	 * @return summary of the request
-	 */
-	public String FRRequestToString(FRRequestDetails req) {
-		StringBuilder build = new StringBuilder(100);
-		build.append(times.formatTimePeriod(req.getPeriod(), true, false));
-		build.append(" ");
-		// it's the max size of the collections of room. but the textview has a
-		// maxlength of 2 lines anyway, so we dont really care...
-		int max = 150;
-
-		if (req.isAny()) {
-			build.append(getString(R.string.freeroom_search_any));
-		} else {
-			if (req.isFav()) {
-				build.append(getString(R.string.freeroom_search_favorites));
-				build.append("; ");
-			}
-			if (req.isOnlyFreeRooms()) {
-				build.append(getString(R.string.freeroom_search_only_free_short));
-				build.append("; ");
-			}
-			if (req.isUser()) {
-				if (req.getUidNonFav() != null) {
-					build.append("[" + req.getUidNonFav().size() + "] : ");
-					build.append(u.getSummaryTextFromCollection(
-							req.getUidNonFav(), "", max));
-				}
-			}
-		}
-		return build.toString();
-	}
-
-	/**
-	 * When a Previous Request item is clicked on "remove".
-	 * 
-	 * @param position
-	 *            position of the item to remove
-	 */
-	public void onRemoveRequestClickListener(int position) {
-		mModel.removeRequest(position);
-		mPrevRequestAdapter.notifyDataSetChanged();
-		if (mModel.getPreviousRequest().isEmpty()) {
-			initPreviousTitle();
-			mSearchDialog.show();
-		}
-	}
-
-	/**
-	 * When a Selected Room item is clicked on "remove".
-	 * 
-	 * @param position
-	 *            position of the item to remove
-	 */
-	public void onRemoveRoomClickListener(int position) {
-		// from time to time cause an issue, this gets black hole in the list.
-		// fixed by setting the whole line clickable to remove the line
-		selectedRoomArrayAdapter.remove(selectedRoomArrayAdapter
-				.getItem(position));
-		selectedListView.refreshDrawableState();
-	}
-
-	/**
-	 * Fill the search menus with the selected previous request.
-	 * 
-	 * @param position
-	 *            position of the item to use to refill.
-	 */
-	public boolean onFillRequestClickListeners(int position) {
-		mSearchPreviousListView.smoothScrollToPosition(0);
-		FRRequestDetails req = mModel.getPreviousRequest().get(position);
-		if (req != null) {
-			reset();
-			fillSearchDialog(req);
-			return true;
-		}
-		return false;
-	}
-
-	private void initWarningDialog() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(getString(R.string.freeroom_dialog_warn_title));
-		builder.setMessage(getString(R.string.freeroom_dialog_warn_delete_fav_text));
-		builder.setIcon(R.drawable.ic_action_warning);
-		builder.setPositiveButton(
-				getString(R.string.freeroom_dialog_warn_confirm),
-				new AlertDialog.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						mModel.resetFavorites();
-						mFavoritesAdapter.notifyDataSetChanged();
-					}
-				});
-		builder.setNegativeButton(
-				getString(R.string.freeroom_dialog_warn_cancel), null);
-
-		// Get the AlertDialog from create()
-		mWarningDialog = builder.create();
-
-		// redefine paramaters to dim screen when displayed
-		WindowManager.LayoutParams lp = mWarningDialog.getWindow()
-				.getAttributes();
-		lp.dimAmount = 0.60f;
-		// these doesn't work
-		lp.width = LayoutParams.WRAP_CONTENT;
-		lp.height = LayoutParams.WRAP_CONTENT;
-		mWarningDialog.getWindow().addFlags(
-				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
-		mWarningDialog.getWindow().addFlags(
-				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-		mWarningDialog.getWindow().setAttributes(lp);
-
-		mWarningDialog.setOnDismissListener(new OnDismissListener() {
-
-			@Override
-			public void onDismiss(DialogInterface dialog) {
-				updateFavoritesSummary();
-				mFavoritesAdapter.notifyDataSetChanged();
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/warning");
-			}
-		});
-	}
-
-	private void initErrorDialog() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(getString(R.string.freeroom_dialog_error_title));
-		builder.setIcon(R.drawable.ic_action_error);
-		builder.setNeutralButton(R.string.freeroom_dialog_error_dismiss, null);
-
-		// Get the AlertDialog from create()
-		mErrorDialog = builder.create();
-
-		// redefine paramaters to dim screen when displayed
-		WindowManager.LayoutParams lp = mErrorDialog.getWindow()
-				.getAttributes();
-		lp.dimAmount = 0.60f;
-		// these doesn't work
-		lp.width = LayoutParams.WRAP_CONTENT;
-		lp.height = LayoutParams.WRAP_CONTENT;
-		mErrorDialog.getWindow().addFlags(
-				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
-		mErrorDialog.getWindow().addFlags(
-				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-		mErrorDialog.getWindow().setAttributes(lp);
-
-		// reset the message when dismiss
-		// (to avoid showing with previous message!)
-		mErrorDialog.setOnDismissListener(new OnDismissListener() {
-
-			@Override
-			public void onDismiss(DialogInterface dialog) {
-				mErrorDialog.setMessage("");
-			}
-		});
-
-		mErrorDialog.setOnShowListener(new OnShowListener() {
-			@Override
-			public void onShow(DialogInterface dialog) {
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/error");
-			}
-		});
-	}
-
-	/**
-	 * Show the error dialog with the given message.
-	 * 
-	 * @param text
-	 *            message to display.
-	 */
-	private void showErrorDialog(String text) {
-		// error dialog may be null at init time!
-		if (mErrorDialog != null) {
-			mErrorDialog.setMessage(text);
-			mErrorDialog.show();
-		}
-	}
-
-	/**
-	 * Inits the dialog to display the parameters.
-	 */
-	private void initParamDialog() {
-		// Instantiate an AlertDialog.Builder with its constructor
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(getString(R.string.freeroom_settings_title));
-		builder.setIcon(R.drawable.ic_action_settings);
-
-		// Get the AlertDialog from create()
-		mParamDialog = builder.create();
-
-		// redefine paramaters to dim screen when displayed
-		WindowManager.LayoutParams lp = mParamDialog.getWindow()
-				.getAttributes();
-		lp.dimAmount = 0.60f;
-		// these doesn't work
-		lp.width = LayoutParams.FILL_PARENT;
-		lp.height = LayoutParams.WRAP_CONTENT;
-		mParamDialog.getWindow().addFlags(
-				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
-		mParamDialog.getWindow().addFlags(
-				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-		mParamDialog.getWindow().setAttributes(lp);
-
-		mParamView = mLayoutInflater.inflate(
-				R.layout.freeroom_layout_dialog_param, null);
-
-		// these work perfectly
-		mParamView.setMinimumWidth((int) (activityWidth * 0.95f));
-
-		mParamDialog.setView(mParamView);
-
-		// fill with the real value from model!
-		initParamDialogData();
-		// when dismissing, make a new search with (new) default value
-		mParamDialog.setOnDismissListener(new OnDismissListener() {
-
-			@Override
-			public void onDismiss(DialogInterface dialog) {
-				initDefaultRequest(false);
-				refresh();
-			}
-		});
-
-		mParamDialog.setOnShowListener(new OnShowListener() {
-			@Override
-			public void onShow(DialogInterface dialog) {
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/settings");
-			}
-		});
-	}
-
-	private void initParamDialogData() {
-		mParamDialogRefreshTimeFormatExample();
-		mParamDialogRefreshColorBlindExamples();
-
-		int id;
-		RadioButton rd;
-
-		HomeBehaviourRoom room = mModel.getHomeBehaviourRoom();
-		switch (room) {
-		case ANYFREEROOM:
-			id = R.id.freeroom_layout_param_home_any;
-			break;
-		case FAVORITES:
-			id = R.id.freeroom_layout_param_home_fav;
-			break;
-		case FAVORITES_ONLY_FREE:
-			id = R.id.freeroom_layout_param_home_favfree;
-			break;
-		// this is implemented, this was thought as useless.
-		// case LASTREQUEST:
-		// id = R.id.freeroom_layout_param_home_last;
-		// break;
-		default:
-			id = R.id.freeroom_layout_param_home_fav;
-			break;
-		}
-		rd = (RadioButton) mParamView.findViewById(id);
-		rd.setChecked(true);
-
-		HomeBehaviourTime time = mModel.getHomeBehaviourTime();
-		switch (time) {
-		case CURRENT_TIME:
-			id = R.id.freeroom_layout_param_home_time_current;
-			break;
-		case UP_TO_END_OF_DAY:
-			id = R.id.freeroom_layout_param_home_time_end;
-			break;
-		case WHOLE_DAY:
-			id = R.id.freeroom_layout_param_home_time_whole;
-			break;
-		default:
-			id = R.id.freeroom_layout_param_home_time_current;
-			break;
-		}
-		rd = (RadioButton) mParamView.findViewById(id);
-		rd.setChecked(true);
-
-		ColorBlindMode colorBlindMode = mModel.getColorBlindMode();
-		switch (colorBlindMode) {
-		case DEFAULT:
-			id = R.id.freeroom_layout_param_color_default;
-			break;
-		case DOTS_DISCOLORED:
-			id = R.id.freeroom_layout_param_color_default;
-			break;
-		case DOTS_SYMBOL:
-			id = R.id.freeroom_layout_param_color_symbolic;
-			break;
-		case DOTS_SYMBOL_LINEFULL:
-			id = R.id.freeroom_layout_param_color_symbolic_lines;
-			break;
-		case DOTS_SYMBOL_LINEFULL_DISCOLORED:
-			id = R.id.freeroom_layout_param_color_symbolic_lines_disc;
-			break;
-		default:
-			id = R.id.freeroom_layout_param_color_default;
-			break;
-		}
-		rd = (RadioButton) mParamView.findViewById(id);
-		rd.setChecked(true);
-
-		boolean advanced = false;
-		switch (colorBlindMode) {
-		case DEFAULT:
-		case DOTS_DISCOLORED:
-			advanced = false;
-			break;
-		case DOTS_SYMBOL:
-		case DOTS_SYMBOL_LINEFULL:
-		case DOTS_SYMBOL_LINEFULL_DISCOLORED:
-			advanced = true;
-			break;
-		default:
-			advanced = false;
-			break;
-		}
-
-		CheckBox advancedCheckBox = (CheckBox) mParamView
-				.findViewById(R.id.freeroom_layout_dialog_param_colorblind_advanced);
-		advancedCheckBox.setChecked(advanced);
-		onColorBlindAdvancedChecked(advancedCheckBox);
-
-		TimeLanguage tl = mModel.getTimeLanguage();
-		switch (tl) {
-		case DEFAULT:
-			id = R.id.freeroom_layout_param_time_language_def;
-			break;
-		case ENGLISH:
-			id = R.id.freeroom_layout_param_time_language_en;
-			break;
-		case FRENCH:
-			id = R.id.freeroom_layout_param_time_language_fr;
-			break;
-		default:
-			id = R.id.freeroom_layout_param_time_language_def;
-			break;
-		}
-		rd = (RadioButton) mParamView.findViewById(id);
-		rd.setChecked(true);
-	}
-
-	/**
-	 * This checks the konami code moves.
-	 */
-	public boolean onTouchEvent(MotionEvent event) {
-		checkKonamiCode(event);
-		return true;
-	}
-
-	/**
-	 * Overrides the legacy <code>onKeyDown</code> method in order to override
-	 * some hardware button implementation.
-	 * 
-	 * @param keyCode
-	 *            keycode as specified by overridden method
-	 * @param event
-	 *            event as specified by overridden method
-	 * @return boolean value as specified by overridden method
-	 */
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// overrides search button for devices who are equipped with such
-		// hardware button, and launch automatically the search popup.
-		if (keyCode == KeyEvent.KEYCODE_SEARCH) {
-			mSearchDialog.show();
-			return true;
-		}
-
-		// overrides clear button for devices who are equipped with such
-		// hardware button, and clear all the search introduced (reset)
-		if (keyCode == KeyEvent.KEYCODE_CLEAR) {
-			reset();
-			return true;
-		}
-
-		// overrides enter button for devices who are equipped with such
-		// hardware button, and launch a search if valid.
-		if (keyCode == KeyEvent.KEYCODE_ENTER) {
-			if (mSearchDialog.isShowing() && !mAddRoomDialog.isShowing()
-					&& !mEditRoomDialog.isShowing() && (auditSubmit() == 0)) {
-				prepareSearchQuery(true);
-				return true;
-			}
-		}
-
-		// overrides envelope button for devices who are equipped with such
-		// hardware button, and share the location if the detailled info popup
-		// is displayed and available for the whole period.
-		if (keyCode == KeyEvent.KEYCODE_ENVELOPE) {
-			if (mInfoRoomDialog.isShowing()) {
-				Occupancy mOccupancy = mModel.getDisplayedOccupancy();
-				if (mOccupancy != null && mOccupancy.isIsAtLeastFreeOnce()
-						&& !mOccupancy.isIsAtLeastOccupiedOnce()) {
-					Button shareButton = mInfoRoomDialog
-							.getButton(AlertDialog.BUTTON_POSITIVE);
-					if (shareButton != null && shareButton.isEnabled()) {
-						shareButton.performClick();
-						return true;
-					}
-				}
-			}
-		}
-
-		// this overrides the menu button, which is present on most phone BUT
-		// not all (deprecated). We should never think this is always available.
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			// this does nothging special and let the legacy menu to be shown.
-			// it's implemented now to display the same as the overflow button,
-			// but in different UI and shapes.
-		}
-
-		// Overrides the back button, which is present on all devices.
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// this is not used so far, as all the popup are automatically
-			// closed by the back button.
-		}
-
-		// all other keys are handled automatically or not handled.
-		return super.onKeyDown(keyCode, event);
-	}
-
-	@Override
-	public void anyError() {
-		setTitle();
-		String errorMessage = getString(R.string.freeroom_home_error_sorry);
-		setTextSummary(errorMessage);
-		autoCompleteUpdateMessage(errorMessage);
-		workingDisclaimer.setText(errorMessage);
-	}
-
-	/**
-	 * Sets the summary text box to the specified text.
-	 * <p>
-	 * It doesn't need to start by a space, the text view already contains an
-	 * appropriate padding.
-	 * 
-	 * @param text
-	 *            the new summary to be displayed.
-	 */
-	private void setTextSummary(String text) {
-		mTextView.setText(text);
-	}
-
-	/**
-	 * Sets the title to the default value.
-	 * <p>
-	 * same effect as <br>
-	 * <code>String default = getString(R.string.freeroom_title_main_title)</code>
-	 * <br>
-	 * <code>titleLayout.setTitle(defaultTitle);</code>
-	 * 
-	 */
-	private void setTitle() {
-		super.setTitle(getString(R.string.freeroom_title_main_title));
-	}
-
-	/**
-	 * Sets the title to the given value.
-	 * <p>
-	 * same effect as <br>
-	 * <code>titleLayout.setTitle(titleValue);</code>
-	 * 
-	 * @param titleValue
-	 *            the new title
-	 * 
-	 */
-	private void setTitle(String titleValue) {
-		titleLayout.setTitle(titleValue);
-	}
-
-	/**
-	 * Constructs the default request and sets it in the model for future use.
-	 * You may call <code>refresh</code> in order to actually send it to the
-	 * server.
-	 * 
-	 * @param forceUseFavorites
-	 *            if the constructor of the request should consider the
-	 *            favorites or not
-	 */
-	private void initDefaultRequest(boolean forceUseFavorites) {
-		u.logV("generating and setting a new default request");
-		mModel.setFRRequestDetails(validRequest(forceUseFavorites), false);
-		mPrevRequestAdapter.notifyDataSetChanged();
-	}
-
-	/**
-	 * Construct a valid and default request. If useFavorites is true, it will
-	 * check all the favorites for the next valid period, otherwise or if there
-	 * are not.
-	 * 
-	 * @param forceUseFavorites
-	 *            if it should consider the favorites or not
-	 * @return a valid and default request, based or nor on the favorites.
-	 */
-	private FRRequestDetails validRequest(boolean forceUseFavorites) {
-		OrderMapListFew<String, List<FRRoom>, FRRoom> set = mModel
-				.getFavorites();
-
-		// we choose the period according to settings in model.
-		FRPeriod period = null;
-		HomeBehaviourTime time = mModel.getHomeBehaviourTime();
-		if (time.equals(HomeBehaviourTime.CURRENT_TIME)) {
-			period = FRTimes.getNextValidPeriod();
-		} else if (time.equals(HomeBehaviourTime.UP_TO_END_OF_DAY)) {
-			period = FRTimes.getNextValidPeriodTillEndOfDay();
-		} else if (time.equals(HomeBehaviourTime.WHOLE_DAY)) {
-			period = FRTimes.getNextValidPeriodWholeDay();
-		} else {
-			u.logE("unknown time behavior: ");
-			u.logE(time.name());
-			u.logE("going for default value");
-			period = FRTimes.getNextValidPeriod();
-		}
-
-		// we choose the request according to the model settings
-		HomeBehaviourRoom room = mModel.getHomeBehaviourRoom();
-		// if there are favorites and we want: to force their usage, despite of
-		// model settings, or the model ask for favorites.
-		if (forceUseFavorites || room.equals(HomeBehaviourRoom.FAVORITES)
-				|| room.equals(HomeBehaviourRoom.FAVORITES_ONLY_FREE)) {
-			if (!set.isEmpty()) {
-
-				// FAV: check occupancy of ALL favs
-				ArrayList<String> array = new ArrayList<String>(set.size());
-
-				addAllFavoriteToCollection(array, AddCollectionCaller.SEARCH,
-						true);
-
-				// if we want only free favorites.
-				boolean onlyFree = room
-						.equals(HomeBehaviourRoom.FAVORITES_ONLY_FREE);
-				return new FRRequestDetails(period, onlyFree, array, false,
-						true, false, null, mModel.getGroupAccess());
-			} else {
-				u.logV("no favorites in model: going for any free room");
-				room = HomeBehaviourRoom.ANYFREEROOM;
-			}
-		}
-
-		if (room.equals(HomeBehaviourRoom.LASTREQUEST)) {
-			// this feature has been disabled => going from default
-			u.logD("last request is not operational now");
-			room = HomeBehaviourRoom.ANYFREEROOM;
-		}
-
-		if (!room.equals(HomeBehaviourRoom.ANYFREEROOM)) {
-			u.logE("unknown room behavior: ");
-			u.logE(room.name());
-			u.logE("going for any free room");
-		}
-		// any free room behavior
-		return new FRRequestDetails(period, true, new ArrayList<String>(1),
-				true, false, false, null, mModel.getGroupAccess());
-	}
-
-	/**
-	 * Asks the controller to send again the request which was already set in
-	 * the model.
-	 * <p>
-	 * Don't call it before setting a request in the model!
-	 */
-	private void refresh() {
-		setTextSummary(getString(R.string.freeroom_home_please_wait));
-		setTitle();
-		// cleans the previous results
-		mModel.getOccupancyResults().clear();
-		mExpListAdapter.notifyDataSetChanged();
-		mController.sendFRRequest(this);
-	}
-
-	@Override
-	public void occupancyResultsUpdated() {
-		setTitle();
-		String subtitle = "";
-		if (mModel.getOccupancyResults().isEmpty()) {
-			// popup with no results message
-			subtitle = getString(R.string.freeroom_home_error_no_results);
-			showErrorDialog(subtitle);
-		} else {
-			FRRequest request = mModel.getFRRequestDetails();
-
-			String title = "";
-			if (request.isOnlyFreeRooms()) {
-				title = getString(R.string.freeroom_home_info_free_rooms);
-			} else {
-				title = getString(R.string.freeroom_home_info_rooms);
-			}
-			FRPeriod period = mModel.getOverAllTreatedPeriod();
-			setTitle(title + times.formatTimeSummaryTitle(period));
-			subtitle = times.formatFullDateFullTimePeriod(period);
-
-			// if the info dialog is opened, we update the CORRECT occupancy
-			// with the new data.
-			if (mInfoRoomDialog.isShowing()) {
-				FRRoom room = mModel.getDisplayedOccupancy().getRoom();
-				List<?> list = mModel.getOccupancyResults().get(
-						mModel.getBuildingKeyLabel(room));
-				Iterator<?> iter = list.iterator();
-				label: while (iter.hasNext()) {
-					Object o = iter.next();
-					if (o instanceof Occupancy) {
-						if (((Occupancy) o).getRoom().getUid()
-								.equals(room.getUid())) {
-							mModel.setDisplayedOccupancy((Occupancy) o);
-							// doesn't work
-							mInfoActualOccupationAdapter.notifyDataSetChanged();
-							// works!
-							displayInfoDialog();
-							break label;
-						}
-					}
-				}
-			}
-
-			// if there's only one result, we display immediately the info
-			// dialog, to get the detailed information (very useful in context
-			// of QR codes)
-			if (mModel.getOccupancyResults().size() == 1) {
-				List<?> list = mModel.getOccupancyResults().get(0);
-				if (list != null && list.size() == 1) {
-					Object elem = list.get(0);
-					if (elem != null && elem instanceof Occupancy) {
-						mModel.setDisplayedOccupancy((Occupancy) elem);
-						displayInfoDialog();
-					}
-				}
-			}
-		}
-
-		setTextSummary(subtitle);
-		mExpListAdapter.notifyDataSetChanged();
-		updateCollapse(mExpListView, mExpListAdapter);
-
-	}
-
-	/**
-	 * Expands all the groups if there are no more than 3 groups AND not more
-	 * than 7 results.
-	 * <p>
-	 * These constants are defined ONLY there <br>
-	 * 
-	 * @param ev
-	 *            expandable list view
-	 * @param ad
-	 *            expandable list view adapter
-	 */
-	public void updateCollapse(ExpandableListView ev,
-			ExpandableListViewAdapter<Occupancy> ad) {
-		int maxChildrenToExpand = 7;
-		int maxGroupToExpand = 3;
-		if (ad.getGroupCount() <= maxGroupToExpand
-				&& ad.getChildrenTotalCount() <= maxChildrenToExpand) {
-			// we expand in reverse order for performance reason!
-			// expand all may caus
-			for (int i = ad.getGroupCount() - 1; i >= 0; i--) {
-				ev.expandGroup(i);
-			}
-		}
-		ad.setGroupFocus(-1);
-	}
-
-	/**
-	 * Put a onClickListener on an imageView in order to share the location and
-	 * time when clicking share, if available.
-	 * 
-	 * @param shareImageView
-	 *            the view on which to put the listener
-	 * @param homeView
-	 *            reference to the home view
-	 * @param mOccupancy
-	 *            the holder of data for location and time
-	 */
-	public void setShareClickListener(View shareImageView,
-			final FreeRoomHomeView homeView, final Occupancy mOccupancy) {
-
-		if (!mOccupancy.isIsAtLeastOccupiedOnce()
-				&& mOccupancy.isIsAtLeastFreeOnce()) {
-			shareImageView.setClickable(true);
-			shareImageView.setEnabled(true);
-			if (shareImageView instanceof ImageView) {
-				((ImageView) shareImageView)
-						.setImageResource(R.drawable.ic_action_share_enabled);
-			}
-			shareImageView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					homeView.displayShareDialog(mOccupancy.getTreatedPeriod(),
-							mOccupancy.getRoom());
-				}
-			});
-		} else {
-			shareImageView.setClickable(false);
-			shareImageView.setEnabled(false);
-
-			if (shareImageView instanceof ImageView) {
-				((ImageView) shareImageView)
-						.setImageResource(R.drawable.ic_action_share_disabled);
-			}
-		}
-	}
-
-	private ActualOccupationArrayAdapter<ActualOccupation> mInfoActualOccupationAdapter;
-
-	/**
-	 * Display the dialog that provides more info about the occupation of the
-	 * selected room.
-	 */
-	public void displayInfoDialog() {
-		final Occupancy mOccupancy = mModel.getDisplayedOccupancy();
-		if (mOccupancy != null) {
-			mInfoRoomDialog.hide();
-			mInfoRoomDialog.show();
-
-			final FRRoom mRoom = mOccupancy.getRoom();
-			mInfoRoomDialog.setTitle(FRUtilsClient.formatRoom(mRoom));
-
-			TextView periodTextView = (TextView) mInfoRoomView
-					.findViewById(R.id.freeroom_layout_dialog_info_period);
-			if (mOccupancy.isSetTreatedPeriod()
-					&& mOccupancy.getTreatedPeriod() != null) {
-				periodTextView.setText(times
-						.formatFullDateFullTimePeriod(mOccupancy
-								.getTreatedPeriod()));
-			} else {
-				// error coming from server ??
-				periodTextView.setText("period");
-				System.err
-						.println("Unknown or undefined period coming from server");
-			}
-
-			// people image to replay worst case occupancy and direct share with
-			// server
-			ImageView peopleImageView = (ImageView) mInfoRoomView
-					.findViewById(R.id.freeroom_layout_dialog_info_people);
-			peopleImageView.setImageResource(mModel
-					.getImageFromRatioOccupation(mOccupancy
-							.getRatioWorstCaseProbableOccupancy()));
-			peopleImageView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View arg0) {
-					directShareWithServer(mOccupancy.getTreatedPeriod(), mRoom);
-				}
-			});
-
-			ImageView map = (ImageView) mInfoRoomView
-					.findViewById(R.id.freeroom_layout_dialog_info_map);
-			map.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					try {
-						// TODO: when map plugin accepts UID and not only room
-						// name, change by uid instead of doorcode!
-						Uri mUri = Uri
-								.parse("pocketcampus://map.plugin.pocketcampus.org/search");
-						Uri.Builder mbuild = mUri.buildUpon()
-								.appendQueryParameter("q", mRoom.getDoorCode());
-						Intent i = new Intent(Intent.ACTION_VIEW, mbuild
-								.build());
-						i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(i);
-					} catch (Exception e) {
-						e.printStackTrace();
-						System.err.println("Map plugin not installed ?!?");
-						showErrorDialog(getString(R.string.freeroom_error_map_plugin_missing));
-					}
-				}
-			});
-
-			ImageView shareImageView = (ImageView) mInfoRoomView
-					.findViewById(R.id.freeroom_layout_dialog_info_share);
-			setShareClickListener(shareImageView, this, mOccupancy);
-
-			Button shareButton = mInfoRoomDialog
-					.getButton(AlertDialog.BUTTON_POSITIVE);
-			shareButton.setEnabled(mOccupancy.isIsAtLeastFreeOnce()
-					&& !mOccupancy.isIsAtLeastOccupiedOnce());
-			setShareClickListener(shareButton, this, mOccupancy);
-
-			ListView roomOccupancyListView = (ListView) mInfoRoomView
-					.findViewById(R.id.freeroom_layout_dialog_info_roomOccupancy);
-			mInfoActualOccupationAdapter = new ActualOccupationArrayAdapter<ActualOccupation>(
-					getApplicationContext(), mOccupancy, mController, this);
-			roomOccupancyListView.setAdapter(mInfoActualOccupationAdapter);
-
-			TextView detailsTextView = (TextView) mInfoRoomView
-					.findViewById(R.id.freeroom_layout_dialog_info_details);
-			detailsTextView.setText(u.getInfoFRRoom(mOccupancy.getRoom()));
-			mInfoRoomDialog.show();
-		}
-	}
-
-	private void fillSearchDialog() {
-		final FRRequestDetails request = mModel.getFRRequestDetails();
-		if (request != null) {
-			fillSearchDialog(request);
-		}
-	}
-
-	/**
-	 * DONT CALL IT! Call {@link #reset()} instead.
-	 * 
-	 * @param request
-	 */
-	private void fillSearchDialog(final FRRequestDetails request) {
-		resetTimes(request.getPeriod());
-		anyButton.setChecked(request.isAny());
-		specButton.setChecked(!request.isAny());
-		favButton.setChecked(request.isFav());
-		userDefButton.setChecked(request.isUser());
-		freeButton.setChecked(request.isOnlyFreeRooms());
-		boolean enabled = !request.isAny();
-		favButton.setEnabled(enabled);
-		userDefButton.setEnabled(enabled);
-		freeButton.setEnabled(enabled);
-		mOptionalLineLinearLayoutWrapperFirst.setVisibility(View.GONE);
-		if (enabled) {
-			mOptionalLineLinearLayoutWrapperFirst.setVisibility(View.VISIBLE);
-		}
-		mOptionalLineLinearLayoutWrapperSecond.setVisibility(View.GONE);
-		if (request.isUser()) {
-			mOptionalLineLinearLayoutWrapperSecond.setVisibility(View.VISIBLE);
-			selectedRooms.addAll(request.getUidNonFav());
-			mSummarySelectedRoomsTextViewSearchMenu.setText(u
-					.getSummaryTextFromCollection(selectedRooms));
-		}
-		updateDateTimePickersAndButtons();
-
-		// MUST be the last action: after all field are set, check if the
-		// request is valid
-		searchButton.setEnabled(auditSubmit() == 0);
-	}
-
-	/**
-	 * Sends directly a sharing with the server, without going thru the dialog
-	 * and/or asking for a message or a confirmation.
-	 * 
-	 * @param mPeriod
-	 *            the room (location) to share
-	 * @param mRoom
-	 *            the period (of time) to share
-	 */
-	public void directShareWithServer(FRPeriod mPeriod, FRRoom mRoom) {
-		share(mPeriod, mRoom, false, "");
-	}
-
-	private void share(FRPeriod mPeriod, FRRoom mRoom, boolean withFriends,
-			String toShare) {
-		WorkingOccupancy work = new WorkingOccupancy(mPeriod, mRoom);
-		CheckBox mShareDialogCheckBoxShareMessageServer = (CheckBox) mShareDialog
-				.findViewById(R.id.freeroom_layout_dialog_share_checkbox_server);
-		if (mShareDialogCheckBoxShareMessageServer != null
-				&& mShareDialogCheckBoxShareMessageServer.isChecked()
-				&& toShare != null && toShare != "") {
-			work.setMessage(toShare);
-		}
-		ImWorkingRequest request = new ImWorkingRequest(work,
-				mModel.getAnonymID());
-		mController.prepareImWorking(request);
-		mModel.setOnlyServer(!withFriends);
-		mController.ImWorking(this);
-		if (withFriends) {
-			shareWithFriends(mPeriod, mRoom, toShare);
-		}
-	}
-
-	/**
-	 * Construct the Intent to share the location and time with friends. The
-	 * same information is shared with the server at the same time
-	 * 
-	 * @param mPeriod
-	 *            time period
-	 * @param mRoom
-	 *            location
-	 */
-	private void shareWithFriends(FRPeriod mPeriod, FRRoom mRoom, String toShare) {
-		String sharing = u.wantToShare(mPeriod, mRoom, toShare);
-		sharing += " \n" + getString(R.string.freeroom_share_ref_pocket);
-		u.logV("sharing:" + sharing);
-		Intent sendIntent = new Intent();
-		sendIntent.setAction(Intent.ACTION_SEND);
-		sendIntent.putExtra(Intent.EXTRA_TEXT, sharing);
-		// this ensure that our handler, that is handling home-made text types,
-		// will also work. But our won't work outside the app, which is needed,
-		// because it waits for this special type.
-		sendIntent.setType("text/*");
-		startActivity(Intent.createChooser(sendIntent,
-				getString(R.string.freeroom_share_intent_title)));
-	}
-
-	// ** REUSED FROM SCRATCH FROM FreeRoomSearchView ** //
-	private SetArrayList<FRRoom> selectedRooms;
-
-	private ListView mAutoCompleteAddRoomListView;
-	private List<FRRoom> mAutoCompleteAddRoomArrayListFRRoom;
-
-	/** The input bar to make the search */
-	private InputBarElement mAutoCompleteAddRoomInputBarElement;
-	/** Adapter for the <code>mListView</code> */
-	private FRRoomSuggestionArrayAdapter<FRRoom> mAddRoomAdapter;
-
-	/**
-	 * FAVORITES
-	 */
-
-	private ListView mAutoCompleteAddFavoritesListView;
-	private List<FRRoom> mAutoCompleteAddFavoritesArrayListFRRoom;
-
-	/** The input bar to make the search */
-	private InputBarElement mAutoCompleteAddFavoritesInputBarElement;
-	/** Adapter for the <code>mListView</code> */
-	private FRRoomSuggestionArrayAdapter<FRRoom> mAddFavoritesAdapter;
-
-	private DatePickerDialog mDatePickerDialog;
-	private TimePickerDialog mTimePickerStartDialog;
-	private TimePickerDialog mTimePickerEndDialog;
-
-	private Button showDatePicker;
-	private Button showStartTimePicker;
-	private Button showEndTimePicker;
-	private Button showStartTimePickerShort;
-	private Button showEndTimePickerShort;
-
-	private RadioButton specButton;
-	private RadioButton anyButton;
-	private CheckBox favButton;
-	private CheckBox userDefButton;
-	/**
-	 * TRUE: "only free rooms" FALSE: "allow non-free rooms"
-	 */
-	private CheckBox freeButton;
-
-	private Button searchButton;
-	private Button resetButton;
-
-	private Button userDefEditButton;
-	private Button userDefAddButton;
-	private Button userDefResetButton;
-	private ImageButton downToStartHourButton;
-	private ImageButton downStartHourButton;
-	private ImageButton upStartHourButton;
-	private ImageButton downEndHourButton;
-	private ImageButton upEndHourButton;
-	private ImageButton upToEndHourButton;
-
-	/**
-	 * Stores if the "up to end" button has been trigged.
-	 * <p>
-	 * If yes, the endHour don't follow anymore the startHour when you change
-	 * it. It will be disabled when you change manually the endHour to a value
-	 * under the maximal hour.
-	 */
-	private boolean upToEndSelected = false;
-
-	private TextView mSummarySelectedRoomsTextViewSearchMenu;
-
-	private int yearSelected = -1;
-	private int monthSelected = -1;
-	private int dayOfMonthSelected = -1;
-	private int startHourSelected = -1;
-	private int startMinSelected = -1;
-	private int endHourSelected = -1;
-	private int endMinSelected = -1;
-
-	private LinearLayout mOptionalLineLinearLayoutWrapperFirst;
-	private LinearLayout mOptionalLineLinearLayoutWrapperSecond;
 
 	private void initSearch() {
 
@@ -3419,298 +3380,45 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 	}
 
-	/**
-	 * Minimal width in pixel to trigger landscape mode according to
-	 * {@link #isLandscapeTabletMode()}.
-	 */
-	private int minWidthForLandscapeMode = 480;
-
-	/**
-	 * Check if the height is smaller than the width of the displayed screen.
-	 * <p>
-	 * As the plugin is NOT sensible to landscape mode, this will ONLY occur on
-	 * tablets.
-	 * <p>
-	 * Please note some phones are also wider than higher, even if their are
-	 * very small. To avoid the "landscape tablet mode" to be triggered, we
-	 * check than the witdh is wider than the {@link #minWidthForLandscapeMode}
-	 * constant in pixels, which is not really perfect, but not an issue as
-	 * these phones are low-pixels densities and most recent tablets are medium
-	 * or high-density.
-	 * 
-	 * @return true if landscape mode should be activated.
-	 */
-	private boolean isLandscapeTabletMode() {
-		return (activityHeight < activityWidth)
-				&& (activityWidth > minWidthForLandscapeMode);
-	}
-
-	private void UIConstructAddRoomInputBar() {
-		final IFreeRoomView view = this;
-
-		mAutoCompleteAddRoomInputBarElement = new InputBarElement(
-				this,
-				null,
-				getString(R.string.freeroom_check_occupancy_search_inputbarhint));
-		mAutoCompleteAddRoomInputBarElement
-				.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-
-		// click on magnify glass on the keyboard
-		mAutoCompleteAddRoomInputBarElement
-				.setOnEditorActionListener(new OnEditorActionListener() {
-					@Override
-					public boolean onEditorAction(TextView v, int actionId,
-							KeyEvent event) {
-						if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-							String query = mAutoCompleteAddRoomInputBarElement
-									.getInputText();
-							validAutoCompleteQuery(query, v);
-						}
-
-						return true;
-					}
-				});
-
-		// click on BUTTON magnify glass on the inputbar
-		mAutoCompleteAddRoomInputBarElement
-				.setOnButtonClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						String query = mAutoCompleteAddRoomInputBarElement
-								.getInputText();
-						validAutoCompleteQuery(query, v);
-					}
-				});
-
-		mAddRoomAdapter = new FRRoomSuggestionArrayAdapter<FRRoom>(
-				getApplicationContext(),
-				R.layout.freeroom_layout_list_room_add_room,
-				R.id.freeroom_layout_list_room_add_room,
-				mAutoCompleteAddRoomArrayListFRRoom, mModel, false);
-
-		mAutoCompleteAddRoomInputBarElement
-				.setOnKeyPressedListener(new OnKeyPressedListener() {
-					@Override
-					public void onKeyPressed(String text) {
-						mAutoCompleteAddRoomListView
-								.setAdapter(mAddRoomAdapter);
-
-						if (!u.validQuery(text)) {
-							mAutoCompleteAddRoomInputBarElement
-									.setButtonText(null);
-							autoCompleteCancel();
-						} else {
-							mAutoCompleteAddRoomInputBarElement
-									.setButtonText("");
-							// remove this if you don't want
-							// automatic autocomplete
-							// without pressing the button
-							AutoCompleteRequest request = new AutoCompleteRequest(
-									text, mModel.getGroupAccess());
-							mController.autoCompleteBuilding(view, request);
-						}
-					}
-				});
-	}
-
-	private void validAutoCompleteQuery(String query, View v) {
-		if (u.validQuery(query)) {
-			dismissSoftKeyBoard(v);
-			AutoCompleteRequest request = new AutoCompleteRequest(query,
-					mModel.getGroupAccess());
-			mController.autoCompleteBuilding(this, request);
-		} else {
-			autoCompleteCancel();
-		}
-		activateDebug(query);
-	}
-
-	private void UIConstructAddFavoritesInputBar() {
-		final IFreeRoomView view = this;
-
-		mAutoCompleteAddFavoritesInputBarElement = new InputBarElement(
-				this,
-				null,
-				getString(R.string.freeroom_check_occupancy_search_inputbarhint));
-		mAutoCompleteAddFavoritesInputBarElement
-				.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-
-		// click on magnify glass on the keyboard
-		mAutoCompleteAddFavoritesInputBarElement
-				.setOnEditorActionListener(new OnEditorActionListener() {
-					@Override
-					public boolean onEditorAction(TextView v, int actionId,
-							KeyEvent event) {
-						if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-							String query = mAutoCompleteAddRoomInputBarElement
-									.getInputText();
-							validAutoCompleteQuery(query, v);
-						}
-
-						return true;
-					}
-				});
-
-		// click on BUTTON magnify glass on the inputbar
-		mAutoCompleteAddFavoritesInputBarElement
-				.setOnButtonClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						String query = mAutoCompleteAddRoomInputBarElement
-								.getInputText();
-						validAutoCompleteQuery(query, v);
-					}
-				});
-
-		mAddFavoritesAdapter = new FRRoomSuggestionArrayAdapter<FRRoom>(
-				getApplicationContext(),
-				R.layout.freeroom_layout_list_room_add_fav,
-				R.id.freeroom_layout_list_room_add_fav,
-				mAutoCompleteAddFavoritesArrayListFRRoom, mModel, true);
-
-		mAutoCompleteAddFavoritesInputBarElement
-				.setOnKeyPressedListener(new OnKeyPressedListener() {
-					@Override
-					public void onKeyPressed(String text) {
-						mAutoCompleteAddFavoritesListView
-								.setAdapter(mAddFavoritesAdapter);
-
-						if (!u.validQuery(text)) {
-							mAutoCompleteAddFavoritesInputBarElement
-									.setButtonText(null);
-							autoCompleteCancel();
-						} else {
-							mAutoCompleteAddFavoritesInputBarElement
-									.setButtonText("");
-							// remove this if you don't want
-							// automatic autocomplete
-							// without pressing the button
-							AutoCompleteRequest request = new AutoCompleteRequest(
-									text, mModel.getGroupAccess());
-							mController.autoCompleteBuilding(view, request);
-						}
-					}
-				});
-	}
-
-	private enum AddCollectionCaller {
-		ADDALLFAV, SEARCH;
-	}
-
-	/**
-	 * Add all the favorites FRRoom to the collection. Caller is needed in order
-	 * to have special condition depending on the caller. The collection will be
-	 * cleared prior to any adding.
-	 * 
-	 * @param collection
-	 *            collection in which you want the favorites to be added.
-	 * @param caller
-	 *            identification of the caller, to provide conditions.
-	 * @param addOnlyUID
-	 *            true to add UID, false to add fully FRRoom object.
-	 */
-	private void addAllFavoriteToCollection(Collection collection,
-			AddCollectionCaller caller, boolean addOnlyUID) {
-		collection.clear();
-		OrderMapListFew<String, List<FRRoom>, FRRoom> set = mModel
-				.getFavorites();
-		Iterator<String> iter = set.keySetOrdered().iterator();
-		while (iter.hasNext()) {
-			String key = iter.next();
-			Iterator<FRRoom> iter2 = set.get(key).iterator();
-			label: while (iter2.hasNext()) {
-				FRRoom mRoom = iter2.next();
-				// condition of adding depending on the caller
-				if (caller.equals(AddCollectionCaller.ADDALLFAV)) {
-					if (selectedRooms.contains(mRoom)) {
-						break label;
-					}
-				}
-				if (addOnlyUID) {
-					collection.add(mRoom.getUid());
-				} else {
-					collection.add(mRoom);
-				}
-			}
+	private void fillSearchDialog() {
+		final FRRequestDetails request = mModel.getFRRequestDetails();
+		if (request != null) {
+			fillSearchDialog(request);
 		}
 	}
 
 	/**
-	 * Initialize the autocomplete suggestion list
+	 * DONT CALL IT! Call {@link #reset()} instead.
+	 * 
+	 * @param request
 	 */
-	private void createAddRoomSuggestionsList() {
-		mAutoCompleteAddRoomListView = new ListView(this);
-		mAutoCompleteAddRoomInputBarElement
-				.addView(mAutoCompleteAddRoomListView);
-
-		mAutoCompleteAddRoomListView
-				.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> adapter, View view,
-							int pos, long id) {
-						// when an item is clicked, the keyboard is dimissed
-						dismissSoftKeyBoard(view);
-						FRRoom room = mAutoCompleteAddRoomArrayListFRRoom
-								.get(pos);
-						addRoomToCheck(room);
-						searchButton.setEnabled(auditSubmit() == 0);
-
-						// WE DONT REMOVE the text in the input bar
-						// INTENTIONNALLY: user may want to select multiple
-						// rooms in the same building
-
-						// refresh the autocomplete, such that selected
-						// rooms are not displayed anymore
-						autoCompletedUpdated();
-
-					}
-				});
-		mAutoCompleteAddRoomListView.setAdapter(mAddRoomAdapter);
-	}
-
-	/**
-	 * Initialize the autocomplete suggestion list
-	 */
-	private void createAddFavoritesSuggestionsList() {
-		mAutoCompleteAddFavoritesListView = new ListView(this);
-		mAutoCompleteAddFavoritesInputBarElement
-				.addView(mAutoCompleteAddFavoritesListView);
-
-		mAutoCompleteAddFavoritesListView
-				.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> adapter, View view,
-							int pos, long id) {
-						// when an item is clicked, the keyboard is dimissed
-						dismissSoftKeyBoard(view);
-						FRRoom room = mAutoCompleteAddFavoritesArrayListFRRoom
-								.get(pos);
-						if (mModel.isFavorite(room)) {
-							mModel.removeFavorite(room);
-						} else {
-							mModel.addFavorite(room);
-						}
-
-						// WE DONT REMOVE the text in the input bar
-						// INTENTIONNALLY: user may want to select multiple
-						// rooms in the same building
-						autoCompletedUpdated();
-					}
-				});
-		mAutoCompleteAddFavoritesListView.setAdapter(mAddFavoritesAdapter);
-	}
-
-	private void addRoomToCheck(FRRoom room) {
-		// we only add if it already contains the room
-		if (!selectedRooms.contains(room)) {
-			selectedRooms.add(room);
+	private void fillSearchDialog(final FRRequestDetails request) {
+		resetTimes(request.getPeriod());
+		anyButton.setChecked(request.isAny());
+		specButton.setChecked(!request.isAny());
+		favButton.setChecked(request.isFav());
+		userDefButton.setChecked(request.isUser());
+		freeButton.setChecked(request.isOnlyFreeRooms());
+		boolean enabled = !request.isAny();
+		favButton.setEnabled(enabled);
+		userDefButton.setEnabled(enabled);
+		freeButton.setEnabled(enabled);
+		mOptionalLineLinearLayoutWrapperFirst.setVisibility(View.GONE);
+		if (enabled) {
+			mOptionalLineLinearLayoutWrapperFirst.setVisibility(View.VISIBLE);
+		}
+		mOptionalLineLinearLayoutWrapperSecond.setVisibility(View.GONE);
+		if (request.isUser()) {
+			mOptionalLineLinearLayoutWrapperSecond.setVisibility(View.VISIBLE);
+			selectedRooms.addAll(request.getUidNonFav());
 			mSummarySelectedRoomsTextViewSearchMenu.setText(u
 					.getSummaryTextFromCollection(selectedRooms));
-
-		} else {
-			Log.e(this.getClass().toString(),
-					"room cannot be added: already added");
 		}
+		updateDateTimePickersAndButtons();
+
+		// MUST be the last action: after all field are set, check if the
+		// request is valid
+		searchButton.setEnabled(auditSubmit() == 0);
 	}
 
 	/**
@@ -4050,102 +3758,289 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		return ret + auditTimesString();
 	}
 
-	@Override
-	public void autoCompleteLaunch() {
-		tvAutcompletStatusFav
-				.setText(getString(R.string.freeroom_dialog_add_autocomplete_updating));
-		tvAutcompletStatusRoom
-				.setText(getString(R.string.freeroom_dialog_add_autocomplete_updating));
-	}
+	// PREVIOUS REQUEST MANAGEMENT //
 
 	/**
-	 * To be called when autocomplete is not lauchable and ask the user to type
-	 * in.
+	 * Inits the title for previous request, with empty value if none, with
+	 * "show" if not displayed, or "prev request" otherwise.
 	 */
-	public void autoCompleteCancel() {
-		mAutoCompleteAddFavoritesArrayListFRRoom.clear();
-		mAddFavoritesAdapter.notifyDataSetInvalidated();
-		mAutoCompleteAddRoomArrayListFRRoom.clear();
-		mAddRoomAdapter.notifyDataSetInvalidated();
-
-		tvAutcompletStatusFav
-				.setText(getString(R.string.freeroom_dialog_add_autocomplete_typein));
-		tvAutcompletStatusRoom
-				.setText(getString(R.string.freeroom_dialog_add_autocomplete_typein));
-	}
-
-	/**
-	 * Update the text message in autocomplete status text view
-	 * (updating/up-to-date/error/...)
-	 * 
-	 * @param text
-	 *            the new message to display.
-	 */
-	private void autoCompleteUpdateMessage(CharSequence text) {
-		tvAutcompletStatusFav.setText(text);
-		tvAutcompletStatusRoom.setText(text);
-	}
-
-	@Override
-	public void autoCompletedUpdated() {
-		mAddRoomAdapter.notifyDataSetInvalidated();
-		mAddFavoritesAdapter.notifyDataSetInvalidated();
-		mAutoCompleteAddRoomArrayListFRRoom.clear();
-		mAutoCompleteAddFavoritesArrayListFRRoom.clear();
-		boolean emptyResult = (mModel.getAutoComplete().values().size() == 0);
-		if (emptyResult) {
-			autoCompleteUpdateMessage(getString(R.string.freeroom_dialog_add_autocomplete_noresult));
+	private void initPreviousTitle() {
+		if (mModel.getPreviousRequest().isEmpty()) {
+			prevSearchTitle.setText("");
+			prevSearchTitle.setVisibility(View.GONE);
+			goUpHomeButton.setVisibility(View.GONE);
 		} else {
-			autoCompleteUpdateMessage(getString(R.string.freeroom_dialog_add_autocomplete_uptodate));
+			prevSearchTitle.setText(textTitlePrevious);
+			prevSearchTitle.setVisibility(View.VISIBLE);
+			goUpHomeButton.setVisibility(View.VISIBLE);
 		}
-
-		// FIXME: adapt to use the new version of autocomplete mapped by
-		// building
-		Iterator<List<FRRoom>> iter = mModel.getAutoComplete().values()
-				.iterator();
-		while (iter.hasNext()) {
-			List<FRRoom> list = iter.next();
-			Iterator<FRRoom> iterroom = list.iterator();
-			while (iterroom.hasNext()) {
-				FRRoom room = iterroom.next();
-				// rooms that are already selected are not displayed...
-				if (!selectedRooms.contains(room)) {
-					mAutoCompleteAddRoomArrayListFRRoom.add(room);
-				}
-				mAutoCompleteAddFavoritesArrayListFRRoom.add(room);
-			}
-		}
-
-		/*
-		 * If there was a non-empty result but all rooms got rejected, we
-		 * display "no more" instead of "up-to-date". Not useful for favorites
-		 * as no room is rejected.
-		 */
-		if (!emptyResult) {
-			if (mAutoCompleteAddRoomArrayListFRRoom.isEmpty()) {
-				tvAutcompletStatusRoom
-						.setText(getString(R.string.freeroom_dialog_add_autocomplete_nomore));
-			}
-			if (mAutoCompleteAddFavoritesArrayListFRRoom.isEmpty()) {
-				tvAutcompletStatusFav
-						.setText(getString(R.string.freeroom_dialog_add_autocomplete_nomore));
-			}
-		}
-
-		if (mSearchByUriTriggered) {
-			searchByUriMakeRequest(mAutoCompleteAddRoomArrayListFRRoom);
-		}
-
-		mAddRoomAdapter.notifyDataSetChanged();
-		mAddFavoritesAdapter.notifyDataSetChanged();
 	}
 
-	@Override
-	public void refreshOccupancies() {
-		refresh();
+	/**
+	 * When a Previous Request item is clicked on "play".
+	 * 
+	 * @param position
+	 *            position of the item to replay
+	 */
+	public void onPlayRequestClickListener(int position) {
+		if (onFillRequestClickListeners(position)) {
+			// request we will be stored
+			// it will actually come at the first place and be deleted from it's
+			// original place
+			prepareSearchQuery(true);
+		}
+	}
+
+	/**
+	 * Generates a String summary of a FRRequestDetails with compatible time and
+	 * collections.
+	 * 
+	 * @param req
+	 *            the request to summarize
+	 * @return summary of the request
+	 */
+	public String FRRequestToString(FRRequestDetails req) {
+		StringBuilder build = new StringBuilder(100);
+		build.append(times.formatTimePeriod(req.getPeriod(), true, false));
+		build.append(" ");
+		// it's the max size of the collections of room. but the textview has a
+		// maxlength of 2 lines anyway, so we dont really care...
+		int max = 150;
+
+		if (req.isAny()) {
+			build.append(getString(R.string.freeroom_search_any));
+		} else {
+			if (req.isFav()) {
+				build.append(getString(R.string.freeroom_search_favorites));
+				build.append("; ");
+			}
+			if (req.isOnlyFreeRooms()) {
+				build.append(getString(R.string.freeroom_search_only_free_short));
+				build.append("; ");
+			}
+			if (req.isUser()) {
+				if (req.getUidNonFav() != null) {
+					build.append("[" + req.getUidNonFav().size() + "] : ");
+					build.append(u.getSummaryTextFromCollection(
+							req.getUidNonFav(), "", max));
+				}
+			}
+		}
+		return build.toString();
+	}
+
+	/**
+	 * When a Previous Request item is clicked on "remove".
+	 * 
+	 * @param position
+	 *            position of the item to remove
+	 */
+	public void onRemoveRequestClickListener(int position) {
+		mModel.removeRequest(position);
+		mPrevRequestAdapter.notifyDataSetChanged();
+		if (mModel.getPreviousRequest().isEmpty()) {
+			initPreviousTitle();
+			mSearchDialog.show();
+		}
+	}
+
+	/**
+	 * When a Selected Room item is clicked on "remove".
+	 * 
+	 * @param position
+	 *            position of the item to remove
+	 */
+	public void onRemoveRoomClickListener(int position) {
+		// from time to time cause an issue, this gets black hole in the list.
+		// fixed by setting the whole line clickable to remove the line
+		selectedRoomArrayAdapter.remove(selectedRoomArrayAdapter
+				.getItem(position));
+		selectedListView.refreshDrawableState();
+	}
+
+	/**
+	 * Fill the search menus with the selected previous request.
+	 * 
+	 * @param position
+	 *            position of the item to use to refill.
+	 */
+	public boolean onFillRequestClickListeners(int position) {
+		mSearchPreviousListView.smoothScrollToPosition(0);
+		FRRequestDetails req = mModel.getPreviousRequest().get(position);
+		if (req != null) {
+			reset();
+			fillSearchDialog(req);
+			return true;
+		}
+		return false;
 	}
 
 	// ******* SETTINGS/PARAMETERS *****///
+
+	/**
+	 * Inits the dialog to display the parameters.
+	 */
+	private void initParamDialog() {
+		// Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.freeroom_settings_title));
+		builder.setIcon(R.drawable.ic_action_settings);
+
+		// Get the AlertDialog from create()
+		mParamDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mParamDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.FILL_PARENT;
+		lp.height = LayoutParams.WRAP_CONTENT;
+		mParamDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mParamDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mParamDialog.getWindow().setAttributes(lp);
+
+		mParamView = mLayoutInflater.inflate(
+				R.layout.freeroom_layout_dialog_param, null);
+
+		// these work perfectly
+		mParamView.setMinimumWidth((int) (activityWidth * 0.95f));
+
+		mParamDialog.setView(mParamView);
+
+		// fill with the real value from model!
+		initParamDialogData();
+		// when dismissing, make a new search with (new) default value
+		mParamDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				initDefaultRequest(false);
+				refresh();
+			}
+		});
+
+		mParamDialog.setOnShowListener(new OnShowListener() {
+			@Override
+			public void onShow(DialogInterface dialog) {
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/settings");
+			}
+		});
+	}
+
+	private void initParamDialogData() {
+		mParamDialogRefreshTimeFormatExample();
+		mParamDialogRefreshColorBlindExamples();
+
+		int id;
+		RadioButton rd;
+
+		HomeBehaviourRoom room = mModel.getHomeBehaviourRoom();
+		switch (room) {
+		case ANYFREEROOM:
+			id = R.id.freeroom_layout_param_home_any;
+			break;
+		case FAVORITES:
+			id = R.id.freeroom_layout_param_home_fav;
+			break;
+		case FAVORITES_ONLY_FREE:
+			id = R.id.freeroom_layout_param_home_favfree;
+			break;
+		// this is implemented, this was thought as useless.
+		// case LASTREQUEST:
+		// id = R.id.freeroom_layout_param_home_last;
+		// break;
+		default:
+			id = R.id.freeroom_layout_param_home_fav;
+			break;
+		}
+		rd = (RadioButton) mParamView.findViewById(id);
+		rd.setChecked(true);
+
+		HomeBehaviourTime time = mModel.getHomeBehaviourTime();
+		switch (time) {
+		case CURRENT_TIME:
+			id = R.id.freeroom_layout_param_home_time_current;
+			break;
+		case UP_TO_END_OF_DAY:
+			id = R.id.freeroom_layout_param_home_time_end;
+			break;
+		case WHOLE_DAY:
+			id = R.id.freeroom_layout_param_home_time_whole;
+			break;
+		default:
+			id = R.id.freeroom_layout_param_home_time_current;
+			break;
+		}
+		rd = (RadioButton) mParamView.findViewById(id);
+		rd.setChecked(true);
+
+		ColorBlindMode colorBlindMode = mModel.getColorBlindMode();
+		switch (colorBlindMode) {
+		case DEFAULT:
+			id = R.id.freeroom_layout_param_color_default;
+			break;
+		case DOTS_DISCOLORED:
+			id = R.id.freeroom_layout_param_color_default;
+			break;
+		case DOTS_SYMBOL:
+			id = R.id.freeroom_layout_param_color_symbolic;
+			break;
+		case DOTS_SYMBOL_LINEFULL:
+			id = R.id.freeroom_layout_param_color_symbolic_lines;
+			break;
+		case DOTS_SYMBOL_LINEFULL_DISCOLORED:
+			id = R.id.freeroom_layout_param_color_symbolic_lines_disc;
+			break;
+		default:
+			id = R.id.freeroom_layout_param_color_default;
+			break;
+		}
+		rd = (RadioButton) mParamView.findViewById(id);
+		rd.setChecked(true);
+
+		boolean advanced = false;
+		switch (colorBlindMode) {
+		case DEFAULT:
+		case DOTS_DISCOLORED:
+			advanced = false;
+			break;
+		case DOTS_SYMBOL:
+		case DOTS_SYMBOL_LINEFULL:
+		case DOTS_SYMBOL_LINEFULL_DISCOLORED:
+			advanced = true;
+			break;
+		default:
+			advanced = false;
+			break;
+		}
+
+		CheckBox advancedCheckBox = (CheckBox) mParamView
+				.findViewById(R.id.freeroom_layout_dialog_param_colorblind_advanced);
+		advancedCheckBox.setChecked(advanced);
+		onColorBlindAdvancedChecked(advancedCheckBox);
+
+		TimeLanguage tl = mModel.getTimeLanguage();
+		switch (tl) {
+		case DEFAULT:
+			id = R.id.freeroom_layout_param_time_language_def;
+			break;
+		case ENGLISH:
+			id = R.id.freeroom_layout_param_time_language_en;
+			break;
+		case FRENCH:
+			id = R.id.freeroom_layout_param_time_language_fr;
+			break;
+		default:
+			id = R.id.freeroom_layout_param_time_language_def;
+			break;
+		}
+		rd = (RadioButton) mParamView.findViewById(id);
+		rd.setChecked(true);
+	}
 
 	/**
 	 * Listener to change some model parameter/settings.
@@ -4420,6 +4315,164 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		tv.setText(times.formatFullDate(selected));
 	}
 
+	// WELCOME DIALOF FOR BETA
+
+	/**
+	 * Stores (non-permanent!) if it's the first time the user want to dismiss
+	 * the welcome dialog without being registered.
+	 */
+	private boolean firstTimeWelcomeWithOutRegistered = true;
+
+	/**
+	 * Inits the welcome dialog
+	 * <p>
+	 * TODO: beta-only
+	 */
+	private void initWelcomeDialog() {
+		// Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.freeroom_welcome_title));
+		builder.setIcon(R.drawable.ic_action_about);
+		builder.setNeutralButton(getString(R.string.freeroom_welcome_dismiss),
+				null);
+
+		// Get the AlertDialog from create()
+		mWelcomeDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mWelcomeDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.FILL_PARENT;
+		lp.height = LayoutParams.WRAP_CONTENT;
+		mWelcomeDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mWelcomeDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mWelcomeDialog.getWindow().setAttributes(lp);
+
+		mWelcomeView = mLayoutInflater.inflate(
+				R.layout.freeroom_layout_dialog_welcome, null);
+
+		// these work perfectly
+		mWelcomeView.setMinimumWidth((int) (activityWidth * 0.9f));
+		mWelcomeView.setMinimumHeight((int) (activityHeight * 0.8f));
+
+		mWelcomeDialog.setView(mWelcomeView);
+		mWelcomeDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface arg0) {
+				if (!mModel.getRegisteredUser()) {
+					if (firstTimeWelcomeWithOutRegistered) {
+						firstTimeWelcomeWithOutRegistered = false;
+						mWelcomeDialog.show();
+						showErrorDialog(getString(R.string.freeroom_welcome_error));
+					} else {
+						finish();
+					}
+				}
+			}
+		});
+
+		mWelcomeDialog.setOnShowListener(new OnShowListener() {
+			@Override
+			public void onShow(DialogInterface dialog) {
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/welcome");
+			}
+		});
+
+		TextView configText = (TextView) mWelcomeView
+				.findViewById(R.id.freeroom_layout_dialog_welcome_config);
+		configText.setText(getConfig(true));
+
+		final EditText emailText = (EditText) mWelcomeView
+				.findViewById(R.id.freeroom_layout_dialog_welcome_email);
+		final Button registerUserBeta = (Button) mWelcomeView
+				.findViewById(R.id.freeroom_layout_dialog_welcome_register);
+
+		final IFreeRoomView view = this;
+		registerUserBeta.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				String email = emailText.getText().toString();
+				if (email.equals(fct_prefix + "noregister")) {
+					registerUserBeta
+							.setText(getString(R.string.freeroom_welcome_submitting));
+					registerUserBeta.setEnabled(false);
+					dismissSoftKeyBoard(arg0);
+					mModel.setRegisteredUser(true);
+					validateRegistration();
+				} else if (validEmail(email)) {
+					RegisterUser req = new RegisterUser(email, getConfig(false));
+					mController.sendRegisterUser(req, view);
+					registerUserBeta
+							.setText(getString(R.string.freeroom_welcome_submitting));
+					registerUserBeta.setEnabled(false);
+					dismissSoftKeyBoard(arg0);
+				}
+			}
+		});
+	}
+
+	/**
+	 * Tries to validate an email. If error, display an error message in a
+	 * dialog.
+	 * <p>
+	 * TODO: beta-only
+	 * 
+	 * @param email
+	 *            the email to test
+	 * @return true if email is well-formed.
+	 */
+	private boolean validEmail(String email) {
+		if (u.validEmail(email)) {
+			return true;
+		} else {
+			showErrorDialog(getString(R.string.freeroom_welcome_invalid_mail));
+			return false;
+		}
+	}
+
+	/**
+	 * To be called when the server validates the registration, to change the
+	 * display of the welcome popup.
+	 * <p>
+	 * TODO: beta-only
+	 */
+	private void validateRegistration() {
+		LinearLayout before = (LinearLayout) mWelcomeView
+				.findViewById(R.id.freeroom_layout_dialog_welcome_before);
+		LinearLayout after = (LinearLayout) mWelcomeView
+				.findViewById(R.id.freeroom_layout_dialog_welcome_after);
+		after.setVisibility(LinearLayout.VISIBLE);
+		before.setVisibility(LinearLayout.GONE);
+	}
+
+	@Override
+	public void errorRegister(boolean transmissionError) {
+
+		// TODO beta-test only.
+		Button registerUserBeta = (Button) mWelcomeView
+				.findViewById(R.id.freeroom_layout_dialog_welcome_register);
+		registerUserBeta.setEnabled(true);
+		registerUserBeta.setText(getString(R.string.freeroom_welcome_register));
+		String string = getString(R.string.freeroom_welcome_validate_network_error);
+		if (!transmissionError) {
+			string = getString(R.string.freeroom_welcome_validate_reject);
+			showErrorDialog(string);
+		}
+	}
+
+	@Override
+	public void validateRegister() {
+		// TODO beta-test only.
+		validateRegistration();
+	}
+
 	// FOR BETA/DEV
 
 	/**
@@ -4640,6 +4693,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		showErrorDialog(getString(R.string.freeroom_error_unknown_error) + "\n"
 				+ getString(R.string.freeroom_error_please_report));
 	}
+
+	// KONAMI CODE AND HIDDEN DEBUG FUNCTIONS
 
 	/**
 	 * Enum to describe Moves taken into account in Konami Code.
