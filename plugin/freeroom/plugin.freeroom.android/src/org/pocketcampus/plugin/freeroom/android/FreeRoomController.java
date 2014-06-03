@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.freeroom.android;
 
-import java.util.Iterator;
-
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.R;
@@ -19,7 +17,6 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
-import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
 import org.pocketcampus.plugin.freeroom.shared.RegisterUser;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
@@ -99,7 +96,8 @@ public class FreeRoomController extends PluginController implements
 			Log.e(callingClass, "server had an internal error");
 			caller.freeRoomServersInternalError();
 		} else {
-			Log.e(callingClass, "server sent another UNKNOWN status" + status);
+			Log.e(callingClass, "server sent another UNKNOWN status" + status
+					+ "/" + statusComment);
 			caller.freeRoomServersUnknownError();
 		}
 	}
@@ -253,7 +251,7 @@ public class FreeRoomController extends PluginController implements
 	 *            the <code>WhoIsWorkingReply</code> from the server.
 	 */
 	public void setWhoIsWorkingReply(WhoIsWorkingReply result) {
-		 mModel.setListMessageFrequency(result.getMessages());
+		mModel.setListMessageFrequency(result.getMessages());
 	}
 
 	// NEW INTERFACE as of 2104.04.04.

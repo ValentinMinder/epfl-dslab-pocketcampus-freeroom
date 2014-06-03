@@ -2518,7 +2518,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			if (mInfoRoomDialog.isShowing()) {
 				FRRoom room = mModel.getDisplayedOccupancy().getRoom();
 				List<?> list = mModel.getOccupancyResults().get(
-						mModel.getKey(room));
+						mModel.getBuildingKeyLabel(room));
 				Iterator<?> iter = list.iterator();
 				label: while (iter.hasNext()) {
 					Object o = iter.next();

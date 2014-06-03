@@ -612,73 +612,25 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	// ********** END OF "WHO'S WORKING THERE" PART **********
 
 	/**
-	 * TODO: deprecated
+	 * WARNING: USE WITH GREAT CARE. PREFER BUILDING_LABLE IN ALL CASES.
 	 * <p>
-	 * Returns the building part in mDoorCode.
+	 * Returns the building part in mDoorCode. <br>
 	 * 
 	 * Door codes should be like PH D2 398 with PH the building D2 the zone 398
-	 * the number (including floor)
+	 * the number (including floor) <br>
 	 * 
-	 * It works ONLY if spaces are correctly set!
+	 * It works ONLY if spaces are correctly set! <br>
 	 * 
 	 * @param mDoorCode
 	 * @return
 	 */
-	public String getBuilding(String mDoorCode) {
+	private String getBuilding(String mDoorCode) {
 		mDoorCode = mDoorCode.trim();
 		int firstSpace = mDoorCode.indexOf(" ");
 		if (firstSpace > 0) {
 			mDoorCode = mDoorCode.substring(0, firstSpace);
 		}
 		return mDoorCode;
-	}
-
-	/**
-	 * TODO: Deprecated method!
-	 * <p>
-	 * Sort a given set of rooms by its buildings, the returning map maps
-	 * building's name to the list of rooms in this buildings. This also add's a
-	 * category named Favorites that contains all the favorites if boolean
-	 * wantFavoritesList is true
-	 * <p>
-	 **/
-	public TreeMap<String, List<FRRoom>> sortFRRoomsByBuildingsAndFavorites(
-			Set<FRRoom> rooms, boolean wantFavoritesList) {
-		Iterator<FRRoom> iter = rooms.iterator();
-		TreeMap<String, List<FRRoom>> sortedResult = new TreeMap<String, List<FRRoom>>();
-		ArrayList<String> buildingsList = new ArrayList<String>();
-
-		ArrayList<FRRoom> roomsFavorites = null;
-		if (wantFavoritesList) {
-			buildingsList.add(context
-					.getString(R.string.freeroom_result_group_favorites));
-			roomsFavorites = new ArrayList<FRRoom>();
-		}
-
-		while (iter.hasNext()) {
-			FRRoom frRoom = iter.next();
-
-			if (wantFavoritesList && isFavorite(frRoom)) {
-				roomsFavorites.add(frRoom);
-			}
-
-			String building = getBuilding(frRoom.getDoorCode());
-
-			List<FRRoom> roomsNumbers = sortedResult.get(building);
-			if (roomsNumbers == null) {
-				buildingsList.add(building);
-				roomsNumbers = new ArrayList<FRRoom>();
-				sortedResult.put(building, roomsNumbers);
-			}
-			roomsNumbers.add(frRoom);
-		}
-
-		// we leave an empty favorites list!
-		if (wantFavoritesList && roomsFavorites.isEmpty()) {
-			sortedResult.remove(buildingsList.get(0));
-			buildingsList.remove(0);
-		}
-		return sortedResult;
 	}
 
 	// ********** END OF "FAVORITES" PART **********
@@ -690,8 +642,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	// ********** END OF FILE **********
 
 	/**
-	 * TODO: NEW INTERFACE as of 2014.04.04.
-	 * <p>
 	 * Update the occupancy results in the model. The reference to the old data
 	 * is kept, only the old data are trashed but the reference is kept.
 	 * 
@@ -719,8 +669,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * TODO: NEW INTERFACE as of 2014.04.04.
-	 * <p>
 	 * Get the occupancy results. Note that the reference never changes, so you
 	 * simply need to update your adapter, never put the date again in it.
 	 * 
@@ -731,23 +679,21 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * TODO: NEW INTERFACE as of 2014.04.04.
-	 * <p>
-	 * TODO: this is not kept permanently!
+	 * WARNING: THIS FEATURE HAS BEEN CANCELED AND this is not kept permanently!
 	 * <p>
 	 * Order of the buildings for displaying to the user.
 	 */
 	private List<String> orderedBuildings = new ArrayList<String>();
 
 	/**
-	 * TODO: NEW INTERFACE as of 2014.04.04.
+	 * * WARNING: THIS FEATURE HAS BEEN CANCELED AND this is not kept
+	 * permanently!
 	 * <p>
 	 * Get the orderedBuilding list to display
 	 * 
 	 * @return the list of ordered buildings.
 	 */
 	public List<String> getOrderedBuildings() {
-		// TODO: this is not stored so far!
 		return orderedBuildings;
 	}
 
@@ -1187,15 +1133,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	/**
 	 * Return the id of the right image based on the ratio given.
 	 * <p>
-	 * TODO: may be do that better TODO: insert a "???" image if information is
-	 * not available.
+	 * WARNING: VALUES ARE DEFINED ONLY THERE.
 	 * 
 	 * @param ratio
 	 *            ratio of WorstCaseProbableOccupancy
-	 * @return
+	 * @return the correct reference to the image.
 	 */
 	public int getImageFromRatioOccupation(double ratio) {
-
+		// at first presence we already change the image
 		double ratioLowg = 0.00;
 		double ratioLow = 0.05;
 		double ratioMedg = 0.10;
@@ -1426,7 +1371,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		getFavorites();
 		// cannot add twice!
 		if (!isFavorite(mRoom)) {
-			String key = getKey(mRoom);
+			String key = getBuildingKeyLabel(mRoom);
 			List<FRRoom> list = null;
 			if (favorites.containsKey(key)) {
 				list = favorites.get(key);
@@ -1451,7 +1396,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public boolean isFavorite(FRRoom mRoom) {
 		// ensure favorites structure exists.
 		getFavorites();
-		String key = getKey(mRoom);
+		String key = getBuildingKeyLabel(mRoom);
 		List<FRRoom> list = null;
 		if (favorites.containsKey(key)) {
 			list = favorites.get(key);
@@ -1478,7 +1423,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		// ensure favorites structure exists.
 		getFavorites();
 
-		String key = getKey(mRoom);
+		String key = getBuildingKeyLabel(mRoom);
 		List<FRRoom> list = null;
 		if (favorites.containsKey(key)) {
 			list = favorites.get(key);
@@ -1502,8 +1447,16 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		}
 	}
 
-	// TODO: this is not secured (may not exist)
-	public String getKey(FRRoom mRoom) {
+	/**
+	 * Get the building key of the room, from its building label if set, or from
+	 * its door code otherwise.
+	 * <p>
+	 * WARNING: THIS MAY BE INCORRECT IF BUILDING LABEL IS NOT SET.
+	 * 
+	 * @param mRoom the given room
+	 * @return the room's building name.
+	 */
+	public String getBuildingKeyLabel(FRRoom mRoom) {
 		String key = mRoom.getBuilding_name();
 		if (key == null || key.length() == 0) {
 			key = getBuilding(mRoom.getDoorCode());
