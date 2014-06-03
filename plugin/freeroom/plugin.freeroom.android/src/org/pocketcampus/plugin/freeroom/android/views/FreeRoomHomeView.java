@@ -1651,7 +1651,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onDismiss(DialogInterface dialog) {
-				// TODO remove text + empty spinner
+				// we dont remove the text, as the user may want to share again
+				// the same text!
 			}
 		});
 
@@ -1733,14 +1734,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		final Spinner spinner = (Spinner) mShareView
 				.findViewById(R.id.freeroom_layout_dialog_share_spinner_course);
 		// Create an ArrayAdapter using the string array and a default spinner
-		// layout
-		// TODO: get that from the occupancy data... ++ string
+		// layout : this is NOT displayed for now!
+		// other's activity are only displayed in the given popup, not there.
 		ArrayList<String> suggest = new ArrayList<String>();
 		// 1st result is the "title"
 		suggest.add(getString(R.string.freeroom_share_others_activity));
-		// TODO: get this from the selected occupancy...
-		// suggest.add("SwEng");
-		// suggest.add("NetSec");
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, suggest);
@@ -1975,7 +1973,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 *            position of the item to remove
 	 */
 	public void onRemoveRoomClickListener(int position) {
-		// TODO: issue, this gets black hole in the list ?!?!?
+		// from time to time cause an issue, this gets black hole in the list.
+		// fixed by setting the whole line clickable to remove the line
 		selectedRoomArrayAdapter.remove(selectedRoomArrayAdapter
 				.getItem(position));
 		selectedListView.refreshDrawableState();
@@ -2171,7 +2170,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		case FAVORITES_ONLY_FREE:
 			id = R.id.freeroom_layout_param_home_favfree;
 			break;
-		// TODO dont work now
+		// this is implemented, this was thought as useless.
 		// case LASTREQUEST:
 		// id = R.id.freeroom_layout_param_home_last;
 		// break;
@@ -2265,24 +2264,22 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
-	 * TODO: this doesn't get triggered !!!
+	 * This checks the konami code moves.
 	 */
 	public boolean onTouchEvent(MotionEvent event) {
-		if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-			System.out.println("touch outside dialog");
-			mSearchDialog.dismiss();
-		}
 		checkKonamiCode(event);
 		return true;
 	}
 
 	/**
-	 * Overrides the legacy <code>onKeyDown</code> method in order to close the
-	 * dialog if one was opened. TODO: test if really needed.
+	 * Overrides the legacy <code>onKeyDown</code> method in order to override
+	 * some hardware button implementation.
 	 * 
 	 * @param keyCode
+	 *            keycode as specified by overridden method
 	 * @param event
-	 * @return
+	 *            event as specified by overridden method
+	 * @return boolean value as specified by overridden method
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -2465,7 +2462,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		if (room.equals(HomeBehaviourRoom.LASTREQUEST)) {
-			// TODO
+			// this feature has been disabled => going from default
 			u.logD("last request is not operational now");
 			room = HomeBehaviourRoom.ANYFREEROOM;
 		}
@@ -2564,8 +2561,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Expands all the groups if there are no more than 3 groups AND not more
 	 * than 7 results.
 	 * <p>
-	 * TODO defines these consts somewhere else <br>
-	 * TODO: move this method in utils.
+	 * These constants are defined ONLY there <br>
 	 * 
 	 * @param ev
 	 *            expandable list view
@@ -2650,8 +2646,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						.formatFullDateFullTimePeriod(mOccupancy
 								.getTreatedPeriod()));
 			} else {
-				// TODO: error coming from server ??
-				periodTextView.setText("ERROR-PERIOD");
+				// error coming from server ??
+				periodTextView.setText("period");
+				System.err
+						.println("Unknown or undefined period coming from server");
 			}
 
 			// people image to replay worst case occupancy and direct share with
@@ -2675,8 +2673,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				@Override
 				public void onClick(View v) {
 					try {
-						// TODO: when map plugin accepts UID, change by uid
-						// instead of doorcode!
+						// TODO: when map plugin accepts UID and not only room
+						// name, change by uid instead of doorcode!
 						Uri mUri = Uri
 								.parse("pocketcampus://map.plugin.pocketcampus.org/search");
 						Uri.Builder mbuild = mUri.buildUpon()
@@ -3018,9 +3016,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							endMinSelected = 0;
 						}
 						if (endHourSelected == FRTimes.FIRST_HOUR_CHECK
-								&& endMinSelected <= FRTimes.MIN_MINUTE_INTERVAL) {
-							endMinSelected = FRTimes.MIN_MINUTE_INTERVAL;
-							// TODO: if start is not 8h00 (eg 8h10 dont work)
+								&& (endMinSelected - startMinSelected) <= FRTimes.MIN_MINUTE_INTERVAL) {
+							endMinSelected = startMinSelected
+									+ FRTimes.MIN_MINUTE_INTERVAL;
+							if (endMinSelected >= 60) {
+								endMinSelected = 0;
+								endHourSelected += 1;
+								startMinSelected = 60 - FRTimes.MIN_MINUTE_INTERVAL;
+							}
 						}
 
 						if (endHourSelected >= FRTimes.LAST_HOUR_CHECK) {
@@ -3211,10 +3214,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				reset();
-				// addAllFavsToAutoComplete();
-				// we reset the input bar...
-				// TODO
-				// mAutoCompleteSuggestionInputBarElement.setInputText("");
 			}
 		});
 
@@ -3503,8 +3502,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						} else {
 							mAutoCompleteAddRoomInputBarElement
 									.setButtonText("");
-							// TODO remove this if you don't want
-							// auto-complete
+							// remove this if you don't want
+							// automatic autocomplete
 							// without pressing the button
 							AutoCompleteRequest request = new AutoCompleteRequest(
 									text, mModel.getGroupAccess());
@@ -3583,8 +3582,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						} else {
 							mAutoCompleteAddFavoritesInputBarElement
 									.setButtonText("");
-							// TODO remove this if you don't want
-							// auto-complete
+							// remove this if you don't want
+							// automatic autocomplete
 							// without pressing the button
 							AutoCompleteRequest request = new AutoCompleteRequest(
 									text, mModel.getGroupAccess());
@@ -3744,11 +3743,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void reset() {
 		searchButton.setEnabled(false);
 
-		// // reset the list of selected rooms
+		// reset the list of selected rooms
 		selectedRooms.clear();
-		// mSummarySelectedRoomsTextView
+		// TODO: mSummarySelectedRoomsTextView
 		// .setText(getString(R.string.freeroom_check_occupancy_search_text_no_selected_rooms));
-		//
+
 		mAutoCompleteAddRoomArrayListFRRoom.clear();
 
 		resetTimes();
@@ -3760,7 +3759,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		specButton.setChecked(false);
 		favButton.setChecked(false);
 		userDefButton.setChecked(false);
+
 		// resetUserDefined(); TODO
+
 		freeButton.setChecked(true);
 		// verify the submit
 		searchButton.setEnabled(auditSubmit() == 0);
@@ -4098,15 +4099,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			autoCompleteUpdateMessage(getString(R.string.freeroom_dialog_add_autocomplete_uptodate));
 		}
 
-		// TODO: adapt to use the new version of autocomplete mapped by building
+		// FIXME: adapt to use the new version of autocomplete mapped by building
 		Iterator<List<FRRoom>> iter = mModel.getAutoComplete().values()
 				.iterator();
-		// TODO: syso
-		System.out.println(mModel.getAutoComplete().values().size());
 		while (iter.hasNext()) {
 			List<FRRoom> list = iter.next();
-			// TODO: syso
-			System.out.println(list.size());
 			Iterator<FRRoom> iterroom = list.iterator();
 			while (iterroom.hasNext()) {
 				FRRoom room = iterroom.next();
