@@ -27,4 +27,6 @@ public class Constants {
 
   public static final int LENGTH_USERMESSAGE = 50;
 
+  public static final int MIN_AUTOCOMPL_LENGTH = 2;
+
 }

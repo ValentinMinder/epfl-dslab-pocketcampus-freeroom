@@ -27,16 +27,19 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
   private static final org.apache.thrift.protocol.TField CONSTRAINT_FIELD_DESC = new org.apache.thrift.protocol.TField("constraint", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField FORBIDDEN_ROOMS_UID_FIELD_DESC = new org.apache.thrift.protocol.TField("forbiddenRoomsUID", org.apache.thrift.protocol.TType.SET, (short)2);
   private static final org.apache.thrift.protocol.TField USER_GROUP_FIELD_DESC = new org.apache.thrift.protocol.TField("userGroup", org.apache.thrift.protocol.TType.I32, (short)3);
+  private static final org.apache.thrift.protocol.TField EXACT_STRING_FIELD_DESC = new org.apache.thrift.protocol.TField("exactString", org.apache.thrift.protocol.TType.BOOL, (short)4);
 
   private String constraint; // required
   private Set<String> forbiddenRoomsUID; // required
   private int userGroup; // required
+  private boolean exactString; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     CONSTRAINT((short)1, "constraint"),
     FORBIDDEN_ROOMS_UID((short)2, "forbiddenRoomsUID"),
-    USER_GROUP((short)3, "userGroup");
+    USER_GROUP((short)3, "userGroup"),
+    EXACT_STRING((short)4, "exactString");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -57,6 +60,8 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
           return FORBIDDEN_ROOMS_UID;
         case 3: // USER_GROUP
           return USER_GROUP;
+        case 4: // EXACT_STRING
+          return EXACT_STRING;
         default:
           return null;
       }
@@ -98,7 +103,8 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
 
   // isset id assignments
   private static final int __USERGROUP_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
+  private static final int __EXACTSTRING_ISSET_ID = 1;
+  private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -110,6 +116,8 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     tmpMap.put(_Fields.USER_GROUP, new org.apache.thrift.meta_data.FieldMetaData("userGroup", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.EXACT_STRING, new org.apache.thrift.meta_data.FieldMetaData("exactString", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(AutoCompleteRequest.class, metaDataMap);
   }
@@ -144,6 +152,7 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
       this.forbiddenRoomsUID = __this__forbiddenRoomsUID;
     }
     this.userGroup = other.userGroup;
+    this.exactString = other.exactString;
   }
 
   public AutoCompleteRequest deepCopy() {
@@ -156,6 +165,8 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     this.forbiddenRoomsUID = null;
     setUserGroupIsSet(false);
     this.userGroup = 0;
+    setExactStringIsSet(false);
+    this.exactString = false;
   }
 
   public String getConstraint() {
@@ -244,6 +255,29 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     __isset_bit_vector.set(__USERGROUP_ISSET_ID, value);
   }
 
+  public boolean isExactString() {
+    return this.exactString;
+  }
+
+  public AutoCompleteRequest setExactString(boolean exactString) {
+    this.exactString = exactString;
+    setExactStringIsSet(true);
+    return this;
+  }
+
+  public void unsetExactString() {
+    __isset_bit_vector.clear(__EXACTSTRING_ISSET_ID);
+  }
+
+  /** Returns true if field exactString is set (has been assigned a value) and false otherwise */
+  public boolean isSetExactString() {
+    return __isset_bit_vector.get(__EXACTSTRING_ISSET_ID);
+  }
+
+  public void setExactStringIsSet(boolean value) {
+    __isset_bit_vector.set(__EXACTSTRING_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case CONSTRAINT:
@@ -270,6 +304,14 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
       }
       break;
 
+    case EXACT_STRING:
+      if (value == null) {
+        unsetExactString();
+      } else {
+        setExactString((Boolean)value);
+      }
+      break;
+
     }
   }
 
@@ -283,6 +325,9 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
 
     case USER_GROUP:
       return Integer.valueOf(getUserGroup());
+
+    case EXACT_STRING:
+      return Boolean.valueOf(isExactString());
 
     }
     throw new IllegalStateException();
@@ -301,6 +346,8 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
       return isSetForbiddenRoomsUID();
     case USER_GROUP:
       return isSetUserGroup();
+    case EXACT_STRING:
+      return isSetExactString();
     }
     throw new IllegalStateException();
   }
@@ -345,6 +392,15 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
         return false;
     }
 
+    boolean this_present_exactString = true && this.isSetExactString();
+    boolean that_present_exactString = true && that.isSetExactString();
+    if (this_present_exactString || that_present_exactString) {
+      if (!(this_present_exactString && that_present_exactString))
+        return false;
+      if (this.exactString != that.exactString)
+        return false;
+    }
+
     return true;
   }
 
@@ -366,6 +422,11 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     builder.append(present_userGroup);
     if (present_userGroup)
       builder.append(userGroup);
+
+    boolean present_exactString = true && (isSetExactString());
+    builder.append(present_exactString);
+    if (present_exactString)
+      builder.append(exactString);
 
     return builder.toHashCode();
   }
@@ -404,6 +465,16 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     }
     if (isSetUserGroup()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.userGroup, typedOther.userGroup);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetExactString()).compareTo(typedOther.isSetExactString());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetExactString()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.exactString, typedOther.exactString);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -457,6 +528,14 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 4: // EXACT_STRING
+          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
+            this.exactString = iprot.readBool();
+            setExactStringIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -497,6 +576,11 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     oprot.writeFieldBegin(USER_GROUP_FIELD_DESC);
     oprot.writeI32(this.userGroup);
     oprot.writeFieldEnd();
+    if (isSetExactString()) {
+      oprot.writeFieldBegin(EXACT_STRING_FIELD_DESC);
+      oprot.writeBool(this.exactString);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -527,6 +611,12 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     sb.append("userGroup:");
     sb.append(this.userGroup);
     first = false;
+    if (isSetExactString()) {
+      if (!first) sb.append(", ");
+      sb.append("exactString:");
+      sb.append(this.exactString);
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }

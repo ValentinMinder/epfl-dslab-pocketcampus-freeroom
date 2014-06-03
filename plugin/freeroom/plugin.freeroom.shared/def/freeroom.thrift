@@ -3,6 +3,7 @@ namespace java org.pocketcampus.plugin.freeroom.shared
 
 const i32 HTTP_UPDATED = 299
 const i32 LENGTH_USERMESSAGE = 50;
+const i32 MIN_AUTOCOMPL_LENGTH = 2;
 
 struct FRRoom{
 	1: required string doorCode;
@@ -91,6 +92,8 @@ struct AutoCompleteRequest {
 	2: optional set<string> forbiddenRoomsUID;
 	//as defined in database, see create-tables.sql in server for more info
 	3: required i32 userGroup;
+	// if not present or false, autocomplete automatically adds a "%" to your constraint
+	4: optional bool exactString;
 }
 
 struct AutoCompleteReply {

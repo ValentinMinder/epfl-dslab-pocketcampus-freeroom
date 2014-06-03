@@ -1177,9 +1177,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	/**
 	 * Returns all the rooms that satisfies the hint given in the request.
-	 * 
-	 * The hint may be the start of the door code or the uid or even the alias.
-	 * 
+	 * <p>
+	 * WARNING: if the request is set to "exactMatch", it will return only
+	 * result that have matched exactly. It you still want autocomplete in this
+	 * configuration, you can add a "%" in you constraint. In all other cases,
+	 * the server add the "%" automatically.
+	 * <p>
+	 * The hint may be the start of the door code, the alias, the building name
+	 * or the room uid.
+	 * <p>
 	 * Constraints should be at least 2 characters long. You can specify a list
 	 * of forbidden rooms the server should not include in the response. The
 	 * number of results is bounded by the constant LIMIT_AUTOCOMPLETE.
@@ -1206,9 +1212,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		String constraint = request.getConstraint();
 
-		if (constraint.length() < 2) {
+		if (constraint.length() < Constants.MIN_AUTOCOMPL_LENGTH) {
 			return new AutoCompleteReply(HttpURLConnection.HTTP_BAD_REQUEST,
-					"Constraints should be at least 2 characters long.");
+					"Constraints should be at least "
+							+ Constants.MIN_AUTOCOMPL_LENGTH
+							+ " characters long.");
 		}
 
 		List<FRRoom> rooms = new ArrayList<FRRoom>();
@@ -1227,20 +1235,27 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		// avoid all whitespaces for requests
 		constraint = constraint.replaceAll("\\s+", "");
 
+		// if we want not exact match, we add a "%"
+		if (request.isSetExactString() && request.isExactString()) {
+			// the constraint is not changed (user may have entered a %!)
+		} else {
+			constraint += "%";
+		}
+
 		try {
 			Connection connectBDD = connMgr.getConnection();
 			String requestSQL = "";
 			if (forbiddenRooms == null) {
 				requestSQL = "SELECT * "
 						+ "FROM `fr-roomslist` rl "
-						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?) OR rl.alias LIKE (?)) "
+						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?) OR rl.alias LIKE (?) OR rl.building_name LIKE (?)) "
 						+ "AND rl.groupAccess <= ? AND rl.enabled = 1 "
 						+ "ORDER BY rl.doorCode ASC LIMIT "
 						+ LIMIT_AUTOCOMPLETE;
 			} else {
 				requestSQL = "SELECT * "
 						+ "FROM `fr-roomslist` rl "
-						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?) OR rl.alias LIKE (?)) "
+						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?) OR rl.alias LIKE (?) OR rl.building_name LIKE (?)) "
 						+ "AND rl.groupAccess <= ? AND rl.enabled = 1 AND rl.uid NOT IN ("
 						+ forbidRoomsSQL + ") "
 						+ "ORDER BY rl.doorCode ASC LIMIT "
@@ -1248,13 +1263,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			}
 
 			PreparedStatement query = connectBDD.prepareStatement(requestSQL);
-			query.setString(1, constraint + "%");
-			query.setString(2, constraint + "%");
-			query.setString(3, constraint + "%");
-			query.setInt(4, request.getUserGroup());
+			query.setString(1, constraint);
+			query.setString(2, constraint);
+			query.setString(3, constraint);
+			query.setString(4, constraint);
+			query.setInt(5, request.getUserGroup());
 
 			if (forbiddenRooms != null) {
-				int i = 5;
+				int i = 6;
 				for (String roomUID : forbiddenRooms) {
 					query.setString(i, roomUID);
 					++i;
