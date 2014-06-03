@@ -1413,10 +1413,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				}
 				updateFavoritesSummary();
 				autoCompleteCancel();
-				mAutoCompleteAddFavoritesArrayListFRRoom.clear();
-				mAddFavoritesAdapter.notifyDataSetInvalidated();
-				mAutoCompleteAddRoomArrayListFRRoom.clear();
-				mAddRoomAdapter.notifyDataSetInvalidated();
 				mAutoCompleteAddRoomInputBarElement.setInputText("");
 				mAutoCompleteAddFavoritesInputBarElement.setInputText("");
 			}
@@ -1479,10 +1475,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				mSummarySelectedRoomsTextViewSearchMenu.setText(u
 						.getSummaryTextFromCollection(selectedRooms));
 				searchButton.setEnabled(auditSubmit() == 0);
-				mAutoCompleteAddFavoritesArrayListFRRoom.clear();
-				mAddFavoritesAdapter.notifyDataSetInvalidated();
-				mAutoCompleteAddRoomArrayListFRRoom.clear();
-				mAddRoomAdapter.notifyDataSetInvalidated();
 				mAutoCompleteAddRoomInputBarElement.setInputText("");
 				mAutoCompleteAddFavoritesInputBarElement.setInputText("");
 			}
@@ -3484,7 +3476,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						if (!u.validQuery(text)) {
 							mAutoCompleteAddRoomInputBarElement
 									.setButtonText(null);
-							mAddRoomAdapter.notifyDataSetInvalidated();
 							autoCompleteCancel();
 						} else {
 							mAutoCompleteAddRoomInputBarElement
@@ -3565,7 +3556,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						if (!u.validQuery(text)) {
 							mAutoCompleteAddFavoritesInputBarElement
 									.setButtonText(null);
-							mAddFavoritesAdapter.notifyDataSetInvalidated();
 							autoCompleteCancel();
 						} else {
 							mAutoCompleteAddFavoritesInputBarElement
@@ -4038,10 +4028,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	@Override
 	public void autoCompleteLaunch() {
-		TextView tvAutcompletStatusFav = (TextView) mAddFavoritesView
-				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
-		TextView tvAutcompletStatusRoom = (TextView) mAddRoomView
-				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
 		tvAutcompletStatusFav
 				.setText(getString(R.string.freeroom_dialog_add_autocomplete_updating));
 		tvAutcompletStatusRoom
@@ -4053,10 +4039,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * in.
 	 */
 	public void autoCompleteCancel() {
-		TextView tvAutcompletStatusFav = (TextView) mAddFavoritesView
-				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
-		TextView tvAutcompletStatusRoom = (TextView) mAddRoomView
-				.findViewById(R.id.freeroom_layout_dialog_add_room_status);
+		mAutoCompleteAddFavoritesArrayListFRRoom.clear();
+		mAddFavoritesAdapter.notifyDataSetInvalidated();
+		mAutoCompleteAddRoomArrayListFRRoom.clear();
+		mAddRoomAdapter.notifyDataSetInvalidated();
+
 		tvAutcompletStatusFav
 				.setText(getString(R.string.freeroom_dialog_add_autocomplete_typein));
 		tvAutcompletStatusRoom
@@ -4115,11 +4102,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		 */
 		if (!emptyResult) {
 			if (mAutoCompleteAddRoomArrayListFRRoom.isEmpty()) {
-				tvAutcompletStatusFav
+				tvAutcompletStatusRoom
 						.setText(getString(R.string.freeroom_dialog_add_autocomplete_nomore));
 			}
 			if (mAutoCompleteAddFavoritesArrayListFRRoom.isEmpty()) {
-				tvAutcompletStatusRoom
+				tvAutcompletStatusFav
 						.setText(getString(R.string.freeroom_dialog_add_autocomplete_nomore));
 			}
 		}
