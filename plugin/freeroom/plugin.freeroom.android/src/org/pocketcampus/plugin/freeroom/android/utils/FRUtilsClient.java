@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.pocketcampus.plugin.freeroom.R;
+import org.pocketcampus.plugin.freeroom.shared.Constants;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
@@ -304,7 +305,6 @@ public class FRUtilsClient {
 		return email.matches("^[a-zA-Z0-9-]+[.][a-zA-Z0-9-]+@epfl[.]ch$");
 	}
 
-	public final int MIN_QUERY_LENGTH = 2;
 	private final int MAX_QUERY_LENGTH = 6;
 
 	/**
@@ -316,7 +316,7 @@ public class FRUtilsClient {
 	 * @return true if valid.
 	 */
 	public boolean validQuery(String query) {
-		boolean serverPreCond = query.trim().length() >= MIN_QUERY_LENGTH;
+		boolean serverPreCond = query.trim().length() >= Constants.MIN_AUTOCOMPL_LENGTH;
 		boolean clientDontCare = query.trim().length() <= MAX_QUERY_LENGTH;
 		return serverPreCond && clientDontCare;
 	}
