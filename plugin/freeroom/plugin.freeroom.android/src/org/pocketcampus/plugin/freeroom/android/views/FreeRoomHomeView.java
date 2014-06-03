@@ -511,10 +511,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
-		// search is not in menu, already always in action bar!
-		// case R.id.freeroom_action_search:
-		// mSearchDialog.show();
-		// return true;
 		case R.id.freeroom_action_favorites:
 			mFavoritesDialog.show();
 			return true;
@@ -525,13 +521,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		case R.id.freeroom_action_settings:
 			mParamDialog.show();
 			return true;
-			// these case are not handled: probably wont exist at all
-			// case R.id.freeroom_action_help:
-			// // TODO: do something
-			// return true;
-			// case R.id.freeroom_action_about:
-			// // TODO: do something
-			// return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
