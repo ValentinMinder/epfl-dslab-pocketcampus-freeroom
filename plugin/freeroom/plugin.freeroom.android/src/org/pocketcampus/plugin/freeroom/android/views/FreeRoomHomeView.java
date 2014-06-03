@@ -460,7 +460,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Action to refresh the data (it sends the same stored request again if not
 	 * outdated, or generates a new request).
 	 * <p>
-	 * TODO: useful? useless ? delete !
+	 * Please not that it replays the SAME request if it's not outdated, it wont
+	 * generate a new default request!
 	 * <p>
 	 * Only added conditionally. Otherwise, go through menu or overflow action.
 	 */
