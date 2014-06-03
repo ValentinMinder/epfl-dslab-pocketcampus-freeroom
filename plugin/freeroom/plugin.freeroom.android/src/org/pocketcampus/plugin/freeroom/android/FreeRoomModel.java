@@ -10,6 +10,7 @@ import java.io.OptionalDataException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -1536,30 +1537,38 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * @return true if successful.
 	 */
 	public boolean removeFavorite(FRRoom mRoom) {
-		// ensure favorites structure exists.
-		getFavorites();
+		try {
+			// ensure favorites structure exists.
+			getFavorites();
 
-		String key = getBuildingKeyLabel(mRoom);
-		List<FRRoom> list = null;
-		if (favorites.containsKey(key)) {
-			list = favorites.get(key);
-			boolean flag1 = list.remove(mRoom);
-			Iterator<FRRoom> iter = list.iterator();
-			while (iter.hasNext()) {
-				FRRoom mRoomSel = iter.next();
-				if (mRoomSel.getUid().equals(mRoom.getUid())) {
-					flag1 = list.remove(mRoomSel);
+			String key = getBuildingKeyLabel(mRoom);
+			List<FRRoom> list = null;
+			if (favorites.containsKey(key)) {
+				list = favorites.get(key);
+				boolean flag1 = list.remove(mRoom);
+				Iterator<FRRoom> iter = list.iterator();
+				while (iter.hasNext()) {
+					FRRoom mRoomSel = iter.next();
+					if (mRoomSel.getUid().equals(mRoom.getUid())) {
+						flag1 = list.remove(mRoomSel);
+					}
 				}
-			}
-			if (list.isEmpty()) {
-				favorites.remove(key);
+				if (list.isEmpty()) {
+					favorites.remove(key);
+				} else {
+					favorites.put(key, list);
+				}
+				boolean flag2 = saveFavorites();
+				return flag1 && flag2;
 			} else {
-				favorites.put(key, list);
+				return true;
 			}
-			boolean flag2 = saveFavorites();
-			return flag1 && flag2;
-		} else {
-			return true;
+		} catch (ConcurrentModificationException e) {
+			System.err.println("cannot remove fav due "
+					+ "to concurrent modification error, "
+					+ "but killing the app was avoided!");
+			e.printStackTrace();
+			return false;
 		}
 	}
 
