@@ -1354,22 +1354,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		favoritesSummaryTextView.setText(text);
 	}
 
-	private void dimissAddRoomDialog() {
-		mSummarySelectedRoomsTextViewSearchMenu.setText(u
-				.getSummaryTextFromCollection(selectedRooms));
-		searchButton.setEnabled(auditSubmit() == 0);
-
-		// Iterator<FRRoom> iter = selectedRooms.iterator();
-		// while (iter.hasNext()) {
-		// FRRoom mRoom = iter.next();
-		// // TODO: add all in batch!
-		// mModel.addFavorite(mRoom);
-		// }
-		// mFavoritesAdapter.notifyDataSetChanged();
-		// resetUserDefined(true);
-
-	}
-
 	private void initAddFavoritesDialog() {
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -1482,7 +1466,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		});
 
 		mAddRoomDialog.setOnDismissListener(new OnDismissListener() {
-
 			@Override
 			public void onDismiss(DialogInterface dialog) {
 				autoCompleteCancel();
@@ -1491,31 +1474,34 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				searchButton.setEnabled(auditSubmit() == 0);
 				mAutoCompleteAddRoomInputBarElement.setInputText("");
 				mAutoCompleteAddFavoritesInputBarElement.setInputText("");
+
+				dismissSoftKeyBoard(mAddRoomView);
+				mEditRoomDialog.dismiss();
+				mAddRoomDialog.dismiss();
 			}
 		});
 
 		Button bt_done = (Button) mAddRoomView
 				.findViewById(R.id.freeroom_layout_dialog_add_room_done);
 		bt_done.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				dismissSoftKeyBoard(v);
+				mEditRoomDialog.dismiss();
 				mAddRoomDialog.dismiss();
-				dimissAddRoomDialog();
 			}
 		});
 
 		Button bt_edit = (Button) mAddRoomView
 				.findViewById(R.id.freeroom_layout_dialog_add_room_edit);
 		bt_edit.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				dismissSoftKeyBoard(v);
-				mAddRoomDialog.dismiss();
+				// we dont dismiss, we hide, such that the text is kept
+				// if it's dismissed by other method, the text will be reset
+				mAddRoomDialog.hide();
 				mEditRoomDialog.show();
-				dimissAddRoomDialog();
 			}
 		});
 
@@ -1575,21 +1561,21 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		});
 		selectedListView.refreshDrawableState();
 
+		mEditRoomDialog.setOnDismissListener(new OnDismissListener() {
+			@Override
+			public void onDismiss(DialogInterface arg0) {
+				dismissSoftKeyBoard(mEditRoomView);
+				mEditRoomDialog.dismiss();
+				mAddRoomDialog.dismiss();
+			}
+		});
+
 		mEditRoomDialog.setOnShowListener(new OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
 				selectedRoomArrayAdapter.notifyDataSetChanged();
 				// Tracker
 				Tracker.getInstance().trackPageView("freeroom/search/edit");
-			}
-		});
-
-		mEditRoomDialog.setOnDismissListener(new OnDismissListener() {
-
-			@Override
-			public void onDismiss(DialogInterface dialog) {
-				dimissAddRoomDialog();
-
 			}
 		});
 
@@ -1601,7 +1587,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onClick(View v) {
 				dismissSoftKeyBoard(v);
 				mEditRoomDialog.dismiss();
-				dimissAddRoomDialog();
+				mAddRoomDialog.dismiss();
 			}
 		});
 
@@ -1611,7 +1597,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				mEditRoomDialog.dismiss();
+				// we DONT dismiss, only hide! (no trigger or dismisslistener)
+				mEditRoomDialog.hide();
 				mAddRoomDialog.show();
 			}
 		});
