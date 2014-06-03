@@ -124,7 +124,7 @@ public final class NewsSourceImpl implements NewsSource {
 				items.put(id, new FeedItem(id, title, link, date, getPictureUrl(content), content));
 			}
 
-			feeds.add(new Feed(feedName, isMain, items));
+			feeds.add(new Feed(feedId, feedName, isMain, items));
 		}
 
 		// Sort the feeds by name, but always put the main feed first.

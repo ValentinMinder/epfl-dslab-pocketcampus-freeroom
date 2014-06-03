@@ -27,6 +27,14 @@ public class NewsSourceTests {
 		assertEquals("The first feed should be Mediacom, a.k.a. General.",
 				"Général", feed.name);
 	}
+	
+	@Test
+	public void feedIdIsSet() {
+		Feed feed = getFeeds()[0];
+
+		assertEquals("The first feed should be Mediacom, a.k.a. General.",
+				"mediacom", feed.id);
+	}
 
 	@Test
 	public void oneFeedIsMain() {
