@@ -14,8 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
@@ -42,9 +40,21 @@ import android.graphics.drawable.Drawable;
  * FreeRoomModel - The Model that stores the data of this plugin.
  * <p>
  * This is the Model associated with the FreeRoom plugin. It stores the data
- * required for the correct functioning of the plugin. Some data is persistent
- * (none at the moment!) Other data are temporary.
+ * required for the correct functioning of the plugin. Some data is persistent,
+ * other data are temporary.
  * <p>
+ * This class is very long, but it's divided and organized in several parts: <br>
+ * - common things, starting at {@link #getViewInterface()} <br>
+ * - interaction with controller/view, start at
+ * {@link #setOccupancyResults(Map)}<br>
+ * - non-stored values and preferences, start at {@link #getFRRequestDetails()}
+ * <br>
+ * - stored values and preferences, start at {@link #generateAnonymID()} <br>
+ * - colors methods, start at {@link #isColorLineFull()} <br>
+ * - general object storage, start at {@link #writeObjectToFile(String, Object)}
+ * <br>
+ * - favorites storage, start at {@link #retrieveFavorites()} <br>
+ * - previous request storage, start at {@link #retrievePreviousRequest()} <br>
  * 
  * @author FreeRoom Project Team (2014/05)
  * @author Julien WEBER <julien.weber@epfl.ch>
@@ -75,6 +85,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private final String groupAccessIDKey = "groupAccessIDKey";
 	private final String colorBlindModeIDKey = "colorBlindModeIDKey";
 
+	/*
+	 * Colors references
+	 */
 	private final int COLOR_TRANSPARENT = Color.TRANSPARENT;
 	private final int COLOR_DEFAULT = Color.WHITE;
 	private final int COLOR_TRANSPARENCY = 128;
@@ -92,6 +105,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 			COLOR_TRANSPARENCY, 255, 255, 153);
 	private final int COLOR_HEADER_HIGHLIGHT = Color.GRAY;
 
+	/**
+	 * Default group access, using to reset.
+	 */
 	public final int DEFAULT_GROUP_ACCESS = 10;
 
 	/**
@@ -102,19 +118,25 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	IFreeRoomView mListeners = (IFreeRoomView) getListeners();
 
 	/**
+	 * Storing the occupancies, mapped by building.
+	 */
+	private OrderMapListFew<String, List<?>, Occupancy> occupancyByBuilding;
+
+	/**
 	 * Storing the <code>WorkingOccupancy</code> of people who indicate their
 	 * are going to work there.
 	 */
 	private List<MessageFrequency> listMessageFrequency = new ArrayList<MessageFrequency>();
 
+	/**
+	 * Reference to application context.
+	 */
 	private Context context;
+
 	/**
 	 * Storage for basic preferences, parameters and so on.
 	 */
 	private SharedPreferences preferences;
-
-	// NEW INTERFACE as of 2104.04.04.
-	private OrderMapListFew<String, List<?>, Occupancy> occupancyByBuilding;
 
 	/**
 	 * Constructor with reference to the context.
@@ -172,6 +194,276 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	public IFreeRoomView getListenersToNotify() {
 		return mListeners;
+	}
+
+	public void autoCompleteLaunch() {
+		mListeners.autoCompleteLaunch();
+	}
+
+	/* ALL CONTROLLER - VIEW INTERACTION */
+	/* START OF OCCUPANCY RESULTS */
+
+	/**
+	 * Update the occupancy results in the model. The reference to the old data
+	 * is kept, only the old data are trashed but the reference is kept.
+	 * 
+	 * @param occupancyOfRooms
+	 */
+	public void setOccupancyResults(
+			Map<String, List<Occupancy>> occupancyOfRooms) {
+		occupancyByBuilding.clear();
+		// keys are ordered!
+		TreeSet<String> keySetOrder = new TreeSet<String>(
+				occupancyOfRooms.keySet());
+		List<String> buildings = getOrderedBuildings();
+		for (String building : buildings) {
+			List<Occupancy> list = occupancyOfRooms.get(building);
+			if (list != null) {
+				keySetOrder.remove(building);
+				occupancyByBuilding.put(building, list);
+			}
+		}
+
+		for (String key : keySetOrder) {
+			occupancyByBuilding.put(key, occupancyOfRooms.get(key));
+		}
+		mListeners.occupancyResultsUpdated();
+	}
+
+	/**
+	 * Get the occupancy results. Note that the reference never changes, so you
+	 * simply need to update your adapter, never put the date again in it.
+	 * 
+	 * @return
+	 */
+	public OrderMapListFew<String, List<?>, Occupancy> getOccupancyResults() {
+		return this.occupancyByBuilding;
+	}
+
+	/* END OF OCCUPANCY RESULTS */
+	/* START OF AUTOCOMPLETE RESULTS */
+
+	/**
+	 * Stores the rooms autocompleted, mapped by buildings.
+	 */
+	private Map<String, List<FRRoom>> listRoom;
+
+	public void setAutoComplete(Map<String, List<FRRoom>> listRoom) {
+		this.listRoom = listRoom;
+		mListeners.autoCompletedUpdated();
+	}
+
+	/**
+	 * Return the rooms autocompleted, mapped by buildings.
+	 * 
+	 * @return the rooms autocompleted, mapped by buildings.
+	 */
+	public Map<String, List<FRRoom>> getAutoComplete() {
+		return listRoom;
+	}
+
+	/* END OF AUTOCOMPLETE RESULTS */
+	/* "WHO'S WORKING THERE" PART */
+
+	/**
+	 * Stores a list of <code>WorkingOccupancy</code> to represent what others
+	 * are doing.
+	 * 
+	 * @param listMessageFrequency
+	 */
+	public void setListMessageFrequency(
+			List<MessageFrequency> listMessageFrequency) {
+		Iterator<MessageFrequency> iter = this.listMessageFrequency.iterator();
+		System.out.println("there:");
+		while (iter.hasNext()) {
+			System.out.println(iter.next());
+		}
+		iter = listMessageFrequency.iterator();
+		System.out.println("added:");
+		while (iter.hasNext()) {
+			System.out.println(iter.next());
+		}
+		this.listMessageFrequency.clear();
+		this.listMessageFrequency.addAll(listMessageFrequency);
+		mListeners.workingMessageUpdated();
+	}
+
+	/**
+	 * Retrieves the stored <code>List</code> of <code>WorkingOccupancy</code>.
+	 * 
+	 * @return
+	 */
+	public List<MessageFrequency> getListMessageFrequency() {
+		return listMessageFrequency;
+	}
+
+	/* END OF "WHO'S WORKING THERE" PART */
+	/* NON-STORED PARAMETERS/VALUEWS */
+
+	/**
+	 * Stores the currently displayed request.
+	 */
+	private FRRequestDetails mFRRequest;
+
+	/**
+	 * Get the currently displayed request.
+	 * 
+	 * @return the currently displayed request.
+	 */
+	public FRRequestDetails getFRRequestDetails() {
+		return mFRRequest;
+	}
+
+	/**
+	 * Set the currently displayed request.
+	 * <p>
+	 * Make sure you call a notify method on the previous request adapter.
+	 * 
+	 * @param request
+	 *            next currently displayed request.
+	 * @param save
+	 *            if the request should be kept in history or not.
+	 */
+	public void setFRRequestDetails(FRRequestDetails request, boolean save) {
+		if (save) {
+			// write in history each time a request is set.
+			addPreviousRequest(request);
+		}
+		this.mFRRequest = request;
+	}
+
+	private Occupancy occupancy;
+
+	public void setDisplayedOccupancy(Occupancy occupancy) {
+		this.occupancy = occupancy;
+	}
+
+	public Occupancy getDisplayedOccupancy() {
+		return occupancy;
+	}
+
+	/**
+	 * True if the last sharing was only for server, false if also for friends.
+	 */
+	private boolean onlyServer = false;
+
+	/**
+	 * Return the value of onlyServer boolean.
+	 * 
+	 * @return true if the last sharing was only for server, false if also for
+	 *         friends.
+	 */
+	public boolean isOnlyServer() {
+		return onlyServer;
+	}
+
+	/**
+	 * Set the value of onlyServer boolean.
+	 * 
+	 * @param newValue
+	 *            true if the last sharing was only for server, false if also
+	 *            for friends.
+	 */
+	public void setOnlyServer(boolean newValue) {
+		onlyServer = newValue;
+	}
+
+	/**
+	 * Stores the whole period treated by the last FRReply received from server.
+	 */
+	private FRPeriod overAllTreatedPeriod = null;
+
+	/**
+	 * Set the whole period treated by the last FRReply received from server.
+	 * 
+	 * @param overAllTreatedPeriod
+	 *            the new period
+	 */
+	public void setOverAllTreatedPeriod(FRPeriod overAllTreatedPeriod) {
+		this.overAllTreatedPeriod = overAllTreatedPeriod;
+	}
+
+	/**
+	 * Retrieves the whole period treated by the last FRReply received from
+	 * server.
+	 * 
+	 * @return the whole period.
+	 */
+	public FRPeriod getOverAllTreatedPeriod() {
+		return overAllTreatedPeriod;
+	}
+
+	/**
+	 * WARNING: THIS FEATURE HAS BEEN CANCELED AND this is not kept permanently!
+	 * <p>
+	 * Order of the buildings for displaying to the user.
+	 */
+	private List<String> orderedBuildings = new ArrayList<String>();
+
+	/**
+	 * * WARNING: THIS FEATURE HAS BEEN CANCELED AND this is not kept
+	 * permanently!
+	 * <p>
+	 * Get the orderedBuilding list to display
+	 * 
+	 * @return the list of ordered buildings.
+	 */
+	public List<String> getOrderedBuildings() {
+		return orderedBuildings;
+	}
+
+	/* ALL STORED PREFERENCES */
+
+	/**
+	 * Retrieves the 32-char unique and anonymous device-identifier.
+	 * <p>
+	 * This identifiers guarantees the uniqueness among users and hold no
+	 * personal data, neither ID or information from the device, it's therefore
+	 * anonymous. We DONT use the ID of the device as this is not anonymous
+	 * enough (it cannot be changed nor deleted, and identifies the device also
+	 * for other apps)
+	 * <p>
+	 * It's stored in persistent memory, and generated if not exists at this
+	 * time. It can be deleted only if the user deletes and reinstall the app,
+	 * and this is not considered as an issue.
+	 * 
+	 * @return the 32-char unique and anonymous device-identifier.
+	 */
+	public String getAnonymID() {
+		String anonymID = preferences.getString(anonymIDKey, null);
+		if (anonymID != null) {
+			return anonymID;
+		} else {
+			anonymID = generateAnonymID();
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.putString(anonymIDKey, anonymID);
+			editor.commit();
+			return anonymID;
+		}
+	}
+
+	/**
+	 * Generates an unique and anonymous device-identifier based on the time of
+	 * generation in milliseconds concatenated to a random String.
+	 * 
+	 * <p>
+	 * This guarantees that every user has a different identifier with a very
+	 * high certainty. To be the same: must be generated at the exact same
+	 * millisecond + get the exact the same random string, which probability can
+	 * be considered as 0 as there is no security issue with this identifier.
+	 * 
+	 * @return a 32-char anonymous and unique ID.
+	 */
+	private String generateAnonymID() {
+		// time in millis as a string
+		long time = System.currentTimeMillis();
+		setRegisteredTime(time);
+		String timeAsString = time + "";
+
+		// random string to complete to 32 chars
+		return timeAsString
+				+ new BigInteger(130, new SecureRandom())
+						.toString(32 - timeAsString.length());
 	}
 
 	/**
@@ -504,7 +796,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	/**
 	 * Stores the group access the user is registered for.
 	 * <p>
-	 * Default: 10. (groupe 10).
+	 * Default: {@link #DEFAULT_GROUP_ACCESS}.
 	 */
 	private int groupAccess = DEFAULT_GROUP_ACCESS;
 
@@ -575,126 +867,172 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return this.registeredUser;
 	}
 
-	// ********** START OF "WHO'S WORKING THERE" PART **********
+	/* TIMES */
 
 	/**
-	 * Stores a list of <code>WorkingOccupancy</code> to represent what others
-	 * are doing.
+	 * Return a <code>FRTimesClient</code> with the given context and formatters
+	 * ready depending on the language or parameters chosen in model.
 	 * 
-	 * @param listMessageFrequency
+	 * @param context
+	 *            application context for getString
+	 * @return a FRTimesClient with appropriate context and formatters.
 	 */
-	public void setListMessageFrequency(
-			List<MessageFrequency> listMessageFrequency) {
-		Iterator<MessageFrequency> iter = this.listMessageFrequency.iterator();
-		System.out.println("there:");
-		while (iter.hasNext()) {
-			System.out.println(iter.next());
-		}
-		iter = listMessageFrequency.iterator();
-		System.out.println("added:");
-		while (iter.hasNext()) {
-			System.out.println(iter.next());
-		}
-		this.listMessageFrequency.clear();
-		this.listMessageFrequency.addAll(listMessageFrequency);
-		mListeners.workingMessageUpdated();
+	public FRTimesClient getFRTimesClient(Context context) {
+		return getFRTimesClient(context, timeLanguage);
 	}
 
 	/**
-	 * Retrieves the stored <code>List</code> of <code>WorkingOccupancy</code>.
+	 * Return a <code>FRTimesClient</code> with the given context and formatters
+	 * ready depending on the language or parameters chosen in model.
+	 * <p>
+	 * You should usually call the method WITHOUT the timeLanguage, and the
+	 * model use the one selected in parameters.
+	 * 
+	 * @param context
+	 *            application context for getString
+	 * @param timeLanguage
+	 *            the language chosen (may be default).
+	 * @return a FRTimesClient with appropriate context and formatters.
+	 */
+	private FRTimesClient getFRTimesClient(Context context,
+			TimeLanguage timeLanguage) {
+
+		// Formatting will use the device language settings
+		// if it has been overridden, it will these one:
+		// English format: Saturday, May 17, 2014
+		// French format: samedi, 17 mai 2014
+
+		// IT AFFECTS ONLY FORMATTING, NEVER THE LANGUAGE !!!
+
+		Locale defaultLocale = Locale.getDefault();
+
+		if (timeLanguage.equals(TimeLanguage.FRENCH)) {
+			return new FRTimesClient(context, defaultLocale,
+					"EEEE, d MMMM yyyy");
+		}
+
+		if (timeLanguage.equals(TimeLanguage.ENGLISH)) {
+			return new FRTimesClient(context, defaultLocale,
+					"EEEE, MMMM d, yyyy");
+		}
+
+		// default
+		return new FRTimesClient(context, Locale.getDefault(), null);
+	}
+
+	/* COLORS */
+
+	/**
+	 * Stores the color-blind mode in a local variable (change must be done
+	 * trhough the correct setter to be stored).
+	 */
+	private ColorBlindMode colorBlindMode = ColorBlindMode.DEFAULT;
+
+	/**
+	 * Enum for color-blind modes. Available modes are:
+	 * <p>
+	 * {@link #DEFAULT}: small color-dots on the left.<br>
+	 * {@link #DOTS_DISCOLORED}: color-dots are discolored according to
+	 * color-blind vision. <br>
+	 * {@link #DOTS_SYMBOL}: dots are symbol showing the state. <br>
+	 * {@link #DOTS_SYMBOL_LINEFULL}: the line is fully colored, with the dots
+	 * symbol.<br>
+	 * {@link #DOTS_SYMBOL_LINEFULL_DISCOLORED}: the line is fully colored with
+	 * color-blind colors, with the dots symbol.<br>
+	 * <br>
+	 */
+	public enum ColorBlindMode {
+		DEFAULT, DOTS_DISCOLORED, DOTS_SYMBOL, DOTS_SYMBOL_LINEFULL, DOTS_SYMBOL_LINEFULL_DISCOLORED;
+	}
+
+	/**
+	 * Set the {@link ColorBlindMode} and save it to persistent storage.
+	 * 
+	 * @param colorBlindMode
+	 *            the new {@link ColorBlindMode}
+	 */
+	public void setColorBlindMode(ColorBlindMode colorBlindMode) {
+		this.colorBlindMode = colorBlindMode;
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putString(colorBlindModeIDKey, colorBlindMode.name());
+		editor.commit();
+	}
+
+	/**
+	 * Set the {@link ColorBlindMode} to the switch settings according to the
+	 * checkbox.
+	 * 
+	 * @param bool
+	 *            if the checkbox is checked.
+	 */
+	public void setColorBlindModeBasicSwitch(boolean bool) {
+		if (bool) {
+			setColorBlindMode(ColorBlindMode.DOTS_DISCOLORED);
+		} else {
+			setColorBlindMode(ColorBlindMode.DEFAULT);
+		}
+	}
+
+	/**
+	 * Retrieves the {@link ColorBlindMode}.
+	 * 
+	 * @return the current {@link ColorBlindMode}.
+	 */
+	public ColorBlindMode getColorBlindMode() {
+		return colorBlindMode;
+	}
+
+	/* ENDS OF PREFERENCES */
+	/* COLORS METHODS */
+
+	/**
+	 * Return true if lines should be colored according to the
+	 * {@link ColorBlindMode}.
+	 * 
+	 * @return true if lines should be colored.
+	 */
+	private boolean isColorLineFull() {
+		if (colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL)
+				|| colorBlindMode
+						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Return true if dots should be displayed in front of room names, according
+	 * to the {@link ColorBlindMode}.
+	 * <p>
+	 * Actually ALL modes display dots now, either a colored one or a symbol.
+	 * 
+	 * @return true if dots should be present.
+	 */
+	private boolean isColorColoredDots() {
+		if (colorBlindMode.equals(ColorBlindMode.DEFAULT)
+				|| colorBlindMode.equals(ColorBlindMode.DOTS_DISCOLORED)
+				|| colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL)
+				|| colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL)
+				|| colorBlindMode
+						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Return true if the current {@link ColorBlindMode} is for color-blind
+	 * people.
 	 * 
 	 * @return
 	 */
-	public List<MessageFrequency> getListMessageFrequency() {
-		return listMessageFrequency;
-	}
-
-	// ********** END OF "WHO'S WORKING THERE" PART **********
-
-	/**
-	 * WARNING: USE WITH GREAT CARE. PREFER BUILDING_LABLE IN ALL CASES.
-	 * <p>
-	 * Returns the building part in mDoorCode. <br>
-	 * 
-	 * Door codes should be like PH D2 398 with PH the building D2 the zone 398
-	 * the number (including floor) <br>
-	 * 
-	 * It works ONLY if spaces are correctly set! <br>
-	 * 
-	 * @param mDoorCode
-	 * @return
-	 */
-	private String getBuilding(String mDoorCode) {
-		mDoorCode = mDoorCode.trim();
-		int firstSpace = mDoorCode.indexOf(" ");
-		if (firstSpace > 0) {
-			mDoorCode = mDoorCode.substring(0, firstSpace);
+	private boolean isColorBlind() {
+		if (colorBlindMode.equals(ColorBlindMode.DOTS_DISCOLORED)
+				|| colorBlindMode
+						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
+			return true;
 		}
-		return mDoorCode;
-	}
-
-	// ********** END OF "FAVORITES" PART **********
-	/*
-	 * methods are ordered by functionality in model !! PLEASE insert your new
-	 * method in an existing category or create a new one with two separators
-	 * like this one!
-	 */
-	// ********** END OF FILE **********
-
-	/**
-	 * Update the occupancy results in the model. The reference to the old data
-	 * is kept, only the old data are trashed but the reference is kept.
-	 * 
-	 * @param occupancyOfRooms
-	 */
-	public void setOccupancyResults(
-			Map<String, List<Occupancy>> occupancyOfRooms) {
-		occupancyByBuilding.clear();
-		// keys are ordered!
-		TreeSet<String> keySetOrder = new TreeSet<String>(
-				occupancyOfRooms.keySet());
-		List<String> buildings = getOrderedBuildings();
-		for (String building : buildings) {
-			List<Occupancy> list = occupancyOfRooms.get(building);
-			if (list != null) {
-				keySetOrder.remove(building);
-				occupancyByBuilding.put(building, list);
-			}
-		}
-
-		for (String key : keySetOrder) {
-			occupancyByBuilding.put(key, occupancyOfRooms.get(key));
-		}
-		mListeners.occupancyResultsUpdated();
-	}
-
-	/**
-	 * Get the occupancy results. Note that the reference never changes, so you
-	 * simply need to update your adapter, never put the date again in it.
-	 * 
-	 * @return
-	 */
-	public OrderMapListFew<String, List<?>, Occupancy> getOccupancyResults() {
-		return this.occupancyByBuilding;
-	}
-
-	/**
-	 * WARNING: THIS FEATURE HAS BEEN CANCELED AND this is not kept permanently!
-	 * <p>
-	 * Order of the buildings for displaying to the user.
-	 */
-	private List<String> orderedBuildings = new ArrayList<String>();
-
-	/**
-	 * * WARNING: THIS FEATURE HAS BEEN CANCELED AND this is not kept
-	 * permanently!
-	 * <p>
-	 * Get the orderedBuilding list to display
-	 * 
-	 * @return the list of ordered buildings.
-	 */
-	public List<String> getOrderedBuildings() {
-		return orderedBuildings;
+		return false;
 	}
 
 	/**
@@ -795,116 +1133,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		} else {
 			return getColoredDotRed();
 		}
-	}
-
-	/**
-	 * Stores the color-blind mode in a local variable (change must be done
-	 * trhough the correct setter to be stored).
-	 */
-	private ColorBlindMode colorBlindMode = ColorBlindMode.DEFAULT;
-
-	/**
-	 * Enum for color-blind modes. Available modes are:
-	 * <p>
-	 * {@link #DEFAULT}: small color-dots on the left.<br>
-	 * {@link #DOTS_DISCOLORED}: color-dots are discolored according to
-	 * color-blind vision. <br>
-	 * {@link #DOTS_SYMBOL}: dots are symbol showing the state. <br>
-	 * {@link #DOTS_SYMBOL_LINEFULL}: the line is fully colored, with the dots
-	 * symbol.<br>
-	 * {@link #DOTS_SYMBOL_LINEFULL_DISCOLORED}: the line is fully colored with
-	 * color-blind colors, with the dots symbol.<br>
-	 * <br>
-	 */
-	public enum ColorBlindMode {
-		DEFAULT, DOTS_DISCOLORED, DOTS_SYMBOL, DOTS_SYMBOL_LINEFULL, DOTS_SYMBOL_LINEFULL_DISCOLORED;
-	}
-
-	/**
-	 * Set the {@link ColorBlindMode} and save it to persistent storage.
-	 * 
-	 * @param colorBlindMode
-	 *            the new {@link ColorBlindMode}
-	 */
-	public void setColorBlindMode(ColorBlindMode colorBlindMode) {
-		this.colorBlindMode = colorBlindMode;
-		SharedPreferences.Editor editor = preferences.edit();
-		editor.putString(colorBlindModeIDKey, colorBlindMode.name());
-		editor.commit();
-	}
-
-	/**
-	 * Set the {@link ColorBlindMode} to the switch settings according to the
-	 * checkbox.
-	 * 
-	 * @param bool
-	 *            if the checkbox is checked.
-	 */
-	public void setColorBlindModeBasicSwitch(boolean bool) {
-		if (bool) {
-			setColorBlindMode(ColorBlindMode.DOTS_DISCOLORED);
-		} else {
-			setColorBlindMode(ColorBlindMode.DEFAULT);
-		}
-	}
-
-	/**
-	 * Retrieves the {@link ColorBlindMode}.
-	 * 
-	 * @return the current {@link ColorBlindMode}.
-	 */
-	public ColorBlindMode getColorBlindMode() {
-		return colorBlindMode;
-	}
-
-	/**
-	 * Return true if lines should be colored according to the
-	 * {@link ColorBlindMode}.
-	 * 
-	 * @return true if lines should be colored.
-	 */
-	private boolean isColorLineFull() {
-		if (colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL)
-				|| colorBlindMode
-						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Return true if dots should be displayed in front of room names, according
-	 * to the {@link ColorBlindMode}.
-	 * <p>
-	 * Actually ALL modes display dots now, either a colored one or a symbol.
-	 * 
-	 * @return true if dots should be present.
-	 */
-	private boolean isColorColoredDots() {
-		if (colorBlindMode.equals(ColorBlindMode.DEFAULT)
-				|| colorBlindMode.equals(ColorBlindMode.DOTS_DISCOLORED)
-				|| colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL)
-				|| colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL)
-				|| colorBlindMode
-						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Return true if the current {@link ColorBlindMode} is for color-blind
-	 * people.
-	 * 
-	 * @return
-	 */
-	private boolean isColorBlind() {
-		if (colorBlindMode.equals(ColorBlindMode.DOTS_DISCOLORED)
-				|| colorBlindMode
-						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -1070,67 +1298,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * Stores the currently displayed request.
-	 */
-	private FRRequestDetails mFRRequest;
-
-	/**
-	 * Get the currently displayed request.
-	 * 
-	 * @return the currently displayed request.
-	 */
-	public FRRequestDetails getFRRequestDetails() {
-		return mFRRequest;
-	}
-
-	/**
-	 * Set the currently displayed request.
-	 * <p>
-	 * Make sure you call a notify method on the previous request adapter.
-	 * 
-	 * @param request
-	 *            next currently displayed request.
-	 * @param save
-	 *            if the request should be kept in history or not.
-	 */
-	public void setFRRequestDetails(FRRequestDetails request, boolean save) {
-		if (save) {
-			// write in history each time a request is set.
-			addPreviousRequest(request);
-		}
-		this.mFRRequest = request;
-	}
-
-	private Occupancy occupancy;
-
-	public void setDisplayedOccupancy(Occupancy occupancy) {
-		this.occupancy = occupancy;
-	}
-
-	public Occupancy getDisplayedOccupancy() {
-		return occupancy;
-	}
-
-	/**
-	 * Stores the rooms autocompleted, mapped by buildings.
-	 */
-	private Map<String, List<FRRoom>> listRoom;
-
-	public void setAutoComplete(Map<String, List<FRRoom>> listRoom) {
-		this.listRoom = listRoom;
-		mListeners.autoCompletedUpdated();
-	}
-
-	/**
-	 * Return the rooms autocompleted, mapped by buildings.
-	 * 
-	 * @return the rooms autocompleted, mapped by buildings.
-	 */
-	public Map<String, List<FRRoom>> getAutoComplete() {
-		return listRoom;
-	}
-
-	/**
 	 * Return the id of the right image based on the ratio given.
 	 * <p>
 	 * WARNING: VALUES ARE DEFINED ONLY THERE.
@@ -1172,58 +1339,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return id;
 	}
 
-	/**
-	 * Retrieves the 32-char unique and anonymous device-identifier.
-	 * <p>
-	 * This identifiers guarantees the uniqueness among users and hold no
-	 * personal data, neither ID or information from the device, it's therefore
-	 * anonymous. We DONT use the ID of the device as this is not anonymous
-	 * enough (it cannot be changed nor deleted, and identifies the device also
-	 * for other apps)
-	 * <p>
-	 * It's stored in persistent memory, and generated if not exists at this
-	 * time. It can be deleted only if the user deletes and reinstall the app,
-	 * and this is not considered as an issue.
-	 * 
-	 * @return the 32-char unique and anonymous device-identifier.
-	 */
-	public String getAnonymID() {
-		String anonymID = preferences.getString(anonymIDKey, null);
-		if (anonymID != null) {
-			return anonymID;
-		} else {
-			anonymID = generateAnonymID();
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putString(anonymIDKey, anonymID);
-			editor.commit();
-			return anonymID;
-		}
-	}
-
-	/**
-	 * Generates an unique and anonymous device-identifier based on the time of
-	 * generation in milliseconds concatenated to a random String.
-	 * 
-	 * <p>
-	 * This guarantees that every user has a different identifier with a very
-	 * high certainty. To be the same: must be generated at the exact same
-	 * millisecond + get the exact the same random string, which probability can
-	 * be considered as 0 as there is no security issue with this identifier.
-	 * 
-	 * @return a 32-char anonymous and unique ID.
-	 */
-	private String generateAnonymID() {
-		// time in millis as a string
-		long time = System.currentTimeMillis();
-		setRegisteredTime(time);
-		String timeAsString = time + "";
-
-		// random string to complete to 32 chars
-		return timeAsString
-				+ new BigInteger(130, new SecureRandom())
-						.toString(32 - timeAsString.length());
-	}
-
+	/* END OF COLORS */
 	/* INTERACTION WITH FILESYSTEM */
 
 	/**
@@ -1453,7 +1569,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * <p>
 	 * WARNING: THIS MAY BE INCORRECT IF BUILDING LABEL IS NOT SET.
 	 * 
-	 * @param mRoom the given room
+	 * @param mRoom
+	 *            the given room
 	 * @return the room's building name.
 	 */
 	public String getBuildingKeyLabel(FRRoom mRoom) {
@@ -1468,29 +1585,25 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * True if the last sharing was only for server, false if also for friends.
-	 */
-	private boolean onlyServer = false;
-
-	/**
-	 * Return the value of onlyServer boolean.
+	 * WARNING: USE WITH GREAT CARE. PREFER BUILDING_LABLE IN ALL CASES.
+	 * <p>
+	 * Returns the building part in mDoorCode. <br>
 	 * 
-	 * @return true if the last sharing was only for server, false if also for
-	 *         friends.
-	 */
-	public boolean isOnlyServer() {
-		return onlyServer;
-	}
-
-	/**
-	 * Set the value of onlyServer boolean.
+	 * Door codes should be like PH D2 398 with PH the building D2 the zone 398
+	 * the number (including floor) <br>
 	 * 
-	 * @param newValue
-	 *            true if the last sharing was only for server, false if also
-	 *            for friends.
+	 * It works ONLY if spaces are correctly set! <br>
+	 * 
+	 * @param mDoorCode
+	 * @return
 	 */
-	public void setOnlyServer(boolean newValue) {
-		onlyServer = newValue;
+	private String getBuilding(String mDoorCode) {
+		mDoorCode = mDoorCode.trim();
+		int firstSpace = mDoorCode.indexOf(" ");
+		if (firstSpace > 0) {
+			mDoorCode = mDoorCode.substring(0, firstSpace);
+		}
+		return mDoorCode;
 	}
 
 	/* STORAGE OF PREV. REQUEST */
@@ -1614,83 +1727,12 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return savePreviousRequest();
 	}
 
-	/**
-	 * Stores the whole period treated by the last FRReply received from server.
+	/* PREVIOUS REQUEST */
+
+	/*
+	 * methods are ordered by functionality in model !! PLEASE insert your new
+	 * method in an existing category or create a new one with two separators
+	 * like this one!
 	 */
-	private FRPeriod overAllTreatedPeriod = null;
-
-	/**
-	 * Set the whole period treated by the last FRReply received from server.
-	 * 
-	 * @param overAllTreatedPeriod
-	 *            the new period
-	 */
-	public void setOverAllTreatedPeriod(FRPeriod overAllTreatedPeriod) {
-		this.overAllTreatedPeriod = overAllTreatedPeriod;
-	}
-
-	/**
-	 * Retrieves the whole period treated by the last FRReply received from
-	 * server.
-	 * 
-	 * @return the whole period.
-	 */
-	public FRPeriod getOverAllTreatedPeriod() {
-		return overAllTreatedPeriod;
-	}
-
-	/**
-	 * Return a <code>FRTimesClient</code> with the given context and formatters
-	 * ready depending on the language or parameters chosen in model.
-	 * 
-	 * @param context
-	 *            application context for getString
-	 * @return a FRTimesClient with appropriate context and formatters.
-	 */
-	public FRTimesClient getFRTimesClient(Context context) {
-		return getFRTimesClient(context, timeLanguage);
-	}
-
-	/**
-	 * Return a <code>FRTimesClient</code> with the given context and formatters
-	 * ready depending on the language or parameters chosen in model.
-	 * <p>
-	 * You should usually call the method WITHOUT the timeLanguage, and the
-	 * model use the one selected in parameters.
-	 * 
-	 * @param context
-	 *            application context for getString
-	 * @param timeLanguage
-	 *            the language chosen (may be default).
-	 * @return a FRTimesClient with appropriate context and formatters.
-	 */
-	private FRTimesClient getFRTimesClient(Context context,
-			TimeLanguage timeLanguage) {
-
-		// Formatting will use the device language settings
-		// if it has been overridden, it will these one:
-		// English format: Saturday, May 17, 2014
-		// French format: samedi, 17 mai 2014
-
-		// IT AFFECTS ONLY FORMATTING, NEVER THE LANGUAGE !!!
-
-		Locale defaultLocale = Locale.getDefault();
-
-		if (timeLanguage.equals(TimeLanguage.FRENCH)) {
-			return new FRTimesClient(context, defaultLocale,
-					"EEEE, d MMMM yyyy");
-		}
-
-		if (timeLanguage.equals(TimeLanguage.ENGLISH)) {
-			return new FRTimesClient(context, defaultLocale,
-					"EEEE, MMMM d, yyyy");
-		}
-
-		// default
-		return new FRTimesClient(context, Locale.getDefault(), null);
-	}
-
-	public void autoCompleteLaunch() {
-		mListeners.autoCompleteLaunch();
-	}
+	// ********** END OF FILE **********
 }
