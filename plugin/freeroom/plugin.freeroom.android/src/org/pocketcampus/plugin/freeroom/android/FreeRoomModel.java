@@ -251,7 +251,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	public void setAutoComplete(Map<String, List<FRRoom>> listRoom) {
 		this.listRoom = listRoom;
-		mListeners.autoCompletedUpdated();
+		mListeners.autoCompleteUpdated();
 	}
 
 	/**

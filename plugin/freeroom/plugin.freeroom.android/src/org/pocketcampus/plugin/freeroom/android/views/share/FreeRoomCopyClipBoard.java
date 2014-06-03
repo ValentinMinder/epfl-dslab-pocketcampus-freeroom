@@ -127,7 +127,7 @@ public class FreeRoomCopyClipBoard extends FreeRoomAbstractView implements
 	}
 
 	@Override
-	public void autoCompletedUpdated() {
+	public void autoCompleteUpdated() {
 		// WE DO NOTHING!
 	}
 
@@ -142,13 +142,13 @@ public class FreeRoomCopyClipBoard extends FreeRoomAbstractView implements
 	}
 
 	@Override
-	public void errorRegister(boolean bool) {
+	public void welcomeErrorRegister(boolean bool) {
 		// TODO beta test only
 		// WE DO NOTHING!
 	}
 
 	@Override
-	public void validateRegister() {
+	public void welcomeValidateRegister() {
 		// TODO beta test only
 		// WE DO NOTHING!
 	}

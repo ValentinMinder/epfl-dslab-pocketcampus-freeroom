@@ -36,9 +36,9 @@ public class RegisterASyncTask extends
 	protected void onResult(FreeRoomController mController, Boolean reply) {
 		mController.registeredUser(reply);
 		if (reply.booleanValue()) {
-			callerView.validateRegister();
+			callerView.welcomeValidateRegister();
 		} else {
-			callerView.errorRegister(false);
+			callerView.welcomeErrorRegister(false);
 		}
 
 	}
@@ -47,7 +47,7 @@ public class RegisterASyncTask extends
 	protected void onError(FreeRoomController mController, Exception e) {
 		callerView.networkErrorHappened();
 		callerView.anyError();
-		callerView.errorRegister(true);
+		callerView.welcomeErrorRegister(true);
 		e.printStackTrace();
 	}
 }

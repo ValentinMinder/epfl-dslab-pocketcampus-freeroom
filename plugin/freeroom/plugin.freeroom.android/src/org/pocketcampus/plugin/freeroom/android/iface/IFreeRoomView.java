@@ -17,7 +17,7 @@ public interface IFreeRoomView extends IAbstractFreeRoomView {
 
 	void autoCompleteLaunch();
 
-	void autoCompletedUpdated();
+	void autoCompleteUpdated();
 
 	void occupancyResultsUpdated();
 
@@ -28,9 +28,9 @@ public interface IFreeRoomView extends IAbstractFreeRoomView {
 	void workingMessageUpdated();
 
 	// TODO: beta-test only
-	void errorRegister(boolean transmissionError);
+	void welcomeErrorRegister(boolean transmissionError);
 
 	// TODO: beta-test only
-	void validateRegister();
+	void welcomeValidateRegister();
 
 }

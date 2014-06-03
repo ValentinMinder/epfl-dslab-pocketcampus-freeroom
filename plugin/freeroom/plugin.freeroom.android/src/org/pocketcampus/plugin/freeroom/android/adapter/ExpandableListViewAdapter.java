@@ -168,13 +168,13 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		});
 
 		// only display if necessary (if it's only free)
-		homeView.setShareClickListener(share, homeView, occupancy);
+		homeView.shareSetClickListener(share, homeView, occupancy);
 
 		// direct share to the server by pressing the +1 button.
 		OnClickListener onClickDirectServerShare = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				homeView.directShareWithServer(occupancy.getTreatedPeriod(),
+				homeView.shareDirectWithServer(occupancy.getTreatedPeriod(),
 						mRoom);
 			}
 		};

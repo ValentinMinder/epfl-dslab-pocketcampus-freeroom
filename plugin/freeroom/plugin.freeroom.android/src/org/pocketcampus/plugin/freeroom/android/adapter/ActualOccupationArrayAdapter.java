@@ -96,7 +96,7 @@ public class ActualOccupationArrayAdapter<T> extends
 
 				@Override
 				public void onClick(View v) {
-					homeView.directShareWithServer(
+					homeView.shareDirectWithServer(
 							mActualOccupation.getPeriod(), occupancy.getRoom());
 				}
 			});
@@ -114,7 +114,7 @@ public class ActualOccupationArrayAdapter<T> extends
 				public void onClick(View arg0) {
 					FRPeriod mPeriod = mActualOccupation.getPeriod();
 					FRRoom mRoom = mModel.getDisplayedOccupancy().getRoom();
-					homeView.displayShareDialog(mPeriod, mRoom);
+					homeView.shareDisplayDialog(mPeriod, mRoom);
 				}
 			};
 			// share icon clickable
@@ -133,7 +133,7 @@ public class ActualOccupationArrayAdapter<T> extends
 							mActualOccupation.getPeriod());
 					mController.prepareCheckWhoIsWorking(req);
 					mController.checkWhoIsWorking(homeView);
-					homeView.displayWorkingDialog(occupancy.getRoom(),
+					homeView.whoIsWorkingDisplayDialog(occupancy.getRoom(),
 							mActualOccupation.getPeriod());
 				}
 			};

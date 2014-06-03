@@ -44,7 +44,7 @@ public class PreviousRequestArrayAdapter<T> extends
 		removeRequest.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				caller.onRemoveRequestClickListener(position);
+				caller.searchPreviousRequestRemoveClickListener(position);
 			}
 		});
 
@@ -55,7 +55,7 @@ public class PreviousRequestArrayAdapter<T> extends
 		editRequest.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				caller.onFillRequestClickListeners(position);
+				caller.searchPreviousRequestReFillClickListeners(position);
 			}
 		});
 
@@ -63,11 +63,11 @@ public class PreviousRequestArrayAdapter<T> extends
 		TextView requestTextView = (TextView) row
 				.findViewById(R.id.freeroom_layout_prev_req_text);
 		FRRequestDetails req = super.getItem(position);
-		requestTextView.setText(caller.FRRequestToString(req));
+		requestTextView.setText(caller.searchPreviousFRRequestToString(req));
 		requestTextView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				caller.onPlayRequestClickListener(position);
+				caller.searchPreviousRequestRePlayClickListener(position);
 			}
 		});
 		return (row);
