@@ -4099,7 +4099,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			autoCompleteUpdateMessage(getString(R.string.freeroom_dialog_add_autocomplete_uptodate));
 		}
 
-		// FIXME: adapt to use the new version of autocomplete mapped by building
+		// FIXME: adapt to use the new version of autocomplete mapped by
+		// building
 		Iterator<List<FRRoom>> iter = mModel.getAutoComplete().values()
 				.iterator();
 		while (iter.hasNext()) {
@@ -4915,15 +4916,25 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	/**
 	 * Activates and display the konami code.
 	 * <p>
-	 * TODO: do something funny!
+	 * This popup is NEVER closable. The user who cheats has to close the
+	 * application by the application manager! :p
+	 * <p>
+	 * Never trust cheaters! :D
 	 */
 	private void activateKonamiCode() {
-		// Uri.Builder builder = new Uri.Builder();
-		// builder.scheme("pocketcampus")
-		// .authority("directory.plugin.pocketcampus.org")
-		// .appendPath("search").appendQueryParameter("q", 215256 + "");
-		// Intent i = new Intent(Intent.ACTION_VIEW, builder.build());
-		// startActivity(i);
-		showErrorDialog("konami code activated, well done! Nothing will happen!");
+		ImageView konami = new ImageView(this);
+		konami.setImageResource(R.drawable.konami);
+		mErrorDialog.setView(konami);
+
+		showErrorDialog("KONAMI CODE IS CHEATING! NOW FIND THE WAY OUT!"
+				+ "\nIf you find or want other hidden functions, "
+				+ "please contact us at freeroom.epfl@gmail.com :p");
+
+		mErrorDialog.setOnDismissListener(new OnDismissListener() {
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				mErrorDialog.show();
+			}
+		});
 	}
 }
