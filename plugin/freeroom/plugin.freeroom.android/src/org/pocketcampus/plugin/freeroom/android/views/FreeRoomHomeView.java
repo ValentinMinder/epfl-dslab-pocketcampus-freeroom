@@ -751,8 +751,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			// if no previous request or it's outdated
 			long timeOut = mModel.getMinutesRequestTimeOut()
 					* FRTimes.ONE_MIN_IN_MS;
-			// TODO: remove this line.
-			timeOut = FRTimes.ONE_SEC_IN_MS * 15;
 			if (req == null || req.isOutDated(timeOut)) {
 				initDefaultRequest(false);
 			} else {
@@ -824,14 +822,19 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					+ " "
 					+ getString(R.string.freeroom_urisearch_error_AutoComplete_noMatch));
 		} else {
-			// TODO: warn if there is more than 1 result ? Val. think no.
+			// we dont warn if there is more than 1 result
+			// please use carefully
+			// /show?id=ID, /search?name=NAM and /match?name?NAME
 
 			// search for the rest of the day.
 			FRPeriod period = FRTimes.getNextValidPeriodTillEndOfDay();
 			FRRequestDetails request = null;
 			List<String> uidList = new ArrayList<String>();
 			Set<FRRoom> uidNonFav = new HashSet<FRRoom>();
-			// TODO: find a simpler and more efficient way ?
+
+			// maybe find a simpler and more efficient way ?
+			// it's not really relevant as these collection are usually
+			// relatively small (limited by autocomplete limit on server side)
 			Iterator<FRRoom> iter = collection.iterator();
 			while (iter.hasNext()) {
 				FRRoom room = iter.next();
@@ -889,7 +892,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		// search action is always there.
+		// search action is always there, on phones AND tablet modes
 		addActionToActionBar(search);
 		// on tablet, put all the actions, without the overflow.
 		if (isLandscapeTabletMode()) {
@@ -4852,10 +4855,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 		if (query.matches("[Dd][Ee][Bb][Uu][Gg]")
 				&& !query.startsWith(fct_prefix)) {
-			mModel.setAdvancedTime(true);
+			boolean advanced = mModel.getAdvancedTime();
+			mModel.setAdvancedTime(!advanced);
 			initSearchDialog();
-			mModel.setGroupAccess(Integer.MAX_VALUE);
-			showErrorDialog("Debug mode activated! Try with great care!");
+			if (advanced) {
+				mModel.setGroupAccess();
+				showErrorDialog("Debug mode deactivated!");
+			} else {
+				mModel.setGroupAccess(Integer.MAX_VALUE);
+				showErrorDialog("Debug mode activated! Try with great care! :p");
+			}
 		}
 		if (!query.startsWith(fct_prefix)) {
 			return;
