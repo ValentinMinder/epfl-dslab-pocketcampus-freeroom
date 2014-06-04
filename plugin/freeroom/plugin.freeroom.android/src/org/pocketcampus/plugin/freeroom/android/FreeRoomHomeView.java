@@ -24,7 +24,7 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.HomeBehaviourTime;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.TimeLanguage;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.TimePickersPref;
 import org.pocketcampus.plugin.freeroom.android.adapter.ActualOccupationArrayAdapter;
-import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewAdapter;
+import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewOccupancyAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewFavoriteAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.FRRoomRemoveArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.FRRoomSuggestionArrayAdapter;
@@ -247,7 +247,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * HOME: Adapter for the results (to display the occupancies). See also
 	 * {@link #homeResultExpListView}.
 	 */
-	private ExpandableListViewAdapter<Occupancy> homeResultExpListAdapter;
+	private ExpandableListViewOccupancyAdapter<Occupancy> homeResultExpListAdapter;
 
 	/* MAIN ACTIVITY - OVERRIDEN METHODS */
 
@@ -486,7 +486,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		activityWidth = displayRectangle.width();
 		homeActivityHeight = displayRectangle.height();
 
-		homeResultExpListAdapter = new ExpandableListViewAdapter<Occupancy>(
+		homeResultExpListAdapter = new ExpandableListViewOccupancyAdapter<Occupancy>(
 				getApplicationContext(), mModel.getOccupancyResults(),
 				mController, this);
 		homeResultExpListView.setAdapter(homeResultExpListAdapter);
@@ -1300,7 +1300,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 *            expandable list view adapter
 	 */
 	private void homeUpdateCollapse(ExpandableListView ev,
-			ExpandableListViewAdapter<Occupancy> ad) {
+			ExpandableListViewOccupancyAdapter<Occupancy> ad) {
 		int maxChildrenToExpand = 7;
 		int maxGroupToExpand = 3;
 		if (ad.getGroupCount() <= maxGroupToExpand
@@ -1524,7 +1524,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * {@link #infoDetailsRoom}: display the dialog that provides more info
 	 * about the occupation of the selected room.
 	 * <p>
-	 * Called by the {@link ExpandableListViewAdapter} when clicking on a line.
+	 * Called by the {@link ExpandableListViewOccupancyAdapter} when clicking on a line.
 	 */
 	public void infoDetailsDisplayDialog() {
 		final Occupancy mOccupancy = mModel.getDisplayedOccupancy();
@@ -1761,7 +1761,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	/**
 	 * {@link #favorites}: adapter for the favorites ListView.
 	 */
-	private ExpandableListViewFavoriteAdapter favoritesListAdapter;
+	private ExpandableListViewFavoriteAdapter<FRRoom> favoritesListAdapter;
 
 	/**
 	 * {@link #favorites}: Inits the {@link #favorites} dialog to display the
@@ -1847,9 +1847,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		ExpandableListView lv = (ExpandableListView) favoritesView
 				.findViewById(R.id.freeroom_layout_dialog_fav_list);
-		favoritesListAdapter = new ExpandableListViewFavoriteAdapter(this,
-				mModel.getFavorites().keySetOrdered(), mModel.getFavorites(),
-				mModel, this);
+		favoritesListAdapter = new ExpandableListViewFavoriteAdapter<FRRoom>(
+				this, mModel.getFavorites(), mModel, this);
 		lv.setAdapter(favoritesListAdapter);
 		favoritesListAdapter.notifyDataSetChanged();
 	}

@@ -30,7 +30,7 @@ import android.widget.TextView;
  * ExpandableSimpleListViewAdapter<T> and, ExpandableListViewFavoriteAdapter<T>
  * <p>
  * 
- * <code>ExpandableListViewAdapter<T></code> is a simple adapter to use with
+ * <code>ExpandableListViewOccupancyAdapter<T></code> is a simple adapter to use with
  * <code>ExpandableListView</code>.
  * 
  * Data are stored in user-defined class <code>OrderMapList</code>. You can use
@@ -45,7 +45,7 @@ import android.widget.TextView;
  *            The type of data is the lists.
  */
 
-public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
+public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAdapter {
 	private Context context;
 	private OrderMapListFew<String, List<?>, Occupancy> data;
 	// hold the caller view for colors updates.
@@ -57,7 +57,7 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 	 */
 	private int focusedGroup = -1;
 
-	public ExpandableListViewAdapter(Context c,
+	public ExpandableListViewOccupancyAdapter(Context c,
 			OrderMapListFew<String, List<?>, Occupancy> data,
 			FreeRoomController controller, FreeRoomHomeView homeView) {
 		this.context = c;
@@ -288,7 +288,7 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		final ImageView iv = vholder.getImageView();
 		final RelativeLayout rel = vholder.getRelativeLayoutMore();
 		final ExpandableListView v = ((ExpandableListView) parent);
-		final ExpandableListViewAdapter<T> adapter = this;
+		final ExpandableListViewOccupancyAdapter<T> adapter = this;
 
 		updateClick(more, iv, v, groupPosition);
 

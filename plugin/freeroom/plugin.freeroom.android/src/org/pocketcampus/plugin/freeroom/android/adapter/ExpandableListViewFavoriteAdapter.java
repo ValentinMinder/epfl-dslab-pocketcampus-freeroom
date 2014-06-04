@@ -1,11 +1,11 @@
 package org.pocketcampus.plugin.freeroom.android.adapter;
 
 import java.util.List;
-import java.util.Map;
 
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
+import org.pocketcampus.plugin.freeroom.android.utils.OrderMapList;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 import android.content.Context;
@@ -15,34 +15,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * //TODO: NOT USED as of 2014.04.04, REPLACED BY ExpandableListViewAdapter
- * <p>
- * still used for now, may be need a few refactoring! :)
- * <p>
  * Simple adapter to use with ExpandableListView, Headers are Strings, Childs
  * are FRRooms.
+ * <p>
+ * Used by favorites :)
  * 
  * @author FreeRoom Project Team (2014/05)
  * @author Julien WEBER <julien.weber@epfl.ch>
  * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
-public class ExpandableListViewFavoriteAdapter extends
-		ExpandableAbstractListViewAdapter<FRRoom> {
+public class ExpandableListViewFavoriteAdapter<T> extends
+		BaseExpandableListAdapter {
 
 	FreeRoomHomeView home;
+	protected Context context;
+	protected OrderMapList<String, List<FRRoom>, FRRoom> data;
+	// hold the caller view for colors updates.
+	protected FreeRoomModel mModel;
 
-	public ExpandableListViewFavoriteAdapter(Context c, List<String> header,
-			Map<String, List<FRRoom>> data, FreeRoomModel model,
-			FreeRoomHomeView home) {
-		super(c, header, data, model);
+	public ExpandableListViewFavoriteAdapter(Context c,
+			OrderMapList<String, List<FRRoom>, FRRoom> data,
+			FreeRoomModel model, FreeRoomHomeView home) {
+		this.context = c;
+		this.data = data;
+		this.mModel = model;
 		this.home = home;
 	}
 
+	/**
+	 * Return the corresponding child's doorCode, this method is intented for
+	 * the display, thus should not return the door UID, if you want the object
+	 * FRRoom, use getChildObject instead
+	 */
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		FRRoom child = this.getChildObject(groupPosition, childPosition);
@@ -54,7 +64,7 @@ public class ExpandableListViewFavoriteAdapter extends
 
 	/**
 	 * This method returns the child's object. It is not suitable for display,
-	 * use getChild(int, int) instead.
+	 * use {@link #getChild(int, int)} instead.
 	 * 
 	 * @param groupPosition
 	 *            The group id
@@ -62,12 +72,11 @@ public class ExpandableListViewFavoriteAdapter extends
 	 *            The child id
 	 * @return The child object FRRoom associated.
 	 */
-	@Override
 	public FRRoom getChildObject(int groupPosition, int childPosition) {
-		if (groupPosition >= headers.size()) {
+		if (groupPosition >= data.size()) {
 			return null;
 		}
-		List<FRRoom> groupList = data.get(headers.get(groupPosition));
+		List<FRRoom> groupList = data.get(groupPosition);
 
 		if (childPosition >= groupList.size() || groupList == null) {
 			return null;
@@ -78,7 +87,7 @@ public class ExpandableListViewFavoriteAdapter extends
 	public View getChildView(int groupPosition, int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
 
-		if (groupPosition >= headers.size()) {
+		if (groupPosition >= data.size()) {
 			return null;
 		}
 
@@ -150,7 +159,7 @@ public class ExpandableListViewFavoriteAdapter extends
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
-		if (groupPosition >= headers.size()) {
+		if (groupPosition >= data.size()) {
 			return null;
 		}
 
@@ -170,7 +179,23 @@ public class ExpandableListViewFavoriteAdapter extends
 			vholder = (ViewHolderGroup) convertView.getTag();
 		}
 
-		String text = (String) headers.get(groupPosition);
+		List<FRRoom> list = data.get(groupPosition);
+		String text = "unkwown";
+		if (list != null && !list.isEmpty() && list.get(0) != null) {
+			FRRoom room = list.get(0);
+			if (room.isSetBuilding_name()) {
+				text = room.getBuilding_name();
+			} else {
+				String code = room.getDoorCode();
+				label: while (code.length() >= 0) {
+					if ((code.charAt(0) + "").matches("[A-Za-z]")) {
+						text += code.charAt(0);
+					} else {
+						break label;
+					}
+				}
+			}
+		}
 		TextView tv = vholder.getTextView();
 		tv.setText(text);
 
@@ -188,6 +213,51 @@ public class ExpandableListViewFavoriteAdapter extends
 
 		return convertView;
 
+	}
+
+	@Override
+	public int getChildrenCount(int groupPosition) {
+		if (groupPosition >= data.size()) {
+			return 0;
+		}
+		List<?> list = data.get(groupPosition);
+		if (list != null) {
+			return list.size();
+		}
+		return 0;
+	}
+
+	@Override
+	public Object getGroup(int groupPosition) {
+		if (groupPosition >= data.size()) {
+			return null;
+		}
+		return data.get(groupPosition);
+	}
+
+	@Override
+	public int getGroupCount() {
+		return data.size();
+	}
+
+	@Override
+	public long getGroupId(int groupPosition) {
+		return groupPosition;
+	}
+
+	@Override
+	public boolean hasStableIds() {
+		return false;
+	}
+
+	@Override
+	public boolean isChildSelectable(int groupPosition, int childPosition) {
+		return true;
+	}
+
+	@Override
+	public long getChildId(int groupPosition, int childPosition) {
+		return childPosition;
 	}
 
 	/**
