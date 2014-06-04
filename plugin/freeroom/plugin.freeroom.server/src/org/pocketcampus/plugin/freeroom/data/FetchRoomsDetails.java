@@ -13,7 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Scanner;
 
 import org.json.JSONArray;
@@ -27,8 +26,9 @@ import org.pocketcampus.plugin.freeroom.server.utils.Utils;
  * This class allows you to either fetch and insert all the relevant rooms for
  * the projet in the database or fetching the details about one specific room.
  * 
- * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 public class FetchRoomsDetails {
@@ -96,7 +96,9 @@ public class FetchRoomsDetails {
 
 	/**
 	 * Fetch and insert a particular room in the database.
-	 * @param uid The unique identifier of the room to fetch
+	 * 
+	 * @param uid
+	 *            The unique identifier of the room to fetch
 	 */
 	public boolean fetchRoomDetailInDB(String uid) {
 		if (uid == null) {
@@ -104,7 +106,7 @@ public class FetchRoomsDetails {
 		}
 		return insertIntoDBRoomDetail(fetchRoomDetail(uid));
 	}
-	
+
 	/**
 	 * Fetch details about a room (i.e all its attributes) and convert it to a
 	 * JSONObject.
@@ -222,7 +224,7 @@ public class FetchRoomsDetails {
 		if (room == null) {
 			return false;
 		}
-		
+
 		Connection conn = null;
 		try {
 			conn = connMgr.getConnection();
@@ -354,7 +356,8 @@ public class FetchRoomsDetails {
 				query.setString(19, typeFR);
 				query.setString(20, typeEN);
 				query.setString(21, room.getString("dincat"));
-				query.setInt(22, Utils.determineGroupAccessRoom(room.getString("id")));
+				query.setInt(22,
+						Utils.determineGroupAccessRoom(room.getString("id")));
 				// in case of update
 				query.setString(23, room.getString("dincat"));
 				query.setString(24, typeFR);
@@ -363,7 +366,8 @@ public class FetchRoomsDetails {
 				query.setNull(19, Types.CHAR);
 				query.setNull(20, Types.CHAR);
 				query.setNull(21, Types.CHAR);
-				query.setInt(22, Utils.determineGroupAccessRoom(room.getString("id")));
+				query.setInt(22,
+						Utils.determineGroupAccessRoom(room.getString("id")));
 				query.setNull(23, Types.CHAR);
 				query.setNull(24, Types.CHAR);
 				query.setNull(25, Types.CHAR);

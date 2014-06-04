@@ -11,8 +11,9 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
  * Runnable used to be launched periodically to fetch and update data in the
  * database
  * 
- * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 public class PeriodicallyUpdate implements Runnable {
@@ -37,11 +38,12 @@ public class PeriodicallyUpdate implements Runnable {
 				DB_USER, DB_PASSWORD, server);
 		Calendar mCalendar = Calendar.getInstance();
 		long start = mCalendar.getTimeInMillis() - FRTimes.ONE_WEEK_IN_MS;
-		long end = mCalendar.getTimeInMillis() + 3*FRTimes.ONE_WEEK_IN_MS;
+		long end = mCalendar.getTimeInMillis() + 3 * FRTimes.ONE_WEEK_IN_MS;
 		fodj.fetchAndInsert(start, end);
-		
+
 		server.log(Level.INFO, "Starting update of data from Exchange");
-		ExchangeServiceImpl exchange = new ExchangeServiceImpl(DB_URL, DB_USER, DB_PASSWORD, server);
+		ExchangeServiceImpl exchange = new ExchangeServiceImpl(DB_URL, DB_USER,
+				DB_PASSWORD, server);
 		exchange.updateEWAOccupancyFromTo(start, end);
 	}
 

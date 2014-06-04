@@ -3,19 +3,14 @@ package org.pocketcampus.plugin.freeroom.data;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.logging.Level;
 
-import microsoft.exchange.webservices.data.LogicalOperator;
-
-import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -30,13 +25,15 @@ import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
-	Fetch, insert, update rooms and/or occupancies from the ISA webservice
+ * Fetch, insert, update rooms and/or occupancies from the ISA webservice
  * 
- * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 public class FetchOccupancyDataJSON {
+	// TODO: when turning production to real ISA server, change the URL.
 	private final String URL_DATA = "https://isatest.epfl.ch/services/timetable/reservations/";
 
 	private final String KEY_ALIAS = "name";
@@ -245,9 +242,13 @@ public class FetchOccupancyDataJSON {
 
 	/**
 	 * Parse and insert occupancies contained in the argument into the database
-	 * @param array The array containing the occupancies for the given room
-	 * @param uid The unique ID (UID) representing the rooms of the occupancies
-	 * @return The number of occupancies extracted and inserted into the database
+	 * 
+	 * @param array
+	 *            The array containing the occupancies for the given room
+	 * @param uid
+	 *            The unique ID (UID) representing the rooms of the occupancies
+	 * @return The number of occupancies extracted and inserted into the
+	 *         database
 	 */
 	private int extractAndInsertOccupancies(JSONArray array, String uid) {
 		if (array == null || uid == null) {
@@ -307,8 +308,11 @@ public class FetchOccupancyDataJSON {
 
 	/**
 	 * Fetch JSON page from ISA webservice during a given period
-	 * @param from The start of the period
-	 * @param to The end of the period
+	 * 
+	 * @param from
+	 *            The start of the period
+	 * @param to
+	 *            The end of the period
 	 * @return The JSON page fetched
 	 */
 	private String fetchFromTo(long from, long to) {
@@ -320,7 +324,9 @@ public class FetchOccupancyDataJSON {
 
 	/**
 	 * Fetch JSON page from ISA webservice for a given day
-	 * @param timestamp The day to fetch
+	 * 
+	 * @param timestamp
+	 *            The day to fetch
 	 * @return The JSON page fetched
 	 */
 	private String fetch(long timestamp) {
@@ -331,11 +337,14 @@ public class FetchOccupancyDataJSON {
 
 	/**
 	 * Fetch a JSON page at a given URL
-	 * @param URL The URL to fetch
+	 * 
+	 * @param URL
+	 *            The URL to fetch
 	 * @return The JSON page located at the given URL, null if none
 	 */
 	private String fetch(String URL) {
-		server.log(Level.INFO, "Starting fetching data from ISA webservice for URL " + URL);
+		server.log(Level.INFO,
+				"Starting fetching data from ISA webservice for URL " + URL);
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpGet request;
 		try {
@@ -354,12 +363,16 @@ public class FetchOccupancyDataJSON {
 				while ((line = reader.readLine()) != null) {
 					jsonBuffer.append(line);
 				}
-				server.log(Level.INFO, "Successfully fetched data from ISA webservice");
+				server.log(Level.INFO,
+						"Successfully fetched data from ISA webservice");
 				return jsonBuffer.toString();
 			} else {
-				server.log(Level.WARNING, "Error while fetching from ISA webservice, status " + response.getStatusLine().getStatusCode());
+				server.log(Level.WARNING,
+						"Error while fetching from ISA webservice, status "
+								+ response.getStatusLine().getStatusCode());
 			}
-			//TODO compile and merge script does not like URISyntaxException and HttpException
+			// TODO compile and merge script does not like URISyntaxException
+			// and HttpException
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
