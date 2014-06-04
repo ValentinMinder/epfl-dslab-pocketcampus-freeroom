@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.pocketcampus.plugin.freeroom.R;
+import org.pocketcampus.plugin.freeroom.android.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
-import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 import android.content.Context;

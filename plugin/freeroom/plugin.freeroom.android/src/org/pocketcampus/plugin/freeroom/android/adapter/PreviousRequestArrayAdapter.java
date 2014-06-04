@@ -3,8 +3,8 @@ package org.pocketcampus.plugin.freeroom.android.adapter;
 import java.util.List;
 
 import org.pocketcampus.plugin.freeroom.R;
+import org.pocketcampus.plugin.freeroom.android.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
-import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
 
 import android.content.Context;
 import android.view.View;

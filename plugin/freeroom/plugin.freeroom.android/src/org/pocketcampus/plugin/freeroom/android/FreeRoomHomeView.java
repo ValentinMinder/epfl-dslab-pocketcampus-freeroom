@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.freeroom.android.views;
+package org.pocketcampus.plugin.freeroom.android;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,9 +18,6 @@ import org.pocketcampus.android.platform.sdk.ui.element.InputBarElement;
 import org.pocketcampus.android.platform.sdk.ui.element.OnKeyPressedListener;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
-import org.pocketcampus.plugin.freeroom.android.FreeRoomAbstractView;
-import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
-import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.ColorBlindMode;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.HomeBehaviourRoom;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.HomeBehaviourTime;

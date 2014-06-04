@@ -19,7 +19,7 @@
         android:theme="@style/PocketCampusTheme" >
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:name="org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView"
+            android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomHomeView"
             android:icon="@drawable/freeroom_beta_icon"
             android:label="@string/freeroom_plugin_title"
             android:launchMode="singleTask"
@@ -177,7 +177,7 @@
         </activity>
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:name="org.pocketcampus.plugin.freeroom.android.views.share.FreeRoomCopyClipBoard"
+            android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomCopyClipBoard"
             android:icon="@drawable/ic_action_copy"
             android:label="@string/freeroom_share_CopyClipBoard"
             android:screenOrientation="nosensor" >
