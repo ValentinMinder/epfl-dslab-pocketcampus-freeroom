@@ -143,16 +143,34 @@ public class FRUtilsClient {
 	}
 
 	/**
-	 * Converts a FRRoom to a String of only major properties, in order to
-	 * display them. It includes name (with alias), type, capacity, surface and
-	 * UID.
-	 * <p>
-	 * TODO: this method may be changed
+	 * See {@link #getInfoFRRoom(FRRoom, boolean, boolean)}, launched with both
+	 * false.
 	 * 
 	 * @param mFrRoom
-	 * @return
+	 *            the room
+	 * @return a string summary of its information.
 	 */
 	public String getInfoFRRoom(FRRoom mFrRoom) {
+		return getInfoFRRoom(mFrRoom, false, false);
+	}
+
+	/**
+	 * Converts a FRRoom to a String of only major properties, in order to
+	 * display them. It includes name (with alias), type, capacity, and
+	 * optionally surface and UID.
+	 * <p>
+	 * 
+	 * @param mFrRoom
+	 *            the room.
+	 * @param printSurface
+	 *            if the surface should be printed.
+	 * @param printUID
+	 *            if the uid should be printed.
+	 * 
+	 * @return a string summary of its information.
+	 */
+	public String getInfoFRRoom(FRRoom mFrRoom, boolean printSurface,
+			boolean printUID) {
 		StringBuilder builder = new StringBuilder(50);
 		if (mFrRoom.isSetDoorCode()) {
 			if (mFrRoom.isSetDoorCodeAlias()) {
@@ -191,15 +209,18 @@ public class FRUtilsClient {
 						R.plurals.freeroom_dialog_info_places, cap, cap));
 			}
 		}
-		if (mFrRoom.isSetSurface()) {
+		if (mFrRoom.isSetSurface() && printSurface) {
+			double surface = mFrRoom.getSurface();
 			builder.append(" / "
-					+ context.getString(R.string.freeroom_dialog_info_surface)
-					+ ": " + mFrRoom.getSurface() + " "
-					+ context.getString(R.string.freeroom_dialog_info_sqm));
+					+ context.getString(R.string.freeroom_dialog_info_surface));
+			if (surface <= 0) {
+				builder.append(context
+						.getString(R.string.freeroom_dialog_info_capacity_unknown));
+			} else {
+				builder.append(": " + surface + " "
+						+ context.getString(R.string.freeroom_dialog_info_sqm));
+			}
 		}
-		// TODO: for production, remove UID (it's useful for debugging for the
-		// moment)
-		boolean printUID = false;
 		if (mFrRoom.isSetUid() && printUID) {
 			builder.append(" / "
 					+ context.getString(R.string.freeroom_dialog_info_uniqID)

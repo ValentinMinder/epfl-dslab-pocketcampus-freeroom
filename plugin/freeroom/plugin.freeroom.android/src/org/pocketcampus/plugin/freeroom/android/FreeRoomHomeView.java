@@ -1524,7 +1524,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * {@link #infoDetailsRoom}: display the dialog that provides more info
 	 * about the occupation of the selected room.
 	 * <p>
-	 * Called by the {@link ExpandableListViewOccupancyAdapter} when clicking on a line.
+	 * Called by the {@link ExpandableListViewOccupancyAdapter} when clicking on
+	 * a line.
 	 */
 	public void infoDetailsDisplayDialog() {
 		final Occupancy mOccupancy = mModel.getDisplayedOccupancy();
@@ -1607,7 +1608,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			TextView detailsTextView = (TextView) infoDetailsRoomView
 					.findViewById(R.id.freeroom_layout_dialog_info_details);
-			detailsTextView.setText(u.getInfoFRRoom(mOccupancy.getRoom()));
+
+			// UID and surface are display only to user who have special rights
+			// (time and room access), and therefore also in debug mode.
+			boolean value = mModel.getAdvancedTime()
+					&& (mModel.getGroupAccess() > mModel.DEFAULT_GROUP_ACCESS);
+			detailsTextView.setText(u.getInfoFRRoom(mOccupancy.getRoom(),
+					value, value));
 			infoDetailsRoom.show();
 		}
 	}

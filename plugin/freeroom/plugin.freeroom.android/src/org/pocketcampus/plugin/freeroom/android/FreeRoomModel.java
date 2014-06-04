@@ -113,7 +113,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private final ColorBlindMode DEFAULT_COLORBLINDMODE = ColorBlindMode.DEFAULT;
 	private final int DEFAULT_PREVREQUEST = 20;
 	private final boolean DEFAULT_ADVANCED_TIME = false;
-	private final int DEFAULT_GROUP_ACCESS = 10;
+	public final int DEFAULT_GROUP_ACCESS = 10;
 
 	/**
 	 * 
