@@ -8,6 +8,9 @@
 
     <!-- HOME TITLES -->
     <string name="freeroom_title_main_title">"FreeRoom: Home"</string>
+    <string name="freeroom_title_main_title_error">"FreeRoom: Erreur :/"</string>
+    <string name="freeroom_title_main_title_updating">"FreeRoom: actualisation\&#8230;"</string>
+    <string name="freeroom_title_main_title_no_result">"FreeRoom: pas de résultat :/"</string>
     <string name="freeroom_home_info_rooms">"Occupations "</string>
     <string name="freeroom_home_info_free_rooms">"Salles libres "</string>
 

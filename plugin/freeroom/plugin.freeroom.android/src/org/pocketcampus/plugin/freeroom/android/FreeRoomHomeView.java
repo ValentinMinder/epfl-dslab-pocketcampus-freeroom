@@ -276,7 +276,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				R.layout.freeroom_layout_home, null);
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(homeTitleLayout);
-		homeSetTitle();
+		homeSetTitleDefault();
 
 		homeResultExpListView = (ExpandableListView) homeMainContentLayout
 				.findViewById(R.id.freeroom_layout_home_list);
@@ -412,7 +412,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	@Override
 	public void anyError() {
-		homeSetTitle();
+		homeSetTitleError();
 		String errorMessage = getString(R.string.freeroom_home_error_sorry);
 		homeSetStatusTextSummary(errorMessage);
 		autoCompleteUpdateMessage(errorMessage);
@@ -1143,7 +1143,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private void commonReplayRefresh() {
 		homeSetStatusTextSummary(getString(R.string.freeroom_home_please_wait));
-		homeSetTitle();
+		homeSetTitleUpdating();
 		// cleans the previous results
 		mModel.getOccupancyResults().clear();
 		homeResultExpListAdapter.notifyDataSetChanged();
@@ -1164,27 +1164,51 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
-	 * HOME: Sets the title to the default value.
+	 * HOME: Sets the title to the default value (FreeRoom: Home)
 	 * <p>
-	 * same effect as <br>
-	 * <code>String default = getString(R.string.freeroom_title_main_title)</code>
-	 * <br>
-	 * <code>homeTitleLayout.setTitle(defaultTitle);</code>
-	 * 
+	 * So far, this happens only at the very beginning, and immediately
+	 * overridden by a refreshing.
 	 */
-	private void homeSetTitle() {
-		super.setTitle(getString(R.string.freeroom_title_main_title));
+	private void homeSetTitleDefault() {
+		homeTitleLayout.setTitle(getString(R.string.freeroom_title_main_title));
 	}
 
 	/**
-	 * Sets the title to the given value.
+	 * HOME: Sets the title to the default error value (FreeRoom: error :/)
 	 * <p>
-	 * same effect as <br>
-	 * <code>homeTitleLayout.setTitle(titleValue);</code>
+	 * Used by transmission/network error, internal server error, bad request.
+	 */
+	private void homeSetTitleError() {
+		homeTitleLayout
+				.setTitle(getString(R.string.freeroom_title_main_title_error));
+	}
+
+	/**
+	 * HOME: Sets the title to the default no result value (FreeRoom: no result
+	 * :/)
+	 * <p>
+	 * Used when a successfully answer was received, but empty! (eg when no
+	 * selected room is free!)
+	 */
+	private void homeSetTitleNoResults() {
+		homeTitleLayout
+				.setTitle(getString(R.string.freeroom_title_main_title_no_result));
+	}
+
+	/**
+	 * HOME: Sets the title to the default udpating value (FreeRoom:
+	 * updating...)
+	 */
+	private void homeSetTitleUpdating() {
+		homeTitleLayout
+				.setTitle(getString(R.string.freeroom_title_main_title_updating));
+	}
+
+	/**
+	 * HOME: Sets the title to the given value.
 	 * 
 	 * @param titleValue
 	 *            the new title
-	 * 
 	 */
 	private void homeSetTitle(String titleValue) {
 		homeTitleLayout.setTitle(titleValue);
@@ -1199,12 +1223,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	@Override
 	public void occupancyResultsUpdated() {
-		homeSetTitle();
+		homeSetTitleUpdating();
 		String subtitle = "";
 		if (mModel.getOccupancyResults().isEmpty()) {
 			// popup with no results message
 			subtitle = getString(R.string.freeroom_home_error_no_results);
 			errorDialogShowMessage(subtitle);
+			homeSetTitleNoResults();
 		} else {
 			FRRequest request = mModel.getFRRequestDetails();
 
