@@ -196,7 +196,7 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			@Override
 			public void onClick(View v) {
 				mModel.setDisplayedOccupancy(occupancy);
-				homeView.displayInfoDialog();
+				homeView.infoDetailsDisplayDialog();
 			}
 		};
 		tv.setOnClickListener(onClickOpenDetails);
