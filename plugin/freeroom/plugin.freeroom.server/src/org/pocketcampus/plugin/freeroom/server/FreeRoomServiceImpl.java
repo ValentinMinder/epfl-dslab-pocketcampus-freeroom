@@ -988,7 +988,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		Connection connectBDD;
 		try {
 			connectBDD = connMgr.getConnection();
-			String request = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.typeEN, rl.typeFR, "
+			String request = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.typeEN, rl.typeFR, "
 					+ "uo.count, uo.timestampStart, uo.timestampEnd, uo.type "
 					+ "FROM `fr-roomslist` rl, `fr-occupancy` uo "
 					+ "WHERE rl.uid = uo.uid AND rl.uid IN("
@@ -1030,6 +1030,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				String alias = resultQuery.getString("alias");
 				String typeFR = resultQuery.getString("typeFR");
 				String typeEN = resultQuery.getString("typeEN");
+				double surface = resultQuery.getDouble("surface");
 
 				OCCUPANCY_TYPE type = OCCUPANCY_TYPE.valueOf(resultQuery
 						.getString("type"));
@@ -1045,6 +1046,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				mRoom.setBuilding_name(Utils.extractBuilding(doorCode));
 
 				mRoom.setCapacity(capacity);
+				mRoom.setSurface(surface);
 				Utils.addAliasIfNeeded(mRoom, alias);
 
 				if (typeEN != null) {
@@ -1109,7 +1111,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				}
 
 				roomsListQueryFormat += "?";
-				String infoRequest = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.typeEN, rl.typeFR "
+				String infoRequest = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.typeEN, rl.typeFR "
 						+ "FROM `fr-roomslist` rl "
 						+ "WHERE rl.uid IN("
 						+ roomsListQueryFormat + ")";
@@ -1130,9 +1132,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					String alias = infoRoom.getString("alias");
 					String typeFR = infoRoom.getString("typeFR");
 					String typeEN = infoRoom.getString("typeEN");
+					double surface = resultQuery.getDouble("surface");
 
 					FRRoom mRoom = new FRRoom(doorCode, uid);
 					mRoom.setCapacity(capacity);
+					mRoom.setSurface(surface);
 					Utils.addAliasIfNeeded(mRoom, alias);
 					if (typeEN != null) {
 						mRoom.setTypeEN(typeEN);
@@ -1306,9 +1310,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				frRoom.setBuilding_name(Utils.extractBuilding(doorCode));
 
 				int cap = resultQuery.getInt("capacity");
-				if (cap > 0) {
+				if (cap >= 0) {
 					frRoom.setCapacity(cap);
 				}
+				double surface = resultQuery.getDouble("surface");
+				frRoom.setSurface(surface);
 				String alias = resultQuery.getString("alias");
 				Utils.addAliasIfNeeded(frRoom, alias);
 
