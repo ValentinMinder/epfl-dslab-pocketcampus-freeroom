@@ -1142,7 +1142,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					String alias = infoRoom.getString("alias");
 					String typeFR = infoRoom.getString("typeFR");
 					String typeEN = infoRoom.getString("typeEN");
-					double surface = resultQuery.getDouble("surface");
+					double surface = infoRoom.getDouble("surface");
 
 					FRRoom mRoom = new FRRoom(doorCode, uid);
 					mRoom.setCapacity(capacity);
