@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "32136E87193F6934002905A9"
-               BuildableName = "org.pocketcampus.dev.EPFL-Camipro.appex"
-               BlueprintName = "EPFL Camipro"
+               BlueprintIdentifier = "32136F32193FBCFF002905A9"
+               BuildableName = "org.pocketcampus.dev.CamiproWidget.appex"
+               BlueprintName = "CamiproWidget"
                ReferencedContainer = "container:PocketCampus.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

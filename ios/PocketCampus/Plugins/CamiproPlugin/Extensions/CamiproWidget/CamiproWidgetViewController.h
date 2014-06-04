@@ -1,6 +1,6 @@
 //
 //  TodayViewController.h
-//  EPFL Camipro
+//  Camipro EPFL
 //
 //  Created by Loïc Gardiol on 04.06.14.
 //  Copyright (c) 2014 EPFL. All rights reserved.

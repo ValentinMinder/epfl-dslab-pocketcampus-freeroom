@@ -4,10 +4,10 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>EPFL Camipro.xcscheme</key>
+		<key>CamiproWidget.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>14</integer>
+			<integer>15</integer>
 		</dict>
 		<key>PocketCampus (NSZombie).xcscheme</key>
 		<dict>
@@ -38,6 +38,16 @@
 			<true/>
 		</dict>
 		<key>32136E87193F6934002905A9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>32136EB8193FAF91002905A9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>32136F32193FBCFF002905A9</key>
 		<dict>
 			<key>primary</key>
 			<true/>

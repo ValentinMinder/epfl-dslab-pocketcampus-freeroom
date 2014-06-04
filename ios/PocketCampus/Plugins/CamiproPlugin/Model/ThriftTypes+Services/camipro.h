@@ -6,10 +6,10 @@
 
 #import <Foundation/Foundation.h>
 
-#import <TProtocol.h>
-#import <TApplicationException.h>
-#import <TProtocolUtil.h>
-#import <TProcessor.h>
+#import "TProtocol.h"
+#import "TApplicationException.h"
+#import "TProtocolUtil.h"
+#import "TProcessor.h"
 
 
 @interface TequilaToken : NSObject <NSCoding> {
