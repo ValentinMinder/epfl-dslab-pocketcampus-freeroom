@@ -69,7 +69,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	private final String PREF_USER_DETAILS_KEY = "KEY_USER_DETAILS";
 	/*
-	 * Keys for the parameters.
+	 * Keys for the setting.
 	 */
 	private final String anonymIDKey = "anonymIDKey";
 	private final String homeBehaviourRoomIDKey = "homeBehaviourRoomIDKey";
@@ -139,7 +139,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private Context context;
 
 	/**
-	 * Storage for basic preferences, parameters and so on.
+	 * Storage for basic preferences, setting and so on.
 	 */
 	private SharedPreferences preferences;
 
@@ -162,22 +162,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	private void initSharedPreferences() {
-		homeBehaviourRoom = HomeBehaviourRoom.valueOf(preferences.getString(
-				homeBehaviourRoomIDKey, DEFAULT_HOMEBEHAVIOUR_ROOM.name()));
-		homeBehaviourTime = HomeBehaviourTime.valueOf(preferences.getString(
-				homeBehaviourTimeIDKey, DEFAULT_HOMEBEHAVIOUR_TIME.name()));
-		timeLanguage = TimeLanguage.valueOf(preferences.getString(
-				timeLanguageIDKey, DEFAULT_TIMELANGUAGE.name()));
-		previousRequestNumber = preferences.getInt(previousRequestNumberIDKey,
-				DEFAULT_PREVREQUEST);
+		// color-blind is stored in a variable as it's used many times!
 		colorBlindMode = ColorBlindMode.valueOf(preferences.getString(
 				colorBlindModeIDKey, DEFAULT_COLORBLINDMODE.name()));
-		timePickersPref = TimePickersPref.valueOf(preferences.getString(
-				timePickersPrefIDKey, DEFAULT_TIMEPICKERS.name()));
-		advancedTime = preferences.getBoolean(advancedTimeIDKey,
-				DEFAULT_ADVANCED_TIME);
-		groupAccess = preferences
-				.getInt(groupAccessIDKey, DEFAULT_GROUP_ACCESS);
 		// generates the anonym ID at first launch time
 		getAnonymID();
 		registeredTime = preferences.getLong(registeredTimeIDKey,
@@ -440,6 +427,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 			editor.clear();
 		}
 		editor.commit();
+		resetFavorites();
+		resetPreviousRequest();
 	}
 
 	/**
@@ -508,32 +497,31 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * Stores the homeBehaviourRoom parameters.
+	 * Stores the homeBehaviourRoom setting.
 	 * <p>
 	 * Default: HomeBehaviourRoom.ANYFREEROOM (NOT Favorites!!!).
 	 */
-	private HomeBehaviourRoom homeBehaviourRoom = HomeBehaviourRoom.ANYFREEROOM;
 
 	/**
-	 * Set the homeBehaviourRoom parameters.
+	 * Set the homeBehaviourRoom setting.
 	 * 
 	 * @param next
-	 *            the new homeBehaviourRoom parameters.
+	 *            the new homeBehaviourRoom setting.
 	 */
 	public void setHomeBehaviourRoom(HomeBehaviourRoom next) {
-		this.homeBehaviourRoom = next;
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.putString(homeBehaviourRoomIDKey, homeBehaviourRoom.name());
+		editor.putString(homeBehaviourRoomIDKey, next.name());
 		editor.commit();
 	}
 
 	/**
-	 * Retrieves the homeBehaviourRoom parameters.
+	 * Retrieves the homeBehaviourRoom setting.
 	 * 
-	 * @return the current homeBehaviourRoom parameters.
+	 * @return the current homeBehaviourRoom setting.
 	 */
 	public HomeBehaviourRoom getHomeBehaviourRoom() {
-		return this.homeBehaviourRoom;
+		return HomeBehaviourRoom.valueOf(preferences.getString(
+				homeBehaviourRoomIDKey, DEFAULT_HOMEBEHAVIOUR_ROOM.name()));
 	}
 
 	/**
@@ -548,32 +536,25 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * Stores the homeBehaviourTime parameters.
-	 * <p>
-	 * Default: HomeBehaviourTime.CURRENT_TIME
-	 */
-	private HomeBehaviourTime homeBehaviourTime = HomeBehaviourTime.CURRENT_TIME;
-
-	/**
-	 * Set the homeBehaviourTime parameters.
+	 * Set the homeBehaviourTime setting.
 	 * 
 	 * @param next
-	 *            the new homeBehaviourTime parameters.
+	 *            the new homeBehaviourTime setting.
 	 */
 	public void setHomeBehaviourTime(HomeBehaviourTime next) {
-		this.homeBehaviourTime = next;
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.putString(homeBehaviourTimeIDKey, homeBehaviourTime.name());
+		editor.putString(homeBehaviourTimeIDKey, next.name());
 		editor.commit();
 	}
 
 	/**
-	 * Retrieves the homeBehaviourTime parameters.
+	 * Retrieves the homeBehaviourTime setting.
 	 * 
-	 * @return the current homeBehaviourTime parameters.
+	 * @return the current homeBehaviourTime setting.
 	 */
 	public HomeBehaviourTime getHomeBehaviourTime() {
-		return this.homeBehaviourTime;
+		return HomeBehaviourTime.valueOf(preferences.getString(
+				homeBehaviourTimeIDKey, DEFAULT_HOMEBEHAVIOUR_TIME.name()));
 	}
 
 	/**
@@ -591,41 +572,26 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * Stores the timeLanguage parameters.
-	 * <p>
-	 * Default: TimeLanguage.DEFAULT (will choose your language if defined, or
-	 * english otherwise).
-	 */
-	private TimeLanguage timeLanguage = TimeLanguage.DEFAULT;
-
-	/**
-	 * Set the timeLanguage parameters.
+	 * Set the timeLanguage setting.
 	 * 
 	 * @param tl
-	 *            the new timeLanguage parameters.
+	 *            the new timeLanguage setting.
 	 */
 	public void setTimeLanguage(TimeLanguage tl) {
-		this.timeLanguage = tl;
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.putString(timeLanguageIDKey, timeLanguage.name());
+		editor.putString(timeLanguageIDKey, tl.name());
 		editor.commit();
 	}
 
 	/**
-	 * Retrieves the timeLanguage parameters.
+	 * Retrieves the timeLanguage setting.
 	 * 
-	 * @return the current timeLanguage parameters.
+	 * @return the current timeLanguage setting.
 	 */
 	public TimeLanguage getTimeLanguage() {
-		return this.timeLanguage;
+		return TimeLanguage.valueOf(preferences.getString(timeLanguageIDKey,
+				DEFAULT_TIMELANGUAGE.name()));
 	}
-
-	/**
-	 * # of previous request before previous requests are deleted.
-	 * <p>
-	 * Default: 20 requests.
-	 */
-	private int previousRequestNumber = 20;
 
 	/**
 	 * # of previous request before previous requests are deleted.
@@ -633,7 +599,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * @return the previousRequestNumber
 	 */
 	private int getPreviousRequestNumber() {
-		return previousRequestNumber;
+		return preferences.getInt(previousRequestNumberIDKey,
+				DEFAULT_PREVREQUEST);
 	}
 
 	/**
@@ -643,53 +610,44 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 *            the previousRequestNumber to set
 	 */
 	public void setPreviousRequestNumber(int previousRequestNumber) {
-		this.previousRequestNumber = previousRequestNumber;
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putInt(previousRequestNumberIDKey, previousRequestNumber);
 		editor.commit();
 	}
 
 	/**
-	 * Stores the advancedTime parameters.
-	 * <p>
-	 * Default: false.
-	 */
-	private boolean advancedTime = false;
-
-	/**
-	 * Set the advancedTime parameters.
+	 * Set the advancedTime setting.
 	 * 
 	 * @param next
-	 *            the new advancedTime parameters.
+	 *            the new advancedTime setting.
 	 */
 	public void setAdvancedTime(boolean next) {
-		this.advancedTime = next;
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.putBoolean(advancedTimeIDKey, advancedTime);
+		editor.putBoolean(advancedTimeIDKey, next);
 		editor.commit();
 	}
 
 	/**
-	 * Retrieves the advancedTime parameters.
+	 * Retrieves the advancedTime setting.
 	 * 
-	 * @return the current advancedTime parameters.
+	 * @return the current advancedTime setting.
 	 */
 	public boolean getAdvancedTime() {
-		return this.advancedTime;
+		return preferences.getBoolean(advancedTimeIDKey, DEFAULT_ADVANCED_TIME);
 	}
 
 	/**
-	 * Stores the registeredTime parameters.
+	 * Stores the registeredTime setting.
 	 * <p>
 	 * Default: 0.
 	 */
 	private long registeredTime = 0;
 
 	/**
-	 * Set the registeredTime parameters.
+	 * Set the registeredTime setting.
 	 * 
 	 * @param next
-	 *            the new registeredTime parameters.
+	 *            the new registeredTime setting.
 	 */
 	private void setRegisteredTime(long next) {
 		this.registeredTime = next;
@@ -709,40 +667,26 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * Stores the TimePickersPref parameters.
-	 * <p>
-	 * Default: TimePickersPref.PICKERS
-	 */
-	private TimePickersPref timePickersPref = TimePickersPref.PICKERS;
-
-	/**
-	 * Set the timePickersPref parameters.
+	 * Set the timePickersPref setting.
 	 * 
-	 * @param tl
-	 *            the new timePickersPref parameters.
+	 * @param tpf
+	 *            the new timePickersPref setting.
 	 */
-	public void setTimePickersPref(TimePickersPref tl) {
-		this.timePickersPref = tl;
+	public void setTimePickersPref(TimePickersPref tpf) {
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.putString(timePickersPrefIDKey, timePickersPref.name());
+		editor.putString(timePickersPrefIDKey, tpf.name());
 		editor.commit();
 	}
 
 	/**
-	 * Retrieves the timePickersPref parameters.
+	 * Retrieves the timePickersPref setting.
 	 * 
-	 * @return the current timePickersPref parameters.
+	 * @return the current timePickersPref setting.
 	 */
 	public TimePickersPref getTimePickersPref() {
-		return this.timePickersPref;
+		return TimePickersPref.valueOf(preferences.getString(
+				timePickersPrefIDKey, DEFAULT_TIMEPICKERS.name()));
 	}
-
-	/**
-	 * Stores the group access the user is registered for.
-	 * <p>
-	 * Default: {@link #DEFAULT_GROUP_ACCESS}.
-	 */
-	private int groupAccess = DEFAULT_GROUP_ACCESS;
 
 	/**
 	 * Retrieve the group access the user is registered for.
@@ -750,7 +694,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * @return the previousRequestNumber
 	 */
 	public int getGroupAccess() {
-		return groupAccess;
+		return preferences.getInt(groupAccessIDKey, DEFAULT_GROUP_ACCESS);
 	}
 
 	/**
@@ -760,7 +704,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 *            the previousRequestNumber to set
 	 */
 	public void setGroupAccess(int groupAccess) {
-		this.groupAccess = groupAccess;
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putInt(groupAccessIDKey, groupAccess);
 		editor.commit();
@@ -774,26 +717,26 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * Retrieves the registeredTime parameters.
+	 * Retrieves the registeredTime setting.
 	 * 
-	 * @return the current registeredTime parameters.
+	 * @return the current registeredTime setting.
 	 */
 	public long getRegisteredTime() {
 		return this.registeredTime;
 	}
 
 	/**
-	 * Stores the registeredUser parameters.
+	 * Stores the registeredUser setting.
 	 * <p>
 	 * Default: false.
 	 */
 	private boolean registeredUser = false;
 
 	/**
-	 * Set the registeredUser parameters.
+	 * Set the registeredUser setting.
 	 * 
 	 * @param next
-	 *            the new registeredUser parameters.
+	 *            the new registeredUser setting.
 	 */
 	public void setRegisteredUser(boolean next) {
 		this.registeredUser = next;
@@ -803,9 +746,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * Retrieves the registeredUser parameters.
+	 * Retrieves the registeredUser setting.
 	 * 
-	 * @return the current registeredUser parameters.
+	 * @return the current registeredUser setting.
 	 */
 	public boolean getRegisteredUser() {
 		return this.registeredUser;
@@ -815,22 +758,22 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * Return a <code>FRTimesClient</code> with the given context and formatters
-	 * ready depending on the language or parameters chosen in model.
+	 * ready depending on the language or setting chosen in model.
 	 * 
 	 * @param context
 	 *            application context for getString
 	 * @return a FRTimesClient with appropriate context and formatters.
 	 */
 	public FRTimesClient getFRTimesClient(Context context) {
-		return getFRTimesClient(context, timeLanguage);
+		return getFRTimesClient(context, getTimeLanguage());
 	}
 
 	/**
 	 * Return a <code>FRTimesClient</code> with the given context and formatters
-	 * ready depending on the language or parameters chosen in model.
+	 * ready depending on the language or setting chosen in model.
 	 * <p>
 	 * You should usually call the method WITHOUT the timeLanguage, and the
-	 * model use the one selected in parameters.
+	 * model use the one selected in setting.
 	 * 
 	 * @param context
 	 *            application context for getString
