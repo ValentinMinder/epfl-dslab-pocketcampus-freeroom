@@ -6,8 +6,15 @@ import static org.junit.Assert.assertTrue;
 import java.util.Calendar;
 
 import org.junit.Test;
-import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
+
+/**
+ * 
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
+ * 
+ */
 
 public class TestFRTimes {
 
@@ -240,8 +247,10 @@ public class TestFRTimes {
 		// checks the validity of 100000 hasardous times during a week!
 		for (int i = 0; i < 100000; i++) {
 			long now = (long) (Math.random() * FRTimes.ONE_WEEK_IN_MS);
-			assertTrue("Hazardous test number " + i, FRTimes.validCalendars(FRTimes.getNextValidPeriod(System
-					.currentTimeMillis() + now)));
+			assertTrue(
+					"Hazardous test number " + i,
+					FRTimes.validCalendars(FRTimes.getNextValidPeriod(System
+							.currentTimeMillis() + now)));
 		}
 
 	}

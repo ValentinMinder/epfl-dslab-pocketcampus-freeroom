@@ -12,8 +12,9 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
  * constants.
  * <p>
  * 
- * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 public class FRTimes {
@@ -791,11 +792,11 @@ public class FRTimes {
 	public static String convertTimeStampInString(long timestamp) {
 		Calendar mCalendar = Calendar.getInstance();
 		mCalendar.setTimeInMillis(timestamp);
-		
+
 		int year = mCalendar.get(Calendar.YEAR);
 		int month = mCalendar.get(Calendar.MONTH) + 1;
 		int day = mCalendar.get(Calendar.DAY_OF_MONTH);
-		
+
 		return year + "-" + month + "-" + day;
 	}
 
@@ -805,15 +806,15 @@ public class FRTimes {
 			int year = Integer.parseInt(dateSplitted[2]);
 			int month = Integer.parseInt(dateSplitted[1]);
 			int day = Integer.parseInt(dateSplitted[0]);
-			
+
 			String[] timeSplitted = time.split(":");
 			if (timeSplitted.length != 2) {
 				return 0;
-			} 
-			
+			}
+
 			int hour = Integer.parseInt(timeSplitted[0]);
 			int min = Integer.parseInt(timeSplitted[1]);
-			
+
 			Calendar mCalendar = Calendar.getInstance();
 			mCalendar.set(year, month, day, hour, min);
 			return mCalendar.getTimeInMillis();
