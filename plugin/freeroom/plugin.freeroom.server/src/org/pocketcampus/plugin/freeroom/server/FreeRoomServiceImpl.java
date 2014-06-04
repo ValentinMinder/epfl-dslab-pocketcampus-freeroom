@@ -99,7 +99,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ... V2");
 		createLogFolder();
-		logger.setLevel(Level.INFO);
+		logger.setLevel(Level.WARNING);
 		FileHandler logHandler = null;
 		try {
 			logHandler = new FileHandler(PATH_LOG_PATTERN,
