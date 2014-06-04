@@ -1,6 +1,5 @@
 package org.pocketcampus.plugin.freeroom.server.utils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -25,8 +24,9 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
  * This is an utility class doing useful conversions, and defining a few
  * constants.
  * 
- * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 public class Utils {

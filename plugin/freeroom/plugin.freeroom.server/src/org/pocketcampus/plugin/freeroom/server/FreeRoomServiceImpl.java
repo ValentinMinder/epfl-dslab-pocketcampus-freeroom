@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,8 +51,9 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
  * 
  * It responds to different types of request from the clients.
  * 
- * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 
@@ -184,8 +184,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	/**
 	 * Pre-format the message for loggin
-	 * @param method The method to be logged
-	 * @param arguments The args of the method
+	 * 
+	 * @param method
+	 *            The method to be logged
+	 * @param arguments
+	 *            The args of the method
 	 * @return A string suitable for logging
 	 */
 	private String formatServerLogInfo(String method, String arguments) {
@@ -195,9 +198,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	/**
 	 * Pre-format the message for loggin
-	 * @param method The method to be logged
-	 * @param arguments The args of the method
-	 * @param answer The return value of the method's call
+	 * 
+	 * @param method
+	 *            The method to be logged
+	 * @param arguments
+	 *            The args of the method
+	 * @param answer
+	 *            The return value of the method's call
 	 * @return A string suitable for logging
 	 */
 	private String formatServerLogInfo(String method, String arguments,

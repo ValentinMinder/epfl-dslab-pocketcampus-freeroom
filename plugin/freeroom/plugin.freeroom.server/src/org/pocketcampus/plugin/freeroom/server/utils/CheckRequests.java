@@ -14,6 +14,17 @@ import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 
+/**
+ * Checks that the request receive all well-formed and not corrupted (never
+ * trust the user application!).
+ * <p>
+ * Also useful for debug to detect quickly client bugs.
+ * 
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
+ * 
+ */
 public class CheckRequests {
 	public static FRReply checkFRRequest(FRRequest request) {
 		FRReply reply = new FRReply();
@@ -48,7 +59,7 @@ public class CheckRequests {
 		}
 		return reply;
 	}
-	
+
 	public static AutoCompleteReply checkAutoCompleteRequest(
 			AutoCompleteRequest request) {
 		AutoCompleteReply reply = new AutoCompleteReply();
@@ -78,7 +89,7 @@ public class CheckRequests {
 		}
 		return reply;
 	}
-	
+
 	public static ImWorkingReply checkImWorkingRequest(ImWorkingRequest request) {
 		ImWorkingReply reply = new ImWorkingReply();
 		int status = HttpURLConnection.HTTP_OK;
@@ -135,8 +146,9 @@ public class CheckRequests {
 		}
 		return null;
 	}
-	
-	public static WhoIsWorkingReply checkWhoIsWorkingRequest(WhoIsWorkingRequest request) {
+
+	public static WhoIsWorkingReply checkWhoIsWorkingRequest(
+			WhoIsWorkingRequest request) {
 		WhoIsWorkingReply reply = new WhoIsWorkingReply();
 		int status = HttpURLConnection.HTTP_OK;
 		String statusComment = "WhoIsWorkingRequest : ";
@@ -164,7 +176,7 @@ public class CheckRequests {
 		}
 		return reply;
 	}
-	
+
 	public static AutoCompleteUserMessageReply checkAutoCompleteUserMessageRequest(
 			AutoCompleteUserMessageRequest request) {
 		AutoCompleteUserMessageReply reply = new AutoCompleteUserMessageReply();
@@ -184,7 +196,7 @@ public class CheckRequests {
 				status = HttpURLConnection.HTTP_BAD_REQUEST;
 				statusComment += "Room is not set;";
 			}
-			
+
 			if (!request.isSetPeriod() || request.getPeriod() == null) {
 				status = HttpURLConnection.HTTP_BAD_REQUEST;
 				statusComment += "FRPeriod is not set;";

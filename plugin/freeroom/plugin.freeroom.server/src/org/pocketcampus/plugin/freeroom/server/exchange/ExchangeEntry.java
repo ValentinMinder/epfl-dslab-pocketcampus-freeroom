@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,9 +32,10 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
  * 
-  * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
- *
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
+ * 
  */
 public class ExchangeEntry {
 	private String gasparUserName = "";
@@ -91,7 +91,8 @@ public class ExchangeEntry {
 					service.setUrl(EWAURI);
 				}
 			} else {
-				System.err.println("Cannot find property file with gaspar credentials for EWA set up");
+				System.err
+						.println("Cannot find property file with gaspar credentials for EWA set up");
 			}
 		} catch (FileNotFoundException e1) {
 			System.err.println("Cannot load property file");
@@ -160,7 +161,8 @@ public class ExchangeEntry {
 					.getAttendeesAvailability()) {
 				AttendeeInfo attendee = attendees.get(attendeeIndex);
 				attendee.getSmtpAddress();
-				System.out.println("Getting availability for " + attendee.getSmtpAddress());
+				System.out.println("Getting availability for "
+						+ attendee.getSmtpAddress());
 				if (attendeeAvailability.getErrorCode() == ServiceError.NoError) {
 					for (CalendarEvent calendarEvent : attendeeAvailability
 							.getCalendarEvents()) {

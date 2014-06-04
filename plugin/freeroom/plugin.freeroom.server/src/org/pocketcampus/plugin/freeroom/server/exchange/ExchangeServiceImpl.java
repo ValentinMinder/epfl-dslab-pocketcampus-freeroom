@@ -20,8 +20,9 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
  * This class is used to fetch data and insert it into the database from the EWA
  * platform.
  * 
- * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 public class ExchangeServiceImpl {

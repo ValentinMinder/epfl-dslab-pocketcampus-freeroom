@@ -7,10 +7,12 @@ import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 
 /**
- * This class is used to update the rooms list with correct attributes in the database (i.e EWAid)
-  * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
- *
+ * This class is used to update the rooms list with correct attributes in the
+ * database (i.e EWAid)
+ * 
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  */
 public class ExchangeLoading {
 
@@ -20,9 +22,9 @@ public class ExchangeLoading {
 	final static String DB_URL = "jdbc:mysql://localhost/pocketcampus?allowMultiQueries=true";
 
 	private static String sep = File.separator;
-	private static String path = "src" + sep + "org" + sep + "pocketcampus" + sep
-			+ "plugin" + sep + "freeroom" + sep + "server" + sep + "exchange" + sep
-			+ "EWSRoomsData";
+	private static String path = "src" + sep + "org" + sep + "pocketcampus"
+			+ sep + "plugin" + sep + "freeroom" + sep + "server" + sep
+			+ "exchange" + sep + "EWSRoomsData";
 
 	/**
 	 * This method should be run periodically to update the EWAid in the room
@@ -77,6 +79,7 @@ public class ExchangeLoading {
 
 	/**
 	 * Load the data from a file. Rooms (contacts) are comma-separated.
+	 * 
 	 * @param file
 	 * @return true if successful, false in case of errors.
 	 */
@@ -105,6 +108,7 @@ public class ExchangeLoading {
 
 	/**
 	 * Load the given room as a contact (name + email).
+	 * 
 	 * @param nameEmail
 	 *            contact of the room (usually: "Name <name@intranet.epfl.ch>").
 	 * @return true if successful, false in case of errors.
@@ -139,7 +143,8 @@ public class ExchangeLoading {
 			return false;
 		}
 
-		ExchangeServiceImpl exchange = new ExchangeServiceImpl(DB_URL, DB_USERNAME, DB_PASSWORD, null);
+		ExchangeServiceImpl exchange = new ExchangeServiceImpl(DB_URL,
+				DB_USERNAME, DB_PASSWORD, null);
 		return exchange.setExchangeData(concatName, email);
 	}
 }

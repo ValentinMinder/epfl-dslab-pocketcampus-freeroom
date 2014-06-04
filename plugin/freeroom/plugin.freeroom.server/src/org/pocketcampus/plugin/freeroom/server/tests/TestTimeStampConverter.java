@@ -9,6 +9,13 @@ import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
+/**
+ * 
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
+ * 
+ */
 public class TestTimeStampConverter {
 
 	/**
@@ -34,11 +41,11 @@ public class TestTimeStampConverter {
 		assertTrue(day == Calendar.MONDAY);
 		assertTrue(startHour == 8);
 		assertTrue(endHour == 19);
-		
+
 		int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
 		mCalendar.setTimeInMillis(System.currentTimeMillis());
 		int todayDay = mCalendar.get(Calendar.DAY_OF_MONTH);
-		
+
 		assertTrue(todayDay <= dayOfMonth);
 	}
 
@@ -78,11 +85,11 @@ public class TestTimeStampConverter {
 		assertTrue(day == Calendar.TUESDAY);
 		assertTrue(startHour == 8);
 		assertTrue(endHour == 9);
-		
+
 		int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
 		mCalendar.setTimeInMillis(System.currentTimeMillis());
 		int todayDay = mCalendar.get(Calendar.DAY_OF_MONTH);
-		
+
 		assertTrue(todayDay <= dayOfMonth);
 	}
 
@@ -103,11 +110,11 @@ public class TestTimeStampConverter {
 		assertTrue(day == Calendar.WEDNESDAY);
 		assertTrue(startHour == 8);
 		assertTrue(endHour == 9);
-		
+
 		int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
 		mCalendar.setTimeInMillis(System.currentTimeMillis());
 		int todayDay = mCalendar.get(Calendar.DAY_OF_MONTH);
-		
+
 		assertTrue(todayDay <= dayOfMonth);
 	}
 
@@ -128,11 +135,11 @@ public class TestTimeStampConverter {
 		assertTrue(day == Calendar.THURSDAY);
 		assertTrue(startHour == 8);
 		assertTrue(endHour == 9);
-		
+
 		int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
 		mCalendar.setTimeInMillis(System.currentTimeMillis());
 		int todayDay = mCalendar.get(Calendar.DAY_OF_MONTH);
-		
+
 		assertTrue(todayDay <= dayOfMonth);
 	}
 
@@ -153,11 +160,11 @@ public class TestTimeStampConverter {
 		assertTrue(day == Calendar.FRIDAY);
 		assertTrue(startHour == 8);
 		assertTrue(endHour == 9);
-		
+
 		int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
 		mCalendar.setTimeInMillis(System.currentTimeMillis());
 		int todayDay = mCalendar.get(Calendar.DAY_OF_MONTH);
-		
+
 		assertTrue(todayDay <= dayOfMonth);
 	}
 
@@ -178,14 +185,14 @@ public class TestTimeStampConverter {
 		assertTrue(day == Calendar.SATURDAY);
 		assertTrue(startHour == 8);
 		assertTrue(endHour == 9);
-		
+
 		int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
 		mCalendar.setTimeInMillis(System.currentTimeMillis());
 		int todayDay = mCalendar.get(Calendar.DAY_OF_MONTH);
-		
+
 		assertTrue(todayDay <= dayOfMonth);
 	}
-	
+
 	@Test
 	public void testSunday89() {
 		FreeRoomRequest request = FRTimes.convert(Calendar.SUNDAY, 8, 9);
@@ -203,12 +210,12 @@ public class TestTimeStampConverter {
 		assertTrue(day == Calendar.SUNDAY);
 		assertTrue(startHour == 8);
 		assertTrue(endHour == 9);
-		
+
 		int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
 		mCalendar.setTimeInMillis(System.currentTimeMillis());
 		int todayDay = mCalendar.get(Calendar.DAY_OF_MONTH);
-		
+
 		assertTrue(todayDay <= dayOfMonth);
 	}
-	
+
 }
