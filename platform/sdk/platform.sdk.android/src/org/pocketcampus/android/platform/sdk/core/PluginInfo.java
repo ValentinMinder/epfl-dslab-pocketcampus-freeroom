@@ -14,6 +14,8 @@ public class PluginInfo {
 	private String mMainClassName;
 	private String mMainPackageName;
 	
+	private String mId;
+	
 	public void setMainClassName(String name) {
 		mMainClassName = name;
 	}
@@ -44,6 +46,14 @@ public class PluginInfo {
 	
 	public void setLabel(String label) {
 		this.mLabel = label;
+	}
+
+	public String getId() {
+		return mId;
+	}
+	
+	public void setId(String s) {
+		this.mId = s;
 	}
 
 }

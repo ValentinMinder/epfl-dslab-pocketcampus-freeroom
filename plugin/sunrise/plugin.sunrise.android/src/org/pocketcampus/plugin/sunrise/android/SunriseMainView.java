@@ -130,6 +130,11 @@ public class SunriseMainView extends PluginView implements ISunriseView {
 			finish();
 		}
 	}
+	
+	@Override
+	protected String screenName() {
+		return "/sunrise";
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.edx.shared
-namespace csharp org.pocketcampus.plugin.edx.shared
 
 
 struct EdxCourse {

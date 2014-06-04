@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.directory.shared
-namespace csharp org.pocketcampus.plugin.directory.shared
 
 
 struct Person {

@@ -1,6 +1,8 @@
 package org.pocketcampus.plugin.authentication.android;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
@@ -73,6 +75,8 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	private List<String> serviceAccess;
 	private boolean fromBrowser;
 	private boolean selfAuth;
+	private boolean notFromEpfl;
+	private Map<String, String> serviceOrgs;
 	
 	private String tequilaCookie;
 	private String tempPassword;
@@ -162,6 +166,22 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	}
 	public void setSelfAuth(boolean b) {
 		selfAuth = b;
+	}
+	
+	public boolean getNotFromEpfl() {
+		return this.notFromEpfl;
+	}
+	
+	public void setNotFromEpfl(boolean v) {
+		this.notFromEpfl = v;
+	}
+	
+	public Map<String, String> getServiceOrgs() {
+		return this.serviceOrgs;
+	}
+	
+	public void setServiceOrgs(Map<String, String> v) {
+		this.serviceOrgs = v;
 	}
 
 	public String getTequilaCookie() {

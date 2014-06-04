@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.moodle.shared
-namespace csharp org.pocketcampus.plugin.moodle.shared
 
 const string MOODLE_RAW_ACTION_KEY = "action";
 const string MOODLE_RAW_ACTION_DOWNLOAD_FILE = "download_file";

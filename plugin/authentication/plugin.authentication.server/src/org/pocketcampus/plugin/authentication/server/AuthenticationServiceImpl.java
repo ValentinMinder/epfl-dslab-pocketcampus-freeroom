@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.launcher.server.PocketCampusServer;
+import org.pocketcampus.platform.launcher.server.PocketCampusServer.AuthUserDetailsReq;
+import org.pocketcampus.platform.launcher.server.PocketCampusServer.AuthUserDetailsResp;
 import org.pocketcampus.plugin.authentication.shared.AuthSessionRequest;
 import org.pocketcampus.plugin.authentication.shared.AuthSessionResponse;
 import org.pocketcampus.plugin.authentication.shared.AuthStatusCode;
@@ -69,6 +71,10 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 		}
 	}
 
+	/**
+	 * INTER-PLUGIN INTERFACE BEGIN
+	 */
+	
 	public String getGasparFromSession(String sess) {
 		return getFieldFromSession(sess, "`gaspar`");
 	}
@@ -77,22 +83,18 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 		return getFieldFromSession(sess, "`sciper`");
 	}
 	
-	public String getFirstNameFromSession(String sess) {
-		return getFieldFromSession(sess, "`firstname`");
-	}
-	
-	public String getLastNameFromSession(String sess) {
-		return getFieldFromSession(sess, "`lastname`");
-	}
-	
 	/**
 	 * Gets any fields/attributes related to the logged in user
 	 * field names must be surrounded by MySQL quotes (`)
-	 * returns null if the session has expired / does not exist
+	 * returned list is null if the session has expired / does not exist
 	 */
-	public List<String> getUserFieldsFromSession(String sess, List<String> fields) {
-		return _manager.getFields(sess, fields);
+	public AuthUserDetailsResp getUserFieldsFromSession(AuthUserDetailsReq req) {
+		return new AuthUserDetailsResp(_manager.getFields(req.sessionId, req.requestedFields));
 	}
+	
+	/**
+	 * INTER-PLUGIN INTERFACE END
+	 */
 	
 	private String firstValue(String crap) {
 		crap = crap.split("[,]")[0];

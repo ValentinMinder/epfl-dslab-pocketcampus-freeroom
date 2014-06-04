@@ -14,8 +14,8 @@
 	<string name="food_dialog_prices">Show prices for</string>
 	<string name="food_dialog_vote">Vote</string>
 	
-	<string name="food_title_lunch_menus">Lunch menus on</string>
-	<string name="food_title_evening_menus">Evening menus on</string>
+	<string name="food_title_lunch_menus">Lunch menus</string>
+	<string name="food_title_evening_menus">Evening menus</string>
 
 	<string name="food_text_satisfaction">satisfaction</string>
 	<string name="food_text_vote">vote</string>

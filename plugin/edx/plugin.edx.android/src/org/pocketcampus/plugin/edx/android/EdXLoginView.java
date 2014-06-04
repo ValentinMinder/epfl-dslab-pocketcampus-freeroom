@@ -142,4 +142,11 @@ public class EdXLoginView extends PluginView implements IEdXView {
 	public void sessionTimedOut() {
 	}
 
+
+	@Override
+	protected String screenName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -45,11 +45,11 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:padding="3dip"		
-		        android:background="@drawable/food_image_bg" 
+				android:id="@+id/food_smiley_sad"   
 			    android:layout_marginRight="5dip">
 		        
 				<ImageView     
-					android:id="@+id/food_smiley_sad"   
+			        android:background="@color/white" 
 					android:src="@drawable/food_smiley_sad"/>
 		        				
 			</LinearLayout>
@@ -60,11 +60,11 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:padding="3dip"		
-		        android:background="@drawable/food_image_bg" 
+				android:id="@+id/food_smiley_soso"   
 			    android:layout_marginRight="5dip">
 		        
 				<ImageView     
-					android:id="@+id/food_smiley_soso"   
+			        android:background="@color/white" 
 					android:src="@drawable/food_smiley_soso"/>
 		        				
 			</LinearLayout>
@@ -74,11 +74,11 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:padding="3dip"		
-		        android:background="@drawable/food_image_bg" 
+				android:id="@+id/food_smiley_happy"   
 			    android:layout_marginRight="5dip">
 		        
 				<ImageView     
-					android:id="@+id/food_smiley_happy"   
+			        android:background="@color/white" 
 					android:src="@drawable/food_smiley_happy"/>
 		        				
 			</LinearLayout>

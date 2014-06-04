@@ -77,6 +77,11 @@ public class SunriseSettingsView extends PluginView implements ISunriseView {
 	}
 
 	@Override
+	protected String screenName() {
+		return "/sunrise/settings";
+	}
+	
+	@Override
 	public void networkErrorHappened() {
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.sunrise_connection_error_happened), Toast.LENGTH_SHORT).show();

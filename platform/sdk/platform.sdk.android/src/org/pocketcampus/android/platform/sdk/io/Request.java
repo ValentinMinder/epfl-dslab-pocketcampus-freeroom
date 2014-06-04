@@ -69,7 +69,7 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 		try {
 			iServedFromCache = true;
 			
-			ResultType cachedResult = (ResultType) RequestCache.queryCache(mGlobalContext, this.getClass().getCanonicalName(), iParam);
+			ResultType cachedResult = (ResultType) RequestCache.queryCache(mGlobalContext, this.getClass().getName(), iParam);
 			iFoundInCache = (cachedResult != null);
 			if(iFoundInCache && !iBypassCache)
 				return cachedResult;
@@ -136,7 +136,7 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 	protected void keepInCache() {
 		if(iServedFromCache)
 			return;
-		RequestCache.pushToCache(mGlobalContext, this.getClass().getCanonicalName(), iParam, (TBase) iResult);
+		RequestCache.pushToCache(mGlobalContext, this.getClass().getName(), iParam, (TBase) iResult);
 	}
 	
 	/**

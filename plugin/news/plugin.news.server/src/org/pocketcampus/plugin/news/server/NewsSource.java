@@ -13,14 +13,15 @@ public interface NewsSource {
 	/** Gets all feeds in the specified language. */
 	Feed[] getFeeds(String language);
 
-	
 	/** News feed */
 	public static class Feed {
+		public final String id;
 		public final String name;
 		public final boolean isMain;
 		public final Map<Integer, FeedItem> items;
 
-		public Feed(String name, boolean isMain, Map<Integer, FeedItem> items) {
+		public Feed(String id, String name, boolean isMain, Map<Integer, FeedItem> items) {
+			this.id = id;
 			this.name = name;
 			this.isMain = isMain;
 			this.items = items;

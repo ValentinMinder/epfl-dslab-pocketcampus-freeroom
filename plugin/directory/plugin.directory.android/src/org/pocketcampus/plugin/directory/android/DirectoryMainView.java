@@ -1,6 +1,8 @@
 package org.pocketcampus.plugin.directory.android;
 
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
@@ -24,6 +26,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -50,6 +53,10 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 	private DirectoryController mController;
 	private DirectoryModel mModel;
 	
+	final long REFRESH_DELAY = 500;	
+	private Timer refreshTimer;
+	private long lastKeyPress = 0;
+	private boolean stopRefresh;
 	
 	ListView listView;
 	StandardLayout msgView;
@@ -101,7 +108,7 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			}
 			public void afterTextChanged(Editable s) {
-				mController.search(DirectoryMainView.this, s.toString());
+				lastKeyPress = System.currentTimeMillis();
 			}
 		});
 		
@@ -109,9 +116,35 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 		clearButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				searchBar.setText("");
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.showSoftInput(searchBar, InputMethodManager.SHOW_FORCED);
 			}
 		});
 		
+	}
+	
+	private void performSearchIfNeeded() {
+		String s = ((EditText) findViewById(R.id.directory_searchinput)).getText().toString();
+		if(mController.search(this, s)) {
+			trackEvent("Search", s);
+		}
+	}
+	
+	private TimerTask getRefreshTask() {
+		return new TimerTask() {
+			public void run() {
+				if(stopRefresh)
+					return;
+				long interval = System.currentTimeMillis() - lastKeyPress;
+				refreshTimer = new Timer();
+				if(interval > REFRESH_DELAY) {
+					performSearchIfNeeded();
+					refreshTimer.schedule(getRefreshTask(), REFRESH_DELAY);
+				} else {
+					refreshTimer.schedule(getRefreshTask(), REFRESH_DELAY - interval);
+				}
+			}
+		};
 	}
 	
 
@@ -145,13 +178,23 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		
+		stopRefresh = false;
+		refreshTimer = new Timer();
+		refreshTimer.schedule(getRefreshTask(), REFRESH_DELAY);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
+		
+		stopRefresh = true;
 	}
 	
+	@Override
+	protected String screenName() {
+		return "/directory";
+	}
 	
 	
 	@Override
@@ -223,6 +266,7 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 							builder.scheme("pocketcampus").authority("directory.plugin.pocketcampus.org").appendPath("search").appendQueryParameter("q", ((Person) obj).getSciper());
 							Intent i = new Intent(Intent.ACTION_VIEW, builder.build());
 							startActivity(i);
+							trackEvent("ViewPerson", ((Person) obj).getFirstName() + " " + ((Person) obj).getLastName());
 						}
 					} else {
 						Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
@@ -234,9 +278,7 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 				scrollState.restore(listView);*/
 			
 		}
-		
-		EditText s = (EditText) findViewById(R.id.directory_searchinput);
-		mController.search(this, s.getText().toString());
+
 		
 	}
 	

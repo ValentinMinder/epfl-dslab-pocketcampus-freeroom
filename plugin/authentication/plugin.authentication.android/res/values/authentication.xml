@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="authentication_plugin_title">Gaspar Authentication</string>
+    <string name="authentication_plugin_title">Authentication</string>
     <string name="authentication_authenticating_title">Authenticating</string>
     
     <string name="authentication_string_username_hint">Username</string>
@@ -26,5 +26,9 @@
     <string name="authentication_permission_label">authenticate users with Tequila</string>
     <string name="authentication_permission_group_description">This permission group is used to group PocketCampus permissions related to Authentication</string>
     <string name="authentication_permission_group_label">Authentication</string>
-        
+
+    <string name="authentication_ext_org_not_allowed">Sorry, the service to which you are logging in does not allow external organizations</string>
+    <string name="authentication_org_prompt_title">Choose your organization</string>
+    <string name="authentication_not_from_epfl">Not from EPFL?</string>
+    
 </resources>

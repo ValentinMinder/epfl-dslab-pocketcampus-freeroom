@@ -266,7 +266,7 @@ public class StyledDialog extends Dialog {
 				((LinearLayout) layout.findViewById(R.id.content))
 				.addView(mContentView, 
 						new LayoutParams(
-								LayoutParams.WRAP_CONTENT, 
+								LayoutParams.FILL_PARENT, 
 								LayoutParams.WRAP_CONTENT));
 			}
 
@@ -280,7 +280,7 @@ public class StyledDialog extends Dialog {
 				((LinearLayout) layout.findViewById(R.id.content))
 				.addView(mContentView, 
 						new LayoutParams(
-								LayoutParams.WRAP_CONTENT, 
+								LayoutParams.FILL_PARENT, 
 								LayoutParams.WRAP_CONTENT));
 			}
 

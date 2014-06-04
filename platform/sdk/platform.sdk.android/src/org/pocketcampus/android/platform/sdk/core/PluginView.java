@@ -1,9 +1,12 @@
 package org.pocketcampus.android.platform.sdk.core;
 
+import static org.pocketcampus.android.platform.sdk.core.GlobalContext.GA_EVENT_CATEG;
+
 import java.util.ArrayList;
 
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController.ControllerBinder;
+import org.pocketcampus.android.platform.sdk.tracker.GATracker;
 
 import android.app.Activity;
 import android.app.Service;
@@ -117,8 +120,13 @@ public abstract class PluginView extends Activity {
 	 * @param savedInstanceState
 	 * @param controller
 	 */
-	protected void onDisplay(Bundle savedInstanceState,
-			PluginController controller) {
+	protected abstract void onDisplay(Bundle savedInstanceState,
+			PluginController controller);
+	
+	protected abstract String screenName();
+	
+	protected void trackEvent(String action, String label) {
+		GATracker.getInstance().sendEvent(GA_EVENT_CATEG, screenName() + "-" + action, label, null);
 	}
 
 	/**
@@ -167,6 +175,8 @@ public abstract class PluginView extends Activity {
 
 		GlobalContext globalContext = (GlobalContext) getApplicationContext();
 		globalContext.setRequestActivityListener(activityListener);
+		
+		GATracker.getInstance().sendScreen(screenName());
 	}
 
 	/**
@@ -178,12 +188,6 @@ public abstract class PluginView extends Activity {
 	 */
 	// protected abstract void onDisplay(Bundle savedInstanceState,
 	// PluginController controller);
-
-	// /**
-	// * Event triggered by the Model when something goes wrong with the
-	// network.
-	// */
-	// public abstract void onNetworkError(); TODO remove?
 
 	/**
 	 * Creates the <code>ServiceConnection</code> used between this

@@ -1,14 +1,13 @@
 package org.pocketcampus.plugin.satellite.android;
 
-import org.pocketcampus.plugin.satellite.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.element.ImageTextView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ISubtitledFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledScrollableDoubleLayout;
 import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
+import org.pocketcampus.plugin.satellite.R;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteMainView;
 import org.pocketcampus.plugin.satellite.android.ui.AffluenceImageView;
 import org.pocketcampus.plugin.satellite.shared.Affluence;
@@ -48,8 +47,6 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
-		// Tracker
-		Tracker.getInstance().trackPageView("satellite");
 
 		// MVC
 		mController = (SatelliteController) controller;
@@ -63,6 +60,12 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 
 		setContentView(mLayout);
 		loadData();
+		setActionBarTitle(getString(R.string.satellite_plugin_name));
+	}
+	
+	@Override
+	protected String screenName() {
+		return "/satellite";
 	}
 
 	/**
@@ -115,9 +118,6 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	 */
 	@Override
 	public void networkErrorHappened() {
-		// Tracker
-		Tracker.getInstance().trackPageView("satellite/network_error");
-
 		mLayout.removeFirstLayoutFillerView();
 		mLayout.removeSecondLayoutFillerView();
 		mLayout.setText(getResources().getString(

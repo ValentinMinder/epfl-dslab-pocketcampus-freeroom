@@ -34,8 +34,8 @@ public class DashboardController extends PluginController {
 		return mModel;
 	}
 	
-	public void fetchDynamicConfig() {
-		new FetchDynamicConfigRequest().start(this, threadSafeClient, getApplicationContext());
+	public void fetchDynamicConfig(DashboardView view) {
+		new FetchDynamicConfigRequest(view).start(this, threadSafeClient, getApplicationContext());
 	}
 	
 	public void registerPushNotif() {

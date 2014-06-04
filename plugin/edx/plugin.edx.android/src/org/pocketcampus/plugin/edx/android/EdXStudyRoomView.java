@@ -656,6 +656,13 @@ public class EdXStudyRoomView extends PluginView implements IEdXView, OnInitiali
 	}
 
 
+	@Override
+	protected String screenName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 	
 	

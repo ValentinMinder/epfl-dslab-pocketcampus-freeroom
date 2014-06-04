@@ -2,13 +2,12 @@ package org.pocketcampus.plugin.news.android;
 
 import java.util.List;
 
-import org.pocketcampus.plugin.news.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.FeedWithImageListViewElement;
+import org.pocketcampus.plugin.news.R;
 import org.pocketcampus.plugin.news.android.iface.INewsModel;
 import org.pocketcampus.plugin.news.android.iface.INewsView;
 
@@ -71,8 +70,6 @@ public class NewsMainView extends PluginView implements INewsView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
-		// Tracker
-		Tracker.getInstance().trackPageView("news");
 
 		// Get and cast the controller and model
 		mController = (NewsController) controller;
@@ -90,6 +87,12 @@ public class NewsMainView extends PluginView implements INewsView {
 		// data,
 		// as the controller may take some time to get it.
 		displayData();
+		setActionBarTitle(getString(R.string.news_plugin_title));
+	}
+	
+	@Override
+	protected String screenName() {
+		return "/news";
 	}
 
 	/**
@@ -187,6 +190,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		if (item.getItemId() == R.id.news_menu_settings) {
+			trackEvent("OpenSettings", null);
 			mController.getFeedUrls();
 		}
 		return true;
@@ -197,9 +201,6 @@ public class NewsMainView extends PluginView implements INewsView {
 	 */
 	@Override
 	public void networkErrorHappened() {
-		// Tracker
-		Tracker.getInstance().trackPageView("news/network_error");
-
 		mLayout.removeFillerView();
 		mLayout.hideTitle();
 		mLayout.setText(getString(R.string.news_no_news));
@@ -219,9 +220,7 @@ public class NewsMainView extends PluginView implements INewsView {
 				mController.getNewsContent(toDisplay.getNewsItem()
 						.getNewsItemId());
 
-				// Tracker
-				Tracker.getInstance().trackPageView(
-						"news/click/" + toDisplay.getNewsItem().getTitle());
+				trackEvent("OpenNewsItem", toDisplay.getNewsItem().getLink());
 			}
 		};
 		mListView.setOnItemClickListener(mOnItemClickListener);

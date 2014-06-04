@@ -260,7 +260,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 					}
 				});
 				StringBuilder categBuilder = new StringBuilder();
-				categBuilder.append("<tr><td style=\"border: 0px; height: 20px; padding: 0px; background-color: #F1F1F1; font:1em Georgia,serif;\">" + categMap.get(c) + "</td></tr>\n");
+				categBuilder.append("<tr><td style=\"border: 0px; height: 20px; padding: 0px; background-color: #F1F1F1; font:1em Georgia,serif;\" colspan=\"2\">" + categMap.get(c) + "</td></tr>\n");
 				for(EventItem e : categEvents) {
 					categBuilder.append("<tr>\n");
 					categBuilder.append("<td style=\"border: 0px; background-color: #F1F1F1; padding-top: 6px; vertical-align: top;\">\n");

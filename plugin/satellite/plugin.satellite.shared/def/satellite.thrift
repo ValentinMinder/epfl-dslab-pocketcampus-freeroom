@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.satellite.shared
-namespace csharp org.pocketcampus.plugin.satellite.shared
 
 // ---------
 // OLD STUFF

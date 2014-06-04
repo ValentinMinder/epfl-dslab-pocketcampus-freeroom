@@ -10,8 +10,9 @@
 
 
 
-android/PocketCampus/*
-server/PocketCampusServer/*
+/android/PocketCampus
+/server/PocketCampusServer
+/misc
 local.properties
 *~
 bin/

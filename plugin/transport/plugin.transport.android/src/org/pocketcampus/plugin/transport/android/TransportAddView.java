@@ -2,16 +2,15 @@ package org.pocketcampus.plugin.transport.android;
 
 import java.util.List;
 
-import org.pocketcampus.plugin.transport.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
 import org.pocketcampus.android.platform.sdk.ui.element.InputBarElement;
 import org.pocketcampus.android.platform.sdk.ui.element.OnKeyPressedListener;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
+import org.pocketcampus.plugin.transport.R;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
 import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
@@ -84,8 +83,6 @@ public class TransportAddView extends PluginView implements ITransportView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
-		// Tracker
-		Tracker.getInstance().trackPageView("transport/addView");
 
 		mController = (TransportController) controller;
 		mModel = (TransportModel) mController.getModel();
@@ -93,6 +90,12 @@ public class TransportAddView extends PluginView implements ITransportView {
 		displayView();
 		// Create the list of next departures
 		createStationsList();
+		setActionBarTitle(getString(R.string.transport_plugin_name));
+	}
+	
+	@Override
+	protected String screenName() {
+		return "/transport/addStation";
 	}
 
 	/**
@@ -144,9 +147,7 @@ public class TransportAddView extends PluginView implements ITransportView {
 				TransportStation station = (TransportStation) adapter
 						.getItemAtPosition(pos);
 
-				// Tracker
-				Tracker.getInstance().trackPageView(
-						"transport/addView/add" + station.getName());
+				trackEvent("Add", station.getName());
 
 				// Request for the next departures from EPFL to the station
 				// the user just clicked
@@ -173,8 +174,6 @@ public class TransportAddView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void networkErrorHappened() {
-		// Tracker
-		Tracker.getInstance().trackPageView("transport/addView/network_error");
 	}
 
 	/**

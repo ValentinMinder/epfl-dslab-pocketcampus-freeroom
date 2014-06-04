@@ -284,4 +284,10 @@ public class EdXMainView extends PluginView implements IEdXView {
 		mController.performLogin(this);
 	}
 
+	@Override
+	protected String screenName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

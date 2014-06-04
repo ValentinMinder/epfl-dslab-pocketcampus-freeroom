@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="authentication_plugin_title">Authentification Gaspar</string>
+    <string name="authentication_plugin_title">Authentification</string>
     <string name="authentication_authenticating_title">Authentification en cours</string>
     
     <string name="authentication_string_username_hint">Nom d\'utilisateur</string>
@@ -25,5 +25,9 @@
     <string name="authentication_permission_label">authentifier les utilisateurs avec Tequila</string>
     <string name="authentication_permission_group_description">Ce groupe d\'autorisations est utilisé pour les autorisations PocketCampus liés à l\'authentification</string>
     <string name="authentication_permission_group_label">Authentification</string>
+    
+    <string name="authentication_ext_org_not_allowed">Le service auquel vous vous connectez ne permet pas les connexions provenant d\'institutions externes</string>
+    <string name="authentication_org_prompt_title">Choisir votre institution</string>
+    <string name="authentication_not_from_epfl">Pas de l\'EPFL?</string>
     
 </resources>

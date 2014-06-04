@@ -9,8 +9,9 @@
 #
 
 
-# BUILD THE CLIENT
+# BUILD THE ANDROID CLIENT
 php tool/tool.merger/merger.php 
+android update project -p android/PocketCampus/
 ant -f android/PocketCampus/build.xml clean
 ant -f android/PocketCampus/build.xml debug
 
