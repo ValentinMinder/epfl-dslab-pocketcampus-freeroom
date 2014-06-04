@@ -4935,7 +4935,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * KONAMI: The maximal time elapsed between two move to trigger a
 	 * {@link KonamiCodeMove}
 	 */
-	private long konamiCodeMaxTime = 2000;
+	private long konamiCodeMaxTime = 3000;
 
 	/**
 	 * KONAMI: Stores the index to where the KonamiCode list has been triggered.
@@ -4984,6 +4984,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private void konamiCodeCheck(MotionEvent event) {
 		if (konamiCodeCurrentIndex >= 8) {
+			konamiCodeCurrentIndex = 0;
 			return;
 		} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			// action down/start: if too much time elapsed, reset
@@ -4991,7 +4992,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				long elapsed = System.currentTimeMillis()
 						- konamiCodeLastTimeTriggered;
 				if (elapsed > konamiCodeMaxTime) {
-					System.out.println("rst time");
 					konamiCodeCurrentIndex = 0;
 				}
 			}
@@ -5006,13 +5006,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			float absX = Math.abs(diffX);
 			float absY = Math.abs(diffY);
 			KonamiCodeMove move = KonamiCodeMove.NONE;
-			System.out.println(event.getX() + "/" + event.getY());
-			System.out.println(konamiCodePrevX + "/" + konamiCodePrevY);
-			System.out.println(diffX + "/" + diffY);
 			if (absX < konamiCodeMinChangeCoord
 					&& absY < konamiCodeMinChangeCoord) {
-				System.out.println("no change sign");
-
 				// if changes are not significant: NONE move.
 			} else if (absY > absX) {
 				// if more change on Y axe: up/down event.
@@ -5030,7 +5025,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				}
 			}
 
-			System.out.println(move);
 			if (move.equals(KonamiCodeMove.NONE)) {
 				// none event: reset
 				konamiCodeCurrentIndex = 0;

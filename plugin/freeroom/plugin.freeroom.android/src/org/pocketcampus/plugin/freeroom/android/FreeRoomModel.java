@@ -265,16 +265,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	public void setListMessageFrequency(
 			List<MessageFrequency> listMessageFrequency) {
-		Iterator<MessageFrequency> iter = this.listMessageFrequency.iterator();
-		System.out.println("there:");
-		while (iter.hasNext()) {
-			System.out.println(iter.next());
-		}
-		iter = listMessageFrequency.iterator();
-		System.out.println("added:");
-		while (iter.hasNext()) {
-			System.out.println(iter.next());
-		}
 		this.listMessageFrequency.clear();
 		this.listMessageFrequency.addAll(listMessageFrequency);
 		mListeners.workingMessageUpdated();
@@ -1590,11 +1580,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		getPreviousRequest();
 		// if the request was already present, we remove it.
 		if (previousRequestDetails.contains(request)) {
-			System.out.println(request);
-			System.out.println("doublon");
 			previousRequestDetails.remove(request);
 		}
-		// adding at the start!
+		// and adding at the start!
 		previousRequestDetails.addFirst(request);
 		// if too much elements, we remove the end.
 		while (previousRequestDetails.size() > getPreviousRequestNumber()) {
