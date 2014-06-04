@@ -4772,7 +4772,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View arg0) {
 				String email = emailText.getText().toString();
-				if (email.equals(devTestPrefix + "noregister")) {
+				if (email.equalsIgnoreCase("go")
+						|| email.equalsIgnoreCase("noregister")
+						|| email.equals(devTestPrefix + "noregister")) {
 					registerUserBeta
 							.setText(getString(R.string.freeroom_welcome_submitting));
 					registerUserBeta.setEnabled(false);
