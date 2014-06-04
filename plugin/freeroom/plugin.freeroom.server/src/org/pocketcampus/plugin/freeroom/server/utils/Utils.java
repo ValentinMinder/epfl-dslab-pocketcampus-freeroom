@@ -336,4 +336,22 @@ public class Utils {
 		Collections.sort(answer);
 		return answer;
 	}
+
+	/**
+	 * Add an alias to the room only if it's not null, and not the same as the
+	 * existing door code.
+	 * 
+	 * @param room
+	 *            the room
+	 * @param alias
+	 *            the alias
+	 */
+	public static void addAliasIfNeeded(FRRoom room, String alias) {
+		if (alias != null) {
+			if (!room.getDoorCode().trim().replaceAll("\\s+", "")
+					.equalsIgnoreCase(alias.trim().replaceAll("\\s+", ""))) {
+				room.setDoorCodeAlias(alias);
+			}
+		}
+	}
 }

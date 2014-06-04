@@ -1045,9 +1045,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				mRoom.setBuilding_name(Utils.extractBuilding(doorCode));
 
 				mRoom.setCapacity(capacity);
-				if (alias != null) {
-					mRoom.setDoorCodeAlias(alias);
-				}
+				Utils.addAliasIfNeeded(mRoom, alias);
+
 				if (typeEN != null) {
 					mRoom.setTypeEN(typeEN);
 				}
@@ -1134,9 +1133,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 					FRRoom mRoom = new FRRoom(doorCode, uid);
 					mRoom.setCapacity(capacity);
-					if (alias != null) {
-						mRoom.setDoorCodeAlias(alias);
-					}
+					Utils.addAliasIfNeeded(mRoom, alias);
 					if (typeEN != null) {
 						mRoom.setTypeEN(typeEN);
 					}
@@ -1313,9 +1310,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					frRoom.setCapacity(cap);
 				}
 				String alias = resultQuery.getString("alias");
-				if (alias != null) {
-					frRoom.setDoorCodeAlias(alias);
-				}
+				Utils.addAliasIfNeeded(frRoom, alias);
 
 				String typeFR = resultQuery.getString("typeFR");
 				if (typeFR != null) {
