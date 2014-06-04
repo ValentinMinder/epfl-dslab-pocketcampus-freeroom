@@ -57,6 +57,8 @@
     return self.executing;
 }
 
+@synthesize executing = _executing;
+
 - (void)setExecuting:(BOOL)executing {
     [self willChangeValueForKey:@"isExecuting"];
     _executing = executing;
@@ -67,6 +69,8 @@
     return self.finished;
 }
 
+@synthesize finished = _finished;
+
 - (void)setFinished:(BOOL)finished {
     [self willChangeValueForKey:@"isFinished"];
     _finished = finished;
@@ -76,6 +80,8 @@
 - (BOOL)isCancelled {
     return self.cancelled;
 }
+
+@synthesize cancelled = _cancelled;
 
 - (void)setCancelled:(BOOL)cancelled {
     [self willChangeValueForKey:@"isCancelled"];
