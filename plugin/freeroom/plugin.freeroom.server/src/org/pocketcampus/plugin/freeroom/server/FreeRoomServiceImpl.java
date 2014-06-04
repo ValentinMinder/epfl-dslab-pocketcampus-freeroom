@@ -832,7 +832,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		int group = request.getUserGroup();
 
-		if (!FRTimes.validCalendars(period)) {
+		boolean allowWeekends = true;
+		boolean allowEvenings = true;
+		if (FRTimes.validCalendarsString(period, System.currentTimeMillis(),
+				allowWeekends, allowEvenings).length() != 0) {
 			// if something is wrong in the request
 			return new FRReply(HttpURLConnection.HTTP_BAD_REQUEST,
 					"Bad timestamps! Your client sent a bad request, sorry");
