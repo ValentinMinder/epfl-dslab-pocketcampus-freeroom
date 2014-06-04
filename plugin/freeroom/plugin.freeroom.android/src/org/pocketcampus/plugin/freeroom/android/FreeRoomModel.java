@@ -75,10 +75,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private final String homeBehaviourRoomIDKey = "homeBehaviourRoomIDKey";
 	private final String homeBehaviourTimeIDKey = "homeBehaviourTimeIDKey";
 	private final String timeLanguageIDKey = "timeLanguageIDKey";
-	private final String displayTimePrefixIDKey = "displayTimePrefixIDKey";
-	private final String minutesRequestTimeOutIDKey = "minutesRequestTimeOutIDKey";
 	private final String previousRequestNumberIDKey = "previousRequestNumberIDKey";
-	private final String previousRequestWeeksIDKey = "previousRequestWeeksIDKey";
 	private final String timePickersPrefIDKey = "timePickersPrefIDKey";
 	private final String registeredTimeIDKey = "registeredTimeIDKey";
 	private final String registeredUserIDKey = "registeredUserIDKey";
@@ -107,9 +104,16 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private final int COLOR_HEADER_HIGHLIGHT = Color.GRAY;
 
 	/**
-	 * Default group access, using to reset.
+	 * Default values, used to RESET.
 	 */
-	public final int DEFAULT_GROUP_ACCESS = 10;
+	private final HomeBehaviourRoom DEFAULT_HOMEBEHAVIOUR_ROOM = HomeBehaviourRoom.ANYFREEROOM;
+	private final HomeBehaviourTime DEFAULT_HOMEBEHAVIOUR_TIME = HomeBehaviourTime.CURRENT_TIME;
+	private final TimeLanguage DEFAULT_TIMELANGUAGE = TimeLanguage.DEFAULT;
+	private final TimePickersPref DEFAULT_TIMEPICKERS = TimePickersPref.PICKERS;
+	private final ColorBlindMode DEFAULT_COLORBLINDMODE = ColorBlindMode.DEFAULT;
+	private final int DEFAULT_PREVREQUEST = 20;
+	private final boolean DEFAULT_ADVANCED_TIME = false;
+	private final int DEFAULT_GROUP_ACCESS = 10;
 
 	/**
 	 * 
@@ -141,7 +145,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * Constructor with reference to the context.
-	 * 
+	 * <p>
 	 * We need the context to be able to instantiate the SharedPreferences
 	 * object in order to use persistent storage.
 	 * 
@@ -151,35 +155,35 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public FreeRoomModel(Context context) {
 		preferences = context.getSharedPreferences(PREF_USER_DETAILS_KEY,
 				Context.MODE_PRIVATE);
-		homeBehaviourRoom = HomeBehaviourRoom.valueOf(preferences.getString(
-				homeBehaviourRoomIDKey, homeBehaviourRoom.name()));
-		homeBehaviourTime = HomeBehaviourTime.valueOf(preferences.getString(
-				homeBehaviourTimeIDKey, homeBehaviourTime.name()));
-		timeLanguage = TimeLanguage.valueOf(preferences.getString(
-				timeLanguageIDKey, timeLanguage.name()));
-		displayTimePrefix = preferences.getBoolean(displayTimePrefixIDKey,
-				displayTimePrefix);
-		minutesRequestTimeOut = preferences.getInt(minutesRequestTimeOutIDKey,
-				minutesRequestTimeOut);
-		previousRequestWeeks = preferences.getInt(previousRequestWeeksIDKey,
-				previousRequestWeeks);
-		previousRequestNumber = preferences.getInt(previousRequestNumberIDKey,
-				previousRequestNumber);
-		registeredUser = preferences.getBoolean(registeredUserIDKey,
-				registeredUser);
+		initSharedPreferences();
 		occupancyByBuilding = new OrderMapListFew<String, List<?>, Occupancy>(
 				30);
+		this.context = context;
+	}
+
+	private void initSharedPreferences() {
+		homeBehaviourRoom = HomeBehaviourRoom.valueOf(preferences.getString(
+				homeBehaviourRoomIDKey, DEFAULT_HOMEBEHAVIOUR_ROOM.name()));
+		homeBehaviourTime = HomeBehaviourTime.valueOf(preferences.getString(
+				homeBehaviourTimeIDKey, DEFAULT_HOMEBEHAVIOUR_TIME.name()));
+		timeLanguage = TimeLanguage.valueOf(preferences.getString(
+				timeLanguageIDKey, DEFAULT_TIMELANGUAGE.name()));
+		previousRequestNumber = preferences.getInt(previousRequestNumberIDKey,
+				DEFAULT_PREVREQUEST);
+		colorBlindMode = ColorBlindMode.valueOf(preferences.getString(
+				colorBlindModeIDKey, DEFAULT_COLORBLINDMODE.name()));
+		timePickersPref = TimePickersPref.valueOf(preferences.getString(
+				timePickersPrefIDKey, DEFAULT_TIMEPICKERS.name()));
+		advancedTime = preferences.getBoolean(advancedTimeIDKey,
+				DEFAULT_ADVANCED_TIME);
+		groupAccess = preferences
+				.getInt(groupAccessIDKey, DEFAULT_GROUP_ACCESS);
 		// generates the anonym ID at first launch time
 		getAnonymID();
-		groupAccess = preferences.getInt(groupAccessIDKey, groupAccess);
 		registeredTime = preferences.getLong(registeredTimeIDKey,
 				registeredTime);
-		timePickersPref = TimePickersPref.valueOf(preferences.getString(
-				timePickersPrefIDKey, timePickersPref.name()));
-		advancedTime = preferences.getBoolean(advancedTimeIDKey, advancedTime);
-		colorBlindMode = ColorBlindMode.valueOf(preferences.getString(
-				colorBlindModeIDKey, colorBlindMode.name()));
-		this.context = context;
+		registeredUser = preferences.getBoolean(registeredUserIDKey,
+				registeredUser);
 	}
 
 	/**
@@ -416,6 +420,29 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	/* ALL STORED PREFERENCES */
 
 	/**
+	 * RESET DEFINITELY ALL THE SHARED PREFERENCES.
+	 * <p>
+	 * 
+	 * @param keepAnonymUID
+	 *            if the unique ID should be kept in the operation.
+	 */
+	public void resetAll(boolean keepAnonymUID) {
+		SharedPreferences.Editor editor = preferences.edit();
+		if (keepAnonymUID) {
+			String uid = getAnonymID();
+			long time = getRegisteredTime();
+			boolean reg = getRegisteredUser();
+			editor.clear();
+			editor.putString(anonymIDKey, uid);
+			editor.putLong(registeredTimeIDKey, time);
+			editor.putBoolean(registeredUserIDKey, reg);
+		} else {
+			editor.clear();
+		}
+		editor.commit();
+	}
+
+	/**
 	 * Retrieves the 32-char unique and anonymous device-identifier.
 	 * <p>
 	 * This identifiers guarantees the uniqueness among users and hold no
@@ -594,93 +621,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * Stores the displayTimePrefix parameters.
-	 * <p>
-	 * Default: true.
-	 */
-	private boolean displayTimePrefix = true;
-
-	/**
-	 * Set the displayTimePrefix parameters.
-	 * 
-	 * @param next
-	 *            the new displayTimePrefix parameters.
-	 */
-	public void setDisplayTimePrefix(boolean next) {
-		this.displayTimePrefix = next;
-		SharedPreferences.Editor editor = preferences.edit();
-		editor.putBoolean(displayTimePrefixIDKey, displayTimePrefix);
-		editor.commit();
-	}
-
-	/**
-	 * Retrieves the displayTimePrefix parameters.
-	 * 
-	 * @return the current displayTimePrefix parameters.
-	 */
-	public boolean getDisplayTimePrefix() {
-		return this.displayTimePrefix;
-	}
-
-	/**
-	 * # minutes before a request becomes invalid for refreshing.
-	 * <p>
-	 * Default: 5 minutes.
-	 */
-	private int minutesRequestTimeOut = 5;
-
-	/**
-	 * # minutes before a request becomes invalid for refreshing.
-	 * 
-	 * @return the minutesRequestTimeOut
-	 */
-	public int getMinutesRequestTimeOut() {
-		return minutesRequestTimeOut;
-	}
-
-	/**
-	 * # minutes before a request becomes invalid for refreshing.
-	 * 
-	 * @param minutesRequestTimeOut
-	 *            the minutesRequestTimeOut to set
-	 */
-	public void setMinutesRequestTimeOut(int minutesRequestTimeOut) {
-		this.minutesRequestTimeOut = minutesRequestTimeOut;
-		SharedPreferences.Editor editor = preferences.edit();
-		editor.putInt(minutesRequestTimeOutIDKey, minutesRequestTimeOut);
-		editor.commit();
-	}
-
-	/**
-	 * # weeks before a previous requests are deleted.
-	 * <p>
-	 * Default: 15 weeks (1 semester run).
-	 */
-	private int previousRequestWeeks = 15;
-
-	/**
-	 * # weeks before a previous requests are deleted.
-	 * 
-	 * @return the previousRequestWeeks
-	 */
-	public int getPreviousRequestWeeks() {
-		return previousRequestWeeks;
-	}
-
-	/**
-	 * # weeks before a previous requests are deleted.
-	 * 
-	 * @param previousRequestWeeks
-	 *            the previousRequestWeeks to set
-	 */
-	public void setPreviousRequestWeeks(int previousRequestWeeks) {
-		this.previousRequestWeeks = previousRequestWeeks;
-		SharedPreferences.Editor editor = preferences.edit();
-		editor.putInt(previousRequestWeeksIDKey, previousRequestWeeks);
-		editor.commit();
-	}
-
-	/**
 	 * # of previous request before previous requests are deleted.
 	 * <p>
 	 * Default: 20 requests.
@@ -692,7 +632,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * 
 	 * @return the previousRequestNumber
 	 */
-	public int getPreviousRequestNumber() {
+	private int getPreviousRequestNumber() {
 		return previousRequestNumber;
 	}
 
@@ -760,15 +700,18 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * Declaration of TimePickersPref type supported.
+	 * <p>
+	 * This settings is not available to user, but as some developers, a cheat
+	 * code can activate them.
 	 */
 	public enum TimePickersPref {
 		PICKERS, ARROWS, BOTH;
 	}
 
 	/**
-	 * Stores the timeLanguage parameters.
+	 * Stores the TimePickersPref parameters.
 	 * <p>
-	 * Default: TimeLanguage.PICKERS
+	 * Default: TimePickersPref.PICKERS
 	 */
 	private TimePickersPref timePickersPref = TimePickersPref.PICKERS;
 
