@@ -61,6 +61,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private final int LIMIT_AUTOCOMPLETE = 50;
 
+	/**
+	 * some rooms don't have a capacity, so we display the occupation based on
+	 * 40 places, which is probably under-evaluated, so wont create many
+	 * issues...
+	 */
+	int defaultCapacity = 40;
+
 	private ConnectionManager connMgr;
 	private Logger logger = Logger.getLogger(FreeRoomServiceImpl.class
 			.getName());
@@ -1029,7 +1036,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				boolean available = (type == OCCUPANCY_TYPE.USER) ? true
 						: false;
 				int capacity = resultQuery.getInt("capacity");
-				double ratio = capacity > 0 ? (double) count / capacity : 0.0;
+
+				int calculCapacity = capacity > 0 ? capacity : defaultCapacity;
+				double ratio = (double) count / calculCapacity;
 
 				FRPeriod period = new FRPeriod(start, end, false);
 				FRRoom mRoom = new FRRoom(doorCode, uid);
