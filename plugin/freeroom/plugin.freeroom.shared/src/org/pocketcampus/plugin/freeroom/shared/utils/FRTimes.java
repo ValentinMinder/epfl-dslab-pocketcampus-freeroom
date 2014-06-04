@@ -316,6 +316,24 @@ public class FRTimes {
 	 */
 	public static String validCalendarsString(FRPeriod mFrPeriod,
 			long nowTimeStamp) {
+		return validCalendarsString(mFrPeriod, nowTimeStamp, false, false);
+	}
+
+	/**
+	 * See {@link #validCalendarsString(FRPeriod, long)}.
+	 * <p>
+	 * This method let allow weekends and/or evenings.
+	 * 
+	 * @param mFrPeriod
+	 * @param nowTimeStamp
+	 * @param allowWeekEnds
+	 *            if weekend should be accepted
+	 * @param allowEvenings
+	 *            if evening should be accepted
+	 * @return
+	 */
+	public static String validCalendarsString(FRPeriod mFrPeriod,
+			long nowTimeStamp, boolean allowWeekEnds, boolean allowEvenings) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("");
 
@@ -364,10 +382,12 @@ public class FRTimes {
 			buffer.append(" ");
 		}
 
-		// we only accept weekdays
-		int dayWeek = mStartCalendar.get(Calendar.DAY_OF_WEEK);
-		if (dayWeek == Calendar.SUNDAY || dayWeek == Calendar.SATURDAY) {
-			buffer.append("Only weekdays are accepted. Please avoid Saturdays and Sundays.\n");
+		if (!allowWeekEnds) {
+			// we only accept weekdays
+			int dayWeek = mStartCalendar.get(Calendar.DAY_OF_WEEK);
+			if (dayWeek == Calendar.SUNDAY || dayWeek == Calendar.SATURDAY) {
+				buffer.append("Only weekdays are accepted. Please avoid Saturdays and Sundays.\n");
+			}
 		}
 
 		int startHour = mStartCalendar.get(Calendar.HOUR_OF_DAY);
@@ -375,22 +395,24 @@ public class FRTimes {
 		int endHour = mEndCalendar.get(Calendar.HOUR_OF_DAY);
 		int endMinutes = mEndCalendar.get(Calendar.MINUTE);
 
-		// we limit the first hour checkable
-		if (startHour < FIRST_HOUR_CHECK) {
-			buffer.append("Start time cannot be before " + FIRST_HOUR_CHECK
-					+ " AM .\n");
-		}
+		if (!allowEvenings) {
+			// we limit the first hour checkable
+			if (startHour < FIRST_HOUR_CHECK) {
+				buffer.append("Start time cannot be before " + FIRST_HOUR_CHECK
+						+ " AM .\n");
+			}
 
-		// we limit the last hour checkable
-		// case > 19h
-		if (endHour > LAST_HOUR_CHECK) {
-			buffer.append("End time cannot be after " + LAST_HOUR_CHECK
-					+ " PM .\n");
-		}
-		// case 19h00
-		if (endHour == LAST_HOUR_CHECK && endMinutes != 0) {
-			buffer.append("End time cannot be after " + LAST_HOUR_CHECK
-					+ " PM .\n");
+			// we limit the last hour checkable
+			// case > 19h
+			if (endHour > LAST_HOUR_CHECK) {
+				buffer.append("End time cannot be after " + LAST_HOUR_CHECK
+						+ " PM .\n");
+			}
+			// case 19hXX
+			if (endHour == LAST_HOUR_CHECK && endMinutes != 0) {
+				buffer.append("End time cannot be after " + LAST_HOUR_CHECK
+						+ " PM .\n");
+			}
 		}
 
 		// It's redundant, no message
