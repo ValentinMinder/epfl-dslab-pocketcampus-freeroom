@@ -67,7 +67,7 @@ public class TestFRTimes {
 
 		// not enough time
 		calEnd.set(Calendar.HOUR_OF_DAY, 9);
-		calEnd.set(Calendar.MINUTE, FRTimes.MIN_MINUTE_INTERVAL - 1);
+		calEnd.set(Calendar.MINUTE, Constants.MIN_MINUTE_INTERVAL - 1);
 		assertFalse(FRTimes.validCalendars(calStart, calEnd, now));
 		calEnd.set(Calendar.HOUR_OF_DAY, 10);
 		calEnd.set(Calendar.MINUTE, 0);
@@ -76,7 +76,7 @@ public class TestFRTimes {
 
 		// not enough time
 		calEnd.setTimeInMillis(calStart.getTimeInMillis()
-				+ (FRTimes.MIN_MINUTE_INTERVAL - 1) * FRTimes.ONE_MIN_IN_MS);
+				+ (Constants.MIN_MINUTE_INTERVAL - 1) * FRTimes.ONE_MIN_IN_MS);
 		assertFalse(FRTimes.validCalendars(calStart, calEnd, now));
 		calStart.setTimeInMillis(now);
 		calEnd.setTimeInMillis(nowEnd);

@@ -16,6 +16,10 @@ import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
  * 
  */
 public class FRTimes {
+	/*
+	 * All of these constants ARE NOT in thrift intentionally. Only used by
+	 * server and Android.
+	 */
 	public static final long ONE_SEC_IN_MS = 1000;
 	public static final long ONE_MIN_IN_MS = ONE_SEC_IN_MS * 60;
 	public static final long m30_MIN_IN_MS = ONE_MIN_IN_MS * 30;
@@ -25,10 +29,6 @@ public class FRTimes {
 	public static final long ONE_MONTH_IN_MS = ONE_DAY_IN_MS * 30;
 
 	public static final long AUTO_UPDATE_INTERVAL_USER_OCCUPANCY = ONE_DAY_IN_MS;
-
-	public static final int FIRST_HOUR_CHECK = 8;
-	public static final int LAST_HOUR_CHECK = 19;
-	public static final int MIN_MINUTE_INTERVAL = 5;
 
 	public static final long MARGIN_ERROR = 5 * 60 * 1000;
 	public static final long MIN_PERIOD = 15 * 60 * 1000;
@@ -288,16 +288,16 @@ public class FRTimes {
 		}
 
 		// defines the minimal time interval
-		if (Math.abs(endTimeStamp - startTimeStamp) < MIN_MINUTE_INTERVAL
+		if (Math.abs(endTimeStamp - startTimeStamp) < Constants.MIN_MINUTE_INTERVAL
 				* ONE_MIN_IN_MS) {
-			buffer.append("Their should be at least " + MIN_MINUTE_INTERVAL
-					+ " minutes to check.\n");
+			buffer.append("Their should be at least "
+					+ Constants.MIN_MINUTE_INTERVAL + " minutes to check.\n");
 		}
 
 		// not more than 24h (It's redundant: no message)
 		if (Math.abs(mStartCalendar.getTimeInMillis()
 				- mEndCalendar.getTimeInMillis()) > ONE_DAY_IN_MS
-				+ MIN_MINUTE_INTERVAL) {
+				+ Constants.MIN_MINUTE_INTERVAL) {
 			buffer.append(" ");
 		}
 
@@ -316,21 +316,21 @@ public class FRTimes {
 
 		if (!allowEvenings) {
 			// we limit the first hour checkable
-			if (startHour < FIRST_HOUR_CHECK) {
-				buffer.append("Start time cannot be before " + FIRST_HOUR_CHECK
-						+ " AM .\n");
+			if (startHour < Constants.FIRST_HOUR_CHECK) {
+				buffer.append("Start time cannot be before "
+						+ Constants.FIRST_HOUR_CHECK + " AM .\n");
 			}
 
 			// we limit the last hour checkable
 			// case > 19h
-			if (endHour > LAST_HOUR_CHECK) {
-				buffer.append("End time cannot be after " + LAST_HOUR_CHECK
-						+ " PM .\n");
+			if (endHour > Constants.LAST_HOUR_CHECK) {
+				buffer.append("End time cannot be after "
+						+ Constants.LAST_HOUR_CHECK + " PM .\n");
 			}
 			// case 19hXX
-			if (endHour == LAST_HOUR_CHECK && endMinutes != 0) {
-				buffer.append("End time cannot be after " + LAST_HOUR_CHECK
-						+ " PM .\n");
+			if (endHour == Constants.LAST_HOUR_CHECK && endMinutes != 0) {
+				buffer.append("End time cannot be after "
+						+ Constants.LAST_HOUR_CHECK + " PM .\n");
 			}
 		}
 
@@ -420,20 +420,20 @@ public class FRTimes {
 
 		if (day == Calendar.SATURDAY || day == Calendar.SUNDAY) {
 			return shiftWeekEndToMondayFirstHour(tsStart);
-		} else if (day == Calendar.FRIDAY && hour >= LAST_HOUR_CHECK) {
+		} else if (day == Calendar.FRIDAY && hour >= Constants.LAST_HOUR_CHECK) {
 			return shiftWeekEndToMondayFirstHour(tsStart);
-		} else if (hour == LAST_HOUR_CHECK - 1) {
+		} else if (hour == Constants.LAST_HOUR_CHECK - 1) {
 			mCalendar.set(Calendar.MINUTE, 0);
 			return new FRPeriod(mCalendar.getTimeInMillis(),
 					mCalendar.getTimeInMillis() + ONE_HOUR_IN_MS, false);
-		} else if (hour >= 0 && hour < FIRST_HOUR_CHECK) {
-			int hourShift = FIRST_HOUR_CHECK - hour;
+		} else if (hour >= 0 && hour < Constants.FIRST_HOUR_CHECK) {
+			int hourShift = Constants.FIRST_HOUR_CHECK - hour;
 			mCalendar.set(Calendar.MINUTE, 0);
 			tsStart = mCalendar.getTimeInMillis() + ONE_HOUR_IN_MS * hourShift;
 			return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
-		} else if (day != Calendar.FRIDAY && hour >= LAST_HOUR_CHECK
+		} else if (day != Calendar.FRIDAY && hour >= Constants.LAST_HOUR_CHECK
 				&& hour <= 23) {
-			int hourShift = FIRST_HOUR_CHECK + (24 - hour);
+			int hourShift = Constants.FIRST_HOUR_CHECK + (24 - hour);
 			mCalendar.set(Calendar.MINUTE, 0);
 			tsStart = mCalendar.getTimeInMillis() + ONE_HOUR_IN_MS * hourShift;
 			return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
@@ -491,7 +491,7 @@ public class FRTimes {
 			hourToCompleteDay += 24;
 		}
 
-		hourToCompleteDay += FIRST_HOUR_CHECK;
+		hourToCompleteDay += Constants.FIRST_HOUR_CHECK;
 		long tsStart = mCalendar.getTimeInMillis() + hourToCompleteDay
 				* ONE_HOUR_IN_MS;
 		return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
@@ -528,7 +528,7 @@ public class FRTimes {
 		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(period.getTimeStampStart());
 
-		while (cal.get(Calendar.HOUR_OF_DAY) < FRTimes.LAST_HOUR_CHECK) {
+		while (cal.get(Calendar.HOUR_OF_DAY) < Constants.LAST_HOUR_CHECK) {
 			cal.roll(Calendar.HOUR_OF_DAY, true);
 		}
 
@@ -550,11 +550,11 @@ public class FRTimes {
 		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(period.getTimeStampStart());
 
-		cal.set(Calendar.HOUR_OF_DAY, FRTimes.FIRST_HOUR_CHECK);
+		cal.set(Calendar.HOUR_OF_DAY, Constants.FIRST_HOUR_CHECK);
 		cal.set(Calendar.MINUTE, 0);
 		period.setTimeStampStart(cal.getTimeInMillis());
 
-		cal.set(Calendar.HOUR_OF_DAY, FRTimes.LAST_HOUR_CHECK);
+		cal.set(Calendar.HOUR_OF_DAY, Constants.LAST_HOUR_CHECK);
 		cal.set(Calendar.MINUTE, 0);
 		period.setTimeStampEnd(cal.getTimeInMillis());
 
@@ -704,7 +704,7 @@ public class FRTimes {
 
 		// if we are not a full hour, take the next hour is possible
 		if (minEnd != 0) {
-			hourEnd = Math.min(LAST_HOUR_CHECK, hourEnd + 1);
+			hourEnd = Math.min(Constants.LAST_HOUR_CHECK, hourEnd + 1);
 			mCalendar.set(Calendar.HOUR_OF_DAY, hourEnd);
 			mCalendar.set(Calendar.MINUTE, 0);
 			tsEnd = mCalendar.getTimeInMillis();

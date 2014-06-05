@@ -24,8 +24,8 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.HomeBehaviourTime;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.TimeLanguage;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.TimePickersPref;
 import org.pocketcampus.plugin.freeroom.android.adapter.ActualOccupationArrayAdapter;
-import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewOccupancyAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewFavoriteAdapter;
+import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewOccupancyAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.FRRoomRemoveArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.FRRoomSuggestionArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.MessageFrequencyArrayAdapter;
@@ -3217,26 +3217,26 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						int previous = startHourSelected;
 						startHourSelected = nHourOfDay;
 						startMinSelected = nMinute;
-						if (startHourSelected < FRTimes.FIRST_HOUR_CHECK) {
-							startHourSelected = FRTimes.FIRST_HOUR_CHECK;
+						if (startHourSelected < Constants.FIRST_HOUR_CHECK) {
+							startHourSelected = Constants.FIRST_HOUR_CHECK;
 							startMinSelected = 0;
 						}
-						if (startHourSelected >= FRTimes.LAST_HOUR_CHECK) {
-							startHourSelected = FRTimes.LAST_HOUR_CHECK - 1;
+						if (startHourSelected >= Constants.LAST_HOUR_CHECK) {
+							startHourSelected = Constants.LAST_HOUR_CHECK - 1;
 							startMinSelected = 0;
 						}
 						if (startHourSelected != -1
 								&& !searchTimeAdvUpToEndSelected) {
 							int shift = startHourSelected - previous;
 							int newEndHour = endHourSelected + shift;
-							if (newEndHour > FRTimes.LAST_HOUR_CHECK) {
-								newEndHour = FRTimes.LAST_HOUR_CHECK;
+							if (newEndHour > Constants.LAST_HOUR_CHECK) {
+								newEndHour = Constants.LAST_HOUR_CHECK;
 							}
-							if (newEndHour < FRTimes.FIRST_HOUR_CHECK) {
-								newEndHour = FRTimes.FIRST_HOUR_CHECK + 1;
+							if (newEndHour < Constants.FIRST_HOUR_CHECK) {
+								newEndHour = Constants.FIRST_HOUR_CHECK + 1;
 							}
 							endHourSelected = newEndHour;
-							if (endHourSelected == FRTimes.LAST_HOUR_CHECK) {
+							if (endHourSelected == Constants.LAST_HOUR_CHECK) {
 								endMinSelected = 0;
 							}
 							searchTimeUpdateEndTimePickerAndButton();
@@ -3272,26 +3272,26 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						if (endHourSelected < startHourSelected) {
 							endHourSelected = startHourSelected + 1;
 						}
-						if (endHourSelected < FRTimes.FIRST_HOUR_CHECK) {
-							endHourSelected = FRTimes.FIRST_HOUR_CHECK + 1;
+						if (endHourSelected < Constants.FIRST_HOUR_CHECK) {
+							endHourSelected = Constants.FIRST_HOUR_CHECK + 1;
 							endMinSelected = 0;
 						}
-						if (endHourSelected == FRTimes.FIRST_HOUR_CHECK
-								&& (endMinSelected - startMinSelected) <= FRTimes.MIN_MINUTE_INTERVAL) {
+						if (endHourSelected == Constants.FIRST_HOUR_CHECK
+								&& (endMinSelected - startMinSelected) <= Constants.MIN_MINUTE_INTERVAL) {
 							endMinSelected = startMinSelected
-									+ FRTimes.MIN_MINUTE_INTERVAL;
+									+ Constants.MIN_MINUTE_INTERVAL;
 							if (endMinSelected >= 60) {
 								endMinSelected = 0;
 								endHourSelected += 1;
-								startMinSelected = 60 - FRTimes.MIN_MINUTE_INTERVAL;
+								startMinSelected = 60 - Constants.MIN_MINUTE_INTERVAL;
 							}
 						}
 
-						if (endHourSelected >= FRTimes.LAST_HOUR_CHECK) {
-							endHourSelected = FRTimes.LAST_HOUR_CHECK;
+						if (endHourSelected >= Constants.LAST_HOUR_CHECK) {
+							endHourSelected = Constants.LAST_HOUR_CHECK;
 							endMinSelected = 0;
 						}
-						if (endHourSelected != FRTimes.LAST_HOUR_CHECK) {
+						if (endHourSelected != Constants.LAST_HOUR_CHECK) {
 							searchTimeAdvUpToEndSelected = false;
 							searchTimeAdvUpToEndHourButton
 									.setEnabled(!searchTimeAdvUpToEndSelected);
@@ -3484,8 +3484,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					public void onClick(View v) {
 						startMinSelected = 0;
 						int shift = startHourSelected
-								- FRTimes.FIRST_HOUR_CHECK;
-						startHourSelected = FRTimes.FIRST_HOUR_CHECK;
+								- Constants.FIRST_HOUR_CHECK;
+						startHourSelected = Constants.FIRST_HOUR_CHECK;
 						if (!searchTimeAdvUpToEndSelected && shift > 0) {
 							endHourSelected -= shift;
 						}
@@ -3501,7 +3501,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 					@Override
 					public void onClick(View v) {
-						if (startHourSelected >= FRTimes.FIRST_HOUR_CHECK - 1) {
+						if (startHourSelected >= Constants.FIRST_HOUR_CHECK - 1) {
 							startHourSelected -= 1;
 							if (!searchTimeAdvUpToEndSelected) {
 								endHourSelected -= 1;
@@ -3519,11 +3519,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 					@Override
 					public void onClick(View v) {
-						if (startHourSelected <= FRTimes.LAST_HOUR_CHECK - 2) {
+						if (startHourSelected <= Constants.LAST_HOUR_CHECK - 2) {
 							startHourSelected += 1;
 							if (!searchTimeAdvUpToEndSelected) {
 								endHourSelected = Math.min(endHourSelected + 1,
-										FRTimes.LAST_HOUR_CHECK);
+										Constants.LAST_HOUR_CHECK);
 							}
 						}
 						searchTimeUpdateAllPickersAndButtons();
@@ -3538,7 +3538,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 					@Override
 					public void onClick(View v) {
-						if (endHourSelected >= FRTimes.FIRST_HOUR_CHECK + 2) {
+						if (endHourSelected >= Constants.FIRST_HOUR_CHECK + 2) {
 							endHourSelected -= 1;
 							if (startHourSelected >= endHourSelected) {
 								startHourSelected -= 1;
@@ -3556,10 +3556,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				if (endHourSelected <= FRTimes.LAST_HOUR_CHECK - 1) {
+				if (endHourSelected <= Constants.LAST_HOUR_CHECK - 1) {
 					endHourSelected += 1;
 				}
-				if (endHourSelected == FRTimes.LAST_HOUR_CHECK) {
+				if (endHourSelected == Constants.LAST_HOUR_CHECK) {
 					endMinSelected = 0;
 				}
 				searchTimeAdvUpToEndSelected = false;
@@ -3575,7 +3575,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 					@Override
 					public void onClick(View v) {
-						endHourSelected = FRTimes.LAST_HOUR_CHECK;
+						endHourSelected = Constants.LAST_HOUR_CHECK;
 						endMinSelected = 0;
 						searchTimeAdvUpToEndSelected = true;
 						searchTimeUpdateAllPickersAndButtons();
@@ -3869,14 +3869,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private void searchTimeUpdateEnabledButtons() {
 		searchTimeAdvUpStartHourButton
-				.setEnabled(startHourSelected <= FRTimes.LAST_HOUR_CHECK - 2);
+				.setEnabled(startHourSelected <= Constants.LAST_HOUR_CHECK - 2);
 		searchTimeAdvDownStartHourButton
-				.setEnabled(startHourSelected > FRTimes.FIRST_HOUR_CHECK);
+				.setEnabled(startHourSelected > Constants.FIRST_HOUR_CHECK);
 
 		searchTimeAdvUpEndHourButton
-				.setEnabled(endHourSelected < FRTimes.LAST_HOUR_CHECK);
+				.setEnabled(endHourSelected < Constants.LAST_HOUR_CHECK);
 		searchTimeAdvDownEndHourButton
-				.setEnabled(endHourSelected >= FRTimes.FIRST_HOUR_CHECK + 2);
+				.setEnabled(endHourSelected >= Constants.FIRST_HOUR_CHECK + 2);
 		searchTimeAdvUpToEndHourButton
 				.setEnabled(!searchTimeAdvUpToEndSelected);
 	}
@@ -3941,8 +3941,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				getString(R.string.freeroom_selectendHour), true, times
 						.formatTime(searchLaunchPreparePeriod()
 								.getTimeStampEnd(), false)));
-		if (endHourSelected >= FRTimes.LAST_HOUR_CHECK
-				|| (endHourSelected == FRTimes.LAST_HOUR_CHECK - 1 && endMinSelected != 0)) {
+		if (endHourSelected >= Constants.LAST_HOUR_CHECK
+				|| (endHourSelected == Constants.LAST_HOUR_CHECK - 1 && endMinSelected != 0)) {
 			searchTimeAdvUpEndHourButton.setEnabled(false);
 		} else {
 			searchTimeAdvUpEndHourButton.setEnabled(true);
@@ -4062,14 +4062,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			if (advancedTime) {
 				return getString(
 						R.string.freeroom_search_invalid_time_advanced,
-						FRTimes.FIRST_HOUR_CHECK, FRTimes.LAST_HOUR_CHECK,
-						FRTimes.MIN_MINUTE_INTERVAL,
+						Constants.FIRST_HOUR_CHECK, Constants.LAST_HOUR_CHECK,
+						Constants.MIN_MINUTE_INTERVAL,
 						Constants.MAXIMAL_WEEKS_IN_PAST,
 						Constants.MAXIMAL_WEEKS_IN_FUTURE);
 			} else {
 				return getString(R.string.freeroom_search_invalid_time_basic,
-						FRTimes.FIRST_HOUR_CHECK, FRTimes.LAST_HOUR_CHECK,
-						FRTimes.MIN_MINUTE_INTERVAL);
+						Constants.FIRST_HOUR_CHECK, Constants.LAST_HOUR_CHECK,
+						Constants.MIN_MINUTE_INTERVAL);
 			}
 		}
 	}

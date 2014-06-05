@@ -8,6 +8,10 @@ const i32 MIN_AUTOCOMPL_LENGTH = 2;
 const i32 MAXIMAL_WEEKS_IN_FUTURE = 4;
 const i32 MAXIMAL_WEEKS_IN_PAST = 1;
 
+const i32 FIRST_HOUR_CHECK = 8;
+const i32 LAST_HOUR_CHECK = 19;
+const i32 MIN_MINUTE_INTERVAL = 5;
+
 struct FRRoom{
 	1: required string doorCode;
 	2: required string uid;

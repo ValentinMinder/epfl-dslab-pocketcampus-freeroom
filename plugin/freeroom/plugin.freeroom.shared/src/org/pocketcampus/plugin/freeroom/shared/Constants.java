@@ -33,4 +33,10 @@ public class Constants {
 
   public static final int MAXIMAL_WEEKS_IN_PAST = 1;
 
+  public static final int FIRST_HOUR_CHECK = 8;
+
+  public static final int LAST_HOUR_CHECK = 19;
+
+  public static final int MIN_MINUTE_INTERVAL = 5;
+
 }
