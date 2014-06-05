@@ -428,45 +428,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		commonReplayRefresh();
 	}
 
-	// OVERRIDING FOR BETA ONLY
-	// (the abstract class already does the production behaviour!)
-
-	/**
-	 * TODO: Beta only
-	 */
-	@Override
-	public void networkErrorHappened() {
-		errorDialogShowMessage(getString(R.string.freeroom_connection_error_happened)
-				+ "\n" + getString(R.string.freeroom_error_please_try_again));
-	}
-
-	/**
-	 * TODO: Beta only
-	 */
-	@Override
-	public void freeRoomServerBadRequest() {
-		errorDialogShowMessage(getString(R.string.freeroom_error_bad_request)
-				+ "\n" + getString(R.string.freeroom_error_please_report));
-	}
-
-	/**
-	 * TODO: Beta only
-	 */
-	@Override
-	public void freeRoomServersInternalError() {
-		errorDialogShowMessage(getString(R.string.freeroom_error_internal_error)
-				+ "\n" + getString(R.string.freeroom_error_please_report));
-	}
-
-	/**
-	 * TODO: Beta only
-	 */
-	@Override
-	public void freeRoomServersUnknownError() {
-		errorDialogShowMessage(getString(R.string.freeroom_error_unknown_error)
-				+ "\n" + getString(R.string.freeroom_error_please_report));
-	}
-
 	/* MAIN ACTIVITY - INITIALIZATION */
 
 	/**
