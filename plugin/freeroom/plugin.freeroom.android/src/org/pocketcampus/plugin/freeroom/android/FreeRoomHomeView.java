@@ -488,11 +488,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			addActionToActionBar(actionFavoritesEdit);
 			addActionToActionBar(actionSettings);
 			addActionToActionBar(actionRefresh);
-			// TODO: beta only
-			addActionToActionBar(actionWelcomBetaRegister);
 		} else {
-			// TODO: beta only
-			addActionToActionBar(actionWelcomBetaRegister);
 			// on phones, put all the other actions in the action
 			// actionOverflow.
 			addActionToActionBar(actionOverflow);
@@ -511,10 +507,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initSettingsDialog();
 		initWhoIsWorkingDialog();
 
-		// TODO: beta only
 		initWelcomeDialog();
 		if (!mModel.getRegisteredUser()) {
-			welcome.show();
+			mModel.setRegisteredUser(true);
+			welcomeValidateRegistration();
+			// uncomment this if you want to show the welcome dialog at first
+			// start only, and you may want to change its content as well! :)
+			// welcome.show();
 		} else {
 			welcomeValidateRegistration();
 		}
