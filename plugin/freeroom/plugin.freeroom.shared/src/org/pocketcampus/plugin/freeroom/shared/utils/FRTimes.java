@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
-import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 
 /**
  * This is an utility class doing useful conversions, and defining a few
@@ -45,17 +44,13 @@ public class FRTimes {
 	public static final long MIN_PERIOD = 15 * 60 * 1000;
 
 	/**
-	 * Return a FreeRoomRequest from a given day, starthour and endhour.
+	 * Return a FRPeriod from a given day, starthour and endhour.
 	 * 
 	 * @param day
 	 * @param startHour
 	 * @param endHour
 	 * @return
 	 */
-	public static FreeRoomRequest convert(int day, int startHour, int endHour) {
-		return new FreeRoomRequest(convertFRPeriod(day, startHour, endHour));
-	}
-
 	public static FRPeriod convertFRPeriod(int day, int startHour, int endHour) {
 		Calendar calendar = Calendar.getInstance();
 		int today_day = calendar.get(Calendar.DAY_OF_WEEK);
@@ -107,15 +102,9 @@ public class FRTimes {
 	 *            The precision in minutes for the end
 	 * @return
 	 */
-	public static FreeRoomRequest convertWithMinPrecision(int day,
-			int startHour, int startMin, int endHour, int endMin) {
-		return new FreeRoomRequest(convertWithMinPrecisionFRPeriod(day,
-				startHour, startMin, endHour, endMin));
-	}
-
 	public static FRPeriod convertWithMinPrecisionFRPeriod(int day,
 			int startHour, int startMin, int endHour, int endMin) {
-		FRPeriod period = convert(day, startHour, endHour).getPeriod();
+		FRPeriod period = convertFRPeriod(day, startHour, endHour);
 		period.setTimeStampStart(period.getTimeStampStart() + startMin
 				* ONE_MIN_IN_MS);
 		period.setTimeStampEnd(period.getTimeStampEnd() + endMin
@@ -766,25 +755,6 @@ public class FRTimes {
 		mCalendar.set(Calendar.SECOND, 0);
 		mCalendar.set(Calendar.MILLISECOND, 0);
 		return mCalendar.getTimeInMillis();
-	}
-
-	/**
-	 * Adjust the period given in the request. It adds 30s to the lower bound,
-	 * substract 30s from the upper bound. It is used to allow a margin for
-	 * error with the timestamps
-	 * 
-	 * @param req
-	 *            The initial request issued by the client
-	 * @return The new request with correct timestamps.
-	 */
-	public static FreeRoomRequest convertMinPrecision(FreeRoomRequest req) {
-		FRPeriod period = req.getPeriod();
-		period.setTimeStampStart(period.getTimeStampStart()
-				+ FRTimes.m30_MIN_IN_MS);
-		period.setTimeStampEnd(period.getTimeStampEnd() - FRTimes.m30_MIN_IN_MS);
-
-		return new FreeRoomRequest(period);
-
 	}
 
 	public static FRPeriod roundFRRequestTimestamp(FRPeriod period) {
