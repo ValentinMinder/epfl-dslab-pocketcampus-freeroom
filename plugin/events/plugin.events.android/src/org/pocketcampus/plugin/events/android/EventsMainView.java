@@ -8,8 +8,6 @@ import static org.pocketcampus.android.platform.sdk.utils.SetUtils.difference;
 import static org.pocketcampus.android.platform.sdk.utils.SetUtils.intersect;
 import static org.pocketcampus.plugin.events.android.EventDetailView.EXTRAS_KEY_EVENTITEMID;
 import static org.pocketcampus.plugin.events.android.EventsController.getEventItemComp4sort;
-import static org.pocketcampus.plugin.events.android.EventsController.simpleDateFormat;
-import static org.pocketcampus.plugin.events.android.EventsController.simpleTimeFormat;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -262,7 +260,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 				addActionToActionBar(new Action() {
 					public void performAction(View view) {
 						trackEvent("ShowCategories", null);
-						showMultiChoiceDialog(EventsMainView.this, subMap, "Filter by category", filteredCategs, new MultiChoiceHandler<Integer>() {
+						showMultiChoiceDialog(EventsMainView.this, subMap, getString(R.string.events_filter_by_categ), filteredCategs, new MultiChoiceHandler<Integer>() {
 							public void saveSelection(Integer t, boolean isChecked) {
 								if(isChecked)
 									filteredCategs.add(t);
@@ -284,7 +282,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 				addActionToActionBar(new Action() {
 					public void performAction(View view) {
 						trackEvent("ShowTags", null);
-						showMultiChoiceDialog(EventsMainView.this, subMap, "Filter by areas", filteredTags, new MultiChoiceHandler<String>() {
+						showMultiChoiceDialog(EventsMainView.this, subMap, getString(R.string.events_filter_by_tags), filteredTags, new MultiChoiceHandler<String>() {
 							public void saveSelection(String t, boolean isChecked) {
 								if(isChecked)
 									filteredTags.add(t);
@@ -316,7 +314,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 			addActionToActionBar(new Action() {
 				public void performAction(View view) {
 					trackEvent("RequestEmail", null);
-					showInputDialog(EventsMainView.this, "Send by email", "Email address to send starred items", "OK", new TextInputHandler() {
+					showInputDialog(EventsMainView.this, getString(R.string.events_email_popup_title), getString(R.string.events_email_popup_body), getString(R.string.events_ok), new TextInputHandler() {
 						public void gotText(String s) {
 							mController.sendFavoritesByEmail(EventsMainView.this, eventPoolId, s);
 						}
@@ -382,8 +380,8 @@ public class EventsMainView extends PluginView implements IEventsView {
 							return e.getTimeSnippet();
 						if(!e.isSetStartDate())
 							return null;
-						String startTime = simpleTimeFormat.format(new Date(e.getStartDate()));
-						String startDay = simpleDateFormat.format(new Date(e.getStartDate()));
+						String startTime = EventsController.getTimeFormat(EventsMainView.this).format(new Date(e.getStartDate()));
+						String startDay = EventsController.getDateFormat(EventsMainView.this).format(new Date(e.getStartDate()));
 						if(e.isFullDay())
 							return startDay;
 						else
