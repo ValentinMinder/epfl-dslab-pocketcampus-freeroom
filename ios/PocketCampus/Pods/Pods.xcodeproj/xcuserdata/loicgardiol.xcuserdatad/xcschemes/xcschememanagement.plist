@@ -8,121 +8,101 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>5</integer>
 		</dict>
 		<key>Pods-CDZQRScanningViewController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>6</integer>
 		</dict>
 		<key>Pods-GoogleAnalytics-iOS-SDK.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>7</integer>
 		</dict>
 		<key>Pods-JTTargetActionBlock.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>8</integer>
 		</dict>
 		<key>Pods-MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>9</integer>
 		</dict>
 		<key>Pods-NSTimer-Blocks.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>10</integer>
 		</dict>
 		<key>Pods-SSKeychain.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>11</integer>
 		</dict>
 		<key>Pods-TUSafariActivity.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>13</integer>
 		</dict>
 		<key>Pods-TapkuLibrary.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>12</integer>
 		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>4</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0AA45FAD7CC14F1E8EF0E43F</key>
+		<key>05FAEB7ACD2D412D84967808</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1B295E574D53427894E18E9D</key>
+		<key>49D8BFFE1D9D47799D4C6AAA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>646FAB9182464131B83DF619</key>
+		<key>663A94DF84A84B3F9A191E91</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6AF18C53106241C49722BD38</key>
+		<key>A7096446C88F4287AD9A9F42</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8C22B23A09484AC59CE19DFF</key>
+		<key>AAE5716D48DD425CAF2CC344</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A07AECE895504A63B3CB8002</key>
+		<key>B099EF73993F4C43B80436B2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C6695C0F958148E794AA0494</key>
+		<key>B3D5AE4A79F146669E534120</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D8AFED8E385149B98B7859D7</key>
+		<key>B75ACE8C0887412EA3E79CBF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F46A233E39904F5EA85FF433</key>
+		<key>BFCC2EEAB81244E0A828D07D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FBBA9A2A4082428A8935E8ED</key>
+		<key>E00A3BF0645C4F8393095690</key>
 		<dict>
 			<key>primary</key>
 			<true/>

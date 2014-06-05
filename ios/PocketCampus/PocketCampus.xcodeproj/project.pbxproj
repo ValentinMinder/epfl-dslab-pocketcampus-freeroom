@@ -94,46 +94,6 @@
 		323A913F164078FF007A63D3 /* TopDown1pxShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323A913E164078FF007A63D3 /* TopDown1pxShadow@2x.png */; };
 		323CAC5919324F4800941BB1 /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAC5819324F4800941BB1 /* AuthenticationViewController.m */; };
 		323E5894193FC08F002B0B30 /* CamiproWidgetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32136F49193FBD20002905A9 /* CamiproWidgetViewController.m */; };
-		323E5896193FC0C3002B0B30 /* camipro.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B58717156458FA0051C57E /* camipro.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		323E5897193FC2FD002B0B30 /* CamiproService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32710E8C1564FC2400DE6984 /* CamiproService.m */; };
-		323E5898193FC31F002B0B30 /* PCPersistenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* PCPersistenceManager.m */; };
-		323E5899193FC31F002B0B30 /* PCConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3258D65016AF1FE20040DAE3 /* PCConfig.m */; };
-		323E589A193FC31F002B0B30 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 324715AD15001381007C230C /* Service.m */; };
-		323E589B193FC31F002B0B30 /* NSOperationWithDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA99C1854A06F00C6393A /* NSOperationWithDelegate.m */; };
-		323E589C193FC31F002B0B30 /* ServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA9A01854B5E600C6393A /* ServiceRequest.m */; };
-		323E589D193FC356002B0B30 /* PCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 322207F61689E3A3003F6622 /* PCUtils.m */; };
-		323E589E193FC356002B0B30 /* PCValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 322207F81689E3A3003F6622 /* PCValues.m */; };
-		323E589F193FC356002B0B30 /* PCURLSchemeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 321CCF9D16E3B537002CBEA2 /* PCURLSchemeHandler.m */; };
-		323E58A0193FC356002B0B30 /* PCGAITracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 322FB01717EC938E00D1A466 /* PCGAITracker.m */; };
-		323E58A1193FC356002B0B30 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 321CCF6F16E27357002CBEA2 /* UIImage+Additions.m */; };
-		323E58A2193FC356002B0B30 /* NSDate+Addtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB441F17650268008C8282 /* NSDate+Addtions.m */; };
-		323E58A3193FC356002B0B30 /* NSLayoutConstraint+LGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE5B2717F2003800E03423 /* NSLayoutConstraint+LGAdditions.m */; };
-		323E58A4193FC356002B0B30 /* NSCache+LGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32797ABB1877050B005A19FD /* NSCache+LGAdditions.m */; };
-		323E58A5193FC356002B0B30 /* MKMapView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 324BEE7E19221A8D00886693 /* MKMapView+Additions.m */; };
-		323E58A7193FC4A6002B0B30 /* PluginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32704C66150016B3002BCB75 /* PluginController.m */; };
-		323E58A8193FC4A6002B0B30 /* PluginControllerAuthentified.m in Sources */ = {isa = PBXBuildFile; fileRef = 324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */; };
-		323E58A9193FC4A6002B0B30 /* PCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B1D9E217F08E1D000CC209 /* PCNavigationController.m */; };
-		323E58AA193FC4A6002B0B30 /* PluginNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF46541636FB2500932FF5 /* PluginNavigationController.m */; };
-		323E58AB193FC4A6002B0B30 /* PluginSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */; };
-		323E58AC193FC4A6002B0B30 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 329CF4BD187ABC2C00062C98 /* UIViewController+Additions.m */; };
-		323E58AD193FC4A6002B0B30 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47AD1621E91A006752B4 /* MainController.m */; };
-		323E58AE193FC4A6002B0B30 /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B3F38F16219403007A75C7 /* MainMenuViewController.m */; };
-		323E58AF193FC4A6002B0B30 /* PCSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CBF0621634812C00FD92E5 /* PCSplashViewController.m */; };
-		323E58B0193FC4A6002B0B30 /* PCGlobalSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320A05B115B02C240057B15C /* PCGlobalSettingsViewController.m */; };
-		323E58B1193FC4A6002B0B30 /* PCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293AD1F15D1BC7C0097D414 /* PCAboutViewController.m */; };
-		323E58B2193FC4A7002B0B30 /* PCUsageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3245DF2F18881B5F0072E086 /* PCUsageViewController.m */; };
-		323E58B3193FC4A7002B0B30 /* PCTableViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32617BCD16E7DA5F004F9CF9 /* PCTableViewAdditions.m */; };
-		323E58B4193FC4A7002B0B30 /* PCTableViewSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3247CAF715135FD800105A71 /* PCTableViewSectionHeader.m */; };
-		323E58B5193FC4A7002B0B30 /* PCEditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3241F1DD15B4AB9B00C7DF3A /* PCEditableTableViewCell.m */; };
-		323E58B6193FC4A7002B0B30 /* PCCenterMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BA30701645D31A00909D82 /* PCCenterMessageCell.m */; };
-		323E58B7193FC4A7002B0B30 /* PCTableViewCellAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 327412E4167E824F001E8C62 /* PCTableViewCellAdditions.m */; };
-		323E58B8193FC4A7002B0B30 /* PCRecentResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E67DC51684D40C00E5CFF6 /* PCRecentResultTableViewCell.m */; };
-		323E58B9193FC4A7002B0B30 /* UIPopoverController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC216A564460018976F /* UIPopoverController+Additions.m */; };
-		323E58BA193FC4A7002B0B30 /* UIActionSheet+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC516A565600018976F /* UIActionSheet+Additions.m */; };
-		323E58BB193FC4A7002B0B30 /* UILabel+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BBA917187454A600B2A7D3 /* UILabel+Additions.m */; };
-		323E58BC193FC4A7002B0B30 /* LGRefreshControl+PCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A7417F882010025F864 /* LGRefreshControl+PCAdditions.m */; };
-		323E58BD193FC4A7002B0B30 /* UISearchBar+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 329C52AD187EE6200045ECB8 /* UISearchBar+Additions.m */; };
-		323E58BE193FC4A7002B0B30 /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 329C52B0187EE6600045ECB8 /* UIView+Additions.m */; };
 		324151CC15373A1700CCFB22 /* MapPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 324151C615373A1700CCFB22 /* MapPlugin.strings */; };
 		324151D515373B5900CCFB22 /* map.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151D415373B5900CCFB22 /* map.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		324151D815373BA300CCFB22 /* MapService.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151D715373BA300CCFB22 /* MapService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -422,6 +382,7 @@
 		435A47269DBBFFEEE4BC0920 /* PushNotifController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F427C8F702CC10F288D8C /* PushNotifController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		4C3C4FEEB609B30BEFA34726 /* events.m in Sources */ = {isa = PBXBuildFile; fileRef = 62FB4BFDBB53089EB412B0C1 /* events.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		718D4D56B3591F1306C1875F /* IsAcademiaService.m in Sources */ = {isa = PBXBuildFile; fileRef = 152945DD901E004926831E89 /* IsAcademiaService.m */; };
+		76515AD1AD2B4332BDAD1DA1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96AF5068222245668954256E /* libPods.a */; };
 		8193447294E5D065581CBAAD /* IsAcademia.png in Resources */ = {isa = PBXBuildFile; fileRef = 2EDE488982F3A13DD8BF17AF /* IsAcademia.png */; };
 		8D964F08A876C676D9337E69 /* Events.png in Resources */ = {isa = PBXBuildFile; fileRef = C9574A2CA3E21EEE6B620DE7 /* Events.png */; };
 		C5894949AFC59FDB4346CF53 /* IsAcademia@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51224CC590D66476EC4D0CFB /* IsAcademia@2x.png */; };
@@ -1041,6 +1002,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				32136F34193FBCFF002905A9 /* NotificationCenter.framework in Frameworks */,
+				76515AD1AD2B4332BDAD1DA1 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2477,9 +2439,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 32136F42193FBCFF002905A9 /* Build configuration list for PBXNativeTarget "CamiproWidget" */;
 			buildPhases = (
+				111ED509B57F49E78AA95A6B /* Check Pods Manifest.lock */,
 				32136F2F193FBCFF002905A9 /* Sources */,
 				32136F30193FBCFF002905A9 /* Frameworks */,
 				32136F31193FBCFF002905A9 /* Resources */,
+				4825CF6B7E8742E082105EE4 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2787,6 +2751,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		111ED509B57F49E78AA95A6B /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		32C879A9183D6C4B00750A11 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2799,6 +2778,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "./Crashlytics.framework/run 5501169cb5b463b5f215a0033b2c4d4f5f214bd7";
+		};
+		4825CF6B7E8742E082105EE4 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		5BC697C521FB416CA4EB2C52 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2822,47 +2816,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				323E58A7193FC4A6002B0B30 /* PluginController.m in Sources */,
-				323E58A8193FC4A6002B0B30 /* PluginControllerAuthentified.m in Sources */,
-				323E58A9193FC4A6002B0B30 /* PCNavigationController.m in Sources */,
-				323E58AA193FC4A6002B0B30 /* PluginNavigationController.m in Sources */,
-				323E58AB193FC4A6002B0B30 /* PluginSplitViewController.m in Sources */,
-				323E58AC193FC4A6002B0B30 /* UIViewController+Additions.m in Sources */,
-				323E58AD193FC4A6002B0B30 /* MainController.m in Sources */,
-				323E58AE193FC4A6002B0B30 /* MainMenuViewController.m in Sources */,
-				323E58AF193FC4A6002B0B30 /* PCSplashViewController.m in Sources */,
-				323E58B0193FC4A6002B0B30 /* PCGlobalSettingsViewController.m in Sources */,
-				323E58B1193FC4A6002B0B30 /* PCAboutViewController.m in Sources */,
-				323E58B2193FC4A7002B0B30 /* PCUsageViewController.m in Sources */,
-				323E58B3193FC4A7002B0B30 /* PCTableViewAdditions.m in Sources */,
-				323E58B4193FC4A7002B0B30 /* PCTableViewSectionHeader.m in Sources */,
-				323E58B5193FC4A7002B0B30 /* PCEditableTableViewCell.m in Sources */,
-				323E58B6193FC4A7002B0B30 /* PCCenterMessageCell.m in Sources */,
-				323E58B7193FC4A7002B0B30 /* PCTableViewCellAdditions.m in Sources */,
-				323E58B8193FC4A7002B0B30 /* PCRecentResultTableViewCell.m in Sources */,
-				323E58B9193FC4A7002B0B30 /* UIPopoverController+Additions.m in Sources */,
-				323E58BA193FC4A7002B0B30 /* UIActionSheet+Additions.m in Sources */,
-				323E58BB193FC4A7002B0B30 /* UILabel+Additions.m in Sources */,
-				323E58BC193FC4A7002B0B30 /* LGRefreshControl+PCAdditions.m in Sources */,
-				323E58BD193FC4A7002B0B30 /* UISearchBar+Additions.m in Sources */,
-				323E58BE193FC4A7002B0B30 /* UIView+Additions.m in Sources */,
-				323E589D193FC356002B0B30 /* PCUtils.m in Sources */,
-				323E589E193FC356002B0B30 /* PCValues.m in Sources */,
-				323E589F193FC356002B0B30 /* PCURLSchemeHandler.m in Sources */,
-				323E58A0193FC356002B0B30 /* PCGAITracker.m in Sources */,
-				323E58A1193FC356002B0B30 /* UIImage+Additions.m in Sources */,
-				323E58A2193FC356002B0B30 /* NSDate+Addtions.m in Sources */,
-				323E58A3193FC356002B0B30 /* NSLayoutConstraint+LGAdditions.m in Sources */,
-				323E58A4193FC356002B0B30 /* NSCache+LGAdditions.m in Sources */,
-				323E58A5193FC356002B0B30 /* MKMapView+Additions.m in Sources */,
-				323E5898193FC31F002B0B30 /* PCPersistenceManager.m in Sources */,
-				323E5899193FC31F002B0B30 /* PCConfig.m in Sources */,
-				323E589A193FC31F002B0B30 /* Service.m in Sources */,
-				323E589B193FC31F002B0B30 /* NSOperationWithDelegate.m in Sources */,
-				323E589C193FC31F002B0B30 /* ServiceRequest.m in Sources */,
-				323E5897193FC2FD002B0B30 /* CamiproService.m in Sources */,
 				323E5894193FC08F002B0B30 /* CamiproWidgetViewController.m in Sources */,
-				323E5896193FC0C3002B0B30 /* camipro.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3194,6 +3148,7 @@
 /* Begin XCBuildConfiguration section */
 		32136F43193FBCFF002905A9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43F74C41A62B4C69936087B0 /* Pods.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -3204,6 +3159,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Loic Gardiol (NL782XD7Y6)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Loic Gardiol (NL782XD7Y6)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -3223,6 +3179,7 @@
 		};
 		32136F44193FBCFF002905A9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43F74C41A62B4C69936087B0 /* Pods.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -3234,6 +3191,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Loic Gardiol (7KPBSVCYLZ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Loic Gardiol (7KPBSVCYLZ)";
 				ENABLE_NS_ASSERTIONS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;

@@ -1,4 +1,5 @@
 platform :ios, '7.0'
+link_with ['PocketCampus', 'CamiproWidget']
 pod 'AFNetworking', '~> 2.0'
 pod 'GoogleAnalytics-iOS-SDK',  '~> 3.0'
 pod 'CDZQRScanningViewController'
