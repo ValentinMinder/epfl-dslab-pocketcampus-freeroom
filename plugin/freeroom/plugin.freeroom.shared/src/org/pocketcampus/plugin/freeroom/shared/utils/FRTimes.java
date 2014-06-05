@@ -1,8 +1,6 @@
 package org.pocketcampus.plugin.freeroom.shared.utils;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 
@@ -27,14 +25,7 @@ public class FRTimes {
 	public static final long MAXIMAL_WEEKS_IN_FUTURE = 2;
 	public static final long MAXIMAL_WEEKS_IN_PAST = 1;
 
-	public static final long STEP_OF_OCCUPANCY = ONE_HOUR_IN_MS;
-	public static final long MAX_TIME_IN_FUTURE = ONE_DAY_IN_MS;
-	public static final long MAX_TIME_IN_PAST = ONE_WEEK_IN_MS;
 	public static final long AUTO_UPDATE_INTERVAL_USER_OCCUPANCY = ONE_DAY_IN_MS;
-	/**
-	 * This MUST be less than half of step of occupancy!
-	 */
-	public static final long USER_OCCUPANCY_UPDATE_MARGIN = ONE_MIN_IN_MS;
 
 	public static final int FIRST_HOUR_CHECK = 8;
 	public static final int LAST_HOUR_CHECK = 19;
@@ -110,66 +101,6 @@ public class FRTimes {
 		period.setTimeStampEnd(period.getTimeStampEnd() + endMin
 				* ONE_MIN_IN_MS);
 		return period;
-	}
-
-	/**
-	 * Returns a list of FRPeriod that are contiguous, that covers entirely the
-	 * given mFrPeriod, and that have steps of exactly step.
-	 * 
-	 * Moreover, all the period starts with a full step.
-	 * 
-	 * Example: if you select from 14.12 to 15.32 with step half an hour, you'll
-	 * get a list of {(14.00, 14.30), (14.30,15.00), (15.00, 15.30), (15.30,
-	 * 16.00)}
-	 * 
-	 * The default <code>STEP_OF_OCCUPANCY</code> is used there.
-	 * 
-	 * @param mFrPeriod
-	 * @return
-	 */
-	public static List<FRPeriod> getFRPeriodByStep(FRPeriod mFrPeriod) {
-		return getFRPeriodByStep(mFrPeriod, STEP_OF_OCCUPANCY);
-	}
-
-	private static List<FRPeriod> getFRPeriodByStep(FRPeriod mFrPeriod,
-			long step) {
-		long timestampEnd = mFrPeriod.getTimeStampEnd();
-		long timestampStart = mFrPeriod.getTimeStampStart();
-		long size = (timestampEnd - timestampStart) / step + 2;
-		List<FRPeriod> mFrPeriods = new ArrayList<FRPeriod>((int) size);
-
-		timestampStart = getPreviousTimeStampFromStep(timestampStart, step,
-				true);
-		timestampEnd = getPreviousTimeStampFromStep(timestampEnd, step, false);
-		long next = timestampStart + step;
-		for (; next <= timestampEnd; timestampStart += step, next += step) {
-			FRPeriod period = new FRPeriod(timestampStart, next, false);
-			mFrPeriods.add(period);
-		}
-		return mFrPeriods;
-	}
-
-	/**
-	 * Returns the previous full step just before the timestamp. (if previous
-	 * boolean is false, returns the next one).
-	 * 
-	 * @param timeStamp
-	 * @param step
-	 * @param previous
-	 * @return
-	 */
-	private static long getPreviousTimeStampFromStep(long timeStamp, long step,
-			boolean previous) {
-		long shift = (timeStamp % step);
-		if (shift == 0) {
-			return timeStamp;
-		}
-
-		if (previous) {
-			return timeStamp - shift;
-		} else {
-			return timeStamp + step - shift;
-		}
 	}
 
 	/*
