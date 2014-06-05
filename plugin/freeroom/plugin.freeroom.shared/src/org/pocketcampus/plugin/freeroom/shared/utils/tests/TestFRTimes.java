@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Calendar;
 
 import org.junit.Test;
+import org.pocketcampus.plugin.freeroom.shared.Constants;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
@@ -117,7 +118,7 @@ public class TestFRTimes {
 
 		// cannot check too much in the past
 		// As we shift with full weeks, it's garanteed to stay on Monday!
-		calStart.setTimeInMillis(now - (FRTimes.MAXIMAL_WEEKS_IN_PAST + 1)
+		calStart.setTimeInMillis(now - (Constants.MAXIMAL_WEEKS_IN_PAST + 1)
 				* FRTimes.ONE_WEEK_IN_MS);
 		calEnd.setTimeInMillis(calStart.getTimeInMillis()
 				+ FRTimes.ONE_HOUR_IN_MS);
@@ -126,7 +127,7 @@ public class TestFRTimes {
 		calEnd.setTimeInMillis(nowEnd);
 
 		// cannot check too much in the future
-		calStart.setTimeInMillis(now + (FRTimes.MAXIMAL_WEEKS_IN_FUTURE + 1)
+		calStart.setTimeInMillis(now + (Constants.MAXIMAL_WEEKS_IN_FUTURE + 1)
 				* FRTimes.ONE_WEEK_IN_MS);
 		calEnd.setTimeInMillis(calStart.getTimeInMillis()
 				+ FRTimes.ONE_HOUR_IN_MS);

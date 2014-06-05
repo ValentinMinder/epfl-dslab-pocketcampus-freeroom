@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.freeroom.shared.utils;
 
 import java.util.Calendar;
 
+import org.pocketcampus.plugin.freeroom.shared.Constants;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 
 /**
@@ -22,8 +23,6 @@ public class FRTimes {
 	public static final long ONE_DAY_IN_MS = ONE_HOUR_IN_MS * 24;
 	public static final long ONE_WEEK_IN_MS = ONE_DAY_IN_MS * 7;
 	public static final long ONE_MONTH_IN_MS = ONE_DAY_IN_MS * 30;
-	public static final long MAXIMAL_WEEKS_IN_FUTURE = 2;
-	public static final long MAXIMAL_WEEKS_IN_PAST = 1;
 
 	public static final long AUTO_UPDATE_INTERVAL_USER_OCCUPANCY = ONE_DAY_IN_MS;
 
@@ -343,19 +342,21 @@ public class FRTimes {
 
 		// limit the timestamp in the past
 		if (nowTimeStamp > startTimeStamp) {
-			if ((nowTimeStamp - startTimeStamp) > MAXIMAL_WEEKS_IN_PAST
+			if ((nowTimeStamp - startTimeStamp) > Constants.MAXIMAL_WEEKS_IN_PAST
 					* ONE_WEEK_IN_MS) {
 				buffer.append("You cannot check more than "
-						+ MAXIMAL_WEEKS_IN_PAST + " weeks in the past.\n");
+						+ Constants.MAXIMAL_WEEKS_IN_PAST
+						+ " weeks in the past.\n");
 			}
 		}
 
 		// limit the timestamp in the future
 		if (nowTimeStamp < startTimeStamp) {
-			if ((startTimeStamp - nowTimeStamp) > MAXIMAL_WEEKS_IN_FUTURE
+			if ((startTimeStamp - nowTimeStamp) > Constants.MAXIMAL_WEEKS_IN_FUTURE
 					* ONE_WEEK_IN_MS) {
 				buffer.append("You cannot check more than "
-						+ MAXIMAL_WEEKS_IN_FUTURE + " weeks in the future.\n");
+						+ Constants.MAXIMAL_WEEKS_IN_FUTURE
+						+ " weeks in the future.\n");
 			}
 		}
 

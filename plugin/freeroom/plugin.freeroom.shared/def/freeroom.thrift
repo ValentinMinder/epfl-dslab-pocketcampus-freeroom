@@ -1,9 +1,12 @@
 namespace java org.pocketcampus.plugin.freeroom.shared
 //namespace csharp org.pocketcampus.plugin.freeroom.shared
 
-const i32 HTTP_UPDATED = 299
+const i32 HTTP_UPDATED = 299;
 const i32 LENGTH_USERMESSAGE = 50;
 const i32 MIN_AUTOCOMPL_LENGTH = 2;
+
+const i32 MAXIMAL_WEEKS_IN_FUTURE = 4;
+const i32 MAXIMAL_WEEKS_IN_PAST = 1;
 
 struct FRRoom{
 	1: required string doorCode;

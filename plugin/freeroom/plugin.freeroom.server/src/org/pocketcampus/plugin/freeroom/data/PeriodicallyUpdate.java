@@ -5,6 +5,7 @@ import java.util.logging.Level;
 
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
 import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeServiceImpl;
+import org.pocketcampus.plugin.freeroom.shared.Constants;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
@@ -37,8 +38,15 @@ public class PeriodicallyUpdate implements Runnable {
 		FetchOccupancyDataJSON fodj = new FetchOccupancyDataJSON(DB_URL,
 				DB_USER, DB_PASSWORD, server);
 		Calendar mCalendar = Calendar.getInstance();
-		long start = mCalendar.getTimeInMillis() - FRTimes.ONE_WEEK_IN_MS;
-		long end = mCalendar.getTimeInMillis() + 3 * FRTimes.ONE_WEEK_IN_MS;
+		long now = mCalendar.getTimeInMillis();
+		// start is one day before what is authorized by clients.
+		long start = now - Constants.MAXIMAL_WEEKS_IN_PAST
+				* FRTimes.ONE_WEEK_IN_MS + FRTimes.ONE_DAY_IN_MS;
+		// end is two weeks after what is authorized by clients.
+		// just in case the ISA server goes down for a while, or we cannot fetch
+		// data for any other reason, we have data for a longer period.
+		long end = now + (Constants.MAXIMAL_WEEKS_IN_FUTURE + 2)
+				* FRTimes.ONE_WEEK_IN_MS;
 		fodj.fetchAndInsert(start, end);
 
 		server.log(Level.INFO, "Starting update of data from Exchange");

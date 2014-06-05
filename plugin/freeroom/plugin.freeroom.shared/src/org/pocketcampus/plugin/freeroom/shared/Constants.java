@@ -29,4 +29,8 @@ public class Constants {
 
   public static final int MIN_AUTOCOMPL_LENGTH = 2;
 
+  public static final int MAXIMAL_WEEKS_IN_FUTURE = 4;
+
+  public static final int MAXIMAL_WEEKS_IN_PAST = 1;
+
 }

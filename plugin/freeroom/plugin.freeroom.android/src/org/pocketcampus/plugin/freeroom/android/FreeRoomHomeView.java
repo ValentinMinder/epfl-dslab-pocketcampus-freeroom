@@ -4064,8 +4064,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						R.string.freeroom_search_invalid_time_advanced,
 						FRTimes.FIRST_HOUR_CHECK, FRTimes.LAST_HOUR_CHECK,
 						FRTimes.MIN_MINUTE_INTERVAL,
-						FRTimes.MAXIMAL_WEEKS_IN_PAST,
-						FRTimes.MAXIMAL_WEEKS_IN_FUTURE);
+						Constants.MAXIMAL_WEEKS_IN_PAST,
+						Constants.MAXIMAL_WEEKS_IN_FUTURE);
 			} else {
 				return getString(R.string.freeroom_search_invalid_time_basic,
 						FRTimes.FIRST_HOUR_CHECK, FRTimes.LAST_HOUR_CHECK,
