@@ -1,152 +1,142 @@
 package org.pocketcampus.plugin.news.android;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.news.android.iface.INewsModel;
 import org.pocketcampus.plugin.news.android.iface.INewsView;
-import org.pocketcampus.plugin.news.shared.Feed;
-import org.pocketcampus.plugin.news.shared.NewsItem;
+import org.pocketcampus.plugin.news.shared.NewsFeed;
+import org.pocketcampus.plugin.news.shared.NewsFeedItemContent;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
+import android.text.TextUtils;
 
-/**
- * 
- * @author Elodie <elodienilane.triponez@epfl.ch>
- * 
- */
 public class NewsModel extends PluginModel implements INewsModel {
-	/** Listeners for the state of the view */
+
+
+	
+	/**
+	 * Some constants.
+	 */
+	private static final String NEWS_STORAGE_NAME = "NEWS_STORAGE_NAME";
+	
+	private static final String NEWS_DISLIKED_FEEDS_KEY = "NEWS_DISLIKED_FEEDS_KEY";
+	
+	/**
+	 * SharedPreferences object responsible for the persistent data storage.
+	 */
+	private SharedPreferences iStorage;
+	
+	/**
+	 * Reference to the Views that need to be notified when the stored data changes.
+	 */
 	INewsView mListeners = (INewsView) getListeners();
+	
+	/**
+	 * Member variables containing required data for the plugin.
+	 */
+	private List<NewsFeed> newsFeeds;
+	private NewsFeedItemContent itemContents;
+	
+	/**
+	 * Member variables that need to be persistent
+	 */
+	private Set<String> dislikedFeeds = new HashSet<String>();
+	
+	/**
+	 * Constructor with reference to the context.
+	 * 
+	 * We need the context to be able to instantiate
+	 * the SharedPreferences object in order to use
+	 * persistent storage.
+	 * 
+	 * @param context is the Application Context.
+	 */
+	public NewsModel(Context context) {
+		iStorage = context.getSharedPreferences(NEWS_STORAGE_NAME, 0);
+		
+		dislikedFeeds = decodeFeeds(iStorage.getString(NEWS_DISLIKED_FEEDS_KEY, ""));
+		
+		newsFeeds = new LinkedList<NewsFeed>();
+		itemContents = new NewsFeedItemContent();
+	}
+	
+	/**
+	 * Setter and getter for iNews
+	 */
+	public List<NewsFeed> getNewsFeeds() {
+		return newsFeeds;
+	}
+	public void setNewsFeeds(List<NewsFeed> obj) {
+		newsFeeds = obj;
+		mListeners.gotFeeds();
+	}
 
-	/** List of news items to display. */
-	private List<NewsItemWithImage> mNewsItems;
+	public NewsFeedItemContent getItemContents() {
+		return itemContents;
+	}
+	public void setItemContents(NewsFeedItemContent obj) {
+		itemContents = obj;
+		mListeners.gotContents();
+	}
+	/**
+	 * Getters/Setters for persistent stuff
+	 */
+	public Set<String> getDislikedFeeds() {
+		return dislikedFeeds;
+	}
+	public void addDislikedFeed(String s) {
+		dislikedFeeds.add(s);
+		savePrefs();
+	}
+	public void removeDislikedFeed(String s) {
+		dislikedFeeds.remove(s);
+		savePrefs();
+	}
 
-	/** Access to the preferences */
-	private SharedPreferences mPreferences;
-
-	/** The map of feed names with their Urls */
-	private HashMap<String, String> mFeedUrls;
-
-	/** List of Feeds to display */
-	private List<Feed> mNewsFeeds;
-
+	private void savePrefs() {
+		iStorage.edit()
+				.putString(NEWS_DISLIKED_FEEDS_KEY, encodeFeeds(dislikedFeeds))
+				.commit();
+	}
+	
+	/**
+	 * Returns the Type of the Views associated with this plugin.
+	 */
 	@Override
 	protected Class<? extends IView> getViewInterface() {
 		return INewsView.class;
 	}
 
-	public void setNews(List<NewsItem> newsItems) {
-		if (newsItems != null) {
-			if (mNewsItems == null) {
-				mNewsItems = new ArrayList<NewsItemWithImage>();
-			}
-			for (NewsItem ni : newsItems) {
-				NewsItemWithImage newsItem = new NewsItemWithImage(ni);
-				mNewsItems.add(newsItem);
-			}
-			mListeners.newsUpdated();
+	/**
+	 * Returns the registered listeners to by notified.
+	 */
+	public INewsView getListenersToNotify() {
+		return mListeners;
+	}
+		
+	
+	/***
+	 * HELPERS
+	 */
+	
+	
+
+	private String encodeFeeds(Set<String> ss) {
+		return TextUtils.join(",", ss);
+	}
+	private Set<String> decodeFeeds(String ss) {
+		Set<String> decoded = new HashSet<String>();
+		if("".equals(ss))
+			return decoded;
+		for(String s : ss.split("[,]")) {
+			decoded.add(s);
 		}
-	}
-
-	@Override
-	public List<NewsItemWithImage> getNews(Context ctx) {
-		if (mPreferences == null) {
-			mPreferences = ctx.getSharedPreferences(
-					NewsPreferencesView.NEWS_PREFS_NAME, 0);
-		}
-
-		if (mNewsItems == null) {
-			return null;
-		}
-
-		ArrayList<NewsItemWithImage> filteredList = new ArrayList<NewsItemWithImage>();
-		for (NewsItemWithImage newsItem : mNewsItems) {
-			if (mPreferences.getBoolean(newsItem.getNewsItem().getFeed(), true)) {
-				if (!alreadyContains(filteredList, newsItem)) {
-					filteredList.add(newsItem);
-				}
-			}
-		}
-
-		return filteredList;
-	}
-
-	private boolean alreadyContains(List<NewsItemWithImage> filteredList,
-			NewsItemWithImage newsItemWithImage) {
-		for (NewsItemWithImage ni : filteredList) {
-			if (ni.getNewsItem().getTitle()
-					.equals(newsItemWithImage.getNewsItem().getTitle())
-					|| ni.getNewsItem().getLink()
-							.equals(newsItemWithImage.getNewsItem().getLink())) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public List<Feed> getFeedsList() {
-		return mNewsFeeds;
-	}
-
-	@Override
-	public void setFeedsList(List<Feed> list) {
-		if (list != null) {
-			mNewsFeeds = list;
-
-			if (mNewsItems == null) {
-				mNewsItems = new ArrayList<NewsItemWithImage>();
-			}
-
-			for (Feed f : mNewsFeeds) {
-				List<NewsItem> feedItems = f.getItems();
-				for (NewsItem ni : feedItems) {
-					mNewsItems.add(new NewsItemWithImage(ni));
-				}
-			}
-			mListeners.newsUpdated();
-		}
-	}
-
-	@Override
-	public Map<String, String> getFeedsUrls() {
-		return mFeedUrls;
-	}
-
-	@Override
-	public void setFeedsUrls(Map<String, String> map) {
-		if (map != null) {
-			mFeedUrls = new HashMap<String, String>();
-			Iterator<Entry<String, String>> entries = map.entrySet().iterator();
-			while (entries.hasNext()) {
-				Entry<String, String> thisEntry = (Entry<String, String>) entries
-						.next();
-				String key = (String) thisEntry.getKey();
-				String value = (String) thisEntry.getValue();
-				mFeedUrls.put(key, value);
-			}
-		} else {
-			Log.d("NEWSMODEL", "Null map");
-		}
-		mListeners.feedUrlsUpdated();
-	}
-
-	@Override
-	public void displayNewsContent(String content) {
-		mListeners.newsContentLoaded(content);
-	}
-
-	@Override
-	public void notifyNetworkErrorFeedUrls() {
-		System.out.println("NETWORK ERROR");
+		return decoded;
 	}
 }
