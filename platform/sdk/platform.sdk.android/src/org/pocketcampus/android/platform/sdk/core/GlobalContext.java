@@ -146,23 +146,27 @@ public class GlobalContext extends Application {
 	}
 
 	public void incrementRequestCounter() {
-		if(mRequestCounter == 0 && mRequestActivityListener != null) {
-			mRequestActivityListener.requestStarted();
-		}
-		
 		mRequestCounter++;
+		
+		if(mRequestActivityListener != null) {
+			mRequestActivityListener.requestsChanged(mRequestCounter);
+		}
 	}
 
 	public void decrementRequestCounter() {
 		mRequestCounter--;
 		
-		if(mRequestCounter == 0 && mRequestActivityListener != null) {
-			mRequestActivityListener.requestStopped();
+		if(mRequestActivityListener != null) {
+			mRequestActivityListener.requestsChanged(mRequestCounter);
 		}
 		
 		if(mRequestCounter < 0) {
 			throw new RuntimeException("Negative number of queries running?!");
 		}
+	}
+	
+	public int getRequestsCount() {
+		return mRequestCounter;
 	}
 
 	public void setRequestActivityListener(RequestActivityListener requestActivityListener) {
