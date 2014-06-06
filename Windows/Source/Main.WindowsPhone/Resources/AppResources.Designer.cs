@@ -79,7 +79,7 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to support.epfl@pocketcampus.org.
+        ///   Looks up a localized string similar to team@pocketcampus.org.
         /// </summary>
         public static string AboutContact {
             get {
@@ -88,7 +88,7 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to contact &amp; support.
+        ///   Looks up a localized string similar to contact.
         /// </summary>
         public static string AboutContactHeader {
             get {
@@ -151,6 +151,24 @@ namespace PocketCampus.Main.Resources {
         public static string AboutRateAppButton {
             get {
                 return ResourceManager.GetString("AboutRateAppButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1234@epfl.ch.
+        /// </summary>
+        public static string AboutSupport {
+            get {
+                return ResourceManager.GetString("AboutSupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to support.
+        /// </summary>
+        public static string AboutSupportHeader {
+            get {
+                return ResourceManager.GetString("AboutSupportHeader", resourceCulture);
             }
         }
         

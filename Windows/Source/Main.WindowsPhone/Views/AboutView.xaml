@@ -33,6 +33,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Page header -->
@@ -51,12 +52,13 @@
             <!-- App version -->
             <TextBlock Text="{Binding AppVersion}"
                        Style="{StaticResource PhoneTextTitle3Style}"
-                       Foreground="{StaticResource PhoneSubtleBrush}" />
+                       Foreground="{StaticResource PhoneSubtleBrush}"
+                       Margin="12,-10,12,0"/>
         </StackPanel>
 
         <!-- Developers -->
         <StackPanel Grid.Row="2"
-                    Margin="0,30">
+                    Margin="0,15">
             <TextBlock Text="{Binding Resources.AboutDevelopersHeader, Source={StaticResource Strings}}"
                        Style="{StaticResource PhoneTextTitle3Style}" />
 
@@ -70,7 +72,7 @@
 
         <!-- Website -->
         <StackPanel Grid.Row="3"
-                    Margin="0,30">
+                    Margin="0,15">
             <TextBlock Text="{Binding Resources.AboutWebsiteHeader, Source={StaticResource Strings}}"
                        Style="{StaticResource PhoneTextTitle3Style}" />
 
@@ -84,13 +86,27 @@
 
         <!-- Contact email -->
         <StackPanel Grid.Row="4"
-                    Margin="0,30">
+                    Margin="0,15">
             <TextBlock Text="{Binding Resources.AboutContactHeader, Source={StaticResource Strings}}"
                        Style="{StaticResource PhoneTextTitle3Style}" />
 
             <HyperlinkButton Command="{Binding SendEmailCommand}"
                              CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}"
                              Content="{Binding Resources.AboutContact, Source={StaticResource Strings}}"
+                             HorizontalAlignment="Left"
+                             FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                             Foreground="{StaticResource PhoneSubtleBrush}" />
+        </StackPanel>
+        
+        <!-- Support email -->
+        <StackPanel Grid.Row="5"
+                    Margin="0">
+            <TextBlock Text="{Binding Resources.AboutSupportHeader, Source={StaticResource Strings}}"
+                       Style="{StaticResource PhoneTextTitle3Style}" />
+
+            <HyperlinkButton Command="{Binding SendEmailCommand}"
+                             CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}"
+                             Content="{Binding Resources.AboutSupport, Source={StaticResource Strings}}"
                              HorizontalAlignment="Left"
                              FontSize="{StaticResource PhoneFontSizeMediumLarge}"
                              Foreground="{StaticResource PhoneSubtleBrush}" />

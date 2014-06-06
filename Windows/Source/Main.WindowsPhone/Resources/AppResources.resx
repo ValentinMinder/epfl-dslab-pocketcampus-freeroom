@@ -219,11 +219,11 @@ George Candea</value>
   <data name="AboutRateAppButton" xml:space="preserve">
     <value>rate us on the Store</value>
   </data>
-  <data name="AboutContact" xml:space="preserve">
-    <value>support.epfl@pocketcampus.org</value>
+  <data name="AboutSupport" xml:space="preserve">
+    <value>1234@epfl.ch</value>
   </data>
-  <data name="AboutContactHeader" xml:space="preserve">
-    <value>contact &amp; support</value>
+  <data name="AboutSupportHeader" xml:space="preserve">
+    <value>support</value>
   </data>
   <data name="AboutOrganizationName" xml:space="preserve">
     <value>PocketCampus.Org</value>
@@ -239,5 +239,11 @@ George Candea</value>
   </data>
   <data name="TemporarilyAuthenticatedMessage" xml:space="preserve">
     <value>your credentials will be forgotten when the app becomes inactive</value>
+  </data>
+  <data name="AboutContact" xml:space="preserve">
+    <value>team@pocketcampus.org</value>
+  </data>
+  <data name="AboutContactHeader" xml:space="preserve">
+    <value>contact</value>
   </data>
 </root>

@@ -182,9 +182,6 @@ Notre politique de confidentialité est simple : vos données et votre position 
   <data name="AboutPrivacyPolicy" xml:space="preserve">
     <value>politique de confidentialité</value>
   </data>
-  <data name="AboutAppVersion" xml:space="preserve">
-    <value>version</value>
-  </data>
   <data name="AboutDevelopers" xml:space="preserve">
     <value>Solal Pirelli
 Amer Chamseddine
@@ -223,10 +220,10 @@ George Candea</value>
     <value>évaluer l'app sur le store</value>
   </data>
   <data name="AboutContact" xml:space="preserve">
-    <value>support.epfl@pocketcampus.org</value>
+    <value>team@pocketcampus.org</value>
   </data>
   <data name="AboutContactHeader" xml:space="preserve">
-    <value>contact &amp; support</value>
+    <value>contact</value>
   </data>
   <data name="AboutOrganizationName" xml:space="preserve">
     <value>PocketCampus.Org</value>
@@ -242,5 +239,11 @@ George Candea</value>
   </data>
   <data name="TemporarilyAuthenticatedMessage" xml:space="preserve">
     <value>vos identifiants seront oubliés quand l'application deviendra inactive</value>
+  </data>
+  <data name="AboutSupport" xml:space="preserve">
+    <value>1234@epfl.ch</value>
+  </data>
+  <data name="AboutSupportHeader" xml:space="preserve">
+    <value>support</value>
   </data>
 </root>
