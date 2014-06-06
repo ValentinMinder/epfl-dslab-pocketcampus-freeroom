@@ -45,7 +45,7 @@ struct NewsFeed {
     // The feed items
     2: required list<NewsFeedItem> items;
     // The feed's ID, which is language-independent (useful to store a list of feeds on a client)
-    3: required string id;
+    3: required string feedId;
 }
 
 struct NewsFeedItemContent {

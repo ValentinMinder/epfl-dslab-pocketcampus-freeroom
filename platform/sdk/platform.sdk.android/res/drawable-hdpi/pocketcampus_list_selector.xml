@@ -4,11 +4,11 @@
 
 <item 
  android:state_pressed="true" 
-    android:drawable="@drawable/food_gradient_bg_hover" />
+    android:drawable="@drawable/pocketcampus_gradient_bg_hover" />
 
 <item 
  android:state_focused="true" 
-    android:drawable="@drawable/food_gradient_bg" />
+    android:drawable="@drawable/pocketcampus_gradient_bg" />
 
 
 </selector>

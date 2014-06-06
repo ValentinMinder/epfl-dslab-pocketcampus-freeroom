@@ -12,7 +12,7 @@
 		android:layout_height="wrap_content"
 		android:padding="3dip"		
         android:layout_alignParentLeft="true"
-        android:background="@drawable/directory_image_bg" 
+        android:background="@drawable/pocketcampus_image_border" 
 	    android:layout_marginRight="5dip">
         
 		<ImageView     

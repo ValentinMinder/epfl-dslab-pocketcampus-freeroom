@@ -7,7 +7,7 @@
 	    android:orientation="horizontal">
 
 		<ImageView     
-		    android:background="@drawable/directory_image_bg"
+		    android:background="@drawable/pocketcampus_image_border"
 			android:id="@+id/directory_person_details_picture"   
 			android:padding="3dip"
 			android:layout_margin="2dip"

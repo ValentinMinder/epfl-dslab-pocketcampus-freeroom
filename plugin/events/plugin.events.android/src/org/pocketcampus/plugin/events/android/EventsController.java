@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.events.android;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,11 +11,11 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.events.android.iface.IEventsController;
 import org.pocketcampus.plugin.events.android.iface.IEventsView;
-import org.pocketcampus.plugin.events.android.req.SendRegEmailRequest;
 import org.pocketcampus.plugin.events.android.req.ExchangeContactsRequest;
 import org.pocketcampus.plugin.events.android.req.GetEventItemRequest;
 import org.pocketcampus.plugin.events.android.req.GetEventPoolRequest;
 import org.pocketcampus.plugin.events.android.req.SendFavoritesByEmailRequest;
+import org.pocketcampus.plugin.events.android.req.SendRegEmailRequest;
 import org.pocketcampus.plugin.events.shared.AdminSendRegEmailRequest;
 import org.pocketcampus.plugin.events.shared.Constants;
 import org.pocketcampus.plugin.events.shared.EventItem;
@@ -27,10 +27,11 @@ import org.pocketcampus.plugin.events.shared.EventsService.Iface;
 import org.pocketcampus.plugin.events.shared.ExchangeRequest;
 import org.pocketcampus.plugin.events.shared.SendEmailRequest;
 
+import android.content.Context;
+import android.text.TextUtils;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-
-import android.text.TextUtils;
 
 /**
  * EventsController - Main logic for the Events Plugin.
@@ -159,9 +160,12 @@ public class EventsController extends PluginController implements IEventsControl
 		return list;
 	}
 	
-	public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
-	
-	public static SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm", Locale.US);
+	public static DateFormat getDateFormat(Context c) {
+		return android.text.format.DateFormat.getDateFormat(c);
+	}
+	public static DateFormat getTimeFormat(Context c) {
+		return android.text.format.DateFormat.getTimeFormat(c);
+	}
 	
 	public static Comparator<EventItem> getEventItemComp4sort(final boolean decr) {
 		return new Comparator<EventItem>() {

@@ -120,9 +120,7 @@ public class SchildbachToPCConverter {
 	// LINE
 	static protected TransportLine convertSchToPC(de.schildbach.pte.dto.Line sl) {
 		ArrayList<String> al = new ArrayList<String>();
-		System.out.println("Before:"+sl.label);
 		String nicerLine = nicerLineName(sl.label);
-		System.out.println("After:"+nicerLine);
 		return new TransportLine(nicerLine, al);
 	}
 
