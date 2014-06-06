@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.authentication.server;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.thrift.TException;
@@ -12,6 +13,10 @@ import org.pocketcampus.plugin.authentication.shared.AuthSessionResponse;
 import org.pocketcampus.plugin.authentication.shared.AuthStatusCode;
 import org.pocketcampus.plugin.authentication.shared.AuthTokenResponse;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService;
+import org.pocketcampus.plugin.authentication.shared.LogoutRequest;
+import org.pocketcampus.plugin.authentication.shared.LogoutResponse;
+import org.pocketcampus.plugin.authentication.shared.UserAttributesRequest;
+import org.pocketcampus.plugin.authentication.shared.UserAttributesResponse;
 
 import ch.epfl.tequila.client.model.TequilaPrincipal;
 
@@ -56,6 +61,32 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 		}
 	}
 
+	@Override
+	public LogoutResponse destroyAllUserSessions(LogoutRequest req) throws TException {
+		String sciper = getSciperFromSession(req.getSessionId());
+		if(sciper == null)
+			return new LogoutResponse(AuthStatusCode.INVALID_SESSION);
+		Integer resp = _manager.destroySessions(sciper);
+		if(resp == null)
+			return new LogoutResponse(AuthStatusCode.SERVER_ERROR);
+		LogoutResponse ret = new LogoutResponse(AuthStatusCode.OK);
+		ret.setDeletedSessionsCount(resp);
+		return ret;
+	}
+
+	@Override
+	public UserAttributesResponse getUserAttributes(UserAttributesRequest req) throws TException {
+		List<String> fields = new LinkedList<String>();
+		for(String s : req.getAttributeNames())
+			fields.add("`" + s + "`");
+		AuthUserDetailsResp resp = getUserFieldsFromSession(new AuthUserDetailsReq(req.getSessionId(), fields));
+		if(resp == null)
+			return new UserAttributesResponse(AuthStatusCode.INVALID_SESSION);
+		UserAttributesResponse ret = new UserAttributesResponse(AuthStatusCode.INVALID_SESSION);
+		ret.setUserAttributes(resp.fieldValues);
+		return ret;
+	}
+	
 	@Override
 	@Deprecated
 	public AuthSessionResponse getAuthSessionId(String tequilaToken) throws TException {
@@ -105,5 +136,5 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 		List<String> list = _manager.getFields(sess, Arrays.asList(new String[]{field}));
 		return (list == null ? null : firstValue(list.get(0)));
 	}
-	
+
 }
