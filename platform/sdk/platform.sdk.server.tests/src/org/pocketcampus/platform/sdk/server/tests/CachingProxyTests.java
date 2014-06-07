@@ -1,4 +1,4 @@
-package org.pocketcampus.platform.sdk.shared.tests;
+package org.pocketcampus.platform.sdk.server.tests;
 
 import static org.junit.Assert.*;
 import org.junit.Ignore;

@@ -3,10 +3,9 @@ package org.pocketcampus.plugin.events.android;
 import static org.pocketcampus.android.platform.sdk.utils.SetUtils.intersect;
 import static org.pocketcampus.plugin.events.android.EventsController.getEventPoolComp4sort;
 import static org.pocketcampus.plugin.events.android.EventsController.oneItemList;
-import static org.pocketcampus.plugin.events.android.EventsController.simpleDateFormat;
-import static org.pocketcampus.plugin.events.android.EventsController.simpleTimeFormat;
 import static org.pocketcampus.plugin.events.android.EventsMainView.EXTRAS_KEY_EVENTPOOLID;
 
+import java.text.DateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -149,16 +148,18 @@ public class EventDetailView extends PluginView implements IEventsView {
 			public int[] resources() {
 				return new int[] { R.id.event_list_complex_title, R.id.event_list_complex_subtitle, R.id.event_list_item_details, R.id.event_list_complex_image, R.id.event_list_complex_caption, R.id.event_big_image };
 			}
+			DateFormat timeFormat = EventsController.getTimeFormat(EventDetailView.this);
+			DateFormat dateFormat = EventsController.getDateFormat(EventDetailView.this);
 			private String getFormattedTimeInterval(EventItem e) {
-				String eventTime = simpleTimeFormat.format(new Date(e.getStartDate()));
-				String eventTime1 = simpleTimeFormat.format(new Date(e.getEndDate()));
+				String eventTime = timeFormat.format(new Date(e.getStartDate()));
+				String eventTime1 = timeFormat.format(new Date(e.getEndDate()));
 				if(e.getEndDate() > e.getStartDate())
 					return eventTime + " - " + eventTime1;
 				return eventTime;
 			}
 			private String getFormattedDateInterval(EventItem e) {
-				String eventDate = simpleDateFormat.format(new Date(e.getStartDate()));
-				String eventDate1 = simpleDateFormat.format(new Date(e.getEndDate()));
+				String eventDate = dateFormat.format(new Date(e.getStartDate()));
+				String eventDate1 = dateFormat.format(new Date(e.getEndDate()));
 				if(e.getEndDate() > e.getStartDate() && eventDate1.compareTo(eventDate) > 0)
 					return eventDate + " - " + eventDate1;
 				return eventDate;

@@ -32,7 +32,7 @@ public final class NewsSourceImpl implements NewsSource {
 	private static final String FEED_URL_FORMAT = "http://actu.epfl.ch/feeds/rss/%s/%s/";
 	// ID of the "main" feed, which contains the important news from other feeds
 	private static final String MAIN_FEED_ID = "mediacom";
-	// All feed IDs
+	// All feed IDs. If you add any, make sure you update FEED_NAMES as well.
 	private static final String[] FEED_IDS = { "mediacom", "enac", "sb", "ic", "cdh", "sti", "sv", "cdm" };
 	// The feed names, per language
 	private static final Map<String, Map<String, String>> FEED_NAMES = new HashMap<String, Map<String, String>>();
@@ -114,7 +114,7 @@ public final class NewsSourceImpl implements NewsSource {
 			Map<Integer, FeedItem> items = new LinkedHashMap<Integer, FeedItem>(); // LinkedHashMap keeps insertion order
 			for (XElement itemElement : channelElem.children(RSS_FEED_ITEM_ELEMENT)) {
 				String title = itemElement.elementText(RSS_FEED_ITEM_TITLE_ELEMENT);
-				int id = title.hashCode();
+				int id = getFeedItemId(title, feedId);
 				String link = itemElement.elementText(RSS_FEED_ITEM_LINK_ELEMENT);
 				String dateString = itemElement.elementText(RSS_FEED_ITEM_DATE_ELEMENT);
 				DateTime date = DateTime.parse(dateString, RSS_DATE_FORMAT);
@@ -140,6 +140,11 @@ public final class NewsSourceImpl implements NewsSource {
 		});
 
 		return feeds.toArray(new Feed[feeds.size()]);
+	}
+
+	/** Computes an ID for a feed item from its title and the feed ID. */
+	private static int getFeedItemId(String itemTitle, String feedID) {
+		return itemTitle.hashCode() + feedID.hashCode();
 	}
 
 	/** Gets the picture URL of the specified item, given its content. */

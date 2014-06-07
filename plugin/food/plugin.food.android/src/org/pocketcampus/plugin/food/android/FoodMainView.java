@@ -261,7 +261,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 	private void updateActionBar() {
 		removeAllActionsFromActionBar();
 		final Map<Long, String> subMapRestos = subMap(mController.getRestoNames(), restosInRS);
-		final int restoFilterIcon = (difference(restosInRS, filteredRestos).size() == 0 ? R.drawable.food_filter : R.drawable.food_filter_sel);
+		final int restoFilterIcon = (difference(restosInRS, filteredRestos).size() == 0 ? R.drawable.pocketcampus_filter : R.drawable.pocketcampus_filter_sel);
 		if(subMapRestos.size() > 0) {
 			addActionToActionBar(new Action() {
 				public void performAction(View view) {
