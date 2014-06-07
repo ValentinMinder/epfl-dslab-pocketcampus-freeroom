@@ -890,8 +890,10 @@ static MainController<MainControllerPublic>* instance = nil;
              * Little hack found on http://ev3r.tumblr.com/post/3854315796/uinavigationcontroller-pushviewcontroller-from 
              * Will actually make view controller retest for supported operations and rotate if necessary.
              */
-            [viewController presentViewController:[[UIViewController alloc] init] animated:NO completion:NULL];
-            [viewController dismissViewControllerAnimated:NO completion:NULL];
+            
+#warning DISABLED, results in black screen in iOS 8. Still need to find a solution to 
+            //[viewController presentViewController:[[UIViewController alloc] init] animated:NO completion:NULL];
+            //[viewController dismissViewControllerAnimated:NO completion:NULL];
         }
     }
 }
