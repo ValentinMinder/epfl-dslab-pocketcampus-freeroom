@@ -22,14 +22,36 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.pocketcampus.plugin.dashboard.android.AboutView" 
+        <activity android:name="org.pocketcampus.plugin.dashboard.android.DashboardAboutView" 
+            android:screenOrientation="nosensor">
+        </activity>
+
+        
+        <activity android:name="org.pocketcampus.plugin.dashboard.android.DashboardSettingsView" 
             android:screenOrientation="nosensor">
         </activity>
         
         <service xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.dashboard.android.DashboardController" >
+            
+            
+			<intent-filter>
+				<action android:name="org.pocketcampus.plugin.pushnotif.REGISTRATION_FINISHED" />
+				<category android:name="org.pocketcampus" />
+				<data  android:scheme="pocketcampus" android:host="dashboard.plugin.pocketcampus.org" />
+			</intent-filter>
+		
+		            
         </service>
         
+        
+	        
+		<receiver android:name="org.pocketcampus.plugin.dashboard.android.DashboardController$PushNotifListener" >
+			<intent-filter>
+				<action android:name="org.pocketcampus.plugin.pushnotif.REGISTRATION_FINISHED" />
+			</intent-filter>
+		</receiver>
+			
         
     </application>
 
