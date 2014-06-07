@@ -504,7 +504,7 @@ static NSString* const kZoomScaleKey = @"ZoomScale";
 }
 
 - (void)restoreScrollViewSateIfExists {
-    if (![[PCPersistenceManager defaultsForPluginName:@"moodle"] boolForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey]) {
+    if (![[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey]) {
         return;
     }
     NSDictionary* resourceDic = [MoodleResource defaultsDictionaryForMoodleResource:self.moodleResource];

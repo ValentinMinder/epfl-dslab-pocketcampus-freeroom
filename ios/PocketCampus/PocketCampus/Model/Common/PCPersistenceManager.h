@@ -41,13 +41,13 @@
  * Returns user defaults in which plugin case safely use keys that not need
  * be unique throught the app. These defaults are NOT deleted by deleteCacheForPluginName:
  */
-+ (NSUserDefaults*)defaultsForPluginName:(NSString*)pluginName;
++ (NSUserDefaults*)userDefaultsForPluginName:(NSString*)pluginName;
 
 /*
  * Returns cache user defaults in which plugin case safely use keys that not need
  * be unique throught the app. These defaults ARE deleted by deleteCacheForPluginName:
  */
-+ (NSUserDefaults*)cacheForPluginName:(NSString*)pluginName;
++ (NSUserDefaults*)cacheUserDefaultsForPluginName:(NSString*)pluginName;
 
 
 #pragma mark - Complex objects persistence

@@ -607,7 +607,7 @@ static NSString* const kAuthSessionIdPCConfigKey = @"PocketCampusAuthSessionId";
     if (_pocketCampusAuthSessionId) {
         return _pocketCampusAuthSessionId;
     }
-    _pocketCampusAuthSessionId = [[PCConfig defaults] objectForKey:kAuthSessionIdPCConfigKey];
+    _pocketCampusAuthSessionId = [[PCPersistenceManager userDefaultsForPluginName:@"authentication"] objectForKey:kAuthSessionIdPCConfigKey];
     return _pocketCampusAuthSessionId;
 }
 
@@ -618,18 +618,20 @@ static NSString* const kAuthSessionIdPCConfigKey = @"PocketCampusAuthSessionId";
         [PCUtils throwExceptionIfObject:sessionId notKindOfClass:[NSString class]];
     }
     _pocketCampusAuthSessionId = sessionId;
+    NSUserDefaults* defaults = [PCPersistenceManager userDefaultsForPluginName:@"authentication"];
     if (persist) {
-        [[PCConfig defaults] setObject:sessionId forKey:kAuthSessionIdPCConfigKey];
+        [defaults setObject:sessionId forKey:kAuthSessionIdPCConfigKey];
     } else {
-        [[PCConfig defaults] removeObjectForKey:kAuthSessionIdPCConfigKey];
+        [defaults removeObjectForKey:kAuthSessionIdPCConfigKey];
     }
-    [[PCConfig defaults] synchronize];
+    [defaults synchronize];
 }
 
 - (void)deletePocketCampusAuthSessionId {
     _pocketCampusAuthSessionId = nil;
-    [[PCConfig defaults] removeObjectForKey:kAuthSessionIdPCConfigKey];
-    [[PCConfig defaults] synchronize];
+    NSUserDefaults* defaults = [PCPersistenceManager userDefaultsForPluginName:@"authentication"];
+    [defaults removeObjectForKey:kAuthSessionIdPCConfigKey];
+    [defaults synchronize];
 }
 
 #pragma mark Save password switch value persistence
@@ -642,16 +644,17 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
     dispatch_once(&onceToken, ^{
         //check if transferred from PCObjectArchiver to PCConfig default
         static NSString* const kAuthTransferedPasswordSwitchStateKey = @"AuthTransferedPasswordSwitchState";
-        if (![[PCConfig defaults] boolForKey:kAuthTransferedPasswordSwitchStateKey]) {
+        NSUserDefaults* defaults = [PCPersistenceManager userDefaultsForPluginName:@"authentication"];
+        if (![defaults boolForKey:kAuthTransferedPasswordSwitchStateKey]) {
             NSNumber* nsBool = (NSNumber*)[PCPersistenceManager objectForKey:kSavePasswordSwitchStateOldKey pluginName:@"authentication"];
             if (nsBool) {
-                [[PCConfig defaults] setBool:[nsBool boolValue] forKey:kSavePasswordBoolKey];
+                [defaults setBool:[nsBool boolValue] forKey:kSavePasswordBoolKey];
             }
-            [[PCConfig defaults] setBool:YES forKey:kAuthTransferedPasswordSwitchStateKey];
-            [[PCConfig defaults] synchronize];
+            [defaults setBool:YES forKey:kAuthTransferedPasswordSwitchStateKey];
+            [defaults synchronize];
         }
     });
-    NSNumber* boolNb = [[PCConfig defaults] objectForKey:kSavePasswordBoolKey];
+    NSNumber* boolNb = [[PCPersistenceManager userDefaultsForPluginName:@"authentication"] objectForKey:kSavePasswordBoolKey];
     if (boolNb) {
         return [boolNb boolValue];
     }
@@ -664,8 +667,9 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
         //delete old saved state if any
         [PCPersistenceManager saveObject:nil forKey:kSavePasswordSwitchStateOldKey pluginName:@"authentication"];
     });
-    [[PCConfig defaults] setBool:savePassword forKey:kSavePasswordBoolKey];
-    [[PCConfig defaults] synchronize];
+    NSUserDefaults* defaults = [PCPersistenceManager userDefaultsForPluginName:@"authentication"];
+    [defaults setBool:savePassword forKey:kSavePasswordBoolKey];
+    [defaults synchronize];
 }
 
 #pragma mark - Dealloc

@@ -88,7 +88,7 @@ NSString* const kMoodleSavePositionResourceSettingBoolKey = @"SavePositionResour
 }
 
 + (NSDictionary*)defaultsDictionaryForMoodleResource:(MoodleResource*)resource {
-    NSUserDefaults* moodleDefaults = [PCPersistenceManager defaultsForPluginName:@"moodle"];
+    NSUserDefaults* moodleDefaults = [PCPersistenceManager userDefaultsForPluginName:@"moodle"];
     NSMutableDictionary* resourceDic = [[moodleDefaults objectForKey:[self keyForDefaultsDictionaryForMoodleResource:resource]] mutableCopy];
     if (!resourceDic) {
         resourceDic = [NSMutableDictionary dictionary];
@@ -103,7 +103,7 @@ NSString* const kMoodleSavePositionResourceSettingBoolKey = @"SavePositionResour
 }
 
 + (void)setDefaultsDictionary:(NSDictionary*)defaultsDic forMoodleResource:(MoodleResource*)resource {
-    NSUserDefaults* moodleDefaults = [PCPersistenceManager defaultsForPluginName:@"moodle"];
+    NSUserDefaults* moodleDefaults = [PCPersistenceManager userDefaultsForPluginName:@"moodle"];
     [moodleDefaults setObject:defaultsDic forKey:[self keyForDefaultsDictionaryForMoodleResource:resource]];
 }
 

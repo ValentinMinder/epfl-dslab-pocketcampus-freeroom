@@ -86,7 +86,7 @@ static EventsService* instance __weak = nil;
 
 #pragma mark - User tickets
 
-static NSString* const kUserTokenKey = @"userToken";
+static NSString* const kUserTokenOldKey = @"userToken";
 
 - (void)initUserTickets {
     if (!self.userTickets) { //first try to get it from persistent storage
@@ -97,13 +97,13 @@ static NSString* const kUserTokenKey = @"userToken";
     }
     
     static NSString* const kEventsTransitionToUserTicketsDone = @"EventsTransitionToUserTicketsDone";
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [PCPersistenceManager userDefaultsForPluginName:@"events"];
     if (![defaults boolForKey:kEventsTransitionToUserTicketsDone]) {
-        NSString* userToken = (NSString*)[PCPersistenceManager objectForKey:kUserTokenKey pluginName:@"events"];
+        NSString* userToken = (NSString*)[PCPersistenceManager objectForKey:kUserTokenOldKey pluginName:@"events"];
         if (userToken) {
             //transition period, get back old tokens
             [self.userTickets addObject:userToken];
-            [PCPersistenceManager saveObject:nil forKey:kUserTokenKey pluginName:@"events"];
+            [PCPersistenceManager saveObject:nil forKey:kUserTokenOldKey pluginName:@"events"];
         }
         [defaults setBool:YES forKey:kEventsTransitionToUserTicketsDone];
     }
