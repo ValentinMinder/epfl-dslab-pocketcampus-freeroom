@@ -82,7 +82,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 		AuthUserDetailsResp resp = getUserFieldsFromSession(new AuthUserDetailsReq(req.getSessionId(), fields));
 		if(resp == null)
 			return new UserAttributesResponse(AuthStatusCode.INVALID_SESSION);
-		UserAttributesResponse ret = new UserAttributesResponse(AuthStatusCode.INVALID_SESSION);
+		UserAttributesResponse ret = new UserAttributesResponse(AuthStatusCode.OK);
 		ret.setUserAttributes(resp.fieldValues);
 		return ret;
 	}
