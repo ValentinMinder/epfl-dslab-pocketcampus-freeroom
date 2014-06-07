@@ -6,6 +6,8 @@ import java.io.File;
 
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.pocketcampus.android.platform.sdk.cache.RequestCache;
+import org.pocketcampus.android.platform.sdk.core.AuthenticationListener;
+import org.pocketcampus.android.platform.sdk.core.GlobalContext;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleController;
@@ -13,7 +15,6 @@ import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.android.req.CoursesListRequest;
 import org.pocketcampus.plugin.moodle.android.req.FetchMoodleResourceRequest;
 import org.pocketcampus.plugin.moodle.android.req.SectionsListRequest;
-import org.pocketcampus.plugin.moodle.android.MoodleModel;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Client;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Iface;
 
@@ -46,6 +47,22 @@ public class MoodleController extends PluginController implements IMoodleControl
 		}
 	};
 
+
+	public static class AuthListener extends AuthenticationListener {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			super.onReceive(context, intent);
+			Log.v("DEBUG", "MoodleController$AuthListener auth finished");
+			Intent intenteye = new Intent("org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED", 
+					Uri.parse("pocketcampus://moodle.plugin.pocketcampus.org/auth_finished"));
+			if(intent.getIntExtra("selfauthok", 0) != 0)
+				intenteye.putExtra("selfauthok", 1);
+			if(intent.getIntExtra("usercancelled", 0) != 0)
+				intenteye.putExtra("usercancelled", 1);
+			context.startService(intenteye);
+		}
+	};
+	
 //	final public static RedirectHandler redirectNoFollow = new RedirectHandler() {
 //		public boolean isRedirectRequested(HttpResponse response, HttpContext context) {
 //			return false;
@@ -141,10 +158,13 @@ public class MoodleController extends PluginController implements IMoodleControl
 	
 	public static void pingAuthPlugin(Context context) {
 		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
-				Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticatetoken"));
-		authIntent.putExtra("callbackurl", "pocketcampus://moodle.plugin.pocketcampus.org/tokenauthenticated");
+				Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticate"));
 		authIntent.putExtra("selfauth", true);
 		context.startService(authIntent);
+	}
+	
+	public static boolean sessionExists(Context context) {
+		return ((GlobalContext) context.getApplicationContext()).hasPcSessionId();
 	}
 	
 	public static void deleteRecursive(File fileOrDirectory) {

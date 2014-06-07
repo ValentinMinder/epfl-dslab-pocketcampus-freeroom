@@ -142,6 +142,10 @@ public class GlobalContext extends Application {
 		return pcSessId;
 	}
 
+	public boolean hasPcSessionId() {
+		return (pcSessId != null);
+	}
+
 	public void incrementRequestCounter() {
 		mRequestCounter++;
 		

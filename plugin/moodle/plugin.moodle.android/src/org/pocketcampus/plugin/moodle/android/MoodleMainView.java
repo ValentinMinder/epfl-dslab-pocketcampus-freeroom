@@ -78,9 +78,12 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	@Override
 	protected void handleIntent(Intent aIntent) {
 		
+		if(MoodleController.sessionExists(this))
+			mController.refreshCourseList(this, false);
+		else
+			MoodleController.pingAuthPlugin(this);
+
 		
-		mController.refreshCourseList(this, false);
-		updateDisplay();
 		
 		
 	}
@@ -149,10 +152,6 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	public void sectionsListUpdated() {
 	}
 
-	private void updateDisplay() {
-		coursesListUpdated();
-	}
-	
 	/*public static void pingAuthPlugin(Context context) {
 		Intent authIntent = new Intent(Intent.ACTION_VIEW,
 				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=moodle"));

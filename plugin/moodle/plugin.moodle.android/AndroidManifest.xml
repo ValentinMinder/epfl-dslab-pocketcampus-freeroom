@@ -73,7 +73,7 @@
 			<intent-filter>
 				<action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
 				<action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
-				<category android:name="org.pocketcampus.plugin.authentication" />
+				<category android:name="org.pocketcampus" />
 				<data  android:scheme="pocketcampus" android:host="moodle.plugin.pocketcampus.org" />
 			</intent-filter>
 		    		    
@@ -87,6 +87,12 @@
             </intent-filter>
         </receiver>		    
 		    		
+		<receiver android:name="org.pocketcampus.plugin.moodle.android.MoodleController$AuthListener" >
+            <intent-filter>
+                <action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
+            </intent-filter>
+        </receiver>		    
+		   
 	</application>
     
         
