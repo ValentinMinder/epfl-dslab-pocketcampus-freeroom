@@ -88,22 +88,29 @@
 	
 }
 - (void) webViewDidFinishLoad:(UIWebView *)webView {
-	self.navigationItem.rightBarButtonItem = [UIBarButtonItem actionItemWithTarget:self action:@selector(showActionSheet:)];
+	self.navigationItem.rightBarButtonItem = self.actionBarButtonItem;
 	self.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
 }
 - (void) webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-	self.navigationItem.rightBarButtonItem = [UIBarButtonItem actionItemWithTarget:self action:@selector(showActionSheet:)];
+	self.navigationItem.rightBarButtonItem = self.actionBarButtonItem;
 	self.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
 }
 - (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
 	
 	if(self.navigationController && (navigationType == UIWebViewNavigationTypeFormSubmitted || navigationType == UIWebViewNavigationTypeLinkClicked)){
-		TKWebViewController *vc = [[TKWebViewController alloc] initWithURLRequest:request];
+		TKWebViewController *vc = [[[self class] alloc] initWithURLRequest:request];
 		[self.navigationController pushViewController:vc animated:YES];
 		return NO;
 	}
 	
 	return YES;
+}
+
+
+- (UIBarButtonItem*) actionBarButtonItem{
+	if(_actionBarButtonItem) return _actionBarButtonItem;
+	_actionBarButtonItem =  [UIBarButtonItem actionItemWithTarget:self action:@selector(showActionSheet:)];
+	return _actionBarButtonItem;
 }
 
 @end

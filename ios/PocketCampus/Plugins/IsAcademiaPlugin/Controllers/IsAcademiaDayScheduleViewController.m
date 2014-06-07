@@ -100,13 +100,13 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
-    self.navigationController.navigationBar.hairlineDividerImageView.hidden = YES;
+    self.navigationController.navigationBar.hairlineDividerView.hidden = YES;
     [self.navigationController setToolbarHidden:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.hairlineDividerImageView.hidden = NO;
+    self.navigationController.navigationBar.hairlineDividerView.hidden = NO;
     [self.navigationController setToolbarHidden:YES];
 }
 
