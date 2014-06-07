@@ -138,7 +138,11 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 				long interval = System.currentTimeMillis() - lastKeyPress;
 				refreshTimer = new Timer();
 				if(interval > REFRESH_DELAY) {
-					performSearchIfNeeded();
+					runOnUiThread(new Runnable() {
+						public void run() {
+							performSearchIfNeeded();
+						}
+					});
 					refreshTimer.schedule(getRefreshTask(), REFRESH_DELAY);
 				} else {
 					refreshTimer.schedule(getRefreshTask(), REFRESH_DELAY - interval);
