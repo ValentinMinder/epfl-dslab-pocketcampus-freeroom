@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.authentication.android;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -337,6 +338,14 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	@Override
 	public void shouldFinish() {
 		finish();
+	}
+
+	@Override
+	public void gotUserAttributes(List<String> attr) {
+	}
+
+	@Override
+	public void deletedSessions(Integer c) {
 	}
 
 }

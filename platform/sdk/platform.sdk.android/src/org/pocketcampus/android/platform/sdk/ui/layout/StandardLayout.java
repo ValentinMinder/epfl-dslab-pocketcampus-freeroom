@@ -41,7 +41,7 @@ public class StandardLayout extends RelativeLayout {
 	 * Displays a centered message.
 	 * @param text
 	 */
-	public void setText(String text) {
+	public void setText(CharSequence text) {
 		mMessageTextView.setText(text);
 		mMessageTextView.setVisibility(View.VISIBLE);
 	}

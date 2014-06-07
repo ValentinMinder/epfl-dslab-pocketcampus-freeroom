@@ -37,16 +37,13 @@ public class GlobalContext extends Application {
 	private int mRequestCounter = 0;
 	private RequestActivityListener mRequestActivityListener;
 	private String pushNotifToken = null;
-	
-	private SdkStore store = null;
+	private String pcSessId = null;
 	
 	public static final String GA_EVENT_CATEG = "UserAction";
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
-		store = new SdkStore(this);
 		
 		refresh();
 	}
@@ -137,12 +134,12 @@ public class GlobalContext extends Application {
 		return pushNotifToken;
 	}
 
-	public void setPcSessionId(String s, boolean permanently) {
-		store.setPcSessionId(s, permanently);
+	public void setPcSessionId(String s) {
+		pcSessId = s;
 	}
 	
 	public String getPcSessionId() {
-		return store.getPcSessionId();
+		return pcSessId;
 	}
 
 	public void incrementRequestCounter() {

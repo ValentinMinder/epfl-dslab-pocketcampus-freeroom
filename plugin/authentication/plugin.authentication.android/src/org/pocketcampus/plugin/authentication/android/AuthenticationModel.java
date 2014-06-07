@@ -35,6 +35,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	private static final String GASPAR_USERNAME_KEY = "GASPAR_USERNAME_KEY";
 	private static final String GASPAR_PASSWORD_KEY = "GASPAR_PASSWORD_KEY";
 	private static final String AUTH_STORE_PASSWORD_KEY = "AUTH_STORE_PASSWORD_KEY";
+	private static final String PC_SESSION_ID_KEY = "PC_SESSION_ID_KEY";
 	
 	/**
 	 * Some utility classes.
@@ -88,6 +89,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	private String gasparUsername;
 	private String gasparPassword;
 	private boolean storePassword;
+	private String pcSessionId;
 	//private boolean staySignedIn;
 
 	/**
@@ -105,6 +107,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		gasparUsername = iStorage.getString(GASPAR_USERNAME_KEY, null);
 		gasparPassword = iStorage.getString(GASPAR_PASSWORD_KEY, null);
 		storePassword = iStorage.getBoolean(AUTH_STORE_PASSWORD_KEY, true);
+		pcSessionId = iStorage.getString(PC_SESSION_ID_KEY, null);
 		//staySignedIn = iStorage.getBoolean(STAYSIGNEDIN_KEY, false);
 		
 		
@@ -227,6 +230,16 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		storePassword = val;
 		Editor editor = iStorage.edit();
 		editor.putBoolean(AUTH_STORE_PASSWORD_KEY, storePassword);
+		editor.commit();
+	}
+	
+	public String getPcSessionId() {
+		return pcSessionId;
+	}
+	public void setPcSessionId(String val) {
+		pcSessionId = val;
+		Editor editor = iStorage.edit();
+		editor.putString(PC_SESSION_ID_KEY, pcSessionId);
 		editor.commit();
 	}
 	
