@@ -16,7 +16,7 @@ namespace PocketCampus.Main.ViewModels
     /// <summary>
     /// The ViewModel that authenticates the user.
     /// </summary>
-    [LogId( "/dashboard/authenticate" )]
+    [LogId( "/authentication" )]
     public sealed class AuthenticationViewModel : ViewModel<AuthenticationRequest>
     {
         private readonly IAuthenticationService _authenticationService;
@@ -81,7 +81,7 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the command executed to attempt to authenticate the user.
         /// </summary>
-        [LogId( "Authenticate" )]
+        [LogId( "LogIn" )]
         [LogParameter( "SaveCredentials" )]
         [LogValueConverter( true, "SavePasswordYes" )]
         [LogValueConverter( false, "SavePasswordNo" )]
