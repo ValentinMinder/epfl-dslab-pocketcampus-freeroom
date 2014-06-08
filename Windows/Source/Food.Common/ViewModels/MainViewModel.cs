@@ -140,7 +140,11 @@ namespace PocketCampus.Food.ViewModels
             AreRatingsEnabled = serverSettings.Configuration.AreFoodRatingsEnabled != 0;
             Settings = settings;
 
-            Settings.PropertyChanged += ( _, __ ) => UpdateMenu();
+            Settings.PropertyChanged += ( _, __ ) =>
+            {
+                Menu = FilterMenu( _fullMenu );
+                AnyFilterResults = Menu.Any();
+            };
         }
 
 
