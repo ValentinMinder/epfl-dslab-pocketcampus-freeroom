@@ -19,6 +19,12 @@ namespace PocketCampus.Food.Models
         public Restaurant[] Menu { get; set; }
 
         /// <summary>
+        /// The user's price target, present only if the username was sent with the request.
+        /// </summary>
+        [ThriftField( 2, false, "userStatus" )]
+        public PriceTarget? UserPriceTarget { get; set; }
+
+        /// <summary>
         /// The request status.
         /// </summary>
         [ThriftField( 4, true, "statusCode" )]

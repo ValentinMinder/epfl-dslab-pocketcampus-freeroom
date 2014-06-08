@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using PocketCampus.Common;
+using ThinMvvm;
 
 namespace PocketCampus.Main
 {
@@ -38,18 +39,18 @@ namespace PocketCampus.Main
         /// <summary>
         /// Creates a new instance of the WindowsPhoneCredentialsStore class.
         /// </summary>
-        public WindowsPhoneCredentialsStore( IApplicationSettings settings ) : base( settings ) { }
+        public WindowsPhoneCredentialsStore( ISettingsStorage settings ) : base( settings ) { }
 
 
         /// <summary>
         /// Gets the default values.
         /// </summary>
-        protected override SettingsDefaultValues<WindowsPhoneCredentialsStore> GetDefaultValues()
+        protected override SettingsDefaultValues GetDefaultValues()
         {
-            return new SettingsDefaultValues<WindowsPhoneCredentialsStore>
+            return new SettingsDefaultValues
             {
-                { x => x.UserName, null },
-                { x => x.Password, null }
+                { x => x.UserName, () => null },
+                { x => x.Password, () => null }
             };
         }
 

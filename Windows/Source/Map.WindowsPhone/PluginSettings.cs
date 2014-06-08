@@ -4,6 +4,7 @@
 
 using PocketCampus.Common;
 using PocketCampus.Map.Resources;
+using ThinMvvm;
 
 namespace PocketCampus.Map
 {
@@ -25,15 +26,15 @@ namespace PocketCampus.Map
         /// <summary>
         /// Creates a new PluginSettings.
         /// </summary>
-        public PluginSettings( IApplicationSettings settings ) : base( settings ) { }
+        public PluginSettings( ISettingsStorage settings ) : base( settings ) { }
 
 
         /// <summary>
         /// Gets the default values of the settings.
         /// </summary>
-        protected override SettingsDefaultValues<PluginSettings> GetDefaultValues()
+        protected override SettingsDefaultValues GetDefaultValues()
         {
-            return new SettingsDefaultValues<PluginSettings>
+            return new SettingsDefaultValues
             {
                 { x => x.UseGeolocation, () => MessageBoxEx.ShowPrompt( PluginResources.UseGeolocationCaption, PluginResources.UseGeolocationMessage ) },
             };

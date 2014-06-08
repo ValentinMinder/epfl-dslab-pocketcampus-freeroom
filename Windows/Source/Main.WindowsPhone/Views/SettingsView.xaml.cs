@@ -19,18 +19,18 @@ namespace PocketCampus.Main.Views
         private const string WhiteBackgroundImage = "Assets/Tiles/WhiteMedium.png";
 
         private const string PluginKey = "Main";
-        private const string UseColoredTileSetting = "UseColoredTile";
+        private const string UseColoredTileSettingKey = "PocketCampus.Main.UseColoredTile";
 
         public SettingsView()
         {
             InitializeComponent();
 
             // HACK: Not very clean, but it works...
-            var settings = (ApplicationSettings) Container.Get( typeof( ApplicationSettings ) );
+            var settings = (ISettingsStorage) Container.Get( typeof( ISettingsStorage ) );
             bool currentValue = true;
-            if ( settings.IsDefined( PluginKey, UseColoredTileSetting ) )
+            if ( settings.IsDefined( UseColoredTileSettingKey ) )
             {
-                currentValue = settings.Get<bool>( PluginKey, UseColoredTileSetting );
+                currentValue = settings.Get<bool>( UseColoredTileSettingKey );
             }
 
             UseColoredTileBox.IsChecked = currentValue;
@@ -41,8 +41,8 @@ namespace PocketCampus.Main.Views
 
         private void ChangeApplicationTile( bool useColor )
         {
-            var settings = (ApplicationSettings) Container.Get( typeof( ApplicationSettings ) );
-            settings.Set( PluginKey, UseColoredTileSetting, useColor );
+            var settings = (ISettingsStorage) Container.Get( typeof( ISettingsStorage ) );
+            settings.Set( UseColoredTileSettingKey, useColor );
 
             ShellTile.ActiveTiles.First().Update( new FlipTileData
             {

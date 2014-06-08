@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using PocketCampus.Common;
 using PocketCampus.Transport.Models;
 using PocketCampus.Transport.Resources;
+using ThinMvvm;
 
 namespace PocketCampus.Transport
 {
@@ -37,15 +38,15 @@ namespace PocketCampus.Transport
         /// <summary>
         /// Creates new PluginSettings.
         /// </summary>
-        public PluginSettings( IApplicationSettings settings ) : base( settings ) { }
+        public PluginSettings( ISettingsStorage settings ) : base( settings ) { }
 
 
         /// <summary>
         /// Gets the settings default values.
         /// </summary>
-        protected override SettingsDefaultValues<PluginSettings> GetDefaultValues()
+        protected override SettingsDefaultValues GetDefaultValues()
         {
-            return new SettingsDefaultValues<PluginSettings>
+            return new SettingsDefaultValues
             {
                 { x => x.SortByPosition, () => MessageBoxEx.ShowPrompt( PluginResources.UseGeolocationCaption, PluginResources.UseGeolocationMessage ) },
                 { x => x.Stations, () => new ObservableCollection<Station>() }

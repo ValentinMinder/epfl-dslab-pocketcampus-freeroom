@@ -3,7 +3,7 @@
 // File author: Solal Pirelli
 
 using System.Collections.Generic;
-using PocketCampus.Common;
+using ThinMvvm;
 
 namespace PocketCampus.Events
 {
@@ -88,15 +88,15 @@ namespace PocketCampus.Events
         /// <summary>
         /// Creates a new PluginSettings.
         /// </summary>
-        public PluginSettings( IApplicationSettings applicationSettings ) : base( applicationSettings ) { }
+        public PluginSettings( ISettingsStorage settings ) : base( settings ) { }
 
 
         /// <summary>
         /// Gets the default values of the settings.
         /// </summary>
-        protected override SettingsDefaultValues<PluginSettings> GetDefaultValues()
+        protected override SettingsDefaultValues GetDefaultValues()
         {
-            return new SettingsDefaultValues<PluginSettings>
+            return new SettingsDefaultValues
             {
                 { x => x.UserTickets, () => new List<string>() },
                 { x => x.SearchPeriod,() => SearchPeriod.OneMonth },

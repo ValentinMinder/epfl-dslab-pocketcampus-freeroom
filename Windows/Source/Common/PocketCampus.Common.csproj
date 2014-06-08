@@ -41,7 +41,6 @@
     <Compile Include="GeoLocationStatus.cs" />
     <Compile Include="GeoPosition.cs" />
     <Compile Include="HttpResponse.cs" />
-    <Compile Include="IApplicationSettings.cs" />
     <Compile Include="IAuthenticationToken.cs" />
     <Compile Include="ICredentialsStore.cs" />
     <Compile Include="IServerSettings.cs" />
@@ -59,15 +58,13 @@
     <Compile Include="Services\ITwoStepAuthenticator.cs" />
     <Compile Include="LocationChangedEventArgs.cs" />
     <Compile Include="Pair.cs" />
-    <Compile Include="SettingsBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SettingsDefaultValues.cs" />
     <Compile Include="SettingsUtils.cs" />
     <Compile Include="TequilaAuthenticationException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThinMvvm">
-      <HintPath>..\..\packages\ThinMvvm.0.9.4\lib\portable-net45+wp8+win8+wpa81\ThinMvvm.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.0.9.7\lib\portable-net45+wp8+win8+wpa81\ThinMvvm.dll</HintPath>
     </Reference>
     <Reference Include="ThriftSharp">
       <HintPath>..\..\packages\ThriftSharp.2.0.5\lib\portable-net45+wp8+win8+wpa81\ThriftSharp.dll</HintPath>

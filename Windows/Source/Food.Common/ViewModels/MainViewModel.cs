@@ -27,6 +27,7 @@ namespace PocketCampus.Food.ViewModels
 
         private readonly INavigationService _navigationService;
         private readonly IFoodService _menuService;
+        private readonly ICredentialsStore _credentials;
 
         // The unfiltered menu
         private Restaurant[] _fullMenu;
@@ -126,17 +127,20 @@ namespace PocketCampus.Food.ViewModels
         /// Creates a new MainViewModel.
         /// </summary>
         public MainViewModel( ICache cache, INavigationService navigationService, IFoodService menuService,
-                              IPluginSettings settings, IServerSettings serverSettings )
+                              ICredentialsStore credentials, IPluginSettings settings, IServerSettings serverSettings )
             : base( cache )
         {
             _navigationService = navigationService;
             _menuService = menuService;
+            _credentials = credentials;
 
             _mealDate = DateTime.Now;
             _mealTime = GetMealTime( _mealDate.Hour );
 
             AreRatingsEnabled = serverSettings.Configuration.AreFoodRatingsEnabled != 0;
             Settings = settings;
+
+            Settings.PropertyChanged += ( _, __ ) => UpdateMenu();
         }
 
 
@@ -159,7 +163,8 @@ namespace PocketCampus.Food.ViewModels
             {
                 Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
                 MealTime = MealTime,
-                Date = MealDate
+                Date = MealDate,
+                UserName = _credentials.UserName
             };
 
             Func<Task<FoodResponse>> getter = () => _menuService.GetMenusAsync( request, token );
@@ -178,6 +183,11 @@ namespace PocketCampus.Food.ViewModels
                 throw new Exception( "An error occurred while fetching the menu on the server." );
             }
 
+            if ( !Settings.IsPriceTargetOverriden && data.UserPriceTarget.HasValue )
+            {
+                Settings.PriceTarget = data.UserPriceTarget.Value;
+            }
+
             foreach ( var restaurant in data.Menu )
             {
                 foreach ( var meal in restaurant.Meals )
@@ -186,26 +196,10 @@ namespace PocketCampus.Food.ViewModels
                 }
             }
 
-            _fullMenu = data.Menu;
-
-            // the simple solution, using Any() on Settings.DisplayedMealTypes, displays meals with more than one type
-            // even if the user doesn't want the second type to appear
-            var forbiddenTypes = EnumEx.GetValues<MealType>().Where( type => !Settings.DisplayedMealTypes.Contains( type ) );
-
-            var menu = from restaurant in _fullMenu
-                       let meals = from meal in restaurant.Meals
-                                   where !forbiddenTypes.Any( type => meal.MealTypes.Contains( type ) )
-                                   let mealPrice = meal.GetPrice( Settings.PriceTarget )
-                                   where mealPrice == null || mealPrice <= Settings.MaximumBudget
-                                      || ( meal.HalfPortionPrice != null && meal.HalfPortionPrice <= Settings.MaximumBudget )
-                                   select meal
-                       where meals.Any()
-                       orderby restaurant.Name ascending
-                       select restaurant.WithMeals( meals );
-
             if ( !token.IsCancellationRequested )
             {
-                Menu = menu.ToArray();
+                _fullMenu = data.Menu;
+                Menu = FilterMenu( _fullMenu );
                 AnyMeals = _fullMenu.Any();
                 AnyFilterResults = Menu.Any();
             }
@@ -213,6 +207,25 @@ namespace PocketCampus.Food.ViewModels
             return true;
         }
 
+
+        private Restaurant[] FilterMenu( Restaurant[] menu )
+        {
+            // The simple solution, using Any() on Settings.DisplayedMealTypes, displays meals with more than one type
+            // even if the user doesn't want the second type to appear
+            var forbiddenTypes = EnumEx.GetValues<MealType>().Where( type => !Settings.DisplayedMealTypes.Contains( type ) ).ToArray();
+
+            return ( from restaurant in _fullMenu
+                     let meals = from meal in restaurant.Meals
+                                 where !forbiddenTypes.Any( type => meal.MealTypes.Contains( type ) )
+                                 let mealPrice = meal.GetPrice( Settings.PriceTarget )
+                                 where mealPrice == null || mealPrice <= Settings.MaximumBudget
+                                    || ( meal.HalfPortionPrice.HasValue && meal.HalfPortionPrice.Value <= Settings.MaximumBudget )
+                                 select meal
+                     where meals.Any()
+                     orderby restaurant.Name ascending
+                     select restaurant.WithMeals( meals ) )
+                    .ToArray();
+        }
 
         /// <summary>
         /// Gets the meal time associated with the specified hour.

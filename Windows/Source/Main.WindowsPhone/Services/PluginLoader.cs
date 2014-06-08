@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using PocketCampus.Common;
+using ThinMvvm;
 
 namespace PocketCampus.Main.Services
 {
@@ -19,12 +20,10 @@ namespace PocketCampus.Main.Services
         private const string PluginAssembliesPrefix = "PocketCampus";
         // The suffix assemblies have, which needs to be removed from their name to load them
         private const string AssemblySuffix = ".dll";
-        // The key for the settings
-        private const string SettingsPluginKey = "Main";
         // The format of the settings key for the cached plugin types
-        private const string CachedTypesKeyFormat = "CachedPlugins_{0}";
+        private const string CachedTypesKeyFormat = "PocketCampus.Main.CachedPlugins_{0}";
 
-        private IApplicationSettings _settings;
+        private ISettingsStorage _settings;
         private string _cachedTypesKey;
         private IPlugin[] _plugins;
 
@@ -32,7 +31,7 @@ namespace PocketCampus.Main.Services
         /// <summary>
         /// Creates a new instance of the <see cref="PluginLoader" /> class.
         /// </summary>
-        public PluginLoader( IApplicationSettings settings )
+        public PluginLoader( ISettingsStorage settings )
         {
             _settings = settings;
             _cachedTypesKey = string.Format( CachedTypesKeyFormat, Assembly.GetExecutingAssembly().GetName().Version.ToString() );
@@ -47,9 +46,9 @@ namespace PocketCampus.Main.Services
             if ( _plugins == null )
             {
                 string[] typeNames;
-                if ( _settings.IsDefined( SettingsPluginKey, _cachedTypesKey ) )
+                if ( _settings.IsDefined( _cachedTypesKey ) )
                 {
-                    typeNames = _settings.Get<string[]>( SettingsPluginKey, _cachedTypesKey );
+                    typeNames = _settings.Get<string[]>( _cachedTypesKey );
                 }
                 else
                 {
@@ -62,7 +61,7 @@ namespace PocketCampus.Main.Services
                                   select type.AssemblyQualifiedName )
                              .ToArray();
 
-                    _settings.Set( SettingsPluginKey, _cachedTypesKey, typeNames );
+                    _settings.Set( _cachedTypesKey, typeNames );
                 }
 
                 _plugins = ( from name in typeNames

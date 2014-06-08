@@ -81,7 +81,7 @@ namespace PocketCampus.Main
         protected override void Initialize()
         {
             Container.Bind<IHttpClient, HttpClient>();
-            Container.Bind<IApplicationSettings, ApplicationSettings>();
+            Container.Bind<ISettingsStorage, WindowsPhoneSettingsStorage>();
             var pluginLoader = Container.Bind<IPluginLoader, PluginLoader>();
 
             Container.Bind<Logger, GoogleAnalyticsLogger>();

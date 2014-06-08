@@ -15,6 +15,8 @@ namespace PocketCampus.Food.ViewModels
     [LogId( "/food/settings" )]
     public sealed class SettingsViewModel : ViewModel<NoParameter>
     {
+        private readonly PriceTarget _previousTarget;
+
         /// <summary>
         /// Gets the plugin settings.
         /// </summary>
@@ -41,6 +43,8 @@ namespace PocketCampus.Food.ViewModels
         {
             Settings = settings;
             DisplayedMealTypes = SettingsUtils.GetEnumPairs( Settings.DisplayedMealTypes, MealType.Unknown );
+
+            _previousTarget = settings.PriceTarget;
         }
 
 
@@ -50,6 +54,11 @@ namespace PocketCampus.Food.ViewModels
         public override void OnNavigatedFrom()
         {
             Settings.DisplayedMealTypes = SettingsUtils.GetEnumList( DisplayedMealTypes );
+
+            if ( Settings.PriceTarget != _previousTarget )
+            {
+                Settings.IsPriceTargetOverriden = true;
+            }
         }
     }
 }

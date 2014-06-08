@@ -34,5 +34,14 @@ namespace PocketCampus.Food.Models
         [ThriftField( 3, false, "mealDate" )]
         [ThriftConverter( typeof( ThriftJavaDateConverter ) )]
         public DateTime? Date { get; set; }
+
+        /// <summary>
+        /// The user's username, if the user is authenticated.
+        /// </summary>
+        /// <remarks>
+        /// This is used to automatically set the price target for the user.
+        /// </remarks>
+        [ThriftField( 5, false, "userGaspar" )]
+        public string UserName { get; set; }
     }
 }

@@ -4,6 +4,7 @@
 
 using PocketCampus.Common;
 using PocketCampus.Food.Models;
+using ThinMvvm;
 
 namespace PocketCampus.Food
 {
@@ -19,6 +20,16 @@ namespace PocketCampus.Food
         public PriceTarget PriceTarget
         {
             get { return Get<PriceTarget>(); }
+            set { Set( value ); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the user overrode the default price target,
+        /// which is given by the server if the user is logged in.
+        /// </summary>
+        public bool IsPriceTargetOverriden
+        {
+            get { return Get<bool>(); }
             set { Set( value ); }
         }
 
@@ -53,17 +64,18 @@ namespace PocketCampus.Food
         /// <summary>
         /// Creates a new PluginSettings.
         /// </summary>
-        public PluginSettings( IApplicationSettings settings ) : base( settings ) { }
+        public PluginSettings( ISettingsStorage settings ) : base( settings ) { }
 
 
         /// <summary>
         /// Gets the default values for all settings.
         /// </summary>
-        protected override SettingsDefaultValues<PluginSettings> GetDefaultValues()
+        protected override SettingsDefaultValues GetDefaultValues()
         {
-            return new SettingsDefaultValues<PluginSettings>
+            return new SettingsDefaultValues
             {
                 { x => x.PriceTarget, () => PriceTarget.Student },
+                { x => x.IsPriceTargetOverriden, () => false },
                 { x => x.MaximumBudget, () => 50.0 }, // this is too much, but it ensures no meal is hidden by default
                 { x => x.DisplayedMealTypes, () => EnumEx.GetValues<MealType>() }
             };

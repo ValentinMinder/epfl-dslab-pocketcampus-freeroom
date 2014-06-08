@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using PocketCampus.Common;
+using ThinMvvm;
 
 namespace PocketCampus.Main
 {
@@ -53,15 +54,15 @@ namespace PocketCampus.Main
         /// <summary>
         /// Creates a new instance of PluginSettings.
         /// </summary>
-        public MainSettings( IApplicationSettings settings ) : base( settings ) { }
+        public MainSettings( ISettingsStorage settings ) : base( settings ) { }
 
 
         /// <summary>
         /// Gets the default values.
         /// </summary>
-        protected override SettingsDefaultValues<MainSettings> GetDefaultValues()
+        protected override SettingsDefaultValues GetDefaultValues()
         {
-            return new SettingsDefaultValues<MainSettings>
+            return new SettingsDefaultValues
             {
                 { x => x.Configuration, () => new ServerConfiguration( "https", 4433, "Camipro", "Directory", "Events", "Food", "IsAcademia", 
                                                                                       "Map", "Moodle", "News", "Satellite", "Transport" ) },

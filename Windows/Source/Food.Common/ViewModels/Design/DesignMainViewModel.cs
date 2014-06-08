@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using PocketCampus.Food.Models;
 using ThinMvvm;
 
@@ -750,12 +751,19 @@ Pommes à la lyonnaise",
             }
         }
 
-        private sealed class DesignPluginSettings : IPluginSettings
+        private sealed class DesignPluginSettings : IPluginSettings, INotifyPropertyChanged
         {
             public PriceTarget PriceTarget { get; set; }
+            public bool IsPriceTargetOverriden { get; set; }
             public double MaximumBudget { get; set; }
             public MealType[] DisplayedMealTypes { get; set; }
             public Dictionary<MealTime, DateTime> LastVotes { get; set; }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            private void IgnoreAboveEvent()
+            {
+                PropertyChanged( null, null );
+            }
         }
 #endif
     }
