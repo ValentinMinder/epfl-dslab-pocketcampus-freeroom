@@ -576,6 +576,8 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	}
 	
 	private static Map<String, String> cleanHomepages(String [] ss) {
+		if(ss == null)
+			return null;
 		Map<String, String> homepages = new HashMap<String, String>();
 		for(String s : ss) {
 			String [] e = s.split(" ", 2);
