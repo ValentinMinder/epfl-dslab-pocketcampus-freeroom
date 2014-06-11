@@ -8,10 +8,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.shared.utils.NetworkUtil;
 import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
+import org.pocketcampus.plugin.directory.shared.DirectoryPersonRole;
 import org.pocketcampus.plugin.directory.shared.DirectoryRequest;
 import org.pocketcampus.plugin.directory.shared.DirectoryResponse;
 import org.pocketcampus.plugin.directory.shared.DirectoryService;
@@ -48,7 +50,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	/** Page size */
 	private static final int PAGE_SIZE = 30;
 	/** Set of wanted attributes: first name, lastname, mail, url, phone number, office, gaspar account, sciper, organizational units*/
-	private String[] attWanted = { "givenName", "sn", "mail", "labeledURI", "telephoneNumber", "roomNumber", "uniqueIdentifier", "uid", "ou" };
+	private String[] attWanted = { "givenName", "sn", "mail", "labeledURI", "telephoneNumber", "roomNumber", "uniqueIdentifier", "uid", "ou", "ou;lang-en", "description", "description;lang-en", "employeeType" };
 	/** Limited set of attributes */
 	private String[] onlyNameWanted = {"givenName", "sn"};
 	
@@ -81,7 +83,6 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		}catch (LDAPException e) {
 			System.err.println("Ldap exception");
 		}
-		
 		
 	}
 	
@@ -137,12 +138,12 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		
 		//exact first or last name search
 		String searchQuery = "(|(sn=" +param+ ")(givenName=" +param+ "))";
-		results = searchOnLDAP2(searchQuery, null);
+		results = searchOnLDAP2(searchQuery, null, null);
 		Collections.sort(results);
 		
 		//adding more people with *param* in their diplay name
 		searchQuery = "(displayName=*"+param+"*)";
-		LinkedList<Person> tmp = searchOnLDAP2(searchQuery, null);
+		LinkedList<Person> tmp = searchOnLDAP2(searchQuery, null, null);
 		Collections.sort(tmp);
 		for(Person sup : tmp){
 			if(!results.contains(sup))
@@ -372,7 +373,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	 * @throws org.pocketcampus.plugin.directory.shared.LDAPException
 	 */
 	private LinkedList<Person> searchSciper(String sciper) throws org.pocketcampus.plugin.directory.shared.LDAPException{
-		return searchOnLDAP2("(uniqueIdentifier="+sciper+")", null);
+		return searchOnLDAP2("(uniqueIdentifier="+sciper+")", null, null);
 	}
 	
 	/**
@@ -442,7 +443,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			for(int i = 0; i < query.length; i++)
 				query[i] = "(|(cn=" + query[i] + "*)(cn=* " + query[i] + "*)(ou=" + query[i] + "))";
 			String q2 = org.apache.commons.lang3.StringUtils.join(query, "");
-			LinkedList<Person> tmp = searchOnLDAP2("(|(&" + q2 + ")(mail=" + q + "*)(uid=" + q + ")(uniqueidentifier=" + q + "))", pag);
+			LinkedList<Person> tmp = searchOnLDAP2("(|(&" + q2 + ")(mail=" + q + "*)(uid=" + q + ")(uniqueidentifier=" + q + "))", pag, req.getLanguage());
 			DirectoryResponse resp = new DirectoryResponse(200);
 			resp.setResults(tmp);
 			if(pag.cookie != null)
@@ -457,9 +458,14 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	
 	
 	
-	private LinkedList<Person> searchOnLDAP2(String searchQuery, Pagination pag) throws org.pocketcampus.plugin.directory.shared.LDAPException{
+	private LinkedList<Person> searchOnLDAP2(String searchQuery, Pagination pag, String lang) throws org.pocketcampus.plugin.directory.shared.LDAPException{
 		//LinkedList<Person> results = new LinkedList<Person>();
 		HashMap<String, Person> results = new HashMap<String, Person>();
+		
+		if(lang == null || !lang.equals("fr"))
+			lang = "en";
+		
+		String attributeKeyAppendix = (lang.equals("en") ? ";lang-en" : "");
 		
 		SearchResult searchResult;
 		do {
@@ -498,6 +504,9 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			//adding persons from the search to our result list
 			for (SearchResultEntry e : searchResult.getSearchEntries())
 			{
+				if(!e.hasAttribute("employeeType") || "Ignore".equals(e.getAttributeValue("employeeType")))
+					continue;
+				
 				//getting the interessant part of the url
 				String t[] = new String[2];
 				String web = e.getAttributeValue("labeledURI");
@@ -523,11 +532,21 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 				p.setOrganisationalUnits(ouList);
 				p.setPictureUrl("http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + p.getSciper());
 				
+				String unitAcro = e.getAttributeValue("ou");
+				DirectoryPersonRole role = new DirectoryPersonRole(
+						last(e.getAttributeValues("ou" + attributeKeyAppendix)),
+						last(e.getAttributeValues("description" + attributeKeyAppendix)));
+				Map<String, DirectoryPersonRole> roles = new HashMap<String, DirectoryPersonRole>();
+				roles.put(unitAcro, role);
+				p.setRoles(roles);
+				p.setHomepages(cleanHomepages(e.getAttributeValues("labeledURI")));
+				
 				//no duplicates!
 				if( !results.containsKey(p.getSciper()))
 					results.put(p.getSciper(), p);
 				else{
 					results.get(p.getSciper()).getOrganisationalUnits().addAll(p.getOrganisationalUnits());
+					results.get(p.getSciper()).getRoles().putAll(p.getRoles());
 				}
 				
 			}
@@ -552,5 +571,17 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	
 	
 	
+	private static String last(String [] ss) {
+		return ss[ss.length - 1];
+	}
 	
+	private static Map<String, String> cleanHomepages(String [] ss) {
+		Map<String, String> homepages = new HashMap<String, String>();
+		for(String s : ss) {
+			String [] e = s.split(" ", 2);
+			if(e.length == 2)
+				homepages.put(e[1], e[0]);
+		}
+		return homepages;
+	} 
 }

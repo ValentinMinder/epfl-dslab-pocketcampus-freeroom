@@ -1041,14 +1041,14 @@ public class DirectoryService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
-                this.success = new ArrayList<Person>(_list8.size);
-                for (int _i9 = 0; _i9 < _list8.size; ++_i9)
+                org.apache.thrift.protocol.TList _list18 = iprot.readListBegin();
+                this.success = new ArrayList<Person>(_list18.size);
+                for (int _i19 = 0; _i19 < _list18.size; ++_i19)
                 {
-                  Person _elem10; // required
-                  _elem10 = new Person();
-                  _elem10.read(iprot);
-                  this.success.add(_elem10);
+                  Person _elem20; // required
+                  _elem20 = new Person();
+                  _elem20.read(iprot);
+                  this.success.add(_elem20);
                 }
                 iprot.readListEnd();
               }
@@ -1082,9 +1082,9 @@ public class DirectoryService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Person _iter11 : this.success)
+          for (Person _iter21 : this.success)
           {
-            _iter11.write(oprot);
+            _iter21.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -2407,13 +2407,13 @@ public class DirectoryService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list12 = iprot.readListBegin();
-                this.success = new ArrayList<String>(_list12.size);
-                for (int _i13 = 0; _i13 < _list12.size; ++_i13)
+                org.apache.thrift.protocol.TList _list22 = iprot.readListBegin();
+                this.success = new ArrayList<String>(_list22.size);
+                for (int _i23 = 0; _i23 < _list22.size; ++_i23)
                 {
-                  String _elem14; // required
-                  _elem14 = iprot.readString();
-                  this.success.add(_elem14);
+                  String _elem24; // required
+                  _elem24 = iprot.readString();
+                  this.success.add(_elem24);
                 }
                 iprot.readListEnd();
               }
@@ -2439,9 +2439,9 @@ public class DirectoryService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.success.size()));
-          for (String _iter15 : this.success)
+          for (String _iter25 : this.success)
           {
-            oprot.writeString(_iter15);
+            oprot.writeString(_iter25);
           }
           oprot.writeListEnd();
         }
