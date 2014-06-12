@@ -4265,11 +4265,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/TapkuLibrary/src/TapkuLibrary/TKCalendarDayView.m"
-            timestampString = "417707508.699801"
+            timestampString = "423868676.502018"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "518"
-            endingLineNumber = "518"
+            startingLineNumber = "532"
+            endingLineNumber = "532"
             landmarkName = "-_realignEventsAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4281,11 +4281,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/TapkuLibrary/src/TapkuLibrary/TKCalendarDayView.m"
-            timestampString = "417707687.063774"
+            timestampString = "423868676.502018"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "574"
-            endingLineNumber = "574"
+            startingLineNumber = "588"
+            endingLineNumber = "588"
             landmarkName = "-_realignEventsAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4858,6 +4858,22 @@
             startingLineNumber = "175"
             endingLineNumber = "175"
             landmarkName = "-viewWillAppear:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/TapkuLibrary/src/TapkuLibrary/TKCalendarDayView.m"
+            timestampString = "424282907.963654"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "903"
+            endingLineNumber = "903"
+            landmarkName = "-_setupDaysView"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
