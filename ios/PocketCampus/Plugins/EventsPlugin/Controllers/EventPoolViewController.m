@@ -174,7 +174,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
     
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"events" dataName:[NSString stringWithFormat:@"eventPool-%lld", self.poolId]]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
-    [self showButtonsConditionally];
+    [self updateButtonsConditionally];
     [self fillCollectionsFromReplyAndSelection];
 }
 
@@ -214,6 +214,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
 #pragma mark - Refresh control
 
 - (void)refreshFromCurrentData {
+    [self updateButtonsConditionally];
     [self fillCollectionsFromReplyAndSelection];
     [self.tableView reloadData];
     [self reselectLastSelectedItem];
@@ -261,7 +262,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
 
 #pragma mark - Buttons preparation and actions
 
-- (void)showButtonsConditionally {
+- (void)updateButtonsConditionally {
     if (!self.poolReply) {
         return;
     }
@@ -270,14 +271,22 @@ static const NSInteger kOneYearPeriodIndex = 3;
 
     if (self.eventPool.enableScan) {
         self.scanButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"CameraBarButton"] style:UIBarButtonItemStylePlain target:self action:@selector(cameraButtonPressed)];
-        //self.scanButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Scan", @"EventsPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(cameraButtonPressed)];
         self.scanButton.accessibilityLabel = NSLocalizedStringFromTable(@"ScanACode", @"EventsPlugin", nil);
         [rightElements addObject:self.scanButton];
     }
     
     if (!self.eventPool.disableFilterByCateg || !self.eventPool.disableFilterByTags) { //will also disable period filtering
-        //self.filterButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Filter", @"EventsPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(filterButtonPressed)];
-        self.filterButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SortBarButton"] style:UIBarButtonItemStylePlain target:self action:@selector(filterButtonPressed)];
+        
+        NSSet* selectedTagsSet = [NSSet setWithArray:[self.selectedTags allKeys]];
+        NSSet* selectableTagsSet = [NSSet setWithArray:[self.tagsInPresentItems allKeys]];
+        NSString* filterButtonImageName = nil;
+        if (self.poolReply.tags.count == 0 || [selectedTagsSet isEqualToSet:selectableTagsSet] || [selectableTagsSet isSubsetOfSet:selectedTagsSet]) {
+            filterButtonImageName = @"FilterBarButton";
+        } else {
+            filterButtonImageName = @"FilterBarButtonSelected";
+        }
+        
+        self.filterButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:filterButtonImageName] style:UIBarButtonItemStylePlain target:self action:@selector(filterButtonPressed)];
         self.filterButton.accessibilityLabel = NSLocalizedStringFromTable(@"PresentationOptions", @"EventsPlugin", nil);
         [rightElements addObject:self.filterButton];
     }
@@ -499,7 +508,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
 }
 
 - (void)presentTagsController {
-    EventPoolViewController* controller __weak = self;
+    __weak __typeof(self) welf = self;
     NSArray* selectableTags = [[self.tagsInPresentItems allValues] sortedArrayUsingSelector:@selector(compare:)]; //alphabetically
     NSMutableSet* selectedInitially = [NSMutableSet setWithCapacity:selectableTags.count];
     
@@ -531,8 +540,8 @@ static const NSInteger kOneYearPeriodIndex = 3;
             }];
             self.selectedTags = selectedTags;
         }
-        [controller refreshFromCurrentData];
-        [controller dismissViewControllerAnimated:YES completion:NULL];
+        [welf refreshFromCurrentData];
+        [welf dismissViewControllerAnimated:YES completion:NULL];
     }];
     UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:tagsViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -621,6 +630,31 @@ static const NSInteger kOneYearPeriodIndex = 3;
 
 #pragma mark - Data fill
 
+/**
+ * Add categs and tags from reply into selectedCategories and selectedTags,
+ * to ensure "selected" by default behavior (if categ/tag was not available before)
+ * IMPORTANT: call this *before* updating self.poolReply
+ */
+- (void)addMissingCategsAndTagsFromReply:(EventPoolReply*)reply {
+    
+    //on purpose using self.poolReply
+    NSSet* categIdsSet = [NSSet setWithArray:self.poolReply.categs.allKeys];
+    NSSet* shortTagNamesSet = [NSSet setWithArray:self.poolReply.tags.allKeys];
+    
+    //now comparing on reply parameter
+    for (NSNumber* categId in reply.categs) {
+        if (![categIdsSet containsObject:categId]) {
+            self.selectedCategories[categId] = reply.categs[categId];
+        }
+    }
+    
+    for (NSString* shortTagName in reply.tags) {
+        if (![shortTagNamesSet containsObject:shortTagName]) {
+            self.selectedTags[shortTagName] = reply.tags[shortTagName];
+        }
+    }
+}
+
 - (void)fillCollectionsFromReplyAndSelection {
     if (!self.poolReply) {
         return;
@@ -677,11 +711,12 @@ static const NSInteger kOneYearPeriodIndex = 3;
 - (void)getEventPoolForRequest:(EventPoolRequest *)request didReturn:(EventPoolReply *)reply {
     switch (reply.status) {
         case 200:
+            [self addMissingCategsAndTagsFromReply:reply];
             self.poolReply = reply;
             if (self.eventPool.poolTitle) {
                 self.title = self.eventPool.poolTitle;
             }
-            [self showButtonsConditionally];
+            [self updateButtonsConditionally];
             [self fillCollectionsFromReplyAndSelection];
             [self.tableView reloadData];
             [self reselectLastSelectedItem];

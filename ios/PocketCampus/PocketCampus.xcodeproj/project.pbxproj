@@ -335,6 +335,10 @@
 		32DE5B2817F2003800E03423 /* NSLayoutConstraint+LGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE5B2717F2003800E03423 /* NSLayoutConstraint+LGAdditions.m */; };
 		32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */; };
 		32DFDB0F190902AE008C61E2 /* NewsModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DFDB0E190902AE008C61E2 /* NewsModelAdditions.m */; };
+		32E0E315194B1FDD003251CC /* FilterBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E0E313194B1FDD003251CC /* FilterBarButton.png */; };
+		32E0E316194B1FDD003251CC /* FilterBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E0E314194B1FDD003251CC /* FilterBarButton@2x.png */; };
+		32E0E319194B206D003251CC /* FilterBarButtonSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E0E317194B206D003251CC /* FilterBarButtonSelected.png */; };
+		32E0E31A194B206D003251CC /* FilterBarButtonSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E0E318194B206D003251CC /* FilterBarButtonSelected@2x.png */; };
 		32E3E5CB1897D1F200D263C5 /* TransportPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32E3E5CD1897D1F200D263C5 /* TransportPlugin.strings */; };
 		32E3E5D11899370600D263C5 /* MapModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E3E5D01899370600D263C5 /* MapModelAdditions.m */; };
 		32E67DBC16847A0900E5CFF6 /* ClockCell.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBA16847A0900E5CFF6 /* ClockCell.png */; };
@@ -868,6 +872,10 @@
 		32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodLarge.png; sourceTree = "<group>"; };
 		32DFDB0D190902AE008C61E2 /* NewsModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsModelAdditions.h; sourceTree = "<group>"; };
 		32DFDB0E190902AE008C61E2 /* NewsModelAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsModelAdditions.m; sourceTree = "<group>"; };
+		32E0E313194B1FDD003251CC /* FilterBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FilterBarButton.png; sourceTree = "<group>"; };
+		32E0E314194B1FDD003251CC /* FilterBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FilterBarButton@2x.png"; sourceTree = "<group>"; };
+		32E0E317194B206D003251CC /* FilterBarButtonSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FilterBarButtonSelected.png; sourceTree = "<group>"; };
+		32E0E318194B206D003251CC /* FilterBarButtonSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FilterBarButtonSelected@2x.png"; sourceTree = "<group>"; };
 		32E280AA156E613100B74825 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		32E3E5CC1897D1F200D263C5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TransportPlugin.strings; sourceTree = "<group>"; };
 		32E3E5CE1897D1F500D263C5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/TransportPlugin.strings; sourceTree = "<group>"; };
@@ -1202,6 +1210,10 @@
 				32C8799B183D103600750A11 /* SettingsBarButton2@2x.png */,
 				32C509E817FC6D73005A5635 /* SortBarButton.png */,
 				32C509E917FC6D73005A5635 /* SortBarButton@2x.png */,
+				32E0E313194B1FDD003251CC /* FilterBarButton.png */,
+				32E0E314194B1FDD003251CC /* FilterBarButton@2x.png */,
+				32E0E317194B206D003251CC /* FilterBarButtonSelected.png */,
+				32E0E318194B206D003251CC /* FilterBarButtonSelected@2x.png */,
 				328A72DD184A4EE0002C5A6B /* SplashImage4inch@2x.png */,
 				328A72DE184A4EE0002C5A6B /* SplashImage@2x.png */,
 				321F37E115B02FBE00E7BA6D /* HelpBarButton.png */,
@@ -2496,10 +2508,12 @@
 				327513341825465D0037FE00 /* FavoriteCornerSelected@2x.png in Resources */,
 				32CBF059163450E500FD92E5 /* PocketCampusDrawing.png in Resources */,
 				32CACD99183E366B00BD36F9 /* LocationArrowSelected.png in Resources */,
+				32E0E319194B206D003251CC /* FilterBarButtonSelected.png in Resources */,
 				32574ED7182140AE008F3163 /* DirectoryEmptyPictureSmall@2x.png in Resources */,
 				327585A91844DE93004215FC /* TransportSmallBus@2x.png in Resources */,
 				32CBF05A163450E500FD92E5 /* PocketCampusDrawing@2x.png in Resources */,
 				32C509E617FC60B0005A5635 /* CameraBarButton.png in Resources */,
+				32E0E316194B1FDD003251CC /* FilterBarButton@2x.png in Resources */,
 				32B13A3F1634B0F4007B54A1 /* MainMenuNavbar.png in Resources */,
 				32B13A401634B0F4007B54A1 /* MainMenuNavbar@2x.png in Resources */,
 				323A913C1640783F007A63D3 /* TopDown1pxShadow.png in Resources */,
@@ -2557,7 +2571,9 @@
 				328A72DF184A4EE0002C5A6B /* SplashImage4inch@2x.png in Resources */,
 				322207F11688F101003F6622 /* NewsItemView.xib in Resources */,
 				32D1DE18184663C700D0C866 /* TransportTripCell.xib in Resources */,
+				32E0E31A194B206D003251CC /* FilterBarButtonSelected@2x.png in Resources */,
 				322207F31688FFFA003F6622 /* NewsItem.html in Resources */,
+				32E0E315194B1FDD003251CC /* FilterBarButton.png in Resources */,
 				32506D01181DC41E003F08D7 /* MasterVisible.png in Resources */,
 				3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */,
 				32C8799D183D103600750A11 /* SettingsBarButton2@2x.png in Resources */,
