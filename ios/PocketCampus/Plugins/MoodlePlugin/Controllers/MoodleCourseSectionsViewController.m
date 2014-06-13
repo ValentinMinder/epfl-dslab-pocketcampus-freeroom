@@ -571,7 +571,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
     if (self.splitViewController && [resource isEqualToMoodleResource:self.selectedResource]) {
         return;
     }
-    [self trackAction:@"DownloadAndOpenFile"];
+    [self trackAction:@"DownloadAndOpenFile" contentInfo:resource.iName];
     MoodleResourceViewController* detailViewController = [[MoodleResourceViewController alloc] initWithMoodleResource:resource];
     if (self.splitViewController) { // iPad
         if (self.selectedResource) {
@@ -681,7 +681,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         MoodleSection* section = tableView == self.tableView ? self.sections[indexPath.section] : self.searchFilteredSections[indexPath.section];
         MoodleResource* resource = section.iResources[indexPath.row];
-        [self trackAction:PCGAITrackerActionDelete];
+        [self trackAction:PCGAITrackerActionDelete contentInfo:resource.iName];
         if ([self.moodleService deleteDownloadedMoodleResource:resource]) {
             [tableView setEditing:NO animated:YES];
         } else {

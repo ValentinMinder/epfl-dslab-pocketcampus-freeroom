@@ -179,7 +179,7 @@ static CGFloat kRowHeight;
     if (!self.personBaseInfoCell.profilePicture) {
         return;
     }
-    [self trackAction:@"ShowPictureLarge"];
+    [self trackAction:@"ShowPictureLarge" contentInfo:self.person.fullFirstnameLastname];
     DirectoryProfilePictureViewController* viewController = [[DirectoryProfilePictureViewController alloc] initWithImage:self.personBaseInfoCell.profilePicture];
     if (self.splitViewController) {
         if (!self.imagePopoverController) {
@@ -267,7 +267,7 @@ static CGFloat kRowHeight;
         self.actionSheet = nil;
         return;
     } else if (buttonIndex == kCreateNewContactActionIndex) {
-        [self trackAction:@"CreateNewContact"];
+        [self trackAction:@"CreateNewContact" contentInfo:self.person.fullFirstnameLastname];
         [self createAndPresentNewContactWithRecordOrNil:nil addressBookOrNil:nil];
     } else if (buttonIndex == kAddToExistingContactActionIndex) {
         [self trackAction:@"AddToExistingContact"];
@@ -346,7 +346,6 @@ static CGFloat kRowHeight;
             break;
         case kPhonesSection:
         {
-            [self trackAction:@"Call"];
             NSString* phone = nil;
             if (indexPath.row == [self privatePhoneNumberRowIndex]) {
                 phone = self.person.privatePhoneNumber;
@@ -356,25 +355,26 @@ static CGFloat kRowHeight;
                 //should not happen
                 return;
             }
+            [self trackAction:@"Call" contentInfo:phone];
             phone = [phone stringByReplacingOccurrencesOfString:@" " withString:@""];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phone]]];
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         }
         case kEmailSection:
-            [self trackAction:@"SendEmail"];
+            [self trackAction:@"SendEmail" contentInfo:self.person.email];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"mailto://%@", self.person.email]]];
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         case kWebpageSection:
-            [self trackAction:@"ViewWebsite"];
+            [self trackAction:@"ViewWebsite" contentInfo:self.person.web];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.person.web]];
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         case kOfficeSection:
         {
             if (self.allowShowOfficeOnMap) {
-                [self trackAction:@"ViewOffice"];
+                [self trackAction:@"ViewOffice" contentInfo:self.person.office];
                 UIViewController* viewController = [MapController viewControllerWithInitialSearchQuery:self.person.office pinLabelText:self.person.fullFirstnameLastname];
                 [self.navigationController pushViewController:viewController animated:YES];
             } else {
@@ -399,7 +399,6 @@ static CGFloat kRowHeight;
 }
 
 - (void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-    [self trackAction:PCGAITrackerActionCopy];
     UIPasteboard* pasteboard = [UIPasteboard generalPasteboard];
     switch (indexPath.section) {
         case kPersonBaseInfoSection:
@@ -425,6 +424,7 @@ static CGFloat kRowHeight;
             pasteboard.string = self.person.office;
             break;
     }
+    [self trackAction:PCGAITrackerActionCopy contentInfo:pasteboard.string];
     CLSNSLog(@"-> Copy '%@' to pasteboard.", pasteboard.string);
 }
 

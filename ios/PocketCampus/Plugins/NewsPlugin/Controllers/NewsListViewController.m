@@ -225,7 +225,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     if ([self.selectedItem isEqual:newsFeedItem]) {
         return;
     }
-    [self trackAction:@"OpenNewsItem"];
+    [self trackAction:@"OpenNewsItem"  contentInfo:[NSString stringWithFormat:@"%lld-%@", newsFeedItem.itemId, newsFeedItem.title]];
     NewsItemViewController* newsItemViewController = [[NewsItemViewController alloc] initWithNewsFeedItem:newsFeedItem];
     if (self.splitViewController) { // iPad
         self.selectedItem = newsFeedItem;

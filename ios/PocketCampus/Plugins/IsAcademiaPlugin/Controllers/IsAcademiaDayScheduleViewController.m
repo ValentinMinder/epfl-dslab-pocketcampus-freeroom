@@ -250,7 +250,7 @@
             NSString* room = [actionSheet buttonTitleAtIndex:buttonIndex];
             UIViewController* viewController = [MapController viewControllerWithInitialSearchQuery:room];
             [self.navigationController pushViewController:viewController animated:YES];
-            [self trackAction:@"ViewRoomOnMap"];
+            [self trackAction:@"ViewRoomOnMap" contentInfo:room];
         }
         self.detailsActionSheet = nil;
     }
@@ -294,7 +294,7 @@
     [self.detailsActionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil)];
     self.detailsActionSheet.cancelButtonIndex = self.detailsActionSheet.numberOfButtons-1;
     [self.detailsActionSheet showFromToolbar:self.navigationController.toolbar];
-    [self trackAction:@"ViewPeriodProperties"];
+    [self trackAction:@"ViewPeriodProperties" contentInfo:period.name];
 }
 
 #pragma mark - TKCalendarDayViewDataSource

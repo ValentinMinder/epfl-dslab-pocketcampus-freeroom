@@ -301,7 +301,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         [self.docController dismissMenuAnimated:YES];
         self.docController = nil;
     } else {
-        [self trackAction:PCGAITrackerActionActionButtonPressed];
+        [self trackAction:PCGAITrackerActionActionButtonPressed contentInfo:self.moodleResource.iName];
         NSURL* resourceLocalURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleResource:self.moodleResource]];
         self.docController = [UIDocumentInteractionController interactionControllerWithURL:resourceLocalURL];
         self.docController.delegate = self;
@@ -311,10 +311,10 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)favoriteButtonPressed {
     if ([self.moodleService isFavoriteMoodleResource:self.moodleResource]) {
-        [self trackAction:PCGAITrackerActionUnmarkFavorite];
+        [self trackAction:PCGAITrackerActionUnmarkFavorite contentInfo:self.moodleResource.iName];
         [self.moodleService removeFavoriteMoodleResource:self.moodleResource];
     } else {
-        [self trackAction:PCGAITrackerActionMarkFavorite];
+        [self trackAction:PCGAITrackerActionMarkFavorite contentInfo:self.moodleResource.iName];
         [self.moodleService addFavoriteMoodleResource:self.moodleResource];;
     }
 }
@@ -438,7 +438,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) { //delete button, starts from the top, cancel button not included
-        [self trackAction:PCGAITrackerActionDelete];
+        [self trackAction:PCGAITrackerActionDelete contentInfo:self.moodleResource.iName];
         [self removeSplitViewControllerObserver];
         if (![self.moodleService deleteDownloadedMoodleResource:self.moodleResource]) {
             UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ImpossibleDeleteFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];

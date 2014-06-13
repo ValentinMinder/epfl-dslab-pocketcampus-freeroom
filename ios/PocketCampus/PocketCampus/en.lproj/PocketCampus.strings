@@ -23,7 +23,9 @@
 "Clear" = "Clear";
 "MainMenu" = "Main menu";
 "EditMainMenu" = "Customize main menu";
+"RestoreDefaultMainMenu..." = "Default main menu...";
 "RestoreDefaultMainMenu" = "Default main menu";
+"RestoreDefaultMainMenuExplanation" = "All features will be enabled and default order restored.";
 "Misc" = "Misc";
 "Usage" = "Usage";
 "Close" = "Close";
