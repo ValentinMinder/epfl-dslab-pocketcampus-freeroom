@@ -40,7 +40,7 @@ NSString* const kNewsFeedItemImageUrlParameterY = @"{y}";
 }
 
 - (BOOL)isEqualToNewsFeedItem:(NewsFeedItem*)otherItem {
-    return (self.itemId == otherItem.itemId && [self.title isEqualToString:otherItem.title]);
+    return [self.title isEqualToString:otherItem.title];
 }
 
 - (BOOL)isEqual:(id)object {
@@ -55,7 +55,6 @@ NSString* const kNewsFeedItemImageUrlParameterY = @"{y}";
 
 - (NSUInteger)hash {
     NSUInteger hash = 0;
-    hash += (NSUInteger)self.itemId;
     hash += [self.title hash];
     return hash;
 }
