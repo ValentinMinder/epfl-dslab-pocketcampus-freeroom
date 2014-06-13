@@ -133,10 +133,16 @@ static NSCache* attrStringCache = nil;
 
 + (NSAttributedString*)attributedStringForPerson:(Person*)person {
     
-    /*static dispatch_once_t onceToken;
+    static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         attrStringCache = [NSCache new];
-    });*/
+    });
+    
+    NSString* cacheKey = person.sciper;
+    
+    if (attrStringCache[cacheKey]) {
+        return attrStringCache[cacheKey];
+    }
     
     NSString* firstLastName = person.fullFirstnameLastname;
     NSString* organizations = person.rolesString;
@@ -160,7 +166,9 @@ static NSCache* attrStringCache = nil;
         }];
     }
     
-    [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:[finalString rangeOfString:organizations]];
+    [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:[finalString rangeOfString:organizations]];
+    
+    attrStringCache[cacheKey] = attrString;
     
     return attrString;
 }
