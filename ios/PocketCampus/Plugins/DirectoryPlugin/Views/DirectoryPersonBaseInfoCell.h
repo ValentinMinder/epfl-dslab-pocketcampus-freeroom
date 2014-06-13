@@ -25,16 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 25.09.13.
-
-
-
-#import <UIKit/UIKit.h>
 
 #import "DirectoryService.h"
 
@@ -59,6 +50,6 @@ typedef enum {
 
 - (id)initWithDirectoryPersonBaseInfoCellStyle:(DirectoryPersonBaseInfoCellStyle)style reuseIdentifer:(NSString*)reuseIdentifier;
 
-+ (CGFloat)heightForStyle:(DirectoryPersonBaseInfoCellStyle)style;
++ (CGFloat)preferredHeightForStyle:(DirectoryPersonBaseInfoCellStyle)style person:(Person*)person;
 
 @end

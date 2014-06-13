@@ -127,7 +127,7 @@ static CGFloat kRowHeight;
             self.tableView.hidden = YES;
             return;
         }
-        DirectoryRequest* req = [[DirectoryRequest alloc] initWithQuery:self.fullNameToSearch directorySession:nil resultSetCookie:nil];
+        DirectoryRequest* req = [[DirectoryRequest alloc] initWithQuery:self.fullNameToSearch language:[PCUtils userLanguageCode] resultSetCookie:nil];
         [self.directoryService searchForRequest:req delegate:self];
         [self.loadingIndicator startAnimating];
         self.tableView.hidden = YES;
@@ -314,7 +314,7 @@ static CGFloat kRowHeight;
     }
     switch (indexPath.section) {
         case kPersonBaseInfoSection:
-            return [DirectoryPersonBaseInfoCell heightForStyle:DirectoryPersonBaseInfoCellStyleLarge];
+            return [DirectoryPersonBaseInfoCell preferredHeightForStyle:DirectoryPersonBaseInfoCellStyleLarge person:self.person];
     }
     return kRowHeight;
 }

@@ -45,7 +45,9 @@
  */
 @property (nonatomic, readonly) NSString* firstnameLastname;
 
-@property (nonatomic, readonly) NSString* organizationsString;
+@property (nonatomic, readonly) NSString* organizationalUnitsStrings;
+
+@property (nonatomic, readonly) NSString* rolesString;
 
 /*
  * Returns what is before the @ (loic.gardiol@epfl.ch => loic.gardiol)

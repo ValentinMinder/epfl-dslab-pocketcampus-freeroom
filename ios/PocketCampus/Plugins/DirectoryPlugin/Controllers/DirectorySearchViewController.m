@@ -260,7 +260,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
         return;
     }
     [self.barActivityIndicator startAnimating];
-    DirectoryRequest* request = [[DirectoryRequest alloc] initWithQuery:self.searchBar.text directorySession:nil resultSetCookie:nil];
+    DirectoryRequest* request = [[DirectoryRequest alloc] initWithQuery:self.searchBar.text language:[PCUtils userLanguageCode] resultSetCookie:nil];
     [self.directoryService searchForRequest:request delegate:self];
 }
 
@@ -443,7 +443,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
         }
         [activityIndicatorView startAnimating];
         [self.directoryService cancelOperationsForDelegate:self];
-        [self.directoryService searchForRequest:[[DirectoryRequest alloc] initWithQuery:searchString directorySession:nil resultSetCookie:nil] delegate:self];
+        [self.directoryService searchForRequest:[[DirectoryRequest alloc] initWithQuery:searchString language:[PCUtils userLanguageCode] resultSetCookie:nil] delegate:self];
         [self.searchBar resignFirstResponder];
     } else {
         //Unsupported mode
@@ -475,7 +475,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
             }
             Person* person = self.searchResults[indexPath.row];
             cell.textLabel.text = person.firstnameLastname;
-            cell.detailTextLabel.text = person.organizationsString;
+            cell.detailTextLabel.text = person.organizationalUnitsStrings;
             NSURL* url = person.pictureUrl ? [NSURL URLWithString:person.pictureUrl] : nil;
             [self.tableView setImageURL:url forCell:cell atIndexPath:indexPath];
             break;

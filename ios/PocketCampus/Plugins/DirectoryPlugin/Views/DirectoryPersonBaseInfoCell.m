@@ -27,6 +27,8 @@
 
 //  Created by Loïc Gardiol on 25.09.13.
 
+@import CoreText;
+
 #import "DirectoryPersonBaseInfoCell.h"
 
 #import "Person+Extras.h"
@@ -52,6 +54,8 @@
 
 @implementation DirectoryPersonBaseInfoCell
 
+#pragma mark - Init
+
 - (id)initWithDirectoryPersonBaseInfoCellStyle:(DirectoryPersonBaseInfoCellStyle)style reuseIdentifer:(NSString*)reuseIdentifier; {
     self = [[NSBundle mainBundle] loadNibNamed:@"DirectoryPersonBaseInfoCell" owner:self options:nil][0];
     if (self) {
@@ -74,8 +78,17 @@
     return self;
 }
 
-+ (CGFloat)heightForStyle:(DirectoryPersonBaseInfoCellStyle)style {
-    return 106.0;
+#pragma mark - Public
+
++ (CGFloat)preferredHeightForStyle:(DirectoryPersonBaseInfoCellStyle)style person:(Person*)person {
+    [PCUtils throwExceptionIfObject:person notKindOfClass:[Person class]];
+    NSAttributedString* attrString = [self attributedStringForPerson:person];
+    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attrString);
+    CGSize targetSize = CGSizeMake(206.0, CGFLOAT_MAX); //account for text left and right insets of the text view
+    CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, [attrString length]), NULL, targetSize, NULL);
+    CFRelease(framesetter);
+    static CGFloat const kMinHeight = 106.0;
+    return size.height > kMinHeight ? size.height + 20.0 : kMinHeight;
 }
 
 - (void)setPerson:(Person *)person {
@@ -111,23 +124,48 @@
         [self noProfilePictureOrError];
     }
     
+    self.titleLabel.attributedText = [self.class attributedStringForPerson:person];
+}
+
+#pragma mark - Private
+
+static NSCache* attrStringCache = nil;
+
++ (NSAttributedString*)attributedStringForPerson:(Person*)person {
     
-    NSString* firstLastName = self.person.fullFirstnameLastname;
-    NSString* organizations = self.person.organizationsString;
+    /*static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        attrStringCache = [NSCache new];
+    });*/
+    
+    NSString* firstLastName = person.fullFirstnameLastname;
+    NSString* organizations = person.rolesString;
     NSString* finalString = [NSString stringWithFormat:@"%@\n%@", firstLastName, organizations];
     
     NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:finalString];
     
     [attrString setAttributes:[NSDictionary dictionaryWithObject:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] forKey:NSFontAttributeName] range:[finalString rangeOfString:firstLastName]];
     
-    [attrString setAttributes:[NSDictionary dictionaryWithObject:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] forKey:NSFontAttributeName] range:[finalString rangeOfString:organizations]];
+    UIFont* footnoteFont = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    UIFont* bolderFootnoteFont = [UIFont boldSystemFontOfSize:footnoteFont.pointSize];
+    
+    
+    [attrString setAttributes:@{NSFontAttributeName:footnoteFont} range:[finalString rangeOfString:organizations]];
+    
+    for (DirectoryPersonRole* role in person.roles.allValues) {
+        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:role.localizedTitle options:0 error:nil];
+        
+        [regex enumerateMatchesInString:finalString options:0 range:NSMakeRange(0, finalString.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+            [attrString addAttribute:NSFontAttributeName value:bolderFootnoteFont range:result.range];
+        }];
+    }
     
     [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:[finalString rangeOfString:organizations]];
     
-    self.titleLabel.attributedText = attrString;
+    return attrString;
 }
 
-#pragma mark - ImageView stuff
+#pragma mark ImageView stuff
 
 - (void)noProfilePictureOrError {
     self.profilePictureImageView.layer.borderWidth = 1.0;
