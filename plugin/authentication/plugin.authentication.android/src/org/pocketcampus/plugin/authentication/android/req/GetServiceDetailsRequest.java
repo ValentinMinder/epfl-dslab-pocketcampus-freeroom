@@ -49,7 +49,6 @@ public class GetServiceDetailsRequest extends Request<AuthenticationController, 
 						orgs.put(key, val);
 				}
 			}
-			System.out.println("" + orgs);
 			((AuthenticationModel) controller.getModel()).setServiceOrgs(orgs);
 			controller.fetchedServiceDetails();
 		} else {

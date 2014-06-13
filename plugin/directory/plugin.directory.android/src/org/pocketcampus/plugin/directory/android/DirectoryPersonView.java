@@ -13,6 +13,7 @@ import org.pocketcampus.android.platform.sdk.utils.Preparated;
 import org.pocketcampus.android.platform.sdk.utils.Preparator;
 import org.pocketcampus.plugin.directory.R;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
+import org.pocketcampus.plugin.directory.shared.DirectoryPersonRole;
 import org.pocketcampus.plugin.directory.shared.Person;
 
 import android.content.Intent;
@@ -156,7 +157,7 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 
 		Preparated<Person> pp = new Preparated<Person>(Arrays.asList(new Person[]{p}), new Preparator<Person>() {
 			public int[] resources() {
-				return new int[] { R.id.directory_person_details_picture, R.id.directory_person_details_name, R.id.directory_person_details_affiliation };
+				return new int[] { R.id.directory_person_details_picture, R.id.directory_person_details_name, R.id.directory_person_details_affiliation, R.id.directory_person_details_expanded_affiliation };
 			}
 			public Object content(int res, final Person e) {
 				switch (res) {
@@ -173,6 +174,8 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + e.getSciper() + "&show=1")));
 						}
 					});
+				case R.id.directory_person_details_expanded_affiliation:
+					return getOrgUnitsString(e);
 				default:
 					return null;
 				}
@@ -197,8 +200,11 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 			//ic_dialog_email, ic_menu_send
 			actions.add(new PersonInteraction(R.drawable.directory_mail, p.getEmail(), Uri.parse("mailto:" + p.getEmail()), "SendEmail"));
 		}
-		if(p.isSetWeb()) {
+		if(p.isSetHomepages() && p.getHomepages().containsKey("Personal profile")) {
 			//ic_dialog_info, ic_menu_info_details
+			String homepage = p.getHomepages().get("Personal profile");
+			actions.add(new PersonInteraction(R.drawable.directory_web, homepage, Uri.parse(homepage), "ViewWebsite"));
+		} else if(p.isSetWeb()) {
 			actions.add(new PersonInteraction(R.drawable.directory_web, p.getWeb(), Uri.parse(p.getWeb()), "ViewWebsite"));
 		}
 		if(p.isSetOffice()) {
@@ -310,5 +316,14 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 		finish();
 	}
 
+	private static String getOrgUnitsString(Person p) {
+		if(!p.isSetRoles())
+			return null;
+		List<String> roles = new LinkedList<String>();
+		for(DirectoryPersonRole r : p.getRoles().values()) {
+			roles.add("<b>&bull; <i>" + r.getLocalizedTitle() + "</i></b> &mdash; " + r.getExtendedLocalizedUnit() + "");
+		}
+		return TextUtils.join("<br>",  roles);
+	}
 	
 }

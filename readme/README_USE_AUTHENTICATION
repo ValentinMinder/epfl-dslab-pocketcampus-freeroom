@@ -69,3 +69,69 @@ Finally you should handle the following actions in your onStartCommand function 
 
 
 For more info, take a look at the Camipro plugin or Moodle plugin.
+
+ ***************** USING THE *NEW* AUTHENTICATION PLUGIN *****************
+           @Author:    Amer C (amer.chamseddine@epfl.ch)
+ =========================================================================
+
+In addition, in the manifest
+
+		
+	<receiver android:name="org.pocketcampus.plugin.moodle.android.MoodleController$AuthListener" >
+		<intent-filter>
+			<action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
+		</intent-filter>
+	</receiver>
+		   
+
+In the code,
+
+
+	public static class AuthListener extends AuthenticationListener {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			super.onReceive(context, intent);
+			Log.v("DEBUG", "MoodleController$AuthListener auth finished");
+			Intent intenteye = new Intent("org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED", 
+					Uri.parse("pocketcampus://moodle.plugin.pocketcampus.org/auth_finished"));
+			if(intent.getIntExtra("selfauthok", 0) != 0)
+				intenteye.putExtra("selfauthok", 1);
+			if(intent.getIntExtra("usercancelled", 0) != 0)
+				intenteye.putExtra("usercancelled", 1);
+			context.startService(intenteye);
+		}
+	};
+
+
+In onStartCommand
+
+		if("org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED".equals(aIntent.getAction())) {
+			Bundle extras = aIntent.getExtras();
+			if(extras != null && extras.getInt("selfauthok") != 0) {
+				Log.v("DEBUG", "MoodleController::onStartCommand auth succ");
+				mClient = (Iface) getClient(new Client.Factory(), mPluginName); // need to recreate thrift client coz old one will not have the sessId http header attached
+				mModel.getListenersToNotify().authenticationFinished();
+			} else if(extras != null && extras.getInt("usercancelled") != 0) {
+				Log.v("DEBUG", "MoodleController::onStartCommand user cancelled");
+				mModel.getListenersToNotify().userCancelledAuthentication();
+			} else {
+				Log.v("DEBUG", "MoodleController::onStartCommand auth failed");
+				mModel.getListenersToNotify().authenticationFailed();
+			}
+		}
+		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
+			Log.v("DEBUG", "MoodleController::onStartCommand logout");
+			RequestCache.invalidateCache(this, CoursesListRequest.class.getCanonicalName());
+			RequestCache.invalidateCache(this, SectionsListRequest.class.getCanonicalName());
+			deleteRecursive(new File(getMoodleFilesPath()));
+		}
+
+
+
+To start the authentication (after you get a TequilaToken from your own server), use
+
+	Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+			Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticate"));
+	authIntent.putExtra("selfauth", true);
+	context.startService(authIntent);
+

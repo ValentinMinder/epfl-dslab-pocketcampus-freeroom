@@ -56,12 +56,8 @@ public abstract class PluginController extends Service {
 			THttpClient httpClient = new THttpClient(url, httpInitialClient);
 			httpClient.setConnectTimeout(5000);
 			httpClient.setReadTimeout(60000);
-			httpClient.setCustomHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_OS, "ANDROID");
-			httpClient.setCustomHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_TOKEN, ((GlobalContext) getApplicationContext()).getPushNotifToken());
 			
-			String pcSessionId = ((GlobalContext) getApplicationContext()).getPcSessionId();
-			if(pcSessionId != null)
-				httpClient.setCustomHeader(PcConstants.HTTP_HEADER_AUTH_PCSESSID, pcSessionId);
+			attachExtraHeaders(httpClient);
 
 			TProtocol protocol = new TBinaryProtocol(httpClient);
 			client = clientFactory.getClient(protocol);
@@ -80,20 +76,38 @@ public abstract class PluginController extends Service {
 	
 	protected HttpGet getHttpGet(String pluginName) { // raw
 		HttpGet get = new HttpGet(getBackendUrl(pluginName, true));
-		attachPcSession(get);
+		attachExtraHeaders(get);
 		return get;
 	}
 	
 	protected HttpPost getHttpPost(String pluginName) { // raw
 		HttpPost post = new HttpPost(getBackendUrl(pluginName, true));
-		attachPcSession(post);
+		attachExtraHeaders(post);
 		return post;
 	}
 	
-	private void attachPcSession(HttpRequestBase reqObj) {
+	private void attachExtraHeaders(HttpRequestBase reqObj) {
+		String pushNotifToken = ((GlobalContext) getApplicationContext()).getPushNotifToken();
+		if(pushNotifToken != null) {
+			reqObj.setHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_OS, "ANDROID");
+			reqObj.setHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_TOKEN, pushNotifToken);
+		}
 		String pcSessionId = ((GlobalContext) getApplicationContext()).getPcSessionId();
-		if(pcSessionId != null)
+		if(pcSessionId != null) {
 			reqObj.setHeader(PcConstants.HTTP_HEADER_AUTH_PCSESSID, pcSessionId);
+		}
+	}
+
+	private void attachExtraHeaders(THttpClient client) {
+		String pushNotifToken = ((GlobalContext) getApplicationContext()).getPushNotifToken();
+		if(pushNotifToken != null) {
+			client.setCustomHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_OS, "ANDROID");
+			client.setCustomHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_TOKEN, pushNotifToken);
+		}
+		String pcSessionId = ((GlobalContext) getApplicationContext()).getPcSessionId();
+		if(pcSessionId != null) {
+			client.setCustomHeader(PcConstants.HTTP_HEADER_AUTH_PCSESSID, pcSessionId);
+		}
 	}
 
 	/**

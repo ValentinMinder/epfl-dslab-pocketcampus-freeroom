@@ -155,26 +155,21 @@ public abstract class PluginView extends Activity {
 		// ActionBar when a request is running.
 		RequestActivityListener activityListener = new RequestActivityListener() {
 			@Override
-			public void requestStarted() {
+			public void requestsChanged(int count) {
 				if (mActionBar == null) {
 					return;
 				}
 
-				mActionBar.setProgressBarVisibility(View.VISIBLE);
+				mActionBar.setProgressBarVisibility(count == 0 ? View.GONE : View.VISIBLE);
 			}
 
-			@Override
-			public void requestStopped() {
-				if (mActionBar == null) {
-					return;
-				}
-
-				mActionBar.setProgressBarVisibility(View.GONE);
-			}
 		};
 
 		GlobalContext globalContext = (GlobalContext) getApplicationContext();
 		globalContext.setRequestActivityListener(activityListener);
+		
+		// update the action bar in case a request is already running from another plugin
+		activityListener.requestsChanged(globalContext.getRequestsCount());
 		
 		GATracker.getInstance().sendScreen(screenName());
 	}

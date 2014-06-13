@@ -11,10 +11,4 @@ import org.pocketcampus.android.platform.sdk.core.IView;
  *
  */
 public interface IPushNotifView extends IView {
-		
-	/**
-	 * Display errors and notices.
-	 */
-	void networkErrorHappened();
-	
 }

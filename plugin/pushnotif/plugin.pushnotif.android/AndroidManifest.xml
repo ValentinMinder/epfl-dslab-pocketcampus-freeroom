@@ -34,8 +34,6 @@
 		<service android:name="org.pocketcampus.plugin.pushnotif.android.PushNotifController"
 			xmlns:android="http://schemas.android.com/apk/res/android">
 			<intent-filter>
-				<action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
-				<action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
 				
 				<action android:name="org.pocketcampus.plugin.pushnotif.GCM_INTENT" />
 				<action android:name="org.pocketcampus.plugin.pushnotif.REGISTER_FOR_PUSH" />
@@ -47,13 +45,7 @@
 		</service>
         
 		    
-
-		<receiver android:name="org.pocketcampus.plugin.pushnotif.android.PushNotifController$Logouter" >
-            <intent-filter>
-                <action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
-            </intent-filter>
-        </receiver>		    
-		    		
+	
 		
 		<receiver android:name="org.pocketcampus.plugin.pushnotif.gcm.PCGCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
 			<intent-filter>
@@ -79,7 +71,7 @@
 			    android:label="@string/pushnotif_permission_label"
 			    android:name="org.pocketcampus.permissions.USE_PC_PUSHNOTIF"
 			    android:permissionGroup="org.pocketcampus.permission_groups.PUSHNOTIF"
-			    android:protectionLevel="dangerous" />
+			    android:protectionLevel="signature" />
 	
     
 	<permission android:name="org.pocketcampus.plugin.pushnotif.permission.C2D_MESSAGE" android:protectionLevel="signature" />
@@ -96,7 +88,6 @@
 	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />	
 	
-	<uses-permission android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA" />
 	<uses-permission android:name="org.pocketcampus.permissions.USE_PC_PUSHNOTIF" />
 
 </manifest>

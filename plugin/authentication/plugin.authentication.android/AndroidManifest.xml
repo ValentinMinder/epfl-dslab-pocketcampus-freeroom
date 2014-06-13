@@ -59,25 +59,33 @@
 			    
 		</activity>
 		
+		<activity
+		     android:name="org.pocketcampus.plugin.authentication.android.AuthenticationStatusView"
+			android:screenOrientation="nosensor">
+		    
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="pocketcampus" 
+				    android:host="authentication.plugin.pocketcampus.org"  
+				    android:pathPrefix="/status" />
+			</intent-filter>
+		    
+		</activity>
+		
 		<service android:name="org.pocketcampus.plugin.authentication.android.AuthenticationController"
 		    android:permission="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA"
 			xmlns:android="http://schemas.android.com/apk/res/android">
 			<intent-filter>
 				<action android:name="org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE" />
-				<action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
 				<category android:name="org.pocketcampus.plugin.authentication" />
 				<data android:scheme="pocketcampus" android:host="authentication.plugin.pocketcampus.org" />
 			</intent-filter>
 		    		    
 		</service>
             
-		    
-		<receiver android:name="org.pocketcampus.plugin.authentication.android.AuthenticationController$Logouter" >
-            <intent-filter>
-                <action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
-            </intent-filter>
-        </receiver>		    
-		    
+		  
 		    
     </application>
     
@@ -91,7 +99,7 @@
 			    android:label="@string/authentication_permission_label"
 			    android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA"
 			    android:permissionGroup="org.pocketcampus.permission_groups.AUTHENTICATION"
-			    android:protectionLevel="dangerous" />
+			    android:protectionLevel="signature" />
         
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

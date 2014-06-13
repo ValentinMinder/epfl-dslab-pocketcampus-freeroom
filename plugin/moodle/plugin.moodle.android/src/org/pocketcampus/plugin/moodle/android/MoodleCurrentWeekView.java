@@ -96,9 +96,11 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 			}
 		}
 		
-		mController.refreshCourseSections(this, courseId, false);
+		if(MoodleController.sessionExists(this))
+			mController.refreshCourseSections(this, courseId, false);
+		else
+			MoodleController.pingAuthPlugin(this);
 
-		//updateDisplay(); // might contain data for a different course
 	}
 
 	/**
@@ -189,26 +191,12 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 				}
 			}
 		});
-//		fillerView.setOnItemLongClickListener(new OnItemLongClickListener() {
-//			@Override
-//			public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//				Intent i = new Intent(MoodleCurrentWeekView.this, MoodleCourseSectionsView.class);
-//				i.putExtra("courseId", courseId);
-//				i.putExtra("courseTitle", courseTitle);
-//				MoodleCurrentWeekView.this.startActivity(i);
-//				return true;
-//			}
-//		});
 		
 		mLayout.hideTitle();
 		mLayout.removeFillerView();
 		mLayout.addFillerView(fillerView);
 	}
 
-	/*private void updateDisplay() {
-		sectionsListUpdated();
-	}*/
-	
 	@Override
 	public void networkErrorHappened() {
 		Toast.makeText(getApplicationContext(), getResources().getString(

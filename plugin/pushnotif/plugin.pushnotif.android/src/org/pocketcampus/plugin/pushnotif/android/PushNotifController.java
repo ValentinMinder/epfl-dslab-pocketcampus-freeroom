@@ -2,23 +2,16 @@ package org.pocketcampus.plugin.pushnotif.android;
 
 import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
 
-import org.pocketcampus.android.platform.sdk.core.GlobalContext;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.android.platform.sdk.core.PushNotificationListener;
 import org.pocketcampus.plugin.pushnotif.android.iface.IPushNotifController;
-import org.pocketcampus.plugin.pushnotif.android.req.DeleteMappingRequest;
-import org.pocketcampus.plugin.pushnotif.android.PushNotifModel;
-import org.pocketcampus.plugin.pushnotif.shared.PushNotifService.Client;
-import org.pocketcampus.plugin.pushnotif.shared.PushNotifService.Iface;
 
-import com.google.android.gcm.GCMRegistrar;
-
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.google.android.gcm.GCMRegistrar;
 
 /**
  * PushNotifController - Main logic for the PushNotif Plugin.
@@ -31,51 +24,22 @@ import android.util.Log;
  */
 public class PushNotifController extends PluginController implements IPushNotifController{
 
-	public static class Logouter extends BroadcastReceiver {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			// No, why do we have to delete the mapping if the user logs out?
-			// Some plugins use pushnotif without requiring auth!
-//			Log.v("DEBUG", "PushNotifController$Logouter logging out");
-//			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.LOGOUT",
-//					Uri.parse("pocketcampus://pushnotif.plugin.pocketcampus.org/logout"));
-//			context.startService(authIntent);
-		}
-	};
-
-	/**
-	 *  This name must match given in the Server.java file in plugin.launcher.server.
-	 *  It's used to route the request to the right server implementation.
-	 */
-	private String mPluginName = "pushnotif";
-	
 	/**
 	 * Stores reference to the Model associated with this plugin.
 	 */
 	private PushNotifModel mModel;
 	
-	/**
-	 * HTTP Clients used to communicate with the PocketCampus server.
-	 * Use thrift to transport the data.
-	 */
-	private Iface mClient;
-
-	private String callbackUrl = null;
+	private String pushToken = null;
 	
 	@Override
 	public void onCreate() {
 		mModel = new PushNotifModel(getApplicationContext());
-		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 	}
 	
 	@Override
 	public int onStartCommand(Intent aIntent, int flags, int startId) {
 		Bundle extras = aIntent.getExtras();
-		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
-			// Never called
-//			Log.v("DEBUG", "PushNotifController::onStartCommand logout");
-//			new DeleteMappingRequest().start(this, mClient, "dummy");
-		} else if("org.pocketcampus.plugin.pushnotif.GCM_INTENT".equals(aIntent.getAction())) {
+		if("org.pocketcampus.plugin.pushnotif.GCM_INTENT".equals(aIntent.getAction())) {
 			if(extras != null && extras.getString("registrationid") != null) {
 				Log.v("DEBUG", "PushNotifController::onStartCommand regisration_id ok");
 				setRegistrationIdAndStop(extras.getString("registrationid"));
@@ -88,8 +52,6 @@ public class PushNotifController extends PluginController implements IPushNotifC
 			}
 		} else if("org.pocketcampus.plugin.pushnotif.REGISTER_FOR_PUSH".equals(aIntent.getAction())) {
 			Log.v("DEBUG", "PushNotifController::onStartCommand received request to register");
-			if(extras != null && extras.getString("callbackurl") != null)
-				callbackUrl = extras.getString("callbackurl");
 			startRegistrationProcess();
 		} else {
 			Log.v("DEBUG", "PushNotifController::onStartCommand malformed action");
@@ -125,25 +87,17 @@ public class PushNotifController extends PluginController implements IPushNotifC
 	}
 	
 	public void setRegistrationIdAndStop(String val) {
-		((GlobalContext) getApplicationContext()).setPushNotifToken(val);
+		pushToken = val;
 		pingBackAndStop("succeeded");
 	}
 	
-	public void deleteMappingReqFinished() {
-		Log.v("DEBUG", "PushNotifController::deleteMappingReqFinished");
-		stopSelf();
-	}
-	
 	private void pingBackAndStop(String extra) {
-		if(callbackUrl == null) {
-			Log.v("DEBUG", "PushNotifController::pingBack SORRY we don't have a callbackUrl");
-			stopSelf();
-			return;
-		}
-		Intent intenteye = new Intent("org.pocketcampus.plugin.pushnotif.REGISTRATION_FINISHED", Uri.parse(callbackUrl));
+		Intent intent = new Intent();
+		intent.setAction("org.pocketcampus.plugin.pushnotif.REGISTRATION_FINISHED");
+		intent.putExtra(PushNotificationListener.PUSH_NOTIF_TOKEN_EXTRA, pushToken);
 		if(extra != null)
-			intenteye.putExtra(extra, 1); // failed or succeeded
-		startService(intenteye);
+			intent.putExtra(extra, 1);
+		sendBroadcast(intent, "org.pocketcampus.permissions.USE_PC_PUSHNOTIF"); 
 		stopSelf();
 	}
 

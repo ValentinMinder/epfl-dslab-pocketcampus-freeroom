@@ -116,6 +116,27 @@ public class SessionManagerImpl implements SessionManager {
 		
 	}
 	
+	@Override
+	public Integer destroySessions(String sciper) {
+		PreparedStatement sqlStm = null;
+		try {
+			sqlStm = mConnectionManager.getConnection().prepareStatement("DELETE FROM `authsessions` WHERE `sciper` = ?");
+			sqlStm.setString(1, sciper);
+			return sqlStm.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[auth] Problem while destroying sessions");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (sqlStm != null)
+					sqlStm.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
 	private Runnable getCleaner() {
 		return new Runnable() {
 			public void run() {
