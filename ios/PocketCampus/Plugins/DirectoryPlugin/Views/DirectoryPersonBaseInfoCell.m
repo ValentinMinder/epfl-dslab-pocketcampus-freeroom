@@ -28,6 +28,9 @@
 //  Created by Loïc Gardiol on 25.09.13.
 
 @import CoreText;
+@import QuartzCore;
+
+#import <TTTAttributedLabel/TTTAttributedLabel.h>
 
 #import "DirectoryPersonBaseInfoCell.h"
 
@@ -37,9 +40,7 @@
 
 #import "UIImageView+AFNetworking.h"
 
-#import <QuartzCore/QuartzCore.h>
-
-@interface DirectoryPersonBaseInfoCell ()
+@interface DirectoryPersonBaseInfoCell ()<TTTAttributedLabelDelegate>
 
 @property (nonatomic, strong) DirectoryService* directoryService;
 
@@ -48,7 +49,7 @@
 @property (nonatomic, readwrite, strong) UIImage* profilePicture;
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* imageLoadingIndicator;
-@property (nonatomic, strong) IBOutlet UILabel* titleLabel;
+@property (nonatomic, strong) IBOutlet TTTAttributedLabel* titleLabel;
 
 @end
 
@@ -74,6 +75,8 @@
         self.backgroundView = backgroundView;
         self.backgroundColor = [UIColor clearColor];
         self.separatorInset = UIEdgeInsetsMake(0, 50, 0, 0);
+        self.titleLabel.delegate = self;
+        self.titleLabel.linkAttributes = @{NSForegroundColorAttributeName:[PCValues pocketCampusRed],  NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle)};
     }
     return self;
 }
@@ -89,7 +92,7 @@
 
 + (CGFloat)preferredHeightForStyle:(DirectoryPersonBaseInfoCellStyle)style person:(Person*)person inTableView:(UITableView*)tableView {
     [PCUtils throwExceptionIfObject:person notKindOfClass:[Person class]];
-    NSAttributedString* attrString = [self attributedStringForPerson:person];
+    NSAttributedString* attrString = [self attributedStringAndSetAttributedTextOfTTTAttributedLabel:nil forPerson:person];
     CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attrString);
     CGSize targetSize = CGSizeMake(tableView.frame.size.width - 110.0, CGFLOAT_MAX); //account for text left and right insets of the text view
     CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, [attrString length]), NULL, targetSize, NULL);
@@ -132,14 +135,23 @@
         [self noProfilePictureOrError];
     }
     
-    self.titleLabel.attributedText = [self.class attributedStringForPerson:person];
+    [self.class attributedStringAndSetAttributedTextOfTTTAttributedLabel:self.titleLabel forPerson:person];
+    
+}
+
+#pragma mark - TTTAttributedLabelDelegate
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+    if (self.unitTappedBlock) {
+        self.unitTappedBlock(url);
+    }
 }
 
 #pragma mark - Private
 
 static NSCache* attrStringCache = nil;
 
-+ (NSAttributedString*)attributedStringForPerson:(Person*)person {
++ (NSAttributedString*)attributedStringAndSetAttributedTextOfTTTAttributedLabel:(TTTAttributedLabel*)label forPerson:(Person*)person {
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -148,7 +160,7 @@ static NSCache* attrStringCache = nil;
     
     NSString* cacheKey = person.sciper;
     
-    if (attrStringCache[cacheKey]) {
+    if (attrStringCache[cacheKey] && !label) {
         return attrStringCache[cacheKey];
     }
     
@@ -167,14 +179,28 @@ static NSCache* attrStringCache = nil;
     [attrString setAttributes:@{NSFontAttributeName:footnoteFont} range:[finalString rangeOfString:organizations]];
     
     for (DirectoryPersonRole* role in person.roles.allValues) {
-        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:role.localizedTitle options:0 error:nil];
-        
-        [regex enumerateMatchesInString:finalString options:0 range:NSMakeRange(0, finalString.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+        NSRegularExpression* titleRegex = [NSRegularExpression regularExpressionWithPattern:role.localizedTitle options:0 error:nil];
+        [titleRegex enumerateMatchesInString:finalString options:0 range:NSMakeRange(0, finalString.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
             [attrString addAttribute:NSFontAttributeName value:bolderFootnoteFont range:result.range];
         }];
     }
     
     [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:[finalString rangeOfString:organizations]];
+    
+    if (label) {
+        [label setText:nil afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+            return attrString;
+        }];
+        [person.roles enumerateKeysAndObjectsUsingBlock:^(NSString* unit, DirectoryPersonRole* role, BOOL *stop) {
+            NSRange range = [finalString rangeOfString:role.extendedLocalizedUnit];
+            if (range.location != NSNotFound) {
+                NSURL* url = [Person directoryWebpageURLForUnit:unit];
+                if (url) {
+                    [label addLinkToURL:url withRange:range];
+                }
+            }
+        }];
+    }
     
     attrStringCache[cacheKey] = attrString;
     

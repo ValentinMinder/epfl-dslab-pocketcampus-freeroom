@@ -184,6 +184,8 @@
 		3281AB8216E221F700D8FAD1 /* EventItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3281AB8116E221F700D8FAD1 /* EventItemViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3281AB8316E2254600D8FAD1 /* EventItemView.xib */; };
 		3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3282C283181179E2002A4FAE /* EventsLarge@2x.png */; };
+		32875E5F194CF2EF0071CDF8 /* PCWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32875E5E194CF2EF0071CDF8 /* PCWebViewController.m */; };
+		32875E61194CF3100071CDF8 /* PCWebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32875E60194CF3100071CDF8 /* PCWebView.xib */; };
 		328860B9183B63590098C857 /* FoodModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 328860B8183B63590098C857 /* FoodModelAdditions.m */; };
 		328869AC14FE5AF400CC97DB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3288699214FE5AF300CC97DB /* AppDelegate.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		328872C71534D82C00330B54 /* TransportTripsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328872C61534D82C00330B54 /* TransportTripsListViewController.m */; };
@@ -644,6 +646,9 @@
 		3281AB8116E221F700D8FAD1 /* EventItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EventItemViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		3281AB8316E2254600D8FAD1 /* EventItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventItemView.xib; sourceTree = "<group>"; };
 		3282C283181179E2002A4FAE /* EventsLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EventsLarge@2x.png"; sourceTree = "<group>"; };
+		32875E5D194CF2EF0071CDF8 /* PCWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCWebViewController.h; sourceTree = "<group>"; };
+		32875E5E194CF2EF0071CDF8 /* PCWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCWebViewController.m; sourceTree = "<group>"; };
+		32875E60194CF3100071CDF8 /* PCWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PCWebView.xib; sourceTree = "<group>"; };
 		328860B7183B63590098C857 /* FoodModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodModelAdditions.h; sourceTree = "<group>"; };
 		328860B8183B63590098C857 /* FoodModelAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodModelAdditions.m; sourceTree = "<group>"; };
 		3288699114FE5AF300CC97DB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AppDelegate.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -1561,6 +1566,7 @@
 				329C52AD187EE6200045ECB8 /* UISearchBar+Additions.m */,
 				329C52AF187EE6600045ECB8 /* UIView+Additions.h */,
 				329C52B0187EE6600045ECB8 /* UIView+Additions.m */,
+				32875E60194CF3100071CDF8 /* PCWebView.xib */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1677,6 +1683,8 @@
 				32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */,
 				329CF4BC187ABC2C00062C98 /* UIViewController+Additions.h */,
 				329CF4BD187ABC2C00062C98 /* UIViewController+Additions.m */,
+				32875E5D194CF2EF0071CDF8 /* PCWebViewController.h */,
+				32875E5E194CF2EF0071CDF8 /* PCWebViewController.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2474,6 +2482,7 @@
 				32CCB4F01555237500220282 /* Moodle@2x.png in Resources */,
 				32342A8117F43347009C05FA /* DirectoryEmptyPicture@2x.png in Resources */,
 				32CCB500155546C100220282 /* NewsPlugin.strings in Resources */,
+				32875E61194CF3100071CDF8 /* PCWebView.xib in Resources */,
 				32CCB510155567CB00220282 /* News.png in Resources */,
 				32CCB511155567CB00220282 /* News@2x.png in Resources */,
 				3297E017155571F80054F790 /* NewsLarge.png in Resources */,
@@ -2763,6 +2772,7 @@
 				325C47AE1621E91A006752B4 /* MainController.m in Sources */,
 				32797ABC1877050B005A19FD /* NSCache+LGAdditions.m in Sources */,
 				324ADABF191A3A36000737E7 /* PCTileOverlay.m in Sources */,
+				32875E5F194CF2EF0071CDF8 /* PCWebViewController.m in Sources */,
 				32CBF0631634812C00FD92E5 /* PCSplashViewController.m in Sources */,
 				32DE5B2817F2003800E03423 /* NSLayoutConstraint+LGAdditions.m in Sources */,
 				32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */,

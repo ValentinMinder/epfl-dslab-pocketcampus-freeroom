@@ -42,6 +42,8 @@
 
 #import "DirectoryPersonBaseInfoCell.h"
 
+#import "PCWebViewController.h"
+
 static const int kPersonBaseInfoSection = 0;
 static const int kPhonesSection = 1;
 static const int kEmailSection = 2;
@@ -392,6 +394,9 @@ static CGFloat kRowHeight;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+    if (indexPath.section == kPersonBaseInfoSection) {
+        return NO;
+    }
     if ([NSStringFromSelector(action) isEqualToString:@"copy:"]) {
         return YES;
     }
@@ -443,6 +448,11 @@ static CGFloat kRowHeight;
             secretTapGesture.numberOfTapsRequired = 3;
             secretTapGesture.numberOfTouchesRequired = 2;
             [self.personBaseInfoCell.contentView addGestureRecognizer:secretTapGesture];
+            __weak __typeof(self) welf = self;
+            [self.personBaseInfoCell setUnitTappedBlock:^(NSURL* unitURL) {
+                 PCWebViewController* webViewController = [[PCWebViewController alloc] initWithURL:unitURL title:nil];
+                [welf.navigationController pushViewController:webViewController animated:YES];
+            }];
         }
         self.personBaseInfoCell.person = self.person;
         return self.personBaseInfoCell;

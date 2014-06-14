@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,40 +22,59 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 25.09.13.
+//  Created by Loïc Gardiol on 14.06.14.
 
-#import "DirectoryService.h"
+#import "PCWebViewController.h"
 
-typedef enum {
-    DirectoryPersonBaseInfoCellStyleLarge = 0,
-    DirectoryPersonBaseInfoCellStyleSmall = 1
-} DirectoryPersonBaseInfoCellStyle;
+@interface PCWebViewController ()<UIWebViewDelegate>
 
-@interface DirectoryPersonBaseInfoCell : UITableViewCell
+@property (nonatomic, strong) IBOutlet UIWebView* webView;
 
-- (id)initWithDirectoryPersonBaseInfoCellStyle:(DirectoryPersonBaseInfoCellStyle)style reuseIdentifer:(NSString*)reuseIdentifier;
+@property (nonatomic, strong) NSURL* originalURL;
 
-+ (CGFloat)preferredHeightForStyle:(DirectoryPersonBaseInfoCellStyle)style person:(Person*)person inTableView:(UITableView*)tableView;
+@end
 
-@property (nonatomic, strong) Person* person;
+@implementation PCWebViewController
 
-@property (nonatomic, readonly) DirectoryPersonBaseInfoCellStyle style;
+#pragma mark - Init
 
-@property (nonatomic, readonly) UIImage* profilePicture;
+- (instancetype)initWithURL:(NSURL*)url title:(NSString *)title {
+    [PCUtils throwExceptionIfObject:url notKindOfClass:[NSURL class]];
+    self = [super initWithNibName:@"PCWebView" bundle:nil];
+    if (self) {
+        self.originalURL = url;
+        self.title = title;
+    }
+    return self;
+}
 
-/**
- * Executed when user tapped on one of the person's role's unit
- * Cell owner should handle the URL (typically open it in browser)
- */
-@property (nonatomic, copy) void (^unitTappedBlock)(NSURL* url);
+#pragma mark - UIViewController overrides
 
-/*
- * WARNING: do not use profilePictureImageView.image to get person's profile picture, because it might be a generic one.
- * Use property profilePicture above (non-nil if actual picture exists)
- */
-@property (nonatomic, strong) IBOutlet UIImageView* profilePictureImageView;
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.webView.scalesPageToFit = YES;
+    [self.webView loadRequest:[NSURLRequest requestWithURL:self.originalURL]];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"OpenInSafari", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(openInSafariTapped)];
+}
+
+#pragma mark - Buttons actions
+
+- (void)openInSafariTapped {
+    [[UIApplication sharedApplication] openURL:self.originalURL];
+}
+
+#pragma mark - UIWebViewDelegate
+
+//nothing
+
+#pragma mark - Dealloc
+
+- (void)dealloc {
+    self.webView.delegate = nil;
+    [self.webView stopLoading];
+}
 
 @end

@@ -65,4 +65,10 @@
  */
 - (ABRecordRef)newMergedWithABRecord:(ABRecordRef)person addressBook:(ABAddressBookRef)addressBook;
 
+/**
+ * @return url pointing to people.epfl.ch page of the unit
+ * @param unit short unit abbreviation (e.g. DSLAB)
+ */
++ (NSURL*)directoryWebpageURLForUnit:(NSString*)unit;
+
 @end

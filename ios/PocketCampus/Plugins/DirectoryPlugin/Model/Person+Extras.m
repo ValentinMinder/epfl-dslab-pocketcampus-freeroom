@@ -321,6 +321,13 @@
     return abPerson;
 }
 
++ (NSURL*)directoryWebpageURLForUnit:(NSString*)unit {
+    [PCUtils throwExceptionIfObject:unit notKindOfClass:[NSString class]];
+    static NSString* const kUnitPageWithFormat = @"http://search.epfl.ch/search/ubrowse.action?acro=%@";
+    NSString* urlString = [NSString stringWithFormat:kUnitPageWithFormat, unit];
+    return [NSURL URLWithString:urlString];
+}
+
 #pragma mark - Private methods
 
 - (NSString*)firstnameLastnameWithFirstName:(NSString*)firstname {

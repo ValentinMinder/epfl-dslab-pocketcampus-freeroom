@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,40 +22,18 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 25.09.13.
+//  Created by Loïc Gardiol on 14.06.14.
 
-#import "DirectoryService.h"
-
-typedef enum {
-    DirectoryPersonBaseInfoCellStyleLarge = 0,
-    DirectoryPersonBaseInfoCellStyleSmall = 1
-} DirectoryPersonBaseInfoCellStyle;
-
-@interface DirectoryPersonBaseInfoCell : UITableViewCell
-
-- (id)initWithDirectoryPersonBaseInfoCellStyle:(DirectoryPersonBaseInfoCellStyle)style reuseIdentifer:(NSString*)reuseIdentifier;
-
-+ (CGFloat)preferredHeightForStyle:(DirectoryPersonBaseInfoCellStyle)style person:(Person*)person inTableView:(UITableView*)tableView;
-
-@property (nonatomic, strong) Person* person;
-
-@property (nonatomic, readonly) DirectoryPersonBaseInfoCellStyle style;
-
-@property (nonatomic, readonly) UIImage* profilePicture;
+@interface PCWebViewController : UIViewController
 
 /**
- * Executed when user tapped on one of the person's role's unit
- * Cell owner should handle the URL (typically open it in browser)
+ * @return web view controller loading url
+ * @param url url to load
+ * @param title optional title to us as view controller's title
  */
-@property (nonatomic, copy) void (^unitTappedBlock)(NSURL* url);
-
-/*
- * WARNING: do not use profilePictureImageView.image to get person's profile picture, because it might be a generic one.
- * Use property profilePicture above (non-nil if actual picture exists)
- */
-@property (nonatomic, strong) IBOutlet UIImageView* profilePictureImageView;
+- (instancetype)initWithURL:(NSURL*)url title:(NSString*)title;
 
 @end
