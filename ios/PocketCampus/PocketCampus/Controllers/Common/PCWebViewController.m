@@ -63,7 +63,7 @@
 #pragma mark - Buttons actions
 
 - (void)openInSafariTapped {
-    [[UIApplication sharedApplication] openURL:self.originalURL];
+    [[UIApplication sharedApplication] openURL:self.webView.request.URL];
 }
 
 #pragma mark - UIWebViewDelegate
