@@ -153,6 +153,8 @@ static NSCache* attrStringCache = nil;
 
 + (NSAttributedString*)attributedStringAndSetAttributedTextOfTTTAttributedLabel:(TTTAttributedLabel*)label forPerson:(Person*)person {
     
+#warning IMPROVE PERF & BUG OF KARL ABERER IN FRENCH (height too small)
+    
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         attrStringCache = [NSCache new];
@@ -178,7 +180,8 @@ static NSCache* attrStringCache = nil;
     
     [attrString setAttributes:@{NSFontAttributeName:footnoteFont} range:[finalString rangeOfString:organizations]];
     
-    for (DirectoryPersonRole* role in person.roles.allValues) {
+    for (NSString* unit in person.organisationalUnits) {
+        DirectoryPersonRole* role = person.roles[unit];
         NSRegularExpression* titleRegex = [NSRegularExpression regularExpressionWithPattern:role.localizedTitle options:0 error:nil];
         [titleRegex enumerateMatchesInString:finalString options:0 range:NSMakeRange(0, finalString.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
             [attrString addAttribute:NSFontAttributeName value:bolderFootnoteFont range:result.range];
@@ -187,20 +190,20 @@ static NSCache* attrStringCache = nil;
     
     [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:[finalString rangeOfString:organizations]];
     
-    if (label) {
-        [label setText:nil afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
-            return attrString;
-        }];
-        [person.roles enumerateKeysAndObjectsUsingBlock:^(NSString* unit, DirectoryPersonRole* role, BOOL *stop) {
-            NSRange range = [finalString rangeOfString:role.extendedLocalizedUnit];
-            if (range.location != NSNotFound) {
-                NSURL* url = [Person directoryWebpageURLForUnit:unit];
-                if (url) {
-                    [label addLinkToURL:url withRange:range];
-                }
-            }
-        }];
-    }
+    [label setText:nil afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+        return attrString;
+    }];
+    [person.roles enumerateKeysAndObjectsUsingBlock:^(NSString* unit, DirectoryPersonRole* role, BOOL *stop) {
+        NSRange range = [finalString rangeOfString:role.extendedLocalizedUnit];
+        if (range.location == NSNotFound) {
+            return;
+        }
+        NSURL* url = [Person directoryWebpageURLForUnit:unit];
+        if (url) {
+            [attrString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range]; //TTTAttributedLabel does it automatically, but might influance final text size => returned attr string must reflect it
+            [label addLinkToURL:url withRange:range];
+        }
+    }];
     
     attrStringCache[cacheKey] = attrString;
     
