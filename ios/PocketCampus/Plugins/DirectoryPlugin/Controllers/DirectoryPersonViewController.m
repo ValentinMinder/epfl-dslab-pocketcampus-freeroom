@@ -314,7 +314,7 @@ static CGFloat kRowHeight;
     }
     switch (indexPath.section) {
         case kPersonBaseInfoSection:
-            return [DirectoryPersonBaseInfoCell preferredHeightForStyle:DirectoryPersonBaseInfoCellStyleLarge person:self.person];
+            return [DirectoryPersonBaseInfoCell preferredHeightForStyle:DirectoryPersonBaseInfoCellStyleLarge person:self.person inTableView:self.tableView];
     }
     return kRowHeight;
 }

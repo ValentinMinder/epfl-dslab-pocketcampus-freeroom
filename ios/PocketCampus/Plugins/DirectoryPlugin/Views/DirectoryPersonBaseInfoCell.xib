@@ -21,8 +21,8 @@
                             <constraint firstAttribute="height" constant="80" id="M6s-VF-u9k"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Firstname Lastname" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="206" translatesAutoresizingMaskIntoConstraints="NO" id="sbc-vp-W0Y">
-                        <rect key="frame" x="109" y="42" width="206" height="21"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Firstname Lastname" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="206" translatesAutoresizingMaskIntoConstraints="NO" id="sbc-vp-W0Y" userLabel="Title label">
+                        <rect key="frame" x="109" y="40" width="206" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -37,8 +37,8 @@
                 <constraints>
                     <constraint firstItem="m5q-Ja-ZpP" firstAttribute="top" secondItem="Mbw-uj-UTl" secondAttribute="top" constant="13" id="AQV-oT-hUk"/>
                     <constraint firstItem="sbc-vp-W0Y" firstAttribute="leading" secondItem="m5q-Ja-ZpP" secondAttribute="trailing" constant="14" id="Ahv-yF-OGm"/>
+                    <constraint firstAttribute="centerY" secondItem="sbc-vp-W0Y" secondAttribute="centerY" constant="2" id="BQJ-aX-Faf"/>
                     <constraint firstItem="m5q-Ja-ZpP" firstAttribute="leading" secondItem="Mbw-uj-UTl" secondAttribute="leading" constant="15" id="NGy-Xy-y4o"/>
-                    <constraint firstAttribute="centerY" secondItem="sbc-vp-W0Y" secondAttribute="centerY" id="Pi7-MX-fM5"/>
                     <constraint firstItem="m5q-Ja-ZpP" firstAttribute="centerX" secondItem="5wV-2J-Nas" secondAttribute="centerX" id="RnL-9Y-FqZ"/>
                     <constraint firstAttribute="trailing" secondItem="sbc-vp-W0Y" secondAttribute="trailing" constant="5" id="swG-0O-ebB"/>
                     <constraint firstItem="m5q-Ja-ZpP" firstAttribute="centerY" secondItem="5wV-2J-Nas" secondAttribute="centerY" id="y6p-To-gF7"/>

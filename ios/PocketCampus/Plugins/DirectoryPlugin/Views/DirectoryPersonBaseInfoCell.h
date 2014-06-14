@@ -50,6 +50,6 @@ typedef enum {
 
 - (id)initWithDirectoryPersonBaseInfoCellStyle:(DirectoryPersonBaseInfoCellStyle)style reuseIdentifer:(NSString*)reuseIdentifier;
 
-+ (CGFloat)preferredHeightForStyle:(DirectoryPersonBaseInfoCellStyle)style person:(Person*)person;
++ (CGFloat)preferredHeightForStyle:(DirectoryPersonBaseInfoCellStyle)style person:(Person*)person inTableView:(UITableView*)tableView;
 
 @end

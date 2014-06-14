@@ -1748,7 +1748,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/DirectoryPlugin/Views/DirectoryPersonBaseInfoCell.m"
-            timestampString = "424361464.107678"
+            timestampString = "424468815.511526"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "79"
@@ -1890,11 +1890,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/DirectoryPlugin/Views/DirectoryPersonBaseInfoCell.m"
-            timestampString = "424361464.107678"
+            timestampString = "424468815.511526"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
             landmarkName = "-setPerson:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4843,6 +4843,22 @@
             endingLineNumber = "228"
             landmarkName = "@implementation EventPoolViewController"
             landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/DirectoryPlugin/Views/DirectoryPersonBaseInfoCell.m"
+            timestampString = "424468815.511526"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
+            landmarkName = "+preferredHeightForStyle:person:inTableView:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

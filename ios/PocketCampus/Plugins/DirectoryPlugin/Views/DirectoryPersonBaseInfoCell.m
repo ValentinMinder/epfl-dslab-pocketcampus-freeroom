@@ -78,17 +78,25 @@
     return self;
 }
 
+#pragma mark - UIView overrides
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    self.titleLabel.preferredMaxLayoutWidth = self.superview.frame.size.width - 110.0;
+}
+
 #pragma mark - Public
 
-+ (CGFloat)preferredHeightForStyle:(DirectoryPersonBaseInfoCellStyle)style person:(Person*)person {
++ (CGFloat)preferredHeightForStyle:(DirectoryPersonBaseInfoCellStyle)style person:(Person*)person inTableView:(UITableView*)tableView {
     [PCUtils throwExceptionIfObject:person notKindOfClass:[Person class]];
     NSAttributedString* attrString = [self attributedStringForPerson:person];
     CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attrString);
-    CGSize targetSize = CGSizeMake(206.0, CGFLOAT_MAX); //account for text left and right insets of the text view
+    CGSize targetSize = CGSizeMake(tableView.frame.size.width - 110.0, CGFLOAT_MAX); //account for text left and right insets of the text view
     CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, [attrString length]), NULL, targetSize, NULL);
     CFRelease(framesetter);
+    size.height += 20.0;
     static CGFloat const kMinHeight = 106.0;
-    return size.height > kMinHeight ? size.height + 20.0 : kMinHeight;
+    return size.height > kMinHeight ? size.height : kMinHeight;
 }
 
 - (void)setPerson:(Person *)person {
