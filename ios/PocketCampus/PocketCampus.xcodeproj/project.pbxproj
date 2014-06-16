@@ -31,6 +31,10 @@
 		3204C6D11648412D003944D2 /* LightGrayTextureBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */; };
 		32074B7D17FB09CA009804CE /* NewsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32074B7C17FB09CA009804CE /* NewsLarge@2x.png */; };
 		320A05B215B02C240057B15C /* PCGlobalSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320A05B115B02C240057B15C /* PCGlobalSettingsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		320F8599194EED8C00BF3228 /* ArrowLeftBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 320F8595194EED8C00BF3228 /* ArrowLeftBarButton.png */; };
+		320F859A194EED8C00BF3228 /* ArrowLeftBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320F8596194EED8C00BF3228 /* ArrowLeftBarButton@2x.png */; };
+		320F859B194EED8C00BF3228 /* ArrowRightBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 320F8597194EED8C00BF3228 /* ArrowRightBarButton.png */; };
+		320F859C194EED8C00BF3228 /* ArrowRightBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320F8598194EED8C00BF3228 /* ArrowRightBarButton@2x.png */; };
 		32102B6615050B9D0076537E /* food.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6515050B9D0076537E /* food.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32102B6C15050C000076537E /* FoodService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6B15050C000076537E /* FoodService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3212452D16FE174500469113 /* EyeBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3212452B16FE174500469113 /* EyeBarButton.png */; };
@@ -426,6 +430,10 @@
 		320A05B015B02C240057B15C /* PCGlobalSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCGlobalSettingsViewController.h; sourceTree = "<group>"; };
 		320A05B115B02C240057B15C /* PCGlobalSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCGlobalSettingsViewController.m; sourceTree = "<group>"; };
 		320DFC24164697AE00849907 /* PCMasterSplitDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCMasterSplitDelegate.h; sourceTree = "<group>"; };
+		320F8595194EED8C00BF3228 /* ArrowLeftBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ArrowLeftBarButton.png; path = "../../../../../graphics/Glyphish 6/Glyphish 6 Icons (PNG)/Gray/ArrowLeftBarButton.png"; sourceTree = "<group>"; };
+		320F8596194EED8C00BF3228 /* ArrowLeftBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ArrowLeftBarButton@2x.png"; path = "../../../../../graphics/Glyphish 6/Glyphish 6 Icons (PNG)/Gray/ArrowLeftBarButton@2x.png"; sourceTree = "<group>"; };
+		320F8597194EED8C00BF3228 /* ArrowRightBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ArrowRightBarButton.png; path = "../../../../../graphics/Glyphish 6/Glyphish 6 Icons (PNG)/Gray/ArrowRightBarButton.png"; sourceTree = "<group>"; };
+		320F8598194EED8C00BF3228 /* ArrowRightBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ArrowRightBarButton@2x.png"; path = "../../../../../graphics/Glyphish 6/Glyphish 6 Icons (PNG)/Gray/ArrowRightBarButton@2x.png"; sourceTree = "<group>"; };
 		32102B6415050B9D0076537E /* food.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = food.h; sourceTree = "<group>"; };
 		32102B6515050B9D0076537E /* food.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = food.m; sourceTree = "<group>"; };
 		32102B6A15050C000076537E /* FoodService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodService.h; sourceTree = "<group>"; };
@@ -1139,6 +1147,10 @@
 				327585A31844C5B1004215FC /* ArrowSimpleRight@2x.png */,
 				327B0C22175199590011D81E /* ArrowUpRightCircleAccessory.png */,
 				327B0C23175199590011D81E /* ArrowUpRightCircleAccessory@2x.png */,
+				320F8595194EED8C00BF3228 /* ArrowLeftBarButton.png */,
+				320F8596194EED8C00BF3228 /* ArrowLeftBarButton@2x.png */,
+				320F8597194EED8C00BF3228 /* ArrowRightBarButton.png */,
+				320F8598194EED8C00BF3228 /* ArrowRightBarButton@2x.png */,
 				32C509E417FC60B0005A5635 /* CameraBarButton.png */,
 				32C509E517FC60B0005A5635 /* CameraBarButton@2x.png */,
 				32ADC7151659A2BA0039F6A6 /* CancelCrossRound.png */,
@@ -2497,6 +2509,7 @@
 				321F37E615B02FBE00E7BA6D /* HelpBarButton.png in Resources */,
 				321F37E715B02FBE00E7BA6D /* HelpBarButton@2x.png in Resources */,
 				32506D06181DC7AF003F08D7 /* MasterHidden@2x.png in Resources */,
+				320F859C194EED8C00BF3228 /* ArrowRightBarButton@2x.png in Resources */,
 				327585A81844DE93004215FC /* TransportSmallBus.png in Resources */,
 				32AF214815B197DE00BB445D /* TransportHelp.html in Resources */,
 				3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */,
@@ -2526,12 +2539,14 @@
 				32B13A3F1634B0F4007B54A1 /* MainMenuNavbar.png in Resources */,
 				32B13A401634B0F4007B54A1 /* MainMenuNavbar@2x.png in Resources */,
 				323A913C1640783F007A63D3 /* TopDown1pxShadow.png in Resources */,
+				320F859B194EED8C00BF3228 /* ArrowRightBarButton.png in Resources */,
 				3289F2B9183FAB8C00D833C2 /* LocationArrow2Active.png in Resources */,
 				323A913F164078FF007A63D3 /* TopDown1pxShadow@2x.png in Resources */,
 				32DE5B2117F1F8D900E03423 /* DirectoryLarge.png in Resources */,
 				329FD2FD164485DF003FF9BE /* ArrowDownCircle.png in Resources */,
 				329FD2FE164485DF003FF9BE /* ArrowDownCircle@2x.png in Resources */,
 				329FD30516449C67003FF9BE /* WarningSignRed.png in Resources */,
+				320F859A194EED8C00BF3228 /* ArrowLeftBarButton@2x.png in Resources */,
 				329FD30616449C67003FF9BE /* WarningSignRed@2x.png in Resources */,
 				32574ED6182140AE008F3163 /* DirectoryEmptyPictureSmall.png in Resources */,
 				327513321825465D0037FE00 /* FavoriteCorner@2x.png in Resources */,
@@ -2637,6 +2652,7 @@
 				32456C0C184373FE00993F8B /* TransportNextDeparturesCell.xib in Resources */,
 				32449D5D17C3F248003269E5 /* DirectoryLarge@2x.png in Resources */,
 				3289F2B7183FAB8C00D833C2 /* LocationArrow2.png in Resources */,
+				320F8599194EED8C00BF3228 /* ArrowLeftBarButton.png in Resources */,
 				320480C618479D4E00116380 /* TransportSmallBusGreen@2x.png in Resources */,
 				324FD733176574DD0003EE30 /* CamiproTransactionCell.xib in Resources */,
 				3219821F18D36A8B00118921 /* FoodRestaurantInfoView.xib in Resources */,

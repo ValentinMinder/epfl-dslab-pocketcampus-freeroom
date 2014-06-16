@@ -34,6 +34,9 @@
 @property (nonatomic, strong) IBOutlet UIWebView* webView;
 
 @property (nonatomic, strong) NSURL* originalURL;
+@property (nonatomic, strong) UIBarButtonItem* goBackBarButton;
+@property (nonatomic, strong) UIBarButtonItem* goForwardBarButton;
+@property (nonatomic, strong) UIActivityIndicatorView* loadingIndicator;
 
 @end
 
@@ -58,6 +61,24 @@
     self.webView.scalesPageToFit = YES;
     [self.webView loadRequest:[NSURLRequest requestWithURL:self.originalURL]];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"OpenInSafari", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(openInSafariTapped)];
+    self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.goBackBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ArrowLeftBarButton"] style:UIBarButtonItemStylePlain target:self.webView action:@selector(goBack)];
+    UIBarButtonItem* fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    fixedSpace.width = 50.0;
+    self.goForwardBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ArrowRightBarButton"] style:UIBarButtonItemStylePlain target:self.webView action:@selector(goForward)];
+    UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem* loadingItem = [[UIBarButtonItem alloc] initWithCustomView:self.loadingIndicator];
+    self.toolbarItems= @[self.goBackBarButton, fixedSpace, self.goForwardBarButton, flexibleSpace, loadingItem];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:NO animated:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 #pragma mark - Buttons actions
@@ -68,7 +89,17 @@
 
 #pragma mark - UIWebViewDelegate
 
-//nothing
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    [self.loadingIndicator startAnimating];
+    self.goBackBarButton.enabled = webView.canGoBack;
+    self.goForwardBarButton.enabled = webView.canGoForward;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [self.loadingIndicator stopAnimating];
+    self.goBackBarButton.enabled = webView.canGoBack;
+    self.goForwardBarButton.enabled = webView.canGoForward;
+}
 
 #pragma mark - Dealloc
 
