@@ -130,10 +130,10 @@
     UIActivityViewController* viewController = [[UIActivityViewController alloc] initWithActivityItems:@[newsItemURL] applicationActivities:@[safariActivity]];
     viewController.completionHandler = ^(NSString* activityType, BOOL completed) {
         if ([activityType isEqualToString:safariActivity.activityType]) {
-            [self trackAction:@"ViewInBrowser" contentInfo:[NSString stringWithFormat:@"%lld-%@", self.newsFeedItem.itemId, self.newsFeedItem.title]];
+            [self trackAction:@"ViewInBrowser" contentInfo:[NSString stringWithFormat:@"%ld-%@", self.newsFeedItem.itemId, self.newsFeedItem.title]];
         }
     };
-    [self trackAction:PCGAITrackerActionActionButtonPressed contentInfo:[NSString stringWithFormat:@"%lld-%@", self.newsFeedItem.itemId, self.newsFeedItem.title]];
+    [self trackAction:PCGAITrackerActionActionButtonPressed contentInfo:[NSString stringWithFormat:@"%ld-%@", self.newsFeedItem.itemId, self.newsFeedItem.title]];
     if (self.splitViewController) {
         if (!self.actionsPopover) {
             self.actionsPopover = [[UIPopoverController alloc] initWithContentViewController:viewController];
