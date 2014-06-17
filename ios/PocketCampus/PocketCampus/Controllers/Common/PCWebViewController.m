@@ -73,12 +73,14 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:NO animated:YES];
+    self.navigationController.toolbar.translucent = NO;
+    [self.navigationController setToolbarHidden:NO animated:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self.navigationController setToolbarHidden:YES animated:YES];
+    self.navigationController.toolbar.translucent = YES;
+    [self.navigationController setToolbarHidden:YES animated:NO];
 }
 
 #pragma mark - Buttons actions
