@@ -298,10 +298,10 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
                 self.tableView.alpha = 1.0;
             }];
         }
-        return;
+    } else {
+        [self.typingTimer invalidate];
+        self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startSearchRequest) userInfo:nil repeats:NO];
     }
-    [self.typingTimer invalidate];
-    self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startSearchRequest) userInfo:nil repeats:NO];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar_ {
