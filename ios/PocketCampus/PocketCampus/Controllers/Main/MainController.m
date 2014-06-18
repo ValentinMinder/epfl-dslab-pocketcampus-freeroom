@@ -265,6 +265,9 @@ static MainController<MainControllerPublic>* instance = nil;
         Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:identifierName]);
         if ([pluginClass respondsToSelector:@selector(viewControllerForWebURL:)]) {
             viewController = [pluginClass viewControllerForWebURL:url];
+            if (viewController) {
+                break;
+            }
         }
     }
     return viewController;
