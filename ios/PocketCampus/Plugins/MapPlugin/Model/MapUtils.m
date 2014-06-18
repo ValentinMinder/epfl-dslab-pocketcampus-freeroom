@@ -436,8 +436,8 @@ double tiley2lat(int y, int z) {
 }
 
 + (CH1903BBox)tilePathToCH1903:(MKTileOverlayPath)tilePath tileSize:(CGSize)tileSize {
-    double lat = tiley2lat(tilePath.y, tilePath.z);
-    double lon = tilex2long(tilePath.x, tilePath.z);
+    double lat = tiley2lat((int)tilePath.y, (int)tilePath.z);
+    double lon = tilex2long((int)tilePath.x, (int)tilePath.z);
     
     CLLocationDegrees latSpan = (360.0*cos(lat * M_PI / 180.0)) / (double)(pow(2,tilePath.z));
     CLLocationDegrees lonSpan = (360.0*cos(lon * M_PI / 180.0)) / (double)(pow(2,tilePath.z));

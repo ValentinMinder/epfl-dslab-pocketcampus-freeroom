@@ -448,6 +448,7 @@ static CGFloat kRowHeight;
             [self.personBaseInfoCell.contentView addGestureRecognizer:secretTapGesture];
             __weak __typeof(self) welf = self;
             [self.personBaseInfoCell setUnitTappedBlock:^(NSURL* unitURL) {
+                [welf trackAction:@"ViewUnit"];
                 PCWebViewController* webViewController = [[PCWebViewController alloc] initWithURL:unitURL title:nil];
                 [welf.navigationController pushViewController:webViewController animated:YES];
             }];
