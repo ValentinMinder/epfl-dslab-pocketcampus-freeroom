@@ -79,6 +79,8 @@ static DirectoryController* instance __weak = nil;
     }
 }
 
+#pragma mark - PluginControllerProtocol
+
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
@@ -90,6 +92,10 @@ static DirectoryController* instance __weak = nil;
         return [[[[self class] alloc] init] autorelease];
 #endif
     }
+}
+
+- (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
+    return [self.class viewControllerForURLQueryAction:action parameters:parameters];
 }
 
 - (BOOL)handleURLQueryAction:(NSString *)action parameters:(NSDictionary *)parameters {
@@ -114,13 +120,34 @@ static DirectoryController* instance __weak = nil;
     return YES;
 }
 
-- (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
-    if ([action isEqualToString:@"search"]) { //search in EPFL directory
-        NSString* query = parameters[@"q"];
++ (UIViewController*)viewControllerForWebURL:(NSURL*)webURL {
+    if (![webURL.host isEqualToString:@"personnes.epfl.ch"] && ![webURL.host isEqualToString:@"people.epfl.ch"]) {
+        return nil;
+    }
+    NSString* firstDotLastname = webURL.lastPathComponent;
+    if ([firstDotLastname rangeOfString:@"."].location == NSNotFound) {
+        return nil;
+    }
+    return [self viewControllerForURLQueryAction:kDirectoryURLActionSearch parameters:@{kDirectoryURLParameterQuery:firstDotLastname}];
+}
+
++ (NSString*)localizedName {
+    return NSLocalizedStringFromTable(@"PluginName", @"DirectoryPlugin", @"");
+}
+
++ (NSString*)identifierName {
+    return @"Directory";
+}
+
+#pragma mark - Private
+
++ (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
+    if ([action isEqualToString:kDirectoryURLActionSearch]) { //search in EPFL directory
+        NSString* query = parameters[kDirectoryURLParameterQuery];
         if (query) {
             return [[DirectoryPersonViewController alloc] initAndLoadPersonWithFullName:query];
         }
-    } else if ([action isEqualToString:@"view"]) {
+    } else if ([action isEqualToString:kDirectoryURLActionView]) {
         @try {
             if (parameters.count > 0) {
                 Person* person = [Person new];
@@ -135,17 +162,6 @@ static DirectoryController* instance __weak = nil;
     return nil;
 }
 
-
-#pragma mark - PluginControllerProtocol
-
-+ (NSString*)localizedName {
-    return NSLocalizedStringFromTable(@"PluginName", @"DirectoryPlugin", @"");
-}
-
-+ (NSString*)identifierName {
-    return @"Directory";
-}
-
 #pragma mark - UISplitViewControllerDelegate
 
 - (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {
@@ -155,6 +171,7 @@ static DirectoryController* instance __weak = nil;
     return NO;
 }
 
+#pragma mark - Dealloc
 
 - (void)dealloc
 {

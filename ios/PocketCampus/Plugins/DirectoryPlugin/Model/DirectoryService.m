@@ -25,13 +25,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 28.02.12.
 
-
 #import "DirectoryService.h"
+
+NSString* const kDirectoryURLActionSearch = @"search";
+NSString* const kDirectoryURLActionView = @"view";
+
+NSString* const kDirectoryURLParameterQuery = @"q";
 
 @implementation DirectoryService
 

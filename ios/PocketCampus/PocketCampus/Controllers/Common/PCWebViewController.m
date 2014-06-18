@@ -31,7 +31,7 @@
 
 @interface PCWebViewController ()<UIWebViewDelegate>
 
-@property (nonatomic, strong) IBOutlet UIWebView* webView;
+@property (nonatomic, strong, readwrite) IBOutlet UIWebView* webView;
 
 @property (nonatomic, strong) NSURL* originalURL;
 @property (nonatomic, strong) UIBarButtonItem* goBackBarButton;
@@ -50,6 +50,7 @@
     if (self) {
         self.originalURL = url;
         self.title = title;
+        self.automaticallyHandlesInternallyRecognizedURLs = YES; //Default
     }
     return self;
 }
@@ -101,6 +102,20 @@
     [self.loadingIndicator stopAnimating];
     self.goBackBarButton.enabled = webView.canGoBack;
     self.goForwardBarButton.enabled = webView.canGoForward;
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if (self.automaticallyHandlesInternallyRecognizedURLs) {
+        UIViewController* viewController = [[MainController publicController] viewControllerForWebURL:request.URL];
+        if (viewController) {
+            [self.navigationController pushViewController:viewController animated:YES];
+            return NO;
+        }
+    }
+    if (self.shouldLoadRequest) {
+        return self.shouldLoadRequest(request, navigationType);
+    }
+    return YES;
 }
 
 #pragma mark - Dealloc

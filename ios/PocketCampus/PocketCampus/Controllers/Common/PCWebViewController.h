@@ -33,7 +33,22 @@
  * @return web view controller loading url
  * @param url url to load
  * @param title optional title to us as view controller's title
+ * Important: PCWebViewController must be used with a navigation controller
  */
 - (instancetype)initWithURL:(NSURL*)url title:(NSString*)title;
+
+/**
+ * If YES, each request will hit MainController viewControllerForURL:
+ * if a view controller is available, it will automatically be pushed on the navigation controller
+ * Default: YES
+ */
+@property (nonatomic) BOOL automaticallyHandlesInternallyRecognizedURLs;
+
+/**
+ * Equivalent of UIWebViewDelegate webView:shouldLoad...:
+ * Called *after* dealing with automaticallyHandlesInternallyRecognizedURLs if URL was not recognized.
+ * Defaut: nil (will load all requests)
+ */
+@property (nonatomic, copy) BOOL (^shouldLoadRequest)(NSURLRequest* request, UIWebViewNavigationType navigationType);
 
 @end

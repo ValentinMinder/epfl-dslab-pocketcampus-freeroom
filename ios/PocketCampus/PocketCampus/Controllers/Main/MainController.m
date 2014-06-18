@@ -256,6 +256,20 @@ static MainController<MainControllerPublic>* instance = nil;
     return YES;
 }
 
+- (UIViewController*)viewControllerForWebURL:(NSURL*)url {
+    if (![url isKindOfClass:[NSURL class]]) {
+        return nil;
+    }
+    UIViewController* viewController = nil;
+    for (NSString* identifierName in self.pluginsList) {
+        Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:identifierName]);
+        if ([pluginClass respondsToSelector:@selector(viewControllerForWebURL:)]) {
+            viewController = [pluginClass viewControllerForWebURL:url];
+        }
+    }
+    return viewController;
+}
+
 - (BOOL)isPluginAnycaseIdentifierValid:(NSString*)anycaseIdentifier {
     return [self existsPluginWithIdentifier:[self validPluginIdentifierForAnycasePluginIdentifier:anycaseIdentifier]];
 }

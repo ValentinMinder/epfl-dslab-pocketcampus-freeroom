@@ -25,11 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 22.09.12.
-
 
 @import AddressBook;
 @import AddressBookUI;
@@ -39,6 +35,8 @@
 #import "DirectoryProfilePictureViewController.h"
 
 #import "MapController.h"
+
+#import "DirectoryController.h"
 
 #import "DirectoryPersonBaseInfoCell.h"
 
@@ -450,7 +448,7 @@ static CGFloat kRowHeight;
             [self.personBaseInfoCell.contentView addGestureRecognizer:secretTapGesture];
             __weak __typeof(self) welf = self;
             [self.personBaseInfoCell setUnitTappedBlock:^(NSURL* unitURL) {
-                 PCWebViewController* webViewController = [[PCWebViewController alloc] initWithURL:unitURL title:nil];
+                PCWebViewController* webViewController = [[PCWebViewController alloc] initWithURL:unitURL title:nil];
                 [welf.navigationController pushViewController:webViewController animated:YES];
             }];
         }
