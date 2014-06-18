@@ -25,11 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 24.12.12.
-
 
 #import "NewsItemViewController.h"
 
@@ -47,13 +43,14 @@
 
 #import "NewsModelAdditions.h"
 
-@interface NewsItemViewController ()<NewsServiceDelegate, UIAlertViewDelegate, UIWebViewDelegate>
+#import "PCWebViewController.h"
+
+@interface NewsItemViewController ()<NewsServiceDelegate, UIWebViewDelegate>
 
 @property (nonatomic, strong) UIPopoverController* actionsPopover;
 @property (nonatomic, strong) NewsFeedItem* newsFeedItem;
 @property (nonatomic, strong) NewsFeedItemContent* newsFeedItemContent;
 @property (nonatomic, strong) NewsService* newsService;
-@property (nonatomic, strong) NSURL* urlClicked;
 @property (nonatomic, strong) AFNetworkReachabilityManager* reachabilityManager;
     
 @property (nonatomic, strong) IBOutlet UIWebView* webView;
@@ -244,34 +241,11 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        self.urlClicked = request.URL;
-        NSString* title = self.urlClicked.host;
-        if (self.urlClicked.path.length > 1) { //empty path is "/"
-            title = [title stringByAppendingString:@"/..."];
-        }
-        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:title message:NSLocalizedStringFromTable(@"ClickLinkLeaveApplicationExplanation", @"NewsPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:@"OK", nil];
-        [alertView show];
+        PCWebViewController* webViewController = [[PCWebViewController alloc] initWithURL:request.URL title:nil];
+        [self.navigationController pushViewController:webViewController animated:YES];
         return NO;
     }
     return YES;
-}
-
-#pragma mark - UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (self.urlClicked) {
-        switch (buttonIndex) {
-            case 0: //cancel
-                //Nothing to do
-                break;
-            case 1: //OK
-                [[UIApplication sharedApplication] openURL:self.urlClicked];
-                break;
-            default:
-                break;
-        }
-        self.urlClicked = nil;
-    }
 }
 
 #pragma mark - dealloc

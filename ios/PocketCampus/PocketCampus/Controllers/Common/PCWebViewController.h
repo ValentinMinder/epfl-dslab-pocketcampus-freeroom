@@ -47,7 +47,7 @@
 /**
  * Equivalent of UIWebViewDelegate webView:shouldLoad...:
  * Called *after* dealing with automaticallyHandlesInternallyRecognizedURLs if URL was not recognized.
- * Defaut: nil (will load all requests)
+ * Defaut: nil (default behavior)
  */
 @property (nonatomic, copy) BOOL (^shouldLoadRequest)(NSURLRequest* request, UIWebViewNavigationType navigationType);
 
