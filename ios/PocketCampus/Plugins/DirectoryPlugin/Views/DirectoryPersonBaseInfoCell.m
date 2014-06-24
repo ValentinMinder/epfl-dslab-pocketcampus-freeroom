@@ -40,6 +40,8 @@
 
 #import "UIImageView+AFNetworking.h"
 
+static CGFloat const kNormalWidthMinusLabelWidth = 114.0;
+
 @interface DirectoryPersonBaseInfoCell ()<TTTAttributedLabelDelegate>
 
 @property (nonatomic, strong) DirectoryService* directoryService;
@@ -85,7 +87,7 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.titleLabel.preferredMaxLayoutWidth = self.superview.frame.size.width - 114.0;
+    self.titleLabel.preferredMaxLayoutWidth = self.superview.frame.size.width - kNormalWidthMinusLabelWidth;
 }
 
 #pragma mark - Public
@@ -94,7 +96,7 @@
     [PCUtils throwExceptionIfObject:person notKindOfClass:[Person class]];
     NSAttributedString* attrString = [self attributedStringForPerson:person];
     CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attrString);
-    CGSize targetSize = CGSizeMake(tableView.frame.size.width - 110.0, CGFLOAT_MAX); //account for text left and right insets of the text view
+    CGSize targetSize = CGSizeMake(tableView.frame.size.width - kNormalWidthMinusLabelWidth, CGFLOAT_MAX); //account for text left and right insets of the text view
     CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, [attrString length]), NULL, targetSize, NULL);
     CFRelease(framesetter);
     size.height += 20.0;
