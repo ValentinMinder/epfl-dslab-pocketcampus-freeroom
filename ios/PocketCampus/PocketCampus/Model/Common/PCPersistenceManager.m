@@ -253,14 +253,15 @@
     if (![key isKindOfClass:[NSString class]] || ![pluginName isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad argument(s)" reason:@"bad key and/or pluginName argument" userInfo:nil];
     }
-    /*NSArray* paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-     NSString* path = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@.save", pluginName, key]];
-     path = [path stringByAppendingPathComponent:@"Archived Objects"];
-     return path;*/
     
-    NSString* dir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-	NSString* path = [dir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-    path = [path stringByAppendingPathComponent:[self standardizedNameForPluginName:pluginName]];
+    static NSString* appSupportBundlePath = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString* dir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+        appSupportBundlePath = [dir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    });
+    
+    NSString* path = [appSupportBundlePath stringByAppendingPathComponent:[self standardizedNameForPluginName:pluginName]];
     if (isCache) {
         path = [path stringByAppendingPathComponent:@"cache"];
     }

@@ -25,7 +25,7 @@
 "EditMainMenu" = "Customize main menu";
 "RestoreDefaultMainMenu..." = "Default main menu...";
 "RestoreDefaultMainMenu" = "Default main menu";
-"RestoreDefaultMainMenuExplanation" = "All features will be enabled and default order restored.";
+"RestoreDefaultMainMenuExplanation" = "All features will be reenabled and\ndefault order restored.";
 "Misc" = "Misc";
 "Usage" = "Usage";
 "Close" = "Close";

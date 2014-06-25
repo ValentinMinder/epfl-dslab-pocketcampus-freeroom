@@ -25,7 +25,7 @@
 "EditMainMenu" = "Personnaliser le menu principal";
 "RestoreDefaultMainMenu..." = "Menu principal par défaut...";
 "RestoreDefaultMainMenu" = "Menu principal par défaut";
-"RestoreDefaultMainMenuExplanation" = "Toutes les fonctionalités seront activées et l'ordre par défault rétabli.";
+"RestoreDefaultMainMenuExplanation" = "Toutes les fonctionalités seront réactivées et l'ordre par défault rétabli.";
 "Misc" = "Divers";
 "Usage" = "Utilisation";
 "Close" = "Fermer";
