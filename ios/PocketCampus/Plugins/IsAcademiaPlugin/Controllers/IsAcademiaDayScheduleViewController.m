@@ -39,6 +39,8 @@
 
 #import "MBProgressHUD.h"
 
+#import "PCDatePickerView.h"
+
 @interface IsAcademiaDayScheduleViewController ()<IsAcademiaServiceDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) IsAcademiaService* isaService;
@@ -78,7 +80,9 @@
     self.dayView.is24hClock = [PCUtils userLocaleIs24Hour];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshPressed)];
     UIBarButtonItem* todayItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Today", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(todayPressed)];
-    self.toolbarItems = @[todayItem];
+    UIBarButtonItem* flexibleSpaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem* goToDateItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"GoToDate", @"IsAcademiaPlugin", nil) style:UIBarButtonItemStylePlain target:self action:@selector(goToDatePressed)];
+    self.toolbarItems = @[todayItem, flexibleSpaceItem, goToDateItem];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferredContentSizeChanged) name:UIContentSizeCategoryDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     
@@ -157,6 +161,22 @@
     [self trackAction:@"Today"];
     self.dayView.date = [NSDate date];
     [self calendarDayTimelineView:self.dayView didMoveToDate:self.dayView.date]; //force refresh
+}
+
+- (void)goToDatePressed {
+    PCDatePickerView* pcDatePicker = [PCDatePickerView new];
+    pcDatePicker.datePicker.datePickerMode = UIDatePickerModeDate;
+    pcDatePicker.datePicker.date = self.dayView.date;
+    __weak __typeof(self) welf = self;
+    [pcDatePicker setUserValidatedDateBlock:^(PCDatePickerView* view, NSDate* date) {
+        welf.dayView.date = date;
+        [welf calendarDayTimelineView:welf.dayView didMoveToDate:welf.dayView.date]; //force refresh
+        [view dismiss];
+    }];
+    [pcDatePicker setUserCancelledBlock:^(PCDatePickerView* view) {
+        [view dismiss];
+    }];
+    [pcDatePicker presentInView:self.view];
 }
 
 #pragma mark - Date utils

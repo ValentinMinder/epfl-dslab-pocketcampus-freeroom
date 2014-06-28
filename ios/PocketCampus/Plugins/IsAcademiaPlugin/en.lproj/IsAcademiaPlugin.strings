@@ -13,6 +13,7 @@
 "IsAcademiaServerProblemTryLater" = "IS-Academia seems to have a problem right now.\nPlease try again later.";
 "NoCourseOnThatDay" = "No course on that day";
 "NoCourseToday" = "No course today";
+"GoToDate" = "Go to date";
 
 //Accessibility
 "PeriodViewAccessiblityLabelWithFormat" = "%@: %@. Room: %@"; //<start time>, <name>, <room>
