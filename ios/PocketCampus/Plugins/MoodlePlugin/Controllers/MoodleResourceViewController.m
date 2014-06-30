@@ -142,7 +142,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kMoodleFavoritesMoodleResourcesUpdatedNotification object:self.moodleService];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -152,6 +151,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     [self.moodleService cancelDownloadOfMoodleResourceForDelegate:self];
     [self removeSplitViewControllerObserver];
     [self removeScrollViewContentSizeObserver];
+    [self.webView loadHTMLString:@"" baseURL:nil]; //prevent major memory leak, see http://stackoverflow.com/a/16514274/1423774
     @try {
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
@@ -169,6 +169,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
     return UIStatusBarAnimationSlide;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    [self.webView reload]; //should release a bit of memory
 }
 
 #pragma mark - Observers
@@ -551,7 +557,6 @@ static NSString* const kZoomScaleKey = @"ZoomScale";
     [self removeScrollViewContentSizeObserver];
     [self.hideNavbarTimer invalidate];
     [self.moodleService cancelOperationsForDelegate:self];
-    [self.webView stopLoading];
     self.webView.delegate = nil; //docs says so
     self.deleteActionSheet.delegate = nil;
     self.docController.delegate = nil;
