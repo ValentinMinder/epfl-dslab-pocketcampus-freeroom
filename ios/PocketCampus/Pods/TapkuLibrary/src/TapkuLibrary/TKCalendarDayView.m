@@ -193,7 +193,7 @@
     
     NSMutableArray* daySymbols = [[[NSDateFormatter new] shortWeekdaySymbols] mutableCopy];
     
-    NSUInteger firstWeekday = [self.calendar firstWeekday];
+    NSUInteger firstWeekday = 1; // Sunday //[self.calendar firstWeekday]; DISABLED because buggy when current date was a Sunday
     
     self.firstWeekdayIndex = firstWeekday;
     
