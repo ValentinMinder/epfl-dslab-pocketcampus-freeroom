@@ -117,12 +117,12 @@ static NSString* const kCancelledOperationUserInfoBoolKey = @"CancelledOperation
         self.cachedRawImageForUrlString = [NSCache new];
         self.failedThumbsIndexPaths = [NSMutableSet set];
         
-        __weak __typeof(self) weakSelf = self;
+        __weak __typeof(self) welf = self;
         self.reachabilityManager = [AFNetworkReachabilityManager managerForDomain:@"google.com"];
         [self.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-            [weakSelf adaptMaxNbConcurrentOperationsBasedOnConnection];
-            if (status > 0 && weakSelf.failedThumbsIndexPaths.count > 0) { //means internet reachable
-                [weakSelf reloadFailedThumbnailsCells];
+            [welf adaptMaxNbConcurrentOperationsBasedOnConnection];
+            if (status > 0 && welf.failedThumbsIndexPaths.count > 0) { //means internet reachable
+                [welf reloadFailedThumbnailsCells];
             }
         }];
         [self.reachabilityManager startMonitoring];
@@ -168,7 +168,7 @@ static NSString* const kCancelledOperationUserInfoBoolKey = @"CancelledOperation
                 }
                 // 2)
                 if (welf.rowHeightBlock) {
-                    welf.rowHeight = self.rowHeightBlock(welf);
+                    welf.rowHeight = welf.rowHeightBlock(welf);
                 }
                 // 3)
                 if (welf.reprocessesImagesWhenContentSizeCategoryChanges) {
@@ -437,7 +437,7 @@ static NSString* const kScrollViewStateContentSize = @"ContentSize";
     NSIndexPath* indexPath __block = indexPath_;
     NSURL* url __block = url_;
     void (^completion)() __block = completion_;
-    PCTableViewAdditions* welf __weak = self;
+    __weak __typeof(self) welf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
         if (!completion) {
             completion = ^void(){};
@@ -547,10 +547,8 @@ static NSString* const kScrollViewStateContentSize = @"ContentSize";
 
 - (void)dealloc
 {
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
+    NSLog(@"Dealloc PCTableViewAdditions");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.reachabilityManager stopMonitoring];
     [self cancelAllImageDownloads];
     [self.operationQueue cancelAllOperations];

@@ -151,11 +151,10 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     [self.moodleService cancelDownloadOfMoodleResourceForDelegate:self];
     [self removeSplitViewControllerObserver];
     [self removeScrollViewContentSizeObserver];
-    [self.webView loadHTMLString:@"" baseURL:nil]; //prevent major memory leak, see http://stackoverflow.com/a/16514274/1423774
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if (!self.isDisappearingBecauseOtherPushed) {
+        [self.webView loadHTMLString:@"" baseURL:nil]; //prevent major memory leak, see http://stackoverflow.com/a/16514274/1423774
     }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -548,10 +547,7 @@ static NSString* const kZoomScaleKey = @"ZoomScale";
 
 - (void)dealloc
 {
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [self removeSplitViewControllerObserver];
     [self removeScrollViewContentSizeObserver];

@@ -585,10 +585,7 @@ static MainController<MainControllerPublic>* instance = nil;
 
 - (void)pcConfigUserDefaultsDidChange {
     [self initAnalytics];
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:[PCConfig defaults]];
-    }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:[PCConfig defaults]];
 }
 
 #pragma mark - Called by MainMenuViewController

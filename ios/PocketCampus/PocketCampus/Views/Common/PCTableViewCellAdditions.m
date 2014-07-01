@@ -197,6 +197,12 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
     }
 }
 
+#pragma mark - NSObject overrides
+
+- (NSString*)description {
+    return [[super description] stringByAppendingString:self.textLabel.text];
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {

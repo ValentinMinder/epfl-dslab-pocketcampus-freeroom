@@ -60,7 +60,6 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
     // Need to start monitoring, otherwise sharedManager.networkReachabilityStatus is wrong
     // Bug in AFNetworkReachabilityManager ?
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];

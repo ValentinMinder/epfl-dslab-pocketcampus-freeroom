@@ -63,6 +63,8 @@
 
 @implementation NewsItemViewController
 
+#pragma mark - Init
+
 - (id)initWithNewsFeedItem:(NewsFeedItem*)newsFeedItem
 {
     [PCUtils throwExceptionIfObject:newsFeedItem notKindOfClass:[NewsFeedItem class]];
@@ -75,6 +77,8 @@
     }
     return self;
 }
+
+#pragma mark - UIViewController overrides
 
 - (void)viewDidLoad
 {
@@ -97,6 +101,13 @@
     [self trackScreen];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if (!self.isDisappearingBecauseOtherPushed) {
+        [self.webView loadHTMLString:@"" baseURL:nil]; //prevent major memory leak, see http://stackoverflow.com/a/16514274/1423774
+    }
+}
+
 - (void)loadNewsItem {
     [self.loadingIndicator startAnimating];
     self.centerMessageLabel.hidden = YES;
@@ -108,7 +119,7 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [self.webView reload]; //should release a bit of memory
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6

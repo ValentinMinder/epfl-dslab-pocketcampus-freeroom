@@ -359,7 +359,9 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
         }
-        @catch (NSException *exception) {}
+        @catch (NSException *exception) {
+            [self.tableView reloadData];
+        }
     }
 
 }

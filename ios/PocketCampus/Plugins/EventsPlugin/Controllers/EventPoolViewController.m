@@ -848,10 +848,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
 
 - (void)dealloc {
     [self.eventsService cancelOperationsForDelegate:self];
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

@@ -449,10 +449,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
 - (void)dealloc {
     [self.mealTypeImageView cancelImageRequestOperation];
     [self.foodService cancelOperationsForDelegate:self];
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

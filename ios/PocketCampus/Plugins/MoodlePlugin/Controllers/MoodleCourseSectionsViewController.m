@@ -180,7 +180,32 @@ static const NSInteger kSegmentIndexFavorites = 2;
     if (!self.sections || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
+//#warning REMOVE
+    //[NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(test) userInfo:nil repeats:YES];
+    
 }
+
+// STRESS TEST
+// Also need to set animated:NO for iPhone in didSelectRowAtIndexPath
+/*
+static int i = 0;
+- (void)test {
+    NSUInteger randSection = arc4random() % (self.sections.count - 1);
+    MoodleSection* section = self.sections[randSection];
+    NSUInteger randRow = 0;
+    if (section.iResources.count == 0) {
+        return;
+    }
+    if (![PCUtils isIdiomPad] && (i % 2 == 1)) {
+        [self.navigationController popViewControllerAnimated:NO];
+    } else {
+        if (section.iResources.count > 1) {
+            randRow = arc4random() % (section.iResources.count - 1);
+        }
+        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:randRow inSection:randSection]];
+    }
+    i++;
+}*/
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -789,8 +814,8 @@ static const NSInteger kSegmentIndexFavorites = 2;
     [self.moodleService cancelOperationsForDelegate:self];
     [self.searchQueue cancelAllOperations];
     [self.typingTimer invalidate];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
         [self.segmentedControl removeObserver:self forKeyPath:NSStringFromSelector(@selector(frame))];
     }
     @catch (NSException *exception) {}

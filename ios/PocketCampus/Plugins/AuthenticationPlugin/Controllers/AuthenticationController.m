@@ -674,12 +674,8 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
 
 #pragma mark - Dealloc
 
-- (void)dealloc
-{
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     @synchronized(self) {
         instance = nil;
     }

@@ -308,10 +308,7 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 
 - (void)dealloc
 {
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [pushNotifService cancelOperationsForDelegate:unregistrationDelegate];
     @synchronized(self) {
         instance = nil;
