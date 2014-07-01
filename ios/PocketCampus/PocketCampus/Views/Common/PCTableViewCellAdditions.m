@@ -45,6 +45,8 @@ NSString* PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle;
 @property (nonatomic, strong) UIColor* originalTextLabelColor;
 @property (nonatomic, strong) UIColor* originalDetailTextLabelColor;
 
+@property (atomic) BOOL textObserversAdded;
+
 @end
 
 static __strong UIColor* kDefaultTextLabelDimmedColor ;
@@ -260,11 +262,23 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
     self.icon.hidden = !(self.downloadedIndicationVisible || self.favoriteIndicationVisible);
 }
 
-- (void)updateTextLabelHighlighting {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+- (void)addObserversIfNecessary {
+    if (!self.textObserversAdded) {
+        self.textObserversAdded = YES;
         [self.textLabel addObserver:self forKeyPath:@"text" options:0 context:NULL];
-    });
+        [self.detailTextLabel addObserver:self forKeyPath:@"text" options:0 context:NULL];
+    }
+}
+
+- (void)removeObservers {
+    if (self.textObserversAdded) {
+        [self.textLabel removeObserver:self forKeyPath:@"text"];
+        [self.detailTextLabel removeObserver:self forKeyPath:@"text"];
+    }
+}
+
+- (void)updateTextLabelHighlighting {
+    [self addObserversIfNecessary];
     if (self.textLabelHighlightedRegex) {
         [self.textLabel setHighlightedColor:self.originalTextLabelColor forMatchesOfRegex:self.textLabelHighlightedRegex dimmedColor:self.textLabelDimmedColor ?: kDefaultTextLabelDimmedColor];
     } else {
@@ -273,10 +287,7 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
 }
 
 - (void)updateDetailTextLabelHighlighting {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        [self.detailTextLabel addObserver:self forKeyPath:@"text" options:0 context:NULL];
-    });
+    [self addObserversIfNecessary];
     if (self.detailTextLabelHighlightedRegex) {
         [self.detailTextLabel setHighlightedColor:self.originalTextLabelColor forMatchesOfRegex:self.detailTextLabelHighlightedRegex dimmedColor:self.detailTextLabelDimmedColor ?: kDefaultDetailTextLabelDimmedColor];
     } else {
@@ -320,11 +331,7 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
 #pragma mark - Dealloc
 
 - (void)dealloc {
-    @try {
-        [self.textLabel removeObserver:self forKeyPath:@"text"];
-        [self.detailTextLabel removeObserver:self forKeyPath:@"text"];
-    }
-    @catch (NSException *exception) {}
+    [self removeObservers];
 }
 
 @end

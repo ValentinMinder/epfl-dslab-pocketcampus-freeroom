@@ -547,7 +547,6 @@ static NSString* const kScrollViewStateContentSize = @"ContentSize";
 
 - (void)dealloc
 {
-    NSLog(@"Dealloc PCTableViewAdditions");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.reachabilityManager stopMonitoring];
     [self cancelAllImageDownloads];

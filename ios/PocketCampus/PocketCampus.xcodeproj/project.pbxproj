@@ -168,7 +168,7 @@
 		327412DB167E776A001E8C62 /* DownloadedCorner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412D9167E776A001E8C62 /* DownloadedCorner@2x.png */; };
 		327412E1167E7E56001E8C62 /* DownloadedCornerSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412DF167E7E56001E8C62 /* DownloadedCornerSelected.png */; };
 		327412E2167E7E56001E8C62 /* DownloadedCornerSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412E0167E7E56001E8C62 /* DownloadedCornerSelected@2x.png */; };
-		327412E5167E824F001E8C62 /* PCTableViewCellAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 327412E4167E824F001E8C62 /* PCTableViewCellAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		327412E5167E824F001E8C62 /* PCTableViewCellAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 327412E4167E824F001E8C62 /* PCTableViewCellAdditions.m */; };
 		327513311825465D0037FE00 /* FavoriteCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275132D1825465D0037FE00 /* FavoriteCorner.png */; };
 		327513321825465D0037FE00 /* FavoriteCorner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275132E1825465D0037FE00 /* FavoriteCorner@2x.png */; };
 		327513331825465D0037FE00 /* FavoriteCornerSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275132F1825465D0037FE00 /* FavoriteCornerSelected.png */; };
@@ -369,7 +369,7 @@
 		32F8E3EE16E1F53000AF365C /* CellNoImageStretchable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F8E3EC16E1F53000AF365C /* CellNoImageStretchable@2x.png */; };
 		32F8E3F116E1F9D900AF365C /* EventsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F8E3F016E1F9D900AF365C /* EventsUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32FAC0F51500F40700925180 /* DirectoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E31500F40700925180 /* DirectoryController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32FAC0F61500F40700925180 /* DirectorySearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E51500F40700925180 /* DirectorySearchViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32FAC0F61500F40700925180 /* DirectorySearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E51500F40700925180 /* DirectorySearchViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc-exceptions"; }; };
 		32FAC0F81500F40700925180 /* DirectoryPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32FAC0E81500F40700925180 /* DirectoryPlugin.strings */; };
 		32FAC0F91500F40700925180 /* DirectoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0ED1500F40700925180 /* DirectoryService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32FAC0FA1500F40700925180 /* directory.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0F01500F40700925180 /* directory.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };

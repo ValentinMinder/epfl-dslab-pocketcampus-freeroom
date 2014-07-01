@@ -86,6 +86,7 @@ static NSString* const kGAIScreenNameKey = @"GAIScreenName";
  * 0 otherwise
  */
 - (int)navControllerStackDirection {
+    // http://stackoverflow.com/a/1816682/1423774
     NSArray* viewControllers = self.navigationController.viewControllers;
     if (viewControllers.count > 1 && [viewControllers objectAtIndex:viewControllers.count-2] == self) {
         // View is disappearing because a new view controller was pushed onto the stack
