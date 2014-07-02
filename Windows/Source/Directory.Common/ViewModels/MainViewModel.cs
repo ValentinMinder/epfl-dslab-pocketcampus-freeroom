@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Threading.Tasks;
 using PocketCampus.Directory.Models;
 using PocketCampus.Directory.Services;
@@ -38,7 +39,8 @@ namespace PocketCampus.Directory.ViewModels
         public string Query
         {
             get { return _query; }
-            set { SetProperty( ref _query, value ); OnQueryChanged(); }
+            // HACK: Task.Run shouldn't add anything here, but it does prevent slowdowns...why?
+            set { SetProperty( ref _query, value ); Task.Run( () => OnQueryChanged() ); }
         }
 
         /// <summary>
@@ -127,7 +129,12 @@ namespace PocketCampus.Directory.ViewModels
         {
             return TryExecuteAsync( async token =>
             {
-                var request = new SearchRequest { Query = query };
+                var request = new SearchRequest
+                {
+                    Query = query,
+                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
+                };
+
                 var response = await _directoryService.SearchAsync( request, token );
 
                 if ( response.Status != SearchStatus.Success )
@@ -162,6 +169,7 @@ namespace PocketCampus.Directory.ViewModels
                 var request = new SearchRequest
                 {
                     Query = this.Query,
+                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
                     PaginationToken = _currentPaginationToken
                 };
                 var response = await _directoryService.SearchAsync( request, CurrentCancellationToken );

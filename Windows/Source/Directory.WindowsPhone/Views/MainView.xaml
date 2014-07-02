@@ -64,8 +64,7 @@
                     <!-- Units -->
                     <ItemsControl Grid.Column="1"
                                   Grid.Row="1"
-                                  ItemsSource="{Binding Units}"
-                                  >
+                                  ItemsSource="{Binding Roles.Keys}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <!-- This is an overview, we don't care about overflows -->

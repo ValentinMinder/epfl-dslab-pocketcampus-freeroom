@@ -37,12 +37,12 @@ namespace PocketCampus.Directory.ViewModels
         }
 
         /// <summary>
-        /// Gets the command executed to open the person's website.
+        /// Gets the command executed to open a website.
         /// </summary>
         [LogId( "ViewWebsite" )]
-        public Command OpenWebsiteCommand
+        public Command<string> OpenWebsiteCommand
         {
-            get { return GetCommand( () => _browserService.NavigateTo( Person.Website ) ); }
+            get { return GetCommand<string>( _browserService.NavigateTo ); }
         }
 
         /// <summary>

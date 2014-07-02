@@ -23,5 +23,11 @@ namespace PocketCampus.Directory.Models
         /// </summary>
         [ThriftField( 3, false, "resultSetCookie" )]
         public sbyte[] PaginationToken { get; set; }
+
+        /// <summary>
+        /// The language of the query.
+        /// </summary>
+        [ThriftField( 4, false, "language" )]
+        public string Language { get; set; }
     }
 }

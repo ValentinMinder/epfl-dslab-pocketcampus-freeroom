@@ -34,12 +34,6 @@ namespace PocketCampus.Directory.Models
         public string EmailAddress { get; set; }
 
         /// <summary>
-        /// The person's website, if any.
-        /// </summary>
-        [ThriftField( 5, false, "web" )]
-        public string Website { get; set; }
-
-        /// <summary>
         /// The person's private phone number, if it's visible.
         /// </summary>
         [ThriftField( 6, false, "privatePhoneNumber" )]
@@ -58,16 +52,22 @@ namespace PocketCampus.Directory.Models
         public string Office { get; set; }
 
         /// <summary>
-        /// The organizational units to which the person belongs (e.g. IN-BA3, DSLAB).
-        /// </summary>
-        [ThriftField( 10, false, "OrganisationalUnit" )]
-        public string[] Units { get; set; }
-
-        /// <summary>
         /// An URL to the person's picture, if it's visible.
         /// </summary>
         [ThriftField( 11, false, "pictureUrl" )]
         public string PictureUrl { get; set; }
+
+        /// <summary>
+        /// The person's roles.
+        /// </summary>
+        [ThriftField( 12, false, "roles" )]
+        public Dictionary<string, PersonRole> Roles { get; set; }
+
+        /// <summary>
+        /// The person's homepages.
+        /// </summary>
+        [ThriftField( 13, false, "homepages" )]
+        public Dictionary<string, string> Homepages { get; set; }
 
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace PocketCampus.Directory.Models
                     var attr = p.GetCustomAttribute<ThriftFieldAttribute>();
                     return attr != null && attr.Name == pair.Key;
                 } );
-                // thankfully there are only strings in this class, apart from units
+                // thankfully there are only strings in this class, apart from roles & homepages
                 if ( prop != null && prop.PropertyType == typeof( string ) )
                 {
                     prop.SetValue( person, pair.Value );

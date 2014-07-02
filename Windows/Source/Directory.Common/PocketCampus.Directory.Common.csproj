@@ -35,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Models\PersonRole.cs" />
     <Compile Include="Models\SearchRequest.cs" />
     <Compile Include="Models\SearchResponse.cs" />
     <Compile Include="Models\SearchStatus.cs" />
