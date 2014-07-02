@@ -816,6 +816,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
         return UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
     }];
     
+    cell.imageView.image = nil;
     [(PCTableViewAdditions*)(self.tableView) setImageURL:[NSURL URLWithString:eventItem.eventThumbnail] forCell:cell atIndexPath:indexPath];
     
     return cell;
