@@ -83,8 +83,7 @@ namespace PocketCampus.Main.ViewModels
         /// </summary>
         [LogId( "LogIn" )]
         [LogParameter( "SaveCredentials" )]
-        [LogValueConverter( true, "SavePasswordYes" )]
-        [LogValueConverter( false, "SavePasswordNo" )]
+        [LogValueConverter( typeof( SavePasswordLogValueConverter ) )]
         public AsyncCommand AuthenticateCommand
         {
             get { return GetAsyncCommand( AuthenticateAsync, () => !IsAuthenticating ); }
@@ -171,6 +170,18 @@ namespace PocketCampus.Main.ViewModels
             }
 
             IsAuthenticating = false;
+        }
+
+
+        /// <summary>
+        /// Utility class for analytics.
+        /// </summary>
+        private sealed class SavePasswordLogValueConverter : ILogValueConverter
+        {
+            public string Convert( object value )
+            {
+                return (bool) value ? "SavePasswordYes" : "SavePasswordNo";
+            }
         }
     }
 }

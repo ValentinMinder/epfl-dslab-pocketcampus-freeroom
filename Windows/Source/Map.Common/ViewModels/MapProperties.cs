@@ -4,6 +4,7 @@
 
 using PocketCampus.Common;
 using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Map.ViewModels
 {
@@ -23,7 +24,19 @@ namespace PocketCampus.Map.ViewModels
         public int BuildingsLevel
         {
             get { return _buildingsLevel; }
-            set { SetProperty( ref _buildingsLevel, value ); }
+            set
+            {
+                if ( value > _buildingsLevel )
+                {
+                    Messenger.Send( new EventLogRequest( "IncreaseFloor", null ) );
+                }
+                else if ( value < _buildingsLevel )
+                {
+                    Messenger.Send( new EventLogRequest( "DecreaseFloor", null ) );
+                }
+
+                SetProperty( ref _buildingsLevel, value );
+            }
         }
 
         /// <summary>

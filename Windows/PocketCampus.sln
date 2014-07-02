@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Main.WindowsPhone", "Source\Main.WindowsPhone\PocketCampus.Main.WindowsPhone.csproj", "{AF9FF1D1-FDAC-42A1-841C-65DB481066FB}"
 EndProject
@@ -50,6 +50,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Events.Common", "Source\Events.Common\PocketCampus.Events.Common.csproj", "{FA7A34C6-DD2B-48C1-827B-2B56BD634996}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Events.WindowsPhone", "Source\Events.WindowsPhone\PocketCampus.Events.WindowsPhone.csproj", "{248C6CF6-C940-42E4-AC38-C31F3726DD44}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F6311D09-62EE-4FBF-A3C0-0AE400039E63}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

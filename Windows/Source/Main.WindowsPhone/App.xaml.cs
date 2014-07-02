@@ -15,7 +15,6 @@ using PocketCampus.Main.Resources;
 using PocketCampus.Main.Services;
 using PocketCampus.Main.ViewModels;
 using ThinMvvm;
-using ThinMvvm.Logging;
 using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Main
@@ -84,7 +83,6 @@ namespace PocketCampus.Main
             Container.Bind<ISettingsStorage, WindowsPhoneSettingsStorage>();
             var pluginLoader = Container.Bind<IPluginLoader, PluginLoader>();
 
-            Container.Bind<Logger, GoogleAnalyticsLogger>();
             Container.Bind<IBrowserService, BrowserService>();
             Container.Bind<IEmailService, EmailService>();
             Container.Bind<IPhoneService, PhoneService>();
@@ -105,6 +103,9 @@ namespace PocketCampus.Main
             NavigationService.Bind<AuthenticationViewModel>( "/Views/AuthenticationView.xaml" );
             NavigationService.Bind<SettingsViewModel>( "/Views/SettingsView.xaml" );
             NavigationService.Bind<AboutViewModel>( "/Views/AboutView.xaml" );
+
+            // Logging
+            new GoogleAnalyticsLogger( NavigationService ).Start();
 
             // Common services
             AppInitializer.BindImplementations();

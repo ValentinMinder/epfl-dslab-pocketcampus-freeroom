@@ -6,6 +6,7 @@
 using GoogleAnalytics;
 #endif
 using ThinMvvm.Logging;
+using ThinMvvm;
 
 namespace PocketCampus.Main.Services
 {
@@ -15,21 +16,32 @@ namespace PocketCampus.Main.Services
     public sealed class GoogleAnalyticsLogger : Logger
     {
         private const string EventCategory = "UserAction";
+        private const string RefreshCommandId = "Refresh";
 
-        /// <summary>
-        /// Logs a navigation with the specified ID.
-        /// </summary>
-        protected override void LogNavigation( string id )
+
+        public GoogleAnalyticsLogger( INavigationService navigationService )
+            : base( navigationService )
+        {
+        }
+
+        protected override void LogAction( string viewModelId, SpecialAction action )
         {
 #if !DEBUG
-            EasyTracker.GetTracker().SendView( id );
+            switch ( action )
+            {
+                case SpecialAction.ForwardsNavigation:
+                case SpecialAction.BackwardsNavigation:
+                    EasyTracker.GetTracker().SendView( viewModelId );
+                    break;
+
+                case SpecialAction.Refresh:
+                    LogCommand( viewModelId, RefreshCommandId, null );
+                    break;
+            }
 #endif
         }
 
-        /// <summary>
-        /// Logs a command execution on the specified ViewModel with the specified ID.
-        /// </summary>
-        protected override void LogEvent( string viewModelId, string eventId, string label )
+        protected override void LogCommand( string viewModelId, string eventId, string label )
         {
 #if !DEBUG
             EasyTracker.GetTracker().SendEvent( EventCategory, viewModelId + "-" + eventId, label, 0 );
