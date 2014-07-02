@@ -84,6 +84,19 @@
     [self.navigationController setToolbarHidden:YES animated:NO];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    if (!self.isDisappearingBecauseOtherPushed) {
+        [self.webView loadHTMLString:@"" baseURL:nil]; //prevent major memory leak, see http://stackoverflow.com/a/16514274/1423774
+    }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    [self.webView reload]; //should release a bit of memory
+}
+
 #pragma mark - Buttons actions
 
 - (void)openInSafariTapped {

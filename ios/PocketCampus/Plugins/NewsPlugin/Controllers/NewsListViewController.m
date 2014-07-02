@@ -259,7 +259,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     
     NSString* imageUrlString = [newsFeedItem imageUrlStringForSize:CGSizeMake(106.0, tableView.rowHeight) applyDeviceScreenMultiplyingFactor:YES];
     
-    cell.imageView.image = nil;
+    cell.imageView.image = nil; // as said in PCTableViewAdditions doc for setImageURL:forCell:atIndexPath:
     [(PCTableViewAdditions*)(self.tableView) setImageURL:[NSURL URLWithString:imageUrlString] forCell:cell atIndexPath:indexPath];
     
     return cell;

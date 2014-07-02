@@ -41,6 +41,8 @@
  * IMPORTANT: if you reloadData/Sections/Rows, add, remove or reorder rows, requests are cancelled and
  * failed index paths are invalidated. It is *your* responsability to call this method again (typically in cellForRowAtIndexPath).
  * IMPORTANT 2: the 3 following methods are *not* thread-safe
+ * IMPORTANT 3: if temporaryImage (below) is nil, it is *your* responsability to clear the cell's image when reusing it,
+ * otherwise a wrong image will be temporarily displayed until the url request for the new one completes.
  */
 - (void)setImageURL:(NSURL*)url forCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath;
 
@@ -61,7 +63,10 @@
  */
 - (void)cancelAllImageDownloads;
 
-
+/**
+ * Image that is displayed while image download is still in progress
+ * or if the download fails or returns empty data.
+ */
 @property (nonatomic, strong) UIImage* temporaryImage;
 
 /**

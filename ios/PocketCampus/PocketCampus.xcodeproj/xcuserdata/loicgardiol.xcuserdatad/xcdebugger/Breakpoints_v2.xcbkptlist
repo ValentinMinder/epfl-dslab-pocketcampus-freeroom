@@ -415,11 +415,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/NewsPlugin/Controllers/NewsItemViewController.m"
-            timestampString = "425913356.472305"
+            timestampString = "425985509.852134"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "466"
-            endingLineNumber = "466">
+            startingLineNumber = "472"
+            endingLineNumber = "472">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -2126,11 +2126,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/NewsPlugin/Controllers/NewsItemViewController.m"
-            timestampString = "425913356.472305"
+            timestampString = "425985509.852134"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "343"
-            endingLineNumber = "343">
+            startingLineNumber = "349"
+            endingLineNumber = "349">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3143,7 +3143,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/NewsPlugin/Controllers/NewsListViewController.m"
-            timestampString = "425917739.657917"
+            timestampString = "425984451.257392"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "271"

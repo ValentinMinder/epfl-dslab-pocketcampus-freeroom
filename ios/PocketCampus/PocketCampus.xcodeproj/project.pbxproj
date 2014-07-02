@@ -16,10 +16,6 @@
 		3200375618118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375418118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png */; };
 		3200375918119B4100901F6A /* Info.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375718119B4100901F6A /* Info.png */; };
 		3200375A18119B4100901F6A /* Info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375818119B4100901F6A /* Info@2x.png */; };
-		320073671647128F002AD7BA /* ArrowHide.png in Resources */ = {isa = PBXBuildFile; fileRef = 320073651647128F002AD7BA /* ArrowHide.png */; };
-		320073681647128F002AD7BA /* ArrowHide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320073661647128F002AD7BA /* ArrowHide@2x.png */; };
-		3200736B164718DA002AD7BA /* ArrowShow.png in Resources */ = {isa = PBXBuildFile; fileRef = 32007369164718DA002AD7BA /* ArrowShow.png */; };
-		3200736C164718DA002AD7BA /* ArrowShow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200736A164718DA002AD7BA /* ArrowShow@2x.png */; };
 		3200A93F1666B709003D163E /* MapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151D015373A5B00CCFB22 /* MapController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32035BB3166E987100E134DD /* MoodleResourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035BB2166E987100E134DD /* MoodleResourceViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc-exceptions"; }; };
 		32035BB5166E988600E134DD /* MoodleResourceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32035BB4166E988600E134DD /* MoodleResourceView.xib */; };
@@ -157,6 +153,8 @@
 		32675C2415F50F4A00880387 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32675C2315F50F4A00880387 /* Config.plist */; };
 		326B9250150279E900DB4AEE /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B924F150279E900DB4AEE /* AddressBookUI.framework */; };
 		326B925215027A1400DB4AEE /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B925115027A1400DB4AEE /* AddressBook.framework */; };
+		326E3E3D1963FF7F00017F0C /* CellEmptyPicture.png in Resources */ = {isa = PBXBuildFile; fileRef = 326E3E3B1963FF7F00017F0C /* CellEmptyPicture.png */; };
+		326E3E3E1963FF7F00017F0C /* CellEmptyPicture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 326E3E3C1963FF7F00017F0C /* CellEmptyPicture@2x.png */; };
 		32704C7C15002F67002BCB75 /* Plugins.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32704C7B15002F67002BCB75 /* Plugins.plist */; };
 		3270B7F118056E6F007EE85B /* ListBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3270B7EF18056E6F007EE85B /* ListBarButton.png */; };
 		3270B7F218056E6F007EE85B /* ListBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3270B7F018056E6F007EE85B /* ListBarButton@2x.png */; };
@@ -251,8 +249,6 @@
 		329E1B3C16E693130054C3A8 /* FavoriteNavBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3A16E693130054C3A8 /* FavoriteNavBarButton@2x.png */; };
 		329E1B3F16E696F80054C3A8 /* FavoriteGlowNavBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3D16E696F80054C3A8 /* FavoriteGlowNavBarButton.png */; };
 		329E1B4016E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3E16E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png */; };
-		329FD2FD164485DF003FF9BE /* ArrowDownCircle.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD2FB164485DF003FF9BE /* ArrowDownCircle.png */; };
-		329FD2FE164485DF003FF9BE /* ArrowDownCircle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD2FC164485DF003FF9BE /* ArrowDownCircle@2x.png */; };
 		329FD30516449C67003FF9BE /* WarningSignRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD30316449C67003FF9BE /* WarningSignRed.png */; };
 		329FD30616449C67003FF9BE /* WarningSignRed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD30416449C67003FF9BE /* WarningSignRed@2x.png */; };
 		32A63A4B1535FFF400237841 /* TransportTripsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A63A4D1535FFF400237841 /* TransportTripsHeaderCell.xib */; };
@@ -365,8 +361,6 @@
 		32F5309216EAB8F800F66484 /* EventsSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5309116EAB8F700F66484 /* EventsSplashDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32F5309416EABA0F00F66484 /* EventsLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F5309316EABA0F00F66484 /* EventsLarge.png */; };
 		32F7218C171B0BB4005755A2 /* CamiproView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F7218B171B0BB4005755A2 /* CamiproView~ipad.xib */; };
-		32F8E3ED16E1F53000AF365C /* CellNoImageStretchable.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F8E3EB16E1F53000AF365C /* CellNoImageStretchable.png */; };
-		32F8E3EE16E1F53000AF365C /* CellNoImageStretchable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F8E3EC16E1F53000AF365C /* CellNoImageStretchable@2x.png */; };
 		32F8E3F116E1F9D900AF365C /* EventsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F8E3F016E1F9D900AF365C /* EventsUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32FAC0F51500F40700925180 /* DirectoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E31500F40700925180 /* DirectoryController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32FAC0F61500F40700925180 /* DirectorySearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E51500F40700925180 /* DirectorySearchViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc-exceptions"; }; };
@@ -413,10 +407,6 @@
 		3200375418118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CheckmarkRoundedSquareEmpty@2x.png"; sourceTree = "<group>"; };
 		3200375718119B4100901F6A /* Info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Info.png; sourceTree = "<group>"; };
 		3200375818119B4100901F6A /* Info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Info@2x.png"; sourceTree = "<group>"; };
-		320073651647128F002AD7BA /* ArrowHide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowHide.png; sourceTree = "<group>"; };
-		320073661647128F002AD7BA /* ArrowHide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowHide@2x.png"; sourceTree = "<group>"; };
-		32007369164718DA002AD7BA /* ArrowShow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowShow.png; sourceTree = "<group>"; };
-		3200736A164718DA002AD7BA /* ArrowShow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowShow@2x.png"; sourceTree = "<group>"; };
 		32035BB1166E987100E134DD /* MoodleResourceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleResourceViewController.h; sourceTree = "<group>"; };
 		32035BB2166E987100E134DD /* MoodleResourceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MoodleResourceViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32035BB4166E988600E134DD /* MoodleResourceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleResourceView.xib; sourceTree = "<group>"; };
@@ -614,6 +604,8 @@
 		32675C2315F50F4A00880387 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		326B924F150279E900DB4AEE /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		326B925115027A1400DB4AEE /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		326E3E3B1963FF7F00017F0C /* CellEmptyPicture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CellEmptyPicture.png; sourceTree = "<group>"; };
+		326E3E3C1963FF7F00017F0C /* CellEmptyPicture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CellEmptyPicture@2x.png"; sourceTree = "<group>"; };
 		32704C65150016B3002BCB75 /* PluginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PluginController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32704C66150016B3002BCB75 /* PluginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PluginController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32704C7B15002F67002BCB75 /* Plugins.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Plugins.plist; sourceTree = "<group>"; };
@@ -759,8 +751,6 @@
 		329E1B3A16E693130054C3A8 /* FavoriteNavBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteNavBarButton@2x.png"; sourceTree = "<group>"; };
 		329E1B3D16E696F80054C3A8 /* FavoriteGlowNavBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteGlowNavBarButton.png; sourceTree = "<group>"; };
 		329E1B3E16E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteGlowNavBarButton@2x.png"; sourceTree = "<group>"; };
-		329FD2FB164485DF003FF9BE /* ArrowDownCircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowDownCircle.png; sourceTree = "<group>"; };
-		329FD2FC164485DF003FF9BE /* ArrowDownCircle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowDownCircle@2x.png"; sourceTree = "<group>"; };
 		329FD30316449C67003FF9BE /* WarningSignRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WarningSignRed.png; sourceTree = "<group>"; };
 		329FD30416449C67003FF9BE /* WarningSignRed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WarningSignRed@2x.png"; sourceTree = "<group>"; };
 		32A63A4C1535FFF400237841 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TransportTripsHeaderCell.xib; sourceTree = "<group>"; };
@@ -925,8 +915,6 @@
 		32F5309116EAB8F700F66484 /* EventsSplashDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsSplashDetailViewController.m; sourceTree = "<group>"; };
 		32F5309316EABA0F00F66484 /* EventsLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EventsLarge.png; sourceTree = "<group>"; };
 		32F7218B171B0BB4005755A2 /* CamiproView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "CamiproView~ipad.xib"; sourceTree = "<group>"; };
-		32F8E3EB16E1F53000AF365C /* CellNoImageStretchable.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CellNoImageStretchable.png; sourceTree = "<group>"; };
-		32F8E3EC16E1F53000AF365C /* CellNoImageStretchable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CellNoImageStretchable@2x.png"; sourceTree = "<group>"; };
 		32F8E3EF16E1F9D900AF365C /* EventsUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsUtils.h; sourceTree = "<group>"; };
 		32F8E3F016E1F9D900AF365C /* EventsUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsUtils.m; sourceTree = "<group>"; };
 		32F8E3F216E1FA1100AF365C /* EventItem+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "EventItem+Additions.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -1142,12 +1130,6 @@
 			children = (
 				323676C416BDB5300004D5AD /* AppLogoCellImage.png */,
 				323676C216BDB42D0004D5AD /* AppLogoCellImage@2x.png */,
-				329FD2FB164485DF003FF9BE /* ArrowDownCircle.png */,
-				329FD2FC164485DF003FF9BE /* ArrowDownCircle@2x.png */,
-				320073651647128F002AD7BA /* ArrowHide.png */,
-				320073661647128F002AD7BA /* ArrowHide@2x.png */,
-				32007369164718DA002AD7BA /* ArrowShow.png */,
-				3200736A164718DA002AD7BA /* ArrowShow@2x.png */,
 				327585A21844C5B1004215FC /* ArrowSimpleRight.png */,
 				327585A31844C5B1004215FC /* ArrowSimpleRight@2x.png */,
 				327B0C22175199590011D81E /* ArrowUpRightCircleAccessory.png */,
@@ -1160,14 +1142,14 @@
 				32C509E517FC60B0005A5635 /* CameraBarButton@2x.png */,
 				32ADC7151659A2BA0039F6A6 /* CancelCrossRound.png */,
 				32ADC70F165999820039F6A6 /* CancelCrossRound@2x.png */,
-				32F8E3EB16E1F53000AF365C /* CellNoImageStretchable.png */,
-				32F8E3EC16E1F53000AF365C /* CellNoImageStretchable@2x.png */,
 				3200374F1811843500901F6A /* CheckmarkRoundedSquare.png */,
 				320037501811843500901F6A /* CheckmarkRoundedSquare@2x.png */,
 				3200375318118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png */,
 				3200375418118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png */,
 				32E67DBA16847A0900E5CFF6 /* ClockCell.png */,
 				32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */,
+				326E3E3B1963FF7F00017F0C /* CellEmptyPicture.png */,
+				326E3E3C1963FF7F00017F0C /* CellEmptyPicture@2x.png */,
 				32ADC7171659AAEB0039F6A6 /* Download.png */,
 				32ADC7181659AAEB0039F6A6 /* Download@2x.png */,
 				327412D8167E776A001E8C62 /* DownloadedCorner.png */,
@@ -2495,6 +2477,7 @@
 				324151E515375BDD00CCFB22 /* Map.png in Resources */,
 				32FFA797186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png in Resources */,
 				324151E615375BDD00CCFB22 /* Map@2x.png in Resources */,
+				326E3E3E1963FF7F00017F0C /* CellEmptyPicture@2x.png in Resources */,
 				32CCB4EA1555237500220282 /* MoodlePlugin.strings in Resources */,
 				327585A118449347004215FC /* TransportLarge@2x.png in Resources */,
 				328A132618296E2D00F4C622 /* FoodSmileySad@2x.png in Resources */,
@@ -2551,21 +2534,16 @@
 				3289F2B9183FAB8C00D833C2 /* LocationArrow2Active.png in Resources */,
 				323A913F164078FF007A63D3 /* TopDown1pxShadow@2x.png in Resources */,
 				32DE5B2117F1F8D900E03423 /* DirectoryLarge.png in Resources */,
-				329FD2FD164485DF003FF9BE /* ArrowDownCircle.png in Resources */,
-				329FD2FE164485DF003FF9BE /* ArrowDownCircle@2x.png in Resources */,
 				329FD30516449C67003FF9BE /* WarningSignRed.png in Resources */,
+				326E3E3D1963FF7F00017F0C /* CellEmptyPicture.png in Resources */,
 				320F859A194EED8C00BF3228 /* ArrowLeftBarButton@2x.png in Resources */,
 				329FD30616449C67003FF9BE /* WarningSignRed@2x.png in Resources */,
 				32574ED6182140AE008F3163 /* DirectoryEmptyPictureSmall.png in Resources */,
 				327513321825465D0037FE00 /* FavoriteCorner@2x.png in Resources */,
 				32C8799C183D103600750A11 /* SettingsBarButton2.png in Resources */,
-				320073671647128F002AD7BA /* ArrowHide.png in Resources */,
 				327585A51844C5B1004215FC /* ArrowSimpleRight@2x.png in Resources */,
-				320073681647128F002AD7BA /* ArrowHide@2x.png in Resources */,
 				32CACD9A183E366B00BD36F9 /* LocationArrowSelected@2x.png in Resources */,
-				3200736B164718DA002AD7BA /* ArrowShow.png in Resources */,
 				32C509EB17FC6D73005A5635 /* SortBarButton@2x.png in Resources */,
-				3200736C164718DA002AD7BA /* ArrowShow@2x.png in Resources */,
 				3204C6D01648412D003944D2 /* LightGrayTextureBackground.png in Resources */,
 				3204C6D11648412D003944D2 /* LightGrayTextureBackground@2x.png in Resources */,
 				325368C0164932F600406801 /* StretchableInnerShadow.png in Resources */,
@@ -2619,8 +2597,6 @@
 				8D964F08A876C676D9337E69 /* Events.png in Resources */,
 				38AE40F7B2AF51B65874011A /* Events@2x.png in Resources */,
 				32AA6CCA16DFF0D100783E9C /* EventsPlugin.strings in Resources */,
-				32F8E3ED16E1F53000AF365C /* CellNoImageStretchable.png in Resources */,
-				32F8E3EE16E1F53000AF365C /* CellNoImageStretchable@2x.png in Resources */,
 				3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */,
 				329E1B3B16E693130054C3A8 /* FavoriteNavBarButton.png in Resources */,
 				329E1B3C16E693130054C3A8 /* FavoriteNavBarButton@2x.png in Resources */,

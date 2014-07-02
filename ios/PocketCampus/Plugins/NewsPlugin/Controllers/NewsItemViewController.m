@@ -101,8 +101,8 @@
     [self trackScreen];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
     if (!self.isDisappearingBecauseOtherPushed) {
         [self.webView loadHTMLString:@"" baseURL:nil]; //prevent major memory leak, see http://stackoverflow.com/a/16514274/1423774
     }
@@ -264,7 +264,6 @@
 - (void)dealloc {
     [self.reachabilityManager stopMonitoring];
     self.webView.delegate = nil;
-    [self.webView stopLoading];
     [self.newsService cancelOperationsForDelegate:self];
 }
 
