@@ -10,6 +10,7 @@ import java.io.OptionalDataException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
@@ -31,6 +32,7 @@ import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -742,6 +744,76 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	public boolean getRegisteredUser() {
 		return this.registeredUser;
+	}
+
+	/**
+	 * Set the registeredUser setting.
+	 * 
+	 * @param next
+	 *            the new registeredUser setting.
+	 */
+	public void setRegisteredUserAuto() {
+		setRegisteredTime(System.currentTimeMillis());
+		setRegisteredUser(true);
+	}
+
+	/**
+	 * Retrieves the registeredUser setting.
+	 * 
+	 * @return the current registeredUser setting.
+	 */
+	public boolean getRegisteredUserNeedUpdate() {
+		if (!this.registeredUser) {
+			return true;
+		} else {
+			long now = System.currentTimeMillis();
+
+			if (registeredTime - now < FRTimes.ONE_WEEK_IN_MS * 2) {
+				return false;
+			}
+
+			Calendar calNow = Calendar.getInstance();
+			calNow.setTimeInMillis(now);
+
+			Calendar cal15Feb = Calendar.getInstance();
+			cal15Feb.setTimeInMillis(now);
+			cal15Feb.set(Calendar.MONTH, Calendar.FEBRUARY);
+			cal15Feb.set(Calendar.DAY_OF_MONTH, 15);
+
+			Calendar cal15Sept = Calendar.getInstance();
+			cal15Sept.setTimeInMillis(now);
+			cal15Sept.set(Calendar.MONTH, Calendar.SEPTEMBER);
+			cal15Sept.set(Calendar.DAY_OF_MONTH, 15);
+
+			Calendar calReg = Calendar.getInstance();
+			calReg.setTimeInMillis(now);
+
+			return compareNowAndRegistrationToThreshold(calReg, cal15Sept,
+					calNow)
+					|| compareNowAndRegistrationToThreshold(calReg, cal15Feb,
+							calNow);
+		}
+	}
+
+	/**
+	 * Checks if the registration is before the given threshold, AND that now
+	 * given is after the threshold.
+	 * 
+	 * @param calReg
+	 *            calendar corresponding to the registration time.
+	 * @param calTreshold
+	 *            calendar corresponding to the threshold time.
+	 * @param calNow
+	 *            calendar corresponding to now time.
+	 * @return
+	 */
+	private boolean compareNowAndRegistrationToThreshold(Calendar calReg,
+			Calendar calTreshold, Calendar calNow) {
+		if ((calReg.compareTo(calTreshold) < 0)
+				&& (calTreshold.compareTo(calNow) < 0)) {
+			return true;
+		}
+		return false;
 	}
 
 	/* TIMES */
