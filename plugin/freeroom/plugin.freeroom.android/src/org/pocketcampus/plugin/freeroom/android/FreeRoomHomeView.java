@@ -510,12 +510,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initWelcomeDialog();
 		if (!mModel.getRegisteredUser()) {
 			mModel.setRegisteredUser(true);
-			welcomeValidateRegistration();
+			//welcomeValidateRegistration();
 			// uncomment this if you want to show the welcome dialog at first
 			// start only, and you may want to change its content as well! :)
-			// welcome.show();
+			welcome.show();
 		} else {
-			welcomeValidateRegistration();
+			// welcomeValidateRegistration();
 		}
 	}
 

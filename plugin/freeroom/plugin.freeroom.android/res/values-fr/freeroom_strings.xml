@@ -214,7 +214,7 @@
     <string name="freeroom_settings_date_EU">"format français/européen"</string>
 
     <!-- WELCOME: beta-only -->
-    <string name="freeroom_authors">"Ce plugin en beta-test dans PocketCampus est le résultat d\'un projet de semestre dans le labo DSLAB.\nAuteurs:\nJulien WEBER\nValentin MINDER\nMerci à Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE pour leurs précieux conseils."</string>
+    <string name="freeroom_authors">"Ce plugin dans PocketCampus est le résultat d\'un projet de semestre dans le labo DSLAB.\nAuteurs: Julien WEBER, Valentin MINDER\nMerci à Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE pour leurs précieux conseils."</string>
     <string name="freeroom_welcome_title">"Bienvenue !"</string>
     <string name="freeroom_welcome_subtitle">"Merci de tester FreeRoom!"</string>
     <string name="freeroom_welcome_expl">"Pour que cette beta fonctionne, nous avons besoin de votre email epfl, UNE seule fois."</string>
@@ -232,6 +232,12 @@
     <string name="freeroom_welcome_validate_network_error">"Erreur réseau, merci de réessayer et de vérifier votre connection internet."</string>
     <string name="freeroom_welcome_validate_reject">"Le serveur a rejeté votre enregistrement !Merci de réessayer.\nSi cela persiste, merci de nous contacter à\nfreeroom.epfl@gmail.com !"</string>
 
+    <!-- Welcome: reused for normal usage -->
+
+    <string name="freeroom_welcome_explanations_first">"FreeRoom permet à quiconque de trouver une salle libre à l'EPFL. De la même manière, il est possible de consulter l'horaire d'une salle spécifique."</string>
+    <string name="freeroom_welcome_explanations_second">"Merci de laisser les salles dans un état acceptable. Pensez donc à mettre vos déchets à la poubelle et à remettre le mobilier en place. Merci également de quitter la salle 15 minutes avant toute réservation officielle."</string>
+    <string name="freeroom_welcome_explanations_third">"FreeRoom a encore d'autres fonctions: il est possible de partager votre position avec vos amis, d'indiquer anonymement votre position pour prévoir l'occupation future des salles, de visualiser les salles sur la carte&#8230; Veuillez noter que certaines salles ne sont affichées qu'à un certain cercle de personnes, vous aurez peut-être plus de résultas en étant connecté."</string>
+    
     <!-- No need to translate these layout img identificators -->
     <string name="freeroom_layout_roomslist_img_fav">fav icon</string>
     <string name="freeroom_layout_roomslist_img_map">map icon</string>

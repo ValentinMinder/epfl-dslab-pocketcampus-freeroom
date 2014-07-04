@@ -211,7 +211,7 @@
     <string name="freeroom_settings_date_EU">"French/European format"</string>
 
     <!-- WELCOME: beta-only -->
-    <string name="freeroom_authors">"This beta-plugin in PocketCampus is the result of a semester project with DSLAB.\nAuthors:\nJulien WEBER\nValentin MINDER\nThanks to Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE for their support and advices."</string>
+    <string name="freeroom_authors">"This plugin in PocketCampus is the result of a semester project with DSLAB.\nAuthors: Julien WEBER, Valentin MINDER\nThanks to Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE for their support and advices."</string>
     <string name="freeroom_welcome_title">"Welcome!"</string>
     <string name="freeroom_welcome_subtitle">"Thanks for testing FreeRoom!"</string>
     <string name="freeroom_welcome_expl">"In order to make this beta test work, we need you to register ONCE with your EPFL email address."</string>
@@ -228,6 +228,12 @@
     <string name="freeroom_welcome_invalid_mail">"Invalid email!\nPlease use your epfl email with format \nfirstname.lastname@epfl.ch\nwithout any spaces or special character, only alphanumerical (a&#8211;zA&#8211;Z0&#8211;9), dash (&#8211;), dot (.) and @.\nIf you believe this is an error or you have trouble registering, please write us an email at\nfreeroom.epfl@gmail.com"</string>
     <string name="freeroom_welcome_validate_network_error">"Network transmission. Please try again.\nPlease check your connectivity to the internet.""</string>
     <string name="freeroom_welcome_validate_reject">"Server rejected the registration! Please try again.\nIf it happens more than once, please contact us at\nfreeroom.epfl@gmail.com!"</string>
+
+    <!-- Welcome: reused for normal usage -->
+
+    <string name="freeroom_welcome_explanations_first">"FreeRoom allows everyone at EPFL to find rooms that are free. Alternatively, you may search the schedule of a specific room."</string>
+    <string name="freeroom_welcome_explanations_second">"Please note that you are required to leave the room in an acceptable state, so put your trashes in a bin and put back the furnitures in order. Moreover, please leave the room 15 minutes before any official reservations."</string>
+    <string name="freeroom_welcome_explanations_third">"FreeRoom has additional features: you may share your location with friends, indicate anonymously that you're in the room to forecast the probable occupation, search the room on the map&#8230; Please note that some rooms are only accessible to some people, therefore you might have more results if you're connected."</string>
 
     <!-- No need to translate these layout img identificators -->
     <string name="freeroom_layout_roomslist_img_fav">fav icon</string>
