@@ -51,6 +51,8 @@
 
 @property (nonatomic, strong) UIActionSheet* detailsActionSheet;
 
+@property (nonatomic, strong) PCDatePickerView* datePickerView;
+
 @property (nonatomic, strong) NSDate* lastRefreshDate;
 
 @end
@@ -85,6 +87,9 @@
     self.toolbarItems = @[todayItem, flexibleSpaceItem, goToDateItem];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferredContentSizeChanged) name:UIContentSizeCategoryDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
+    [[MainController publicController] addPluginStateObserver:self selector:@selector(willLoseForeground) notification:PluginWillLoseForegroundNotification pluginIdentifierName:@"IsAcademia"];
+    [[MainController publicController] addPluginStateObserver:self selector:@selector(didEnterForeground) notification:PluginDidEnterForegroundNotification pluginIdentifierName:@"IsAcademia"];
     
     self.progressHUD = [[MBProgressHUD alloc] initWithView:self.dayView];
     self.progressHUD.userInteractionEnabled = NO;
@@ -131,6 +136,18 @@
     [self refreshAndGoToTodayIfNeeded];
 }
 
+- (void)willLoseForeground {
+    [self.datePickerView dismiss];
+}
+
+- (void)didEnterForeground {
+    if (self.datePickerView) {
+        //check uncessary, just to make clear that
+        //self.datePickerView != nil means it was presented
+        [self.datePickerView presentInView:self.view];
+    }
+}
+
 #pragma mark - Refresh & actions
 
 - (void)refreshAndGoToTodayIfNeeded {
@@ -172,11 +189,14 @@
         welf.dayView.date = date;
         [welf calendarDayTimelineView:welf.dayView didMoveToDate:welf.dayView.date]; //force refresh
         [view dismiss];
+        welf.datePickerView = nil;
     }];
     [pcDatePicker setUserCancelledBlock:^(PCDatePickerView* view) {
         [view dismiss];
+        welf.datePickerView = nil;
     }];
     [pcDatePicker presentInView:self.view];
+    self.datePickerView = pcDatePicker;
 }
 
 #pragma mark - Date utils
