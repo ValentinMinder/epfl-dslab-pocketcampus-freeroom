@@ -5161,7 +5161,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			errorDialogShowMessage(timeLang + mModel.getTimeLanguage().name()
 					+ resetTimeLang);
 		}
-		if (query.matches("[Rr][Ee][Ss][Ee][Tt][Aa][LL][Ll]")) {
+		if (query.matches("[Rr][Ee][Ss][Ee][Tt][Aa][Ll][Ll]")) {
 			mModel.resetAll(false);
 			errorDialogShowMessage("All settings have been reset, including UID.");
 		}

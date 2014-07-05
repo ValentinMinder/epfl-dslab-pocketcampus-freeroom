@@ -768,25 +768,23 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		} else {
 			long now = System.currentTimeMillis();
 
-			if (registeredTime - now < FRTimes.ONE_WEEK_IN_MS * 2) {
+			if (getRegisteredTime() - now < FRTimes.ONE_WEEK_IN_MS * 2) {
 				return false;
 			}
 
 			Calendar calNow = Calendar.getInstance();
 			calNow.setTimeInMillis(now);
+			int year = calNow.get(Calendar.YEAR);
 
 			Calendar cal15Feb = Calendar.getInstance();
 			cal15Feb.setTimeInMillis(now);
-			cal15Feb.set(Calendar.MONTH, Calendar.FEBRUARY);
-			cal15Feb.set(Calendar.DAY_OF_MONTH, 15);
+			cal15Feb.set(year, Calendar.FEBRUARY, 14, 1, 0);
 
 			Calendar cal15Sept = Calendar.getInstance();
-			cal15Sept.setTimeInMillis(now);
-			cal15Sept.set(Calendar.MONTH, Calendar.SEPTEMBER);
-			cal15Sept.set(Calendar.DAY_OF_MONTH, 15);
+			cal15Sept.set(year, Calendar.SEPTEMBER, 14, 1, 0);
 
 			Calendar calReg = Calendar.getInstance();
-			calReg.setTimeInMillis(now);
+			calReg.setTimeInMillis(getRegisteredTime());
 
 			return compareNowAndRegistrationToThreshold(calReg, cal15Sept,
 					calNow)
