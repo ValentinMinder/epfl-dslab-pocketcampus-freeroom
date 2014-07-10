@@ -340,7 +340,7 @@ static NSTimeInterval kMaxIntervalForMinutesLeftString = 15.0;
                     break;
             }
             UILabel* timeLabel = timeLabels[index];
-            NSString* lineName = firstConnection ? firstConnection.line.veryShortName : @"";
+            NSString* lineName = firstConnection.line.veryShortName ?: @"";
             NSString* fullString = nil;
             if ([timeString isEqualToString:@"Now"]) {
                 [self setBusImageViewVisible:YES inLabel:timeLabel];

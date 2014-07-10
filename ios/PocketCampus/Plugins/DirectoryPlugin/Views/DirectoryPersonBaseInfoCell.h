@@ -25,16 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 25.09.13.
-
-
-
-#import <UIKit/UIKit.h>
 
 #import "DirectoryService.h"
 
@@ -45,20 +36,26 @@ typedef enum {
 
 @interface DirectoryPersonBaseInfoCell : UITableViewCell
 
+- (id)initWithDirectoryPersonBaseInfoCellStyle:(DirectoryPersonBaseInfoCellStyle)style reuseIdentifer:(NSString*)reuseIdentifier;
+
++ (CGFloat)preferredHeightForStyle:(DirectoryPersonBaseInfoCellStyle)style person:(Person*)person inTableView:(UITableView*)tableView;
+
 @property (nonatomic, strong) Person* person;
 
 @property (nonatomic, readonly) DirectoryPersonBaseInfoCellStyle style;
 
 @property (nonatomic, readonly) UIImage* profilePicture;
 
+/**
+ * Executed when user tapped on one of the person's role's unit
+ * Cell owner should handle the URL (typically open it in browser)
+ */
+@property (nonatomic, copy) void (^unitTappedBlock)(NSURL* url);
+
 /*
  * WARNING: do not use profilePictureImageView.image to get person's profile picture, because it might be a generic one.
  * Use property profilePicture above (non-nil if actual picture exists)
  */
 @property (nonatomic, strong) IBOutlet UIImageView* profilePictureImageView;
-
-- (id)initWithDirectoryPersonBaseInfoCellStyle:(DirectoryPersonBaseInfoCellStyle)style reuseIdentifer:(NSString*)reuseIdentifier;
-
-+ (CGFloat)heightForStyle:(DirectoryPersonBaseInfoCellStyle)style;
 
 @end

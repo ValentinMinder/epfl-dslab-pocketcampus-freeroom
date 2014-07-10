@@ -236,7 +236,8 @@ static const int kPluginsSection = 0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MainMenuItem* item = self.menuItems[indexPath.row];
-    [self trackAction:@"OpenPlugin" contentInfo:item.identifier];
+    NSString* lowercaseIdentifier = [item.identifier lowercaseString];
+    [self trackAction:@"OpenPlugin" contentInfo:lowercaseIdentifier];
     [self.mainController setActivePluginWithIdentifier:item.identifier];
 }
 

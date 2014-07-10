@@ -26,7 +26,6 @@
  */
 
 
-
 #import "MoodleService.h"
 
 #import "PCPersistenceManager.h"
@@ -464,11 +463,14 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 }
 
 - (void)cancelDownloadOfMoodleResourceForDelegate:(id)delegate {
-    [self.resourcesDownloadSessionManager.tasks enumerateObjectsUsingBlock:^(NSURLSessionTask* task, NSUInteger index, BOOL *stop) {
+    if (!_resourcesDownloadSessionManager) {
+        return;
+    }
+    for (NSURLSessionTask* task in self.resourcesDownloadSessionManager.tasks) {
         if ([task.taskDescription isEqualToString:[NSString stringWithFormat:@"%p", delegate]]) {
             [task cancel];
         }
-    }];
+    }
 }
 
 #pragma mark - Service overrides
@@ -482,6 +484,9 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 
 - (void)dealloc
 {
+    if (_resourcesDownloadSessionManager) {
+        [_resourcesDownloadSessionManager invalidateSessionCancelingTasks:YES]; //might retain cycle the manager with its session otherwise. See http://stackoverflow.com/a/24370373/1423774
+    }
     @synchronized(self) {
         instance = nil;
     }

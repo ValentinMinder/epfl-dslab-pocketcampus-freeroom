@@ -47,6 +47,8 @@ static MapController* instance __weak = nil;
 
 @implementation MapController
 
+#pragma mark - Init
+
 - (id)init
 {
     @synchronized(self) {
@@ -65,6 +67,8 @@ static MapController* instance __weak = nil;
     }
 }
 
+#pragma mark - PluginController
+
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
@@ -78,19 +82,12 @@ static MapController* instance __weak = nil;
     }
 }
 
-- (BOOL)handleURLQueryAction:(NSString *)action parameters:(NSDictionary *)parameters {
-    if ([action isEqualToString:@"search"]) {
-        NSString* query = parameters[@"q"];
-        if (query) {
-            if ([self.mapViewController isViewLoaded]) {
-                [self.mapViewController startSearchForQuery:query];
-            } else {
-                self.mapViewController.initialQueryWithFullControls = query;
-            }
-            return YES;
-        }
-    }
-    return NO;
++ (NSString*)localizedName {
+    return NSLocalizedStringFromTable(@"PluginName", @"MapPlugin", @"");
+}
+
++ (NSString*)identifierName {
+    return @"Map";
 }
 
 - (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
@@ -108,6 +105,35 @@ static MapController* instance __weak = nil;
     return nil;
 }
 
+- (BOOL)handleURLQueryAction:(NSString *)action parameters:(NSDictionary *)parameters {
+    if ([action isEqualToString:@"search"]) {
+        NSString* query = parameters[@"q"];
+        if (query) {
+            if ([self.mapViewController isViewLoaded]) {
+                [self.mapViewController startSearchForQuery:query];
+            } else {
+                self.mapViewController.initialQueryWithFullControls = query;
+            }
+            return YES;
+        }
+    }
+    return NO;
+}
+
++ (UIViewController*)viewControllerForWebURL:(NSURL *)webURL {
+    if (![webURL.host isEqualToString:@"plan.epfl.ch"] && ![webURL.host isEqualToString:@"map.epfl.ch"]) {
+        return nil;
+    }
+    NSDictionary* params = [PCUtils urlStringParameters:webURL.absoluteString];
+    NSString* query = params[@"room"];
+    if (![query isKindOfClass:[NSString class]]) {
+        return nil;
+    }
+    return [self viewControllerWithInitialSearchQuery:query];
+}
+
+#pragma mark - Public
+
 + (UIViewController*)viewControllerWithInitialMapItem:(MapItem*)mapItem {
     return [[MapViewController alloc] initWithInitialMapItem:mapItem];
 }
@@ -118,16 +144,6 @@ static MapController* instance __weak = nil;
 
 + (UIViewController*)viewControllerWithInitialSearchQuery:(NSString*)query pinLabelText:(NSString*)pinLabelText {
     return [[MapViewController alloc] initWithInitialQuery:query pinTextLabel:pinLabelText];
-}
-
-#pragma mark - PluginControllerProtocol
-
-+ (NSString*)localizedName {
-    return NSLocalizedStringFromTable(@"PluginName", @"MapPlugin", @"");
-}
-
-+ (NSString*)identifierName {
-    return @"Map";
 }
 
 #pragma mark - dealloc

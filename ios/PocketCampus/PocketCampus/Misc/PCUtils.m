@@ -174,7 +174,9 @@
             NSArray* pairComponents = [keyValuePair componentsSeparatedByString:@"="];
             NSString* key = pairComponents[0];
             NSString* value = pairComponents[1];
-            [queryStringDictionary setObject:value forKey:key];
+            value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // convert HTML entities
+            value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "]; //sometimes + are used for spaces in URLs
+            queryStringDictionary[key] = value;
         }
     }
     @catch (NSException *exception) {

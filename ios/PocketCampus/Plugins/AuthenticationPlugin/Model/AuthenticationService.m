@@ -220,6 +220,8 @@ static AuthenticationService* instance __weak = nil;
     [self.operationQueue addOperation:operation];
 }
 
+#pragma mark - Service methods
+
 - (void)getAuthTequilaTokenWithDelegate:(id<AuthenticationServiceDelegate>)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getAuthTequilaToken);
@@ -229,12 +231,12 @@ static AuthenticationService* instance __weak = nil;
     [self.operationQueue addOperation:operation];
 }
 
-- (void)getAuthSessionIdWithTequilaToken:(NSString*)tequilaToken delegate:(id<AuthenticationServiceDelegate>)delegate {
+- (void)getAuthSessionWithRequest:(AuthSessionRequest*)request delegate:(id<AuthenticationServiceDelegate>)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getAuthSessionId:);
-    operation.delegateDidReturnSelector = @selector(getAuthSessionIdWithToken:didReturn:);
-    operation.delegateDidFailSelector = @selector(getAuthSessionIdFailedForToken:);
-    [operation addObjectArgument:tequilaToken];
+    operation.serviceClientSelector = @selector(getAuthSession:);
+    operation.delegateDidReturnSelector = @selector(getAuthSessionForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getAuthSessionFailedForRequest:);
+    [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
 }

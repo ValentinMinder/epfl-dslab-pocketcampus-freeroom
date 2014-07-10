@@ -91,11 +91,11 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 #pragma mark - Properties
 
 - (BOOL)saveDocsPositionGeneralSetting {
-    return [[[PCPersistenceManager defaultsForPluginName:@"moodle"] objectForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey] boolValue];
+    return [[[PCPersistenceManager userDefaultsForPluginName:@"moodle"] objectForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey] boolValue];
 }
 
 - (void)setSaveDocsPositionGeneralSetting:(BOOL)saveDocsPositionGeneralSetting {
-    [[PCPersistenceManager defaultsForPluginName:@"moodle"] setObject:[NSNumber numberWithBool:saveDocsPositionGeneralSetting] forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
+    [[PCPersistenceManager userDefaultsForPluginName:@"moodle"] setObject:[NSNumber numberWithBool:saveDocsPositionGeneralSetting] forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
 }
 
 #pragma mark - UITableViewDelegate

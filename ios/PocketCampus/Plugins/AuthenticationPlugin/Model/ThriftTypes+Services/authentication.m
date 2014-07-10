@@ -482,6 +482,615 @@
 
 @end
 
+@implementation LogoutResponse
+
+- (id) initWithStatusCode: (int) statusCode deletedSessionsCount: (int32_t) deletedSessionsCount
+{
+  self = [super init];
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
+  __deletedSessionsCount = deletedSessionsCount;
+  __deletedSessionsCount_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"statusCode"])
+  {
+    __statusCode = [decoder decodeIntForKey: @"statusCode"];
+    __statusCode_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"deletedSessionsCount"])
+  {
+    __deletedSessionsCount = [decoder decodeInt32ForKey: @"deletedSessionsCount"];
+    __deletedSessionsCount_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__statusCode_isset)
+  {
+    [encoder encodeInt: __statusCode forKey: @"statusCode"];
+  }
+  if (__deletedSessionsCount_isset)
+  {
+    [encoder encodeInt32: __deletedSessionsCount forKey: @"deletedSessionsCount"];
+  }
+}
+
+- (void) dealloc
+{
+  [super dealloc];
+}
+
+- (int) statusCode {
+  return __statusCode;
+}
+
+- (void) setStatusCode: (int) statusCode {
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
+}
+
+- (BOOL) statusCodeIsSet {
+  return __statusCode_isset;
+}
+
+- (void) unsetStatusCode {
+  __statusCode_isset = NO;
+}
+
+- (int32_t) deletedSessionsCount {
+  return __deletedSessionsCount;
+}
+
+- (void) setDeletedSessionsCount: (int32_t) deletedSessionsCount {
+  __deletedSessionsCount = deletedSessionsCount;
+  __deletedSessionsCount_isset = YES;
+}
+
+- (BOOL) deletedSessionsCountIsSet {
+  return __deletedSessionsCount_isset;
+}
+
+- (void) unsetDeletedSessionsCount {
+  __deletedSessionsCount_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setStatusCode: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setDeletedSessionsCount: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"LogoutResponse"];
+  if (__statusCode_isset) {
+    [outProtocol writeFieldBeginWithName: @"statusCode" type: TType_I32 fieldID: 1];
+    [outProtocol writeI32: __statusCode];
+    [outProtocol writeFieldEnd];
+  }
+  if (__deletedSessionsCount_isset) {
+    [outProtocol writeFieldBeginWithName: @"deletedSessionsCount" type: TType_I32 fieldID: 2];
+    [outProtocol writeI32: __deletedSessionsCount];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"LogoutResponse("];
+  [ms appendString: @"statusCode:"];
+  [ms appendFormat: @"%i", __statusCode];
+  [ms appendString: @",deletedSessionsCount:"];
+  [ms appendFormat: @"%i", __deletedSessionsCount];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation LogoutRequest
+
+- (id) initWithSessionId: (NSString *) sessionId
+{
+  self = [super init];
+  __sessionId = [sessionId retain];
+  __sessionId_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"sessionId"])
+  {
+    __sessionId = [[decoder decodeObjectForKey: @"sessionId"] retain];
+    __sessionId_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__sessionId_isset)
+  {
+    [encoder encodeObject: __sessionId forKey: @"sessionId"];
+  }
+}
+
+- (void) dealloc
+{
+  [__sessionId release];
+  [super dealloc];
+}
+
+- (NSString *) sessionId {
+  return [[__sessionId retain] autorelease];
+}
+
+- (void) setSessionId: (NSString *) sessionId {
+  [sessionId retain];
+  [__sessionId release];
+  __sessionId = sessionId;
+  __sessionId_isset = YES;
+}
+
+- (BOOL) sessionIdIsSet {
+  return __sessionId_isset;
+}
+
+- (void) unsetSessionId {
+  [__sessionId release];
+  __sessionId = nil;
+  __sessionId_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setSessionId: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"LogoutRequest"];
+  if (__sessionId_isset) {
+    if (__sessionId != nil) {
+      [outProtocol writeFieldBeginWithName: @"sessionId" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __sessionId];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"LogoutRequest("];
+  [ms appendString: @"sessionId:"];
+  [ms appendFormat: @"\"%@\"", __sessionId];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation UserAttributesResponse
+
+- (id) initWithUserAttributes: (NSArray *) userAttributes statusCode: (int) statusCode
+{
+  self = [super init];
+  __userAttributes = [userAttributes retain];
+  __userAttributes_isset = YES;
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"userAttributes"])
+  {
+    __userAttributes = [[decoder decodeObjectForKey: @"userAttributes"] retain];
+    __userAttributes_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"statusCode"])
+  {
+    __statusCode = [decoder decodeIntForKey: @"statusCode"];
+    __statusCode_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__userAttributes_isset)
+  {
+    [encoder encodeObject: __userAttributes forKey: @"userAttributes"];
+  }
+  if (__statusCode_isset)
+  {
+    [encoder encodeInt: __statusCode forKey: @"statusCode"];
+  }
+}
+
+- (void) dealloc
+{
+  [__userAttributes release];
+  [super dealloc];
+}
+
+- (NSArray *) userAttributes {
+  return [[__userAttributes retain] autorelease];
+}
+
+- (void) setUserAttributes: (NSArray *) userAttributes {
+  [userAttributes retain];
+  [__userAttributes release];
+  __userAttributes = userAttributes;
+  __userAttributes_isset = YES;
+}
+
+- (BOOL) userAttributesIsSet {
+  return __userAttributes_isset;
+}
+
+- (void) unsetUserAttributes {
+  [__userAttributes release];
+  __userAttributes = nil;
+  __userAttributes_isset = NO;
+}
+
+- (int) statusCode {
+  return __statusCode;
+}
+
+- (void) setStatusCode: (int) statusCode {
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
+}
+
+- (BOOL) statusCodeIsSet {
+  return __statusCode_isset;
+}
+
+- (void) unsetStatusCode {
+  __statusCode_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_LIST) {
+          int _size0;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size0];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size0];
+          int _i1;
+          for (_i1 = 0; _i1 < _size0; ++_i1)
+          {
+            NSString * _elem2 = [inProtocol readString];
+            [fieldValue addObject: _elem2];
+          }
+          [inProtocol readListEnd];
+          [self setUserAttributes: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setStatusCode: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"UserAttributesResponse"];
+  if (__userAttributes_isset) {
+    if (__userAttributes != nil) {
+      [outProtocol writeFieldBeginWithName: @"userAttributes" type: TType_LIST fieldID: 1];
+      {
+        [outProtocol writeListBeginWithElementType: TType_STRING size: [__userAttributes count]];
+        int i4;
+        for (i4 = 0; i4 < [__userAttributes count]; i4++)
+        {
+          [outProtocol writeString: [__userAttributes objectAtIndex: i4]];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__statusCode_isset) {
+    [outProtocol writeFieldBeginWithName: @"statusCode" type: TType_I32 fieldID: 2];
+    [outProtocol writeI32: __statusCode];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"UserAttributesResponse("];
+  [ms appendString: @"userAttributes:"];
+  [ms appendFormat: @"%@", __userAttributes];
+  [ms appendString: @",statusCode:"];
+  [ms appendFormat: @"%i", __statusCode];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation UserAttributesRequest
+
+- (id) initWithSessionId: (NSString *) sessionId attributeNames: (NSArray *) attributeNames
+{
+  self = [super init];
+  __sessionId = [sessionId retain];
+  __sessionId_isset = YES;
+  __attributeNames = [attributeNames retain];
+  __attributeNames_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"sessionId"])
+  {
+    __sessionId = [[decoder decodeObjectForKey: @"sessionId"] retain];
+    __sessionId_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"attributeNames"])
+  {
+    __attributeNames = [[decoder decodeObjectForKey: @"attributeNames"] retain];
+    __attributeNames_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__sessionId_isset)
+  {
+    [encoder encodeObject: __sessionId forKey: @"sessionId"];
+  }
+  if (__attributeNames_isset)
+  {
+    [encoder encodeObject: __attributeNames forKey: @"attributeNames"];
+  }
+}
+
+- (void) dealloc
+{
+  [__sessionId release];
+  [__attributeNames release];
+  [super dealloc];
+}
+
+- (NSString *) sessionId {
+  return [[__sessionId retain] autorelease];
+}
+
+- (void) setSessionId: (NSString *) sessionId {
+  [sessionId retain];
+  [__sessionId release];
+  __sessionId = sessionId;
+  __sessionId_isset = YES;
+}
+
+- (BOOL) sessionIdIsSet {
+  return __sessionId_isset;
+}
+
+- (void) unsetSessionId {
+  [__sessionId release];
+  __sessionId = nil;
+  __sessionId_isset = NO;
+}
+
+- (NSArray *) attributeNames {
+  return [[__attributeNames retain] autorelease];
+}
+
+- (void) setAttributeNames: (NSArray *) attributeNames {
+  [attributeNames retain];
+  [__attributeNames release];
+  __attributeNames = attributeNames;
+  __attributeNames_isset = YES;
+}
+
+- (BOOL) attributeNamesIsSet {
+  return __attributeNames_isset;
+}
+
+- (void) unsetAttributeNames {
+  [__attributeNames release];
+  __attributeNames = nil;
+  __attributeNames_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setSessionId: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_LIST) {
+          int _size5;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size5];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size5];
+          int _i6;
+          for (_i6 = 0; _i6 < _size5; ++_i6)
+          {
+            NSString * _elem7 = [inProtocol readString];
+            [fieldValue addObject: _elem7];
+          }
+          [inProtocol readListEnd];
+          [self setAttributeNames: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"UserAttributesRequest"];
+  if (__sessionId_isset) {
+    if (__sessionId != nil) {
+      [outProtocol writeFieldBeginWithName: @"sessionId" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __sessionId];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__attributeNames_isset) {
+    if (__attributeNames != nil) {
+      [outProtocol writeFieldBeginWithName: @"attributeNames" type: TType_LIST fieldID: 2];
+      {
+        [outProtocol writeListBeginWithElementType: TType_STRING size: [__attributeNames count]];
+        int i9;
+        for (i9 = 0; i9 < [__attributeNames count]; i9++)
+        {
+          [outProtocol writeString: [__attributeNames objectAtIndex: i9]];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"UserAttributesRequest("];
+  [ms appendString: @"sessionId:"];
+  [ms appendFormat: @"\"%@\"", __sessionId];
+  [ms appendString: @",attributeNames:"];
+  [ms appendFormat: @"%@", __attributeNames];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @interface getAuthTequilaToken_args : NSObject <NSCoding> {
 }
 
@@ -945,6 +1554,544 @@
 
 @end
 
+@interface destroyAllUserSessions_args : NSObject <NSCoding> {
+  LogoutRequest * __req;
+
+  BOOL __req_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=req, setter=setReq:) LogoutRequest * req;
+#endif
+
+- (id) initWithReq: (LogoutRequest *) req;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (LogoutRequest *) req;
+- (void) setReq: (LogoutRequest *) req;
+- (BOOL) reqIsSet;
+
+@end
+
+@implementation destroyAllUserSessions_args
+
+- (id) initWithReq: (LogoutRequest *) req
+{
+  self = [super init];
+  __req = [req retain];
+  __req_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"req"])
+  {
+    __req = [[decoder decodeObjectForKey: @"req"] retain];
+    __req_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__req_isset)
+  {
+    [encoder encodeObject: __req forKey: @"req"];
+  }
+}
+
+- (void) dealloc
+{
+  [__req release];
+  [super dealloc];
+}
+
+- (LogoutRequest *) req {
+  return [[__req retain] autorelease];
+}
+
+- (void) setReq: (LogoutRequest *) req {
+  [req retain];
+  [__req release];
+  __req = req;
+  __req_isset = YES;
+}
+
+- (BOOL) reqIsSet {
+  return __req_isset;
+}
+
+- (void) unsetReq {
+  [__req release];
+  __req = nil;
+  __req_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          LogoutRequest *fieldValue = [[LogoutRequest alloc] init];
+          [fieldValue read: inProtocol];
+          [self setReq: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"destroyAllUserSessions_args"];
+  if (__req_isset) {
+    if (__req != nil) {
+      [outProtocol writeFieldBeginWithName: @"req" type: TType_STRUCT fieldID: 1];
+      [__req write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"destroyAllUserSessions_args("];
+  [ms appendString: @"req:"];
+  [ms appendFormat: @"%@", __req];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface DestroyAllUserSessions_result : NSObject <NSCoding> {
+  LogoutResponse * __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=success, setter=setSuccess:) LogoutResponse * success;
+#endif
+
+- (id) initWithSuccess: (LogoutResponse *) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (LogoutResponse *) success;
+- (void) setSuccess: (LogoutResponse *) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation DestroyAllUserSessions_result
+
+- (id) initWithSuccess: (LogoutResponse *) success
+{
+  self = [super init];
+  __success = [success retain];
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [[decoder decodeObjectForKey: @"success"] retain];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeObject: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [__success release];
+  [super dealloc];
+}
+
+- (LogoutResponse *) success {
+  return [[__success retain] autorelease];
+}
+
+- (void) setSuccess: (LogoutResponse *) success {
+  [success retain];
+  [__success release];
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  [__success release];
+  __success = nil;
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_STRUCT) {
+          LogoutResponse *fieldValue = [[LogoutResponse alloc] init];
+          [fieldValue read: inProtocol];
+          [self setSuccess: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"DestroyAllUserSessions_result"];
+
+  if (__success_isset) {
+    if (__success != nil) {
+      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
+      [__success write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"DestroyAllUserSessions_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%@", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface getUserAttributes_args : NSObject <NSCoding> {
+  UserAttributesRequest * __req;
+
+  BOOL __req_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=req, setter=setReq:) UserAttributesRequest * req;
+#endif
+
+- (id) initWithReq: (UserAttributesRequest *) req;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (UserAttributesRequest *) req;
+- (void) setReq: (UserAttributesRequest *) req;
+- (BOOL) reqIsSet;
+
+@end
+
+@implementation getUserAttributes_args
+
+- (id) initWithReq: (UserAttributesRequest *) req
+{
+  self = [super init];
+  __req = [req retain];
+  __req_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"req"])
+  {
+    __req = [[decoder decodeObjectForKey: @"req"] retain];
+    __req_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__req_isset)
+  {
+    [encoder encodeObject: __req forKey: @"req"];
+  }
+}
+
+- (void) dealloc
+{
+  [__req release];
+  [super dealloc];
+}
+
+- (UserAttributesRequest *) req {
+  return [[__req retain] autorelease];
+}
+
+- (void) setReq: (UserAttributesRequest *) req {
+  [req retain];
+  [__req release];
+  __req = req;
+  __req_isset = YES;
+}
+
+- (BOOL) reqIsSet {
+  return __req_isset;
+}
+
+- (void) unsetReq {
+  [__req release];
+  __req = nil;
+  __req_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          UserAttributesRequest *fieldValue = [[UserAttributesRequest alloc] init];
+          [fieldValue read: inProtocol];
+          [self setReq: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"getUserAttributes_args"];
+  if (__req_isset) {
+    if (__req != nil) {
+      [outProtocol writeFieldBeginWithName: @"req" type: TType_STRUCT fieldID: 1];
+      [__req write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"getUserAttributes_args("];
+  [ms appendString: @"req:"];
+  [ms appendFormat: @"%@", __req];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface GetUserAttributes_result : NSObject <NSCoding> {
+  UserAttributesResponse * __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=success, setter=setSuccess:) UserAttributesResponse * success;
+#endif
+
+- (id) initWithSuccess: (UserAttributesResponse *) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (UserAttributesResponse *) success;
+- (void) setSuccess: (UserAttributesResponse *) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation GetUserAttributes_result
+
+- (id) initWithSuccess: (UserAttributesResponse *) success
+{
+  self = [super init];
+  __success = [success retain];
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [[decoder decodeObjectForKey: @"success"] retain];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeObject: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [__success release];
+  [super dealloc];
+}
+
+- (UserAttributesResponse *) success {
+  return [[__success retain] autorelease];
+}
+
+- (void) setSuccess: (UserAttributesResponse *) success {
+  [success retain];
+  [__success release];
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  [__success release];
+  __success = nil;
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_STRUCT) {
+          UserAttributesResponse *fieldValue = [[UserAttributesResponse alloc] init];
+          [fieldValue read: inProtocol];
+          [self setSuccess: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"GetUserAttributes_result"];
+
+  if (__success_isset) {
+    if (__success != nil) {
+      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
+      [__success write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"GetUserAttributes_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%@", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @interface getAuthSessionId_args : NSObject <NSCoding> {
   NSString * __tequilaToken;
 
@@ -1308,6 +2455,86 @@
   return [self recv_getAuthSession];
 }
 
+- (void) send_destroyAllUserSessions: (LogoutRequest *) req
+{
+  [outProtocol writeMessageBeginWithName: @"destroyAllUserSessions" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"destroyAllUserSessions_args"];
+  if (req != nil)  {
+    [outProtocol writeFieldBeginWithName: @"req" type: TType_STRUCT fieldID: 1];
+    [req write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (LogoutResponse *) recv_destroyAllUserSessions
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  DestroyAllUserSessions_result * result = [[[DestroyAllUserSessions_result alloc] init] autorelease];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"destroyAllUserSessions failed: unknown result"];
+}
+
+- (LogoutResponse *) destroyAllUserSessions: (LogoutRequest *) req
+{
+  [self send_destroyAllUserSessions: req];
+  return [self recv_destroyAllUserSessions];
+}
+
+- (void) send_getUserAttributes: (UserAttributesRequest *) req
+{
+  [outProtocol writeMessageBeginWithName: @"getUserAttributes" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"getUserAttributes_args"];
+  if (req != nil)  {
+    [outProtocol writeFieldBeginWithName: @"req" type: TType_STRUCT fieldID: 1];
+    [req write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (UserAttributesResponse *) recv_getUserAttributes
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  GetUserAttributes_result * result = [[[GetUserAttributes_result alloc] init] autorelease];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"getUserAttributes failed: unknown result"];
+}
+
+- (UserAttributesResponse *) getUserAttributes: (UserAttributesRequest *) req
+{
+  [self send_getUserAttributes: req];
+  return [self recv_getUserAttributes];
+}
+
 - (void) send_getAuthSessionId: (NSString *) tequilaToken
 {
   [outProtocol writeMessageBeginWithName: @"getAuthSessionId" type: TMessageType_CALL sequenceID: 0];
@@ -1375,6 +2602,22 @@
     [invocation setSelector: s];
     [invocation retainArguments];
     [mMethodMap setValue: invocation forKey: @"getAuthSession"];
+  }
+  {
+    SEL s = @selector(process_destroyAllUserSessions_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"destroyAllUserSessions"];
+  }
+  {
+    SEL s = @selector(process_getUserAttributes_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"getUserAttributes"];
   }
   {
     SEL s = @selector(process_getAuthSessionId_withSequenceID:inProtocol:outProtocol:);
@@ -1450,6 +2693,40 @@
   GetAuthSession_result * result = [[GetAuthSession_result alloc] init];
   [result setSuccess: [mService getAuthSession: [args req]]];
   [outProtocol writeMessageBeginWithName: @"getAuthSession"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release];
+  [args release];
+}
+
+- (void) process_destroyAllUserSessions_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  destroyAllUserSessions_args * args = [[destroyAllUserSessions_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  DestroyAllUserSessions_result * result = [[DestroyAllUserSessions_result alloc] init];
+  [result setSuccess: [mService destroyAllUserSessions: [args req]]];
+  [outProtocol writeMessageBeginWithName: @"destroyAllUserSessions"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release];
+  [args release];
+}
+
+- (void) process_getUserAttributes_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  getUserAttributes_args * args = [[getUserAttributes_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  GetUserAttributes_result * result = [[GetUserAttributes_result alloc] init];
+  [result setSuccess: [mService getUserAttributes: [args req]]];
+  [outProtocol writeMessageBeginWithName: @"getUserAttributes"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
   [result write: outProtocol];

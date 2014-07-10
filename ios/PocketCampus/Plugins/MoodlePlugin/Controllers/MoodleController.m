@@ -51,7 +51,7 @@ static MoodleController* instance __weak = nil;
 
 + (void)initialize {
     //initializing default settings
-    NSUserDefaults* defaults = [PCPersistenceManager defaultsForPluginName:@"moodle"];
+    NSUserDefaults* defaults = [PCPersistenceManager userDefaultsForPluginName:@"moodle"];
     if (![defaults objectForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey]) {
         [defaults setObject:@YES forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
     }

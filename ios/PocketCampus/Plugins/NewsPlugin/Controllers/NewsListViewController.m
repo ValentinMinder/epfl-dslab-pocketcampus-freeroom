@@ -81,7 +81,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] init];
+    PCTableViewAdditions* tableViewAdditions = [PCTableViewAdditions new];
     self.tableView = tableViewAdditions;
     tableViewAdditions.imageProcessingBlock = ^UIImage*(PCTableViewAdditions* tableView, NSIndexPath* indexPath, UIImage* image) {
         return [image imageByScalingAndCroppingForSize:CGSizeMake(106.0, tableView.rowHeight) applyDeviceScreenMultiplyingFactor:YES];
@@ -144,13 +144,13 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
             
             [self fillSectionsFromNewsFeedsResponse:response];
             [self.tableView reloadData];
-            
+            __weak __typeof(self) welf = self;
             if (self.selectedItem) {
                 BOOL found __block = NO;
                 [self.sections enumerateObjectsUsingBlock:^(NSArray* items, NSUInteger section, BOOL *stop1) {
                     [items enumerateObjectsUsingBlock:^(NewsFeedItem* item, NSUInteger row, BOOL *stop2) {
                         if ([item isEqual:self.selectedItem]) {
-                            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                            [welf.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
                             self.selectedItem = item;
                             *stop1 = YES;
                             *stop2 = YES;
@@ -225,7 +225,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     if ([self.selectedItem isEqual:newsFeedItem]) {
         return;
     }
-    [self trackAction:@"OpenNewsItem"];
+    [self trackAction:@"OpenNewsItem"  contentInfo:[NSString stringWithFormat:@"%ld-%@", newsFeedItem.itemId, newsFeedItem.title]];
     NewsItemViewController* newsItemViewController = [[NewsItemViewController alloc] initWithNewsFeedItem:newsFeedItem];
     if (self.splitViewController) { // iPad
         self.selectedItem = newsFeedItem;
@@ -259,6 +259,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     
     NSString* imageUrlString = [newsFeedItem imageUrlStringForSize:CGSizeMake(106.0, tableView.rowHeight) applyDeviceScreenMultiplyingFactor:YES];
     
+    cell.imageView.image = nil; // as said in PCTableViewAdditions doc for setImageURL:forCell:atIndexPath:
     [(PCTableViewAdditions*)(self.tableView) setImageURL:[NSURL URLWithString:imageUrlString] forCell:cell atIndexPath:indexPath];
     
     return cell;
@@ -282,11 +283,8 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 
 - (void)dealloc
 {
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
     [self.newsService cancelOperationsForDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

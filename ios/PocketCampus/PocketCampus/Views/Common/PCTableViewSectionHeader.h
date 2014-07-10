@@ -25,19 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 16.03.12.
-
-
-#import <UIKit/UIKit.h>
 
 @interface PCTableViewSectionHeader : UIView
 
 - (id)initWithSectionTitle:(NSString*)sectionTitle tableView:(UITableView*)tableView;
 
-@property (nonatomic, readonly) UITableView* tableView;
+@property (nonatomic, readonly, weak) UITableView* tableView;
 
 + (CGFloat)preferredHeight;
 

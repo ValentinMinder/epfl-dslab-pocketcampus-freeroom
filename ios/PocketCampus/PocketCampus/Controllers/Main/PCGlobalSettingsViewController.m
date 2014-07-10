@@ -37,7 +37,7 @@
 
 #import "PCEditableTableViewCell.h"
 
-#import "AuthenticationViewController.h"
+#import "AuthenticationController.h"
 
 #import "PCAboutViewController.h"
 
@@ -65,9 +65,11 @@ static const int kAboutRow = 2;
 
 static const int kUsageRow = 0;
 
-@interface PCGlobalSettingsViewController () <UITextFieldDelegate, SKStoreProductViewControllerDelegate>
+@interface PCGlobalSettingsViewController () <UITextFieldDelegate, SKStoreProductViewControllerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, weak) MainController* mainController;
+
+@property (nonatomic, strong) UIActionSheet* restoreDefaultMainMenuActionSheet;
 
 @end
 
@@ -124,7 +126,12 @@ static const int kUsageRow = 0;
                 case 0: //gaspar account
                 {
                     [self trackAction:@"OpenAuthentication"];
-                    AuthenticationViewController* viewController = [[AuthenticationViewController alloc] init];
+                    AuthenticationViewController* viewController = [[AuthenticationController sharedInstance] statusViewController];
+                    [viewController setShowDoneButton:YES forState:AuthenticationViewControllerStateLoggedIn];
+                    __weak __typeof(self) welf = self;
+                    [viewController setUserTappedDoneBlock:^{
+                        [welf.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+                    }];
                     [self.navigationController pushViewController:viewController animated:YES];
                     break;
                 }
@@ -143,9 +150,8 @@ static const int kUsageRow = 0;
                 }
                 case kRestoreDefaultMainMenuRow:
                 {
-                    [self trackAction:@"RestoreDefaultDashboard"];
-                    [self.mainController restoreDefaultMainMenu];
-                    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+                    self.restoreDefaultMainMenuActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"RestoreDefaultMainMenuExplanation", @"PocketCampus", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"RestoreDefaultMainMenu", @"PocketCampus", nil), nil];
+                    [self.restoreDefaultMainMenuActionSheet showInView:self.tableView];
                     break;
                 }
                 default:
@@ -206,6 +212,22 @@ static const int kUsageRow = 0;
     }
 }
 
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == actionSheet.cancelButtonIndex) {
+        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+        return;
+    }
+    [self trackAction:@"RestoreDefaultDashboard"];
+    [self.mainController restoreDefaultMainMenu];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    self.restoreDefaultMainMenuActionSheet = nil;
+}
+
 #pragma mark - SKStoreProductViewControllerDelegate
 
 - (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
@@ -238,12 +260,7 @@ static const int kUsageRow = 0;
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = [AuthenticationViewController localizedTitle];
-            NSString* username = [AuthenticationService savedUsername];
-            if (username) {
-                cell.detailTextLabel.text = username;
-            } else {
-                cell.detailTextLabel.text = @"";
-            }
+            cell.detailTextLabel.text = [[AuthenticationController sharedInstance] loggedInUsername];
             break;
         }
         case kMainMenuSection:
@@ -255,7 +272,7 @@ static const int kUsageRow = 0;
                     break;
                 case kRestoreDefaultMainMenuRow:
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-                    cell.textLabel.text = NSLocalizedStringFromTable(@"RestoreDefaultMainMenu", @"PocketCampus", nil);
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"RestoreDefaultMainMenu...", @"PocketCampus", nil);
                     break;
                 default:
                     break;

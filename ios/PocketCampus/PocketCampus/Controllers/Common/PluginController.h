@@ -87,8 +87,6 @@
  */
 + (void)initObservers;
 
-
-@optional
 /*
  * If either or both of these method(s) is/are implemented, this means that plugin supports
  * actions from URLs of the form:
@@ -110,27 +108,31 @@
  * Should return YES if action was successfully handled, NO otherwise.
  */
 - (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters;
+
 - (BOOL)handleURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters;
 
+/**
+ * This method is *different* from viewControllerForURLQueryAction:parameters:
+ * In this case, webURL can be any HTTP(S) URL, and if the plugin has a way to display the data
+ * pointed by this URL via a view controller, it should return one, or nil otherwise.
+ */
++ (UIViewController*)viewControllerForWebURL:(NSURL*)webURL;
 
 /* 
  * Should return whether the plugin can be deallocated. 
  * Do not return NO unless there is an operation currently in progress that cannot be stopped.
  */
-@optional
 - (BOOL)canBeReleased;
 
 /*
  * Called when menu is revealed and plugin shifted to the right.
  */
-@optional
 - (void)pluginWillLoseForeground;
 
 /*
  * Called when plugin is presented or when it is shifted back
  * to the left after main menu was reaveled
  */
-@optional
 - (void)pluginDidEnterForeground;
 
 

@@ -207,10 +207,7 @@ static const NSInteger kMealsSection = 1;
 
 - (void)dealloc
 {
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

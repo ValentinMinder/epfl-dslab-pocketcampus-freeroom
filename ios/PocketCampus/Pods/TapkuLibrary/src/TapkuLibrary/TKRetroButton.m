@@ -33,7 +33,7 @@
 
 @implementation TKRetroButton
 
-- (id) initWithFrame:(CGRect)frame{
+- (instancetype) initWithFrame:(CGRect)frame{
 	if(!(self=[super initWithFrame:frame])) return nil;
 	[self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 	[self setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
@@ -43,9 +43,6 @@
 	self.layer.contentsScale = [UIScreen mainScreen].scale;
     return self;
 }
-
-
-
 
 - (void) drawRect:(CGRect)rect {
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
@@ -91,6 +88,14 @@
 		
 		CGContextRestoreGState(ctx);
 	}
+	
+	if(self.highlighted)
+		self.imageView.tintColor = [self titleColorForState:UIControlStateHighlighted];
+	else if(self.selected)
+		self.imageView.tintColor = [self titleColorForState:UIControlStateSelected];
+	else
+		self.imageView.tintColor = [self titleColorForState:UIControlStateNormal];
+	
 }
 
 - (void) layoutSubviews {

@@ -220,6 +220,13 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     [self.lgRefreshControl endRefreshing];
     
     self.usersStations = [self.transportService.userTransportStations copy];
+    
+    if (self.transportService.userManualDepartureStation && self.usersStations && ![self.usersStations containsObject:self.transportService.userManualDepartureStation]) {
+        //If manual departure station is no longer in userStations,
+        //unset it (removes from persistence)
+        self.transportService.userManualDepartureStation = nil;
+    }
+    
     self.departureStation = self.transportService.userManualDepartureStation;
 
     self.userStationsState = self.usersStations ? (self.usersStations.count > 1 ? UserStationsStateOK : UserStationsStateErrorNeedTwo) : UserStationsStateLoadingDefault;
