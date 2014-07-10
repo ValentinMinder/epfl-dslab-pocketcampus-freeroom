@@ -443,7 +443,8 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			for(int i = 0; i < query.length; i++)
 				query[i] = "(|(cn=" + query[i] + "*)(cn=* " + query[i] + "*)(ou=" + query[i] + "))";
 			String q2 = org.apache.commons.lang3.StringUtils.join(query, "");
-			LinkedList<Person> tmp = searchOnLDAP2("(|(&" + q2 + ")(mail=" + q + "*)(uid=" + q + ")(uniqueidentifier=" + q + "))", pag, req.getLanguage());
+			String q3 = q.substring(Math.max(0, q.length() - 7));
+			LinkedList<Person> tmp = searchOnLDAP2("(|(&" + q2 + ")(mail=" + q + "*)(telephoneNumber=*" + q3 + ")(uid=" + q + ")(uniqueidentifier=" + q + "))", pag, req.getLanguage());
 			DirectoryResponse resp = new DirectoryResponse(200);
 			resp.setResults(tmp);
 			if(pag.cookie != null)
