@@ -245,6 +245,15 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your password is sent directly to the EPFL&apos;s servers via a secure connection. If you chose to save it, it is saved securely..
+        /// </summary>
+        public static string AuthenticationInfo {
+            get {
+                return ResourceManager.GetString("AuthenticationInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to password.
         /// </summary>
         public static string AuthenticationPassword {
@@ -254,7 +263,7 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to remember me.
+        ///   Looks up a localized string similar to save my password.
         /// </summary>
         public static string AuthenticationSaveCredentials {
             get {

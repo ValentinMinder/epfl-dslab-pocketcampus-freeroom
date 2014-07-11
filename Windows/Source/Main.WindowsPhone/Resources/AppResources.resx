@@ -229,7 +229,7 @@ George Candea</value>
     <value>PocketCampus.Org</value>
   </data>
   <data name="AuthenticationSaveCredentials" xml:space="preserve">
-    <value>remember me</value>
+    <value>save my password</value>
   </data>
   <data name="UseColoredTile" xml:space="preserve">
     <value>use colored application tile</value>
@@ -245,5 +245,8 @@ George Candea</value>
   </data>
   <data name="AboutContactHeader" xml:space="preserve">
     <value>contact</value>
+  </data>
+  <data name="AuthenticationInfo" xml:space="preserve">
+    <value>Your password is sent directly to the EPFL's servers via a secure connection. If you chose to save it, it is saved securely.</value>
   </data>
 </root>
