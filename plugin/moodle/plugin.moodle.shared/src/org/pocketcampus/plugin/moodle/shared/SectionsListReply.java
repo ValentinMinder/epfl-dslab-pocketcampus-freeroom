@@ -354,14 +354,14 @@ public class SectionsListReply implements org.apache.thrift.TBase<SectionsListRe
         case 1: // I_SECTIONS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list12 = iprot.readListBegin();
-              this.iSections = new ArrayList<MoodleSection>(_list12.size);
-              for (int _i13 = 0; _i13 < _list12.size; ++_i13)
+              org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
+              this.iSections = new ArrayList<MoodleSection>(_list8.size);
+              for (int _i9 = 0; _i9 < _list8.size; ++_i9)
               {
-                MoodleSection _elem14; // required
-                _elem14 = new MoodleSection();
-                _elem14.read(iprot);
-                this.iSections.add(_elem14);
+                MoodleSection _elem10; // required
+                _elem10 = new MoodleSection();
+                _elem10.read(iprot);
+                this.iSections.add(_elem10);
               }
               iprot.readListEnd();
             }
@@ -400,9 +400,9 @@ public class SectionsListReply implements org.apache.thrift.TBase<SectionsListRe
         oprot.writeFieldBegin(I_SECTIONS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.iSections.size()));
-          for (MoodleSection _iter15 : this.iSections)
+          for (MoodleSection _iter11 : this.iSections)
           {
-            _iter15.write(oprot);
+            _iter11.write(oprot);
           }
           oprot.writeListEnd();
         }

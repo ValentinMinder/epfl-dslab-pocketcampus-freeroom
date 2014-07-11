@@ -5,17 +5,11 @@ import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CO
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,17 +32,12 @@ import org.pocketcampus.platform.sdk.shared.utils.PostDataBuilder;
 import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
 import org.pocketcampus.plugin.moodle.shared.Constants;
 import org.pocketcampus.plugin.moodle.shared.CoursesListReply;
-import org.pocketcampus.plugin.moodle.shared.EventsListReply;
-import org.pocketcampus.plugin.moodle.shared.MoodleAssignment;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
-import org.pocketcampus.plugin.moodle.shared.MoodleEvent;
-import org.pocketcampus.plugin.moodle.shared.MoodleEventType;
 import org.pocketcampus.plugin.moodle.shared.MoodleRequest;
 import org.pocketcampus.plugin.moodle.shared.MoodleResource;
 import org.pocketcampus.plugin.moodle.shared.MoodleSection;
 import org.pocketcampus.plugin.moodle.shared.MoodleService;
 import org.pocketcampus.plugin.moodle.shared.MoodleSession;
-import org.pocketcampus.plugin.moodle.shared.MoodleUserEvent;
 import org.pocketcampus.plugin.moodle.shared.SectionsListReply;
 
 import com.google.gson.Gson;
@@ -74,12 +63,6 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 
 	public MoodleServiceImpl() {
 		System.out.println("Starting Moodle plugin server ...");
-//		try {
-//			getCoursesListAPI("");
-//			getCourseSectionsAPI("225");
-//		} catch (TException e) {
-//			e.printStackTrace();
-//		}
 	}
 	
 	@Override
@@ -375,41 +358,6 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 	}
 
 	@Override
-	public EventsListReply getEventsList(MoodleRequest iRequest) throws TException {
-		// TODO this method was not checked against the new moodle
-		System.out.println("getEventsList");
-		String page = null;
-		Cookie cookie = new Cookie();
-		cookie.importFromString(iRequest.getISessionId().getMoodleCookie());
-		
-		try {
-			page = getPageWithCookie("http://moodle.epfl.ch/calendar/view.php", cookie);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return new EventsListReply(404);
-		}
-		if(page == null || page.indexOf("login/index.php") != -1) {
-			System.out.println("not logged in");
-			return new EventsListReply(407);
-		}
-		
-		LinkedList<MoodleEvent> tEvents = new LinkedList<MoodleEvent>();
-		for (String i : getAllSubstringsBetween(page, "&lt;div&gt;", "&lt;/div&gt;")) {
-			MoodleEvent mev = parseMoodleEvent(i);
-			if(mev.getIType() == MoodleEventType.MOODLE_EVENT_ASSIGNMENT) {
-				mev.setIAssignment(getAssignment(mev, cookie)); // TODO check if null
-			} else if(mev.getIType() == MoodleEventType.MOODLE_EVENT_USEREVENT) {
-				mev.setIUserEvent(getUserEvent(mev, cookie)); // TODO check if null
-			}
-			tEvents.add(mev);
-		}
-		
-		EventsListReply el = new EventsListReply(200);
-		el.setIEvents(tEvents);
-		return el;
-	}
-
-	@Override
 	public SectionsListReply getCourseSections(MoodleRequest iRequest) throws TException {
 		System.out.println("getCourseSections");
 		String page = null;
@@ -593,32 +541,7 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 			return new HttpPageReply(null, conn.getHeaderField("Location"));
 		return new HttpPageReply(null, null);
 	}
-	
-	private String getSubstringBetween(String orig, String before, String after) {
-		int b = orig.indexOf(before);
-		if(b != -1) {
-			orig = orig.substring(b + before.length());
-		}
-		int a = orig.indexOf(after);
-		if(a != -1) {
-			orig = orig.substring(0, a);
-		}
-		return orig;
-	}
-	
-	
-	private String getLastSubstringBetween(String orig, String before, String after) {
-		int a = orig.lastIndexOf(after);
-		if(a != -1) {
-			orig = orig.substring(0, a);
-		}
-		int b = orig.lastIndexOf(before);
-		if(b != -1) {
-			orig = orig.substring(b + before.length());
-		}
-		return orig;
-	}
-	
+
 
 	private LinkedList<String> getAllSubstringsBetween(String orig, String before, String after) {
 		LinkedList<String> ssl = new LinkedList<String>();
@@ -636,191 +559,7 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 			orig = orig.substring(a + after.length());
 		}
 	}
-	
-	private LinkedList<String> getAllSubstringsBetween(String orig, String before, String middle, String after) {
-		LinkedList<String> ssl = new LinkedList<String>();
-		if(orig.length() == 0 || before.length() == 0 || middle.length() == 0 || after.length() == 0)
-			return ssl;
-		while(true) {
-			int m = orig.indexOf(middle);
-			if(m == -1)
-				return ssl;
-			int a = orig.indexOf(after, m + middle.length());
-			if(a == -1)
-				return ssl;
-			int b = orig.lastIndexOf(before, m - before.length());
-			if(b == -1)
-				return ssl;
-			ssl.add(orig.substring(b + before.length(), a));
-			orig = orig.substring(a + after.length());
-		}
-	}
-	
-	
-	private MoodleEvent parseMoodleEvent(String html) {
-		int id = Integer.parseInt(getSubstringBetween(html, "event_", "&quot;"));
-		
-		String title = getSubstringBetween(html, "&quot;&gt;", "&lt;");
-		
-		String datePart = getSubstringBetween(html, "view=day", "#");
-		int d = Integer.parseInt(getSubstringBetween(datePart, "_d=", "&"));
-		int m = Integer.parseInt(getSubstringBetween(datePart, "_m=", "&"));
-		int y = Integer.parseInt(getSubstringBetween(datePart, "_y=", "&"));
-		Calendar cal = Calendar.getInstance();
-		cal.set(y, m - 1, d);
-		long date = cal.getTimeInMillis();
-		//SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yy");
-		//datePart = sdf.format(cal.getTimeInMillis()getTime());
-		
-		MoodleEventType type = MoodleEventType.MOODLE_EVENT_UNKNOWN;
-		if(html.indexOf("c/user.gif") != -1) {
-			type = MoodleEventType.MOODLE_EVENT_USEREVENT;
-		} else if(html.indexOf("assignment/icon.gif") != -1) {
-			type = MoodleEventType.MOODLE_EVENT_ASSIGNMENT;
-		}
-		
-		return new MoodleEvent(id, title, date, type);
-	}
-	
-	
-	private MoodleAssignment getAssignment(MoodleEvent event, Cookie cookie) {
-		Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(event.getIDate());
-		String url = "http://moodle.epfl.ch/calendar/view.php?view=day&cal_d=" + cal.get(Calendar.DATE) +
-				"&cal_m=" + (cal.get(Calendar.MONTH) + 1) + "&cal_y=" + cal.get(Calendar.YEAR);
-		String page = null;
-		try {
-			page = getPageWithCookie(url, cookie);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-		if(page == null) {
-			System.out.println("not logged in? now?");
-			return null;
-		}
-		page = getSubstringBetween(page, "<a name=\"event_" + event.getIId() + "\"></a>", "</table>");
-		page = getSubstringBetween(page, "assignment/view.php?id=", "\"");
-		int id = Integer.parseInt(page);
-		try {
-			page = getPageWithCookie("http://moodle.epfl.ch/mod/assignment/view.php?id=" + id, cookie);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-		if(page == null) {
-			System.out.println("not logged in? now?");
-			return null;
-		}
-		String desc = getSubstringBetween(page, "id=\"intro\"", "id=\"dates\"");
-		int b = desc.indexOf(">");
-		desc = desc.substring(b + 1);
-		int a = desc.lastIndexOf("</div>");
-		desc = stripHtmlTags(desc.substring(0, a));
-		// <div id="dates" class="box generalbox generalboxcontent boxaligncenter"><table><tr><td class="c0">Disponible d��s le:</td>    <td class="c1">vendredi 9 d��cembre 2011, 13:40</td></tr><tr><td class="c0">�� rendre jusqu'au:</td>    <td class="c1">samedi  24 d��cembre 2011, 00:00</td></tr></table></div>
-		String dateHTML = getSubstringBetween(page, "id=\"dates\"", "</div>");
-		LinkedList<String> byDate = getAllSubstringsBetween(dateHTML, "<td class=\"c1\">", "</td>");
-		Long postingDate = null;
-		Long dueDate = null;
-		if(byDate.size() > 1) {
-			postingDate = parseDate(byDate.get(0));
-			dueDate = parseDate(byDate.get(1));
-		} else if(byDate.size() > 0) {
-			dueDate = parseDate(byDate.get(0));
-		}
-		if(dueDate == null) { // if cannot parse then keep previous imprecise date
-			dueDate = cal.getTimeInMillis();
-		}
-		String courseName = getSubstringBetween(page, "&amp;label=", "&amp;");
-		try {
-			courseName = URLDecoder.decode(courseName, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		String courseIdStr = getSubstringBetween(page, "course/view.php?id=", "\"");
-		int courseId = Integer.parseInt(courseIdStr);
-		MoodleAssignment ma = new MoodleAssignment(id, event.getITitle(), desc, new MoodleCourse(courseId, courseName), dueDate);
-		if(postingDate != null)
-			ma.setIPostingDate(postingDate);
-		// TODO add grade if existent
-		return ma;
-	}
-	
-	
-	private MoodleUserEvent getUserEvent(MoodleEvent event, Cookie cookie) {
-		String page = null;
-		try {
-			page = getPageWithCookie("http://moodle.epfl.ch/calendar/event.php?action=edit&id=" + event.getIId(), cookie);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-		if(page == null) {
-			System.out.println("not logged in? now?");
-			return null;
-		}
-		String desc = getSubstringBetween(page, "id=\"edit-description\"", "id=\"edit-description\"");
-		desc = stripHtmlTags(getSubstringBetween(desc, ">", "</textarea>"));
-		int startday = getSelectedValue(getSubstringBetween(page, "name=\"startday\"", "</select>"));
-		int startmon = getSelectedValue(getSubstringBetween(page, "name=\"startmon\"", "</select>"));
-		int startyr = getSelectedValue(getSubstringBetween(page, "name=\"startyr\"", "</select>"));
-		int starthr = getSelectedValue(getSubstringBetween(page, "name=\"starthr\"", "</select>"));
-		int startmin = getSelectedValue(getSubstringBetween(page, "name=\"startmin\"", "</select>"));
-		Calendar cal = Calendar.getInstance();
-		cal.set(startyr, startmon - 1, startday, starthr, startmin);
-		MoodleUserEvent userEvent = new MoodleUserEvent(event.getIId(), event.getITitle(), desc, cal.getTimeInMillis());
-		if(page.indexOf("id=\"duration_none\" checked") == -1) {
-			int endday = getSelectedValue(getSubstringBetween(page, "name=\"endday\"", "</select>"));
-			int endmon = getSelectedValue(getSubstringBetween(page, "name=\"endmon\"", "</select>"));
-			int endyr = getSelectedValue(getSubstringBetween(page, "name=\"endyr\"", "</select>"));
-			int endhr = getSelectedValue(getSubstringBetween(page, "name=\"endhr\"", "</select>"));
-			int endmin = getSelectedValue(getSubstringBetween(page, "name=\"endmin\"", "</select>"));
-			cal.set(endyr, endmon - 1, endday, endhr, endmin);
-			userEvent.setIEndDate(cal.getTimeInMillis());
-		}
-		return userEvent;
-	}
-	
-	
-	private int getSelectedValue(String html) {
-		html = getLastSubstringBetween(html, "value=", "selected=");
-		html = getSubstringBetween(html, "\"", "\"");
-		return Integer.parseInt(html);
-	}
-	
-	
-	private Long parseDate(String date) {
-		// Try the 3 possible languages of Moodle.
-		Calendar cal = Calendar.getInstance();
-		try {
-			// Monday, 9 January 2012, 06:05 PM
-			SimpleDateFormat sdf = new SimpleDateFormat("EEEE, d MMMM yyyy, hh:mm a", Locale.ENGLISH);
-			cal.setTime(sdf.parse(date));
-			return cal.getTimeInMillis();
-		} catch (ParseException e1) {
-			//e1.printStackTrace();
-		}
-		try {
-			// lundi 9 janvier 2012, 18:05
-			SimpleDateFormat sdf = new SimpleDateFormat("EEEE d MMMM yyyy, HH:mm", Locale.FRENCH);
-			cal.setTime(sdf.parse(date));
-			return cal.getTimeInMillis();
-		} catch (ParseException e1) {
-			//e1.printStackTrace();
-		}
-		try {
-			// Montag, 9. Januar 2012, 18:05
-			SimpleDateFormat sdf = new SimpleDateFormat("EEEE, d. MMMM yyyy, HH:mm", Locale.GERMAN);
-			cal.setTime(sdf.parse(date));
-			return cal.getTimeInMillis();
-		} catch (ParseException e1) {
-			//e1.printStackTrace();
-		}
-		System.err.println("parseDate: failed to interpret date. what language you using? arabic?");
-		return null;
-	}
-	
-	
+
 	private LinkedList<String> getAllFilesFromMoodleResource(String resourceUrl, Cookie cookie) {
 		LinkedList<String> urls = new LinkedList<String>();
 		HttpPageReply httpReply = null;
