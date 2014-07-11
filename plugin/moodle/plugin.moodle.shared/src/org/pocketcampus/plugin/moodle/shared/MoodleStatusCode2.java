@@ -10,14 +10,14 @@ import java.util.Map;
 import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
-public enum MoodleEventType implements org.apache.thrift.TEnum {
-  MOODLE_EVENT_UNKNOWN(0),
-  MOODLE_EVENT_ASSIGNMENT(1),
-  MOODLE_EVENT_USEREVENT(2);
+public enum MoodleStatusCode2 implements org.apache.thrift.TEnum {
+  OK(200),
+  AUTHENTICATION_ERROR(403),
+  NETWORK_ERROR(404);
 
   private final int value;
 
-  private MoodleEventType(int value) {
+  private MoodleStatusCode2(int value) {
     this.value = value;
   }
 
@@ -32,14 +32,14 @@ public enum MoodleEventType implements org.apache.thrift.TEnum {
    * Find a the enum type by its integer value, as defined in the Thrift IDL.
    * @return null if the value is not found.
    */
-  public static MoodleEventType findByValue(int value) { 
+  public static MoodleStatusCode2 findByValue(int value) { 
     switch (value) {
-      case 0:
-        return MOODLE_EVENT_UNKNOWN;
-      case 1:
-        return MOODLE_EVENT_ASSIGNMENT;
-      case 2:
-        return MOODLE_EVENT_USEREVENT;
+      case 200:
+        return OK;
+      case 403:
+        return AUTHENTICATION_ERROR;
+      case 404:
+        return NETWORK_ERROR;
       default:
         return null;
     }
