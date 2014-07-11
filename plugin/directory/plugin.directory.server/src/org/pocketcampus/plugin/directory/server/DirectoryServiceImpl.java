@@ -434,17 +434,18 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 
 	@Override
 	public DirectoryResponse searchDirectory(DirectoryRequest req) throws TException {
+		System.out.println("searchDirectory");
 		try {
 			Pagination pag = new Pagination();
 			if(req.isSetResultSetCookie())
 				pag.cookie = new ASN1OctetString(req.getResultSetCookie());
-			String q = StringUtils.removeAccents(req.getQuery()).trim();
+			String q = StringUtils.removeAccents(req.getQuery()).replaceAll("[\\s]+", " ").trim();
 			String [] query = q.split(" ");
 			for(int i = 0; i < query.length; i++)
 				query[i] = "(|(cn=" + query[i] + "*)(cn=* " + query[i] + "*)(ou=" + query[i] + "))";
 			String q2 = org.apache.commons.lang3.StringUtils.join(query, "");
-			String q3 = q.substring(Math.max(0, q.length() - 7));
-			LinkedList<Person> tmp = searchOnLDAP2("(|(&" + q2 + ")(mail=" + q + "*)(telephoneNumber=*" + q3 + ")(uid=" + q + ")(uniqueidentifier=" + q + "))", pag, req.getLanguage());
+			String q3 = q.replaceAll(" ", "").replaceAll("^[0]+", "");
+			LinkedList<Person> tmp = searchOnLDAP2("(|(&" + q2 + ")(mail=" + q3 + "*)(telephoneNumber=*" + q3 + ")(uid=" + q3 + ")(uniqueidentifier=" + q3 + "))", pag, req.getLanguage());
 			DirectoryResponse resp = new DirectoryResponse(200);
 			resp.setResults(tmp);
 			if(pag.cookie != null)
