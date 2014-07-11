@@ -58,6 +58,94 @@ struct SectionsListReply {
 }
 
 
+
+
+// NEW STUFF - USE THIS!
+
+struct MoodleFile2 {
+    // File name, including the extension
+    1: required string name;
+    // Download URL (use the PocketCampus moodle proxy for it)
+    2: required string url;
+}
+
+struct MoodleFolder2 {
+    // Folder name
+    1: required string name;
+    // Files
+    2: required list<MoodleFile2> files;
+}
+
+struct MoodleUrl2 {
+    // Name
+    1: required string name;
+    // URL
+    2: required string url;
+}
+
+// Union struct. Exactly 1 of the 3 fields is set.
+struct MoodleResource2 {
+    1: optional MoodleFile2 file;
+    2: optional MoodleFolder2 folder;
+    3: optional MoodleUrl2 url;
+}
+
+struct MoodleCourseSection2 {
+    // Resources (folders, files & URLs)
+    1: required list<MoodleResource2> resources;
+    // Title, if it's not a week section
+    2: optional string title;
+    // Start date of the section, if it's a week section (Java timestamp)
+    3: optional i64 startDate;
+    // End date of the section, if it's a week section (Java timestamp)
+    4: optional i64 endDate;
+    // Details, as HTML, if any
+    5: optional string details;
+
+    // Invariant: (text is set) or (startDate and endDate are set) but not both
+}
+
+struct MoodleCourse2 {
+    // ID, used when requesting the sections
+    1: required i32 courseId;
+    // Name
+    2: required string name;
+}
+
+enum MoodleStatusCode2 {
+    // Success
+    OK = 200,
+    // Authentication error, authenticate to the authentication plugin again
+    AUTHENTICATION_ERROR = 403,
+    // Error while reaching Moodle, try again later
+    NETWORK_ERROR = 404
+}
+
+struct MoodleCoursesRequest2 {
+    // Unused for now
+    1: required string language;
+}
+
+struct MoodleCoursesResponse2 {
+    // Status code
+    1: required MoodleStatusCode2 statusCode;
+    // Courses, empty if statusCode != OK
+    2: required list<MoodleCourse2> courses;
+}
+
+struct MoodleCourseSectionsRequest2 {
+    // The requested course ID
+    1: required i32 courseId;
+}
+
+struct MoodleCourseSectionsResponse2 {
+    // Status code
+    1: required MoodleStatusCode2 statusCode;
+    // Course sections (may be empty)
+    2: required list<MoodleCourseSection2> sections;
+}
+
+
 service MoodleService {
     // EXTREMELY OLD STUFF - DO NOT USE
 	TequilaToken getTequilaTokenForMoodle();
@@ -68,4 +156,12 @@ service MoodleService {
     // OLD STUFF - DO NOT USE
 	CoursesListReply getCoursesListAPI(1: string dummy);
 	SectionsListReply getCourseSectionsAPI(1: string courseId);
+	
+	
+	// NEW STUFF - USE THIS!
+	
+	// Get all courses
+    MoodleCoursesResponse2 getCourses( 1: MoodleCoursesRequest2 request );
+    // Get course sections
+    MoodleCourseSectionsResponse2 getSections( 1: MoodleCourseSectionsRequest2 request );
 }
