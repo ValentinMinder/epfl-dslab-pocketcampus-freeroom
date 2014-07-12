@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.moodle.server;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTime;
@@ -49,132 +50,10 @@ public final class CourseServiceImpl implements CourseService {
 	// ...which is the sciper.
 	private static final String GET_USER_SCIPER_KEY = "criteria[0][value]";
 
-	/**
-	 * 
-	 * {
-	 * "users":
-	 * [
-	 * {
-	 * "id":202901,
-	 * "fullname":"Solal Pirelli",
-	 * "email":"solal.pirelli@epfl.ch",
-	 * "skype":"live:solal.pirelli",
-	 * "idnumber":"223572",
-	 * "firstaccess":1342777439,
-	 * "lastaccess":1403683338,
-	 * "description":"",
-	 * "descriptionformat":1,
-	 * "city":"Lausanne",
-	 * "url":"https:\/\/bitbucket.org\/SolalPirelli",
-	 * "country":"CH",
-	 * "profileimageurlsmall":"http:\/\/moodle.epfl.ch\/pluginfile.php\/1489941\/user\/icon\/f2",
-	 * "profileimageurl":"http:\/\/moodle.epfl.ch\/pluginfile.php\/1489941\/user\/icon\/f1"
-	 * }
-	 * ],
-	 * "warnings":
-	 * []
-	 * }
-	 * 
-	 */
-
 	// Request all courses an user is enrolled in...
 	private static final String METHOD_VALUE_GET_COURSES = "core_enrol_get_users_courses";
 	// ...this time, with a much simpler selection method.
 	private static final String GET_COURSES_USERID_KEY = "userid";
-
-	/**
-	 * [
-	 * {
-	 * "id": 14174,
-	 * "shortname": "CS-251",
-	 * "fullname": "Theory of computation",
-	 * "enrolledusercount": 166,
-	 * "idnumber": "M1704192615_G1378362175_G1378365806_P200602_P217799_P217986_P237044",
-	 * "visible": 1
-	 * },
-	 * {
-	 * "id": 14153,
-	 * "shortname": "ArchOrd2",
-	 * "fullname": "Architecture des ordinateurs II",
-	 * "enrolledusercount": 47,
-	 * "idnumber": "",
-	 * "visible": 1
-	 * },
-	 * {
-	 * "id": 14084,
-	 * "shortname": "ArchOrd1",
-	 * "fullname": "Architecture des ordinateurs I",
-	 * "enrolledusercount": 152,
-	 * "idnumber": "M1771839_G1378362148_G1378365780_P101954_P183817_P196536_P206309_P221493",
-	 * "visible": 1
-	 * },
-	 * {
-	 * "id": 13768,
-	 * "shortname": "CS-250",
-	 * "fullname": "Algorithms",
-	 * "enrolledusercount": 290,
-	 * "idnumber":
-	 * "M2258712_G736311150_G1378362148_G1378365780_G1378438904_G1650773612_G1654125707_P200246_P200365_P203131_P210783_P213225_P217986_P226032_P226149",
-	 * "visible": 1
-	 * },
-	 * {
-	 * "id": 2671,
-	 * "shortname": "CS-206",
-	 * "fullname": "Concurrence",
-	 * "enrolledusercount": 174,
-	 * "idnumber": "M1772852_G1378362175_G1378365806_P106377_P179262_P194219_P211297_P221727",
-	 * "visible": 1
-	 * },
-	 * {
-	 * "id": 6731,
-	 * "shortname": "ProgOrientSyst",
-	 * "fullname": "Programmation orientée système",
-	 * "enrolledusercount": 199,
-	 * "idnumber": "M71645784_G736309037_G736312585_P112547",
-	 * "visible": 1
-	 * },
-	 * {
-	 * "id": 13726,
-	 * "shortname": "EE-202(b)",
-	 * "fullname": "Electronique I",
-	 * "enrolledusercount": 163,
-	 * "idnumber": "M1773492_G1378362148_G1378365780_P106795",
-	 * "visible": 1
-	 * },
-	 * {
-	 * "id": 14155,
-	 * "shortname": "PHYS-114",
-	 * "fullname": "Physique Générale II (pour IC)",
-	 * "enrolledusercount": 214,
-	 * "idnumber": "",
-	 * "visible": 1
-	 * },
-	 * {
-	 * "id": 14030,
-	 * "shortname": "PHYS-113",
-	 * "fullname": "Physique Générale I pour IC",
-	 * "enrolledusercount": 160,
-	 * "idnumber": "",
-	 * "visible": 1
-	 * },
-	 * {
-	 * "id": 5191,
-	 * "shortname": "EE-204",
-	 * "fullname": "Circuits et Systèmes I",
-	 * "enrolledusercount": 166,
-	 * "idnumber": "M348715502_G1378341373_G1378362148_G1378365780_P199128_P200700_P213980_P217987_P221971",
-	 * "visible": 1
-	 * },
-	 * {
-	 * "id": 13839,
-	 * "shortname": "HUM-257",
-	 * "fullname": "Santé, Population, Société",
-	 * "enrolledusercount": 82,
-	 * "idnumber": "M1580215967_G1378366144_P243244",
-	 * "visible": 1
-	 * }
-	 * ]
-	 */
 
 	// Request all sections of a course...
 	private static final String METHOD_VALUE_GET_SECTIONS = "core_course_get_contents";
@@ -183,7 +62,10 @@ public final class CourseServiceImpl implements CourseService {
 
 	// For sections whose name is a date range, the separator between these dates and their format
 	private static final String SECTION_NAME_DATE_SEPARATOR = " - ";
-	private static final DateTimeFormatter SECTION_NAME_DATE_FORMAT = DateTimeFormat.forPattern("dd MMMM");
+	private static final DateTimeFormatter SECTION_NAME_DATE_FORMAT =
+			DateTimeFormat.forPattern("d MMMM")
+					.withLocale(Locale.ENGLISH)
+					.withDefaultYear(DateTime.now().getYear());
 
 	// The module types
 	private static final String MODULE_FILE = "resource";
@@ -194,14 +76,14 @@ public final class CourseServiceImpl implements CourseService {
 	private final HttpClient client;
 	private final String token;
 
-	public CourseServiceImpl(Authenticator authenticator, HttpClient client, String token) {
+	public CourseServiceImpl(final Authenticator authenticator, final HttpClient client, final String token) {
 		this.authenticator = authenticator;
 		this.client = client;
 		this.token = token;
 	}
 
 	@Override
-	public MoodleCoursesResponse2 getCourses(MoodleCoursesRequest2 request) {
+	public MoodleCoursesResponse2 getCourses(final MoodleCoursesRequest2 request) {
 		final String sciper = authenticator.getSciper(request);
 		if (sciper == null) {
 			return new MoodleCoursesResponse2(MoodleStatusCode2.AUTHENTICATION_ERROR, new ArrayList<MoodleCourse2>());
@@ -255,15 +137,12 @@ public final class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public MoodleCourseSectionsResponse2 getSections(MoodleCourseSectionsRequest2 request) {
+	public MoodleCourseSectionsResponse2 getSections(final MoodleCourseSectionsRequest2 request) {
 		final String sciper = authenticator.getSciper(request);
 		if (sciper == null) {
 			// basic check, but it's not enough, see TODO in class javadoc
 			return new MoodleCourseSectionsResponse2(MoodleStatusCode2.AUTHENTICATION_ERROR, new ArrayList<MoodleCourseSection2>());
 		}
-
-		// for visibility checks
-		final DateTime now = DateTime.now();
 
 		final String queryParams = new PostDataBuilder()
 				.addParam(FORMAT_KEY, FORMAT_VALUE)
@@ -279,6 +158,9 @@ public final class CourseServiceImpl implements CourseService {
 		} catch (Exception _) {
 			return new MoodleCourseSectionsResponse2(MoodleStatusCode2.NETWORK_ERROR, new ArrayList<MoodleCourseSection2>());
 		}
+		
+		// for visibility checks
+		final DateTime now = DateTime.now();
 
 		final MoodleCourseSectionsResponse2 response = new MoodleCourseSectionsResponse2(MoodleStatusCode2.OK, new ArrayList<MoodleCourseSection2>());
 
@@ -291,6 +173,7 @@ public final class CourseServiceImpl implements CourseService {
 				}
 
 				// Annoyingly, there's no way to know if the section title is a range of dates or not
+				// TODO: Make sure that the dates are always in this format/language
 				if (section.name.contains(SECTION_NAME_DATE_SEPARATOR)) {
 					final String[] dates = section.name.split(SECTION_NAME_DATE_SEPARATOR);
 					if (dates.length == 2) {
@@ -310,40 +193,39 @@ public final class CourseServiceImpl implements CourseService {
 				}
 
 				for (final JsonSection.Module module : section.modules) {
-					if (module.visible == VISIBLE
-							&& (module.availablefrom == 0 || module.availablefrom * 1000 >= now.getMillis())
-							&& (module.availableuntil == 0 || module.availableuntil * 1000 <= now.getMillis())) {
-						if (module.modname == MODULE_FILE && module.contents.length == 1) {
-							// The module name is more descriptive but doesn't always have an extension, which we need
-							// The file name has one, but is less descriptive
-							// Also, note that FilenameUtils returns extensions without the separator.
-							String fileName = FilenameUtils.getBaseName(module.name);
-							String fileExt = FilenameUtils.getExtension(module.contents[0].filename);
-							String fullName = fileName + FilenameUtils.EXTENSION_SEPARATOR_STR + fileExt;
+					if (module == null // Gson doing weird things, I guess...
+							|| module.visible != VISIBLE
+							|| (module.availablefrom != 0 && module.availablefrom * 1000 > now.getMillis())
+							|| (module.availableuntil != 0 && module.availableuntil * 1000 < now.getMillis())) {
+						continue;
+					}
 
-							MoodleFile2 file = new MoodleFile2(fullName, module.contents[0].fileurl);
-							MoodleResource2 resource = new MoodleResource2().setFile(file);
-							moodleSection.addToResources(resource);
-						} else if (module.modname == MODULE_URL && module.contents.length == 1) {
-							MoodleUrl2 url = new MoodleUrl2(module.name, module.contents[0].fileurl);
-							MoodleResource2 resource = new MoodleResource2().setUrl(url);
-							moodleSection.addToResources(resource);
-						} else if (module.modname == MODULE_FOLDER) {
-							MoodleFolder2 folder = new MoodleFolder2(module.name, new ArrayList<MoodleFile2>());
-							for (final JsonSection.Module.Content content : module.contents) {
-								// in this case the names have an extension
-								MoodleFile2 file = new MoodleFile2(content.filename, content.fileurl);
-								folder.addToFiles(file);
-							}
-							if (folder.getFilesSize() > 0) {
-								MoodleResource2 resource = new MoodleResource2().setFolder(folder);
-								moodleSection.addToResources(resource);
-							}
+					if (module.modname.equals(MODULE_FILE) && module.contents.length == 1) {
+						// The module name is more descriptive but doesn't always have an extension, which we need
+						// The file name has one, but is less descriptive
+						// Also, note that FilenameUtils returns extensions without the separator.
+						final String fileName = FilenameUtils.getBaseName(module.name);
+						final String fileExt = FilenameUtils.getExtension(module.contents[0].filename);
+						final String fullName = fileName + FilenameUtils.EXTENSION_SEPARATOR_STR + fileExt;
+
+						final MoodleFile2 file = new MoodleFile2(fullName, module.contents[0].fileurl);
+						moodleSection.addToResources(new MoodleResource2().setFile(file));
+					} else if (module.modname.equals(MODULE_URL) && module.contents.length == 1) {
+						final MoodleUrl2 url = new MoodleUrl2(module.name, module.contents[0].fileurl);
+						moodleSection.addToResources(new MoodleResource2().setUrl(url));
+					} else if (module.modname.equals(MODULE_FOLDER)) {
+						final MoodleFolder2 folder = new MoodleFolder2(module.name, new ArrayList<MoodleFile2>());
+						for (final JsonSection.Module.Content content : module.contents) {
+							// in this case the names have an extension
+							folder.addToFiles(new MoodleFile2(content.filename, content.fileurl));
+						}
+						if (folder.getFilesSize() > 0) {
+							moodleSection.addToResources(new MoodleResource2().setFolder(folder));
 						}
 					}
 				}
 
-				if (moodleSection.getResourcesSize() > 0) {
+				if (moodleSection.getResourcesSize() > 0 || moodleSection.getDetails() != null) {
 					response.addToSections(moodleSection);
 				}
 			}
@@ -378,8 +260,8 @@ public final class CourseServiceImpl implements CourseService {
 			public String name;
 			public int visible;
 			public String modname;
-			public int availablefrom;
-			public int availableuntil;
+			public long availablefrom;
+			public long availableuntil;
 			public Content[] contents;
 
 			public static final class Content {

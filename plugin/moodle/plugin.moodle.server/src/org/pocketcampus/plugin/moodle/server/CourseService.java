@@ -8,7 +8,7 @@ import org.pocketcampus.plugin.moodle.shared.*;
  * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public interface CourseService {
-	MoodleCoursesResponse2 getCourses(MoodleCoursesRequest2 request);
+	MoodleCoursesResponse2 getCourses(final MoodleCoursesRequest2 request);
 
-	MoodleCourseSectionsResponse2 getSections(MoodleCourseSectionsRequest2 request);
+	MoodleCourseSectionsResponse2 getSections(final MoodleCourseSectionsRequest2 request);
 }

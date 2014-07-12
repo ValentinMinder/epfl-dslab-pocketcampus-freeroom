@@ -8,5 +8,5 @@ import javax.servlet.http.*;
  * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public interface FileService {
-	void download(HttpServletRequest request, HttpServletResponse response);
+	void download(final HttpServletRequest request, final HttpServletResponse response);
 }

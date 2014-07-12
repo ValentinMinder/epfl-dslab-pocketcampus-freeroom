@@ -134,8 +134,10 @@ struct MoodleCoursesResponse2 {
 }
 
 struct MoodleCourseSectionsRequest2 {
+    // Unused for now
+    1: required string language;
     // The requested course ID
-    1: required i32 courseId;
+    2: required i32 courseId;
 }
 
 struct MoodleCourseSectionsResponse2 {

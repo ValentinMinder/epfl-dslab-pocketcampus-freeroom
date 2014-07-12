@@ -6,7 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.server"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-io-2.0.1.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex.jar" sourcepath="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang3-3.0.1.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-util-8.0.0.M3.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>

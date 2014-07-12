@@ -24,13 +24,16 @@ import org.slf4j.LoggerFactory;
 public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<MoodleCourseSectionsRequest2, MoodleCourseSectionsRequest2._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MoodleCourseSectionsRequest2");
 
-  private static final org.apache.thrift.protocol.TField COURSE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("courseId", org.apache.thrift.protocol.TType.I32, (short)1);
+  private static final org.apache.thrift.protocol.TField LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("language", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField COURSE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("courseId", org.apache.thrift.protocol.TType.I32, (short)2);
 
+  private String language; // required
   private int courseId; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    COURSE_ID((short)1, "courseId");
+    LANGUAGE((short)1, "language"),
+    COURSE_ID((short)2, "courseId");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -45,7 +48,9 @@ public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<Moo
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // COURSE_ID
+        case 1: // LANGUAGE
+          return LANGUAGE;
+        case 2: // COURSE_ID
           return COURSE_ID;
         default:
           return null;
@@ -93,6 +98,8 @@ public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<Moo
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+    tmpMap.put(_Fields.LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("language", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.COURSE_ID, new org.apache.thrift.meta_data.FieldMetaData("courseId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -103,9 +110,11 @@ public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<Moo
   }
 
   public MoodleCourseSectionsRequest2(
+    String language,
     int courseId)
   {
     this();
+    this.language = language;
     this.courseId = courseId;
     setCourseIdIsSet(true);
   }
@@ -116,6 +125,9 @@ public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<Moo
   public MoodleCourseSectionsRequest2(MoodleCourseSectionsRequest2 other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
+    if (other.isSetLanguage()) {
+      this.language = other.language;
+    }
     this.courseId = other.courseId;
   }
 
@@ -125,8 +137,33 @@ public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<Moo
 
   @Override
   public void clear() {
+    this.language = null;
     setCourseIdIsSet(false);
     this.courseId = 0;
+  }
+
+  public String getLanguage() {
+    return this.language;
+  }
+
+  public MoodleCourseSectionsRequest2 setLanguage(String language) {
+    this.language = language;
+    return this;
+  }
+
+  public void unsetLanguage() {
+    this.language = null;
+  }
+
+  /** Returns true if field language is set (has been assigned a value) and false otherwise */
+  public boolean isSetLanguage() {
+    return this.language != null;
+  }
+
+  public void setLanguageIsSet(boolean value) {
+    if (!value) {
+      this.language = null;
+    }
   }
 
   public int getCourseId() {
@@ -154,6 +191,14 @@ public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<Moo
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
+    case LANGUAGE:
+      if (value == null) {
+        unsetLanguage();
+      } else {
+        setLanguage((String)value);
+      }
+      break;
+
     case COURSE_ID:
       if (value == null) {
         unsetCourseId();
@@ -167,6 +212,9 @@ public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<Moo
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
+    case LANGUAGE:
+      return getLanguage();
+
     case COURSE_ID:
       return Integer.valueOf(getCourseId());
 
@@ -181,6 +229,8 @@ public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<Moo
     }
 
     switch (field) {
+    case LANGUAGE:
+      return isSetLanguage();
     case COURSE_ID:
       return isSetCourseId();
     }
@@ -200,6 +250,15 @@ public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<Moo
     if (that == null)
       return false;
 
+    boolean this_present_language = true && this.isSetLanguage();
+    boolean that_present_language = true && that.isSetLanguage();
+    if (this_present_language || that_present_language) {
+      if (!(this_present_language && that_present_language))
+        return false;
+      if (!this.language.equals(that.language))
+        return false;
+    }
+
     boolean this_present_courseId = true;
     boolean that_present_courseId = true;
     if (this_present_courseId || that_present_courseId) {
@@ -215,6 +274,11 @@ public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<Moo
   @Override
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_language = true && (isSetLanguage());
+    builder.append(present_language);
+    if (present_language)
+      builder.append(language);
 
     boolean present_courseId = true;
     builder.append(present_courseId);
@@ -232,6 +296,16 @@ public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<Moo
     int lastComparison = 0;
     MoodleCourseSectionsRequest2 typedOther = (MoodleCourseSectionsRequest2)other;
 
+    lastComparison = Boolean.valueOf(isSetLanguage()).compareTo(typedOther.isSetLanguage());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetLanguage()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.language, typedOther.language);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetCourseId()).compareTo(typedOther.isSetCourseId());
     if (lastComparison != 0) {
       return lastComparison;
@@ -259,7 +333,14 @@ public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<Moo
         break;
       }
       switch (field.id) {
-        case 1: // COURSE_ID
+        case 1: // LANGUAGE
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.language = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 2: // COURSE_ID
           if (field.type == org.apache.thrift.protocol.TType.I32) {
             this.courseId = iprot.readI32();
             setCourseIdIsSet(true);
@@ -285,6 +366,11 @@ public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<Moo
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    if (this.language != null) {
+      oprot.writeFieldBegin(LANGUAGE_FIELD_DESC);
+      oprot.writeString(this.language);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldBegin(COURSE_ID_FIELD_DESC);
     oprot.writeI32(this.courseId);
     oprot.writeFieldEnd();
@@ -297,6 +383,14 @@ public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<Moo
     StringBuilder sb = new StringBuilder("MoodleCourseSectionsRequest2(");
     boolean first = true;
 
+    sb.append("language:");
+    if (this.language == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.language);
+    }
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("courseId:");
     sb.append(this.courseId);
     first = false;
@@ -306,6 +400,9 @@ public class MoodleCourseSectionsRequest2 implements org.apache.thrift.TBase<Moo
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    if (language == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'language' was not present! Struct: " + toString());
+    }
     // alas, we cannot check 'courseId' because it's a primitive and you chose the non-beans generator.
   }
 

@@ -17,18 +17,19 @@ import org.pocketcampus.plugin.moodle.shared.*;
  * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
+	private static final String MOODLE_ACCESS_TOKEN = PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN");
+	
 	private final CourseService courseService;
 	private final FileService fileService;
 
-	public MoodleServiceImpl(CourseService courseService, FileService fileService) {
+	public MoodleServiceImpl(final CourseService courseService, final FileService fileService) {
 		this.courseService = courseService;
 		this.fileService = fileService;
 	}
 
 	public MoodleServiceImpl() {
-		this(new CourseServiceImpl(new AuthenticatorImpl(), new HttpClientImpl(),
-				PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")),
-				new FileServiceImpl());
+		this(new CourseServiceImpl(new AuthenticatorImpl(), new HttpClientImpl(), MOODLE_ACCESS_TOKEN),
+			 new FileServiceImpl(MOODLE_ACCESS_TOKEN));
 	}
 
 	@Override

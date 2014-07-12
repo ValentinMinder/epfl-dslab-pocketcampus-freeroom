@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.moodle.server;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -16,43 +14,64 @@ import org.pocketcampus.platform.sdk.shared.utils.PostDataBuilder;
 import org.pocketcampus.plugin.moodle.shared.Constants;
 
 /**
- * Implementation of FileService.
+ * Implementation of FileService using Moodle's web service API.
  * 
  * TODO: Check if the user has access to the requested file!
  * 
  * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public final class FileServiceImpl implements FileService {
+	// Guards between the file name in the link we receive
+	private static final String FILE_NAME_LEFT_GUARD = "pluginfile.php";
+	private static final String FILE_NAME_RIGHT_GUARD = "?";
+	
+	// Prefix for the download URL of a file, using Moodle's web service.
+	private static final String DOWNLOAD_URL_PREFIX = "http://moodle.epfl.ch/webservice/pluginfile.php";
+
+	// The key of the token parameter to download files
+	private static final String TOKEN_KEY = "token";
+
+	// Missing from Apache's HttpHeaders constant for some reason
+	private static final String HTTP_CONTENT_DISPOSITION = "Content-Disposition";
+
+	private final String token;
+
+	public FileServiceImpl(final String token) {
+		this.token = token;
+	}
+
 	@Override
-	public void download(HttpServletRequest request, HttpServletResponse response) {
+	public void download(final HttpServletRequest request, final HttpServletResponse response) {
 		try {
-			String gaspar = PocketCampusServer.authGetUserGasparFromReq(request);
+			final String gaspar = PocketCampusServer.authGetUserGasparFromReq(request);
 			if (gaspar == null) {
 				response.setStatus(HttpURLConnection.HTTP_PROXY_AUTH);
 				return;
 			}
 
-			String action = request.getParameter(Constants.MOODLE_RAW_ACTION_KEY);
+			final String action = request.getParameter(Constants.MOODLE_RAW_ACTION_KEY);
 			String filePath = request.getParameter(Constants.MOODLE_RAW_FILE_PATH);
-			
+
 			if (!Constants.MOODLE_RAW_ACTION_DOWNLOAD_FILE.equals(action) || filePath == null) {
 				response.setStatus(HttpURLConnection.HTTP_BAD_METHOD);
 				return;
 			}
 
-			filePath = StringUtils.substringBetween(filePath, "pluginfile.php", "?");
-			filePath = "http://moodle.epfl.ch/webservice/pluginfile.php" + filePath;
+			filePath = StringUtils.substringBetween(filePath, FILE_NAME_LEFT_GUARD, FILE_NAME_RIGHT_GUARD);
+			filePath = DOWNLOAD_URL_PREFIX + filePath;
 
-			HttpURLConnection conn = (HttpURLConnection) new URL(filePath).openConnection();
+			final HttpURLConnection conn = (HttpURLConnection) new URL(filePath).openConnection();
 			conn.setDoOutput(true);
 
-			PostDataBuilder builder = new PostDataBuilder().addParam("token", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN"));
-			conn.getOutputStream().write(builder.toBytes());
+			final byte[] bytes = new PostDataBuilder()
+					.addParam(TOKEN_KEY, token)
+					.toBytes();
+			conn.getOutputStream().write(bytes);
 
 			response.setContentType(conn.getContentType());
 			response.setContentLength(conn.getContentLength());
 			// "a means for the origin server to suggest a default filename if the user requests that the content is saved to a file"
-			response.addHeader("Content-Disposition", conn.getHeaderField("Content-Disposition"));
+			response.addHeader(HTTP_CONTENT_DISPOSITION, conn.getHeaderField(HTTP_CONTENT_DISPOSITION));
 
 			InputStream in = null;
 			OutputStream out = null;
