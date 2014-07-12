@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.moodle.server;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
+import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -187,6 +188,7 @@ public final class CourseServiceImpl implements CourseService {
 	// The module types
 	private static final String MODULE_FILE = "resource";
 	private static final String MODULE_URL = "url";
+	private static final String MODULE_FOLDER = "folder";
 
 	private final HttpClient client;
 	private final String token;
@@ -310,14 +312,30 @@ public final class CourseServiceImpl implements CourseService {
 							&& (module.availablefrom == 0 || module.availablefrom * 1000 >= now.getMillis())
 							&& (module.availableuntil == 0 || module.availableuntil * 1000 <= now.getMillis())) {
 						if (module.modname == MODULE_FILE) {
-							MoodleFile2 file = new MoodleFile2(module.name, module.contents[0].fileurl);
+							// The module name is more descriptive but doesn't always have an extension, which we need to display it nicely
+							// The file name has one, but is less descriptive
+							// Also, note that FilenameUtils returns extensions without the separator.
+							String fileName = FilenameUtils.getBaseName(module.name);
+							String fileExt = FilenameUtils.getExtension(module.contents[0].filename);
+							String fullName = fileName + FilenameUtils.EXTENSION_SEPARATOR_STR + fileExt;
+
+							MoodleFile2 file = new MoodleFile2(fullName, module.contents[0].fileurl);
 							MoodleResource2 resource = new MoodleResource2().setFile(file);
 							moodleSection.addToResources(resource);
 						} else if (module.modname == MODULE_URL && module.contents.length == 1) {
 							MoodleUrl2 url = new MoodleUrl2(module.name, module.contents[0].fileurl);
 							MoodleResource2 resource = new MoodleResource2().setUrl(url);
 							moodleSection.addToResources(resource);
-						} // TODO folder
+						} else if (module.modname == MODULE_FOLDER) {
+							MoodleFolder2 folder = new MoodleFolder2(module.name, new ArrayList<MoodleFile2>());
+							for (final JsonSection.Module.Content content : module.contents) {
+								// in this case the names have an extension
+								MoodleFile2 file = new MoodleFile2(content.filename, content.fileurl);
+								folder.addToFiles(file);
+							}
+							MoodleResource2 resource = new MoodleResource2().setFolder(folder);
+							moodleSection.addToResources(resource);
+						}
 					}
 				}
 
@@ -361,6 +379,7 @@ public final class CourseServiceImpl implements CourseService {
 			public Content[] contents;
 
 			public static final class Content {
+				public String filename;
 				public String fileurl;
 			}
 		}
