@@ -183,7 +183,7 @@ public final class CourseServiceImpl implements CourseService {
 
 	// For sections whose name is a date range, the separator between these dates and their format
 	private static final String SECTION_NAME_DATE_SEPARATOR = " - ";
-	private static final DateTimeFormatter SECTION_NAME_DATE_FORMAT = DateTimeFormat.forPattern("dd mmmm");
+	private static final DateTimeFormatter SECTION_NAME_DATE_FORMAT = DateTimeFormat.forPattern("dd MMMM");
 
 	// The module types
 	private static final String MODULE_FILE = "resource";
@@ -311,8 +311,8 @@ public final class CourseServiceImpl implements CourseService {
 					if (module.visible == VISIBLE
 							&& (module.availablefrom == 0 || module.availablefrom * 1000 >= now.getMillis())
 							&& (module.availableuntil == 0 || module.availableuntil * 1000 <= now.getMillis())) {
-						if (module.modname == MODULE_FILE) {
-							// The module name is more descriptive but doesn't always have an extension, which we need to display it nicely
+						if (module.modname == MODULE_FILE && module.contents.length == 1) {
+							// The module name is more descriptive but doesn't always have an extension, which we need
 							// The file name has one, but is less descriptive
 							// Also, note that FilenameUtils returns extensions without the separator.
 							String fileName = FilenameUtils.getBaseName(module.name);
@@ -333,8 +333,10 @@ public final class CourseServiceImpl implements CourseService {
 								MoodleFile2 file = new MoodleFile2(content.filename, content.fileurl);
 								folder.addToFiles(file);
 							}
-							MoodleResource2 resource = new MoodleResource2().setFolder(folder);
-							moodleSection.addToResources(resource);
+							if (folder.getFilesSize() > 0) {
+								MoodleResource2 resource = new MoodleResource2().setFolder(folder);
+								moodleSection.addToResources(resource);
+							}
 						}
 					}
 				}
