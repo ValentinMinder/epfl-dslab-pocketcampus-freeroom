@@ -5,6 +5,8 @@ import javax.servlet.http.*;
 import org.apache.thrift.TException;
 
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+
+import org.pocketcampus.platform.launcher.server.AuthenticatorImpl;
 import org.pocketcampus.platform.launcher.server.RawPlugin;
 import org.pocketcampus.platform.sdk.server.HttpClientImpl;
 import org.pocketcampus.plugin.moodle.shared.*;
@@ -24,7 +26,9 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 	}
 
 	public MoodleServiceImpl() {
-		this(new CourseServiceImpl(new HttpClientImpl(), PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")), new FileServiceImpl());
+		this(new CourseServiceImpl(new AuthenticatorImpl(), new HttpClientImpl(),
+				PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")),
+				new FileServiceImpl());
 	}
 
 	@Override
