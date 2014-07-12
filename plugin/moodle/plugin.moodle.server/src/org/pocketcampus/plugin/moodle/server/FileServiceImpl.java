@@ -67,6 +67,8 @@ public final class FileServiceImpl implements FileService {
 					.addParam(TOKEN_KEY, token)
 					.toBytes();
 			conn.getOutputStream().write(bytes);
+			
+			conn.connect();
 
 			response.setContentType(conn.getContentType());
 			response.setContentLength(conn.getContentLength());
