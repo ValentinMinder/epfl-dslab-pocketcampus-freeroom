@@ -6,8 +6,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.isacademia.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.isacademia.shared"/>
-    <classpathentry kind="lib" path="/platform.shared/lib/joda-time-2.3.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/joda-time-2.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="/platform.shared/lib/joda-time-2.3-javadoc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

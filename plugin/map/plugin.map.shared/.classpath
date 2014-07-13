@@ -14,7 +14,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.shared"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/commons-lang-2.6.jar"/>
-	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.7.0-javadoc.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
