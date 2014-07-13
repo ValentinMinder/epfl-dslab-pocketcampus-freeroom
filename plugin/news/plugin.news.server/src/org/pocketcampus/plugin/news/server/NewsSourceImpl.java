@@ -19,8 +19,8 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import org.pocketcampus.platform.sdk.server.HttpClient;
-import org.pocketcampus.platform.sdk.server.XElement;
+import org.pocketcampus.platform.server.HttpClient;
+import org.pocketcampus.platform.server.XElement;
 
 /**
  * Implementation of NewsSource using the EPFL RSS feeds.

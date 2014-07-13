@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.authentication.server;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.database.ConnectionManager;
 
 import ch.epfl.tequila.client.model.TequilaPrincipal;
 

@@ -1,9 +1,9 @@
 package org.pocketcampus.plugin.dashboard.android;
 
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
-import org.pocketcampus.android.platform.sdk.core.PushNotificationListener;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginModel;
+import org.pocketcampus.platform.android.core.PushNotificationListener;
 import org.pocketcampus.plugin.dashboard.android.req.FetchDynamicConfigRequest;
 
 import com.nostra13.universalimageloader.core.ImageLoader;

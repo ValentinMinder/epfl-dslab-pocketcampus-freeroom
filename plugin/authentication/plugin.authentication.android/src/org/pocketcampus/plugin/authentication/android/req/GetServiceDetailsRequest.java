@@ -8,8 +8,8 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.pocketcampus.android.platform.sdk.io.Request;
-import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
+import org.pocketcampus.platform.android.io.Request;
+import org.pocketcampus.platform.shared.utils.StringUtils;
 import org.pocketcampus.plugin.authentication.android.AuthenticationController;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel;
 

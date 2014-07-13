@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Basic colors -->
+    <color name="red">#FFFF0000</color>
+    <color name="green">#FF00FF00</color>
+    <color name="blue">#FF0000FF</color>
+
+    <!-- Custom cool colors -->
+    <color name="smoke">#4D4D4D</color>
+
+    <!-- Redefining Android colors for consistency -->
+    <color name="black">@android:color/black</color>
+    <color name="white">@android:color/white</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="darker_gray">@android:color/darker_gray</color>
+    
+
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+    <!-- SHOULD BE MERGED FROM THE LAUNCHER!!! -->
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+
+    <!--
+    EPFL Colors
+	We need to correct the official colors to account for
+	the poor phone rendering accuracy.
+    -->
+    <color name="epfl_official_red">#E00016</color>
+    <color name="epfl_corrected_red">#cf0003</color>
+    <color name="epfl_darkgrey">#444444</color>
+
+    <!-- Value from v2 -->
+    <color name="epfl_red_start">#CC0000</color>
+    <color name="epfl_red_end">#9F080B</color>
+
+    <!-- Color used by the ActionBar -->
+    <color name="actionbar_separator">#8B1A1A</color>
+    <color name="actionbar_title">@color/white</color>
+    <color name="actionbar_background_start">@color/epfl_red_start</color>
+    <color name="actionbar_background_end">@color/epfl_red_end</color>
+    <color name="actionbar_background_item_pressed_start">#FF7F00</color>
+    <color name="actionbar_background_item_pressed_end">#EE7600</color>
+
+</resources>

@@ -5,9 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.thrift.TException;
-import org.pocketcampus.platform.launcher.server.PocketCampusServer;
-import org.pocketcampus.platform.launcher.server.PocketCampusServer.AuthUserDetailsReq;
-import org.pocketcampus.platform.launcher.server.PocketCampusServer.AuthUserDetailsResp;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer.AuthUserDetailsReq;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer.AuthUserDetailsResp;
 import org.pocketcampus.plugin.authentication.shared.AuthSessionRequest;
 import org.pocketcampus.plugin.authentication.shared.AuthSessionResponse;
 import org.pocketcampus.plugin.authentication.shared.AuthStatusCode;

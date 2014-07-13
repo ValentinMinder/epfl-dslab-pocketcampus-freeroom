@@ -11,8 +11,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.thrift.TException;
-import org.pocketcampus.platform.sdk.shared.utils.Cookie;
-import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
+import org.pocketcampus.platform.shared.utils.Cookie;
+import org.pocketcampus.platform.shared.utils.StringUtils;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.CourseDetailsJson;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.CourseJson;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.MaterialJson;

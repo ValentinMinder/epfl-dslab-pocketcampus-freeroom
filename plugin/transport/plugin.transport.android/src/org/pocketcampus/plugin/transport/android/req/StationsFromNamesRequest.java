@@ -2,7 +2,7 @@ package org.pocketcampus.plugin.transport.android.req;
 
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.io.Request;
+import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.transport.android.TransportController;
 import org.pocketcampus.plugin.transport.android.TransportModel;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;

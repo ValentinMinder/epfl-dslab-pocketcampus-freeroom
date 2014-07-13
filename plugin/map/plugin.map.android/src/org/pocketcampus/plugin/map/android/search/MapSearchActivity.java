@@ -2,9 +2,9 @@ package org.pocketcampus.plugin.map.android.search;
 
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.map.R;
 import org.pocketcampus.plugin.map.android.MapMainController;
 import org.pocketcampus.plugin.map.android.MapMainView;

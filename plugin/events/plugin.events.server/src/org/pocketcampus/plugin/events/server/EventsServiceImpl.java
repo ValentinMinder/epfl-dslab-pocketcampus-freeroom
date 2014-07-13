@@ -51,8 +51,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.pocketcampus.platform.launcher.server.PocketCampusServer;
-import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.events.shared.AdminSendRegEmailReply;
 import org.pocketcampus.plugin.events.shared.AdminSendRegEmailRequest;
 import org.pocketcampus.plugin.events.shared.Constants;
@@ -68,7 +68,7 @@ import org.pocketcampus.plugin.events.shared.ExchangeRequest;
 import org.pocketcampus.plugin.events.shared.SendEmailReply;
 import org.pocketcampus.plugin.events.shared.SendEmailRequest;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
 
 /**
  * 

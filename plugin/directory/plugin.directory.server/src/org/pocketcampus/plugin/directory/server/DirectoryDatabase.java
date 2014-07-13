@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.directory.server;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.database.ConnectionManager;
 
 /**
  * 

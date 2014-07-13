@@ -1,9 +1,9 @@
 package org.pocketcampus.plugin.myedu.android;
 
 import org.pocketcampus.plugin.myedu.R;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.myedu.android.iface.IMyEduView;
 
 import android.os.Bundle;

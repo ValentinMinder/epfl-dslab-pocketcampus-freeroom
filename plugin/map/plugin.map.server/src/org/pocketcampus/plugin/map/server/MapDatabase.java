@@ -8,10 +8,11 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.database.ConnectionManager;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+
+import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
 
 public class MapDatabase {
 

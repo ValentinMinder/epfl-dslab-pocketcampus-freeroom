@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.myedu.android;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.myedu.android.iface.IMyEduController;
 import org.pocketcampus.plugin.myedu.android.MyEduModel;
 import org.pocketcampus.plugin.myedu.shared.MyEduService.Client;

@@ -2,14 +2,14 @@ package org.pocketcampus.plugin.transport.android;
 
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
-import org.pocketcampus.android.platform.sdk.ui.element.InputBarElement;
-import org.pocketcampus.android.platform.sdk.ui.element.OnKeyPressedListener;
-import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.adapter.LabeledArrayAdapter;
+import org.pocketcampus.platform.android.ui.element.InputBarElement;
+import org.pocketcampus.platform.android.ui.element.OnKeyPressedListener;
+import org.pocketcampus.platform.android.ui.labeler.ILabeler;
+import org.pocketcampus.platform.android.ui.layout.StandardTitledLayout;
+import org.pocketcampus.platform.android.ui.list.LabeledListViewElement;
 import org.pocketcampus.plugin.transport.R;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
 import org.pocketcampus.plugin.transport.shared.QueryTripsResult;

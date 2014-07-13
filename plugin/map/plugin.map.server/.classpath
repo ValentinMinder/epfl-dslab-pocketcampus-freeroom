@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/platform.shared"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.jetty.runtimeTarget/Jetty v8.x">
 		<attributes>
@@ -10,9 +10,9 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="/plugin.map.shared"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/gson-1.7.1.jar"/>
-	<classpathentry kind="src" path="/platform.sdk.server"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-javadoc.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/gson-1.7.1.jar"/>
+	<classpathentry kind="src" path="/platform.server"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.7.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -4,11 +4,11 @@ import javax.servlet.http.*;
 
 import org.apache.thrift.TException;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
 
-import org.pocketcampus.platform.launcher.server.RawPlugin;
-import org.pocketcampus.platform.sdk.server.AuthenticatorImpl;
-import org.pocketcampus.platform.sdk.server.HttpClientImpl;
+import org.pocketcampus.platform.server.AuthenticatorImpl;
+import org.pocketcampus.platform.server.HttpClientImpl;
+import org.pocketcampus.platform.server.launcher.RawPlugin;
 import org.pocketcampus.plugin.moodle.shared.*;
 
 /**

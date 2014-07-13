@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.thrift.TException;
-import org.pocketcampus.platform.sdk.shared.utils.NetworkUtils;
-import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
+import org.pocketcampus.platform.shared.utils.NetworkUtils;
+import org.pocketcampus.platform.shared.utils.StringUtils;
 import org.pocketcampus.plugin.directory.shared.DirectoryPersonRole;
 import org.pocketcampus.plugin.directory.shared.DirectoryRequest;
 import org.pocketcampus.plugin.directory.shared.DirectoryResponse;

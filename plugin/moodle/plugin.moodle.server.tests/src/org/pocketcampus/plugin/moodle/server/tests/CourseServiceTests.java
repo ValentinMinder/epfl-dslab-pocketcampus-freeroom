@@ -9,8 +9,8 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
-import org.pocketcampus.platform.sdk.server.Authenticator;
-import org.pocketcampus.platform.sdk.server.HttpClient;
+import org.pocketcampus.platform.server.Authenticator;
+import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.plugin.moodle.server.CourseService;
 import org.pocketcampus.plugin.moodle.server.CourseServiceImpl;
 import org.pocketcampus.plugin.moodle.shared.*;

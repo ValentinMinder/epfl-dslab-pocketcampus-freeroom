@@ -1,10 +1,10 @@
 package org.pocketcampus.plugin.food.android;
 
-import static org.pocketcampus.android.platform.sdk.utils.DialogUtils.showMultiChoiceDialog;
-import static org.pocketcampus.android.platform.sdk.utils.DialogUtils.showMultiChoiceDialogSbN;
-import static org.pocketcampus.android.platform.sdk.utils.DialogUtils.showSingleChoiceDialog;
-import static org.pocketcampus.android.platform.sdk.utils.MapUtils.subMap;
-import static org.pocketcampus.android.platform.sdk.utils.SetUtils.difference;
+import static org.pocketcampus.platform.android.utils.DialogUtils.showMultiChoiceDialog;
+import static org.pocketcampus.platform.android.utils.DialogUtils.showMultiChoiceDialogSbN;
+import static org.pocketcampus.platform.android.utils.DialogUtils.showSingleChoiceDialog;
+import static org.pocketcampus.platform.android.utils.MapUtils.subMap;
+import static org.pocketcampus.platform.android.utils.SetUtils.difference;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -24,18 +24,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuated;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuator;
-import org.pocketcampus.android.platform.sdk.ui.adapter.MultiListAdapter;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
-import org.pocketcampus.android.platform.sdk.utils.DialogUtils.MultiChoiceHandler;
-import org.pocketcampus.android.platform.sdk.utils.DialogUtils.SingleChoiceHandler;
-import org.pocketcampus.android.platform.sdk.utils.Preparated;
-import org.pocketcampus.android.platform.sdk.utils.Preparator;
-import org.pocketcampus.android.platform.sdk.utils.ScrollStateSaver;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuated;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuator;
+import org.pocketcampus.platform.android.ui.adapter.MultiListAdapter;
+import org.pocketcampus.platform.android.ui.layout.StandardLayout;
+import org.pocketcampus.platform.android.utils.DialogUtils.MultiChoiceHandler;
+import org.pocketcampus.platform.android.utils.DialogUtils.SingleChoiceHandler;
+import org.pocketcampus.platform.android.utils.Preparated;
+import org.pocketcampus.platform.android.utils.Preparator;
+import org.pocketcampus.platform.android.utils.ScrollStateSaver;
 import org.pocketcampus.plugin.food.R;
 import org.pocketcampus.plugin.food.android.FoodController.AMeal;
 import org.pocketcampus.plugin.food.android.FoodController.AResto;

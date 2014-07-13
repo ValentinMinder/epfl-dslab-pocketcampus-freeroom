@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.moodle.server.old;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -17,10 +17,10 @@ import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.NodeJson.Item
 import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.SectionNode.ModuleNode;
 import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.SectionNode.ModuleNode.ModuleContent;
 import org.pocketcampus.plugin.moodle.shared.TequilaToken;
-import org.pocketcampus.platform.launcher.server.PocketCampusServer;
-import org.pocketcampus.platform.sdk.shared.utils.Cookie;
-import org.pocketcampus.platform.sdk.shared.utils.PostDataBuilder;
-import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.platform.shared.utils.Cookie;
+import org.pocketcampus.platform.shared.utils.PostDataBuilder;
+import org.pocketcampus.platform.shared.utils.StringUtils;
 import org.pocketcampus.plugin.moodle.shared.CoursesListReply;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
 import org.pocketcampus.plugin.moodle.shared.MoodleRequest;

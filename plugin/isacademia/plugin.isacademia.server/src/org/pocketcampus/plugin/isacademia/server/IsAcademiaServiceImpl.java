@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.isacademia.server;
 
-import org.pocketcampus.platform.launcher.server.PocketCampusServer;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.isacademia.shared.*;
 
 import org.apache.thrift.TException;

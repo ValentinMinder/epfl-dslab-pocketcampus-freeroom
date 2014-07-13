@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.events.android;
 
-import static org.pocketcampus.android.platform.sdk.utils.SetUtils.intersect;
+import static org.pocketcampus.platform.android.utils.SetUtils.intersect;
 import static org.pocketcampus.plugin.events.android.EventsController.getEventPoolComp4sort;
 import static org.pocketcampus.plugin.events.android.EventsController.oneItemList;
 import static org.pocketcampus.plugin.events.android.EventsMainView.EXTRAS_KEY_EVENTPOOLID;
@@ -12,13 +12,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
-import org.pocketcampus.android.platform.sdk.ui.adapter.MultiListAdapter;
-import org.pocketcampus.android.platform.sdk.utils.Preparated;
-import org.pocketcampus.android.platform.sdk.utils.Preparator;
-import org.pocketcampus.android.platform.sdk.utils.ScrollStateSaver;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.ui.adapter.MultiListAdapter;
+import org.pocketcampus.platform.android.utils.Preparated;
+import org.pocketcampus.platform.android.utils.Preparator;
+import org.pocketcampus.platform.android.utils.ScrollStateSaver;
 import org.pocketcampus.plugin.events.R;
 import org.pocketcampus.plugin.events.android.iface.IEventsView;
 import org.pocketcampus.plugin.events.shared.EventItem;

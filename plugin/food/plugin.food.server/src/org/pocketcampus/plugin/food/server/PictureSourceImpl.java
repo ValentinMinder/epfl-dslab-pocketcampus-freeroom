@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
+import org.pocketcampus.platform.shared.utils.StringUtils;
 import org.pocketcampus.plugin.food.shared.MealType;
 
 public final class PictureSourceImpl implements PictureSource {

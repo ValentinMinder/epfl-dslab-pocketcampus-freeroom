@@ -9,9 +9,9 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.pocketcampus.plugin.moodle.shared.*;
-import org.pocketcampus.platform.sdk.server.Authenticator;
-import org.pocketcampus.platform.sdk.server.HttpClient;
-import org.pocketcampus.platform.sdk.shared.utils.PostDataBuilder;
+import org.pocketcampus.platform.server.Authenticator;
+import org.pocketcampus.platform.server.HttpClient;
+import org.pocketcampus.platform.shared.utils.PostDataBuilder;
 
 import com.google.gson.*;
 

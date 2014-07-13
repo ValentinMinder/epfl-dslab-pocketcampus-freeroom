@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.pushnotif.server;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import javapns.notification.PushedNotification;
 import javapns.notification.ResponsePacket;
 
 import org.json.JSONException;
-import org.pocketcampus.platform.launcher.server.PocketCampusServer;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 
 import com.google.android.gcm.server.Constants;
 import com.google.android.gcm.server.Message;

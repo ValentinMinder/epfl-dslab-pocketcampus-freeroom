@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.List;
 
 import org.pocketcampus.plugin.edx.R;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.plugin.edx.android.EdXController.Stopper;
 import org.pocketcampus.plugin.edx.android.Utils.AudioIn;
 import org.pocketcampus.plugin.edx.android.Utils.AudioOut2;

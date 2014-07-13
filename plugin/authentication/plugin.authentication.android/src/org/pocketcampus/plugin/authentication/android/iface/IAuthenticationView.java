@@ -2,7 +2,7 @@ package org.pocketcampus.plugin.authentication.android.iface;
 
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
+import org.pocketcampus.platform.android.core.IView;
 
 /**
  * IAuthenticationView

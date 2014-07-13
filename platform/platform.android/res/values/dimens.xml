@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Basic sizes -->
+    <dimen name="title_one_size">18sp</dimen>
+    <dimen name="title_two_size">16sp</dimen>
+    <dimen name="title_three_size">14sp</dimen>
+
+    <!-- Advanced sizes for fine tuning -->
+    <dimen name="centered_message_size">@dimen/title_one_size</dimen>
+    <dimen name="dialog_title_size">@dimen/title_one_size</dimen>
+
+    <!-- Dimensions used by the ActionBar -->
+    <dimen name="actionbar_title_size">20dip</dimen>
+    <dimen name="actionbar_height">45dip</dimen>
+    <dimen name="actionbar_item_height">45dip</dimen>
+    <dimen name="actionbar_item_width">45dip</dimen>
+
+</resources>

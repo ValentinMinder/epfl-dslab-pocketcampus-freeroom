@@ -1,15 +1,15 @@
 package org.pocketcampus.plugin.moodle.android;
 
-import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
+import static org.pocketcampus.platform.android.core.PCAndroidConfig.PC_ANDR_CFG;
 
 import java.io.File;
 
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.pocketcampus.android.platform.sdk.cache.RequestCache;
-import org.pocketcampus.android.platform.sdk.core.AuthenticationListener;
-import org.pocketcampus.android.platform.sdk.core.GlobalContext;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.cache.RequestCache;
+import org.pocketcampus.platform.android.core.AuthenticationListener;
+import org.pocketcampus.platform.android.core.GlobalContext;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleController;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.android.req.CoursesListRequest;

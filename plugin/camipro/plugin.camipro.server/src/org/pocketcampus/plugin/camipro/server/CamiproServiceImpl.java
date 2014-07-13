@@ -12,7 +12,7 @@ import org.apache.thrift.TException;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 import org.pocketcampus.plugin.camipro.shared.TequilaToken;
-import org.pocketcampus.platform.sdk.shared.utils.Cookie;
+import org.pocketcampus.platform.shared.utils.Cookie;
 import org.pocketcampus.plugin.camipro.shared.BalanceAndTransactions;
 import org.pocketcampus.plugin.camipro.shared.CamiproRequest;
 import org.pocketcampus.plugin.camipro.shared.CamiproService;

@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
-import org.pocketcampus.platform.sdk.server.HttpClient;
+import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.plugin.news.server.NewsSourceImpl;
 import org.pocketcampus.plugin.news.server.NewsSource.*;
 

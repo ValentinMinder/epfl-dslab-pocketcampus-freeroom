@@ -2,8 +2,8 @@ package org.pocketcampus.plugin.satellite.server;
 
 import org.apache.thrift.TException;
 
-import org.pocketcampus.platform.sdk.server.CachingProxy;
-import org.pocketcampus.platform.sdk.server.HttpClientImpl;
+import org.pocketcampus.platform.server.CachingProxy;
+import org.pocketcampus.platform.server.HttpClientImpl;
 import org.pocketcampus.plugin.satellite.shared.*;
 
 import org.joda.time.Duration;

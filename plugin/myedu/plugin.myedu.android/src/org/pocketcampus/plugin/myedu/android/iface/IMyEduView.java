@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.myedu.android.iface;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
+import org.pocketcampus.platform.android.core.IView;
 
 /**
  * IMyEduView

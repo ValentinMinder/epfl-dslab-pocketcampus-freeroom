@@ -9,8 +9,8 @@ import javax.servlet.http.*;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.pocketcampus.platform.launcher.server.PocketCampusServer;
-import org.pocketcampus.platform.sdk.shared.utils.PostDataBuilder;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.platform.shared.utils.PostDataBuilder;
 import org.pocketcampus.plugin.moodle.shared.Constants;
 
 /**

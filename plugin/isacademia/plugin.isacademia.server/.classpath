@@ -2,18 +2,14 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.isacademia.shared"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.server"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/joda-time-2.3.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/platform.sdk.shared/lib/joda-time-2.3-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/platform.server"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/platform.shared"/>
+    <classpathentry kind="lib" path="/platform.shared/lib/joda-time-2.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-javadoc.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/joda-time-2.3-javadoc.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/httpclient-4.1.2.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/httpcore-4.1.2.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.7.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.7.0.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/joda-time-2.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/httpclient-4.1.2.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/httpcore-4.1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.thrift.TException;
-import org.pocketcampus.platform.launcher.server.PocketCampusServer;
-import org.pocketcampus.platform.launcher.server.PocketCampusServer.PushNotifMapReq;
-import org.pocketcampus.platform.launcher.server.PocketCampusServer.PushNotifSendReq;
-import org.pocketcampus.platform.sdk.shared.utils.ListUtils;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer.PushNotifMapReq;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer.PushNotifSendReq;
+import org.pocketcampus.platform.shared.utils.ListUtils;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifService;
 
 /**

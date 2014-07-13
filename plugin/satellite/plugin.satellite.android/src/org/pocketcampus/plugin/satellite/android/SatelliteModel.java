@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.satellite.android;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.IView;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteMainView;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteModel;
 import org.pocketcampus.plugin.satellite.shared.Affluence;
