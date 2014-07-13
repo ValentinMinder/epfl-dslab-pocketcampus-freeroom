@@ -190,6 +190,12 @@
         [welf calendarDayTimelineView:welf.dayView didMoveToDate:welf.dayView.date]; //force refresh
         [view dismiss];
         welf.datePickerView = nil;
+        
+        //GA stuff
+        NSDateFormatter* formatter = [NSDateFormatter new];
+        formatter.dateFormat = @"yyyy-MM-dd";
+        NSString* dateString = [formatter stringFromDate:date];
+        [welf trackAction:@"GoToDateSelected" contentInfo:dateString];
     }];
     [pcDatePicker setUserCancelledBlock:^(PCDatePickerView* view) {
         [view dismiss];
@@ -197,6 +203,7 @@
     }];
     [pcDatePicker presentInView:self.view];
     self.datePickerView = pcDatePicker;
+    [self trackAction:@"GoToDate"];
 }
 
 #pragma mark - Date utils
