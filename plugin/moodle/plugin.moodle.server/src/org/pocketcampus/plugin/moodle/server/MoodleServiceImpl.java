@@ -6,8 +6,8 @@ import org.apache.thrift.TException;
 
 import org.pocketcampus.platform.server.AuthenticatorImpl;
 import org.pocketcampus.platform.server.HttpClientImpl;
+import org.pocketcampus.platform.server.RawPlugin;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-import org.pocketcampus.platform.server.launcher.RawPlugin;
 import org.pocketcampus.plugin.moodle.shared.*;
 
 /**

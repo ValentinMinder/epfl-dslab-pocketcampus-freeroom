@@ -1,4 +1,4 @@
-package org.pocketcampus.platform.server.launcher;
+package org.pocketcampus.platform.server;
 
 import javax.servlet.http.HttpServlet;
 

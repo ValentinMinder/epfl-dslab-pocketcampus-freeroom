@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.thrift.TProcessor;
+import org.pocketcampus.platform.server.RawPlugin;
 import org.pocketcampus.platform.shared.PCConfig;
 import org.pocketcampus.platform.shared.PCConstants;
 
