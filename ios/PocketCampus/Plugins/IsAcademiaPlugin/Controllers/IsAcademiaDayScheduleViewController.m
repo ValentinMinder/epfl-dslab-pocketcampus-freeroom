@@ -245,13 +245,13 @@
         }
         case IsaStatusCode_INVALID_SESSION:
         {
-            __weak __typeof(self) weakSelf = self;
+            __weak __typeof(self) welf = self;
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
-                [weakSelf refreshForDisplayedDaySkipCache:YES];
+                [welf refreshForDisplayedDaySkipCache:YES];
             } userCancelled:^{
                 //nothing to do
             } failure:^{
-                [weakSelf getScheduleFailedForRequest:request];
+                [welf getScheduleFailedForRequest:request];
             }];
             break;
         }
