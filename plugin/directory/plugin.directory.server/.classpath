@@ -5,8 +5,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.directory.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
-	<classpathentry kind="lib" path="lib/unboundid-ldapsdk-se.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-javadoc.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/unboundid-ldapsdk-se.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
