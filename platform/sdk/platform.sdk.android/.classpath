@@ -8,5 +8,9 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-javadoc.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libGoogleAnalytics.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/universal-image-loader-1.8.0.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libGoogleAnalyticsServices.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -10,5 +10,6 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/plugin.map.shared"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-javadoc.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/universal-image-loader-1.8.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
