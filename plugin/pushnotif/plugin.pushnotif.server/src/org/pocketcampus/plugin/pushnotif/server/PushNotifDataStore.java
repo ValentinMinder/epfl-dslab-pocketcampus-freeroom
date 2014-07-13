@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.pushnotif.server;
 
-import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,13 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 
 public class PushNotifDataStore {
 	private ConnectionManager mConnectionManager;
 
 	public PushNotifDataStore() {
-		this.mConnectionManager = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
-				PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
+		this.mConnectionManager = new ConnectionManager(PocketCampusServer.CONFIG.getString("DB_URL"),
+				PocketCampusServer.CONFIG.getString("DB_USERNAME"), PocketCampusServer.CONFIG.getString("DB_PASSWORD"));
 	}
 
 	public boolean insertMapping(String plugin, String userid, String platform, String pushtoken) {

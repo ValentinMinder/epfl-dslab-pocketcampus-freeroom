@@ -68,8 +68,6 @@ import org.pocketcampus.plugin.events.shared.ExchangeRequest;
 import org.pocketcampus.plugin.events.shared.SendEmailReply;
 import org.pocketcampus.plugin.events.shared.SendEmailRequest;
 
-import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
-
 /**
  * 
  * Class that takes care of the services the Events server provides to the
@@ -113,8 +111,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 
 	public EventsServiceImpl() {
 		System.out.println("Starting Events plugin server ...");
-		connMgr = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
-				PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
+		connMgr = new ConnectionManager(PocketCampusServer.CONFIG.getString("DB_URL"),
+				PocketCampusServer.CONFIG.getString("DB_USERNAME"), PocketCampusServer.CONFIG.getString("DB_PASSWORD"));
 	}
 
 	String[] ballouta = new String[] { "http://api.androidhive.info/music/images/adele.png", "http://api.androidhive.info/music/images/eminem.png",
@@ -1230,8 +1228,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 		static Session session;
 
 		public static boolean openSession() {
-			final String username = PC_SRV_CONFIG.getString("BOT_EMAIL_ACCOUNT_USERNAME");
-			final String password = PC_SRV_CONFIG.getString("BOT_EMAIL_ACCOUNT_PASSWORD");
+			final String username = PocketCampusServer.CONFIG.getString("BOT_EMAIL_ACCOUNT_USERNAME");
+			final String password = PocketCampusServer.CONFIG.getString("BOT_EMAIL_ACCOUNT_PASSWORD");
 			if (username == null || password == null)
 				return false;
 

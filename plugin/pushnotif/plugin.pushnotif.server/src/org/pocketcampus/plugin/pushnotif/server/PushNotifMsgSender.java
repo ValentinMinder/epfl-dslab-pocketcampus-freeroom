@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.pushnotif.server;
 
-import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -40,19 +38,19 @@ public class PushNotifMsgSender {
 																			// 24
 																			// hours
 
-	private static final String APNS_P12_PATH = PC_SRV_CONFIG
+	private static final String APNS_P12_PATH = PocketCampusServer.CONFIG
 			.getString("APNS_P12_PATH");
 
-	private static final String APNS_P12_PASSWORD = PC_SRV_CONFIG
+	private static final String APNS_P12_PASSWORD = PocketCampusServer.CONFIG
 			.getString("APNS_P12_PASSWORD");
 
 	private static final Boolean APNS_PROD = new Boolean(
-			PC_SRV_CONFIG.getString("APNS_PROD"));
+			PocketCampusServer.CONFIG.getString("APNS_PROD"));
 
 	private static long apnsFeedbackServiceLastCheckTimestamp = 0;
 
 	private static final Sender sender = new Sender(
-			PC_SRV_CONFIG.getString("GCM_SERVER_KEY"));
+			PocketCampusServer.CONFIG.getString("GCM_SERVER_KEY"));
 
 	private static final Executor threadPool = Executors.newFixedThreadPool(5);
 

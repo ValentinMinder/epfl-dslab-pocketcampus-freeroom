@@ -1,7 +1,5 @@
 package org.pocketcampus.platform.server.launcher;
 
-import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
-
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -15,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.thrift.TProcessor;
+import org.pocketcampus.platform.shared.PCConfig;
 import org.pocketcampus.platform.shared.PCConstants;
 
 import ch.epfl.tequila.client.model.ClientConfig;
@@ -22,13 +21,14 @@ import ch.epfl.tequila.client.model.TequilaPrincipal;
 import ch.epfl.tequila.client.service.TequilaService;
 
 public class PocketCampusServer extends ServerBase {
+	public static final PCConfig CONFIG = new PCConfig();
 
 	private static Map<String, Object> pluginsImpl = new HashMap<String, Object>();
 
 	@Override
 	protected ArrayList<Processor> getServiceProcessors() {
 		ArrayList<Processor> processors = new ArrayList<Processor>();
-		for (String plugin : PC_SRV_CONFIG.getString("ENABLED_PLUGINS").split(",")) {
+		for (String plugin : CONFIG.getString("ENABLED_PLUGINS").split(",")) {
 			boolean skipped = true;
 			String srvr_pref = "org.pocketcampus.plugin." + plugin.toLowerCase() + ".server.";
 			String shrd_pref = "org.pocketcampus.plugin." + plugin.toLowerCase() + ".shared.";

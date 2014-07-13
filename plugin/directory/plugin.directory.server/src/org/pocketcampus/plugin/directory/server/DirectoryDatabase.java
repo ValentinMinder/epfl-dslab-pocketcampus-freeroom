@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.directory.server;
 
-import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 
 /**
  * 
@@ -36,8 +35,8 @@ public class DirectoryDatabase {
 	 * 
 	 */
 	public DirectoryDatabase() {
-		this.connectionManager_ = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
-				PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
+		this.connectionManager_ = new ConnectionManager(PocketCampusServer.CONFIG.getString("DB_URL"),
+				PocketCampusServer.CONFIG.getString("DB_USERNAME"), PocketCampusServer.CONFIG.getString("DB_PASSWORD"));
 	}
 
 	/**

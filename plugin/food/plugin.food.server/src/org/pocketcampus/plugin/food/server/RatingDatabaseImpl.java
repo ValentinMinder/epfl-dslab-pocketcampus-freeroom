@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.food.server;
 
-import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
-
 import java.sql.*;
 import java.text.Normalizer;
 import java.util.HashMap;
@@ -13,6 +11,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.food.shared.*;
 
 /**
@@ -33,7 +32,8 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	private final Days _maxVotingDaysInPast;
 
 	public RatingDatabaseImpl(Days maxVotingDaysInPast) {
-		this(PC_SRV_CONFIG.getString("DB_URL"), PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"), maxVotingDaysInPast);
+		this(PocketCampusServer.CONFIG.getString("DB_URL"), PocketCampusServer.CONFIG.getString("DB_USERNAME"), 
+				PocketCampusServer.CONFIG.getString("DB_PASSWORD"), maxVotingDaysInPast);
 	}
 
 	public RatingDatabaseImpl(String databaseUrl, String userName, String password, Days maxVotingDaysInPast) {

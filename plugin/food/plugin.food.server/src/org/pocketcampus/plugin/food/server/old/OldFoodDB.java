@@ -10,11 +10,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
 import org.pocketcampus.plugin.food.shared.Restaurant;
-
-import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
 
 /**
  * The old food database.
@@ -34,8 +33,8 @@ public class OldFoodDB {
 	 * Constructor for the Food Database Handler
 	 */
 	public OldFoodDB() {
-		this.mConnectionManager = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
-				PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
+		this.mConnectionManager = new ConnectionManager(PocketCampusServer.CONFIG.getString("DB_URL"),
+				PocketCampusServer.CONFIG.getString("DB_USERNAME"), PocketCampusServer.CONFIG.getString("DB_PASSWORD"));
 
 	}
 

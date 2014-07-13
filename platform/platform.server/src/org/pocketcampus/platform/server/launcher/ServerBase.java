@@ -31,8 +31,6 @@ import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
-
 public abstract class ServerBase {
 	
 	private static TProtocolFactory binProtocolFactory = new TBinaryProtocol.Factory();
@@ -46,7 +44,7 @@ public abstract class ServerBase {
         LinkedList<Connector> conn_list = new LinkedList<Connector>();
 
         SelectChannelConnector connector0 = new SelectChannelConnector();
-        connector0.setPort(PC_SRV_CONFIG.getInteger("LISTEN_ON_PORT"));
+        connector0.setPort(PocketCampusServer.CONFIG.getInteger("LISTEN_ON_PORT"));
         connector0.setMaxIdleTime(30000);
         connector0.setRequestHeaderSize(8192);
         conn_list.add(connector0);
@@ -59,13 +57,13 @@ public abstract class ServerBase {
         conn_list.add(connector1);*/
 
         
-        if(PC_SRV_CONFIG.getInteger("SSL_LISTEN_ON_PORT") != 0) {
+        if(PocketCampusServer.CONFIG.getInteger("SSL_LISTEN_ON_PORT") != 0) {
 	        SslSelectChannelConnector ssl_connector = new SslSelectChannelConnector();
-	        ssl_connector.setPort(PC_SRV_CONFIG.getInteger("SSL_LISTEN_ON_PORT"));
+	        ssl_connector.setPort(PocketCampusServer.CONFIG.getInteger("SSL_LISTEN_ON_PORT"));
 	        SslContextFactory cf = ssl_connector.getSslContextFactory();
-	        cf.setKeyStore(PC_SRV_CONFIG.getString("SSL_KEYSTORE"));
-	        cf.setKeyStorePassword(PC_SRV_CONFIG.getString("SSL_KEYSTORE_PASS"));
-	        cf.setKeyManagerPassword(PC_SRV_CONFIG.getString("SSL_KEYMGR_PASS"));
+	        cf.setKeyStore(PocketCampusServer.CONFIG.getString("SSL_KEYSTORE"));
+	        cf.setKeyStorePassword(PocketCampusServer.CONFIG.getString("SSL_KEYSTORE_PASS"));
+	        cf.setKeyManagerPassword(PocketCampusServer.CONFIG.getString("SSL_KEYMGR_PASS"));
 	        conn_list.add(ssl_connector);
         }
 
@@ -108,7 +106,7 @@ public abstract class ServerBase {
 				  }
 		}), "/ping");
 		
-		NCSARequestLog requestLog = new NCSARequestLog(PC_SRV_CONFIG.getString("JETTY_LOGFILES_PATH") + "/jetty-yyyy_mm_dd.request.log");
+		NCSARequestLog requestLog = new NCSARequestLog(PocketCampusServer.CONFIG.getString("JETTY_LOGFILES_PATH") + "/jetty-yyyy_mm_dd.request.log");
 		requestLog.setRetainDays(90);
 		requestLog.setAppend(true);
 		requestLog.setExtended(false);
@@ -135,7 +133,7 @@ public abstract class ServerBase {
 			*   This should be exhaustive/comprehensive
 			*   meaning all config params should be assigned a value here.
 			*/
-			PC_SRV_CONFIG.load(this.getClass().getResourceAsStream("pocketcampus-server.config"));
+			PocketCampusServer.CONFIG.load(this.getClass().getResourceAsStream("pocketcampus-server.config"));
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -149,7 +147,7 @@ public abstract class ServerBase {
 			*/
 			String configFile = "/etc/pocketcampus-server.config";
 			if(new File(configFile).exists()) {
-				PC_SRV_CONFIG.load(new FileInputStream(configFile));
+				PocketCampusServer.CONFIG.load(new FileInputStream(configFile));
 			}
 			
 		} catch (IOException e) {
@@ -163,7 +161,7 @@ public abstract class ServerBase {
 			*   of the server on the same machine.
 			*/
 			if(config != null) {
-				PC_SRV_CONFIG.load(new FileInputStream(config));
+				PocketCampusServer.CONFIG.load(new FileInputStream(config));
 			}
 			
 		} catch (IOException e) {
@@ -172,5 +170,4 @@ public abstract class ServerBase {
 	}
 	
 	protected abstract ArrayList<Processor> getServiceProcessors();
-	
 }

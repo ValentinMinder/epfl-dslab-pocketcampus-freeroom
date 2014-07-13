@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.moodle.server.old;
 
-import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
-
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -246,7 +244,7 @@ public class MoodleServiceImpl {
 			HttpURLConnection conn = (HttpURLConnection) new URL(MOODLE_WEBSERVICE_URL).openConnection();
 			PostDataBuilder pd = new PostDataBuilder().
 					addParam("moodlewsrestformat", "json").
-					addParam("wstoken", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")).
+					addParam("wstoken", PocketCampusServer.CONFIG.getString("MOODLE_ACCESS_TOKEN")).
 					addParam("wsfunction", "core_user_get_users").
 					addParam("criteria[0][key]", "idnumber").
 					addParam("criteria[0][value]", sciper);
@@ -259,7 +257,7 @@ public class MoodleServiceImpl {
 			conn = (HttpURLConnection) new URL(MOODLE_WEBSERVICE_URL).openConnection();
 			pd = new PostDataBuilder().
 					addParam("moodlewsrestformat", "json").
-					addParam("wstoken", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")).
+					addParam("wstoken", PocketCampusServer.CONFIG.getString("MOODLE_ACCESS_TOKEN")).
 					addParam("wsfunction", "core_enrol_get_users_courses").
 					addParam("userid", "" + theId);
 			conn.setDoOutput(true);
@@ -393,7 +391,7 @@ public class MoodleServiceImpl {
 			HttpURLConnection conn = (HttpURLConnection) new URL(MOODLE_WEBSERVICE_URL).openConnection();
 			PostDataBuilder pd = new PostDataBuilder().
 					addParam("moodlewsrestformat", "json").
-					addParam("wstoken", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")).
+					addParam("wstoken", PocketCampusServer.CONFIG.getString("MOODLE_ACCESS_TOKEN")).
 					addParam("wsfunction", "core_course_get_contents").
 					addParam("courseid", courseId);
 			conn.setDoOutput(true);

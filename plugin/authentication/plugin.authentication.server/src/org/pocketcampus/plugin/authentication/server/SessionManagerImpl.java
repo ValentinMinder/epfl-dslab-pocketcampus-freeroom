@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.authentication.server;
 
-import static org.pocketcampus.platform.server.launcher.PCServerConfig.PC_SRV_CONFIG;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 
 import ch.epfl.tequila.client.model.TequilaPrincipal;
 
@@ -26,8 +25,8 @@ public class SessionManagerImpl implements SessionManager {
 	private ConnectionManager mConnectionManager;
 
 	public SessionManagerImpl() {
-		this.mConnectionManager = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
-				PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
+		this.mConnectionManager = new ConnectionManager(PocketCampusServer.CONFIG.getString("DB_URL"),
+				PocketCampusServer.CONFIG.getString("DB_USERNAME"), PocketCampusServer.CONFIG.getString("DB_PASSWORD"));
 		new Thread(getCleaner()).start();
 	}
 
