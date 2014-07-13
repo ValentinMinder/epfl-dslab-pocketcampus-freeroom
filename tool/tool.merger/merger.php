@@ -21,12 +21,12 @@ $libs_to_export = array(
 		"gcm.jar",
 		"libGoogleAnalyticsServices.jar",
 		"osmdroid-android-3.0.3.jar",
-		"servlet-api-3.0.jar", "slf4j-api-1.6.2.jar",
+		"servlet-api-3.0.jar",
 		"universal-image-loader-1.8.0.jar");
 
 $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
-$path_to_lib_dir = "../../platform/sdk/platform.sdk.shared/lib";
+$path_to_lib_dir = "../../platform/platform.shared/lib";
 
 $versionCode = "25";
 $versionName = "2.0";

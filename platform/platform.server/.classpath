@@ -33,5 +33,7 @@
 	<classpathentry kind="lib" path="/platform.shared/lib/jetty-webapp-8.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/jetty-websocket-8.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/jetty-xml-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/slf4j-api-1.6.2.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/slf4j-simple-1.6.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
