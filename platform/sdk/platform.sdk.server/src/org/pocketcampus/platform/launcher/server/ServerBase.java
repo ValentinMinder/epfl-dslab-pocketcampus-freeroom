@@ -18,7 +18,6 @@ import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TJSONProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
-import org.apache.thrift.server.TServlet;
 import org.eclipse.jetty.http.ssl.SslContextFactory;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
@@ -90,8 +89,8 @@ public abstract class ServerBase {
 
 		for(Processor processor : processors) {
 			TProcessor thriftProcessor = processor.getThriftProcessor();
-			TServlet binThriftServlet = new TServlet(thriftProcessor, binProtocolFactory);
-			TServlet jsonThriftServlet = new TServlet(thriftProcessor, jsonProtocolFactory);
+			TrackingThriftServlet binThriftServlet = new TrackingThriftServlet(thriftProcessor, binProtocolFactory);
+			TrackingThriftServlet jsonThriftServlet = new TrackingThriftServlet(thriftProcessor, jsonProtocolFactory);
 			context.addServlet(new ServletHolder(binThriftServlet), "/" + processor.getServiceName());
 			context.addServlet(new ServletHolder(jsonThriftServlet), "/json-" + processor.getServiceName());
 			if(processor.getRawProcessor() != null) {

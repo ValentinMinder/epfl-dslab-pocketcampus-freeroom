@@ -9,7 +9,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.pocketcampus.plugin.moodle.shared.*;
-import org.pocketcampus.platform.launcher.server.Authenticator;
+import org.pocketcampus.platform.sdk.server.Authenticator;
 import org.pocketcampus.platform.sdk.server.HttpClient;
 import org.pocketcampus.platform.sdk.shared.utils.PostDataBuilder;
 
@@ -84,7 +84,7 @@ public final class CourseServiceImpl implements CourseService {
 
 	@Override
 	public MoodleCoursesResponse2 getCourses(final MoodleCoursesRequest2 request) {
-		final String sciper = authenticator.getSciper(request);
+		final String sciper = authenticator.getSciper();
 		if (sciper == null) {
 			return new MoodleCoursesResponse2(MoodleStatusCode2.AUTHENTICATION_ERROR, new ArrayList<MoodleCourse2>());
 		}
@@ -138,7 +138,7 @@ public final class CourseServiceImpl implements CourseService {
 
 	@Override
 	public MoodleCourseSectionsResponse2 getSections(final MoodleCourseSectionsRequest2 request) {
-		final String sciper = authenticator.getSciper(request);
+		final String sciper = authenticator.getSciper();
 		if (sciper == null) {
 			// basic check, but it's not enough, see TODO in class javadoc
 			return new MoodleCourseSectionsResponse2(MoodleStatusCode2.AUTHENTICATION_ERROR, new ArrayList<MoodleCourseSection2>());

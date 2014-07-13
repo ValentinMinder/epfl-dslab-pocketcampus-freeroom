@@ -1,14 +1,15 @@
-package org.pocketcampus.platform.launcher.server;
+package org.pocketcampus.platform.sdk.server;
+
+import org.pocketcampus.platform.launcher.server.PocketCampusServer;
 
 /**
  * Authenticator implementation using the existing static methods on PocketCampusServer. 
- * Hack.
  * 
  * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public final class AuthenticatorImpl implements Authenticator {
 	@Override
-	public String getSciper(Object queryParameter) {
-		return PocketCampusServer.authGetUserSciper(queryParameter);
+	public String getSciper() {
+		return PocketCampusServer.authGetUserSciper();
 	}
 }

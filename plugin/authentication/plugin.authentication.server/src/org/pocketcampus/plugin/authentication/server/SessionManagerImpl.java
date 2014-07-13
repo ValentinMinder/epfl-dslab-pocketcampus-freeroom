@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
-import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 
 import ch.epfl.tequila.client.model.TequilaPrincipal;
 
@@ -27,14 +26,9 @@ public class SessionManagerImpl implements SessionManager {
 	private ConnectionManager mConnectionManager;
 
 	public SessionManagerImpl() {
-		try {
-			this.mConnectionManager = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
-					PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
-			new Thread(getCleaner()).start();
-		} catch (ServerException e) {
-			e.printStackTrace();
-		}
-
+		this.mConnectionManager = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
+				PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
+		new Thread(getCleaner()).start();
 	}
 
 	private long getNow() {

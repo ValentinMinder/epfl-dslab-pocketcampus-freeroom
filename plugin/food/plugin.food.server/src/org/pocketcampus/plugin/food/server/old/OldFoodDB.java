@@ -10,7 +10,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
-import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
 import org.pocketcampus.plugin.food.shared.Restaurant;
@@ -35,12 +34,8 @@ public class OldFoodDB {
 	 * Constructor for the Food Database Handler
 	 */
 	public OldFoodDB() {
-		try {
-			this.mConnectionManager = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
-					PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
-		} catch (ServerException e) {
-			e.printStackTrace();
-		}
+		this.mConnectionManager = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
+				PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
 
 	}
 
@@ -299,7 +294,7 @@ public class OldFoodDB {
 		if (meal == null) {
 			return;
 		}
-		
+
 		Connection dbConnection = null;
 		PreparedStatement insertRating = null;
 		String insertString = "UPDATE " + MENUS_TABLE
@@ -396,7 +391,7 @@ public class OldFoodDB {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Get strings that should not be capitalized.
 	 * 
@@ -404,7 +399,7 @@ public class OldFoodDB {
 	 */
 	public List<String> getNotCapitalized() {
 		List<String> notCapitalized = new ArrayList<String>();
-		
+
 		try {
 			Connection dbConnection = mConnectionManager.getConnection();
 			Statement statement = dbConnection.createStatement();
@@ -416,12 +411,12 @@ public class OldFoodDB {
 
 			statement.close();
 			mConnectionManager.disconnect();
-			
+
 		} catch (SQLException e) {
 			System.err.println("Error with SQL");
 			e.printStackTrace();
 		}
-		
+
 		return notCapitalized;
 	}
 

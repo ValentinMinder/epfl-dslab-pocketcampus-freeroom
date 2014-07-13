@@ -13,7 +13,6 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
-import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.food.shared.*;
 
 /**
@@ -38,12 +37,8 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	}
 
 	public RatingDatabaseImpl(String databaseUrl, String userName, String password, Days maxVotingDaysInPast) {
-		try {
-			_connectionManager = new ConnectionManager(databaseUrl, userName, password);
-			_maxVotingDaysInPast = maxVotingDaysInPast;
-		} catch (ServerException e) {
-			throw new RuntimeException(e);
-		}
+		_connectionManager = new ConnectionManager(databaseUrl, userName, password);
+		_maxVotingDaysInPast = maxVotingDaysInPast;
 	}
 
 	@Override

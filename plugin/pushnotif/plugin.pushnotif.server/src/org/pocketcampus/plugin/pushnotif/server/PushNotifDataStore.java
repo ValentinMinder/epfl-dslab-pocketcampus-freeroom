@@ -10,19 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
-import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 
 public class PushNotifDataStore {
 	private ConnectionManager mConnectionManager;
 
 	public PushNotifDataStore() {
-		try {
-			this.mConnectionManager = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
-					PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
-		} catch (ServerException e) {
-			e.printStackTrace();
-		}
-
+		this.mConnectionManager = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
+				PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
 	}
 
 	public boolean insertMapping(String plugin, String userid, String platform, String pushtoken) {

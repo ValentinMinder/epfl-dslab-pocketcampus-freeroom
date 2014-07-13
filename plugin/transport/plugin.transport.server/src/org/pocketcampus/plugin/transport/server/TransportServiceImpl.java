@@ -57,6 +57,7 @@ public class TransportServiceImpl implements TransportService.Iface {
 			sbbCompletions = mSbbProvider.autocompleteStations(constraint);
 		} catch (IOException e) {
 			e.printStackTrace();
+			return new ArrayList<TransportStation>();
 		}
 
 		List<TransportStation> completions = new ArrayList<TransportStation>();

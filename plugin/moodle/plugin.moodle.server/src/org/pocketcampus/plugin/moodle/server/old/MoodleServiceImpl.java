@@ -234,7 +234,7 @@ public class MoodleServiceImpl {
 	}
 
 	public CoursesListReply getCoursesListAPI(String dummy) throws TException {
-		String sciper = PocketCampusServer.authGetUserSciper(dummy);
+		String sciper = PocketCampusServer.authGetUserSciper();
 		if(sciper == null){
 			return new CoursesListReply(407);
 		}

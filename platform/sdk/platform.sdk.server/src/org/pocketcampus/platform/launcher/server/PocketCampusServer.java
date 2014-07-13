@@ -219,7 +219,7 @@ public class PocketCampusServer extends ServerBase {
 		return null;
 	}
 
-	public static String authGetUserSciper(Object firstArg) {
+	public static String authGetUserSciper() {
 		return callOnAuthPlugin("getSciperFromSession");
 	}
 
