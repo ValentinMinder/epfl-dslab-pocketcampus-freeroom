@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.thrift.TException;
-import org.pocketcampus.platform.sdk.shared.utils.Utils;
 import org.pocketcampus.plugin.food.server.old.OldRssParser.RssFeed;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;

@@ -65,7 +65,8 @@ public final class FileServiceImpl implements FileService {
 
 			final byte[] bytes = new PostDataBuilder()
 					.addParam(TOKEN_KEY, token)
-					.toBytes();
+					.toString()
+					.getBytes();
 			conn.getOutputStream().write(bytes);
 
 			conn.connect();

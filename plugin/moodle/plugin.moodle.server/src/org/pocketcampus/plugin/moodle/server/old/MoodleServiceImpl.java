@@ -3,20 +3,12 @@ package org.pocketcampus.plugin.moodle.server.old;
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.thrift.TException;
 import org.eclipse.jetty.util.MultiMap;
@@ -29,7 +21,6 @@ import org.pocketcampus.platform.launcher.server.PocketCampusServer;
 import org.pocketcampus.platform.sdk.shared.utils.Cookie;
 import org.pocketcampus.platform.sdk.shared.utils.PostDataBuilder;
 import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
-import org.pocketcampus.plugin.moodle.shared.Constants;
 import org.pocketcampus.plugin.moodle.shared.CoursesListReply;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
 import org.pocketcampus.plugin.moodle.shared.MoodleRequest;
@@ -74,7 +65,9 @@ public class MoodleServiceImpl {
 			UrlEncoded.decodeTo(url.getQuery(), params, "UTF-8");
 			TequilaToken teqToken = new TequilaToken(params.getString("requestkey"));
 			Cookie cookie = new Cookie();
-			cookie.setCookie(conn2.getHeaderFields().get("Set-Cookie"));
+			for (String header : conn2.getHeaderFields().get("Set-Cookie")) {
+				cookie.addFromHeader(header);
+			}
 			teqToken.setLoginCookie(cookie.cookie());
 			return teqToken;
 		} catch (IOException e) {
@@ -258,8 +251,8 @@ public class MoodleServiceImpl {
 					addParam("criteria[0][key]", "idnumber").
 					addParam("criteria[0][value]", sciper);
 			conn.setDoOutput(true);
-			conn.getOutputStream().write(pd.toBytes());
-			String result = IOUtils.toString(conn.getInputStream(), "UTF-8");
+			conn.getOutputStream().write(pd.toString().getBytes());
+			String result = StringUtils.fromStream(conn.getInputStream(), "UTF-8");
 			UsersNode usrNodes = gson.fromJson(result, UsersNode.class);
 			int theId = usrNodes.users.get(0).id;
 			
@@ -270,8 +263,8 @@ public class MoodleServiceImpl {
 					addParam("wsfunction", "core_enrol_get_users_courses").
 					addParam("userid", "" + theId);
 			conn.setDoOutput(true);
-			conn.getOutputStream().write(pd.toBytes());
-			result = IOUtils.toString(conn.getInputStream(), "UTF-8");
+			conn.getOutputStream().write(pd.toString().getBytes());
+			result = StringUtils.fromStream(conn.getInputStream(), "UTF-8");
 			Type listType = new TypeToken<List<CourseNode>>() {}.getType();
 			List<CourseNode> lcn = gson.fromJson(result, listType);
 			for(CourseNode mcj : lcn) {
@@ -404,8 +397,8 @@ public class MoodleServiceImpl {
 					addParam("wsfunction", "core_course_get_contents").
 					addParam("courseid", courseId);
 			conn.setDoOutput(true);
-			conn.getOutputStream().write(pd.toBytes());
-			String result = IOUtils.toString(conn.getInputStream(), "UTF-8");
+			conn.getOutputStream().write(pd.toString().getBytes());
+			String result = StringUtils.fromStream(conn.getInputStream(), "UTF-8");
 //			System.out.println(result);
 			Type listType = new TypeToken<List<SectionNode>>() {}.getType();
 			List<SectionNode> lsn = gson.fromJson(result, listType);
@@ -472,7 +465,7 @@ public class MoodleServiceImpl {
 		conn.setInstanceFollowRedirects(false);
 		conn.setRequestProperty("Cookie", cookie.cookie());
 		if(conn.getResponseCode() == 200)
-			return new HttpPageReply(IOUtils.toString(conn.getInputStream(), "UTF-8"), null);
+			return new HttpPageReply(StringUtils.fromStream(conn.getInputStream(), "UTF-8"), null);
 		if(conn.getResponseCode() / 100 == 3)
 			return new HttpPageReply(null, conn.getHeaderField("Location"));
 		return new HttpPageReply(null, null);

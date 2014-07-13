@@ -26,7 +26,7 @@ public class GetServiceDetailsRequest extends Request<AuthenticationController, 
 	protected String runInBackground(DefaultHttpClient client, String param) throws Exception {
 		HttpGet get = new HttpGet(String.format(AuthenticationController.tequilaAuthTokenUrl, param));
 		HttpResponse resp = client.execute(get);
-		return IOUtils.toString(resp.getEntity().getContent(), "UTF-8");
+		return StringUtils.fromStream(resp.getEntity().getContent(), "UTF-8");
 	}
 
 	@Override

@@ -327,4 +327,3 @@ public class ThriftObjectClassName implements org.apache.thrift.TBase<ThriftObje
   }
 
 }
-

@@ -10,9 +10,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.shared.utils.Cookie;
+import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.CourseDetailsJson;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.CourseJson;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.MaterialJson;
@@ -499,9 +499,11 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		List<String> cookies = conn.getHeaderFields().get("Set-Cookie");
 		if (cookies != null) {
 			cookieReceived = new Cookie();
-			cookieReceived.setCookie(conn.getHeaderFields().get("Set-Cookie"));
+			for (String header : cookies) {
+				cookieReceived.addFromHeader(header);
+			}
 		}
-		HttpReply reply = new HttpReply(conn.getResponseCode(), IOUtils.toString(conn.getInputStream(), "UTF-8"), cookieReceived); 
+		HttpReply reply = new HttpReply(conn.getResponseCode(), StringUtils.fromStream(conn.getInputStream(), "UTF-8"), cookieReceived); 
 		return reply;
 	}
 	

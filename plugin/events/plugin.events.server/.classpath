@@ -5,15 +5,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-io-2.0.1.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang3-3.0.1.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jsoup-1.6.1.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/ical4j-1.0.4.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/backport-util-concurrent-3.1.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/mysql-connector-java-5.1.15-bin.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/mail.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-javadoc.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0.jar"/>

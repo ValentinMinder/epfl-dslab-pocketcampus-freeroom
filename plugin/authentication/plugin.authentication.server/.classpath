@@ -5,17 +5,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.authentication.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-io-2.0.1.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang3-3.0.1.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/gson-1.7.1.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/gcm-server.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/json_simple-1.1.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/servlet-api-3.0.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/mysql-connector-java-5.1.15-bin.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/javapns_2.2.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/log4j-1.2.16.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/bcprov-jdk15-146.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-javadoc.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>

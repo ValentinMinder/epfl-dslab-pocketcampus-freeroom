@@ -1,37 +1,23 @@
 package org.pocketcampus.platform.sdk.shared.utils;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * List utilities.
+ * 
+ * @author Solal Pirelli <solal@pocketcampus.org>
+ */
 public class ListUtils {
-
-	public static <T> List<List<T>> chunkList(List<T> bigList, int size) {
-		List<List<T>> chunks = new LinkedList<List<T>>();
-		List<T> chunk = new ArrayList<T>(size);
-		for(T t : bigList) {
-			chunk.add(t);
-			if(chunk.size() == size) {
-				chunks.add(chunk);
-				chunk = new ArrayList<T>(size);
-			}
+	/** Splits a large list into a list of chunks of the specified size. */
+	public static <T> List<List<T>> chunkList(final List<T> list, final int size) {
+		List<List<T>> parts = new ArrayList<List<T>>();
+		final int totalSize = list.size();
+		
+		for (int i = 0; i < totalSize; i += size) {
+			// create a new list to force a deep copy
+			parts.add(new ArrayList<T>(list.subList(i, Math.min(totalSize, i + size))));
 		}
-		if(chunk.size() > 0)
-			chunks.add(chunk);
-		return chunks;
+		return parts;
 	}
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

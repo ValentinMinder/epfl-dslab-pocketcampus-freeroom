@@ -12,7 +12,6 @@ import org.pocketcampus.plugin.map.android.MapModel;
 import org.pocketcampus.plugin.map.android.iface.IMapView;
 import org.pocketcampus.plugin.map.shared.MapItem;
 
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -34,8 +33,6 @@ import android.widget.ListView;
  * 
  */
 public class MapSearchActivity extends PluginView implements IMapView {
-	private ProgressDialog progressDialog_;
-
 	private MapMainController mController;
 	private MapModel mModel;
 

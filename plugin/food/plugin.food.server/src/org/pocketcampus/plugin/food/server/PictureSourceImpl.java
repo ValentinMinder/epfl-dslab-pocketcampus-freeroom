@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
+import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
 import org.pocketcampus.plugin.food.shared.MealType;
 
 public final class PictureSourceImpl implements PictureSource {
@@ -47,7 +47,7 @@ public final class PictureSourceImpl implements PictureSource {
 	 *         Cafétéria BC => cafeteria_bc
 	 */
 	private static String normalizedNameForFilename(String restaurantName) {
-		restaurantName = StringUtils.stripAccents(restaurantName);
+		restaurantName = StringUtils.removeAccents(restaurantName);
 		restaurantName = restaurantName.toLowerCase();
 		restaurantName = restaurantName.replace("'", "_");
 		restaurantName = restaurantName.replace(" ", "_");

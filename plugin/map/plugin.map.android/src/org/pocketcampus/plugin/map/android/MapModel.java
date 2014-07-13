@@ -9,8 +9,6 @@ import org.pocketcampus.plugin.map.android.iface.IMapView;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
 
-import android.widget.ArrayAdapter;
-
 /**
  * Map model.
  * 

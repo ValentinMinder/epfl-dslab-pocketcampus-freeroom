@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -67,8 +68,6 @@ import org.pocketcampus.plugin.events.shared.ExchangeReply;
 import org.pocketcampus.plugin.events.shared.ExchangeRequest;
 import org.pocketcampus.plugin.events.shared.SendEmailReply;
 import org.pocketcampus.plugin.events.shared.SendEmailRequest;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
@@ -572,7 +571,6 @@ public class EventsServiceImpl implements EventsService.Iface {
 		return sb.toString();
 	}
 
-	@SuppressWarnings("unchecked")
 	public static List<String> split(String blob, String regex) {
 		if(blob == null)
 			return null;
@@ -1161,7 +1159,6 @@ public class EventsServiceImpl implements EventsService.Iface {
 		return list;
 	}
 
-	@SuppressWarnings("unchecked")
 	private static <T> List<T> arrayToList(T[] a) {
 		return Arrays.asList(a);
 	}
