@@ -3,7 +3,6 @@ package org.pocketcampus.plugin.myedu.android;
 import org.pocketcampus.plugin.myedu.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.myedu.android.iface.IMyEduView;
 
@@ -36,9 +35,6 @@ public class MyEduMainView extends PluginView implements IMyEduView {
 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
-		//Tracker
-		Tracker.getInstance().trackPageView("myedu");
-		
 		// Get and cast the controller and model
 		mController = (MyEduController) controller;
 		mModel = (MyEduModel) controller.getModel();
@@ -73,6 +69,11 @@ public class MyEduMainView extends PluginView implements IMyEduView {
 	public void networkErrorHappened() {
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.myedu_connection_error_happened), Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	protected String screenName() {
+		return "/myedu";
 	}
 
 }

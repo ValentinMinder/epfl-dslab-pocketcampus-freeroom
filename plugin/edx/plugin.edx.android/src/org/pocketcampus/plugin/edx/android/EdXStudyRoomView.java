@@ -3,7 +3,6 @@ package org.pocketcampus.plugin.edx.android;
 import java.io.IOException;
 import java.util.List;
 
-import org.pocketcampus.platform.sdk.shared.utils.Callback;
 import org.pocketcampus.plugin.edx.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;

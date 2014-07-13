@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
-import org.pocketcampus.platform.sdk.shared.utils.Callback;
 import org.pocketcampus.plugin.edx.android.iface.IEdXController;
 import org.pocketcampus.plugin.edx.android.iface.IEdXView;
 import org.pocketcampus.plugin.edx.android.req.CourseSectionsRequest;
