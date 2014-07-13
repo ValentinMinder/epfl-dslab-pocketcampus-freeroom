@@ -36,13 +36,12 @@ public class TrackingThriftServlet extends HttpServlet {
 
 	private final Collection<Map.Entry<String, String>> customHeaders;
 
-	public static final Map<Long, Map<String, String>> receivedRequestHeaders;
+	public static final ThreadLocal<Map<String, String>> receivedRequestHeaders;
 
-	
-	static{
-		receivedRequestHeaders = new HashMap<Long, Map<String, String>>();
+	static {
+		receivedRequestHeaders = new ThreadLocal<Map<String, String>>();
 	}
-	
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -98,14 +97,14 @@ public class TrackingThriftServlet extends HttpServlet {
 				String key = headerNames.nextElement();
 				headers.put(key, request.getHeader(key));
 			}
-			receivedRequestHeaders.put(Thread.currentThread().getId(), headers);
+			receivedRequestHeaders.set(headers);
 
 			processor.process(inProtocol, outProtocol);
 			out.flush();
 		} catch (TException te) {
 			throw new ServletException(te);
 		} finally {
-			receivedRequestHeaders.remove(Thread.currentThread().getId());
+			receivedRequestHeaders.set(null);
 		}
 	}
 

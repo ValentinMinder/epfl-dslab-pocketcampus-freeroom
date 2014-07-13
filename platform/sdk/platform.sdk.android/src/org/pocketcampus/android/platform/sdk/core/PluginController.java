@@ -14,7 +14,7 @@ import org.apache.thrift.TServiceClientFactory;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.THttpClient;
-import org.pocketcampus.platform.sdk.shared.utils.PcConstants;
+import org.pocketcampus.platform.sdk.shared.PCConstants;
 
 import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
 
@@ -89,24 +89,24 @@ public abstract class PluginController extends Service {
 	private void attachExtraHeaders(HttpRequestBase reqObj) {
 		String pushNotifToken = ((GlobalContext) getApplicationContext()).getPushNotifToken();
 		if(pushNotifToken != null) {
-			reqObj.setHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_OS, "ANDROID");
-			reqObj.setHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_TOKEN, pushNotifToken);
+			reqObj.setHeader(PCConstants.HTTP_HEADER_PUSHNOTIF_OS, "ANDROID");
+			reqObj.setHeader(PCConstants.HTTP_HEADER_PUSHNOTIF_TOKEN, pushNotifToken);
 		}
 		String pcSessionId = ((GlobalContext) getApplicationContext()).getPcSessionId();
 		if(pcSessionId != null) {
-			reqObj.setHeader(PcConstants.HTTP_HEADER_AUTH_PCSESSID, pcSessionId);
+			reqObj.setHeader(PCConstants.HTTP_HEADER_AUTH_PCSESSID, pcSessionId);
 		}
 	}
 
 	private void attachExtraHeaders(THttpClient client) {
 		String pushNotifToken = ((GlobalContext) getApplicationContext()).getPushNotifToken();
 		if(pushNotifToken != null) {
-			client.setCustomHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_OS, "ANDROID");
-			client.setCustomHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_TOKEN, pushNotifToken);
+			client.setCustomHeader(PCConstants.HTTP_HEADER_PUSHNOTIF_OS, "ANDROID");
+			client.setCustomHeader(PCConstants.HTTP_HEADER_PUSHNOTIF_TOKEN, pushNotifToken);
 		}
 		String pcSessionId = ((GlobalContext) getApplicationContext()).getPcSessionId();
 		if(pcSessionId != null) {
-			client.setCustomHeader(PcConstants.HTTP_HEADER_AUTH_PCSESSID, pcSessionId);
+			client.setCustomHeader(PCConstants.HTTP_HEADER_AUTH_PCSESSID, pcSessionId);
 		}
 	}
 

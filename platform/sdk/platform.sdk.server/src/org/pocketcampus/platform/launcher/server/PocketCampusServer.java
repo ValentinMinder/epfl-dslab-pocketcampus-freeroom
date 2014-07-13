@@ -15,7 +15,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.thrift.TProcessor;
-import org.pocketcampus.platform.sdk.shared.utils.PcConstants;
+import org.pocketcampus.platform.sdk.shared.PCConstants;
 
 import ch.epfl.tequila.client.model.ClientConfig;
 import ch.epfl.tequila.client.model.TequilaPrincipal;
@@ -111,11 +111,11 @@ public class PocketCampusServer extends ServerBase {
 	}
 
 	public static boolean pushNotifMap(String plugin, String userId) {
-		Map<String, String> headers = TrackingThriftServlet.receivedRequestHeaders.get(Thread.currentThread().getId());
+		Map<String, String> headers = getRequestHeaders();
 		if (headers == null)
 			return false;
-		String os = headers.get(PcConstants.HTTP_HEADER_PUSHNOTIF_OS);
-		String token = headers.get(PcConstants.HTTP_HEADER_PUSHNOTIF_TOKEN);
+		String os = headers.get(PCConstants.HTTP_HEADER_PUSHNOTIF_OS);
+		String token = headers.get(PCConstants.HTTP_HEADER_PUSHNOTIF_TOKEN);
 		if (os == null || token == null || plugin == null || userId == null)
 			return false;
 		try {
@@ -206,7 +206,7 @@ public class PocketCampusServer extends ServerBase {
 	}
 
 	public static String authGetUserGasparFromReq(HttpServletRequest request) {
-		String pcSessionId = request.getHeader(PcConstants.HTTP_HEADER_AUTH_PCSESSID);
+		String pcSessionId = request.getHeader(PCConstants.HTTP_HEADER_AUTH_PCSESSID);
 		try {
 			return (String) invokeOnPlugin("authentication", "getGasparFromSession", pcSessionId);
 		} catch (NoSuchObjectException e) {
@@ -224,12 +224,11 @@ public class PocketCampusServer extends ServerBase {
 	}
 
 	public static Map<String, String> getRequestHeaders() {
-		return TrackingThriftServlet.receivedRequestHeaders
-				.get(Thread.currentThread().getId());
+		return TrackingThriftServlet.receivedRequestHeaders.get();
 	}
 
 	public static List<String> authGetUserAttributes(List<String> attr) {
-		String pcSessionId = getRequestHeaders().get(PcConstants.HTTP_HEADER_AUTH_PCSESSID);
+		String pcSessionId = getRequestHeaders().get(PCConstants.HTTP_HEADER_AUTH_PCSESSID);
 		if (pcSessionId == null)
 			return null;
 		try {
@@ -247,7 +246,7 @@ public class PocketCampusServer extends ServerBase {
 	}
 
 	private static String callOnAuthPlugin(String func) {
-		String pcSessionId = getRequestHeaders().get(PcConstants.HTTP_HEADER_AUTH_PCSESSID);
+		String pcSessionId = getRequestHeaders().get(PCConstants.HTTP_HEADER_AUTH_PCSESSID);
 		if (pcSessionId == null)
 			return null;
 		try {

@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-/** "Nice" abstraction over configuration files. */
+/** Abstraction over configuration files. */
 public class PCConfig extends Properties {
 	public static final long serialVersionUID = 41216938188L;
 
