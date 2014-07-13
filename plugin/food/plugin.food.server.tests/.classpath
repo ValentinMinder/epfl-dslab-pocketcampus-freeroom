@@ -13,5 +13,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.map.shared"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/joda-time-2.3-javadoc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

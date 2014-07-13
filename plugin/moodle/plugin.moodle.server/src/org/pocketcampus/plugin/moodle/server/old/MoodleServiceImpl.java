@@ -63,61 +63,6 @@ public class MoodleServiceImpl {
 		System.out.println("Starting Moodle plugin server ...");
 	}
 	
-	public HttpServlet getServlet() {
-		return new HttpServlet() {
-			private static final long serialVersionUID = -2572366584222819828L;
-			protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-				//InputStream in = request.getInputStream();
-				//request.get
-//				response.setStatus(500);
-//				System.out.println(request.getQueryString());
-//				OutputStream out = response.getOutputStream();
-//				out.write("OK1".getBytes());
-//				out.flush();
-//				doPost(request, response);
-			}
-			protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-				String gaspar = PocketCampusServer.authGetUserGasparFromReq(req);
-				if(gaspar == null) {
-					resp.setStatus(407);
-					return;
-				}
-				
-				String action = req.getParameter(Constants.MOODLE_RAW_ACTION_KEY);
-				if(Constants.MOODLE_RAW_ACTION_DOWNLOAD_FILE.equals(action)) {
-					// TODO check if requested file belongs to course registered by user 
-					String fp = req.getParameter(Constants.MOODLE_RAW_FILE_PATH);
-					if(fp == null) {
-						resp.setStatus(405);
-						return;
-					}
-					
-					fp = StringUtils.getSubstringBetween(fp, "pluginfile.php", "?");
-//					if(fp.indexOf("?") != -1)
-//						fp = fp.substring(0, fp.indexOf("?"));
-//					URLBuilder url = new URLBuilder(fp).addParam("token", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN"));
-					fp = "http://moodle.epfl.ch/webservice/pluginfile.php" + fp;
-					HttpURLConnection conn = (HttpURLConnection) new URL(fp).openConnection();
-					conn.setDoOutput(true);
-					PostDataBuilder pd = new PostDataBuilder().
-							addParam("token", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN"));
-					conn.getOutputStream().write(pd.toBytes());
-					InputStream in = conn.getInputStream();
-					//System.out.println("encoding=" + conn.getContentEncoding() + " length=" + conn.getContentLength());
-					//System.out.println(conn.getHeaderFields().toString());
-					resp.setContentType(conn.getContentType());
-					resp.setContentLength(conn.getContentLength());
-					resp.addHeader("Content-Disposition", conn.getHeaderField("Content-Disposition"));
-					OutputStream out = resp.getOutputStream();
-					IOUtils.copy(in, out);
-//					out.flush();
-					in.close();
-					out.close();
-				} 
-			}
-		};
-	}
-
 	public TequilaToken getTequilaTokenForMoodle() throws TException {
 		System.out.println("getTequilaTokenForMoodle");
 		try {
@@ -441,7 +386,7 @@ public class MoodleServiceImpl {
 	public SectionsListReply getCourseSectionsAPI(String courseId) throws TException {
 		if(courseId == null)
 			return new SectionsListReply(405);
-		String gaspar = PocketCampusServer.authGetUserGaspar(courseId);
+		String gaspar = PocketCampusServer.authGetUserGaspar();
 		if(gaspar == null){
 			// TODO check if user is enrolled in this course
 			return new SectionsListReply(407);

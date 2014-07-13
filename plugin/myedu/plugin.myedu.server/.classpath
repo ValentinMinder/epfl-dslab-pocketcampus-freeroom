@@ -12,7 +12,6 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/gcm-server.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/gcm.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/gson-1.7.1.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/httpclient-4.0-alpha1.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/javapns_2.0_Beta_4.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-ajp-8.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-annotations-8.0.0.M3.jar"/>
@@ -48,7 +47,9 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2-sources.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/unboundid-ldapsdk-se.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex.jar" sourcepath="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-javadoc.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/httpclient-4.1.2.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/httpcore-4.1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

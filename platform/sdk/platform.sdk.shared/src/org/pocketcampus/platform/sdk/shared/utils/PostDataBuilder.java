@@ -28,7 +28,7 @@ public class PostDataBuilder {
 		}
 		return this;
 	}
-	@Override
+
 	public String toString() {
 		return StringUtils.join(params.toArray(), "&");
 	}

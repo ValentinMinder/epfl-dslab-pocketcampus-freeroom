@@ -5,13 +5,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang-2.6.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/lib/commons-codec-1.4.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/lib/commons-lang-2.6.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/lib/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/lib/httpclient-4.1.2.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/lib/httpclient-cache-4.1.2.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/lib/httpcore-4.1.2.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/lib/httpmime-4.1.2.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

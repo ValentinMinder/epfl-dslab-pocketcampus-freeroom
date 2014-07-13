@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.launcher.server.PocketCampusServer;
 import org.pocketcampus.platform.launcher.server.PocketCampusServer.PushNotifMapReq;
@@ -76,10 +74,10 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 	@Override
 	public int deleteMapping(String dummy) throws TException {
 		System.out.println("deleteMapping");
-		HttpServletRequest req = PocketCampusServer.getHttpRequest(dummy);
-		if(req == null) return 500;
-		String os = req.getHeader("X-PC-PUSHNOTIF-OS");
-		String token = req.getHeader("X-PC-PUSHNOTIF-TOKEN");
+		Map<String, String> headers = PocketCampusServer.getRequestHeaders();
+		if(headers == null) return 500;
+		String os = headers.get("X-PC-PUSHNOTIF-OS");
+		String token = headers.get("X-PC-PUSHNOTIF-TOKEN");
 		if(os == null || token == null) return 500;
 		return (dataStore.deletePushToken(os, token) ? 200 : 500);
 	}

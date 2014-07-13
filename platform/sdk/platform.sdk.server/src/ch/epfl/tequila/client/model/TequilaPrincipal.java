@@ -29,7 +29,7 @@ public final class TequilaPrincipal implements Principal
   private String _user;
   private String _host;
   private String _org;
-  private Map _attributes;
+  private Map<?,?> _attributes;
 
   /**
    * Returns the user name.
@@ -106,7 +106,7 @@ public final class TequilaPrincipal implements Principal
    *
    * @return the user attributes.
    */
-  public Map getAttributes()
+  public Map<?,?> getAttributes()
   {
     return _attributes;
   }
@@ -116,7 +116,7 @@ public final class TequilaPrincipal implements Principal
    *
    * @param attributes the user attributes.
    */
-  public void setAttributes(Map attributes)
+  public void setAttributes(Map<?,?> attributes)
   {
     _attributes = attributes;
   }

@@ -9,5 +9,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.server"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/joda-time-2.3-javadoc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

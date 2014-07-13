@@ -24,7 +24,7 @@ public final class FileServiceImpl implements FileService {
 	// Guards between the file name in the link we receive
 	private static final String FILE_NAME_LEFT_GUARD = "pluginfile.php";
 	private static final String FILE_NAME_RIGHT_GUARD = "?";
-	
+
 	// Prefix for the download URL of a file, using Moodle's web service.
 	private static final String DOWNLOAD_URL_PREFIX = "http://moodle.epfl.ch/webservice/pluginfile.php";
 
@@ -67,7 +67,7 @@ public final class FileServiceImpl implements FileService {
 					.addParam(TOKEN_KEY, token)
 					.toBytes();
 			conn.getOutputStream().write(bytes);
-			
+
 			conn.connect();
 
 			response.setContentType(conn.getContentType());

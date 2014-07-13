@@ -502,12 +502,10 @@ public class EventsServiceImpl implements EventsService.Iface {
 	
 	private void registerForPush(TBase<?, ?> req, List<String> tokens) {
 		for(String t : tokens)
-			PocketCampusServer.pushNotifMap(req, "events", t);
+			PocketCampusServer.pushNotifMap("events", t);
 	}
 	
 	private synchronized void importFromMemento(TBase<?, ?> req) {
-		if(!PocketCampusServer.getServerIp(req).equals("128.178.132.3"))
-			return;
 		String date = new SimpleDateFormat("yyyyMMdd").format(new Date().getTime());
 		if(dateLastImport == null) {
 			dateLastImport = date;

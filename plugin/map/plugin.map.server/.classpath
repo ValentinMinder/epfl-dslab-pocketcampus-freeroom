@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex.jar" sourcepath="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex-sources"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
@@ -16,5 +15,7 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/gson-1.7.1.jar"/>
 	<classpathentry kind="src" path="/platform.sdk.server"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/mysql-connector-java-5.1.15-bin.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

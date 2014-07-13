@@ -5,6 +5,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.blank.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex.jar" sourcepath="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

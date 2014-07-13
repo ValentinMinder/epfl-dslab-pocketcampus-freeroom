@@ -134,7 +134,7 @@ public class TequilaService
 
     TequilaPrincipal principal = new TequilaPrincipal();
 
-    Map attributes = new HashMap();
+    Map<Object,Object> attributes = new HashMap<Object,Object>();
 
     // data is in the form key=value, one per line
     String line = in.readLine();

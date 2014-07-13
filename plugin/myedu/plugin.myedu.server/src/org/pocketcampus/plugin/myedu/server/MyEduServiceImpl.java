@@ -5,11 +5,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -503,7 +501,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 			cookieReceived = new Cookie();
 			cookieReceived.setCookie(conn.getHeaderFields().get("Set-Cookie"));
 		}
-		HttpReply reply = new HttpReply(conn.getResponseCode(), IOUtils.toString(conn.getInputStream(), "UTF-8"), cookieReceived, conn.getHeaderField("Location")); 
+		HttpReply reply = new HttpReply(conn.getResponseCode(), IOUtils.toString(conn.getInputStream(), "UTF-8"), cookieReceived); 
 		return reply;
 	}
 	
@@ -517,13 +515,11 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		private int statusCode;
 		private String replyString;
 		private Cookie cookie;
-		private String redirectionURL;
 		
-		public HttpReply(int statusCode, String replyString, Cookie cookie, String redirectionURL) {
+		public HttpReply(int statusCode, String replyString, Cookie cookie) {
 			this.statusCode = statusCode;
 			this.replyString = replyString;
 			this.cookie = cookie;
-			this.redirectionURL = redirectionURL;
 		}
 
 		public int getStatusCode() {
@@ -533,14 +529,6 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		public String getReplyString() {
 			return replyString;
 		}
-
-		public Cookie getCookie() {
-			return cookie;
-		}
-		
-		public String getRedirectionURL() {
-			return redirectionURL;
-		}
 		
 	}
 
@@ -548,7 +536,6 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 	@Override
 	public MyEduSubmitFeedbackReply submitFeedback(MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest)
 			throws TException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

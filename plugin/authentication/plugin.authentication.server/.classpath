@@ -16,5 +16,7 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/javapns_2.2.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/log4j-1.2.16.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/bcprov-jdk15-146.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

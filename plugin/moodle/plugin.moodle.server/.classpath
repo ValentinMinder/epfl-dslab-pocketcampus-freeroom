@@ -5,7 +5,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.moodle.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.server"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-io-2.0.1.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex.jar" sourcepath="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang3-3.0.1.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-util-8.0.0.M3.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
@@ -19,5 +18,7 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/platform.sdk.shared/lib/joda-time-2.3-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
