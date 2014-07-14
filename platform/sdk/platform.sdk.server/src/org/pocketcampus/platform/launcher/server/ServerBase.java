@@ -73,7 +73,18 @@ public abstract class ServerBase {
         server.setConnectors((Connector[]) conn_list.toArray(new Connector[conn_list.size()]));
         
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-		context.setContextPath("/v3r1");
+		
+		//context.setContextPath("/v3r1"); // comment out this to allow flexibility below
+		
+		// add dummy servlet to ping to check if server is up
+		context.addServlet(new ServletHolder(new HttpServlet() {
+			private static final long serialVersionUID = 2812085352871299189L;
+			protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+				    OutputStream out = response.getOutputStream();
+				    out.write("OK".getBytes());
+				    out.flush();
+				  }
+		}), "/v3r1/ping"); // put just '/' here, to make this servlet respond to all non-caught-by-other-servlet URIs 
 		
 		String locale = "en_US";
 		String encoding = "UTF-8";
@@ -92,22 +103,12 @@ public abstract class ServerBase {
 			TProcessor thriftProcessor = processor.getThriftProcessor();
 			TServlet binThriftServlet = new TServlet(thriftProcessor, binProtocolFactory);
 			TServlet jsonThriftServlet = new TServlet(thriftProcessor, jsonProtocolFactory);
-			context.addServlet(new ServletHolder(binThriftServlet), "/" + processor.getServiceName());
-			context.addServlet(new ServletHolder(jsonThriftServlet), "/json-" + processor.getServiceName());
+			context.addServlet(new ServletHolder(binThriftServlet), "/v3r1/" + processor.getServiceName());
+			context.addServlet(new ServletHolder(jsonThriftServlet), "/v3r1/json-" + processor.getServiceName());
 			if(processor.getRawProcessor() != null) {
-				context.addServlet(new ServletHolder(processor.getRawProcessor()), "/raw-" + processor.getServiceName());
+				context.addServlet(new ServletHolder(processor.getRawProcessor()), "/v3r1/raw-" + processor.getServiceName());
 			}
 		}
-		
-		// add dummy servlet to ping to check if server is up
-		context.addServlet(new ServletHolder(new HttpServlet() {
-			private static final long serialVersionUID = 2812085352871299189L;
-			protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-				    OutputStream out = response.getOutputStream();
-				    out.write("OK".getBytes());
-				    out.flush();
-				  }
-		}), "/ping");
 		
 		NCSARequestLog requestLog = new NCSARequestLog(PC_SRV_CONFIG.getString("JETTY_LOGFILES_PATH") + "/jetty-yyyy_mm_dd.request.log");
 		requestLog.setRetainDays(90);
