@@ -1,15 +1,13 @@
 package org.pocketcampus.platform.server.launcher;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.thrift.TProcessor;
@@ -24,65 +22,83 @@ import ch.epfl.tequila.client.service.TequilaService;
 public class PocketCampusServer extends ServerBase {
 	public static final PCConfig CONFIG = new PCConfig();
 
-	private static Map<String, Object> pluginsImpl = new HashMap<String, Object>();
+	private static final Map<String, Object> plugins = new HashMap<String, Object>();
 
 	@Override
-	protected ArrayList<Processor> getServiceProcessors() {
-		ArrayList<Processor> processors = new ArrayList<Processor>();
-		for (String plugin : CONFIG.getString("ENABLED_PLUGINS").split(",")) {
-			boolean skipped = true;
-			String srvr_pref = "org.pocketcampus.plugin." + plugin.toLowerCase() + ".server.";
-			String shrd_pref = "org.pocketcampus.plugin." + plugin.toLowerCase() + ".shared.";
-			try {
-				Class<?> cls_impl = Class.forName(srvr_pref + plugin + "ServiceImpl");
-				Class<?> cls_srvc = Class.forName(shrd_pref + plugin + "Service$Processor");
-				Class<?> cls_ifce = Class.forName(shrd_pref + plugin + "Service$Iface");
-				Constructor<?> con_impl = cls_impl.getConstructor();
-				Object obj_impl = con_impl.newInstance();
-				Constructor<?> con_srvc = cls_srvc.getConstructor(cls_ifce);
-				Object obj_srvc = con_srvc.newInstance(obj_impl);
-				Processor proc = new Processor((TProcessor) obj_srvc, plugin.toLowerCase());
-				if (obj_impl instanceof RawPlugin)
-					proc.setRawProcessor(((RawPlugin) obj_impl).getServlet());
-				processors.add(proc);
-				pluginsImpl.put(plugin.toLowerCase(), obj_impl);
-				skipped = false;
-			} catch (ClassNotFoundException e) {
-			} catch (SecurityException e) {
-			} catch (NoSuchMethodException e) {
-			} catch (IllegalArgumentException e) {
-			} catch (InstantiationException e) {
-			} catch (IllegalAccessException e) {
-			} catch (InvocationTargetException e) {
-			}
-			if (skipped) {
-				System.out.println("Not found: " + plugin + " plugin, skipping ...");
+	protected List<ServiceInfo> getServices() {
+		ArrayList<ServiceInfo> processors = new ArrayList<ServiceInfo>();
+
+		for (String pluginName : CONFIG.getString("ENABLED_PLUGINS").split(",")) {
+			Object pluginService = getPluginService(pluginName);
+			TProcessor thriftProcessor = getThriftProcessor(pluginService, pluginName);
+			HttpServlet rawProcessor = getRawProcessor(pluginService);
+
+			if (thriftProcessor == null) {
+				System.out.println(pluginName + " plugin not found!");
 			} else {
-				System.out.println("Started: " + plugin + " plugin.");
+				processors.add(new ServiceInfo(pluginName.toLowerCase(), thriftProcessor, rawProcessor));
+				plugins.put(pluginName.toLowerCase(), pluginService);
+				System.out.println(pluginName + " plugin started.");
 			}
 		}
 		return processors;
 	}
 
-	/***
-	 * STATIC FUNCTIONS
-	 */
+	private Object getPluginService(final String pluginName) {
+		String serviceName = "org.pocketcampus.plugin." + pluginName.toLowerCase() + ".server." + pluginName + "ServiceImpl";
 
-	public static Object invokeOnPlugin(String pluginName, String methodName, Object arg) throws NoSuchObjectException, SecurityException, NoSuchMethodException,
-			IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		if (!pluginsImpl.containsKey(pluginName.toLowerCase())) {
-			throw new NoSuchObjectException("Plugin not found: " + pluginName);
+		try {
+			return Class.forName(serviceName).getConstructor().newInstance();
+		} catch (Exception _) {
+			return null;
 		}
-		Object obj = pluginsImpl.get(pluginName.toLowerCase());
-		Method m = obj.getClass().getMethod(methodName, arg.getClass());
-		return m.invoke(obj, arg);
 	}
 
-	/*****
+	private TProcessor getThriftProcessor(final Object pluginService, final String pluginName) {
+		if (pluginService == null) {
+			return null;
+		}
+
+		final String sharedPrefix = "org.pocketcampus.plugin." + pluginName.toLowerCase() + ".shared." + pluginName;
+		final String interfaceName = sharedPrefix + "Service$Iface";
+		final String serviceProcessorName = sharedPrefix + "Service$Processor";
+
+		try {
+			final Class<?> interfaceClass = Class.forName(interfaceName);
+
+			return (TProcessor) Class.forName(serviceProcessorName)
+					.getConstructor(interfaceClass)
+					.newInstance(pluginService);
+		} catch (Exception _) {
+			return null;
+		}
+	}
+
+	private HttpServlet getRawProcessor(final Object pluginService) {
+		return pluginService instanceof RawPlugin ? ((RawPlugin) pluginService).getServlet() : null;
+	}
+
+	
+	/** Basic Messenger-like functionality. */
+	public static Object invokeOnPlugin(String pluginName, String methodName, Object arg) 
+			throws NoSuchObjectException, NoSuchMethodException {
+		if (!plugins.containsKey(pluginName.toLowerCase())) {
+			throw new NoSuchObjectException("Plugin not found: " + pluginName);
+		}
+		
+		try {
+			Object plugin = plugins.get(pluginName.toLowerCase());
+			return plugin.getClass().getMethod(methodName, arg.getClass()).invoke(plugin, arg);
+		} catch (Exception _) {
+			throw new NoSuchMethodException("Method not found: " + methodName);
+		}
+	}
+
+	
+	/**
 	 * PUSH NOTIF CRAP
 	 * 
-	 * @author amer
-	 * 
+	 * @author Amer
 	 */
 
 	public static class PushNotifMapReq {
@@ -121,13 +137,8 @@ public class PocketCampusServer extends ServerBase {
 			return false;
 		try {
 			return (Boolean) invokeOnPlugin("pushnotif", "addMapping", new PushNotifMapReq(plugin, userId, os, token));
-		} catch (NoSuchObjectException e) {
-		} catch (SecurityException e) {
-		} catch (IllegalArgumentException e) {
-		} catch (NoSuchMethodException e) {
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
-		}
+		} catch (Exception e) {
+		} 
 		return false;
 	}
 
@@ -136,12 +147,7 @@ public class PocketCampusServer extends ServerBase {
 			return false;
 		try {
 			return (Boolean) invokeOnPlugin("pushnotif", "sendMessage", new PushNotifSendReq(plugin, userIds, msg));
-		} catch (NoSuchObjectException e) {
-		} catch (SecurityException e) {
-		} catch (IllegalArgumentException e) {
-		} catch (NoSuchMethodException e) {
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
+		} catch (Exception e) {
 		}
 		return false;
 	}
@@ -152,21 +158,15 @@ public class PocketCampusServer extends ServerBase {
 		try {
 			PocketCampusServer.invokeOnPlugin(plugin, "appendToFailedDevicesList", failedUsers);
 			return true;
-		} catch (NoSuchObjectException e) {
-		} catch (SecurityException e) {
-		} catch (IllegalArgumentException e) {
-		} catch (NoSuchMethodException e) {
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
+		} catch (Exception e) {
 		}
 		return false;
 	}
 
-	/*****
+	/**
 	 * TEQUILA AUTHENTICATION CRAP
 	 * 
-	 * @author amer
-	 * 
+	 * @author Amer
 	 */
 
 	public static String authGetTequilaToken(String plugin) {
@@ -188,8 +188,7 @@ public class PocketCampusServer extends ServerBase {
 		}
 	}
 
-	public static TequilaPrincipal authGetTequilaPrincipal(String token) throws SecurityException {
-
+	public static TequilaPrincipal authGetTequilaPrincipal(String token) {
 		ClientConfig config = new ClientConfig();
 		config.setHost("tequila.epfl.ch");
 
@@ -199,7 +198,6 @@ public class PocketCampusServer extends ServerBase {
 			e.printStackTrace();
 			return null;
 		}
-
 	}
 
 	public static String authGetUserGaspar() {
@@ -210,12 +208,7 @@ public class PocketCampusServer extends ServerBase {
 		String pcSessionId = request.getHeader(PCConstants.HTTP_HEADER_AUTH_PCSESSID);
 		try {
 			return (String) invokeOnPlugin("authentication", "getGasparFromSession", pcSessionId);
-		} catch (NoSuchObjectException e) {
-		} catch (SecurityException e) {
-		} catch (NoSuchMethodException e) {
-		} catch (IllegalArgumentException e) {
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
+		} catch (Exception e) {
 		}
 		return null;
 	}
@@ -236,12 +229,7 @@ public class PocketCampusServer extends ServerBase {
 			AuthUserDetailsReq dReq = new AuthUserDetailsReq(pcSessionId, attr);
 			AuthUserDetailsResp dResp = (AuthUserDetailsResp) invokeOnPlugin("authentication", "getUserFieldsFromSession", dReq);
 			return dResp.fieldValues;
-		} catch (NoSuchObjectException e) {
-		} catch (SecurityException e) {
-		} catch (IllegalArgumentException e) {
-		} catch (NoSuchMethodException e) {
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
+		} catch (Exception e) {
 		}
 		return null;
 	}
@@ -252,12 +240,7 @@ public class PocketCampusServer extends ServerBase {
 			return null;
 		try {
 			return (String) invokeOnPlugin("authentication", func, pcSessionId);
-		} catch (NoSuchObjectException e) {
-		} catch (SecurityException e) {
-		} catch (IllegalArgumentException e) {
-		} catch (NoSuchMethodException e) {
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
+		} catch (Exception e) {
 		}
 		return null;
 	}
@@ -279,5 +262,4 @@ public class PocketCampusServer extends ServerBase {
 			this.fieldValues = fieldValues;
 		}
 	}
-
 }
