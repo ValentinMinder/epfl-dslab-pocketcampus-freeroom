@@ -440,6 +440,8 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			if(req.isSetResultSetCookie())
 				pag.cookie = new ASN1OctetString(req.getResultSetCookie());
 			String q = StringUtils.removeAccents(req.getQuery()).replaceAll("[\\s]+", " ").trim();
+			if(q.length() == 0) // zero-length (and all-spaces) queries should have zero reply. 
+				q = "PocketCampus";
 			String [] query = q.split(" ");
 			for(int i = 0; i < query.length; i++)
 				query[i] = "(|(cn=" + query[i] + "*)(cn=* " + query[i] + "*)(ou=" + query[i] + "))";
