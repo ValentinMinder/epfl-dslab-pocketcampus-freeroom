@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.moodle.android;
 import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
 
 import java.io.File;
+import java.util.Locale;
 
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.pocketcampus.android.platform.sdk.cache.RequestCache;
@@ -15,6 +16,8 @@ import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.android.req.CoursesListRequest;
 import org.pocketcampus.plugin.moodle.android.req.FetchMoodleResourceRequest;
 import org.pocketcampus.plugin.moodle.android.req.SectionsListRequest;
+import org.pocketcampus.plugin.moodle.shared.MoodleCourseSectionsRequest2;
+import org.pocketcampus.plugin.moodle.shared.MoodleCoursesRequest2;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Client;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Iface;
 
@@ -145,11 +148,13 @@ public class MoodleController extends PluginController implements IMoodleControl
 	}
 
 	public void refreshCourseList(IMoodleView caller, boolean useCache) {
-		new CoursesListRequest(caller).setBypassCache(!useCache).start(this, mClient, null);
+		MoodleCoursesRequest2 req = new MoodleCoursesRequest2(Locale.getDefault().getLanguage());
+		new CoursesListRequest(caller).setBypassCache(!useCache).start(this, mClient, req);
 	}
 
-	public void refreshCourseSections(IMoodleView caller, String courseId, boolean useCache) {
-		new SectionsListRequest(caller).setBypassCache(!useCache).start(this, mClient, courseId);
+	public void refreshCourseSections(IMoodleView caller, int courseId, boolean useCache) {
+		MoodleCourseSectionsRequest2 req = new MoodleCourseSectionsRequest2(Locale.getDefault().getLanguage(), courseId);
+		new SectionsListRequest(caller).setBypassCache(!useCache).start(this, mClient, req);
 	}
 	
 	public void fetchFileResource(IMoodleView caller, String filePath) {

@@ -9,7 +9,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.moodle.R;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
-import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
+import org.pocketcampus.plugin.moodle.shared.MoodleCourse2;
 
 import android.content.Context;
 import android.content.Intent;
@@ -63,7 +63,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-		mLayout.hideTitle();
+		//mLayout.hideTitle();
 
 		setActionBarTitle(getString(R.string.moodle_plugin_title));
 	}
@@ -78,7 +78,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	@Override
 	protected void handleIntent(Intent aIntent) {
 		
-		if(MoodleController.sessionExists(this))
+		if(MoodleController.sessionExists(this)) // I think this is no longer necessary (well, this saves the one call that the auth plugin does to check if the session is valid)
 			mController.refreshCourseList(this, false);
 		else
 			MoodleController.pingAuthPlugin(this);
@@ -111,7 +111,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 
 	@Override
 	public void coursesListUpdated() {
-		List<MoodleCourse> ltb = mModel.getCourses();
+		List<MoodleCourse2> ltb = mModel.getCourses();
 		if(ltb == null)
 			return;
 		
@@ -119,8 +119,8 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		// add title
 		einfos.add(new CourseInfo(getResources().getString(R.string.moodle_courses_view_title), null, true));
 		// add courses
-		for(MoodleCourse i : ltb) {
-			einfos.add(new CourseInfo(i.getITitle(), i.getIId() + "", false));
+		for(MoodleCourse2 i : ltb) {
+			einfos.add(new CourseInfo(i.getName(), i.getCourseId() + "", false));
 		}
 		ListView lv = new ListView(this);
 		lv.setAdapter(new CoursesListAdapter(this, R.layout.moodle_course_record, einfos));
@@ -131,8 +131,8 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				CourseInfo courseInfo = ((CourseInfo) arg0.getItemAtPosition(arg2));
-				Intent i = new Intent(MoodleMainView.this, MoodleCurrentWeekView.class);
-				i.putExtra("courseId", courseInfo.value);
+				Intent i = new Intent(MoodleMainView.this, MoodleCourseView.class);
+				i.putExtra("courseId", Integer.parseInt(courseInfo.value));
 				i.putExtra("courseTitle", courseInfo.title);
 				MoodleMainView.this.startActivity(i);
 				trackEvent("ViewCourse", courseInfo.value + "-" + courseInfo.title);

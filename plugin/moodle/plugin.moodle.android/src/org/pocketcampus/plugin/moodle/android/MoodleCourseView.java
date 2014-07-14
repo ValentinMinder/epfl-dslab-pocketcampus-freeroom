@@ -31,18 +31,12 @@ import android.widget.Toast;
 import com.markupartist.android.widget.ActionBar.Action;
 
 /**
- * MoodleMainView - Main view that shows Moodle courses.
- * 
- * This is the main view in the Moodle Plugin.
- * It checks if the user is logged in, if not it pings
- * the Authentication Plugin.
- * When it gets back a valid SessionId it fetches the
- * user's Moodle data.
+ * MoodleCourseView - Shows a particular course's contents.
  * 
  * @author Amer <amer.chamseddine@epfl.ch>
  * 
  */
-public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
+public class MoodleCourseView extends PluginView implements IMoodleView {
 
 	private MoodleController mController;
 	private MoodleModel mModel;
@@ -50,7 +44,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 	private StandardTitledLayout mLayout;
 	private ListView fillerView;
 	
-	private String courseId;
+	private int courseId;
 	private String courseTitle;
 
 	private int current;
@@ -91,7 +85,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 		if(aIntent != null) {
 			Bundle aExtras = aIntent.getExtras();
 			if(aExtras != null && aExtras.containsKey("courseId")) {
-				courseId = aExtras.getString("courseId");
+				courseId = aExtras.getInt("courseId");
 				courseTitle = aExtras.getString("courseTitle");
 			}
 		}
@@ -131,7 +125,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 
 	@Override
 	public void sectionsListUpdated() {
-		List<MoodleSection> lms = mModel.getSections();
+		List<MoodleSection> lms = null;// TODO mModel.getSections();
 		if(lms == null)
 			return;
 		
@@ -183,11 +177,11 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 				trackEvent("DownloadAndOpenFile", resourceInfo.title);
 				File resourceFile = new File(MoodleController.getLocalPath(resourceInfo.value, false));
 				if(resourceFile.exists()) {
-					openFile(MoodleCurrentWeekView.this, resourceFile);
+					openFile(MoodleCourseView.this, resourceFile);
 				} else {
 					/*Toast.makeText(getApplicationContext(), getResources().getString(
 							R.string.moodle_file_downloading), Toast.LENGTH_SHORT).show();*/
-					mController.fetchFileResource(MoodleCurrentWeekView.this, resourceInfo.value);
+					mController.fetchFileResource(MoodleCourseView.this, resourceInfo.value);
 				}
 			}
 		});
@@ -297,7 +291,6 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 	
 		@Override
 		public View getView(int position, View v, ViewGroup parent) {
-			// TODO
 			// this is still not SUPER efficient
 			// the efficient way to do it is here
 			// http://jsharkey.org/blog/2008/08/18/separating-lists-with-headers-in-android-09/
@@ -375,7 +368,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 				sectionsListUpdated();
 				return;
 			}
-			List<MoodleSection> lms = mModel.getSections();
+			List<MoodleSection> lms = null;// TODO mModel.getSections();
 			if(lms == null)
 				return;
 			for(int i = 1; i < lms.size(); i++) {
