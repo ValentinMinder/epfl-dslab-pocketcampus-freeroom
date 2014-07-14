@@ -344,6 +344,12 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			if (req.isSetResultSetCookie())
 				pag.cookie = new ASN1OctetString(req.getResultSetCookie());
 			String q = StringUtils.removeAccents(req.getQuery()).replaceAll("[\\s]+", " ").trim();
+
+            if(q.length()==0){
+            	DirectoryResponse resp=new DirectoryResponse(200);
+            	resp.setResults(new ArrayList<Person>());
+            	return resp;
+            }
 			String[] query = q.split(" ");
 			StringBuilder q2Builder = new StringBuilder();
 			for (int i = 0; i < query.length; i++)

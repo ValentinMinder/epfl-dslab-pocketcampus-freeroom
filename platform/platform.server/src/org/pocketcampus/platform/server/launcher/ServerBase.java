@@ -81,9 +81,8 @@ public abstract class ServerBase {
 
 	private Handler getServicesHandler() {
 		ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-		handler.setContextPath("/v3r1");
 		handler.addLocaleEncoding("en_US", "UTF-8");
-		handler.addServlet(getPingServlet(), "/ping");
+		handler.addServlet(getPingServlet(), "/v3r1/ping"); // or use "/" to catch all unhandled URLs
 		addProcessorServlets(handler);
 		return handler;
 	}
@@ -105,11 +104,11 @@ public abstract class ServerBase {
 		for (ServiceInfo service : getServices()) {
 			TrackingThriftServlet binServlet = new TrackingThriftServlet(service.thriftProcessor, binProtocolFactory);
 
-			context.addServlet(new ServletHolder(binServlet), "/" + service.name);
+			context.addServlet(new ServletHolder(binServlet), "/v3r1/" + service.name);
 
 			// Special case for plugins that need a "raw" (non-Thrift) servlet
 			if (service.rawProcessor != null) {
-				context.addServlet(new ServletHolder(service.rawProcessor), "/raw-" + service.name);
+				context.addServlet(new ServletHolder(service.rawProcessor), "/v3r1/raw-" + service.name);
 			}
 		}
 	}
