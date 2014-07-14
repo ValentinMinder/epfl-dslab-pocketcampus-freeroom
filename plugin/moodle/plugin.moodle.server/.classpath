@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.moodle.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.shared"/>
@@ -13,5 +12,6 @@
 	<classpathentry kind="lib" path="/platform.shared/lib/servlet-api-3.0.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/commons-io-2.0.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.authentication.server"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
