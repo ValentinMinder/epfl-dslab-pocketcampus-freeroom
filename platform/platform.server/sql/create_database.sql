@@ -1,3 +1,1 @@
-
-CREATE DATABASE  `pocketcampus` ;
-
+CREATE DATABASE `pocketcampus`;
