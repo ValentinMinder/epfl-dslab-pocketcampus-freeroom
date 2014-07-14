@@ -26,6 +26,7 @@ $libs_to_export = array(
 		"joda-time-2.3.jar",
                 "libthrift-0.7.0.jar",
 		"kxml2-2.3.0.jar",
+                "tequila-client.jar",
 		"mail.jar", "mysql-connector-java-5.1.15-bin.jar", 
 		"servlet-api-3.0.jar",
 		"unboundid-ldapsdk-se.jar",
