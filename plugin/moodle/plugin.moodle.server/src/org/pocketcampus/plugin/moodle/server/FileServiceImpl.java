@@ -8,9 +8,9 @@ import java.net.URL;
 import javax.servlet.http.*;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.pocketcampus.platform.launcher.server.PocketCampusServer;
 import org.pocketcampus.platform.sdk.shared.utils.PostDataBuilder;
+import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
 import org.pocketcampus.plugin.moodle.shared.Constants;
 
 /**
@@ -57,7 +57,7 @@ public final class FileServiceImpl implements FileService {
 				return;
 			}
 
-			filePath = StringUtils.substringBetween(filePath, FILE_NAME_LEFT_GUARD, FILE_NAME_RIGHT_GUARD);
+			filePath = StringUtils.getSubstringBetween(filePath, FILE_NAME_LEFT_GUARD, FILE_NAME_RIGHT_GUARD);
 			filePath = DOWNLOAD_URL_PREFIX + filePath;
 
 			final HttpURLConnection conn = (HttpURLConnection) new URL(filePath).openConnection();

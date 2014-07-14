@@ -45,13 +45,12 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 	@SuppressWarnings("serial")
 	@Override
 	public HttpServlet getServlet() {
-		return oldService.getServlet();
-//		return new HttpServlet() {
-//			@Override
-//			protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-//				fileService.download(request, response);
-//			}
-//		};
+		return new HttpServlet() {
+			@Override
+			protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+				fileService.download(request, response);
+			}
+		};
 	}
 
 	// OLD STUFF - DO NOT TOUCH
