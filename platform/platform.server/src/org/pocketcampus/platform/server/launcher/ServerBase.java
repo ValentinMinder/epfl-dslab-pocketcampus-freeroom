@@ -49,13 +49,12 @@ public abstract class ServerBase {
         connector0.setRequestHeaderSize(8192);
         conn_list.add(connector0);
 
-        SelectChannelConnector connector1 = new SelectChannelConnector();
-        connector1.setHost("127.0.0.1");
-        connector1.setPort(7070);
-        connector1.setThreadPool(new org.eclipse.jetty.util.thread.QueuedThreadPool(20));
-        connector1.setName("admin");
-        conn_list.add(connector1);
-
+//        SelectChannelConnector connector1 = new SelectChannelConnector();
+//        connector1.setHost("127.0.0.1");
+//        connector1.setPort(7070);
+//        connector1.setThreadPool(new org.eclipse.jetty.util.thread.QueuedThreadPool(20));
+//        connector1.setName("admin");
+//        conn_list.add(connector1);
         
         if(PocketCampusServer.CONFIG.getInteger("SSL_LISTEN_ON_PORT") != 0) {
 	        SslSelectChannelConnector ssl_connector = new SslSelectChannelConnector();
