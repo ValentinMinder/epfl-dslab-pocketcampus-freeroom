@@ -67,6 +67,7 @@ import org.pocketcampus.plugin.events.shared.ExchangeReply;
 import org.pocketcampus.plugin.events.shared.ExchangeRequest;
 import org.pocketcampus.plugin.events.shared.SendEmailReply;
 import org.pocketcampus.plugin.events.shared.SendEmailRequest;
+import org.pocketcampus.plugin.pushnotif.server.PushNotifServiceImpl;
 
 /**
  * 
@@ -517,7 +518,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 
 	private void registerForPush(TBase<?, ?> req, List<String> tokens) {
 		for (String t : tokens)
-			PocketCampusServer.pushNotifMap("events", t);
+			PushNotifServiceImpl.pushNotifMap("events", t);
 	}
 
 	private synchronized void importFromMemento(TBase<?, ?> req) {

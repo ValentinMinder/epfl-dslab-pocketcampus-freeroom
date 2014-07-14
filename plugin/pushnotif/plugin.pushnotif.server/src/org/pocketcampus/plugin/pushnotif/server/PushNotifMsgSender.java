@@ -130,7 +130,7 @@ public class PushNotifMsgSender {
 				
 				
 				if (users.size() > 0)
-					PocketCampusServer.pushNotifNotifyFailedUsers(message.getData().get("pluginName"), new ArrayList<String>(users));
+					PushNotifServiceImpl.pushNotifNotifyFailedUsers(message.getData().get("pluginName"), new ArrayList<String>(users));
 				
 			}
 		});
@@ -206,7 +206,7 @@ public class PushNotifMsgSender {
 				
 
 				if (users.size() > 0)
-					PocketCampusServer.pushNotifNotifyFailedUsers(msg.get("pluginName"), new ArrayList<String>(users));
+					PushNotifServiceImpl.pushNotifNotifyFailedUsers(msg.get("pluginName"), new ArrayList<String>(users));
 				
 				
 			}

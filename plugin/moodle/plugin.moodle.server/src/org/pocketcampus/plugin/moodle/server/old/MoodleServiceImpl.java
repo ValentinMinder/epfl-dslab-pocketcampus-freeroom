@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.thrift.TException;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
+import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
 import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.NodeJson.ItemJson;
 import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.SectionNode.ModuleNode;
 import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.SectionNode.ModuleNode.ModuleContent;
@@ -232,7 +233,7 @@ public class MoodleServiceImpl {
 	}
 
 	public CoursesListReply getCoursesListAPI(String dummy) throws TException {
-		String sciper = PocketCampusServer.authGetUserSciper();
+		String sciper = AuthenticationServiceImpl.authGetUserSciper();
 		if(sciper == null){
 			return new CoursesListReply(407);
 		}
@@ -377,7 +378,7 @@ public class MoodleServiceImpl {
 	public SectionsListReply getCourseSectionsAPI(String courseId) throws TException {
 		if(courseId == null)
 			return new SectionsListReply(405);
-		String gaspar = PocketCampusServer.authGetUserGaspar();
+		String gaspar = AuthenticationServiceImpl.authGetUserGaspar();
 		if(gaspar == null){
 			// TODO check if user is enrolled in this course
 			return new SectionsListReply(407);

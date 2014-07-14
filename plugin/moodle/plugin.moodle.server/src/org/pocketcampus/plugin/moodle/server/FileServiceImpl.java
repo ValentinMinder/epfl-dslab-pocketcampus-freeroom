@@ -9,8 +9,8 @@ import javax.servlet.http.*;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.platform.shared.utils.PostDataBuilder;
+import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
 import org.pocketcampus.plugin.moodle.shared.Constants;
 
 /**
@@ -43,7 +43,7 @@ public final class FileServiceImpl implements FileService {
 	@Override
 	public void download(final HttpServletRequest request, final HttpServletResponse response) {
 		try {
-			final String gaspar = PocketCampusServer.authGetUserGasparFromReq(request);
+			final String gaspar = AuthenticationServiceImpl.authGetUserGasparFromReq(request);
 			if (gaspar == null) {
 				response.setStatus(HttpURLConnection.HTTP_PROXY_AUTH);
 				return;

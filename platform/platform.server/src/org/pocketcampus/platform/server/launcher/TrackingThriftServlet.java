@@ -90,7 +90,7 @@ public class TrackingThriftServlet extends HttpServlet {
 			TProtocol outProtocol = outProtocolFactory.getProtocol(outTransport);
 
 			// log the request headers
-			// Who on Earth thought using Enumeration<E> was a good idea? Seriously, Jetty?
+			// getHeaderNames returns an instance of the horribly obsolete interface Enumeration<E>...
 			Map<String, String> headers = new HashMap<String, String>();
 			Enumeration<String> headerNames = request.getHeaderNames();
 			while (headerNames.hasMoreElements()) {

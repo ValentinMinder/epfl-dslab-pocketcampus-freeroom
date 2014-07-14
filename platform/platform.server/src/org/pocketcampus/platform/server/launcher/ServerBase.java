@@ -42,7 +42,7 @@ public abstract class ServerBase {
 		server.start();
 		server.join();
 	}
-	
+
 	protected abstract List<ServiceInfo> getServices();
 
 	private Connector[] getConnectors() {
@@ -56,12 +56,12 @@ public abstract class ServerBase {
 		conns.add(connector);
 
 		// Debug connector on localhost
-		 SelectChannelConnector debugConnector = new SelectChannelConnector();
-		 debugConnector.setHost("127.0.0.1");
-		 debugConnector.setPort(7070);
-		 debugConnector.setThreadPool(new org.eclipse.jetty.util.thread.QueuedThreadPool(20));
-		 debugConnector.setName("admin");
-		 conns.add(debugConnector);
+//		SelectChannelConnector debugConnector = new SelectChannelConnector();
+//		debugConnector.setHost("127.0.0.1");
+//		debugConnector.setPort(7070);
+//		debugConnector.setThreadPool(new org.eclipse.jetty.util.thread.QueuedThreadPool(20));
+//		debugConnector.setName("admin");
+//		conns.add(debugConnector);
 
 		// Secure (HTTPS) connector
 		if (PocketCampusServer.CONFIG.getInteger("SSL_LISTEN_ON_PORT") != 0) {
@@ -101,7 +101,7 @@ public abstract class ServerBase {
 
 	private void addProcessorServlets(ServletContextHandler context) {
 		TProtocolFactory binProtocolFactory = new TBinaryProtocol.Factory();
-		
+
 		for (ServiceInfo service : getServices()) {
 			TrackingThriftServlet binServlet = new TrackingThriftServlet(service.thriftProcessor, binProtocolFactory);
 

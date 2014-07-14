@@ -9,8 +9,7 @@ import java.util.Set;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-import org.pocketcampus.platform.server.launcher.PocketCampusServer.PushNotifMapReq;
-import org.pocketcampus.platform.server.launcher.PocketCampusServer.PushNotifSendReq;
+import org.pocketcampus.platform.shared.PCConstants;
 import org.pocketcampus.platform.shared.utils.ListUtils;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifService;
 
@@ -60,7 +59,7 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		users.removeAll(androidTokens.values());
 		users.removeAll(iosTokens.values());
 		if(users.size() > 0) // we don't have a token for these users, sorry
-			PocketCampusServer.pushNotifNotifyFailedUsers(pluginName, new ArrayList<String>(users));
+			pushNotifNotifyFailedUsers(pluginName, new ArrayList<String>(users));
 		Map<String, String> pluginMessage = new HashMap<String, String>(msg);
 		// Override pluginName 
 		pluginMessage.put("pluginName", pluginName);
@@ -82,4 +81,66 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		return (dataStore.deletePushToken(os, token) ? 200 : 500);
 	}
 
+
+	public static class PushNotifMapReq {
+		public PushNotifMapReq(String pluginName, String userId, String deviceOs, String pushToken) {
+			this.pluginName = pluginName;
+			this.userId = userId;
+			this.deviceOs = deviceOs;
+			this.pushToken = pushToken;
+		}
+
+		public String pluginName;
+		public String userId;
+		public String deviceOs;
+		public String pushToken;
+	}
+
+	public static class PushNotifSendReq {
+		public PushNotifSendReq(String pluginName, List<String> userIds, Map<String, String> messageMap) {
+			this.pluginName = pluginName;
+			this.userIds = userIds;
+			this.messageMap = messageMap;
+		}
+
+		public String pluginName;
+		public List<String> userIds;
+		public Map<String, String> messageMap;
+	}
+
+	public static boolean pushNotifMap(String plugin, String userId) {
+		Map<String, String> headers = PocketCampusServer.getRequestHeaders();
+		if (headers == null)
+			return false;
+		String os = headers.get(PCConstants.HTTP_HEADER_PUSHNOTIF_OS);
+		String token = headers.get(PCConstants.HTTP_HEADER_PUSHNOTIF_TOKEN);
+		if (os == null || token == null || plugin == null || userId == null)
+			return false;
+		try {
+			return (Boolean) PocketCampusServer.invokeOnPlugin("pushnotif", "addMapping", new PushNotifMapReq(plugin, userId, os, token));
+		} catch (Exception e) {
+		} 
+		return false;
+	}
+
+	public static boolean pushNotifSend(String plugin, List<String> userIds, Map<String, String> msg) {
+		if (msg == null || plugin == null || userIds == null)
+			return false;
+		try {
+			return (Boolean) PocketCampusServer.invokeOnPlugin("pushnotif", "sendMessage", new PushNotifSendReq(plugin, userIds, msg));
+		} catch (Exception e) {
+		}
+		return false;
+	}
+
+	public static boolean pushNotifNotifyFailedUsers(String plugin, List<String> failedUsers) {
+		if (plugin == null || failedUsers == null)
+			return false;
+		try {
+			PocketCampusServer.invokeOnPlugin(plugin, "appendToFailedDevicesList", failedUsers);
+			return true;
+		} catch (Exception e) {
+		}
+		return false;
+	}
 }

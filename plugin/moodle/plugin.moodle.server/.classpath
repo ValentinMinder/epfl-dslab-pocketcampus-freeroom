@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="/platform.shared/lib/jetty-util-8.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/servlet-api-3.0.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/commons-io-2.0.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.authentication.server"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

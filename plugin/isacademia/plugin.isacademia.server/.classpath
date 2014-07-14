@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.7.0.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/httpclient-4.1.2.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/httpcore-4.1.2.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.authentication.server"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
