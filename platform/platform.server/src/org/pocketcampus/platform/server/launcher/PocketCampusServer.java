@@ -42,12 +42,12 @@ public class PocketCampusServer extends ServerBase {
 	/** Gets the available services. */
 	@Override
 	protected List<ServiceInfo> getServices() {
-		ArrayList<ServiceInfo> processors = new ArrayList<ServiceInfo>();
+		final List<ServiceInfo> processors = new ArrayList<ServiceInfo>();
 
-		for (String pluginName : CONFIG.getString("ENABLED_PLUGINS").split(",")) {
-			Object pluginService = getPluginService(pluginName);
-			TProcessor thriftProcessor = getThriftProcessor(pluginService, pluginName);
-			HttpServlet rawProcessor = getRawProcessor(pluginService);
+		for (final String pluginName : CONFIG.getString("ENABLED_PLUGINS").split(",")) {
+			final Object pluginService = getPluginService(pluginName);
+			final TProcessor thriftProcessor = getThriftProcessor(pluginService, pluginName);
+			final HttpServlet rawProcessor = getRawProcessor(pluginService);
 
 			if (thriftProcessor == null) {
 				System.out.println(pluginName + " plugin not found!");
