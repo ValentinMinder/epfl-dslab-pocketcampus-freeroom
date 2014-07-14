@@ -354,14 +354,14 @@ public class CoursesListReply implements org.apache.thrift.TBase<CoursesListRepl
         case 1: // I_COURSES
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-              this.iCourses = new ArrayList<MoodleCourse>(_list0.size);
-              for (int _i1 = 0; _i1 < _list0.size; ++_i1)
+              org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
+              this.iCourses = new ArrayList<MoodleCourse>(_list4.size);
+              for (int _i5 = 0; _i5 < _list4.size; ++_i5)
               {
-                MoodleCourse _elem2; // required
-                _elem2 = new MoodleCourse();
-                _elem2.read(iprot);
-                this.iCourses.add(_elem2);
+                MoodleCourse _elem6; // required
+                _elem6 = new MoodleCourse();
+                _elem6.read(iprot);
+                this.iCourses.add(_elem6);
               }
               iprot.readListEnd();
             }
@@ -400,9 +400,9 @@ public class CoursesListReply implements org.apache.thrift.TBase<CoursesListRepl
         oprot.writeFieldBegin(I_COURSES_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.iCourses.size()));
-          for (MoodleCourse _iter3 : this.iCourses)
+          for (MoodleCourse _iter7 : this.iCourses)
           {
-            _iter3.write(oprot);
+            _iter7.write(oprot);
           }
           oprot.writeListEnd();
         }

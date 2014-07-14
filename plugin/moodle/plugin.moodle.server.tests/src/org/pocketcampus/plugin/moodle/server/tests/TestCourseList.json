@@ -1,0 +1,52 @@
+[
+  {
+    "N.B.": "This file has been obtained from Moodle, formatted, and modified to include edge cases.",
+
+    "id":14174,
+    "shortname":"CS-251",
+    "fullname":"Theory of computation",
+    "enrolledusercount":166,
+    "idnumber":"M1704192615_G1378362175_G1378365806_P200602_P217799_P217986_P237044",
+    "visible":1
+  },
+  {
+    "id":14153,
+    "shortname":"ArchOrd2",
+    "fullname":"Architecture des ordinateurs II",
+    "enrolledusercount":47,
+    "idnumber":"",
+    "visible":0
+  },
+  {
+    "id":14084,
+    "shortname":"ArchOrd1",
+    "fullname":"Architecture des ordinateurs I",
+    "enrolledusercount":152,
+    "idnumber":"M1771839_G1378362148_G1378365780_P101954_P183817_P196536_P206309_P221493",
+    "visible":1
+  },
+  {
+    "id":13768,
+    "shortname":"CS-250",
+    "fullname":"Algorithms",
+    "enrolledusercount":290,
+    "idnumber":"M2258712_G736311150_G1378362148_G1378365780_G1378438904_G1650773612_G1654125707_P200246_P200365_P203131_P210783_P213225_P217986_P226032_P226149",
+    "visible":1
+  },
+  {
+    "id":2671,
+    "shortname":"CS-206",
+    "fullname":"Concurrence",
+    "enrolledusercount":174,
+    "idnumber":"M1772852_G1378362175_G1378365806_P106377_P179262_P194219_P211297_P221727",
+    "visible":1
+  },
+  {
+    "id":6731,
+    "shortname":"ProgOrientSyst",
+    "fullname":"Programmation orientée système",
+    "enrolledusercount":199,
+    "idnumber":"M71645784_G736309037_G736312585_P112547",
+    "visible":1
+  }
+]
