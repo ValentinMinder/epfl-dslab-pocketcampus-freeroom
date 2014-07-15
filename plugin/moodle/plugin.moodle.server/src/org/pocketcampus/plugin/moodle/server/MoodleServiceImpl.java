@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.moodle.server;
 
+import java.io.IOException;
+
 import javax.servlet.http.*;
 
 import org.apache.thrift.TException;
@@ -46,7 +48,7 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 	public HttpServlet getServlet() {
 		return new HttpServlet() {
 			@Override
-			protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+			protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 				fileService.download(request, response);
 			}
 		};

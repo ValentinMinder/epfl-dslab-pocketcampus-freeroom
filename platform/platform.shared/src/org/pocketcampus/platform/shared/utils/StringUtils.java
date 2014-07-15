@@ -35,7 +35,8 @@ public class StringUtils {
 		return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
 	}
 
-	/** Gets the substring between the specified guards. */
+	/** Gets the substring between the specified guards.
+	 *  Unlike the Apache Commons version, this doesn't return null if it can't find 'after'. */
 	public static String getSubstringBetween(String orig, String before, String after) {
 		int b = orig.indexOf(before);
 		if (b != -1) {
