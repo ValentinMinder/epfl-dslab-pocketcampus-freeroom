@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.moodle.server;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -24,7 +23,7 @@ public final class FileServiceImpl implements FileService {
 	// Guards between the file name in the link we receive
 	private static final String FILE_NAME_LEFT_GUARD = "pluginfile.php";
 	private static final String FILE_NAME_RIGHT_GUARD = "?";
-	
+
 	// Prefix for the download URL of a file, using Moodle's web service.
 	private static final String DOWNLOAD_URL_PREFIX = "http://moodle.epfl.ch/webservice/pluginfile.php";
 
@@ -41,33 +40,34 @@ public final class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public void download(final HttpServletRequest request, final HttpServletResponse response) {
+	public void download(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+		final String gaspar = PocketCampusServer.authGetUserGasparFromReq(request);
+		if (gaspar == null) {
+			response.setStatus(HttpURLConnection.HTTP_PROXY_AUTH);
+			return;
+		}
+
+		final String action = request.getParameter(Constants.MOODLE_RAW_ACTION_KEY);
+		String filePath = request.getParameter(Constants.MOODLE_RAW_FILE_PATH);
+
+		if (!Constants.MOODLE_RAW_ACTION_DOWNLOAD_FILE.equals(action) || filePath == null) {
+			response.setStatus(HttpURLConnection.HTTP_BAD_METHOD);
+			return;
+		}
+
+		filePath = StringUtils.getSubstringBetween(filePath, FILE_NAME_LEFT_GUARD, FILE_NAME_RIGHT_GUARD);
+		filePath = DOWNLOAD_URL_PREFIX + filePath;
+		
+		HttpURLConnection conn = null;
 		try {
-			final String gaspar = PocketCampusServer.authGetUserGasparFromReq(request);
-			if (gaspar == null) {
-				response.setStatus(HttpURLConnection.HTTP_PROXY_AUTH);
-				return;
-			}
-
-			final String action = request.getParameter(Constants.MOODLE_RAW_ACTION_KEY);
-			String filePath = request.getParameter(Constants.MOODLE_RAW_FILE_PATH);
-
-			if (!Constants.MOODLE_RAW_ACTION_DOWNLOAD_FILE.equals(action) || filePath == null) {
-				response.setStatus(HttpURLConnection.HTTP_BAD_METHOD);
-				return;
-			}
-
-			filePath = StringUtils.getSubstringBetween(filePath, FILE_NAME_LEFT_GUARD, FILE_NAME_RIGHT_GUARD);
-			filePath = DOWNLOAD_URL_PREFIX + filePath;
-
-			final HttpURLConnection conn = (HttpURLConnection) new URL(filePath).openConnection();
+			conn = (HttpURLConnection) new URL(filePath).openConnection();
 			conn.setDoOutput(true);
 
 			final byte[] bytes = new PostDataBuilder()
 					.addParam(TOKEN_KEY, token)
 					.toBytes();
 			conn.getOutputStream().write(bytes);
-			
+
 			conn.connect();
 
 			response.setContentType(conn.getContentType());
@@ -75,25 +75,11 @@ public final class FileServiceImpl implements FileService {
 			// "a means for the origin server to suggest a default filename if the user requests that the content is saved to a file"
 			response.addHeader(HTTP_CONTENT_DISPOSITION, conn.getHeaderField(HTTP_CONTENT_DISPOSITION));
 
-			InputStream in = null;
-			OutputStream out = null;
-			try {
-				in = conn.getInputStream();
-				out = response.getOutputStream();
-
-				IOUtils.copy(in, out);
-			} finally {
-				if (in != null) {
-					in.close();
-				}
-				if (out != null) {
-					out.close();
-				}
+			IOUtils.copy(conn.getInputStream(), response.getOutputStream());
+		} finally {
+			if (conn != null) {
+				conn.disconnect();
 			}
-
-		} catch (Exception _) {
-			// This is ugly, but it shouldn't ever be triggered anyway
-			response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
 		}
 	}
 }

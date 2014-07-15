@@ -149,6 +149,7 @@ public class StringUtils {
 	}
 	
 
+    /** Unlike the Apache Commons version, this doesn't return null if it can't find 'after'. */
 	public static String getSubstringBetween(String orig, String before, String after) {
 		int b = orig.indexOf(before);
 		if(b != -1) {
