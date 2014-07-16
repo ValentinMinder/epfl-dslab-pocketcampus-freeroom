@@ -67,6 +67,8 @@ struct MoodleFile2 {
     1: required string name;
     // Download URL (use the PocketCampus moodle proxy for it)
     2: required string url;
+    // Icon URL (easy for user to see the file type)
+    3: optional string icon;
 }
 
 struct MoodleFolder2 {
