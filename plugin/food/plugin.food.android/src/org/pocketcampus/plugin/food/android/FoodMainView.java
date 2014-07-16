@@ -413,7 +413,10 @@ public class FoodMainView extends PluginView implements IFoodView {
 		if(mModel.getMeals().size() == 0) {
 			displayingList = false;
 			StandardLayout sl = new StandardLayout(this);
-			sl.setText(getString(R.string.food_no_menus));
+			DateFormat dateFormat = new SimpleDateFormat("EEE dd", getResources().getConfiguration().locale);
+			String t = (foodTime == MealTime.DINNER ? getString(R.string.food_string_no_evening_menus) : getString(R.string.food_string_no_lunch_menus));
+			String d = (dateFormat.format(new Date(foodDay)));
+			sl.setText(String.format(t, d));
 			setContentView(sl);
 		} else {
 			if(!displayingList) {
@@ -427,7 +430,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 			DateFormat dateFormat = new SimpleDateFormat("EEE dd", getResources().getConfiguration().locale);
 			String t = (foodTime == MealTime.DINNER ? getString(R.string.food_title_evening_menus) : getString(R.string.food_title_lunch_menus));
 			String d = (dateFormat.format(new Date(foodDay)));
-			headerTitle.setText(t + " - " + d);
+			headerTitle.setText(String.format(t, d));
 			//headerDate.setText("");
 			mList.setAdapter(adapter);
 			//mList.setCacheColorHint(Color.TRANSPARENT);
