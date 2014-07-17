@@ -46,4 +46,9 @@ public interface IMoodleView extends IView {
 	void authenticationFailed();
 	void userCancelledAuthentication();
 	
+	/**
+	 * Trigger a display update.
+	 * called from the dialog (after user deletes a file)
+	 */
+	void updateDisplay();
 }

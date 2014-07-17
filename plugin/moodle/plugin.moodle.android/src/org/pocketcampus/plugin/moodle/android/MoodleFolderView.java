@@ -16,12 +16,17 @@ import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.shared.MoodleFile2;
 import org.pocketcampus.plugin.moodle.shared.MoodleFolder2;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -121,7 +126,7 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 	public void sectionsListUpdated() {
 	}
 
-	private void updateDisplay() {
+	public void updateDisplay() {
 
 		if(folderObj == null)
 			return;
@@ -191,6 +196,16 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 					}
 				}
 			});
+			mList.setOnItemLongClickListener(new OnItemLongClickListener() {
+				public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					Object o = arg0.getItemAtPosition(arg2);
+					if(o instanceof Map<?, ?>) {
+						MoodleFile2 mf = (MoodleFile2) ((Map<?, ?>) o).get(MAP_KEY_MOODLEFILE);
+						return fileOnLongPress(MoodleFolderView.this, mController, mf);
+					}
+					return false;
+				}
+			});
 			
 			if(scrollState != null)
 				scrollState.restore(mList);
@@ -251,13 +266,66 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 	 */
 
 
-	public static <T extends PluginView & IMoodleView> void fileOnClick  (T context, MoodleController controller, MoodleFile2 item) {
+	private static <T extends PluginView & IMoodleView> void fileMenu(final T context, final MoodleController controller, final MoodleFile2 item, final File file) {
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		View titleV = inflater.inflate(R.layout.sdk_actionbar_dialog, null);
+		((TextView) titleV.findViewById(R.id.actionbar_title)).setText(item.getName());
+		
+		AlertDialog dialog = new AlertDialog.Builder(context)
+				.setCustomTitle(titleV)
+				.setAdapter(new ArrayAdapter<String>(context, android.R.layout.select_dialog_item, 
+						new String[] {context.getString(R.string.moodle_filemenu_open), 
+								context.getString(R.string.moodle_filemenu_redownload), 
+								context.getString(R.string.moodle_filemenu_delete)}), 
+						new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						switch(arg1) {
+						case 0:
+							MoodleController.openFile(context, file);
+							break;
+						case 1:
+							controller.fetchFileResource(context, item.getUrl());
+							break;
+						case 2:
+							file.delete();
+							context.updateDisplay();
+							break;
+						default:
+							Toast.makeText(context.getApplicationContext(), arg1, Toast.LENGTH_SHORT).show();
+							break;
+						}
+						
+					}
+					
+				})
+				.setInverseBackgroundForced(true)
+				.create();
+		dialog.setCanceledOnTouchOutside(true);
+		dialog.show();
+		
+	}
+	
+
+	public static <T extends PluginView & IMoodleView> void fileOnClick(T context, MoodleController controller, MoodleFile2 item) {
 		context.trackEvent("DownloadAndOpenFile", item.getName());
 		File resourceFile = new File(MoodleController.getLocalPath(item.getUrl(), false));
 		if(resourceFile.exists()) {
 			MoodleController.openFile(context, resourceFile);
 		} else {
 			controller.fetchFileResource(context, item.getUrl());
+		}
+	}
+	
+	public static <T extends PluginView & IMoodleView> boolean fileOnLongPress(T context, MoodleController controller, MoodleFile2 item) {
+		File resourceFile = new File(MoodleController.getLocalPath(item.getUrl(), false));
+		if(resourceFile.exists()) {
+			fileMenu(context, controller, item, resourceFile);
+			return true;
+		} else {
+			return false;
 		}
 	}
 	

@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -135,7 +136,7 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 
 	}
 
-	private void updateDisplay() {
+	public void updateDisplay() {
 
 		if(sections == null)
 			return;
@@ -210,6 +211,16 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 					} else {
 						Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
 					}
+				}
+			});
+			mList.setOnItemLongClickListener(new OnItemLongClickListener() {
+				public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					Object o = arg0.getItemAtPosition(arg2);
+					if(o instanceof Map<?, ?>) {
+						MoodleResource2 mr = (MoodleResource2) ((Map<?, ?>) o).get(MAP_KEY_MOODLERESOURCE);
+						return resourceOnLongPress(MoodleCourseView.this, mController, mr);
+					}
+					return false;
 				}
 			});
 			
@@ -299,6 +310,14 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 		}
 		
 	}
+	
+	private static boolean resourceOnLongPress(MoodleCourseView context, MoodleController controller, MoodleResource2 item) {
+		if(item.getFile() != null) {
+			return MoodleFolderView.fileOnLongPress(context, controller, item.getFile());
+		}
+		return false;
+	}
+	
 	
 	private static String getSectionTitle(Context c, MoodleCourseSection2 section) {
 		if(section.getTitle() != null)

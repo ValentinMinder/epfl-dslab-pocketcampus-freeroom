@@ -15,6 +15,10 @@
     <string name="moodle_string_nothingtodisplay">Rien à afficher</string>
     <string name="moodle_string_xfiles">%d fichier(s)</string>
     
+    <string name="moodle_filemenu_open">Ouvrir</string>
+    <string name="moodle_filemenu_redownload">Télécharger de nouveau</string>
+    <string name="moodle_filemenu_delete">Supprimer</string>
+    
     <string name="moodle_error_moodle_down">PocketCampus a essayé de se connecter aux serveurs Moodle, mais ils semblent hors-ligne.</string>
     <string name="moodle_connection_error_happened">Nous ne pouvons pas récupérer les données Moodle maintenant, car vous n\'êtes pas connecté à Internet.</string>
     <string name="moodle_file_downloaded">Fichier téléchargé avec succès.</string>

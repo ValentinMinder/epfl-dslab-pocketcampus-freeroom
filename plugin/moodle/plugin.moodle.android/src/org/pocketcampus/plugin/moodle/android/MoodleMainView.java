@@ -117,6 +117,10 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 
 	@Override
 	public void coursesListUpdated() {
+		updateDisplay();
+	}
+	
+	public void updateDisplay() {
 		
 		List<MoodleCourse2> courses = mModel.getCourses();
 
