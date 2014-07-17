@@ -345,7 +345,7 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 
 	public static Object fileGetIcon(Context c, MoodleFile2 item) {
 		if(item.getIcon() == null) return null;
-		return String.format(item.getIcon(), 128);
+		return item.getIcon().replace("{size}", "128");
 	}
 	
 	public static Object fileGetTitle(Context c, MoodleFile2 item) {
