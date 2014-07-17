@@ -23,48 +23,13 @@
 			</intent-filter>
 			
 			    
-			    
-			    
-			    
-<!-- 			Communication with authentication plugin     -->
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="pocketcampus-authenticate" android:host="moodle.plugin.pocketcampus.org" />
-			</intent-filter>
-			
-			    			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
 		</activity>
 		
-		    
-		<activity android:name="org.pocketcampus.plugin.moodle.android.MoodleCourseSectionsView"
-		    android:screenOrientation="nosensor"
-			xmlns:android="http://schemas.android.com/apk/res/android" />
-		
-		<activity android:name="org.pocketcampus.plugin.moodle.android.MoodleCourseSectionResourcesView"
-		    android:screenOrientation="nosensor"
-			xmlns:android="http://schemas.android.com/apk/res/android" />
-		
-		<activity android:name="org.pocketcampus.plugin.moodle.android.MoodleEventsView"
-		    android:screenOrientation="nosensor"
-			xmlns:android="http://schemas.android.com/apk/res/android" />
-		
 		<activity android:name="org.pocketcampus.plugin.moodle.android.MoodleCourseView"
+		    android:screenOrientation="nosensor"
+			xmlns:android="http://schemas.android.com/apk/res/android" />
+				
+		<activity android:name="org.pocketcampus.plugin.moodle.android.MoodleFolderView"
 		    android:screenOrientation="nosensor"
 			xmlns:android="http://schemas.android.com/apk/res/android" />
 						    

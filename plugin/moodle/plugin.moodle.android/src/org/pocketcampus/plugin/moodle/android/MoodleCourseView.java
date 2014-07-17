@@ -18,11 +18,9 @@ import org.pocketcampus.android.platform.sdk.utils.ScrollStateSaver;
 import org.pocketcampus.plugin.moodle.R;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourseSection2;
-import org.pocketcampus.plugin.moodle.shared.MoodleFile2;
-import org.pocketcampus.plugin.moodle.shared.MoodleFolder2;
 import org.pocketcampus.plugin.moodle.shared.MoodleResource2;
-import org.pocketcampus.plugin.moodle.shared.MoodleUrl2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -159,13 +157,13 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 				public Object content(int res, final MoodleResource2 e) {
 					switch (res) {
 					case R.id.moodle_resource_icon:
-						return (e.getFile() != null ? String.format(e.getFile().getIcon(), 128) : null);
+						return resourceGetIcon(MoodleCourseView.this, e);
 					case R.id.moodle_resource_title:
-						return resourceGetTitle(e);
+						return resourceGetTitle(MoodleCourseView.this, e);
 					case R.id.moodle_resource_second_line:
-						return resourceGetSecondLine(e);
+						return resourceGetSecondLine(MoodleCourseView.this, e);
 					case R.id.moodle_resource_status:
-						return resourceGetStatus(e);
+						return resourceGetStatus(MoodleCourseView.this, e);
 					case R.id.moodle_resource_arrow:
 						return (e.getFolder() != null ? R.drawable.pocketcampus_list_arrow : -1);
 					default:
@@ -178,7 +176,7 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 			});
 			if(section.getResourcesSize() != 0) {
 				atLeastOneSection = true;
-				adapter.addSection(getSectionTitle(section), new LazyAdapter(this, p.getMap(), 
+				adapter.addSection(MoodleCourseView.getSectionTitle(MoodleCourseView.this, section), new LazyAdapter(this, p.getMap(), 
 						R.layout.moodle_course_resource_entry, p.getKeys(), p.getResources()));
 			}
 		}
@@ -208,7 +206,7 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 					Object o = arg0.getItemAtPosition(arg2);
 					if(o instanceof Map<?, ?>) {
 						MoodleResource2 mr = (MoodleResource2) ((Map<?, ?>) o).get(MAP_KEY_MOODLERESOURCE);
-						resourceOnClick(mr);
+						resourceOnClick(MoodleCourseView.this, mController, mr);
 					} else {
 						Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
 					}
@@ -283,81 +281,72 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 	 * 
 	 */
 
-	
 
-	private Object resourceGetTitle(MoodleResource2 item) {
+	private static void resourceOnClick(MoodleCourseView context, MoodleController controller, MoodleResource2 item) {
 		if(item.getFile() != null) {
-			MoodleFile2 mf = item.getFile();
-			return mf.getName();
+			MoodleFolderView.fileOnClick(context, controller, item.getFile());
 		} else if(item.getFolder() != null) {
-			MoodleFolder2 mf = item.getFolder();
-			return mf.getName();
-		} else if(item.getUrl() != null) {
-			MoodleUrl2 mu = item.getUrl();
-			return mu.getName();
-		}
-		return null;
-	}
-	
-	private Object resourceGetSecondLine(MoodleResource2 item) {
-		if(item.getFile() != null) {
-			MoodleFile2 mf = item.getFile();
-			return MoodleController.getPrettyName(mf.getUrl());
-		} else if(item.getFolder() != null) {
-			MoodleFolder2 mf = item.getFolder();
-			return String.format(getString(R.string.moodle_string_xfiles), mf.getFilesSize());
-		} else if(item.getUrl() != null) {
-			MoodleUrl2 mu = item.getUrl();
-			return mu.getUrl();
-		}
-		return null;
-	}
-	
-	private Object resourceGetStatus(MoodleResource2 item) {
-		if(item.getFile() != null) {
-			MoodleFile2 mf = item.getFile();
-			return (new File(MoodleController.getLocalPath(mf.getUrl(), false)).exists() ? getString(R.string.moodle_string_downloaded) : "");
-		} else if(item.getFolder() != null) {
-			return "";
-			
-		} else if(item.getUrl() != null) {
-			return "";
-			
-		}
-		return null;
-	}
-	
-	private void resourceOnClick(MoodleResource2 item) {
-		if(item.getFile() != null) {
-			MoodleFile2 mf = item.getFile();
-			trackEvent("DownloadAndOpenFile", mf.getName());
-			File resourceFile = new File(MoodleController.getLocalPath(mf.getUrl(), false));
-			if(resourceFile.exists()) {
-				MoodleController.openFile(MoodleCourseView.this, resourceFile);
-			} else {
-				mController.fetchFileResource(MoodleCourseView.this, mf.getUrl());
-			}
-		} else if(item.getFolder() != null) {
-			// TODO
-			Toast.makeText(getApplicationContext(), "Folders not yet implemented", Toast.LENGTH_SHORT).show();
+			Intent i = new Intent(context, MoodleFolderView.class);
+			i.putExtra(MoodleFolderView.EXTRAS_KEY_FOLDEROBJECT, item.getFolder());
+			i.putExtra(MoodleFolderView.EXTRAS_KEY_MOODLECOURSETITLE, context.courseTitle);
+			context.startActivity(i);
 			
 		} else if(item.getUrl() != null) {
 			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl().getUrl()));
-			startActivity(browserIntent);
+			context.startActivity(browserIntent);
 
 			
 		}
 		
 	}
 	
-	private String getSectionTitle(MoodleCourseSection2 section) {
+	private static String getSectionTitle(Context c, MoodleCourseSection2 section) {
 		if(section.getTitle() != null)
 			return section.getTitle();
-		DateFormat dateFormat = new SimpleDateFormat("dd MMMM", getResources().getConfiguration().locale);
+		DateFormat dateFormat = new SimpleDateFormat("dd MMMM", c.getResources().getConfiguration().locale);
 		String startDate = dateFormat.format(new Date(section.getStartDate()));
 		String endDate = dateFormat.format(new Date(section.getEndDate()));
 		return startDate + " - " + endDate;
 	}
 	
 
+	/***
+	 * 
+	 */
+	
+	private static Object resourceGetIcon(Context c, MoodleResource2 item) {
+		if(item.getFile() != null)
+			return MoodleFolderView.fileGetIcon(c, item.getFile());
+		return null;
+	}
+	
+	private static Object resourceGetTitle(Context c, MoodleResource2 item) {
+		if(item.getFile() != null) {
+			return MoodleFolderView.fileGetTitle(c, item.getFile());
+		} else if(item.getFolder() != null) {
+			return item.getFolder().getName();
+		} else if(item.getUrl() != null) {
+			return item.getUrl().getName();
+		}
+		return null;
+	}
+	
+	private static Object resourceGetSecondLine(Context c, MoodleResource2 item) {
+		if(item.getFile() != null) {
+			return MoodleFolderView.fileGetSecondLine(c, item.getFile());
+		} else if(item.getFolder() != null) {
+			return String.format(c.getString(R.string.moodle_string_xfiles), item.getFolder().getFilesSize());
+		} else if(item.getUrl() != null) {
+			return item.getUrl().getUrl();
+		}
+		return null;
+	}
+	
+	private static Object resourceGetStatus(Context c, MoodleResource2 item) {
+		if(item.getFile() != null)
+			return MoodleFolderView.fileGetStatus(c, item.getFile());
+		return null;
+	}
+	
+	
 }

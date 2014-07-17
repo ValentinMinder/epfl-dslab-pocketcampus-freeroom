@@ -125,7 +125,7 @@ public abstract class PluginView extends Activity {
 	
 	protected abstract String screenName();
 	
-	protected void trackEvent(String action, String label) {
+	public void trackEvent(String action, String label) {
 		GATracker.getInstance().sendEvent(GA_EVENT_CATEG, screenName() + "-" + action, label, null);
 	}
 
