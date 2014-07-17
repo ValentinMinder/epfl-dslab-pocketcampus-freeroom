@@ -200,7 +200,8 @@ public final class CourseServiceImpl implements CourseService {
 					}
 
 					if (module.modname.equals(MODULE_FILE) && module.contents.length == 1) {
-						final MoodleFile2 file = new MoodleFile2(module.name, module.contents[0].fileurl).setIcon(module.modicon);
+						final MoodleFile2 file = new MoodleFile2(module.name, module.contents[0].fileurl);
+						file.setIcon(module.modicon.split("[-]")[0] + "-%d");
 						moodleSection.addToResources(new MoodleResource2().setFile(file));
 					} else if (module.modname.equals(MODULE_URL) && module.contents.length == 1) {
 						final MoodleUrl2 url = new MoodleUrl2(module.name, module.contents[0].fileurl);

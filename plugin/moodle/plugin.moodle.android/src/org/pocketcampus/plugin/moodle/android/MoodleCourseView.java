@@ -159,7 +159,7 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 				public Object content(int res, final MoodleResource2 e) {
 					switch (res) {
 					case R.id.moodle_resource_icon:
-						return (e.getFile() != null ? e.getFile().getIcon() : null);
+						return (e.getFile() != null ? String.format(e.getFile().getIcon(), 128) : null);
 					case R.id.moodle_resource_title:
 						return resourceGetTitle(e);
 					case R.id.moodle_resource_second_line:
