@@ -79,7 +79,7 @@ function generate_android_manifest($output_dir, $is_lib){
 	$app->setAttribute("android:label", "@string/app_name");
 	$app->setAttribute("android:theme", "@style/PocketCampusTheme");
 	$app->setAttribute("android:icon", "@drawable/app_icon");
-	$app->setAttribute("android:name", "org.pocketcampus.android.platform.sdk.core.GlobalContext");
+	$app->setAttribute("android:name", "org.pocketcampus.platform.android.core.GlobalContext");
 
 	$sdk = $doc->createElement("uses-sdk");
 	$manif->appendChild($sdk);
@@ -365,7 +365,7 @@ function collect_res($output_dir) {
 	global $path_to_plugin_dir;
 	global $path_to_platform_dir;
 
-	copyr("$path_to_platform_dir/sdk/platform.sdk.android/res", "$output_dir/res");
+	copyr("$path_to_platform_dir/platform.android/res", "$output_dir/res");
 
 	foreach($plugins_to_merge as $plgn) {
 		$plugin = strtolower($plgn);
@@ -379,8 +379,8 @@ function collect_src($output_dir) {
 	global $path_to_plugin_dir;
 	global $path_to_platform_dir;
 
-	copyr("$path_to_platform_dir/sdk/platform.sdk.android/src", "$output_dir/src");
-	copyr("$path_to_platform_dir/sdk/platform.sdk.shared/src", "$output_dir/src");
+	copyr("$path_to_platform_dir/platform.android/src", "$output_dir/src");
+	copyr("$path_to_platform_dir/platform.shared/src", "$output_dir/src");
 
 	foreach($plugins_to_merge as $plgn) {
 		$plugin = strtolower($plgn);
