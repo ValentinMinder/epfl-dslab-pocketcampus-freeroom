@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.IView;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.edx.android.iface.IEdXModel;
 import org.pocketcampus.plugin.edx.android.iface.IEdXView;
 import org.pocketcampus.plugin.edx.shared.EdxCourse;

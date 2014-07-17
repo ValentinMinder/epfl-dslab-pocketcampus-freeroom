@@ -6,11 +6,10 @@ import javax.servlet.http.*;
 
 import org.apache.thrift.TException;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
-
-import org.pocketcampus.platform.launcher.server.AuthenticatorImpl;
-import org.pocketcampus.platform.launcher.server.RawPlugin;
-import org.pocketcampus.platform.sdk.server.HttpClientImpl;
+import org.pocketcampus.platform.server.HttpClientImpl;
+import org.pocketcampus.platform.server.RawPlugin;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.plugin.authentication.server.AuthenticatorImpl;
 import org.pocketcampus.plugin.moodle.shared.*;
 
 /**
@@ -19,7 +18,7 @@ import org.pocketcampus.plugin.moodle.shared.*;
  * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
-	private static final String MOODLE_ACCESS_TOKEN = PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN");
+	private static final String MOODLE_ACCESS_TOKEN = PocketCampusServer.CONFIG.getString("MOODLE_ACCESS_TOKEN");
 	
 	private final CourseService courseService;
 	private final FileService fileService;

@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.moodle.android.req;
 
-import org.pocketcampus.android.platform.sdk.io.Request;
+import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.moodle.android.MoodleController;
 import org.pocketcampus.plugin.moodle.android.MoodleModel;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;

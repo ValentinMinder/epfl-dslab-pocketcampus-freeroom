@@ -1,35 +1,25 @@
 package org.pocketcampus.plugin.moodle.server.old;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.thrift.TException;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
+import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
 import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.NodeJson.ItemJson;
 import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.SectionNode.ModuleNode;
 import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.SectionNode.ModuleNode.ModuleContent;
 import org.pocketcampus.plugin.moodle.shared.TequilaToken;
-import org.pocketcampus.platform.launcher.server.PocketCampusServer;
-import org.pocketcampus.platform.sdk.shared.utils.Cookie;
-import org.pocketcampus.platform.sdk.shared.utils.PostDataBuilder;
-import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
-import org.pocketcampus.plugin.moodle.shared.Constants;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.platform.shared.utils.Cookie;
+import org.pocketcampus.platform.shared.utils.PostDataBuilder;
+import org.pocketcampus.platform.shared.utils.StringUtils;
 import org.pocketcampus.plugin.moodle.shared.CoursesListReply;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
 import org.pocketcampus.plugin.moodle.shared.MoodleRequest;
@@ -63,61 +53,6 @@ public class MoodleServiceImpl {
 		System.out.println("Starting Moodle plugin server ...");
 	}
 	
-	public HttpServlet getServlet() {
-		return new HttpServlet() {
-			private static final long serialVersionUID = -2572366584222819828L;
-			protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-				//InputStream in = request.getInputStream();
-				//request.get
-//				response.setStatus(500);
-//				System.out.println(request.getQueryString());
-//				OutputStream out = response.getOutputStream();
-//				out.write("OK1".getBytes());
-//				out.flush();
-//				doPost(request, response);
-			}
-			protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-				String gaspar = PocketCampusServer.authGetUserGasparFromReq(req);
-				if(gaspar == null) {
-					resp.setStatus(407);
-					return;
-				}
-				
-				String action = req.getParameter(Constants.MOODLE_RAW_ACTION_KEY);
-				if(Constants.MOODLE_RAW_ACTION_DOWNLOAD_FILE.equals(action)) {
-					// TODO check if requested file belongs to course registered by user 
-					String fp = req.getParameter(Constants.MOODLE_RAW_FILE_PATH);
-					if(fp == null) {
-						resp.setStatus(405);
-						return;
-					}
-					
-					fp = StringUtils.getSubstringBetween(fp, "pluginfile.php", "?");
-//					if(fp.indexOf("?") != -1)
-//						fp = fp.substring(0, fp.indexOf("?"));
-//					URLBuilder url = new URLBuilder(fp).addParam("token", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN"));
-					fp = "http://moodle.epfl.ch/webservice/pluginfile.php" + fp;
-					HttpURLConnection conn = (HttpURLConnection) new URL(fp).openConnection();
-					conn.setDoOutput(true);
-					PostDataBuilder pd = new PostDataBuilder().
-							addParam("token", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN"));
-					conn.getOutputStream().write(pd.toBytes());
-					InputStream in = conn.getInputStream();
-					//System.out.println("encoding=" + conn.getContentEncoding() + " length=" + conn.getContentLength());
-					//System.out.println(conn.getHeaderFields().toString());
-					resp.setContentType(conn.getContentType());
-					resp.setContentLength(conn.getContentLength());
-					resp.addHeader("Content-Disposition", conn.getHeaderField("Content-Disposition"));
-					OutputStream out = resp.getOutputStream();
-					IOUtils.copy(in, out);
-//					out.flush();
-					in.close();
-					out.close();
-				} 
-			}
-		};
-	}
-
 	public TequilaToken getTequilaTokenForMoodle() throws TException {
 		System.out.println("getTequilaTokenForMoodle");
 		try {
@@ -129,7 +64,9 @@ public class MoodleServiceImpl {
 			UrlEncoded.decodeTo(url.getQuery(), params, "UTF-8");
 			TequilaToken teqToken = new TequilaToken(params.getString("requestkey"));
 			Cookie cookie = new Cookie();
-			cookie.setCookie(conn2.getHeaderFields().get("Set-Cookie"));
+			for (String header : conn2.getHeaderFields().get("Set-Cookie")) {
+				cookie.addFromHeader(header);
+			}
 			teqToken.setLoginCookie(cookie.cookie());
 			return teqToken;
 		} catch (IOException e) {
@@ -296,7 +233,7 @@ public class MoodleServiceImpl {
 	}
 
 	public CoursesListReply getCoursesListAPI(String dummy) throws TException {
-		String sciper = PocketCampusServer.authGetUserSciper(dummy);
+		String sciper = AuthenticationServiceImpl.authGetUserSciper();
 		if(sciper == null){
 			return new CoursesListReply(407);
 		}
@@ -308,25 +245,25 @@ public class MoodleServiceImpl {
 			HttpURLConnection conn = (HttpURLConnection) new URL(MOODLE_WEBSERVICE_URL).openConnection();
 			PostDataBuilder pd = new PostDataBuilder().
 					addParam("moodlewsrestformat", "json").
-					addParam("wstoken", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")).
+					addParam("wstoken", PocketCampusServer.CONFIG.getString("MOODLE_ACCESS_TOKEN")).
 					addParam("wsfunction", "core_user_get_users").
 					addParam("criteria[0][key]", "idnumber").
 					addParam("criteria[0][value]", sciper);
 			conn.setDoOutput(true);
-			conn.getOutputStream().write(pd.toBytes());
-			String result = IOUtils.toString(conn.getInputStream(), "UTF-8");
+			conn.getOutputStream().write(pd.toString().getBytes());
+			String result = StringUtils.fromStream(conn.getInputStream(), "UTF-8");
 			UsersNode usrNodes = gson.fromJson(result, UsersNode.class);
 			int theId = usrNodes.users.get(0).id;
 			
 			conn = (HttpURLConnection) new URL(MOODLE_WEBSERVICE_URL).openConnection();
 			pd = new PostDataBuilder().
 					addParam("moodlewsrestformat", "json").
-					addParam("wstoken", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")).
+					addParam("wstoken", PocketCampusServer.CONFIG.getString("MOODLE_ACCESS_TOKEN")).
 					addParam("wsfunction", "core_enrol_get_users_courses").
 					addParam("userid", "" + theId);
 			conn.setDoOutput(true);
-			conn.getOutputStream().write(pd.toBytes());
-			result = IOUtils.toString(conn.getInputStream(), "UTF-8");
+			conn.getOutputStream().write(pd.toString().getBytes());
+			result = StringUtils.fromStream(conn.getInputStream(), "UTF-8");
 			Type listType = new TypeToken<List<CourseNode>>() {}.getType();
 			List<CourseNode> lcn = gson.fromJson(result, listType);
 			for(CourseNode mcj : lcn) {
@@ -441,7 +378,7 @@ public class MoodleServiceImpl {
 	public SectionsListReply getCourseSectionsAPI(String courseId) throws TException {
 		if(courseId == null)
 			return new SectionsListReply(405);
-		String gaspar = PocketCampusServer.authGetUserGaspar(courseId);
+		String gaspar = AuthenticationServiceImpl.authGetUserGaspar();
 		if(gaspar == null){
 			// TODO check if user is enrolled in this course
 			return new SectionsListReply(407);
@@ -455,12 +392,12 @@ public class MoodleServiceImpl {
 			HttpURLConnection conn = (HttpURLConnection) new URL(MOODLE_WEBSERVICE_URL).openConnection();
 			PostDataBuilder pd = new PostDataBuilder().
 					addParam("moodlewsrestformat", "json").
-					addParam("wstoken", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")).
+					addParam("wstoken", PocketCampusServer.CONFIG.getString("MOODLE_ACCESS_TOKEN")).
 					addParam("wsfunction", "core_course_get_contents").
 					addParam("courseid", courseId);
 			conn.setDoOutput(true);
-			conn.getOutputStream().write(pd.toBytes());
-			String result = IOUtils.toString(conn.getInputStream(), "UTF-8");
+			conn.getOutputStream().write(pd.toString().getBytes());
+			String result = StringUtils.fromStream(conn.getInputStream(), "UTF-8");
 //			System.out.println(result);
 			Type listType = new TypeToken<List<SectionNode>>() {}.getType();
 			List<SectionNode> lsn = gson.fromJson(result, listType);
@@ -527,7 +464,7 @@ public class MoodleServiceImpl {
 		conn.setInstanceFollowRedirects(false);
 		conn.setRequestProperty("Cookie", cookie.cookie());
 		if(conn.getResponseCode() == 200)
-			return new HttpPageReply(IOUtils.toString(conn.getInputStream(), "UTF-8"), null);
+			return new HttpPageReply(StringUtils.fromStream(conn.getInputStream(), "UTF-8"), null);
 		if(conn.getResponseCode() / 100 == 3)
 			return new HttpPageReply(null, conn.getHeaderField("Location"));
 		return new HttpPageReply(null, null);

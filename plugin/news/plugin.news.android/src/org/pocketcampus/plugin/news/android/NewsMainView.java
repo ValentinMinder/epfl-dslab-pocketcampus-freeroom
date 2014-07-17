@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.news.android;
 
-import static org.pocketcampus.android.platform.sdk.utils.DialogUtils.showMultiChoiceDialogSbN;
-import static org.pocketcampus.android.platform.sdk.utils.SetUtils.difference;
+import static org.pocketcampus.platform.android.utils.DialogUtils.showMultiChoiceDialogSbN;
+import static org.pocketcampus.platform.android.utils.SetUtils.difference;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
-import org.pocketcampus.android.platform.sdk.ui.adapter.SeparatedListAdapter;
-import org.pocketcampus.android.platform.sdk.utils.DialogUtils.MultiChoiceHandler;
-import org.pocketcampus.android.platform.sdk.utils.Preparated;
-import org.pocketcampus.android.platform.sdk.utils.Preparator;
-import org.pocketcampus.android.platform.sdk.utils.ScrollStateSaver;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
+import org.pocketcampus.platform.android.utils.DialogUtils.MultiChoiceHandler;
+import org.pocketcampus.platform.android.utils.Preparated;
+import org.pocketcampus.platform.android.utils.Preparator;
+import org.pocketcampus.platform.android.utils.ScrollStateSaver;
 import org.pocketcampus.plugin.news.R;
 import org.pocketcampus.plugin.news.android.iface.INewsView;
 import org.pocketcampus.plugin.news.shared.NewsFeed;

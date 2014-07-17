@@ -10,7 +10,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.pocketcampus.android.platform.sdk.io.Request;
+import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.authentication.android.AuthenticationController;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel.TokenCredentialsComplex;

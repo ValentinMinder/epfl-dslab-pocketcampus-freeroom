@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!-- Unmodifiable Style Elements -->
+	<style name="PocketCampusThemeBase" parent="android:style/Theme.Light">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:fastScrollEnabled">false</item>
+		<item name="android:windowBackground">@color/white</item>
+	</style>
+
+	<!-- Common Style Elements -->
+	<style name="PocketCampusTheme" parent="PocketCampusThemeBase">
+		<item name="android:windowBackground">@color/white</item>
+		<!-- To be extended from the launcher. -->
+	</style>
+
+	<!--
+		The Primary colors are used for the header and other elements that 
+		are visually "on top" of the interface
+
+	-->
+	<style name="PocketCampusTheme.Primary">
+		<item name="android:background">@drawable/epfl_primary_gradient</item>
+		<item name="android:textColor">@color/white</item>
+	</style>
+
+	<style name="PocketCampusTheme.Primary.Title">
+		<item name="android:background">@color/transparent</item>
+		<item name="android:textAppearance">@android:style/TextAppearance.Large</item>
+		<item name="android:textColor">@android:color/black</item> 
+	</style>
+
+	<style name="PocketCampusTheme.Primary.Subtitle">
+		<item name="android:background">@color/transparent</item>
+		<item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
+		<item name="android:textColor">@android:color/black</item>
+	</style>
+	
+	<style name="PocketCampusTheme.Primary.SecondSubtitle">
+		<item name="android:background">@color/transparent</item>
+		<item name="android:textAppearance">@android:style/TextAppearance.Small</item>
+		<item name="android:textColor">@android:color/black</item>
+	</style>
+	
+	<style name="PocketCampusTheme.Secondary.Title" parent="android:attr/listSeparatorTextViewStyle">
+		<item name="android:textSize">15dip</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textAppearance">@android:style/TextAppearance.Large</item>
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_alignParentTop">true</item>
+		<item name="android:background">@color/smoke</item>
+		<item name="android:paddingBottom">2dip</item>
+		<item name="android:paddingTop">2dip</item>
+		<item name="android:paddingLeft">5dip</item>
+		<item name="android:textColor">@android:color/white</item>
+	</style>
+
+	<!-- Secondary colors are used for the normal layouts parts. -->
+	<style name="PocketCampusTheme.Secondary">
+		<item name="android:background">@color/white</item>
+		<item name="android:textColor">@color/black</item>
+	</style>
+
+	<style name="PocketCampusTheme.Secondary.MainLayout"></style>
+
+	<style name="PocketCampusTheme.Secondary.Detail">
+		<item name="android:textAppearance">@android:style/TextAppearance.Small</item>
+		<!-- <item name="android:textColor">@color/darker_gray</item> -->
+	</style>
+
+	<style name="PocketCampusTheme.Secondary.ListView">
+		<item name="android:cacheColorHint">#00000000</item>
+	</style>
+
+	<!-- TODO use this -->
+	<style name="PocketCampusTheme.ActionBarTitle" parent="PocketCampusTheme.Primary">
+		<item name="android:textSize">20sp</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+
+</resources>

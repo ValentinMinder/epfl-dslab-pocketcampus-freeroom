@@ -24,7 +24,7 @@ import android.util.Log;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 
-import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
+import static org.pocketcampus.platform.android.core.PCAndroidConfig.PC_ANDR_CFG;
 
 /**
  * IntentService responsible for handling GCM messages.

@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.authentication.server;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,9 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.commons.lang3.StringUtils;
-import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
-import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 
 import ch.epfl.tequila.client.model.TequilaPrincipal;
 
@@ -24,20 +21,15 @@ public class SessionManagerImpl implements SessionManager {
 
 	private final static long TIMEOUT_INTERVAL = 3600; // 1 hour
 	private final static long EXPIRY_INTERVAL = 30 * 24 * 3600; // 1 month
-	
-	private ConnectionManager mConnectionManager;
-	
-	public SessionManagerImpl() {
-		try {
-			this.mConnectionManager = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
-					PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
-			new Thread(getCleaner()).start();
-		} catch (ServerException e) {
-			e.printStackTrace();
-		}
 
+	private ConnectionManager mConnectionManager;
+
+	public SessionManagerImpl() {
+		this.mConnectionManager = new ConnectionManager(PocketCampusServer.CONFIG.getString("DB_URL"),
+				PocketCampusServer.CONFIG.getString("DB_USERNAME"), PocketCampusServer.CONFIG.getString("DB_PASSWORD"));
+		new Thread(getCleaner()).start();
 	}
-	
+
 	private long getNow() {
 		return System.currentTimeMillis() / 1000;
 	}
@@ -48,7 +40,12 @@ public class SessionManagerImpl implements SessionManager {
 		PreparedStatement sqlStm = null;
 		long now = getNow();
 		try {
-			sqlStm = mConnectionManager.getConnection().prepareStatement("REPLACE INTO `authsessions` (`sessionid`, `expiry`, `timeout`, `clienthost`, `office`, `phone`, `status`, `firstname`, `where`, `requesthost`, `version`, `unit`, `sciper`, `title`, `gaspar`, `email`, `category`, `lastname`, `authorig`, `unixid`, `groupid`, `authstrength`) VALUES (" + StringUtils.repeat(", ?", 22).substring(2) + ")");
+			sqlStm = mConnectionManager
+					.getConnection()
+					.prepareStatement(
+							"REPLACE INTO `authsessions` (`sessionid`, `expiry`, `timeout`, `clienthost`, `office`, `phone`, `status`, `firstname`, `where`, `requesthost`, `version`, `unit`, `sciper`, `title`, `gaspar`, `email`, `category`, `lastname`, `authorig`, `unixid`, `groupid`, `authstrength`) VALUES ("
+									// Slight hack to repeat a string, it avoids a dependency on Commons Lang...
+									+ new String(new char[22]).replace("\0", ", ?").substring(2) + ")");
 			sqlStm.setString(1, id);
 			sqlStm.setLong(2, now + EXPIRY_INTERVAL); // 0 = never expires
 			sqlStm.setLong(3, rememberMe ? 0 : now + TIMEOUT_INTERVAL); // 0 = never times out
@@ -85,18 +82,25 @@ public class SessionManagerImpl implements SessionManager {
 			}
 		}
 	}
-	
+
 	@Override
 	public List<String> getFields(String sessionId, List<String> fields) {
 		touch(sessionId);
 		PreparedStatement sqlStm = null;
 		try {
-			sqlStm = mConnectionManager.getConnection().prepareStatement("SELECT " + StringUtils.join(fields, ", ") + " FROM `authsessions` WHERE `sessionid` = ?");
+			StringBuilder fieldsBuilder = new StringBuilder();
+			for (int n = 0; n < fields.size() - 1; n++) {
+				fieldsBuilder.append(fields.get(n));
+				fieldsBuilder.append(", ");
+			}
+			fieldsBuilder.append(fields.get(fields.size() - 1));
+
+			sqlStm = mConnectionManager.getConnection().prepareStatement("SELECT " + fieldsBuilder.toString() + " FROM `authsessions` WHERE `sessionid` = ?");
 			sqlStm.setString(1, sessionId);
 			ResultSet rs = sqlStm.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				List<String> res = new LinkedList<String>();
-				for(int i = 1; i <= fields.size(); i++)
+				for (int i = 1; i <= fields.size(); i++)
 					res.add(rs.getString(i));
 				return res;
 			}
@@ -113,9 +117,9 @@ public class SessionManagerImpl implements SessionManager {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
-	
+
 	@Override
 	public Integer destroySessions(String sciper) {
 		PreparedStatement sqlStm = null;
@@ -140,7 +144,7 @@ public class SessionManagerImpl implements SessionManager {
 	private Runnable getCleaner() {
 		return new Runnable() {
 			public void run() {
-				while(true) {
+				while (true) {
 					try {
 						Thread.sleep(60 * 1000); // 1 minute
 						cleanup();
@@ -170,7 +174,7 @@ public class SessionManagerImpl implements SessionManager {
 			}
 		}
 	}
-	
+
 	private void cleanup() {
 		PreparedStatement sqlStm = null;
 		long now = getNow();

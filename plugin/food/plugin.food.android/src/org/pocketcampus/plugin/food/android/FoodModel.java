@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.IView;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.food.android.FoodController.AMeal;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;

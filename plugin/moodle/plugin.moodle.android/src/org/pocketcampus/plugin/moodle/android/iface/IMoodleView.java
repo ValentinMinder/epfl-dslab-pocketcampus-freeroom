@@ -2,7 +2,7 @@ package org.pocketcampus.plugin.moodle.android.iface;
 
 import java.io.File;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
+import org.pocketcampus.platform.android.core.IView;
 
 /**
  * IMoodleView

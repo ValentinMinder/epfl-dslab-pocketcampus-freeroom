@@ -23,6 +23,7 @@ import java.util.List;
 /**
  * @author Andreas Schildbach
  */
+@SuppressWarnings("serial")
 public final class QueryConnectionsResult implements Serializable
 {
 	public enum Status

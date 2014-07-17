@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/platform.sdk.shared"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/platform.sdk.android"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/platform.shared"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/platform.android"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/plugin.directory.shared"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex.jar" sourcepath="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.7.0.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/universal-image-loader-1.8.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

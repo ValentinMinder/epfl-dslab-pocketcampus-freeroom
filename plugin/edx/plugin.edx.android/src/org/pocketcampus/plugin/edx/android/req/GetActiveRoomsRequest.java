@@ -13,7 +13,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.pocketcampus.android.platform.sdk.io.Request;
+import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.edx.android.EdXController;
 import org.pocketcampus.plugin.edx.android.EdXModel;
 import org.pocketcampus.plugin.edx.android.EdXModel.ActiveRoom;

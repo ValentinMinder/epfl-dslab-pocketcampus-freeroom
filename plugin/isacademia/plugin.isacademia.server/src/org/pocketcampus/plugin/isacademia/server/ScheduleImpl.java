@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.isacademia.server;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
-
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.ArrayList;
@@ -11,7 +9,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.pocketcampus.plugin.isacademia.shared.*;
-import org.pocketcampus.platform.sdk.server.XElement;
+import org.pocketcampus.platform.server.XElement;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 
 import org.joda.time.*;
 import org.joda.time.format.*;
@@ -22,7 +21,7 @@ import org.joda.time.format.*;
  * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public final class ScheduleImpl implements Schedule {
-	private static final String ISA_SCHEDULE_URL = PC_SRV_CONFIG.getString("ISA_SCHEDULE_URL");
+	private static final String ISA_SCHEDULE_URL = PocketCampusServer.CONFIG.getString("ISA_SCHEDULE_URL");
 	// The encoding of IS-Academia's schedule API.
 	private static final Charset ISA_CHARSET = Charset.forName("ISO-8859-1");
 	// The time zone for the IS-Academia replies

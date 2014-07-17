@@ -3,9 +3,9 @@ package org.pocketcampus.plugin.authentication.android;
 import java.util.Arrays;
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.utils.DialogUtils;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.utils.DialogUtils;
 import org.pocketcampus.plugin.authentication.R;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
 import org.pocketcampus.plugin.authentication.android.req.FetchUserAttributes;

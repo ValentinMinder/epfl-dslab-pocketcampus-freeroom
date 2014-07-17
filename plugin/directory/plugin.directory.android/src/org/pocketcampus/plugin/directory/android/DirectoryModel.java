@@ -3,8 +3,8 @@ package org.pocketcampus.plugin.directory.android;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.IView;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
 import org.pocketcampus.plugin.directory.shared.Person;

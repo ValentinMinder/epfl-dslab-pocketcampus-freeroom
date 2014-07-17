@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import org.pocketcampus.android.platform.sdk.core.GlobalContext;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginInfo;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.layout.DashboardLayout;
+import org.pocketcampus.platform.android.core.GlobalContext;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginInfo;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.layout.DashboardLayout;
 import org.pocketcampus.plugin.dashboard.R;
 
 import android.content.Context;

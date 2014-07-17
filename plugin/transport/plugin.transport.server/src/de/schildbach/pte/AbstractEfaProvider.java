@@ -1745,15 +1745,9 @@ public abstract class AbstractEfaProvider extends AbstractNetworkProvider
 					final Date departureTime = time.getTime();
 					if (firstDepartureTime == null)
 						firstDepartureTime = departureTime;
-					final Date departureTargetTime;
 					if (XmlPullUtil.test(pp, "itdDateTimeTarget"))
 					{
 						processItdDateTime(pp, time);
-						departureTargetTime = time.getTime();
-					}
-					else
-					{
-						departureTargetTime = null;
 					}
 					XmlPullUtil.exit(pp, "itdPoint");
 
@@ -1771,15 +1765,9 @@ public abstract class AbstractEfaProvider extends AbstractNetworkProvider
 					processItdDateTime(pp, time);
 					final Date arrivalTime = time.getTime();
 					lastArrivalTime = arrivalTime;
-					final Date arrivalTargetTime;
 					if (XmlPullUtil.test(pp, "itdDateTimeTarget"))
 					{
 						processItdDateTime(pp, time);
-						arrivalTargetTime = time.getTime();
-					}
-					else
-					{
-						arrivalTargetTime = null;
 					}
 					XmlPullUtil.exit(pp, "itdPoint");
 

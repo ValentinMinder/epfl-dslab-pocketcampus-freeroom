@@ -2,9 +2,9 @@ package org.pocketcampus.plugin.map.android.search;
 
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.map.R;
 import org.pocketcampus.plugin.map.android.MapMainController;
 import org.pocketcampus.plugin.map.android.MapMainView;
@@ -12,7 +12,6 @@ import org.pocketcampus.plugin.map.android.MapModel;
 import org.pocketcampus.plugin.map.android.iface.IMapView;
 import org.pocketcampus.plugin.map.shared.MapItem;
 
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -34,8 +33,6 @@ import android.widget.ListView;
  * 
  */
 public class MapSearchActivity extends PluginView implements IMapView {
-	private ProgressDialog progressDialog_;
-
 	private MapMainController mController;
 	private MapModel mModel;
 

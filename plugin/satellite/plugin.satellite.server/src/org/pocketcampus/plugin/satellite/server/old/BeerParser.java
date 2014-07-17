@@ -2,7 +2,6 @@ package org.pocketcampus.plugin.satellite.server.old;
 
 import java.io.IOException;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -67,18 +66,9 @@ public class BeerParser {
 			}
 		}
 
-		cleantexts();
 		mBeer = new Beer((mBeerName + mBeerDescription).hashCode(), mBeerName,
 				mBeerDescription);
 		mBeer.setPictureUrl(mBeerPictureLink);
-	}
-
-	/**
-	 * Cleans the beer name and description to get rid of the bad characters.
-	 */
-	private void cleantexts() {
-		mBeerName = StringEscapeUtils.unescapeHtml4(mBeerName);
-		mBeerDescription = StringEscapeUtils.unescapeHtml4(mBeerDescription);
 	}
 
 	/**

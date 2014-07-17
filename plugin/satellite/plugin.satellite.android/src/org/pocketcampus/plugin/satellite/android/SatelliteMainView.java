@@ -1,12 +1,12 @@
 package org.pocketcampus.plugin.satellite.android;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.element.ImageTextView;
-import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
-import org.pocketcampus.android.platform.sdk.ui.labeler.ISubtitledFeedViewLabeler;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledScrollableDoubleLayout;
-import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.element.ImageTextView;
+import org.pocketcampus.platform.android.ui.labeler.IFeedViewLabeler;
+import org.pocketcampus.platform.android.ui.labeler.ISubtitledFeedViewLabeler;
+import org.pocketcampus.platform.android.ui.layout.StandardTitledScrollableDoubleLayout;
+import org.pocketcampus.platform.android.utils.LoaderImageView;
 import org.pocketcampus.plugin.satellite.R;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteMainView;
 import org.pocketcampus.plugin.satellite.android.ui.AffluenceImageView;

@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.satellite.android;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteController;
 import org.pocketcampus.plugin.satellite.android.req.AffluenceRequest;
 import org.pocketcampus.plugin.satellite.android.req.BeerRequest;

@@ -6,8 +6,8 @@ import java.io.InputStream;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.pocketcampus.android.platform.sdk.core.GlobalContext;
-import org.pocketcampus.android.platform.sdk.io.Request;
+import org.pocketcampus.platform.android.core.GlobalContext;
+import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.dashboard.android.DashboardController;
 import org.pocketcampus.plugin.dashboard.android.DashboardView;
 

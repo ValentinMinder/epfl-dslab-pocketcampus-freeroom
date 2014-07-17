@@ -1,8 +1,8 @@
 package org.pocketcampus.plugin.blank.android;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.blank.R;
 import org.pocketcampus.plugin.blank.android.iface.IBlankView;
 

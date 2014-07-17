@@ -7,9 +7,9 @@ import java.net.URL;
 import javax.servlet.http.*;
 
 import org.apache.commons.io.IOUtils;
-import org.pocketcampus.platform.launcher.server.PocketCampusServer;
-import org.pocketcampus.platform.sdk.shared.utils.PostDataBuilder;
-import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
+import org.pocketcampus.platform.shared.utils.PostDataBuilder;
+import org.pocketcampus.platform.shared.utils.StringUtils;
+import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
 import org.pocketcampus.plugin.moodle.shared.Constants;
 
 /**
@@ -41,7 +41,7 @@ public final class FileServiceImpl implements FileService {
 
 	@Override
 	public void download(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-		final String gaspar = PocketCampusServer.authGetUserGasparFromReq(request);
+		final String gaspar = AuthenticationServiceImpl.authGetUserGasparFromReq(request);
 		if (gaspar == null) {
 			response.setStatus(HttpURLConnection.HTTP_PROXY_AUTH);
 			return;
@@ -57,7 +57,7 @@ public final class FileServiceImpl implements FileService {
 
 		filePath = StringUtils.getSubstringBetween(filePath, FILE_NAME_LEFT_GUARD, FILE_NAME_RIGHT_GUARD);
 		filePath = DOWNLOAD_URL_PREFIX + filePath;
-		
+
 		HttpURLConnection conn = null;
 		try {
 			conn = (HttpURLConnection) new URL(filePath).openConnection();
@@ -65,7 +65,8 @@ public final class FileServiceImpl implements FileService {
 
 			final byte[] bytes = new PostDataBuilder()
 					.addParam(TOKEN_KEY, token)
-					.toBytes();
+					.toString()
+					.getBytes();
 			conn.getOutputStream().write(bytes);
 
 			conn.connect();

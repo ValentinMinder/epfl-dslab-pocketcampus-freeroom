@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.food.R;
 import org.pocketcampus.plugin.food.android.iface.IFoodController;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;

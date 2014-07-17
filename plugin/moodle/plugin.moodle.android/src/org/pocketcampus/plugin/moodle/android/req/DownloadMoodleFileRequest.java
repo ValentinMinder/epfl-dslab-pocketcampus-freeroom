@@ -14,7 +14,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
-import org.pocketcampus.android.platform.sdk.io.Request;
+import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.moodle.android.MoodleController;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.shared.Constants;

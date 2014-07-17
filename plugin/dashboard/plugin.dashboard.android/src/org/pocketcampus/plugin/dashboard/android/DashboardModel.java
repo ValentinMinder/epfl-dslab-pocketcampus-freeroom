@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.dashboard.android;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.IView;
+import org.pocketcampus.platform.android.core.PluginModel;
 
 import android.content.Context;
 
