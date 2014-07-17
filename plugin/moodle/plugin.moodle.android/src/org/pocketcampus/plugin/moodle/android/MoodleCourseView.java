@@ -301,10 +301,12 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 			i.putExtra(MoodleFolderView.EXTRAS_KEY_FOLDEROBJECT, item.getFolder());
 			i.putExtra(MoodleFolderView.EXTRAS_KEY_MOODLECOURSETITLE, context.courseTitle);
 			context.startActivity(i);
+			context.trackEvent("OpenFolder", item.getFolder().getName());
 			
 		} else if(item.getUrl() != null) {
 			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl().getUrl()));
 			context.startActivity(browserIntent);
+			context.trackEvent("OpenLink", item.getUrl().getName());
 
 			
 		}

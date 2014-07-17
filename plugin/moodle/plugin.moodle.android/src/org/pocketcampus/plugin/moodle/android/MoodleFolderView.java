@@ -284,12 +284,15 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 					public void onClick(DialogInterface arg0, int arg1) {
 						switch(arg1) {
 						case 0:
+							context.trackEvent("Open", item.getName());
 							MoodleController.openFile(context, file);
 							break;
 						case 1:
+							context.trackEvent("ReDownload", item.getName());
 							controller.fetchFileResource(context, item.getUrl());
 							break;
 						case 2:
+							context.trackEvent("Delete", item.getName());
 							file.delete();
 							context.updateDisplay();
 							break;
@@ -320,6 +323,7 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 	}
 	
 	public static <T extends PluginView & IMoodleView> boolean fileOnLongPress(T context, MoodleController controller, MoodleFile2 item) {
+		context.trackEvent("ContextMenu", item.getName());
 		File resourceFile = new File(MoodleController.getLocalPath(item.getUrl(), false));
 		if(resourceFile.exists()) {
 			fileMenu(context, controller, item, resourceFile);
