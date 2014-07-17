@@ -4,8 +4,10 @@ import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.moodle.android.MoodleController;
 import org.pocketcampus.plugin.moodle.android.MoodleModel;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
+import org.pocketcampus.plugin.moodle.shared.MoodleCourseSectionsRequest2;
+import org.pocketcampus.plugin.moodle.shared.MoodleCourseSectionsResponse2;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Iface;
-import org.pocketcampus.plugin.moodle.shared.SectionsListReply;
+import org.pocketcampus.plugin.moodle.shared.MoodleStatusCode2;
 
 /**
  * CoursesListRequest
@@ -17,7 +19,7 @@ import org.pocketcampus.plugin.moodle.shared.SectionsListReply;
  * @author Amer <amer.chamseddine@epfl.ch>
  *
  */
-public class SectionsListRequest extends Request<MoodleController, Iface, String, SectionsListReply> {
+public class SectionsListRequest extends Request<MoodleController, Iface, MoodleCourseSectionsRequest2, MoodleCourseSectionsResponse2> {
 
 	private IMoodleView caller;
 	
@@ -26,18 +28,18 @@ public class SectionsListRequest extends Request<MoodleController, Iface, String
 	}
 	
 	@Override
-	protected SectionsListReply runInBackground(Iface client, String param) throws Exception {
-		return client.getCourseSectionsAPI(param);
+	protected MoodleCourseSectionsResponse2 runInBackground(Iface client, MoodleCourseSectionsRequest2 param) throws Exception {
+		return client.getSections(param);
 	}
 
 	@Override
-	protected void onResult(MoodleController controller, SectionsListReply result) {
-		if(result.getIStatus() == 200) {
-			((MoodleModel) controller.getModel()).setSections(result.getISections());
+	protected void onResult(MoodleController controller, MoodleCourseSectionsResponse2 result) {
+		if(result.getStatusCode() == MoodleStatusCode2.OK) {
+			((MoodleModel) controller.getModel()).setSections(result.getSections());
 			
 			keepInCache();
 			
-		} else if(result.getIStatus() == 407) {
+		} else if(result.getStatusCode() == MoodleStatusCode2.AUTHENTICATION_ERROR) {
 			caller.notLoggedIn();
 			
 		} else {

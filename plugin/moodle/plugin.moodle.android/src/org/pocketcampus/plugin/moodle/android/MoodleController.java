@@ -3,6 +3,10 @@ package org.pocketcampus.plugin.moodle.android;
 import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
 
 import java.io.File;
+import java.net.URLConnection;
+import java.net.URLDecoder;
+import java.util.Comparator;
+import java.util.Locale;
 
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.pocketcampus.android.platform.sdk.cache.RequestCache;
@@ -10,11 +14,15 @@ import org.pocketcampus.android.platform.sdk.core.AuthenticationListener;
 import org.pocketcampus.android.platform.sdk.core.GlobalContext;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.plugin.moodle.R;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleController;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.android.req.CoursesListRequest;
-import org.pocketcampus.plugin.moodle.android.req.FetchMoodleResourceRequest;
+import org.pocketcampus.plugin.moodle.android.req.DownloadMoodleFileRequest;
 import org.pocketcampus.plugin.moodle.android.req.SectionsListRequest;
+import org.pocketcampus.plugin.moodle.shared.MoodleCourse2;
+import org.pocketcampus.plugin.moodle.shared.MoodleCourseSectionsRequest2;
+import org.pocketcampus.plugin.moodle.shared.MoodleCoursesRequest2;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Client;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Iface;
 
@@ -25,6 +33,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 /**
  * MoodleController - Main logic for the Moodle Plugin.
@@ -101,6 +113,9 @@ public class MoodleController extends PluginController implements IMoodleControl
 		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 		threadSafeClient = getThreadSafeClient();
 //		threadSafeClient.setRedirectHandler(redirectNoFollow);
+
+		// initialize ImageLoader
+		ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
 	}
 	
 	@Override
@@ -134,28 +149,77 @@ public class MoodleController extends PluginController implements IMoodleControl
 		return mModel;
 	}
 	
-	public static String getLocalPath(String fileName, boolean prepareFolder) {
-		final String filePHP = "/pluginfile.php/";
-		fileName = fileName.substring(fileName.indexOf(filePHP) + filePHP.length());
-		fileName = getMoodleFilesPath() + fileName;
-		File fileDir = new File(fileName.substring(0, fileName.lastIndexOf("/")));
-		if(prepareFolder)
-			fileDir.mkdirs();
-		return fileName;
-	}
-
 	public void refreshCourseList(IMoodleView caller, boolean useCache) {
-		new CoursesListRequest(caller).setBypassCache(!useCache).start(this, mClient, null);
+		MoodleCoursesRequest2 req = new MoodleCoursesRequest2(Locale.getDefault().getLanguage());
+		new CoursesListRequest(caller).setBypassCache(!useCache).start(this, mClient, req);
 	}
 
-	public void refreshCourseSections(IMoodleView caller, String courseId, boolean useCache) {
-		new SectionsListRequest(caller).setBypassCache(!useCache).start(this, mClient, courseId);
+	public void refreshCourseSections(IMoodleView caller, int courseId, boolean useCache) {
+		MoodleCourseSectionsRequest2 req = new MoodleCourseSectionsRequest2(Locale.getDefault().getLanguage(), courseId);
+		new SectionsListRequest(caller).setBypassCache(!useCache).start(this, mClient, req);
 	}
 	
 	public void fetchFileResource(IMoodleView caller, String filePath) {
-		new FetchMoodleResourceRequest(caller, getHttpPost(mPluginName)).start(this, threadSafeClient, filePath);
+		new DownloadMoodleFileRequest(caller, getHttpPost(mPluginName)).start(this, threadSafeClient, filePath);
 	}
 	
+
+	/*****
+	 * HELPER CLASSES AND FUNCTIONS
+	 */
+	
+	public static Comparator<MoodleCourse2> getMoodleCourseItemComp4sort() {
+		return new Comparator<MoodleCourse2>() {
+			public int compare(MoodleCourse2 lhs, MoodleCourse2 rhs) {
+				return rhs.getName().compareTo(lhs.getName());
+			}
+		};
+	}
+	
+
+	public static void openFile(Context c, File file) {
+		Uri uri = Uri.fromFile(file);
+		Intent viewFileIntent = new Intent(Intent.ACTION_VIEW);
+		String guessedContentType = URLConnection.guessContentTypeFromName(file.getName());
+		if(guessedContentType == null) {
+			Toast.makeText(c.getApplicationContext(), c.getResources().getString(
+					R.string.moodle_no_app_to_handle_filetype), Toast.LENGTH_SHORT).show();
+			return;
+		}
+		viewFileIntent.setDataAndType(uri, guessedContentType);
+		viewFileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		try {
+			c.startActivity(viewFileIntent);
+		} catch(Exception e) {
+			Toast.makeText(c.getApplicationContext(), c.getResources().getString(
+					R.string.moodle_no_app_to_handle_filetype), Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+
+	public static String getPrettyName(String url) {
+		if(url == null) return null;
+		if(url.length() < 1) return "";
+		url = url.split("[?]")[0];
+		if(url.length() < 1) return "";
+		url = url.substring(url.lastIndexOf("/") + 1);
+		return URLDecoder.decode(url);
+	}
+	
+
+	public static String getLocalPath(String url, boolean prepareFolder) {
+		url = url.split("[?]")[0];
+		String filePHP = "/pluginfile.php/";
+		url = url.substring(url.indexOf(filePHP) + filePHP.length());
+		url = URLDecoder.decode(url);
+		url = getMoodleFilesPath() + url;
+		File fileDir = new File(url.substring(0, url.lastIndexOf("/")));
+		if(prepareFolder)
+			fileDir.mkdirs();
+		return url;
+	}
+
+
 	public static void pingAuthPlugin(Context context) {
 		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
 				Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticate"));
@@ -180,5 +244,6 @@ public class MoodleController extends PluginController implements IMoodleControl
 		return  extStr + "/" + PC_ANDR_CFG.getString("SDCARD_FILES_PATH") + "/moodle/files/";
 
 	}
+
 	
 }

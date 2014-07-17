@@ -28,13 +28,13 @@ import org.pocketcampus.plugin.moodle.shared.Constants;
  * @author Amer <amer.chamseddine@epfl.ch>
  *
  */
-public class FetchMoodleResourceRequest extends Request<MoodleController, DefaultHttpClient, String, Integer> {
+public class DownloadMoodleFileRequest extends Request<MoodleController, DefaultHttpClient, String, Integer> {
 	
 	private File localFile;
 	private IMoodleView caller;
 	private HttpPost post;
 	
-	public FetchMoodleResourceRequest(IMoodleView caller, HttpPost post) {
+	public DownloadMoodleFileRequest(IMoodleView caller, HttpPost post) {
 		this.caller = caller;
 		this.post = post;
 	}
