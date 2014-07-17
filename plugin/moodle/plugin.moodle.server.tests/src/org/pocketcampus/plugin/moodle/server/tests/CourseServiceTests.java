@@ -183,11 +183,17 @@ public final class CourseServiceTests {
 		assertFalse("The first resource should not be a folder.",
 				resource.isSetFolder());
 		assertEquals("The first resource's name should be fetched properly.",
-				"Attribution Aux Salles Examen Analyse II.pdf",
+				"Attribution Aux Salles Examen Analyse II",
 				resource.getFile().getName());
+		assertEquals("the first resource's extension should be fetched properly",
+				"pdf",
+				resource.getFile().getExtension());
 		assertEquals("The first resource's URL should be fetched properly.",
 				"http://moodle.epfl.ch/webservice/pluginfile.php/1570918/mod_resource/content/1/AttributionAuxSallesExamenAnalyseII.pdf?forcedownload=1",
 				resource.getFile().getUrl());
+		assertEquals("The first resource's icon URL should be fetched properly and the token should be inserted.",
+				"http://moodle.epfl.ch/theme/image.php/epfl_sb/core/1377260229/f/pdf-{size}",
+				resource.getFile().getIcon());
 	}
 
 	@Test
@@ -234,9 +240,12 @@ public final class CourseServiceTests {
 
 		MoodleFile2 file = resource.getFolder().getFiles().get(0);
 
-		assertEquals("The name of first file in the folder should be fetched properly.",
-				"convergence.bmp",
+		assertEquals("The name of the first file in the folder should be fetched properly.",
+				"convergence",
 				file.getName());
+		assertEquals("The extension of the first file in the folder should be fetched properly.",
+				"bmp",
+				file.getExtension());
 		assertEquals("The URL of first file in the folder should be fetched properly.",
 				"http://moodle.epfl.ch/webservice/pluginfile.php/1562364/mod_folder/content/2/convergence.bmp?forcedownload=1",
 				file.getUrl());
@@ -254,7 +263,7 @@ public final class CourseServiceTests {
 				1, section.getResourcesSize());
 
 		assertEquals("The only resource should be a file with the name 'Update_Semaine_01_14'.",
-				"Update_Semaine_01_14.pdf", section.getResources().get(0).getFile().getName());
+				"Update_Semaine_01_14", section.getResources().get(0).getFile().getName());
 	}
 
 	// THIS IS REALLY IMPORTANT
@@ -272,7 +281,7 @@ public final class CourseServiceTests {
 				1, section.getResourcesSize());
 
 		assertEquals("Only one file should be there. (checked by name)",
-				"Serie02v04.pdf", section.getResources().get(0).getFile().getName());
+				"Serie02v04", section.getResources().get(0).getFile().getName());
 	}
 
 	private static final class TestHttpClient implements HttpClient {

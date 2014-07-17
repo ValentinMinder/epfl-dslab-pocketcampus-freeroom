@@ -4,6 +4,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -65,6 +66,10 @@ public final class CourseServiceImpl implements CourseService {
 			DateTimeFormat.forPattern("d MMMM")
 					.withLocale(Locale.ENGLISH)
 					.withDefaultYear(DateTime.now().getYear());
+
+	// Replacement token for the size in a file icon URL
+	private static final String FILE_ICON_SIZE = "-24";
+	private static final String FILE_ICON_SIZE_TOKEN = "-{size}";
 
 	// The module types
 	private static final String MODULE_FILE = "resource";
@@ -157,7 +162,7 @@ public final class CourseServiceImpl implements CourseService {
 		} catch (Exception _) {
 			return new MoodleCourseSectionsResponse2(MoodleStatusCode2.NETWORK_ERROR, new ArrayList<MoodleCourseSection2>());
 		}
-		
+
 		// for visibility checks
 		final DateTime now = DateTime.now();
 
@@ -200,8 +205,11 @@ public final class CourseServiceImpl implements CourseService {
 					}
 
 					if (module.modname.equals(MODULE_FILE) && module.contents.length == 1) {
-						final MoodleFile2 file = new MoodleFile2(module.name, module.contents[0].fileurl);
-						file.setIcon(module.modicon.split("[-]")[0] + "-%d");
+						final String name = FilenameUtils.getBaseName(module.name);
+						final String extension = FilenameUtils.getExtension(module.contents[0].filename);
+						final String iconUrl = module.modicon.replace(FILE_ICON_SIZE, FILE_ICON_SIZE_TOKEN);
+
+						final MoodleFile2 file = new MoodleFile2(name, extension, module.contents[0].fileurl).setIcon(iconUrl);
 						moodleSection.addToResources(new MoodleResource2().setFile(file));
 					} else if (module.modname.equals(MODULE_URL) && module.contents.length == 1) {
 						final MoodleUrl2 url = new MoodleUrl2(module.name, module.contents[0].fileurl);
@@ -210,7 +218,9 @@ public final class CourseServiceImpl implements CourseService {
 						final MoodleFolder2 folder = new MoodleFolder2(module.name, new ArrayList<MoodleFile2>());
 						for (final JsonSection.Module.Content content : module.contents) {
 							// in this case the names have an extension
-							folder.addToFiles(new MoodleFile2(content.filename, content.fileurl));
+							final String name = FilenameUtils.getBaseName(content.filename);
+							final String extension = FilenameUtils.getExtension(content.filename);
+							folder.addToFiles(new MoodleFile2(name, extension, content.fileurl));
 						}
 						if (folder.getFilesSize() > 0) {
 							moodleSection.addToResources(new MoodleResource2().setFolder(folder));

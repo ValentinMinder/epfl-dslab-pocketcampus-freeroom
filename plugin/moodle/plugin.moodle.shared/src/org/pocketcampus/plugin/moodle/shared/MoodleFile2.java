@@ -23,18 +23,21 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MoodleFile2");
 
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField URL_FIELD_DESC = new org.apache.thrift.protocol.TField("url", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField ICON_FIELD_DESC = new org.apache.thrift.protocol.TField("icon", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField EXTENSION_FIELD_DESC = new org.apache.thrift.protocol.TField("extension", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField URL_FIELD_DESC = new org.apache.thrift.protocol.TField("url", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField ICON_FIELD_DESC = new org.apache.thrift.protocol.TField("icon", org.apache.thrift.protocol.TType.STRING, (short)4);
 
   private String name; // required
+  private String extension; // required
   private String url; // required
   private String icon; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     NAME((short)1, "name"),
-    URL((short)2, "url"),
-    ICON((short)3, "icon");
+    EXTENSION((short)2, "extension"),
+    URL((short)3, "url"),
+    ICON((short)4, "icon");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -51,9 +54,11 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
       switch(fieldId) {
         case 1: // NAME
           return NAME;
-        case 2: // URL
+        case 2: // EXTENSION
+          return EXTENSION;
+        case 3: // URL
           return URL;
-        case 3: // ICON
+        case 4: // ICON
           return ICON;
         default:
           return null;
@@ -101,6 +106,8 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.EXTENSION, new org.apache.thrift.meta_data.FieldMetaData("extension", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.URL, new org.apache.thrift.meta_data.FieldMetaData("url", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.ICON, new org.apache.thrift.meta_data.FieldMetaData("icon", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
@@ -114,10 +121,12 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
 
   public MoodleFile2(
     String name,
+    String extension,
     String url)
   {
     this();
     this.name = name;
+    this.extension = extension;
     this.url = url;
   }
 
@@ -127,6 +136,9 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
   public MoodleFile2(MoodleFile2 other) {
     if (other.isSetName()) {
       this.name = other.name;
+    }
+    if (other.isSetExtension()) {
+      this.extension = other.extension;
     }
     if (other.isSetUrl()) {
       this.url = other.url;
@@ -143,6 +155,7 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
   @Override
   public void clear() {
     this.name = null;
+    this.extension = null;
     this.url = null;
     this.icon = null;
   }
@@ -168,6 +181,30 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
   public void setNameIsSet(boolean value) {
     if (!value) {
       this.name = null;
+    }
+  }
+
+  public String getExtension() {
+    return this.extension;
+  }
+
+  public MoodleFile2 setExtension(String extension) {
+    this.extension = extension;
+    return this;
+  }
+
+  public void unsetExtension() {
+    this.extension = null;
+  }
+
+  /** Returns true if field extension is set (has been assigned a value) and false otherwise */
+  public boolean isSetExtension() {
+    return this.extension != null;
+  }
+
+  public void setExtensionIsSet(boolean value) {
+    if (!value) {
+      this.extension = null;
     }
   }
 
@@ -229,6 +266,14 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
       }
       break;
 
+    case EXTENSION:
+      if (value == null) {
+        unsetExtension();
+      } else {
+        setExtension((String)value);
+      }
+      break;
+
     case URL:
       if (value == null) {
         unsetUrl();
@@ -253,6 +298,9 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
     case NAME:
       return getName();
 
+    case EXTENSION:
+      return getExtension();
+
     case URL:
       return getUrl();
 
@@ -272,6 +320,8 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
     switch (field) {
     case NAME:
       return isSetName();
+    case EXTENSION:
+      return isSetExtension();
     case URL:
       return isSetUrl();
     case ICON:
@@ -299,6 +349,15 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
       if (!(this_present_name && that_present_name))
         return false;
       if (!this.name.equals(that.name))
+        return false;
+    }
+
+    boolean this_present_extension = true && this.isSetExtension();
+    boolean that_present_extension = true && that.isSetExtension();
+    if (this_present_extension || that_present_extension) {
+      if (!(this_present_extension && that_present_extension))
+        return false;
+      if (!this.extension.equals(that.extension))
         return false;
     }
 
@@ -332,6 +391,11 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
     if (present_name)
       builder.append(name);
 
+    boolean present_extension = true && (isSetExtension());
+    builder.append(present_extension);
+    if (present_extension)
+      builder.append(extension);
+
     boolean present_url = true && (isSetUrl());
     builder.append(present_url);
     if (present_url)
@@ -359,6 +423,16 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
     }
     if (isSetName()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.name, typedOther.name);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetExtension()).compareTo(typedOther.isSetExtension());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetExtension()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.extension, typedOther.extension);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -407,14 +481,21 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // URL
+        case 2: // EXTENSION
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.extension = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 3: // URL
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.url = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // ICON
+        case 4: // ICON
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.icon = iprot.readString();
           } else { 
@@ -439,6 +520,11 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
     if (this.name != null) {
       oprot.writeFieldBegin(NAME_FIELD_DESC);
       oprot.writeString(this.name);
+      oprot.writeFieldEnd();
+    }
+    if (this.extension != null) {
+      oprot.writeFieldBegin(EXTENSION_FIELD_DESC);
+      oprot.writeString(this.extension);
       oprot.writeFieldEnd();
     }
     if (this.url != null) {
@@ -470,6 +556,14 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
     }
     first = false;
     if (!first) sb.append(", ");
+    sb.append("extension:");
+    if (this.extension == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.extension);
+    }
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("url:");
     if (this.url == null) {
       sb.append("null");
@@ -495,6 +589,9 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
     // check for required fields
     if (name == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'name' was not present! Struct: " + toString());
+    }
+    if (extension == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'extension' was not present! Struct: " + toString());
     }
     if (url == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'url' was not present! Struct: " + toString());

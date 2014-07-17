@@ -63,12 +63,15 @@ struct SectionsListReply {
 // NEW STUFF - USE THIS!
 
 struct MoodleFile2 {
-    // File name, including the extension
+    // File name
     1: required string name;
+    // File extension
+    2: required string extension;
     // Download URL (use the PocketCampus moodle proxy for it)
-    2: required string url;
-    // Icon URL (easy for user to see the file type)
-    3: optional string icon;
+    3: required string url;
+    // Moodle file icon URL, contains a {size} token which can be powers of 2 up to 256, as well as smaller sizes like 24.
+    // Not provided for files inside a folder, unfortunately.
+    4: optional string icon;
 }
 
 struct MoodleFolder2 {
