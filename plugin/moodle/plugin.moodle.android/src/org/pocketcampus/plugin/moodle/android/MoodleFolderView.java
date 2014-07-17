@@ -276,7 +276,8 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 				.setCustomTitle(titleV)
 				.setAdapter(new ArrayAdapter<String>(context, android.R.layout.select_dialog_item, 
 						new String[] {context.getString(R.string.moodle_filemenu_open), 
-								context.getString(R.string.moodle_filemenu_redownload), 
+								context.getString(R.string.moodle_filemenu_share),
+								context.getString(R.string.moodle_filemenu_redownload),
 								context.getString(R.string.moodle_filemenu_delete)}), 
 						new DialogInterface.OnClickListener() {
 
@@ -288,10 +289,14 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 							MoodleController.openFile(context, file);
 							break;
 						case 1:
+							context.trackEvent("Share", item.getName());
+							MoodleController.shareFile(context, file);
+							break;
+						case 2:
 							context.trackEvent("ReDownload", item.getName());
 							controller.fetchFileResource(context, item.getUrl());
 							break;
-						case 2:
+						case 3:
 							context.trackEvent("Delete", item.getName());
 							file.delete();
 							context.updateDisplay();

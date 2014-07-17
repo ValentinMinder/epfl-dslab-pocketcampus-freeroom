@@ -16,6 +16,7 @@
     <string name="moodle_string_xfiles">%d fichier(s)</string>
     
     <string name="moodle_filemenu_open">Ouvrir</string>
+    <string name="moodle_filemenu_share">Partager</string>
     <string name="moodle_filemenu_redownload">Télécharger de nouveau</string>
     <string name="moodle_filemenu_delete">Supprimer</string>
     

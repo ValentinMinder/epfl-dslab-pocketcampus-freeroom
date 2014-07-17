@@ -195,6 +195,22 @@ public class MoodleController extends PluginController implements IMoodleControl
 					R.string.moodle_no_app_to_handle_filetype), Toast.LENGTH_SHORT).show();
 		}
 	}
+
+	public static void shareFile(Context c, File file) {
+		Uri uri = Uri.fromFile(file);
+		Intent shareFileIntent = new Intent(Intent.ACTION_SEND);
+		String guessedContentType = URLConnection.guessContentTypeFromName(file.getName());
+		if(guessedContentType == null)
+			guessedContentType = "*/*";
+		shareFileIntent.setType(guessedContentType);
+		shareFileIntent.putExtra(Intent.EXTRA_STREAM, uri);
+		try {
+			c.startActivity(shareFileIntent);
+		} catch(Exception e) {
+			Toast.makeText(c.getApplicationContext(), c.getResources().getString(
+					R.string.moodle_no_app_to_handle_filetype), Toast.LENGTH_SHORT).show();
+		}
+	}
 	
 
 	public static String getPrettyName(String url) {
