@@ -355,7 +355,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 		}
 		
 		
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.event_list_header);
+		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.sdk_separated_list_header2);
 		List<Integer> categList = new ArrayList<Integer>(filteredCategs);
 		Collections.sort(categList);
 		for(int i : categList) {

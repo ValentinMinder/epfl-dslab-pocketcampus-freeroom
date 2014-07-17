@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.7.0.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/commons-io-2.0.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.android"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/universal-image-loader-1.8.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

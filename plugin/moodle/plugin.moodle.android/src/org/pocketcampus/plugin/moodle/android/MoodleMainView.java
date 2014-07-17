@@ -1,31 +1,33 @@
 package org.pocketcampus.plugin.moodle.android;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
-import org.pocketcampus.platform.android.ui.layout.StandardTitledLayout;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
+import org.pocketcampus.platform.android.ui.layout.StandardLayout;
+import org.pocketcampus.platform.android.utils.Preparated;
+import org.pocketcampus.platform.android.utils.Preparator;
+import org.pocketcampus.platform.android.utils.ScrollStateSaver;
 import org.pocketcampus.plugin.moodle.R;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
-import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
+import org.pocketcampus.plugin.moodle.shared.MoodleCourse2;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 /**
  * MoodleMainView - Main view that shows Moodle courses.
@@ -44,8 +46,17 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	private MoodleController mController;
 	private MoodleModel mModel;
 	
-	private StandardTitledLayout mLayout;
+	public static final String MAP_KEY_MOODLECOURSEID = "MOODLE_COURSE_ID";
+	public static final String MAP_KEY_MOODLECOURSETITLE = "MOODLE_COURSE_TITLE";
+
+	private boolean displayingList;
+
+//	private Map<String, String> feedsInRS = new HashMap<String, String>();
+//	private Set<String> filteredFeeds = new HashSet<String>();
 	
+	ListView mList;
+	ScrollStateSaver scrollState;
+
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return MoodleController.class;
@@ -58,12 +69,9 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		mController = (MoodleController) controller;
 		mModel = (MoodleModel) controller.getModel();
 
-		// Setup the layout
-		mLayout = new StandardTitledLayout(this);
-
-		// The ActionBar is added automatically when you call setContentView
-		setContentView(mLayout);
-		mLayout.hideTitle();
+		setContentView(R.layout.moodle_main_container);
+		mList = (ListView) findViewById(R.id.moodle_main_list);
+		displayingList = true;
 
 		setActionBarTitle(getString(R.string.moodle_plugin_title));
 	}
@@ -78,7 +86,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	@Override
 	protected void handleIntent(Intent aIntent) {
 		
-		if(MoodleController.sessionExists(this))
+		if(MoodleController.sessionExists(this)) // I think this is no longer necessary, since the auth plugin doesnt blindly redo auth (well, this saves the one call that the auth plugin does to check if the session is valid)
 			mController.refreshCourseList(this, false);
 		else
 			MoodleController.pingAuthPlugin(this);
@@ -88,22 +96,20 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		
 	}
 
-	/**
-	 * This is called when the Activity is resumed.
-	 * 
-	 * If the user presses back on the Authentication window,
-	 * This Activity is resumed but we do not have the
-	 * moodleCookie. In this case we close the Activity.
-	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
-		/*if(mModel != null && mModel.getMoodleCookie() == null) {
-			// Resumed and lot logged in? go back
-			finish();
-		}*/
+		if(displayingList && scrollState != null)
+			scrollState.restore(mList);
 	}
-	
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if(displayingList && mList != null)
+			scrollState = new ScrollStateSaver(mList);
+	}
+		
 	@Override
 	protected String screenName() {
 		return "/moodle";
@@ -111,67 +117,94 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 
 	@Override
 	public void coursesListUpdated() {
-		List<MoodleCourse> ltb = mModel.getCourses();
-		if(ltb == null)
-			return;
+		updateDisplay();
+	}
+	
+	public void updateDisplay() {
 		
-		ArrayList<CourseInfo> einfos = new ArrayList<CourseInfo>();
-		// add title
-		einfos.add(new CourseInfo(getResources().getString(R.string.moodle_courses_view_title), null, true));
-		// add courses
-		for(MoodleCourse i : ltb) {
-			einfos.add(new CourseInfo(i.getITitle(), i.getIId() + "", false));
-		}
-		ListView lv = new ListView(this);
-		lv.setAdapter(new CoursesListAdapter(this, R.layout.moodle_course_record, einfos));
-		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		lv.setLayoutParams(p);
+		List<MoodleCourse2> courses = mModel.getCourses();
 
-		lv.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				CourseInfo courseInfo = ((CourseInfo) arg0.getItemAtPosition(arg2));
-				Intent i = new Intent(MoodleMainView.this, MoodleCurrentWeekView.class);
-				i.putExtra("courseId", courseInfo.value);
-				i.putExtra("courseTitle", courseInfo.title);
-				MoodleMainView.this.startActivity(i);
-				trackEvent("ViewCourse", courseInfo.value + "-" + courseInfo.title);
+		if(displayingList)
+			scrollState = new ScrollStateSaver(mList);
+		
+
+		
+		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.sdk_separated_list_header2);
+
+		Collections.sort(courses, MoodleController.getMoodleCourseItemComp4sort());
+		
+		Preparated<MoodleCourse2> p = new Preparated<MoodleCourse2>(courses, new Preparator<MoodleCourse2>() {
+			public int[] resources() {
+				return new int[] { R.id.moodle_courselist_coursetitle };
+			}
+			public Object content(int res, final MoodleCourse2 e) {
+				switch (res) {
+				case R.id.moodle_courselist_coursetitle:
+					return e.getName();
+				default:
+					return null;
+				}
+			}
+			public void finalize(Map<String, Object> map, MoodleCourse2 item) {
+				map.put(MAP_KEY_MOODLECOURSEID, item.getCourseId());
+				map.put(MAP_KEY_MOODLECOURSETITLE, item.getName());
 			}
 		});
-		//lv.setItemsCanFocus(true);
-		//lv.setClickable(true);
-		//lv.setFocusableInTouchMode(true);
-		//lv.setDrawSelectorOnTop(true);
+		adapter.addSection(getString(R.string.moodle_string_courses), new LazyAdapter(this, p.getMap(), 
+				R.layout.moodle_main_course_entry, p.getKeys(), p.getResources()));
 		
-		mLayout.hideTitle();
-		mLayout.removeFillerView();
-		mLayout.addFillerView(lv);
+		if(courses.size() == 0) {
+			displayingList = false;
+			StandardLayout sl = new StandardLayout(this);
+			sl.setText(getString(R.string.moodle_string_no_courses));
+			setContentView(sl);
+		} else {
+			
+			
+			if(!displayingList) {
+				setContentView(R.layout.moodle_main_container);
+				mList = (ListView) findViewById(R.id.moodle_main_list);
+				displayingList = true;
+			}
+			mList.setAdapter(adapter);
+			
+			mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
+			
+			mList.setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					Object o = arg0.getItemAtPosition(arg2);
+					if(o instanceof Map<?, ?>) {
+						Integer eId = (Integer) ((Map<?, ?>) o).get(MAP_KEY_MOODLECOURSEID);
+						String eTitle = (String) ((Map<?, ?>) o).get(MAP_KEY_MOODLECOURSETITLE);
+						Intent i = new Intent(MoodleMainView.this, MoodleCourseView.class);
+						i.putExtra(MoodleCourseView.EXTRAS_KEY_MOODLECOURSEID, (int) eId);
+						i.putExtra(MoodleCourseView.EXTRAS_KEY_MOODLECOURSETITLE, eTitle);
+						MoodleMainView.this.startActivity(i);
+						trackEvent("ViewCourse", eId + "-" + eTitle);
+					} else {
+						Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+			
+			if(scrollState != null)
+				scrollState.restore(mList);
+			
+		}
+		
+				
+		
+		
+		
 	}
 
 	@Override
 	public void sectionsListUpdated() {
 	}
 
-	/*public static void pingAuthPlugin(Context context) {
-		Intent authIntent = new Intent(Intent.ACTION_VIEW,
-				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=moodle"));
-		context.startActivity(authIntent);
-	}*/
-	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.moodle_main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		/*if(item.getItemId() == R.id.moodle_menu_events) {
-			Intent i = new Intent(this, MoodleEventsView.class);
-			startActivity(i);
-		}*/
-		return true;
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		return false;
 	}
 	
 	@Override
@@ -223,66 +256,5 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		
 	}
 
-
-	/*****
-	 * HELPER CLASSES AND FUNCTIONS
-	 */
-	
-	public class CourseInfo {
-		CourseInfo(String t, String v, boolean s) {
-			title = t;
-			value = v;
-			isSeparator = s;
-		}
-		public String title;
-		public String value;
-		public boolean isSeparator;
-	}
-	
-	public class CoursesListAdapter extends ArrayAdapter<CourseInfo> {
-
-		private LayoutInflater li;
-		private int rid;
-		
-		public CoursesListAdapter(Context context, int textViewResourceId, List<CourseInfo> list) {
-			super(context, textViewResourceId, list);
-			li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			rid = textViewResourceId;
-		}
-	
-		@Override
-		public View getView(int position, View v, ViewGroup parent) {
-	        CourseInfo t = getItem(position);
-	        if(t.isSeparator) {
-				v = li.inflate(R.layout.sdk_sectioned_list_item_section, null);
-		        TextView tv;
-		        tv = (TextView)v.findViewById(R.id.PCSectioned_list_item_section_text);
-		        if(t.title != null)
-		        	tv.setText(t.title);
-		        else
-		        	tv.setVisibility(View.GONE);
-		        tv = (TextView)v.findViewById(R.id.PCSectioned_list_item_section_description);
-		        if(t.value != null)
-		        	tv.setText(t.value);
-		        else
-		        	tv.setVisibility(View.GONE);
-	        } else {
-	            v = li.inflate(rid, null);
-		        TextView tv;
-		        tv = (TextView)v.findViewById(R.id.moodle_course_title);
-		        if(t.title != null)
-		        	tv.setText(t.title);
-		        else
-		        	tv.setVisibility(View.GONE);
-		        tv = (TextView)v.findViewById(R.id.moodle_course_instructor);
-		        if(t.value != null)
-		        	tv.setVisibility(View.GONE);//tv.setText(t.value);
-		        else
-		        	tv.setVisibility(View.GONE);
-	        }
-	        return v;
-		}
-		
-	}
 
 }

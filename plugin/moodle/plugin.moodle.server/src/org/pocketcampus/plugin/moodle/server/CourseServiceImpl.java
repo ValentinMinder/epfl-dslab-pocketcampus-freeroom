@@ -4,7 +4,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -201,14 +200,8 @@ public final class CourseServiceImpl implements CourseService {
 					}
 
 					if (module.modname.equals(MODULE_FILE) && module.contents.length == 1) {
-						// The module name is more descriptive but doesn't always have an extension, which we need
-						// The file name has one, but is less descriptive
-						// Also, note that FilenameUtils returns extensions without the separator.
-						final String fileName = FilenameUtils.getBaseName(module.name);
-						final String fileExt = FilenameUtils.getExtension(module.contents[0].filename);
-						final String fullName = fileName + FilenameUtils.EXTENSION_SEPARATOR_STR + fileExt;
-
-						final MoodleFile2 file = new MoodleFile2(fullName, module.contents[0].fileurl);
+						final MoodleFile2 file = new MoodleFile2(module.name, module.contents[0].fileurl);
+						file.setIcon(module.modicon.split("[-]")[0] + "-%d");
 						moodleSection.addToResources(new MoodleResource2().setFile(file));
 					} else if (module.modname.equals(MODULE_URL) && module.contents.length == 1) {
 						final MoodleUrl2 url = new MoodleUrl2(module.name, module.contents[0].fileurl);
@@ -260,6 +253,7 @@ public final class CourseServiceImpl implements CourseService {
 			public String name;
 			public int visible;
 			public String modname;
+			public String modicon;
 			public long availablefrom;
 			public long availableuntil;
 			public Content[] contents;

@@ -24,14 +24,17 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
 
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField URL_FIELD_DESC = new org.apache.thrift.protocol.TField("url", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField ICON_FIELD_DESC = new org.apache.thrift.protocol.TField("icon", org.apache.thrift.protocol.TType.STRING, (short)3);
 
   private String name; // required
   private String url; // required
+  private String icon; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     NAME((short)1, "name"),
-    URL((short)2, "url");
+    URL((short)2, "url"),
+    ICON((short)3, "icon");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -50,6 +53,8 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
           return NAME;
         case 2: // URL
           return URL;
+        case 3: // ICON
+          return ICON;
         default:
           return null;
       }
@@ -98,6 +103,8 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.URL, new org.apache.thrift.meta_data.FieldMetaData("url", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.ICON, new org.apache.thrift.meta_data.FieldMetaData("icon", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MoodleFile2.class, metaDataMap);
   }
@@ -124,6 +131,9 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
     if (other.isSetUrl()) {
       this.url = other.url;
     }
+    if (other.isSetIcon()) {
+      this.icon = other.icon;
+    }
   }
 
   public MoodleFile2 deepCopy() {
@@ -134,6 +144,7 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
   public void clear() {
     this.name = null;
     this.url = null;
+    this.icon = null;
   }
 
   public String getName() {
@@ -184,6 +195,30 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
     }
   }
 
+  public String getIcon() {
+    return this.icon;
+  }
+
+  public MoodleFile2 setIcon(String icon) {
+    this.icon = icon;
+    return this;
+  }
+
+  public void unsetIcon() {
+    this.icon = null;
+  }
+
+  /** Returns true if field icon is set (has been assigned a value) and false otherwise */
+  public boolean isSetIcon() {
+    return this.icon != null;
+  }
+
+  public void setIconIsSet(boolean value) {
+    if (!value) {
+      this.icon = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case NAME:
@@ -202,6 +237,14 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
       }
       break;
 
+    case ICON:
+      if (value == null) {
+        unsetIcon();
+      } else {
+        setIcon((String)value);
+      }
+      break;
+
     }
   }
 
@@ -212,6 +255,9 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
 
     case URL:
       return getUrl();
+
+    case ICON:
+      return getIcon();
 
     }
     throw new IllegalStateException();
@@ -228,6 +274,8 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
       return isSetName();
     case URL:
       return isSetUrl();
+    case ICON:
+      return isSetIcon();
     }
     throw new IllegalStateException();
   }
@@ -263,6 +311,15 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
         return false;
     }
 
+    boolean this_present_icon = true && this.isSetIcon();
+    boolean that_present_icon = true && that.isSetIcon();
+    if (this_present_icon || that_present_icon) {
+      if (!(this_present_icon && that_present_icon))
+        return false;
+      if (!this.icon.equals(that.icon))
+        return false;
+    }
+
     return true;
   }
 
@@ -279,6 +336,11 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
     builder.append(present_url);
     if (present_url)
       builder.append(url);
+
+    boolean present_icon = true && (isSetIcon());
+    builder.append(present_icon);
+    if (present_icon)
+      builder.append(icon);
 
     return builder.toHashCode();
   }
@@ -307,6 +369,16 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
     }
     if (isSetUrl()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.url, typedOther.url);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetIcon()).compareTo(typedOther.isSetIcon());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetIcon()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.icon, typedOther.icon);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -342,6 +414,13 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 3: // ICON
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.icon = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -367,6 +446,13 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
       oprot.writeString(this.url);
       oprot.writeFieldEnd();
     }
+    if (this.icon != null) {
+      if (isSetIcon()) {
+        oprot.writeFieldBegin(ICON_FIELD_DESC);
+        oprot.writeString(this.icon);
+        oprot.writeFieldEnd();
+      }
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -391,6 +477,16 @@ public class MoodleFile2 implements org.apache.thrift.TBase<MoodleFile2, MoodleF
       sb.append(this.url);
     }
     first = false;
+    if (isSetIcon()) {
+      if (!first) sb.append(", ");
+      sb.append("icon:");
+      if (this.icon == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.icon);
+      }
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }
