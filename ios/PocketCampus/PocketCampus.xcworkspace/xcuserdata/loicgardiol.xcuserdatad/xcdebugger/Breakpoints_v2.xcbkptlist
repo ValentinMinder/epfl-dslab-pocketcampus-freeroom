@@ -3944,8 +3944,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "376"
             endingLineNumber = "376"
-            landmarkName = "@implementation IsAcademiaDayScheduleViewController"
-            landmarkType = "3">
+            landmarkName = "-calendarDayTimelineView:eventsForDate:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3960,7 +3960,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "345"
             endingLineNumber = "345"
-            landmarkName = "-calendarDayTimelineView:eventsForDate:"
+            landmarkName = "-calendarDayTimelineView:eventViewWasSelected:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4949,7 +4949,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "302"
             endingLineNumber = "302"
-            landmarkName = "-calendarDayTimelineView:didMoveToDate:"
+            landmarkName = "-actionSheet:willDismissWithButtonIndex:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
