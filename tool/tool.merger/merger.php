@@ -105,7 +105,7 @@ function generate_android_manifest($output_dir, $is_lib){
 
 function generate_ant_properties($output_dir){
 	$content = "";
-	$content .= "key.store=../../misc/keystore/pocketcampus-key.keystore\n";
+	$content .= "key.store=pocketcampus-key.keystore\n";
 	$content .= "key.alias=mykey\n";
 	//$content .= "key.store.password=XXXXXXXXXXXXXXXXXXXXXXXXX\n";
 	//$content .= "key.alias.password=XXXXXXXXXXXXXXXXXXXXXXXXX\n";
