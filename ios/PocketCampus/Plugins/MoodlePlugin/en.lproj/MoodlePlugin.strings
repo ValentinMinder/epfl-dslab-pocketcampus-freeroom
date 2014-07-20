@@ -32,10 +32,14 @@
 "AllDocsWillBeDeletedExplanation" = "All documents of all courses will be deleted.\nYou will need to download them again to read them.";
 "DeleteAll" = "Delete all";
 
+//MoodleResourceCell
+"FolderNbElementsWithFormat" = "Folder (%d elements)";
 
 //Accessibility
 "ShowsDocumentsForThisCourse" = "Shows documents for this course.";
 "DocumentDescriptionWithFormat" = "%@, '%@' file, downloaded: %@";
+"FolderDescriptionWithFormat" = "%@, folder containing %d files";
+"LinkDescriptionWithFormat" = "%@, external link";
 "AddDocumentToFavorites" = "Add this document to favorites";
 "RemoveDocumentFromFavorites" = "Remove this document from favorites";
 "DeleteDocumentFromLocalStorage" = "Delete this document from local storage";

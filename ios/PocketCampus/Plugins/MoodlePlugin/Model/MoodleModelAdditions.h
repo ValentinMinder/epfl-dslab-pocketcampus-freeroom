@@ -31,6 +31,8 @@
 
 extern NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey;
 
+#pragma mark - Old
+
 @interface MoodleResource (Additions)<NSCopying>
 
 /*
@@ -58,5 +60,102 @@ extern NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey;
 @end
 
 @interface MoodleSection (Additions)<NSCopying>
+
+@end
+
+#pragma mark - New
+
+@protocol MoodleItemDefaults <NSObject>
+
+/**
+ * @param item must be of the type of the class implementing the protocol
+ * Should empty dictionary if setDefaultsDictionary:forMoodleItem: never called before
+ */
+@required
++ (NSDictionary*)defaultsDictionaryForMoodleItem:(id)item;
++ (void)setDefaultsDictionary:(NSDictionary*)defaultsDic forMoodleItem:(id)item;
+
+@end
+
+@interface MoodleCourseSection2 (Additions)<NSCopying> // Shallow copy (no property is deep copied, just pointing to same things)
+
+/**
+ * @return YES if current date is between startDate and endDate
+ */
+@property (nonatomic, readonly) BOOL isCurrent;
+
+@end
+
+@interface MoodleResource2 (Additions)<NSCopying>
+
+/**
+ * @return first non-nil among self.file, self.folder, self.url, or nil if all are nil
+ */
+@property (nonatomic, readonly) id item;
+
+/**
+ * @return name of self.item if exists
+ */
+@property (nonatomic, readonly) NSString* name;
+
+- (BOOL)isEqual:(id)object;
+
+/**
+ * Propagates equality to self.item
+ */
+- (BOOL)isEqualToMoodleResource:(MoodleResource2*)otherResource;
+
+/**
+ * Propagates hash to self.item
+ */
+- (NSUInteger)hash;
+
+@end
+
+@interface MoodleFile2 (Additions)<MoodleItemDefaults>
+
+/**
+ * @return last path component of url
+ * E.g. homework1.pdf
+ */
+@property (nonatomic, readonly) NSString* filename;
+
+/*
+ * Returns filename's extension in capitals
+ * E.g. PDF, ZIP, ...
+ */
+@property (nonatomic, readonly) NSString* fileExtension;
+
+- (BOOL)isEqual:(id)object;
+- (NSUInteger)hash;
+
+/**
+ * @return YES if urls are equal
+ */
+- (BOOL)isEqualToMoodleFile:(MoodleFile2*)otherFile;
+
+@end
+
+@interface MoodleFolder2 (Additions)
+
+- (BOOL)isEqual:(id)object;
+- (NSUInteger)hash;
+
+/**
+ * @return YES if name and all files are equal
+ */
+- (BOOL)isEqualToMoodleFolder:(MoodleFolder2*)otherFolder;
+
+@end
+
+@interface MoodleUrl2 (Additions)
+
+- (BOOL)isEqual:(id)object;
+- (NSUInteger)hash;
+
+/**
+ * @return YES if name and all files are equal
+ */
+- (BOOL)isEqualToMoodleUrl:(MoodleUrl2*)otherUrl;
 
 @end

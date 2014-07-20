@@ -1856,12 +1856,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
-            filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-            timestampString = "425913499.372948"
+            filePath = "Plugins/MoodlePlugin/Controllers/MoodleFileViewController.m"
+            timestampString = "427574848.855833"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "350"
-            endingLineNumber = "350"
+            startingLineNumber = "351"
+            endingLineNumber = "351"
             landmarkName = "-loadDownloadedMoodleResourceInWebView"
             landmarkType = "5">
             <Actions>
@@ -1882,12 +1882,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Model/MoodleService.m"
-            timestampString = "425919800.257929"
+            timestampString = "427579547.345293"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "370"
-            endingLineNumber = "370"
-            landmarkName = "-removeMoodleResourceObserver:forResource:"
+            startingLineNumber = "431"
+            endingLineNumber = "431"
+            landmarkName = "-removeMoodleFileObserver:forFile:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1898,11 +1898,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Model/MoodleService.m"
-            timestampString = "425919800.257929"
+            timestampString = "427579547.345293"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "390"
-            endingLineNumber = "390"
+            startingLineNumber = "451"
+            endingLineNumber = "451"
             landmarkName = "-resourcesDownloadSessionManager"
             landmarkType = "5">
          </BreakpointContent>

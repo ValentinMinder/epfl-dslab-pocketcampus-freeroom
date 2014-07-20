@@ -33,9 +33,10 @@
 #import <objc/runtime.h>
 
 NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey = @"SaveDocsPositionGeneralSettingBool";
-NSString* const kMoodleSavePositionResourceSettingBoolKey = @"SavePositionResourceSettingBool";
 
-@implementation MoodleResource (Comparison)
+#pragma mark - Old
+
+@implementation MoodleResource (Additions)
 
 - (NSString*)filename {
     static NSString* key;
@@ -94,11 +95,6 @@ NSString* const kMoodleSavePositionResourceSettingBoolKey = @"SavePositionResour
         resourceDic = [NSMutableDictionary dictionary];
     }
     
-    //filling with default values
-    if (!resourceDic[kMoodleSavePositionResourceSettingBoolKey]) {
-        resourceDic[kMoodleSavePositionResourceSettingBoolKey] = @YES;
-    }
-    
     return resourceDic;
 }
 
@@ -127,6 +123,228 @@ NSString* const kMoodleSavePositionResourceSettingBoolKey = @"SavePositionResour
     newInstance.iEndDate = self.iEndDate;
     newInstance.iCurrent = self.iCurrent;
     return newInstance;
+}
+
+@end
+
+#pragma mark - New
+
+@implementation MoodleCourseSection2 (Additions)
+
+- (BOOL)isCurrent {
+#warning REMOVE
+    if ([self.title isEqualToString:@"General"]) {
+        return YES;
+    }
+    
+    
+    if (self.title) {
+        return NO;
+    }
+    long long currentTimestamp = (long long)[NSDate timeIntervalSinceReferenceDate];
+    if (currentTimestamp < self.startDate || currentTimestamp > self.endDate) {
+        return NO;
+    }
+    return YES;
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    MoodleCourseSection2* newInstance = [[[self class] allocWithZone:zone] init];
+    newInstance.resources = self.resources;
+    newInstance.title = self.title;
+    newInstance.startDate = self.startDate;
+    newInstance.endDate = self.endDate;
+    newInstance.details = self.details;
+    return newInstance;
+}
+
+@end
+
+@implementation MoodleResource2 (Additions)
+
+- (id)item {
+    if (self.file) {
+        return self.file;
+    }
+    if (self.folder) {
+        return self.folder;
+    }
+    if (self.url) {
+        return self.url;
+    }
+    return nil;
+}
+
+- (NSString*)name {
+    if (self.file) {
+        return self.file.name;
+    }
+    if (self.folder) {
+        return self.folder.name;
+    }
+    if (self.url) {
+        return self.url.name;
+    }
+    return nil;
+}
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+    if (![object isKindOfClass:[self class]]) {
+        return NO;
+    }
+    return [self isEqualToMoodleResource:object];
+}
+
+- (BOOL)isEqualToMoodleResource:(MoodleResource2*)moodleResource {
+    return [self.item isEqual:moodleResource.item];
+}
+
+- (NSUInteger)hash {
+    NSUInteger hash = 0;
+    hash += [self.item hash];
+    return hash;
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    MoodleResource2* newInstance = [[[self class] allocWithZone:zone] init];
+    newInstance.file = self.file;
+    newInstance.folder = self.folder;
+    newInstance.url = self.url;
+    return newInstance;
+}
+
+
+@end
+
+@implementation MoodleFile2 (Additions)
+
+- (NSString*)filename {
+    if (!self.url) {
+        return nil;
+    }
+    static NSString* key;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        key = NSStringFromSelector(_cmd);
+    });
+    id value = objc_getAssociatedObject(self, (__bridge const void *)(key));
+    if (!value) {
+        //Trick to remove url query paramters if any (we don't want them for the filename)
+        //http://stackoverflow.com/a/4272070/1423774
+        NSURL* url = [NSURL URLWithString:self.url];
+        url = [[NSURL alloc] initWithScheme:url.scheme host:url.host path:url.path];
+        value = [[[url absoluteString] pathComponents] lastObject];
+        value = [value stringByRemovingPercentEncoding];
+        objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return value;
+}
+
+- (NSString*)fileExtension {
+    return [self.filename pathExtension];
+}
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+    if (![object isKindOfClass:[self class]]) {
+        return NO;
+    }
+    return [self isEqualToMoodleFile:object];
+}
+
+- (BOOL)isEqualToMoodleFile:(MoodleFile2 *)otherFile {
+    return [self.url isEqual:otherFile.url];
+}
+
+- (NSUInteger)hash {
+    NSUInteger hash = 0;
+    hash += [self.url hash];
+    return hash;
+}
+
+#pragma mark MoodleItemDefaults protocol
+
++ (NSDictionary*)defaultsDictionaryForMoodleItem:(id)item {
+    [PCUtils throwExceptionIfObject:item notKindOfClass:[MoodleFile2 class]];
+    MoodleFile2* file = (MoodleFile2*)item;
+    NSUserDefaults* moodleDefaults = [PCPersistenceManager userDefaultsForPluginName:@"moodle"];
+    NSMutableDictionary* resourceDic = [[moodleDefaults objectForKey:[self keyForDefaultsDictionaryForMoodleFile:file]] mutableCopy];
+    if (!resourceDic) {
+        resourceDic = [NSMutableDictionary dictionary];
+    }
+    return resourceDic;
+}
+
++ (void)setDefaultsDictionary:(NSDictionary*)defaultsDic forMoodleItem:(id)item; {
+    [PCUtils throwExceptionIfObject:item notKindOfClass:[MoodleFile2 class]];
+    MoodleFile2* file = (MoodleFile2*)item;
+    NSUserDefaults* moodleDefaults = [PCPersistenceManager userDefaultsForPluginName:@"moodle"];
+    [moodleDefaults setObject:defaultsDic forKey:[self keyForDefaultsDictionaryForMoodleFile:file]];
+}
+
+#pragma mark Private
+
++ (NSString*)keyForDefaultsDictionaryForMoodleFile:(MoodleFile2*)file {
+    static NSString* const kDicPostfix = @"MoodleFileDictionary";
+    return [kDicPostfix stringByAppendingFormat:@"%u", [file.url hash]];
+}
+
+@end
+
+@implementation MoodleFolder2 (Additions)
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+    if (![object isKindOfClass:[self class]]) {
+        return NO;
+    }
+    return [self isEqualToMoodleFolder:object];
+}
+
+- (BOOL)isEqualToMoodleFolder:(MoodleFolder2 *)otherFolder {
+    if (![self.name isEqual:otherFolder.name]) {
+        return NO;
+    }
+    return [self.files isEqualToArray:otherFolder.files];
+}
+
+- (NSUInteger)hash {
+    NSUInteger hash = 0;
+    for (MoodleFile2* file in self.files) {
+        hash += [file hash];
+    }
+    return hash;
+}
+
+@end
+
+@implementation MoodleUrl2 (Additions)
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+    if (![object isKindOfClass:[self class]]) {
+        return NO;
+    }
+    return [self isEqualToMoodleUrl:object];
+}
+
+- (BOOL)isEqualToMoodleUrl:(MoodleUrl2 *)otherUrl {
+    return [self.url isEqual:otherUrl.url];
+}
+
+- (NSUInteger)hash {
+    NSUInteger hash = 0;
+    hash += [self.url hash];
+    return hash;
 }
 
 @end

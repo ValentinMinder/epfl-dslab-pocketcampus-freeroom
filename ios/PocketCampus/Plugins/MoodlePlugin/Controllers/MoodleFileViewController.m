@@ -27,7 +27,7 @@
 
 //  Created by Loïc Gardiol on 04.12.12.
 
-#import "MoodleResourceViewController.h"
+#import "MoodleFileViewController.h"
 
 #import "UIActionSheet+Additions.h"
 
@@ -43,14 +43,14 @@
 
 static NSTimeInterval kHideNavbarSeconds = 5.0;
 
-@interface MoodleResourceViewController ()<UIGestureRecognizerDelegate, UIWebViewDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate>
+@interface MoodleFileViewController ()<UIGestureRecognizerDelegate, UIWebViewDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate>
 
 @property (nonatomic, weak) IBOutlet UIWebView* webView;
 @property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
 @property (nonatomic, weak) IBOutlet UIProgressView* progressView;
 
 @property (nonatomic, strong) MoodleService* moodleService;
-@property (nonatomic, strong) MoodleResource* moodleResource;
+@property (nonatomic, strong) MoodleFile2* moodleFile;
 @property (nonatomic, strong) UIActionSheet* deleteActionSheet;
 @property (nonatomic, strong) UIDocumentInteractionController* docController;
 @property (nonatomic, strong) UITapGestureRecognizer* tapGestureReco;
@@ -64,16 +64,16 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 @end
 
-@implementation MoodleResourceViewController
+@implementation MoodleFileViewController
 
 #pragma mark - Init
 
-- (id)initWithMoodleResource:(MoodleResource*)moodleResource {
-    self = [super initWithNibName:@"MoodleResourceView" bundle:nil];
+- (id)initWithMoodleFile:(MoodleFile2*)moodleFile {
+    self = [super initWithNibName:@"MoodleFileView" bundle:nil];
     if (self) {
         self.gaiScreenName = @"/moodle/course/document";
-        self.moodleResource = moodleResource;
-        self.title = moodleResource.iName; //enough space to display title if iPad
+        self.moodleFile = moodleFile;
+        self.title = moodleFile.name; //enough space to display title if iPad
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.lastKnownContentSize = CGSizeZero;
     }
@@ -85,6 +85,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.webView.hidden = YES;
     
     self.progressView.progress = 0.0;
@@ -102,7 +103,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     actionButton.enabled = NO;
     [rightButtons addObject:actionButton];
     
-    BOOL isFavorite = [self.moodleService isFavoriteMoodleResource:self.moodleResource];
+    BOOL isFavorite = [self.moodleService isFavoriteMoodleItem:self.moodleFile];
     UIImage* favoriteImage = [PCValues imageForFavoriteNavBarButtonLandscapePhone:NO glow:isFavorite];
     UIImage* favoriteImageLandscape = [PCValues imageForFavoriteNavBarButtonLandscapePhone:YES glow:isFavorite];
     
@@ -114,10 +115,10 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     deleteButton.enabled = NO;
     deleteButton.accessibilityHint = NSLocalizedStringFromTable(@"DeleteDocumentFromLocalStorage", @"MoodlePlugin", nil);
     [rightButtons addObject:deleteButton];
-
+    
     self.navigationItem.rightBarButtonItems = rightButtons;
-
-    if ([self.moodleService isMoodleResourceDownloaded:self.moodleResource]) {
+    
+    if ([self.moodleService isMoodleFileDownloaded:self.moodleFile]) {
         self.centerMessageLabel.hidden = YES;
         self.progressView.hidden = YES;
         [self deleteButton].enabled = YES;
@@ -140,7 +141,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     self.splitViewControllerPtr = self.splitViewController;
     [self.splitViewController addObserver:self forKeyPath:NSStringFromSelector(@selector(isMasterViewControllerHidden)) options:0 context:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kMoodleFavoritesMoodleResourcesUpdatedNotification object:self.moodleService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kMoodleFavoritesMoodleItemsUpdatedNotification object:self.moodleService];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 }
 
@@ -148,7 +149,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     [super viewWillDisappear:animated];
     [self saveScrollViewState];
     [self showNavbar];
-    [self.moodleService cancelDownloadOfMoodleResourceForDelegate:self];
+    [self.moodleService cancelDownloadOfMoodleFilesForDelegate:self];
     [self removeSplitViewControllerObserver];
     [self removeScrollViewContentSizeObserver];
     if (!self.isDisappearingBecauseOtherPushed) {
@@ -179,7 +180,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 #pragma mark - Observers
 
 - (void)refreshFavoriteButton {
-    BOOL isFavorite = [self.moodleService isFavoriteMoodleResource:self.moodleResource];
+    BOOL isFavorite = [self.moodleService isFavoriteMoodleItem:self.moodleFile];
     UIImage* favoriteImage = [PCValues imageForFavoriteNavBarButtonLandscapePhone:NO glow:isFavorite];
     UIImage* favoriteImageLandscape = [PCValues imageForFavoriteNavBarButtonLandscapePhone:YES glow:isFavorite];
     UIBarButtonItem* favoriteButton = [[UIBarButtonItem alloc] initWithImage:favoriteImage landscapeImagePhone:favoriteImageLandscape style:UIBarButtonItemStylePlain target:self action:@selector(favoriteButtonPressed)];
@@ -229,7 +230,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)rescheduleHideNavbarTimer {
     [self.hideNavbarTimer invalidate];
-    MoodleResourceViewController* weakSelf __weak = self;
+    MoodleFileViewController* weakSelf __weak = self;
     self.hideNavbarTimer = [NSTimer scheduledTimerWithTimeInterval:kHideNavbarSeconds block:^{
         [weakSelf hideNavbar];
     } repeats:YES];
@@ -306,8 +307,8 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         [self.docController dismissMenuAnimated:YES];
         self.docController = nil;
     } else {
-        [self trackAction:PCGAITrackerActionActionButtonPressed contentInfo:self.moodleResource.iName];
-        NSURL* resourceLocalURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleResource:self.moodleResource]];
+        [self trackAction:PCGAITrackerActionActionButtonPressed contentInfo:self.moodleFile.name];
+        NSURL* resourceLocalURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleFile:self.moodleFile]];
         self.docController = [UIDocumentInteractionController interactionControllerWithURL:resourceLocalURL];
         self.docController.delegate = self;
         [self.docController presentOptionsMenuFromBarButtonItem:[self actionButton] animated:YES];
@@ -315,12 +316,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 }
 
 - (void)favoriteButtonPressed {
-    if ([self.moodleService isFavoriteMoodleResource:self.moodleResource]) {
-        [self trackAction:PCGAITrackerActionUnmarkFavorite contentInfo:self.moodleResource.iName];
-        [self.moodleService removeFavoriteMoodleResource:self.moodleResource];
+    if ([self.moodleService isFavoriteMoodleItem:self.moodleFile]) {
+        [self trackAction:PCGAITrackerActionUnmarkFavorite contentInfo:self.moodleFile.name];
+        [self.moodleService removeFavoriteMoodleItem:self.moodleFile];
     } else {
-        [self trackAction:PCGAITrackerActionMarkFavorite contentInfo:self.moodleResource.iName];
-        [self.moodleService addFavoriteMoodleResource:self.moodleResource];;
+        [self trackAction:PCGAITrackerActionMarkFavorite contentInfo:self.moodleFile.name];
+        [self.moodleService addFavoriteMoodleItem:self.moodleFile];
     }
 }
 
@@ -343,12 +344,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"DownloadingFile", @"MoodlePlugin", nil);
     self.centerMessageLabel.hidden = NO;
     self.progressView.hidden = NO;
-    [self.moodleService downloadMoodleResource:self.moodleResource progressView:self.progressView delegate:self];
+    [self.moodleService downloadMoodleFile:self.moodleFile progressView:self.progressView delegate:self];
 }
 
 - (void)loadDownloadedMoodleResourceInWebView {
     self.webView.hidden = NO;
-    NSURL* localFileURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleResource:self.moodleResource]];
+    NSURL* localFileURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleFile:self.moodleFile]];
     [self.webView loadRequest:[NSURLRequest requestWithURL:localFileURL]];
     
     UITapGestureRecognizer* tapGestureReco = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavbarVisibility)];
@@ -381,7 +382,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 #pragma mark - MoodleServiceDelegate
 
-- (void)downloadOfMoodleResource:(MoodleResource *)moodleResource didFinish:(NSURL *)localFileURL {
+- (void)downloadOfMoodleFile:(MoodleFile2 *)moodleFile didFinish:(NSURL *)localFileURL {
     self.centerMessageLabel.hidden = YES;
     self.progressView.hidden = YES;
     [self deleteButton].enabled = YES;
@@ -389,7 +390,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     [self loadDownloadedMoodleResourceInWebView];
 }
 
-- (void)downloadFailedForMoodleResource:(MoodleResource *)moodleResource responseStatusCode:(int)statusCode {
+- (void)downloadFailedForMoodleFile:(MoodleFile2 *)moodleFile responseStatusCode:(int)statusCode {
     if (statusCode == 404) {
         UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [errorAlert show];
@@ -443,9 +444,9 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) { //delete button, starts from the top, cancel button not included
-        [self trackAction:PCGAITrackerActionDelete contentInfo:self.moodleResource.iName];
+        [self trackAction:PCGAITrackerActionDelete contentInfo:self.moodleFile.name];
         [self removeSplitViewControllerObserver];
-        if (![self.moodleService deleteDownloadedMoodleResource:self.moodleResource]) {
+        if (![self.moodleService deleteDownloadedMoodleFile:self.moodleFile]) {
             UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ImpossibleDeleteFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [errorAlert show];
             return;
@@ -478,7 +479,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    NSURL* localFileURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleResource:self.moodleResource]];
+    NSURL* localFileURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleFile:self.moodleFile]];
     if ([request.URL.path isEqualToString:localFileURL.path]) {
         return YES;
     }
@@ -495,7 +496,7 @@ static NSString* const kContentOffsetKey = @"ContentOffset";
 static NSString* const kZoomScaleKey = @"ZoomScale";
 
 - (void)saveScrollViewState {
-    if (!self.moodleResource.iUrl) {
+    if (!self.moodleFile.url) {
         return;
     }
     NSDictionary* state = @{kFrameKey:NSStringFromCGRect(self.webView.scrollView.frame),
@@ -503,16 +504,16 @@ static NSString* const kZoomScaleKey = @"ZoomScale";
                             kContentOffsetKey:NSStringFromCGPoint(self.webView.scrollView.contentOffset),
                             kZoomScaleKey:[NSNumber numberWithFloat:self.webView.scrollView.zoomScale]};
     
-    NSMutableDictionary* resourceDic = [[MoodleResource defaultsDictionaryForMoodleResource:self.moodleResource] mutableCopy];
+    NSMutableDictionary* resourceDic = [[MoodleFile2 defaultsDictionaryForMoodleItem:self.moodleFile] mutableCopy];
     resourceDic[kScrollViewStateKey] = state;
-    [MoodleResource setDefaultsDictionary:resourceDic forMoodleResource:self.moodleResource];
+    [MoodleFile2 setDefaultsDictionary:resourceDic forMoodleItem:self.moodleFile];
 }
 
 - (void)restoreScrollViewSateIfExists {
     if (![[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey]) {
         return;
     }
-    NSDictionary* resourceDic = [MoodleResource defaultsDictionaryForMoodleResource:self.moodleResource];
+    NSDictionary* resourceDic = [MoodleFile2 defaultsDictionaryForMoodleItem:self.moodleFile];
     NSDictionary* state = resourceDic[kScrollViewStateKey];
     if (!state) {
         return;

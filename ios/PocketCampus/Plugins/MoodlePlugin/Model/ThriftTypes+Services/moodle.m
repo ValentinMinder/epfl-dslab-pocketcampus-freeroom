@@ -186,1380 +186,6 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
 
 @end
 
-@implementation CoursesListReply
-
-- (id) initWithICourses: (NSArray *) iCourses iStatus: (int32_t) iStatus
-{
-  self = [super init];
-  __iCourses = [iCourses retain];
-  __iCourses_isset = YES;
-  __iStatus = iStatus;
-  __iStatus_isset = YES;
-  return self;
-}
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  if ([decoder containsValueForKey: @"iCourses"])
-  {
-    __iCourses = [[decoder decodeObjectForKey: @"iCourses"] retain];
-    __iCourses_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iStatus"])
-  {
-    __iStatus = [decoder decodeInt32ForKey: @"iStatus"];
-    __iStatus_isset = YES;
-  }
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-  if (__iCourses_isset)
-  {
-    [encoder encodeObject: __iCourses forKey: @"iCourses"];
-  }
-  if (__iStatus_isset)
-  {
-    [encoder encodeInt32: __iStatus forKey: @"iStatus"];
-  }
-}
-
-- (void) dealloc
-{
-  [__iCourses release];
-  [super dealloc];
-}
-
-- (NSArray *) iCourses {
-  return [[__iCourses retain] autorelease];
-}
-
-- (void) setICourses: (NSArray *) iCourses {
-  [iCourses retain];
-  [__iCourses release];
-  __iCourses = iCourses;
-  __iCourses_isset = YES;
-}
-
-- (BOOL) iCoursesIsSet {
-  return __iCourses_isset;
-}
-
-- (void) unsetICourses {
-  [__iCourses release];
-  __iCourses = nil;
-  __iCourses_isset = NO;
-}
-
-- (int32_t) iStatus {
-  return __iStatus;
-}
-
-- (void) setIStatus: (int32_t) iStatus {
-  __iStatus = iStatus;
-  __iStatus_isset = YES;
-}
-
-- (BOOL) iStatusIsSet {
-  return __iStatus_isset;
-}
-
-- (void) unsetIStatus {
-  __iStatus_isset = NO;
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      case 1:
-        if (fieldType == TType_LIST) {
-          int _size0;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size0];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size0];
-          int _i1;
-          for (_i1 = 0; _i1 < _size0; ++_i1)
-          {
-            MoodleCourse *_elem2 = [[MoodleCourse alloc] init];
-            [_elem2 read: inProtocol];
-            [fieldValue addObject: _elem2];
-            [_elem2 release];
-          }
-          [inProtocol readListEnd];
-          [self setICourses: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 2:
-        if (fieldType == TType_I32) {
-          int32_t fieldValue = [inProtocol readI32];
-          [self setIStatus: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"CoursesListReply"];
-  if (__iCourses_isset) {
-    if (__iCourses != nil) {
-      [outProtocol writeFieldBeginWithName: @"iCourses" type: TType_LIST fieldID: 1];
-      {
-        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__iCourses count]];
-        int i4;
-        for (i4 = 0; i4 < [__iCourses count]; i4++)
-        {
-          [[__iCourses objectAtIndex: i4] write: outProtocol];
-        }
-        [outProtocol writeListEnd];
-      }
-      [outProtocol writeFieldEnd];
-    }
-  }
-  if (__iStatus_isset) {
-    [outProtocol writeFieldBeginWithName: @"iStatus" type: TType_I32 fieldID: 2];
-    [outProtocol writeI32: __iStatus];
-    [outProtocol writeFieldEnd];
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"CoursesListReply("];
-  [ms appendString: @"iCourses:"];
-  [ms appendFormat: @"%@", __iCourses];
-  [ms appendString: @",iStatus:"];
-  [ms appendFormat: @"%i", __iStatus];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
-@implementation MoodleAssignment
-
-- (id) initWithIId: (int32_t) iId iTitle: (NSString *) iTitle iDesc: (NSString *) iDesc iCourse: (MoodleCourse *) iCourse iPostingDate: (int64_t) iPostingDate iDueDate: (int64_t) iDueDate iGrade: (NSString *) iGrade
-{
-  self = [super init];
-  __iId = iId;
-  __iId_isset = YES;
-  __iTitle = [iTitle retain];
-  __iTitle_isset = YES;
-  __iDesc = [iDesc retain];
-  __iDesc_isset = YES;
-  __iCourse = [iCourse retain];
-  __iCourse_isset = YES;
-  __iPostingDate = iPostingDate;
-  __iPostingDate_isset = YES;
-  __iDueDate = iDueDate;
-  __iDueDate_isset = YES;
-  __iGrade = [iGrade retain];
-  __iGrade_isset = YES;
-  return self;
-}
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  if ([decoder containsValueForKey: @"iId"])
-  {
-    __iId = [decoder decodeInt32ForKey: @"iId"];
-    __iId_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iTitle"])
-  {
-    __iTitle = [[decoder decodeObjectForKey: @"iTitle"] retain];
-    __iTitle_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iDesc"])
-  {
-    __iDesc = [[decoder decodeObjectForKey: @"iDesc"] retain];
-    __iDesc_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iCourse"])
-  {
-    __iCourse = [[decoder decodeObjectForKey: @"iCourse"] retain];
-    __iCourse_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iPostingDate"])
-  {
-    __iPostingDate = [decoder decodeInt64ForKey: @"iPostingDate"];
-    __iPostingDate_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iDueDate"])
-  {
-    __iDueDate = [decoder decodeInt64ForKey: @"iDueDate"];
-    __iDueDate_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iGrade"])
-  {
-    __iGrade = [[decoder decodeObjectForKey: @"iGrade"] retain];
-    __iGrade_isset = YES;
-  }
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-  if (__iId_isset)
-  {
-    [encoder encodeInt32: __iId forKey: @"iId"];
-  }
-  if (__iTitle_isset)
-  {
-    [encoder encodeObject: __iTitle forKey: @"iTitle"];
-  }
-  if (__iDesc_isset)
-  {
-    [encoder encodeObject: __iDesc forKey: @"iDesc"];
-  }
-  if (__iCourse_isset)
-  {
-    [encoder encodeObject: __iCourse forKey: @"iCourse"];
-  }
-  if (__iPostingDate_isset)
-  {
-    [encoder encodeInt64: __iPostingDate forKey: @"iPostingDate"];
-  }
-  if (__iDueDate_isset)
-  {
-    [encoder encodeInt64: __iDueDate forKey: @"iDueDate"];
-  }
-  if (__iGrade_isset)
-  {
-    [encoder encodeObject: __iGrade forKey: @"iGrade"];
-  }
-}
-
-- (void) dealloc
-{
-  [__iTitle release];
-  [__iDesc release];
-  [__iCourse release];
-  [__iGrade release];
-  [super dealloc];
-}
-
-- (int32_t) iId {
-  return __iId;
-}
-
-- (void) setIId: (int32_t) iId {
-  __iId = iId;
-  __iId_isset = YES;
-}
-
-- (BOOL) iIdIsSet {
-  return __iId_isset;
-}
-
-- (void) unsetIId {
-  __iId_isset = NO;
-}
-
-- (NSString *) iTitle {
-  return [[__iTitle retain] autorelease];
-}
-
-- (void) setITitle: (NSString *) iTitle {
-  [iTitle retain];
-  [__iTitle release];
-  __iTitle = iTitle;
-  __iTitle_isset = YES;
-}
-
-- (BOOL) iTitleIsSet {
-  return __iTitle_isset;
-}
-
-- (void) unsetITitle {
-  [__iTitle release];
-  __iTitle = nil;
-  __iTitle_isset = NO;
-}
-
-- (NSString *) iDesc {
-  return [[__iDesc retain] autorelease];
-}
-
-- (void) setIDesc: (NSString *) iDesc {
-  [iDesc retain];
-  [__iDesc release];
-  __iDesc = iDesc;
-  __iDesc_isset = YES;
-}
-
-- (BOOL) iDescIsSet {
-  return __iDesc_isset;
-}
-
-- (void) unsetIDesc {
-  [__iDesc release];
-  __iDesc = nil;
-  __iDesc_isset = NO;
-}
-
-- (MoodleCourse *) iCourse {
-  return [[__iCourse retain] autorelease];
-}
-
-- (void) setICourse: (MoodleCourse *) iCourse {
-  [iCourse retain];
-  [__iCourse release];
-  __iCourse = iCourse;
-  __iCourse_isset = YES;
-}
-
-- (BOOL) iCourseIsSet {
-  return __iCourse_isset;
-}
-
-- (void) unsetICourse {
-  [__iCourse release];
-  __iCourse = nil;
-  __iCourse_isset = NO;
-}
-
-- (int64_t) iPostingDate {
-  return __iPostingDate;
-}
-
-- (void) setIPostingDate: (int64_t) iPostingDate {
-  __iPostingDate = iPostingDate;
-  __iPostingDate_isset = YES;
-}
-
-- (BOOL) iPostingDateIsSet {
-  return __iPostingDate_isset;
-}
-
-- (void) unsetIPostingDate {
-  __iPostingDate_isset = NO;
-}
-
-- (int64_t) iDueDate {
-  return __iDueDate;
-}
-
-- (void) setIDueDate: (int64_t) iDueDate {
-  __iDueDate = iDueDate;
-  __iDueDate_isset = YES;
-}
-
-- (BOOL) iDueDateIsSet {
-  return __iDueDate_isset;
-}
-
-- (void) unsetIDueDate {
-  __iDueDate_isset = NO;
-}
-
-- (NSString *) iGrade {
-  return [[__iGrade retain] autorelease];
-}
-
-- (void) setIGrade: (NSString *) iGrade {
-  [iGrade retain];
-  [__iGrade release];
-  __iGrade = iGrade;
-  __iGrade_isset = YES;
-}
-
-- (BOOL) iGradeIsSet {
-  return __iGrade_isset;
-}
-
-- (void) unsetIGrade {
-  [__iGrade release];
-  __iGrade = nil;
-  __iGrade_isset = NO;
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      case 1:
-        if (fieldType == TType_I32) {
-          int32_t fieldValue = [inProtocol readI32];
-          [self setIId: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 2:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
-          [self setITitle: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 3:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
-          [self setIDesc: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 4:
-        if (fieldType == TType_STRUCT) {
-          MoodleCourse *fieldValue = [[MoodleCourse alloc] init];
-          [fieldValue read: inProtocol];
-          [self setICourse: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 5:
-        if (fieldType == TType_I64) {
-          int64_t fieldValue = [inProtocol readI64];
-          [self setIPostingDate: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 6:
-        if (fieldType == TType_I64) {
-          int64_t fieldValue = [inProtocol readI64];
-          [self setIDueDate: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 7:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
-          [self setIGrade: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"MoodleAssignment"];
-  if (__iId_isset) {
-    [outProtocol writeFieldBeginWithName: @"iId" type: TType_I32 fieldID: 1];
-    [outProtocol writeI32: __iId];
-    [outProtocol writeFieldEnd];
-  }
-  if (__iTitle_isset) {
-    if (__iTitle != nil) {
-      [outProtocol writeFieldBeginWithName: @"iTitle" type: TType_STRING fieldID: 2];
-      [outProtocol writeString: __iTitle];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  if (__iDesc_isset) {
-    if (__iDesc != nil) {
-      [outProtocol writeFieldBeginWithName: @"iDesc" type: TType_STRING fieldID: 3];
-      [outProtocol writeString: __iDesc];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  if (__iCourse_isset) {
-    if (__iCourse != nil) {
-      [outProtocol writeFieldBeginWithName: @"iCourse" type: TType_STRUCT fieldID: 4];
-      [__iCourse write: outProtocol];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  if (__iPostingDate_isset) {
-    [outProtocol writeFieldBeginWithName: @"iPostingDate" type: TType_I64 fieldID: 5];
-    [outProtocol writeI64: __iPostingDate];
-    [outProtocol writeFieldEnd];
-  }
-  if (__iDueDate_isset) {
-    [outProtocol writeFieldBeginWithName: @"iDueDate" type: TType_I64 fieldID: 6];
-    [outProtocol writeI64: __iDueDate];
-    [outProtocol writeFieldEnd];
-  }
-  if (__iGrade_isset) {
-    if (__iGrade != nil) {
-      [outProtocol writeFieldBeginWithName: @"iGrade" type: TType_STRING fieldID: 7];
-      [outProtocol writeString: __iGrade];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"MoodleAssignment("];
-  [ms appendString: @"iId:"];
-  [ms appendFormat: @"%i", __iId];
-  [ms appendString: @",iTitle:"];
-  [ms appendFormat: @"\"%@\"", __iTitle];
-  [ms appendString: @",iDesc:"];
-  [ms appendFormat: @"\"%@\"", __iDesc];
-  [ms appendString: @",iCourse:"];
-  [ms appendFormat: @"%@", __iCourse];
-  [ms appendString: @",iPostingDate:"];
-  [ms appendFormat: @"%qi", __iPostingDate];
-  [ms appendString: @",iDueDate:"];
-  [ms appendFormat: @"%qi", __iDueDate];
-  [ms appendString: @",iGrade:"];
-  [ms appendFormat: @"\"%@\"", __iGrade];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
-@implementation MoodleUserEvent
-
-- (id) initWithIId: (int32_t) iId iTitle: (NSString *) iTitle iDesc: (NSString *) iDesc iStartDate: (int64_t) iStartDate iEndDate: (int64_t) iEndDate
-{
-  self = [super init];
-  __iId = iId;
-  __iId_isset = YES;
-  __iTitle = [iTitle retain];
-  __iTitle_isset = YES;
-  __iDesc = [iDesc retain];
-  __iDesc_isset = YES;
-  __iStartDate = iStartDate;
-  __iStartDate_isset = YES;
-  __iEndDate = iEndDate;
-  __iEndDate_isset = YES;
-  return self;
-}
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  if ([decoder containsValueForKey: @"iId"])
-  {
-    __iId = [decoder decodeInt32ForKey: @"iId"];
-    __iId_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iTitle"])
-  {
-    __iTitle = [[decoder decodeObjectForKey: @"iTitle"] retain];
-    __iTitle_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iDesc"])
-  {
-    __iDesc = [[decoder decodeObjectForKey: @"iDesc"] retain];
-    __iDesc_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iStartDate"])
-  {
-    __iStartDate = [decoder decodeInt64ForKey: @"iStartDate"];
-    __iStartDate_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iEndDate"])
-  {
-    __iEndDate = [decoder decodeInt64ForKey: @"iEndDate"];
-    __iEndDate_isset = YES;
-  }
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-  if (__iId_isset)
-  {
-    [encoder encodeInt32: __iId forKey: @"iId"];
-  }
-  if (__iTitle_isset)
-  {
-    [encoder encodeObject: __iTitle forKey: @"iTitle"];
-  }
-  if (__iDesc_isset)
-  {
-    [encoder encodeObject: __iDesc forKey: @"iDesc"];
-  }
-  if (__iStartDate_isset)
-  {
-    [encoder encodeInt64: __iStartDate forKey: @"iStartDate"];
-  }
-  if (__iEndDate_isset)
-  {
-    [encoder encodeInt64: __iEndDate forKey: @"iEndDate"];
-  }
-}
-
-- (void) dealloc
-{
-  [__iTitle release];
-  [__iDesc release];
-  [super dealloc];
-}
-
-- (int32_t) iId {
-  return __iId;
-}
-
-- (void) setIId: (int32_t) iId {
-  __iId = iId;
-  __iId_isset = YES;
-}
-
-- (BOOL) iIdIsSet {
-  return __iId_isset;
-}
-
-- (void) unsetIId {
-  __iId_isset = NO;
-}
-
-- (NSString *) iTitle {
-  return [[__iTitle retain] autorelease];
-}
-
-- (void) setITitle: (NSString *) iTitle {
-  [iTitle retain];
-  [__iTitle release];
-  __iTitle = iTitle;
-  __iTitle_isset = YES;
-}
-
-- (BOOL) iTitleIsSet {
-  return __iTitle_isset;
-}
-
-- (void) unsetITitle {
-  [__iTitle release];
-  __iTitle = nil;
-  __iTitle_isset = NO;
-}
-
-- (NSString *) iDesc {
-  return [[__iDesc retain] autorelease];
-}
-
-- (void) setIDesc: (NSString *) iDesc {
-  [iDesc retain];
-  [__iDesc release];
-  __iDesc = iDesc;
-  __iDesc_isset = YES;
-}
-
-- (BOOL) iDescIsSet {
-  return __iDesc_isset;
-}
-
-- (void) unsetIDesc {
-  [__iDesc release];
-  __iDesc = nil;
-  __iDesc_isset = NO;
-}
-
-- (int64_t) iStartDate {
-  return __iStartDate;
-}
-
-- (void) setIStartDate: (int64_t) iStartDate {
-  __iStartDate = iStartDate;
-  __iStartDate_isset = YES;
-}
-
-- (BOOL) iStartDateIsSet {
-  return __iStartDate_isset;
-}
-
-- (void) unsetIStartDate {
-  __iStartDate_isset = NO;
-}
-
-- (int64_t) iEndDate {
-  return __iEndDate;
-}
-
-- (void) setIEndDate: (int64_t) iEndDate {
-  __iEndDate = iEndDate;
-  __iEndDate_isset = YES;
-}
-
-- (BOOL) iEndDateIsSet {
-  return __iEndDate_isset;
-}
-
-- (void) unsetIEndDate {
-  __iEndDate_isset = NO;
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      case 1:
-        if (fieldType == TType_I32) {
-          int32_t fieldValue = [inProtocol readI32];
-          [self setIId: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 2:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
-          [self setITitle: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 3:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
-          [self setIDesc: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 4:
-        if (fieldType == TType_I64) {
-          int64_t fieldValue = [inProtocol readI64];
-          [self setIStartDate: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 5:
-        if (fieldType == TType_I64) {
-          int64_t fieldValue = [inProtocol readI64];
-          [self setIEndDate: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"MoodleUserEvent"];
-  if (__iId_isset) {
-    [outProtocol writeFieldBeginWithName: @"iId" type: TType_I32 fieldID: 1];
-    [outProtocol writeI32: __iId];
-    [outProtocol writeFieldEnd];
-  }
-  if (__iTitle_isset) {
-    if (__iTitle != nil) {
-      [outProtocol writeFieldBeginWithName: @"iTitle" type: TType_STRING fieldID: 2];
-      [outProtocol writeString: __iTitle];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  if (__iDesc_isset) {
-    if (__iDesc != nil) {
-      [outProtocol writeFieldBeginWithName: @"iDesc" type: TType_STRING fieldID: 3];
-      [outProtocol writeString: __iDesc];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  if (__iStartDate_isset) {
-    [outProtocol writeFieldBeginWithName: @"iStartDate" type: TType_I64 fieldID: 4];
-    [outProtocol writeI64: __iStartDate];
-    [outProtocol writeFieldEnd];
-  }
-  if (__iEndDate_isset) {
-    [outProtocol writeFieldBeginWithName: @"iEndDate" type: TType_I64 fieldID: 5];
-    [outProtocol writeI64: __iEndDate];
-    [outProtocol writeFieldEnd];
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"MoodleUserEvent("];
-  [ms appendString: @"iId:"];
-  [ms appendFormat: @"%i", __iId];
-  [ms appendString: @",iTitle:"];
-  [ms appendFormat: @"\"%@\"", __iTitle];
-  [ms appendString: @",iDesc:"];
-  [ms appendFormat: @"\"%@\"", __iDesc];
-  [ms appendString: @",iStartDate:"];
-  [ms appendFormat: @"%qi", __iStartDate];
-  [ms appendString: @",iEndDate:"];
-  [ms appendFormat: @"%qi", __iEndDate];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
-@implementation MoodleEvent
-
-- (id) initWithIId: (int32_t) iId iTitle: (NSString *) iTitle iDate: (int64_t) iDate iType: (int) iType iAssignment: (MoodleAssignment *) iAssignment iUserEvent: (MoodleUserEvent *) iUserEvent
-{
-  self = [super init];
-  __iId = iId;
-  __iId_isset = YES;
-  __iTitle = [iTitle retain];
-  __iTitle_isset = YES;
-  __iDate = iDate;
-  __iDate_isset = YES;
-  __iType = iType;
-  __iType_isset = YES;
-  __iAssignment = [iAssignment retain];
-  __iAssignment_isset = YES;
-  __iUserEvent = [iUserEvent retain];
-  __iUserEvent_isset = YES;
-  return self;
-}
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  if ([decoder containsValueForKey: @"iId"])
-  {
-    __iId = [decoder decodeInt32ForKey: @"iId"];
-    __iId_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iTitle"])
-  {
-    __iTitle = [[decoder decodeObjectForKey: @"iTitle"] retain];
-    __iTitle_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iDate"])
-  {
-    __iDate = [decoder decodeInt64ForKey: @"iDate"];
-    __iDate_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iType"])
-  {
-    __iType = [decoder decodeIntForKey: @"iType"];
-    __iType_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iAssignment"])
-  {
-    __iAssignment = [[decoder decodeObjectForKey: @"iAssignment"] retain];
-    __iAssignment_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iUserEvent"])
-  {
-    __iUserEvent = [[decoder decodeObjectForKey: @"iUserEvent"] retain];
-    __iUserEvent_isset = YES;
-  }
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-  if (__iId_isset)
-  {
-    [encoder encodeInt32: __iId forKey: @"iId"];
-  }
-  if (__iTitle_isset)
-  {
-    [encoder encodeObject: __iTitle forKey: @"iTitle"];
-  }
-  if (__iDate_isset)
-  {
-    [encoder encodeInt64: __iDate forKey: @"iDate"];
-  }
-  if (__iType_isset)
-  {
-    [encoder encodeInt: __iType forKey: @"iType"];
-  }
-  if (__iAssignment_isset)
-  {
-    [encoder encodeObject: __iAssignment forKey: @"iAssignment"];
-  }
-  if (__iUserEvent_isset)
-  {
-    [encoder encodeObject: __iUserEvent forKey: @"iUserEvent"];
-  }
-}
-
-- (void) dealloc
-{
-  [__iTitle release];
-  [__iAssignment release];
-  [__iUserEvent release];
-  [super dealloc];
-}
-
-- (int32_t) iId {
-  return __iId;
-}
-
-- (void) setIId: (int32_t) iId {
-  __iId = iId;
-  __iId_isset = YES;
-}
-
-- (BOOL) iIdIsSet {
-  return __iId_isset;
-}
-
-- (void) unsetIId {
-  __iId_isset = NO;
-}
-
-- (NSString *) iTitle {
-  return [[__iTitle retain] autorelease];
-}
-
-- (void) setITitle: (NSString *) iTitle {
-  [iTitle retain];
-  [__iTitle release];
-  __iTitle = iTitle;
-  __iTitle_isset = YES;
-}
-
-- (BOOL) iTitleIsSet {
-  return __iTitle_isset;
-}
-
-- (void) unsetITitle {
-  [__iTitle release];
-  __iTitle = nil;
-  __iTitle_isset = NO;
-}
-
-- (int64_t) iDate {
-  return __iDate;
-}
-
-- (void) setIDate: (int64_t) iDate {
-  __iDate = iDate;
-  __iDate_isset = YES;
-}
-
-- (BOOL) iDateIsSet {
-  return __iDate_isset;
-}
-
-- (void) unsetIDate {
-  __iDate_isset = NO;
-}
-
-- (int) iType {
-  return __iType;
-}
-
-- (void) setIType: (int) iType {
-  __iType = iType;
-  __iType_isset = YES;
-}
-
-- (BOOL) iTypeIsSet {
-  return __iType_isset;
-}
-
-- (void) unsetIType {
-  __iType_isset = NO;
-}
-
-- (MoodleAssignment *) iAssignment {
-  return [[__iAssignment retain] autorelease];
-}
-
-- (void) setIAssignment: (MoodleAssignment *) iAssignment {
-  [iAssignment retain];
-  [__iAssignment release];
-  __iAssignment = iAssignment;
-  __iAssignment_isset = YES;
-}
-
-- (BOOL) iAssignmentIsSet {
-  return __iAssignment_isset;
-}
-
-- (void) unsetIAssignment {
-  [__iAssignment release];
-  __iAssignment = nil;
-  __iAssignment_isset = NO;
-}
-
-- (MoodleUserEvent *) iUserEvent {
-  return [[__iUserEvent retain] autorelease];
-}
-
-- (void) setIUserEvent: (MoodleUserEvent *) iUserEvent {
-  [iUserEvent retain];
-  [__iUserEvent release];
-  __iUserEvent = iUserEvent;
-  __iUserEvent_isset = YES;
-}
-
-- (BOOL) iUserEventIsSet {
-  return __iUserEvent_isset;
-}
-
-- (void) unsetIUserEvent {
-  [__iUserEvent release];
-  __iUserEvent = nil;
-  __iUserEvent_isset = NO;
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      case 1:
-        if (fieldType == TType_I32) {
-          int32_t fieldValue = [inProtocol readI32];
-          [self setIId: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 2:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
-          [self setITitle: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 3:
-        if (fieldType == TType_I64) {
-          int64_t fieldValue = [inProtocol readI64];
-          [self setIDate: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 4:
-        if (fieldType == TType_I32) {
-          int fieldValue = [inProtocol readI32];
-          [self setIType: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 5:
-        if (fieldType == TType_STRUCT) {
-          MoodleAssignment *fieldValue = [[MoodleAssignment alloc] init];
-          [fieldValue read: inProtocol];
-          [self setIAssignment: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 6:
-        if (fieldType == TType_STRUCT) {
-          MoodleUserEvent *fieldValue = [[MoodleUserEvent alloc] init];
-          [fieldValue read: inProtocol];
-          [self setIUserEvent: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"MoodleEvent"];
-  if (__iId_isset) {
-    [outProtocol writeFieldBeginWithName: @"iId" type: TType_I32 fieldID: 1];
-    [outProtocol writeI32: __iId];
-    [outProtocol writeFieldEnd];
-  }
-  if (__iTitle_isset) {
-    if (__iTitle != nil) {
-      [outProtocol writeFieldBeginWithName: @"iTitle" type: TType_STRING fieldID: 2];
-      [outProtocol writeString: __iTitle];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  if (__iDate_isset) {
-    [outProtocol writeFieldBeginWithName: @"iDate" type: TType_I64 fieldID: 3];
-    [outProtocol writeI64: __iDate];
-    [outProtocol writeFieldEnd];
-  }
-  if (__iType_isset) {
-    [outProtocol writeFieldBeginWithName: @"iType" type: TType_I32 fieldID: 4];
-    [outProtocol writeI32: __iType];
-    [outProtocol writeFieldEnd];
-  }
-  if (__iAssignment_isset) {
-    if (__iAssignment != nil) {
-      [outProtocol writeFieldBeginWithName: @"iAssignment" type: TType_STRUCT fieldID: 5];
-      [__iAssignment write: outProtocol];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  if (__iUserEvent_isset) {
-    if (__iUserEvent != nil) {
-      [outProtocol writeFieldBeginWithName: @"iUserEvent" type: TType_STRUCT fieldID: 6];
-      [__iUserEvent write: outProtocol];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"MoodleEvent("];
-  [ms appendString: @"iId:"];
-  [ms appendFormat: @"%i", __iId];
-  [ms appendString: @",iTitle:"];
-  [ms appendFormat: @"\"%@\"", __iTitle];
-  [ms appendString: @",iDate:"];
-  [ms appendFormat: @"%qi", __iDate];
-  [ms appendString: @",iType:"];
-  [ms appendFormat: @"%i", __iType];
-  [ms appendString: @",iAssignment:"];
-  [ms appendFormat: @"%@", __iAssignment];
-  [ms appendString: @",iUserEvent:"];
-  [ms appendFormat: @"%@", __iUserEvent];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
-@implementation EventsListReply
-
-- (id) initWithIEvents: (NSArray *) iEvents iStatus: (int32_t) iStatus
-{
-  self = [super init];
-  __iEvents = [iEvents retain];
-  __iEvents_isset = YES;
-  __iStatus = iStatus;
-  __iStatus_isset = YES;
-  return self;
-}
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  if ([decoder containsValueForKey: @"iEvents"])
-  {
-    __iEvents = [[decoder decodeObjectForKey: @"iEvents"] retain];
-    __iEvents_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iStatus"])
-  {
-    __iStatus = [decoder decodeInt32ForKey: @"iStatus"];
-    __iStatus_isset = YES;
-  }
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-  if (__iEvents_isset)
-  {
-    [encoder encodeObject: __iEvents forKey: @"iEvents"];
-  }
-  if (__iStatus_isset)
-  {
-    [encoder encodeInt32: __iStatus forKey: @"iStatus"];
-  }
-}
-
-- (void) dealloc
-{
-  [__iEvents release];
-  [super dealloc];
-}
-
-- (NSArray *) iEvents {
-  return [[__iEvents retain] autorelease];
-}
-
-- (void) setIEvents: (NSArray *) iEvents {
-  [iEvents retain];
-  [__iEvents release];
-  __iEvents = iEvents;
-  __iEvents_isset = YES;
-}
-
-- (BOOL) iEventsIsSet {
-  return __iEvents_isset;
-}
-
-- (void) unsetIEvents {
-  [__iEvents release];
-  __iEvents = nil;
-  __iEvents_isset = NO;
-}
-
-- (int32_t) iStatus {
-  return __iStatus;
-}
-
-- (void) setIStatus: (int32_t) iStatus {
-  __iStatus = iStatus;
-  __iStatus_isset = YES;
-}
-
-- (BOOL) iStatusIsSet {
-  return __iStatus_isset;
-}
-
-- (void) unsetIStatus {
-  __iStatus_isset = NO;
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      case 1:
-        if (fieldType == TType_LIST) {
-          int _size5;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size5];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size5];
-          int _i6;
-          for (_i6 = 0; _i6 < _size5; ++_i6)
-          {
-            MoodleEvent *_elem7 = [[MoodleEvent alloc] init];
-            [_elem7 read: inProtocol];
-            [fieldValue addObject: _elem7];
-            [_elem7 release];
-          }
-          [inProtocol readListEnd];
-          [self setIEvents: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 2:
-        if (fieldType == TType_I32) {
-          int32_t fieldValue = [inProtocol readI32];
-          [self setIStatus: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"EventsListReply"];
-  if (__iEvents_isset) {
-    if (__iEvents != nil) {
-      [outProtocol writeFieldBeginWithName: @"iEvents" type: TType_LIST fieldID: 1];
-      {
-        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__iEvents count]];
-        int i9;
-        for (i9 = 0; i9 < [__iEvents count]; i9++)
-        {
-          [[__iEvents objectAtIndex: i9] write: outProtocol];
-        }
-        [outProtocol writeListEnd];
-      }
-      [outProtocol writeFieldEnd];
-    }
-  }
-  if (__iStatus_isset) {
-    [outProtocol writeFieldBeginWithName: @"iStatus" type: TType_I32 fieldID: 2];
-    [outProtocol writeI32: __iStatus];
-    [outProtocol writeFieldEnd];
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"EventsListReply("];
-  [ms appendString: @"iEvents:"];
-  [ms appendFormat: @"%@", __iEvents];
-  [ms appendString: @",iStatus:"];
-  [ms appendFormat: @"%i", __iStatus];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
 @implementation MoodleResource
 
 - (id) initWithIName: (NSString *) iName iUrl: (NSString *) iUrl
@@ -1911,16 +537,16 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
     {
       case 1:
         if (fieldType == TType_LIST) {
-          int _size10;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size10];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size10];
-          int _i11;
-          for (_i11 = 0; _i11 < _size10; ++_i11)
+          int _size0;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size0];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size0];
+          int _i1;
+          for (_i1 = 0; _i1 < _size0; ++_i1)
           {
-            MoodleResource *_elem12 = [[MoodleResource alloc] init];
-            [_elem12 read: inProtocol];
-            [fieldValue addObject: _elem12];
-            [_elem12 release];
+            MoodleResource *_elem2 = [[MoodleResource alloc] init];
+            [_elem2 read: inProtocol];
+            [fieldValue addObject: _elem2];
+            [_elem2 release];
           }
           [inProtocol readListEnd];
           [self setIResources: fieldValue];
@@ -1977,10 +603,10 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
       [outProtocol writeFieldBeginWithName: @"iResources" type: TType_LIST fieldID: 1];
       {
         [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__iResources count]];
-        int i14;
-        for (i14 = 0; i14 < [__iResources count]; i14++)
+        int i4;
+        for (i4 = 0; i4 < [__iResources count]; i4++)
         {
-          [[__iResources objectAtIndex: i14] write: outProtocol];
+          [[__iResources objectAtIndex: i4] write: outProtocol];
         }
         [outProtocol writeListEnd];
       }
@@ -2025,6 +651,180 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
   [ms appendFormat: @"%qi", __iEndDate];
   [ms appendString: @",iCurrent:"];
   [ms appendFormat: @"%i", __iCurrent];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation CoursesListReply
+
+- (id) initWithICourses: (NSArray *) iCourses iStatus: (int32_t) iStatus
+{
+  self = [super init];
+  __iCourses = [iCourses retain];
+  __iCourses_isset = YES;
+  __iStatus = iStatus;
+  __iStatus_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"iCourses"])
+  {
+    __iCourses = [[decoder decodeObjectForKey: @"iCourses"] retain];
+    __iCourses_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"iStatus"])
+  {
+    __iStatus = [decoder decodeInt32ForKey: @"iStatus"];
+    __iStatus_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__iCourses_isset)
+  {
+    [encoder encodeObject: __iCourses forKey: @"iCourses"];
+  }
+  if (__iStatus_isset)
+  {
+    [encoder encodeInt32: __iStatus forKey: @"iStatus"];
+  }
+}
+
+- (void) dealloc
+{
+  [__iCourses release];
+  [super dealloc];
+}
+
+- (NSArray *) iCourses {
+  return [[__iCourses retain] autorelease];
+}
+
+- (void) setICourses: (NSArray *) iCourses {
+  [iCourses retain];
+  [__iCourses release];
+  __iCourses = iCourses;
+  __iCourses_isset = YES;
+}
+
+- (BOOL) iCoursesIsSet {
+  return __iCourses_isset;
+}
+
+- (void) unsetICourses {
+  [__iCourses release];
+  __iCourses = nil;
+  __iCourses_isset = NO;
+}
+
+- (int32_t) iStatus {
+  return __iStatus;
+}
+
+- (void) setIStatus: (int32_t) iStatus {
+  __iStatus = iStatus;
+  __iStatus_isset = YES;
+}
+
+- (BOOL) iStatusIsSet {
+  return __iStatus_isset;
+}
+
+- (void) unsetIStatus {
+  __iStatus_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_LIST) {
+          int _size5;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size5];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size5];
+          int _i6;
+          for (_i6 = 0; _i6 < _size5; ++_i6)
+          {
+            MoodleCourse *_elem7 = [[MoodleCourse alloc] init];
+            [_elem7 read: inProtocol];
+            [fieldValue addObject: _elem7];
+            [_elem7 release];
+          }
+          [inProtocol readListEnd];
+          [self setICourses: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setIStatus: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"CoursesListReply"];
+  if (__iCourses_isset) {
+    if (__iCourses != nil) {
+      [outProtocol writeFieldBeginWithName: @"iCourses" type: TType_LIST fieldID: 1];
+      {
+        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__iCourses count]];
+        int i9;
+        for (i9 = 0; i9 < [__iCourses count]; i9++)
+        {
+          [[__iCourses objectAtIndex: i9] write: outProtocol];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__iStatus_isset) {
+    [outProtocol writeFieldBeginWithName: @"iStatus" type: TType_I32 fieldID: 2];
+    [outProtocol writeI32: __iStatus];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"CoursesListReply("];
+  [ms appendString: @"iCourses:"];
+  [ms appendFormat: @"%@", __iCourses];
+  [ms appendString: @",iStatus:"];
+  [ms appendFormat: @"%i", __iStatus];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -2132,16 +932,16 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
     {
       case 1:
         if (fieldType == TType_LIST) {
-          int _size15;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size15];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size15];
-          int _i16;
-          for (_i16 = 0; _i16 < _size15; ++_i16)
+          int _size10;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size10];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size10];
+          int _i11;
+          for (_i11 = 0; _i11 < _size10; ++_i11)
           {
-            MoodleSection *_elem17 = [[MoodleSection alloc] init];
-            [_elem17 read: inProtocol];
-            [fieldValue addObject: _elem17];
-            [_elem17 release];
+            MoodleSection *_elem12 = [[MoodleSection alloc] init];
+            [_elem12 read: inProtocol];
+            [fieldValue addObject: _elem12];
+            [_elem12 release];
           }
           [inProtocol readListEnd];
           [self setISections: fieldValue];
@@ -2174,10 +974,10 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
       [outProtocol writeFieldBeginWithName: @"iSections" type: TType_LIST fieldID: 1];
       {
         [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__iSections count]];
-        int i19;
-        for (i19 = 0; i19 < [__iSections count]; i19++)
+        int i14;
+        for (i14 = 0; i14 < [__iSections count]; i14++)
         {
-          [[__iSections objectAtIndex: i19] write: outProtocol];
+          [[__iSections objectAtIndex: i14] write: outProtocol];
         }
         [outProtocol writeListEnd];
       }
@@ -2199,6 +999,1910 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
   [ms appendFormat: @"%@", __iSections];
   [ms appendString: @",iStatus:"];
   [ms appendFormat: @"%i", __iStatus];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation MoodleFile2
+
+- (id) initWithName: (NSString *) name extension: (NSString *) extension url: (NSString *) url icon: (NSString *) icon
+{
+  self = [super init];
+  __name = [name retain];
+  __name_isset = YES;
+  __extension = [extension retain];
+  __extension_isset = YES;
+  __url = [url retain];
+  __url_isset = YES;
+  __icon = [icon retain];
+  __icon_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"name"])
+  {
+    __name = [[decoder decodeObjectForKey: @"name"] retain];
+    __name_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"extension"])
+  {
+    __extension = [[decoder decodeObjectForKey: @"extension"] retain];
+    __extension_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"url"])
+  {
+    __url = [[decoder decodeObjectForKey: @"url"] retain];
+    __url_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"icon"])
+  {
+    __icon = [[decoder decodeObjectForKey: @"icon"] retain];
+    __icon_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__name_isset)
+  {
+    [encoder encodeObject: __name forKey: @"name"];
+  }
+  if (__extension_isset)
+  {
+    [encoder encodeObject: __extension forKey: @"extension"];
+  }
+  if (__url_isset)
+  {
+    [encoder encodeObject: __url forKey: @"url"];
+  }
+  if (__icon_isset)
+  {
+    [encoder encodeObject: __icon forKey: @"icon"];
+  }
+}
+
+- (void) dealloc
+{
+  [__name release];
+  [__extension release];
+  [__url release];
+  [__icon release];
+  [super dealloc];
+}
+
+- (NSString *) name {
+  return [[__name retain] autorelease];
+}
+
+- (void) setName: (NSString *) name {
+  [name retain];
+  [__name release];
+  __name = name;
+  __name_isset = YES;
+}
+
+- (BOOL) nameIsSet {
+  return __name_isset;
+}
+
+- (void) unsetName {
+  [__name release];
+  __name = nil;
+  __name_isset = NO;
+}
+
+- (NSString *) extension {
+  return [[__extension retain] autorelease];
+}
+
+- (void) setExtension: (NSString *) extension {
+  [extension retain];
+  [__extension release];
+  __extension = extension;
+  __extension_isset = YES;
+}
+
+- (BOOL) extensionIsSet {
+  return __extension_isset;
+}
+
+- (void) unsetExtension {
+  [__extension release];
+  __extension = nil;
+  __extension_isset = NO;
+}
+
+- (NSString *) url {
+  return [[__url retain] autorelease];
+}
+
+- (void) setUrl: (NSString *) url {
+  [url retain];
+  [__url release];
+  __url = url;
+  __url_isset = YES;
+}
+
+- (BOOL) urlIsSet {
+  return __url_isset;
+}
+
+- (void) unsetUrl {
+  [__url release];
+  __url = nil;
+  __url_isset = NO;
+}
+
+- (NSString *) icon {
+  return [[__icon retain] autorelease];
+}
+
+- (void) setIcon: (NSString *) icon {
+  [icon retain];
+  [__icon release];
+  __icon = icon;
+  __icon_isset = YES;
+}
+
+- (BOOL) iconIsSet {
+  return __icon_isset;
+}
+
+- (void) unsetIcon {
+  [__icon release];
+  __icon = nil;
+  __icon_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setName: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setExtension: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 3:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setUrl: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 4:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setIcon: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"MoodleFile2"];
+  if (__name_isset) {
+    if (__name != nil) {
+      [outProtocol writeFieldBeginWithName: @"name" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __name];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__extension_isset) {
+    if (__extension != nil) {
+      [outProtocol writeFieldBeginWithName: @"extension" type: TType_STRING fieldID: 2];
+      [outProtocol writeString: __extension];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__url_isset) {
+    if (__url != nil) {
+      [outProtocol writeFieldBeginWithName: @"url" type: TType_STRING fieldID: 3];
+      [outProtocol writeString: __url];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__icon_isset) {
+    if (__icon != nil) {
+      [outProtocol writeFieldBeginWithName: @"icon" type: TType_STRING fieldID: 4];
+      [outProtocol writeString: __icon];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"MoodleFile2("];
+  [ms appendString: @"name:"];
+  [ms appendFormat: @"\"%@\"", __name];
+  [ms appendString: @",extension:"];
+  [ms appendFormat: @"\"%@\"", __extension];
+  [ms appendString: @",url:"];
+  [ms appendFormat: @"\"%@\"", __url];
+  [ms appendString: @",icon:"];
+  [ms appendFormat: @"\"%@\"", __icon];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation MoodleFolder2
+
+- (id) initWithName: (NSString *) name files: (NSArray *) files
+{
+  self = [super init];
+  __name = [name retain];
+  __name_isset = YES;
+  __files = [files retain];
+  __files_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"name"])
+  {
+    __name = [[decoder decodeObjectForKey: @"name"] retain];
+    __name_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"files"])
+  {
+    __files = [[decoder decodeObjectForKey: @"files"] retain];
+    __files_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__name_isset)
+  {
+    [encoder encodeObject: __name forKey: @"name"];
+  }
+  if (__files_isset)
+  {
+    [encoder encodeObject: __files forKey: @"files"];
+  }
+}
+
+- (void) dealloc
+{
+  [__name release];
+  [__files release];
+  [super dealloc];
+}
+
+- (NSString *) name {
+  return [[__name retain] autorelease];
+}
+
+- (void) setName: (NSString *) name {
+  [name retain];
+  [__name release];
+  __name = name;
+  __name_isset = YES;
+}
+
+- (BOOL) nameIsSet {
+  return __name_isset;
+}
+
+- (void) unsetName {
+  [__name release];
+  __name = nil;
+  __name_isset = NO;
+}
+
+- (NSArray *) files {
+  return [[__files retain] autorelease];
+}
+
+- (void) setFiles: (NSArray *) files {
+  [files retain];
+  [__files release];
+  __files = files;
+  __files_isset = YES;
+}
+
+- (BOOL) filesIsSet {
+  return __files_isset;
+}
+
+- (void) unsetFiles {
+  [__files release];
+  __files = nil;
+  __files_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setName: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_LIST) {
+          int _size15;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size15];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size15];
+          int _i16;
+          for (_i16 = 0; _i16 < _size15; ++_i16)
+          {
+            MoodleFile2 *_elem17 = [[MoodleFile2 alloc] init];
+            [_elem17 read: inProtocol];
+            [fieldValue addObject: _elem17];
+            [_elem17 release];
+          }
+          [inProtocol readListEnd];
+          [self setFiles: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"MoodleFolder2"];
+  if (__name_isset) {
+    if (__name != nil) {
+      [outProtocol writeFieldBeginWithName: @"name" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __name];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__files_isset) {
+    if (__files != nil) {
+      [outProtocol writeFieldBeginWithName: @"files" type: TType_LIST fieldID: 2];
+      {
+        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__files count]];
+        int i19;
+        for (i19 = 0; i19 < [__files count]; i19++)
+        {
+          [[__files objectAtIndex: i19] write: outProtocol];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"MoodleFolder2("];
+  [ms appendString: @"name:"];
+  [ms appendFormat: @"\"%@\"", __name];
+  [ms appendString: @",files:"];
+  [ms appendFormat: @"%@", __files];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation MoodleUrl2
+
+- (id) initWithName: (NSString *) name url: (NSString *) url
+{
+  self = [super init];
+  __name = [name retain];
+  __name_isset = YES;
+  __url = [url retain];
+  __url_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"name"])
+  {
+    __name = [[decoder decodeObjectForKey: @"name"] retain];
+    __name_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"url"])
+  {
+    __url = [[decoder decodeObjectForKey: @"url"] retain];
+    __url_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__name_isset)
+  {
+    [encoder encodeObject: __name forKey: @"name"];
+  }
+  if (__url_isset)
+  {
+    [encoder encodeObject: __url forKey: @"url"];
+  }
+}
+
+- (void) dealloc
+{
+  [__name release];
+  [__url release];
+  [super dealloc];
+}
+
+- (NSString *) name {
+  return [[__name retain] autorelease];
+}
+
+- (void) setName: (NSString *) name {
+  [name retain];
+  [__name release];
+  __name = name;
+  __name_isset = YES;
+}
+
+- (BOOL) nameIsSet {
+  return __name_isset;
+}
+
+- (void) unsetName {
+  [__name release];
+  __name = nil;
+  __name_isset = NO;
+}
+
+- (NSString *) url {
+  return [[__url retain] autorelease];
+}
+
+- (void) setUrl: (NSString *) url {
+  [url retain];
+  [__url release];
+  __url = url;
+  __url_isset = YES;
+}
+
+- (BOOL) urlIsSet {
+  return __url_isset;
+}
+
+- (void) unsetUrl {
+  [__url release];
+  __url = nil;
+  __url_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setName: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setUrl: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"MoodleUrl2"];
+  if (__name_isset) {
+    if (__name != nil) {
+      [outProtocol writeFieldBeginWithName: @"name" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __name];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__url_isset) {
+    if (__url != nil) {
+      [outProtocol writeFieldBeginWithName: @"url" type: TType_STRING fieldID: 2];
+      [outProtocol writeString: __url];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"MoodleUrl2("];
+  [ms appendString: @"name:"];
+  [ms appendFormat: @"\"%@\"", __name];
+  [ms appendString: @",url:"];
+  [ms appendFormat: @"\"%@\"", __url];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation MoodleResource2
+
+- (id) initWithFile: (MoodleFile2 *) file folder: (MoodleFolder2 *) folder url: (MoodleUrl2 *) url
+{
+  self = [super init];
+  __file = [file retain];
+  __file_isset = YES;
+  __folder = [folder retain];
+  __folder_isset = YES;
+  __url = [url retain];
+  __url_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"file"])
+  {
+    __file = [[decoder decodeObjectForKey: @"file"] retain];
+    __file_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"folder"])
+  {
+    __folder = [[decoder decodeObjectForKey: @"folder"] retain];
+    __folder_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"url"])
+  {
+    __url = [[decoder decodeObjectForKey: @"url"] retain];
+    __url_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__file_isset)
+  {
+    [encoder encodeObject: __file forKey: @"file"];
+  }
+  if (__folder_isset)
+  {
+    [encoder encodeObject: __folder forKey: @"folder"];
+  }
+  if (__url_isset)
+  {
+    [encoder encodeObject: __url forKey: @"url"];
+  }
+}
+
+- (void) dealloc
+{
+  [__file release];
+  [__folder release];
+  [__url release];
+  [super dealloc];
+}
+
+- (MoodleFile2 *) file {
+  return [[__file retain] autorelease];
+}
+
+- (void) setFile: (MoodleFile2 *) file {
+  [file retain];
+  [__file release];
+  __file = file;
+  __file_isset = YES;
+}
+
+- (BOOL) fileIsSet {
+  return __file_isset;
+}
+
+- (void) unsetFile {
+  [__file release];
+  __file = nil;
+  __file_isset = NO;
+}
+
+- (MoodleFolder2 *) folder {
+  return [[__folder retain] autorelease];
+}
+
+- (void) setFolder: (MoodleFolder2 *) folder {
+  [folder retain];
+  [__folder release];
+  __folder = folder;
+  __folder_isset = YES;
+}
+
+- (BOOL) folderIsSet {
+  return __folder_isset;
+}
+
+- (void) unsetFolder {
+  [__folder release];
+  __folder = nil;
+  __folder_isset = NO;
+}
+
+- (MoodleUrl2 *) url {
+  return [[__url retain] autorelease];
+}
+
+- (void) setUrl: (MoodleUrl2 *) url {
+  [url retain];
+  [__url release];
+  __url = url;
+  __url_isset = YES;
+}
+
+- (BOOL) urlIsSet {
+  return __url_isset;
+}
+
+- (void) unsetUrl {
+  [__url release];
+  __url = nil;
+  __url_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          MoodleFile2 *fieldValue = [[MoodleFile2 alloc] init];
+          [fieldValue read: inProtocol];
+          [self setFile: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_STRUCT) {
+          MoodleFolder2 *fieldValue = [[MoodleFolder2 alloc] init];
+          [fieldValue read: inProtocol];
+          [self setFolder: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 3:
+        if (fieldType == TType_STRUCT) {
+          MoodleUrl2 *fieldValue = [[MoodleUrl2 alloc] init];
+          [fieldValue read: inProtocol];
+          [self setUrl: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"MoodleResource2"];
+  if (__file_isset) {
+    if (__file != nil) {
+      [outProtocol writeFieldBeginWithName: @"file" type: TType_STRUCT fieldID: 1];
+      [__file write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__folder_isset) {
+    if (__folder != nil) {
+      [outProtocol writeFieldBeginWithName: @"folder" type: TType_STRUCT fieldID: 2];
+      [__folder write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__url_isset) {
+    if (__url != nil) {
+      [outProtocol writeFieldBeginWithName: @"url" type: TType_STRUCT fieldID: 3];
+      [__url write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"MoodleResource2("];
+  [ms appendString: @"file:"];
+  [ms appendFormat: @"%@", __file];
+  [ms appendString: @",folder:"];
+  [ms appendFormat: @"%@", __folder];
+  [ms appendString: @",url:"];
+  [ms appendFormat: @"%@", __url];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation MoodleCourseSection2
+
+- (id) initWithResources: (NSArray *) resources title: (NSString *) title startDate: (int64_t) startDate endDate: (int64_t) endDate details: (NSString *) details
+{
+  self = [super init];
+  __resources = [resources retain];
+  __resources_isset = YES;
+  __title = [title retain];
+  __title_isset = YES;
+  __startDate = startDate;
+  __startDate_isset = YES;
+  __endDate = endDate;
+  __endDate_isset = YES;
+  __details = [details retain];
+  __details_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"resources"])
+  {
+    __resources = [[decoder decodeObjectForKey: @"resources"] retain];
+    __resources_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"title"])
+  {
+    __title = [[decoder decodeObjectForKey: @"title"] retain];
+    __title_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"startDate"])
+  {
+    __startDate = [decoder decodeInt64ForKey: @"startDate"];
+    __startDate_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"endDate"])
+  {
+    __endDate = [decoder decodeInt64ForKey: @"endDate"];
+    __endDate_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"details"])
+  {
+    __details = [[decoder decodeObjectForKey: @"details"] retain];
+    __details_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__resources_isset)
+  {
+    [encoder encodeObject: __resources forKey: @"resources"];
+  }
+  if (__title_isset)
+  {
+    [encoder encodeObject: __title forKey: @"title"];
+  }
+  if (__startDate_isset)
+  {
+    [encoder encodeInt64: __startDate forKey: @"startDate"];
+  }
+  if (__endDate_isset)
+  {
+    [encoder encodeInt64: __endDate forKey: @"endDate"];
+  }
+  if (__details_isset)
+  {
+    [encoder encodeObject: __details forKey: @"details"];
+  }
+}
+
+- (void) dealloc
+{
+  [__resources release];
+  [__title release];
+  [__details release];
+  [super dealloc];
+}
+
+- (NSArray *) resources {
+  return [[__resources retain] autorelease];
+}
+
+- (void) setResources: (NSArray *) resources {
+  [resources retain];
+  [__resources release];
+  __resources = resources;
+  __resources_isset = YES;
+}
+
+- (BOOL) resourcesIsSet {
+  return __resources_isset;
+}
+
+- (void) unsetResources {
+  [__resources release];
+  __resources = nil;
+  __resources_isset = NO;
+}
+
+- (NSString *) title {
+  return [[__title retain] autorelease];
+}
+
+- (void) setTitle: (NSString *) title {
+  [title retain];
+  [__title release];
+  __title = title;
+  __title_isset = YES;
+}
+
+- (BOOL) titleIsSet {
+  return __title_isset;
+}
+
+- (void) unsetTitle {
+  [__title release];
+  __title = nil;
+  __title_isset = NO;
+}
+
+- (int64_t) startDate {
+  return __startDate;
+}
+
+- (void) setStartDate: (int64_t) startDate {
+  __startDate = startDate;
+  __startDate_isset = YES;
+}
+
+- (BOOL) startDateIsSet {
+  return __startDate_isset;
+}
+
+- (void) unsetStartDate {
+  __startDate_isset = NO;
+}
+
+- (int64_t) endDate {
+  return __endDate;
+}
+
+- (void) setEndDate: (int64_t) endDate {
+  __endDate = endDate;
+  __endDate_isset = YES;
+}
+
+- (BOOL) endDateIsSet {
+  return __endDate_isset;
+}
+
+- (void) unsetEndDate {
+  __endDate_isset = NO;
+}
+
+- (NSString *) details {
+  return [[__details retain] autorelease];
+}
+
+- (void) setDetails: (NSString *) details {
+  [details retain];
+  [__details release];
+  __details = details;
+  __details_isset = YES;
+}
+
+- (BOOL) detailsIsSet {
+  return __details_isset;
+}
+
+- (void) unsetDetails {
+  [__details release];
+  __details = nil;
+  __details_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_LIST) {
+          int _size20;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size20];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size20];
+          int _i21;
+          for (_i21 = 0; _i21 < _size20; ++_i21)
+          {
+            MoodleResource2 *_elem22 = [[MoodleResource2 alloc] init];
+            [_elem22 read: inProtocol];
+            [fieldValue addObject: _elem22];
+            [_elem22 release];
+          }
+          [inProtocol readListEnd];
+          [self setResources: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setTitle: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 3:
+        if (fieldType == TType_I64) {
+          int64_t fieldValue = [inProtocol readI64];
+          [self setStartDate: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 4:
+        if (fieldType == TType_I64) {
+          int64_t fieldValue = [inProtocol readI64];
+          [self setEndDate: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 5:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setDetails: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"MoodleCourseSection2"];
+  if (__resources_isset) {
+    if (__resources != nil) {
+      [outProtocol writeFieldBeginWithName: @"resources" type: TType_LIST fieldID: 1];
+      {
+        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__resources count]];
+        int i24;
+        for (i24 = 0; i24 < [__resources count]; i24++)
+        {
+          [[__resources objectAtIndex: i24] write: outProtocol];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__title_isset) {
+    if (__title != nil) {
+      [outProtocol writeFieldBeginWithName: @"title" type: TType_STRING fieldID: 2];
+      [outProtocol writeString: __title];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__startDate_isset) {
+    [outProtocol writeFieldBeginWithName: @"startDate" type: TType_I64 fieldID: 3];
+    [outProtocol writeI64: __startDate];
+    [outProtocol writeFieldEnd];
+  }
+  if (__endDate_isset) {
+    [outProtocol writeFieldBeginWithName: @"endDate" type: TType_I64 fieldID: 4];
+    [outProtocol writeI64: __endDate];
+    [outProtocol writeFieldEnd];
+  }
+  if (__details_isset) {
+    if (__details != nil) {
+      [outProtocol writeFieldBeginWithName: @"details" type: TType_STRING fieldID: 5];
+      [outProtocol writeString: __details];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"MoodleCourseSection2("];
+  [ms appendString: @"resources:"];
+  [ms appendFormat: @"%@", __resources];
+  [ms appendString: @",title:"];
+  [ms appendFormat: @"\"%@\"", __title];
+  [ms appendString: @",startDate:"];
+  [ms appendFormat: @"%qi", __startDate];
+  [ms appendString: @",endDate:"];
+  [ms appendFormat: @"%qi", __endDate];
+  [ms appendString: @",details:"];
+  [ms appendFormat: @"\"%@\"", __details];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation MoodleCourse2
+
+- (id) initWithCourseId: (int32_t) courseId name: (NSString *) name
+{
+  self = [super init];
+  __courseId = courseId;
+  __courseId_isset = YES;
+  __name = [name retain];
+  __name_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"courseId"])
+  {
+    __courseId = [decoder decodeInt32ForKey: @"courseId"];
+    __courseId_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"name"])
+  {
+    __name = [[decoder decodeObjectForKey: @"name"] retain];
+    __name_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__courseId_isset)
+  {
+    [encoder encodeInt32: __courseId forKey: @"courseId"];
+  }
+  if (__name_isset)
+  {
+    [encoder encodeObject: __name forKey: @"name"];
+  }
+}
+
+- (void) dealloc
+{
+  [__name release];
+  [super dealloc];
+}
+
+- (int32_t) courseId {
+  return __courseId;
+}
+
+- (void) setCourseId: (int32_t) courseId {
+  __courseId = courseId;
+  __courseId_isset = YES;
+}
+
+- (BOOL) courseIdIsSet {
+  return __courseId_isset;
+}
+
+- (void) unsetCourseId {
+  __courseId_isset = NO;
+}
+
+- (NSString *) name {
+  return [[__name retain] autorelease];
+}
+
+- (void) setName: (NSString *) name {
+  [name retain];
+  [__name release];
+  __name = name;
+  __name_isset = YES;
+}
+
+- (BOOL) nameIsSet {
+  return __name_isset;
+}
+
+- (void) unsetName {
+  [__name release];
+  __name = nil;
+  __name_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setCourseId: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setName: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"MoodleCourse2"];
+  if (__courseId_isset) {
+    [outProtocol writeFieldBeginWithName: @"courseId" type: TType_I32 fieldID: 1];
+    [outProtocol writeI32: __courseId];
+    [outProtocol writeFieldEnd];
+  }
+  if (__name_isset) {
+    if (__name != nil) {
+      [outProtocol writeFieldBeginWithName: @"name" type: TType_STRING fieldID: 2];
+      [outProtocol writeString: __name];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"MoodleCourse2("];
+  [ms appendString: @"courseId:"];
+  [ms appendFormat: @"%i", __courseId];
+  [ms appendString: @",name:"];
+  [ms appendFormat: @"\"%@\"", __name];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation MoodleCoursesRequest2
+
+- (id) initWithLanguage: (NSString *) language
+{
+  self = [super init];
+  __language = [language retain];
+  __language_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"language"])
+  {
+    __language = [[decoder decodeObjectForKey: @"language"] retain];
+    __language_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__language_isset)
+  {
+    [encoder encodeObject: __language forKey: @"language"];
+  }
+}
+
+- (void) dealloc
+{
+  [__language release];
+  [super dealloc];
+}
+
+- (NSString *) language {
+  return [[__language retain] autorelease];
+}
+
+- (void) setLanguage: (NSString *) language {
+  [language retain];
+  [__language release];
+  __language = language;
+  __language_isset = YES;
+}
+
+- (BOOL) languageIsSet {
+  return __language_isset;
+}
+
+- (void) unsetLanguage {
+  [__language release];
+  __language = nil;
+  __language_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setLanguage: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"MoodleCoursesRequest2"];
+  if (__language_isset) {
+    if (__language != nil) {
+      [outProtocol writeFieldBeginWithName: @"language" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __language];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"MoodleCoursesRequest2("];
+  [ms appendString: @"language:"];
+  [ms appendFormat: @"\"%@\"", __language];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation MoodleCoursesResponse2
+
+- (id) initWithStatusCode: (int) statusCode courses: (NSArray *) courses
+{
+  self = [super init];
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
+  __courses = [courses retain];
+  __courses_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"statusCode"])
+  {
+    __statusCode = [decoder decodeIntForKey: @"statusCode"];
+    __statusCode_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"courses"])
+  {
+    __courses = [[decoder decodeObjectForKey: @"courses"] retain];
+    __courses_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__statusCode_isset)
+  {
+    [encoder encodeInt: __statusCode forKey: @"statusCode"];
+  }
+  if (__courses_isset)
+  {
+    [encoder encodeObject: __courses forKey: @"courses"];
+  }
+}
+
+- (void) dealloc
+{
+  [__courses release];
+  [super dealloc];
+}
+
+- (int) statusCode {
+  return __statusCode;
+}
+
+- (void) setStatusCode: (int) statusCode {
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
+}
+
+- (BOOL) statusCodeIsSet {
+  return __statusCode_isset;
+}
+
+- (void) unsetStatusCode {
+  __statusCode_isset = NO;
+}
+
+- (NSArray *) courses {
+  return [[__courses retain] autorelease];
+}
+
+- (void) setCourses: (NSArray *) courses {
+  [courses retain];
+  [__courses release];
+  __courses = courses;
+  __courses_isset = YES;
+}
+
+- (BOOL) coursesIsSet {
+  return __courses_isset;
+}
+
+- (void) unsetCourses {
+  [__courses release];
+  __courses = nil;
+  __courses_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setStatusCode: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_LIST) {
+          int _size25;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size25];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size25];
+          int _i26;
+          for (_i26 = 0; _i26 < _size25; ++_i26)
+          {
+            MoodleCourse2 *_elem27 = [[MoodleCourse2 alloc] init];
+            [_elem27 read: inProtocol];
+            [fieldValue addObject: _elem27];
+            [_elem27 release];
+          }
+          [inProtocol readListEnd];
+          [self setCourses: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"MoodleCoursesResponse2"];
+  if (__statusCode_isset) {
+    [outProtocol writeFieldBeginWithName: @"statusCode" type: TType_I32 fieldID: 1];
+    [outProtocol writeI32: __statusCode];
+    [outProtocol writeFieldEnd];
+  }
+  if (__courses_isset) {
+    if (__courses != nil) {
+      [outProtocol writeFieldBeginWithName: @"courses" type: TType_LIST fieldID: 2];
+      {
+        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__courses count]];
+        int i29;
+        for (i29 = 0; i29 < [__courses count]; i29++)
+        {
+          [[__courses objectAtIndex: i29] write: outProtocol];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"MoodleCoursesResponse2("];
+  [ms appendString: @"statusCode:"];
+  [ms appendFormat: @"%i", __statusCode];
+  [ms appendString: @",courses:"];
+  [ms appendFormat: @"%@", __courses];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation MoodleCourseSectionsRequest2
+
+- (id) initWithLanguage: (NSString *) language courseId: (int32_t) courseId
+{
+  self = [super init];
+  __language = [language retain];
+  __language_isset = YES;
+  __courseId = courseId;
+  __courseId_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"language"])
+  {
+    __language = [[decoder decodeObjectForKey: @"language"] retain];
+    __language_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"courseId"])
+  {
+    __courseId = [decoder decodeInt32ForKey: @"courseId"];
+    __courseId_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__language_isset)
+  {
+    [encoder encodeObject: __language forKey: @"language"];
+  }
+  if (__courseId_isset)
+  {
+    [encoder encodeInt32: __courseId forKey: @"courseId"];
+  }
+}
+
+- (void) dealloc
+{
+  [__language release];
+  [super dealloc];
+}
+
+- (NSString *) language {
+  return [[__language retain] autorelease];
+}
+
+- (void) setLanguage: (NSString *) language {
+  [language retain];
+  [__language release];
+  __language = language;
+  __language_isset = YES;
+}
+
+- (BOOL) languageIsSet {
+  return __language_isset;
+}
+
+- (void) unsetLanguage {
+  [__language release];
+  __language = nil;
+  __language_isset = NO;
+}
+
+- (int32_t) courseId {
+  return __courseId;
+}
+
+- (void) setCourseId: (int32_t) courseId {
+  __courseId = courseId;
+  __courseId_isset = YES;
+}
+
+- (BOOL) courseIdIsSet {
+  return __courseId_isset;
+}
+
+- (void) unsetCourseId {
+  __courseId_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setLanguage: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setCourseId: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"MoodleCourseSectionsRequest2"];
+  if (__language_isset) {
+    if (__language != nil) {
+      [outProtocol writeFieldBeginWithName: @"language" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __language];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__courseId_isset) {
+    [outProtocol writeFieldBeginWithName: @"courseId" type: TType_I32 fieldID: 2];
+    [outProtocol writeI32: __courseId];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"MoodleCourseSectionsRequest2("];
+  [ms appendString: @"language:"];
+  [ms appendFormat: @"\"%@\"", __language];
+  [ms appendString: @",courseId:"];
+  [ms appendFormat: @"%i", __courseId];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation MoodleCourseSectionsResponse2
+
+- (id) initWithStatusCode: (int) statusCode sections: (NSArray *) sections
+{
+  self = [super init];
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
+  __sections = [sections retain];
+  __sections_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"statusCode"])
+  {
+    __statusCode = [decoder decodeIntForKey: @"statusCode"];
+    __statusCode_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"sections"])
+  {
+    __sections = [[decoder decodeObjectForKey: @"sections"] retain];
+    __sections_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__statusCode_isset)
+  {
+    [encoder encodeInt: __statusCode forKey: @"statusCode"];
+  }
+  if (__sections_isset)
+  {
+    [encoder encodeObject: __sections forKey: @"sections"];
+  }
+}
+
+- (void) dealloc
+{
+  [__sections release];
+  [super dealloc];
+}
+
+- (int) statusCode {
+  return __statusCode;
+}
+
+- (void) setStatusCode: (int) statusCode {
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
+}
+
+- (BOOL) statusCodeIsSet {
+  return __statusCode_isset;
+}
+
+- (void) unsetStatusCode {
+  __statusCode_isset = NO;
+}
+
+- (NSArray *) sections {
+  return [[__sections retain] autorelease];
+}
+
+- (void) setSections: (NSArray *) sections {
+  [sections retain];
+  [__sections release];
+  __sections = sections;
+  __sections_isset = YES;
+}
+
+- (BOOL) sectionsIsSet {
+  return __sections_isset;
+}
+
+- (void) unsetSections {
+  [__sections release];
+  __sections = nil;
+  __sections_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setStatusCode: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_LIST) {
+          int _size30;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size30];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size30];
+          int _i31;
+          for (_i31 = 0; _i31 < _size30; ++_i31)
+          {
+            MoodleCourseSection2 *_elem32 = [[MoodleCourseSection2 alloc] init];
+            [_elem32 read: inProtocol];
+            [fieldValue addObject: _elem32];
+            [_elem32 release];
+          }
+          [inProtocol readListEnd];
+          [self setSections: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"MoodleCourseSectionsResponse2"];
+  if (__statusCode_isset) {
+    [outProtocol writeFieldBeginWithName: @"statusCode" type: TType_I32 fieldID: 1];
+    [outProtocol writeI32: __statusCode];
+    [outProtocol writeFieldEnd];
+  }
+  if (__sections_isset) {
+    if (__sections != nil) {
+      [outProtocol writeFieldBeginWithName: @"sections" type: TType_LIST fieldID: 2];
+      {
+        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__sections count]];
+        int i34;
+        for (i34 = 0; i34 < [__sections count]; i34++)
+        {
+          [[__sections objectAtIndex: i34] write: outProtocol];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"MoodleCourseSectionsResponse2("];
+  [ms appendString: @"statusCode:"];
+  [ms appendFormat: @"%i", __statusCode];
+  [ms appendString: @",sections:"];
+  [ms appendFormat: @"%@", __sections];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -2739,6 +3443,544 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
 
 @end
 
+@interface getCourses_args : NSObject <NSCoding> {
+  MoodleCoursesRequest2 * __request;
+
+  BOOL __request_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=request, setter=setRequest:) MoodleCoursesRequest2 * request;
+#endif
+
+- (id) initWithRequest: (MoodleCoursesRequest2 *) request;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (MoodleCoursesRequest2 *) request;
+- (void) setRequest: (MoodleCoursesRequest2 *) request;
+- (BOOL) requestIsSet;
+
+@end
+
+@implementation getCourses_args
+
+- (id) initWithRequest: (MoodleCoursesRequest2 *) request
+{
+  self = [super init];
+  __request = [request retain];
+  __request_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"request"])
+  {
+    __request = [[decoder decodeObjectForKey: @"request"] retain];
+    __request_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__request_isset)
+  {
+    [encoder encodeObject: __request forKey: @"request"];
+  }
+}
+
+- (void) dealloc
+{
+  [__request release];
+  [super dealloc];
+}
+
+- (MoodleCoursesRequest2 *) request {
+  return [[__request retain] autorelease];
+}
+
+- (void) setRequest: (MoodleCoursesRequest2 *) request {
+  [request retain];
+  [__request release];
+  __request = request;
+  __request_isset = YES;
+}
+
+- (BOOL) requestIsSet {
+  return __request_isset;
+}
+
+- (void) unsetRequest {
+  [__request release];
+  __request = nil;
+  __request_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          MoodleCoursesRequest2 *fieldValue = [[MoodleCoursesRequest2 alloc] init];
+          [fieldValue read: inProtocol];
+          [self setRequest: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"getCourses_args"];
+  if (__request_isset) {
+    if (__request != nil) {
+      [outProtocol writeFieldBeginWithName: @"request" type: TType_STRUCT fieldID: 1];
+      [__request write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"getCourses_args("];
+  [ms appendString: @"request:"];
+  [ms appendFormat: @"%@", __request];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface GetCourses_result : NSObject <NSCoding> {
+  MoodleCoursesResponse2 * __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=success, setter=setSuccess:) MoodleCoursesResponse2 * success;
+#endif
+
+- (id) initWithSuccess: (MoodleCoursesResponse2 *) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (MoodleCoursesResponse2 *) success;
+- (void) setSuccess: (MoodleCoursesResponse2 *) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation GetCourses_result
+
+- (id) initWithSuccess: (MoodleCoursesResponse2 *) success
+{
+  self = [super init];
+  __success = [success retain];
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [[decoder decodeObjectForKey: @"success"] retain];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeObject: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [__success release];
+  [super dealloc];
+}
+
+- (MoodleCoursesResponse2 *) success {
+  return [[__success retain] autorelease];
+}
+
+- (void) setSuccess: (MoodleCoursesResponse2 *) success {
+  [success retain];
+  [__success release];
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  [__success release];
+  __success = nil;
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_STRUCT) {
+          MoodleCoursesResponse2 *fieldValue = [[MoodleCoursesResponse2 alloc] init];
+          [fieldValue read: inProtocol];
+          [self setSuccess: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"GetCourses_result"];
+
+  if (__success_isset) {
+    if (__success != nil) {
+      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
+      [__success write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"GetCourses_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%@", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface getSections_args : NSObject <NSCoding> {
+  MoodleCourseSectionsRequest2 * __request;
+
+  BOOL __request_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=request, setter=setRequest:) MoodleCourseSectionsRequest2 * request;
+#endif
+
+- (id) initWithRequest: (MoodleCourseSectionsRequest2 *) request;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (MoodleCourseSectionsRequest2 *) request;
+- (void) setRequest: (MoodleCourseSectionsRequest2 *) request;
+- (BOOL) requestIsSet;
+
+@end
+
+@implementation getSections_args
+
+- (id) initWithRequest: (MoodleCourseSectionsRequest2 *) request
+{
+  self = [super init];
+  __request = [request retain];
+  __request_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"request"])
+  {
+    __request = [[decoder decodeObjectForKey: @"request"] retain];
+    __request_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__request_isset)
+  {
+    [encoder encodeObject: __request forKey: @"request"];
+  }
+}
+
+- (void) dealloc
+{
+  [__request release];
+  [super dealloc];
+}
+
+- (MoodleCourseSectionsRequest2 *) request {
+  return [[__request retain] autorelease];
+}
+
+- (void) setRequest: (MoodleCourseSectionsRequest2 *) request {
+  [request retain];
+  [__request release];
+  __request = request;
+  __request_isset = YES;
+}
+
+- (BOOL) requestIsSet {
+  return __request_isset;
+}
+
+- (void) unsetRequest {
+  [__request release];
+  __request = nil;
+  __request_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          MoodleCourseSectionsRequest2 *fieldValue = [[MoodleCourseSectionsRequest2 alloc] init];
+          [fieldValue read: inProtocol];
+          [self setRequest: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"getSections_args"];
+  if (__request_isset) {
+    if (__request != nil) {
+      [outProtocol writeFieldBeginWithName: @"request" type: TType_STRUCT fieldID: 1];
+      [__request write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"getSections_args("];
+  [ms appendString: @"request:"];
+  [ms appendFormat: @"%@", __request];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface GetSections_result : NSObject <NSCoding> {
+  MoodleCourseSectionsResponse2 * __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=success, setter=setSuccess:) MoodleCourseSectionsResponse2 * success;
+#endif
+
+- (id) initWithSuccess: (MoodleCourseSectionsResponse2 *) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (MoodleCourseSectionsResponse2 *) success;
+- (void) setSuccess: (MoodleCourseSectionsResponse2 *) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation GetSections_result
+
+- (id) initWithSuccess: (MoodleCourseSectionsResponse2 *) success
+{
+  self = [super init];
+  __success = [success retain];
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [[decoder decodeObjectForKey: @"success"] retain];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeObject: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [__success release];
+  [super dealloc];
+}
+
+- (MoodleCourseSectionsResponse2 *) success {
+  return [[__success retain] autorelease];
+}
+
+- (void) setSuccess: (MoodleCourseSectionsResponse2 *) success {
+  [success retain];
+  [__success release];
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  [__success release];
+  __success = nil;
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_STRUCT) {
+          MoodleCourseSectionsResponse2 *fieldValue = [[MoodleCourseSectionsResponse2 alloc] init];
+          [fieldValue read: inProtocol];
+          [self setSuccess: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"GetSections_result"];
+
+  if (__success_isset) {
+    if (__success != nil) {
+      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
+      [__success write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"GetSections_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%@", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @implementation MoodleServiceClient
 - (id) initWithProtocol: (id <TProtocol>) protocol
 {
@@ -2840,6 +4082,86 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
   return [self recv_getCourseSectionsAPI];
 }
 
+- (void) send_getCourses: (MoodleCoursesRequest2 *) request
+{
+  [outProtocol writeMessageBeginWithName: @"getCourses" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"getCourses_args"];
+  if (request != nil)  {
+    [outProtocol writeFieldBeginWithName: @"request" type: TType_STRUCT fieldID: 1];
+    [request write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (MoodleCoursesResponse2 *) recv_getCourses
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  GetCourses_result * result = [[[GetCourses_result alloc] init] autorelease];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"getCourses failed: unknown result"];
+}
+
+- (MoodleCoursesResponse2 *) getCourses: (MoodleCoursesRequest2 *) request
+{
+  [self send_getCourses: request];
+  return [self recv_getCourses];
+}
+
+- (void) send_getSections: (MoodleCourseSectionsRequest2 *) request
+{
+  [outProtocol writeMessageBeginWithName: @"getSections" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"getSections_args"];
+  if (request != nil)  {
+    [outProtocol writeFieldBeginWithName: @"request" type: TType_STRUCT fieldID: 1];
+    [request write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (MoodleCourseSectionsResponse2 *) recv_getSections
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  GetSections_result * result = [[[GetSections_result alloc] init] autorelease];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"getSections failed: unknown result"];
+}
+
+- (MoodleCourseSectionsResponse2 *) getSections: (MoodleCourseSectionsRequest2 *) request
+{
+  [self send_getSections: request];
+  return [self recv_getSections];
+}
+
 @end
 
 @implementation MoodleServiceProcessor
@@ -2867,6 +4189,22 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
     [invocation setSelector: s];
     [invocation retainArguments];
     [mMethodMap setValue: invocation forKey: @"getCourseSectionsAPI"];
+  }
+  {
+    SEL s = @selector(process_getCourses_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"getCourses"];
+  }
+  {
+    SEL s = @selector(process_getSections_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"getSections"];
   }
   return self;
 }
@@ -2934,6 +4272,40 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
   GetCourseSectionsAPI_result * result = [[GetCourseSectionsAPI_result alloc] init];
   [result setSuccess: [mService getCourseSectionsAPI: [args courseId]]];
   [outProtocol writeMessageBeginWithName: @"getCourseSectionsAPI"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release];
+  [args release];
+}
+
+- (void) process_getCourses_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  getCourses_args * args = [[getCourses_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  GetCourses_result * result = [[GetCourses_result alloc] init];
+  [result setSuccess: [mService getCourses: [args request]]];
+  [outProtocol writeMessageBeginWithName: @"getCourses"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release];
+  [args release];
+}
+
+- (void) process_getSections_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  getSections_args * args = [[getSections_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  GetSections_result * result = [[GetSections_result alloc] init];
+  [result setSuccess: [mService getSections: [args request]]];
+  [outProtocol writeMessageBeginWithName: @"getSections"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
   [result write: outProtocol];

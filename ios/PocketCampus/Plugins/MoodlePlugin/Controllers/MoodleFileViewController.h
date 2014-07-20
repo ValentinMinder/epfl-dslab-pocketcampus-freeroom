@@ -25,13 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
 //  Created by Loïc Gardiol on 04.12.12.
 
-@class MoodleCourse2;
+@class MoodleFile2;
 
-@interface MoodleCourseSectionsViewController : UITableViewController
+@interface MoodleFileViewController : UIViewController
 
-- (id)initWithCourse:(MoodleCourse2*)course;
+- (id)initWithMoodleFile:(MoodleFile2*)moodleFile;
 
 @end

@@ -51,7 +51,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 @interface MoodleCoursesListViewController ()<PCMasterSplitDelegate, MoodleServiceDelegate>
 
 @property (nonatomic, strong) MoodleService* moodleService;
-@property (nonatomic, strong) NSArray* courses;
+@property (nonatomic, strong) MoodleCoursesResponse2* coursesResponse;
+@property (nonatomic, readonly) NSArray* courses;
 @property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
 @property (nonatomic, strong) UIPopoverController* settingsPopover;
 
@@ -66,7 +67,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
         self.gaiScreenName = @"/moodle";
         self.title = NSLocalizedStringFromTable(@"MyCourses", @"MoodlePlugin", nil);
         self.moodleService = [MoodleService sharedInstanceToRetain];
-        self.courses = [self.moodleService getFromCacheCoursesList].iCourses;
+        self.coursesResponse = [self.moodleService getFromCacheCoursesWithRequest:[self newMoodleCoursesRequest]];
     }
     return self;
 }
@@ -102,6 +103,12 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     
 }
 
+#pragma mark - Properties
+
+- (NSArray*)courses {
+    return self.coursesResponse.courses;
+}
+
 #pragma mark - Refresh control
 
 - (void)refresh {
@@ -111,7 +118,11 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 }
 
 - (void)startGetCoursesListRequest {
-    [self.moodleService getCoursesListWithDelegate:self];
+    [self.moodleService getCoursesWithRequest:[self newMoodleCoursesRequest] delegate:self];
+}
+
+- (MoodleCoursesRequest2*)newMoodleCoursesRequest {
+    return [[MoodleCoursesRequest2 alloc] initWithLanguage:[PCUtils userLanguageCode]];
 }
 
 #pragma mark - Buttons actions
@@ -139,14 +150,14 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 
 #pragma mark - MoodleServiceDelegate
 
-- (void)getCoursesListForDummy:(NSString *)dummy didReturn:(CoursesListReply *)reply {
-    switch (reply.iStatus) {
-        case 200:
-            self.courses = reply.iCourses;
+- (void)getCoursesForRequest:(MoodleCoursesRequest2 *)request didReturn:(MoodleCoursesResponse2 *)response {
+    switch (response.statusCode) {
+        case MoodleStatusCode2_OK:
+            self.coursesResponse = response;
             [self.tableView reloadData];
             [self.lgRefreshControl endRefreshingAndMarkSuccessful];
             break;
-        case 407:
+        case MoodleStatusCode2_AUTHENTICATION_ERROR:
         {
             __weak __typeof(self) weakSelf = self;
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
@@ -158,10 +169,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
             }];
             break;
         }
-        case 405:
-            [self error];
-            break;
-        case 404:
+        case MoodleStatusCode2_NETWORK_ERROR:
         {
             [self.lgRefreshControl endRefreshing];
             UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -169,12 +177,12 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
             break;
         }
         default:
-            [self getCoursesListFailedForDummy:dummy];
+            [self error];
             break;
     }
 }
 
-- (void)getCoursesListFailedForDummy:(NSString *)dummy {
+- (void)getCoursesFailedForRequest:(MoodleCoursesRequest2 *)request {
     [self error];
 }
 
@@ -194,8 +202,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     if (self.courses.count == 0) {
         return;
     }
-    MoodleCourse* course = self.courses[indexPath.row];
-    [self trackAction:@"ViewCourse" contentInfo:[NSString stringWithFormat:@"%ld-%@", course.iId, course.iTitle]];
+    MoodleCourse2* course = self.courses[indexPath.row];
+    [self trackAction:@"ViewCourse" contentInfo:[NSString stringWithFormat:@"%ld-%@", course.courseId, course.name]];
     MoodleCourseSectionsViewController* viewController = [[MoodleCourseSectionsViewController alloc] initWithCourse:course];
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -214,7 +222,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
         }
     }
     NSString* const identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"CourseCell"];
-    MoodleCourse* course = self.courses[indexPath.row];
+    MoodleCourse2* course = self.courses[indexPath.row];
     PCTableViewCellAdditions *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     
     if (!cell) {
@@ -231,7 +239,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
         }];
     }
     
-    cell.textLabel.text = course.iTitle;
+    cell.textLabel.text = course.name;
     
     return cell;
 }

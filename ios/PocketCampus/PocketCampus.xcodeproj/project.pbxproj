@@ -17,8 +17,8 @@
 		3200375918119B4100901F6A /* Info.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375718119B4100901F6A /* Info.png */; };
 		3200375A18119B4100901F6A /* Info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375818119B4100901F6A /* Info@2x.png */; };
 		3200A93F1666B709003D163E /* MapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151D015373A5B00CCFB22 /* MapController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32035BB3166E987100E134DD /* MoodleResourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035BB2166E987100E134DD /* MoodleResourceViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc-exceptions"; }; };
-		32035BB5166E988600E134DD /* MoodleResourceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32035BB4166E988600E134DD /* MoodleResourceView.xib */; };
+		32035BB3166E987100E134DD /* MoodleFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035BB2166E987100E134DD /* MoodleFileViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc-exceptions"; }; };
+		32035BB5166E988600E134DD /* MoodleFileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32035BB4166E988600E134DD /* MoodleFileView.xib */; };
 		32035FE616E13A020016F03C /* EventPoolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035FE516E13A020016F03C /* EventPoolViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32035FEB16E153860016F03C /* EventItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035FEA16E153860016F03C /* EventItemCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		320480C518479D4E00116380 /* TransportSmallBusGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 320480C318479D4E00116380 /* TransportSmallBusGreen.png */; };
@@ -33,6 +33,7 @@
 		320F859C194EED8C00BF3228 /* ArrowRightBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320F8598194EED8C00BF3228 /* ArrowRightBarButton@2x.png */; };
 		32102B6615050B9D0076537E /* food.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6515050B9D0076537E /* food.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32102B6C15050C000076537E /* FoodService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6B15050C000076537E /* FoodService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		3210FD1A197C050000EEDCBF /* MoodleResourceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3210FD19197C050000EEDCBF /* MoodleResourceCell.m */; };
 		3212452D16FE174500469113 /* EyeBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3212452B16FE174500469113 /* EyeBarButton.png */; };
 		3212452E16FE174500469113 /* EyeBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3212452C16FE174500469113 /* EyeBarButton@2x.png */; };
 		32125BBF1536F215009B8D37 /* TransportFeetConnection.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBD1536F215009B8D37 /* TransportFeetConnection.png */; };
@@ -407,9 +408,9 @@
 		3200375418118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CheckmarkRoundedSquareEmpty@2x.png"; sourceTree = "<group>"; };
 		3200375718119B4100901F6A /* Info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Info.png; sourceTree = "<group>"; };
 		3200375818119B4100901F6A /* Info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Info@2x.png"; sourceTree = "<group>"; };
-		32035BB1166E987100E134DD /* MoodleResourceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleResourceViewController.h; sourceTree = "<group>"; };
-		32035BB2166E987100E134DD /* MoodleResourceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MoodleResourceViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		32035BB4166E988600E134DD /* MoodleResourceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleResourceView.xib; sourceTree = "<group>"; };
+		32035BB1166E987100E134DD /* MoodleFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleFileViewController.h; sourceTree = "<group>"; };
+		32035BB2166E987100E134DD /* MoodleFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MoodleFileViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		32035BB4166E988600E134DD /* MoodleFileView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleFileView.xib; sourceTree = "<group>"; };
 		32035FE416E13A020016F03C /* EventPoolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventPoolViewController.h; sourceTree = "<group>"; };
 		32035FE516E13A020016F03C /* EventPoolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EventPoolViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32035FE916E153860016F03C /* EventItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EventItemCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -430,6 +431,8 @@
 		32102B6515050B9D0076537E /* food.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = food.m; sourceTree = "<group>"; };
 		32102B6A15050C000076537E /* FoodService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodService.h; sourceTree = "<group>"; };
 		32102B6B15050C000076537E /* FoodService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FoodService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		3210FD18197C050000EEDCBF /* MoodleResourceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleResourceCell.h; sourceTree = "<group>"; };
+		3210FD19197C050000EEDCBF /* MoodleResourceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleResourceCell.m; sourceTree = "<group>"; };
 		3212452B16FE174500469113 /* EyeBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EyeBarButton.png; sourceTree = "<group>"; };
 		3212452C16FE174500469113 /* EyeBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EyeBarButton@2x.png"; sourceTree = "<group>"; };
 		32125BBD1536F215009B8D37 /* TransportFeetConnection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TransportFeetConnection.png; sourceTree = "<group>"; };
@@ -1850,8 +1853,8 @@
 				32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */,
 				324CB5801671585B008C7B3D /* MoodleSplashDetailViewController.h */,
 				324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */,
-				32035BB1166E987100E134DD /* MoodleResourceViewController.h */,
-				32035BB2166E987100E134DD /* MoodleResourceViewController.m */,
+				32035BB1166E987100E134DD /* MoodleFileViewController.h */,
+				32035BB2166E987100E134DD /* MoodleFileViewController.m */,
 				32151EE818FC3212001F6DA9 /* MoodleSettingsViewController.h */,
 				32151EE918FC3212001F6DA9 /* MoodleSettingsViewController.m */,
 			);
@@ -1884,7 +1887,9 @@
 			children = (
 				32CCB4E41555237500220282 /* Images */,
 				324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */,
-				32035BB4166E988600E134DD /* MoodleResourceView.xib */,
+				32035BB4166E988600E134DD /* MoodleFileView.xib */,
+				3210FD18197C050000EEDCBF /* MoodleResourceCell.h */,
+				3210FD19197C050000EEDCBF /* MoodleResourceCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2567,7 +2572,7 @@
 				329CA503166D452E00F7B1AE /* SettingsBarButton.png in Resources */,
 				32C879A0183D10E600750A11 /* PlusBarButton.png in Resources */,
 				329CA504166D452E00F7B1AE /* SettingsBarButton@2x.png in Resources */,
-				32035BB5166E988600E134DD /* MoodleResourceView.xib in Resources */,
+				32035BB5166E988600E134DD /* MoodleFileView.xib in Resources */,
 				324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */,
 				327412DA167E776A001E8C62 /* DownloadedCorner.png in Resources */,
 				327412DB167E776A001E8C62 /* DownloadedCorner@2x.png in Resources */,
@@ -2791,7 +2796,7 @@
 				3200A93F1666B709003D163E /* MapController.m in Sources */,
 				32EE9623166E19D5005B0F65 /* MoodleCoursesListViewController.m in Sources */,
 				32EE9628166E25BD005B0F65 /* MoodleCourseSectionsViewController.m in Sources */,
-				32035BB3166E987100E134DD /* MoodleResourceViewController.m in Sources */,
+				32035BB3166E987100E134DD /* MoodleFileViewController.m in Sources */,
 				324CB5821671585B008C7B3D /* MoodleSplashDetailViewController.m in Sources */,
 				327412E5167E824F001E8C62 /* PCTableViewCellAdditions.m in Sources */,
 				32930AAE17F898910025F864 /* TApplicationException.m in Sources */,
@@ -2849,6 +2854,7 @@
 				32EB6182180D7CC4001AE852 /* MapRecentSearchesListViewController.m in Sources */,
 				32930AA917F898910025F864 /* LGRefreshControl.m in Sources */,
 				32930AB317F898910025F864 /* TNSFileHandleTransport.m in Sources */,
+				3210FD1A197C050000EEDCBF /* MoodleResourceCell.m in Sources */,
 				32930AB017F898910025F864 /* TFramedTransport.m in Sources */,
 				32930AAB17F898910025F864 /* TProtocolException.m in Sources */,
 				32E3E5D11899370600D263C5 /* MapModelAdditions.m in Sources */,

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,21 +22,24 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+//  Created by Loïc Gardiol on 20.07.14.
 
+#import "PCTableViewCellAdditions.h"
 
+@class MoodleResource2;
 
-//  Created by Loïc Gardiol on 04.12.12.
+@interface MoodleResourceCell : PCTableViewCellAdditions
 
+/**
+ * @return a cell that will display resource info according to its type
+ * @discussion: MoodleResourceCell is not made to be reused. Please consider using
+ * a collection to create and store your cells before loading your table view.
+ */
+- (instancetype)initWithMoodleResource:(MoodleResource2*)resource;
 
-#import <UIKit/UIKit.h>
-
-@class MoodleResource;
-
-@interface MoodleResourceViewController : UIViewController
-
-- (id)initWithMoodleResource:(MoodleResource*)moodleResource;
+@property (nonatomic, readonly) MoodleResource2* resource;
 
 @end
