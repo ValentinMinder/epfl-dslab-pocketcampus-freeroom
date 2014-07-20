@@ -53,6 +53,8 @@
 
 #import "MoodleResourceCell.h"
 
+#import "MoodleFolderViewController.h"
+
 static const NSTimeInterval kRefreshValiditySeconds = 86400; //1 day
 
 static const UISearchBarStyle kSearchBarDefaultStyle = UISearchBarStyleDefault;
@@ -600,7 +602,7 @@ static int i = 0;
         viewController = [[MoodleFileViewController alloc] initWithMoodleFile:resource.file];
         [self trackAction:@"DownloadAndOpenFile" contentInfo:resource.file.name];
     } else if (resource.folder) {
-#warning TODO
+        viewController = [[MoodleFolderViewController alloc] initWithFolder:resource.folder];
         [self trackAction:@"OpenFolder" contentInfo:resource.folder.name];
     } else if (resource.url) {
         viewController = [[PCWebViewController alloc] initWithURL:[NSURL URLWithString:resource.url.url] title:resource.url.name];

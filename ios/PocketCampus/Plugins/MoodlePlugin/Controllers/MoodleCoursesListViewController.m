@@ -60,6 +60,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 
 @implementation MoodleCoursesListViewController
 
+#pragma mark - Init
+
 - (id)init
 {
     self = [super initWithStyle:UITableViewStylePlain];
@@ -71,6 +73,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     }
     return self;
 }
+
+#pragma mark - UIViewController overrides
 
 - (void)viewDidLoad {
     [super viewDidLoad];

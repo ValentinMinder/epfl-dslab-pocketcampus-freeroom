@@ -32,6 +32,9 @@
 "AllDocsWillBeDeletedExplanation" = "All documents of all courses will be deleted.\nYou will need to download them again to read them.";
 "DeleteAll" = "Delete all";
 
+//MoodleFolderViewController
+"MoodleEmptyFolder" = "Empty folder";
+
 //MoodleResourceCell
 "FolderNbElementsWithFormat" = "Folder (%d elements)";
 

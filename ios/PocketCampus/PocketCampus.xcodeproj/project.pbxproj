@@ -34,6 +34,7 @@
 		32102B6615050B9D0076537E /* food.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6515050B9D0076537E /* food.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32102B6C15050C000076537E /* FoodService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6B15050C000076537E /* FoodService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3210FD1A197C050000EEDCBF /* MoodleResourceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3210FD19197C050000EEDCBF /* MoodleResourceCell.m */; };
+		3210FD1D197C5BD700EEDCBF /* MoodleFolderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3210FD1C197C5BD700EEDCBF /* MoodleFolderViewController.m */; };
 		3212452D16FE174500469113 /* EyeBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3212452B16FE174500469113 /* EyeBarButton.png */; };
 		3212452E16FE174500469113 /* EyeBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3212452C16FE174500469113 /* EyeBarButton@2x.png */; };
 		32125BBF1536F215009B8D37 /* TransportFeetConnection.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBD1536F215009B8D37 /* TransportFeetConnection.png */; };
@@ -433,6 +434,8 @@
 		32102B6B15050C000076537E /* FoodService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FoodService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		3210FD18197C050000EEDCBF /* MoodleResourceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleResourceCell.h; sourceTree = "<group>"; };
 		3210FD19197C050000EEDCBF /* MoodleResourceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleResourceCell.m; sourceTree = "<group>"; };
+		3210FD1B197C5BD700EEDCBF /* MoodleFolderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleFolderViewController.h; sourceTree = "<group>"; };
+		3210FD1C197C5BD700EEDCBF /* MoodleFolderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleFolderViewController.m; sourceTree = "<group>"; };
 		3212452B16FE174500469113 /* EyeBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EyeBarButton.png; sourceTree = "<group>"; };
 		3212452C16FE174500469113 /* EyeBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EyeBarButton@2x.png"; sourceTree = "<group>"; };
 		32125BBD1536F215009B8D37 /* TransportFeetConnection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TransportFeetConnection.png; sourceTree = "<group>"; };
@@ -1855,6 +1858,8 @@
 				324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */,
 				32035BB1166E987100E134DD /* MoodleFileViewController.h */,
 				32035BB2166E987100E134DD /* MoodleFileViewController.m */,
+				3210FD1B197C5BD700EEDCBF /* MoodleFolderViewController.h */,
+				3210FD1C197C5BD700EEDCBF /* MoodleFolderViewController.m */,
 				32151EE818FC3212001F6DA9 /* MoodleSettingsViewController.h */,
 				32151EE918FC3212001F6DA9 /* MoodleSettingsViewController.m */,
 			);
@@ -2711,6 +2716,7 @@
 				3219EF5D14FCDE4900A271CD /* main.m in Sources */,
 				324ADAC2191A44B1000737E7 /* EPFLLayersOverlay.m in Sources */,
 				328869AC14FE5AF400CC97DB /* AppDelegate.m in Sources */,
+				3210FD1D197C5BD700EEDCBF /* MoodleFolderViewController.m in Sources */,
 				32930AAD17F898910025F864 /* TSocketServer.m in Sources */,
 				32FAC0F51500F40700925180 /* DirectoryController.m in Sources */,
 				32FAC0F61500F40700925180 /* DirectorySearchViewController.m in Sources */,

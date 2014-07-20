@@ -31,8 +31,6 @@
 
 extern NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey;
 
-#pragma mark - New
-
 @protocol MoodleItemDefaults <NSObject>
 
 /**
