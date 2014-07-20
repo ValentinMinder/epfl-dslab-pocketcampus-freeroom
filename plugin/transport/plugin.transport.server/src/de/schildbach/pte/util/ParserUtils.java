@@ -442,6 +442,7 @@ public final class ParserUtils
 		}
 	}
 
+	@SafeVarargs
 	public static <T> T selectNotNull(final T... groups)
 	{
 		T selected = null;

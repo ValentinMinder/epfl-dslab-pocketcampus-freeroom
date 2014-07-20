@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.news.android;
 
-import static org.pocketcampus.android.platform.sdk.utils.DialogUtils.showMultiChoiceDialogSbN;
-import static org.pocketcampus.android.platform.sdk.utils.SetUtils.difference;
+import static org.pocketcampus.platform.android.utils.DialogUtils.showMultiChoiceDialogSbN;
+import static org.pocketcampus.platform.android.utils.SetUtils.difference;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
-import org.pocketcampus.android.platform.sdk.ui.adapter.SeparatedListAdapter;
-import org.pocketcampus.android.platform.sdk.utils.DialogUtils.MultiChoiceHandler;
-import org.pocketcampus.android.platform.sdk.utils.Preparated;
-import org.pocketcampus.android.platform.sdk.utils.Preparator;
-import org.pocketcampus.android.platform.sdk.utils.ScrollStateSaver;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
+import org.pocketcampus.platform.android.utils.DialogUtils.MultiChoiceHandler;
+import org.pocketcampus.platform.android.utils.Preparated;
+import org.pocketcampus.platform.android.utils.Preparator;
+import org.pocketcampus.platform.android.utils.ScrollStateSaver;
 import org.pocketcampus.plugin.news.R;
 import org.pocketcampus.plugin.news.android.iface.INewsView;
 import org.pocketcampus.plugin.news.shared.NewsFeed;
@@ -115,25 +115,6 @@ public class NewsMainView extends PluginView implements INewsView {
 	@Override
 	protected void handleIntent(Intent aIntent) {
 		mController.requestNewsFeeds(this, false);
-//		eventPoolId = Constants.CONTAINER_EVENT_ID;
-//		boolean processedIntent = false;
-//		if(aIntent != null) {
-//			Bundle aExtras = aIntent.getExtras();
-//			Uri aData = aIntent.getData();
-//			if(aExtras != null && aExtras.containsKey(EXTRAS_KEY_EVENTPOOLID)) {
-//				eventPoolId = Long.parseLong(aExtras.getString(EXTRAS_KEY_EVENTPOOLID));
-//				System.out.println("Started with intent to display pool " + eventPoolId);
-//				mController.refreshEventPool(this, eventPoolId, fetchPast, false);
-//				processedIntent = true;
-//			} else if(aData != null && aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID) != null) {
-//				eventPoolId = Long.parseLong(aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID));
-//				System.out.println("External start with intent to display pool " + eventPoolId);
-//				externalCall(aData);
-//				processedIntent = true;
-//			}
-//		}
-//		if(!processedIntent)
-//			mController.refreshEventPool(this, eventPoolId, fetchPast, false);
 		
 	}
 
@@ -147,8 +128,6 @@ public class NewsMainView extends PluginView implements INewsView {
 		super.onResume();
 		if(displayingList && scrollState != null)
 			scrollState.restore(mList);
-//		if(thisEventPool != null && thisEventPool.isRefreshOnBack())
-//			mController.refreshEventPool(this, eventPoolId, fetchPast, false);
 	}
 	
 	@Override
@@ -215,32 +194,9 @@ public class NewsMainView extends PluginView implements INewsView {
 		if(displayingList)
 			scrollState = new ScrollStateSaver(mList);
 		
-//		Set<EventItem> filteredNews = new HashSet<EventItem>();
-//		for(String tag : filteredTags) {
-//			List<EventItem> tagNews = newsByTags.get(tag);
-//			if(tagNews == null) // if tag becomes empty (shorter period selected)
-//				continue; // then skip it
-//			filteredNews.addAll(tagNews);
-//		}
-//		
-//		//Map<Integer, List<EventItem>> newsByCateg = new HashMap<Integer, List<EventItem>>();
-//		SparseArray<List<EventItem>> newsByCateg = new SparseArray<List<EventItem>>();
-//		
-//		
-//		for(EventItem e : filteredNews) {
-//			if(e.getEventCateg() < 0)
-//				filteredCategs.add(e.getEventCateg()); // make sure special categs are always displayed
-//			if(newsByCateg.indexOfKey(e.getEventCateg()) < 0)
-//				newsByCateg.put(e.getEventCateg(), new LinkedList<EventItem>());
-//			newsByCateg.get(e.getEventCateg()).add(e);
-//		}
-		
 		Map<Long, List<NewsFeedItem>> items = new HashMap<Long, List<NewsFeedItem>>();
 		
-//		Set<String> titles = new HashSet<String>();
-		
 		final SparseArray<String> reverseMap = new SparseArray<String>();
-//		final Map<Integer, String> reverseMap = new HashMap<Integer, String>();
 		
 		for(NewsFeed i : mModel.getNewsFeeds()) {
 			if(!filteredFeeds.contains(i.getFeedId()))
@@ -267,7 +223,7 @@ public class NewsMainView extends PluginView implements INewsView {
 
 		
 		
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.news_list_header);
+		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.sdk_separated_list_header2);
 //		List<NewsFeed> newsFeeds = mModel.getNewsFeeds();
 //		Collections.sort(newsFeeds, NewsController.getNewsFeedComp4sort());
 		List<Long> keys = new LinkedList<Long>(items.keySet());

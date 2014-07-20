@@ -1,10 +1,10 @@
 package org.pocketcampus.plugin.pushnotif.android;
 
-import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
+import static org.pocketcampus.platform.android.core.PCAndroidConfig.PC_ANDR_CFG;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
-import org.pocketcampus.android.platform.sdk.core.PushNotificationListener;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginModel;
+import org.pocketcampus.platform.android.core.PushNotificationListener;
 import org.pocketcampus.plugin.pushnotif.android.iface.IPushNotifController;
 
 import android.content.Intent;

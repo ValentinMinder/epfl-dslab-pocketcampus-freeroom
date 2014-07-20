@@ -1,0 +1,23 @@
+{
+  "users":[
+    {
+      "id":202901,
+      "fullname":"Solal Pirelli",
+      "email":"solal.pirelli@epfl.ch",
+      "skype":"live:solal.pirelli",
+      "idnumber":"223572",
+      "firstaccess":1342777439,
+      "lastaccess":1403683338,
+      "description":"",
+      "descriptionformat":1,
+      "city":"Lausanne",
+      "url":"https:\/\/bitbucket.org\/SolalPirelli",
+      "country":"CH",
+      "profileimageurlsmall":"http:\/\/moodle.epfl.ch\/pluginfile.php\/1489941\/user\/icon\/f2",
+      "profileimageurl":"http:\/\/moodle.epfl.ch\/pluginfile.php\/1489941\/user\/icon\/f1"
+    }
+  ],
+  "warnings":[
+
+  ]
+}

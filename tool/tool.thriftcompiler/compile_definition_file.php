@@ -8,7 +8,7 @@
   
   Usage: $0 plugin=<...> platform=<ios|android>
   (Replace <...> by your plugin name)
-  You can use plugin=sdk to compile the thrift files of the SDK
+  You can use plugin=platform to compile the thrift files of the platform.shared project
   
   @Author: Amer C (amer.chamseddine@epfl.ch)
 */
@@ -44,11 +44,12 @@ if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 $plugin_ios_dir = "../../ios/PocketCampus/Plugins/{$plugin_name}Plugin/Model/ThriftTypes+Services";
 $plugin_name = strtolower($plugin_name);
 $string_plugin = "plugin";
-if($plugin_name == "sdk") {
+$plugin_shared_dir = "../../$string_plugin/$plugin_name/$string_plugin.$plugin_name.shared";
+if($plugin_name == "platform") {
 	$string_plugin = "platform";
+        $plugin_shared_dir = "../../$string_plugin/$string_plugin.shared";
 	$plugin_ios_dir = "../../ios/PocketCampus/PocketCampus/Model/SharedThriftTypes+Services";
 }
-$plugin_shared_dir = "../../$string_plugin/$plugin_name/$string_plugin.$plugin_name.shared";
 
 foreach(glob("$plugin_shared_dir/def/*.thrift") as $def_file) {
 	echo "Compiling $def_file for platform $platform\n";

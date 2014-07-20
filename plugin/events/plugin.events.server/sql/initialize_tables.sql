@@ -1,27 +1,9 @@
--- phpMyAdmin SQL Dump
--- version 3.3.7deb5build0.10.10.1
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Sep 24, 2013 at 04:05 PM
--- Server version: 5.1.61
--- PHP Version: 5.3.3-1ubuntu9.10
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-
---
--- Database: `pocketcampus`
---
-
---
--- Dumping data for table `eventcategs`
---
 
 INSERT INTO `eventcategs` (`categKey`, `categValue`) VALUES
 (-2, 'Favorites'),
@@ -57,10 +39,6 @@ INSERT INTO `eventcategs` (`categKey`, `categValue`) VALUES
 (114, 'Affiliates'),
 (115, 'Research Areas'),
 (116, 'Useful Information');
-
---
--- Dumping data for table `eventtags`
---
 
 INSERT INTO `eventtags` (`feedKey`, `feedValue`, `isMemento`) VALUES
 ('epfl', 'EPFL', 1),
@@ -148,10 +126,6 @@ INSERT INTO `eventtags` (`feedKey`, `feedValue`, `isMemento`) VALUES
 ('sfi-epfl', 'Swiss Finance Institute at EPFL', 1),
 ('cdm-sfi-seminars', 'Finance Research Seminars', 1),
 ('innovationpark', 'INNOVATION PARK', 1);
-
---
--- Dumping data for table `eventpools`
---
 
 INSERT INTO `eventpools` (`poolId`, `poolPicture`, `poolTitle`, `poolPlace`, `poolDetails`, `disableStar`, `disableFilterByCateg`, `disableFilterByTags`, `enableScan`, `refreshOnBack`, `sendStarred`, `noResultText`, `overrideLink`, `parentEvent`) VALUES
 (-1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL);

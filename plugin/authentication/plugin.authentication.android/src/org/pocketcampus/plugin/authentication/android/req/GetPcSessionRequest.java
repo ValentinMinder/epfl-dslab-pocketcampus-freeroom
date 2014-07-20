@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.authentication.android.req;
 
-import org.pocketcampus.android.platform.sdk.io.Request;
+import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.authentication.android.AuthenticationController;
 import org.pocketcampus.plugin.authentication.shared.AuthSessionRequest;
 import org.pocketcampus.plugin.authentication.shared.AuthSessionResponse;

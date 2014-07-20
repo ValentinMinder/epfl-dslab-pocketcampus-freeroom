@@ -23,6 +23,7 @@ import java.net.URL;
 /**
  * @author Andreas Schildbach
  */
+@SuppressWarnings("serial")
 public class UnexpectedRedirectException extends IOException
 {
 	private final URL originalUrl;

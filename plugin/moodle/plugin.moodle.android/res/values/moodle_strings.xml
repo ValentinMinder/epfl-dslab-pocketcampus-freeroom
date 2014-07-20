@@ -8,7 +8,18 @@
         
     <string name="moodle_string_logout">Logout</string>
     <string name="moodle_string_events">Events</string>
-        
+    
+    <string name="moodle_string_courses">Courses</string>
+    <string name="moodle_string_no_courses">No courses</string>
+    <string name="moodle_string_downloaded">Downloaded</string>
+    <string name="moodle_string_nothingtodisplay">Nothing to display</string>
+    <string name="moodle_string_xfiles">%d file(s)</string>
+    
+    <string name="moodle_filemenu_open">Open</string>
+    <string name="moodle_filemenu_share">Share</string>
+    <string name="moodle_filemenu_redownload">Download again</string>
+    <string name="moodle_filemenu_delete">Delete</string>
+    
     <string name="moodle_error_moodle_down">PocketCampus tried to connect to Moodle servers, but they seem down.</string>
     <string name="moodle_connection_error_happened">We cannot fetch Moodle data right now, because you are not connected to the Internet.</string>
     <string name="moodle_file_downloaded">File successfully downloaded.</string>

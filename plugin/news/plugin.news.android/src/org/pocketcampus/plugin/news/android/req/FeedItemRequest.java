@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.news.android.req;
 
-import org.pocketcampus.android.platform.sdk.io.Request;
+import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.news.android.NewsController;
 import org.pocketcampus.plugin.news.android.NewsModel;
 import org.pocketcampus.plugin.news.android.iface.INewsView;

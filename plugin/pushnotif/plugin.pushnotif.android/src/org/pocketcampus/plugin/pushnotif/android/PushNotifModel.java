@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.pushnotif.android;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.IView;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.pushnotif.android.iface.IPushNotifModel;
 import org.pocketcampus.plugin.pushnotif.android.iface.IPushNotifView;
 

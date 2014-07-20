@@ -14,13 +14,13 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import org.pocketcampus.platform.sdk.server.HttpClient;
-import org.pocketcampus.platform.sdk.server.XElement;
+import org.pocketcampus.platform.server.HttpClient;
+import org.pocketcampus.platform.server.XElement;
 
 /**
  * Implementation of NewsSource using the EPFL RSS feeds.
@@ -119,7 +119,7 @@ public final class NewsSourceImpl implements NewsSource {
 				String dateString = itemElement.elementText(RSS_FEED_ITEM_DATE_ELEMENT);
 				DateTime date = DateTime.parse(dateString, RSS_DATE_FORMAT);
 				String content = itemElement.elementText(RSS_FEED_ITEM_CONTENT_ELEMENT);
-				content = StringEscapeUtils.unescapeHtml(content);
+				content = StringEscapeUtils.unescapeHtml4(content);
 
 				items.put(id, new FeedItem(id, title, link, date, getPictureUrl(content), content));
 			}

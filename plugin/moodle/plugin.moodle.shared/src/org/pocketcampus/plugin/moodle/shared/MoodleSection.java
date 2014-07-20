@@ -18,8 +18,6 @@ import java.util.Collections;
 import java.util.BitSet;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, MoodleSection._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MoodleSection");
@@ -569,14 +567,14 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
         case 1: // I_RESOURCES
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
-              this.iResources = new ArrayList<MoodleResource>(_list8.size);
-              for (int _i9 = 0; _i9 < _list8.size; ++_i9)
+              org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
+              this.iResources = new ArrayList<MoodleResource>(_list0.size);
+              for (int _i1 = 0; _i1 < _list0.size; ++_i1)
               {
-                MoodleResource _elem10; // required
-                _elem10 = new MoodleResource();
-                _elem10.read(iprot);
-                this.iResources.add(_elem10);
+                MoodleResource _elem2; // required
+                _elem2 = new MoodleResource();
+                _elem2.read(iprot);
+                this.iResources.add(_elem2);
               }
               iprot.readListEnd();
             }
@@ -634,9 +632,9 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
       oprot.writeFieldBegin(I_RESOURCES_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.iResources.size()));
-        for (MoodleResource _iter11 : this.iResources)
+        for (MoodleResource _iter3 : this.iResources)
         {
-          _iter11.write(oprot);
+          _iter3.write(oprot);
         }
         oprot.writeListEnd();
       }

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import org.pocketcampus.platform.sdk.server.HttpClient;
+import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.plugin.food.server.*;
 import org.pocketcampus.plugin.food.shared.*;
 

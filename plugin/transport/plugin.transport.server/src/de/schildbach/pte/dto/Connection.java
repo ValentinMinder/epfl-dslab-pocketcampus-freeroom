@@ -93,6 +93,7 @@ public final class Connection implements Serializable
 		}
 	}
 
+	@SuppressWarnings("serial")
 	public final static class Trip extends Part
 	{
 		public final Line line;
@@ -137,6 +138,7 @@ public final class Connection implements Serializable
 		}
 	}
 
+	@SuppressWarnings("serial")
 	public final static class Footway extends Part
 	{
 		public final int min;

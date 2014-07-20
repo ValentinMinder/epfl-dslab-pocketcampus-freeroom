@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.food.server;
 import java.text.Normalizer;
 import java.util.List;
 
-import org.pocketcampus.platform.launcher.server.PocketCampusServer;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.map.shared.MapItem;
 
 public class RestaurantLocatorImpl implements RestaurantLocator {

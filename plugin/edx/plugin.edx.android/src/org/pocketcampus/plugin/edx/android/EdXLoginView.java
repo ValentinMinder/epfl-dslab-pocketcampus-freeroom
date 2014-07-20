@@ -1,8 +1,8 @@
 package org.pocketcampus.plugin.edx.android;
 
 import org.pocketcampus.plugin.edx.R;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.plugin.edx.android.iface.IEdXView;
 
 import android.os.Bundle;

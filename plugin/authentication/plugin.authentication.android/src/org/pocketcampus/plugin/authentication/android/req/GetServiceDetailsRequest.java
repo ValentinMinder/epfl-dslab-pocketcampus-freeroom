@@ -5,12 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.pocketcampus.android.platform.sdk.io.Request;
-import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
+import org.pocketcampus.platform.android.io.Request;
+import org.pocketcampus.platform.shared.utils.StringUtils;
 import org.pocketcampus.plugin.authentication.android.AuthenticationController;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel;
 
@@ -26,7 +25,7 @@ public class GetServiceDetailsRequest extends Request<AuthenticationController, 
 	protected String runInBackground(DefaultHttpClient client, String param) throws Exception {
 		HttpGet get = new HttpGet(String.format(AuthenticationController.tequilaAuthTokenUrl, param));
 		HttpResponse resp = client.execute(get);
-		return IOUtils.toString(resp.getEntity().getContent(), "UTF-8");
+		return StringUtils.fromStream(resp.getEntity().getContent(), "UTF-8");
 	}
 
 	@Override

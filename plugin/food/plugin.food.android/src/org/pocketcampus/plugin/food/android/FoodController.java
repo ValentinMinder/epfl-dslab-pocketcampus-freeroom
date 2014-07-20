@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.food.R;
 import org.pocketcampus.plugin.food.android.iface.IFoodController;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
@@ -119,7 +119,7 @@ public class FoodController extends PluginController implements IFoodController 
 	
 	public void setEpflMenus(List<EpflRestaurant> menus, PriceTarget priceTarget) {
 		
-		System.out.println("setEpflMenus # of resto " + menus.size());
+//		System.out.println("setEpflMenus # of resto " + menus.size());
 		
 		if(mModel.getUserStatus() != null)
 			priceTarget = mModel.getUserStatus();
@@ -128,7 +128,7 @@ public class FoodController extends PluginController implements IFoodController 
 		Map<Long, AMeal> meals = new HashMap<Long, AMeal>();
 		
 		for(EpflRestaurant r : menus) {
-			System.out.println("# of resto's meals " + r.getRMealsSize());
+//			System.out.println("# of resto's meals " + r.getRMealsSize());
 			restos.put(r.getRId(), new AResto(r.getRId(), r.getRName(), getSatisfaction(r.getRRating()), r.getRLocation()));
 			for(EpflMeal m : r.getRMeals()) {
 				Double price = m.getMPrices().get(priceTarget != null ? priceTarget : PriceTarget.VISITOR);
