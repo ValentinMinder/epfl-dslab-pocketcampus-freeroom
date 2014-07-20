@@ -36,7 +36,7 @@
 
 #pragma mark - MoodleResourceObserver
 
-@interface MoodleResourceObserver : NSObject
+@interface MoodleFileObserver : NSObject
 
 @property (nonatomic, unsafe_unretained) id observer;
 @property (nonatomic, strong) MoodleFile2* file;
@@ -44,7 +44,7 @@
 
 @end
 
-@implementation MoodleResourceObserver
+@implementation MoodleFileObserver
 
 - (BOOL)isEqual:(id)object {
     if (self == object) {
@@ -53,10 +53,10 @@
     if (![object isKindOfClass:[self class]]) {
         return NO;
     }
-    return [self isEqualToMoodleResourceObserver:object];
+    return [self isEqualToMoodleFileObserver:object];
 }
 
-- (BOOL)isEqualToMoodleResourceObserver:(MoodleResourceObserver*)resourceObserver {
+- (BOOL)isEqualToMoodleFileObserver:(MoodleFileObserver*)resourceObserver {
     return self.observer == resourceObserver.observer && [self.file isEqual:resourceObserver.file];
 }
 
@@ -95,7 +95,7 @@ static MoodleService* instance __weak = nil;
 
 @interface MoodleService ()
 
-@property (strong) NSMutableDictionary* resourcesObserversForResourceKey; //key: [self keyForMoodleResource:] value: NSArray of MoodleResourceObserver
+@property (strong) NSMutableDictionary* filesObserversForFileKey; //key: [self keyForMoodleFile:] value: NSArray of MoodleResourceObserver
 @property (nonatomic, strong) NSMutableSet* favoriteMoodleResourcesURLs; //set of NSString
 
 @property (nonatomic, strong) AFHTTPSessionManager* resourcesDownloadSessionManager;
@@ -236,7 +236,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
     [[NSFileManager defaultManager] removeItemAtPath:[self localPathForMoodleFile:moodleFile] error:&error]; //OK to pass nil for error, method returns aleary YES/NO is case of success/failure
     if (!error) {
         /* Execute observers block */
-        for (MoodleResourceObserver* observer in self.resourcesObserversForResourceKey[[self keyForMoodleFile:moodleFile]]) {
+        for (MoodleFileObserver* observer in self.filesObserversForFileKey[[self keyForMoodleFile:moodleFile]]) {
             if (observer.observer && observer.eventBlock) {
                 observer.eventBlock(MoodleResourceEventDeleted);
             }
@@ -253,8 +253,8 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
     [fileManager removeItemAtPath:path error:&error];
     if (!error) {
         /* Execute observers block */
-        [self.resourcesObserversForResourceKey enumerateKeysAndObjectsUsingBlock:^(id key, NSMutableSet* observers, BOOL *stop) {
-            for (MoodleResourceObserver* observer in observers) {
+        [self.filesObserversForFileKey enumerateKeysAndObjectsUsingBlock:^(id key, NSMutableSet* observers, BOOL *stop) {
+            for (MoodleFileObserver* observer in observers) {
                 if (observer.observer && observer.eventBlock) {
                     observer.eventBlock(MoodleResourceEventDeleted);
                 }
@@ -319,19 +319,6 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
     [self.operationQueue addOperation:operation];
 }
 
-- (void)getCoursesSectionsForCourseId:(NSString*)courseId delegate:(id<MoodleServiceDelegate>)delegate __attribute__ ((deprecated)) {
-    [PCUtils throwExceptionIfObject:courseId notKindOfClass:[NSString class]];
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.keepInCache = YES;
-    operation.skipCache = YES;
-    operation.serviceClientSelector = @selector(getCourseSectionsAPI:);
-    operation.delegateDidReturnSelector = @selector(getCourseSectionsForCourseId:didReturn:);
-    operation.delegateDidFailSelector = @selector(getCourseSectionsFailedForCourseId:);
-    [operation addObjectArgument:courseId];
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
 #pragma mark - Cached versions
 
 - (MoodleCoursesResponse2*)getFromCacheCoursesWithRequest:(MoodleCoursesRequest2*)request {
@@ -354,27 +341,6 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
     return [operation cachedResponseObjectEvenIfStale:YES];
 }
 
-- (CoursesListReply*)getFromCacheCoursesList __attribute__ ((deprecated)) {
-    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
-    operation.serviceClientSelector = @selector(getCoursesListAPI:);
-    operation.delegateDidReturnSelector = @selector(getCoursesListForDummy:didReturn:);
-    operation.delegateDidFailSelector = @selector(getCoursesListFailedForDummy:);
-    [operation addObjectArgument:@"dummy"];
-    operation.returnType = ReturnTypeObject;
-    return [operation cachedResponseObjectEvenIfStale:YES];
-}
-
-- (SectionsListReply*)getFromCacheCoursesSectionsForCourseId:(NSString*)courseId __attribute__ ((deprecated)) {
-    [PCUtils throwExceptionIfObject:courseId notKindOfClass:[NSString class]];
-    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
-    operation.serviceClientSelector = @selector(getCourseSectionsAPI:);
-    operation.delegateDidReturnSelector = @selector(getCourseSectionsForCourseId:didReturn:);
-    operation.delegateDidFailSelector = @selector(getCourseSectionsFailedForCourseId:);
-    [operation addObjectArgument:courseId];
-    operation.returnType = ReturnTypeObject;
-    return [operation cachedResponseObjectEvenIfStale:YES];
-}
-
 #pragma mark - MoodleResources observation
 
 - (NSString*)keyForMoodleFile:(MoodleFile2*)file {
@@ -385,17 +351,17 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
     @synchronized(self) {
         NSString* key = [self keyForMoodleFile:file];
         
-        if (!self.resourcesObserversForResourceKey) {
-            self.resourcesObserversForResourceKey = [NSMutableDictionary dictionary];
+        if (!self.filesObserversForFileKey) {
+            self.filesObserversForFileKey = [NSMutableDictionary dictionary];
         }
         
-        NSMutableSet* currentObservers = self.resourcesObserversForResourceKey[key];
+        NSMutableSet* currentObservers = self.filesObserversForFileKey[key];
         if (!currentObservers) {
             currentObservers = [NSMutableSet set];
-            self.resourcesObserversForResourceKey[key] = currentObservers;
+            self.filesObserversForFileKey[key] = currentObservers;
         }
         
-        MoodleResourceObserver* observer = [[MoodleResourceObserver alloc] init];
+        MoodleFileObserver* observer = [[MoodleFileObserver alloc] init];
         observer.observer = observer_;
         observer.file = file;
         observer.eventBlock = eventBlock;
@@ -405,12 +371,12 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 
 - (void)removeMoodleFileObserver:(id)observer {
     @synchronized (self) {
-        [[self.resourcesObserversForResourceKey copy] enumerateKeysAndObjectsUsingBlock:^(id key, NSMutableSet* observers, BOOL *stop) {
-            for (MoodleResourceObserver* resourceObserver in [observers copy]) {
+        [[self.filesObserversForFileKey copy] enumerateKeysAndObjectsUsingBlock:^(id key, NSMutableSet* observers, BOOL *stop) {
+            for (MoodleFileObserver* resourceObserver in [observers copy]) {
                 if (resourceObserver.observer == observer) {
                     [observers removeObject:resourceObserver];
                     if (observers.count == 0) {
-                        [self.resourcesObserversForResourceKey removeObjectForKey:key];
+                        [self.filesObserversForFileKey removeObjectForKey:key];
                     }
                 }
             }
@@ -421,12 +387,12 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 - (void)removeMoodleFileObserver:(id)observer forFile:(MoodleFile2*)file {
     @synchronized (self) {
         NSString* key = [self keyForMoodleFile:file];
-        NSMutableSet* observers = self.resourcesObserversForResourceKey[key];
-        for (MoodleResourceObserver* resourceObserver in [observers copy]) {
+        NSMutableSet* observers = self.filesObserversForFileKey[key];
+        for (MoodleFileObserver* resourceObserver in [observers copy]) {
             if (resourceObserver.observer == observer) {
                 [observers removeObject:resourceObserver];
                 if (observers.count == 0) {
-                    [self.resourcesObserversForResourceKey removeObjectForKey:key];
+                    [self.filesObserversForFileKey removeObjectForKey:key];
                 }
             }
         }
@@ -504,7 +470,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
                         [weakDelegate downloadOfMoodleFile:file didFinish:localURL];
                     }
                     // Execute observers block
-                    for (MoodleResourceObserver* observer in self.resourcesObserversForResourceKey[[self keyForMoodleFile:file]]) {
+                    for (MoodleFileObserver* observer in self.filesObserversForFileKey[[self keyForMoodleFile:file]]) {
                         if (observer.observer && observer.eventBlock) {
                             observer.eventBlock(MoodleResourceEventDownloaded);
                         }

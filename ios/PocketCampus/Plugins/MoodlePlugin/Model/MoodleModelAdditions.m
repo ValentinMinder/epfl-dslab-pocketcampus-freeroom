@@ -34,108 +34,13 @@
 
 NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey = @"SaveDocsPositionGeneralSettingBool";
 
-#pragma mark - Old
-
-@implementation MoodleResource (Additions)
-
-- (NSString*)filename {
-    static NSString* key;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        key = NSStringFromSelector(_cmd);
-    });
-    id value = objc_getAssociatedObject(self, (__bridge const void *)(key));
-    if (!value) {
-        //Trick to remove url query paramters if any (we don't want them for the filename)
-        //http://stackoverflow.com/a/4272070/1423774
-        NSURL* url = [NSURL URLWithString:self.iUrl];
-        url = [[NSURL alloc] initWithScheme:url.scheme host:url.host path:url.path];
-        value = [[[url absoluteString] pathComponents] lastObject];
-        value = [value stringByRemovingPercentEncoding];
-        objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-    return value;
-}
-
-- (NSString*)fileExtension {
-    return [self.filename pathExtension];
-}
-
-- (BOOL)isEqual:(id)object {
-    if (self == object) {
-        return YES;
-    }
-    if (![object isKindOfClass:[self class]]) {
-        return NO;
-    }
-    return [self isEqualToMoodleResource:object];
-}
-
-- (BOOL)isEqualToMoodleResource:(MoodleResource*)moodleResource {
-    return [self.iUrl isEqualToString:moodleResource.iUrl];
-}
-
-- (NSUInteger)hash {
-    NSUInteger hash = 0;
-    hash += [self.iUrl hash];
-    return hash;
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-    MoodleResource* newInstance = [[[self class] allocWithZone:zone] init];
-    newInstance.iName = self.iName;
-    newInstance.iUrl = self.iUrl;
-    return newInstance;
-}
-
-+ (NSDictionary*)defaultsDictionaryForMoodleResource:(MoodleResource*)resource {
-    NSUserDefaults* moodleDefaults = [PCPersistenceManager userDefaultsForPluginName:@"moodle"];
-    NSMutableDictionary* resourceDic = [[moodleDefaults objectForKey:[self keyForDefaultsDictionaryForMoodleResource:resource]] mutableCopy];
-    if (!resourceDic) {
-        resourceDic = [NSMutableDictionary dictionary];
-    }
-    
-    return resourceDic;
-}
-
-+ (void)setDefaultsDictionary:(NSDictionary*)defaultsDic forMoodleResource:(MoodleResource*)resource {
-    NSUserDefaults* moodleDefaults = [PCPersistenceManager userDefaultsForPluginName:@"moodle"];
-    [moodleDefaults setObject:defaultsDic forKey:[self keyForDefaultsDictionaryForMoodleResource:resource]];
-}
-
-#pragma mark Private
-
-+ (NSString*)keyForDefaultsDictionaryForMoodleResource:(MoodleResource*)resource {
-    [PCUtils throwExceptionIfObject:resource.iUrl notKindOfClass:[NSString class]];
-    static NSString* const kDicPostfix = @"MoodleResourceDictionary";
-    return [kDicPostfix stringByAppendingFormat:@"%u", [resource.iUrl hash]];
-}
-
-@end
-
-@implementation MoodleSection (Additions)
-
-- (id)copyWithZone:(NSZone *)zone {
-    MoodleSection* newInstance = [[[self class] allocWithZone:zone] init];
-    newInstance.iResources = self.iResources;
-    newInstance.iText = self.iText;
-    newInstance.iStartDate = self.iStartDate;
-    newInstance.iEndDate = self.iEndDate;
-    newInstance.iCurrent = self.iCurrent;
-    return newInstance;
-}
-
-@end
-
-#pragma mark - New
-
 @implementation MoodleCourseSection2 (Additions)
 
 - (BOOL)isCurrent {
-#warning REMOVE
+/*#warning REMOVE
     if ([self.title isEqualToString:@"General"]) {
         return YES;
-    }
+    }*/
     
     
     if (self.title) {

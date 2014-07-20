@@ -31,38 +31,6 @@
 
 extern NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey;
 
-#pragma mark - Old
-
-@interface MoodleResource (Additions)<NSCopying>
-
-/*
- * Returns last path component of iUrl
- * E.g. homework1.pdf
- */
-@property (nonatomic, readonly) NSString* filename;
-
-/*
- * Returns filename's extension in capitals
- * E.g. PDF, ZIP, ...
- */
-@property (nonatomic, readonly) NSString* fileExtension;
-
-- (BOOL)isEqual:(id)object;
-- (BOOL)isEqualToMoodleResource:(MoodleResource*)moodleResource;
-- (NSUInteger)hash;
-
-/*
- * Returns empty dictionary if setDefaultsDictionary:forMoodleResource: never called before
- */
-+ (NSDictionary*)defaultsDictionaryForMoodleResource:(MoodleResource*)resource;
-+ (void)setDefaultsDictionary:(NSDictionary*)defaultsDic forMoodleResource:(MoodleResource*)resource;
-
-@end
-
-@interface MoodleSection (Additions)<NSCopying>
-
-@end
-
 #pragma mark - New
 
 @protocol MoodleItemDefaults <NSObject>

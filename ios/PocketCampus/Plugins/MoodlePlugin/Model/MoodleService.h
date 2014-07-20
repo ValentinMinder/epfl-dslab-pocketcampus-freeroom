@@ -58,16 +58,6 @@ typedef void (^MoodleResourceEventBlock)(MoodleResourceEvent event);
 - (void)downloadOfMoodleFile:(MoodleFile2*)moodleFile didFinish:(NSURL*)localFileURL;
 - (void)downloadFailedForMoodleFile:(MoodleFile2*)moodleFile responseStatusCode:(int)statusCode;
 
-//dummy HAS to be there because of how delegate abstraction is built in ServiceRequest
-//simply ignore it
-- (void)getCoursesListForDummy:(NSString*)dummy didReturn:(CoursesListReply*)reply __attribute__ ((deprecated));
-- (void)getCoursesListFailedForDummy:(NSString*)dummy __attribute__ ((deprecated));
-- (void)getCourseSectionsForCourseId:(NSString*)courseId didReturn:(SectionsListReply*)reply __attribute__ ((deprecated));
-- (void)getCourseSectionsFailedForCourseId:(NSString*)courseId __attribute__ ((deprecated));
-
-- (void)downloadOfMoodleResource:(MoodleResource*)moodleResource didFinish:(NSURL*)localFileURL  __attribute__ ((deprecated));
-- (void)downloadFailedForMoodleResource:(MoodleResource*)moodleResource responseStatusCode:(int)statusCode __attribute__ ((deprecated));
-
 @end
 
 #pragma mark - MoodleService definition
@@ -114,15 +104,10 @@ extern NSString* const kMoodleFavoritesStatusMoodleItemUpdatedUserInfoKey;
 - (void)getCoursesWithRequest:(MoodleCoursesRequest2*)request delegate:(id<MoodleServiceDelegate>)delegate;
 - (void)getSectionsWithRequest:(MoodleCourseSectionsRequest2*)request delegate:(id<MoodleServiceDelegate>)delegate;
 
-- (void)getCoursesSectionsForCourseId:(NSString*)courseId delegate:(id<MoodleServiceDelegate>)delegate __attribute__ ((deprecated));
-
 #pragma mark - Cached versions
 
 - (MoodleCoursesResponse2*)getFromCacheCoursesWithRequest:(MoodleCoursesRequest2*)request;
 - (MoodleCourseSectionsResponse2*)getFromCacheSectionsWithRequest:(MoodleCourseSectionsRequest2*)request;
-
-- (CoursesListReply*)getFromCacheCoursesList __attribute__ ((deprecated));
-- (SectionsListReply*)getFromCacheCoursesSectionsForCourseId:(NSString*)courseId __attribute__ ((deprecated));
 
 #pragma mark - MoodleResources files observation
 
@@ -130,7 +115,7 @@ extern NSString* const kMoodleFavoritesStatusMoodleItemUpdatedUserInfoKey;
 - (void)removeMoodleFileObserver:(id)observer;
 - (void)removeMoodleFileObserver:(id)observer forFile:(MoodleFile2*)file;
 
-#pragma mark - Fetch resources
+#pragma mark - File downloads
 
 - (void)downloadMoodleFile:(MoodleFile2*)file progressView:(UIProgressView*)progressView delegate:(id)delegate;
 - (void)cancelDownloadOfMoodleFilesForDelegate:(id)delegate;
