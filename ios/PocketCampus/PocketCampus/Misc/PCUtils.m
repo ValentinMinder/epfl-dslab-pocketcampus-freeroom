@@ -251,8 +251,8 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
         return nil;
     }
     
-    CGFloat newWidth = ceilf(systemImage.size.width * 0.76);
-    CGFloat newHeight = ceilf(systemImage.size.height * 0.76);
+    CGFloat newWidth = ceilf(systemImage.size.width * 0.89);
+    CGFloat newHeight = ceilf(systemImage.size.height * 0.89);
     UIImage* smallerSystemImage = [systemImage imageScaledToSize:CGSizeMake(newWidth, newHeight) applyDeviceScreenMultiplyingFactor:NO];
     
     UIGraphicsBeginImageContextWithOptions(systemImage.size, NO, systemImage.scale);

@@ -284,7 +284,7 @@ static int i = 0;
     return [[MoodleCourseSectionsRequest2 alloc] initWithLanguage:[PCUtils userLanguageCode] courseId:self.course.courseId];
 }
 
-#pragma mark - Utils and toggle week button
+#pragma mark - Utils and data
 
 - (void)computeCurrentWeek {
     if(!self.sectionsResponse.sections) {
@@ -344,12 +344,14 @@ static int i = 0;
                         // folders cannot be faved (doc of addFavoriteMoodleItem)
                         // let's see if nested files are.
                         for (MoodleFile2* file in resource.folder.files) {
-                            // We HAVE TO HAVE MoodleResource2 in filteredResources
-                            // so we have to create file resource containers for each
-                            // file nested in the folder. Displaying favs list will show
-                            // files flattened, this is wanted behavior.
-                            MoodleResource2* tmpResource = [[MoodleResource2 alloc] initWithFile:file folder:nil url:nil];
-                            [filteredResources addObject:tmpResource];
+                            if ([self.moodleService isFavoriteMoodleItem:file]) {
+                                // We HAVE TO HAVE MoodleResource2 in filteredResources
+                                // so we have to create file resource containers for each
+                                // file nested in the folder. Displaying favs list will show
+                                // files flattened, this is wanted behavior.
+                                MoodleResource2* tmpResource = [[MoodleResource2 alloc] initWithFile:file folder:nil url:nil];
+                                [filteredResources addObject:tmpResource];
+                            }
                         }
                     }
                 }
@@ -375,44 +377,45 @@ static int i = 0;
     }
     
     NSMapTable* cellsTemp = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsStrongMemory valueOptions:NSPointerFunctionsStrongMemory];
-    
     for (MoodleCourseSection2* section in self.sectionsResponse.sections) {
         for (MoodleResource2* resource in section.resources) {
-            
-            MoodleResourceCell* cell = [[MoodleResourceCell alloc] initWithMoodleResource:resource];
-            cell.durablySelected = [resource isEqual:self.selectedResource];
+            MoodleResourceCell* cell = [self newCellForMoodleResource:resource];
             [cellsTemp setObject:cell forKey:resource];
-            
-            __weak typeof(cell) weakCell = cell;
-            __weak typeof(self) welf = self;
-            if (resource.file) {
-                [self.moodleService removeMoodleFileObserver:self forFile:resource.file];
-                [self.moodleService addMoodleFileObserver:self forFile:resource.file eventBlock:^(MoodleResourceEvent event) {
-                    if (!weakCell) {
-                        return;
-                    }
-                    if (event == MoodleResourceEventDeleted) {
-                        weakCell.durablySelected = NO;
-                        if (welf.splitViewController && [welf.selectedResource isEqual:resource]) { //iPad //resource deleted => hide ResourceViewController
-                            [welf.tableView deselectRowAtIndexPath:[welf.tableView indexPathForSelectedRow] animated:YES];
-                            [welf.searchController.searchResultsTableView deselectRowAtIndexPath:[welf.searchController.searchResultsTableView indexPathForSelectedRow] animated:YES];
-                            welf.selectedResource = nil;
-                            MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
-                            welf.splitViewController.viewControllers = @[welf.splitViewController.viewControllers[0], [[PCNavigationController alloc] initWithRootViewController:splashViewController]];
-                            [NSTimer scheduledTimerWithTimeInterval:0.2 target:welf selector:@selector(showMasterViewController) userInfo:nil repeats:NO];
-                        }
-                    }
-                    [weakCell setNeedsLayout];
-                }];
-            }
         }
     }
-    
     self.cellForMoodleResource = cellsTemp;
+}
 
+- (MoodleResourceCell*)newCellForMoodleResource:(MoodleResource2*)resource {
+    MoodleResourceCell* cell = [[MoodleResourceCell alloc] initWithMoodleResource:resource];
+    cell.durablySelected = [resource isEqual:self.selectedResource];
+    __weak typeof(cell) weakCell = cell;
+    __weak typeof(self) welf = self;
+    if (resource.file) {
+        [self.moodleService removeMoodleFileObserver:self forFile:resource.file];
+        [self.moodleService addMoodleFileObserver:self forFile:resource.file eventBlock:^(MoodleResourceEvent event) {
+            if (!weakCell) {
+                return;
+            }
+            if (event == MoodleResourceEventDeleted) {
+                weakCell.durablySelected = NO;
+                if (welf.splitViewController && [welf.selectedResource isEqual:resource]) { //iPad //resource deleted => hide ResourceViewController
+                    [welf.tableView deselectRowAtIndexPath:[welf.tableView indexPathForSelectedRow] animated:YES];
+                    [welf.searchController.searchResultsTableView deselectRowAtIndexPath:[welf.searchController.searchResultsTableView indexPathForSelectedRow] animated:YES];
+                    welf.selectedResource = nil;
+                    MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
+                    welf.splitViewController.viewControllers = @[welf.splitViewController.viewControllers[0], [[PCNavigationController alloc] initWithRootViewController:splashViewController]];
+                    [NSTimer scheduledTimerWithTimeInterval:0.2 target:welf selector:@selector(showMasterViewController) userInfo:nil repeats:NO];
+                }
+            }
+            [weakCell setNeedsLayout];
+        }];
+    }
+    return cell;
 }
 
 - (NSArray*)filteredSectionsFromPattern:(NSString*)pattern {
+#warning THIS DOES NOT WITHIN FOLDER FILES
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"SELF.name contains[cd] %@ OR SELF.file.filename contains[cd] %@", pattern, pattern];
     NSMutableArray* filteredSections = [NSMutableArray arrayWithCapacity:self.sectionsResponse.sections.count];
     for (MoodleCourseSection2* moodleSection in self.sectionsResponse.sections) {
@@ -764,7 +767,13 @@ static int i = 0;
     MoodleCourseSection2* section = tableView == self.tableView ? self.sections[indexPath.section] : self.searchFilteredSections[indexPath.section];
     MoodleResource2* resource = section.resources[indexPath.row];
     MoodleResourceCell* cell = [self.cellForMoodleResource objectForKey:resource];
-#warning set icon (not from withing MoodleResourceCell to not download everything at once)
+    
+    if (!cell) {
+        // happens if a "fake" resource was created to display a file outside its folder for example (in favorites or search modes)
+        cell = [self newCellForMoodleResource:resource];
+        [self.cellForMoodleResource setObject:cell forKey:resource];
+    }
+    
     if (tableView == self.tableView) {
         cell.textLabelHighlightedRegex = nil;
         cell.detailTextLabelHighlightedRegex = nil;
@@ -772,10 +781,6 @@ static int i = 0;
         //Results text highlighting
         cell.textLabelHighlightedRegex = self.currentSearchRegex;
         cell.detailTextLabelHighlightedRegex = self.currentSearchRegex;
-    }
-    if (resource.file) {
-        NSURL* url = [resource.file iconURLForMinimalSquareSideLength:self.tableView.rowHeight];
-        //[(PCTableViewAdditions*)tableView setImageURL:url forCell:cell atIndexPath:indexPath];
     }
     return cell;
 }
