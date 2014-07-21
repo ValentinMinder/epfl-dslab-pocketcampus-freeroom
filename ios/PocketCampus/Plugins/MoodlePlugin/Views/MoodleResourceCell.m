@@ -79,8 +79,6 @@
 - (void)setResource:(MoodleResource2*)resource {
     _resource = resource;
     
-#warning TODO icon
-    
     self.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
     self.textLabel.adjustsFontSizeToFitWidth = YES;
     self.textLabel.minimumScaleFactor = 0.9;
@@ -88,6 +86,9 @@
     self.detailTextLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle];
     self.detailTextLabel.adjustsFontSizeToFitWidth = YES;
     self.detailTextLabel.minimumScaleFactor = 0.9;
+    
+    self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    self.imageView.image = resource.systemIcon;
     
     if (resource.file) {
         self.textLabel.text = resource.file.name;

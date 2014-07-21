@@ -89,7 +89,7 @@
         }
     }
     
-    UIGraphicsBeginImageContext(targetSize); // this will crop
+    UIGraphicsBeginImageContextWithOptions(targetSize, NO, self.scale); // this will crop
     
     CGRect thumbnailRect = CGRectZero;
     thumbnailRect.origin = thumbnailPoint;
@@ -120,7 +120,7 @@
     }
     
     //create drawing context
-    UIGraphicsBeginImageContextWithOptions(size, NO, 1.0f);
+    UIGraphicsBeginImageContextWithOptions(size, NO, self.scale);
     
     //draw
     [self drawInRect:CGRectMake(0.0f, 0.0f, size.width, size.height)];

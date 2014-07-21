@@ -773,7 +773,10 @@ static int i = 0;
         cell.textLabelHighlightedRegex = self.currentSearchRegex;
         cell.detailTextLabelHighlightedRegex = self.currentSearchRegex;
     }
-    
+    if (resource.file) {
+        NSURL* url = [resource.file iconURLForMinimalSquareSideLength:self.tableView.rowHeight];
+        //[(PCTableViewAdditions*)tableView setImageURL:url forCell:cell atIndexPath:indexPath];
+    }
     return cell;
 }
 

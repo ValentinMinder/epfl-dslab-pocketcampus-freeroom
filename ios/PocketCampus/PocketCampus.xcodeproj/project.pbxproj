@@ -41,6 +41,12 @@
 		32125BC01536F215009B8D37 /* TransportFeetConnection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBE1536F215009B8D37 /* TransportFeetConnection@2x.png */; };
 		32141FA718D8D16F0084FE44 /* IsAcademiaModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32141FA618D8D16F0084FE44 /* IsAcademiaModelAdditions.m */; };
 		32148A3E18101D6C00AF2F8E /* CamiproLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32148A3D18101D6C00AF2F8E /* CamiproLarge@2x.png */; };
+		32150DD4197D693300CCF2AB /* LinkIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 32150DD2197D693300CCF2AB /* LinkIcon.png */; };
+		32150DD5197D693300CCF2AB /* LinkIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32150DD3197D693300CCF2AB /* LinkIcon@2x.png */; };
+		32150DD8197D6D0400CCF2AB /* FolderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 32150DD6197D6D0400CCF2AB /* FolderIcon.png */; };
+		32150DD9197D6D0400CCF2AB /* FolderIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32150DD7197D6D0400CCF2AB /* FolderIcon@2x.png */; };
+		32150DDC197D6D1400CCF2AB /* FolderBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32150DDA197D6D1400CCF2AB /* FolderBarButton.png */; };
+		32150DDD197D6D1400CCF2AB /* FolderBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32150DDB197D6D1400CCF2AB /* FolderBarButton@2x.png */; };
 		32151EEA18FC3212001F6DA9 /* MoodleSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32151EE918FC3212001F6DA9 /* MoodleSettingsViewController.m */; };
 		3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3215425415B5B75F0003C8B2 /* AuthenticationPlugin.strings */; };
 		3216C95816A6098C0050D17D /* DirectoryProfilePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216C95716A6098C0050D17D /* DirectoryProfilePictureViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -443,6 +449,12 @@
 		32141FA518D8D16F0084FE44 /* IsAcademiaModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IsAcademiaModelAdditions.h; sourceTree = "<group>"; };
 		32141FA618D8D16F0084FE44 /* IsAcademiaModelAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IsAcademiaModelAdditions.m; sourceTree = "<group>"; };
 		32148A3D18101D6C00AF2F8E /* CamiproLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CamiproLarge@2x.png"; sourceTree = "<group>"; };
+		32150DD2197D693300CCF2AB /* LinkIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LinkIcon.png; sourceTree = "<group>"; };
+		32150DD3197D693300CCF2AB /* LinkIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LinkIcon@2x.png"; sourceTree = "<group>"; };
+		32150DD6197D6D0400CCF2AB /* FolderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FolderIcon.png; sourceTree = "<group>"; };
+		32150DD7197D6D0400CCF2AB /* FolderIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FolderIcon@2x.png"; sourceTree = "<group>"; };
+		32150DDA197D6D1400CCF2AB /* FolderBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FolderBarButton.png; sourceTree = "<group>"; };
+		32150DDB197D6D1400CCF2AB /* FolderBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FolderBarButton@2x.png"; sourceTree = "<group>"; };
 		32151EE818FC3212001F6DA9 /* MoodleSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleSettingsViewController.h; sourceTree = "<group>"; };
 		32151EE918FC3212001F6DA9 /* MoodleSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleSettingsViewController.m; sourceTree = "<group>"; };
 		3215425515B5B75F0003C8B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
@@ -1180,6 +1192,10 @@
 				329E1B3A16E693130054C3A8 /* FavoriteNavBarButton@2x.png */,
 				32FFA794186DDD5500237957 /* FavoriteNavBarButtonLandscape.png */,
 				32FFA795186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png */,
+				32150DDA197D6D1400CCF2AB /* FolderBarButton.png */,
+				32150DDB197D6D1400CCF2AB /* FolderBarButton@2x.png */,
+				32150DD6197D6D0400CCF2AB /* FolderIcon.png */,
+				32150DD7197D6D0400CCF2AB /* FolderIcon@2x.png */,
 				322C07501722A7E6004FDC83 /* GenericGreyButton.png */,
 				322C07511722A7E6004FDC83 /* GenericGreyButton@2x.png */,
 				322C07521722A7E6004FDC83 /* GenericGreyButtonHighlight.png */,
@@ -1190,6 +1206,8 @@
 				3200375818119B4100901F6A /* Info@2x.png */,
 				3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */,
 				3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */,
+				32150DD2197D693300CCF2AB /* LinkIcon.png */,
+				32150DD3197D693300CCF2AB /* LinkIcon@2x.png */,
 				3270B7EF18056E6F007EE85B /* ListBarButton.png */,
 				3270B7F018056E6F007EE85B /* ListBarButton@2x.png */,
 				32CACD93183E366B00BD36F9 /* LocationArrow.png */,
@@ -2474,6 +2492,7 @@
 				32E3E5CB1897D1F200D263C5 /* TransportPlugin.strings in Resources */,
 				32506CFE181D4195003F08D7 /* MoodleLarge@2x.png in Resources */,
 				327513311825465D0037FE00 /* FavoriteCorner.png in Resources */,
+				32150DDD197D6D1400CCF2AB /* FolderBarButton@2x.png in Resources */,
 				324A599A151DFDF700977F33 /* TransportAddStationView.xib in Resources */,
 				3289F2BA183FAB8C00D833C2 /* LocationArrow2Active@2x.png in Resources */,
 				32A63A4B1535FFF400237841 /* TransportTripsHeaderCell.xib in Resources */,
@@ -2555,6 +2574,7 @@
 				32CACD9A183E366B00BD36F9 /* LocationArrowSelected@2x.png in Resources */,
 				32C509EB17FC6D73005A5635 /* SortBarButton@2x.png in Resources */,
 				3204C6D01648412D003944D2 /* LightGrayTextureBackground.png in Resources */,
+				32150DD4197D693300CCF2AB /* LinkIcon.png in Resources */,
 				3204C6D11648412D003944D2 /* LightGrayTextureBackground@2x.png in Resources */,
 				325368C0164932F600406801 /* StretchableInnerShadow.png in Resources */,
 				325368C1164932F600406801 /* StretchableInnerShadow@2x.png in Resources */,
@@ -2595,6 +2615,7 @@
 				322207F31688FFFA003F6622 /* NewsItem.html in Resources */,
 				32E0E315194B1FDD003251CC /* FilterBarButton.png in Resources */,
 				32506D01181DC41E003F08D7 /* MasterVisible.png in Resources */,
+				32150DDC197D6D1400CCF2AB /* FolderBarButton.png in Resources */,
 				3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */,
 				32C8799D183D103600750A11 /* SettingsBarButton2@2x.png in Resources */,
 				323676C316BDB42D0004D5AD /* AppLogoCellImage@2x.png in Resources */,
@@ -2612,18 +2633,21 @@
 				329E1B3C16E693130054C3A8 /* FavoriteNavBarButton@2x.png in Resources */,
 				329E1B3F16E696F80054C3A8 /* FavoriteGlowNavBarButton.png in Resources */,
 				329E1B4016E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png in Resources */,
+				32150DD5197D693300CCF2AB /* LinkIcon@2x.png in Resources */,
 				32F5308D16EAB02400F66484 /* EventItemInfo.html in Resources */,
 				32F5308F16EAB89500F66484 /* EventsSplashDetailView.xib in Resources */,
 				3200375A18119B4100901F6A /* Info@2x.png in Resources */,
 				32F5309416EABA0F00F66484 /* EventsLarge.png in Resources */,
 				32C509E717FC60B0005A5635 /* CameraBarButton@2x.png in Resources */,
 				3212452D16FE174500469113 /* EyeBarButton.png in Resources */,
+				32150DD8197D6D0400CCF2AB /* FolderIcon.png in Resources */,
 				328A131E18296E2D00F4C622 /* FoodSmileyHappy@2x.png in Resources */,
 				32503AA5195EE4F1007B709E /* PCDatePickerView.xib in Resources */,
 				3212452E16FE174500469113 /* EyeBarButton@2x.png in Resources */,
 				32F7218C171B0BB4005755A2 /* CamiproView~ipad.xib in Resources */,
 				322C07541722A7E6004FDC83 /* GenericGreyButton.png in Resources */,
 				322C07551722A7E6004FDC83 /* GenericGreyButton@2x.png in Resources */,
+				32150DD9197D6D0400CCF2AB /* FolderIcon@2x.png in Resources */,
 				322C07561722A7E6004FDC83 /* GenericGreyButtonHighlight.png in Resources */,
 				322C07571722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png in Resources */,
 				328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */,

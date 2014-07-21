@@ -30,6 +30,8 @@
 
 #import "MoodleModelAdditions.h"
 
+#import "MoodleService.h"
+
 #import <objc/runtime.h>
 
 NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey = @"SaveDocsPositionGeneralSettingBool";
@@ -93,6 +95,19 @@ NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey = @"SaveDocsPositio
     return nil;
 }
 
+- (UIImage*)systemIcon {
+    if (self.file) {
+        return self.file.systemIcon;
+    }
+    if (self.folder) {
+        return self.folder.systemIcon;
+    }
+    if (self.url) {
+        return self.url.systemIcon;
+    }
+    return nil;
+}
+
 - (BOOL)isEqual:(id)object {
     if (self == object) {
         return YES;
@@ -152,6 +167,31 @@ NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey = @"SaveDocsPositio
     return [self.filename pathExtension];
 }
 
+- (UIImage*)systemIcon {
+    return [PCUtils iconForFileExtension:self.extension];
+}
+
+- (NSURL*)iconURLForMinimalSquareSideLength:(CGFloat)length {
+    if (!self.icon) {
+        return nil;
+    }
+    if (length < 24.0) {
+        length = 24.0;
+    } else if (length < 32.0) {
+        length = 32.0;
+    } else if (length < 64.0) {
+        length = 64.0;
+    } else if (length < 128.0) {
+        length = 128.0;
+    } else if (length < 256.0) {
+        length = 256.0;
+    } else {
+        length = 256.0;
+    }
+    NSString* urlString = [self.icon stringByReplacingOccurrencesOfString:@"{size}" withString:[NSString stringWithFormat:@"%d", (int)length]];
+    return [NSURL URLWithString:urlString];
+}
+
 - (BOOL)isEqual:(id)object {
     if (self == object) {
         return YES;
@@ -203,6 +243,10 @@ NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey = @"SaveDocsPositio
 
 @implementation MoodleFolder2 (Additions)
 
+- (UIImage*)systemIcon {
+    return [PCUtils iconForFileExtension:kPCUtilsExtensionFolder];
+}
+
 - (BOOL)isEqual:(id)object {
     if (self == object) {
         return YES;
@@ -231,6 +275,10 @@ NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey = @"SaveDocsPositio
 @end
 
 @implementation MoodleUrl2 (Additions)
+
+- (UIImage*)systemIcon {
+    return [PCUtils iconForFileExtension:kPCUtilsExtensionLink];
+}
 
 - (BOOL)isEqual:(id)object {
     if (self == object) {

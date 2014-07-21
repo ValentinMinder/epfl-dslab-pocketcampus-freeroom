@@ -64,11 +64,15 @@ extern NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey;
  */
 @property (nonatomic, readonly) NSString* name;
 
-- (BOOL)isEqual:(id)object;
+/**
+ * @return systemIcon of self.item if exists
+ */
+@property (nonatomic, readonly) UIImage* systemIcon;
 
 /**
  * Propagates equality to self.item
  */
+- (BOOL)isEqual:(id)object;
 - (BOOL)isEqualToMoodleResource:(MoodleResource2*)otherResource;
 
 /**
@@ -92,36 +96,49 @@ extern NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey;
  */
 @property (nonatomic, readonly) NSString* fileExtension;
 
-- (BOOL)isEqual:(id)object;
-- (NSUInteger)hash;
+@property (nonatomic, readonly) UIImage* systemIcon;
+
+/**
+ * @return URL for self.icon that has a square side length of at least <length>
+ * @param length can be between 1 and 256
+ * nil if self.icon is nil
+ */
+- (NSURL*)iconURLForMinimalSquareSideLength:(CGFloat)length;
 
 /**
  * @return YES if urls are equal
  */
+- (BOOL)isEqual:(id)object;
 - (BOOL)isEqualToMoodleFile:(MoodleFile2*)otherFile;
+
+- (NSUInteger)hash;
 
 @end
 
 @interface MoodleFolder2 (Additions)
 
-- (BOOL)isEqual:(id)object;
-- (NSUInteger)hash;
+@property (nonatomic, readonly) UIImage* systemIcon;
 
 /**
  * @return YES if name and all files are equal
  */
+- (BOOL)isEqual:(id)object;
 - (BOOL)isEqualToMoodleFolder:(MoodleFolder2*)otherFolder;
+
+- (NSUInteger)hash;
 
 @end
 
 @interface MoodleUrl2 (Additions)
 
-- (BOOL)isEqual:(id)object;
-- (NSUInteger)hash;
+@property (nonatomic, readonly) UIImage* systemIcon;
 
 /**
  * @return YES if name and all files are equal
  */
+- (BOOL)isEqual:(id)object;
 - (BOOL)isEqualToMoodleUrl:(MoodleUrl2*)otherUrl;
+
+- (NSUInteger)hash;
 
 @end
