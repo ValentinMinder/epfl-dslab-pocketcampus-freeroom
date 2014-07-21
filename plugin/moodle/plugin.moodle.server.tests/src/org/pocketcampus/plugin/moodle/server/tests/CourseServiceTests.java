@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Scanner;
@@ -294,8 +295,13 @@ public final class CourseServiceTests {
 		}
 
 		@Override
-		public String getString(String url, Charset charset) throws Exception {
+		public String get(String url, Charset charset) throws IOException {
 			return getFileContents(returnValues[index++]);
+		}
+		
+		@Override
+		public String post(String url, String body, Charset charset) throws IOException {
+			throw new RuntimeException("post(String, String, Charset) should not be called.");
 		}
 
 		@SuppressWarnings("resource")

@@ -21,7 +21,7 @@ public final class HttpClientTests {
     public void getStringWorks() throws Exception {
     	HttpClientImpl client = new HttpClientImpl();
     	
-    	String s = client.getString("http://perdu.com", Charset.forName("UTF-8"));
+    	String s = client.get("http://perdu.com", Charset.forName("UTF-8"));
     	
     	assertEquals("<html><head><title>Vous Etes Perdu ?</title></head><body><h1>Perdu sur l'Internet ?</h1><h2>Pas de panique, on va vous aider</h2><strong><pre>    * <----- vous &ecirc;tes ici</pre></strong></body></html>", s.trim());
     }
