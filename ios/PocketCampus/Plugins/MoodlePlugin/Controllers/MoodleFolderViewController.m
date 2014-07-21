@@ -250,7 +250,6 @@
     }
     MoodleFile2* file = self.files[indexPath.row];
     MoodleResourceCell* cell = [self.cellForMoodleFile objectForKey:file];
-#warning set icon (not from withing MoodleResourceCell to not download everything at once)
     return cell;
 }
 

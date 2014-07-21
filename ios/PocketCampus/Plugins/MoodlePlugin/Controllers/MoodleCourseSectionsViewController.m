@@ -415,7 +415,7 @@ static int i = 0;
 }
 
 - (NSArray*)filteredSectionsFromPattern:(NSString*)pattern {
-#warning THIS DOES NOT WITHIN FOLDER FILES
+#warning this does not search within folders
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"SELF.name contains[cd] %@ OR SELF.file.filename contains[cd] %@", pattern, pattern];
     NSMutableArray* filteredSections = [NSMutableArray arrayWithCapacity:self.sectionsResponse.sections.count];
     for (MoodleCourseSection2* moodleSection in self.sectionsResponse.sections) {

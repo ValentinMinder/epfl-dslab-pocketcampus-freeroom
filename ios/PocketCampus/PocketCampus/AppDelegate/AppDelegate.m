@@ -60,18 +60,6 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
-#warning REMOVE
-    
-    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    NSString* appSupport = [paths firstObject];
-    NSString* path = [appSupport stringByAppendingPathComponent:@"test.uuuuuuu"];
-    UIDocumentInteractionController* controller = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
-    
-    UIImage* image = [controller.icons lastObject];
-    
-    
-    
     // Need to start monitoring, otherwise sharedManager.networkReachabilityStatus is wrong
     // Bug in AFNetworkReachabilityManager ?
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
