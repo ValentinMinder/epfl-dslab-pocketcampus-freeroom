@@ -17,7 +17,7 @@ import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
 /**
- * Super-simple XML parsing API on top of the horror that is Java's XML API.
+ * Simple XML parsing API on top of the horror that is Java's XML API.
  * 
  * @author Solal Pirelli <solal@pocketcampus.org>
  */
@@ -64,13 +64,17 @@ public final class XElement {
 	}
 
 	/** Gets the content of the child element with the specified name. */
-	public String elementText(final String elementName) {
+	public String childText(final String elementName) {
 		return element.getElementsByTagName(elementName).item(0).getTextContent().trim();
 	}
 
 	/** Gets the child with the specified name. */
 	public XElement child(final String name) {
-		return new XElement((Element) element.getElementsByTagName(name).item(0));
+		NodeList children = element.getElementsByTagName(name);
+		if (children.getLength() == 0) {
+			return null;
+		}
+		return new XElement((Element) children.item(0));
 	}
 
 	/** Gets the children with the specified name. */
@@ -111,7 +115,7 @@ public final class XElement {
 		}
 	}
 
-	/** @deprecated Please use toString(Charset) instead. */
+	/** @deprecated Use toString(Charset) instead. */
 	@Override
 	@Deprecated
 	public String toString() {

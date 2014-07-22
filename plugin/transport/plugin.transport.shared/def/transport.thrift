@@ -33,7 +33,7 @@ struct TransportConnection {
 	9: optional string arrivalPosition;
 	
 	11: required bool foot;
-	// required if on foot
+	// required if on foot; in minutes
 	12: optional i32 footDuration;
 }
 
