@@ -51,6 +51,12 @@ extern NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey;
 @property (nonatomic, readonly) BOOL isCurrent;
 
 /**
+ * @return self.title if not nil, or date range of localized string
+ * of the form <start-date> - <end-date>
+ */
+@property (nonatomic, readonly) NSString* titleOrDateRangeString;
+
+/**
  * @return self.details, surrounded by some CSS and HTML tags
  * to make them appear nice a a web view. Returns nil if self.details is nil.
  */

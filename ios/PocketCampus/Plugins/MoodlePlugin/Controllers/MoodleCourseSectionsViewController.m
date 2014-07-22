@@ -704,7 +704,7 @@ static int i = 0;
     } else {
         //should not happen
     }
-    return [PCTableViewSectionHeader preferredHeightWithInfoButton:(secObj.details.length > 0)];
+    return [PCTableViewSectionHeader preferredHeightWithInfoButton:YES]; //we want all section headers to be same height
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -728,31 +728,8 @@ static int i = 0;
         }
     }
     
-    NSString* title = nil;
-    
-    if (moodleSection.title) {
-        title = moodleSection.title;
-    } else {
-        static NSDateFormatter* formatter = nil;
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            formatter = [NSDateFormatter new];
-            formatter.locale = [NSLocale currentLocale];
-            formatter.timeZone = [NSTimeZone timeZoneWithName:@"Europe/Zurich"];
-            formatter.dateStyle = NSDateFormatterMediumStyle;
-            formatter.timeStyle = NSDateFormatterNoStyle;
-        });
-        NSString* startDateString = moodleSection.startDate != 0 ? [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:moodleSection.startDate/1000.0]] : nil;
-        NSString* endDateString = moodleSection.endDate != 0 ? [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:moodleSection.endDate/1000.0]] : nil;
+    NSString* title = moodleSection.titleOrDateRangeString;
 
-        if (startDateString && endDateString) {
-            title = [NSString stringWithFormat:@"%@ - %@", startDateString, endDateString];
-        } else if (startDateString) {
-            title = startDateString;
-        } else if (endDateString) {
-            title = endDateString;
-        }
-    }
     PCTableViewSectionHeader* header = [[PCTableViewSectionHeader alloc] initWithSectionTitle:title tableView:tableView showInfoButton:(moodleSection.details.length > 0)];
     header.highlighted = moodleSection.isCurrent;
     __weak __typeof(self) welf = self;

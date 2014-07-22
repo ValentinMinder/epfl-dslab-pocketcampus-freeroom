@@ -49,6 +49,38 @@ NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey = @"SaveDocsPositio
     return YES;
 }
 
+- (NSString*)titleOrDateRangeString {
+    if (self.title) {
+        return self.title;
+    }
+    NSString* string = nil;
+    static NSDateFormatter* formatter = nil;
+    static NSString* startDateFormat = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        formatter = [NSDateFormatter new];
+        formatter.locale = [NSLocale currentLocale];
+        formatter.timeZone = [NSTimeZone timeZoneWithName:@"Europe/Zurich"];
+        formatter.dateStyle = NSDateFormatterMediumStyle;
+        formatter.timeStyle = NSDateFormatterNoStyle;
+        startDateFormat = [NSDateFormatter dateFormatFromTemplate:@"MMMd" options:0 locale:[NSLocale currentLocale]];
+    });
+    
+    formatter.dateFormat = startDateFormat;
+    NSString* startDateString = self.startDate != 0 ? [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.startDate/1000.0]] : nil;
+    formatter.dateFormat = nil;
+    NSString* endDateString = self.endDate != 0 ? [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.endDate/1000.0]] : nil;
+    
+    if (startDateString && endDateString) {
+        string = [NSString stringWithFormat:@"%@ - %@", startDateString, endDateString];
+    } else if (startDateString) {
+        string = startDateString;
+    } else if (endDateString) {
+        string = endDateString;
+    }
+    return string;
+}
+
 - (NSString*)webViewReadyDetails {
     if (!self.details) {
         return nil;
