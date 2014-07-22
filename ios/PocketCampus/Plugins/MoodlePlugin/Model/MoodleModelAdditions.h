@@ -50,6 +50,12 @@ extern NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey;
  */
 @property (nonatomic, readonly) BOOL isCurrent;
 
+/**
+ * @return self.details, surrounded by some CSS and HTML tags
+ * to make them appear nice a a web view. Returns nil if self.details is nil.
+ */
+@property (nonatomic, readonly) NSString* webViewReadyDetails;
+
 @end
 
 @interface MoodleResource2 (Additions)<NSCopying>

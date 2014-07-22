@@ -19,6 +19,7 @@
 "DownloadingFile" = "Downloading file...";
 "DeleteFileFromCacheQuestion" = "Delete file from local storage ?\nYou will have to download it again to read it.";
 "ImpossibleDeleteFile" = "Sorry, an error occured while deleting file.";
+"SearchCourse" = "Search course";
 
 //MoodleSettingsViewController
 "MoodleSettings" = "Moodle settings";
@@ -35,7 +36,7 @@
 "MoodleEmptyFolder" = "Empty folder";
 
 //MoodleResourceCell
-"FolderNbElementsWithFormat" = "Folder (%d elements)";
+"FolderNbElementsWithFormat" = "Folder (%d elem.)";
 
 //Accessibility
 "ShowsDocumentsForThisCourse" = "Shows documents for this course.";

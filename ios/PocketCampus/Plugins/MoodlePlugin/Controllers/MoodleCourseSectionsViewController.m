@@ -160,7 +160,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 1.0)];
     [self.searchBar sizeToFit];
     self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.searchBar.placeholder = NSLocalizedStringFromTable(@"SearchNoun", @"PocketCampus", nil);
+    self.searchBar.placeholder = NSLocalizedStringFromTable(@"SearchCourse", @"MoodlePlugin", nil);
     self.searchBar.searchBarStyle = kSearchBarDefaultStyle;
     
     self.tableView.tableHeaderView = self.searchBar;
@@ -324,7 +324,13 @@ static int i = 0;
             break;
         case kSegmentIndexCurrentWeek:
         {
-            self.sections = self.sectionsResponse.sections; //filtering managed by showSection:inTableView:
+            NSMutableArray* filteredSections = [NSMutableArray arrayWithCapacity:1]; //assuming only 1 current section
+            for (MoodleCourseSection2* section in self.sectionsResponse.sections) {
+                if (section.isCurrent) {
+                    [filteredSections addObject:section];
+                }
+            }
+            self.sections = filteredSections;
             break;
         }
         case kSegmentIndexFavorites:
@@ -488,6 +494,10 @@ static int i = 0;
     [self.tableView reloadData];
     [(PCTableViewAdditions*)(self.tableView) restoreContentOffsetForIdentifier:[NSString stringWithFormat:@"%ld", self.segmentedControl.selectedSegmentIndex]];
     self.prevSelectedSegmentIndex = self.segmentedControl.selectedSegmentIndex;
+}
+
+- (void)sectionDetailsDoneButtonTapped {
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - UISearchDisplayDelegate
@@ -674,14 +684,12 @@ static int i = 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    MoodleCourseSection2* secObj = nil;
     if (tableView == self.tableView) {
         if (!self.sections.count) {
             return 0.0;
         }
-        if (![self showSection:section inTableView:tableView]) {
-            return 0.0;
-        }
-        MoodleCourseSection2* secObj = self.sections[section];
+        secObj = self.sections[section];
         if (secObj.resources.count == 0) {
             return 0.0;
         }
@@ -689,23 +697,20 @@ static int i = 0;
         if (!self.searchFilteredSections.count) {
             return 0.0;
         }
-        if (![self showSection:section inTableView:tableView]) {
-            return 0.0;
-        }
-        MoodleCourseSection2* secObj = self.searchFilteredSections[section];
+        secObj = self.searchFilteredSections[section];
         if (secObj.resources.count == 0) {
             return 0.0;
         }
     } else {
         //should not happen
     }
-    return [PCTableViewSectionHeader preferredHeight];
+    return [PCTableViewSectionHeader preferredHeightWithInfoButton:(secObj.details.length > 0)];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     MoodleCourseSection2* moodleSection = nil;
     if (tableView == self.tableView) {
-        if (!self.sections.count || ![self showSection:section inTableView:tableView]) {
+        if (self.sections.count == 0) {
             return nil;
         }
         moodleSection = self.sections[section];
@@ -714,7 +719,7 @@ static int i = 0;
         }
     }
     if (tableView == self.searchController.searchResultsTableView) {
-        if (!self.searchFilteredSections.count || ![self showSection:section inTableView:tableView]) {
+        if (self.searchFilteredSections.count == 0) {
             return nil;
         }
         moodleSection = self.searchFilteredSections[section];
@@ -748,8 +753,19 @@ static int i = 0;
             title = endDateString;
         }
     }
-#warning support section.details + highlight if current
-    return [[PCTableViewSectionHeader alloc] initWithSectionTitle:title tableView:tableView];
+    PCTableViewSectionHeader* header = [[PCTableViewSectionHeader alloc] initWithSectionTitle:title tableView:tableView showInfoButton:(moodleSection.details.length > 0)];
+    header.highlighted = moodleSection.isCurrent;
+    __weak __typeof(self) welf = self;
+    if (moodleSection.details.length > 0) {
+        [header setInfoButtonTappedBlock:^{
+            PCWebViewController* webViewController = [[PCWebViewController alloc] initWithHTMLString:moodleSection.webViewReadyDetails title:title];
+            webViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:welf action:@selector(sectionDetailsDoneButtonTapped)];
+            PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:webViewController];
+            navController.modalPresentationStyle = UIModalPresentationFormSheet;
+            [welf presentViewController:navController animated:YES completion:NULL];
+        }];
+    }
+    return header;
 }
 
 #pragma mark - UITableViewDataSource
@@ -819,17 +835,11 @@ static int i = 0;
         if (self.sections.count == 0) {
             return 2; //first empty cell, second cell says no content
         }
-        if(![self showSection:section inTableView:tableView]) {
-            return 0;
-        }
         MoodleCourseSection2* secObj = self.sections[section];
         return secObj.resources.count;
     }
     if (tableView == self.searchController.searchResultsTableView) {
         if (!self.searchFilteredSections) {
-            return 0;
-        }
-        if(![self showSection:section inTableView:tableView]) {
             return 0;
         }
         MoodleCourseSection2* secObj = self.searchFilteredSections[section];
@@ -852,18 +862,6 @@ static int i = 0;
         return self.searchFilteredSections.count;
     }
     return 0;
-}
-
-#pragma mark - showSections
-
-- (BOOL)showSection:(NSInteger)section inTableView:(UITableView*)tableView {
-    if (tableView == self.searchController.searchResultsTableView) {
-        return YES;
-    }
-    if (self.segmentedControl.selectedSegmentIndex == kSegmentIndexCurrentWeek) {
-        return (section == self.currentWeek);
-    }
-    return YES;
 }
 
 #pragma mark - Dealloc

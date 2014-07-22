@@ -33,7 +33,8 @@
 
 @property (nonatomic, strong, readwrite) IBOutlet UIWebView* webView;
 
-@property (nonatomic, strong) NSURL* originalURL;
+@property (nonatomic, copy) NSURL* originalURL;
+@property (nonatomic, copy) NSString* htmlString;
 @property (nonatomic, strong) UIBarButtonItem* goBackBarButton;
 @property (nonatomic, strong) UIBarButtonItem* goForwardBarButton;
 @property (nonatomic, strong) UIActivityIndicatorView* loadingIndicator;
@@ -55,33 +56,54 @@
     return self;
 }
 
+- (instancetype)initWithHTMLString:(NSString*)htmlString title:(NSString*)title {
+    [PCUtils throwExceptionIfObject:htmlString notKindOfClass:[NSString class]];
+    self = [super initWithNibName:@"PCWebView" bundle:nil];
+    if (self) {
+        self.htmlString = htmlString;
+        self.title = title;
+        self.automaticallyHandlesInternallyRecognizedURLs = YES; //Default
+    }
+    return self;
+}
+
 #pragma mark - UIViewController overrides
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.webView.scalesPageToFit = YES;
-    [self.webView loadRequest:[NSURLRequest requestWithURL:self.originalURL]];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"OpenInSafari", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(openInSafariTapped)];
-    self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    self.goBackBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ArrowLeftBarButton"] style:UIBarButtonItemStylePlain target:self.webView action:@selector(goBack)];
-    UIBarButtonItem* fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    fixedSpace.width = 50.0;
-    self.goForwardBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ArrowRightBarButton"] style:UIBarButtonItemStylePlain target:self.webView action:@selector(goForward)];
-    UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem* loadingItem = [[UIBarButtonItem alloc] initWithCustomView:self.loadingIndicator];
-    self.toolbarItems= @[self.goBackBarButton, fixedSpace, self.goForwardBarButton, flexibleSpace, loadingItem];
+    if (self.originalURL) {
+        self.webView.scalesPageToFit = YES;
+        [self.webView loadRequest:[NSURLRequest requestWithURL:self.originalURL]];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"OpenInSafari", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(openInSafariTapped)];
+        self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        self.goBackBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ArrowLeftBarButton"] style:UIBarButtonItemStylePlain target:self.webView action:@selector(goBack)];
+        UIBarButtonItem* fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+        fixedSpace.width = 50.0;
+        self.goForwardBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ArrowRightBarButton"] style:UIBarButtonItemStylePlain target:self.webView action:@selector(goForward)];
+        UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        UIBarButtonItem* loadingItem = [[UIBarButtonItem alloc] initWithCustomView:self.loadingIndicator];
+        self.toolbarItems= @[self.goBackBarButton, fixedSpace, self.goForwardBarButton, flexibleSpace, loadingItem];
+    } else if (self.htmlString) {
+        [self.webView loadHTMLString:self.htmlString baseURL:nil];
+    } else {
+        //should not happen
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationController.toolbar.translucent = NO;
-    [self.navigationController setToolbarHidden:NO animated:NO];
+    if (self.originalURL) {
+        self.navigationController.toolbar.translucent = NO;
+        [self.navigationController setToolbarHidden:NO animated:NO];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.navigationController.toolbar.translucent = YES;
-    [self.navigationController setToolbarHidden:YES animated:NO];
+    if (self.originalURL) {
+        self.navigationController.toolbar.translucent = YES;
+        [self.navigationController setToolbarHidden:YES animated:NO];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

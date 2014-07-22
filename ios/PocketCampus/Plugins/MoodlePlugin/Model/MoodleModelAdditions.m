@@ -39,12 +39,6 @@ NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey = @"SaveDocsPositio
 @implementation MoodleCourseSection2 (Additions)
 
 - (BOOL)isCurrent {
-/*#warning REMOVE
-    if ([self.title isEqualToString:@"General"]) {
-        return YES;
-    }*/
-    
-    
     if (self.title) {
         return NO;
     }
@@ -53,6 +47,15 @@ NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey = @"SaveDocsPositio
         return NO;
     }
     return YES;
+}
+
+- (NSString*)webViewReadyDetails {
+    if (!self.details) {
+        return nil;
+    }
+    static NSString* const kStartingTags = @"<html><style type=\"text/css\">body {font-family: \"Helvetica Neue\";}</style><body>";
+    static NSString* const kEndingTags = @"</body></html>";
+    return [NSString stringWithFormat:@"%@%@%@", kStartingTags, self.details, kEndingTags];
 }
 
 - (id)copyWithZone:(NSZone *)zone {

@@ -29,10 +29,46 @@
 
 @interface PCTableViewSectionHeader : UIView
 
+/**
+ * @discussion same as nect with showInfoButton set to NO
+ */
 - (id)initWithSectionTitle:(NSString*)sectionTitle tableView:(UITableView*)tableView;
+
+- (id)initWithSectionTitle:(NSString*)sectionTitle tableView:(UITableView*)tableView showInfoButton:(BOOL)showInfoButton;
 
 @property (nonatomic, readonly, weak) UITableView* tableView;
 
+/**
+ * @discussion If YES, backgroundTintColor and textColor are set so that
+ * the header view looks highlighted compare to the non-highlighted ones.
+ * Manually setting backgroundTintColor and textColor after setting this property
+ * to YES will set it back to NO.
+ * Set to NO will set backgroundTintColor and textColor to their default values.
+ */
+@property (nonatomic) BOOL highlighted;
+
+/**
+ * @discussion The background of the header is made of a navigation bar
+ * changing backgroundTintColor will change the bar's barTintColor.
+ * Setting to nil will set to default nav bar tint color.
+ * Default: nil
+ */
+@property (nonatomic, strong) UIColor* backgroundTintColor;
+
+/**
+ * @discussion Setting to nil will set to default.
+ * Default: black with alpha 0.8
+ */
+@property (nonatomic, strong) UIColor* textColor;
+
+/**
+ * @discussion executed when info button tapped
+ * Default: nil
+ */
+@property (nonatomic, copy) void (^infoButtonTappedBlock)();
+
 + (CGFloat)preferredHeight;
+
++ (CGFloat)preferredHeightWithInfoButton:(BOOL)withInfoButton;
 
 @end

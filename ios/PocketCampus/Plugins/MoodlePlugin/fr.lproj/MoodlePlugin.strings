@@ -19,6 +19,7 @@
 "DownloadingFile" = "Téléchargement du fichier...";
 "DeleteFileFromCacheQuestion" = "Supprimer le fichier du stockage local ?\nVous devrez le télécharger à nouveau pour pouvoir le lire.";
 "ImpossibleDeleteFile" = "Désolé, une erreur s'est produite lors de la suppression du fichier.";
+"SearchCourse" = "Rechercher dans le cours";
 
 //MoodleSettingsViewController
 "MoodleSettings" = "Réglages Moodle";
@@ -35,7 +36,7 @@
 "MoodleEmptyFolder" = "Dossier vide";
 
 //MoodleResourceCell
-"FolderNbElementsWithFormat" = "Dossier (%d éléments)";
+"FolderNbElementsWithFormat" = "Dossier (%d élém.)";
 
 //Accessibility
 "ShowsDocumentsForThisCourse" = "Affiche les documents de ce cours.";
