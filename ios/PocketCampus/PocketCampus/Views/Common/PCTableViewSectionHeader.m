@@ -77,7 +77,7 @@ static UIColor* kHighlightedBarTintColor;
         navBar.userInteractionEnabled = NO;
         self.navBar = navBar;
         
-        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(self.tableView.separatorInset.left, 0, self.frame.size.width, self.frame.size.height)];
+        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(self.tableView.separatorInset.left, 0, self.frame.size.width - (showInfoButton ? 56.0 : 0.0), self.frame.size.height)];
         label.text = sectionTitle;
         label.backgroundColor = [UIColor clearColor];
         label.font = [self.class fontForTitleLabel];

@@ -763,6 +763,7 @@ static int i = 0;
             PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:webViewController];
             navController.modalPresentationStyle = UIModalPresentationFormSheet;
             [welf presentViewController:navController animated:YES completion:NULL];
+            [welf trackAction:@"ViewSectionDetails" contentInfo:moodleSection.title];
         }];
     }
     return header;
