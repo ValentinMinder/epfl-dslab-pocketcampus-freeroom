@@ -88,9 +88,11 @@ static UIColor* kHighlightedBarTintColor;
         [self addSubview:label];
         
         if (showInfoButton) {
-            UIButton* infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
+            UIButton* infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
+            [infoButton setAttributedTitle:[self.class attributedTitleForInfoButton] forState:UIControlStateNormal];
+            infoButton.bounds = CGRectMake(0, 0, 56.0, self.frame.size.height);
             [infoButton addTarget:self action:@selector(infoButtonTapped) forControlEvents:UIControlEventTouchUpInside];
-            infoButton.frame = CGRectMake(self.frame.size.width - infoButton.frame.size.width - 10.0, (self.frame.size.height - infoButton.frame.size.height)/2.0, infoButton.frame.size.width, infoButton.frame.size.height);
+            infoButton.frame = CGRectMake(self.frame.size.width - infoButton.frame.size.width, (self.frame.size.height - infoButton.frame.size.height)/2.0, infoButton.frame.size.width, infoButton.frame.size.height);
             infoButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
             self.infoButton = infoButton;
             [self addSubview:infoButton];
@@ -174,5 +176,22 @@ static UIColor* kHighlightedBarTintColor;
     }
     return font;
 }
+
++ (NSAttributedString*)attributedTitleForInfoButton {
+    static NSAttributedString* attrTitle = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIContentSizeCategoryDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+            attrTitle = nil;
+        }];
+    });
+    if (!attrTitle) {
+        UIFontDescriptor* fontDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleFootnote];
+        UIFont* font = [UIFont systemFontOfSize:fontDescriptor.pointSize+2.0];
+        attrTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"Info", @"PocketCampus", nil) attributes:@{NSFontAttributeName:font}];
+    }
+    return attrTitle;
+}
+
 
 @end
