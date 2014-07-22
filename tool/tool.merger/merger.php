@@ -19,7 +19,7 @@ $libs_to_export = array(
 		"android-support-v4.jar",
 		"commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar",
 		"gcm.jar",
-		"libGoogleAnalyticsServices.jar",
+		"libGoogleAnalyticsServices.jar", "libthrift-0.7.0.jar", 
 		"osmdroid-android-3.0.3.jar",
 		"servlet-api-3.0.jar",
 		"universal-image-loader-1.8.0.jar");
@@ -105,7 +105,7 @@ function generate_android_manifest($output_dir, $is_lib){
 
 function generate_ant_properties($output_dir){
 	$content = "";
-	$content .= "key.store=../../misc/keystore/pocketcampus-key.keystore\n";
+	$content .= "key.store=pocketcampus-key.keystore\n";
 	$content .= "key.alias=mykey\n";
 	//$content .= "key.store.password=XXXXXXXXXXXXXXXXXXXXXXXXX\n";
 	//$content .= "key.alias.password=XXXXXXXXXXXXXXXXXXXXXXXXX\n";

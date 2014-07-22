@@ -7,6 +7,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.thrift.TException;
 import org.apache.thrift.TServiceClient;
@@ -128,6 +129,7 @@ public abstract class PluginController extends Service {
 		client = new DefaultHttpClient(new ThreadSafeClientConnManager(params,
 				mgr.getSchemeRegistry()), params);
 
+		client.getParams().setParameter(CoreProtocolPNames.USER_AGENT, GlobalContext.USER_AGENT);
 		return client;
 	}
 

@@ -38,6 +38,10 @@ import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 /**
  * MoodleCourseView - Shows a particular course's contents.
  * 
+ * TODO: For icons, we might want to do:
+ * - get mime type from file extension http://stackoverflow.com/questions/8589645/how-to-determine-mime-type-of-file-in-android
+ * - get icon from default app that opens file http://stackoverflow.com/questions/8248466/get-icon-of-the-default-application-that-opens-a-file
+ * 
  * @author Amer <amer.chamseddine@epfl.ch>
  * 
  */
