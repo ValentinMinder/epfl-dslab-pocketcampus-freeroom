@@ -20,7 +20,6 @@
 "DeleteFileFromCacheQuestion" = "Delete file from local storage ?\nYou will have to download it again to read it.";
 "ImpossibleDeleteFile" = "Sorry, an error occured while deleting file.";
 
-
 //MoodleSettingsViewController
 "MoodleSettings" = "Moodle settings";
 "KeepDocsPosition" = "Restore reading position";
@@ -45,4 +44,6 @@
 "LinkDescriptionWithFormat" = "%@, external link";
 "AddDocumentToFavorites" = "Add this document to favorites";
 "RemoveDocumentFromFavorites" = "Remove this document from favorites";
+"AddLinkToFavorites" = "Add this link to favorites";
+"RemoveLinkFromFavorites" = "Remove this link from favorites";
 "DeleteDocumentFromLocalStorage" = "Delete this document from local storage";

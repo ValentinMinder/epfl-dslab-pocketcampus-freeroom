@@ -56,6 +56,7 @@
 #pragma mark - Init
 
 - (instancetype)initWithFolder:(MoodleFolder2*)folder {
+    [PCUtils throwExceptionIfObject:folder notKindOfClass:[MoodleFolder2 class]];
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.gaiScreenName = @"/moodle/course/folder";

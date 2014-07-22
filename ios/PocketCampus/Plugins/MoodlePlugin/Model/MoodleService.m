@@ -157,7 +157,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 }
 
 - (void)throwIfNotMoodleLeafItem:(id)object {
-    if (![object isKindOfClass:[MoodleFile2 class]] && !![object isKindOfClass:[MoodleUrl2 class]]) {
+    if (![object isKindOfClass:[MoodleFile2 class]] && ![object isKindOfClass:[MoodleUrl2 class]]) {
         [NSException raise:@"Illegal argument" format:@"object must be of type MoodleFile2 or MoodleUrl2"];
     }
 }

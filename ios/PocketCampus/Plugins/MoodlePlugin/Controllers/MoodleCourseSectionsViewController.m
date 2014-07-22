@@ -49,7 +49,7 @@
 
 #import "MoodleSettingsViewController.h"
 
-#import "PCWebViewController.h"
+#import "MoodleUrlViewController.h"
 
 #import "MoodleResourceCell.h"
 
@@ -415,8 +415,34 @@ static int i = 0;
 }
 
 - (NSArray*)filteredSectionsFromPattern:(NSString*)pattern {
-#warning this does not search within folders
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"SELF.name contains[cd] %@ OR SELF.file.filename contains[cd] %@", pattern, pattern];
+    static NSUInteger const options = NSDiacriticInsensitiveSearch | NSCaseInsensitiveSearch;
+    NSPredicate* predicate = [NSPredicate predicateWithBlock:^BOOL(MoodleResource2* resource, NSDictionary *bindings) {
+        if ([resource.name rangeOfString:pattern options:options].location != NSNotFound) {
+            return YES;
+        }
+        if (resource.file) {
+            return [resource.file.filename rangeOfString:pattern options:options].location != NSNotFound;
+        }
+        if (resource.folder) {
+            for (MoodleFile2* file in resource.folder.files) {
+                if ([file.name rangeOfString:pattern options:options].location != NSNotFound) {
+                    return YES;
+                }
+                if ([file.filename rangeOfString:pattern options:options].location != NSNotFound) {
+                    return YES;
+                }
+            }
+            return NO;
+        }
+        if (resource.url) {
+            if ([resource.url.url rangeOfString:pattern options:options].location != NSNotFound) {
+                return YES;
+            }
+            return NO;
+        }
+        return NO;
+    }];
+    
     NSMutableArray* filteredSections = [NSMutableArray arrayWithCapacity:self.sectionsResponse.sections.count];
     for (MoodleCourseSection2* moodleSection in self.sectionsResponse.sections) {
         MoodleCourseSection2* moodleSectionCopy = [moodleSection copy]; //conforms to NSCopying in Additions category
@@ -608,7 +634,7 @@ static int i = 0;
         viewController = [[MoodleFolderViewController alloc] initWithFolder:resource.folder];
         [self trackAction:@"OpenFolder" contentInfo:resource.folder.name];
     } else if (resource.url) {
-        viewController = [[PCWebViewController alloc] initWithURL:[NSURL URLWithString:resource.url.url] title:resource.url.name];
+        viewController = [[MoodleUrlViewController alloc] initWithMoodleUrl:resource.url];
         [self trackAction:@"OpenLink" contentInfo:resource.url.name];
     }
     

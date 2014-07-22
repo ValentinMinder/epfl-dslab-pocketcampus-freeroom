@@ -25,30 +25,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 14.06.14.
+//  Created by Loïc Gardiol on 22.07.14.
 
-@interface PCWebViewController : UIViewController
+#import "PCWebViewController.h"
 
-/**
- * @return web view controller loading url
- * @param url url to load
- * @param title optional title to us as view controller's title
- * @discussion: important: PCWebViewController must be used with a navigation controller
- */
-- (instancetype)initWithURL:(NSURL*)url title:(NSString*)title;
+@class MoodleUrl2;
 
-/**
- * If YES, each request will hit MainController viewControllerForURL:
- * if a view controller is available, it will automatically be pushed on the navigation controller
- * Default: YES
- */
-@property (nonatomic) BOOL automaticallyHandlesInternallyRecognizedURLs;
+@interface MoodleUrlViewController : PCWebViewController
 
-/**
- * Equivalent of UIWebViewDelegate webView:shouldLoad...:
- * Called *after* dealing with automaticallyHandlesInternallyRecognizedURLs if URL was not recognized.
- * Defaut: nil (default behavior)
- */
-@property (nonatomic, copy) BOOL (^shouldLoadRequest)(NSURLRequest* request, UIWebViewNavigationType navigationType);
+- (instancetype)initWithMoodleUrl:(MoodleUrl2*)moodleUrl;
+
+@property (nonatomic, readonly, strong) MoodleUrl2* moodleUrl;
 
 @end

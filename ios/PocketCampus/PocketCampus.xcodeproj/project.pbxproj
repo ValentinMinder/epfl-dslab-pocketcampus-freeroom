@@ -47,6 +47,7 @@
 		32150DD9197D6D0400CCF2AB /* FolderIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32150DD7197D6D0400CCF2AB /* FolderIcon@2x.png */; };
 		32150DDC197D6D1400CCF2AB /* FolderBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32150DDA197D6D1400CCF2AB /* FolderBarButton.png */; };
 		32150DDD197D6D1400CCF2AB /* FolderBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32150DDB197D6D1400CCF2AB /* FolderBarButton@2x.png */; };
+		32150DE0197E710E00CCF2AB /* MoodleUrlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32150DDF197E710E00CCF2AB /* MoodleUrlViewController.m */; };
 		32151EEA18FC3212001F6DA9 /* MoodleSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32151EE918FC3212001F6DA9 /* MoodleSettingsViewController.m */; };
 		3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3215425415B5B75F0003C8B2 /* AuthenticationPlugin.strings */; };
 		3216C95816A6098C0050D17D /* DirectoryProfilePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216C95716A6098C0050D17D /* DirectoryProfilePictureViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -455,6 +456,8 @@
 		32150DD7197D6D0400CCF2AB /* FolderIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FolderIcon@2x.png"; sourceTree = "<group>"; };
 		32150DDA197D6D1400CCF2AB /* FolderBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FolderBarButton.png; sourceTree = "<group>"; };
 		32150DDB197D6D1400CCF2AB /* FolderBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FolderBarButton@2x.png"; sourceTree = "<group>"; };
+		32150DDE197E710E00CCF2AB /* MoodleUrlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleUrlViewController.h; sourceTree = "<group>"; };
+		32150DDF197E710E00CCF2AB /* MoodleUrlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleUrlViewController.m; sourceTree = "<group>"; };
 		32151EE818FC3212001F6DA9 /* MoodleSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleSettingsViewController.h; sourceTree = "<group>"; };
 		32151EE918FC3212001F6DA9 /* MoodleSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleSettingsViewController.m; sourceTree = "<group>"; };
 		3215425515B5B75F0003C8B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
@@ -1880,6 +1883,8 @@
 				3210FD1C197C5BD700EEDCBF /* MoodleFolderViewController.m */,
 				32151EE818FC3212001F6DA9 /* MoodleSettingsViewController.h */,
 				32151EE918FC3212001F6DA9 /* MoodleSettingsViewController.m */,
+				32150DDE197E710E00CCF2AB /* MoodleUrlViewController.h */,
+				32150DDF197E710E00CCF2AB /* MoodleUrlViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2760,6 +2765,7 @@
 				32CFECEF151CCB6800D8CBA6 /* PCPersistenceManager.m in Sources */,
 				32442FEB151CF87100685D10 /* TransportNextDeparturesViewController.m in Sources */,
 				322FB01817EC938E00D1A466 /* PCGAITracker.m in Sources */,
+				32150DE0197E710E00CCF2AB /* MoodleUrlViewController.m in Sources */,
 				3278F6CA184257AF007CB382 /* TransportDepartureSelectionViewController.m in Sources */,
 				324A5998151DFDD200977F33 /* TransportAddStationViewController.m in Sources */,
 				32141FA718D8D16F0084FE44 /* IsAcademiaModelAdditions.m in Sources */,

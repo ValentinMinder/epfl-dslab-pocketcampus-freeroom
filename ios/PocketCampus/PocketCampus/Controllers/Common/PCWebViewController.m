@@ -101,6 +101,7 @@
 
 - (void)openInSafariTapped {
     [[UIApplication sharedApplication] openURL:self.webView.request.URL];
+    [self trackAction:@"ViewInBrowser" contentInfo:self.title];
 }
 
 #pragma mark - UIWebViewDelegate

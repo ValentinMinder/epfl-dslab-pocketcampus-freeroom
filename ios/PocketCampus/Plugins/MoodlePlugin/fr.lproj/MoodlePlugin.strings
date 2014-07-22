@@ -44,4 +44,6 @@
 "LinkDescriptionWithFormat" = "%@, lien";
 "AddDocumentToFavorites" = "Ajouter ce document aux favoris";
 "RemoveDocumentFromFavorites" = "Enlever ce document des favoris";
+"AddLinkToFavorites" = "Ajouter ce lien aux favoris";
+"RemoveLinkFromFavorites" = "Enlever ce lien des favoris";
 "DeleteDocumentFromLocalStorage" = "Supprimer ce fichier du stockage local";
