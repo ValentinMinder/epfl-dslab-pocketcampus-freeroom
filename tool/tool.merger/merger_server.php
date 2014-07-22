@@ -55,8 +55,8 @@ function generate_build_xml($output_dir, $project_name){
 
 	$proj->appendChild(create_elem_w_attrib($doc, "property", array("environment" => "env")));
 	$proj->appendChild(create_elem_w_attrib($doc, "property", array("name" => "debuglevel", "value" => "source,lines,vars")));
-	$proj->appendChild(create_elem_w_attrib($doc, "property", array("name" => "target", "value" => "1.6")));
-	$proj->appendChild(create_elem_w_attrib($doc, "property", array("name" => "source", "value" => "1.6")));
+	$proj->appendChild(create_elem_w_attrib($doc, "property", array("name" => "target", "value" => "1.7")));
+	$proj->appendChild(create_elem_w_attrib($doc, "property", array("name" => "source", "value" => "1.7")));
 
 	$proj->appendChild($path = create_elem_w_attrib($doc, "path", array("id" => "$project_name.classpath")));
 	$path->appendChild(create_elem_w_attrib($doc, "pathelement", array("location" => "bin")));
@@ -119,7 +119,7 @@ function generate_dot_classpath($output_dir){
 	$cpe = $doc->createElement("classpathentry");
 	$cp->appendChild($cpe);
 	$cpe->setAttribute("kind", "con");
-	$cpe->setAttribute("path", "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6");
+	$cpe->setAttribute("path", "org.eclipse.jdt.launching.JRE_CONTAINER");
 
 	foreach($libs_to_export as $lib) {
 		$cpe = $doc->createElement("classpathentry");
@@ -256,43 +256,6 @@ function export_libs($output_dir) {
 
 }
 
-function generate_server_launcher($output_dir) {
-	global $plugins_to_merge;
-
-	$content = <<<EOS
-package org.pocketcampus.platform.server.launcher;
-import java.util.ArrayList;
-IMPORTS
-public class ServerLauncher {
-	public static class PocketCampusServer extends ServerBase {
-		protected ArrayList<Processor> getServiceProcessors() {
-			ArrayList<Processor> processors = new ArrayList<Processor>();
-PROCESSORS
-			return processors;
-		}
-	}
-	public static void main(String[] args) throws Exception {
-		ServerBase server = new PocketCampusServer();
-		server.start();
-	}
-}
-EOS;
-
-	$imports = "";
-	$processors = "";
-	foreach($plugins_to_merge as $plugin_cap) {
-		$plugin = strtolower($plugin_cap);
-		$imports .= "import org.pocketcampus.plugin.$plugin.server.{$plugin_cap}ServiceImpl;\n";
-		$imports .= "import org.pocketcampus.plugin.$plugin.shared.{$plugin_cap}Service;\n";
-		$processors .= "			processors.add(new Processor(new {$plugin_cap}Service.Processor<{$plugin_cap}ServiceImpl>(new {$plugin_cap}ServiceImpl()), \"$plugin\"));\n";
-	}
-	$content = str_replace("IMPORTS", "$imports", $content);
-	$content = str_replace("PROCESSORS", "$processors", $content);
-
-	file_put_contents("$output_dir/src/org/pocketcampus/platform/server/launcher/ServerLauncher.java", $content);
-
-}
-
 
 // LOGIC
 
@@ -308,8 +271,6 @@ generate_dot_project($output_dir, "$project_name");
 
 delete_dir("$output_dir/src");
 collect_src("$output_dir");
-
-//generate_server_launcher($output_dir);
 
 delete_dir("$output_dir/lib");
 export_libs("$output_dir");
