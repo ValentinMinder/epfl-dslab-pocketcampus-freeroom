@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.transport.server;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +9,12 @@ import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.platform.server.XElement;
 import org.pocketcampus.plugin.transport.shared.*;
 
-public final class LocationService {
-	// For reference, the SBB HAFAS API's schema is available at http://fahrplan.sbb.ch/xsd/hafasXMLInterface.xsd
-
+/**
+ * Implementation of StationService using the SBB's API (HAFAS).
+ * 
+ * @author Solal Pirelli <solal@pocketcampus.org>
+ */
+public final class StationServiceImpl implements StationService {
 	// API-related constants
 	private static final String API_URL = "http://fahrplan.sbb.ch/bin/query.exe/dn";
 	private static final Charset API_CHARSET = Charset.forName("ISO-8859-1");
@@ -37,42 +41,67 @@ public final class LocationService {
 	private final HttpClient client;
 	private final String token;
 
-	public LocationService(HttpClient client, String token) {
+	public StationServiceImpl(HttpClient client, String token) {
 		this.client = client;
 		this.token = token;
 	}
 
 	// TODO remove this
 	public static void main(String... args) throws Exception {
-		List<TransportStation> stations = new LocationService(new org.pocketcampus.platform.server.HttpClientImpl(),
-				"YJpyuPISerpXNNRTo50fNMP0yVu7L6IMuOaBgS0Xz89l3f6I3WhAjnto4kS9oz1").searchStations("Ecublens VD");
+		List<TransportStation> stations = new StationServiceImpl(new org.pocketcampus.platform.server.HttpClientImpl(),
+				"YJpyuPISerpXNNRTo50fNMP0yVu7L6IMuOaBgS0Xz89l3f6I3WhAjnto4kS9oz1")
+		.findStations("Bourdonette");
 
 		for (TransportStation station : stations) {
 			System.out.println(station.toString());
 		}
 	}
 
-	public TransportStation getStation(final String name) throws Exception {
-		return searchStations(name, 1).get(0);
+	/** Gets the station with the specified name, or null if no such station exists. */
+	public TransportStation getStation(final String name) throws IOException {
+		List<TransportStation> result = findStations(name, 1);
+
+		if (result.size() == 0) {
+			return null;
+		}
+
+		if (result.get(0).getName().equals(name)) {
+			return result.get(0);
+		}
+
+		return null;
 	}
 
-	public List<TransportStation> searchStations(final String query) throws Exception {
-		return searchStations(query, REQUEST_MAX_RESULTS);
+	/** Searches for stations by name using the specified query. */
+	public List<TransportStation> findStations(final String query) throws IOException {
+		return findStations(query, REQUEST_MAX_RESULTS);
 	}
 
-	private List<TransportStation> searchStations(final String query, final int count) throws Exception {
+	
+	/** Searches for stations by name using the specified query with the specified maximum number of results. */
+	private List<TransportStation> findStations(final String query, final int maxResultsCount) throws IOException {
+		XElement request = buildRequest(token, query, maxResultsCount);
+		String responseXml = client.post(API_URL, request.toBytes(API_CHARSET), API_CHARSET);
+		return parseResponse(responseXml);
+	}
+
+	/** Builds the request XML. */
+	private XElement buildRequest(final String token, final String query, final int maxResultsCount) {
 		XElement root = HafasUtil.createRequestRoot(token);
 
-		XElement container = root.addElement(REQUEST_CONTAINER)
+		XElement container = root.addChild(REQUEST_CONTAINER)
 				.setAttribute(REQUEST_CONTAINER_ID_ATTRIBUTE, REQUEST_ID)
-				.setAttribute(REQUEST_CONTAINER_MAX_RESULTS_ATTRIBUTE, Integer.toString(count));
+				.setAttribute(REQUEST_CONTAINER_MAX_RESULTS_ATTRIBUTE, Integer.toString(maxResultsCount));
 
-		container.addElement(REQUEST_ELEMENT)
+		container.addChild(REQUEST_ELEMENT)
 				.setAttribute(REQUEST_TYPE_ATTRIBUTE, REQUEST_TYPE)
 				.setAttribute(REQUEST_QUERY_ATTRIBUTE, query);
 
-		String requestXml = root.toString(API_CHARSET);
-		String responseXml = client.post(API_URL, requestXml, API_CHARSET);
+		return root;
+	}
+
+	/** Parses the response XML. */
+	private static List<TransportStation> parseResponse(final String responseXml) {
 		XElement responseElem = XElement.parse(responseXml);
 
 		List<TransportStation> result = new ArrayList<TransportStation>();
