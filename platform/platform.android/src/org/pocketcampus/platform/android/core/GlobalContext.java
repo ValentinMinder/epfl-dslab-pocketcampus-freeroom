@@ -24,6 +24,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Environment;
+import android.webkit.WebView;
 
 /**
  * Core PocketCampus class, handles the plugin discovery and initialization. 
@@ -40,6 +41,7 @@ public class GlobalContext extends Application {
 	private String pcSessId = null;
 	
 	public static final String GA_EVENT_CATEG = "UserAction";
+	public static String USER_AGENT = "PocketCampus";
 	
 	@Override
 	public void onCreate() {
@@ -55,6 +57,7 @@ public class GlobalContext extends Application {
 		//Starts the Tracker for the google analytics
 		GATracker.getInstance().start(getApplicationContext());
 		
+		USER_AGENT = new WebView(getApplicationContext()).getSettings().getUserAgentString();
 	}
 
 	private void loadPluginManifests() {
