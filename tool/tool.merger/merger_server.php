@@ -18,8 +18,10 @@ $plugins_to_merge = array("Authentication", "Camipro", "Moodle", "Food", "Transp
 $libs_to_export = array(
 		"backport-util-concurrent-3.1.jar", "bcprov-jdk15-146.jar",
 		"commons-codec-1.4.jar", "commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar", "commons-logging-1.1.1.jar",
-		"gson-1.7.1.jar", "gcm-server.jar",
-		"httpclient-4.1.2.jar", "httpclient-cache-4.1.2.jar", "httpcore-4.1.2.jar", "httpmime-4.1.2.jar",
+		"gson-1.7.1.jar", 
+                "gcm-server.jar",
+                "org.json-20120521.jar",
+		"httpclient-4.1.2.jar", "httpcore-4.1.2.jar",
 		"ical4j-1.0.4.jar",
 		"javapns_2.2.jar",
 		"jetty-ajp-8.0.0.M3.jar", "jetty-annotations-8.0.0.M3.jar", "jetty-client-8.0.0.M3.jar", "jetty-continuation-8.0.0.M3.jar", "jetty-deploy-8.0.0.M3.jar", "jetty-http-8.0.0.M3.jar", "jetty-io-8.0.0.M3.jar", "jetty-jmx-8.0.0.M3.jar", "jetty-jndi-8.0.0.M3.jar", "jetty-overlay-deployer-8.0.0.M3.jar", "jetty-plus-8.0.0.M3.jar", "jetty-policy-8.0.0.M3.jar", "jetty-rewrite-8.0.0.M3.jar", "jetty-security-8.0.0.M3.jar", "jetty-server-8.0.0.M3.jar", "jetty-servlet-8.0.0.M3.jar", "jetty-servlets-8.0.0.M3.jar", "jetty-util-8.0.0.M3.jar", "jetty-webapp-8.0.0.M3.jar", "jetty-websocket-8.0.0.M3.jar", "jetty-xml-8.0.0.M3.jar",
