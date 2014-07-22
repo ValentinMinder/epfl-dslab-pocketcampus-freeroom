@@ -100,7 +100,7 @@ public final class NewsSourceImpl implements NewsSource {
 
 			XElement rootElem;
 			try {
-				String rss = _client.getString(url, RSS_CHARSET);
+				String rss = _client.get(url, RSS_CHARSET);
 				rootElem = XElement.parse(rss);
 			} catch (Exception e) {
 				return null;

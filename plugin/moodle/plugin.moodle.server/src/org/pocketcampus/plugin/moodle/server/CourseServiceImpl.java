@@ -103,7 +103,7 @@ public final class CourseServiceImpl implements CourseService {
 
 		int userId = -1;
 		try {
-			final String usersResponseString = client.getString(SERVICE_URL + usersQueryParams, CHARSET);
+			final String usersResponseString = client.get(SERVICE_URL + usersQueryParams, CHARSET);
 			final JsonUsersResponse usersResponse = new Gson().fromJson(usersResponseString, JsonUsersResponse.class);
 
 			if (usersResponse.users.length == 0) {
@@ -124,7 +124,7 @@ public final class CourseServiceImpl implements CourseService {
 
 		JsonCourse[] courses = null;
 		try {
-			final String coursesResponseString = client.getString(SERVICE_URL + coursesQueryParams, CHARSET);
+			final String coursesResponseString = client.get(SERVICE_URL + coursesQueryParams, CHARSET);
 			courses = new Gson().fromJson(coursesResponseString, JsonCourse[].class);
 		} catch (Exception _) {
 			return new MoodleCoursesResponse2(MoodleStatusCode2.NETWORK_ERROR, new ArrayList<MoodleCourse2>());
@@ -157,7 +157,7 @@ public final class CourseServiceImpl implements CourseService {
 
 		JsonSection[] sections = null;
 		try {
-			final String responseString = client.getString(SERVICE_URL + queryParams, CHARSET);
+			final String responseString = client.get(SERVICE_URL + queryParams, CHARSET);
 			sections = new Gson().fromJson(responseString, JsonSection[].class);
 		} catch (Exception _) {
 			return new MoodleCourseSectionsResponse2(MoodleStatusCode2.NETWORK_ERROR, new ArrayList<MoodleCourseSection2>());

@@ -56,7 +56,7 @@ public final class BeerMenuImpl implements BeerMenu {
 	public BeersResponse get() throws Exception {
 		String xml;
 		try {
-			xml = _client.getString(BEER_LIST_URL, Charset.forName("UTF-8"));
+			xml = _client.get(BEER_LIST_URL, Charset.forName("UTF-8"));
 		} catch (Exception e) {
 			return new BeersResponse(SatelliteStatusCode.NETWORK_ERROR);
 		}
