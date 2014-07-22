@@ -118,6 +118,7 @@ public class DialogUtils {
         sdb.setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
 				handler.gotText(input.getText().toString());
+				dialogInterface.dismiss();
             }
         });
         sdb.setCanceledOnTouchOutside(true);
