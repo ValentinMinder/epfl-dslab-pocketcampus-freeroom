@@ -1,7 +1,8 @@
 package org.pocketcampus.platform.server;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.nio.charset.Charset;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,9 +16,10 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
- * Simple XML parsing API on top of the horror that is Java's XML API.
+ * Simple XML API on top of the horror that is Java's XML API.
  * 
  * @author Solal Pirelli <solal@pocketcampus.org>
  */
@@ -30,27 +32,43 @@ public final class XElement {
 
 	/** Creates an XElement from scratch, with the specified name for the root element. */
 	public static XElement create(final String rootElementName) {
+		ensureNotBlank(rootElementName, "rootElementName");
+
 		try {
-			final Document doc = DocumentBuilderFactory
-					.newInstance()
-					.newDocumentBuilder()
-					.newDocument();
+			final Document doc =
+					DocumentBuilderFactory
+							.newInstance()
+							.newDocumentBuilder()
+							.newDocument();
 			final Element root = doc.createElement(rootElementName);
 			doc.appendChild(root);
 			return new XElement(root);
 		} catch (ParserConfigurationException e) {
-			// never happening, since we don't change any config
-			throw new RuntimeException("A ParserConfigurationException was thrown while creating an empty document with no configuration.", e);
+			// should never happen
+			throw new RuntimeException("A ParserConfigurationException was thrown while creating an XML document builder with no configuration.", e);
 		}
 	}
 
-	/** Parses an XElement from XML. */
-	public static XElement parse(final String xml) throws Exception {
-		final Document doc = DocumentBuilderFactory
-				.newInstance()
-				.newDocumentBuilder()
-				.parse(new InputSource(new StringReader(xml)));
-		return new XElement(doc.getDocumentElement());
+	/** Parses an XElement from XML, or returns null if the document cannot be parsed as XML. */
+	public static XElement parse(final String xml) {
+		ensureNotBlank(xml, "xml");
+
+		try {
+			final Document doc =
+					DocumentBuilderFactory
+							.newInstance()
+							.newDocumentBuilder()
+							.parse(new InputSource(new StringReader(xml)));
+			return new XElement(doc.getDocumentElement());
+		} catch (ParserConfigurationException e) {
+			// should never happen
+			throw new RuntimeException("A ParserConfigurationException was thrown while creating an XML document builder with no configuration.", e);
+		} catch (IOException e) {
+			// also should never happen
+			throw new RuntimeException("An IOException was thrown while reading from a String.", e);
+		} catch (SAXException _) {
+			throw new IllegalArgumentException("Invalid XML.");
+		}
 	}
 
 	/** Gets the element's content. */
@@ -60,16 +78,15 @@ public final class XElement {
 
 	/** Gets the value of the attribute with the specified name. */
 	public String attribute(final String name) {
-		return element.getAttribute(name).trim();
-	}
+		ensureNotBlank(name, "name");
 
-	/** Gets the content of the child element with the specified name. */
-	public String childText(final String elementName) {
-		return element.getElementsByTagName(elementName).item(0).getTextContent().trim();
+		return element.getAttribute(name).trim();
 	}
 
 	/** Gets the child with the specified name. */
 	public XElement child(final String name) {
+		ensureNotBlank(name, "name");
+
 		NodeList children = element.getElementsByTagName(name);
 		if (children.getLength() == 0) {
 			return null;
@@ -79,6 +96,8 @@ public final class XElement {
 
 	/** Gets the children with the specified name. */
 	public XElement[] children(final String name) {
+		ensureNotBlank(name, "name");
+
 		final NodeList elements = element.getElementsByTagName(name);
 		final XElement[] xelems = new XElement[elements.getLength()];
 		for (int n = 0; n < xelems.length; n++) {
@@ -89,36 +108,40 @@ public final class XElement {
 
 	/** Adds the specified attribute with the specified value, or sets it if the attribute is already present. Returns this element. */
 	public XElement setAttribute(final String key, final String value) {
+		ensureNotBlank(key, "key");
+
 		element.setAttribute(key, value);
 		return this;
 	}
 
 	/** Adds a child element with the specified name and returns it. */
-	public XElement addElement(final String name) {
+	public XElement addChild(final String name) {
+		ensureNotBlank(name, "name");
+
 		final Element child = element.getOwnerDocument().createElement(name);
 		element.appendChild(child);
 		return new XElement(child);
 	}
 
-	/** Gets the XML as a string, with the specified encoding. */
-	public String toString(final Charset charset) {
+	/** Gets the XML as a byte array, with the specified encoding. */
+	public byte[] toBytes(final Charset charset) {
 		try {
-			TransformerFactory tf = TransformerFactory.newInstance();
-			Transformer transformer = tf.newTransformer();
+			Transformer transformer = TransformerFactory.newInstance().newTransformer();
 			transformer.setOutputProperty(OutputKeys.ENCODING, charset.name());
-			StringWriter writer = new StringWriter();
-			transformer.transform(new DOMSource(element), new StreamResult(writer));
-			return writer.getBuffer().toString();
+			ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+			transformer.transform(new DOMSource(element), new StreamResult(byteStream));
+			return byteStream.toByteArray();
 		} catch (TransformerException _) {
-			// Bad, but toString can't throw exceptions, and this shouldn't ever happen anyway.
+			// Bad, but this should never happen.
 			return null;
 		}
 	}
+	
 
-	/** @deprecated Use toString(Charset) instead. */
-	@Override
-	@Deprecated
-	public String toString() {
-		return toString(Charset.defaultCharset());
+	/** Validation method to ensure the specified parameter is neither null nor blank. */
+	private static void ensureNotBlank(final String parameter, final String parameterName) {
+		if (parameter == null || parameter.trim().length() == 0) {
+			throw new IllegalArgumentException(parameterName + " cannot be null or blank.");
+		}
 	}
 }

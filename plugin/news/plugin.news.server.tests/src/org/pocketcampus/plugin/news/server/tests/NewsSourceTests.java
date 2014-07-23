@@ -102,8 +102,8 @@ public class NewsSourceTests {
 		}
 		
 		@Override
-		public String post(String url, String body, Charset charset) throws IOException {
-			throw new RuntimeException("post(String, String, Charset) should not be called.");
+		public String post(String url, byte[] body, Charset charset) throws IOException {
+			throw new RuntimeException("post(String, byte[], Charset) should not be called.");
 		}
 
 		@SuppressWarnings("resource")

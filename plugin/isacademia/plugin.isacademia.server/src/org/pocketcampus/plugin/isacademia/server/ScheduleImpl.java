@@ -100,9 +100,9 @@ public final class ScheduleImpl implements Schedule {
 		for (XElement periodElem : rootElem.children(STUDY_PERIOD_TAG)) {
 			StudyPeriod period = new StudyPeriod();
 
-			LocalDate periodDate = LocalDate.parse(periodElem.childText(DATE_ELEMENT), DATE_FORMATTER);
-			LocalTime startTime = LocalTime.parse(periodElem.childText(START_TIME_ELEMENT), TIME_FORMATTER);
-			LocalTime endTime = LocalTime.parse(periodElem.childText(END_TIME_ELEMENT), TIME_FORMATTER);
+			LocalDate periodDate = LocalDate.parse(periodElem.child(DATE_ELEMENT).text(), DATE_FORMATTER);
+			LocalTime startTime = LocalTime.parse(periodElem.child(START_TIME_ELEMENT).text(), TIME_FORMATTER);
+			LocalTime endTime = LocalTime.parse(periodElem.child(END_TIME_ELEMENT).text(), TIME_FORMATTER);
 			period.setStartTime(periodDate.toDateTime(startTime, ISA_TIME_ZONE).getMillis());
 			period.setEndTime(periodDate.toDateTime(endTime, ISA_TIME_ZONE).getMillis());
 

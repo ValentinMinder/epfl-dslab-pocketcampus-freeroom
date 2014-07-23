@@ -10,5 +10,5 @@ import java.nio.charset.Charset;
  */
 public interface HttpClient {
     String get(String url, Charset charset) throws IOException;
-    String post(String url, String body, Charset charset) throws IOException;
+    String post(String url, byte[] body, Charset charset) throws IOException;
 }
