@@ -854,7 +854,8 @@ function connect_to_db($db_name){
 			$Connection = sql_connect("ASB00D11","sa","");
 			sql_select_db($db_name,$Connection) or die("ERROR: NO SUCH DATABASE");
 		}else{ // IF MYSQL
-			$config = parse_ini_file("/etc/pocketcampus-server.config");
+			$config = parse_ini_file("/var/www/vhosts/pocketcampus/private/pocketcampus-server.config");
+			$config or die("CANNOT FIND OR OPEN CONFIG FILE");
 			$db_url = parse_url(str_replace("jdbc:", "", stripslashes("{$config["DB_URL"]}")));
 			$Connection = sql_connect("{$db_url["host"]}:{$db_url["port"]}","{$config["DB_USERNAME"]}","{$config["DB_PASSWORD"]}");
 			$db_name = array_pop(explode("/", "{$db_url["path"]}"));
