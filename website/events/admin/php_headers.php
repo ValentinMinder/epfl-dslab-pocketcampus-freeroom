@@ -31,8 +31,10 @@ sql_query("set time_zone = 'Europe/Zurich';", $conn);
 session_start();
 
 
+$config = parse_ini_file("/var/www/vhosts/pocketcampus/private/pocketcampus-access.config");
+$config or die("CANNOT FIND OR OPEN CONFIG FILE");
 
-$ADMIN_KEY = "2d6e8f713289585afa8abb8542e3638a";
+$ADMIN_KEY = "{$config["EVENT_ADMIN_ACCESS"]}";
 
 
 if(!empty($_GET[$ADMIN_KEY])) {

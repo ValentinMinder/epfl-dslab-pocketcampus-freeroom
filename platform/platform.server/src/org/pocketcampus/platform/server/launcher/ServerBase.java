@@ -132,7 +132,7 @@ public abstract class ServerBase {
 
 			// Then override with config file in absolute path.
 			// All secret (e.g. tokens) params should get their value from there.
-			String configFile = "/etc/pocketcampus-server.config";
+			String configFile = "/var/www/vhosts/pocketcampus/private/pocketcampus-server.config";
 			if (new File(configFile).exists()) {
 				PocketCampusServer.CONFIG.load(new FileInputStream(configFile));
 			}
