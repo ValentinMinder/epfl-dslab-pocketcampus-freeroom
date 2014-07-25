@@ -9,7 +9,12 @@ import org.pocketcampus.plugin.transport.shared.TransportStation;
 
 // The SBB HAFAS API's schema is available at http://fahrplan.sbb.ch/xsd/hafasXMLInterface.xsd
 
-public final class HafasUtil {
+/**
+ * Internal utility class for HAFAS-related things.
+ * 
+ * @author Solal Pirelli <solal@pocketcampus.org>
+ */
+final class HafasUtil {
 	// Root element name
 	private static final String ROOT_NAME = "ReqC";
 
@@ -20,7 +25,7 @@ public final class HafasUtil {
 	private static final String ROOT_TOKEN_ATTRIBUTE = "accessId";
 
 	// Properties of the CFF's HAFAS API
-	private static final String HAFAS_VERSION = "3.2.3";
+	private static final String HAFAS_VERSION = "3.2.2"; // real version number is 3.2.3 but XSD says 3.2.2...
 	private static final String HAFAS_LANGUAGE = "EN";
 	private static final String HAFAS_NAME = "hafas";
 
