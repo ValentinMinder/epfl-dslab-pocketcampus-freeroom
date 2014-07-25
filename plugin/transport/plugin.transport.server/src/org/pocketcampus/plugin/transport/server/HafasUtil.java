@@ -2,7 +2,6 @@ package org.pocketcampus.plugin.transport.server;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.pocketcampus.platform.server.XElement;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
@@ -35,9 +34,8 @@ final class HafasUtil {
 	private static final String STATION_LONGITUDE_ATTRIBUTE = "x";
 	private static final String STATION_LATITUDE_ATTRIBUTE = "y";
 
-	// EPFL-centered special names for common stations, and an inverted version
+	// EPFL-centered special names for common stations
 	private static final Map<String, String> SPECIAL_NAMES = new HashMap<String, String>();
-	private static final Map<String, String> SPECIAL_NAMES_INVERTED = new HashMap<String, String>();
 
 	static {
 		// The entire M1 line goes into SPECIAL_NAMES for convenience
@@ -56,10 +54,6 @@ final class HafasUtil {
 		SPECIAL_NAMES.put("Chavannes-près-Renens, Crochy", "Crochy");
 		SPECIAL_NAMES.put("Ecublens VD, Epenex", "Epenex");
 		SPECIAL_NAMES.put("Renens VD, gare", "Renens gare");
-
-		for (final Entry<String, String> entry : SPECIAL_NAMES.entrySet()) {
-			SPECIAL_NAMES_INVERTED.put(entry.getValue(), entry.getKey());
-		}
 	}
 
 	/** Gets the root for requests to HAFAS. */
@@ -83,13 +77,5 @@ final class HafasUtil {
 		}
 
 		return new TransportStation(id, latitude, longitude, name);
-	}
-
-	/** Gets the full name of a station from name that may be a short name. */
-	public static String getFullStationName(final String shortName) {
-		if (SPECIAL_NAMES_INVERTED.containsKey(shortName)) {
-			return SPECIAL_NAMES_INVERTED.get(shortName);
-		}
-		return shortName;
 	}
 }
