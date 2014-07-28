@@ -2,43 +2,24 @@
 
 include_once "vars.php";
 
-function get_latest($team, $thing) {
-	$files = glob("bin/pocketcampus-server-$team-*-*.$thing");
-	sort($files);
-	return basename(array_pop($files));
-}
-
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-echo "<pre>";
-
-echo "Terminating old server\n";
-
-system("ps aux | grep pocketcampus-server-$team | grep -v grep | tr '\t' ' ' | tr -s ' ' | cut -f 2 -d ' ' | xargs kill -TERM");
-
-echo "Waiting for it to terminate gracefully\n";
-
-sleep(5);
-
-echo "Killing the old server just in case\n";
-
-system("ps aux | grep pocketcampus-server-$team | grep -v grep | tr '\t' ' ' | tr -s ' ' | cut -f 2 -d ' ' | xargs kill -KILL");
-
-echo "Starting the new server\n";
-
-$jarname = get_latest($team, "jar");
-$configname = get_latest($team, "config");
-$jarname or die("jar not found");
-$configname or die("config not found");
-$d = date("YmdHis");
-$u = uniqid('');
-system("cd bin ; java -jar $jarname $configname  > pocketcampus-server-$team-$d-$u.log  2>&1 & echo Server successfully started with pid $!");
-
-exit;
+	$u = uniqid('');
+	file_put_contents("private/commands", "php start_server.php $team ; echo $u \n", FILE_APPEND | LOCK_EX);
+	$watchdog = 0;
+	do {
+		sleep(1);
+		$watchdog++;
+		if($watchdog > 20) die("FATAL: timed out. is executor running?\n");
+	} while("" == exec("grep ^$u private/logs"));
+	echo "<pre>\n";
+	system("grep \"echo $u\" -A 100 private/logs | grep -B 100 ^$u | grep -v $u");
+	exit;
 
 }
+
+
+
 
 ?>
 <html>
@@ -48,9 +29,9 @@ exit;
 
 
 <form action="#" method="post">
-<p>(takes ~5 seconds)</p>
+<p>(this button submits a request to restart your server; the old instance will be killed)</p>
 <input type="hidden" name="file"><br>
-<input type="submit" value="kill!">
+<input type="submit" value="submit">
 </form>
 
 

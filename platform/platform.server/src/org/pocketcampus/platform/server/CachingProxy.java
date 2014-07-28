@@ -1,12 +1,12 @@
 package org.pocketcampus.platform.server;
 
-import java.lang.ref.*;
 import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
 
 import org.joda.time.*;
+import org.pocketcampus.platform.shared.utils.SoftMap;
 
 /**
  * Creates proxies that (softly) cache method results from interfaces for a specified amount of time.
@@ -57,55 +57,6 @@ public final class CachingProxy {
 
 	public static interface CacheValidator {
 		boolean isValid(DateTime lastGenerationDate);
-	}
-
-	/** A map with hard keys and soft values. It doesn't implement Map<K, V> because it's not needed. */
-	private static final class SoftMap<K, V> {
-		private final ReferenceQueue<V> _queue;
-		private final Map<K, Reference<V>> _map;
-		private final Map<Reference<? extends V>, K> _inverseMap;
-
-		private final Thread _cleanerThread;
-
-		public SoftMap() {
-			_queue = new ReferenceQueue<V>();
-			_map = new HashMap<K, Reference<V>>();
-			_inverseMap = new HashMap<Reference<? extends V>, K>();
-
-			_cleanerThread = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					while (true) {
-						try {
-							Reference<? extends V> valRef = _queue.remove();
-							K key = _inverseMap.get(valRef);
-
-							_map.remove(key);
-							_inverseMap.remove(valRef);
-						} catch (InterruptedException e) {
-							// should never happen
-						}
-					}
-				}
-			});
-			_cleanerThread.start();
-		}
-
-		public boolean containsKey(K key) {
-			return _map.containsKey(key);
-		}
-
-		public V get(K key) {
-			Reference<V> refVal = _map.get(key);
-			return refVal == null ? null : refVal.get();
-		}
-
-		public V put(K key, V value) {
-			Reference<V> valRef = new SoftReference<V>(value, _queue);
-			_map.put(key, valRef);
-			_inverseMap.put(valRef, key);
-			return null;
-		}
 	}
 
 	/** A simple value wrapper with a time stamp. */

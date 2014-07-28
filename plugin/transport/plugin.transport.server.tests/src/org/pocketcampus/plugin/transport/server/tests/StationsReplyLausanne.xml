@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ResC xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="No path to XML scheme defined" ver="3.2.1" prod="String" lang="EN">
+    <LocValRes flag="FINAL" id="_">
+        <Station name="Lausanne" externalId="008501120#95" externalStationNr="008501120" type="WGS84" x="6629095" y="46516776"/>
+        <Station name="Lausanne, gare" externalId="008592050#95" externalStationNr="008592050" type="WGS84" x="6629670" y="46517594"/>
+        <Station name="Lausanne, Ours" externalId="008579237#95" externalStationNr="008579237" type="WGS84" x="6640673" y="46521244"/>
+        <Station name="Lausanne, CHUV" externalId="008592017#95" externalStationNr="008592017" type="WGS84" x="6641491" y="46526404"/>
+        <Station name="Lausanne, Sallaz" externalId="008579238#95" externalStationNr="008579238" type="WGS84" x="6646192" y="46532813"/>
+    </LocValRes>
+</ResC>

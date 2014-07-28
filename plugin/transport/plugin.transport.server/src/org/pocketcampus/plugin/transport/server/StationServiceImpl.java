@@ -46,16 +46,6 @@ public final class StationServiceImpl implements StationService {
 		this.token = token;
 	}
 
-	// TODO remove this
-	public static void main(String... args) throws Exception {
-		List<TransportStation> stations = new StationServiceImpl(new org.pocketcampus.platform.server.HttpClientImpl(),
-				"YJpyuPISerpXNNRTo50fNMP0yVu7L6IMuOaBgS0Xz89l3f6I3WhAjnto4kS9oz1")
-		.findStations("Bourdonette");
-
-		for (TransportStation station : stations) {
-			System.out.println(station.toString());
-		}
-	}
 
 	/** Gets the station with the specified name, or null if no such station exists. */
 	public TransportStation getStation(final String name) throws IOException {
