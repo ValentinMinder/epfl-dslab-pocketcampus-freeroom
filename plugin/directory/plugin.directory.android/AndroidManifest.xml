@@ -22,7 +22,9 @@
             android:screenOrientation="nosensor"
              android:icon="@drawable/directory_icon"
             android:name="org.pocketcampus.plugin.directory.android.DirectoryMainView"
-            android:windowSoftInputMode="stateVisible" >
+            android:windowSoftInputMode="stateVisible"
+            android:launchMode="singleTask" 
+            >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -57,7 +59,9 @@
             android:label="@string/directory_plugin_name"
 			android:screenOrientation="nosensor"
 			 android:theme="@android:style/Theme.Dialog"
-            android:windowSoftInputMode="stateHidden" 			 >
+            android:windowSoftInputMode="stateHidden"
+            android:launchMode="singleTask" 			 
+            >
 			
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />

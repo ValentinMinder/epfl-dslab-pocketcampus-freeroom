@@ -164,9 +164,7 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 				case R.id.directory_person_details_picture:
 					return e.getPictureUrl();
 				case R.id.directory_person_details_name:
-					return DirectoryController.getFullName(e);
-				case R.id.directory_person_details_affiliation:
-					return new LazyAdapter.Actuated(TextUtils.join(", ",  e.getOrganisationalUnits()), new LazyAdapter.Actuator() {
+					return new LazyAdapter.Actuated(DirectoryController.getFullName(e), new LazyAdapter.Actuator() {
 						int count = 10;
 						public void triggered() {
 							count--;
@@ -174,8 +172,11 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + e.getSciper() + "&show=1")));
 						}
 					});
-				case R.id.directory_person_details_expanded_affiliation:
+				case R.id.directory_person_details_affiliation:
+					//return TextUtils.join(", ",  e.getOrganisationalUnits());
 					return getOrgUnitsString(e);
+				case R.id.directory_person_details_expanded_affiliation:
+					return null;
 				default:
 					return null;
 				}
@@ -320,8 +321,9 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 		if(!p.isSetRoles())
 			return null;
 		List<String> roles = new LinkedList<String>();
-		for(DirectoryPersonRole r : p.getRoles().values()) {
-			roles.add("<b>&bull; <i>" + r.getLocalizedTitle() + "</i></b> &mdash; " + r.getExtendedLocalizedUnit() + "");
+		for(String k : p.getRoles().keySet()) {
+			DirectoryPersonRole r = p.getRoles().get(k);
+			roles.add("<b>&bull; <i>" + r.getLocalizedTitle() + "</i></b> &mdash; <i>" + r.getExtendedLocalizedUnit() + " (<a href=\"pocketcampus://directory.plugin.pocketcampus.org/query?q=" + k + "\">" + k + "</a>)</i>");
 		}
 		return TextUtils.join("<br>",  roles);
 	}
