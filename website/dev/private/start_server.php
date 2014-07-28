@@ -19,8 +19,8 @@ function get_latest($team, $thing) {
 
 $jarname = get_latest($team, "jar");
 $configname = get_latest($team, "config");
-$jarname or die("jar not found");
-$configname or die("config not found");
+$jarname or die("jar not found\n");
+$configname or die("config not found\n");
 date_default_timezone_set("Europe/Zurich");
 $d = date("YmdHis");
 $u = uniqid('');
