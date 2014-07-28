@@ -49,7 +49,7 @@ public final class TripsServiceImpl implements TripsService {
 	private static final DateTimeFormatter REQUEST_TIME_FORMAT = DateTimeFormat.forPattern("hh:mm");
 
 	// Values for the request
-	private static final String REQUEST_FILTER_ALL = "1111111111"; // Undocumented. Each 'bit' enables/disables a mode of transport.
+	private static final String REQUEST_FILTER_ALL = "1111111111111111"; // Undocumented. Each 'bit' enables/disables a mode of transport.
 	private static final int REQUEST_PAST_RESULTS_COUNT = 0; // 0-6
 	private static final int REQUEST_FUTURE_RESULTS_COUNT = 6; // 0-6
 
@@ -110,22 +110,6 @@ public final class TripsServiceImpl implements TripsService {
 	private final HttpClient client;
 	private final String token;
 
-	// TODO remove this
-	public static void main(String... args) throws Exception {
-		StationServiceImpl locServ = new StationServiceImpl(new org.pocketcampus.platform.server.HttpClientImpl(),
-				"YJpyuPISerpXNNRTo50fNMP0yVu7L6IMuOaBgS0Xz89l3f6I3WhAjnto4kS9oz1");
-
-		TransportStation a = locServ.findStations("Lausanne, Malley").get(0);
-		TransportStation b = locServ.findStations("Lausanne-Flon").get(0);
-
-		List<TransportTrip> trips = new TripsServiceImpl(new org.pocketcampus.platform.server.HttpClientImpl(),
-				"YJpyuPISerpXNNRTo50fNMP0yVu7L6IMuOaBgS0Xz89l3f6I3WhAjnto4kS9oz1").getTrips(a, b, DateTime.now());
-
-		System.out.println(trips.size());
-		for (TransportTrip trip : trips) {
-			System.out.println(trip.toString());
-		}
-	}
 
 	public TripsServiceImpl(HttpClient client, String token) {
 		this.client = client;
