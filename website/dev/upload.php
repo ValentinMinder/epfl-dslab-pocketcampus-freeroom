@@ -19,12 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //    echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
 //    echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";
 
+date_default_timezone_set("Europe/Zurich");
 $d = date("YmdHis");
 $u = uniqid('');
 
       if(move_uploaded_file($_FILES["file"]["tmp_name"],   "bin/pocketcampus-server-$team-$d-$u.$thing"))
-      echo "Uploaded $thing";
-else echo "Error moving";
+      echo "Uploaded $thing\n";
+else echo "Error moving\n";
     }
 exit;
 }
