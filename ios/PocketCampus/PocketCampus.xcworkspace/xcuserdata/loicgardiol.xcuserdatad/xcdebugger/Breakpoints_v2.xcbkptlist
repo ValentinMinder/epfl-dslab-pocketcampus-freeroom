@@ -4925,11 +4925,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
-            timestampString = "427734061.60225"
+            timestampString = "428940850.166601"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "565"
-            endingLineNumber = "565"
+            startingLineNumber = "564"
+            endingLineNumber = "564"
             landmarkName = "-getSectionsForRequest:didReturn:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4941,11 +4941,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
-            timestampString = "427734061.60225"
+            timestampString = "428940850.166601"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "618"
-            endingLineNumber = "618"
+            startingLineNumber = "617"
+            endingLineNumber = "617"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5053,12 +5053,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
-            timestampString = "427734061.60225"
+            timestampString = "428940850.166601"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "371"
-            endingLineNumber = "371"
+            startingLineNumber = "370"
+            endingLineNumber = "370"
             landmarkName = "-fillSectionsForSelectedSegment"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
+            timestampString = "428939529.62528"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "253"
+            endingLineNumber = "253"
+            landmarkName = "-observeValueForKeyPath:ofObject:change:context:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -127,10 +127,6 @@ static const NSInteger kSegmentIndexFavorites = 2;
     self.segmentedControl.selectedSegmentIndex = kSegmentIndexAll;
     self.prevSelectedSegmentIndex = self.segmentedControl.selectedSegmentIndex;
     [self.segmentedControl addTarget:self action:@selector(segmentedControlValueChanged) forControlEvents:UIControlEventValueChanged];
-    self.segmentedControl.translatesAutoresizingMaskIntoConstraints = NO;
-    self.segmentedControlWidthConstraint = [NSLayoutConstraint widthConstraint:self.tableView.frame.size.width forView:self.segmentedControl];
-    self.segmentedControlHeightConstraint  = [NSLayoutConstraint heightConstraint:40.0 forView:self.segmentedControl];
-    [self.segmentedControl addConstraints:@[self.segmentedControlWidthConstraint, self.segmentedControlHeightConstraint]];
     [self showCurrentWeekSegmentConditionally];
     UIBarButtonItem* segmentedControlBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.segmentedControl];
     
@@ -258,12 +254,11 @@ static int i = 0;
         if (width > 350.0) {
             width = 350.0;
         }
-        self.segmentedControlWidthConstraint.constant = width;
         CGFloat height = self.segmentedControl.superview.frame.size.height-16.0;
         if (height < 20.0) {
             height = 20.0;
         }
-        self.segmentedControlHeightConstraint.constant = height;
+        self.segmentedControl.bounds = CGRectMake(0, 0, width, height);
     }
 }
 
