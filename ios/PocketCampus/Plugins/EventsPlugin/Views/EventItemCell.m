@@ -32,8 +32,6 @@
 
 #import "EventItem+Additions.h"
 
-#import "UIImage+Additions.h"
-
 #import "EventsService.h"
 
 static NSString* kTextLabelTextStyle;

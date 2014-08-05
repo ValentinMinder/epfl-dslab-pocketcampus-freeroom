@@ -1,285 +1,339 @@
 package org.pocketcampus.plugin.news.android;
 
-import java.util.List;
+import static org.pocketcampus.platform.android.utils.DialogUtils.showMultiChoiceDialogSbN;
+import static org.pocketcampus.platform.android.utils.SetUtils.difference;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.FeedWithImageListViewElement;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
+import org.pocketcampus.platform.android.utils.DialogUtils.MultiChoiceHandler;
+import org.pocketcampus.platform.android.utils.Preparated;
+import org.pocketcampus.platform.android.utils.Preparator;
+import org.pocketcampus.platform.android.utils.ScrollStateSaver;
 import org.pocketcampus.plugin.news.R;
-import org.pocketcampus.plugin.news.android.iface.INewsModel;
 import org.pocketcampus.plugin.news.android.iface.INewsView;
+import org.pocketcampus.plugin.news.shared.NewsFeed;
+import org.pocketcampus.plugin.news.shared.NewsFeedItem;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.markupartist.android.widget.ActionBar.Action;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 /**
- * The Main View of the News plugin, first displayed when accessing News.
+ * NewsMainView - Main view that shows list of News.
  * 
- * Displays News from newest to oldest
+ * This is the main view in the News Plugin.
  * 
- * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Amer <amer.chamseddine@epfl.ch>
  * 
  */
 public class NewsMainView extends PluginView implements INewsView {
 
-	/** The controller that does the interface between Model and View. */
 	private NewsController mController;
-	/** The corresponding model. */
-	private INewsModel mModel;
+	private NewsModel mModel;
+	
+//	public static final String EXTRAS_KEY_EVENTPOOLID = "eventPoolId";
+//	public static final String QUERYSTRING_KEY_EVENTPOOLID = "eventPoolId";
+//	public static final String QUERYSTRING_KEY_TICKET = "userTicket";
+//	public static final String QUERYSTRING_KEY_EXCHANGETOKEN = "exchangeToken";
+//	public static final String QUERYSTRING_KEY_TEMPLATEID = "templateId";
+//	public static final String QUERYSTRING_KEY_MARKFAVORITE = "markFavorite";
+	public static final String MAP_KEY_NEWSITEMID = "NEWS_ITEM_ID";
+	public static final String MAP_KEY_NEWSITEMTITLE = "NEWS_ITEM_TITLE";
+//	public static final String MAP_KEY_EVENTITEMTITLE = "EVENT_ITEM_TITLE";
+	public static final long MILLISECONDS_DAY = 1000 * 3600 * 24;
+	public static final long MILLISECONDS_WEEK = 7 * MILLISECONDS_DAY;
+	public static final long MILLISECONDS_MONTH = 30 * MILLISECONDS_DAY;
+	public static final long MILLISECONDS_YEAR = 365 * MILLISECONDS_DAY;
+	
+	private boolean displayingList;
+	
 
-	/** A simple full screen layout. */
-	private StandardTitledLayout mLayout;
-
-	/** The main list with news. */
-	private FeedWithImageListViewElement mListView;
-
-	/** Listener for when you click on a line in the list */
-	private OnItemClickListener mOnItemClickListener;
-
-	/** Code used to make a request to the preferences activity */
-	private static final int PREFERENCES_REQUEST_CODE = 1555;
-
-	/**
-	 * Defines what the main controller is for this view. This is optional, some
-	 * view may not need a controller (see for example the dashboard).
-	 * 
-	 * This is only a shortcut for what is done in
-	 * <code>getOtherController()</code> below: if you know you'll need a
-	 * controller before doing anything else in this view, you can define it as
-	 * you're main controller so you know it'll be ready as soon as
-	 * <code>onDisplay()</code> is called.
-	 */
-	@Override
+	private Map<String, String> feedsInRS = new HashMap<String, String>();
+	private Set<String> filteredFeeds = new HashSet<String>();
+//	private long eventPoolId;
+//	private boolean fetchPast = false;
+//	private List<Long> newsInRS = new LinkedList<Long>();
+//	private Set<Integer> categsInRS = new HashSet<Integer>();
+//	private Set<String> tagsInRS = new HashSet<String>();
+//	
+//	EventPool thisEventPool;
+//	Map<String, List<EventItem>> newsByTags;
+//	Set<Integer> filteredCategs = new HashSet<Integer>();
+//	Set<String> filteredTags = new HashSet<String>();
+//	
+	ListView mList;
+	ScrollStateSaver scrollState;
+	
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return NewsController.class;
 	}
 
-	/**
-	 * Called once the view is connected to the controller. If you don't
-	 * implement <code>getMainControllerClass()</code> then the controller given
-	 * here will simply be <code>null</code>.
-	 */
 	@Override
-	protected void onDisplay(Bundle savedInstanceState,
-			PluginController controller) {
-
+	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
+		
 		// Get and cast the controller and model
 		mController = (NewsController) controller;
 		mModel = (NewsModel) controller.getModel();
 
-		// The StandardLayout is a RelativeLayout with a TextView in its center.
-		mLayout = new StandardTitledLayout(this, null);
-
-		mLayout.setTitle(getString(R.string.news_plugin_title));
-
 		// The ActionBar is added automatically when you call setContentView
-		setContentView(mLayout);
-
-		// We need to force the display before asking the controller for the
-		// data,
-		// as the controller may take some time to get it.
-		displayData();
+		//disableActionBar();
+		setContentView(R.layout.news_main);
+		mList = (ListView) findViewById(R.id.news_main_list);
+		displayingList = true;
+		
 		setActionBarTitle(getString(R.string.news_plugin_title));
 	}
 	
+
+	/**
+	 * Handles the intent that was used to start this plugin.
+	 * 
+	 * We need to read the Extras.
+	 */
+	@Override
+	protected void handleIntent(Intent aIntent) {
+		mController.requestNewsFeeds(this, false);
+		
+	}
+
 	@Override
 	protected String screenName() {
 		return "/news";
 	}
-
-	/**
-	 * Initiates request to the server for news items.
-	 */
-	private void displayData() {
-		mLayout.setText(getResources().getString(R.string.news_loading));
-		mLayout.hideTitle();
-		mController.getNewsItems();
-	}
-
-	/**
-	 * Called when the list of news has been updated. Displays the list
-	 * according to the user's preferences.
-	 */
+	
 	@Override
-	public void newsUpdated() {
-		List<NewsItemWithImage> newsList = mModel.getNews(this);
-		mLayout.removeFillerView();
-		mLayout.hideTitle();
-		if (newsList != null) {
-			if (!newsList.isEmpty()) {
-				mLayout.setTitle(getString(R.string.news_plugin_title));
-				// Add them to the listView
-				mListView = new FeedWithImageListViewElement(this, newsList,
-						mNewsItemLabeler);
-
-				// Set onClickListener
-				setOnListViewClickListener();
-
-				// Set the layout
-				mLayout.addFillerView(mListView);
-
-				mLayout.setText("");
-			} else {
-				mLayout.setText(getString(R.string.news_no_feed_selected));
-			}
-		} else {
-			mLayout.setText(getString(R.string.news_no_news));
+	protected void onResume() {
+		super.onResume();
+		if(displayingList && scrollState != null)
+			scrollState.restore(mList);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if(displayingList && mList != null)
+			scrollState = new ScrollStateSaver(mList);
+	}
+	
+	
+	@Override
+	public void gotFeeds() {
+		feedsInRS = new HashMap<String, String>();
+		for(NewsFeed i : mModel.getNewsFeeds()) {
+			feedsInRS.put(i.getFeedId(), i.getName());
 		}
+		
+		updateDisplay();
+	}
+	
+	
+	private void updateFilter() {
+		filteredFeeds = difference(feedsInRS.keySet(), mModel.getDislikedFeeds());
+		
 	}
 
-	/**
-	 * Called when the feed Urls have been updated. Calls the preference
-	 * activity.
-	 */
+	private void updateActionBar() {
+		removeAllActionsFromActionBar();
+		final int restoFilterIcon = (difference(feedsInRS.keySet(), filteredFeeds).size() == 0 ? R.drawable.pocketcampus_filter : R.drawable.pocketcampus_filter_sel);
+		if(feedsInRS.size() > 0) {
+			addActionToActionBar(new Action() {
+				public void performAction(View view) {
+					trackEvent("Filter", null);
+					showMultiChoiceDialogSbN(NewsMainView.this, feedsInRS, getString(R.string.news_string_filter), filteredFeeds, new MultiChoiceHandler<String>() {
+						public void saveSelection(String t, boolean isChecked) {
+							if(isChecked)
+								mModel.removeDislikedFeed(t);
+							else
+								mModel.addDislikedFeed(t);
+							updateDisplay();
+						}
+					});
+				}
+				public int getDrawable() {
+					return restoFilterIcon;
+				}
+			});
+		}
+		
+		
+	}
+	
+
 	@Override
-	public void feedUrlsUpdated() {
-
-		Intent settings = new Intent(getApplicationContext(),
-				NewsPreferencesView.class);
-
-		startActivityForResult(settings, PREFERENCES_REQUEST_CODE);
+	public void gotContents() {
 	}
 
-	/**
-	 * Called when coming back from the preferences.
-	 * 
-	 * @param requestCode
-	 *            The integer request code originally supplied to
-	 *            startActivityForResult(), allowing you to identify who this
-	 *            result came from.
-	 * @param resultCode
-	 *            The integer result code returned by the child activity through
-	 *            its setResult().
-	 * @param data
-	 *            An Intent, which can return result data to the caller (various
-	 *            data can be attached to Intent "extras").
-	 */
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
+	
+	private void updateDisplay() {
+		
+		updateFilter();
+		updateActionBar();
 
-		switch (requestCode) {
-		case PREFERENCES_REQUEST_CODE:
-			if (resultCode == RESULT_OK) {
-				newsUpdated();
+		if(displayingList)
+			scrollState = new ScrollStateSaver(mList);
+		
+		Map<Long, List<NewsFeedItem>> items = new HashMap<Long, List<NewsFeedItem>>();
+		
+		final SparseArray<String> reverseMap = new SparseArray<String>();
+		
+		for(NewsFeed i : mModel.getNewsFeeds()) {
+			if(!filteredFeeds.contains(i.getFeedId()))
+				continue;
+			for(NewsFeedItem item : i.getItems()) {
+//				if(titles.contains(item.getTitle()))
+//					continue; // de-duplication // TODO this is not ideal
+//				titles.add(item.getTitle());
+				reverseMap.put(item.getItemId(), i.getFeedId());
+				long timeDiff = System.currentTimeMillis() - item.getDate();
+				if(timeDiff < MILLISECONDS_DAY) {
+					NewsController.addToMap(items, MILLISECONDS_DAY, item);
+				} else if(timeDiff < MILLISECONDS_WEEK) {
+					NewsController.addToMap(items, MILLISECONDS_WEEK, item);
+				} else if(timeDiff < MILLISECONDS_MONTH) {
+					NewsController.addToMap(items, MILLISECONDS_MONTH, item);
+				} else if(timeDiff < MILLISECONDS_YEAR) {
+					NewsController.addToMap(items, MILLISECONDS_YEAR, item);
+				}
 			}
 		}
-	}
+		
+		
 
-	/**
-	 * Main News Options menu contains access to the Feed preferences.
-	 */
+		
+		
+		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.sdk_separated_list_header2);
+//		List<NewsFeed> newsFeeds = mModel.getNewsFeeds();
+//		Collections.sort(newsFeeds, NewsController.getNewsFeedComp4sort());
+		List<Long> keys = new LinkedList<Long>(items.keySet());
+		Collections.sort(keys);
+		for(final long i : keys) {
+			
+			Collections.sort(items.get(i), NewsController.getNewsFeedItemComp4sort());
+			Preparated<NewsFeedItem> p = new Preparated<NewsFeedItem>(items.get(i), new Preparator<NewsFeedItem>() {
+				public int[] resources() {
+					return new int[] { R.id.news_feed_item_title, R.id.news_feed_thumbnail, R.id.news_item_feed_name, R.id.news_feed_item_date };
+				}
+				public Object content(int res, final NewsFeedItem e) {
+					switch (res) {
+					case R.id.news_feed_item_title:
+						return e.getTitle();
+					case R.id.news_feed_thumbnail:
+						return NewsController.getResizedPicUrl(e.getImageUrl(), 24);
+					case R.id.news_item_feed_name:
+						return feedsInRS.get(reverseMap.get(e.getItemId()));
+					case R.id.news_feed_item_date:
+						if(i == MILLISECONDS_DAY)
+							return null;
+						return new SimpleDateFormat("dd MMM", getResources().getConfiguration().locale).format(new Date(e.getDate()));
+					default:
+						return null;
+					}
+				}
+				public void finalize(Map<String, Object> map, NewsFeedItem item) {
+					map.put(MAP_KEY_NEWSITEMID, "" + item.getItemId());
+					map.put(MAP_KEY_NEWSITEMTITLE, item.getTitle());
+				}
+			});
+			adapter.addSection(getHeaderTitle(i), new LazyAdapter(this, p.getMap(), 
+					R.layout.news_list_row, p.getKeys(), p.getResources()));
+		}
+		
+//		if(newsFeeds.size() == 0) {
+//			displayingList = false;
+//			StandardLayout sl = new StandardLayout(this);
+//			sl.setText(getString(resId));
+//			setContentView(sl);
+//		} else {
+			if(!displayingList) {
+				setContentView(R.layout.news_main);
+				mList = (ListView) findViewById(R.id.news_main_list);
+				displayingList = true;
+			}
+			mList.setAdapter(adapter);
+			
+			mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
+			
+			mList.setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					Object o = arg0.getItemAtPosition(arg2);
+					if(o instanceof Map<?, ?>) {
+						String eId = ((Map<?, ?>) o).get(MAP_KEY_NEWSITEMID).toString();
+						String eTitle = ((Map<?, ?>) o).get(MAP_KEY_NEWSITEMTITLE).toString();
+						Intent i = new Intent(NewsMainView.this, NewsItemView.class);
+						i.putExtra(NewsItemView.EXTRAS_KEY_NEWSITEMID, eId);
+						NewsMainView.this.startActivity(i);
+						trackEvent("OpenNewsItem", eId + "-" + eTitle);
+					} else {
+						Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+			
+			if(scrollState != null)
+				scrollState.restore(mList);
+			
+//		}
+	}
+	
+	
+	private String getHeaderTitle(long x) {
+		if(x == MILLISECONDS_DAY)
+			return getString(R.string.news_header_last_day);
+		if(x == MILLISECONDS_WEEK)
+			return getString(R.string.news_header_last_week);
+		if(x == MILLISECONDS_MONTH)
+			return getString(R.string.news_header_last_month);
+		if(x == MILLISECONDS_YEAR)
+			return getString(R.string.news_header_last_year);
+		return null;
+	}
+	
+	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.news_menu, menu);
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.clear();
 		return true;
 	}
-
-	/**
-	 * Decides what happens when the options menu is opened and an option is
-	 * chosen (what view to display).
-	 */
+	
 	@Override
-	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		if (item.getItemId() == R.id.news_menu_settings) {
-			trackEvent("OpenSettings", null);
-			mController.getFeedUrls();
-		}
-		return true;
+	public void networkErrorCacheExists() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.sdk_connection_no_cache_yes), Toast.LENGTH_SHORT).show();
+		mController.requestNewsFeeds(this, true);
 	}
-
-	/**
-	 * Called when an error occurs while trying to contact the server.
-	 */
+	
 	@Override
 	public void networkErrorHappened() {
-		mLayout.removeFillerView();
-		mLayout.hideTitle();
-		mLayout.setText(getString(R.string.news_no_news));
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.sdk_connection_error_happened), Toast.LENGTH_SHORT).show();
 	}
-
-	/**
-	 * Sets the clickListener of the listView.
-	 */
-	private void setOnListViewClickListener() {
-
-		mOnItemClickListener = new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View v,
-					int position, long arg3) {
-				toDisplay = mModel.getNews(NewsMainView.this).get(position);
-
-				mController.getNewsContent(toDisplay.getNewsItem()
-						.getNewsItemId());
-
-				trackEvent("OpenNewsItem", toDisplay.getNewsItem().getLink());
-			}
-		};
-		mListView.setOnItemClickListener(mOnItemClickListener);
-	}
-
-	/**
-	 * The labeler for a feed, to tell how it has to be displayed in a generic
-	 * view.
-	 */
-	IFeedViewLabeler<NewsItemWithImage> mNewsItemLabeler = new IFeedViewLabeler<NewsItemWithImage>() {
-
-		/**
-		 * @param newsItem
-		 *            the NewsItem to be represented
-		 * @return The title of the NewsItem.
-		 */
-		@Override
-		public String getTitle(NewsItemWithImage newsItem) {
-			return newsItem.getNewsItem().getTitle();
-		}
-
-		/**
-		 * @param newsItem
-		 *            the NewsItem to be represented
-		 * @return The description of the NewsItem.
-		 */
-		@Override
-		public String getDescription(NewsItemWithImage newsItem) {
-			return "";
-		}
-
-		/**
-		 * @param newsItem
-		 *            the NewsItem to be represented
-		 * @return The layout with the image associated to the NewsItem.
-		 */
-		@Override
-		public LinearLayout getPictureLayout(NewsItemWithImage newsItem) {
-			return new LoaderNewsImageView(NewsMainView.this, newsItem);
-		}
-	};
-
-	private NewsItemWithImage toDisplay;
-
+	
 	@Override
-	public void newsContentLoaded(String content) {
-		if (toDisplay != null) {
-			Intent news = new Intent(getApplicationContext(),
-					NewsItemView.class);
-			news.putExtra("org.pocketcampus.news.newsitem.title", toDisplay
-					.getNewsItem().getTitle());
-			news.putExtra("org.pocketcampus.news.newsitem.feed", toDisplay
-					.getNewsItem().getFeed());
-			news.putExtra("org.pocketcampus.news.newsitem.bitmap",
-					toDisplay.getBitmapDrawable());
-
-			news.putExtra("org.pocketcampus.news.newsitem.description", content);
-
-			startActivity(news);
-		}
+	public void newsServersDown() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.sdk_upstream_server_down), Toast.LENGTH_SHORT).show();
 	}
+
 }

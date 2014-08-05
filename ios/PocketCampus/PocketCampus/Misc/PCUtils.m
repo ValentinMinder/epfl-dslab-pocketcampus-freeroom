@@ -25,17 +25,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 04.07.12.
-
 
 #import "PCUtils.h"
 
 #import "AFNetworking.h"
 
 #import <CoreLocation/CoreLocation.h>
+
+NSString* const kPCUtilsExtensionLink = @"PCUtilsExtensionLink";
+NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 
 @implementation PCUtils
 
@@ -174,7 +173,9 @@
             NSArray* pairComponents = [keyValuePair componentsSeparatedByString:@"="];
             NSString* key = pairComponents[0];
             NSString* value = pairComponents[1];
-            [queryStringDictionary setObject:value forKey:key];
+            value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // convert HTML entities
+            value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "]; //sometimes + are used for spaces in URLs
+            queryStringDictionary[key] = value;
         }
     }
     @catch (NSException *exception) {
@@ -217,6 +218,51 @@
             completion(totalSize, NO);
         });
     });
+}
+
++ (UIImage*)iconForFileExtension:(NSString*)extension {
+    if (extension == kPCUtilsExtensionFolder) {
+        return [UIImage imageNamed:@"FolderIcon"];
+    }
+    if (extension == kPCUtilsExtensionLink) {
+        return [UIImage imageNamed:@"LinkIcon"];
+    }
+    static NSCache* cachedIconForExtension;
+    static NSString* const kExtensionForGenericFile = @"qwertzuiop"; //this exentsion does not exist, thus a generic file icon will be generated
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        cachedIconForExtension = [NSCache new];
+    });
+    if (!extension) {
+        extension = kExtensionForGenericFile;
+    }
+    UIImage* cachedIcon = cachedIconForExtension[extension];
+    if (cachedIcon) {
+        return cachedIcon;
+    }
+    
+    // This is a trick, UIDocumentInteractionController does not actually need
+    // to have the file downloaded to have the icon, it just looks at the extension.
+    NSString* fakePath = [NSString stringWithFormat:@"sample.%@", extension];
+    UIDocumentInteractionController* controller = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:fakePath]];
+    UIImage* systemImage = [controller.icons lastObject]; //take biggest as source, see doc.
+    if (!systemImage) {
+        // should not happen, doc says controller.icons ALWAYS contain an image
+        return nil;
+    }
+    
+    CGFloat newWidth = ceilf(systemImage.size.width * 0.89);
+    CGFloat newHeight = ceilf(systemImage.size.height * 0.89);
+    UIImage* smallerSystemImage = [systemImage imageScaledToSize:CGSizeMake(newWidth, newHeight) applyDeviceScreenMultiplyingFactor:NO];
+    
+    UIGraphicsBeginImageContextWithOptions(systemImage.size, NO, systemImage.scale);
+    CGFloat x = (systemImage.size.width - newWidth) / 2.0;
+    CGFloat y = (systemImage.size.height - newHeight) / 2.0;
+    [smallerSystemImage drawAtPoint:CGPointMake(x, y)];
+    UIImage* finalImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    cachedIconForExtension[extension] = finalImage ?: systemImage;
+    return finalImage ?: systemImage;
 }
 
 + (BOOL)hasDeviceInternetConnection {

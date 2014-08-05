@@ -8,7 +8,13 @@
 	<string name="news_settings">Preferences</string>
 	<string name="news_no_news">Could not connect.</string>
 	<string name="news_loading">Loading news...</string>
-
+	
+	<string name="news_string_filter">Filter</string>
+	<string name="news_header_last_day">Last 24 hours</string>
+	<string name="news_header_last_week">Last 7 days</string>
+	<string name="news_header_last_month">Last 30 days</string>	
+	<string name="news_header_last_year">Last 12 months</string>
+				
 	<string name="news_no_feed_selected">No feed selected.</string>
 	<string name="news_readmore">
 		<u>Read more...</u>

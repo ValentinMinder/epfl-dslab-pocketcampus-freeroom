@@ -6,6 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.thrift.TException;
+import org.joda.time.DateTime;
+import org.pocketcampus.platform.server.HttpClientImpl;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.platform.shared.utils.SoftMap;
 import org.pocketcampus.plugin.transport.shared.*;
 
 import de.schildbach.pte.NetworkProvider.WalkSpeed;
@@ -13,15 +17,32 @@ import de.schildbach.pte.SbbProvider;
 import de.schildbach.pte.dto.LocationType;
 
 /**
- * This is the server side implementation of the transport plugin. It handles
- * all the service provided to the client
+ * Server part of the transport plugin.
  * 
+ * Old parts:
  * @author Florian <florian.laurent@gmail.com>
  * @author Pascal <pascal.scheiben@gmail.com>
+ * 
+ * New parts:
+ * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public class TransportServiceImpl implements TransportService.Iface {
+	// TODO: Remove this once we're sure the new parts work
+	private static final boolean USE_HAFAS = Boolean.parseBoolean(PocketCampusServer.CONFIG.getString("TRANSPORT_USE_HAFAS"));
+
+	private final StationService stationService;
+	private final TripsService tripsService;
+
+	private final SoftMap<String, TransportStation> stationsCache;
+
 	/** Public Transport information provider */
 	private SbbProvider mSbbProvider;
+
+	public TransportServiceImpl(StationService stationService, TripsService tripsService) {
+		this.stationService = stationService;
+		this.tripsService = tripsService;
+		this.stationsCache = new SoftMap<String, TransportStation>();
+	}
 
 	/**
 	 * Used by getTrips
@@ -34,10 +55,15 @@ public class TransportServiceImpl implements TransportService.Iface {
 	 * Constructor. Initializes the provider with the api key.
 	 */
 	public TransportServiceImpl() {
-		mSbbProvider = new SbbProvider(
-				"YJpyuPISerpXNNRTo50fNMP0yVu7L6IMuOaBgS0Xz89l3f6I3WhAjnto4kS9oz1");
+		this(new StationServiceImpl(new HttpClientImpl(), PocketCampusServer.CONFIG.getString("TRANSPORT_HAFAS_TOKEN")),
+				new TripsServiceImpl(new HttpClientImpl(), PocketCampusServer.CONFIG.getString("TRANSPORT_HAFAS_TOKEN")));
 
-		System.out.println("Transport started.");
+		if (!USE_HAFAS) {
+			mSbbProvider = new SbbProvider(
+					"YJpyuPISerpXNNRTo50fNMP0yVu7L6IMuOaBgS0Xz89l3f6I3WhAjnto4kS9oz1");
+
+			System.out.println("Transport started.");
+		}
 	}
 
 	/**
@@ -51,12 +77,21 @@ public class TransportServiceImpl implements TransportService.Iface {
 	@Override
 	public List<TransportStation> autocomplete(String constraint)
 			throws TException {
+		if (USE_HAFAS) {
+			try {
+				// Don't use the cache, this will be used with extremely many unrelated queries
+				return stationService.findStations(constraint);
+			} catch (IOException e) {
+				throw new TException("An IO error occurred.", e);
+			}
+		}
 
 		List<de.schildbach.pte.dto.Location> sbbCompletions = null;
 		try {
 			sbbCompletions = mSbbProvider.autocompleteStations(constraint);
 		} catch (IOException e) {
 			e.printStackTrace();
+			return new ArrayList<TransportStation>();
 		}
 
 		List<TransportStation> completions = new ArrayList<TransportStation>();
@@ -80,6 +115,14 @@ public class TransportServiceImpl implements TransportService.Iface {
 	@Override
 	public List<TransportStation> getLocationsFromNames(List<String> names)
 			throws TException {
+		if (USE_HAFAS) {
+			final List<TransportStation> stations = new ArrayList<TransportStation>();
+			for (final String name : names) {
+				stations.add(getStationFromName(name));
+			}
+			return stations;
+		}
+
 		ArrayList<TransportStation> locList = new ArrayList<TransportStation>();
 
 		for (String name : names) {
@@ -109,6 +152,21 @@ public class TransportServiceImpl implements TransportService.Iface {
 	 */
 	@Override
 	public QueryTripsResult getTrips(String from, String to) throws TException {
+		if (USE_HAFAS) {
+			final TransportStation departure = getStationFromName(from);
+			final TransportStation arrival = getStationFromName(to);
+			final DateTime now = DateTime.now(); // TODO: Do we need to show old trips?
+
+			List<TransportTrip> trips;
+			try {
+				trips = tripsService.getTrips(departure, arrival, now);
+			} catch (IOException e) {
+				throw new TException("An IO error occurred.", e);
+			}
+
+			return new QueryTripsResult(departure, arrival, trips);
+		}
+
 		// requesting in past so that user can also see trips are leaving now or just left
 		long now = (new Date()).getTime() - NUMBER_MS_IN_PAST_GET_TRIPS_REQUEST;
 		QueryTripsResult result = getTripsFromSchildbach(from, to, now, true);
@@ -180,5 +238,22 @@ public class TransportServiceImpl implements TransportService.Iface {
 		}
 
 		return tripResults;
+	}
+
+	private TransportStation getStationFromName(final String name) throws TException {
+		if (!stationsCache.containsKey(name)) {
+			try {
+				final TransportStation station = stationService.getStation(name);
+
+				if (station == null) {
+					throw new TException("Invalid station name.");
+				}
+
+				stationsCache.put(name, station);
+			} catch (IOException e) {
+				throw new TException("An IO error occurred.", e);
+			}
+		}
+		return stationsCache.get(name);
 	}
 }

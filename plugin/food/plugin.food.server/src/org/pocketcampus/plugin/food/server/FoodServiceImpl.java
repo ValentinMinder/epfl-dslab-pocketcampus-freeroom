@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.pocketcampus.platform.sdk.server.CachingProxy;
-import org.pocketcampus.platform.sdk.server.HttpClientImpl;
+import org.pocketcampus.platform.server.CachingProxy;
+import org.pocketcampus.platform.server.HttpClientImpl;
 import org.pocketcampus.plugin.food.shared.*;
 
 import org.apache.thrift.TException;

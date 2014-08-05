@@ -188,6 +188,7 @@ static BOOL loaded = NO;
         if (task.state == NSURLSessionTaskStateRunning) {
             [task cancel];
         }
+        [manager invalidateSessionCancelingTasks:NO]; //might retain cycle the manager with its session otherwise. See http://stackoverflow.com/a/24370373/1423774
     } repeats:NO];
 }
 

@@ -386,7 +386,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         //should not happen
         return;
     }
-    [[PCGAITracker sharedTracker] trackAction:@"RateMeal" inScreenWithName:@"/food/restaurant"];
+    [[PCGAITracker sharedTracker] trackAction:@"RateMeal" inScreenWithName:@"/food/restaurant" contentInfo:[NSString stringWithFormat:@"%lld-%@", self.meal.mId, self.meal.mName]];
     self.ratingStatus = RatingStatusLoading;
     NSString* identifier = [PCUtils uniqueDeviceIdentifier];
     VoteRequest* req = [[VoteRequest alloc] initWithMealId:self.meal.mId rating:ratingValue deviceId:identifier];
@@ -449,10 +449,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
 - (void)dealloc {
     [self.mealTypeImageView cancelImageRequestOperation];
     [self.foodService cancelOperationsForDelegate:self];
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

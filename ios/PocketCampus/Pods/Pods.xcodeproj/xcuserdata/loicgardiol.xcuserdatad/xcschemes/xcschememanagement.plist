@@ -24,6 +24,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-LGALibrary.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -35,6 +40,11 @@
 			<false/>
 		</dict>
 		<key>Pods-SSKeychain.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-TTTAttributedLabel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -57,52 +67,62 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>05FAEB7ACD2D412D84967808</key>
+		<key>342E63FCC0CC43EE9663499E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>49D8BFFE1D9D47799D4C6AAA</key>
+		<key>737942ED38BA46D4AF374AC3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>663A94DF84A84B3F9A191E91</key>
+		<key>791904CDE9BD4764952560D8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A7096446C88F4287AD9A9F42</key>
+		<key>964B5AADBE8F4464A3B7A2CF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AAE5716D48DD425CAF2CC344</key>
+		<key>B07F7ED46C0F4FD6AC6F06EB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B099EF73993F4C43B80436B2</key>
+		<key>B6529D4127CC49F2AA237962</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B3D5AE4A79F146669E534120</key>
+		<key>BF84CCF381D041DBBB373813</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B75ACE8C0887412EA3E79CBF</key>
+		<key>D5BC669950DA424A946EB137</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BFCC2EEAB81244E0A828D07D</key>
+		<key>E04102E4FAA342CD90332AFA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E00A3BF0645C4F8393095690</key>
+		<key>E5AB5416BB9B498295F3E7E6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EBD1602C9EF84D8D8AED9CD7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F7EE42F0862B428A8094F37C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

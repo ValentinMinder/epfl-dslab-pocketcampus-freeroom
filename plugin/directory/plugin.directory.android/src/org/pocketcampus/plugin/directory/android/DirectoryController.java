@@ -2,9 +2,10 @@ package org.pocketcampus.plugin.directory.android;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryController;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
 import org.pocketcampus.plugin.directory.android.req.*;
@@ -88,7 +89,9 @@ public class DirectoryController extends PluginController implements IDirectoryC
 			return false;
 		query = q;
 		request = new SearchDirectoryRequest(caller);
-		request.start(this, mClient, new DirectoryRequest(query));
+		DirectoryRequest req = new DirectoryRequest(query);
+		req.setLanguage(Locale.getDefault().getLanguage());
+		request.start(this, mClient, req);
 		return true;
 	}
 
@@ -100,7 +103,9 @@ public class DirectoryController extends PluginController implements IDirectoryC
 		if(requestU != null && !requestU.getStatus().equals(AsyncTask.Status.FINISHED))
 			return;
 		requestU = new SearchUniqueDirectoryRequest(caller);
-		requestU.start(this, mClientU, new DirectoryRequest(q));
+		DirectoryRequest req = new DirectoryRequest(q);
+		req.setLanguage(Locale.getDefault().getLanguage());
+		requestU.start(this, mClientU, req);
 	}
 
 	/**

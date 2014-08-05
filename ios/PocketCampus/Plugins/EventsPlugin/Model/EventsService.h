@@ -36,13 +36,13 @@
 #import "events.h"
 
 /*
- * Possible action parameter for PocketCampus URL scheme for eEvents
+ * Possible action parameter for PocketCampus URL scheme for Events
  */
 extern NSString* const kEventsURLActionShowEventPool;
 extern NSString* const kEventsURLActionShowEventItem;
 
 /*
- * Other parameters for PocketCampus URL scheme for eEvents
+ * Other parameters for PocketCampus URL scheme for Events
  */
 extern NSString* const kEventsURLParameterEventPoolId;
 extern NSString* const kEventsURLParameterEventItemId;

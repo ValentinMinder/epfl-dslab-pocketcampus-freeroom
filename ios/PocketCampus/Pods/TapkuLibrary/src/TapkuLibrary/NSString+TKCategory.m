@@ -35,13 +35,110 @@
 @implementation NSString (TKCategory)
 
 
+- (NSString*) creditCardType{
+	if(self.length < 4) return nil;
+
+	NSString *firstTwo = [self substringToIndex:2];
+	NSInteger value = firstTwo.integerValue;
+	
+	if(value == 34 || value == 37)
+		return NSLocalizedString(@"American Express", @"");
+	
+	else if(value == 36)
+		return NSLocalizedString(@"Diners Club", @"");
+	
+	else if(value == 38)
+		return NSLocalizedString(@"Carte Blanche", @"");
+	
+	else if(value > 50 && value < 56)
+		return NSLocalizedString(@"Master Card", @"");
+	
+
+	
+	
+		
+	NSString *firstFour = [self substringToIndex:4];
+	value = firstFour.integerValue;
+	
+	
+	if(value == 2014 || value == 2149)
+		return NSLocalizedString(@"EnRoute", @"");
+	
+	else if(value == 2131 || value == 1800)
+		return NSLocalizedString(@"JCB", @"");
+	
+	else if(value == 6011)
+		return NSLocalizedString(@"Discover", @"");
+		
+		
+
+	
+	NSString *firstThree = [self substringToIndex:3];
+	value = firstThree.integerValue;
+	
+	if(value >= 300 && value < 306) return NSLocalizedString(@"Diners Club", @"");
+	
+	NSString *firstOne = [self substringToIndex:1];
+	value = firstOne.integerValue;
+	
+	if(value == 3) return NSLocalizedString(@"JCB", @"");
+	
+	else if(value == 4) return NSLocalizedString(@"Visa", @"");
+	
+
+	return nil;
+}
+
+
+- (BOOL) isValidCreditCardNumber{
+	
+	NSCharacterSet *nonDecimalsSet = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+	
+	if([self rangeOfCharacterFromSet:nonDecimalsSet].location != NSNotFound)
+		return NO;
+	
+	
+	
+	
+	
+	NSInteger luhnChecksum = 0;
+	NSInteger subtractionNumber = 48;
+	
+	for (NSInteger i=0;i<self.length;i++){
+		
+		NSUInteger count = self.length-1;
+		NSInteger doubled = [@([self characterAtIndex:count-i]) integerValue] - subtractionNumber;
+		if (i % 2) doubled = doubled*2;
+		
+		NSString *doubleDigit = [NSString stringWithFormat:@"%@",@(doubled)];
+		
+		if (doubleDigit.length > 1){
+			luhnChecksum += [@([doubleDigit characterAtIndex:0]) integerValue]-subtractionNumber;
+			luhnChecksum += [@([doubleDigit characterAtIndex:1]) integerValue]-subtractionNumber;
+		}else{
+			luhnChecksum += doubled;
+		}
+	}
+	
+	
+	return luhnChecksum % 10 == 0;
+}
+
+
+
+- (NSString*) capitalizeSentence{
+	if(self.length < 1) return self;
+	
+	return [self stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[self substringToIndex:1].capitalizedString];
+}
+
 - (BOOL) isEmail{
 	
-    NSString *emailRegEx =  
-	@"(?:[a-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[a-z0-9!#$%\\&'*+/=?\\^_`{|}"  
-	@"~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\" 
-	@"x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-"  
-	@"z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5"  
+    NSString *emailRegEx =
+	@"(?:[a-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[a-z0-9!#$%\\&'*+/=?\\^_`{|}"
+	@"~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\"
+	@"x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-"
+	@"z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5"
 	@"]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-"  
 	@"9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21"  
 	@"-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"; 

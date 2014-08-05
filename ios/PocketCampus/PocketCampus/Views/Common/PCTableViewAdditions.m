@@ -32,11 +32,11 @@
 
 #import "AFNetworking.h"
 
-#import "UIImage+Additions.h"
-
 #import "AppDelegate.h"
 
 static id kEmptyImageValue;
+
+static NSString* const kCancelledOperationUserInfoBoolKey = @"CancelledOperationUserInfoBool";
 
 @interface PCTableViewAdditions ()
 
@@ -99,6 +99,7 @@ static id kEmptyImageValue;
 
 - (void)initDefaultValues {
     self.reloadsDataWhenContentSizeCategoryChanges = YES;
+    [self resetReuseIdentifiers];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferredContentSizeChanged:) name:UIContentSizeCategoryDidChangeNotification object:nil];
 }
 
@@ -114,12 +115,12 @@ static id kEmptyImageValue;
         self.cachedRawImageForUrlString = [NSCache new];
         self.failedThumbsIndexPaths = [NSMutableSet set];
         
-        __weak __typeof(self) weakSelf = self;
+        __weak __typeof(self) welf = self;
         self.reachabilityManager = [AFNetworkReachabilityManager managerForDomain:@"google.com"];
         [self.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-            [weakSelf adaptMaxNbConcurrentOperationsBasedOnConnection];
-            if (status > 0 && weakSelf.failedThumbsIndexPaths.count > 0) { //means internet reachable
-                [weakSelf reloadFailedThumbnailsCells];
+            [welf adaptMaxNbConcurrentOperationsBasedOnConnection];
+            if (status > 0 && welf.failedThumbsIndexPaths.count > 0) { //means internet reachable
+                [welf reloadFailedThumbnailsCells];
             }
         }];
         [self.reachabilityManager startMonitoring];
@@ -156,25 +157,25 @@ static id kEmptyImageValue;
 - (void)preferredContentSizeChanged:(NSNotification *)notification {
     [NSTimer scheduledTimerWithTimeInterval:0.1 block:^{
         //delayed, so that all UIContentSizeCategoryDidChangeNotification in other classes have been delivered
-        __weak __typeof(self) weakSelf = self;
+        __weak __typeof(self) welf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
             @try {
                 // 1)
-                if (weakSelf.contentSizeCategoryDidChangeBlock) {
-                    weakSelf.contentSizeCategoryDidChangeBlock(weakSelf);
+                if (welf.contentSizeCategoryDidChangeBlock) {
+                    welf.contentSizeCategoryDidChangeBlock(welf);
                 }
                 // 2)
-                if (weakSelf.rowHeightBlock) {
-                    weakSelf.rowHeight = self.rowHeightBlock(weakSelf);
+                if (welf.rowHeightBlock) {
+                    welf.rowHeight = welf.rowHeightBlock(welf);
                 }
                 // 3)
-                if (weakSelf.reprocessesImagesWhenContentSizeCategoryChanges) {
-                    [weakSelf reprocessAllCachedImages];
+                if (welf.reprocessesImagesWhenContentSizeCategoryChanges) {
+                    [welf reprocessAllCachedImages];
                 }
                 // 4)
-                if (weakSelf.reloadsDataWhenContentSizeCategoryChanges) {
-                    [weakSelf invalidateReuseIdentifiers];
-                    [weakSelf reloadData];
+                if (welf.reloadsDataWhenContentSizeCategoryChanges) {
+                    [welf resetReuseIdentifiers];
+                    [welf reloadData];
                 }
             }
             @catch (NSException *exception) {}
@@ -190,6 +191,7 @@ static id kEmptyImageValue;
 }
 
 - (void)deleteRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation {
+    [self cancelImageDownloadForIndexPaths:indexPaths];
     [self invalidateFailedThumbnailsIndexPaths];
     [super deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation];
 }
@@ -205,6 +207,7 @@ static id kEmptyImageValue;
 }
 
 - (void)deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation {
+    [self cancelImageDownloadForSections:sections];
     [self invalidateFailedThumbnailsIndexPaths];
     [super deleteSections:sections withRowAnimation:animation];
 }
@@ -215,16 +218,19 @@ static id kEmptyImageValue;
 }
 
 - (void)reloadData {
+    [self cancelAllImageDownloads];
     [self invalidateFailedThumbnailsIndexPaths];
     [super reloadData];
 }
 
 - (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation {
+    [self cancelImageDownloadForIndexPaths:indexPaths];
     [self invalidateFailedThumbnailsIndexPaths];
     [super reloadRowsAtIndexPaths:indexPaths withRowAnimation:animation];
 }
 
 - (void)reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation {
+    [self cancelImageDownloadForSections:sections];
     [self invalidateFailedThumbnailsIndexPaths];
     [super reloadSections:sections withRowAnimation:animation];
 }
@@ -245,7 +251,7 @@ static id kEmptyImageValue;
             [self.cachedRawImageForUrlString removeObjectForKey:url];
             [self.urlForIndexPath removeObjectForKey:indexPath];
         }
-        if ([self imageViewForCell:cell].image) {
+        if (self.temporaryImage && [self imageViewForCell:cell].image) {
             [self setImage:self.temporaryImage ofCell:cell];
         }
         return;
@@ -254,7 +260,9 @@ static id kEmptyImageValue;
     if (self.cachedImageForUrlString[url.absoluteString]) {
         if (self.cachedImageForUrlString[url.absoluteString] == kEmptyImageValue) {
             //means previous request returned empty image. No need to check for it again.
-            [self setImage:self.temporaryImage ofCell:cell];
+            if (self.temporaryImage) {
+                [self setImage:self.temporaryImage ofCell:cell];
+            }
         } else {
             self.urlForIndexPath[indexPath] = url;
             [self setImage:self.cachedImageForUrlString[url.absoluteString] ofCell:cell];
@@ -268,39 +276,83 @@ static id kEmptyImageValue;
     if ([prevOperation.request.URL.absoluteString isEqualToString:url.absoluteString]) {
         //no need to start new request, just wait that current finishes
         //just make sure operation has correct priority and reapply temporary image as cell might have been reused in between
-        [self setImage:self.temporaryImage ofCell:cell];
+        if (self.temporaryImage) {
+            [self setImage:self.temporaryImage ofCell:cell];
+        }
         [self manageOperationsPriority];
         return;
     } else if (prevOperation) {
-        //need to start a new request as no current or with different URL
-        [prevOperation setCompletionBlockWithSuccess:NULL failure:NULL];
+        //need to start a new request as no current or with different UR
+        prevOperation.userInfo = @{kCancelledOperationUserInfoBoolKey:@YES};
+        [prevOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            //nothing. Safer than NULL in case of race conditions
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            //nothing. Safer than NULL in case of race conditions
+        }];
         [prevOperation cancel];
         [self.operationForIndexPath removeObjectForKey:indexPath];
     }
-    
-    [self setImage:self.temporaryImage ofCell:cell]; //Temporary thumbnail until image is loaded
+    if (self.temporaryImage) {
+        [self setImage:self.temporaryImage ofCell:cell]; //Temporary thumbnail until image is loaded
+    }
     
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0]; //do not overload network with thumbnails that fail to loa
+    
     AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     self.operationForIndexPath[indexPath] = operation;
     operation.responseSerializer = [AFImageResponseSerializer serializer];
-    __weak __typeof(self) weakSelf = self;
+    __weak __typeof(self) welf = self;
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, UIImage* image) {
-        [weakSelf.operationForIndexPath removeObjectForKey:indexPath];
-        [weakSelf.failedThumbsIndexPaths removeObject:indexPath];
         if (image) {
-            [weakSelf processAndSetImage:image atIndexPath:indexPath url:url];
+            [welf processAndSetImage:image atIndexPath:indexPath url:url checkOperationUserInfoNotCancelled:operation completion:^{
+                [welf.operationForIndexPath removeObjectForKey:indexPath];
+                [welf.failedThumbsIndexPaths removeObject:indexPath];
+            }];
         } else {
-            weakSelf.cachedRawImageForUrlString[url.absoluteString] = kEmptyImageValue;
-            weakSelf.cachedImageForUrlString[url.absoluteString] = kEmptyImageValue;
-            [weakSelf setImage:self.temporaryImage atIndexIndex:indexPath];
+            welf.cachedRawImageForUrlString[url.absoluteString] = kEmptyImageValue;
+            welf.cachedImageForUrlString[url.absoluteString] = kEmptyImageValue;
+            if (welf.temporaryImage && ![operation.userInfo[kCancelledOperationUserInfoBoolKey] boolValue]) {
+                [welf setImage:welf.temporaryImage atIndexIndex:indexPath];
+            }
+            [welf.operationForIndexPath removeObjectForKey:indexPath];
+            [welf.failedThumbsIndexPaths removeObject:indexPath];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [weakSelf.operationForIndexPath removeObjectForKey:indexPath];
-        [weakSelf.failedThumbsIndexPaths addObject:indexPath];
+        [welf.operationForIndexPath removeObjectForKey:indexPath];
+        [welf.failedThumbsIndexPaths addObject:indexPath];
     }];
     [self manageOperationsPriority];
     [self.operationQueue addOperation:operation];
+}
+
+- (void)cancelImageDownloadForIndexPaths:(NSArray*)indexPaths {
+    for (NSIndexPath* indexPath in indexPaths) {
+        AFHTTPRequestOperation* operation = self.operationForIndexPath[indexPath];
+        if (operation) {
+            operation.userInfo = @{kCancelledOperationUserInfoBoolKey:@YES};
+            [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                //nothing. Safer that NULL in case of race conditions
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                //nothing. Safer that NULL in case of race conditions
+            }];
+            [operation cancel];
+            [self.operationForIndexPath removeObjectForKey:indexPath];
+        }
+    }
+}
+
+- (void)cancelImageDownloadForSections:(NSIndexSet*)sections {
+    NSMutableArray* indexPathsToCancel = [NSMutableArray array];
+    for (NSIndexPath* indexPath in self.operationForIndexPath) {
+        if ([sections containsIndex:indexPath.section]) {
+            [indexPathsToCancel addObject:indexPath];
+        }
+    }
+    [self cancelImageDownloadForIndexPaths:indexPathsToCancel];
+}
+
+- (void)cancelAllImageDownloads {
+    [self cancelImageDownloadForIndexPaths:self.operationForIndexPath.allKeys];
 }
 
 - (UIImage*)cachedImageAtIndexPath:(NSIndexPath*)indexPath {
@@ -371,39 +423,51 @@ static NSString* const kScrollViewStateContentSize = @"ContentSize";
 
 #pragma mark - Private methods
 
-- (void)invalidateReuseIdentifiers {
+- (void)resetReuseIdentifiers {
     self.reuseIdentifierPrefix = [NSString stringWithFormat:@"%ld", random()];
 }
 
-- (void)processAndSetImage:(UIImage*)image_ atIndexPath:(NSIndexPath*)indexPath_ url:(NSURL*)url_ {
+- (void)processAndSetImage:(UIImage*)image_ atIndexPath:(NSIndexPath*)indexPath_ url:(NSURL*)url_ checkOperationUserInfoNotCancelled:(AFHTTPRequestOperation*)operation completion:(void (^)())completion_ {
     [PCUtils throwExceptionIfObject:image_ notKindOfClass:[UIImage class]];
     [PCUtils throwExceptionIfObject:indexPath_ notKindOfClass:[NSIndexPath class]];
     [PCUtils throwExceptionIfObject:url_ notKindOfClass:[NSURL class]];
     UIImage* image __block = image_;
     NSIndexPath* indexPath __block = indexPath_;
     NSURL* url __block = url_;
-    PCTableViewAdditions* weakSelf __weak = self;
+    void (^completion)() __block = completion_;
+    __weak __typeof(self) welf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
+        if (!completion) {
+            completion = ^void(){};
+        }
+        if (!welf || [operation.userInfo[kCancelledOperationUserInfoBoolKey] boolValue]) {
+            completion();
+            return;
+        }
         if (image && (image.imageOrientation != UIImageOrientationUp)) {
             image = [UIImage imageWithCGImage:image.CGImage scale:1.0 orientation:UIImageOrientationUp]; //returning to be sure it's in portrait mode
         }
-        if (!weakSelf) {
+        if (!welf || [operation.userInfo[kCancelledOperationUserInfoBoolKey] boolValue]) {
+            completion();
             return;
         }
         UIImage* rawImage = image;
-        if (weakSelf.imageProcessingBlock) {
-            image = weakSelf.imageProcessingBlock(weakSelf, indexPath, rawImage);
+        if (welf.imageProcessingBlock) {
+            image = welf.imageProcessingBlock(welf, indexPath, rawImage);
         }
-        if (!weakSelf) {
+        if (!welf || [operation.userInfo[kCancelledOperationUserInfoBoolKey] boolValue]) {
+            completion();
             return;
         }
         dispatch_async(dispatch_get_main_queue(), ^(void){
-            if (!weakSelf) {
+            if (!welf || [operation.userInfo[kCancelledOperationUserInfoBoolKey] boolValue]) {
+                completion();
                 return;
             }
-            weakSelf.cachedImageForUrlString[url.absoluteString] = image;
-            weakSelf.cachedRawImageForUrlString[url.absoluteString] = rawImage;
-            [weakSelf setImage:image atIndexIndex:indexPath];
+            welf.cachedImageForUrlString[url.absoluteString] = image;
+            welf.cachedRawImageForUrlString[url.absoluteString] = rawImage;
+            [welf setImage:image atIndexIndex:indexPath];
+            completion();
         });
     });
 }
@@ -481,12 +545,9 @@ static NSString* const kScrollViewStateContentSize = @"ContentSize";
 
 - (void)dealloc
 {
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.reachabilityManager stopMonitoring];
-    
+    [self cancelAllImageDownloads];
     [self.operationQueue cancelAllOperations];
 }
 

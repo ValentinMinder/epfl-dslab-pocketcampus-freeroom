@@ -1,11 +1,12 @@
 package org.pocketcampus.plugin.authentication.android;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.utils.DialogUtils;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.utils.DialogUtils;
 import org.pocketcampus.plugin.authentication.R;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
 
@@ -337,6 +338,14 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	@Override
 	public void shouldFinish() {
 		finish();
+	}
+
+	@Override
+	public void gotUserAttributes(List<String> attr) {
+	}
+
+	@Override
+	public void deletedSessions(Integer c) {
 	}
 
 }

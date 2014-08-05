@@ -34,6 +34,18 @@
 
 #import "Person+Extras.h"
 
+/*
+ * Possible action parameter for PocketCampus URL scheme for Directory
+ */
+
+extern NSString* const kDirectoryURLActionSearch;
+extern NSString* const kDirectoryURLActionView;
+
+/*
+ * Other parameters for PocketCampus URL scheme for Directory
+ */
+extern NSString* const kDirectoryURLParameterQuery;
+
 @interface DirectoryService : Service <ServiceProtocol>
 
 /*

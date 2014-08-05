@@ -79,9 +79,11 @@ extern NSString* const kAuthenticationLogoutNotification;
 #pragma mark - Service methods
 
 /*
- - (AuthTokenResponse *) getAuthTequilaToken;
- - (AuthSessionResponse *) getAuthSession: (AuthSessionRequest *) req;
- - (AuthSessionResponse *) getAuthSessionId: (NSString *) tequilaToken; //deprecated
+ - (AuthTokenResponse *) getAuthTequilaToken;  // throws TException
+ - (AuthSessionResponse *) getAuthSession: (AuthSessionRequest *) req;  // throws TException
+ - (LogoutResponse *) destroyAllUserSessions: (LogoutRequest *) req;  // throws TException
+ - (UserAttributesResponse *) getUserAttributes: (UserAttributesRequest *) req;  // throws TException
+ - (AuthSessionResponse *) getAuthSessionId: (NSString *) tequilaToken;  // throws TException //DEPRECATED
  */
 
 - (void)getAuthTequilaTokenWithDelegate:(id<AuthenticationServiceDelegate>)delegate;

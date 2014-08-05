@@ -1,0 +1,29 @@
+120070001	Scale-Out NUMA
+120070002	Bulk Memory Access Prediction and Streaming
+120070003	Clearing the Clouds: A Study of Emerging Scale-out Workloads on Modern Hardware
+120070004	Scale-Out Processors
+120070005	Die-Stacked DRAM Caches for Servers
+120070006	Finding Program Bugs for Free
+120070007	Meet the Walkers: Accelerating Index Traversals for In-Memory Databases
+120070008	Shared History Instruction Fetch for Many-Core Server Processors
+120070009	Unifying Data Representation Transformations
+120070010	IX: A Dataplane Operating System for Event-driven, Web-scale Applications
+120070011	Model-view sensor data management in IoT environment
+120070012	Global Sensor Networks: an evolving middleware for sensor data stream processing
+120070013	OpenSense: Privacy-Aware Crowdsourcing of High-Resolution Air Quality Sensing
+120070014	Get Resource for Free: Just Cooperate the Case of Small Data Centers
+120070015	PrivySeal: PETs for Dummies
+120070016	Building Efﬁcient Query Engines in a High-Level Language
+120070017	Transactions Chasing Instruction Locality
+120070018	PREDIcT: Predicting the Runtime of Iterative Analytics
+120070019	Robust Query Processing with Smooth Operators
+120070020	ATraPos: Adaptive Transaction Processing on Hardware Islands
+120070021	Data Management Challenges in Brain Simulations
+120070022	Data-driven Neuroscience: Enabling Breakthroughs Via Innovative Data Management
+120070023	On-Server Thermosyphon Loop for Passive Datacenter Cooling
+120070024	Prototyping Symbolic Execution Engines for Interpreted Languages
+120070025	Achilles: Finding Trojan Message Vulnerabilities in Distributed Systems
+120070026	Closing the performance gap between Causal Consistency and Eventual Consistency
+120070027	Efficient query processing over raw data files
+120070028	Virtual Data Planes for Software-Defined Networks
+120070029	Convex time-data tradeoffs

@@ -42,16 +42,29 @@
     return [self firstnameLastnameWithFirstName:firstNameOnly];
 }
 
-- (NSString*)organizationsString {
-    NSString* ret __block = @"";
+- (NSString*)organizationalUnitsStrings {
+    NSString* string __block = @"";
     [self.organisationalUnits enumerateObjectsUsingBlock:^(NSString* unit, NSUInteger index, BOOL *stop) {
         if (index < self.organisationalUnits.count - 1) {
-            ret = [ret stringByAppendingFormat:@"%@ ", unit];
+            string = [string stringByAppendingFormat:@"%@ ", unit];
         } else {
-            ret = [ret stringByAppendingString:unit];
+            string = [string stringByAppendingString:unit];
         }
     }];
-    return ret;
+    return string;
+}
+
+- (NSString*)rolesString {
+    NSString* string __block = nil;
+    [self.roles enumerateKeysAndObjectsUsingBlock:^(NSString* unit, DirectoryPersonRole* role, BOOL *stop) {
+        if (string) {
+            string  = [string stringByAppendingString:@"\n"];
+        } else {
+            string = @"";
+        }
+        string = [string stringByAppendingFormat:@"%@ - %@", role.localizedTitle, role.extendedLocalizedUnit];
+    }];
+    return string;
 }
 
 - (NSString*)emailPrefix {
@@ -306,6 +319,13 @@
         return nil;
     }
     return abPerson;
+}
+
++ (NSURL*)directoryWebpageURLForUnit:(NSString*)unit {
+    [PCUtils throwExceptionIfObject:unit notKindOfClass:[NSString class]];
+    static NSString* const kUnitPageWithFormat = @"http://search.epfl.ch/search/ubrowse.action?acro=%@";
+    NSString* urlString = [NSString stringWithFormat:kUnitPageWithFormat, unit];
+    return [NSURL URLWithString:urlString];
 }
 
 #pragma mark - Private methods

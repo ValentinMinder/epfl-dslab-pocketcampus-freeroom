@@ -23,6 +23,7 @@ import java.util.Currency;
 /**
  * @author Andreas Schildbach
  */
+@SuppressWarnings("serial")
 public final class Fare implements Serializable
 {
 	public enum Type

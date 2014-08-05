@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.thrift.TException;
-import org.pocketcampus.platform.sdk.shared.utils.Utils;
 import org.pocketcampus.plugin.food.server.old.OldRssParser.RssFeed;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
@@ -20,24 +19,24 @@ import org.pocketcampus.plugin.food.shared.SubmitStatus;
  * Do not touch. I didn't refactor it properly since we'll drop it later.
  * 
  * Original authors:
+ * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public final class OldFoodService {
 	private static final String FEED_URL = "http://menus.epfl.ch/cgi-bin/rssMenus";
-	
+
 	/** The last time the Meals were parsed from the web page. */
 	private Date mLastImportedMeals;
-	
+
 	/** The list of all Restaurants */
 	private List<Restaurant> mRestaurantList;
 
 	/** The list of all Meals. */
 	private List<Meal> mAllMeals;
-	
+
 	// Character to filter because doesn't show right.
-	private final static int BAD_CHAR = 65533;
-	
+	private final static String BAD_CHAR = "" + (char) 65533;
 
 	/** Interface to the database. */
 	private OldFoodDB mDatabase;
@@ -45,17 +44,12 @@ public final class OldFoodService {
 	/** Ratings for all Meals, represents with their hashcode. */
 	private HashMap<Long, Rating> mMealRatings;
 
-
-
 	/** The list of DeviceIds that have already voted for a meal today. */
 	private ArrayList<String> mDeviceIds;
-
 
 	/** The interval in minutes at which the menu should be fetched. */
 	private int REFRESH_INTERVAL = 60;
 
-	
-	
 	public OldFoodService()
 	{
 		mDatabase = new OldFoodDB();
@@ -67,8 +61,7 @@ public final class OldFoodService {
 
 		importMenus();
 	}
-	
-	
+
 	/**
 	 * Sets the Rating for a particular Meal Missing deviceID and mealHashcode
 	 * because we don't get parameters from the Request... TODO : find another
@@ -176,8 +169,8 @@ public final class OldFoodService {
 
 		return null;
 	}
-	
-	public List<Meal> getMeals(){
+
+	public List<Meal> getMeals() {
 
 		if (!isToday(mLastImportedMeals)) {
 			System.out
@@ -200,7 +193,7 @@ public final class OldFoodService {
 
 		return mAllMeals;
 	}
-	
+
 	/**
 	 * Imports Menus from the RSS feed
 	 */
@@ -223,7 +216,7 @@ public final class OldFoodService {
 			mDatabase.insertMeals(mAllMeals);
 		}
 	}
-	
+
 	/**
 	 * Refresh menus because they have been imported too long ago
 	 */
@@ -245,7 +238,6 @@ public final class OldFoodService {
 			importMenus();
 		}
 	}
-
 
 	/**
 	 * Checks whether the last date the user had is today
@@ -336,7 +328,7 @@ public final class OldFoodService {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Parse the menus from the RSS feeds
 	 * 
@@ -345,7 +337,7 @@ public final class OldFoodService {
 	 */
 	private List<Meal> parseMenus() {
 		List<Meal> newlyParsedMeals = new ArrayList<Meal>();
-		
+
 		OldRssParser rp = new OldRssParser(FEED_URL);
 		rp.parse();
 		RssFeed feed = rp.getFeed();
@@ -378,9 +370,8 @@ public final class OldFoodService {
 
 				Meal newMeal = new Meal(id, name, description, newResto,
 						mealRating);
-				if (!Utils.containsSpecialAscii(newMeal.getMealDescription(),
-						BAD_CHAR)
-						&& !Utils.containsSpecialAscii(newMeal.getName(), BAD_CHAR)) {
+				if (!newMeal.getMealDescription().contains(BAD_CHAR)
+						&& !newMeal.getName().contains(BAD_CHAR)) {
 					if (!alreadyExist(newMeal)) {
 						mAllMeals.add(newMeal);
 						mMealRatings.put(newMeal.getMealId(), mealRating);

@@ -41,7 +41,7 @@
 
 @implementation PCUserDefaults
 
-+ (instancetype)defaultsForPluginName:(NSString*)pluginName isCache:(BOOL)cache {
++ (instancetype)userDefaultsForPluginName:(NSString*)pluginName isCache:(BOOL)cache {
     PCUserDefaults* instance = [self new];
     instance.pluginName = pluginName;
     instance.cache = cache;
@@ -92,24 +92,24 @@
 
 #pragma mark - Standard persistence
 
-+ (NSUserDefaults*)defaultsForPluginName:(NSString*)pluginName {
-    return [self _defaultsForPluginName:pluginName];
++ (NSUserDefaults*)userDefaultsForPluginName:(NSString*)pluginName {
+    return [self _userDefaultsForPluginName:pluginName];
 }
 
-+ (NSUserDefaults*)cacheForPluginName:(NSString *)pluginName {
-    return [self _cacheForPluginName:pluginName];
++ (NSUserDefaults*)cacheUserDefaultsForPluginName:(NSString *)pluginName {
+    return [self _cacheUserDefaultsForPluginName:pluginName];
 }
 
 #pragma mark Private
 
-+ (PCUserDefaults*)_defaultsForPluginName:(NSString*)pluginName {
++ (PCUserDefaults*)_userDefaultsForPluginName:(NSString*)pluginName {
     [self checkPluginName:pluginName];
-    return [PCUserDefaults defaultsForPluginName:pluginName isCache:NO];
+    return [PCUserDefaults userDefaultsForPluginName:pluginName isCache:NO];
 }
 
-+ (PCUserDefaults*)_cacheForPluginName:(NSString*)pluginName {
++ (PCUserDefaults*)_cacheUserDefaultsForPluginName:(NSString*)pluginName {
     [self checkPluginName:pluginName];
-    return [PCUserDefaults defaultsForPluginName:pluginName isCache:YES];
+    return [PCUserDefaults userDefaultsForPluginName:pluginName isCache:YES];
 }
 
 #pragma mark - Complex objects persistence
@@ -192,7 +192,7 @@
         [self checkPluginName:pluginName];
         
         // Cache defaults deletion
-        PCUserDefaults* cacheDefaults = [self _cacheForPluginName:pluginName];
+        PCUserDefaults* cacheDefaults = [self _cacheUserDefaultsForPluginName:pluginName];
         [cacheDefaults removeAllObjects];
         
         // Complex objects deletion
@@ -253,14 +253,15 @@
     if (![key isKindOfClass:[NSString class]] || ![pluginName isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad argument(s)" reason:@"bad key and/or pluginName argument" userInfo:nil];
     }
-    /*NSArray* paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-     NSString* path = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@.save", pluginName, key]];
-     path = [path stringByAppendingPathComponent:@"Archived Objects"];
-     return path;*/
     
-    NSString* dir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-	NSString* path = [dir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-    path = [path stringByAppendingPathComponent:[self standardizedNameForPluginName:pluginName]];
+    static NSString* appSupportBundlePath = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString* dir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+        appSupportBundlePath = [dir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    });
+    
+    NSString* path = [appSupportBundlePath stringByAppendingPathComponent:[self standardizedNameForPluginName:pluginName]];
     if (isCache) {
         path = [path stringByAppendingPathComponent:@"cache"];
     }

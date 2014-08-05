@@ -5,11 +5,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.adapter.IconTextArrayAdapter;
-import org.pocketcampus.android.platform.sdk.ui.dialog.StyledDialog;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleSeparatedLayout;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.adapter.IconTextArrayAdapter;
+import org.pocketcampus.platform.android.ui.dialog.StyledDialog;
+import org.pocketcampus.platform.android.ui.layout.StandardTitledDoubleSeparatedLayout;
 import org.pocketcampus.plugin.transport.R;
 
 import android.content.Context;

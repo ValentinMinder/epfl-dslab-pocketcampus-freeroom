@@ -1,30 +1,34 @@
 PODS:
-  - AFNetworking (2.2.3):
+  - AFNetworking (2.3.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
     - AFNetworking/UIKit
-  - AFNetworking/NSURLConnection (2.2.3):
+  - AFNetworking/NSURLConnection (2.3.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.2.3):
-    - AFNetworking/NSURLConnection
-  - AFNetworking/Reachability (2.2.3)
-  - AFNetworking/Security (2.2.3)
-  - AFNetworking/Serialization (2.2.3)
-  - AFNetworking/UIKit (2.2.3):
+  - AFNetworking/NSURLSession (2.3.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.3.1)
+  - AFNetworking/Security (2.3.1)
+  - AFNetworking/Serialization (2.3.1)
+  - AFNetworking/UIKit (2.3.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - CDZQRScanningViewController (1.0.7)
-  - GoogleAnalytics-iOS-SDK (3.0.6)
+  - GoogleAnalytics-iOS-SDK (3.0.8)
   - JTTargetActionBlock (1.0.0)
+  - LGALibrary (1.0.0)
   - MBProgressHUD (0.8)
   - NSTimer-Blocks (0.0.1)
   - SSKeychain (1.2.2)
-  - TapkuLibrary (0.3.4)
+  - TapkuLibrary (0.3.5)
+  - TTTAttributedLabel (1.10.1)
   - TUSafariActivity (1.0.0)
 
 DEPENDENCIES:
@@ -32,10 +36,12 @@ DEPENDENCIES:
   - CDZQRScanningViewController
   - GoogleAnalytics-iOS-SDK (~> 3.0)
   - JTTargetActionBlock
+  - LGALibrary
   - MBProgressHUD
   - NSTimer-Blocks
   - SSKeychain (~> 1.2)
   - TapkuLibrary (from `git@github.com:loicgardiol/tapkulibrary.git`)
+  - TTTAttributedLabel
   - TUSafariActivity
 
 EXTERNAL SOURCES:
@@ -43,14 +49,16 @@ EXTERNAL SOURCES:
     :git: git@github.com:loicgardiol/tapkulibrary.git
 
 SPEC CHECKSUMS:
-  AFNetworking: 47947303319594706f48a55185ea95a95159ab94
+  AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
   CDZQRScanningViewController: 69cb48a4d02c483a8ee43da15b8fd23fc4e853f3
-  GoogleAnalytics-iOS-SDK: 4577fb25381a71c5beac455b18ebb288fc4f44e9
+  GoogleAnalytics-iOS-SDK: a3206c68ee5f2a014ed67383d1f779072b653988
   JTTargetActionBlock: bef69054d368a91b33b98a520fa9e78e218a5a25
+  LGALibrary: 51cb54158dece48841cb75722045aacfe3412cf1
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
   NSTimer-Blocks: 0a653b84ab33068a085f5c03c82c18be1f61eba9
   SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9
-  TapkuLibrary: 4ed05848ca4926c39f1da29d41695c1c516dcb1d
+  TapkuLibrary: 187d3cd6b9b68064105954afe534f962611b6d48
+  TTTAttributedLabel: 94bb04f1e005616002dd2cee0262a0082e533627
   TUSafariActivity: afff9b1d2eacf7cbace752c5f2bf56db852714de
 
 COCOAPODS: 0.33.1

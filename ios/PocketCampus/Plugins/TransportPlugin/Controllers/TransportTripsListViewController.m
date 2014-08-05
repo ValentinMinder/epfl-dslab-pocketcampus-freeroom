@@ -113,6 +113,7 @@
     TransportTrip* trip = self.trips[indexPath.row-1];
     TransportTripPartsViewController* viewController = [[TransportTripPartsViewController alloc] initWithTransportTrip:trip];
     [self.navigationController pushViewController:viewController animated:YES];
+    [self trackAction:@"ViewTripDetails"];
 }
 
 #pragma mark - UITableViewDataSource

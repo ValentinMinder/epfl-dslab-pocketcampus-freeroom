@@ -1,0 +1,14 @@
+
+
+Find
+
+<div class="mail desktop_only" style="text-align: left; width: 550px; display: none !important; ...
+
+remove "display: none !important;"
+
+Find 
+
+<div class="mobile_only" style="text-align: left; display: inline !important; overflow: visible !important;
+
+replace "display: inline !important; overflow: visible !important; width: auto !important; max-height: inherit !important;"
+with "overflow:hidden; display:none; width:0px; max-height:0px;"

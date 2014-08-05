@@ -44,86 +44,80 @@ typedef enum {
 
 typedef void (^MoodleResourceEventBlock)(MoodleResourceEvent event);
 
-@interface MoodleResourceObserver : NSObject
-
-@property (nonatomic, unsafe_unretained) id observer;
-@property (nonatomic, strong) MoodleResource* resource;
-@property (nonatomic, copy) MoodleResourceEventBlock eventBlock;
-
-@end
-
 #pragma mark - MoodleServiceDelegate definition
 
 @protocol MoodleServiceDelegate <ServiceDelegate>
 
 @optional
 
-//dummy HAS to be there because of how delegate abstraction is built in ServiceRequest
-//simply ignore it
-- (void)getCoursesListForDummy:(NSString*)dummy didReturn:(CoursesListReply*)reply;
-- (void)getCoursesListFailedForDummy:(NSString*)dummy;
-- (void)getCourseSectionsForCourseId:(NSString*)courseId didReturn:(SectionsListReply*)reply;
-- (void)getCourseSectionsFailedForCourseId:(NSString*)courseId;
+- (void)getCoursesForRequest:(MoodleCoursesRequest2*)request didReturn:(MoodleCoursesResponse2*)response;
+- (void)getCoursesFailedForRequest:(MoodleCoursesRequest2*)request;
+- (void)getSectionsForRequest:(MoodleCourseSectionsRequest2*)request didReturn:(MoodleCourseSectionsResponse2*)response;
+- (void)getSectionsFailedForRequest:(MoodleCourseSectionsRequest2*)request;
 
-- (void)downloadOfMoodleResource:(MoodleResource*)moodleResource didFinish:(NSURL*)localFileURL;
-- (void)downloadFailedForMoodleResource:(MoodleResource*)moodleResource responseStatusCode:(int)statusCode;
+- (void)downloadOfMoodleFile:(MoodleFile2*)moodleFile didFinish:(NSURL*)localFileURL;
+- (void)downloadFailedForMoodleFile:(MoodleFile2*)moodleFile responseStatusCode:(int)statusCode;
 
 @end
 
 #pragma mark - MoodleService definition
 
-/*
- * Posted by self on NSNotificationCenter defaultCenter if a resource is added or removed
+/**
+ * Posted by self on NSNotificationCenter defaultCenter if an item is added or removed
  * from favorite resources
  */
-extern NSString* const kMoodleFavoritesMoodleResourcesUpdatedNotification;
+extern NSString* const kMoodleFavoritesMoodleItemsUpdatedNotification;
 
-/*
+/**
  * Key of NSNotifiation.userInfo
- * Value: MoodleResource that was added/removed from favorites
+ * Value: MoodleItem that was added/removed from favorites
  */
-extern NSString* const kMoodleFavoriteStatusMoodleResourceUpdatedUserInfoKey;
+extern NSString* const kMoodleFavoritesStatusMoodleItemUpdatedUserInfoKey;
 
 @interface MoodleService : Service<ServiceProtocol>
 
 #pragma mark - Resources favorites and file management
 
-- (void)addFavoriteMoodleResource:(MoodleResource*)moodleResource;
-- (void)removeFavoriteMoodleResource:(MoodleResource*)moodleResource;
-- (BOOL)isFavoriteMoodleResource:(MoodleResource*)moodleResource;
+/**
+ * moodleItem can be MoodleFile2 or MoodleUrl2
+ * throwns exception otherwise
+ */
+- (void)addFavoriteMoodleItem:(id)moodleItem;
+- (void)removeFavoriteMoodleItem:(id)moodleItem;
+- (BOOL)isFavoriteMoodleItem:(id)moodleItem;
 
-- (NSString*)localPathForMoodleResource:(MoodleResource*)moodleResource;
-- (NSString*)localPathForMoodleResource:(MoodleResource*)moodleResource createIntermediateDirectories:(BOOL)createIntermediateDirectories;
-- (BOOL)isMoodleResourceDownloaded:(MoodleResource*)moodleResource;
-- (BOOL)deleteDownloadedMoodleResource:(MoodleResource*)moodleResource;
-- (BOOL)deleteAllDownloadedMoodleResources;
+- (NSString*)localPathForMoodleFile:(MoodleFile2*)moodleFile;
+- (NSString*)localPathForMoodleFile:(MoodleFile2*)moodleFile createIntermediateDirectories:(BOOL)createIntermediateDirectories;
+- (BOOL)isMoodleFileDownloaded:(MoodleFile2*)moodleFile;
+- (BOOL)deleteDownloadedMoodleFile:(MoodleFile2*)moodleFile;
+- (BOOL)deleteAllDownloadedMoodleFiles;
 
-- (void)totalNbBytesAllDownloadedMoodleResourcesWithCompletion:(void (^)(unsigned long long totalNbBytes, BOOL error))completion;
+- (void)totalNbBytesAllDownloadedMoodleFilesWithCompletion:(void (^)(unsigned long long totalNbBytes, BOOL error))completion;
 
 #pragma mark - Service methods
 
 /*
- - (CoursesListReply *) getCoursesListAPI: (NSString *) dummy;  // throws TException
- - (SectionsListReply *) getCourseSectionsAPI: (NSString *) courseId;  // throws TException
+ - (MoodleCoursesResponse2 *) getCourses: (MoodleCoursesRequest2 *) request;  // throws TException
+ - (MoodleCourseSectionsResponse2 *) getSections: (MoodleCourseSectionsRequest2 *) request;  // throws TException
  */
 
-- (void)getCoursesListWithDelegate:(id<MoodleServiceDelegate>)delegate;
-- (void)getCoursesSectionsForCourseId:(NSString*)courseId delegate:(id<MoodleServiceDelegate>)delegate;
+- (void)getCoursesWithRequest:(MoodleCoursesRequest2*)request delegate:(id<MoodleServiceDelegate>)delegate;
+- (void)getSectionsWithRequest:(MoodleCourseSectionsRequest2*)request delegate:(id<MoodleServiceDelegate>)delegate;
 
-#pragma mark - Saved elements
+#pragma mark - Cached versions
 
-- (CoursesListReply*)getFromCacheCoursesList;
-- (SectionsListReply*)getFromCacheCoursesSectionsForCourseId:(NSString*)courseId;
+- (MoodleCoursesResponse2*)getFromCacheCoursesWithRequest:(MoodleCoursesRequest2*)request;
+- (MoodleCourseSectionsResponse2*)getFromCacheSectionsWithRequest:(MoodleCourseSectionsRequest2*)request;
 
 #pragma mark - MoodleResources files observation
 
-- (void)addMoodleResourceObserver:(id)observer forResource:(MoodleResource*)resource eventBlock:(MoodleResourceEventBlock)eventBlock;
-- (void)removeMoodleResourceObserver:(id)observer;
-- (void)removeMoodleResourceObserver:(id)observer forResource:(MoodleResource*)resource;
+- (void)addMoodleFileObserver:(id)observer forFile:(MoodleFile2*)file eventBlock:(MoodleResourceEventBlock)eventBlock;
+- (void)removeMoodleFileObserver:(id)observer;
+- (void)removeMoodleFileObserver:(id)observer forFile:(MoodleFile2*)file;
 
-#pragma mark - Fetch resources
+#pragma mark - File downloads
 
-- (void)downloadMoodleResource:(MoodleResource*)moodleResource progressView:(UIProgressView*)progressView delegate:(id)delegate;
-- (void)cancelDownloadOfMoodleResourceForDelegate:(id)delegate;
+- (void)downloadMoodleFile:(MoodleFile2*)file progressView:(UIProgressView*)progressView delegate:(id)delegate;
+- (void)cancelDownloadOfMoodleFilesForDelegate:(id)delegate;
 
 @end

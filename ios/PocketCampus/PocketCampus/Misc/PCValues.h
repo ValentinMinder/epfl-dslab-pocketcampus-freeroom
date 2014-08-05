@@ -43,6 +43,8 @@
 
 + (UIImage*)imageForFavoriteNavBarButtonLandscapePhone:(BOOL)landscapePhone glow:(BOOL)glow;
 
++ (UIImage*)resizableCellEmptyImage;
+
 + (UIColor*)pocketCampusRed;
 + (UIColor*)backgroundColor1;
 + (UIColor*)textColor1;

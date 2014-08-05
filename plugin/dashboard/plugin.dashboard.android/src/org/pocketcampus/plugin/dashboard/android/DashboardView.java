@@ -4,25 +4,25 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import org.pocketcampus.android.platform.sdk.core.GlobalContext;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginInfo;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.layout.DashboardLayout;
+import org.pocketcampus.platform.android.core.GlobalContext;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginInfo;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.layout.DashboardLayout;
 import org.pocketcampus.plugin.dashboard.R;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
+
+import com.markupartist.android.widget.ActionBar.Action;
 
 /**
  * 
@@ -51,6 +51,16 @@ public class DashboardView extends PluginView {
 		
 		mController.registerPushNotif();
 		mController.fetchDynamicConfig(this);
+		
+		addActionToActionBar(new Action() {
+			public void performAction(View view) {
+				trackEvent("OpenSettings", null);
+				startActivity(new Intent(DashboardView.this, DashboardSettingsView.class));
+			}
+			public int getDrawable() {
+				return R.drawable.dashboard_settings;
+			}
+		});
 	}
 	
 	public void displayPlugins() {
@@ -65,36 +75,6 @@ public class DashboardView extends PluginView {
 		mainLayout.addView(mDashboard.getView(), layoutParams);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.dashboard_menu, menu);
-		return true;
-	}
-	
-	/**
-	 * Modifies the default entry and exit animations with a fade-in and fade-out.
-	 * 
-	 * @param item
-	 * @return
-	 */
-	@Override
-	public boolean onOptionsItemSelected(android.view. MenuItem item) {
-		if (item.getItemId() == R.id.dashboard_about) {
-			trackEvent("OpenAbout", null);
-			startActivity(new Intent(this, AboutView.class));
-			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-		}
-		if (item.getItemId() == R.id.dashboard_logout) {
-			trackEvent("LogOut", null);
-			Intent intent = new Intent();
-			intent.setAction("org.pocketcampus.plugin.authentication.LOGOUT");
-			sendBroadcast(intent); 
-		}
-
-		return true;
-	}
-	
 	@Override
 	protected String screenName() {
 		return "/dashboard";

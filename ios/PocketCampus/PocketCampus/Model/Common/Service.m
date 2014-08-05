@@ -107,7 +107,7 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
             [operation cancel];
             nbOps++;
         } else if ([operation respondsToSelector:@selector(delegate)]) {
-            if ([(id)operation delegate] == delegate) {
+            if ([(NSOperationWithDelegate*)operation delegate] == delegate) {
                 if ([operation respondsToSelector:@selector(setDelegate:)]) {
                     [(id)operation setDelegate:nil];
                 }

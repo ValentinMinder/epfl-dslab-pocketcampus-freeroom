@@ -50,6 +50,11 @@
     return [UIImage imageNamed:imageName];
 }
 
++ (UIImage*)resizableCellEmptyImage {
+    UIImage* image = [UIImage imageNamed:@"CellEmptyPicture"];
+    return [image resizableImageWithCapInsets:UIEdgeInsetsMake(1, 1, 1, 1)];
+}
+
 + (UIColor*)pocketCampusRed {
     //return [UIColor redColor];
     return [UIColor colorWithRed:0.858824 green:0.062745 blue:0.062745 alpha:1.0]; //220, 16, 16

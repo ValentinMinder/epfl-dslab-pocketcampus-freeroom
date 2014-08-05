@@ -9,7 +9,6 @@ import java.util.HashMap;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -210,7 +209,6 @@ public class OldRssParser extends DefaultHandler {
 	 * @return
 	 */
 	private String removeExtraLineBreaks(String description) {
-		description = StringEscapeUtils.unescapeHtml4(description);
 		description = description.replaceAll("[\\xA0]+", " "); // replace non-breaking spaces (code 160) with normal spaces (code 32)
 		description = description.replaceAll("[\\t\\r\\v\\f]+", ""); // remove some weird characters
 		description = description.replaceAll("[\\n][ ]+", "\n"); // remove spaces at the beginning of a line

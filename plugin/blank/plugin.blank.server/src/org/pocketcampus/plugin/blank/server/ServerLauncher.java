@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.blank.server;
 
-import org.pocketcampus.platform.launcher.server.PocketCampusServer;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 
 public class ServerLauncher {
 	

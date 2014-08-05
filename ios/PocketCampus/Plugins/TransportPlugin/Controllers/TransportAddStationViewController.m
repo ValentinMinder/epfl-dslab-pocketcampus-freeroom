@@ -196,8 +196,8 @@
         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         return;
     }
-    [self trackAction:PCGAITrackerActionAdd];
     TransportStation* newStation = self.stations[indexPath.row];
+    [self trackAction:PCGAITrackerActionAdd contentInfo:newStation.name];
     NSMutableOrderedSet* userStations = [self.transportService.userTransportStations mutableCopy];
     [userStations addObject:newStation];
     self.transportService.userTransportStations = userStations;

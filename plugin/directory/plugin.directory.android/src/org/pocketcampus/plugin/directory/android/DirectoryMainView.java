@@ -4,13 +4,13 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
-import org.pocketcampus.android.platform.sdk.ui.adapter.MultiListAdapter;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
-import org.pocketcampus.android.platform.sdk.utils.Preparated;
-import org.pocketcampus.android.platform.sdk.utils.Preparator;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.ui.adapter.MultiListAdapter;
+import org.pocketcampus.platform.android.ui.layout.StandardLayout;
+import org.pocketcampus.platform.android.utils.Preparated;
+import org.pocketcampus.platform.android.utils.Preparator;
 import org.pocketcampus.plugin.directory.R;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
 import org.pocketcampus.plugin.directory.shared.Person;
@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -138,7 +139,11 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 				long interval = System.currentTimeMillis() - lastKeyPress;
 				refreshTimer = new Timer();
 				if(interval > REFRESH_DELAY) {
-					performSearchIfNeeded();
+					runOnUiThread(new Runnable() {
+						public void run() {
+							performSearchIfNeeded();
+						}
+					});
 					refreshTimer.schedule(getRefreshTask(), REFRESH_DELAY);
 				} else {
 					refreshTimer.schedule(getRefreshTask(), REFRESH_DELAY - interval);
@@ -224,7 +229,7 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 				case R.id.directory_person_name:
 					return e.getFirstName() + " " + e.getLastName();
 				case R.id.directory_person_details:
-					return e.getOrganisationalUnits().iterator().next();
+					return TextUtils.join(", ", e.getOrganisationalUnits());
 				case R.id.directory_person_picture:
 					return e.getPictureUrl();
 				default:

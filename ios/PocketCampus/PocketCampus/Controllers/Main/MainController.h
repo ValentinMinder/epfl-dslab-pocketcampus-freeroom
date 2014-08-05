@@ -87,6 +87,14 @@ typedef enum {
 
 - (BOOL)handlePocketCampusURL:(NSURL*)url;
 
+/**
+ * Calls +viewControllerForWebURL: on all plugin controllers and returns
+ * the first view controller returned, or nil.
+ * See PluginController protocol definition for more information.
+ * Returns nil in case of error.
+ */
+- (UIViewController*)viewControllerForWebURL:(NSURL*)url;
+
 
 /*
  * Returns wether plugin identifier (case insenstive) is valid

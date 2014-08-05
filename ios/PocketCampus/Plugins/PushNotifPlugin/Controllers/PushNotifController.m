@@ -137,7 +137,7 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 
 + (NSString*)notificationsDeviceToken {
     if (!notificationsDeviceTokenCache) {
-        notificationsDeviceTokenCache = (NSString*)[[NSUserDefaults standardUserDefaults] objectForKey:kNotificationsDeviceTokenKey];
+        notificationsDeviceTokenCache = (NSString*)[[PCPersistenceManager userDefaultsForPluginName:@"pushnotif"] objectForKey:kNotificationsDeviceTokenKey];
     }
     return notificationsDeviceTokenCache;
 }
@@ -147,7 +147,7 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
     @synchronized(self) {
         
         NSString* token = [PushNotifController notificationsDeviceToken];
-#warning TEST IF POPUP ALREADY PRESENTED
+#warning test if pop-up already presented
         if (!token && reason && !self.pushNotifsReasonAlert) {
             //first plugin to ask will be the one that will get his reason poped-up
             NSString* localizedIdentifier = [[MainController publicController] localizedPluginIdentifierForAnycaseIdentifier:pluginLowerIdentifier];
@@ -293,14 +293,14 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 
 - (void)saveNotificationsDeviceToken:(NSString*)token {
     [PCUtils throwExceptionIfObject:token notKindOfClass:[NSString class]];
-    [[NSUserDefaults standardUserDefaults] setObject:token forKey:kNotificationsDeviceTokenKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[PCPersistenceManager userDefaultsForPluginName:@"pushnotif"] setObject:token forKey:kNotificationsDeviceTokenKey];
+    [[PCPersistenceManager userDefaultsForPluginName:@"pushnotif"] synchronize];
     notificationsDeviceTokenCache = [token copy];
 }
 
 + (void)deleteNotificationsDeviceToken {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kNotificationsDeviceTokenKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[PCPersistenceManager userDefaultsForPluginName:@"pushnotif"] removeObjectForKey:kNotificationsDeviceTokenKey];
+    [[PCPersistenceManager userDefaultsForPluginName:@"pushnotif"] synchronize];
     notificationsDeviceTokenCache = nil;
 }
 
@@ -308,10 +308,7 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 
 - (void)dealloc
 {
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [pushNotifService cancelOperationsForDelegate:unregistrationDelegate];
     @synchronized(self) {
         instance = nil;

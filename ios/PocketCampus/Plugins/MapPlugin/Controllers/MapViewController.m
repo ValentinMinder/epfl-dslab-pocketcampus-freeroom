@@ -671,7 +671,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [self trackAction:@"Search"];
+    [self trackAction:@"Search" contentInfo:self.searchBar.text];
     [self startSearchForQuery:self.searchBar.text];
 }
 
@@ -896,7 +896,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     DirectoryPersonViewController* personViewController = [[DirectoryPersonViewController alloc] initAndLoadPersonWithFullName:annotationTitle];
     personViewController.allowShowOfficeOnMap = NO; //prevent loop
-    [self trackAction:@"PinViewMoreInfo"];
+    [self trackAction:@"PinViewMoreInfo" contentInfo:annotationTitle];
     if ([PCUtils isIdiomPad]) {
         if (!self.personPopOverController) {
             personViewController.title = NSLocalizedStringFromTable(@"Details", @"MapPlugin", nil);
@@ -1026,10 +1026,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 {
     [self.mapService cancelOperationsForDelegate:self];
     [[MainController publicController] removePluginStateObserver:self];
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.mapView.delegate = nil;
     [self.mapView removeOverlays:self.mapView.overlays]; // http://stackoverflow.com/a/22244049/1423774
     [self.epflLayersOverlayRenderer cancelScreenTileDownload];

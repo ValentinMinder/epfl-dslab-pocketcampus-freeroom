@@ -45,7 +45,9 @@
  */
 @property (nonatomic, readonly) NSString* firstnameLastname;
 
-@property (nonatomic, readonly) NSString* organizationsString;
+@property (nonatomic, readonly) NSString* organizationalUnitsStrings;
+
+@property (nonatomic, readonly) NSString* rolesString;
 
 /*
  * Returns what is before the @ (loic.gardiol@epfl.ch => loic.gardiol)
@@ -62,5 +64,11 @@
  * Returns an ABRecordRef person that is contains info of self + person, or nil in case of failure
  */
 - (ABRecordRef)newMergedWithABRecord:(ABRecordRef)person addressBook:(ABAddressBookRef)addressBook;
+
+/**
+ * @return url pointing to people.epfl.ch page of the unit
+ * @param unit short unit abbreviation (e.g. DSLAB)
+ */
++ (NSURL*)directoryWebpageURLForUnit:(NSString*)unit;
 
 @end

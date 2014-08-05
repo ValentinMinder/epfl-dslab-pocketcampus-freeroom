@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.edx.android.req;
 
-import org.pocketcampus.android.platform.sdk.io.Request;
+import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.edx.android.EdXController;
 import org.pocketcampus.plugin.edx.android.EdXModel;
 import org.pocketcampus.plugin.edx.android.iface.IEdXView;

@@ -13,7 +13,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import org.pocketcampus.platform.sdk.server.HttpClient;
+import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.plugin.satellite.shared.*;
 
 /**
@@ -56,7 +56,7 @@ public final class BeerMenuImpl implements BeerMenu {
 	public BeersResponse get() throws Exception {
 		String xml;
 		try {
-			xml = _client.getString(BEER_LIST_URL, Charset.forName("UTF-8"));
+			xml = _client.get(BEER_LIST_URL, Charset.forName("UTF-8"));
 		} catch (Exception e) {
 			return new BeersResponse(SatelliteStatusCode.NETWORK_ERROR);
 		}

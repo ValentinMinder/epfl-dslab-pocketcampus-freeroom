@@ -2,8 +2,8 @@ package org.pocketcampus.plugin.camipro.android;
 
 import java.util.Locale;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.camipro.shared.SessionId;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproController;
 import org.pocketcampus.plugin.camipro.android.req.BalanceAndTransactionsRequest;

@@ -94,8 +94,9 @@
     if (!self.userValidatedSelectionBlock) {
         return;
     }
-    [self trackAction:@"SelectResult"];
-    self.userValidatedSelectionBlock(@[self.mapItems[indexPath.row]]);
+    MapItem* item = self.mapItems[indexPath.row];
+    [self trackAction:@"SelectResult" contentInfo:item.title];
+    self.userValidatedSelectionBlock(@[item]);
 }
 
 #pragma mark - UITableViewDataSource

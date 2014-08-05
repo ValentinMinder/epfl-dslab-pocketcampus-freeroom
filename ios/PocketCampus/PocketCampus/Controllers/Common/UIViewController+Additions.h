@@ -51,4 +51,15 @@
  */
 - (void)trackAction:(NSString*)action contentInfo:(NSString*)contentInfo;
 
+/**
+ * @return YES if self is being popped of its navigation controller's stack
+ */
+@property (nonatomic, readonly) BOOL isDisappearingBecausePopped;
+
+/**
+ * @return YES if self is disappearing because a new view controller is
+ * being pushed on its navigation controller's stack
+ */
+@property (nonatomic, readonly) BOOL isDisappearingBecauseOtherPushed;
+
 @end

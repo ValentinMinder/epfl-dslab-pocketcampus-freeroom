@@ -18,8 +18,6 @@ import java.util.Collections;
 import java.util.BitSet;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DirectoryResponse implements org.apache.thrift.TBase<DirectoryResponse, DirectoryResponse._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("DirectoryResponse");
@@ -445,14 +443,14 @@ public class DirectoryResponse implements org.apache.thrift.TBase<DirectoryRespo
         case 2: // RESULTS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
-              this.results = new ArrayList<Person>(_list4.size);
-              for (int _i5 = 0; _i5 < _list4.size; ++_i5)
+              org.apache.thrift.protocol.TList _list14 = iprot.readListBegin();
+              this.results = new ArrayList<Person>(_list14.size);
+              for (int _i15 = 0; _i15 < _list14.size; ++_i15)
               {
-                Person _elem6; // required
-                _elem6 = new Person();
-                _elem6.read(iprot);
-                this.results.add(_elem6);
+                Person _elem16; // required
+                _elem16 = new Person();
+                _elem16.read(iprot);
+                this.results.add(_elem16);
               }
               iprot.readListEnd();
             }
@@ -493,9 +491,9 @@ public class DirectoryResponse implements org.apache.thrift.TBase<DirectoryRespo
         oprot.writeFieldBegin(RESULTS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.results.size()));
-          for (Person _iter7 : this.results)
+          for (Person _iter17 : this.results)
           {
-            _iter7.write(oprot);
+            _iter17.write(oprot);
           }
           oprot.writeListEnd();
         }

@@ -51,7 +51,7 @@ static MoodleController* instance __weak = nil;
 
 + (void)initialize {
     //initializing default settings
-    NSUserDefaults* defaults = [PCPersistenceManager defaultsForPluginName:@"moodle"];
+    NSUserDefaults* defaults = [PCPersistenceManager userDefaultsForPluginName:@"moodle"];
     if (![defaults objectForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey]) {
         [defaults setObject:@YES forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
     }
@@ -104,7 +104,7 @@ static MoodleController* instance __weak = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-            [[MoodleService sharedInstanceToRetain] deleteAllDownloadedMoodleResources]; //removing all downloaded Moodle files
+            [[MoodleService sharedInstanceToRetain] deleteAllDownloadedMoodleFiles]; //removing all downloaded Moodle files
             [PCPersistenceManager deleteCacheForPluginName:@"moodle"];
             [[MainController publicController] requestLeavePlugin:@"Moodle"];
         }];

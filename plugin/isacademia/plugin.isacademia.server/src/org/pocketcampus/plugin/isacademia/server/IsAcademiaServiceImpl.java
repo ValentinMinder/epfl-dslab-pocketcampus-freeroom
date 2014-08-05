@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.isacademia.server;
 
-import org.pocketcampus.platform.launcher.server.PocketCampusServer;
+import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
 import org.pocketcampus.plugin.isacademia.shared.*;
 
 import org.apache.thrift.TException;
@@ -25,7 +25,7 @@ public final class IsAcademiaServiceImpl implements IsAcademiaService.Iface {
 
 	@Override
 	public ScheduleResponse getSchedule(ScheduleRequest req) throws TException {
-		String sciper = PocketCampusServer.authGetUserSciper(req);
+		String sciper = AuthenticationServiceImpl.authGetUserSciper();
 
 		LocalDate date = req.isSetWeekStart() ? new LocalDate(req.getWeekStart()) : getCurrentWeekStart();
 		String lang = req.isSetLanguage() ? req.getLanguage() : "fr";

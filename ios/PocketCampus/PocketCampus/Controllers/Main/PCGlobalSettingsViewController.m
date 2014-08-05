@@ -65,9 +65,11 @@ static const int kAboutRow = 2;
 
 static const int kUsageRow = 0;
 
-@interface PCGlobalSettingsViewController () <UITextFieldDelegate, SKStoreProductViewControllerDelegate>
+@interface PCGlobalSettingsViewController () <UITextFieldDelegate, SKStoreProductViewControllerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, weak) MainController* mainController;
+
+@property (nonatomic, strong) UIActionSheet* restoreDefaultMainMenuActionSheet;
 
 @end
 
@@ -148,9 +150,8 @@ static const int kUsageRow = 0;
                 }
                 case kRestoreDefaultMainMenuRow:
                 {
-                    [self trackAction:@"RestoreDefaultDashboard"];
-                    [self.mainController restoreDefaultMainMenu];
-                    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+                    self.restoreDefaultMainMenuActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"RestoreDefaultMainMenuExplanation", @"PocketCampus", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"RestoreDefaultMainMenu", @"PocketCampus", nil), nil];
+                    [self.restoreDefaultMainMenuActionSheet showInView:self.tableView];
                     break;
                 }
                 default:
@@ -211,6 +212,22 @@ static const int kUsageRow = 0;
     }
 }
 
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == actionSheet.cancelButtonIndex) {
+        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+        return;
+    }
+    [self trackAction:@"RestoreDefaultDashboard"];
+    [self.mainController restoreDefaultMainMenu];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    self.restoreDefaultMainMenuActionSheet = nil;
+}
+
 #pragma mark - SKStoreProductViewControllerDelegate
 
 - (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
@@ -255,7 +272,7 @@ static const int kUsageRow = 0;
                     break;
                 case kRestoreDefaultMainMenuRow:
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-                    cell.textLabel.text = NSLocalizedStringFromTable(@"RestoreDefaultMainMenu", @"PocketCampus", nil);
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"RestoreDefaultMainMenu...", @"PocketCampus", nil);
                     break;
                 default:
                     break;
