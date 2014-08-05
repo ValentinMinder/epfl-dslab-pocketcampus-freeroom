@@ -100,7 +100,7 @@ public final class NewsSourceImpl implements NewsSource {
 
 			XElement rootElem;
 			try {
-				String rss = _client.getString(url, RSS_CHARSET);
+				String rss = _client.get(url, RSS_CHARSET);
 				rootElem = XElement.parse(rss);
 			} catch (Exception e) {
 				return null;
@@ -113,12 +113,12 @@ public final class NewsSourceImpl implements NewsSource {
 
 			Map<Integer, FeedItem> items = new LinkedHashMap<Integer, FeedItem>(); // LinkedHashMap keeps insertion order
 			for (XElement itemElement : channelElem.children(RSS_FEED_ITEM_ELEMENT)) {
-				String title = itemElement.elementText(RSS_FEED_ITEM_TITLE_ELEMENT);
+				String title = itemElement.child(RSS_FEED_ITEM_TITLE_ELEMENT).text();
 				int id = getFeedItemId(title, feedId);
-				String link = itemElement.elementText(RSS_FEED_ITEM_LINK_ELEMENT);
-				String dateString = itemElement.elementText(RSS_FEED_ITEM_DATE_ELEMENT);
+				String link = itemElement.child(RSS_FEED_ITEM_LINK_ELEMENT).text();
+				String dateString = itemElement.child(RSS_FEED_ITEM_DATE_ELEMENT).text();
 				DateTime date = DateTime.parse(dateString, RSS_DATE_FORMAT);
-				String content = itemElement.elementText(RSS_FEED_ITEM_CONTENT_ELEMENT);
+				String content = itemElement.child(RSS_FEED_ITEM_CONTENT_ELEMENT).text();
 				content = StringEscapeUtils.unescapeHtml4(content);
 
 				items.put(id, new FeedItem(id, title, link, date, getPictureUrl(content), content));

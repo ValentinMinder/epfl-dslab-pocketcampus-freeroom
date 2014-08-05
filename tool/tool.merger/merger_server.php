@@ -1,13 +1,13 @@
 <?php
 /**
   SERVER MERGER
-  
+
   This script merges the PocketCampus java server
   It transforms all the plugins into a single project
   that you can build using ANT or imoprt it in eclipse
-  
+
   You should specify $plugins_to_merge and $libs_to_export
-  
+
   @Author: Amer C (amer.chamseddine@epfl.ch)
 */
 
@@ -16,21 +16,22 @@ chdir(dirname(__FILE__));
 $plugins_to_merge = array("Authentication", "Camipro", "Moodle", "Food", "Transport", "News", "Satellite", "Map", "Bikes", "Directory", "PushNotif", "MyEdu", "Events", "QAforum", "IsAcademia", "EdX");
 
 $libs_to_export = array(
-		"commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar", 
-		"gson-1.7.1.jar", "gcm-server.jar", 
+		"backport-util-concurrent-3.1.jar", "bcprov-jdk15-146.jar",
+		"commons-codec-1.4.jar", "commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar", "commons-logging-1.1.1.jar",
+		"gson-1.7.1.jar", 
+                "gcm-server.jar",
+                "org.json-20120521.jar",
 		"httpclient-4.1.2.jar", "httpcore-4.1.2.jar",
-		"ical4j-1.0.4.jar", 
+		"ical4j-1.0.4.jar",
 		"javapns_2.2.jar",
 		"jetty-ajp-8.0.0.M3.jar", "jetty-annotations-8.0.0.M3.jar", "jetty-client-8.0.0.M3.jar", "jetty-continuation-8.0.0.M3.jar", "jetty-deploy-8.0.0.M3.jar", "jetty-http-8.0.0.M3.jar", "jetty-io-8.0.0.M3.jar", "jetty-jmx-8.0.0.M3.jar", "jetty-jndi-8.0.0.M3.jar", "jetty-overlay-deployer-8.0.0.M3.jar", "jetty-plus-8.0.0.M3.jar", "jetty-policy-8.0.0.M3.jar", "jetty-rewrite-8.0.0.M3.jar", "jetty-security-8.0.0.M3.jar", "jetty-server-8.0.0.M3.jar", "jetty-servlet-8.0.0.M3.jar", "jetty-servlets-8.0.0.M3.jar", "jetty-util-8.0.0.M3.jar", "jetty-webapp-8.0.0.M3.jar", "jetty-websocket-8.0.0.M3.jar", "jetty-xml-8.0.0.M3.jar",
-		"jsoup-1.7.2.jar", 
-		"joda-time-2.3.jar",
-                "libthrift-0.7.0.jar",
+		"joda-time-2.3.jar", "json_simple-1.1.jar", "jsoup-1.7.2.jar",
 		"kxml2-2.3.0.jar",
-                "tequila-client.jar",
-		"mail.jar", "mysql-connector-java-5.1.15-bin.jar", 
-		"servlet-api-3.0.jar",
-		"unboundid-ldapsdk-se.jar",
-                "slf4j-simple-1.6.2.jar", "slf4j-api-1.6.2.jar");
+		"libthrift-0.7.0.jar", "log4j-1.2.16.jar",
+		"mail.jar", "mysql-connector-java-5.1.15-bin.jar",
+		"servlet-api-3.0.jar", "slf4j-api-1.6.2.jar", "slf4j-simple-1.6.2.jar",
+		"tequila-client.jar",
+		"unboundid-ldapsdk-se.jar");
 
 $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
@@ -47,7 +48,7 @@ function create_elem_w_attrib($doc, $tag, $attrib) {
 function generate_build_xml($output_dir, $project_name){
 	global $libs_to_export;
 	global $path_to_lib_dir;
-	
+
 	$doc = new DOMDocument("1.0", "utf-8");
 	$doc->formatOutput = true;
 
@@ -55,8 +56,8 @@ function generate_build_xml($output_dir, $project_name){
 
 	$proj->appendChild(create_elem_w_attrib($doc, "property", array("environment" => "env")));
 	$proj->appendChild(create_elem_w_attrib($doc, "property", array("name" => "debuglevel", "value" => "source,lines,vars")));
-	$proj->appendChild(create_elem_w_attrib($doc, "property", array("name" => "target", "value" => "1.6")));
-	$proj->appendChild(create_elem_w_attrib($doc, "property", array("name" => "source", "value" => "1.6")));
+	$proj->appendChild(create_elem_w_attrib($doc, "property", array("name" => "target", "value" => "1.7")));
+	$proj->appendChild(create_elem_w_attrib($doc, "property", array("name" => "source", "value" => "1.7")));
 
 	$proj->appendChild($path = create_elem_w_attrib($doc, "path", array("id" => "$project_name.classpath")));
 	$path->appendChild(create_elem_w_attrib($doc, "pathelement", array("location" => "bin")));
@@ -104,13 +105,13 @@ function generate_build_xml($output_dir, $project_name){
 function generate_dot_classpath($output_dir){
 	global $libs_to_export;
 	global $path_to_lib_dir;
-	
+
 	$doc = new DOMDocument("1.0", "utf-8");
 	$doc->formatOutput = true;
 
 	$cp = $doc->createElement("classpath");
 	$doc->appendChild($cp);
-	
+
 	$cpe = $doc->createElement("classpathentry");
 	$cp->appendChild($cpe);
 	$cpe->setAttribute("kind", "src");
@@ -119,7 +120,7 @@ function generate_dot_classpath($output_dir){
 	$cpe = $doc->createElement("classpathentry");
 	$cp->appendChild($cpe);
 	$cpe->setAttribute("kind", "con");
-	$cpe->setAttribute("path", "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6");
+	$cpe->setAttribute("path", "org.eclipse.jdt.launching.JRE_CONTAINER");
 
 	foreach($libs_to_export as $lib) {
 		$cpe = $doc->createElement("classpathentry");
@@ -142,7 +143,7 @@ function generate_dot_project($output_dir, $project_name){
 
 	$projectDescription = $doc->createElement("projectDescription");
 	$doc->appendChild($projectDescription);
-	
+
 	$name = $doc->createElement("name");
 	$name->appendChild($doc->createTextNode($project_name));
 	$projectDescription->appendChild($name);
@@ -191,7 +192,7 @@ function copyr($source, $dest) {
 	if (is_link($source)) {
 		return symlink(readlink($source), $dest);
 	}
-	
+
 	// Simple copy for a file
 	if (is_file($source)) {
 		return copy($source, $dest);
@@ -256,43 +257,6 @@ function export_libs($output_dir) {
 
 }
 
-function generate_server_launcher($output_dir) {
-	global $plugins_to_merge;
-
-	$content = <<<EOS
-package org.pocketcampus.platform.server.launcher;
-import java.util.ArrayList;
-IMPORTS
-public class ServerLauncher {
-	public static class PocketCampusServer extends ServerBase {
-		protected ArrayList<Processor> getServiceProcessors() {
-			ArrayList<Processor> processors = new ArrayList<Processor>();
-PROCESSORS
-			return processors;
-		}
-	}
-	public static void main(String[] args) throws Exception {
-		ServerBase server = new PocketCampusServer();
-		server.start();
-	}
-}
-EOS;
-
-	$imports = "";
-	$processors = "";
-	foreach($plugins_to_merge as $plugin_cap) {
-		$plugin = strtolower($plugin_cap);
-		$imports .= "import org.pocketcampus.plugin.$plugin.server.{$plugin_cap}ServiceImpl;\n";
-		$imports .= "import org.pocketcampus.plugin.$plugin.shared.{$plugin_cap}Service;\n";
-		$processors .= "			processors.add(new Processor(new {$plugin_cap}Service.Processor<{$plugin_cap}ServiceImpl>(new {$plugin_cap}ServiceImpl()), \"$plugin\"));\n";
-	}
-	$content = str_replace("IMPORTS", "$imports", $content);
-	$content = str_replace("PROCESSORS", "$processors", $content);
-
-	file_put_contents("$output_dir/src/org/pocketcampus/platform/server/launcher/ServerLauncher.java", $content);
-
-}
-
 
 // LOGIC
 
@@ -308,8 +272,6 @@ generate_dot_project($output_dir, "$project_name");
 
 delete_dir("$output_dir/src");
 collect_src("$output_dir");
-
-//generate_server_launcher($output_dir);
 
 delete_dir("$output_dir/lib");
 export_libs("$output_dir");

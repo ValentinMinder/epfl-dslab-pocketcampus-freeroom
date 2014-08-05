@@ -58,7 +58,7 @@
 		        android:textColor="#040404"
 		        android:typeface="sans" 
 		        android:layout_marginRight="0dip"
-		        android:layout_marginTop="15dip"
+		        android:layout_marginTop="5dip"
 		        android:textSize="15sp"
 		        android:textStyle="italic"/>
 		    		

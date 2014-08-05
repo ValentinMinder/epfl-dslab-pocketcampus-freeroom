@@ -1,8 +1,11 @@
 package org.pocketcampus.platform.server;
 
+import java.io.IOException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.Charset;
-import java.util.Scanner;
+
+import org.pocketcampus.platform.shared.utils.StringUtils;
 
 /**
  * Implementation of HttpClient.
@@ -11,18 +14,16 @@ import java.util.Scanner;
  */
 public final class HttpClientImpl implements HttpClient {
 	@Override
-	public String getString(String url, Charset charset)
-			throws Exception {
-		Scanner scanner = null;
-		try {
-			scanner = new Scanner(new URL(url).openStream(), charset.name());
-			// HACK: "\\A" == "beginning of input"
-			scanner.useDelimiter("\\A"); 
-			return scanner.hasNext() ? scanner.next() : "";
-		} finally {
-			if (scanner != null) {
-				scanner.close();
-			}
-		}
+	public String get(String url, Charset charset)
+			throws IOException {
+		return StringUtils.fromStream(new URL(url).openStream(), charset.name());
+	}
+
+	@Override
+	public String post(String url, byte[] body, Charset charset) throws IOException {
+		URLConnection conn = new URL(url).openConnection();
+		conn.setDoOutput(true);
+		conn.getOutputStream().write(body);
+		return StringUtils.fromStream(conn.getInputStream(), charset.name());
 	}
 }

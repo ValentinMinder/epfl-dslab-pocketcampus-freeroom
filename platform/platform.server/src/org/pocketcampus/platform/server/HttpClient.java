@@ -1,5 +1,6 @@
 package org.pocketcampus.platform.server;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
 /**
@@ -8,5 +9,6 @@ import java.nio.charset.Charset;
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public interface HttpClient {
-    String getString(String url, Charset charset) throws Exception;
+    String get(String url, Charset charset) throws IOException;
+    String post(String url, byte[] body, Charset charset) throws IOException;
 }

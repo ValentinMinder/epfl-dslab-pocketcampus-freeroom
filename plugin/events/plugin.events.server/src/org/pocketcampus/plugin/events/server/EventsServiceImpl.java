@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.events.server;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -103,6 +104,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 				for (String key : feedsMap.keySet()) {
 					updateEventTag(key, feedsMap.get(key), conn, true);
 				}
+				syncWithMemento(conn);
 				System.out.println("Finished Async Import on " + dateLastImport);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -522,6 +524,9 @@ public class EventsServiceImpl implements EventsService.Iface {
 	}
 
 	private synchronized void importFromMemento(TBase<?, ?> req) {
+		boolean shouldImport = new Boolean(PocketCampusServer.CONFIG.getString("IMPORT_FROM_MEMENTO"));
+		if(!shouldImport)
+			return;
 		String date = new SimpleDateFormat("yyyyMMdd").format(new Date().getTime());
 		if (dateLastImport == null) {
 			dateLastImport = date;
@@ -745,8 +750,9 @@ public class EventsServiceImpl implements EventsService.Iface {
 	}
 
 	private static void updateEventItem(EventItem ei, Connection conn) throws SQLException {
-		PreparedStatement stm = conn
-				.prepareStatement("REPLACE INTO eventitems (eventId,startDate,endDate,fullDay,eventThumbnail,eventTitle,eventPlace,eventSpeaker,eventDetails,parentPool,eventUri,vcalUid,eventCateg,broadcastInFeeds,locationHref,detailsLink) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+		if(ei.isSetStartDate() && (!ei.isSetEndDate() || ei.getEndDate() < ei.getStartDate()))
+			ei.setEndDate(ei.getStartDate());
+		PreparedStatement stm = conn.prepareStatement("REPLACE INTO eventitems (eventId,startDate,endDate,fullDay,eventThumbnail,eventTitle,eventPlace,eventSpeaker,eventDetails,parentPool,eventUri,vcalUid,eventCateg,broadcastInFeeds,locationHref,detailsLink) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
 		stm.setLong(1, ei.getEventId());
 		stm.setTimestamp(2, (ei.isSetStartDate() ? new Timestamp(ei.getStartDate()) : null));
 		stm.setTimestamp(3, (ei.isSetEndDate() ? new Timestamp(ei.getEndDate()) : null));
@@ -769,6 +775,44 @@ public class EventsServiceImpl implements EventsService.Iface {
 		stm.executeUpdate();
 		stm.close();
 		System.out.println("inserted/updated event " + ei.getEventId());
+	}
+	
+	private static List<Long> getIdsOfMementoEventsFromDb(Connection conn) throws SQLException {
+		List<Long> ids = new LinkedList<Long>();
+		PreparedStatement stm = conn.prepareStatement("SELECT eventId FROM eventitems WHERE vcalUid IS NOT NULL AND deleted IS NULL;");
+		ResultSet rs = stm.executeQuery();
+		while (rs.next()) {
+			ids.add(rs.getLong(1));
+		}
+		rs.close();
+		stm.close();
+		return ids;
+	}
+	
+	private static void markMementoEventDeleted(long id, Connection conn) throws SQLException {
+		PreparedStatement stm = conn.prepareStatement("UPDATE eventitems SET deleted = 1 WHERE eventId = ?;");
+		stm.setLong(1, id);
+		stm.executeUpdate();
+		stm.close();
+	}
+	
+	private static void syncWithMemento(Connection conn) throws SQLException {
+		List<Long> ids = getIdsOfMementoEventsFromDb(conn);
+		System.out.println(ids.size() + " undeleted memento events in the db");
+		int deleted = 0;
+		for(long i : ids) {
+			try {
+				new URL("http://memento.epfl.ch/event/export/" + i).openConnection().getInputStream();
+			} catch (Exception e) {
+				if(e instanceof FileNotFoundException) {
+					markMementoEventDeleted(i, conn);
+					deleted++;
+				} else {
+					e.printStackTrace();
+				}
+			}
+		}
+		System.out.println(deleted + " memento events were marked as deleted");
 	}
 
 	private static void updateEventTag(String key, String value, Connection conn, boolean isMemento) throws SQLException {
@@ -926,18 +970,18 @@ public class EventsServiceImpl implements EventsService.Iface {
 
 		public static MyQuery getSelectPublicEventItemsQuery() {
 			return new MyQuery().
-					addPart("SELECT " + EVENTITEMS_SELECT_FIELDS
-							+ ",userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN FROM eventitems LEFT JOIN eventusers ON eventId=mappedEvent WHERE (isProtected IS NULL)");
+					addPart("SELECT " + EVENTITEMS_SELECT_FIELDS + ",userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN").
+					addPart(" FROM eventitems LEFT JOIN eventusers ON eventId=mappedEvent").
+					addPart(" WHERE (deleted IS NULL)").
+					addPart(" AND (isProtected IS NULL)");
 		}
 
 		public static MyQuery getSelectAccessibleEventItemsQuery(List<String> token) {
-			return new MyQuery()
-					.
-					addPart("SELECT "
-							+ EVENTITEMS_SELECT_FIELDS
-							+ ",permLevel AS PERM_LEVEL,userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN FROM eventitems INNER JOIN eventperms ON eventItemId=eventId LEFT JOIN eventusers ON eventId=mappedEvent")
-					.
-					addPartWithList(" WHERE (userToken IN ?)", token, " WHERE (1=0)");
+			return new MyQuery().
+					addPart("SELECT " + EVENTITEMS_SELECT_FIELDS + ",permLevel AS PERM_LEVEL,userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN").
+					addPart(" FROM eventitems INNER JOIN eventperms ON eventItemId=eventId LEFT JOIN eventusers ON eventId=mappedEvent").
+					addPart(" WHERE (deleted IS NULL)").
+					addPartWithList(" AND (userToken IN ?)", token, " AND (1=0)");
 		}
 
 		public static MyQuery getFillChildrenEventPoolsQuery() {

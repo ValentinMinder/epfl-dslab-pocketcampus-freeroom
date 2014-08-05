@@ -19,9 +19,9 @@ $libs_to_export = array(
 		"android-support-v4.jar",
 		"commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar",
 		"gcm.jar",
-		"libGoogleAnalyticsServices.jar",
+		"libGoogleAnalyticsServices.jar", "libthrift-0.7.0.jar",
 		"osmdroid-android-3.0.3.jar",
-		"servlet-api-3.0.jar",
+		"servlet-api-3.0.jar", "slf4j-api-1.6.2.jar", 
 		"universal-image-loader-1.8.0.jar");
 
 $path_to_plugin_dir = "../../plugin";
@@ -105,7 +105,7 @@ function generate_android_manifest($output_dir, $is_lib){
 
 function generate_ant_properties($output_dir){
 	$content = "";
-	$content .= "key.store=../../misc/keystore/pocketcampus-key.keystore\n";
+	$content .= "key.store=pocketcampus-key.keystore\n";
 	$content .= "key.alias=mykey\n";
 	//$content .= "key.store.password=XXXXXXXXXXXXXXXXXXXXXXXXX\n";
 	//$content .= "key.alias.password=XXXXXXXXXXXXXXXXXXXXXXXXX\n";
@@ -114,7 +114,7 @@ function generate_ant_properties($output_dir){
 }
 
 function generate_build_xml($output_dir, $project_name){
-	$doc = new DOMDocument("1.0", "utf-8");
+	$doc = new DOMDocument("1.0", "UTF-8");
 	$doc->formatOutput = true;
 
 	$proj = $doc->createElement("project");
@@ -130,6 +130,19 @@ function generate_build_xml($output_dir, $project_name){
 	$proj->appendChild($prop);
 	$prop->setAttribute("file", "ant.properties");
 
+	$prop = $doc->createElement("property");
+	$proj->appendChild($prop);
+	$prop->setAttribute("environment", "env");
+
+	$cond = $doc->createElement("condition");
+	$proj->appendChild($cond);
+	$cond->setAttribute("property", "sdk.dir");
+	$cond->setAttribute("value", "\${env.ANDROID_HOME}");
+
+	$isset = $doc->createElement("isset");
+	$cond->appendChild($isset);
+	$isset->setAttribute("property", "env.ANDROID_HOME");
+
 	$lprop = $doc->createElement("loadproperties");
 	$proj->appendChild($lprop);
 	$lprop->setAttribute("srcFile", "project.properties");
@@ -142,6 +155,11 @@ function generate_build_xml($output_dir, $project_name){
 	$import = $doc->createElement("import");
 	$proj->appendChild($import);
 	$import->setAttribute("file", "\${sdk.dir}/tools/ant/build.xml");
+
+	$import = $doc->createElement("import");
+	$proj->appendChild($import);
+	$import->setAttribute("file", "custom_rules.xml");
+	$import->setAttribute("optional", "true");
 
 	file_put_contents("$output_dir/build.xml", $doc->saveXML());
 }

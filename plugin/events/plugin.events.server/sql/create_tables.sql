@@ -45,6 +45,8 @@ CREATE TABLE IF NOT EXISTS `eventitems` (
   `hideTitle` tinyint(1) DEFAULT NULL,
   `hideThumbnail` tinyint(1) DEFAULT NULL,
   `isProtected` tinyint(1) DEFAULT NULL,
+  `tempDetails` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `deleted` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`eventId`),
   UNIQUE KEY `VCAL` (`vcalUid`),
   UNIQUE KEY `URI` (`eventUri`)

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -103,7 +104,7 @@ public final class CourseServiceImpl implements CourseService {
 
 		int userId = -1;
 		try {
-			final String usersResponseString = client.getString(SERVICE_URL + usersQueryParams, CHARSET);
+			final String usersResponseString = client.get(SERVICE_URL + usersQueryParams, CHARSET);
 			final JsonUsersResponse usersResponse = new Gson().fromJson(usersResponseString, JsonUsersResponse.class);
 
 			if (usersResponse.users.length == 0) {
@@ -124,7 +125,7 @@ public final class CourseServiceImpl implements CourseService {
 
 		JsonCourse[] courses = null;
 		try {
-			final String coursesResponseString = client.getString(SERVICE_URL + coursesQueryParams, CHARSET);
+			final String coursesResponseString = client.get(SERVICE_URL + coursesQueryParams, CHARSET);
 			courses = new Gson().fromJson(coursesResponseString, JsonCourse[].class);
 		} catch (Exception _) {
 			return new MoodleCoursesResponse2(MoodleStatusCode2.NETWORK_ERROR, new ArrayList<MoodleCourse2>());
@@ -157,7 +158,7 @@ public final class CourseServiceImpl implements CourseService {
 
 		JsonSection[] sections = null;
 		try {
-			final String responseString = client.getString(SERVICE_URL + queryParams, CHARSET);
+			final String responseString = client.get(SERVICE_URL + queryParams, CHARSET);
 			sections = new Gson().fromJson(responseString, JsonSection[].class);
 		} catch (Exception _) {
 			return new MoodleCourseSectionsResponse2(MoodleStatusCode2.NETWORK_ERROR, new ArrayList<MoodleCourseSection2>());
@@ -204,18 +205,22 @@ public final class CourseServiceImpl implements CourseService {
 						continue;
 					}
 
-					if (module.modname.equals(MODULE_FILE) && module.contents.length == 1) {
-						final String name = FilenameUtils.getBaseName(module.name);
+					// Moodle escapes the names for no reason...
+					String moduleName = StringEscapeUtils.unescapeHtml4(module.name);
+
+					// > 0 rather than == 1 for file and URL because Moodle allows multiple files inside a file...
+					if (module.modname.equals(MODULE_FILE) && module.contents.length > 0) {
+						final String name = FilenameUtils.removeExtension(moduleName);
 						final String extension = FilenameUtils.getExtension(module.contents[0].filename);
 						final String iconUrl = module.modicon.replace(FILE_ICON_SIZE, FILE_ICON_SIZE_TOKEN);
 
 						final MoodleFile2 file = new MoodleFile2(name, extension, module.contents[0].fileurl).setIcon(iconUrl);
 						moodleSection.addToResources(new MoodleResource2().setFile(file));
-					} else if (module.modname.equals(MODULE_URL) && module.contents.length == 1) {
-						final MoodleUrl2 url = new MoodleUrl2(module.name, module.contents[0].fileurl);
+					} else if (module.modname.equals(MODULE_URL) && module.contents.length > 0) {
+						final MoodleUrl2 url = new MoodleUrl2(moduleName, module.contents[0].fileurl);
 						moodleSection.addToResources(new MoodleResource2().setUrl(url));
 					} else if (module.modname.equals(MODULE_FOLDER)) {
-						final MoodleFolder2 folder = new MoodleFolder2(module.name, new ArrayList<MoodleFile2>());
+						final MoodleFolder2 folder = new MoodleFolder2(moduleName, new ArrayList<MoodleFile2>());
 						for (final JsonSection.Module.Content content : module.contents) {
 							// in this case the names have an extension
 							final String name = FilenameUtils.getBaseName(content.filename);

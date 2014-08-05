@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.food.server.tests;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.List;
@@ -147,8 +148,13 @@ public final class MenuTests {
 		private static final String RETURN_VALUE = getFileContents("ExampleMenuList.json");
 
 		@Override
-		public String getString(String url, Charset charset) throws Exception {
+		public String get(String url, Charset charset) throws IOException {
 			return RETURN_VALUE;
+		}
+		
+		@Override
+		public String post(String url, byte[] body, Charset charset) throws IOException {
+			throw new RuntimeException("post(String, byte[], Charset) should not be called.");
 		}
 
 		@SuppressWarnings("resource")
