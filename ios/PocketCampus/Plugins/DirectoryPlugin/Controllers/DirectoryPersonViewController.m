@@ -191,7 +191,7 @@ static CGFloat kRowHeight;
         viewController.title = self.person.fullFirstnameLastname;
         PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
         navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self presentViewController:navController animated:YES completion:NO];
+        [self presentViewController:navController animated:YES completion:NULL];
     }
 }
 
