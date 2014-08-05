@@ -40,8 +40,6 @@
 
 #import "PCTableViewSectionHeader.h"
 
-#import "UIImage+Additions.h"
-
 static NSString* kCellTextLabelTextStyle;
 
 static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min

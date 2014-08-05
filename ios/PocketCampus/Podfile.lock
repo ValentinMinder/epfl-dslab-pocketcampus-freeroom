@@ -23,6 +23,7 @@ PODS:
   - CDZQRScanningViewController (1.0.7)
   - GoogleAnalytics-iOS-SDK (3.0.7)
   - JTTargetActionBlock (1.0.0)
+  - LGALibrary (1.0.0)
   - MBProgressHUD (0.8)
   - NSTimer-Blocks (0.0.1)
   - SSKeychain (1.2.2)
@@ -35,6 +36,7 @@ DEPENDENCIES:
   - CDZQRScanningViewController
   - GoogleAnalytics-iOS-SDK (~> 3.0)
   - JTTargetActionBlock
+  - LGALibrary
   - MBProgressHUD
   - NSTimer-Blocks
   - SSKeychain (~> 1.2)
@@ -51,6 +53,7 @@ SPEC CHECKSUMS:
   CDZQRScanningViewController: 69cb48a4d02c483a8ee43da15b8fd23fc4e853f3
   GoogleAnalytics-iOS-SDK: bb285d8eef15a682f1b82971becd0d22edd0e53b
   JTTargetActionBlock: bef69054d368a91b33b98a520fa9e78e218a5a25
+  LGALibrary: 51cb54158dece48841cb75722045aacfe3412cf1
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
   NSTimer-Blocks: 0a653b84ab33068a085f5c03c82c18be1f61eba9
   SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9

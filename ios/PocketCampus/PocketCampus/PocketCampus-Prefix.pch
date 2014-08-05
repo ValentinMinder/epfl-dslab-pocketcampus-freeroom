@@ -22,8 +22,8 @@
 
     #import "AuthenticationController.h"
 
-    #import "NSLayoutConstraint+LGAdditions.h"
-    #import "NSCache+LGAdditions.h"
+    #import "NSLayoutConstraint+LGAAdditions.h"
+    #import "NSCache+LGAAdditions.h"
     #import "UIViewController+Additions.h"
     #import "UIView+Additions.h"
     #import "UISearchBar+Additions.h"
@@ -31,9 +31,9 @@
     #import "UIPopoverController+Additions.h"
     #import "UILabel+Additions.h"
     #import "LGRefreshControl+PCAdditions.h"
-    #import "UIImage+Additions.h"
+    #import "UIImage+LGAAdditions.h"
     #import "NSTimer+Blocks.h"
-    #import "MKMapView+Additions.h"
+    #import "MKMapView+LGAAdditions.h"
     #import "UIControl+JTTargetActionBlock.h"
     #import "PCTableViewAdditions.h"
     #import "PCTableViewCellAdditions.h"

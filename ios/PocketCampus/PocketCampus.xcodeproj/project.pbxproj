@@ -55,7 +55,6 @@
 		3219EF5314FCDE4900A271CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5214FCDE4900A271CD /* Foundation.framework */; };
 		3219EF5514FCDE4900A271CD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5414FCDE4900A271CD /* CoreGraphics.framework */; };
 		3219EF5D14FCDE4900A271CD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3219EF5C14FCDE4900A271CD /* main.m */; };
-		321CCF7016E27357002CBEA2 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 321CCF6F16E27357002CBEA2 /* UIImage+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		321CCF9516E37F53002CBEA2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321CCF9416E37F53002CBEA2 /* AVFoundation.framework */; };
 		321CCF9716E37F5E002CBEA2 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321CCF9616E37F5E002CBEA2 /* CoreMedia.framework */; };
 		321CCF9916E37F6A002CBEA2 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321CCF9816E37F6A002CBEA2 /* CoreVideo.framework */; };
@@ -118,7 +117,6 @@
 		324ADABC191A39F6000737E7 /* PCTileOverlayRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 324ADABB191A39F6000737E7 /* PCTileOverlayRenderer.m */; };
 		324ADABF191A3A36000737E7 /* PCTileOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 324ADABE191A3A36000737E7 /* PCTileOverlay.m */; };
 		324ADAC2191A44B1000737E7 /* EPFLLayersOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 324ADAC1191A44B1000737E7 /* EPFLLayersOverlay.m */; };
-		324BEE7F19221A8D00886693 /* MKMapView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 324BEE7E19221A8D00886693 /* MKMapView+Additions.m */; };
 		324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */; };
 		324CB5821671585B008C7B3D /* MoodleSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		324FD733176574DD0003EE30 /* CamiproTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324FD732176574DD0003EE30 /* CamiproTransactionCell.xib */; };
@@ -172,7 +170,6 @@
 		32763231166511B700C33DF9 /* MapView-pad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32763230166511B600C33DF9 /* MapView-pad.xib */; };
 		32777B4615D1BFBC00A29F56 /* PCAbout.html in Resources */ = {isa = PBXBuildFile; fileRef = 32777B4215D1BFB400A29F56 /* PCAbout.html */; };
 		3278F6CA184257AF007CB382 /* TransportDepartureSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3278F6C9184257AF007CB382 /* TransportDepartureSelectionViewController.m */; };
-		32797ABC1877050B005A19FD /* NSCache+LGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32797ABB1877050B005A19FD /* NSCache+LGAdditions.m */; };
 		327B0C24175199590011D81E /* ArrowUpRightCircleAccessory.png in Resources */ = {isa = PBXBuildFile; fileRef = 327B0C22175199590011D81E /* ArrowUpRightCircleAccessory.png */; };
 		327B0C25175199590011D81E /* ArrowUpRightCircleAccessory@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327B0C23175199590011D81E /* ArrowUpRightCircleAccessory@2x.png */; };
 		327BF2371666043100C67937 /* PushNotifPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327BF2351666043100C67937 /* PushNotifPlugin.strings */; };
@@ -313,7 +310,6 @@
 		32D97C9C15AF1BB8004384A5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32D97C9B15AF1BB8004384A5 /* Security.framework */; };
 		32DE5B2117F1F8D900E03423 /* DirectoryLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B2017F1F8D900E03423 /* DirectoryLarge.png */; };
 		32DE5B2517F1FB6800E03423 /* DirectoryPersonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B2417F1FB6800E03423 /* DirectoryPersonView.xib */; };
-		32DE5B2817F2003800E03423 /* NSLayoutConstraint+LGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE5B2717F2003800E03423 /* NSLayoutConstraint+LGAdditions.m */; };
 		32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */; };
 		32DFDB0F190902AE008C61E2 /* NewsModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DFDB0E190902AE008C61E2 /* NewsModelAdditions.m */; };
 		32E0E315194B1FDD003251CC /* FilterBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E0E313194B1FDD003251CC /* FilterBarButton.png */; };
@@ -442,8 +438,6 @@
 		3219EF5814FCDE4900A271CD /* PocketCampus-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PocketCampus-Info.plist"; sourceTree = "<group>"; };
 		3219EF5C14FCDE4900A271CD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3219EF5E14FCDE4900A271CD /* PocketCampus-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PocketCampus-Prefix.pch"; sourceTree = "<group>"; };
-		321CCF6E16E27357002CBEA2 /* UIImage+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Additions.h"; sourceTree = "<group>"; };
-		321CCF6F16E27357002CBEA2 /* UIImage+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Additions.m"; sourceTree = "<group>"; };
 		321CCF9416E37F53002CBEA2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		321CCF9616E37F5E002CBEA2 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		321CCF9816E37F6A002CBEA2 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -538,8 +532,6 @@
 		324ADABE191A3A36000737E7 /* PCTileOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCTileOverlay.m; sourceTree = "<group>"; };
 		324ADAC0191A44B1000737E7 /* EPFLLayersOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPFLLayersOverlay.h; sourceTree = "<group>"; };
 		324ADAC1191A44B1000737E7 /* EPFLLayersOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPFLLayersOverlay.m; sourceTree = "<group>"; };
-		324BEE7D19221A8D00886693 /* MKMapView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKMapView+Additions.h"; sourceTree = "<group>"; };
-		324BEE7E19221A8D00886693 /* MKMapView+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+Additions.m"; sourceTree = "<group>"; };
 		324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleSplashDetailView.xib; sourceTree = "<group>"; };
 		324CB5801671585B008C7B3D /* MoodleSplashDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleSplashDetailViewController.h; sourceTree = "<group>"; };
 		324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleSplashDetailViewController.m; sourceTree = "<group>"; };
@@ -612,8 +604,6 @@
 		32777B4515D1BFBC00A29F56 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/PCAbout.html; sourceTree = "<group>"; };
 		3278F6C8184257AF007CB382 /* TransportDepartureSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TransportDepartureSelectionViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		3278F6C9184257AF007CB382 /* TransportDepartureSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TransportDepartureSelectionViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		32797ABA1877050B005A19FD /* NSCache+LGAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCache+LGAdditions.h"; sourceTree = "<group>"; };
-		32797ABB1877050B005A19FD /* NSCache+LGAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCache+LGAdditions.m"; sourceTree = "<group>"; };
 		327B0C22175199590011D81E /* ArrowUpRightCircleAccessory.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowUpRightCircleAccessory.png; sourceTree = "<group>"; };
 		327B0C23175199590011D81E /* ArrowUpRightCircleAccessory@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowUpRightCircleAccessory@2x.png"; sourceTree = "<group>"; };
 		327BF2361666043100C67937 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PushNotifPlugin.strings; sourceTree = "<group>"; };
@@ -832,8 +822,6 @@
 		32D97C9B15AF1BB8004384A5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		32DE5B2017F1F8D900E03423 /* DirectoryLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DirectoryLarge.png; sourceTree = "<group>"; };
 		32DE5B2417F1FB6800E03423 /* DirectoryPersonView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryPersonView.xib; sourceTree = "<group>"; };
-		32DE5B2617F2003800E03423 /* NSLayoutConstraint+LGAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+LGAdditions.h"; sourceTree = "<group>"; };
-		32DE5B2717F2003800E03423 /* NSLayoutConstraint+LGAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+LGAdditions.m"; sourceTree = "<group>"; };
 		32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodLarge.png; sourceTree = "<group>"; };
 		32DFDB0D190902AE008C61E2 /* NewsModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsModelAdditions.h; sourceTree = "<group>"; };
 		32DFDB0E190902AE008C61E2 /* NewsModelAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsModelAdditions.m; sourceTree = "<group>"; };
@@ -1175,16 +1163,8 @@
 				321CCF9D16E3B537002CBEA2 /* PCURLSchemeHandler.m */,
 				322FB01617EC938E00D1A466 /* PCGAITracker.h */,
 				322FB01717EC938E00D1A466 /* PCGAITracker.m */,
-				321CCF6E16E27357002CBEA2 /* UIImage+Additions.h */,
-				321CCF6F16E27357002CBEA2 /* UIImage+Additions.m */,
 				32FB441E17650268008C8282 /* NSDate+Addtions.h */,
 				32FB441F17650268008C8282 /* NSDate+Addtions.m */,
-				32DE5B2617F2003800E03423 /* NSLayoutConstraint+LGAdditions.h */,
-				32DE5B2717F2003800E03423 /* NSLayoutConstraint+LGAdditions.m */,
-				32797ABA1877050B005A19FD /* NSCache+LGAdditions.h */,
-				32797ABB1877050B005A19FD /* NSCache+LGAdditions.m */,
-				324BEE7D19221A8D00886693 /* MKMapView+Additions.h */,
-				324BEE7E19221A8D00886693 /* MKMapView+Additions.m */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -2678,18 +2658,15 @@
 				3241F1DE15B4AB9C00C7DF3A /* PCEditableTableViewCell.m in Sources */,
 				3293AD2015D1BC7C0097D414 /* PCAboutViewController.m in Sources */,
 				32649B23160DD7DA002E6498 /* DirectoryPersonViewController.m in Sources */,
-				324BEE7F19221A8D00886693 /* MKMapView+Additions.m in Sources */,
 				32930AB717F898910025F864 /* TSharedProcessorFactory.m in Sources */,
 				32930AAC17F898910025F864 /* TProtocolUtil.m in Sources */,
 				32B3F39016219403007A75C7 /* MainMenuViewController.m in Sources */,
 				32B3F3971621B6D3007A75C7 /* MainMenuItem.m in Sources */,
 				325C47A61621D63E006752B4 /* MainMenuItemCell.m in Sources */,
 				325C47AE1621E91A006752B4 /* MainController.m in Sources */,
-				32797ABC1877050B005A19FD /* NSCache+LGAdditions.m in Sources */,
 				324ADABF191A3A36000737E7 /* PCTileOverlay.m in Sources */,
 				32875E5F194CF2EF0071CDF8 /* PCWebViewController.m in Sources */,
 				32CBF0631634812C00FD92E5 /* PCSplashViewController.m in Sources */,
-				32DE5B2817F2003800E03423 /* NSLayoutConstraint+LGAdditions.m in Sources */,
 				32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */,
 				32E9A22316394F6D00188AE0 /* PluginSplitViewController.m in Sources */,
 				329840E316397ADB00FBADFA /* PluginController.m in Sources */,
@@ -2744,7 +2721,6 @@
 				322C4ACD16E1FD8300DE418E /* EventItem+Additions.m in Sources */,
 				3281AB8216E221F700D8FAD1 /* EventItemViewController.m in Sources */,
 				328860B9183B63590098C857 /* FoodModelAdditions.m in Sources */,
-				321CCF7016E27357002CBEA2 /* UIImage+Additions.m in Sources */,
 				32930AB417F898910025F864 /* TNSStreamTransport.m in Sources */,
 				321CCF9E16E3B537002CBEA2 /* PCURLSchemeHandler.m in Sources */,
 				32617BCE16E7DA5F004F9CF9 /* PCTableViewAdditions.m in Sources */,
