@@ -36,6 +36,7 @@ public final class StationServiceImpl implements StationService {
 
 	// Attributes of the response elements
 	private static final String RESPONSE_CONTAINER = "LocValRes";
+	private static final String RESPONSE_ERROR_ELEMENT = "Err";
 	private static final String RESPONSE_STATION_ELEMENT = "Station";
 
 	private final HttpClient client;
@@ -45,7 +46,6 @@ public final class StationServiceImpl implements StationService {
 		this.client = client;
 		this.token = token;
 	}
-
 
 	/** Gets the station with the specified name, or null if no such station exists. */
 	public TransportStation getStation(final String name) throws IOException {
@@ -67,7 +67,6 @@ public final class StationServiceImpl implements StationService {
 		return findStations(query, REQUEST_MAX_RESULTS);
 	}
 
-	
 	/** Searches for stations by name using the specified query with the specified maximum number of results. */
 	private List<TransportStation> findStations(final String query, final int maxResultsCount) throws IOException {
 		XElement request = buildRequest(token, query, maxResultsCount);
@@ -94,9 +93,18 @@ public final class StationServiceImpl implements StationService {
 	private static List<TransportStation> parseResponse(final String responseXml) {
 		XElement responseElem = XElement.parse(responseXml);
 
-		List<TransportStation> result = new ArrayList<TransportStation>();
+		// haven't seen it in the wild, but the XSD allows it
+		if (responseElem.child(RESPONSE_ERROR_ELEMENT) != null) {
+			return new ArrayList<TransportStation>();
+		}
 
-		for (XElement stationElem : responseElem.child(RESPONSE_CONTAINER).children(RESPONSE_STATION_ELEMENT)) {
+		XElement containerElem = responseElem.child(RESPONSE_CONTAINER);
+		if (containerElem.child(RESPONSE_ERROR_ELEMENT) != null) {
+			return new ArrayList<TransportStation>();
+		}
+
+		List<TransportStation> result = new ArrayList<TransportStation>();
+		for (XElement stationElem : containerElem.children(RESPONSE_STATION_ELEMENT)) {
 			result.add(HafasUtil.parseStation(stationElem));
 		}
 

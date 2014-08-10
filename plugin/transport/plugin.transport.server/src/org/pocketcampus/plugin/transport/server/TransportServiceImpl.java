@@ -19,11 +19,11 @@ import de.schildbach.pte.dto.LocationType;
 /**
  * Server part of the transport plugin.
  * 
- * Old parts:
+ * Old parts / new parts respectively:
+ * 
  * @author Florian <florian.laurent@gmail.com>
  * @author Pascal <pascal.scheiben@gmail.com>
  * 
- * New parts:
  * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public class TransportServiceImpl implements TransportService.Iface {

@@ -125,6 +125,22 @@ public final class TripsServiceTests {
 		assertEquals("The second trip's first part's line should be parsed and converted correctly.",
 				"Bus 9", trip.getParts().get(0).getLine().getName());
 	}
+	
+	// test errors
+	@Test
+	public void error() throws IOException {
+		TestHttpClient client = new TestHttpClient("TripsReplyError.xml");
+		TripsService service = new TripsServiceImpl(client, "token");
+
+		TransportStation from = new TransportStation(8501214, 46522197, 6566143, "EPFL");
+		TransportStation to = new TransportStation(8501181, 46520795, 6630344, "Lausanne-Flon");
+		DateTime now = DateTime.now();
+
+		List<TransportTrip> trips = service.getTrips(from, to, now);
+		
+		assertEquals("There should be no trips in case of an error.",
+				0, trips.size());
+	}
 
 	private static final class TestHttpClient implements HttpClient {
 		private final String returnValue;

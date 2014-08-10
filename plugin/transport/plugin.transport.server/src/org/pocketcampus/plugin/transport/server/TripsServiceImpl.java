@@ -46,7 +46,7 @@ public final class TripsServiceImpl implements TripsService {
 
 	// Date/time formats for the request
 	private static final DateTimeFormatter REQUEST_DATE_FORMAT = DateTimeFormat.forPattern("yyyyMMdd");
-	private static final DateTimeFormatter REQUEST_TIME_FORMAT = DateTimeFormat.forPattern("hh:mm");
+	private static final DateTimeFormatter REQUEST_TIME_FORMAT = DateTimeFormat.forPattern("HH:mm");
 
 	// Values for the request
 	private static final String REQUEST_FILTER_ALL = "1111111111111111"; // Undocumented. Each 'bit' enables/disables a mode of transport.
@@ -155,12 +155,16 @@ public final class TripsServiceImpl implements TripsService {
 	/** Parses the response XML. */
 	private static List<TransportTrip> parseResponse(final String responseXml, final TransportStation start, final TransportStation end, final DateTime datetime) {
 		final XElement responseElem = XElement.parse(responseXml);
+		if (responseElem.child(RESPONSE_ERROR_ELEMENT) != null) {
+			return new ArrayList<TransportTrip>();
+		}
+		
 		final XElement containerElem = responseElem.child(RESPONSE_CONTAINER);
-
+		// haven't seen it in the wild, but the XSD allows it
 		if (containerElem.child(RESPONSE_ERROR_ELEMENT) != null) {
 			return new ArrayList<TransportTrip>();
 		}
-
+		
 		final List<TransportTrip> trips = new ArrayList<TransportTrip>();
 		int id = 0;
 
