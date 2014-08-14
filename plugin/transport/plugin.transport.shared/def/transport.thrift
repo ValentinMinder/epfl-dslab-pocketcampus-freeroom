@@ -54,8 +54,49 @@ struct QueryTripsResult {
 	9: required list<TransportTrip> connections;
 }
 
+struct TransportGeoPoint{
+	1: double latitude;
+	2: double longitude;
+}
+
+enum TransportResponseStatusCode{
+	OK = 200, 
+	NETWORK_ERROR = 404
+}
+
+
+struct TransportStationSearchResponse{
+	1: optional list<TransportStation> stations;
+	2: TransportResponseStatusCode statusCode;
+}
+
+struct TransportDefaultStationsResponse{
+	1: optional list<TransportStation> stations;
+	2: TransportResponseStatusCode statusCode;
+}
+
+struct TransportStationSearchRequest{
+	1: string stationName;
+	2: optional TransportGeoPoint geoPoint;
+}
+
+struct TransportTripSearchRequest{
+	1: TransportStation fromStation;
+	2: TransportStation toStation;
+}
+
+struct TransportTripSearchResponse{
+	1: optional list<TransportTrip> trips;
+	2: TransportResponseStatusCode statusCode;
+}
+
 service TransportService {
 	list<TransportStation> autocomplete(1: string constraint);
 	list<TransportStation> getLocationsFromNames(1: list<string> names);
 	QueryTripsResult getTrips(1: string from; 2: string to);
+
+// NEW APIs
+	TransportStationSearchResponse searchForStationByName(1: TransportStationSearchRequest searchRequest);
+	TransportDefaultStationsResponse getDefaultStations();
+	TransportTripSearchResponse searchForTrips(1: TransportTripSearchRequest searchRequest);
 }
