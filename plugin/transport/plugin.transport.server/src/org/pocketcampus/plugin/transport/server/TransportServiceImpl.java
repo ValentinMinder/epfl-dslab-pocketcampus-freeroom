@@ -9,7 +9,6 @@ import org.apache.thrift.TException;
 import org.joda.time.DateTime;
 import org.pocketcampus.platform.server.HttpClientImpl;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-import org.pocketcampus.platform.shared.utils.SoftMap;
 import org.pocketcampus.plugin.transport.shared.*;
 
 import de.schildbach.pte.NetworkProvider.WalkSpeed;
@@ -30,18 +29,17 @@ public class TransportServiceImpl implements TransportService.Iface {
 	// TODO: Remove this once we're sure the new parts work
 	private static final boolean USE_HAFAS = Boolean.parseBoolean(PocketCampusServer.CONFIG.getString("TRANSPORT_USE_HAFAS"));
 
+	// Names of the default stations
+	private static final String[] DEFAULT_STATION_NAMES = { "Lausanne-Flon", "EPFL" };
+
 	private final StationService stationService;
 	private final TripsService tripsService;
 
-	private final SoftMap<String, TransportStation> stationsCache;
+	private List<TransportStation> defaultStations;
 
-	/** Public Transport information provider */
-	private SbbProvider mSbbProvider;
-
-	public TransportServiceImpl(StationService stationService, TripsService tripsService) {
+	public TransportServiceImpl(final StationService stationService, final TripsService tripsService) {
 		this.stationService = stationService;
 		this.tripsService = tripsService;
-		this.stationsCache = new SoftMap<String, TransportStation>();
 	}
 
 	/**
@@ -50,6 +48,9 @@ public class TransportServiceImpl implements TransportService.Iface {
 	 * so that results can contain departures that just left or are leaving.
 	 */
 	private final long NUMBER_MS_IN_PAST_GET_TRIPS_REQUEST = 3 * 60 * 1000; // 3 min
+
+	/** Public Transport information provider */
+	private SbbProvider mSbbProvider;
 
 	/**
 	 * Constructor. Initializes the provider with the api key.
@@ -66,6 +67,50 @@ public class TransportServiceImpl implements TransportService.Iface {
 		}
 	}
 
+	@Override
+	public TransportStationSearchResponse searchForStations(TransportStationSearchRequest request) throws TException {
+		List<TransportStation> stations;
+
+		try {
+			stations = stationService.findStations(request.getStationName(), request.getGeoPoint());
+		} catch (IOException e) {
+			return new TransportStationSearchResponse(TransportStatusCode.NETWORK_ERROR);
+		}
+
+		return new TransportStationSearchResponse(TransportStatusCode.OK).setStations(stations);
+	}
+
+	@Override
+	public TransportDefaultStationsResponse getDefaultStations() throws TException {
+		if (defaultStations == null) {
+			defaultStations = new ArrayList<TransportStation>();
+			for (String name : DEFAULT_STATION_NAMES) {
+				try {
+					defaultStations.add(stationService.getStation(name));
+				} catch (IOException e) {
+					defaultStations = null;
+					return new TransportDefaultStationsResponse(TransportStatusCode.NETWORK_ERROR);
+				}
+			}
+		}
+
+		return new TransportDefaultStationsResponse(TransportStatusCode.OK).setStations(defaultStations);
+	}
+
+	@Override
+	public TransportTripSearchResponse searchForTrips(TransportTripSearchRequest request) throws TException {
+		List<TransportTrip> trips;
+		try {
+			trips = tripsService.getTrips(request.getFromStation(), request.getToStation(), DateTime.now());
+		} catch (IOException e) {
+			return new TransportTripSearchResponse(TransportStatusCode.NETWORK_ERROR);
+		}
+
+		return new TransportTripSearchResponse(TransportStatusCode.OK).setTrips(trips);
+	}
+
+	// --- OLD STUFF ---
+
 	/**
 	 * Proposes several transport station corresponding to the user input.
 	 * 
@@ -80,7 +125,7 @@ public class TransportServiceImpl implements TransportService.Iface {
 		if (USE_HAFAS) {
 			try {
 				// Don't use the cache, this will be used with extremely many unrelated queries
-				return stationService.findStations(constraint);
+				return stationService.findStations(constraint, null);
 			} catch (IOException e) {
 				throw new TException("An IO error occurred.", e);
 			}
@@ -241,19 +286,16 @@ public class TransportServiceImpl implements TransportService.Iface {
 	}
 
 	private TransportStation getStationFromName(final String name) throws TException {
-		if (!stationsCache.containsKey(name)) {
-			try {
-				final TransportStation station = stationService.getStation(name);
+		try {
+			final TransportStation station = stationService.getStation(name);
 
-				if (station == null) {
-					throw new TException("Invalid station name.");
-				}
-
-				stationsCache.put(name, station);
-			} catch (IOException e) {
-				throw new TException("An IO error occurred.", e);
+			if (station == null) {
+				throw new TException("Invalid station name.");
 			}
+
+			return station;
+		} catch (IOException e) {
+			throw new TException("An IO error occurred.", e);
 		}
-		return stationsCache.get(name);
 	}
 }
