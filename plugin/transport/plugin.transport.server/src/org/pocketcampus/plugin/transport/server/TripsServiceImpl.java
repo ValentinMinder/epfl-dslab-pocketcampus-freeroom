@@ -110,7 +110,6 @@ public final class TripsServiceImpl implements TripsService {
 	private final HttpClient client;
 	private final String token;
 
-
 	public TripsServiceImpl(HttpClient client, String token) {
 		this.client = client;
 		this.token = token;
@@ -158,13 +157,13 @@ public final class TripsServiceImpl implements TripsService {
 		if (responseElem.child(RESPONSE_ERROR_ELEMENT) != null) {
 			return new ArrayList<TransportTrip>();
 		}
-		
+
 		final XElement containerElem = responseElem.child(RESPONSE_CONTAINER);
 		// haven't seen it in the wild, but the XSD allows it
 		if (containerElem.child(RESPONSE_ERROR_ELEMENT) != null) {
 			return new ArrayList<TransportTrip>();
 		}
-		
+
 		final List<TransportTrip> trips = new ArrayList<TransportTrip>();
 		int id = 0;
 
@@ -202,36 +201,33 @@ public final class TripsServiceImpl implements TripsService {
 		final HafasTransportStop arrivalStop = parseStop(arrivalElem, false, datetime.toLocalDate());
 
 		final XElement walkElement = getWalkElement(connectionElem);
+		final boolean isWalk = walkElement != null;
 
-		if (walkElement == null) {
-			final TransportConnection connection = new TransportConnection(departureStop.station, arrivalStop.station, false);
+		final TransportConnection connection = new TransportConnection(departureStop.station, arrivalStop.station, isWalk);
 
-			connection.setDepartureTime(departureStop.datetime.getMillis());
-			if (departureStop.platform != null) {
-				connection.setDeparturePosition(departureStop.platform);
-			}
+		connection.setDepartureTime(departureStop.datetime.getMillis());
+		if (departureStop.platform != null) {
+			connection.setDeparturePosition(departureStop.platform);
+		}
 
-			connection.setArrivalTime(arrivalStop.datetime.getMillis());
-			if (arrivalStop.platform != null) {
-				connection.setArrivalPosition(arrivalStop.platform);
-			}
+		connection.setArrivalTime(arrivalStop.datetime.getMillis());
+		if (arrivalStop.platform != null) {
+			connection.setArrivalPosition(arrivalStop.platform);
+		}
 
+		if (isWalk) {
+			final XElement timeElement = walkElement.child(RESPONSE_TRIP_CONNECTION_WALK_DURATION_ELEMENT);
+			final Period walkTime = RESPONSE_PERIOD_FORMAT.parsePeriod(timeElement.child(RESPONSE_TRIP_CONNECTION_WALK_DURATION_TIME_ATTRIBUTE).text());
+
+			connection.setFootDuration(walkTime.toStandardMinutes().getMinutes());
+		} else {
 			final XElement propertiesElem = connectionElem.child(RESPONSE_TRIP_PROPERTIES_CONTAINER).child(RESPONSE_TRIP_PROPERTIES_ELEMENT);
 			final String lineName = getConnectionProperty(propertiesElem, TRIP_PROPERTY_LINE_NAME);
 			final String lineNumber = getConnectionProperty(propertiesElem, TRIP_PROPERTY_LINE_NUMBER);
 			final String fullLineName = getFullLineName(lineName, lineNumber);
 
 			connection.setLine(new TransportLine(fullLineName, new ArrayList<String>()));
-
-			return connection;
 		}
-
-		final TransportConnection connection = new TransportConnection(departureStop.station, arrivalStop.station, true);
-
-		final XElement timeElement = walkElement.child(RESPONSE_TRIP_CONNECTION_WALK_DURATION_ELEMENT);
-		final Period walkTime = RESPONSE_PERIOD_FORMAT.parsePeriod(timeElement.child(RESPONSE_TRIP_CONNECTION_WALK_DURATION_TIME_ATTRIBUTE).text());
-
-		connection.setFootDuration(walkTime.toStandardMinutes().getMinutes());
 
 		return connection;
 	}

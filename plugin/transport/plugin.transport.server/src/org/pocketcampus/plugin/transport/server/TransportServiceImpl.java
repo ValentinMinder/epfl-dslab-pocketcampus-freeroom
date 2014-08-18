@@ -27,7 +27,7 @@ import de.schildbach.pte.dto.LocationType;
  */
 public class TransportServiceImpl implements TransportService.Iface {
 	// TODO: Remove this once we're sure the new parts work
-	private static final boolean USE_HAFAS = Boolean.parseBoolean(PocketCampusServer.CONFIG.getString("TRANSPORT_USE_HAFAS"));
+	private final boolean USE_HAFAS = Boolean.parseBoolean(PocketCampusServer.CONFIG.getString("TRANSPORT_USE_HAFAS"));
 
 	// Names of the default stations
 	private static final String[] DEFAULT_STATION_NAMES = { "Lausanne-Flon", "EPFL" };

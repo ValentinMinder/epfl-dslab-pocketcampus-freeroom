@@ -27,7 +27,11 @@ public final class TripsServiceTests {
 		TestHttpClient client = new TestHttpClient("TripsReplyEpflFlon.xml");
 		TripsService service = new TripsServiceImpl(client, "token");
 
-		service.getTrips(new TransportStation().setName("X").setId(0), new TransportStation().setName("Y").setId(1), DateTime.now());
+		TransportStation from = new TransportStation().setName("X").setId(0);
+		TransportStation to = new TransportStation().setName("Y").setId(1);
+		DateTime now = DateTime.now();
+
+		service.getTrips(from, to, now);
 
 		Source schemaSource = new StreamSource(new StationServiceTests().getClass().getResourceAsStream("hafasXMLInterface.xsd"));
 		Source requestSource = new StreamSource(new ByteArrayInputStream(client.lastSentBody));
@@ -99,12 +103,17 @@ public final class TripsServiceTests {
 		DateTime now = DateTime.now();
 
 		TransportTrip trip = service.getTrips(from, to, now).get(0);
+		TransportConnection walk=trip.getParts().get(0);
 
 		// NOTE: This is kind of wrong since it makes no sense to "walk from Lausanne, gare to Lausanne" to take a train, but HAFAS says so
 		assertTrue("The first trip's first part should be a foot path.",
-				trip.getParts().get(0).isFoot());
+				walk.isFoot());
 		assertEquals("The foot duration of the first trip's first part should be 4 minutes.",
-				4, trip.getParts().get(0).getFootDuration());
+				4, walk.getFootDuration());
+		assertEquals("The first trip's first part's departure time should be parsed correctly.",
+				now.withTime(06, 20, 00, 00).getMillis(), walk.getDepartureTime());
+		assertEquals("The first trip's first part's arrival time should be parsed correctly.",
+				now.withTime(06, 24, 00, 00).getMillis(), walk.getArrivalTime());
 
 		assertEquals("The first trip's second part's line should be parsed and converted correctly.",
 				"TGV", trip.getParts().get(1).getLine().getName());
@@ -125,7 +134,7 @@ public final class TripsServiceTests {
 		assertEquals("The second trip's first part's line should be parsed and converted correctly.",
 				"Bus 9", trip.getParts().get(0).getLine().getName());
 	}
-	
+
 	// test errors
 	@Test
 	public void error() throws IOException {
@@ -137,7 +146,7 @@ public final class TripsServiceTests {
 		DateTime now = DateTime.now();
 
 		List<TransportTrip> trips = service.getTrips(from, to, now);
-		
+
 		assertEquals("There should be no trips in case of an error.",
 				0, trips.size());
 	}
