@@ -145,7 +145,7 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 - (void)registerDeviceForPushNotificationsWithPluginLowerIdentifier:(NSString*)pluginLowerIdentifier reason:(NSString*)reason success:(VoidBlock)success failure:(PushNotifDeviceRegistrationFailureBlock)failure {
     
     @synchronized(self) {
-        
+#warning iOS 8: need to register with UIUserNotificationSettings object
         NSString* token = [PushNotifController notificationsDeviceToken];
 #warning test if pop-up already presented
         if (!token && reason && !self.pushNotifsReasonAlert) {

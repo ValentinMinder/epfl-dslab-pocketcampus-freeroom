@@ -267,6 +267,10 @@ static NSString* const kLastLocationKey = @"lastLocation";
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
         CLSNSLog(@"-> Waiting for user to accept access to location...");
         self.blockedByAuthStatus = YES;
+        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+            //required in iOS 8 and above
+            [self.locationManager requestWhenInUseAuthorization];
+        }
         return; //self will be called (see delegate method) by CLLocationManager when user has accepted or rejected access to location
     }
     

@@ -22,7 +22,7 @@
 		<key>2F588F688C5A830993D54AFEB3A718DD51064B81</key>
 		<string>../../..</string>
 		<key>EE5017F42780957232AFF14DD75D9A51833942BE</key>
-		<string>../../../ios/PocketCampus/Pods/TapkuLibrary/</string>
+		<string>../../../ios/PocketCampus/Pods/TapkuLibrary</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>ssh://github.com/dslab-epfl/pocketcampus.git</string>
