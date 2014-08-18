@@ -41,7 +41,7 @@ public class TransportServiceImpl implements TransportService.Iface {
 		this.stationService = stationService;
 		this.tripsService = tripsService;
 	}
-
+	
 	/**
 	 * Used by getTrips
 	 * Number of milliseconds that should be deduced from current timestamp when requesting schedules,
@@ -207,6 +207,16 @@ public class TransportServiceImpl implements TransportService.Iface {
 				trips = tripsService.getTrips(departure, arrival, now);
 			} catch (IOException e) {
 				throw new TException("An IO error occurred.", e);
+			}
+
+			// Compatibility with old clients: they understand "BBus\d*" but HAFAS has "Bus \d*".
+			for (TransportTrip trip : trips) {
+				for (TransportConnection connection : trip.getParts()) {
+					TransportLine line = connection.getLine();
+					if (line != null) {
+						line.setName(line.getName().replaceAll("Bus (\\d*)", "BBus$1"));
+					}
+				}
 			}
 
 			return new QueryTripsResult(departure, arrival, trips);

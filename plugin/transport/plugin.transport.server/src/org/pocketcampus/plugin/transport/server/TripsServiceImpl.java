@@ -3,7 +3,10 @@ package org.pocketcampus.plugin.transport.server;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.joda.time.DateTime;
@@ -62,9 +65,7 @@ public final class TripsServiceImpl implements TripsService {
 	private static final String RESPONSE_TRIP_CONNECTION_ELEMENT = "ConSection";
 	private static final String RESPONSE_TRIP_CONNECTION_DEPARTURE_ELEMENT = "Departure";
 	private static final String RESPONSE_TRIP_CONNECTION_ARRIVAL_ELEMENT = "Arrival";
-	private static final String RESPONSE_TRIP_CONNECTION_WALK_ELEMENT_1 = "Walk";
-	private static final String RESPONSE_TRIP_CONNECTION_WALK_ELEMENT_2 = "Transfer";
-	private static final String RESPONSE_TRIP_CONNECTION_WALK_ELEMENT_3 = "GisRoute";
+	private static final String[] RESPONSE_TRIP_CONNECTION_WALK_ELEMENTS = { "Walk", "Transfer", "GisRoute" };
 	private static final String RESPONSE_TRIP_CONNECTION_WALK_DURATION_ELEMENT = "Duration";
 	private static final String RESPONSE_TRIP_CONNECTION_WALK_DURATION_TIME_ATTRIBUTE = "Time";
 	private static final String RESPONSE_TRIP_PROPERTIES_CONTAINER = "Journey";
@@ -93,7 +94,7 @@ public final class TripsServiceImpl implements TripsService {
 	private static final String TRIP_PROPERTY_LINE_NUMBER = "LINE";
 
 	// Special line values
-	private static final String LINE_NAME_METRO = "M";
+	private static final Set<String> LINE_NAMES_WITH_NUMBERS = new HashSet<String>(Arrays.asList(new String[] { "M", "S" }));
 
 	// Placeholder if a line name cannot be found
 	private static final String EMPTY_LINE_PLACEHOLDER = "???";
@@ -238,10 +239,13 @@ public final class TripsServiceImpl implements TripsService {
 	 */
 	private static XElement getWalkElement(final XElement connectionElem) {
 		// We consider any "implicit" element, i.e. "go to station XYZ in 42 minutes", as a walk, even though it might be a very long walk.
-		final XElement walkElement1 = connectionElem.child(RESPONSE_TRIP_CONNECTION_WALK_ELEMENT_1);
-		final XElement walkElement2 = connectionElem.child(RESPONSE_TRIP_CONNECTION_WALK_ELEMENT_2);
-		final XElement walkElement3 = connectionElem.child(RESPONSE_TRIP_CONNECTION_WALK_ELEMENT_3);
-		return walkElement1 == null ? walkElement2 == null ? walkElement3 : walkElement2 : walkElement1;
+		for (final String elementName : RESPONSE_TRIP_CONNECTION_WALK_ELEMENTS) {
+			final XElement walkElement = connectionElem.child(elementName);
+			if (walkElement != null) {
+				return walkElement;
+			}
+		}
+		return null;
 	}
 
 	/** Gets a full line name from the specified line name and number. */
@@ -254,8 +258,8 @@ public final class TripsServiceImpl implements TripsService {
 		if (lineNumber.equals("")) {
 			return lineName;
 		}
-		// Special case for metro, since they're refered to as "M1" rather than "M 1"
-		if (lineName.equals(LINE_NAME_METRO)) {
+		// Special case for some lines (e.g. metro) whose number follows immediately, e.g. "M1" rather than "M 1".
+		if (LINE_NAMES_WITH_NUMBERS.contains(lineName)) {
 			return lineName + lineNumber;
 		}
 		// Normal case, e.g. "Bus 1"
