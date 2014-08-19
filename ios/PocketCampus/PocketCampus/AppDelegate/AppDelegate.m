@@ -61,7 +61,7 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
-    NSLog(@"App support path: %@", [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject]);
+    [PCPersistenceManager migrateDataOnceToSharedAppGroupPersistence];
     
     // Need to start monitoring, otherwise sharedManager.networkReachabilityStatus is wrong
     // Bug in AFNetworkReachabilityManager ?

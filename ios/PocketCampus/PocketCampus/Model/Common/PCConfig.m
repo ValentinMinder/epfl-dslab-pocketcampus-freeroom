@@ -126,7 +126,7 @@ static BOOL loaded = NO;
 #pragma mark - Private methods
 
 + (NSUserDefaults*)_defaults {
-    return [NSUserDefaults standardUserDefaults];
+    return [PCPersistenceManager sharedDefaults];
 }
 
 + (void)registerDefaultsFromBundle {
@@ -193,8 +193,7 @@ static BOOL loaded = NO;
 }
 
 + (void)registerDevDefaultsFromAppSupportIfExists {
-    NSString* pathAppSupportConfig = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-	pathAppSupportConfig = [pathAppSupportConfig stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    NSString* pathAppSupportConfig = [PCPersistenceManager appGroupBundleIdentifierPersistencePath];
     pathAppSupportConfig = [pathAppSupportConfig stringByAppendingPathComponent:@"Config.plist"];
     
     @try {
@@ -223,8 +222,7 @@ static BOOL loaded = NO;
 #pragma mark Utilities
 
 + (NSString*)pathForPersistedServerConfig {
-    NSString* appSupport = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-	NSString* pcAppSupport = [appSupport stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    NSString* pcAppSupport = [PCPersistenceManager appGroupBundleIdentifierPersistencePath];
     NSString* configFilePath = [pcAppSupport stringByAppendingPathComponent:kPersistedServerConfigFilename];
     [PCPersistenceManager createComponentsForPath:configFilePath];
     return configFilePath;

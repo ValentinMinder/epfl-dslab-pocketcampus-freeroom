@@ -611,6 +611,8 @@
 		324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleSplashDetailView.xib; sourceTree = "<group>"; };
 		324CB5801671585B008C7B3D /* MoodleSplashDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleSplashDetailViewController.h; sourceTree = "<group>"; };
 		324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleSplashDetailViewController.m; sourceTree = "<group>"; };
+		324D6E2B19A3A7DF000CCB2C /* PocketCampus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PocketCampus.entitlements; sourceTree = "<group>"; };
+		324D6E2C19A3A7E5000CCB2C /* org.pocketcampus.dev.CamiproWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = org.pocketcampus.dev.CamiproWidget.entitlements; sourceTree = "<group>"; };
 		324FD732176574DD0003EE30 /* CamiproTransactionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CamiproTransactionCell.xib; sourceTree = "<group>"; };
 		324FD734176574FE0003EE30 /* CamiproTransactionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CamiproTransactionCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		324FD735176574FE0003EE30 /* CamiproTransactionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CamiproTransactionCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -1169,6 +1171,7 @@
 		3219EF4114FCDE4800A271CD = {
 			isa = PBXGroup;
 			children = (
+				324D6E2C19A3A7E5000CCB2C /* org.pocketcampus.dev.CamiproWidget.entitlements */,
 				3219EF5614FCDE4900A271CD /* PocketCampus */,
 				32FAC0DF1500F40700925180 /* Plugins */,
 				3219EF4F14FCDE4900A271CD /* Frameworks */,
@@ -1221,6 +1224,7 @@
 		3219EF5614FCDE4900A271CD /* PocketCampus */ = {
 			isa = PBXGroup;
 			children = (
+				324D6E2B19A3A7DF000CCB2C /* PocketCampus.entitlements */,
 				3288699014FE5AF300CC97DB /* AppDelegate */,
 				3288699314FE5AF300CC97DB /* Controllers */,
 				322207F41689E39E003F6622 /* Misc */,
@@ -2534,14 +2538,24 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0600;
-				ORGANIZATIONNAME = EPFL;
+				ORGANIZATIONNAME = PocketCampus.Org;
 				TargetAttributes = {
 					32136F32193FBCFF002905A9 = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = 7KPBSVCYLZ;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					3219EF4B14FCDE4900A271CD = {
 						DevelopmentTeam = 7KPBSVCYLZ;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -3217,6 +3231,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_ENTITLEMENTS = org.pocketcampus.dev.CamiproWidget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3224,6 +3239,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					TARGET_IS_EXTENSION,
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -3249,11 +3265,17 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_ENTITLEMENTS = org.pocketcampus.dev.CamiproWidget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					TARGET_IS_EXTENSION,
+				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/Plugins/CamiproPlugin/Extensions/CamiproWidget/CamiproWidget-Info.plist";
@@ -3323,8 +3345,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Loic Gardiol";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Loic Gardiol";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Association PocketCampus.Org (7KPBSVCYLZ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Association PocketCampus.Org (7KPBSVCYLZ)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
@@ -3357,6 +3379,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
+				CODE_SIGN_ENTITLEMENTS = PocketCampus/PocketCampus.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -3383,6 +3406,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
+				CODE_SIGN_ENTITLEMENTS = PocketCampus/PocketCampus.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";

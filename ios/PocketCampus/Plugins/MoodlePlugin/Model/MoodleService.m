@@ -208,10 +208,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
         nsr = [urlString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
     }
     NSString* nss = [urlString substringFromIndex:(nsr.location + nsr.length)];
-    NSArray* cachePathArray = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    NSString* cachePath = [[cachePathArray lastObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-    NSString* cacheMoodlePath = [cachePath stringByAppendingPathComponent:@"moodle"];
-    cacheMoodlePath = [cacheMoodlePath stringByAppendingPathComponent:@"downloads"];
+    NSString* cacheMoodlePath = [self pathForResourcesDownloadFolder];
     NSString* filePath = [cacheMoodlePath stringByAppendingPathComponent:nss];
     
     if (createIntermediateDirectories) {
@@ -278,8 +275,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 #pragma mark Private
 
 - (NSString*)pathForResourcesDownloadFolder {
-    NSArray* cachePathArray = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    NSString* path = [[cachePathArray lastObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    NSString* path = [PCPersistenceManager appGroupBundleIdentifierPersistencePath];
     path = [path stringByAppendingPathComponent:@"moodle"];
     path = [path stringByAppendingPathComponent:@"downloads"];
     return path;
