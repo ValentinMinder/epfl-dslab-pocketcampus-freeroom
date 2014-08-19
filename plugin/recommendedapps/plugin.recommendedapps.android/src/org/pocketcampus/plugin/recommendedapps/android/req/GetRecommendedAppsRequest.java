@@ -2,7 +2,6 @@ package org.pocketcampus.plugin.recommendedapps.android.req;
 
 import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.recommendedapps.android.RecommendedAppsController;
-import org.pocketcampus.plugin.recommendedapps.android.iface.IRecommendedAppsController;
 import org.pocketcampus.plugin.recommendedapps.android.iface.IRecommendedAppsView;
 import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppsRequest;
 import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppsResponse;
@@ -28,7 +27,7 @@ public class GetRecommendedAppsRequest extends
 			RecommendedAppsResponse result) {
 		if(result.getStatus() == RecommendedAppsResponseStatus.OK) {
 			controller.updateModelWithRecommendedAppsResponse(result);
-			keepInCache();
+//			keepInCache();
 		} else {
 			caller.serverDown();
 		}

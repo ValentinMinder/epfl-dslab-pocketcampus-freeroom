@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -137,12 +138,20 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 		return categories;
 	}
 
+	private static final List<String> knownLanguages = Arrays.asList("EN");
 	@Override
 	public RecommendedAppsResponse getRecommendedApps(RecommendedAppsRequest request){
 		System.out.println("Recommended apps for "+request);
 		RecommendedAppsResponse response = new RecommendedAppsResponse();
 		response.setStatus(RecommendedAppsResponseStatus.OK);
-		String languageSuffix = "_" + request.getLanguage().toUpperCase();
+		
+		String language = request.getLanguage().toUpperCase();
+		if(!knownLanguages.contains(language)){
+			language = "EN";
+		}
+		String languageSuffix = "_" + language;
+		
+		
 		try{
 			Map<Integer, RecommendedApp> apps = getApps(languageSuffix, request.getAppStore());
 			response.setApps(apps);

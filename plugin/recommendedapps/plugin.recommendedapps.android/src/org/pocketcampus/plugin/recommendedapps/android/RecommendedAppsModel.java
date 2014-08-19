@@ -1,6 +1,5 @@
 package org.pocketcampus.plugin.recommendedapps.android;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,34 +18,35 @@ import android.content.Context;
 /**
  * RecommendedAppsModel - The Model that stores the data of this plugin.
  * 
- * This is the Model associated with the RecommendedApps plugin.
- * It stores the data required for the correct functioning of the plugin.
- * Some data is persistent. e.g.recommendedappsCookie.
- * Other data are temporary.
+ * This is the Model associated with the RecommendedApps plugin. It stores the
+ * data required for the correct functioning of the plugin. Some data is
+ * persistent. e.g.recommendedappsCookie. Other data are temporary.
  * 
  * @author Amer <amer.chamseddine@epfl.ch>
- *
+ * 
  */
-public class RecommendedAppsModel extends PluginModel implements IRecommendedAppsModel {
-	
+public class RecommendedAppsModel extends PluginModel implements
+		IRecommendedAppsModel {
+
 	private RecommendedAppsResponse response;
 	/**
-	 * Reference to the Views that need to be notified when the stored data changes.
+	 * Reference to the Views that need to be notified when the stored data
+	 * changes.
 	 */
 	IRecommendedAppsView mListeners = (IRecommendedAppsView) getListeners();
-	
+
 	/**
 	 * Constructor with reference to the context.
 	 * 
-	 * We need the context to be able to instantiate
-	 * the SharedPreferences object in order to use
-	 * persistent storage.
+	 * We need the context to be able to instantiate the SharedPreferences
+	 * object in order to use persistent storage.
 	 * 
-	 * @param context is the Application Context.
+	 * @param context
+	 *            is the Application Context.
 	 */
 	public RecommendedAppsModel(Context context) {
 	}
-	
+
 	/**
 	 * Returns the Type of the Views associated with this plugin.
 	 */
@@ -64,7 +64,7 @@ public class RecommendedAppsModel extends PluginModel implements IRecommendedApp
 
 	@Override
 	public List<RecommendedAppCategory> categories() {
-		if(response != null){
+		if (response != null) {
 			return response.getCategories();
 		}
 		return new Vector<RecommendedAppCategory>();
@@ -72,13 +72,14 @@ public class RecommendedAppsModel extends PluginModel implements IRecommendedApp
 
 	@Override
 	public Map<Integer, RecommendedApp> apps() {
-		if(response != null){
+		if (response != null) {
 			return response.getApps();
 		}
 		return new HashMap<Integer, RecommendedApp>();
 	}
-	
-	public void setRecommendedAppsResponse(RecommendedAppsResponse response){
+
+	public void setRecommendedAppsResponse(RecommendedAppsResponse response) {
 		this.response = response;
+		getListenersToNotify().recommendedAppsRefreshed();
 	}
 }

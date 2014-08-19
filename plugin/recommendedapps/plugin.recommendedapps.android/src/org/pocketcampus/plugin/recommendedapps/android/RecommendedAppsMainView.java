@@ -1,13 +1,29 @@
 package org.pocketcampus.plugin.recommendedapps.android;
 
+import java.util.Map;
+
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.recommendedapps.R;
 import org.pocketcampus.plugin.recommendedapps.android.iface.IRecommendedAppsView;
+import org.pocketcampus.plugin.recommendedapps.shared.RecommendedApp;
+import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppCategory;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * RecommendedAppsMainView - Main view that shows RecommendedApps courses.
@@ -48,7 +64,8 @@ public class RecommendedAppsMainView extends PluginView implements IRecommendedA
 
 		mLayout.setText("Loading recommended apps");
 		setActionBarTitle(getString(R.string.recommendedapps_plugin_title));
-
+				
+		mController.refreshRecommendedApps(this);
 	}
 
 	/**
@@ -61,7 +78,6 @@ public class RecommendedAppsMainView extends PluginView implements IRecommendedA
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mController.refreshRecommendedApps(this);
 	}
 	
 	@Override
@@ -71,6 +87,7 @@ public class RecommendedAppsMainView extends PluginView implements IRecommendedA
 
 	@Override
 	public void networkErrorHappened() {
+		mLayout.setText("Network error");
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.recommendedapps_connection_error_happened), Toast.LENGTH_SHORT).show();
 	}
@@ -91,9 +108,53 @@ public class RecommendedAppsMainView extends PluginView implements IRecommendedA
 
 	@Override
 	public void recommendedAppsRefreshed() {
-		mLayout.setText(mModel.apps()+"\n\n"+mModel.categories());
+		int stubImage = android.R.drawable.ic_popup_sync;
+	    int imageForEmptyUri = android.R.drawable.ic_menu_gallery;
+	    int imageOnFail = android.R.drawable.ic_menu_report_image;
+	    
+		DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.showStubImage(stubImage)
+				.showImageForEmptyUri(imageForEmptyUri)
+				.showImageOnFail(imageOnFail).cacheInMemory().cacheOnDisc()
+				.build();
 		System.out.println(mModel.apps());
 		System.out.println(mModel.categories());
+		
+		Map<Integer, RecommendedApp> apps = mModel.apps();
+		
+		LayoutInflater inflater = (LayoutInflater)getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
+		LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.app_store, null);
+		
+		for(RecommendedAppCategory category : mModel.categories()){
+			LinearLayout categoryLayout = (LinearLayout) inflater.inflate(R.layout.app_store_category, null);
+			((TextView)categoryLayout.findViewById(R.id.recommendedAppCategoryName)).setText(category.getCategoryName());
+			((TextView)categoryLayout.findViewById(R.id.recommendedAppCategoryDescription)).setText(category.getCategoryDescription());
+			LinearLayout appLayout = (LinearLayout) categoryLayout.findViewById(R.id.recommendedAppCategoryApps);
+			for(int appId : category.getAppIds()){
+				final RecommendedApp app = apps.get(appId);
+				LinearLayout appThumbLayout = (LinearLayout) inflater.inflate(R.layout.app_thumb, null);
+				((TextView)appThumbLayout.findViewById(R.id.recommendedAppName)).setText(app.getAppName());
+				((TextView)appThumbLayout.findViewById(R.id.recommendedAppDescription)).setText(app.getAppDescription());
+				ImageLoader.getInstance().displayImage(app.getAppLogoURL(), (ImageView) appThumbLayout.findViewById(R.id.recommendedAppLogo), options);
+				appLayout.addView(appThumbLayout);
+				appThumbLayout.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						System.out.println("CLICKED ON "+app);
+						final String appPackageName = app.getAppStoreQuery();
+						try {
+						    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+						} catch (android.content.ActivityNotFoundException anfe) {
+						    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
+						}
+					}
+				});
+			}
+			linearLayout.addView(categoryLayout);
+		}
+		
+		setContentView(linearLayout);
 	}
-
 }
