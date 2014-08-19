@@ -48,12 +48,6 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 3
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 1
 
-// BTStoreView
-#define COCOAPODS_POD_AVAILABLE_BTStoreView
-#define COCOAPODS_VERSION_MAJOR_BTStoreView 1
-#define COCOAPODS_VERSION_MINOR_BTStoreView 2
-#define COCOAPODS_VERSION_PATCH_BTStoreView 0
-
 // CDZQRScanningViewController
 #define COCOAPODS_POD_AVAILABLE_CDZQRScanningViewController
 #define COCOAPODS_VERSION_MAJOR_CDZQRScanningViewController 1
