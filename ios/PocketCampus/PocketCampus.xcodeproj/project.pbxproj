@@ -1051,8 +1051,8 @@
 			children = (
 				27B74CD119A205E6006B2F17 /* Controllers */,
 				27B74CD619A205E6006B2F17 /* Model */,
-				27B74CEA19A206C8006B2F17 /* RecommendedAppsPlugin.strings */,
 				27B74CDD19A205E6006B2F17 /* Views */,
+				32975CEC19A3437800146390 /* Supporting Files */,
 			);
 			path = RecommendedAppsPlugin;
 			sourceTree = "<group>";
@@ -1071,9 +1071,9 @@
 		27B74CD619A205E6006B2F17 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				27C1160D19A2588E00FEF411 /* ThriftTypes+Services */,
 				27B74CD719A205E6006B2F17 /* RecommendedAppsService.h */,
 				27B74CD819A205E6006B2F17 /* RecommendedAppsService.m */,
+				27C1160D19A2588E00FEF411 /* ThriftTypes+Services */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1750,6 +1750,14 @@
 			path = ZUUIRevealController;
 			sourceTree = "<group>";
 		};
+		32975CEC19A3437800146390 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				27B74CEA19A206C8006B2F17 /* RecommendedAppsPlugin.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		32A6E25514FED6F10051736E /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -2078,7 +2086,6 @@
 		32FAC0DF1500F40700925180 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				27B74CD019A205E6006B2F17 /* RecommendedAppsPlugin */,
 				32CCB4B6155520FE00220282 /* AuthenticationPlugin */,
 				32B5870F156458FA0051C57E /* CamiproPlugin */,
 				32FAC0E01500F40700925180 /* DirectoryPlugin */,
@@ -2089,6 +2096,7 @@
 				32CCB4D01555237500220282 /* MoodlePlugin */,
 				32CCB4F5155546C100220282 /* NewsPlugin */,
 				45F64094AC7F521F7FD1B828 /* PushNotifPlugin */,
+				27B74CD019A205E6006B2F17 /* RecommendedAppsPlugin */,
 				32FB2DFC15179014007AE82B /* TransportPlugin */,
 			);
 			path = Plugins;

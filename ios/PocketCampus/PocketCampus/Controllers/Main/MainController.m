@@ -922,7 +922,7 @@ static MainController<MainControllerPublic>* instance = nil;
              * Will actually make view controller retest for supported operations and rotate if necessary.
              */
             
-#warning DISABLED, results in black screen in iOS 8. Still need to find a solution to 
+#warning DISABLED, results in black screen in iOS 8. Still need to find a solution to force potrait orientation
             //[viewController presentViewController:[[UIViewController alloc] init] animated:NO completion:NULL];
             //[viewController dismissViewControllerAnimated:NO completion:NULL];
         }
