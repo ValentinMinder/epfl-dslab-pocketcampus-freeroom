@@ -28,13 +28,15 @@
   return self;
 }
 
-- (id) initWithAppStoreQuery: (NSString *) appStoreQuery appOpenURLPattern: (NSString *) appOpenURLPattern
+- (id) initWithAppStoreQuery: (NSString *) appStoreQuery appOpenURLPattern: (NSString *) appOpenURLPattern appLogoURL: (NSString *) appLogoURL
 {
   self = [super init];
   __appStoreQuery = [appStoreQuery retain_stub];
   __appStoreQuery_isset = YES;
   __appOpenURLPattern = [appOpenURLPattern retain_stub];
   __appOpenURLPattern_isset = YES;
+  __appLogoURL = [appLogoURL retain_stub];
+  __appLogoURL_isset = YES;
   return self;
 }
 
@@ -51,6 +53,11 @@
     __appOpenURLPattern = [[decoder decodeObjectForKey: @"appOpenURLPattern"] retain_stub];
     __appOpenURLPattern_isset = YES;
   }
+  if ([decoder containsValueForKey: @"appLogoURL"])
+  {
+    __appLogoURL = [[decoder decodeObjectForKey: @"appLogoURL"] retain_stub];
+    __appLogoURL_isset = YES;
+  }
   return self;
 }
 
@@ -64,12 +71,17 @@
   {
     [encoder encodeObject: __appOpenURLPattern forKey: @"appOpenURLPattern"];
   }
+  if (__appLogoURL_isset)
+  {
+    [encoder encodeObject: __appLogoURL forKey: @"appLogoURL"];
+  }
 }
 
 - (void) dealloc
 {
   [__appStoreQuery release_stub];
   [__appOpenURLPattern release_stub];
+  [__appLogoURL release_stub];
   [super dealloc_stub];
 }
 
@@ -115,6 +127,27 @@
   __appOpenURLPattern_isset = NO;
 }
 
+- (NSString *) appLogoURL {
+  return [[__appLogoURL retain_stub] autorelease_stub];
+}
+
+- (void) setAppLogoURL: (NSString *) appLogoURL {
+  [appLogoURL retain_stub];
+  [__appLogoURL release_stub];
+  __appLogoURL = appLogoURL;
+  __appLogoURL_isset = YES;
+}
+
+- (BOOL) appLogoURLIsSet {
+  return __appLogoURL_isset;
+}
+
+- (void) unsetAppLogoURL {
+  [__appLogoURL release_stub];
+  __appLogoURL = nil;
+  __appLogoURL_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -146,6 +179,14 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 3:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setAppLogoURL: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -171,6 +212,13 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__appLogoURL_isset) {
+    if (__appLogoURL != nil) {
+      [outProtocol writeFieldBeginWithName: @"appLogoURL" type: TType_STRING fieldID: 3];
+      [outProtocol writeString: __appLogoURL];
+      [outProtocol writeFieldEnd];
+    }
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -185,6 +233,8 @@
   [ms appendFormat: @"\"%@\"", __appStoreQuery];
   [ms appendString: @",appOpenURLPattern:"];
   [ms appendFormat: @"\"%@\"", __appOpenURLPattern];
+  [ms appendString: @",appLogoURL:"];
+  [ms appendFormat: @"\"%@\"", __appLogoURL];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -201,15 +251,13 @@
   return self;
 }
 
-- (id) initWithAppId: (int32_t) appId appName: (NSString *) appName appLogoURL: (NSString *) appLogoURL appDescription: (NSString *) appDescription appOSConfigurations: (NSMutableDictionary *) appOSConfigurations
+- (id) initWithAppId: (int32_t) appId appName: (NSString *) appName appDescription: (NSString *) appDescription appOSConfigurations: (NSMutableDictionary *) appOSConfigurations
 {
   self = [super init];
   __appId = appId;
   __appId_isset = YES;
   __appName = [appName retain_stub];
   __appName_isset = YES;
-  __appLogoURL = [appLogoURL retain_stub];
-  __appLogoURL_isset = YES;
   __appDescription = [appDescription retain_stub];
   __appDescription_isset = YES;
   __appOSConfigurations = [appOSConfigurations retain_stub];
@@ -229,11 +277,6 @@
   {
     __appName = [[decoder decodeObjectForKey: @"appName"] retain_stub];
     __appName_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"appLogoURL"])
-  {
-    __appLogoURL = [[decoder decodeObjectForKey: @"appLogoURL"] retain_stub];
-    __appLogoURL_isset = YES;
   }
   if ([decoder containsValueForKey: @"appDescription"])
   {
@@ -258,10 +301,6 @@
   {
     [encoder encodeObject: __appName forKey: @"appName"];
   }
-  if (__appLogoURL_isset)
-  {
-    [encoder encodeObject: __appLogoURL forKey: @"appLogoURL"];
-  }
   if (__appDescription_isset)
   {
     [encoder encodeObject: __appDescription forKey: @"appDescription"];
@@ -275,7 +314,6 @@
 - (void) dealloc
 {
   [__appName release_stub];
-  [__appLogoURL release_stub];
   [__appDescription release_stub];
   [__appOSConfigurations release_stub];
   [super dealloc_stub];
@@ -317,27 +355,6 @@
   [__appName release_stub];
   __appName = nil;
   __appName_isset = NO;
-}
-
-- (NSString *) appLogoURL {
-  return [[__appLogoURL retain_stub] autorelease_stub];
-}
-
-- (void) setAppLogoURL: (NSString *) appLogoURL {
-  [appLogoURL retain_stub];
-  [__appLogoURL release_stub];
-  __appLogoURL = appLogoURL;
-  __appLogoURL_isset = YES;
-}
-
-- (BOOL) appLogoURLIsSet {
-  return __appLogoURL_isset;
-}
-
-- (void) unsetAppLogoURL {
-  [__appLogoURL release_stub];
-  __appLogoURL = nil;
-  __appLogoURL_isset = NO;
 }
 
 - (NSString *) appDescription {
@@ -416,20 +433,12 @@
       case 3:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
-          [self setAppLogoURL: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 4:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
           [self setAppDescription: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 5:
+      case 4:
         if (fieldType == TType_MAP) {
           int _size0;
           [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size0];
@@ -473,23 +482,16 @@
       [outProtocol writeFieldEnd];
     }
   }
-  if (__appLogoURL_isset) {
-    if (__appLogoURL != nil) {
-      [outProtocol writeFieldBeginWithName: @"appLogoURL" type: TType_STRING fieldID: 3];
-      [outProtocol writeString: __appLogoURL];
-      [outProtocol writeFieldEnd];
-    }
-  }
   if (__appDescription_isset) {
     if (__appDescription != nil) {
-      [outProtocol writeFieldBeginWithName: @"appDescription" type: TType_STRING fieldID: 4];
+      [outProtocol writeFieldBeginWithName: @"appDescription" type: TType_STRING fieldID: 3];
       [outProtocol writeString: __appDescription];
       [outProtocol writeFieldEnd];
     }
   }
   if (__appOSConfigurations_isset) {
     if (__appOSConfigurations != nil) {
-      [outProtocol writeFieldBeginWithName: @"appOSConfigurations" type: TType_MAP fieldID: 5];
+      [outProtocol writeFieldBeginWithName: @"appOSConfigurations" type: TType_MAP fieldID: 4];
       {
         [outProtocol writeMapBeginWithKeyType: TType_I32 valueType: TType_STRUCT size: [__appOSConfigurations count]];
         NSEnumerator * _iter4 = [__appOSConfigurations keyEnumerator];
@@ -518,8 +520,6 @@
   [ms appendFormat: @"%i", __appId];
   [ms appendString: @",appName:"];
   [ms appendFormat: @"\"%@\"", __appName];
-  [ms appendString: @",appLogoURL:"];
-  [ms appendFormat: @"\"%@\"", __appLogoURL];
   [ms appendString: @",appDescription:"];
   [ms appendFormat: @"\"%@\"", __appDescription];
   [ms appendString: @",appOSConfigurations:"];

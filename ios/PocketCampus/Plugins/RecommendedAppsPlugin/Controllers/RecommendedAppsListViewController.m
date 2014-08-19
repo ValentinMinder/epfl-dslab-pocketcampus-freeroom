@@ -33,7 +33,11 @@
 
 #import "RecommendedAppTableViewCell.h"
 
-@interface RecommendedAppsListViewController()<RecommendedAppsServiceDelegate>
+#import "RecommendedAppThumbView.h"
+
+@import StoreKit;
+
+@interface RecommendedAppsListViewController()<RecommendedAppsServiceDelegate, SKStoreProductViewControllerDelegate>
 
 @property (nonatomic, strong) RecommendedAppsService* recommendedAppService;
 @property (nonatomic, strong) RecommendedAppsResponse* recommendedAppsResponse;
@@ -65,7 +69,8 @@
         return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
     };
     
-    [self.recommendedAppService getRecommendedAppsWithDelegate:self];
+    RecommendedAppsRequest* request = [[RecommendedAppsRequest alloc] initWithLanguage:[PCUtils userLanguageCode]];
+    [self.recommendedAppService getRecommendedApps:request delegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -86,7 +91,7 @@
 
 #pragma mark - RecommendedAppsServiceDelegate
 
-- (void)getRecommendedAppsDidReturn:(RecommendedAppsResponse *)response{
+- (void)getRecommendedAppsForRequest:(RecommendedAppsRequest *)request didReturn:(RecommendedAppsResponse *)response{
     self.recommendedAppsResponse = response;
     [self.tableView reloadData];
 }
@@ -103,7 +108,7 @@
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 130.0;
+    return 140.0;
 }
 
 #pragma mark - UITableViewDataSource
@@ -111,8 +116,18 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RecommendedAppCategory* category = self.recommendedAppsResponse.categories[indexPath.row];
     RecommendedAppTableViewCell* cell = nil;
+    __weak __typeof(self) welf = self;
     if (!cell) {
-        cell = [[RecommendedAppTableViewCell alloc] initWithRecommendedApps:[self recommendedAppsInCategory:category] forCategory:category];
+        cell = [[RecommendedAppTableViewCell alloc] initWithRecommendedApps:[self recommendedAppsInCategory:category] forCategory:category andAppThumbTappedBlock:^(RecommendedAppThumbView *thumbView) {
+            RecommendedApp* app = thumbView.recommendedApp;
+            RecommendedAppOSConfiguration* config = app.appOSConfigurations[@(AppStore_iOS)];
+            NSString* appStoreQuery = config.appStoreQuery;
+            NSNumber* appStoreAppId = @([appStoreQuery integerValue]);
+            SKStoreProductViewController* productViewController = [SKStoreProductViewController new];
+            productViewController.delegate = welf;
+            [productViewController loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier:appStoreAppId} completionBlock:NULL];
+            [self presentViewController:productViewController animated:YES completion:NULL];
+        }];
         cell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
     }
@@ -129,6 +144,10 @@
     return 1;
 }
 
+#pragma mark - SKStoreProductViewControllerDelegate
+- (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController{
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
 #pragma mark - Dealloc
 
 - (void)dealloc {

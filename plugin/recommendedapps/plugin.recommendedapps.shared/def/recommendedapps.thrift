@@ -3,6 +3,7 @@ namespace java org.pocketcampus.plugin.recommendedapps.shared
 struct RecommendedAppOSConfiguration{
 	1: string appStoreQuery;
 	2: string appOpenURLPattern;
+	3: string appLogoURL;
 }
 
 enum AppStore{
@@ -12,9 +13,8 @@ enum AppStore{
 struct RecommendedApp{
 	1: i32 appId;
 	2: string appName;
-	3: string appLogoURL;
-	4: string appDescription;
-	5: map<AppStore, RecommendedAppOSConfiguration> appOSConfigurations;
+	3: string appDescription;
+	4: map<AppStore, RecommendedAppOSConfiguration> appOSConfigurations;
 }
 
 struct RecommendedAppCategory{

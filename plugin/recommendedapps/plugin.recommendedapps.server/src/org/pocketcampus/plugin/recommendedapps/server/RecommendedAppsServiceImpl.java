@@ -62,8 +62,6 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 			app.setAppId(appId);
 			String appName = results.getString("AppName");
 			app.setAppName(appName);
-			String appLogoURL = results.getString("AppLogoURL");
-			app.setAppLogoURL(appLogoURL);
 			String appDescription = results.getString("AppDescription"
 					+ languageSuffix);
 			app.setAppDescription(appDescription);
@@ -86,9 +84,11 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 
 			String appStoreQuery = results.getString("AppStoreQuery");
 			String appOpenURLPattern = results.getString("AppOpenURLPattern");
+			String appLogoURL = results.getString("AppLogoURL");
+			
 
 			RecommendedAppOSConfiguration osConfiguration = new RecommendedAppOSConfiguration(
-					appStoreQuery, appOpenURLPattern);
+					appStoreQuery, appOpenURLPattern, appLogoURL);
 
 			RecommendedApp app = apps.get(appId);
 			app.getAppOSConfigurations().put(appStore, osConfiguration);

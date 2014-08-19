@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "recommendedapps.h"
+
+@class RecommendedAppThumbView;
+
 @interface RecommendedAppTableViewCell : UITableViewCell
 
-- (instancetype)initWithRecommendedApps:(NSArray*)recommendedApps forCategory:(RecommendedAppCategory*)category;
+- (instancetype)initWithRecommendedApps:(NSArray*)recommendedApps forCategory:(RecommendedAppCategory*)category andAppThumbTappedBlock:(void (^)(RecommendedAppThumbView * thumbView)) appThumbTappedBlock;
 
 @end
