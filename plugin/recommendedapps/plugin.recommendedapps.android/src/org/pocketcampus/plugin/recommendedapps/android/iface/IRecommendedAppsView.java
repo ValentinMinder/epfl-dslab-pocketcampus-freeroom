@@ -18,6 +18,5 @@ import org.pocketcampus.platform.android.core.IView;
 public interface IRecommendedAppsView extends IView {
 	void serverDown();
 	void networkErrorHappened();
-	void networkErrorCacheExists();
 	void recommendedAppsRefreshed();
 }

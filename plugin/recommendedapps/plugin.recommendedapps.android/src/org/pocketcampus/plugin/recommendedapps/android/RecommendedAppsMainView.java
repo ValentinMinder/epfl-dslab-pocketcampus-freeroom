@@ -62,7 +62,7 @@ public class RecommendedAppsMainView extends PluginView implements IRecommendedA
 		setContentView(mLayout);
 		mLayout.hideTitle();
 
-		mLayout.setText("Loading recommended apps");
+		mLayout.setText(getString(R.string.recommendedapps_downloading));
 		setActionBarTitle(getString(R.string.recommendedapps_plugin_title));
 				
 		mController.refreshRecommendedApps(this);
@@ -87,22 +87,17 @@ public class RecommendedAppsMainView extends PluginView implements IRecommendedA
 
 	@Override
 	public void networkErrorHappened() {
-		mLayout.setText("Network error");
-		Toast.makeText(getApplicationContext(), getResources().getString(
-				R.string.recommendedapps_connection_error_happened), Toast.LENGTH_SHORT).show();
-	}
-
-	@Override
-	public void serverDown() {
+		mLayout.setText(getString(R.string.recommendedapps_connection_error_happened));
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.recommendedapps_connection_error_happened), Toast.LENGTH_SHORT).show();
 		
 	}
 
 	@Override
-	public void networkErrorCacheExists() {
+	public void serverDown() {
+		mLayout.setText(getString(R.string.recommendedapps_error_recommendedapps_down));
 		Toast.makeText(getApplicationContext(), getResources().getString(
-				R.string.recommendedapps_connection_error_happened), Toast.LENGTH_SHORT).show();
+				R.string.recommendedapps_error_recommendedapps_down), Toast.LENGTH_SHORT).show();
 		
 	}
 
@@ -130,6 +125,7 @@ public class RecommendedAppsMainView extends PluginView implements IRecommendedA
 			LinearLayout categoryLayout = (LinearLayout) inflater.inflate(R.layout.app_store_category, null);
 			((TextView)categoryLayout.findViewById(R.id.recommendedAppCategoryName)).setText(category.getCategoryName());
 			((TextView)categoryLayout.findViewById(R.id.recommendedAppCategoryDescription)).setText(category.getCategoryDescription());
+			ImageLoader.getInstance().displayImage(category.getCategoryLogoURL(), (ImageView) categoryLayout.findViewById(R.id.recommendedAppCategoryImage), options);
 			LinearLayout appLayout = (LinearLayout) categoryLayout.findViewById(R.id.recommendedAppCategoryApps);
 			for(int appId : category.getAppIds()){
 				final RecommendedApp app = apps.get(appId);
