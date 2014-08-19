@@ -21,25 +21,19 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TransportStation implements org.apache.thrift.TBase<TransportStation, TransportStation._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("TransportStation");
+public class TransportGeoPoint implements org.apache.thrift.TBase<TransportGeoPoint, TransportGeoPoint._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("TransportGeoPoint");
 
-  private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.I32, (short)2);
-  private static final org.apache.thrift.protocol.TField LATITUDE_FIELD_DESC = new org.apache.thrift.protocol.TField("latitude", org.apache.thrift.protocol.TType.I32, (short)3);
-  private static final org.apache.thrift.protocol.TField LONGITUDE_FIELD_DESC = new org.apache.thrift.protocol.TField("longitude", org.apache.thrift.protocol.TType.I32, (short)4);
-  private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)6);
+  private static final org.apache.thrift.protocol.TField LATITUDE_FIELD_DESC = new org.apache.thrift.protocol.TField("latitude", org.apache.thrift.protocol.TType.DOUBLE, (short)1);
+  private static final org.apache.thrift.protocol.TField LONGITUDE_FIELD_DESC = new org.apache.thrift.protocol.TField("longitude", org.apache.thrift.protocol.TType.DOUBLE, (short)2);
 
-  private int id; // required
-  private int latitude; // required
-  private int longitude; // required
-  private String name; // required
+  private double latitude; // required
+  private double longitude; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ID((short)2, "id"),
-    LATITUDE((short)3, "latitude"),
-    LONGITUDE((short)4, "longitude"),
-    NAME((short)6, "name");
+    LATITUDE((short)1, "latitude"),
+    LONGITUDE((short)2, "longitude");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -54,14 +48,10 @@ public class TransportStation implements org.apache.thrift.TBase<TransportStatio
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 2: // ID
-          return ID;
-        case 3: // LATITUDE
+        case 1: // LATITUDE
           return LATITUDE;
-        case 4: // LONGITUDE
+        case 2: // LONGITUDE
           return LONGITUDE;
-        case 6: // NAME
-          return NAME;
         default:
           return null;
       }
@@ -102,102 +92,62 @@ public class TransportStation implements org.apache.thrift.TBase<TransportStatio
   }
 
   // isset id assignments
-  private static final int __ID_ISSET_ID = 0;
-  private static final int __LATITUDE_ISSET_ID = 1;
-  private static final int __LONGITUDE_ISSET_ID = 2;
-  private BitSet __isset_bit_vector = new BitSet(3);
+  private static final int __LATITUDE_ISSET_ID = 0;
+  private static final int __LONGITUDE_ISSET_ID = 1;
+  private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.LATITUDE, new org.apache.thrift.meta_data.FieldMetaData("latitude", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     tmpMap.put(_Fields.LONGITUDE, new org.apache.thrift.meta_data.FieldMetaData("longitude", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(TransportStation.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(TransportGeoPoint.class, metaDataMap);
   }
 
-  public TransportStation() {
+  public TransportGeoPoint() {
   }
 
-  public TransportStation(
-    int id,
-    int latitude,
-    int longitude,
-    String name)
+  public TransportGeoPoint(
+    double latitude,
+    double longitude)
   {
     this();
-    this.id = id;
-    setIdIsSet(true);
     this.latitude = latitude;
     setLatitudeIsSet(true);
     this.longitude = longitude;
     setLongitudeIsSet(true);
-    this.name = name;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public TransportStation(TransportStation other) {
+  public TransportGeoPoint(TransportGeoPoint other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    this.id = other.id;
     this.latitude = other.latitude;
     this.longitude = other.longitude;
-    if (other.isSetName()) {
-      this.name = other.name;
-    }
   }
 
-  public TransportStation deepCopy() {
-    return new TransportStation(this);
+  public TransportGeoPoint deepCopy() {
+    return new TransportGeoPoint(this);
   }
 
   @Override
   public void clear() {
-    setIdIsSet(false);
-    this.id = 0;
     setLatitudeIsSet(false);
-    this.latitude = 0;
+    this.latitude = 0.0;
     setLongitudeIsSet(false);
-    this.longitude = 0;
-    this.name = null;
+    this.longitude = 0.0;
   }
 
-  public int getId() {
-    return this.id;
-  }
-
-  public TransportStation setId(int id) {
-    this.id = id;
-    setIdIsSet(true);
-    return this;
-  }
-
-  public void unsetId() {
-    __isset_bit_vector.clear(__ID_ISSET_ID);
-  }
-
-  /** Returns true if field id is set (has been assigned a value) and false otherwise */
-  public boolean isSetId() {
-    return __isset_bit_vector.get(__ID_ISSET_ID);
-  }
-
-  public void setIdIsSet(boolean value) {
-    __isset_bit_vector.set(__ID_ISSET_ID, value);
-  }
-
-  public int getLatitude() {
+  public double getLatitude() {
     return this.latitude;
   }
 
-  public TransportStation setLatitude(int latitude) {
+  public TransportGeoPoint setLatitude(double latitude) {
     this.latitude = latitude;
     setLatitudeIsSet(true);
     return this;
@@ -216,11 +166,11 @@ public class TransportStation implements org.apache.thrift.TBase<TransportStatio
     __isset_bit_vector.set(__LATITUDE_ISSET_ID, value);
   }
 
-  public int getLongitude() {
+  public double getLongitude() {
     return this.longitude;
   }
 
-  public TransportStation setLongitude(int longitude) {
+  public TransportGeoPoint setLongitude(double longitude) {
     this.longitude = longitude;
     setLongitudeIsSet(true);
     return this;
@@ -239,45 +189,13 @@ public class TransportStation implements org.apache.thrift.TBase<TransportStatio
     __isset_bit_vector.set(__LONGITUDE_ISSET_ID, value);
   }
 
-  public String getName() {
-    return this.name;
-  }
-
-  public TransportStation setName(String name) {
-    this.name = name;
-    return this;
-  }
-
-  public void unsetName() {
-    this.name = null;
-  }
-
-  /** Returns true if field name is set (has been assigned a value) and false otherwise */
-  public boolean isSetName() {
-    return this.name != null;
-  }
-
-  public void setNameIsSet(boolean value) {
-    if (!value) {
-      this.name = null;
-    }
-  }
-
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case ID:
-      if (value == null) {
-        unsetId();
-      } else {
-        setId((Integer)value);
-      }
-      break;
-
     case LATITUDE:
       if (value == null) {
         unsetLatitude();
       } else {
-        setLatitude((Integer)value);
+        setLatitude((Double)value);
       }
       break;
 
@@ -285,15 +203,7 @@ public class TransportStation implements org.apache.thrift.TBase<TransportStatio
       if (value == null) {
         unsetLongitude();
       } else {
-        setLongitude((Integer)value);
-      }
-      break;
-
-    case NAME:
-      if (value == null) {
-        unsetName();
-      } else {
-        setName((String)value);
+        setLongitude((Double)value);
       }
       break;
 
@@ -302,17 +212,11 @@ public class TransportStation implements org.apache.thrift.TBase<TransportStatio
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case ID:
-      return Integer.valueOf(getId());
-
     case LATITUDE:
-      return Integer.valueOf(getLatitude());
+      return Double.valueOf(getLatitude());
 
     case LONGITUDE:
-      return Integer.valueOf(getLongitude());
-
-    case NAME:
-      return getName();
+      return Double.valueOf(getLongitude());
 
     }
     throw new IllegalStateException();
@@ -325,14 +229,10 @@ public class TransportStation implements org.apache.thrift.TBase<TransportStatio
     }
 
     switch (field) {
-    case ID:
-      return isSetId();
     case LATITUDE:
       return isSetLatitude();
     case LONGITUDE:
       return isSetLongitude();
-    case NAME:
-      return isSetName();
     }
     throw new IllegalStateException();
   }
@@ -341,23 +241,14 @@ public class TransportStation implements org.apache.thrift.TBase<TransportStatio
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof TransportStation)
-      return this.equals((TransportStation)that);
+    if (that instanceof TransportGeoPoint)
+      return this.equals((TransportGeoPoint)that);
     return false;
   }
 
-  public boolean equals(TransportStation that) {
+  public boolean equals(TransportGeoPoint that) {
     if (that == null)
       return false;
-
-    boolean this_present_id = true;
-    boolean that_present_id = true;
-    if (this_present_id || that_present_id) {
-      if (!(this_present_id && that_present_id))
-        return false;
-      if (this.id != that.id)
-        return false;
-    }
 
     boolean this_present_latitude = true;
     boolean that_present_latitude = true;
@@ -377,26 +268,12 @@ public class TransportStation implements org.apache.thrift.TBase<TransportStatio
         return false;
     }
 
-    boolean this_present_name = true && this.isSetName();
-    boolean that_present_name = true && that.isSetName();
-    if (this_present_name || that_present_name) {
-      if (!(this_present_name && that_present_name))
-        return false;
-      if (!this.name.equals(that.name))
-        return false;
-    }
-
     return true;
   }
 
   @Override
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_id = true;
-    builder.append(present_id);
-    if (present_id)
-      builder.append(id);
 
     boolean present_latitude = true;
     builder.append(present_latitude);
@@ -408,32 +285,17 @@ public class TransportStation implements org.apache.thrift.TBase<TransportStatio
     if (present_longitude)
       builder.append(longitude);
 
-    boolean present_name = true && (isSetName());
-    builder.append(present_name);
-    if (present_name)
-      builder.append(name);
-
     return builder.toHashCode();
   }
 
-  public int compareTo(TransportStation other) {
+  public int compareTo(TransportGeoPoint other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    TransportStation typedOther = (TransportStation)other;
+    TransportGeoPoint typedOther = (TransportGeoPoint)other;
 
-    lastComparison = Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.id, typedOther.id);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     lastComparison = Boolean.valueOf(isSetLatitude()).compareTo(typedOther.isSetLatitude());
     if (lastComparison != 0) {
       return lastComparison;
@@ -450,16 +312,6 @@ public class TransportStation implements org.apache.thrift.TBase<TransportStatio
     }
     if (isSetLongitude()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.longitude, typedOther.longitude);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetName()).compareTo(typedOther.isSetName());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetName()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.name, typedOther.name);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -481,33 +333,18 @@ public class TransportStation implements org.apache.thrift.TBase<TransportStatio
         break;
       }
       switch (field.id) {
-        case 2: // ID
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.id = iprot.readI32();
-            setIdIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 3: // LATITUDE
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.latitude = iprot.readI32();
+        case 1: // LATITUDE
+          if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
+            this.latitude = iprot.readDouble();
             setLatitudeIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // LONGITUDE
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.longitude = iprot.readI32();
+        case 2: // LONGITUDE
+          if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
+            this.longitude = iprot.readDouble();
             setLongitudeIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 6: // NAME
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.name = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -520,9 +357,6 @@ public class TransportStation implements org.apache.thrift.TBase<TransportStatio
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetId()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'id' was not found in serialized data! Struct: " + toString());
-    }
     if (!isSetLatitude()) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'latitude' was not found in serialized data! Struct: " + toString());
     }
@@ -536,33 +370,21 @@ public class TransportStation implements org.apache.thrift.TBase<TransportStatio
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    oprot.writeFieldBegin(ID_FIELD_DESC);
-    oprot.writeI32(this.id);
-    oprot.writeFieldEnd();
     oprot.writeFieldBegin(LATITUDE_FIELD_DESC);
-    oprot.writeI32(this.latitude);
+    oprot.writeDouble(this.latitude);
     oprot.writeFieldEnd();
     oprot.writeFieldBegin(LONGITUDE_FIELD_DESC);
-    oprot.writeI32(this.longitude);
+    oprot.writeDouble(this.longitude);
     oprot.writeFieldEnd();
-    if (this.name != null) {
-      oprot.writeFieldBegin(NAME_FIELD_DESC);
-      oprot.writeString(this.name);
-      oprot.writeFieldEnd();
-    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("TransportStation(");
+    StringBuilder sb = new StringBuilder("TransportGeoPoint(");
     boolean first = true;
 
-    sb.append("id:");
-    sb.append(this.id);
-    first = false;
-    if (!first) sb.append(", ");
     sb.append("latitude:");
     sb.append(this.latitude);
     first = false;
@@ -570,26 +392,14 @@ public class TransportStation implements org.apache.thrift.TBase<TransportStatio
     sb.append("longitude:");
     sb.append(this.longitude);
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("name:");
-    if (this.name == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.name);
-    }
-    first = false;
     sb.append(")");
     return sb.toString();
   }
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'id' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'latitude' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'longitude' because it's a primitive and you chose the non-beans generator.
-    if (name == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'name' was not present! Struct: " + toString());
-    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
