@@ -45,7 +45,8 @@
     _recommendedApp = recommendedApp;
     self.titleLabel.text = recommendedApp.appName;
     self.descriptionLabel.text = recommendedApp.appDescription;
-    [self.imageView setImageWithURL:[NSURL URLWithString:recommendedApp.appLogoURL]];
+    RecommendedAppOSConfiguration* osConfiguration = [recommendedApp.appOSConfigurations objectForKey:@(AppStore_iOS)];
+    [self.imageView setImageWithURL:[NSURL URLWithString:osConfiguration.appLogoURL]];
 }
 
 #pragma mark - Description

@@ -17,9 +17,9 @@
 
 
 enum AppStore {
-  AppStore_iOS = 0,
-  AppStore_Android = 1,
-  AppStore_WindowsPhone8 = 2
+  AppStore_iOS = 1,
+  AppStore_Android = 2,
+  AppStore_WindowsPhone8 = 3
 };
 
 enum RecommendedAppsResponseStatus {
@@ -28,20 +28,23 @@ enum RecommendedAppsResponseStatus {
 };
 
 @interface RecommendedAppOSConfiguration : NSObject <TBase, NSCoding> {
-  NSString * __appStoreURL;
+  NSString * __appStoreQuery;
   NSString * __appOpenURLPattern;
+  NSString * __appLogoURL;
 
-  BOOL __appStoreURL_isset;
+  BOOL __appStoreQuery_isset;
   BOOL __appOpenURLPattern_isset;
+  BOOL __appLogoURL_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=appStoreURL, setter=setAppStoreURL:) NSString * appStoreURL;
+@property (nonatomic, retain, getter=appStoreQuery, setter=setAppStoreQuery:) NSString * appStoreQuery;
 @property (nonatomic, retain, getter=appOpenURLPattern, setter=setAppOpenURLPattern:) NSString * appOpenURLPattern;
+@property (nonatomic, retain, getter=appLogoURL, setter=setAppLogoURL:) NSString * appLogoURL;
 #endif
 
 - (id) init;
-- (id) initWithAppStoreURL: (NSString *) appStoreURL appOpenURLPattern: (NSString *) appOpenURLPattern;
+- (id) initWithAppStoreQuery: (NSString *) appStoreQuery appOpenURLPattern: (NSString *) appOpenURLPattern appLogoURL: (NSString *) appLogoURL;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -49,10 +52,10 @@ enum RecommendedAppsResponseStatus {
 - (void) validate;
 
 #if !__has_feature(objc_arc)
-- (NSString *) appStoreURL;
-- (void) setAppStoreURL: (NSString *) appStoreURL;
+- (NSString *) appStoreQuery;
+- (void) setAppStoreQuery: (NSString *) appStoreQuery;
 #endif
-- (BOOL) appStoreURLIsSet;
+- (BOOL) appStoreQueryIsSet;
 
 #if !__has_feature(objc_arc)
 - (NSString *) appOpenURLPattern;
@@ -60,18 +63,22 @@ enum RecommendedAppsResponseStatus {
 #endif
 - (BOOL) appOpenURLPatternIsSet;
 
+#if !__has_feature(objc_arc)
+- (NSString *) appLogoURL;
+- (void) setAppLogoURL: (NSString *) appLogoURL;
+#endif
+- (BOOL) appLogoURLIsSet;
+
 @end
 
 @interface RecommendedApp : NSObject <TBase, NSCoding> {
   int32_t __appId;
   NSString * __appName;
-  NSString * __appLogoURL;
   NSString * __appDescription;
   NSMutableDictionary * __appOSConfigurations;
 
   BOOL __appId_isset;
   BOOL __appName_isset;
-  BOOL __appLogoURL_isset;
   BOOL __appDescription_isset;
   BOOL __appOSConfigurations_isset;
 }
@@ -79,13 +86,12 @@ enum RecommendedAppsResponseStatus {
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 @property (nonatomic, getter=appId, setter=setAppId:) int32_t appId;
 @property (nonatomic, retain, getter=appName, setter=setAppName:) NSString * appName;
-@property (nonatomic, retain, getter=appLogoURL, setter=setAppLogoURL:) NSString * appLogoURL;
 @property (nonatomic, retain, getter=appDescription, setter=setAppDescription:) NSString * appDescription;
 @property (nonatomic, retain, getter=appOSConfigurations, setter=setAppOSConfigurations:) NSMutableDictionary * appOSConfigurations;
 #endif
 
 - (id) init;
-- (id) initWithAppId: (int32_t) appId appName: (NSString *) appName appLogoURL: (NSString *) appLogoURL appDescription: (NSString *) appDescription appOSConfigurations: (NSMutableDictionary *) appOSConfigurations;
+- (id) initWithAppId: (int32_t) appId appName: (NSString *) appName appDescription: (NSString *) appDescription appOSConfigurations: (NSMutableDictionary *) appOSConfigurations;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -103,12 +109,6 @@ enum RecommendedAppsResponseStatus {
 - (void) setAppName: (NSString *) appName;
 #endif
 - (BOOL) appNameIsSet;
-
-#if !__has_feature(objc_arc)
-- (NSString *) appLogoURL;
-- (void) setAppLogoURL: (NSString *) appLogoURL;
-#endif
-- (BOOL) appLogoURLIsSet;
 
 #if !__has_feature(objc_arc)
 - (NSString *) appDescription;
@@ -230,8 +230,34 @@ enum RecommendedAppsResponseStatus {
 
 @end
 
+@interface RecommendedAppsRequest : NSObject <TBase, NSCoding> {
+  NSString * __language;
+
+  BOOL __language_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=language, setter=setLanguage:) NSString * language;
+#endif
+
+- (id) init;
+- (id) initWithLanguage: (NSString *) language;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (void) validate;
+
+#if !__has_feature(objc_arc)
+- (NSString *) language;
+- (void) setLanguage: (NSString *) language;
+#endif
+- (BOOL) languageIsSet;
+
+@end
+
 @protocol RecommendedAppsService <NSObject>
-- (RecommendedAppsResponse *) getRecommendedApps;  // throws TException
+- (RecommendedAppsResponse *) getRecommendedApps: (RecommendedAppsRequest *) request;  // throws TException
 @end
 
 @interface RecommendedAppsServiceClient : NSObject <RecommendedAppsService> {

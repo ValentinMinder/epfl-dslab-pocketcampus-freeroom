@@ -9,11 +9,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-BTStoreView.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-CDZQRScanningViewController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -72,67 +67,62 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>16888BFC1959490498A6CA1A</key>
+		<key>13BFC7B7464D4CE5AF6A5928</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>25E0CF04EA854C7495FF32B0</key>
+		<key>5DBB74441A31462FA759A36C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2DA3A33922384C89AE070B5B</key>
+		<key>76F678D4A87541B895B68FED</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3888B727DB7645A2A0B82904</key>
+		<key>935F2398FAC44DC4AB918AFD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>424AD8A58D734F8EB75F65C9</key>
+		<key>97E7893DB6DF4ADEA41E1EDB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>47A9B3DCD70545A6B4DD0E3C</key>
+		<key>A2D7D635F8EC4AF49773D869</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7C96F81494B44AF5999DCEA9</key>
+		<key>B5569EB98EDC4856AB8A8D06</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>81CF03BDB9B04C7B9D45F653</key>
+		<key>CE075F91AFA4473398A4244B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9E535D27F24649C89BC972F2</key>
+		<key>D5183315B72E436F9FDEBB41</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A486E5721F1648999660C43D</key>
+		<key>EB3F83CA49D04E5BB274E7BB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C68BAFA2E2E9423EB56C4D6B</key>
+		<key>F23A02EFC508461684299A3A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C6B4C938301E4966A67430B0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FEE211ABCE884782A890793F</key>
+		<key>F95B7B5D004C467DAC3DAC04</key>
 		<dict>
 			<key>primary</key>
 			<true/>

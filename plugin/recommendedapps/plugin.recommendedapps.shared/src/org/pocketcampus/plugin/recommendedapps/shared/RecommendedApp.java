@@ -26,13 +26,11 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
 
   private static final org.apache.thrift.protocol.TField APP_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("appId", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField APP_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("appName", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField APP_LOGO_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("appLogoURL", org.apache.thrift.protocol.TType.STRING, (short)3);
-  private static final org.apache.thrift.protocol.TField APP_DESCRIPTION_FIELD_DESC = new org.apache.thrift.protocol.TField("appDescription", org.apache.thrift.protocol.TType.STRING, (short)4);
-  private static final org.apache.thrift.protocol.TField APP_OSCONFIGURATIONS_FIELD_DESC = new org.apache.thrift.protocol.TField("appOSConfigurations", org.apache.thrift.protocol.TType.MAP, (short)5);
+  private static final org.apache.thrift.protocol.TField APP_DESCRIPTION_FIELD_DESC = new org.apache.thrift.protocol.TField("appDescription", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField APP_OSCONFIGURATIONS_FIELD_DESC = new org.apache.thrift.protocol.TField("appOSConfigurations", org.apache.thrift.protocol.TType.MAP, (short)4);
 
   private int appId; // required
   private String appName; // required
-  private String appLogoURL; // required
   private String appDescription; // required
   private Map<AppStore,RecommendedAppOSConfiguration> appOSConfigurations; // required
 
@@ -40,9 +38,8 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     APP_ID((short)1, "appId"),
     APP_NAME((short)2, "appName"),
-    APP_LOGO_URL((short)3, "appLogoURL"),
-    APP_DESCRIPTION((short)4, "appDescription"),
-    APP_OSCONFIGURATIONS((short)5, "appOSConfigurations");
+    APP_DESCRIPTION((short)3, "appDescription"),
+    APP_OSCONFIGURATIONS((short)4, "appOSConfigurations");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -61,11 +58,9 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
           return APP_ID;
         case 2: // APP_NAME
           return APP_NAME;
-        case 3: // APP_LOGO_URL
-          return APP_LOGO_URL;
-        case 4: // APP_DESCRIPTION
+        case 3: // APP_DESCRIPTION
           return APP_DESCRIPTION;
-        case 5: // APP_OSCONFIGURATIONS
+        case 4: // APP_OSCONFIGURATIONS
           return APP_OSCONFIGURATIONS;
         default:
           return null;
@@ -117,8 +112,6 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.APP_NAME, new org.apache.thrift.meta_data.FieldMetaData("appName", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.APP_LOGO_URL, new org.apache.thrift.meta_data.FieldMetaData("appLogoURL", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.APP_DESCRIPTION, new org.apache.thrift.meta_data.FieldMetaData("appDescription", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.APP_OSCONFIGURATIONS, new org.apache.thrift.meta_data.FieldMetaData("appOSConfigurations", org.apache.thrift.TFieldRequirementType.DEFAULT, 
@@ -135,7 +128,6 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
   public RecommendedApp(
     int appId,
     String appName,
-    String appLogoURL,
     String appDescription,
     Map<AppStore,RecommendedAppOSConfiguration> appOSConfigurations)
   {
@@ -143,7 +135,6 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
     this.appId = appId;
     setAppIdIsSet(true);
     this.appName = appName;
-    this.appLogoURL = appLogoURL;
     this.appDescription = appDescription;
     this.appOSConfigurations = appOSConfigurations;
   }
@@ -157,9 +148,6 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
     this.appId = other.appId;
     if (other.isSetAppName()) {
       this.appName = other.appName;
-    }
-    if (other.isSetAppLogoURL()) {
-      this.appLogoURL = other.appLogoURL;
     }
     if (other.isSetAppDescription()) {
       this.appDescription = other.appDescription;
@@ -190,7 +178,6 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
     setAppIdIsSet(false);
     this.appId = 0;
     this.appName = null;
-    this.appLogoURL = null;
     this.appDescription = null;
     this.appOSConfigurations = null;
   }
@@ -239,30 +226,6 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
   public void setAppNameIsSet(boolean value) {
     if (!value) {
       this.appName = null;
-    }
-  }
-
-  public String getAppLogoURL() {
-    return this.appLogoURL;
-  }
-
-  public RecommendedApp setAppLogoURL(String appLogoURL) {
-    this.appLogoURL = appLogoURL;
-    return this;
-  }
-
-  public void unsetAppLogoURL() {
-    this.appLogoURL = null;
-  }
-
-  /** Returns true if field appLogoURL is set (has been assigned a value) and false otherwise */
-  public boolean isSetAppLogoURL() {
-    return this.appLogoURL != null;
-  }
-
-  public void setAppLogoURLIsSet(boolean value) {
-    if (!value) {
-      this.appLogoURL = null;
     }
   }
 
@@ -343,14 +306,6 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
       }
       break;
 
-    case APP_LOGO_URL:
-      if (value == null) {
-        unsetAppLogoURL();
-      } else {
-        setAppLogoURL((String)value);
-      }
-      break;
-
     case APP_DESCRIPTION:
       if (value == null) {
         unsetAppDescription();
@@ -378,9 +333,6 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
     case APP_NAME:
       return getAppName();
 
-    case APP_LOGO_URL:
-      return getAppLogoURL();
-
     case APP_DESCRIPTION:
       return getAppDescription();
 
@@ -402,8 +354,6 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
       return isSetAppId();
     case APP_NAME:
       return isSetAppName();
-    case APP_LOGO_URL:
-      return isSetAppLogoURL();
     case APP_DESCRIPTION:
       return isSetAppDescription();
     case APP_OSCONFIGURATIONS:
@@ -443,15 +393,6 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
         return false;
     }
 
-    boolean this_present_appLogoURL = true && this.isSetAppLogoURL();
-    boolean that_present_appLogoURL = true && that.isSetAppLogoURL();
-    if (this_present_appLogoURL || that_present_appLogoURL) {
-      if (!(this_present_appLogoURL && that_present_appLogoURL))
-        return false;
-      if (!this.appLogoURL.equals(that.appLogoURL))
-        return false;
-    }
-
     boolean this_present_appDescription = true && this.isSetAppDescription();
     boolean that_present_appDescription = true && that.isSetAppDescription();
     if (this_present_appDescription || that_present_appDescription) {
@@ -486,11 +427,6 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
     builder.append(present_appName);
     if (present_appName)
       builder.append(appName);
-
-    boolean present_appLogoURL = true && (isSetAppLogoURL());
-    builder.append(present_appLogoURL);
-    if (present_appLogoURL)
-      builder.append(appLogoURL);
 
     boolean present_appDescription = true && (isSetAppDescription());
     builder.append(present_appDescription);
@@ -529,16 +465,6 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
     }
     if (isSetAppName()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.appName, typedOther.appName);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetAppLogoURL()).compareTo(typedOther.isSetAppLogoURL());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetAppLogoURL()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.appLogoURL, typedOther.appLogoURL);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -595,21 +521,14 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // APP_LOGO_URL
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.appLogoURL = iprot.readString();
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 4: // APP_DESCRIPTION
+        case 3: // APP_DESCRIPTION
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.appDescription = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 5: // APP_OSCONFIGURATIONS
+        case 4: // APP_OSCONFIGURATIONS
           if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
               org.apache.thrift.protocol.TMap _map0 = iprot.readMapBegin();
@@ -652,11 +571,6 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
       oprot.writeString(this.appName);
       oprot.writeFieldEnd();
     }
-    if (this.appLogoURL != null) {
-      oprot.writeFieldBegin(APP_LOGO_URL_FIELD_DESC);
-      oprot.writeString(this.appLogoURL);
-      oprot.writeFieldEnd();
-    }
     if (this.appDescription != null) {
       oprot.writeFieldBegin(APP_DESCRIPTION_FIELD_DESC);
       oprot.writeString(this.appDescription);
@@ -693,14 +607,6 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
       sb.append("null");
     } else {
       sb.append(this.appName);
-    }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("appLogoURL:");
-    if (this.appLogoURL == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.appLogoURL);
     }
     first = false;
     if (!first) sb.append(", ");
