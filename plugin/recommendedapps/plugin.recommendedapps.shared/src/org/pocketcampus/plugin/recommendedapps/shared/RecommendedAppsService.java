@@ -25,13 +25,13 @@ public class RecommendedAppsService {
 
   public interface Iface {
 
-    public RecommendedAppsResponse getRecommendedApps() throws org.apache.thrift.TException;
+    public RecommendedAppsResponse getRecommendedApps(RecommendedAppsRequest request) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void getRecommendedApps(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getRecommendedApps_call> resultHandler) throws org.apache.thrift.TException;
+    public void getRecommendedApps(RecommendedAppsRequest request, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getRecommendedApps_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -55,15 +55,16 @@ public class RecommendedAppsService {
       super(iprot, oprot);
     }
 
-    public RecommendedAppsResponse getRecommendedApps() throws org.apache.thrift.TException
+    public RecommendedAppsResponse getRecommendedApps(RecommendedAppsRequest request) throws org.apache.thrift.TException
     {
-      send_getRecommendedApps();
+      send_getRecommendedApps(request);
       return recv_getRecommendedApps();
     }
 
-    public void send_getRecommendedApps() throws org.apache.thrift.TException
+    public void send_getRecommendedApps(RecommendedAppsRequest request) throws org.apache.thrift.TException
     {
       getRecommendedApps_args args = new getRecommendedApps_args();
+      args.setRequest(request);
       sendBase("getRecommendedApps", args);
     }
 
@@ -95,21 +96,24 @@ public class RecommendedAppsService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getRecommendedApps(org.apache.thrift.async.AsyncMethodCallback<getRecommendedApps_call> resultHandler) throws org.apache.thrift.TException {
+    public void getRecommendedApps(RecommendedAppsRequest request, org.apache.thrift.async.AsyncMethodCallback<getRecommendedApps_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getRecommendedApps_call method_call = new getRecommendedApps_call(resultHandler, this, ___protocolFactory, ___transport);
+      getRecommendedApps_call method_call = new getRecommendedApps_call(request, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getRecommendedApps_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getRecommendedApps_call(org.apache.thrift.async.AsyncMethodCallback<getRecommendedApps_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private RecommendedAppsRequest request;
+      public getRecommendedApps_call(RecommendedAppsRequest request, org.apache.thrift.async.AsyncMethodCallback<getRecommendedApps_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
+        this.request = request;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getRecommendedApps", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getRecommendedApps_args args = new getRecommendedApps_args();
+        args.setRequest(request);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -152,7 +156,7 @@ public class RecommendedAppsService {
 
       protected getRecommendedApps_result getResult(I iface, getRecommendedApps_args args) throws org.apache.thrift.TException {
         getRecommendedApps_result result = new getRecommendedApps_result();
-        result.success = iface.getRecommendedApps();
+        result.success = iface.getRecommendedApps(args.request);
         return result;
       }
     }
@@ -162,11 +166,13 @@ public class RecommendedAppsService {
   public static class getRecommendedApps_args implements org.apache.thrift.TBase<getRecommendedApps_args, getRecommendedApps_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getRecommendedApps_args");
 
+    private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
+    private RecommendedAppsRequest request; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
+      REQUEST((short)1, "request");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -181,6 +187,8 @@ public class RecommendedAppsService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
+          case 1: // REQUEST
+            return REQUEST;
           default:
             return null;
         }
@@ -219,9 +227,14 @@ public class RecommendedAppsService {
         return _fieldName;
       }
     }
+
+    // isset id assignments
+
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, RecommendedAppsRequest.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getRecommendedApps_args.class, metaDataMap);
     }
@@ -229,10 +242,20 @@ public class RecommendedAppsService {
     public getRecommendedApps_args() {
     }
 
+    public getRecommendedApps_args(
+      RecommendedAppsRequest request)
+    {
+      this();
+      this.request = request;
+    }
+
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getRecommendedApps_args(getRecommendedApps_args other) {
+      if (other.isSetRequest()) {
+        this.request = new RecommendedAppsRequest(other.request);
+      }
     }
 
     public getRecommendedApps_args deepCopy() {
@@ -241,15 +264,51 @@ public class RecommendedAppsService {
 
     @Override
     public void clear() {
+      this.request = null;
+    }
+
+    public RecommendedAppsRequest getRequest() {
+      return this.request;
+    }
+
+    public getRecommendedApps_args setRequest(RecommendedAppsRequest request) {
+      this.request = request;
+      return this;
+    }
+
+    public void unsetRequest() {
+      this.request = null;
+    }
+
+    /** Returns true if field request is set (has been assigned a value) and false otherwise */
+    public boolean isSetRequest() {
+      return this.request != null;
+    }
+
+    public void setRequestIsSet(boolean value) {
+      if (!value) {
+        this.request = null;
+      }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
+      case REQUEST:
+        if (value == null) {
+          unsetRequest();
+        } else {
+          setRequest((RecommendedAppsRequest)value);
+        }
+        break;
+
       }
     }
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
+      case REQUEST:
+        return getRequest();
+
       }
       throw new IllegalStateException();
     }
@@ -261,6 +320,8 @@ public class RecommendedAppsService {
       }
 
       switch (field) {
+      case REQUEST:
+        return isSetRequest();
       }
       throw new IllegalStateException();
     }
@@ -278,12 +339,26 @@ public class RecommendedAppsService {
       if (that == null)
         return false;
 
+      boolean this_present_request = true && this.isSetRequest();
+      boolean that_present_request = true && that.isSetRequest();
+      if (this_present_request || that_present_request) {
+        if (!(this_present_request && that_present_request))
+          return false;
+        if (!this.request.equals(that.request))
+          return false;
+      }
+
       return true;
     }
 
     @Override
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_request = true && (isSetRequest());
+      builder.append(present_request);
+      if (present_request)
+        builder.append(request);
 
       return builder.toHashCode();
     }
@@ -296,6 +371,16 @@ public class RecommendedAppsService {
       int lastComparison = 0;
       getRecommendedApps_args typedOther = (getRecommendedApps_args)other;
 
+      lastComparison = Boolean.valueOf(isSetRequest()).compareTo(typedOther.isSetRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.request, typedOther.request);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -313,6 +398,14 @@ public class RecommendedAppsService {
           break;
         }
         switch (field.id) {
+          case 1: // REQUEST
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.request = new RecommendedAppsRequest();
+              this.request.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
         }
@@ -328,6 +421,11 @@ public class RecommendedAppsService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
+      if (this.request != null) {
+        oprot.writeFieldBegin(REQUEST_FIELD_DESC);
+        this.request.write(oprot);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -337,6 +435,13 @@ public class RecommendedAppsService {
       StringBuilder sb = new StringBuilder("getRecommendedApps_args(");
       boolean first = true;
 
+      sb.append("request:");
+      if (this.request == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.request);
+      }
+      first = false;
       sb.append(")");
       return sb.toString();
     }

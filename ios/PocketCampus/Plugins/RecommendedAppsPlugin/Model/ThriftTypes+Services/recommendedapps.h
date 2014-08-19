@@ -17,9 +17,9 @@
 
 
 enum AppStore {
-  AppStore_iOS = 0,
-  AppStore_Android = 1,
-  AppStore_WindowsPhone8 = 2
+  AppStore_iOS = 1,
+  AppStore_Android = 2,
+  AppStore_WindowsPhone8 = 3
 };
 
 enum RecommendedAppsResponseStatus {
@@ -28,20 +28,20 @@ enum RecommendedAppsResponseStatus {
 };
 
 @interface RecommendedAppOSConfiguration : NSObject <TBase, NSCoding> {
-  NSString * __appStoreURL;
+  NSString * __appStoreQuery;
   NSString * __appOpenURLPattern;
 
-  BOOL __appStoreURL_isset;
+  BOOL __appStoreQuery_isset;
   BOOL __appOpenURLPattern_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=appStoreURL, setter=setAppStoreURL:) NSString * appStoreURL;
+@property (nonatomic, retain, getter=appStoreQuery, setter=setAppStoreQuery:) NSString * appStoreQuery;
 @property (nonatomic, retain, getter=appOpenURLPattern, setter=setAppOpenURLPattern:) NSString * appOpenURLPattern;
 #endif
 
 - (id) init;
-- (id) initWithAppStoreURL: (NSString *) appStoreURL appOpenURLPattern: (NSString *) appOpenURLPattern;
+- (id) initWithAppStoreQuery: (NSString *) appStoreQuery appOpenURLPattern: (NSString *) appOpenURLPattern;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -49,10 +49,10 @@ enum RecommendedAppsResponseStatus {
 - (void) validate;
 
 #if !__has_feature(objc_arc)
-- (NSString *) appStoreURL;
-- (void) setAppStoreURL: (NSString *) appStoreURL;
+- (NSString *) appStoreQuery;
+- (void) setAppStoreQuery: (NSString *) appStoreQuery;
 #endif
-- (BOOL) appStoreURLIsSet;
+- (BOOL) appStoreQueryIsSet;
 
 #if !__has_feature(objc_arc)
 - (NSString *) appOpenURLPattern;
@@ -230,8 +230,34 @@ enum RecommendedAppsResponseStatus {
 
 @end
 
+@interface RecommendedAppsRequest : NSObject <TBase, NSCoding> {
+  NSString * __language;
+
+  BOOL __language_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=language, setter=setLanguage:) NSString * language;
+#endif
+
+- (id) init;
+- (id) initWithLanguage: (NSString *) language;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (void) validate;
+
+#if !__has_feature(objc_arc)
+- (NSString *) language;
+- (void) setLanguage: (NSString *) language;
+#endif
+- (BOOL) languageIsSet;
+
+@end
+
 @protocol RecommendedAppsService <NSObject>
-- (RecommendedAppsResponse *) getRecommendedApps;  // throws TException
+- (RecommendedAppsResponse *) getRecommendedApps: (RecommendedAppsRequest *) request;  // throws TException
 @end
 
 @interface RecommendedAppsServiceClient : NSObject <RecommendedAppsService> {

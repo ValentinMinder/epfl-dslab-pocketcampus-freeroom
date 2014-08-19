@@ -11,9 +11,9 @@ import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
 public enum AppStore implements org.apache.thrift.TEnum {
-  iOS(0),
-  Android(1),
-  WindowsPhone8(2);
+  iOS(1),
+  Android(2),
+  WindowsPhone8(3);
 
   private final int value;
 
@@ -34,11 +34,11 @@ public enum AppStore implements org.apache.thrift.TEnum {
    */
   public static AppStore findByValue(int value) { 
     switch (value) {
-      case 0:
-        return iOS;
       case 1:
-        return Android;
+        return iOS;
       case 2:
+        return Android;
+      case 3:
         return WindowsPhone8;
       default:
         return null;

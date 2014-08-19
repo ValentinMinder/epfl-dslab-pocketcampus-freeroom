@@ -28,11 +28,11 @@
   return self;
 }
 
-- (id) initWithAppStoreURL: (NSString *) appStoreURL appOpenURLPattern: (NSString *) appOpenURLPattern
+- (id) initWithAppStoreQuery: (NSString *) appStoreQuery appOpenURLPattern: (NSString *) appOpenURLPattern
 {
   self = [super init];
-  __appStoreURL = [appStoreURL retain_stub];
-  __appStoreURL_isset = YES;
+  __appStoreQuery = [appStoreQuery retain_stub];
+  __appStoreQuery_isset = YES;
   __appOpenURLPattern = [appOpenURLPattern retain_stub];
   __appOpenURLPattern_isset = YES;
   return self;
@@ -41,10 +41,10 @@
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
-  if ([decoder containsValueForKey: @"appStoreURL"])
+  if ([decoder containsValueForKey: @"appStoreQuery"])
   {
-    __appStoreURL = [[decoder decodeObjectForKey: @"appStoreURL"] retain_stub];
-    __appStoreURL_isset = YES;
+    __appStoreQuery = [[decoder decodeObjectForKey: @"appStoreQuery"] retain_stub];
+    __appStoreQuery_isset = YES;
   }
   if ([decoder containsValueForKey: @"appOpenURLPattern"])
   {
@@ -56,9 +56,9 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  if (__appStoreURL_isset)
+  if (__appStoreQuery_isset)
   {
-    [encoder encodeObject: __appStoreURL forKey: @"appStoreURL"];
+    [encoder encodeObject: __appStoreQuery forKey: @"appStoreQuery"];
   }
   if (__appOpenURLPattern_isset)
   {
@@ -68,30 +68,30 @@
 
 - (void) dealloc
 {
-  [__appStoreURL release_stub];
+  [__appStoreQuery release_stub];
   [__appOpenURLPattern release_stub];
   [super dealloc_stub];
 }
 
-- (NSString *) appStoreURL {
-  return [[__appStoreURL retain_stub] autorelease_stub];
+- (NSString *) appStoreQuery {
+  return [[__appStoreQuery retain_stub] autorelease_stub];
 }
 
-- (void) setAppStoreURL: (NSString *) appStoreURL {
-  [appStoreURL retain_stub];
-  [__appStoreURL release_stub];
-  __appStoreURL = appStoreURL;
-  __appStoreURL_isset = YES;
+- (void) setAppStoreQuery: (NSString *) appStoreQuery {
+  [appStoreQuery retain_stub];
+  [__appStoreQuery release_stub];
+  __appStoreQuery = appStoreQuery;
+  __appStoreQuery_isset = YES;
 }
 
-- (BOOL) appStoreURLIsSet {
-  return __appStoreURL_isset;
+- (BOOL) appStoreQueryIsSet {
+  return __appStoreQuery_isset;
 }
 
-- (void) unsetAppStoreURL {
-  [__appStoreURL release_stub];
-  __appStoreURL = nil;
-  __appStoreURL_isset = NO;
+- (void) unsetAppStoreQuery {
+  [__appStoreQuery release_stub];
+  __appStoreQuery = nil;
+  __appStoreQuery_isset = NO;
 }
 
 - (NSString *) appOpenURLPattern {
@@ -133,7 +133,7 @@
       case 1:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
-          [self setAppStoreURL: fieldValue];
+          [self setAppStoreQuery: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
@@ -157,10 +157,10 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"RecommendedAppOSConfiguration"];
-  if (__appStoreURL_isset) {
-    if (__appStoreURL != nil) {
-      [outProtocol writeFieldBeginWithName: @"appStoreURL" type: TType_STRING fieldID: 1];
-      [outProtocol writeString: __appStoreURL];
+  if (__appStoreQuery_isset) {
+    if (__appStoreQuery != nil) {
+      [outProtocol writeFieldBeginWithName: @"appStoreQuery" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __appStoreQuery];
       [outProtocol writeFieldEnd];
     }
   }
@@ -181,8 +181,8 @@
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"RecommendedAppOSConfiguration("];
-  [ms appendString: @"appStoreURL:"];
-  [ms appendFormat: @"\"%@\"", __appStoreURL];
+  [ms appendString: @"appStoreQuery:"];
+  [ms appendFormat: @"\"%@\"", __appStoreQuery];
   [ms appendString: @",appOpenURLPattern:"];
   [ms appendFormat: @"\"%@\"", __appOpenURLPattern];
   [ms appendString: @")"];
@@ -1123,40 +1123,68 @@
 
 @end
 
-
-@implementation recommendedappsConstants
-+ (void) initialize {
-}
-@end
-
-@interface getRecommendedApps_args : NSObject <TBase, NSCoding> {
-}
-
-- (id) init;
-
-- (void) read: (id <TProtocol>) inProtocol;
-- (void) write: (id <TProtocol>) outProtocol;
-
-- (void) validate;
-
-@end
-
-@implementation getRecommendedApps_args
+@implementation RecommendedAppsRequest
 
 - (id) init
 {
   self = [super init];
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+#endif
+  return self;
+}
+
+- (id) initWithLanguage: (NSString *) language
+{
+  self = [super init];
+  __language = [language retain_stub];
+  __language_isset = YES;
   return self;
 }
 
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
+  if ([decoder containsValueForKey: @"language"])
+  {
+    __language = [[decoder decodeObjectForKey: @"language"] retain_stub];
+    __language_isset = YES;
+  }
   return self;
 }
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
+  if (__language_isset)
+  {
+    [encoder encodeObject: __language forKey: @"language"];
+  }
+}
+
+- (void) dealloc
+{
+  [__language release_stub];
+  [super dealloc_stub];
+}
+
+- (NSString *) language {
+  return [[__language retain_stub] autorelease_stub];
+}
+
+- (void) setLanguage: (NSString *) language {
+  [language retain_stub];
+  [__language release_stub];
+  __language = language;
+  __language_isset = YES;
+}
+
+- (BOOL) languageIsSet {
+  return __language_isset;
+}
+
+- (void) unsetLanguage {
+  [__language release_stub];
+  __language = nil;
+  __language_isset = NO;
 }
 
 - (void) read: (id <TProtocol>) inProtocol
@@ -1174,6 +1202,171 @@
     }
     switch (fieldID)
     {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setLanguage: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"RecommendedAppsRequest"];
+  if (__language_isset) {
+    if (__language != nil) {
+      [outProtocol writeFieldBeginWithName: @"language" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __language];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (void) validate {
+  // check for required fields
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"RecommendedAppsRequest("];
+  [ms appendString: @"language:"];
+  [ms appendFormat: @"\"%@\"", __language];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+
+@implementation recommendedappsConstants
++ (void) initialize {
+}
+@end
+
+@interface getRecommendedApps_args : NSObject <TBase, NSCoding> {
+  RecommendedAppsRequest * __request;
+
+  BOOL __request_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=request, setter=setRequest:) RecommendedAppsRequest * request;
+#endif
+
+- (id) init;
+- (id) initWithRequest: (RecommendedAppsRequest *) request;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (void) validate;
+
+#if !__has_feature(objc_arc)
+- (RecommendedAppsRequest *) request;
+- (void) setRequest: (RecommendedAppsRequest *) request;
+#endif
+- (BOOL) requestIsSet;
+
+@end
+
+@implementation getRecommendedApps_args
+
+- (id) init
+{
+  self = [super init];
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+#endif
+  return self;
+}
+
+- (id) initWithRequest: (RecommendedAppsRequest *) request
+{
+  self = [super init];
+  __request = [request retain_stub];
+  __request_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"request"])
+  {
+    __request = [[decoder decodeObjectForKey: @"request"] retain_stub];
+    __request_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__request_isset)
+  {
+    [encoder encodeObject: __request forKey: @"request"];
+  }
+}
+
+- (void) dealloc
+{
+  [__request release_stub];
+  [super dealloc_stub];
+}
+
+- (RecommendedAppsRequest *) request {
+  return [[__request retain_stub] autorelease_stub];
+}
+
+- (void) setRequest: (RecommendedAppsRequest *) request {
+  [request retain_stub];
+  [__request release_stub];
+  __request = request;
+  __request_isset = YES;
+}
+
+- (BOOL) requestIsSet {
+  return __request_isset;
+}
+
+- (void) unsetRequest {
+  [__request release_stub];
+  __request = nil;
+  __request_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          RecommendedAppsRequest *fieldValue = [[RecommendedAppsRequest alloc] init];
+          [fieldValue read: inProtocol];
+          [self setRequest: fieldValue];
+          [fieldValue release_stub];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -1185,6 +1378,13 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"getRecommendedApps_args"];
+  if (__request_isset) {
+    if (__request != nil) {
+      [outProtocol writeFieldBeginWithName: @"request" type: TType_STRUCT fieldID: 1];
+      [__request write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -1195,6 +1395,8 @@
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"getRecommendedApps_args("];
+  [ms appendString: @"request:"];
+  [ms appendFormat: @"%@", __request];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -1374,10 +1576,15 @@
   [super dealloc_stub];
 }
 
-- (void) send_getRecommendedApps
+- (void) send_getRecommendedApps: (RecommendedAppsRequest *) request
 {
   [outProtocol writeMessageBeginWithName: @"getRecommendedApps" type: TMessageType_CALL sequenceID: 0];
   [outProtocol writeStructBeginWithName: @"getRecommendedApps_args"];
+  if (request != nil)  {
+    [outProtocol writeFieldBeginWithName: @"request" type: TType_STRUCT fieldID: 1];
+    [request write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
   [outProtocol writeMessageEnd];
@@ -1403,9 +1610,9 @@
                                            reason: @"getRecommendedApps failed: unknown result"];
 }
 
-- (RecommendedAppsResponse *) getRecommendedApps
+- (RecommendedAppsResponse *) getRecommendedApps: (RecommendedAppsRequest *) request
 {
-  [self send_getRecommendedApps];
+  [self send_getRecommendedApps : request];
   return [self recv_getRecommendedApps];
 }
 
@@ -1476,7 +1683,7 @@
   [args read: inProtocol];
   [inProtocol readMessageEnd];
   GetRecommendedApps_result * result = [[GetRecommendedApps_result alloc] init];
-  [result setSuccess: [mService getRecommendedApps]];
+  [result setSuccess: [mService getRecommendedApps: [args request]]];
   [outProtocol writeMessageBeginWithName: @"getRecommendedApps"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];

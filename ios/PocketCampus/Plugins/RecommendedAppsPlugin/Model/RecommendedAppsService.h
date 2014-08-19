@@ -13,7 +13,7 @@
 
 @interface RecommendedAppsService : Service <ServiceProtocol>
 
-- (void)getRecommendedAppsWithDelegate:(id)delegate;
+- (void)getRecommendedApps:(RecommendedAppsRequest*)request delegate:(id)delegate;
 
 @end
 
@@ -21,7 +21,7 @@
 
 @optional
 
-- (void)getRecommendedAppsDidReturn:(RecommendedAppsResponse*)response;
-- (void)getRecommendedAppsFailed;
+- (void)getRecommendedAppsForRequest:(RecommendedAppsRequest*)request didReturn:(RecommendedAppsResponse*)response;
+- (void)getRecommendedAppsFailedForRequest:(RecommendedAppsRequest*)request;
 
 @end
