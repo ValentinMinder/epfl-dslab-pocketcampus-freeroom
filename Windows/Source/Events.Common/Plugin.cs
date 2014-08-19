@@ -23,7 +23,6 @@ namespace PocketCampus.Events
         private const string ViewItemQuery = "showEventItem";
         private const string EventIdParameter = "eventItemId";
 
-        private IPluginSettings _settings;
 
         /// <summary>
         /// Gets the plugin's ID.
@@ -47,7 +46,7 @@ namespace PocketCampus.Events
         public void Initialize( INavigationService navigationService )
         {
             Container.Bind<IEventsService, EventsService>();
-            _settings = Container.Bind<IPluginSettings, PluginSettings>();
+            Container.Bind<IPluginSettings, PluginSettings>();
         }
 
         /// <summary>
@@ -55,7 +54,8 @@ namespace PocketCampus.Events
         /// </summary>
         public void NavigateTo( INavigationService navigationService )
         {
-            navigationService.NavigateTo<EventPoolViewModel, long>( EventPool.RootId );
+            var request = new ViewEventPoolRequest( EventPool.RootId );
+            navigationService.NavigateTo<EventPoolViewModel, ViewEventPoolRequest>( request );
         }
 
         /// <summary>
@@ -68,30 +68,30 @@ namespace PocketCampus.Events
                 case ViewPoolQuery:
                     string ticket = null;
                     parameters.TryGetValue( UserTicketParameter, out ticket );
-                    if ( ticket != null )
-                    {
-                        _settings.UserTickets.Add( ticket );
-                    }
 
                     string favoriteIdString = null;
                     if ( parameters.TryGetValue( MarkAsFavoriteParameter, out favoriteIdString ) )
                     {
                         long favoriteId = long.Parse( favoriteIdString );
-                        _settings.FavoriteItemIds.Add( favoriteId );
+                        var request = new ViewEventItemRequest( favoriteId, EventItemFavoriteOption.Requested, ticket );
                         // Ignore the pool, go to the item
-                        navigationService.NavigateTo<EventItemViewModel, ViewEventItemRequest>( new ViewEventItemRequest( favoriteId, true ) );
+                        navigationService.NavigateTo<EventItemViewModel, ViewEventItemRequest>( request );
                     }
                     else
                     {
                         long poolId = long.Parse( parameters[PoolIdParameter] );
-                        navigationService.NavigateTo<EventPoolViewModel, long>( poolId );
+                        var request = new ViewEventPoolRequest( poolId, ticket );
+                        navigationService.NavigateTo<EventPoolViewModel, ViewEventPoolRequest>( request );
                     }
                     break;
 
                 case ViewItemQuery:
-                    long itemId = long.Parse( parameters[EventIdParameter] );
-                    navigationService.NavigateTo<EventItemViewModel, ViewEventItemRequest>( new ViewEventItemRequest( itemId, false ) );
-                    break;
+                    {
+                        long itemId = long.Parse( parameters[EventIdParameter] );
+                        var request = new ViewEventItemRequest( itemId, EventItemFavoriteOption.Forbidden );
+                        navigationService.NavigateTo<EventItemViewModel, ViewEventItemRequest>( request );
+                        break;
+                    }
             }
         }
     }

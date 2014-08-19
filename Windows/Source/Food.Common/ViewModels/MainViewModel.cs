@@ -100,7 +100,7 @@ namespace PocketCampus.Food.ViewModels
         [LogParameter( "$Param.Name" )]
         public Command<Restaurant> ViewMapItemCommand
         {
-            get { return GetCommand<Restaurant>( r => Messenger.Send( new MapSearchRequest( r.MapItem ) ) ); }
+            get { return this.GetCommand<Restaurant>( r => Messenger.Send( new MapSearchRequest( r.MapItem ) ) ); }
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace PocketCampus.Food.ViewModels
         [LogId( "OpenSettings" )]
         public Command ViewSettingsCommand
         {
-            get { return GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
+            get { return this.GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
         }
 
 
@@ -119,14 +119,14 @@ namespace PocketCampus.Food.ViewModels
         [LogId( "RateMeal" )]
         public Command<Meal> RateMealCommand
         {
-            get { return GetCommand<Meal>( _navigationService.NavigateTo<RatingViewModel, Meal>, _ => AreRatingsEnabled ); }
+            get { return this.GetCommand<Meal>( _navigationService.NavigateTo<RatingViewModel, Meal>, _ => AreRatingsEnabled ); }
         }
 
 
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( ICache cache, INavigationService navigationService, IFoodService menuService,
+        public MainViewModel( IDataCache cache, INavigationService navigationService, IFoodService menuService,
                               ICredentialsStore credentials, IPluginSettings settings, IServerSettings serverSettings )
             : base( cache )
         {

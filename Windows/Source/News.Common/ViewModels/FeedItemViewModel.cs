@@ -42,14 +42,14 @@ namespace PocketCampus.News.ViewModels
         [LogId( "ViewInBrowser" )]
         public Command OpenInBrowserCommand
         {
-            get { return GetCommand( () => _browserService.NavigateTo( ItemContent.Url ) ); }
+            get { return this.GetCommand( () => _browserService.NavigateTo( ItemContent.Url ) ); }
         }
 
 
         /// <summary>
         /// Creates a new FeedItemViewModel.
         /// </summary>
-        public FeedItemViewModel( ICache cache, INewsService newsService, IBrowserService browserService,
+        public FeedItemViewModel( IDataCache cache, INewsService newsService, IBrowserService browserService,
                                   FeedItem item )
             : base( cache )
         {

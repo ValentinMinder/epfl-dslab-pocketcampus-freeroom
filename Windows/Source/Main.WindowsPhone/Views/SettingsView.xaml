@@ -119,8 +119,8 @@
 
 
         <!-- "Use colored tile" checkbox & explanation -->
-        <CheckBox x:Name="UseColoredTileBox"
-                  Grid.Row="3"
+        <CheckBox Grid.Row="3"
+                  IsChecked="{Binding Settings.UseColoredTile, Mode=TwoWay}"
                   Margin="12,30">
             <StackPanel>
                 <TextBlock Text="{Binding Resources.UseColoredTile, Source={StaticResource Strings}}"

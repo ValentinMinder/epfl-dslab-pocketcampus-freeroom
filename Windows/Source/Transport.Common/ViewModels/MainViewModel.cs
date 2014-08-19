@@ -75,7 +75,7 @@ namespace PocketCampus.Transport.ViewModels
         [LogId( "AddStation" )]
         public Command AddStationCommand
         {
-            get { return GetCommand( _navigationService.NavigateTo<AddStationViewModel> ); }
+            get { return this.GetCommand( _navigationService.NavigateTo<AddStationViewModel> ); }
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace PocketCampus.Transport.ViewModels
         [LogId( "RemoveStation" )]
         public Command<Station> RemoveStationCommand
         {
-            get { return GetCommand<Station>( RemoveStation ); }
+            get { return this.GetCommand<Station>( RemoveStation ); }
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace PocketCampus.Transport.ViewModels
         [LogId( "OpenSettings" )]
         public Command ViewSettingsCommand
         {
-            get { return GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
+            get { return this.GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
         }
 
 

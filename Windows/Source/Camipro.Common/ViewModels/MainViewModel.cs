@@ -62,13 +62,13 @@ namespace PocketCampus.Camipro.ViewModels
         [LogId( "RequestEmail" )]
         public AsyncCommand RequestEbankingEmailCommand
         {
-            get { return GetAsyncCommand( RequestEbankingEmailAsync ); }
+            get { return this.GetAsyncCommand( RequestEbankingEmailAsync ); }
         }
 
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
-        public MainViewModel( ICache cache, ICamiproService camiproService, ISecureRequestHandler requestHandler )
+        public MainViewModel( IDataCache cache, ICamiproService camiproService, ISecureRequestHandler requestHandler )
             : base( cache )
         {
             _camiproService = camiproService;

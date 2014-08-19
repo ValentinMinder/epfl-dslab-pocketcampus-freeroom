@@ -65,13 +65,13 @@ namespace PocketCampus.Moodle.ViewModels
         [LogId( "DownloadAndOpenFile" )]
         public AsyncCommand<CourseFile> DownloadAndOpenCommand
         {
-            get { return GetAsyncCommand<CourseFile>( DownloadAndOpenAsync ); }
+            get { return this.GetAsyncCommand<CourseFile>( DownloadAndOpenAsync ); }
         }
 
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( ICache cache, ISecureRequestHandler requestHandler, IMoodleService moodleService,
+        public MainViewModel( IDataCache cache, ISecureRequestHandler requestHandler, IMoodleService moodleService,
                               IMoodleDownloader downloader, IFileStorage storage )
             : base( cache )
         {

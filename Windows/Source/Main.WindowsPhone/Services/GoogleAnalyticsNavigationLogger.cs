@@ -24,17 +24,17 @@ namespace PocketCampus.Main.Services
         {
         }
 
-        protected override void LogAction( string viewModelId, SpecialAction action )
+        protected override void LogAction( string viewModelId, LoggedSpecialAction action )
         {
 #if !DEBUG
             switch ( action )
             {
-                case SpecialAction.ForwardsNavigation:
-                case SpecialAction.BackwardsNavigation:
+                case LoggedSpecialAction.ForwardsNavigation:
+                case LoggedSpecialAction.BackwardsNavigation:
                     EasyTracker.GetTracker().SendView( viewModelId );
                     break;
 
-                case SpecialAction.Refresh:
+                case LoggedSpecialAction.Refresh:
                     LogCommand( viewModelId, RefreshCommandId, null );
                     break;
             }

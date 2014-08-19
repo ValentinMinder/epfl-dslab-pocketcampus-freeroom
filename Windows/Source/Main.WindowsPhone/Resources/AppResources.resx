@@ -146,14 +146,6 @@
   <data name="LogIn" xml:space="preserve">
     <value>log in</value>
   </data>
-  <data name="FirstRunCaption" xml:space="preserve">
-    <value>Welcome!</value>
-  </data>
-  <data name="FirstRunMessage" xml:space="preserve">
-    <value>Thanks for downloading PocketCampus!
-
-Our privacy policy is simple: Your data and location are not stored or transmitted anywhere.</value>
-  </data>
   <data name="AboutAppName" xml:space="preserve">
     <value>PocketCampus EPFL</value>
   </data>

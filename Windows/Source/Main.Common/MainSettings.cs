@@ -31,6 +31,14 @@ namespace PocketCampus.Main
             set { Set( value ); }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the app should use a colored tile, as opposed to a white one.
+        /// </summary>
+        public bool UseColoredTile
+        {
+            get { return Get<bool>(); }
+            set { Set( value ); }
+        }
 
         /// <summary>
         /// Gets or sets the session for the server. (separate from the per-plugin sessions)
@@ -67,6 +75,7 @@ namespace PocketCampus.Main
                 { x => x.Configuration, () => new ServerConfiguration( "https", 4433, "Camipro", "Directory", "Events", "Food", "IsAcademia", 
                                                                                       "Map", "Moodle", "News", "Satellite", "Transport" ) },
                 { x => x.AuthenticationStatus, () => AuthenticationStatus.NotAuthenticated },
+                { x => x.UseColoredTile, () => true },
                 { x => x.Session, () => null },
                 { x => x.Sessions, () => new Dictionary<string, string>() }
             };

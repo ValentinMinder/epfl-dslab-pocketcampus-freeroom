@@ -70,7 +70,7 @@ namespace PocketCampus.Map.ViewModels
         [LogId( "CenterOnCampus" )]
         public Command CenterOnCampusCommand
         {
-            get { return GetCommand( CenterOnCampus ); }
+            get { return this.GetCommand( CenterOnCampus ); }
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace PocketCampus.Map.ViewModels
         [LogId( "CenterOnSelf" )]
         public ICommand CenterOnPositionCommand
         {
-            get { return GetCommand( CenterOnPosition, () => _settings.UseGeolocation ); }
+            get { return this.GetCommand( CenterOnPosition, () => _settings.UseGeolocation ); }
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace PocketCampus.Map.ViewModels
         [LogId( "OpenSettings" )]
         public Command ViewSettingsCommand
         {
-            get { return GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
+            get { return this.GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
         }
 
 

@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using ThinMvvm;
 
 namespace PocketCampus.Events
@@ -15,9 +16,9 @@ namespace PocketCampus.Events
         /// <summary>
         /// Gets or sets the stored user tickets.
         /// </summary>
-        public List<string> UserTickets
+        public ObservableCollection<string> UserTickets
         {
-            get { return Get<List<string>>(); }
+            get { return Get<ObservableCollection<string>>(); }
             set { Set( value ); }
         }
 
@@ -60,9 +61,9 @@ namespace PocketCampus.Events
         /// <summary>
         /// Gets or sets the IDs of the user's favorite items.
         /// </summary>
-        public List<long> FavoriteItemIds
+        public ObservableCollection<long> FavoriteItemIds
         {
-            get { return Get<List<long>>(); }
+            get { return Get<ObservableCollection<long>>(); }
             set { Set( value ); }
         }
 
@@ -98,12 +99,12 @@ namespace PocketCampus.Events
         {
             return new SettingsDefaultValues
             {
-                { x => x.UserTickets, () => new List<string>() },
+                { x => x.UserTickets, () => new ObservableCollection<string>() },
                 { x => x.SearchPeriod,() => SearchPeriod.OneMonth },
                 { x => x.SearchInPast, () => false },
                 { x => x.EventCategories, () => new Dictionary<int, string>() },
                 { x => x.EventTags, () => new Dictionary<string, string>() },
-                { x => x.FavoriteItemIds, () => new List<long>() },
+                { x => x.FavoriteItemIds, () => new ObservableCollection<long>() },
                 { x => x.ExcludedCategoriesByPool, () => new Dictionary<long, List<int>>() },
                 { x => x.ExcludedTagsByPool, () => new Dictionary<long, List<string>>() }
             };

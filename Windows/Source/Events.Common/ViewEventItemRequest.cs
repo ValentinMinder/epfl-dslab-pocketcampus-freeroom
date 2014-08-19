@@ -15,18 +15,24 @@ namespace PocketCampus.Events
         public long ItemId { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether the item can be set as a favorite.
+        /// Gets an option for the item's "favorite" status.
         /// </summary>
-        public bool CanBeFavorite { get; private set; }
+        public EventItemFavoriteOption FavoriteOption { get; private set; }
+
+        /// <summary>
+        /// Gets the user's ticket, if there is one.
+        /// </summary>
+        public string UserTicket { get; private set; }
 
 
         /// <summary>
         /// Creates a new ViewEventItemRequest.
         /// </summary>
-        public ViewEventItemRequest( long itemId, bool canBeFavorite )
+        public ViewEventItemRequest( long itemId, EventItemFavoriteOption favoriteOption, string userTicket = null )
         {
             ItemId = itemId;
-            CanBeFavorite = canBeFavorite;
+            FavoriteOption = favoriteOption;
+            UserTicket = userTicket;
         }
     }
 }

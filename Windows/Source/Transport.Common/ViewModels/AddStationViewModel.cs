@@ -36,7 +36,7 @@ namespace PocketCampus.Transport.ViewModels
         [LogId( "Add" )]
         public AsyncCommand<string> AddCommand
         {
-            get { return GetAsyncCommand<string>( AddAsync ); }
+            get { return this.GetAsyncCommand<string>( AddAsync ); }
         }
 
 

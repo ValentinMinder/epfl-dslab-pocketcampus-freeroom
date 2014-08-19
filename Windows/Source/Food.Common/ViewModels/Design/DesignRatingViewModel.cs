@@ -11,7 +11,7 @@ using ThinMvvm;
 
 namespace PocketCampus.Food.ViewModels.Design
 {
-    public sealed class DesignRatingViewModel
+    public sealed class DesignRatingViewModel : ICommandOwner
     {
 #if DEBUG
         public DataStatus DataStatus { get { return DataStatus.DataLoaded; } }
@@ -54,7 +54,7 @@ Buffet de salades",
 
         public ICommand VoteCommand
         {
-            get { return new Command( this, () => { } ); }
+            get { return this.GetCommand( () => { } ); }
         }
 #endif
     }

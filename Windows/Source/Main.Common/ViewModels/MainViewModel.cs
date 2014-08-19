@@ -25,7 +25,7 @@ namespace PocketCampus.Main.ViewModels
         private readonly IServerAccess _serverAccess;
         private readonly IPluginLoader _pluginLoader;
         private readonly IMainSettings _settings;
-        private readonly ITileCreator _tileCreator;
+        private readonly ITileService _tileCreator;
         private readonly ViewPluginRequest _request;
 
         private IPlugin[] _plugins;
@@ -46,7 +46,7 @@ namespace PocketCampus.Main.ViewModels
         [LogId( "OpenAbout" )]
         public Command OpenAboutPageCommand
         {
-            get { return GetCommand( _navigationService.NavigateTo<AboutViewModel> ); }
+            get { return this.GetCommand( _navigationService.NavigateTo<AboutViewModel> ); }
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace PocketCampus.Main.ViewModels
         [LogId( "OpenSettings" )]
         public Command OpenSettingsPageCommand
         {
-            get { return GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
+            get { return this.GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace PocketCampus.Main.ViewModels
         [LogParameter( "$Param.Id" )]
         public Command<IPlugin> CreatePluginTileCommand
         {
-            get { return GetCommand<IPlugin>( p => _tileCreator.CreateTile( p ) ); }
+            get { return this.GetCommand<IPlugin>( p => _tileCreator.CreateTile( p ) ); }
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace PocketCampus.Main.ViewModels
         [LogParameter( "$Param.Id" )]
         public Command<IPlugin> OpenPluginCommand
         {
-            get { return GetCommand<IPlugin>( OpenPlugin ); }
+            get { return this.GetCommand<IPlugin>( OpenPlugin ); }
         }
 
 
@@ -83,7 +83,7 @@ namespace PocketCampus.Main.ViewModels
         /// Creates a new MainViewModel.
         /// </summary>
         public MainViewModel( INavigationService navigationService, IServerAccess serverAccess,
-                              IPluginLoader pluginLoader, IMainSettings settings, ITileCreator tileCreator,
+                              IPluginLoader pluginLoader, IMainSettings settings, ITileService tileCreator,
                               ViewPluginRequest request )
         {
             _navigationService = navigationService;

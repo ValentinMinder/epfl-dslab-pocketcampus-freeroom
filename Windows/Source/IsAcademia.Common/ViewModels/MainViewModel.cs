@@ -56,14 +56,14 @@ namespace PocketCampus.IsAcademia.ViewModels
         [LogId( "ViewRoomOnMap" )]
         public Command<string> ViewRoomOnMapCommand
         {
-            get { return GetCommand<string>( room => Messenger.Send( new MapSearchRequest( room ) ) ); }
+            get { return this.GetCommand<string>( room => Messenger.Send( new MapSearchRequest( room ) ) ); }
         }
 
 
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( ICache cache, IIsAcademiaService isaService, ISecureRequestHandler requestHandler )
+        public MainViewModel( IDataCache cache, IIsAcademiaService isaService, ISecureRequestHandler requestHandler )
             : base( cache )
         {
             _isaService = isaService;

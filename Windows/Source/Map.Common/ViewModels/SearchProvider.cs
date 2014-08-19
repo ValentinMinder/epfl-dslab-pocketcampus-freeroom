@@ -48,7 +48,7 @@ namespace PocketCampus.Map.ViewModels
         [LogId( "Search" )]
         public AsyncCommand<string> SearchCommand
         {
-            get { return GetAsyncCommand<string>( Search ); }
+            get { return this.GetAsyncCommand<string>( Search ); }
         }
 
 

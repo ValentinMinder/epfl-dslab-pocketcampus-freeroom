@@ -31,6 +31,12 @@ namespace PocketCampus.Main.ViewModels.Design
                 set { }
             }
 
+            public bool UseColoredTile
+            {
+                get { return true; }
+                set { }
+            }
+
             public AuthenticationStatus AuthenticationStatus
             {
                 get { return AuthenticationStatus.AuthenticatedTemporarily; }

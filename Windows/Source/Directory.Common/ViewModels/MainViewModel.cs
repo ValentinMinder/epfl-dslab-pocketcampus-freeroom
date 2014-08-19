@@ -76,13 +76,13 @@ namespace PocketCampus.Directory.ViewModels
         [LogId( "Search" )]
         public AsyncCommand SearchCommand
         {
-            get { return GetAsyncCommand( () => SearchAsync( Query, true ) ); }
+            get { return this.GetAsyncCommand( () => SearchAsync( Query, true ) ); }
         }
 
         [LogId( "SearchForMore" )]
         public AsyncCommand SearchForMoreCommand
         {
-            get { return GetAsyncCommand( SearchForMoreAsync, () => _currentPaginationToken != null ); }
+            get { return this.GetAsyncCommand( SearchForMoreAsync, () => _currentPaginationToken != null ); }
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace PocketCampus.Directory.ViewModels
         [LogId( "ViewPersion" )]
         public Command<Person> ViewPersonCommand
         {
-            get { return GetCommand<Person>( _navigationService.NavigateTo<PersonViewModel, Person> ); }
+            get { return this.GetCommand<Person>( _navigationService.NavigateTo<PersonViewModel, Person> ); }
         }
 
 

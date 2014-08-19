@@ -34,13 +34,13 @@ namespace PocketCampus.Main.ViewModels
         [LogId( "ViewWebsite" )]
         public Command<string> BrowseUrlCommand
         {
-            get { return GetCommand<string>( _browserService.NavigateTo ); }
+            get { return this.GetCommand<string>( _browserService.NavigateTo ); }
         }
 
         [LogId( "SendEmail" )]
         public Command<string> SendEmailCommand
         {
-            get { return GetCommand<string>( _emailService.ComposeEmail ); }
+            get { return this.GetCommand<string>( _emailService.ComposeEmail ); }
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace PocketCampus.Main.ViewModels
         [LogId( "RateOnStore" )]
         public Command RateAppCommand
         {
-            get { return GetCommand( _ratingService.RequestRating ); }
+            get { return this.GetCommand( _ratingService.RequestRating ); }
         }
 
 

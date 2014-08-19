@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
+using PocketCampus.Main.Services;
 using ThinMvvm;
 using ThinMvvm.Logging;
 
@@ -36,7 +37,7 @@ namespace PocketCampus.Main.ViewModels
         [LogId( "LogIn" )]
         public Command LogInCommand
         {
-            get { return GetCommand( () => _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( new AuthenticationRequest() ) ); }
+            get { return this.GetCommand( () => _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( new AuthenticationRequest() ) ); }
         }
 
         /// <summary>
@@ -45,19 +46,25 @@ namespace PocketCampus.Main.ViewModels
         [LogId( "LogOff" )]
         public AsyncCommand LogOffCommand
         {
-            get { return GetAsyncCommand( ExecuteLogOffCommand ); }
+            get { return this.GetAsyncCommand( ExecuteLogOffCommand ); }
         }
 
 
         /// <summary>
         /// Creates a new SettingsViewModel.
         /// </summary>
-        public SettingsViewModel( IMainSettings settings, ITequilaAuthenticator authenticator, INavigationService navigationService, ICredentialsStore credentials )
+        public SettingsViewModel( IMainSettings settings, ITequilaAuthenticator authenticator, INavigationService navigationService,
+                                  ICredentialsStore credentials, ITileService tileService )
         {
             Settings = settings;
             Credentials = credentials;
             _authenticator = authenticator;
             _navigationService = navigationService;
+
+            Settings.ListenToProperty( x => x.UseColoredTile, () =>
+            {
+                tileService.SetTileColoring( Settings.UseColoredTile );
+            } );
         }
 
 

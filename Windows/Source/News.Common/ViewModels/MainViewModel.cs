@@ -38,14 +38,14 @@ namespace PocketCampus.News.ViewModels
         [LogId( "OpenNewsItem" )]
         public Command<FeedItem> ViewFeedItemCommand
         {
-            get { return GetCommand<FeedItem>( _navigationService.NavigateTo<FeedItemViewModel, FeedItem> ); }
+            get { return this.GetCommand<FeedItem>( _navigationService.NavigateTo<FeedItemViewModel, FeedItem> ); }
         }
 
 
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( ICache cache, INewsService feedsService, INavigationService navigationService )
+        public MainViewModel( IDataCache cache, INewsService feedsService, INavigationService navigationService )
             : base( cache )
         {
             _feedsService = feedsService;

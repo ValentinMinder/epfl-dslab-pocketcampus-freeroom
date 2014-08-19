@@ -35,7 +35,7 @@ namespace PocketCampus.Satellite.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( ICache cache, ISatelliteService beerService )
+        public MainViewModel( IDataCache cache, ISatelliteService beerService )
             : base( cache )
         {
             _beerService = beerService;

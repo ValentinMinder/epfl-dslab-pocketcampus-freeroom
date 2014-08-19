@@ -20,7 +20,7 @@ namespace PocketCampus.Events.ViewModels
     /// ViewModel for pool details.
     /// </summary>
     [LogId( "/events/pool" )]
-    public sealed class EventPoolViewModel : CachedDataViewModel<long, EventPoolResponse>
+    public sealed class EventPoolViewModel : CachedDataViewModel<ViewEventPoolRequest, EventPoolResponse>
     {
         private static readonly TimeSpan CacheDuration = TimeSpan.FromDays( 7 );
 
@@ -84,10 +84,12 @@ namespace PocketCampus.Events.ViewModels
         {
             get
             {
-                return GetCommand<EventItem>( item =>
-                    _navigationService.NavigateTo<EventItemViewModel, ViewEventItemRequest>(
-                        new ViewEventItemRequest( item.Id, Pool.DisableFavorites != true ) )
-                );
+                return this.GetCommand<EventItem>( item =>
+                {
+                    var option = Pool.DisableFavorites == true ? EventItemFavoriteOption.Forbidden : EventItemFavoriteOption.Optional;
+                    var request = new ViewEventItemRequest( item.Id, option );
+                    _navigationService.NavigateTo<EventItemViewModel, ViewEventItemRequest>( request );
+                } );
             }
         }
 
@@ -97,7 +99,7 @@ namespace PocketCampus.Events.ViewModels
         [LogId( "ShowCategories" )]
         public Command FilterByCategoryCommand
         {
-            get { return GetCommand( () => _navigationService.NavigateTo<CategoryFilterViewModel, EventPool>( Pool ), () => Pool.DisableCategoryFiltering != true ); }
+            get { return this.GetCommand( () => _navigationService.NavigateTo<CategoryFilterViewModel, EventPool>( Pool ), () => Pool.DisableCategoryFiltering != true ); }
         }
 
         /// <summary>
@@ -106,7 +108,7 @@ namespace PocketCampus.Events.ViewModels
         [LogId( "ShowTags" )]
         public Command FilterByTagCommand
         {
-            get { return GetCommand( () => _navigationService.NavigateTo<TagFilterViewModel, EventPool>( Pool ), () => Pool.DisableTagFiltering != true ); }
+            get { return this.GetCommand( () => _navigationService.NavigateTo<TagFilterViewModel, EventPool>( Pool ), () => Pool.DisableTagFiltering != true ); }
         }
 
         /// <summary>
@@ -115,7 +117,7 @@ namespace PocketCampus.Events.ViewModels
         [LogId( "ShowSettings" )]
         public Command ViewSettingsCommand
         {
-            get { return GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
+            get { return this.GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
         }
 
         /// <summary>
@@ -124,7 +126,7 @@ namespace PocketCampus.Events.ViewModels
         [LogId( "RequestEmail" )]
         public AsyncCommand RequestFavoriteEmailCommand
         {
-            get { return GetAsyncCommand( RequestFavoriteEmailAsync, () => Pool.EnableFavoriteEmailRequest == true ); }
+            get { return this.GetAsyncCommand( RequestFavoriteEmailAsync, () => Pool.EnableFavoriteEmailRequest == true ); }
         }
 
         /// <summary>
@@ -133,16 +135,16 @@ namespace PocketCampus.Events.ViewModels
         [LogId( "ShowCodeScanner" )]
         public Command ScanCodeCommand
         {
-            get { return GetCommand( _codeScanner.ScanCode, () => Pool.EnableCodeScanning == true ); }
+            get { return this.GetCommand( _codeScanner.ScanCode, () => Pool.EnableCodeScanning == true ); }
         }
 
 
         /// <summary>
         /// Creates a new EventPoolViewModel.
         /// </summary>
-        public EventPoolViewModel( ICache cache, INavigationService navigationService, IEventsService eventsService,
+        public EventPoolViewModel( IDataCache cache, INavigationService navigationService, IEventsService eventsService,
                                    IPluginSettings settings, IEmailPrompt emailPrompt, ICodeScanner codeScanner,
-                                   long poolId )
+                                   ViewEventPoolRequest request )
             : base( cache )
         {
             _navigationService = navigationService;
@@ -150,9 +152,14 @@ namespace PocketCampus.Events.ViewModels
             _settings = settings;
             _emailPrompt = emailPrompt;
             _codeScanner = codeScanner;
-            _poolId = poolId;
+            _poolId = request.PoolId;
 
             _previousSettings = Tuple.Create( (SearchPeriod) 0, false );
+
+            if ( request.UserTicket != null )
+            {
+                _settings.UserTickets.Add( request.UserTicket );
+            }
         }
 
 

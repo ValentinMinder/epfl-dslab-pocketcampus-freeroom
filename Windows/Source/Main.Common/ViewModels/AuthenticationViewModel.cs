@@ -86,7 +86,7 @@ namespace PocketCampus.Main.ViewModels
         [LogValueConverter( typeof( SavePasswordLogValueConverter ) )]
         public AsyncCommand AuthenticateCommand
         {
-            get { return GetAsyncCommand( AuthenticateAsync, () => !IsAuthenticating ); }
+            get { return this.GetAsyncCommand( AuthenticateAsync, () => !IsAuthenticating ); }
         }
 
 

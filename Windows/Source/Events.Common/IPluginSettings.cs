@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace PocketCampus.Events
@@ -15,7 +16,7 @@ namespace PocketCampus.Events
         /// <summary>
         /// Gets or sets the stored user tickets.
         /// </summary>
-        List<string> UserTickets { get; set; }
+        ObservableCollection<string> UserTickets { get; set; }
 
         /// <summary>
         /// Gets or sets the search period for events.
@@ -40,7 +41,7 @@ namespace PocketCampus.Events
         /// <summary>
         /// Gets or sets the IDs of the user's favorite items.
         /// </summary>
-        List<long> FavoriteItemIds { get; set; }
+        ObservableCollection<long> FavoriteItemIds { get; set; }
 
         /// <summary>
         /// Gets or sets the excluded category IDs by pool.

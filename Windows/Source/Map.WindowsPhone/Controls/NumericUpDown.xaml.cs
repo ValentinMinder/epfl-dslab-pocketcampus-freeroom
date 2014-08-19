@@ -69,7 +69,7 @@ namespace PocketCampus.Map.Controls
         /// </summary>
         public Command IncreaseCommand
         {
-            get { return GetCommand( () => Value++, () => Value < Maximum ); }
+            get { return this.GetCommand( () => Value++, () => Value < Maximum ); }
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace PocketCampus.Map.Controls
         /// </summary>
         public Command DecreaseCommand
         {
-            get { return GetCommand( () => Value--, () => Value > Minimum ); }
+            get { return this.GetCommand( () => Value--, () => Value > Minimum ); }
         }
 
 

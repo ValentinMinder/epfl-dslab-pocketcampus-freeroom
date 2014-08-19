@@ -2,10 +2,8 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using System.Linq;
 using System.Windows.Media;
-using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using PocketCampus.Common;
@@ -22,22 +20,17 @@ namespace PocketCampus.Main
     /// <summary>
     /// The PocketCampus application.
     /// </summary>
-    public partial class App : BaseApp
+    public partial class App : AppBase
     {
-        public new static App Current
+        protected override string Language
         {
-            get { return (App) BaseApp.Current; }
+            get { return AppResources.ResourceLanguage; }
         }
 
-        /// <summary>
-        /// Gets the navigation service used by the app.
-        /// </summary>
-        public IWindowsPhoneNavigationService NavigationService { get; private set; }
-
-        /// <summary>
-        /// Gets the URI mapper used by the app.
-        /// </summary>
-        public PocketCampusUriMapper UriMapper { get; private set; }
+        protected override string FlowDirection
+        {
+            get { return AppResources.ResourceFlowDirection; }
+        }
 
         /// <summary>
         /// Creates a new App.
@@ -45,6 +38,23 @@ namespace PocketCampus.Main
         public App()
         {
             InitializeComponent();
+
+            Container.Bind<ISettingsStorage, WindowsPhoneSettingsStorage>();
+            Container.Bind<IWindowsPhoneNavigationService, WindowsPhoneNavigationService>();
+
+            Container.Bind<IHttpClient, HttpClient>();
+            Container.Bind<IBrowserService, BrowserService>();
+            Container.Bind<IEmailService, EmailService>();
+            Container.Bind<IPhoneService, PhoneService>();
+            Container.Bind<ILocationService, LocationService>();
+            Container.Bind<ITileService, TileService>();
+            Container.Bind<IDeviceIdentifier, DeviceIdentifier>();
+            Container.Bind<IRatingService, RatingService>();
+            Container.Bind<IDataCache, WindowsPhoneDataCache>();
+            Container.Bind<ICredentialsStore, WindowsPhoneCredentialsStore>();
+            Container.Bind<IPluginLoader, PluginLoader>();
+
+            Container.Bind<AppDependencies, CustomAppDependencies>();
 
             // Debug settings
             DebugSettings.EnableFrameRateCounter = false;
@@ -66,66 +76,54 @@ namespace PocketCampus.Main
             return new OrientationChangingFrame();
         }
 
-        /// <summary>
-        /// Gets the language and flow direction of the app.
-        /// </summary>
-        protected override Tuple<string, string> GetLanguageAndFlowDirection()
+        protected override void Start( AppDependencies dependencies, AppArguments arguments )
         {
-            return Tuple.Create( AppResources.ResourceLanguage, AppResources.ResourceFlowDirection );
-        }
-
-        /// <summary>
-        /// Initializes the app, by binding interfaces to concrete types and ViewModels to Views, and also loading plugins.
-        /// </summary>
-        protected override void Initialize()
-        {
-            Container.Bind<IHttpClient, HttpClient>();
-            Container.Bind<ISettingsStorage, WindowsPhoneSettingsStorage>();
-            var pluginLoader = Container.Bind<IPluginLoader, PluginLoader>();
-
-            Container.Bind<IBrowserService, BrowserService>();
-            Container.Bind<IEmailService, EmailService>();
-            Container.Bind<IPhoneService, PhoneService>();
-            Container.Bind<ILocationService, LocationService>();
-            Container.Bind<ITileCreator, TileCreator>();
-            Container.Bind<IDeviceIdentifier, DeviceIdentifier>();
-            Container.Bind<IRatingService, RatingService>();
-            Container.Bind<ICache, WindowsPhoneCache>();
-            Container.Bind<ICredentialsStore, WindowsPhoneCredentialsStore>();
+            var deps = (CustomAppDependencies) dependencies;
 
             // URI mapping
-            RootFrame.UriMapper = UriMapper = new PocketCampusUriMapper( pluginLoader.GetPlugins() );
-            LauncherEx.RegisterProtocol( PocketCampusUriMapper.PocketCampusProtocol, UriMapper.NavigateToCustomUri );
+            //RootFrame.UriMapper = UriMapper = new PocketCampusUriMapper( pluginLoader.GetPlugins() );
+            //LauncherEx.RegisterProtocol( PocketCampusUriMapper.PocketCampusProtocol, UriMapper.NavigateToCustomUri );
+
+            /*
+            string id;
+            if ( NavigationContext.QueryString.TryGetValue( TileCreator.PluginKey, out id ) )
+            {
+                App.Current.NavigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest( id ) );
+                return;
+            }
+
+            string redirect;
+            if ( NavigationContext.QueryString.TryGetValue( PocketCampusUriMapper.RedirectRequestKey, out redirect ) )
+            {
+                redirect = HttpUtility.UrlDecode( redirect );
+                App.Current.UriMapper.NavigateToCustomUri( redirect );
+                return;
+            }
+            */
 
             // ViewModels from Main
-            NavigationService = Container.Bind<INavigationService, WindowsPhoneNavigationService>();
-            NavigationService.Bind<MainViewModel>( "/Views/MainView.xaml" );
-            NavigationService.Bind<AuthenticationViewModel>( "/Views/AuthenticationView.xaml" );
-            NavigationService.Bind<SettingsViewModel>( "/Views/SettingsView.xaml" );
-            NavigationService.Bind<AboutViewModel>( "/Views/AboutView.xaml" );
+            deps.NavigationService.Bind<MainViewModel>( "/Views/MainView.xaml" );
+            deps.NavigationService.Bind<AuthenticationViewModel>( "/Views/AuthenticationView.xaml" );
+            deps.NavigationService.Bind<SettingsViewModel>( "/Views/SettingsView.xaml" );
+            deps.NavigationService.Bind<AboutViewModel>( "/Views/AboutView.xaml" );
 
             // Logging
-            new GoogleAnalyticsLogger( NavigationService ).Start();
+            new GoogleAnalyticsLogger( deps.NavigationService ).Start();
 
             // Common services
             AppInitializer.BindImplementations();
 
             // Common part of plugin initialization
-            AppInitializer.InitializePlugins( pluginLoader, NavigationService );
+            AppInitializer.InitializePlugins( deps.PluginLoader, deps.NavigationService );
 
             // WP-specific part of plugin initialization
-            foreach ( var plugin in pluginLoader.GetPlugins().Cast<IWindowsPhonePlugin>() )
+            foreach ( var plugin in deps.PluginLoader.GetPlugins().Cast<IWindowsPhonePlugin>() )
             {
-                plugin.Initialize( NavigationService );
+                plugin.Initialize( deps.NavigationService );
             }
-        }
 
-        /// <summary>
-        /// Called when the app runs for the very first time after installation.
-        /// </summary>
-        protected override void OnFirstRun()
-        {
-            MessageBoxEx.ShowDialog( AppResources.FirstRunCaption, AppResources.FirstRunMessage );
+            // Go to main
+            deps.NavigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest() );
         }
     }
 }

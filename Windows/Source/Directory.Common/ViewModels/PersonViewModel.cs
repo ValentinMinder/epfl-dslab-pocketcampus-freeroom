@@ -33,7 +33,7 @@ namespace PocketCampus.Directory.ViewModels
         [LogId( "ViewOffice" )]
         public Command ViewOfficeCommand
         {
-            get { return GetCommand( () => Messenger.Send( new MapSearchRequest( Person.Office ) ) ); }
+            get { return this.GetCommand( () => Messenger.Send( new MapSearchRequest( Person.Office ) ) ); }
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace PocketCampus.Directory.ViewModels
         [LogId( "ViewWebsite" )]
         public Command<string> OpenWebsiteCommand
         {
-            get { return GetCommand<string>( _browserService.NavigateTo ); }
+            get { return this.GetCommand<string>( _browserService.NavigateTo ); }
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace PocketCampus.Directory.ViewModels
         [LogId( "SendEmail" )]
         public Command SendEmailCommand
         {
-            get { return GetCommand( () => _emailService.ComposeEmail( Person.EmailAddress ) ); }
+            get { return this.GetCommand( () => _emailService.ComposeEmail( Person.EmailAddress ) ); }
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace PocketCampus.Directory.ViewModels
         [LogId( "Call" )]
         public Command<string> CallCommand
         {
-            get { return GetCommand<string>( num => _phoneService.Call( Person.FullName, num ), _ => _phoneService.CanCall ); }
+            get { return this.GetCommand<string>( num => _phoneService.Call( Person.FullName, num ), _ => _phoneService.CanCall ); }
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace PocketCampus.Directory.ViewModels
         [LogId( "CreateNewContact" )]
         public Command AddAsContactCommand
         {
-            get { return GetCommand( () => _contactsService.AddAsContact( Person ) ); }
+            get { return this.GetCommand( () => _contactsService.AddAsContact( Person ) ); }
         }
 
 

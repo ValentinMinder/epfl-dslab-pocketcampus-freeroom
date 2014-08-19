@@ -10,14 +10,21 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Microsoft.Phone.Shell;
 using PocketCampus.Common;
+using PocketCampus.Main.Resources;
 
 namespace PocketCampus.Main.Services
 {
     /// <summary>
-    /// Creates Live Tiles on the user's home screen.
+    /// Handles Live Tiles on the user's home screen.
     /// </summary>
-    public sealed class TileCreator : ITileCreator
+    public sealed class TileService : ITileService
     {
+        // Images for the main tile
+        private const string MainTileColoredSmallBackgroundImage = "Assets/Tiles/ColoredSmall.png";
+        private const string MainTileColoredBackgroundImage = "Assets/Tiles/ColoredMedium.png";
+        private const string MainTileWhiteSmallBackgroundImage = "Assets/Tiles/WhiteSmall.png";
+        private const string MainTileWhiteBackgroundImage = "Assets/Tiles/WhiteMedium.png";
+
         // N.B. if (when?) adding notification counts to these tiles, the sizes become 130x202 and 70x110 respectively (margins will have to change)
         private const double TileIconSize = 202;
         private const double SmallTileIconSize = 110;
@@ -46,6 +53,19 @@ namespace PocketCampus.Main.Services
             }
 
             ShellTile.Create( uri, data, false );
+        }
+
+        /// <summary>
+        /// Sets the tile coloring; either colored, or white.
+        /// </summary>
+        public void SetTileColoring( bool useColor )
+        {
+            ShellTile.ActiveTiles.First().Update( new FlipTileData
+            {
+                BackgroundImage = new Uri( useColor ? MainTileColoredBackgroundImage : MainTileWhiteBackgroundImage, UriKind.Relative ),
+                SmallBackgroundImage = new Uri( useColor ? MainTileColoredSmallBackgroundImage : MainTileWhiteSmallBackgroundImage, UriKind.Relative ),
+                Title = AppResources.ApplicationTitle
+            } );
         }
 
         /// <summary>

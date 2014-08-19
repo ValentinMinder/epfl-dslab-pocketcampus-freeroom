@@ -74,11 +74,12 @@ namespace PocketCampus.Events.ViewModels
         {
             get
             {
-                return GetCommand<EventPool>( pool =>
+                return this.GetCommand<EventPool>( pool =>
                 {
                     if ( pool.OverrideTargetUrl == null )
                     {
-                        _navigationService.NavigateTo<EventPoolViewModel, long>( pool.Id );
+                        var request = new ViewEventPoolRequest( pool.Id );
+                        _navigationService.NavigateTo<EventPoolViewModel, ViewEventPoolRequest>( request );
                     }
                     else
                     {
@@ -94,14 +95,14 @@ namespace PocketCampus.Events.ViewModels
         [LogId( "OpenLink" )]
         public Command<string> OpenLinkCommand
         {
-            get { return GetCommand<string>( _browserService.NavigateTo ); }
+            get { return this.GetCommand<string>( _browserService.NavigateTo ); }
         }
 
 
         /// <summary>
         /// Creates a new EventItemViewModel.
         /// </summary>
-        public EventItemViewModel( ICache cache, INavigationService navigationService, IBrowserService browserService,
+        public EventItemViewModel( IDataCache cache, INavigationService navigationService, IBrowserService browserService,
                                    IEventsService eventsService, IPluginSettings settings,
                                    ViewEventItemRequest request )
             : base( cache )
@@ -111,7 +112,18 @@ namespace PocketCampus.Events.ViewModels
             _eventsService = eventsService;
             _settings = settings;
             _itemId = request.ItemId;
-            CanBeFavorite = request.CanBeFavorite;
+
+            CanBeFavorite = request.FavoriteOption != EventItemFavoriteOption.Forbidden;
+
+            if ( request.FavoriteOption == EventItemFavoriteOption.Requested )
+            {
+                _settings.FavoriteItemIds.Add( request.ItemId );
+            }
+
+            if ( request.UserTicket != null )
+            {
+                _settings.UserTickets.Add( request.UserTicket );
+            }
         }
 
 

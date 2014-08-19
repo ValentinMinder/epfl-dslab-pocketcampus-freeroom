@@ -54,7 +54,7 @@
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\IRatingService.cs" />
     <Compile Include="Services\IPluginLoader.cs" />
-    <Compile Include="Services\ITileCreator.cs" />
+    <Compile Include="Services\ITileService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SecureRequestHandler.cs" />
     <Compile Include="Services\ServerAccess.cs" />
@@ -72,10 +72,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThinMvvm">
-      <HintPath>..\..\packages\ThinMvvm.0.9.8.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.0.9.9.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
     </Reference>
     <Reference Include="ThinMvvm.Logging">
-      <HintPath>..\..\packages\ThinMvvm.Logging.0.9.8.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.Logging.0.9.9.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
     </Reference>
     <Reference Include="ThriftSharp">
       <HintPath>..\..\packages\ThriftSharp.2.0.5\lib\portable-net45+wp8+win8+wpa81\ThriftSharp.dll</HintPath>

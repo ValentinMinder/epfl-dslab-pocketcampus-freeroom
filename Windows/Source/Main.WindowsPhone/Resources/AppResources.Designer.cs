@@ -299,26 +299,6 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Welcome!.
-        /// </summary>
-        public static string FirstRunCaption {
-            get {
-                return ResourceManager.GetString("FirstRunCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Thanks for downloading PocketCampus!
-        ///
-        ///Our privacy policy is simple: Your data and location are not stored or transmitted anywhere..
-        /// </summary>
-        public static string FirstRunMessage {
-            get {
-                return ResourceManager.GetString("FirstRunMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to log in.
         /// </summary>
         public static string LogIn {
