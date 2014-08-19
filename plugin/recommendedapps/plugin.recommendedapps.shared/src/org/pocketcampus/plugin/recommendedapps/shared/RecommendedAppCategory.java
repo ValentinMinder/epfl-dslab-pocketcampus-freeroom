@@ -607,13 +607,13 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
         case 5: // APP_IDS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list5 = iprot.readListBegin();
-              this.appIds = new ArrayList<Integer>(_list5.size);
-              for (int _i6 = 0; _i6 < _list5.size; ++_i6)
+              org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
+              this.appIds = new ArrayList<Integer>(_list0.size);
+              for (int _i1 = 0; _i1 < _list0.size; ++_i1)
               {
-                int _elem7; // required
-                _elem7 = iprot.readI32();
-                this.appIds.add(_elem7);
+                int _elem2; // required
+                _elem2 = iprot.readI32();
+                this.appIds.add(_elem2);
               }
               iprot.readListEnd();
             }
@@ -658,9 +658,9 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
       oprot.writeFieldBegin(APP_IDS_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, this.appIds.size()));
-        for (int _iter8 : this.appIds)
+        for (int _iter3 : this.appIds)
         {
-          oprot.writeI32(_iter8);
+          oprot.writeI32(_iter3);
         }
         oprot.writeListEnd();
       }

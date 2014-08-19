@@ -46,6 +46,7 @@ public class RecommendedAppsMainView extends PluginView implements IRecommendedA
 		setContentView(mLayout);
 		mLayout.hideTitle();
 
+		mLayout.setText("Loading recommended apps");
 		setActionBarTitle(getString(R.string.recommendedapps_plugin_title));
 
 	}
@@ -60,10 +61,7 @@ public class RecommendedAppsMainView extends PluginView implements IRecommendedA
 	@Override
 	protected void onResume() {
 		super.onResume();
-		/*if(mModel != null && mModel.getRecommendedAppsCookie() == null) {
-			// Resumed and lot logged in? go back
-			finish();
-		}*/
+		mController.refreshRecommendedApps(this);
 	}
 	
 	@Override
@@ -75,6 +73,27 @@ public class RecommendedAppsMainView extends PluginView implements IRecommendedA
 	public void networkErrorHappened() {
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.recommendedapps_connection_error_happened), Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void serverDown() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.recommendedapps_connection_error_happened), Toast.LENGTH_SHORT).show();
+		
+	}
+
+	@Override
+	public void networkErrorCacheExists() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.recommendedapps_connection_error_happened), Toast.LENGTH_SHORT).show();
+		
+	}
+
+	@Override
+	public void recommendedAppsRefreshed() {
+		mLayout.setText(mModel.apps()+"\n\n"+mModel.categories());
+		System.out.println(mModel.apps());
+		System.out.println(mModel.categories());
 	}
 
 }

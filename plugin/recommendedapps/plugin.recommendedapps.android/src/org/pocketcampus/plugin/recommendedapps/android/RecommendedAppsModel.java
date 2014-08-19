@@ -1,10 +1,18 @@
 package org.pocketcampus.plugin.recommendedapps.android;
 
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+
 import org.pocketcampus.platform.android.core.IView;
 import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.recommendedapps.android.iface.IRecommendedAppsModel;
 import org.pocketcampus.plugin.recommendedapps.android.iface.IRecommendedAppsView;
+import org.pocketcampus.plugin.recommendedapps.shared.RecommendedApp;
+import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppCategory;
+import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppsResponse;
 
 import android.content.Context;
 
@@ -21,6 +29,7 @@ import android.content.Context;
  */
 public class RecommendedAppsModel extends PluginModel implements IRecommendedAppsModel {
 	
+	private RecommendedAppsResponse response;
 	/**
 	 * Reference to the Views that need to be notified when the stored data changes.
 	 */
@@ -36,7 +45,6 @@ public class RecommendedAppsModel extends PluginModel implements IRecommendedApp
 	 * @param context is the Application Context.
 	 */
 	public RecommendedAppsModel(Context context) {
-		
 	}
 	
 	/**
@@ -53,5 +61,24 @@ public class RecommendedAppsModel extends PluginModel implements IRecommendedApp
 	public IRecommendedAppsView getListenersToNotify() {
 		return mListeners;
 	}
+
+	@Override
+	public List<RecommendedAppCategory> categories() {
+		if(response != null){
+			return response.getCategories();
+		}
+		return new Vector<RecommendedAppCategory>();
+	}
+
+	@Override
+	public Map<Integer, RecommendedApp> apps() {
+		if(response != null){
+			return response.getApps();
+		}
+		return new HashMap<Integer, RecommendedApp>();
+	}
 	
+	public void setRecommendedAppsResponse(RecommendedAppsResponse response){
+		this.response = response;
+	}
 }

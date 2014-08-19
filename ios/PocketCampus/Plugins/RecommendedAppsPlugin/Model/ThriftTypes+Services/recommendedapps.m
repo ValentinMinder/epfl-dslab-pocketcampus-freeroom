@@ -18,7 +18,7 @@
 
 #import "recommendedapps.h"
 
-@implementation RecommendedAppOSConfiguration
+@implementation RecommendedApp
 
 - (id) init
 {
@@ -28,9 +28,15 @@
   return self;
 }
 
-- (id) initWithAppStoreQuery: (NSString *) appStoreQuery appOpenURLPattern: (NSString *) appOpenURLPattern appLogoURL: (NSString *) appLogoURL
+- (id) initWithAppId: (int32_t) appId appName: (NSString *) appName appDescription: (NSString *) appDescription appStoreQuery: (NSString *) appStoreQuery appOpenURLPattern: (NSString *) appOpenURLPattern appLogoURL: (NSString *) appLogoURL
 {
   self = [super init];
+  __appId = appId;
+  __appId_isset = YES;
+  __appName = [appName retain_stub];
+  __appName_isset = YES;
+  __appDescription = [appDescription retain_stub];
+  __appDescription_isset = YES;
   __appStoreQuery = [appStoreQuery retain_stub];
   __appStoreQuery_isset = YES;
   __appOpenURLPattern = [appOpenURLPattern retain_stub];
@@ -43,6 +49,21 @@
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
+  if ([decoder containsValueForKey: @"appId"])
+  {
+    __appId = [decoder decodeInt32ForKey: @"appId"];
+    __appId_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"appName"])
+  {
+    __appName = [[decoder decodeObjectForKey: @"appName"] retain_stub];
+    __appName_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"appDescription"])
+  {
+    __appDescription = [[decoder decodeObjectForKey: @"appDescription"] retain_stub];
+    __appDescription_isset = YES;
+  }
   if ([decoder containsValueForKey: @"appStoreQuery"])
   {
     __appStoreQuery = [[decoder decodeObjectForKey: @"appStoreQuery"] retain_stub];
@@ -63,6 +84,18 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
+  if (__appId_isset)
+  {
+    [encoder encodeInt32: __appId forKey: @"appId"];
+  }
+  if (__appName_isset)
+  {
+    [encoder encodeObject: __appName forKey: @"appName"];
+  }
+  if (__appDescription_isset)
+  {
+    [encoder encodeObject: __appDescription forKey: @"appDescription"];
+  }
   if (__appStoreQuery_isset)
   {
     [encoder encodeObject: __appStoreQuery forKey: @"appStoreQuery"];
@@ -79,10 +112,71 @@
 
 - (void) dealloc
 {
+  [__appName release_stub];
+  [__appDescription release_stub];
   [__appStoreQuery release_stub];
   [__appOpenURLPattern release_stub];
   [__appLogoURL release_stub];
   [super dealloc_stub];
+}
+
+- (int32_t) appId {
+  return __appId;
+}
+
+- (void) setAppId: (int32_t) appId {
+  __appId = appId;
+  __appId_isset = YES;
+}
+
+- (BOOL) appIdIsSet {
+  return __appId_isset;
+}
+
+- (void) unsetAppId {
+  __appId_isset = NO;
+}
+
+- (NSString *) appName {
+  return [[__appName retain_stub] autorelease_stub];
+}
+
+- (void) setAppName: (NSString *) appName {
+  [appName retain_stub];
+  [__appName release_stub];
+  __appName = appName;
+  __appName_isset = YES;
+}
+
+- (BOOL) appNameIsSet {
+  return __appName_isset;
+}
+
+- (void) unsetAppName {
+  [__appName release_stub];
+  __appName = nil;
+  __appName_isset = NO;
+}
+
+- (NSString *) appDescription {
+  return [[__appDescription retain_stub] autorelease_stub];
+}
+
+- (void) setAppDescription: (NSString *) appDescription {
+  [appDescription retain_stub];
+  [__appDescription release_stub];
+  __appDescription = appDescription;
+  __appDescription_isset = YES;
+}
+
+- (BOOL) appDescriptionIsSet {
+  return __appDescription_isset;
+}
+
+- (void) unsetAppDescription {
+  [__appDescription release_stub];
+  __appDescription = nil;
+  __appDescription_isset = NO;
 }
 
 - (NSString *) appStoreQuery {
@@ -164,257 +258,6 @@
     switch (fieldID)
     {
       case 1:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
-          [self setAppStoreQuery: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 2:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
-          [self setAppOpenURLPattern: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 3:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
-          [self setAppLogoURL: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"RecommendedAppOSConfiguration"];
-  if (__appStoreQuery_isset) {
-    if (__appStoreQuery != nil) {
-      [outProtocol writeFieldBeginWithName: @"appStoreQuery" type: TType_STRING fieldID: 1];
-      [outProtocol writeString: __appStoreQuery];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  if (__appOpenURLPattern_isset) {
-    if (__appOpenURLPattern != nil) {
-      [outProtocol writeFieldBeginWithName: @"appOpenURLPattern" type: TType_STRING fieldID: 2];
-      [outProtocol writeString: __appOpenURLPattern];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  if (__appLogoURL_isset) {
-    if (__appLogoURL != nil) {
-      [outProtocol writeFieldBeginWithName: @"appLogoURL" type: TType_STRING fieldID: 3];
-      [outProtocol writeString: __appLogoURL];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (void) validate {
-  // check for required fields
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"RecommendedAppOSConfiguration("];
-  [ms appendString: @"appStoreQuery:"];
-  [ms appendFormat: @"\"%@\"", __appStoreQuery];
-  [ms appendString: @",appOpenURLPattern:"];
-  [ms appendFormat: @"\"%@\"", __appOpenURLPattern];
-  [ms appendString: @",appLogoURL:"];
-  [ms appendFormat: @"\"%@\"", __appLogoURL];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
-@implementation RecommendedApp
-
-- (id) init
-{
-  self = [super init];
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-#endif
-  return self;
-}
-
-- (id) initWithAppId: (int32_t) appId appName: (NSString *) appName appDescription: (NSString *) appDescription appOSConfigurations: (NSMutableDictionary *) appOSConfigurations
-{
-  self = [super init];
-  __appId = appId;
-  __appId_isset = YES;
-  __appName = [appName retain_stub];
-  __appName_isset = YES;
-  __appDescription = [appDescription retain_stub];
-  __appDescription_isset = YES;
-  __appOSConfigurations = [appOSConfigurations retain_stub];
-  __appOSConfigurations_isset = YES;
-  return self;
-}
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  if ([decoder containsValueForKey: @"appId"])
-  {
-    __appId = [decoder decodeInt32ForKey: @"appId"];
-    __appId_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"appName"])
-  {
-    __appName = [[decoder decodeObjectForKey: @"appName"] retain_stub];
-    __appName_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"appDescription"])
-  {
-    __appDescription = [[decoder decodeObjectForKey: @"appDescription"] retain_stub];
-    __appDescription_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"appOSConfigurations"])
-  {
-    __appOSConfigurations = [[decoder decodeObjectForKey: @"appOSConfigurations"] retain_stub];
-    __appOSConfigurations_isset = YES;
-  }
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-  if (__appId_isset)
-  {
-    [encoder encodeInt32: __appId forKey: @"appId"];
-  }
-  if (__appName_isset)
-  {
-    [encoder encodeObject: __appName forKey: @"appName"];
-  }
-  if (__appDescription_isset)
-  {
-    [encoder encodeObject: __appDescription forKey: @"appDescription"];
-  }
-  if (__appOSConfigurations_isset)
-  {
-    [encoder encodeObject: __appOSConfigurations forKey: @"appOSConfigurations"];
-  }
-}
-
-- (void) dealloc
-{
-  [__appName release_stub];
-  [__appDescription release_stub];
-  [__appOSConfigurations release_stub];
-  [super dealloc_stub];
-}
-
-- (int32_t) appId {
-  return __appId;
-}
-
-- (void) setAppId: (int32_t) appId {
-  __appId = appId;
-  __appId_isset = YES;
-}
-
-- (BOOL) appIdIsSet {
-  return __appId_isset;
-}
-
-- (void) unsetAppId {
-  __appId_isset = NO;
-}
-
-- (NSString *) appName {
-  return [[__appName retain_stub] autorelease_stub];
-}
-
-- (void) setAppName: (NSString *) appName {
-  [appName retain_stub];
-  [__appName release_stub];
-  __appName = appName;
-  __appName_isset = YES;
-}
-
-- (BOOL) appNameIsSet {
-  return __appName_isset;
-}
-
-- (void) unsetAppName {
-  [__appName release_stub];
-  __appName = nil;
-  __appName_isset = NO;
-}
-
-- (NSString *) appDescription {
-  return [[__appDescription retain_stub] autorelease_stub];
-}
-
-- (void) setAppDescription: (NSString *) appDescription {
-  [appDescription retain_stub];
-  [__appDescription release_stub];
-  __appDescription = appDescription;
-  __appDescription_isset = YES;
-}
-
-- (BOOL) appDescriptionIsSet {
-  return __appDescription_isset;
-}
-
-- (void) unsetAppDescription {
-  [__appDescription release_stub];
-  __appDescription = nil;
-  __appDescription_isset = NO;
-}
-
-- (NSMutableDictionary *) appOSConfigurations {
-  return [[__appOSConfigurations retain_stub] autorelease_stub];
-}
-
-- (void) setAppOSConfigurations: (NSMutableDictionary *) appOSConfigurations {
-  [appOSConfigurations retain_stub];
-  [__appOSConfigurations release_stub];
-  __appOSConfigurations = appOSConfigurations;
-  __appOSConfigurations_isset = YES;
-}
-
-- (BOOL) appOSConfigurationsIsSet {
-  return __appOSConfigurations_isset;
-}
-
-- (void) unsetAppOSConfigurations {
-  [__appOSConfigurations release_stub];
-  __appOSConfigurations = nil;
-  __appOSConfigurations_isset = NO;
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      case 1:
         if (fieldType == TType_I32) {
           int32_t fieldValue = [inProtocol readI32];
           [self setAppId: fieldValue];
@@ -439,22 +282,25 @@
         }
         break;
       case 4:
-        if (fieldType == TType_MAP) {
-          int _size0;
-          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size0];
-          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size0];
-          int _i1;
-          for (_i1 = 0; _i1 < _size0; ++_i1)
-          {
-            int _key2 = [inProtocol readI32];
-            RecommendedAppOSConfiguration *_val3 = [[RecommendedAppOSConfiguration alloc] init];
-            [_val3 read: inProtocol];
-            [fieldValue setObject: _val3 forKey: [NSNumber numberWithInt: _key2]];
-            [_val3 release_stub];
-          }
-          [inProtocol readMapEnd];
-          [self setAppOSConfigurations: fieldValue];
-          [fieldValue release_stub];
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setAppStoreQuery: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 5:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setAppOpenURLPattern: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 6:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setAppLogoURL: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
@@ -489,20 +335,24 @@
       [outProtocol writeFieldEnd];
     }
   }
-  if (__appOSConfigurations_isset) {
-    if (__appOSConfigurations != nil) {
-      [outProtocol writeFieldBeginWithName: @"appOSConfigurations" type: TType_MAP fieldID: 4];
-      {
-        [outProtocol writeMapBeginWithKeyType: TType_I32 valueType: TType_STRUCT size: [__appOSConfigurations count]];
-        NSEnumerator * _iter4 = [__appOSConfigurations keyEnumerator];
-        id key5;
-        while ((key5 = [_iter4 nextObject]))
-        {
-          [outProtocol writeI32: [key5 intValue]];
-          [[__appOSConfigurations objectForKey: key5] write: outProtocol];
-        }
-        [outProtocol writeMapEnd];
-      }
+  if (__appStoreQuery_isset) {
+    if (__appStoreQuery != nil) {
+      [outProtocol writeFieldBeginWithName: @"appStoreQuery" type: TType_STRING fieldID: 4];
+      [outProtocol writeString: __appStoreQuery];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__appOpenURLPattern_isset) {
+    if (__appOpenURLPattern != nil) {
+      [outProtocol writeFieldBeginWithName: @"appOpenURLPattern" type: TType_STRING fieldID: 5];
+      [outProtocol writeString: __appOpenURLPattern];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__appLogoURL_isset) {
+    if (__appLogoURL != nil) {
+      [outProtocol writeFieldBeginWithName: @"appLogoURL" type: TType_STRING fieldID: 6];
+      [outProtocol writeString: __appLogoURL];
       [outProtocol writeFieldEnd];
     }
   }
@@ -522,8 +372,12 @@
   [ms appendFormat: @"\"%@\"", __appName];
   [ms appendString: @",appDescription:"];
   [ms appendFormat: @"\"%@\"", __appDescription];
-  [ms appendString: @",appOSConfigurations:"];
-  [ms appendFormat: @"%@", __appOSConfigurations];
+  [ms appendString: @",appStoreQuery:"];
+  [ms appendFormat: @"\"%@\"", __appStoreQuery];
+  [ms appendString: @",appOpenURLPattern:"];
+  [ms appendFormat: @"\"%@\"", __appOpenURLPattern];
+  [ms appendString: @",appLogoURL:"];
+  [ms appendFormat: @"\"%@\"", __appLogoURL];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -770,14 +624,14 @@
         break;
       case 5:
         if (fieldType == TType_LIST) {
-          int _size6;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size6];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size6];
-          int _i7;
-          for (_i7 = 0; _i7 < _size6; ++_i7)
+          int _size0;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size0];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size0];
+          int _i1;
+          for (_i1 = 0; _i1 < _size0; ++_i1)
           {
-            int32_t _elem8 = [inProtocol readI32];
-            [fieldValue addObject: [NSNumber numberWithLong: _elem8]];
+            int32_t _elem2 = [inProtocol readI32];
+            [fieldValue addObject: [NSNumber numberWithLong: _elem2]];
           }
           [inProtocol readListEnd];
           [self setAppIds: fieldValue];
@@ -828,10 +682,10 @@
       [outProtocol writeFieldBeginWithName: @"appIds" type: TType_LIST fieldID: 5];
       {
         [outProtocol writeListBeginWithElementType: TType_I32 size: [__appIds count]];
-        int i10;
-        for (i10 = 0; i10 < [__appIds count]; i10++)
+        int i4;
+        for (i4 = 0; i4 < [__appIds count]; i4++)
         {
-          [outProtocol writeI32: [[__appIds objectAtIndex: i10] longValue]];
+          [outProtocol writeI32: [[__appIds objectAtIndex: i4] longValue]];
         }
         [outProtocol writeListEnd];
       }
@@ -1014,16 +868,16 @@
         break;
       case 2:
         if (fieldType == TType_LIST) {
-          int _size11;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size11];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size11];
-          int _i12;
-          for (_i12 = 0; _i12 < _size11; ++_i12)
+          int _size5;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size5];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size5];
+          int _i6;
+          for (_i6 = 0; _i6 < _size5; ++_i6)
           {
-            RecommendedAppCategory *_elem13 = [[RecommendedAppCategory alloc] init];
-            [_elem13 read: inProtocol];
-            [fieldValue addObject: _elem13];
-            [_elem13 release_stub];
+            RecommendedAppCategory *_elem7 = [[RecommendedAppCategory alloc] init];
+            [_elem7 read: inProtocol];
+            [fieldValue addObject: _elem7];
+            [_elem7 release_stub];
           }
           [inProtocol readListEnd];
           [self setCategories: fieldValue];
@@ -1034,17 +888,17 @@
         break;
       case 3:
         if (fieldType == TType_MAP) {
-          int _size14;
-          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size14];
-          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size14];
-          int _i15;
-          for (_i15 = 0; _i15 < _size14; ++_i15)
+          int _size8;
+          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size8];
+          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size8];
+          int _i9;
+          for (_i9 = 0; _i9 < _size8; ++_i9)
           {
-            int32_t _key16 = [inProtocol readI32];
-            RecommendedApp *_val17 = [[RecommendedApp alloc] init];
-            [_val17 read: inProtocol];
-            [fieldValue setObject: _val17 forKey: [NSNumber numberWithLong: _key16]];
-            [_val17 release_stub];
+            int32_t _key10 = [inProtocol readI32];
+            RecommendedApp *_val11 = [[RecommendedApp alloc] init];
+            [_val11 read: inProtocol];
+            [fieldValue setObject: _val11 forKey: [NSNumber numberWithLong: _key10]];
+            [_val11 release_stub];
           }
           [inProtocol readMapEnd];
           [self setApps: fieldValue];
@@ -1074,10 +928,10 @@
       [outProtocol writeFieldBeginWithName: @"categories" type: TType_LIST fieldID: 2];
       {
         [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__categories count]];
-        int i19;
-        for (i19 = 0; i19 < [__categories count]; i19++)
+        int i13;
+        for (i13 = 0; i13 < [__categories count]; i13++)
         {
-          [[__categories objectAtIndex: i19] write: outProtocol];
+          [[__categories objectAtIndex: i13] write: outProtocol];
         }
         [outProtocol writeListEnd];
       }
@@ -1089,12 +943,12 @@
       [outProtocol writeFieldBeginWithName: @"apps" type: TType_MAP fieldID: 3];
       {
         [outProtocol writeMapBeginWithKeyType: TType_I32 valueType: TType_STRUCT size: [__apps count]];
-        NSEnumerator * _iter20 = [__apps keyEnumerator];
-        id key21;
-        while ((key21 = [_iter20 nextObject]))
+        NSEnumerator * _iter14 = [__apps keyEnumerator];
+        id key15;
+        while ((key15 = [_iter14 nextObject]))
         {
-          [outProtocol writeI32: [key21 longValue]];
-          [[__apps objectForKey: key21] write: outProtocol];
+          [outProtocol writeI32: [key15 longValue]];
+          [[__apps objectForKey: key15] write: outProtocol];
         }
         [outProtocol writeMapEnd];
       }
@@ -1133,11 +987,13 @@
   return self;
 }
 
-- (id) initWithLanguage: (NSString *) language
+- (id) initWithLanguage: (NSString *) language appStore: (int) appStore
 {
   self = [super init];
   __language = [language retain_stub];
   __language_isset = YES;
+  __appStore = appStore;
+  __appStore_isset = YES;
   return self;
 }
 
@@ -1149,6 +1005,11 @@
     __language = [[decoder decodeObjectForKey: @"language"] retain_stub];
     __language_isset = YES;
   }
+  if ([decoder containsValueForKey: @"appStore"])
+  {
+    __appStore = [decoder decodeIntForKey: @"appStore"];
+    __appStore_isset = YES;
+  }
   return self;
 }
 
@@ -1157,6 +1018,10 @@
   if (__language_isset)
   {
     [encoder encodeObject: __language forKey: @"language"];
+  }
+  if (__appStore_isset)
+  {
+    [encoder encodeInt: __appStore forKey: @"appStore"];
   }
 }
 
@@ -1187,6 +1052,23 @@
   __language_isset = NO;
 }
 
+- (int) appStore {
+  return __appStore;
+}
+
+- (void) setAppStore: (int) appStore {
+  __appStore = appStore;
+  __appStore_isset = YES;
+}
+
+- (BOOL) appStoreIsSet {
+  return __appStore_isset;
+}
+
+- (void) unsetAppStore {
+  __appStore_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -1210,6 +1092,14 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 2:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setAppStore: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -1228,6 +1118,11 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__appStore_isset) {
+    [outProtocol writeFieldBeginWithName: @"appStore" type: TType_I32 fieldID: 2];
+    [outProtocol writeI32: __appStore];
+    [outProtocol writeFieldEnd];
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -1240,6 +1135,8 @@
   NSMutableString * ms = [NSMutableString stringWithString: @"RecommendedAppsRequest("];
   [ms appendString: @"language:"];
   [ms appendFormat: @"\"%@\"", __language];
+  [ms appendString: @",appStore:"];
+  [ms appendFormat: @"%i", __appStore];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }

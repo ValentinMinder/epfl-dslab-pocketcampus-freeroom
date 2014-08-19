@@ -27,19 +27,25 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
   private static final org.apache.thrift.protocol.TField APP_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("appId", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField APP_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("appName", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField APP_DESCRIPTION_FIELD_DESC = new org.apache.thrift.protocol.TField("appDescription", org.apache.thrift.protocol.TType.STRING, (short)3);
-  private static final org.apache.thrift.protocol.TField APP_OSCONFIGURATIONS_FIELD_DESC = new org.apache.thrift.protocol.TField("appOSConfigurations", org.apache.thrift.protocol.TType.MAP, (short)4);
+  private static final org.apache.thrift.protocol.TField APP_STORE_QUERY_FIELD_DESC = new org.apache.thrift.protocol.TField("appStoreQuery", org.apache.thrift.protocol.TType.STRING, (short)4);
+  private static final org.apache.thrift.protocol.TField APP_OPEN_URLPATTERN_FIELD_DESC = new org.apache.thrift.protocol.TField("appOpenURLPattern", org.apache.thrift.protocol.TType.STRING, (short)5);
+  private static final org.apache.thrift.protocol.TField APP_LOGO_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("appLogoURL", org.apache.thrift.protocol.TType.STRING, (short)6);
 
   private int appId; // required
   private String appName; // required
   private String appDescription; // required
-  private Map<AppStore,RecommendedAppOSConfiguration> appOSConfigurations; // required
+  private String appStoreQuery; // required
+  private String appOpenURLPattern; // required
+  private String appLogoURL; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     APP_ID((short)1, "appId"),
     APP_NAME((short)2, "appName"),
     APP_DESCRIPTION((short)3, "appDescription"),
-    APP_OSCONFIGURATIONS((short)4, "appOSConfigurations");
+    APP_STORE_QUERY((short)4, "appStoreQuery"),
+    APP_OPEN_URLPATTERN((short)5, "appOpenURLPattern"),
+    APP_LOGO_URL((short)6, "appLogoURL");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -60,8 +66,12 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
           return APP_NAME;
         case 3: // APP_DESCRIPTION
           return APP_DESCRIPTION;
-        case 4: // APP_OSCONFIGURATIONS
-          return APP_OSCONFIGURATIONS;
+        case 4: // APP_STORE_QUERY
+          return APP_STORE_QUERY;
+        case 5: // APP_OPEN_URLPATTERN
+          return APP_OPEN_URLPATTERN;
+        case 6: // APP_LOGO_URL
+          return APP_LOGO_URL;
         default:
           return null;
       }
@@ -114,10 +124,12 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.APP_DESCRIPTION, new org.apache.thrift.meta_data.FieldMetaData("appDescription", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.APP_OSCONFIGURATIONS, new org.apache.thrift.meta_data.FieldMetaData("appOSConfigurations", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
-            new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, AppStore.class), 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, RecommendedAppOSConfiguration.class))));
+    tmpMap.put(_Fields.APP_STORE_QUERY, new org.apache.thrift.meta_data.FieldMetaData("appStoreQuery", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.APP_OPEN_URLPATTERN, new org.apache.thrift.meta_data.FieldMetaData("appOpenURLPattern", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.APP_LOGO_URL, new org.apache.thrift.meta_data.FieldMetaData("appLogoURL", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(RecommendedApp.class, metaDataMap);
   }
@@ -129,14 +141,18 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
     int appId,
     String appName,
     String appDescription,
-    Map<AppStore,RecommendedAppOSConfiguration> appOSConfigurations)
+    String appStoreQuery,
+    String appOpenURLPattern,
+    String appLogoURL)
   {
     this();
     this.appId = appId;
     setAppIdIsSet(true);
     this.appName = appName;
     this.appDescription = appDescription;
-    this.appOSConfigurations = appOSConfigurations;
+    this.appStoreQuery = appStoreQuery;
+    this.appOpenURLPattern = appOpenURLPattern;
+    this.appLogoURL = appLogoURL;
   }
 
   /**
@@ -152,20 +168,14 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
     if (other.isSetAppDescription()) {
       this.appDescription = other.appDescription;
     }
-    if (other.isSetAppOSConfigurations()) {
-      Map<AppStore,RecommendedAppOSConfiguration> __this__appOSConfigurations = new HashMap<AppStore,RecommendedAppOSConfiguration>();
-      for (Map.Entry<AppStore, RecommendedAppOSConfiguration> other_element : other.appOSConfigurations.entrySet()) {
-
-        AppStore other_element_key = other_element.getKey();
-        RecommendedAppOSConfiguration other_element_value = other_element.getValue();
-
-        AppStore __this__appOSConfigurations_copy_key = other_element_key;
-
-        RecommendedAppOSConfiguration __this__appOSConfigurations_copy_value = new RecommendedAppOSConfiguration(other_element_value);
-
-        __this__appOSConfigurations.put(__this__appOSConfigurations_copy_key, __this__appOSConfigurations_copy_value);
-      }
-      this.appOSConfigurations = __this__appOSConfigurations;
+    if (other.isSetAppStoreQuery()) {
+      this.appStoreQuery = other.appStoreQuery;
+    }
+    if (other.isSetAppOpenURLPattern()) {
+      this.appOpenURLPattern = other.appOpenURLPattern;
+    }
+    if (other.isSetAppLogoURL()) {
+      this.appLogoURL = other.appLogoURL;
     }
   }
 
@@ -179,7 +189,9 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
     this.appId = 0;
     this.appName = null;
     this.appDescription = null;
-    this.appOSConfigurations = null;
+    this.appStoreQuery = null;
+    this.appOpenURLPattern = null;
+    this.appLogoURL = null;
   }
 
   public int getAppId() {
@@ -253,38 +265,75 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
     }
   }
 
-  public int getAppOSConfigurationsSize() {
-    return (this.appOSConfigurations == null) ? 0 : this.appOSConfigurations.size();
+  public String getAppStoreQuery() {
+    return this.appStoreQuery;
   }
 
-  public void putToAppOSConfigurations(AppStore key, RecommendedAppOSConfiguration val) {
-    if (this.appOSConfigurations == null) {
-      this.appOSConfigurations = new HashMap<AppStore,RecommendedAppOSConfiguration>();
-    }
-    this.appOSConfigurations.put(key, val);
-  }
-
-  public Map<AppStore,RecommendedAppOSConfiguration> getAppOSConfigurations() {
-    return this.appOSConfigurations;
-  }
-
-  public RecommendedApp setAppOSConfigurations(Map<AppStore,RecommendedAppOSConfiguration> appOSConfigurations) {
-    this.appOSConfigurations = appOSConfigurations;
+  public RecommendedApp setAppStoreQuery(String appStoreQuery) {
+    this.appStoreQuery = appStoreQuery;
     return this;
   }
 
-  public void unsetAppOSConfigurations() {
-    this.appOSConfigurations = null;
+  public void unsetAppStoreQuery() {
+    this.appStoreQuery = null;
   }
 
-  /** Returns true if field appOSConfigurations is set (has been assigned a value) and false otherwise */
-  public boolean isSetAppOSConfigurations() {
-    return this.appOSConfigurations != null;
+  /** Returns true if field appStoreQuery is set (has been assigned a value) and false otherwise */
+  public boolean isSetAppStoreQuery() {
+    return this.appStoreQuery != null;
   }
 
-  public void setAppOSConfigurationsIsSet(boolean value) {
+  public void setAppStoreQueryIsSet(boolean value) {
     if (!value) {
-      this.appOSConfigurations = null;
+      this.appStoreQuery = null;
+    }
+  }
+
+  public String getAppOpenURLPattern() {
+    return this.appOpenURLPattern;
+  }
+
+  public RecommendedApp setAppOpenURLPattern(String appOpenURLPattern) {
+    this.appOpenURLPattern = appOpenURLPattern;
+    return this;
+  }
+
+  public void unsetAppOpenURLPattern() {
+    this.appOpenURLPattern = null;
+  }
+
+  /** Returns true if field appOpenURLPattern is set (has been assigned a value) and false otherwise */
+  public boolean isSetAppOpenURLPattern() {
+    return this.appOpenURLPattern != null;
+  }
+
+  public void setAppOpenURLPatternIsSet(boolean value) {
+    if (!value) {
+      this.appOpenURLPattern = null;
+    }
+  }
+
+  public String getAppLogoURL() {
+    return this.appLogoURL;
+  }
+
+  public RecommendedApp setAppLogoURL(String appLogoURL) {
+    this.appLogoURL = appLogoURL;
+    return this;
+  }
+
+  public void unsetAppLogoURL() {
+    this.appLogoURL = null;
+  }
+
+  /** Returns true if field appLogoURL is set (has been assigned a value) and false otherwise */
+  public boolean isSetAppLogoURL() {
+    return this.appLogoURL != null;
+  }
+
+  public void setAppLogoURLIsSet(boolean value) {
+    if (!value) {
+      this.appLogoURL = null;
     }
   }
 
@@ -314,11 +363,27 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
       }
       break;
 
-    case APP_OSCONFIGURATIONS:
+    case APP_STORE_QUERY:
       if (value == null) {
-        unsetAppOSConfigurations();
+        unsetAppStoreQuery();
       } else {
-        setAppOSConfigurations((Map<AppStore,RecommendedAppOSConfiguration>)value);
+        setAppStoreQuery((String)value);
+      }
+      break;
+
+    case APP_OPEN_URLPATTERN:
+      if (value == null) {
+        unsetAppOpenURLPattern();
+      } else {
+        setAppOpenURLPattern((String)value);
+      }
+      break;
+
+    case APP_LOGO_URL:
+      if (value == null) {
+        unsetAppLogoURL();
+      } else {
+        setAppLogoURL((String)value);
       }
       break;
 
@@ -336,8 +401,14 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
     case APP_DESCRIPTION:
       return getAppDescription();
 
-    case APP_OSCONFIGURATIONS:
-      return getAppOSConfigurations();
+    case APP_STORE_QUERY:
+      return getAppStoreQuery();
+
+    case APP_OPEN_URLPATTERN:
+      return getAppOpenURLPattern();
+
+    case APP_LOGO_URL:
+      return getAppLogoURL();
 
     }
     throw new IllegalStateException();
@@ -356,8 +427,12 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
       return isSetAppName();
     case APP_DESCRIPTION:
       return isSetAppDescription();
-    case APP_OSCONFIGURATIONS:
-      return isSetAppOSConfigurations();
+    case APP_STORE_QUERY:
+      return isSetAppStoreQuery();
+    case APP_OPEN_URLPATTERN:
+      return isSetAppOpenURLPattern();
+    case APP_LOGO_URL:
+      return isSetAppLogoURL();
     }
     throw new IllegalStateException();
   }
@@ -402,12 +477,30 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
         return false;
     }
 
-    boolean this_present_appOSConfigurations = true && this.isSetAppOSConfigurations();
-    boolean that_present_appOSConfigurations = true && that.isSetAppOSConfigurations();
-    if (this_present_appOSConfigurations || that_present_appOSConfigurations) {
-      if (!(this_present_appOSConfigurations && that_present_appOSConfigurations))
+    boolean this_present_appStoreQuery = true && this.isSetAppStoreQuery();
+    boolean that_present_appStoreQuery = true && that.isSetAppStoreQuery();
+    if (this_present_appStoreQuery || that_present_appStoreQuery) {
+      if (!(this_present_appStoreQuery && that_present_appStoreQuery))
         return false;
-      if (!this.appOSConfigurations.equals(that.appOSConfigurations))
+      if (!this.appStoreQuery.equals(that.appStoreQuery))
+        return false;
+    }
+
+    boolean this_present_appOpenURLPattern = true && this.isSetAppOpenURLPattern();
+    boolean that_present_appOpenURLPattern = true && that.isSetAppOpenURLPattern();
+    if (this_present_appOpenURLPattern || that_present_appOpenURLPattern) {
+      if (!(this_present_appOpenURLPattern && that_present_appOpenURLPattern))
+        return false;
+      if (!this.appOpenURLPattern.equals(that.appOpenURLPattern))
+        return false;
+    }
+
+    boolean this_present_appLogoURL = true && this.isSetAppLogoURL();
+    boolean that_present_appLogoURL = true && that.isSetAppLogoURL();
+    if (this_present_appLogoURL || that_present_appLogoURL) {
+      if (!(this_present_appLogoURL && that_present_appLogoURL))
+        return false;
+      if (!this.appLogoURL.equals(that.appLogoURL))
         return false;
     }
 
@@ -433,10 +526,20 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
     if (present_appDescription)
       builder.append(appDescription);
 
-    boolean present_appOSConfigurations = true && (isSetAppOSConfigurations());
-    builder.append(present_appOSConfigurations);
-    if (present_appOSConfigurations)
-      builder.append(appOSConfigurations);
+    boolean present_appStoreQuery = true && (isSetAppStoreQuery());
+    builder.append(present_appStoreQuery);
+    if (present_appStoreQuery)
+      builder.append(appStoreQuery);
+
+    boolean present_appOpenURLPattern = true && (isSetAppOpenURLPattern());
+    builder.append(present_appOpenURLPattern);
+    if (present_appOpenURLPattern)
+      builder.append(appOpenURLPattern);
+
+    boolean present_appLogoURL = true && (isSetAppLogoURL());
+    builder.append(present_appLogoURL);
+    if (present_appLogoURL)
+      builder.append(appLogoURL);
 
     return builder.toHashCode();
   }
@@ -479,12 +582,32 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetAppOSConfigurations()).compareTo(typedOther.isSetAppOSConfigurations());
+    lastComparison = Boolean.valueOf(isSetAppStoreQuery()).compareTo(typedOther.isSetAppStoreQuery());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetAppOSConfigurations()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.appOSConfigurations, typedOther.appOSConfigurations);
+    if (isSetAppStoreQuery()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.appStoreQuery, typedOther.appStoreQuery);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetAppOpenURLPattern()).compareTo(typedOther.isSetAppOpenURLPattern());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetAppOpenURLPattern()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.appOpenURLPattern, typedOther.appOpenURLPattern);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetAppLogoURL()).compareTo(typedOther.isSetAppLogoURL());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetAppLogoURL()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.appLogoURL, typedOther.appLogoURL);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -528,22 +651,23 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // APP_OSCONFIGURATIONS
-          if (field.type == org.apache.thrift.protocol.TType.MAP) {
-            {
-              org.apache.thrift.protocol.TMap _map0 = iprot.readMapBegin();
-              this.appOSConfigurations = new HashMap<AppStore,RecommendedAppOSConfiguration>(2*_map0.size);
-              for (int _i1 = 0; _i1 < _map0.size; ++_i1)
-              {
-                AppStore _key2; // required
-                RecommendedAppOSConfiguration _val3; // required
-                _key2 = AppStore.findByValue(iprot.readI32());
-                _val3 = new RecommendedAppOSConfiguration();
-                _val3.read(iprot);
-                this.appOSConfigurations.put(_key2, _val3);
-              }
-              iprot.readMapEnd();
-            }
+        case 4: // APP_STORE_QUERY
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.appStoreQuery = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 5: // APP_OPEN_URLPATTERN
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.appOpenURLPattern = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 6: // APP_LOGO_URL
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.appLogoURL = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -576,17 +700,19 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
       oprot.writeString(this.appDescription);
       oprot.writeFieldEnd();
     }
-    if (this.appOSConfigurations != null) {
-      oprot.writeFieldBegin(APP_OSCONFIGURATIONS_FIELD_DESC);
-      {
-        oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.STRUCT, this.appOSConfigurations.size()));
-        for (Map.Entry<AppStore, RecommendedAppOSConfiguration> _iter4 : this.appOSConfigurations.entrySet())
-        {
-          oprot.writeI32(_iter4.getKey().getValue());
-          _iter4.getValue().write(oprot);
-        }
-        oprot.writeMapEnd();
-      }
+    if (this.appStoreQuery != null) {
+      oprot.writeFieldBegin(APP_STORE_QUERY_FIELD_DESC);
+      oprot.writeString(this.appStoreQuery);
+      oprot.writeFieldEnd();
+    }
+    if (this.appOpenURLPattern != null) {
+      oprot.writeFieldBegin(APP_OPEN_URLPATTERN_FIELD_DESC);
+      oprot.writeString(this.appOpenURLPattern);
+      oprot.writeFieldEnd();
+    }
+    if (this.appLogoURL != null) {
+      oprot.writeFieldBegin(APP_LOGO_URL_FIELD_DESC);
+      oprot.writeString(this.appLogoURL);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -618,11 +744,27 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("appOSConfigurations:");
-    if (this.appOSConfigurations == null) {
+    sb.append("appStoreQuery:");
+    if (this.appStoreQuery == null) {
       sb.append("null");
     } else {
-      sb.append(this.appOSConfigurations);
+      sb.append(this.appStoreQuery);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("appOpenURLPattern:");
+    if (this.appOpenURLPattern == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.appOpenURLPattern);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("appLogoURL:");
+    if (this.appLogoURL == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.appLogoURL);
     }
     first = false;
     sb.append(")");

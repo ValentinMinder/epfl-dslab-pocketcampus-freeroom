@@ -1,9 +1,14 @@
 package org.pocketcampus.plugin.recommendedapps.android;
 
+import java.util.Locale;
+
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.recommendedapps.android.iface.IRecommendedAppsController;
-import org.pocketcampus.plugin.recommendedapps.android.RecommendedAppsModel;
+import org.pocketcampus.plugin.recommendedapps.android.iface.IRecommendedAppsView;
+import org.pocketcampus.plugin.recommendedapps.android.req.GetRecommendedAppsRequest;
+import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppsRequest;
+import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppsResponse;
 import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppsService.Client;
 import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppsService.Iface;
 
@@ -41,7 +46,6 @@ public class RecommendedAppsController extends PluginController implements IReco
 	public void onCreate() {
 		mModel = new RecommendedAppsModel(getApplicationContext());
 		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
-
 	}
 	
 	@Override
@@ -49,5 +53,12 @@ public class RecommendedAppsController extends PluginController implements IReco
 		return mModel;
 	}
 	
-
+	public void updateModelWithRecommendedAppsResponse(RecommendedAppsResponse response){
+		mModel.setRecommendedAppsResponse(response);
+	}
+	
+	public void refreshRecommendedApps(IRecommendedAppsView caller){
+		RecommendedAppsRequest request = new RecommendedAppsRequest(Locale.getDefault().getLanguage());
+		new GetRecommendedAppsRequest(caller).start(this, mClient, request);
+	}
 }
