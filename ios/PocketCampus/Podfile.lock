@@ -20,12 +20,11 @@ PODS:
   - AFNetworking/UIKit (2.3.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - BTStoreView (1.2)
   - CDZQRScanningViewController (1.0.7)
-  - GoogleAnalytics-iOS-SDK (3.0.8)
+  - GoogleAnalytics-iOS-SDK (3.0.9)
   - JTTargetActionBlock (1.0.0)
   - LGALibrary (1.0.0)
-  - MBProgressHUD (0.8)
+  - MBProgressHUD (0.9)
   - NSTimer-Blocks (0.0.1)
   - SSKeychain (1.2.2)
   - TapkuLibrary (0.3.5)
@@ -34,7 +33,6 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
-  - BTStoreView
   - CDZQRScanningViewController
   - GoogleAnalytics-iOS-SDK (~> 3.0)
   - JTTargetActionBlock
@@ -52,12 +50,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
-  BTStoreView: d6d873d5bf0b47f61c2c9edbb2371304877ccde3
   CDZQRScanningViewController: 69cb48a4d02c483a8ee43da15b8fd23fc4e853f3
-  GoogleAnalytics-iOS-SDK: a3206c68ee5f2a014ed67383d1f779072b653988
+  GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   JTTargetActionBlock: bef69054d368a91b33b98a520fa9e78e218a5a25
   LGALibrary: 51cb54158dece48841cb75722045aacfe3412cf1
-  MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
+  MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   NSTimer-Blocks: 0a653b84ab33068a085f5c03c82c18be1f61eba9
   SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9
   TapkuLibrary: 187d3cd6b9b68064105954afe534f962611b6d48
