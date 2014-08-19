@@ -239,6 +239,8 @@
 		3293AD2315D1BC930097D414 /* PCAboutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3293AD2215D1BC930097D414 /* PCAboutView.xib */; };
 		3296570B14FF9DDB00C44C12 /* PocketCampus.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3296570914FF9DDB00C44C12 /* PocketCampus.strings */; };
 		3297421518D799A900E23C76 /* IsAcademiaDayScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3297421418D799A900E23C76 /* IsAcademiaDayScheduleViewController.m */; };
+		32975CF019A34EB600146390 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32975CF319A34EB600146390 /* InfoPlist.strings */; };
+		32975CF119A34EB600146390 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32975CF319A34EB600146390 /* InfoPlist.strings */; };
 		3297E017155571F80054F790 /* NewsLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 3297E016155571F80054F790 /* NewsLarge.png */; };
 		3297E01B15557FE10054F790 /* NewsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3297E01A15557FE10054F790 /* NewsUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		329840E316397ADB00FBADFA /* PluginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32704C66150016B3002BCB75 /* PluginController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -769,6 +771,8 @@
 		3296570C14FF9DE300C44C12 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = en; path = en.lproj/PocketCampus.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
 		3297421318D799A900E23C76 /* IsAcademiaDayScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IsAcademiaDayScheduleViewController.h; sourceTree = "<group>"; };
 		3297421418D799A900E23C76 /* IsAcademiaDayScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IsAcademiaDayScheduleViewController.m; sourceTree = "<group>"; };
+		32975CF219A34EB600146390 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		32975CF419A34EBB00146390 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3297E016155571F80054F790 /* NewsLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NewsLarge.png; sourceTree = "<group>"; };
 		3297E01915557FE10054F790 /* NewsUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsUtils.h; sourceTree = "<group>"; };
 		3297E01A15557FE10054F790 /* NewsUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsUtils.m; sourceTree = "<group>"; };
@@ -1231,6 +1235,7 @@
 			isa = PBXGroup;
 			children = (
 				3296570914FF9DDB00C44C12 /* PocketCampus.strings */,
+				32975CF319A34EB600146390 /* InfoPlist.strings */,
 				32704C7B15002F67002BCB75 /* Plugins.plist */,
 				32675C2315F50F4A00880387 /* Config.plist */,
 				3219EF5814FCDE4900A271CD /* PocketCampus-Info.plist */,
@@ -2533,7 +2538,10 @@
 				TargetAttributes = {
 					32136F32193FBCFF002905A9 = {
 						CreatedOnToolsVersion = 6.0;
-						DevelopmentTeam = JEHAG5DVUC;
+						DevelopmentTeam = 7KPBSVCYLZ;
+					};
+					3219EF4B14FCDE4900A271CD = {
+						DevelopmentTeam = 7KPBSVCYLZ;
 					};
 				};
 			};
@@ -2562,6 +2570,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				32136F4B193FBD20002905A9 /* CamiproWidget.storyboard in Resources */,
+				32975CF119A34EB600146390 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2570,6 +2579,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3247495017F33B0D00698A9D /* DirectoryPersonBaseInfoCell.xib in Resources */,
+				32975CF019A34EB600146390 /* InfoPlist.strings in Resources */,
 				3296570B14FF9DDB00C44C12 /* PocketCampus.strings in Resources */,
 				3200375518118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png in Resources */,
 				32704C7C15002F67002BCB75 /* Plugins.plist in Resources */,
@@ -3099,6 +3109,15 @@
 				3296570C14FF9DE300C44C12 /* en */,
 			);
 			name = PocketCampus.strings;
+			sourceTree = "<group>";
+		};
+		32975CF319A34EB600146390 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32975CF219A34EB600146390 /* fr */,
+				32975CF419A34EBB00146390 /* en */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		32A63A4D1535FFF400237841 /* TransportTripsHeaderCell.xib */ = {

@@ -274,7 +274,12 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 }
 
 + (BOOL)hasAppAccessToLocation {
-    return ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized);
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    if ([PCUtils isOSVersionSmallerThan:8.0]) {
+        return (status == kCLAuthorizationStatusAuthorized || status == kCLAuthorizationStatusNotDetermined);
+    } else {
+        return (status == kCLAuthorizationStatusAuthorizedAlways || status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusNotDetermined);
+    }
 }
 
 + (void)throwExceptionIfObject:(id)object notKindOfClass:(Class)class; {
