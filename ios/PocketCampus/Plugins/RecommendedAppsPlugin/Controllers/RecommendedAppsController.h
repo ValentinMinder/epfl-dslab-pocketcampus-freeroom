@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-//  Created by ___FULLUSERNAME___ on ___DATE___.
+//  Created by Silviu Andrica on 18.08.2014.
 
 #import "PluginController.h"
 
