@@ -81,7 +81,8 @@ extern NSString* const kTransportUserTransportStationsModifiedNotification;
 
 typedef enum {
     LocationFailureReasonUnset = 0,
-    LocationFailureReasonUserDenied,
+    LocationFailureReasonUserDeniedBufferAlert,
+    LocationFailureReasonUserDeniedSystem,
     LocationFailureReasonTimeout,
     LocationFailureReasonUnknown,
 } LocationFailureReason;

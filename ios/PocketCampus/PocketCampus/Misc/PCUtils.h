@@ -28,7 +28,7 @@
 //  Created by Loïc Gardiol on 04.07.12.
 
 /**
- * You can use this constants for +iconForFileExtension
+ * You can use these constants for +iconForFileExtension
  */
 extern NSString* const kPCUtilsExtensionLink;
 extern NSString* const kPCUtilsExtensionFolder;
