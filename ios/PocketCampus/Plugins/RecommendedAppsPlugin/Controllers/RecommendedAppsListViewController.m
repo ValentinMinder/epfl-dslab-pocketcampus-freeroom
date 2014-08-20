@@ -94,6 +94,8 @@
 - (void)getRecommendedAppsForRequest:(RecommendedAppsRequest *)request didReturn:(RecommendedAppsResponse *)response{
     self.recommendedAppsResponse = response;
     [self.tableView reloadData];
+    NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"RecommendedAppsDisclaimerView" owner:nil options:nil];
+    self.tableView.tableHeaderView = elements[0];
 }
 
 - (void)getRecommendedAppsFailed {
@@ -127,7 +129,7 @@
             [productViewController loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier:appStoreAppId} completionBlock:NULL];
             [self presentViewController:productViewController animated:YES completion:NULL];
         }];
-        cell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
+//        cell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
     }
     cell.textLabel.text = category.categoryName;
@@ -136,11 +138,16 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.recommendedAppsResponse.categories.count;
+    return 1;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return self.recommendedAppsResponse.categories.count;
+}
+
+- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    RecommendedAppCategory* category = self.recommendedAppsResponse.categories[section];
+    return [category.categoryName uppercaseString];
 }
 
 #pragma mark - SKStoreProductViewControllerDelegate

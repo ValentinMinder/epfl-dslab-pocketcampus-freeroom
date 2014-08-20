@@ -13,9 +13,7 @@
 
 @interface RecommendedAppTableViewCell()
 @property (nonatomic, weak) IBOutlet RecommendedAppScrollView* recommendedAppsScrollView;
-@property (nonatomic, weak) IBOutlet UILabel* categoryNameLabel;
 @property (nonatomic, weak) IBOutlet UILabel* categoryDescriptionLabel;
-@property (nonatomic, weak) IBOutlet UIImageView* categoryLogoImage;
 @end
 
 @implementation RecommendedAppTableViewCell
@@ -27,8 +25,6 @@
         self.recommendedAppsScrollView.appItems = recommendedApps;
         self.recommendedAppsScrollView.appThumbTapped = appThumbTappedBlock;
         self.categoryDescriptionLabel.text = category.categoryDescription;
-        self.categoryNameLabel.text = category.categoryName;
-        [self.categoryLogoImage setImageWithURL:[NSURL URLWithString:category.categoryLogoURL]];
     }
     return self;
 }

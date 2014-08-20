@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,31 +50,12 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 		Connection connection = connectionManager.getConnection();
 
 		Map<Integer, RecommendedApp> apps = new HashMap<>();
-
-		PreparedStatement getAppsStatement = connection
-				.prepareStatement("SELECT * FROM RecommendedApps");
-
-		getAppsStatement.execute();
-
-		ResultSet results = getAppsStatement.getResultSet();
-
-		while (results.next()) {
-			RecommendedApp app = new RecommendedApp();
-			int appId = results.getInt("AppId");
-			app.setAppId(appId);
-			String appName = results.getString("AppName");
-			app.setAppName(appName);
-			String appDescription = results.getString("AppDescription"
-					+ languageSuffix);
-			app.setAppDescription(appDescription);
-			apps.put(appId, app);
-		}
-
+		
 		PreparedStatement getAppOSConfigurationsStatement = connection
 				.prepareStatement("SELECT * FROM RecommendedAppsOSConfigurations WHERE AppStore = " + appStore.getValue());
 		getAppOSConfigurationsStatement.execute();
 
-		results = getAppOSConfigurationsStatement.getResultSet();
+		ResultSet results = getAppOSConfigurationsStatement.getResultSet();
 
 		while (results.next()) {
 			int appId = results.getInt("AppId");
@@ -82,10 +64,34 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 			String appOpenURLPattern = results.getString("AppOpenURLPattern");
 			String appLogoURL = results.getString("AppLogoURL");
 
-			RecommendedApp app = apps.get(appId);
+			RecommendedApp app = new RecommendedApp();
+			app.setAppId(appId);
 			app.setAppStoreQuery(appStoreQuery);
 			app.setAppLogoURL(appLogoURL);
 			app.setAppOpenURLPattern(appOpenURLPattern);
+			
+			apps.put(appId, app);
+		}
+
+		PreparedStatement getAppsStatement = connection
+				.prepareStatement("SELECT * FROM RecommendedApps");
+
+		getAppsStatement.execute();
+
+		results = getAppsStatement.getResultSet();
+
+		while (results.next()) {
+			int appId = results.getInt("AppId");
+			if(!apps.containsKey(appId)){
+				continue;
+			}
+			RecommendedApp app = apps.get(appId);
+			String appName = results.getString("AppName");
+			app.setAppName(appName);
+			String appDescription = results.getString("AppDescription"
+					+ languageSuffix);
+			app.setAppDescription(appDescription);
+			
 		}
 		return apps;
 	}
@@ -108,8 +114,8 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 			int categoryId = results.getInt("CategoryId");
 			category.setCategoryId(categoryId);
 			
-			String categoryLogoURL = results.getString("CategoryLogoURL");
-			category.setCategoryLogoURL(categoryLogoURL);
+//			String categoryLogoURL = results.getString("CategoryLogoURL");
+//			category.setCategoryLogoURL(categoryLogoURL);
 			
 			String categoryName = results.getString("CategoryName"+languageSuffix);
 			category.setCategoryName(categoryName);
@@ -131,7 +137,7 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 				}
 			}
 			
-			if(category.getAppIds().size() > 0){
+			if(category.isSetAppIds() && (category.getAppIds().size() > 0)){
 				categories.add(category);
 			}
 		}

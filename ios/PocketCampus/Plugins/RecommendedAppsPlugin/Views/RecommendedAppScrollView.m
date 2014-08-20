@@ -78,7 +78,7 @@
         [subview removeFromSuperview];
     }
     
-    static CGFloat const kBubblesMargin = 20.0;
+    static CGFloat const kBubblesMargin = 5.0;
     
     __weak __typeof(self) welf = self;
     

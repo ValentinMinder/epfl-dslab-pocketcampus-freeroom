@@ -119,13 +119,13 @@ public class RecommendedAppsMainView extends PluginView implements IRecommendedA
 		
 		LayoutInflater inflater = (LayoutInflater)getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
-		LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.app_store, null);
+		LinearLayout storeLayout = (LinearLayout) inflater.inflate(R.layout.app_store, null);
+		LinearLayout linearLayout = (LinearLayout) storeLayout.findViewById(R.id.recommendedAppCategoryList);
 		
 		for(RecommendedAppCategory category : mModel.categories()){
 			LinearLayout categoryLayout = (LinearLayout) inflater.inflate(R.layout.app_store_category, null);
 			((TextView)categoryLayout.findViewById(R.id.recommendedAppCategoryName)).setText(category.getCategoryName());
 			((TextView)categoryLayout.findViewById(R.id.recommendedAppCategoryDescription)).setText(category.getCategoryDescription());
-			ImageLoader.getInstance().displayImage(category.getCategoryLogoURL(), (ImageView) categoryLayout.findViewById(R.id.recommendedAppCategoryImage), options);
 			LinearLayout appLayout = (LinearLayout) categoryLayout.findViewById(R.id.recommendedAppCategoryApps);
 			for(int appId : category.getAppIds()){
 				final RecommendedApp app = apps.get(appId);
@@ -151,6 +151,6 @@ public class RecommendedAppsMainView extends PluginView implements IRecommendedA
 			linearLayout.addView(categoryLayout);
 		}
 		
-		setContentView(linearLayout);
+		setContentView(storeLayout);
 	}
 }

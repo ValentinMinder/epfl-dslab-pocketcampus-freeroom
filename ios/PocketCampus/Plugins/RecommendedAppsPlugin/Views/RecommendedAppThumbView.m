@@ -34,7 +34,7 @@
         self.recommendedApp = recommendedApp;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addConstraints:[NSLayoutConstraint width:220 height:80 constraintsForView:self]];
+        [self addConstraints:[NSLayoutConstraint width:250 height:80 constraintsForView:self]];
     }
     return self;
 }

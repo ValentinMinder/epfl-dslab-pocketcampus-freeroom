@@ -10,6 +10,7 @@
 		18BE4633A56CF967183FC968 /* IsAcademiaController.m in Sources */ = {isa = PBXBuildFile; fileRef = 104F4598B47B32142EF41F88 /* IsAcademiaController.m */; };
 		1997124D15EFC9CA00E2A679 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B7322515C206F30091757D /* libsqlite3.dylib */; };
 		1E8A476B975E7A7BDF71ABF5 /* isacademia.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A324ABBA411E9EDDA54A1AB /* isacademia.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2708FE8219A491A70019D694 /* RecommendedAppsDisclaimerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2708FE8419A491A70019D694 /* RecommendedAppsDisclaimerView.xib */; };
 		27B74CE219A205E6006B2F17 /* RecommendedAppsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B74CD519A205E6006B2F17 /* RecommendedAppsController.m */; };
 		27B74CE319A205E6006B2F17 /* RecommendedAppsService.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B74CD819A205E6006B2F17 /* RecommendedAppsService.m */; };
 		27B74CE619A205E6006B2F17 /* RecommendedApps.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B74CDF19A205E6006B2F17 /* RecommendedApps.png */; };
@@ -420,6 +421,8 @@
 		104F4598B47B32142EF41F88 /* IsAcademiaController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = IsAcademiaController.m; path = Plugins/IsAcademiaPlugin/Controllers/IsAcademiaController.m; sourceTree = SOURCE_ROOT; };
 		14D146FF839137578105D4C3 /* EventsService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EventsService.h; path = Plugins/EventsPlugin/Model/EventsService.h; sourceTree = SOURCE_ROOT; };
 		152945DD901E004926831E89 /* IsAcademiaService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = IsAcademiaService.m; path = Plugins/IsAcademiaPlugin/Model/IsAcademiaService.m; sourceTree = SOURCE_ROOT; };
+		2708FE8319A491A70019D694 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RecommendedAppsDisclaimerView.xib; sourceTree = "<group>"; };
+		2708FE8519A491AD0019D694 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/RecommendedAppsDisclaimerView.xib; sourceTree = "<group>"; };
 		27B74CD419A205E6006B2F17 /* RecommendedAppsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppsController.h; sourceTree = "<group>"; };
 		27B74CD519A205E6006B2F17 /* RecommendedAppsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedAppsController.m; sourceTree = "<group>"; };
 		27B74CD719A205E6006B2F17 /* RecommendedAppsService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppsService.h; sourceTree = "<group>"; };
@@ -1094,6 +1097,7 @@
 				27B74CFE19A21146006B2F17 /* RecommendedAppTableViewCell.m */,
 				27B74CF819A21059006B2F17 /* RecommendedAppTableViewCell.xib */,
 				27B74CDE19A205E6006B2F17 /* Images */,
+				2708FE8419A491A70019D694 /* RecommendedAppsDisclaimerView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2648,6 +2652,7 @@
 				3218CD2415B8359F00CEB238 /* MoodleLarge.png in Resources */,
 				328A132118296E2D00F4C622 /* FoodSmileyMeh.png in Resources */,
 				32930AA817F898910025F864 /* LGRefreshControl.strings in Resources */,
+				2708FE8219A491A70019D694 /* RecommendedAppsDisclaimerView.xib in Resources */,
 				3293AD2315D1BC930097D414 /* PCAboutView.xib in Resources */,
 				32777B4615D1BFBC00A29F56 /* PCAbout.html in Resources */,
 				32675C2415F50F4A00880387 /* Config.plist in Resources */,
@@ -3039,6 +3044,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		2708FE8419A491A70019D694 /* RecommendedAppsDisclaimerView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2708FE8319A491A70019D694 /* en */,
+				2708FE8519A491AD0019D694 /* fr */,
+			);
+			name = RecommendedAppsDisclaimerView.xib;
+			sourceTree = "<group>";
+		};
 		27B74CEA19A206C8006B2F17 /* RecommendedAppsPlugin.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

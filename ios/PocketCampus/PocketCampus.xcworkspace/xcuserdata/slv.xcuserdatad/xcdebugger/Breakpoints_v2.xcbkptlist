@@ -90,7 +90,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/RecommendedAppsPlugin/Controllers/RecommendedAppsListViewController.m"
-            timestampString = "430137762.882065"
+            timestampString = "430217369.878248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "73"
@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/RecommendedAppsPlugin/Controllers/RecommendedAppsListViewController.m"
-            timestampString = "430137736.611534"
+            timestampString = "430217475.719572"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "122"
-            endingLineNumber = "122"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/RecommendedAppsPlugin/Controllers/RecommendedAppsListViewController.m"
-            timestampString = "430151903.795687"
+            timestampString = "430218225.147418"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "148"
-            endingLineNumber = "148"
+            startingLineNumber = "155"
+            endingLineNumber = "155"
             landmarkName = "-productViewControllerDidFinish:"
             landmarkType = "5">
          </BreakpointContent>
