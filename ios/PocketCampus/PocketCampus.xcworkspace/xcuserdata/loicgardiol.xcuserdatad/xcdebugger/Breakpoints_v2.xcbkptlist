@@ -4989,11 +4989,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/AppDelegate/AppDelegate.m"
-            timestampString = "430073761.601557"
+            timestampString = "430218145.112503"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
             landmarkName = "-application:willFinishLaunchingWithOptions:"
             landmarkType = "5">
          </BreakpointContent>

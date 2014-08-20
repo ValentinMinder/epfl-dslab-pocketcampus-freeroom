@@ -75,6 +75,8 @@
  * @discussion WARNING: from plugins, you should typically not access complex object persistence
  * with this method, because they don't prevent key collisions between plugins.
  * Use PCPersistenceManager::saveObject:forKey:pluginName: ... instead
+ * You can use this path if you ensure that your keys are totally unique container-wide,
+ * or by using subfolders for example.
  */
 + (NSString*)appGroupBundleIdentifierPersistencePath;
 

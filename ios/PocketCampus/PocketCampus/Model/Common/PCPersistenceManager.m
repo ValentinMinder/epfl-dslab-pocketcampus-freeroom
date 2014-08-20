@@ -118,7 +118,8 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
         if (![defaults boolForKey:kDefaultsMigrationDoneBoolKey]) {
             // copying data from standardUserDefaults to shared user defaults
             @try {
-                [defaults registerDefaults:[NSUserDefaults standardUserDefaults].dictionaryRepresentation];
+                NSUserDefaults* oldStandardDefaults = [NSUserDefaults standardUserDefaults];
+                [defaults registerDefaults:oldStandardDefaults.dictionaryRepresentation];
                 [defaults setBool:YES forKey:kDefaultsMigrationDoneBoolKey];
                 [defaults synchronize];
                 CLSNSLog(@"   1. Standard defaults successfully migrated to app group defaults.");

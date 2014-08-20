@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
 //  Created by Loïc Gardiol on 28.02.12.
 
 #import "AppDelegate.h"
