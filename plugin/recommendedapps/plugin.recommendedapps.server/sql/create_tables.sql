@@ -10,8 +10,7 @@ CREATE TABLE `PocketCampus`.`RecommendedAppsOSConfigurations` (
   `AppStore` INT NULL,
   `AppStoreQuery` VARCHAR(45) NULL,
   `AppOpenURLPattern` TEXT NULL,
-  `AppLogoURL` TEXT NULL,
-  PRIMARY KEY (`AppId`));
+  `AppLogoURL` TEXT NULL);
 
 
 CREATE TABLE `PocketCampus`.`RecommendedAppsCategories` (

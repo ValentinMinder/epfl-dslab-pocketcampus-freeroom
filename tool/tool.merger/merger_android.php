@@ -13,7 +13,7 @@
 
 chdir(dirname(__FILE__));
 
-$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Map", "Directory", "PushNotif", "Events"); // ("Satellite", "Bikes", "Sunrise", "QAforum");
+$plugins_to_merge = array("Dashboard", "RecommendedApps"); //"Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Map", "Directory", "PushNotif", "Events", "RecommendedApps"); // ("Satellite", "Bikes", "Sunrise", "QAforum");
 
 $libs_to_export = array(
 		"android-support-v4.jar",
@@ -211,7 +211,7 @@ EOS;
 }
 
 function generate_project_properties($output_dir, $is_lib, $refs){
-	$content = "target=android-10\n";
+	$content = "target=android-19\n";
 	if($is_lib)
 		$content .= "android.library=true\n";
 	$i = 1;

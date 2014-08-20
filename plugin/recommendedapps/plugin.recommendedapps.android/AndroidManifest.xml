@@ -8,7 +8,7 @@
     <application android:label="@string/app_name"
         android:theme="@style/PocketCampusTheme"
         android:icon="@drawable/recommendedapps_icon"
-        android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext">
+        android:name="org.pocketcampus.platform.android.core.GlobalContext">
         
         
 		<activity android:name="org.pocketcampus.plugin.recommendedapps.android.RecommendedAppsMainView"

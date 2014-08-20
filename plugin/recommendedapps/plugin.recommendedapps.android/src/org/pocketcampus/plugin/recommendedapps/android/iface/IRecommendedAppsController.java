@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.recommendedapps.android.iface;
 
+import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppsResponse;
+
 /**
  * IRecommendedAppsController
  * 
@@ -10,4 +12,6 @@ package org.pocketcampus.plugin.recommendedapps.android.iface;
  *
  */
 public interface IRecommendedAppsController {
+	void updateModelWithRecommendedAppsResponse(RecommendedAppsResponse response);
+	void refreshRecommendedApps(IRecommendedAppsView caller);
 }

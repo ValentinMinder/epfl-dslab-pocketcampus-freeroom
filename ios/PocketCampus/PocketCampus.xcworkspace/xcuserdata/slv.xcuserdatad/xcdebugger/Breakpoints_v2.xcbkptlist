@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/RecommendedAppsPlugin/Controllers/RecommendedAppsListViewController.m"
-            timestampString = "430137823.783925"
+            timestampString = "430151903.795687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
+            startingLineNumber = "148"
+            endingLineNumber = "148"
             landmarkName = "-productViewControllerDidFinish:"
             landmarkType = "5">
          </BreakpointContent>

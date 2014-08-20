@@ -3,6 +3,7 @@
 	<name>plugin.recommendedapps.android</name>
 	<comment></comment>
 	<projects>
+		<project>platform.android</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

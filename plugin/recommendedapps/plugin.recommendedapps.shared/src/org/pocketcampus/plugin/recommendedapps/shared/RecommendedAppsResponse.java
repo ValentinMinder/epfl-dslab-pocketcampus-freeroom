@@ -471,14 +471,14 @@ public class RecommendedAppsResponse implements org.apache.thrift.TBase<Recommen
         case 2: // CATEGORIES
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list9 = iprot.readListBegin();
-              this.categories = new ArrayList<RecommendedAppCategory>(_list9.size);
-              for (int _i10 = 0; _i10 < _list9.size; ++_i10)
+              org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
+              this.categories = new ArrayList<RecommendedAppCategory>(_list4.size);
+              for (int _i5 = 0; _i5 < _list4.size; ++_i5)
               {
-                RecommendedAppCategory _elem11; // required
-                _elem11 = new RecommendedAppCategory();
-                _elem11.read(iprot);
-                this.categories.add(_elem11);
+                RecommendedAppCategory _elem6; // required
+                _elem6 = new RecommendedAppCategory();
+                _elem6.read(iprot);
+                this.categories.add(_elem6);
               }
               iprot.readListEnd();
             }
@@ -489,16 +489,16 @@ public class RecommendedAppsResponse implements org.apache.thrift.TBase<Recommen
         case 3: // APPS
           if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
-              org.apache.thrift.protocol.TMap _map12 = iprot.readMapBegin();
-              this.apps = new HashMap<Integer,RecommendedApp>(2*_map12.size);
-              for (int _i13 = 0; _i13 < _map12.size; ++_i13)
+              org.apache.thrift.protocol.TMap _map7 = iprot.readMapBegin();
+              this.apps = new HashMap<Integer,RecommendedApp>(2*_map7.size);
+              for (int _i8 = 0; _i8 < _map7.size; ++_i8)
               {
-                int _key14; // required
-                RecommendedApp _val15; // required
-                _key14 = iprot.readI32();
-                _val15 = new RecommendedApp();
-                _val15.read(iprot);
-                this.apps.put(_key14, _val15);
+                int _key9; // required
+                RecommendedApp _val10; // required
+                _key9 = iprot.readI32();
+                _val10 = new RecommendedApp();
+                _val10.read(iprot);
+                this.apps.put(_key9, _val10);
               }
               iprot.readMapEnd();
             }
@@ -530,9 +530,9 @@ public class RecommendedAppsResponse implements org.apache.thrift.TBase<Recommen
       oprot.writeFieldBegin(CATEGORIES_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.categories.size()));
-        for (RecommendedAppCategory _iter16 : this.categories)
+        for (RecommendedAppCategory _iter11 : this.categories)
         {
-          _iter16.write(oprot);
+          _iter11.write(oprot);
         }
         oprot.writeListEnd();
       }
@@ -542,10 +542,10 @@ public class RecommendedAppsResponse implements org.apache.thrift.TBase<Recommen
       oprot.writeFieldBegin(APPS_FIELD_DESC);
       {
         oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.STRUCT, this.apps.size()));
-        for (Map.Entry<Integer, RecommendedApp> _iter17 : this.apps.entrySet())
+        for (Map.Entry<Integer, RecommendedApp> _iter12 : this.apps.entrySet())
         {
-          oprot.writeI32(_iter17.getKey());
-          _iter17.getValue().write(oprot);
+          oprot.writeI32(_iter12.getKey());
+          _iter12.getValue().write(oprot);
         }
         oprot.writeMapEnd();
       }

@@ -25,12 +25,19 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("RecommendedAppsRequest");
 
   private static final org.apache.thrift.protocol.TField LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("language", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField APP_STORE_FIELD_DESC = new org.apache.thrift.protocol.TField("appStore", org.apache.thrift.protocol.TType.I32, (short)2);
 
   private String language; // required
+  private AppStore appStore; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    LANGUAGE((short)1, "language");
+    LANGUAGE((short)1, "language"),
+    /**
+     * 
+     * @see AppStore
+     */
+    APP_STORE((short)2, "appStore");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -47,6 +54,8 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
       switch(fieldId) {
         case 1: // LANGUAGE
           return LANGUAGE;
+        case 2: // APP_STORE
+          return APP_STORE;
         default:
           return null;
       }
@@ -93,6 +102,8 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("language", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.APP_STORE, new org.apache.thrift.meta_data.FieldMetaData("appStore", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, AppStore.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(RecommendedAppsRequest.class, metaDataMap);
   }
@@ -101,10 +112,12 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
   }
 
   public RecommendedAppsRequest(
-    String language)
+    String language,
+    AppStore appStore)
   {
     this();
     this.language = language;
+    this.appStore = appStore;
   }
 
   /**
@@ -113,6 +126,9 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
   public RecommendedAppsRequest(RecommendedAppsRequest other) {
     if (other.isSetLanguage()) {
       this.language = other.language;
+    }
+    if (other.isSetAppStore()) {
+      this.appStore = other.appStore;
     }
   }
 
@@ -123,6 +139,7 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
   @Override
   public void clear() {
     this.language = null;
+    this.appStore = null;
   }
 
   public String getLanguage() {
@@ -149,6 +166,38 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
     }
   }
 
+  /**
+   * 
+   * @see AppStore
+   */
+  public AppStore getAppStore() {
+    return this.appStore;
+  }
+
+  /**
+   * 
+   * @see AppStore
+   */
+  public RecommendedAppsRequest setAppStore(AppStore appStore) {
+    this.appStore = appStore;
+    return this;
+  }
+
+  public void unsetAppStore() {
+    this.appStore = null;
+  }
+
+  /** Returns true if field appStore is set (has been assigned a value) and false otherwise */
+  public boolean isSetAppStore() {
+    return this.appStore != null;
+  }
+
+  public void setAppStoreIsSet(boolean value) {
+    if (!value) {
+      this.appStore = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case LANGUAGE:
@@ -159,6 +208,14 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
       }
       break;
 
+    case APP_STORE:
+      if (value == null) {
+        unsetAppStore();
+      } else {
+        setAppStore((AppStore)value);
+      }
+      break;
+
     }
   }
 
@@ -166,6 +223,9 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
     switch (field) {
     case LANGUAGE:
       return getLanguage();
+
+    case APP_STORE:
+      return getAppStore();
 
     }
     throw new IllegalStateException();
@@ -180,6 +240,8 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
     switch (field) {
     case LANGUAGE:
       return isSetLanguage();
+    case APP_STORE:
+      return isSetAppStore();
     }
     throw new IllegalStateException();
   }
@@ -206,6 +268,15 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
         return false;
     }
 
+    boolean this_present_appStore = true && this.isSetAppStore();
+    boolean that_present_appStore = true && that.isSetAppStore();
+    if (this_present_appStore || that_present_appStore) {
+      if (!(this_present_appStore && that_present_appStore))
+        return false;
+      if (!this.appStore.equals(that.appStore))
+        return false;
+    }
+
     return true;
   }
 
@@ -217,6 +288,11 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
     builder.append(present_language);
     if (present_language)
       builder.append(language);
+
+    boolean present_appStore = true && (isSetAppStore());
+    builder.append(present_appStore);
+    if (present_appStore)
+      builder.append(appStore.getValue());
 
     return builder.toHashCode();
   }
@@ -235,6 +311,16 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
     }
     if (isSetLanguage()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.language, typedOther.language);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetAppStore()).compareTo(typedOther.isSetAppStore());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetAppStore()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.appStore, typedOther.appStore);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -263,6 +349,13 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 2: // APP_STORE
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.appStore = AppStore.findByValue(iprot.readI32());
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -283,6 +376,11 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
       oprot.writeString(this.language);
       oprot.writeFieldEnd();
     }
+    if (this.appStore != null) {
+      oprot.writeFieldBegin(APP_STORE_FIELD_DESC);
+      oprot.writeI32(this.appStore.getValue());
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -297,6 +395,14 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
       sb.append("null");
     } else {
       sb.append(this.language);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("appStore:");
+    if (this.appStore == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.appStore);
     }
     first = false;
     sb.append(")");

@@ -69,7 +69,7 @@
         return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
     };
     
-    RecommendedAppsRequest* request = [[RecommendedAppsRequest alloc] initWithLanguage:[PCUtils userLanguageCode]];
+    RecommendedAppsRequest* request = [[RecommendedAppsRequest alloc] initWithLanguage:[PCUtils userLanguageCode] appStore:AppStore_iOS];
     [self.recommendedAppService getRecommendedApps:request delegate:self];
 }
 
@@ -120,8 +120,7 @@
     if (!cell) {
         cell = [[RecommendedAppTableViewCell alloc] initWithRecommendedApps:[self recommendedAppsInCategory:category] forCategory:category andAppThumbTappedBlock:^(RecommendedAppThumbView *thumbView) {
             RecommendedApp* app = thumbView.recommendedApp;
-            RecommendedAppOSConfiguration* config = app.appOSConfigurations[@(AppStore_iOS)];
-            NSString* appStoreQuery = config.appStoreQuery;
+            NSString* appStoreQuery = app.appStoreQuery;
             NSNumber* appStoreAppId = @([appStoreQuery integerValue]);
             SKStoreProductViewController* productViewController = [SKStoreProductViewController new];
             productViewController.delegate = welf;
