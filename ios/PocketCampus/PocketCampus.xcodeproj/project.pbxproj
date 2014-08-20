@@ -966,7 +966,6 @@
 		32FDA99E1854A30900C6393A /* NSOperationWithDelegate_Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSOperationWithDelegate_Protected.h; sourceTree = "<group>"; };
 		32FDA99F1854B5E600C6393A /* ServiceRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceRequest.h; sourceTree = "<group>"; };
 		32FDA9A01854B5E600C6393A /* ServiceRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ServiceRequest.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		32FDA9A21857151500C6393A /* ServiceRequest_Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServiceRequest_Protected.h; sourceTree = "<group>"; };
 		32FF46531636FB2400932FF5 /* PluginNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PluginNavigationController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32FF46541636FB2500932FF5 /* PluginNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PluginNavigationController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32FFA794186DDD5500237957 /* FavoriteNavBarButtonLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteNavBarButtonLandscape.png; sourceTree = "<group>"; };
@@ -1453,7 +1452,6 @@
 				32FDA99E1854A30900C6393A /* NSOperationWithDelegate_Protected.h */,
 				32FDA99F1854B5E600C6393A /* ServiceRequest.h */,
 				32FDA9A01854B5E600C6393A /* ServiceRequest.m */,
-				32FDA9A21857151500C6393A /* ServiceRequest_Protected.h */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -3243,13 +3241,14 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/Plugins/CamiproPlugin/Extensions/CamiproWidget/CamiproWidget-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				METAL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "org.pocketcampus.dev.$(TARGET_NAME:rfc1034identifier)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -3277,13 +3276,14 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/Plugins/CamiproPlugin/Extensions/CamiproWidget/CamiproWidget-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				METAL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "org.pocketcampus.dev.$(TARGET_NAME:rfc1034identifier)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

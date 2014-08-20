@@ -31,8 +31,6 @@
 
 #import "NSOperationWithDelegate_Protected.h"
 
-#import "ServiceRequest_Protected.h"
-
 #import "Service.h"
 
 #import "TTransportException.h"
