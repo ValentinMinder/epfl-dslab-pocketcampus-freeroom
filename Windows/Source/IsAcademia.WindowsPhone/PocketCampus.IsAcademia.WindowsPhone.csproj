@@ -117,9 +117,9 @@
       <Project>{F780F0DD-8A14-4E72-9525-A11D792CBFAB}</Project>
       <Name>PocketCampus.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\IsAcademia.Common\PocketCampus.IsAcademia.Common.csproj">
+    <ProjectReference Include="..\IsAcademia\PocketCampus.IsAcademia.csproj">
       <Project>{6B1E34FE-AB5D-49E8-923C-2CE10472BBCB}</Project>
-      <Name>PocketCampus.IsAcademia.Common</Name>
+      <Name>PocketCampus.IsAcademia</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

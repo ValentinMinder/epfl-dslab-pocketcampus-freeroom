@@ -41,7 +41,7 @@ namespace PocketCampus.News.ViewModels
         /// Gets the command executed to open the feed item in the browser.
         /// </summary>
         [LogId( "ViewInBrowser" )]
-        [LogId( "Item.LogId" )]
+        [LogParameter( "Item.LogId" )]
         public Command OpenInBrowserCommand
         {
             get { return this.GetCommand( () => _browserService.NavigateTo( ItemContent.Url ) ); }

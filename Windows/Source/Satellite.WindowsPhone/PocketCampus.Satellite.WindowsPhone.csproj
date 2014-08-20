@@ -137,9 +137,9 @@
       <Project>{F780F0DD-8A14-4E72-9525-A11D792CBFAB}</Project>
       <Name>PocketCampus.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Satellite.Common\PocketCampus.Satellite.Common.csproj">
+    <ProjectReference Include="..\Satellite\PocketCampus.Satellite.csproj">
       <Project>{94FB2B30-AA95-41E8-9B2F-6AF7D37355E1}</Project>
-      <Name>PocketCampus.Satellite.Common</Name>
+      <Name>PocketCampus.Satellite</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

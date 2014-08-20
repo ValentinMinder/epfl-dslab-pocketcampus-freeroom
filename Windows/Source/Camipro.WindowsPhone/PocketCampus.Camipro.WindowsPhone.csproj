@@ -105,9 +105,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Camipro.Common\PocketCampus.Camipro.Common.csproj">
+    <ProjectReference Include="..\Camipro\PocketCampus.Camipro.csproj">
       <Project>{2AB0060F-5611-4AEB-9210-D8496CFC421D}</Project>
-      <Name>PocketCampus.Camipro.Common</Name>
+      <Name>PocketCampus.Camipro</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common.WindowsPhone\PocketCampus.Common.WindowsPhone.csproj">
       <Project>{DA337688-F11F-48A8-A1E6-AF0798C0651F}</Project>

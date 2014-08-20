@@ -209,9 +209,9 @@
       <Project>{248C6CF6-C940-42E4-AC38-C31F3726DD44}</Project>
       <Name>PocketCampus.Events.WindowsPhone</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Main.Common\PocketCampus.Main.Common.csproj">
+    <ProjectReference Include="..\Main\PocketCampus.Main.csproj">
       <Project>{A1A50035-9654-49C2-AFA4-F21B25F7C3B7}</Project>
-      <Name>PocketCampus.Main.Common</Name>
+      <Name>PocketCampus.Main</Name>
     </ProjectReference>
     <ProjectReference Include="..\Food.WindowsPhone\PocketCampus.Food.WindowsPhone.csproj">
       <Project>{364C42F1-3C59-4250-9F43-4F6DD3AC6918}</Project>

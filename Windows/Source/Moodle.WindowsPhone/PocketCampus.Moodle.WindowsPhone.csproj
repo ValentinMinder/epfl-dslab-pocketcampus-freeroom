@@ -116,9 +116,9 @@
       <Project>{F780F0DD-8A14-4E72-9525-A11D792CBFAB}</Project>
       <Name>PocketCampus.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Moodle.Common\PocketCampus.Moodle.Common.csproj">
+    <ProjectReference Include="..\Moodle\PocketCampus.Moodle.csproj">
       <Project>{1BE81A3A-E8ED-4659-ADE1-394450E59B69}</Project>
-      <Name>PocketCampus.Moodle.Common</Name>
+      <Name>PocketCampus.Moodle</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

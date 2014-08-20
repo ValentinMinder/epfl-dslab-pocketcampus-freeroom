@@ -224,13 +224,13 @@
       <Project>{F780F0DD-8A14-4E72-9525-A11D792CBFAB}</Project>
       <Name>PocketCampus.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Food.Common\PocketCampus.Food.Common.csproj">
+    <ProjectReference Include="..\Food\PocketCampus.Food.csproj">
       <Project>{36ED8CE4-44DF-4AF0-9F42-138289F663A9}</Project>
-      <Name>PocketCampus.Food.Common</Name>
+      <Name>PocketCampus.Food</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Map.Common\PocketCampus.Map.Common.csproj">
+    <ProjectReference Include="..\Map\PocketCampus.Map.csproj">
       <Project>{986B1475-023C-41A1-903C-7A48FFC55ADF}</Project>
-      <Name>PocketCampus.Map.Common</Name>
+      <Name>PocketCampus.Map</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

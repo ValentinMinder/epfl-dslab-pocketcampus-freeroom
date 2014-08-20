@@ -161,9 +161,9 @@
       <Project>{F780F0DD-8A14-4E72-9525-A11D792CBFAB}</Project>
       <Name>PocketCampus.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Transport.Common\PocketCampus.Transport.Common.csproj">
+    <ProjectReference Include="..\Transport\PocketCampus.Transport.csproj">
       <Project>{7D663977-D179-4AF3-B3B8-671159C976E6}</Project>
-      <Name>PocketCampus.Transport.Common</Name>
+      <Name>PocketCampus.Transport</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

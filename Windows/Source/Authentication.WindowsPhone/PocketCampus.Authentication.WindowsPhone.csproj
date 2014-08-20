@@ -114,9 +114,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Authentication.Common\PocketCampus.Authentication.Common.csproj">
+    <ProjectReference Include="..\Authentication\PocketCampus.Authentication.csproj">
       <Project>{b1780e96-7e18-47c0-9e93-1086d9491815}</Project>
-      <Name>PocketCampus.Authentication.Common</Name>
+      <Name>PocketCampus.Authentication</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common.WindowsPhone\PocketCampus.Common.WindowsPhone.csproj">
       <Project>{da337688-f11f-48a8-a1e6-af0798c0651f}</Project>

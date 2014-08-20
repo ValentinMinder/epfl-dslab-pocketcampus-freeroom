@@ -116,9 +116,9 @@
       <Project>{F780F0DD-8A14-4E72-9525-A11D792CBFAB}</Project>
       <Name>PocketCampus.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\News.Common\PocketCampus.News.Common.csproj">
+    <ProjectReference Include="..\News\PocketCampus.News.csproj">
       <Project>{3E4ADE30-7398-4612-A390-B68BF6175620}</Project>
-      <Name>PocketCampus.News.Common</Name>
+      <Name>PocketCampus.News</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

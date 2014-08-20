@@ -1,19 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{36ED8CE4-44DF-4AF0-9F42-138289F663A9}</ProjectGuid>
+    <ProjectGuid>{B1780E96-7E18-47C0-9E93-1086D9491815}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PocketCampus.Food</RootNamespace>
-    <AssemblyName>PocketCampus.Food.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile78</TargetFrameworkProfile>
+    <RootNamespace>PocketCampus.Authentication</RootNamespace>
+    <AssemblyName>PocketCampus.Authentication</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile78</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -35,42 +36,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
     <ProjectReference Include="..\Common\PocketCampus.Common.csproj">
       <Project>{f780f0dd-8a14-4e72-9525-a11d792cbfab}</Project>
       <Name>PocketCampus.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Map.Common\PocketCampus.Map.Common.csproj">
-      <Project>{986b1475-023c-41a1-903c-7a48ffc55adf}</Project>
-      <Name>PocketCampus.Map.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IPluginSettings.cs" />
-    <Compile Include="Models\Rating.cs" />
-    <Compile Include="Models\VoteRequest.cs" />
-    <Compile Include="Models\VoteResponse.cs" />
-    <Compile Include="Models\VoteStatus.cs" />
+    <Compile Include="AuthenticationAttemptStatus.cs" />
+    <Compile Include="AuthenticationRequest.cs" />
+    <Compile Include="Models\LogoutRequest.cs" />
+    <Compile Include="Models\LogoutResponse.cs" />
+    <Compile Include="Models\AuthenticationStatus.cs" />
+    <Compile Include="Models\SessionRequest.cs" />
+    <Compile Include="Models\SessionResponse.cs" />
+    <Compile Include="Models\TokenResponse.cs" />
     <Compile Include="Plugin.cs" />
-    <Compile Include="PluginSettings.cs" />
-    <Compile Include="Models\FoodRequest.cs" />
-    <Compile Include="Models\FoodResponse.cs" />
-    <Compile Include="Models\FoodStatus.cs" />
-    <Compile Include="Models\Meal.cs" />
-    <Compile Include="Models\MealType.cs" />
-    <Compile Include="RatingInfo.cs" />
-    <Compile Include="Services\IFoodService.cs" />
-    <Compile Include="Models\MealTime.cs" />
-    <Compile Include="Services\FoodService.cs" />
-    <Compile Include="Models\PriceTarget.cs" />
-    <Compile Include="Models\Restaurant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserRating.cs" />
-    <Compile Include="ViewModels\Design\DesignMainViewModel.cs" />
-    <Compile Include="ViewModels\Design\DesignRatingViewModel.cs" />
-    <Compile Include="ViewModels\Design\DesignSettingsViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\RatingViewModel.cs" />
-    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="Services\AuthenticationService.cs" />
+    <Compile Include="Services\IAuthenticationService.cs" />
+    <Compile Include="Services\TequilaAuthenticator.cs" />
+    <Compile Include="ViewModels\AuthenticationViewModel.cs" />
+    <Compile Include="ViewModels\Design\DesignAuthenticationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThinMvvm">
@@ -94,4 +81,11 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

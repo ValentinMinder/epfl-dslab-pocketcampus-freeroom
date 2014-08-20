@@ -130,9 +130,9 @@
       <Project>{F780F0DD-8A14-4E72-9525-A11D792CBFAB}</Project>
       <Name>PocketCampus.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Events.Common\PocketCampus.Events.Common.csproj">
+    <ProjectReference Include="..\Events\PocketCampus.Events.csproj">
       <Project>{FA7A34C6-DD2B-48C1-827B-2B56BD634996}</Project>
-      <Name>PocketCampus.Events.Common</Name>
+      <Name>PocketCampus.Events</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

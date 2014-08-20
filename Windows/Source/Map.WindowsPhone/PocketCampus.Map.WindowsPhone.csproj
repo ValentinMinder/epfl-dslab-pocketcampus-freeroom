@@ -125,9 +125,9 @@
       <Project>{F780F0DD-8A14-4E72-9525-A11D792CBFAB}</Project>
       <Name>PocketCampus.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Map.Common\PocketCampus.Map.Common.csproj">
+    <ProjectReference Include="..\Map\PocketCampus.Map.csproj">
       <Project>{986B1475-023C-41A1-903C-7A48FFC55ADF}</Project>
-      <Name>PocketCampus.Map.Common</Name>
+      <Name>PocketCampus.Map</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

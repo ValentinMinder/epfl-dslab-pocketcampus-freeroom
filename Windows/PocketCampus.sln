@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Main.WindowsPhone", "Source\Main.WindowsPhone\PocketCampus.Main.WindowsPhone.csproj", "{AF9FF1D1-FDAC-42A1-841C-65DB481066FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Camipro.Common", "Source\Camipro.Common\PocketCampus.Camipro.Common.csproj", "{2AB0060F-5611-4AEB-9210-D8496CFC421D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Camipro", "Source\Camipro\PocketCampus.Camipro.csproj", "{2AB0060F-5611-4AEB-9210-D8496CFC421D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Common.WindowsPhone", "Source\Common.WindowsPhone\PocketCampus.Common.WindowsPhone.csproj", "{DA337688-F11F-48A8-A1E6-AF0798C0651F}"
 EndProject
@@ -13,41 +13,41 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Common", "Sour
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Camipro.WindowsPhone", "Source\Camipro.WindowsPhone\PocketCampus.Camipro.WindowsPhone.csproj", "{D16579BC-07A7-4B3C-9611-798D6D0721E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Food.Common", "Source\Food.Common\PocketCampus.Food.Common.csproj", "{36ED8CE4-44DF-4AF0-9F42-138289F663A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Food", "Source\Food\PocketCampus.Food.csproj", "{36ED8CE4-44DF-4AF0-9F42-138289F663A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Food.WindowsPhone", "Source\Food.WindowsPhone\PocketCampus.Food.WindowsPhone.csproj", "{364C42F1-3C59-4250-9F43-4F6DD3AC6918}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.News.Common", "Source\News.Common\PocketCampus.News.Common.csproj", "{3E4ADE30-7398-4612-A390-B68BF6175620}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.News", "Source\News\PocketCampus.News.csproj", "{3E4ADE30-7398-4612-A390-B68BF6175620}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.News.WindowsPhone", "Source\News.WindowsPhone\PocketCampus.News.WindowsPhone.csproj", "{45C81E94-8197-4805-9575-E1EBC960C6E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Satellite.Common", "Source\Satellite.Common\PocketCampus.Satellite.Common.csproj", "{94FB2B30-AA95-41E8-9B2F-6AF7D37355E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Satellite", "Source\Satellite\PocketCampus.Satellite.csproj", "{94FB2B30-AA95-41E8-9B2F-6AF7D37355E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Satellite.WindowsPhone", "Source\Satellite.WindowsPhone\PocketCampus.Satellite.WindowsPhone.csproj", "{F71288EE-9889-4A8E-ABA3-4727AF3D15B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.IsAcademia.Common", "Source\IsAcademia.Common\PocketCampus.IsAcademia.Common.csproj", "{6B1E34FE-AB5D-49E8-923C-2CE10472BBCB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.IsAcademia", "Source\IsAcademia\PocketCampus.IsAcademia.csproj", "{6B1E34FE-AB5D-49E8-923C-2CE10472BBCB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.IsAcademia.WindowsPhone", "Source\IsAcademia.WindowsPhone\PocketCampus.IsAcademia.WindowsPhone.csproj", "{9B1BD61F-84F8-4876-9249-B2B6CC9D9E05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Transport.Common", "Source\Transport.Common\PocketCampus.Transport.Common.csproj", "{7D663977-D179-4AF3-B3B8-671159C976E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Transport", "Source\Transport\PocketCampus.Transport.csproj", "{7D663977-D179-4AF3-B3B8-671159C976E6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Transport.WindowsPhone", "Source\Transport.WindowsPhone\PocketCampus.Transport.WindowsPhone.csproj", "{1E86AD7A-26C3-4B45-9029-6F2FDBC40B78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Map.Common", "Source\Map.Common\PocketCampus.Map.Common.csproj", "{986B1475-023C-41A1-903C-7A48FFC55ADF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Map", "Source\Map\PocketCampus.Map.csproj", "{986B1475-023C-41A1-903C-7A48FFC55ADF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Map.WindowsPhone", "Source\Map.WindowsPhone\PocketCampus.Map.WindowsPhone.csproj", "{5CCE2247-9966-4D14-8634-2C9698717554}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Moodle.Common", "Source\Moodle.Common\PocketCampus.Moodle.Common.csproj", "{1BE81A3A-E8ED-4659-ADE1-394450E59B69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Moodle", "Source\Moodle\PocketCampus.Moodle.csproj", "{1BE81A3A-E8ED-4659-ADE1-394450E59B69}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Moodle.WindowsPhone", "Source\Moodle.WindowsPhone\PocketCampus.Moodle.WindowsPhone.csproj", "{832B58A2-F7FE-4325-ACD8-4952479A6EE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Main.Common", "Source\Main.Common\PocketCampus.Main.Common.csproj", "{A1A50035-9654-49C2-AFA4-F21B25F7C3B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Main", "Source\Main\PocketCampus.Main.csproj", "{A1A50035-9654-49C2-AFA4-F21B25F7C3B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Directory.Common", "Source\Directory.Common\PocketCampus.Directory.Common.csproj", "{C3793263-070C-4DA7-994C-E116E63F9DE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Directory", "Source\Directory\PocketCampus.Directory.csproj", "{C3793263-070C-4DA7-994C-E116E63F9DE6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Directory.WindowsPhone", "Source\Directory.WindowsPhone\PocketCampus.Directory.WindowsPhone.csproj", "{E6A845B2-EEDD-4D20-9895-3BB187C15E81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Events.Common", "Source\Events.Common\PocketCampus.Events.Common.csproj", "{FA7A34C6-DD2B-48C1-827B-2B56BD634996}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Events", "Source\Events\PocketCampus.Events.csproj", "{FA7A34C6-DD2B-48C1-827B-2B56BD634996}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Events.WindowsPhone", "Source\Events.WindowsPhone\PocketCampus.Events.WindowsPhone.csproj", "{248C6CF6-C940-42E4-AC38-C31F3726DD44}"
 EndProject
@@ -60,7 +60,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F6311D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Authentication.WindowsPhone", "Source\Authentication.WindowsPhone\PocketCampus.Authentication.WindowsPhone.csproj", "{0093183A-CAB3-4E91-907D-0F6C48D98993}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Authentication.Common", "Source\Authentication.Common\PocketCampus.Authentication.Common.csproj", "{B1780E96-7E18-47C0-9E93-1086D9491815}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Authentication", "Source\Authentication\PocketCampus.Authentication.csproj", "{B1780E96-7E18-47C0-9E93-1086D9491815}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
