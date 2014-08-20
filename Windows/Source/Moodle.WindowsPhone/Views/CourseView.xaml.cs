@@ -6,9 +6,9 @@ using PocketCampus.Common.Controls;
 
 namespace PocketCampus.Moodle.Views
 {
-    public partial class MainView : BasePage
+    public partial class CourseView : BasePage
     {
-        public MainView()
+        public CourseView()
         {
             InitializeComponent();
         }

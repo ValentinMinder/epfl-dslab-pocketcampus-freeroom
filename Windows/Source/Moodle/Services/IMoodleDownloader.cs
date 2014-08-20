@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System.Threading.Tasks;
+using PocketCampus.Moodle.Models;
 
 namespace PocketCampus.Moodle.Services
 {
@@ -12,8 +13,8 @@ namespace PocketCampus.Moodle.Services
     public interface IMoodleDownloader
     {
         /// <summary>
-        /// Asynchronously downloads a file from the specified URL.
+        /// Asynchronously downloads the specified file.
         /// </summary>
-        Task<byte[]> DownloadAsync( string url );
+        Task<byte[]> DownloadAsync( MoodleFile file );
     }
 }

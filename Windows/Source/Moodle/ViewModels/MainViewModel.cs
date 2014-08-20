@@ -3,34 +3,25 @@
 // File author: Solal Pirelli
 
 using System;
-using System.IO;
-using System.Linq;
+using System.Globalization;
 using System.Threading;
-using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Models;
 using PocketCampus.Moodle.Services;
 using ThinMvvm;
-using ThinMvvm.Logging;
 
 namespace PocketCampus.Moodle.ViewModels
 {
     /// <summary>
-    /// The main (and only) ViewModel.
+    /// The main ViewModel.
     /// </summary>
-    [LogId( "/moodle" )]
-    public sealed class MainViewModel : CachedDataViewModel<NoParameter, CourseListResponse>
+    public sealed class MainViewModel : CachedDataViewModel<NoParameter, CoursesResponse>
     {
-        private const char UrlParametersPrefix = '?';
-
         private readonly ISecureRequestHandler _requestHandler;
+        private readonly INavigationService _navigationService;
         private readonly IMoodleService _moodleService;
-        private readonly IMoodleDownloader _downloader;
-        private readonly IFileStorage _storage;
 
         private Course[] _courses;
-        private bool _anyCourses;
-        private DownloadState _downloadState;
 
         /// <summary>
         /// Gets the courses the user is enrolled in.
@@ -41,156 +32,64 @@ namespace PocketCampus.Moodle.ViewModels
             private set { SetProperty( ref _courses, value ); }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether there are any courses.
-        /// </summary>
-        public bool AnyCourses
-        {
-            get { return _anyCourses; }
-            private set { SetProperty( ref _anyCourses, value ); }
-        }
 
         /// <summary>
-        /// Gets the state of the current download (or lack thereof).
+        /// Gets the command executed to view a course.
         /// </summary>
-        public DownloadState DownloadState
+        public Command<Course> ViewCourseCommand
         {
-            get { return _downloadState; }
-            private set { SetProperty( ref _downloadState, value ); }
+            get { return this.GetCommand<Course>( _navigationService.NavigateTo<CourseViewModel, Course> ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to download and open a file.
-        /// </summary>
-        [LogId( "DownloadAndOpenFile" )]
-        public AsyncCommand<CourseFile> DownloadAndOpenCommand
-        {
-            get { return this.GetAsyncCommand<CourseFile>( DownloadAndOpenAsync ); }
-        }
 
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( IDataCache cache, ISecureRequestHandler requestHandler, IMoodleService moodleService,
-                              IMoodleDownloader downloader, IFileStorage storage )
+        public MainViewModel( IDataCache cache, ISecureRequestHandler requestHandler, INavigationService navigationService,
+                              IMoodleService moodleService )
             : base( cache )
         {
             _requestHandler = requestHandler;
+            _navigationService = navigationService;
             _moodleService = moodleService;
-            _downloader = downloader;
-            _storage = storage;
         }
 
 
-        protected override CachedTask<CourseListResponse> GetData( bool force, CancellationToken token )
+        protected override CachedTask<CoursesResponse> GetData( bool force, CancellationToken token )
         {
             if ( !force )
             {
-                return CachedTask.NoNewData<CourseListResponse>();
+                return CachedTask.NoNewData<CoursesResponse>();
             }
 
-            return CachedTask.Create( () => _requestHandler.ExecuteAsync( async () =>
+            return CachedTask.Create( () => _requestHandler.ExecuteAsync( () =>
             {
-                var coursesResponse = await _moodleService.GetCoursesAsync( "", token );
-
-                if ( coursesResponse.Status == ResponseStatus.AuthenticationError )
+                var request = new CoursesRequest
                 {
-                    _requestHandler.Authenticate<MainViewModel>();
-                    return null;
-                }
-                if ( coursesResponse.Status != ResponseStatus.Success )
-                {
-                    throw new Exception( "An error occurred on the server while fetching the coursed." );
-                }
-
-                foreach ( var course in coursesResponse.Courses )
-                {
-                    var sectionsResponse = await _moodleService.GetCourseSectionsAsync( course.Id.ToString(), token );
-
-                    if ( sectionsResponse.Status == ResponseStatus.AuthenticationError )
-                    {
-                        _requestHandler.Authenticate<MainViewModel>();
-                        return null;
-                    }
-                    if ( sectionsResponse.Status != ResponseStatus.Success )
-                    {
-                        throw new Exception( "An error occurred on the server while fetching a course's sections." );
-                    }
-
-                    course.Sections = sectionsResponse.Sections.Where( s => s.Files.Length > 0 ).ToArray();
-
-                    foreach ( var section in course.Sections )
-                    {
-                        foreach ( var file in section.Files )
-                        {
-                            // This is used to know where to store files
-                            file.Course = course;
-                            // The file names don't have extensions so we must use the one from their URL
-                            // but also remove the URL parameters because Path.GetExtension obviously doesn't do it
-                            file.Name = Path.ChangeExtension( file.Name, Path.GetExtension( file.Url.Split( UrlParametersPrefix )[0] ) );
-                        }
-                    }
-                }
-
-                return coursesResponse;
+                    Language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName
+                };
+                return _moodleService.GetCoursesAsync( request, token );
             } ) );
         }
 
-        protected override bool HandleData( CourseListResponse data, CancellationToken token )
+        protected override bool HandleData( CoursesResponse data, CancellationToken token )
         {
-            if ( data == null )
-            {
-                return false;
-            }
-            if ( data.Status == ResponseStatus.AuthenticationError )
+            if ( data.Status == MoodleStatus.AuthenticationError )
             {
                 _requestHandler.Authenticate<MainViewModel>();
                 return false;
             }
-            if ( data.Status != ResponseStatus.Success )
+            if ( data.Status != MoodleStatus.Success )
             {
-                throw new Exception( "An error occurred while fetching courses." );
+                throw new Exception( "An error occurred on the server while fetching courses." );
             }
 
             if ( !token.IsCancellationRequested )
             {
-                Courses = data.Courses.Where( c => c.Sections.Length > 0 ).ToArray();
-                AnyCourses = Courses.Length > 0;
+                Courses = data.Courses;
             }
 
             return true;
         }
-
-        /// <summary>
-        /// Downloads (if it hasn't already been downloaded) and opens the specified file.
-        /// </summary>
-        private async Task DownloadAndOpenAsync( CourseFile file )
-        {
-            if ( DownloadState == DownloadState.Downloading )
-            {
-                return;
-            }
-
-            if ( !( await _storage.IsStoredAsync( file ) ) )
-            {
-                DownloadState = DownloadState.Downloading;
-
-                try
-                {
-                    var bytes = await _downloader.DownloadAsync( file.Url );
-                    await _storage.StoreFileAsync( file, bytes );
-                    DownloadState = DownloadState.None;
-                }
-                catch
-                {
-                    DownloadState = DownloadState.Error;
-                }
-            }
-            if ( DownloadState == DownloadState.None )
-            {
-                await _storage.OpenFileAsync( file );
-            }
-        }
-
     }
 }

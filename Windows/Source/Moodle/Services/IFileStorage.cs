@@ -15,16 +15,16 @@ namespace PocketCampus.Moodle.Services
         /// <summary>
         /// Asynchronously stores the specified Moodle file with the specified content.
         /// </summary>
-        Task StoreFileAsync( CourseFile file, byte[] content );
+        Task StoreFileAsync( MoodleFile file, byte[] content );
 
         /// <summary>
         /// Asynchronously indicates whether the specified Moodle file is stored on the device.
         /// </summary>
-        Task<bool> IsStoredAsync( CourseFile file );
+        Task<bool> IsStoredAsync( MoodleFile file );
 
         /// <summary>
         /// Asynchronously opens the specified Moodle file.
         /// </summary>
-        Task OpenFileAsync( CourseFile file );
+        Task OpenFileAsync( MoodleFile file );
     }
 }

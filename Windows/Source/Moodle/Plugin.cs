@@ -56,7 +56,7 @@ namespace PocketCampus.Moodle
         }
 
         /// <summary>
-        /// This plugin does not handle external navigation.
+        /// This plugin does not handle external navigations.
         /// </summary>
         public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService ) { }
     }

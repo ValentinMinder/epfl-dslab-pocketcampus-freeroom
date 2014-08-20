@@ -181,4 +181,15 @@ namespace PocketCampus.Common
             throw new NotSupportedException();
         }
     }
+
+    /// <summary>
+    /// Converts arrays to visibilities; Visible if there are no elements, Collapsed otherwise.
+    /// </summary>
+    public sealed class NoElementsToVisibilityConverter : ValueConverter<Array, Visibility>
+    {
+        public override Visibility Convert( Array value )
+        {
+            return value == null || value.Length == 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
+    }
 }

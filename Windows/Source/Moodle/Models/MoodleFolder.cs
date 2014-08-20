@@ -6,13 +6,13 @@ using ThriftSharp;
 
 namespace PocketCampus.Moodle.Models
 {
-    [ThriftStruct( "MoodleCourse2" )]
-    public sealed class Course
+    [ThriftStruct( "MoodleFolder2" )]
+    public sealed class MoodleFolder
     {
-        [ThriftField( 1, true, "courseId" )]
-        public int Id { get; set; }
-
-        [ThriftField( 2, true, "name" )]
+        [ThriftField( 1, true, "name" )]
         public string Name { get; set; }
+
+        [ThriftField( 2, true, "files" )]
+        public MoodleFile[] Files { get; set; }
     }
 }

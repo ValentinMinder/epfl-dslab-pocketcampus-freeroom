@@ -15,18 +15,10 @@ namespace PocketCampus.Moodle.Services
     [ThriftService( "MoodleService" )]
     public interface IMoodleService
     {
-        /// <summary>
-        /// Asynchronously gets the courses for the specified request.
-        /// </summary>
-        /// <remarks>The argument is useless. (not kidding)</remarks>
-        [ThriftMethod( "getCoursesListAPI" )]
-        Task<CourseListResponse> GetCoursesAsync( [ThriftParameter( 1, "dummy" )] string ignore, CancellationToken cancellationToken );
+        [ThriftMethod( "getCourses" )]
+        Task<CoursesResponse> GetCoursesAsync( [ThriftParameter( 1, "request" )] CoursesRequest request, CancellationToken token );
 
-        /// <summary>
-        /// Asynchronously gets the sections of the specified course.
-        /// </summary>
-        /// <remarks>The argument is a actually an int. (not kidding either)</remarks>
-        [ThriftMethod( "getCourseSectionsAPI" )]
-        Task<CourseSectionListResponse> GetCourseSectionsAsync( [ThriftParameter( 1, "courseId" )] string courseId, CancellationToken cancellationToken );
+        [ThriftMethod( "getSections" )]
+        Task<CourseSectionsResponse> GetSectionsAsync( [ThriftParameter( 1, "request" )] CourseSectionsRequest request, CancellationToken token );
     }
 }

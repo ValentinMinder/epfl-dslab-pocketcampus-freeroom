@@ -45,6 +45,8 @@
     <Compile Include="ICredentialsStore.cs" />
     <Compile Include="IServerSettings.cs" />
     <Compile Include="ServerConfiguration.cs" />
+    <Compile Include="Services\Design\DesignBrowserService.cs" />
+    <Compile Include="Services\Design\DesignSecureRequestHandler.cs" />
     <Compile Include="Services\IBrowserService.cs" />
     <Compile Include="Services\IDeviceIdentifier.cs" />
     <Compile Include="Services\IEmailService.cs" />

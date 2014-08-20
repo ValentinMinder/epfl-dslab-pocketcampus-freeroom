@@ -14,20 +14,17 @@ namespace PocketCampus.Moodle.Services
 {
     public sealed class MoodleService : ThriftServiceImplementation<IMoodleService>, IMoodleService
     {
-        public MoodleService( IServerAccess access )
-            : base( access.CreateCommunication( "moodle" ) )
-        {
+        public MoodleService( IServerAccess access ) : base( access.CreateCommunication( "moodle" ) ) { }
 
+
+        public Task<CoursesResponse> GetCoursesAsync( CoursesRequest request, CancellationToken token )
+        {
+            return CallAsync<CoursesRequest, CancellationToken, CoursesResponse>( x => x.GetCoursesAsync, request, token );
         }
 
-        public Task<CourseListResponse> GetCoursesAsync( string dummy, CancellationToken cancellationToken )
+        public Task<CourseSectionsResponse> GetSectionsAsync( CourseSectionsRequest request, CancellationToken token )
         {
-            return CallAsync<string, CancellationToken, CourseListResponse>( x => x.GetCoursesAsync, dummy, cancellationToken );
-        }
-
-        public Task<CourseSectionListResponse> GetCourseSectionsAsync( string courseId, CancellationToken cancellationToken )
-        {
-            return CallAsync<string, CancellationToken, CourseSectionListResponse>( x => x.GetCourseSectionsAsync, courseId, cancellationToken );
+            return CallAsync<CourseSectionsRequest, CancellationToken, CourseSectionsResponse>( x => x.GetSectionsAsync, request, token );
         }
     }
 }
