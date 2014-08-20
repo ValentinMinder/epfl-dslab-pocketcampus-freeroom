@@ -133,6 +133,8 @@ namespace PocketCampus.Main
             string redirect;
             if ( arguments.NavigationArguments.TryGetValue( RedirectRequestKey, out redirect ) )
             {
+                redirect = HttpUtility.UrlDecode( redirect );
+                Messenger.Send( new EventLogRequest( CustomUriEventId, redirect, CustomUriScreenId ) );
                 NavigateToCustomUri( redirect );
                 return;
             }
@@ -156,10 +158,8 @@ namespace PocketCampus.Main
         /// </summary>
         private static Tuple<string, string, Dictionary<string, string>> ParseQuery( string uri )
         {
-            // The URI we get from Windows Phone is URL-encoded...
+            // The URI we get from WP has already been URL-decided, but the original URI is URL-encoded too
             string query = HttpUtility.UrlDecode( uri );
-            // ...and the original URI is URL-encoded too
-            query = HttpUtility.UrlDecode( query );
 
             query = query.Replace( PocketCampusPrefix, "" );
 

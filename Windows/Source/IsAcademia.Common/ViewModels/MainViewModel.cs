@@ -54,6 +54,7 @@ namespace PocketCampus.IsAcademia.ViewModels
         /// Gets the command executed to view a room.
         /// </summary>
         [LogId( "ViewRoomOnMap" )]
+        [LogParameter( "$Param" )]
         public Command<string> ViewRoomOnMapCommand
         {
             get { return this.GetCommand<string>( room => Messenger.Send( new MapSearchRequest( room ) ) ); }

@@ -89,6 +89,7 @@ namespace PocketCampus.Directory.ViewModels
         /// Gets the command executed to view a person's details.
         /// </summary>
         [LogId( "ViewPersion" )]
+        [LogParameter( "$Param.FullName" )]
         public Command<Person> ViewPersonCommand
         {
             get { return this.GetCommand<Person>( _navigationService.NavigateTo<PersonViewModel, Person> ); }

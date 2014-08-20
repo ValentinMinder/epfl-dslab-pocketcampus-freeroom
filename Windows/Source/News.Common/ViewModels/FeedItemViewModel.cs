@@ -23,9 +23,10 @@ namespace PocketCampus.News.ViewModels
 
         private readonly INewsService _newsService;
         private readonly IBrowserService _browserService;
-        private readonly int _itemId;
 
         private FeedItemContent _itemContent;
+
+        public FeedItem Item { get; private set; }
 
         /// <summary>
         /// Gets the feed item's content.
@@ -40,6 +41,7 @@ namespace PocketCampus.News.ViewModels
         /// Gets the command executed to open the feed item in the browser.
         /// </summary>
         [LogId( "ViewInBrowser" )]
+        [LogId( "Item.LogId" )]
         public Command OpenInBrowserCommand
         {
             get { return this.GetCommand( () => _browserService.NavigateTo( ItemContent.Url ) ); }
@@ -55,7 +57,7 @@ namespace PocketCampus.News.ViewModels
         {
             _newsService = newsService;
             _browserService = browserService;
-            _itemId = item.Id;
+            Item = item;
         }
 
 
@@ -69,10 +71,10 @@ namespace PocketCampus.News.ViewModels
             var request = new FeedItemContentRequest
             {
                 Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
-                ItemId = _itemId
+                ItemId = Item.Id
             };
 
-            return CachedTask.Create( () => _newsService.GetFeedItemContentAsync( request, token ), _itemId, DateTime.Now.Add( CacheDuration ) );
+            return CachedTask.Create( () => _newsService.GetFeedItemContentAsync( request, token ), Item.Id, DateTime.Now.Add( CacheDuration ) );
         }
 
         protected override bool HandleData( FeedItemContentResponse data, CancellationToken token )

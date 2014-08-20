@@ -36,6 +36,7 @@ namespace PocketCampus.News.ViewModels
         /// Gets the command executed to view a feed item.
         /// </summary>
         [LogId( "OpenNewsItem" )]
+        [LogParameter( "$Param.LogId" )]
         public Command<FeedItem> ViewFeedItemCommand
         {
             get { return this.GetCommand<FeedItem>( _navigationService.NavigateTo<FeedItemViewModel, FeedItem> ); }

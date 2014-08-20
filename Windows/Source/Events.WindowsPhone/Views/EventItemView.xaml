@@ -158,8 +158,7 @@
 
                         <HyperlinkButton Grid.Column="1"
                                          Content="{Binding Item.Location}"
-                                         Command="{Binding OpenLinkCommand}"
-                                         CommandParameter="{Binding Item.LocationUrl}"
+                                         Command="{Binding ViewOnMapCommand}"
                                          Style="{StaticResource HyperlinkButtonWrappedStyle}"
                                          FontSize="{StaticResource PhoneFontSizeNormal}"
                                          HorizontalContentAlignment="Left"
@@ -222,8 +221,7 @@
 
                 <!-- "More details" button -->
                 <HyperlinkButton Content="{Binding Resources.MoreEventDetailsButton, Source={StaticResource Strings}}"
-                                 Command="{Binding OpenLinkCommand}"
-                                 CommandParameter="{Binding Item.DetailsUrl}"
+                                 Command="{Binding ViewMoreDetailsCommand}"
                                  Foreground="{StaticResource PhoneSubtleBrush}"
                                  HorizontalAlignment="Left"
                                  Margin="12,0"

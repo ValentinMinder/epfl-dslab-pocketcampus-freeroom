@@ -62,7 +62,13 @@ namespace PocketCampus.Events.ViewModels
         public bool IsFavorite
         {
             get { return _isFavorite; }
-            set { SetProperty( ref _isFavorite, value ); }
+            set
+            {
+                SetProperty( ref _isFavorite, value );
+
+                string eventName = value ? "MarkFavorite" : "UnmarkFavorite";
+                Messenger.Send( new EventLogRequest( eventName, Item.LogId ) );
+            }
         }
 
         /// <summary>
@@ -89,12 +95,23 @@ namespace PocketCampus.Events.ViewModels
         }
 
         /// <summary>
-        /// Gets the command executed to open a link.
+        /// Gets the command executed to open the "more details" link.
         /// </summary>
-        [LogId( "OpenLink" )]
-        public Command<string> OpenLinkCommand
+        [LogId( "ViewMoreDetails" )]
+        [LogParameter( "Item.LogId" )]
+        public Command ViewMoreDetailsCommand
         {
-            get { return this.GetCommand<string>( _browserService.NavigateTo ); }
+            get { return this.GetCommand( () => _browserService.NavigateTo( Item.DetailsUrl ) ); }
+        }
+
+        /// <summary>
+        /// Gets the command executed to open the location on the map.
+        /// </summary>
+        [LogId( "ViewOnMap" )]
+        [LogParameter( "Item.Location" )]
+        public Command ViewOnMapCommand
+        {
+            get { return this.GetCommand( () => _browserService.NavigateTo( Item.LocationUrl ) ); }
         }
 
 

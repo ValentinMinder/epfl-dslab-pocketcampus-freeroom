@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System;
+using System.Runtime.Serialization;
 using ThriftSharp;
 
 namespace PocketCampus.News.Models
@@ -44,5 +45,18 @@ namespace PocketCampus.News.Models
         /// </remarks>
         [ThriftField( 4, false, "imageUrl" )]
         public string ImageUrl { get; set; }
+
+
+        /// <summary>
+        /// The log ID for the item.
+        /// </summary>
+        /// <remarks>
+        /// Not in the Thrift interface.
+        /// </remarks>
+        [IgnoreDataMember]
+        public string LogId
+        {
+            get { return Id + " " + Title; }
+        }
     }
 }

@@ -117,6 +117,7 @@ namespace PocketCampus.Food.ViewModels
         /// Gets the command executed to vote on a meal.
         /// </summary>
         [LogId( "RateMeal" )]
+        [LogParameter( "$Param.LogId" )]
         public Command<Meal> RateMealCommand
         {
             get { return this.GetCommand<Meal>( _navigationService.NavigateTo<RatingViewModel, Meal>, _ => AreRatingsEnabled ); }

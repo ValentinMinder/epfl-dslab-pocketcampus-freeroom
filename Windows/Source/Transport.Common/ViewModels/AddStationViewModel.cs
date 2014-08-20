@@ -34,6 +34,7 @@ namespace PocketCampus.Transport.ViewModels
         /// Gets the command executed to add a station.
         /// </summary>
         [LogId( "Add" )]
+        [LogParameter( "$Param" )]
         public AsyncCommand<string> AddCommand
         {
             get { return this.GetAsyncCommand<string>( AddAsync ); }

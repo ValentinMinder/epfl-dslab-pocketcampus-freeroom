@@ -69,6 +69,17 @@ namespace PocketCampus.Food.Models
         [IgnoreDataMember]
         public Restaurant Restaurant { get; set; }
 
+        /// <summary>
+        /// The log ID for the meal.
+        /// </summary>
+        /// <remarks>
+        /// Not in the Thrift interface.
+        /// </remarks>
+        [IgnoreDataMember]
+        public string LogId
+        {
+            get { return Id + " " + Name; }
+        }
 
         /// <summary>
         /// Gets the price of the meal for the specified price target.

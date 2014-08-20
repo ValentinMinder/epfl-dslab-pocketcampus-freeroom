@@ -85,7 +85,7 @@ namespace PocketCampus.Events.ViewModels
             {
                 return this.GetCommand<EventItem>( item =>
                 {
-                    var request = new ViewEventItemRequest( item.Id, Pool.DisableFavorites == true );
+                    var request = new ViewEventItemRequest( item.Id, Pool.DisableFavorites != true );
                     _navigationService.NavigateTo<EventItemViewModel, ViewEventItemRequest>( request );
                 } );
             }
