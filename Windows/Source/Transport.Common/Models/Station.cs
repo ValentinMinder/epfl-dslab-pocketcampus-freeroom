@@ -17,21 +17,20 @@ namespace PocketCampus.Transport.Models
         /// The station's latitude.
         /// </summary>
         [ThriftField( 3, false, "latitude" )]
-        [ThriftConverter( typeof( SchildbachCoordinateConverter ) )]
+        [ThriftConverter( typeof( HafasCoordinateConverter ) )]
         public double? Latitude { get; set; }
 
         /// <summary>
         /// The station's longitude.
         /// </summary>
         [ThriftField( 4, false, "longitude" )]
-        [ThriftConverter( typeof( SchildbachCoordinateConverter ) )]
+        [ThriftConverter( typeof( HafasCoordinateConverter ) )]
         public double? Longitude { get; set; }
 
         /// <summary>
         /// The station's name.
         /// </summary>
         [ThriftField( 6, false, "name" )]
-        [ThriftConverter( typeof( StationNameCleaner ) )]
         public string Name { get; set; }
 
 

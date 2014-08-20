@@ -7,9 +7,9 @@ using ThriftSharp;
 namespace PocketCampus.Transport
 {
     /// <summary>
-    /// Converts coordinates received from the server, which are from the Schildbach API.
+    /// Converts coordinates received from the server, which are from the HAFAS API.
     /// </summary>
-    public sealed class SchildbachCoordinateConverter : ThriftValueConverter<int, double>
+    public sealed class HafasCoordinateConverter : ThriftValueConverter<int, double>
     {
         private const double Factor = 1000000;
 

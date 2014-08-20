@@ -16,7 +16,6 @@ namespace PocketCampus.Transport.Models
         /// The line's name.
         /// </summary>
         [ThriftField( 1, true, "name" )]
-        [ThriftConverter( typeof( LineNameCleaner ) )]
         public string Name { get; set; }
     }
 }
