@@ -147,15 +147,21 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 }
 
 + (void)showUnknownErrorAlertTryRefresh:(BOOL)tryRefresh {
+#ifndef TARGET_IS_EXTENSION
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:tryRefresh ? NSLocalizedStringFromTable(@"UnknownErrorTryRefresh", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"UnknownError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
 }
 
 + (void)showServerErrorAlert {
+#ifndef TARGET_IS_EXTENSION
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
 }
 
 + (void)showConnectionToServerTimedOutAlert {
+#ifndef TARGET_IS_EXTENSION
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
 }
 
 + (NSDictionary*)urlStringParameters:(NSString*)urlString {

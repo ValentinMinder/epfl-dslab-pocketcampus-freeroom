@@ -117,9 +117,7 @@ static BOOL loaded = NO;
 
 + (NSUserDefaults*)defaults {
     if (!loaded) {
-        CLSNSLog(@"WARNING: tried to access [PCConfig defaults] before config was loaded. Returning nil.");
-        [NSException raise:@"Illegal access" format:nil];
-        return nil;
+        CLSNSLog(@"WARNING: tried to access [PCConfig defaults] when config was not loaded. Config might be empty or stale.");
     }
     return [self _defaults];
 }
@@ -202,11 +200,12 @@ static BOOL loaded = NO;
     classicConfigPath = [classicConfigPath stringByAppendingPathComponent:kConfigFilename];
     
     @try {
+        NSFileManager* fileManager = [NSFileManager defaultManager];
+        
         // Step 1: if main app, delete potentially previously copied dev config, so that
         // if there is no new in app classic bundle identifier folder, we don't
         // load an old one.
 #ifdef TARGET_IS_MAIN_APP
-        NSFileManager* fileManager = [NSFileManager defaultManager];
         [fileManager removeItemAtPath:appGroupConfigPath error:nil];
 #endif
         

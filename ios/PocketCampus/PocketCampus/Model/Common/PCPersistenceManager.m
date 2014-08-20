@@ -105,14 +105,18 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
 #pragma mark - Persistence migration
 
 + (void)migrateDataOnceToSharedAppGroupPersistence {
+#ifdef TARGET_IS_MAIN_APP
     static NSString* const kDefaultsMigrationDoneBoolKey = @"PCPersistenceManagerDefaultsMigrationToAppGroupPersistenceDoneBool";
     static NSString* const kBundleIdentifierMigrationDoneBoolKey = @"PCPersistenceManagerBundleIdentifierMigrationToAppGroupPersistenceDoneBool";
-#ifdef TARGET_IS_MAIN_APP
     // Ok, not in extension, so let's migrate containing (main) app standardDefaults
     // to share defaults. TARGET_IS_EXENSION is defined in preprocessor macros of the extensions targets.
     // http://stackoverflow.com/a/25048440/1423774
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        
+        
+        // Step 1: migrating standardUserDefaults to app group user defaults
+        
         NSUserDefaults* defaults = [PCUserDefaults sharedDefaults];
         CLSNSLog(@"-> Migration to app group persistence...");
         if (![defaults boolForKey:kDefaultsMigrationDoneBoolKey]) {
@@ -133,15 +137,23 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
             CLSNSLog(@"   1. (ALREADY DONE) Standard defaults migration to app group defaults.");
         }
         
-        if (![defaults boolForKey:kBundleIdentifierMigrationDoneBoolKey]) {
-            NSString* oldBundleIdentifierPath = [self classicBundleIdentifierPersistencePath];
+        
+        // Step 2: migrating files
+        
+        NSString* oldBundleIdentifierPath = [self classicBundleIdentifierPersistencePath];
+        NSFileManager* fileManager = [NSFileManager defaultManager];
+        if (![fileManager fileExistsAtPath:oldBundleIdentifierPath]) {
+            CLSNSLog(@"   2. No old bundle identifier folder to migrate to app group container folder.");
+            [defaults setBool:YES forKey:kBundleIdentifierMigrationDoneBoolKey];
+            [defaults synchronize];
+        } else if (![defaults boolForKey:kBundleIdentifierMigrationDoneBoolKey]) {
             NSString* newBundleIdentifierPath = [self appGroupBundleIdentifierPersistencePath];
             
             [self createComponentsForPath:oldBundleIdentifierPath];
             [self createComponentsForPath:newBundleIdentifierPath];
             
             NSError* error = nil;
-            NSFileManager* fileManager = [NSFileManager defaultManager];
+            
             [fileManager moveItemAtPath:oldBundleIdentifierPath toPath:newBundleIdentifierPath error:&error];
             if (!error) {
                 [defaults setBool:YES forKey:kBundleIdentifierMigrationDoneBoolKey];
@@ -377,9 +389,21 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
 #pragma mark - Private
 
 + (void)checkPluginName:(NSString*)pluginName {
+#ifdef TARGET_IS_MAIN_APP
     if (![[MainController publicController] isPluginAnycaseIdentifierValid:pluginName]) {
         [NSException raise:@"Illegal argument" format:@"pluginName '%@' is not valid", pluginName];
     }
+#else
+#warning this is ugly, pluginName validity not checked when in extension.
+    //pluginsList is not initialized if not main app.
+    /*NSArray* pluginIdentifiersFromConfig = [[PCConfig defaults] objectForKey:PC_CONFIG_ENABLED_PLUGINS_ARRAY_KEY];
+    for (NSString* pluginIdentifier in pluginIdentifiersFromConfig) {
+        if ([[pluginIdentifier lowercaseString] isEqualToString:[pluginName lowercaseString]]) {
+            return;
+        }
+    }
+    [NSException raise:@"Illegal argument" format:@"pluginName '%@' is not valid", pluginName];*/
+#endif
 }
 
 + (NSString*)standardizedNameForPluginName:(NSString*)name {

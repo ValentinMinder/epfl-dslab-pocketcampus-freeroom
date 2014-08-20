@@ -275,6 +275,7 @@ static MainController<MainControllerPublic>* instance = nil;
 
 - (BOOL)isPluginAnycaseIdentifierValid:(NSString*)anycaseIdentifier {
     return [self existsPluginWithIdentifier:[self validPluginIdentifierForAnycasePluginIdentifier:anycaseIdentifier]];
+
 }
 
 - (NSString*)localizedPluginIdentifierForAnycaseIdentifier:(NSString*)anycaseIdentifier {
@@ -318,18 +319,20 @@ static MainController<MainControllerPublic>* instance = nil;
     [self initRevealController];
     [self initPluginObservers];
     [self revealMenuAndFinalize];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidReceiveMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:[UIApplication sharedApplication]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidReceiveMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pcConfigUserDefaultsDidChange) name:NSUserDefaultsDidChangeNotification object:[PCConfig defaults]];
 }
 
 #pragma mark Pre-config phases
 
 - (void)initAndShowSplashViewViewController {
+#ifdef TARGET_IS_MAIN_APP
     self.splashViewController = [[PCSplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
     if (![PCUtils isIdiomPad]) {
         self.splashView = [[PCSplashView alloc] initWithSuperview:self.splashViewController.view];
     }
     self.window.rootViewController = self.splashViewController;
+#endif
 }
 
 #pragma mark Post-config phases
@@ -440,6 +443,7 @@ static MainController<MainControllerPublic>* instance = nil;
         return nil;
     }
     NSMutableArray* menuItems = [NSMutableArray array];
+#ifdef TARGET_IS_MAIN_APP
     for (NSString* pluginIdentifier in self.pluginsList) {
         Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:pluginIdentifier]);
         NSString* localizedName = [pluginClass localizedName];
@@ -454,6 +458,7 @@ static MainController<MainControllerPublic>* instance = nil;
         }
         [menuItems addObject:item];
     }
+#endif
     return menuItems;
 }
 
@@ -499,11 +504,13 @@ static MainController<MainControllerPublic>* instance = nil;
     @catch (NSException *exception) {
         menuItems = menuItemsCopy; //if anything bad happens during recovery, go back to standard order.
     }
-    
+#ifdef TARGET_IS_MAIN_APP
     self.mainMenuViewController = [[MainMenuViewController alloc] initWithMenuItems:menuItems mainController:self];
+#endif
 }
 
 - (void)initRevealController {
+#ifdef TARGET_IS_MAIN_APP
     self.splashViewController = [[PCSplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
     PCNavigationController* mainMenuNavController = [[PCNavigationController alloc] initWithRootViewController:self.mainMenuViewController];
     self.revealController = [[ZUUIRevealController alloc] initWithFrontViewController:self.splashViewController rearViewController:mainMenuNavController];
@@ -514,6 +521,7 @@ static MainController<MainControllerPublic>* instance = nil;
     self.revealController.toggleAnimationDuration = 0.65;
     [self.splashView moveToSuperview:self.revealController.view];
     self.window.rootViewController = self.revealController;
+#endif
 }
 
 - (void)initPluginObservers {
@@ -625,16 +633,20 @@ static MainController<MainControllerPublic>* instance = nil;
     }
     
     if (![PCPersistenceManager saveObject:menuItemsInfo forKey:kPluginsMainMenuItemsInfoKey pluginName:@"pocketcampus"]) {
+#ifdef TARGET_IS_MAIN_APP
         UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, an error occured while saving the main menu state." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [errorAlert show];
+#endif
     }
 }
 
 - (void)restoreDefaultMainMenu {
     if (![PCPersistenceManager saveObject:nil forKey:kPluginsMainMenuItemsInfoKey pluginName:@"pocketcampus"]) {
+#ifdef TARGET_IS_MAIN_APP
         UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, an error occured while restoring default main menu." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [errorAlert show];
         return;
+#endif
     }
     NSMutableArray* menuItems = [self defaultMainMenuItemsWithoutTopSection];
     
@@ -648,11 +660,13 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (void)showGlobalSettings {
+#ifdef TARGET_IS_MAIN_APP
     [[PCGAITracker sharedTracker] trackAction:@"OpenSettings" inScreenWithName:@"/dashboard"];
     PCGlobalSettingsViewController* settingsViewController = [[PCGlobalSettingsViewController alloc] initWithMainController:self];
     UINavigationController* settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     settingsNavController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.revealController presentViewController:settingsNavController animated:YES completion:NULL];
+#endif
 }
 
 #pragma mark setActivePluginWithIdentifier:
@@ -940,7 +954,9 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (void)showActionNotSupportedAlert {
+#ifdef TARGET_IS_MAIN_APP
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Sorry", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ActionNotSupportedYet", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
 }
 
 - (NSString*)notificiationNameForPluginStateNotification:(PluginStateNotification)notification pluginIdentifierName:(NSString*)pluginIdentifierName {

@@ -15,6 +15,10 @@
 "CamiproDown" = "Désolé, les serveurs de Camipro semblent inaccessibles. Réessayez plus tard.";
 "LastUpdate" = "Dernière m.à.j.";
 
+// Camipro Widget
+
+"TapToOpenAppAndLogin" = "Login requis. Touchez pour ouvrir PocketCampus.";
+
 //Accessibility
 
 "CamiproBalanceWithFormat" = "Solde de la carte Camipro: %@";

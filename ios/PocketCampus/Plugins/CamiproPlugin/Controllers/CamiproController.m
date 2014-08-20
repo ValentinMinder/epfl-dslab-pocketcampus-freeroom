@@ -57,12 +57,14 @@ static CamiproController* instance __weak = nil;
         }
         self = [super init];
         if (self) {
+#ifdef TARGET_IS_MAIN_APP
             CamiproViewController* camiproViewController = [[CamiproViewController alloc] init];
             camiproViewController.title = [[self class] localizedName];
             PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:camiproViewController];
             navController.pluginIdentifier = [[self class] identifierName];
             self.mainNavigationController = navController;
             instance = self;
+#endif
         }
         return self;
     }
@@ -87,7 +89,9 @@ static CamiproController* instance __weak = nil;
             CLSNSLog(@"-> Camipro received %@ notification", kAuthenticationLogoutNotification);
             [[CamiproService sharedInstanceToRetain] deleteCamiproSession]; //removing stored session
             [PCPersistenceManager deleteCacheForPluginName:@"camipro"];
+#ifndef TARGET_IS_EXTENSION
             [[MainController publicController] requestLeavePlugin:@"Camipro"];
+#endif
         }];
     });
 }

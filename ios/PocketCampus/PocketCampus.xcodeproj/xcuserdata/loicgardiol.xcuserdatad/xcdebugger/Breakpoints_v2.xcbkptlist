@@ -338,11 +338,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "PocketCampus/Model/Common/PCService.m"
-            timestampString = "414865229.412241"
+            timestampString = "430235456.592351"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "204"
-            endingLineNumber = "204">
+            startingLineNumber = "200"
+            endingLineNumber = "200">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -361,11 +361,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "PocketCampus/Model/Common/PCService.m"
-            timestampString = "414865229.412241"
+            timestampString = "430235456.592351"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186">
+            startingLineNumber = "182"
+            endingLineNumber = "182">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -438,11 +438,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "PocketCampus/Model/Common/PCService.m"
-            timestampString = "411143686.006257"
+            timestampString = "430235456.592351"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
             landmarkName = "@implementation PCService"
             landmarkType = "3">
             <Actions>
@@ -1887,8 +1887,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "41"
             endingLineNumber = "41"
-            landmarkName = "@interface MoodleController()"
-            landmarkType = "2">
+            landmarkName = "moodleService"
+            landmarkType = "19">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2197,11 +2197,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "425898341.200276"
+            timestampString = "430238422.971348"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "825"
-            endingLineNumber = "825"
+            startingLineNumber = "839"
+            endingLineNumber = "839"
             landmarkName = "-adaptInitializedNavigationOrSplitViewControllerOfPluginController:"
             landmarkType = "5">
             <Actions>
@@ -2222,11 +2222,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "425898341.200276"
+            timestampString = "430238422.971348"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "777"
-            endingLineNumber = "777"
+            startingLineNumber = "791"
+            endingLineNumber = "791"
             landmarkName = "-pluginControllerForPluginIdentifier:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2243,8 +2243,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "119"
             endingLineNumber = "119"
-            landmarkName = "@implementation MoodleController"
-            landmarkType = "3">
+            landmarkName = "+identifierName"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2938,11 +2938,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "425898341.200276"
+            timestampString = "430238422.971348"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "745"
-            endingLineNumber = "745"
+            startingLineNumber = "759"
+            endingLineNumber = "759"
             landmarkName = "-pluginControllerForPluginIdentifier:"
             landmarkType = "5">
             <Locations>
@@ -2984,11 +2984,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/PushNotifPlugin/Controllers/PushNotifController.m"
-            timestampString = "414517287.179697"
+            timestampString = "430235456.592351"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
             landmarkName = "-removeObserver:forPluginLowerIdentifier:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3055,11 +3055,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/PushNotifPlugin/Controllers/PushNotifController.m"
-            timestampString = "414517287.179697"
+            timestampString = "430235456.592351"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "166"
-            endingLineNumber = "166"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
             landmarkName = "-registerDeviceForPushNotificationsWithPluginLowerIdentifier:reason:success:failure:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3071,11 +3071,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCService.m"
-            timestampString = "414865229.412241"
+            timestampString = "430235456.592351"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "214"
-            endingLineNumber = "214">
+            startingLineNumber = "210"
+            endingLineNumber = "210">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

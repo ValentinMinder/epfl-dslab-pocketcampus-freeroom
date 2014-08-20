@@ -109,9 +109,10 @@ extern NSString* const kPCConfigDidFinishLoadingNotification;
 
 @interface PCConfig : NSObject
 
-/*
+/**
  * Starts the config loading in background.
  * Posts kPCConfigDidFinishLoadingNotificationName when finished
+ * This method is thread-safe and will run once only.
  */
 + (void)loadConfigAsynchronously;
 

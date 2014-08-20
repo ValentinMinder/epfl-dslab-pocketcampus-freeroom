@@ -15,6 +15,10 @@
 "CamiproDown" = "Sorry, Camipro servers seem to be down. Please try again later.";
 "LastUpdate" = "Last update";
 
+// Camipro Widget
+
+"TapToOpenAppAndLogin" = "Login required. Tap to open PocketCampus.";
+
 //Accessibility
 
 "CamiproBalanceWithFormat" = "Camipro card balance: %@";

@@ -143,7 +143,7 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 }
 
 - (void)registerDeviceForPushNotificationsWithPluginLowerIdentifier:(NSString*)pluginLowerIdentifier reason:(NSString*)reason success:(VoidBlock)success failure:(PushNotifDeviceRegistrationFailureBlock)failure {
-    
+#ifndef TARGET_IS_EXTENSION
     @synchronized(self) {
 #warning iOS 8: need to register with UIUserNotificationSettings object
         NSString* token = [PushNotifController notificationsDeviceToken];
@@ -151,6 +151,7 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
         if (!token && reason && !self.pushNotifsReasonAlert) {
             //first plugin to ask will be the one that will get his reason poped-up
             NSString* localizedIdentifier = [[MainController publicController] localizedPluginIdentifierForAnycaseIdentifier:pluginLowerIdentifier];
+
             self.pushNotifsReasonAlert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"PushNotifsAlertTitleWithFormat", @"PushNotifPlugin", nil), localizedIdentifier] message:reason delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         }
         
@@ -170,10 +171,12 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
             }
 		}
 	}
+#endif
 }
 
 
 - (void)addPushNotificationObserver:(id)observer forPluginLowerIdentifier:(NSString*)pluginLowerIdentifier newNotificationBlock:(NewNotificationBlock)newNotificationBlock; {
+#ifndef TARGET_IS_EXTENSION
     if (!observer) {
         [NSException raise:@"Illegal argument" format:@"observer parameter cannot be nil"];
     }
@@ -187,10 +190,11 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
     }];
     
     observerInstanceForNSNotificationCenterObserver[[NSString stringWithFormat:@"%p", observer]] = nsObserver;
-    
+#endif
 }
 
 - (void)removeObserver:(id)observer forPluginLowerIdentifier:(NSString*)pluginLowerIdentifier {
+#ifndef TARGET_IS_EXTENSION
     if (!observer) {
         [NSException raise:@"Illegal argument" format:@"observer parameter cannot be nil"];
     }
@@ -204,13 +208,16 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
     [[NSNotificationCenter defaultCenter] removeObserver:nsObserver name:[AppDelegate nsNotificationNameForPluginLowerIdentifier:pluginLowerIdentifier] object:nil];
     
     [observerInstanceForNSNotificationCenterObserver removeObjectForKey:key];
+#endif
 }
 
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (alertView == self.pushNotifsReasonAlert) {
+#ifndef TARGET_IS_EXTENSION
         [self observeAndStartDeviceRegistrationProcessOnOS];
+#endif
         //now starting registration to iOS
         self.pushNotifsReasonAlert = nil;
     }
@@ -219,6 +226,7 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 #pragma mark - AppDelegate registration notifications
 
 - (void)registrationSuccessNotification:(NSNotification*)notification {
+#ifndef TARGET_IS_EXTENSION
     NSString* token = notification.userInfo[kAppDelegatePushDeviceTokenStringUserInfoKey];
     [self saveNotificationsDeviceToken:token];
     CLSNSLog(@"-> Registration to push notifications succeeded. Device token has been saved.");
@@ -228,9 +236,11 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
         }
     }
     [self cleanUpAfterRegistrationProcess];
+#endif
 }
 
 - (void)registrationFailureNotification:(NSNotification*)notification {
+#ifndef TARGET_IS_EXTENSION
     CLSNSLog(@"!! ERROR: registration to push notifications failed.");
     [PushNotifController deleteNotificationsDeviceToken];
     for (PushNotifDeviceRegistrationObserver* observer in self.regObservers) {
@@ -239,6 +249,7 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
         }
     }
     [self cleanUpAfterRegistrationProcess];
+#endif
 }
 
 #pragma mark - Private utils
@@ -272,23 +283,31 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
     }
 }*/
 
+#ifndef TARGET_IS_EXTENSION
 - (void)observeAndStartDeviceRegistrationProcessOnOS {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registrationSuccessNotification:) name:kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registrationFailureNotification:) name:kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification object:nil];
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
 }
+#endif
 
+#ifndef TARGET_IS_EXTENSION
 - (void)cleanUpAfterRegistrationProcess {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification object:nil];
     [self.regObservers removeAllObjects];
     self.pushNotifsReasonAlert = nil; //should be done already
 }
+#endif
 
 - (BOOL)notificationsEnabled {
+#ifdef TARGET_IS_EXTENSION
+    return NO;
+#else
     UIRemoteNotificationType enabledTypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
     BOOL enabled = ((enabledTypes & UIRemoteNotificationTypeAlert));
     return enabled;
+#endif
 }
 
 - (void)saveNotificationsDeviceToken:(NSString*)token {

@@ -69,7 +69,7 @@ typedef void (^NewNotificationBlock)(NSString* notifMessage, NSDictionary* notif
  * rejected the first time respectively.
  * You may display a message telling the user what he is missing in your failure message.
  */
-- (void)registerDeviceForPushNotificationsWithPluginLowerIdentifier:(NSString*)pluginLowerIdentifier reason:(NSString*)reason success:(VoidBlock)success failure:(PushNotifDeviceRegistrationFailureBlock)failure;
+- (void)registerDeviceForPushNotificationsWithPluginLowerIdentifier:(NSString*)pluginLowerIdentifier reason:(NSString*)reason success:(VoidBlock)success failure:(PushNotifDeviceRegistrationFailureBlock)failure NS_EXTENSION_UNAVAILABLE_IOS("You cannot register for push notifications from extensions.");
 
 /*
  * Any class from <pluginLowerIdentifier> can observe arrival of new notifications destinated
@@ -78,12 +78,12 @@ typedef void (^NewNotificationBlock)(NSString* notifMessage, NSDictionary* notif
  * WARNING: classes must remove themselves with removeObserver:forPluginLowerIdentifier:
  * when being deallocated.
  */
-- (void)addPushNotificationObserver:(id)observer forPluginLowerIdentifier:(NSString*)pluginLowerIdentifier newNotificationBlock:(NewNotificationBlock)newNotificationBlock;
+- (void)addPushNotificationObserver:(id)observer forPluginLowerIdentifier:(NSString*)pluginLowerIdentifier newNotificationBlock:(NewNotificationBlock)newNotificationBlock NS_EXTENSION_UNAVAILABLE_IOS("You cannot observe push notifications from extensions.");
 
 /*
  * Classes that observe arrival of notifications (previous method) must use this method
  * to remove themselves as observers before being deallocated.
  */
-- (void)removeObserver:(id)observer forPluginLowerIdentifier:(NSString*)pluginLowerIdentifier;
+- (void)removeObserver:(id)observer forPluginLowerIdentifier:(NSString*)pluginLowerIdentifier NS_EXTENSION_UNAVAILABLE_IOS("You cannot observe push notifications from extensions.");
 
 @end
