@@ -91,8 +91,4 @@
     return height;
 }
 
-+ (CGFloat)tableViewSectionHeaderHeight {
-    return [PCTableViewSectionHeader preferredHeight];
-}
-
 @end

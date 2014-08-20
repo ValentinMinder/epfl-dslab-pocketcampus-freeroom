@@ -504,10 +504,6 @@ static inline void ServiceRequestLog(PCServiceRequest* serviceRequest, NSString*
 
 #pragma mark Public
 
-- (void)setCustomTimeout:(NSTimeInterval)timeout {
-    ServiceRequestLog(self, @"WARNING setCustomTimeout is deprecated and not functional. Ignoring.");
-}
-
 - (void)addObjectArgument:(id)object {
     [self addWrappedArgument:[self.class wrapArgumentObject:object]];
 }

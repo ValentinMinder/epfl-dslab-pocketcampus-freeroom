@@ -59,9 +59,6 @@ extern NSString* const kDirectoryURLParameterQuery;
 
 - (void)searchForRequest:(DirectoryRequest*)request delegate:(id)delegate;
 
-- (void)searchPersons:(NSString *)nameOrSciper delegate:(id)delegate __attribute__((deprecated)); //use search instead
-- (void)autocomplete:(NSString *)constraint delegate:(id)delegate __attribute((deprecated)); //used searchPersons instead
-
 @end
 
 @protocol DirectoryServiceDelegate <PCServiceDelegate>
@@ -70,10 +67,5 @@ extern NSString* const kDirectoryURLParameterQuery;
 
 - (void)searchForRequest:(DirectoryRequest*)request didReturn:(DirectoryResponse*)response;
 - (void)searchFailedForRequest:(DirectoryRequest*)request;
-
-- (void)searchDirectoryFor:(NSString*)searchPattern didReturn:(NSArray*)results __attribute((deprecated));
-- (void)searchDirectoryFailedFor:(NSString*)searchPattern __attribute((deprecated));
-- (void)autocompleteFor:(NSString *)constraint didReturn:(NSArray*)results __attribute((deprecated));
-- (void)autocompleteFailedFor:(NSString *)constraint __attribute((deprecated));
 
 @end

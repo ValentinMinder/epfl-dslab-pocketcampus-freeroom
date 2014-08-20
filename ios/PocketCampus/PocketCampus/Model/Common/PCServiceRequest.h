@@ -60,8 +60,6 @@ typedef enum {
 @property SEL serviceClientSelector;
 @property ReturnType returnType;
 
-- (void)setCustomTimeout:(NSTimeInterval)timeout __attribute__((deprecated));
-
 - (void)addObjectArgument:(id)object;
 - (void)addBoolArgument:(BOOL)val;
 - (void)addCharArgument:(char)val;
@@ -80,7 +78,7 @@ typedef enum {
 
 - (id)cachedResponseObjectEvenIfStale:(BOOL)evenIfStale;
 
-/*
+/**
  * If YES, the result of the request will be cached.
  * The matching is made by hashing serviceClientSelector and all added arguements.
  * If a request is cached, it is returned the next time directly from cache,
@@ -89,7 +87,7 @@ typedef enum {
  */
 @property (nonatomic) BOOL keepInCache;
 
-/*
+/**
  * Gives possibly to keep in cache conditionally.
  * returnedValue is a pointer to the value returned by the server, of the type
  * self.returnType. Block should return YES if reply should be cached, NO otherwise.
@@ -98,14 +96,14 @@ typedef enum {
  */
 @property (nonatomic, copy) BOOL (^keepInCacheBlock)(void* returnedValue);
 
-/*
+/**
  * If YES, the request will never return from cache
  * (does not mean that the reply is not cached, see keepInCache).
  * Default: NO
  */
 @property (nonatomic) BOOL skipCache;
 
-/*
+/**
  * Time is seconds after which cache is considered stale.
  * Stale is never returned unless specifiacally specified
  * (e.g. [self cachedResponseObjectEvenIfStale:YES] or returnEvenStaleCacheIfNoInternetConnection)
@@ -113,8 +111,9 @@ typedef enum {
  */
 @property (nonatomic) NSTimeInterval cacheValidityInterval;
 
-/*
+/**
  * If YES and device does not have internet connection, returns from cache, even if stale.
+ * Default: NO
  */
 @property (nonatomic) BOOL returnEvenStaleCacheIfNoInternetConnection;
 

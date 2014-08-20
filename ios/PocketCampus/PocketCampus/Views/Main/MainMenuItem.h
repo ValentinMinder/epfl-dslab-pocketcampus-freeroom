@@ -47,8 +47,6 @@
 
 @property (nonatomic) BOOL hidden;
 
-+ (MainMenuItem*)menuItemButtonWithTitle:(NSString*)title leftImage:(UIImage*)image identifier:(NSString*)identifier __attribute__ ((deprecated));
-
 + (MainMenuItem*)menuItemButtonWithTitle:(NSString*)title leftImage:(UIImage*)image highlightedLeftImage:(UIImage*)highlightedImage identifier:(NSString*)identifier;
 
 @end

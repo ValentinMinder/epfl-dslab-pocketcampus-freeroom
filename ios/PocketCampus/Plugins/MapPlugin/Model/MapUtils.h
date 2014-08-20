@@ -55,7 +55,6 @@ typedef struct {
 + (UIImage*)mapControlOverylabBoxImage;
 + (NSArray*)mapItemsThatShouldBeDisplayed:(NSArray*)allMapItems forQuery:(NSString*)query;
 + (id<MKAnnotation>)annotationThatShouldBeSelectedOnMapView:(MKMapView*)mapView forQuery:(NSString*)query;
-+ (NSInteger)levelToSelectForRoomName:(NSString*)roomName __attribute__((deprecated)); //returns INT_MAX if level cannot be determined
 + (NSArray*)mapItemAnnotations:(NSArray*)annotations;
 + (BOOL)mapViewHasMapItemAnnotations:(MKMapView*)mapView;
 + (void)removeMapItemAnnotationsOnMapView:(MKMapView*)mapView;

@@ -88,36 +88,6 @@ static DirectoryService* instance __weak = nil;
     [self.operationQueue addOperation:operation];
 }
 
-#pragma mark - Deprecated service methods
-
-- (void)searchPersons:(NSString *)nameOrSciper delegate:(id)delegate {
-    if (![nameOrSciper isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad nameOrSciper" reason:@"nameOrSciper is either nil or not of class NSString" userInfo:nil];
-    }
-    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.keepInCache = YES;
-    operation.cacheValidityInterval = 60; //1 min
-    operation.serviceClientSelector = @selector(searchPersons:);
-    operation.delegateDidReturnSelector = @selector(searchDirectoryFor:didReturn:);
-    operation.delegateDidFailSelector = @selector(searchDirectoryFailedFor:);
-    [operation addObjectArgument:nameOrSciper];
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
-- (void)autocomplete:(NSString *)constraint delegate:(id)delegate {
-    if (![constraint isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad constraint" reason:@"constraint is either nil or not of class NSString" userInfo:nil];
-    }
-    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(autocomplete:);
-    operation.delegateDidReturnSelector = @selector(autocompleteFor:didReturn:);
-    operation.delegateDidFailSelector = @selector(autocompleteFailedFor:);
-    [operation addObjectArgument:constraint];
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
 #pragma mark - Dealloc
 
 - (void)dealloc
