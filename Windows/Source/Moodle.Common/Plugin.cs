@@ -24,6 +24,14 @@ namespace PocketCampus.Moodle
         }
 
         /// <summary>
+        /// This plugin is visible in the application's main menu.
+        /// </summary>
+        public bool IsVisible
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// This plugin requires authentication.
         /// </summary>
         public bool RequiresAuthentication

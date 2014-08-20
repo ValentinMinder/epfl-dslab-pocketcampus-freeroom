@@ -12,24 +12,21 @@ namespace PocketCampus.Main
 {
     public static class AppInitializer
     {
-        public static void BindImplementations()
+        public static void Initialize( IPluginLoader pluginLoader, INavigationService navigationService )
         {
             DataViewModelOptions.AddNetworkExceptionType( typeof( WebException ) );
             DataViewModelOptions.AddNetworkExceptionType( typeof( OperationCanceledException ) );
 
             Container.Bind<IMainSettings, MainSettings>();
             Container.Bind<IServerAccess, ServerAccess>();
-            Container.Bind<IAuthenticationService, AuthenticationService>();
-            Container.Bind<ITequilaAuthenticator, TequilaAuthenticator>();
-            Container.Bind<ISecureRequestHandler, SecureRequestHandler>();
-        }
 
-        public static void InitializePlugins( IPluginLoader pluginLoader, INavigationService navigationService )
-        {
             foreach ( var plugin in pluginLoader.GetPlugins() )
             {
                 plugin.Initialize( navigationService );
             }
+
+            // SecureRequestHandler depends on the auth plugin, so it must be initialized after it
+            Container.Bind<ISecureRequestHandler, SecureRequestHandler>();
         }
     }
 }

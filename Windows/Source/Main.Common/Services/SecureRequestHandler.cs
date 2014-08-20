@@ -7,10 +7,12 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using PocketCampus.Authentication;
+using PocketCampus.Authentication.Models;
+using PocketCampus.Authentication.Services;
+using PocketCampus.Authentication.ViewModels;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
-using PocketCampus.Main.Models;
-using PocketCampus.Main.ViewModels;
 using ThinMvvm;
 
 namespace PocketCampus.Main.Services
@@ -51,24 +53,24 @@ namespace PocketCampus.Main.Services
             {
                 var tokenResponse = await _authenticationService.GetTokenAsync();
 
-                if ( tokenResponse.Status == AuthenticationRequestStatus.Success
+                if ( tokenResponse.Status == AuthenticationStatus.Success
                   && await _authenticator.AuthenticateAsync( _credentials.UserName, _credentials.Password, tokenResponse.Token ) )
                 {
-                    var sessionRequest = new AuthenticationSessionRequest
+                    var sessionRequest = new SessionRequest
                     {
                         TequilaToken = tokenResponse.Token,
-                        RememberMe = _mainSettings.AuthenticationStatus == AuthenticationStatus.Authenticated
+                        RememberMe = _mainSettings.SessionStatus == SessionStatus.LoggedIn
                     };
                     var sessionResponse = await _authenticationService.GetSessionAsync( sessionRequest );
 
-                    if ( sessionResponse.Status == AuthenticationRequestStatus.Success )
+                    if ( sessionResponse.Status == AuthenticationStatus.Success )
                     {
                         _mainSettings.Session = sessionResponse.Session;
                     }
                 }
                 else
                 {
-                    _mainSettings.AuthenticationStatus = AuthenticationStatus.NotAuthenticated;
+                    _mainSettings.SessionStatus = SessionStatus.NotLoggedIn;
                     return null;
                 }
             }
@@ -96,7 +98,7 @@ namespace PocketCampus.Main.Services
                 }
                 else
                 {
-                    _mainSettings.AuthenticationStatus = AuthenticationStatus.NotAuthenticated;
+                    _mainSettings.SessionStatus = SessionStatus.NotLoggedIn;
                     return default( TResult );
                 }
             }

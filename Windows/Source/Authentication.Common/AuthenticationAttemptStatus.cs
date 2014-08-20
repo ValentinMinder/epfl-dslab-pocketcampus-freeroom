@@ -2,7 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-namespace PocketCampus.Main
+namespace PocketCampus.Authentication
 {
     /// <summary>
     /// Display-friendly values for the authentication attempt statuses.

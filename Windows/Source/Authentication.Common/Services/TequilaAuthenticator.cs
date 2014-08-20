@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 
-namespace PocketCampus.Main.Services
+namespace PocketCampus.Authentication.Services
 {
     /// <summary>
     /// Authenticates users to Tequila.

@@ -4,10 +4,10 @@
 
 using ThriftSharp;
 
-namespace PocketCampus.Main.Models
+namespace PocketCampus.Authentication.Models
 {
     [ThriftStruct( "LogoutResponse" )]
-    public sealed class AuthenticationLogoutResponse
+    public sealed class LogoutResponse
     {
         [ThriftField( 1, true, "statusCode" )]
         public AuthenticationStatus Status { get; set; }

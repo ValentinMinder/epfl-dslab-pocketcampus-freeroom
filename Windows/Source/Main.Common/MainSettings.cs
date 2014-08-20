@@ -14,11 +14,11 @@ namespace PocketCampus.Main
     public sealed class MainSettings : SettingsBase<MainSettings>, IMainSettings
     {
         /// <summary>
-        /// Gets or sets the user's authentication status.
+        /// Gets or sets the user's session status.
         /// </summary>
-        public AuthenticationStatus AuthenticationStatus
+        public SessionStatus SessionStatus
         {
-            get { return Get<AuthenticationStatus>(); }
+            get { return Get<SessionStatus>(); }
             set { Set( value ); }
         }
 
@@ -74,7 +74,7 @@ namespace PocketCampus.Main
             {
                 { x => x.Configuration, () => new ServerConfiguration( "https", 4433, "Camipro", "Directory", "Events", "Food", "IsAcademia", 
                                                                                       "Map", "Moodle", "News", "Satellite", "Transport" ) },
-                { x => x.AuthenticationStatus, () => AuthenticationStatus.NotAuthenticated },
+                { x => x.SessionStatus, () => SessionStatus.NotLoggedIn },
                 { x => x.UseColoredTile, () => true },
                 { x => x.Session, () => null },
                 { x => x.Sessions, () => new Dictionary<string, string>() }

@@ -4,14 +4,14 @@
 
 using System;
 using System.Threading.Tasks;
+using PocketCampus.Authentication.Models;
+using PocketCampus.Authentication.Services;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
-using PocketCampus.Main.Models;
-using PocketCampus.Main.Services;
 using ThinMvvm;
 using ThinMvvm.Logging;
 
-namespace PocketCampus.Main.ViewModels
+namespace PocketCampus.Authentication.ViewModels
 {
     /// <summary>
     /// The ViewModel that authenticates the user.
@@ -23,7 +23,7 @@ namespace PocketCampus.Main.ViewModels
         private readonly ITequilaAuthenticator _authenticator;
         private readonly IServerAccess _serverAccess;
         private readonly INavigationService _navigationService;
-        private readonly IMainSettings _settings;
+        private readonly IServerSettings _settings;
         private readonly ICredentialsStore _credentials;
         private readonly AuthenticationRequest _request;
 
@@ -95,7 +95,7 @@ namespace PocketCampus.Main.ViewModels
         /// </summary>
         public AuthenticationViewModel( IAuthenticationService authenticationService, ITequilaAuthenticator authenticator,
                                         IServerAccess serverAccess, INavigationService navigationService,
-                                        IMainSettings settings, ICredentialsStore credentials,
+                                        IServerSettings settings, ICredentialsStore credentials,
                                         AuthenticationRequest request )
         {
             _authenticationService = authenticationService;
@@ -121,27 +121,27 @@ namespace PocketCampus.Main.ViewModels
             try
             {
                 var tokenResponse = await _authenticationService.GetTokenAsync();
-                if ( tokenResponse.Status != AuthenticationRequestStatus.Success )
+                if ( tokenResponse.Status != AuthenticationStatus.Success )
                 {
                     throw new Exception( "An error occurred while getting a token." );
                 }
 
                 if ( await _authenticator.AuthenticateAsync( UserName, Password, tokenResponse.Token ) )
                 {
-                    var sessionRequest = new AuthenticationSessionRequest
+                    var sessionRequest = new SessionRequest
                     {
                         TequilaToken = tokenResponse.Token,
                         RememberMe = SaveCredentials
                     };
                     var sessionResponse = await _authenticationService.GetSessionAsync( sessionRequest );
-                    if ( sessionResponse.Status != AuthenticationRequestStatus.Success )
+                    if ( sessionResponse.Status != AuthenticationStatus.Success )
                     {
                         throw new Exception( "An error occurred while getting a session." );
                     }
 
                     _settings.Session = sessionResponse.Session;
 
-                    _settings.AuthenticationStatus = SaveCredentials ? AuthenticationStatus.Authenticated : AuthenticationStatus.AuthenticatedTemporarily;
+                    _settings.SessionStatus = SaveCredentials ? SessionStatus.LoggedIn : SessionStatus.LoggedInTemporarily;
                     _credentials.UserName = UserName;
                     _credentials.Password = Password;
                     authOk = true;

@@ -4,19 +4,19 @@
 
 using ThriftSharp;
 
-namespace PocketCampus.Main.Models
+namespace PocketCampus.Authentication.Models
 {
     /// <summary>
     /// Response to a request for an authentication token.
     /// </summary>
     [ThriftStruct( "AuthTokenResponse" )]
-    public sealed class AuthenticationTokenResponse
+    public sealed class TokenResponse
     {
         /// <summary>
         /// The request's status.
         /// </summary>
         [ThriftField( 2, true, "statusCode" )]
-        public AuthenticationRequestStatus Status { get; set; }
+        public AuthenticationStatus Status { get; set; }
 
         /// <summary>
         /// The authentication token.

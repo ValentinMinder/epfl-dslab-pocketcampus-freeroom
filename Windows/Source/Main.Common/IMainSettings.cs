@@ -13,11 +13,6 @@ namespace PocketCampus.Main
     public interface IMainSettings : IServerSettings
     {
         /// <summary>
-        /// Gets or sets the user's authentication status.
-        /// </summary>
-        AuthenticationStatus AuthenticationStatus { get; set; }
-
-        /// <summary>
         /// Gets or sets the saved sessions.
         /// </summary>
         Dictionary<string, string> Sessions { get; set; }

@@ -4,13 +4,13 @@
 
 using ThriftSharp;
 
-namespace PocketCampus.Main.Models
+namespace PocketCampus.Authentication.Models
 {
     /// <summary>
     /// Status for authentication requests.
     /// </summary>
     [ThriftEnum]
-    public enum AuthenticationRequestStatus
+    public enum AuthenticationStatus
     {
         /// <summary>
         /// The request completed successfully.

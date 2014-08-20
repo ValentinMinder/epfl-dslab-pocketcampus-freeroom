@@ -1,17 +1,13 @@
-// Copyright (c) PocketCampus.Org 2014
-// See LICENSE file for more details
-// File author: Solal Pirelli
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using PocketCampus.Authentication.Services;
 using PocketCampus.Common;
-using PocketCampus.Transport.Services;
-using PocketCampus.Transport.ViewModels;
+using PocketCampus.Common.Services;
 using ThinMvvm;
 
-namespace PocketCampus.Transport
+namespace PocketCampus.Authentication.Common
 {
     /// <summary>
-    /// The transport plugin.
+    /// The authentication plugin.
     /// </summary>
     public class Plugin : IPlugin
     {
@@ -20,19 +16,19 @@ namespace PocketCampus.Transport
         /// </summary>
         public string Id
         {
-            get { return "transport"; }
+            get { return "Authentication"; }
         }
 
         /// <summary>
-        /// This plugin is visible in the application's main menu.
+        /// This plugin is not visible in the application's main menu.
         /// </summary>
         public bool IsVisible
         {
-            get { return true; }
+            get { return false; }
         }
 
         /// <summary>
-        /// The plugin does not require authentication.
+        /// This plugin does not require authentication.
         /// </summary>
         public bool RequiresAuthentication
         {
@@ -44,19 +40,17 @@ namespace PocketCampus.Transport
         /// </summary>
         public void Initialize( INavigationService navigationService )
         {
-            Container.Bind<ITransportService, TransportService>();
+            Container.Bind<IAuthenticationService, AuthenticationService>();
+            Container.Bind<ITequilaAuthenticator, TequilaAuthenticator>();
         }
 
         /// <summary>
-        /// Navigates to the plugin's main ViewModel.
+        /// Does nothing; this plugin cannot be navigated to.
         /// </summary>
-        public void NavigateTo( INavigationService navigationService )
-        {
-            navigationService.NavigateTo<MainViewModel>();
-        }
+        public void NavigateTo( INavigationService navigationService ) { }
 
         /// <summary>
-        /// This plugin does not handle external navigation.
+        /// Does nothing; this plugin does not handle navigation from external sources.
         /// </summary>
         public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService ) { }
     }

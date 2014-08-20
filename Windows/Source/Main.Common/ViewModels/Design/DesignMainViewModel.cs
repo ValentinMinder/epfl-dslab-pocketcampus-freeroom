@@ -40,6 +40,7 @@ namespace PocketCampus.Main.ViewModels.Design
         private sealed class DesignPlugin : IPlugin
         {
             public string Id { get; set; }
+            public bool IsVisible { get; set; }
             public string Name { get; set; }
             public bool RequiresAuthentication { get; set; }
             public string IconKey { get; set; }
@@ -47,6 +48,7 @@ namespace PocketCampus.Main.ViewModels.Design
             public DesignPlugin( string name )
             {
                 Id = Name = name;
+                IsVisible = true;
                 IconKey = name + "Icon";
             }
 

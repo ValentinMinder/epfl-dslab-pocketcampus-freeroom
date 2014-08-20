@@ -3,10 +3,10 @@
 // File author: Solal Pirelli
 
 using System.Threading.Tasks;
-using PocketCampus.Main.Models;
+using PocketCampus.Authentication.Models;
 using ThriftSharp;
 
-namespace PocketCampus.Main.Services
+namespace PocketCampus.Authentication.Services
 {
     /// <summary>
     /// Authenticates the user to the PocketCampus server.
@@ -18,19 +18,19 @@ namespace PocketCampus.Main.Services
         /// Asynchronously gets a token.
         /// </summary>
         [ThriftMethod( "getAuthTequilaToken" )]
-        Task<AuthenticationTokenResponse> GetTokenAsync();
+        Task<TokenResponse> GetTokenAsync();
 
         /// <summary>
         /// Asynchronously gets a session for the specified token (once it has been authenticated).
         /// </summary>
         [ThriftMethod( "getAuthSession" )]
-        Task<AuthenticationSessionResponse> GetSessionAsync( [ThriftParameter( 1, "req" )] AuthenticationSessionRequest request );
+        Task<SessionResponse> GetSessionAsync( [ThriftParameter( 1, "req" )] SessionRequest request );
 
 
         /// <summary>
         /// Asynchronously requests that all user sessions for PocketCampus be destroyed.
         /// </summary>
         [ThriftMethod( "destroyAllUserSessions" )]
-        Task<AuthenticationLogoutResponse> DestroyAllSessionsAsync( [ThriftParameter( 1, "req" )] AuthenticationLogoutRequest request );
+        Task<LogoutResponse> DestroyAllSessionsAsync( [ThriftParameter( 1, "req" )] LogoutRequest request );
     }
 }

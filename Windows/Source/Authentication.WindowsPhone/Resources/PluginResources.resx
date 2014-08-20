@@ -117,106 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ResourceFlowDirection" xml:space="preserve">
-    <value>LeftToRight</value>
-    <comment>The traditional direction of this resource file's language</comment>
+  <data name="AuthenticationViewTitle" xml:space="preserve">
+    <value>login</value>
   </data>
-  <data name="ResourceLanguage" xml:space="preserve">
-    <value>fr</value>
-    <comment>The language code of this resource file's language.</comment>
+  <data name="AuthenticationPassword" xml:space="preserve">
+    <value>password</value>
   </data>
-  <data name="ApplicationTitle" xml:space="preserve">
-    <value>PocketCampus EPFL</value>
+  <data name="AuthenticationUserName" xml:space="preserve">
+    <value>GASPAR user name</value>
   </data>
-  <data name="AboutButton" xml:space="preserve">
-    <value>à propos...</value>
+  <data name="AuthenticationAttemptStatus_Error" xml:space="preserve">
+    <value>An error occurred while connecting to Tequila. Please try again later.</value>
   </data>
-  <data name="LogOff" xml:space="preserve">
-    <value>se déconnecter</value>
+  <data name="AuthenticationAttemptStatus_NotAuthenticated" xml:space="preserve">
+    <value />
+    <comment>Must be empty</comment>
   </data>
-  <data name="AboutAppName" xml:space="preserve">
-    <value>PocketCampus EPFL</value>
+  <data name="AuthenticationAttemptStatus_WrongCredentials" xml:space="preserve">
+    <value>Your credentials are invalid. Please verify them.</value>
   </data>
-  <data name="AboutPageTitle" xml:space="preserve">
-    <value>À propos</value>
+  <data name="Authenticating" xml:space="preserve">
+    <value>Authenticating...</value>
   </data>
-  <data name="PrivacyPolicyCaption" xml:space="preserve">
-    <value>Politique de confidentialité</value>
+  <data name="AuthenticationSaveCredentials" xml:space="preserve">
+    <value>save my password</value>
   </data>
-  <data name="PrivacyPolicyMessage" xml:space="preserve">
-    <value>C'est très simple : vos données et votre position ne ni stockées ni transmises où que ce soit.</value>
+  <data name="AuthenticationInfo" xml:space="preserve">
+    <value>Your password is sent directly to the EPFL's servers via a secure connection. If you chose to save it, it is saved securely.</value>
   </data>
-  <data name="AboutPrivacyPolicy" xml:space="preserve">
-    <value>politique de confidentialité</value>
-  </data>
-  <data name="AboutDevelopers" xml:space="preserve">
-    <value>Solal Pirelli
-Amer Chamseddine
-Loïc Gardiol
-Silviu Andrica
-George Candea</value>
-  </data>
-  <data name="AboutDevelopersHeader" xml:space="preserve">
-    <value>développeurs</value>
-  </data>
-  <data name="AboutWebsite" xml:space="preserve">
-    <value>http://pocketcampus.epfl.ch</value>
-  </data>
-  <data name="AboutWebsiteHeader" xml:space="preserve">
-    <value>site web</value>
-  </data>
-  <data name="AuthenticatedMessage" xml:space="preserve">
-    <value>vous êtes connecté en tant que</value>
-  </data>
-  <data name="NotAuthenticatedMessage" xml:space="preserve">
-    <value>vous n'êtes pas connecté</value>
+  <data name="LogIn" xml:space="preserve">
+    <value>log in</value>
   </data>
   <data name="PagesHeader" xml:space="preserve">
     <value>POCKETCAMPUS EPFL</value>
-  </data>
-  <data name="SettingsViewTitle" xml:space="preserve">
-    <value>paramètres</value>
-  </data>
-  <data name="SettingsButton" xml:space="preserve">
-    <value>paramètres</value>
-  </data>
-  <data name="CreatePluginTile" xml:space="preserve">
-    <value>épingler sur l'écran d'accueil</value>
-  </data>
-  <data name="AboutRateAppButton" xml:space="preserve">
-    <value>évaluer l'app sur le store</value>
-  </data>
-  <data name="AboutContact" xml:space="preserve">
-    <value>team@pocketcampus.org</value>
-  </data>
-  <data name="AboutContactHeader" xml:space="preserve">
-    <value>contact</value>
-  </data>
-  <data name="AboutOrganizationName" xml:space="preserve">
-    <value>PocketCampus.Org</value>
-  </data>
-  <data name="UseColoredTile" xml:space="preserve">
-    <value>utiliser une tuile colorée</value>
-  </data>
-  <data name="UseColoredTileExplanation" xml:space="preserve">
-    <value>désactivez cette option si la tuile colorée rend mal sur votre fond d'écran démarrer</value>
-  </data>
-  <data name="TemporarilyAuthenticatedMessage" xml:space="preserve">
-    <value>vos identifiants seront oubliés quand l'application deviendra inactive</value>
-  </data>
-  <data name="AboutSupport" xml:space="preserve">
-    <value>1234@epfl.ch</value>
-  </data>
-  <data name="AboutSupportHeader" xml:space="preserve">
-    <value>support</value>
-  </data>
-  <data name="DestroySessions" xml:space="preserve">
-    <value>se déconnecter de tous les appareils</value>
-  </data>
-  <data name="DestroySessionsExplanation" xml:space="preserve">
-    <value>Si vous utilisez PocketCampus sur plus d'un appareil, ceci les déconnectera tous</value>
-  </data>
-  <data name="LogIn" xml:space="preserve">
-    <value>se connecter</value>
   </data>
 </root>

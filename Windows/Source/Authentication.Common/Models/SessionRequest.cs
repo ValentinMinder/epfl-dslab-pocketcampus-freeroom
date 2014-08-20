@@ -4,10 +4,10 @@
 
 using ThriftSharp;
 
-namespace PocketCampus.Main.Models
+namespace PocketCampus.Authentication.Models
 {
     [ThriftStruct( "AuthSessionRequest" )]
-    public sealed class AuthenticationSessionRequest
+    public sealed class SessionRequest
     {
         [ThriftField( 1, true, "tequilaToken" )]
         public string TequilaToken { get; set; }

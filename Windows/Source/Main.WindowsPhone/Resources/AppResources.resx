@@ -128,42 +128,17 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>PocketCampus EPFL</value>
   </data>
-  <data name="AuthenticationViewTitle" xml:space="preserve">
-    <value>authenticate</value>
-  </data>
-  <data name="AuthenticationPassword" xml:space="preserve">
-    <value>password</value>
-  </data>
-  <data name="AuthenticationUserName" xml:space="preserve">
-    <value>GASPAR user name</value>
-  </data>
   <data name="AboutButton" xml:space="preserve">
     <value>about...</value>
   </data>
   <data name="LogOff" xml:space="preserve">
     <value>log off</value>
   </data>
-  <data name="LogIn" xml:space="preserve">
-    <value>log in</value>
-  </data>
   <data name="AboutAppName" xml:space="preserve">
     <value>PocketCampus EPFL</value>
   </data>
   <data name="AboutPageTitle" xml:space="preserve">
     <value>About</value>
-  </data>
-  <data name="AuthenticationAttemptStatus_Error" xml:space="preserve">
-    <value>An error occurred while connecting to Tequila. Please try again later.</value>
-  </data>
-  <data name="AuthenticationAttemptStatus_NotAuthenticated" xml:space="preserve">
-    <value />
-    <comment>Must be empty</comment>
-  </data>
-  <data name="AuthenticationAttemptStatus_WrongCredentials" xml:space="preserve">
-    <value>Your credentials are invalid. Please verify them.</value>
-  </data>
-  <data name="Authenticating" xml:space="preserve">
-    <value>Authenticating...</value>
   </data>
   <data name="PrivacyPolicyCaption" xml:space="preserve">
     <value>Privacy policy</value>
@@ -220,9 +195,6 @@ George Candea</value>
   <data name="AboutOrganizationName" xml:space="preserve">
     <value>PocketCampus.Org</value>
   </data>
-  <data name="AuthenticationSaveCredentials" xml:space="preserve">
-    <value>save my password</value>
-  </data>
   <data name="UseColoredTile" xml:space="preserve">
     <value>use colored application tile</value>
   </data>
@@ -238,13 +210,13 @@ George Candea</value>
   <data name="AboutContactHeader" xml:space="preserve">
     <value>contact</value>
   </data>
-  <data name="AuthenticationInfo" xml:space="preserve">
-    <value>Your password is sent directly to the EPFL's servers via a secure connection. If you chose to save it, it is saved securely.</value>
-  </data>
   <data name="DestroySessions" xml:space="preserve">
     <value>log off all devices</value>
   </data>
   <data name="DestroySessionsExplanation" xml:space="preserve">
     <value>If you use PocketCampus on more than one device, this will log off all of them</value>
+  </data>
+  <data name="LogIn" xml:space="preserve">
+    <value>log in</value>
   </data>
 </root>

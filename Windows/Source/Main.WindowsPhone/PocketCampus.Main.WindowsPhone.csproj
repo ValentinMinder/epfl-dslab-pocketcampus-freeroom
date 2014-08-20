@@ -122,9 +122,6 @@
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AuthenticationView.xaml.cs">
-      <DependentUpon>AuthenticationView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
@@ -143,10 +140,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AboutView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AuthenticationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -192,6 +185,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Authentication.WindowsPhone\PocketCampus.Authentication.WindowsPhone.csproj">
+      <Project>{0093183a-cab3-4e91-907d-0f6c48d98993}</Project>
+      <Name>PocketCampus.Authentication.WindowsPhone</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Camipro.WindowsPhone\PocketCampus.Camipro.WindowsPhone.csproj">
       <Project>{D16579BC-07A7-4B3C-9611-798D6D0721E5}</Project>
       <Name>PocketCampus.Camipro.WindowsPhone</Name>

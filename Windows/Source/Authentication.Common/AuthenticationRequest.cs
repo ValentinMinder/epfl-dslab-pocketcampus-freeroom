@@ -4,7 +4,7 @@
 
 using System;
 
-namespace PocketCampus.Main
+namespace PocketCampus.Authentication
 {
     /// <summary>
     /// Request for the authentication ViewModel.

@@ -81,20 +81,16 @@ namespace PocketCampus.Main
             _pluginLoader = Container.Bind<IPluginLoader, PluginLoader>();
             _logger = Container.Bind<Logger, GoogleAnalyticsLogger>();
 
-            // Common services
-            AppInitializer.BindImplementations();
+            // Common part of plugins & services initialization
+            AppInitializer.Initialize( _pluginLoader, _navigationService );
 
             // View-ViewModels bindings for Main
             _navigationService.Bind<MainViewModel>( "/Views/MainView.xaml" );
-            _navigationService.Bind<AuthenticationViewModel>( "/Views/AuthenticationView.xaml" );
             _navigationService.Bind<SettingsViewModel>( "/Views/SettingsView.xaml" );
             _navigationService.Bind<AboutViewModel>( "/Views/AboutView.xaml" );
 
             // URI mapping
             LauncherEx.RegisterProtocol( PocketCampusProtocol, NavigateToCustomUri );
-
-            // Common part of plugin initialization
-            AppInitializer.InitializePlugins( _pluginLoader, _navigationService );
 
             // WP-specific part of plugin initialization
             _plugins = _pluginLoader.GetPlugins().Cast<IWindowsPhonePlugin>().ToArray();

@@ -37,9 +37,9 @@ namespace PocketCampus.Main.ViewModels.Design
                 set { }
             }
 
-            public AuthenticationStatus AuthenticationStatus
+            public SessionStatus SessionStatus
             {
-                get { return AuthenticationStatus.AuthenticatedTemporarily; }
+                get { return SessionStatus.LoggedInTemporarily; }
                 set { }
             }
 

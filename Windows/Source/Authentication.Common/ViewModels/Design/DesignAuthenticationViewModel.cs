@@ -4,7 +4,7 @@
 
 // Design data for the AuthenticationViewModel
 
-namespace PocketCampus.Main.ViewModels.Design
+namespace PocketCampus.Authentication.ViewModels.Design
 {
     public sealed class DesignAuthenticationViewModel
     {

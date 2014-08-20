@@ -4,9 +4,12 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using PocketCampus.Authentication;
+using PocketCampus.Authentication.Models;
+using PocketCampus.Authentication.Services;
+using PocketCampus.Authentication.ViewModels;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
-using PocketCampus.Main.Models;
 using PocketCampus.Main.Services;
 using ThinMvvm;
 using ThinMvvm.Logging;
@@ -81,7 +84,7 @@ namespace PocketCampus.Main.ViewModels
         /// </summary>
         private async Task ExecuteLogOffCommand()
         {
-            Settings.AuthenticationStatus = AuthenticationStatus.NotAuthenticated;
+            Settings.SessionStatus = SessionStatus.NotLoggedIn;
             Settings.Session = null;
             Settings.Sessions = new Dictionary<string, string>();
             Credentials.UserName = null;
@@ -94,7 +97,7 @@ namespace PocketCampus.Main.ViewModels
         /// </summary>
         private async Task ExecuteDestroySessionsCommand()
         {
-            var request = new AuthenticationLogoutRequest { Session = Settings.Session };
+            var request = new LogoutRequest { Session = Settings.Session };
             await _authenticationService.DestroyAllSessionsAsync( request );
 
             await ExecuteLogOffCommand();

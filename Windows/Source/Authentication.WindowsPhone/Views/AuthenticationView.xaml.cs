@@ -4,7 +4,7 @@
 
 using PocketCampus.Common.Controls;
 
-namespace PocketCampus.Main.Views
+namespace PocketCampus.Authentication.Views
 {
     public partial class AuthenticationView : BasePage
     {

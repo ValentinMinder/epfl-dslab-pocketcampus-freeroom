@@ -48,7 +48,7 @@
 
         <!-- Not authenticated -->
         <StackPanel Grid.Row="2"
-                    Visibility="{Binding Settings.AuthenticationStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=NotAuthenticated}"
+                    Visibility="{Binding Settings.SessionStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=NotLoggedIn}"
                     Margin="24,20,24,10">
             <!-- Text -->
             <TextBlock Text="{Binding Resources.NotAuthenticatedMessage, Source={StaticResource Strings}}"
@@ -65,7 +65,7 @@
 
         <!-- Authenticated temporarily -->
         <StackPanel Grid.Row="2" 
-                    Visibility="{Binding Settings.AuthenticationStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=AuthenticatedTemporarily}"
+                    Visibility="{Binding Settings.SessionStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=LoggedInTemporarily}"
                     Margin="24,20,24,10">
             <!-- Text -->
             <StackPanel Orientation="Horizontal">
@@ -96,7 +96,7 @@
 
         <!-- Authenticated -->
         <StackPanel Grid.Row="2"
-                    Visibility="{Binding Settings.AuthenticationStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=Authenticated}"
+                    Visibility="{Binding Settings.SessionStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=LoggedIn}"
                     Margin="24,20,24,10">
             <!-- Text -->
             <StackPanel Orientation="Horizontal">

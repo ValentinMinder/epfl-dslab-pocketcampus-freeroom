@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using PocketCampus.Authentication;
+using PocketCampus.Authentication.ViewModels;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
@@ -103,7 +105,7 @@ namespace PocketCampus.Main.ViewModels
         {
             if ( Plugins == null )
             {
-                Plugins = _pluginLoader.GetPlugins();
+                Plugins = _pluginLoader.GetPlugins().Where( p => p.IsVisible ).ToArray();
 
                 if ( _request.PluginName == null )
                 {
@@ -148,11 +150,11 @@ namespace PocketCampus.Main.ViewModels
         /// </summary>
         private void OpenPlugin( IPlugin plugin )
         {
-            if ( !plugin.RequiresAuthentication || _settings.AuthenticationStatus != AuthenticationStatus.NotAuthenticated )
+            if ( !plugin.RequiresAuthentication || _settings.SessionStatus != SessionStatus.NotLoggedIn )
             {
                 plugin.NavigateTo( _navigationService );
             }
-            else if ( _settings.AuthenticationStatus == AuthenticationStatus.NotAuthenticated )
+            else if ( _settings.SessionStatus == SessionStatus.NotLoggedIn )
             {
                 var authRequest = new AuthenticationRequest( () => plugin.NavigateTo( _navigationService ) );
                 _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );

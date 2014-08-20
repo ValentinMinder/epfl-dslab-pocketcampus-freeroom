@@ -36,6 +36,14 @@ namespace PocketCampus.Events
         }
 
         /// <summary>
+        /// This plugin is visible in the application's main menu.
+        /// </summary>
+        public bool IsVisible
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// This plugin does not require authentication. (it uses special QR codes for that since it's also aimed at non-EPFL people)
         /// </summary>
         public bool RequiresAuthentication
