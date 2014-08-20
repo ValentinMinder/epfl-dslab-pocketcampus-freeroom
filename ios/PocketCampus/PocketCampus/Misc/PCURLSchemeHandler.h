@@ -25,16 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 03.03.13.
 
-
-
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @class MainController;
 

@@ -25,16 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 20.09.13.
 
-
-
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 extern NSString* const PCGAITrackerActionMarkFavorite;
 extern NSString* const PCGAITrackerActionUnmarkFavorite;

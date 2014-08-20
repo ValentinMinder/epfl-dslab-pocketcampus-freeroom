@@ -27,7 +27,7 @@
 
 //  Created by Loïc Gardiol on 23.03.12.
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @interface PCPersistenceManager : NSObject
 

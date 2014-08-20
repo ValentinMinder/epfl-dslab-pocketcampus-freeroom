@@ -25,17 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 22.01.13.
 
-
-
-#import <Foundation/Foundation.h>
-
+@import Foundation;
 
 /*
  * PocketCampus configuration

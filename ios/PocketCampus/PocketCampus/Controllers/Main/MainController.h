@@ -25,13 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 07.10.12.
 
-
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 #import "ZUUIRevealController.h"
 

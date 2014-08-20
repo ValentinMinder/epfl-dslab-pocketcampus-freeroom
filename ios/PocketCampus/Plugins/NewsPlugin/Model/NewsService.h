@@ -28,7 +28,7 @@
 
 //  Created by Loïc Gardiol on 05.05.12.
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 #import "PCService.h"
 
