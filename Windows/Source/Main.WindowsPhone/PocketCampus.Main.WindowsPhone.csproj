@@ -97,7 +97,6 @@
     <Compile Include="Converters.cs" />
     <Compile Include="CustomAppDependencies.cs" />
     <Compile Include="PngWriter.cs" />
-    <Compile Include="PocketCampusUriMapper.cs" />
     <Compile Include="Resources\AppResources.fr.Designer.cs">
       <DependentUpon>AppResources.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>

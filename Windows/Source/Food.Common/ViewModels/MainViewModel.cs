@@ -142,8 +142,11 @@ namespace PocketCampus.Food.ViewModels
 
             Settings.PropertyChanged += ( _, __ ) =>
             {
-                Menu = FilterMenu( _fullMenu );
-                AnyFilterResults = Menu.Any();
+                if ( _fullMenu != null )
+                {
+                    Menu = FilterMenu( _fullMenu );
+                    AnyFilterResults = Menu.Any();
+                }
             };
         }
 
