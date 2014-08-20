@@ -52,7 +52,8 @@
                     Margin="24,20,24,10">
             <!-- Text -->
             <TextBlock Text="{Binding Resources.NotAuthenticatedMessage, Source={StaticResource Strings}}"
-                       Style="{StaticResource PhoneTextNormalStyle}" />
+                       Style="{StaticResource PhoneTextNormalStyle}"
+                       Margin="0" />
 
             <!-- "Log on" button -->
             <Button Content="{Binding Resources.LogIn, Source={StaticResource Strings}}"
@@ -115,6 +116,19 @@
                     HorizontalAlignment="Left"
                     Margin="-12,0"
                     MinWidth="300" />
+            
+            
+            <!-- "Destroy sessions" button -->
+            <Button Content="{Binding Resources.DestroySessions, Source={StaticResource Strings}}"
+                    Command="{Binding DestroySessionsCommand}"
+                    HorizontalAlignment="Left"
+                    Margin="-12,36,-12,0"
+                    MinWidth="300" />
+            
+            <TextBlock Text="{Binding Resources.DestroySessionsExplanation, Source={StaticResource Strings}}"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource PhoneTextSubtleStyle}"
+                       Margin="0" />
         </StackPanel>
 
 

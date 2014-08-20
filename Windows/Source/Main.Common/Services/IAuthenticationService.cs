@@ -25,5 +25,12 @@ namespace PocketCampus.Main.Services
         /// </summary>
         [ThriftMethod( "getAuthSession" )]
         Task<AuthenticationSessionResponse> GetSessionAsync( [ThriftParameter( 1, "req" )] AuthenticationSessionRequest request );
+
+
+        /// <summary>
+        /// Asynchronously requests that all user sessions for PocketCampus be destroyed.
+        /// </summary>
+        [ThriftMethod( "destroyAllUserSessions" )]
+        Task<AuthenticationLogoutResponse> DestroyAllSessionsAsync( [ThriftParameter( 1, "req" )] AuthenticationLogoutRequest request );
     }
 }

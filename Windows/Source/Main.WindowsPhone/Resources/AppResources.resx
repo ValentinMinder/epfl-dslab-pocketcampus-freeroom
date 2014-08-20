@@ -241,4 +241,10 @@ George Candea</value>
   <data name="AuthenticationInfo" xml:space="preserve">
     <value>Your password is sent directly to the EPFL's servers via a secure connection. If you chose to save it, it is saved securely.</value>
   </data>
+  <data name="DestroySessions" xml:space="preserve">
+    <value>log off all devices</value>
+  </data>
+  <data name="DestroySessionsExplanation" xml:space="preserve">
+    <value>If you use PocketCampus on more than one device, this will log off all of them</value>
+  </data>
 </root>

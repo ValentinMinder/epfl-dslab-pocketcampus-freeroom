@@ -299,6 +299,24 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to log off all devices.
+        /// </summary>
+        public static string DestroySessions {
+            get {
+                return ResourceManager.GetString("DestroySessions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you use PocketCampus on more than one device, this will log off all of them.
+        /// </summary>
+        public static string DestroySessionsExplanation {
+            get {
+                return ResourceManager.GetString("DestroySessionsExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to log in.
         /// </summary>
         public static string LogIn {

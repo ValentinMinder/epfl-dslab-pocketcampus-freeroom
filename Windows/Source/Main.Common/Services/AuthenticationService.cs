@@ -24,5 +24,10 @@ namespace PocketCampus.Main.Services
         {
             return CallAsync<AuthenticationSessionRequest, AuthenticationSessionResponse>( x => x.GetSessionAsync, request );
         }
+
+        public Task<AuthenticationLogoutResponse> DestroyAllSessionsAsync( AuthenticationLogoutRequest request )
+        {
+            return CallAsync<AuthenticationLogoutRequest, AuthenticationLogoutResponse>( x => x.DestroyAllSessionsAsync, request );
+        }
     }
 }

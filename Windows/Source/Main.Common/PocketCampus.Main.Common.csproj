@@ -46,6 +46,8 @@
     <Compile Include="AuthenticationStatus.cs" />
     <Compile Include="IMainSettings.cs" />
     <Compile Include="MainSettings.cs" />
+    <Compile Include="Models\AuthenticationLogoutRequest.cs" />
+    <Compile Include="Models\AuthenticationLogoutResponse.cs" />
     <Compile Include="Models\AuthenticationRequestStatus.cs" />
     <Compile Include="Models\AuthenticationSessionRequest.cs" />
     <Compile Include="Models\AuthenticationSessionResponse.cs" />

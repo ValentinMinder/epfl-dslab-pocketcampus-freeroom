@@ -241,4 +241,10 @@ George Candea</value>
   <data name="AuthenticationInfo" xml:space="preserve">
     <value>Votre mot de passe est envoyé directement aux serveurs de l'EPFL de manière sécurisée. Si vous choisissez de le sauvegarder, il sera chiffré.</value>
   </data>
+  <data name="DestroySessions" xml:space="preserve">
+    <value>se déconnecter de tous les appareils</value>
+  </data>
+  <data name="DestroySessionsExplanation" xml:space="preserve">
+    <value>Si vous utilisez PocketCampus sur plus d'un appareil, ceci les déconnectera tous</value>
+  </data>
 </root>
