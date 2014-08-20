@@ -136,7 +136,7 @@ static FoodService* instance __weak = nil;
 #pragma mark - Service methods
 
 - (void)getFoodForRequest:(FoodRequest*)request delegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
     __weak __typeof(self) weakSelf = self;
     operation.keepInCacheBlock = ^BOOL(void* result) {
@@ -159,7 +159,7 @@ static FoodService* instance __weak = nil;
 }
 
 - (void)voteForRequest:(VoteRequest*)request delegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = NO;
     operation.serviceClientSelector = @selector(vote:);
     operation.delegateDidReturnSelector = @selector(voteForRequest:didReturn:);
@@ -172,7 +172,7 @@ static FoodService* instance __weak = nil;
 #pragma Cached versions
 
 - (FoodResponse*)getFoodFromCacheForRequest:(FoodRequest*)request {
-    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initForCachedResponseOnlyWithService:self];
     operation.cacheValidityInterval = kFoodRequestCacheValidity;
     operation.serviceClientSelector = @selector(getFood:);
     operation.delegateDidReturnSelector = @selector(getFoodForRequest:didReturn:);

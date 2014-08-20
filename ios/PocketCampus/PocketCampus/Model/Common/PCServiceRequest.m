@@ -27,11 +27,11 @@
 
 //  Created by Loïc Gardiol on 08.12.13.
 
-#import "ServiceRequest.h"
+#import "PCServiceRequest.h"
 
 #import "NSOperationWithDelegate_Protected.h"
 
-#import "Service.h"
+#import "PCService.h"
 
 #import "TTransportException.h"
 
@@ -39,21 +39,21 @@
 
 #import <CommonCrypto/CommonDigest.h>
 
-@interface ServiceRequest ()
+@interface PCServiceRequest ()
 
 @property (nonatomic, strong) NSMutableArray* arguments;
 @property (nonatomic, readwrite, strong) id thriftServiceClient;
-@property (nonatomic, readwrite, weak) Service* service;
+@property (nonatomic, readwrite, weak) PCService* service;
 
 @property (nonatomic, strong) NSString* hashIdentifier;
 
 @end
 
-@implementation ServiceRequest
+@implementation PCServiceRequest
 
 #pragma mark - Init
 
-- (id)initWithThriftServiceClient:(id)serviceClient service:(Service*)service delegate:(id)delegate
+- (id)initWithThriftServiceClient:(id)serviceClient service:(PCService*)service delegate:(id)delegate
 {
     self = [super initWithDelegate:delegate];
     if (self) {
@@ -65,7 +65,7 @@
     return self;
 }
 
-- (id)initForCachedResponseOnlyWithService:(Service*)service {
+- (id)initForCachedResponseOnlyWithService:(PCService*)service {
     self = [super init];
     if (self) {
         self.service = service;
@@ -78,9 +78,9 @@
 
 - (NSString*)hashIdentifier {
     if (!_hashIdentifier) {
-        NSString* tempHashIdentifier = [ServiceRequest md5HexDigestForString:NSStringFromSelector(self.serviceClientSelector)];
+        NSString* tempHashIdentifier = [PCServiceRequest md5HexDigestForString:NSStringFromSelector(self.serviceClientSelector)];
         for (NSDictionary* argDic in self.arguments) {
-            tempHashIdentifier =  [ServiceRequest md5HexDigestForString:[NSString stringWithFormat:@"%@%@", tempHashIdentifier, argDic[kWrappedElementDictValueKey]]];
+            tempHashIdentifier =  [PCServiceRequest md5HexDigestForString:[NSString stringWithFormat:@"%@%@", tempHashIdentifier, argDic[kWrappedElementDictValueKey]]];
         }
         _hashIdentifier = tempHashIdentifier;
     }
@@ -91,7 +91,7 @@
     return [NSString stringWithFormat:@"<ServiceRequest %p (%@ - %@)>", self, self.service.serviceName, NSStringFromSelector(self.serviceClientSelector)];
 }
 
-static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* format, ...) {
+static inline void ServiceRequestLog(PCServiceRequest* serviceRequest, NSString* format, ...) {
     va_list args;
     va_start(args, format);
     NSString* message = [[NSString alloc] initWithFormat:format arguments:args];
@@ -118,7 +118,7 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
         return nil;
     }
     
-    id object = [ServiceRequest unwrapArgument:cachedArgDic];
+    id object = [PCServiceRequest unwrapArgument:cachedArgDic];
     
     return object;
 }
@@ -251,7 +251,7 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
         void* result = [self.class unwrapArgument:responseDic];
         [delegateInv setArgument:result atIndex:self.arguments.count+2];
     } else {
-        id object = [ServiceRequest unwrapArgument:responseDic];
+        id object = [PCServiceRequest unwrapArgument:responseDic];
         [delegateInv setArgument:&object atIndex:self.arguments.count+2];
     }
     dispatch_sync(dispatch_get_main_queue(), ^{
@@ -677,11 +677,11 @@ static NSString* const kWrappedElementDictNSNumberSelectorStringKey = @"nsNumber
 - (void)setWrappedArgumentsForInvocation:(NSInvocation*)inv {
     [self.arguments enumerateObjectsUsingBlock:^(NSDictionary* argDic, NSUInteger index, BOOL *stop) {
         if ([argDic[kWrappedElementDictPrimitiveKey] boolValue]) {
-            void* ptr = [ServiceRequest unwrapArgument:argDic];
+            void* ptr = [PCServiceRequest unwrapArgument:argDic];
             [inv setArgument:ptr atIndex:index+2];
             free(ptr);
         } else {
-            id object = [ServiceRequest unwrapArgument:argDic];
+            id object = [PCServiceRequest unwrapArgument:argDic];
             [inv setArgument:&object atIndex:index+2];
         }
     }];

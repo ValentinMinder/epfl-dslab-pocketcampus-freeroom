@@ -31,7 +31,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Service.h"
+#import "PCService.h"
 
 #import "events.h"
 
@@ -55,7 +55,7 @@ extern NSString* const kEventsURLParameterExchangeToken;
  */
 extern NSString* const kEventsFavoritesEventItemsUpdatedNotification;
 
-@interface EventsService : Service <ServiceProtocol>
+@interface EventsService : PCService <PCServiceProtocol>
 
 /* Thrift methods
  
@@ -92,7 +92,7 @@ extern NSString* const kEventsFavoritesEventItemsUpdatedNotification;
 
 @end
 
-@protocol EventsServiceDelegate <ServiceDelegate>
+@protocol EventsServiceDelegate <PCServiceDelegate>
 
 @optional
 

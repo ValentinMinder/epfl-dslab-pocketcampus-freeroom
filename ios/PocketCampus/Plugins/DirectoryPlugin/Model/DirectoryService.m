@@ -72,7 +72,7 @@ static DirectoryService* instance __weak = nil;
 
 - (void)searchForRequest:(DirectoryRequest*)request delegate:(id)delegate {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[DirectoryRequest class]];
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
     operation.keepInCacheBlock = ^BOOL(void* result) {
         DirectoryResponse* response = (__bridge id)result;
@@ -94,7 +94,7 @@ static DirectoryService* instance __weak = nil;
     if (![nameOrSciper isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad nameOrSciper" reason:@"nameOrSciper is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
     operation.cacheValidityInterval = 60; //1 min
     operation.serviceClientSelector = @selector(searchPersons:);
@@ -109,7 +109,7 @@ static DirectoryService* instance __weak = nil;
     if (![constraint isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad constraint" reason:@"constraint is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(autocomplete:);
     operation.delegateDidReturnSelector = @selector(autocompleteFor:didReturn:);
     operation.delegateDidFailSelector = @selector(autocompleteFailedFor:);

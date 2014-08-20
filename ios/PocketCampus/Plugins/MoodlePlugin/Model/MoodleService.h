@@ -27,7 +27,7 @@
 
 
 
-#import "Service.h"
+#import "PCService.h"
 
 #import "moodle.h"
 
@@ -46,7 +46,7 @@ typedef void (^MoodleResourceEventBlock)(MoodleResourceEvent event);
 
 #pragma mark - MoodleServiceDelegate definition
 
-@protocol MoodleServiceDelegate <ServiceDelegate>
+@protocol MoodleServiceDelegate <PCServiceDelegate>
 
 @optional
 
@@ -74,7 +74,7 @@ extern NSString* const kMoodleFavoritesMoodleItemsUpdatedNotification;
  */
 extern NSString* const kMoodleFavoritesStatusMoodleItemUpdatedUserInfoKey;
 
-@interface MoodleService : Service<ServiceProtocol>
+@interface MoodleService : PCService<PCServiceProtocol>
 
 #pragma mark - Resources favorites and file management
 

@@ -108,7 +108,7 @@
 		324151E615375BDD00CCFB22 /* Map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324151E415375BDD00CCFB22 /* Map@2x.png */; };
 		324151F415377B4C00CCFB22 /* MapItemAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151F315377B4C00CCFB22 /* MapItemAnnotation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3241F1DE15B4AB9C00C7DF3A /* PCEditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3241F1DD15B4AB9B00C7DF3A /* PCEditableTableViewCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		3242DE1F150577050082D720 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 324715AD15001381007C230C /* Service.m */; };
+		3242DE1F150577050082D720 /* PCService.m in Sources */ = {isa = PBXBuildFile; fileRef = 324715AD15001381007C230C /* PCService.m */; };
 		3243FB9D18215CEC000F3CB5 /* FoodRestaurantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3243FB9C18215CEC000F3CB5 /* FoodRestaurantViewController.m */; };
 		3243FBA018216B95000F3CB5 /* FoodRestaurantInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3243FB9F18216B95000F3CB5 /* FoodRestaurantInfoCell.m */; };
 		3243FBA218216BBC000F3CB5 /* FoodRestaurantInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3243FBA118216BBC000F3CB5 /* FoodRestaurantInfoCell.xib */; };
@@ -363,7 +363,7 @@
 		32FB2E0B15179014007AE82B /* TransportService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0615179014007AE82B /* TransportService.m */; };
 		32FB442017650268008C8282 /* NSDate+Addtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB441F17650268008C8282 /* NSDate+Addtions.m */; };
 		32FDA99D1854A06F00C6393A /* NSOperationWithDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA99C1854A06F00C6393A /* NSOperationWithDelegate.m */; };
-		32FDA9A11854B5E600C6393A /* ServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA9A01854B5E600C6393A /* ServiceRequest.m */; settings = {COMPILER_FLAGS = "-fobjc-arc-exceptions"; }; };
+		32FDA9A11854B5E600C6393A /* PCServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA9A01854B5E600C6393A /* PCServiceRequest.m */; settings = {COMPILER_FLAGS = "-fobjc-arc-exceptions"; }; };
 		32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF46541636FB2500932FF5 /* PluginNavigationController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32FFA796186DDD5500237957 /* FavoriteNavBarButtonLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA794186DDD5500237957 /* FavoriteNavBarButtonLandscape.png */; };
 		32FFA797186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA795186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png */; };
@@ -586,8 +586,8 @@
 		3245DF2F18881B5F0072E086 /* PCUsageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCUsageViewController.m; sourceTree = "<group>"; };
 		324654C5168BA2D300F2782D /* PluginControllerAuthentified.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PluginControllerAuthentified.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PluginControllerAuthentified.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		324715AC15001381007C230C /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Service.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		324715AD15001381007C230C /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Service.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		324715AC15001381007C230C /* PCService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PCService.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		324715AD15001381007C230C /* PCService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PCService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		3247494F17F33B0D00698A9D /* DirectoryPersonBaseInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryPersonBaseInfoCell.xib; sourceTree = "<group>"; };
 		3247495117F33E3400698A9D /* DirectoryPersonBaseInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DirectoryPersonBaseInfoCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		3247495217F33E3400698A9D /* DirectoryPersonBaseInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DirectoryPersonBaseInfoCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -964,8 +964,8 @@
 		32FDA99B1854A06F00C6393A /* NSOperationWithDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOperationWithDelegate.h; sourceTree = "<group>"; };
 		32FDA99C1854A06F00C6393A /* NSOperationWithDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationWithDelegate.m; sourceTree = "<group>"; };
 		32FDA99E1854A30900C6393A /* NSOperationWithDelegate_Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSOperationWithDelegate_Protected.h; sourceTree = "<group>"; };
-		32FDA99F1854B5E600C6393A /* ServiceRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceRequest.h; sourceTree = "<group>"; };
-		32FDA9A01854B5E600C6393A /* ServiceRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ServiceRequest.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		32FDA99F1854B5E600C6393A /* PCServiceRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCServiceRequest.h; sourceTree = "<group>"; };
+		32FDA9A01854B5E600C6393A /* PCServiceRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PCServiceRequest.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32FF46531636FB2400932FF5 /* PluginNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PluginNavigationController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32FF46541636FB2500932FF5 /* PluginNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PluginNavigationController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32FFA794186DDD5500237957 /* FavoriteNavBarButtonLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteNavBarButtonLandscape.png; sourceTree = "<group>"; };
@@ -1445,13 +1445,13 @@
 				32CFECEE151CCB6800D8CBA6 /* PCPersistenceManager.m */,
 				3258D64F16AF1FE20040DAE3 /* PCConfig.h */,
 				3258D65016AF1FE20040DAE3 /* PCConfig.m */,
-				324715AC15001381007C230C /* Service.h */,
-				324715AD15001381007C230C /* Service.m */,
+				324715AC15001381007C230C /* PCService.h */,
+				324715AD15001381007C230C /* PCService.m */,
 				32FDA99B1854A06F00C6393A /* NSOperationWithDelegate.h */,
 				32FDA99C1854A06F00C6393A /* NSOperationWithDelegate.m */,
 				32FDA99E1854A30900C6393A /* NSOperationWithDelegate_Protected.h */,
-				32FDA99F1854B5E600C6393A /* ServiceRequest.h */,
-				32FDA9A01854B5E600C6393A /* ServiceRequest.m */,
+				32FDA99F1854B5E600C6393A /* PCServiceRequest.h */,
+				32FDA9A01854B5E600C6393A /* PCServiceRequest.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2884,7 +2884,7 @@
 				32102B6615050B9D0076537E /* food.m in Sources */,
 				3245DF3018881B5F0072E086 /* PCUsageViewController.m in Sources */,
 				32102B6C15050C000076537E /* FoodService.m in Sources */,
-				3242DE1F150577050082D720 /* Service.m in Sources */,
+				3242DE1F150577050082D720 /* PCService.m in Sources */,
 				3217CE0A1508E31200BF94F7 /* FoodController.m in Sources */,
 				3217CE0F1508F92700BF94F7 /* FoodRestaurantsListViewController.m in Sources */,
 				3247CAF815135FD800105A71 /* PCTableViewSectionHeader.m in Sources */,
@@ -2928,7 +2928,7 @@
 				32710E8D1564FC2400DE6984 /* CamiproService.m in Sources */,
 				329CF4BE187ABC2C00062C98 /* UIViewController+Additions.m in Sources */,
 				27C1161019A2588E00FEF411 /* recommendedapps.m in Sources */,
-				32FDA9A11854B5E600C6393A /* ServiceRequest.m in Sources */,
+				32FDA9A11854B5E600C6393A /* PCServiceRequest.m in Sources */,
 				32710E91156507DA00DE6984 /* CamiproViewController.m in Sources */,
 				3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */,
 				32308C0D18DA3678008BE037 /* IsAcademiaStudyPeriodCalendarDayEventView.m in Sources */,

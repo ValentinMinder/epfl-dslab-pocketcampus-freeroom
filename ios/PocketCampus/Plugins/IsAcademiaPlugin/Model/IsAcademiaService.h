@@ -35,7 +35,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Service.h"
+#import "PCService.h"
 
 #import "isacademia.h"
 
@@ -43,7 +43,7 @@
 
 @protocol IsAcademiaServiceDelegate;
 
-@interface IsAcademiaService : Service <ServiceProtocol>
+@interface IsAcademiaService : PCService <PCServiceProtocol>
 
 /*
 - (ScheduleResponse *) getSchedule: (ScheduleRequest *) req;  // throws TException
@@ -53,7 +53,7 @@
 
 @end
 
-@protocol IsAcademiaServiceDelegate <ServiceDelegate>
+@protocol IsAcademiaServiceDelegate <PCServiceDelegate>
 
 @optional
 - (void)getScheduleForRequest:(ScheduleRequest*)request didReturn:(ScheduleResponse*)scheduleResponse;

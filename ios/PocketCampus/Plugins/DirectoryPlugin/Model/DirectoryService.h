@@ -29,7 +29,7 @@
 //  Created by Loïc Gardiol on 28.02.12.
 
 #import <Foundation/Foundation.h>
-#import "Service.h"
+#import "PCService.h"
 #import "directory.h"
 
 #import "Person+Extras.h"
@@ -46,7 +46,7 @@ extern NSString* const kDirectoryURLActionView;
  */
 extern NSString* const kDirectoryURLParameterQuery;
 
-@interface DirectoryService : Service <ServiceProtocol>
+@interface DirectoryService : PCService <PCServiceProtocol>
 
 /*
  - (NSArray *) searchPersons: (NSString *) nameOrSciper;  // throws LDAPException *, TException
@@ -64,7 +64,7 @@ extern NSString* const kDirectoryURLParameterQuery;
 
 @end
 
-@protocol DirectoryServiceDelegate <ServiceDelegate>
+@protocol DirectoryServiceDelegate <PCServiceDelegate>
 
 @optional
 

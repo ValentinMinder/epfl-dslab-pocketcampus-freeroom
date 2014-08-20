@@ -31,7 +31,7 @@
 //  Created by Loïc Gardiol on 28.02.12.
 
 
-#import "Service.h"
+#import "PCService.h"
 
 #import "PushNotifController.h"
 
@@ -41,7 +41,7 @@
 
 static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0;
 
-@interface Service ()
+@interface PCService ()
 
 @property (nonatomic, readwrite, strong) NSString* serviceName;
 @property (nonatomic, readwrite, strong) NSString* thriftServiceClientClassName;
@@ -51,7 +51,7 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
 
 @end
 
-@implementation Service
+@implementation PCService
 
 #pragma mark - Init
 
@@ -100,7 +100,7 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
 #pragma mark - Cancelling operations
 
 //pass nil to cancel all operations
-- (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
+- (void)cancelOperationsForDelegate:(id<PCServiceDelegate>)delegate {
     int nbOps = 0;
     for (NSOperation* operation in self.operationQueue.operations) {
         if (!delegate) {

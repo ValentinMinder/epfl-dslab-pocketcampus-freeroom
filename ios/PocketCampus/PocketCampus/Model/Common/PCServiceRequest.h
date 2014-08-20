@@ -30,7 +30,7 @@
 
 #import "NSOperationWithDelegate.h"
 
-@class Service;
+@class PCService;
 
 typedef enum {
     ReturnTypeNotSet = 0,
@@ -50,13 +50,13 @@ typedef enum {
     ReturnTypeUnsignedShort
 } ReturnType;
 
-@interface ServiceRequest : NSOperationWithDelegate
+@interface PCServiceRequest : NSOperationWithDelegate
 
-- (id)initWithThriftServiceClient:(id)serviceClient service:(Service*)service delegate:(id)delegate;
-- (id)initForCachedResponseOnlyWithService:(Service*)service;
+- (id)initWithThriftServiceClient:(id)serviceClient service:(PCService*)service delegate:(id)delegate;
+- (id)initForCachedResponseOnlyWithService:(PCService*)service;
 
 @property (nonatomic, readonly, strong) id thriftServiceClient;
-@property (nonatomic, readonly, weak) Service* service;
+@property (nonatomic, readonly, weak) PCService* service;
 @property SEL serviceClientSelector;
 @property ReturnType returnType;
 

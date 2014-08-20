@@ -29,15 +29,15 @@
 
 @import Foundation;
 
-#import "ServiceRequest.h"
+#import "PCServiceRequest.h"
 
-@protocol ServiceDelegate <NSObject>
+@protocol PCServiceDelegate <NSObject>
 
 - (void)serviceConnectionToServerFailed;
 
 @end
 
-@protocol ServiceProtocol <NSObject>
+@protocol PCServiceProtocol <NSObject>
 
 /**
  * Conforming services must implement this method and implement a weak singleton.
@@ -54,7 +54,7 @@
  * Abstract class
  * Plugin services should sublcass it and conform to ServiceProtocol
  */
-@interface Service : NSObject
+@interface PCService : NSObject
 
 @property (nonatomic, readonly) NSString* serviceName;
 
@@ -87,7 +87,7 @@
 - (id)thriftProtocolInstanceWithCustomTimeoutInterval:(NSTimeInterval)timeoutInterval;
 
 
-- (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate;
+- (void)cancelOperationsForDelegate:(id<PCServiceDelegate>)delegate;
 - (void)cancelAllOperations;
 
 /**

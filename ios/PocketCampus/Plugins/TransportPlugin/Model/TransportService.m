@@ -98,7 +98,7 @@ static TransportService* instance __weak = nil;
     if (![constraint isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad constraint" reason:@"constraint is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(autocomplete:);
     operation.delegateDidReturnSelector = @selector(autocompleteFor:didReturn:);
     operation.delegateDidFailSelector = @selector(autocompleteFailedFor:);
@@ -111,7 +111,7 @@ static TransportService* instance __weak = nil;
     if (![names isKindOfClass:[NSArray class]]) {
         @throw [NSException exceptionWithName:@"bad names" reason:@"names is either nil or not of class NSArray" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getLocationsFromNames:);
     operation.delegateDidReturnSelector = @selector(locationsForNames:didReturn:);
     operation.delegateDidFailSelector = @selector(locationsFailedForNames:);
@@ -127,7 +127,7 @@ static TransportService* instance __weak = nil;
     if (![to isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad 'to' argument" reason:@"'to' argument is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     [operation setQueuePriority:priority];
     operation.serviceClientSelector = @selector(getTrips::);
     operation.delegateDidReturnSelector = @selector(tripsFrom:to:didReturn:);
