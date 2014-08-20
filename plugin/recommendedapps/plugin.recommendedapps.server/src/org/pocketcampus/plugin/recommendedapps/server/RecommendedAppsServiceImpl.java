@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,9 +68,8 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 			String appLogoURL = results.getString("AppLogoURL");
 
 			RecommendedApp app = new RecommendedApp();
-			app.setAppId(appId);
 			app.setAppStoreQuery(appStoreQuery);
-			if (appStore != AppStore.iOS) {
+			if (appStore != AppStore.iOS && appStore != AppStore.Android) {
 				app.setAppLogoURL(appLogoURL);
 			}
 			app.setAppOpenURLPattern(appOpenURLPattern);
@@ -91,7 +89,7 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 			if (!apps.containsKey(appId)) {
 				continue;
 			}
-			if (appStore != AppStore.iOS) {
+			if (appStore != AppStore.iOS && appStore != AppStore.Android) {
 				RecommendedApp app = apps.get(appId);
 				String appName = results.getString("AppName");
 				app.setAppName(appName);

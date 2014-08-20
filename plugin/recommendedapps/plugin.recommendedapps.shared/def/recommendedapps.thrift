@@ -4,12 +4,11 @@ enum AppStore{
 }
 
 struct RecommendedApp{
-	1: i32 appId;
-	2: string appName;
-	3: string appDescription;
-	4: string appStoreQuery;
-	5: string appOpenURLPattern;
-	6: string appLogoURL;
+	1: string appStoreQuery;
+	2: optional string appName;
+	3: optional string appDescription;
+	4: optional string appOpenURLPattern;
+	5: optional string appLogoURL;
 }
 
 struct RecommendedAppCategory{

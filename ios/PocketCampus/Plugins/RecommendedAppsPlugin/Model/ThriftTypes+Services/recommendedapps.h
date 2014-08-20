@@ -28,32 +28,29 @@ enum RecommendedAppsResponseStatus {
 };
 
 @interface RecommendedApp : NSObject <TBase, NSCoding> {
-  int32_t __appId;
+  NSString * __appStoreQuery;
   NSString * __appName;
   NSString * __appDescription;
-  NSString * __appStoreQuery;
   NSString * __appOpenURLPattern;
   NSString * __appLogoURL;
 
-  BOOL __appId_isset;
+  BOOL __appStoreQuery_isset;
   BOOL __appName_isset;
   BOOL __appDescription_isset;
-  BOOL __appStoreQuery_isset;
   BOOL __appOpenURLPattern_isset;
   BOOL __appLogoURL_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, getter=appId, setter=setAppId:) int32_t appId;
+@property (nonatomic, retain, getter=appStoreQuery, setter=setAppStoreQuery:) NSString * appStoreQuery;
 @property (nonatomic, retain, getter=appName, setter=setAppName:) NSString * appName;
 @property (nonatomic, retain, getter=appDescription, setter=setAppDescription:) NSString * appDescription;
-@property (nonatomic, retain, getter=appStoreQuery, setter=setAppStoreQuery:) NSString * appStoreQuery;
 @property (nonatomic, retain, getter=appOpenURLPattern, setter=setAppOpenURLPattern:) NSString * appOpenURLPattern;
 @property (nonatomic, retain, getter=appLogoURL, setter=setAppLogoURL:) NSString * appLogoURL;
 #endif
 
 - (id) init;
-- (id) initWithAppId: (int32_t) appId appName: (NSString *) appName appDescription: (NSString *) appDescription appStoreQuery: (NSString *) appStoreQuery appOpenURLPattern: (NSString *) appOpenURLPattern appLogoURL: (NSString *) appLogoURL;
+- (id) initWithAppStoreQuery: (NSString *) appStoreQuery appName: (NSString *) appName appDescription: (NSString *) appDescription appOpenURLPattern: (NSString *) appOpenURLPattern appLogoURL: (NSString *) appLogoURL;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -61,10 +58,10 @@ enum RecommendedAppsResponseStatus {
 - (void) validate;
 
 #if !__has_feature(objc_arc)
-- (int32_t) appId;
-- (void) setAppId: (int32_t) appId;
+- (NSString *) appStoreQuery;
+- (void) setAppStoreQuery: (NSString *) appStoreQuery;
 #endif
-- (BOOL) appIdIsSet;
+- (BOOL) appStoreQueryIsSet;
 
 #if !__has_feature(objc_arc)
 - (NSString *) appName;
@@ -77,12 +74,6 @@ enum RecommendedAppsResponseStatus {
 - (void) setAppDescription: (NSString *) appDescription;
 #endif
 - (BOOL) appDescriptionIsSet;
-
-#if !__has_feature(objc_arc)
-- (NSString *) appStoreQuery;
-- (void) setAppStoreQuery: (NSString *) appStoreQuery;
-#endif
-- (BOOL) appStoreQueryIsSet;
 
 #if !__has_feature(objc_arc)
 - (NSString *) appOpenURLPattern;

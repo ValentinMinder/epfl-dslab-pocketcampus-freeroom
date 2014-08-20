@@ -50,7 +50,7 @@
     _recommendedApp = recommendedApp;
     __weak __typeof(self) welf = self;
     
-    NSString* jsonString = [NSString stringWithFormat:@"http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/wa/wsLookup?country=ch&id=%@", recommendedApp.appStoreQuery];
+    NSString* jsonString = [NSString stringWithFormat:@"http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/wa/wsLookup?country=ch&lang=%@&id=%@", [PCUtils userLanguageCode],recommendedApp.appStoreQuery];
     NSURL* jsonURL = [NSURL URLWithString:jsonString];
     NSURLRequest* request = [NSURLRequest requestWithURL:jsonURL];
     

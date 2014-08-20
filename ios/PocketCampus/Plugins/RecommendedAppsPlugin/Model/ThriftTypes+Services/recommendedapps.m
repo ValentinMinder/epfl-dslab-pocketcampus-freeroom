@@ -28,17 +28,15 @@
   return self;
 }
 
-- (id) initWithAppId: (int32_t) appId appName: (NSString *) appName appDescription: (NSString *) appDescription appStoreQuery: (NSString *) appStoreQuery appOpenURLPattern: (NSString *) appOpenURLPattern appLogoURL: (NSString *) appLogoURL
+- (id) initWithAppStoreQuery: (NSString *) appStoreQuery appName: (NSString *) appName appDescription: (NSString *) appDescription appOpenURLPattern: (NSString *) appOpenURLPattern appLogoURL: (NSString *) appLogoURL
 {
   self = [super init];
-  __appId = appId;
-  __appId_isset = YES;
+  __appStoreQuery = [appStoreQuery retain_stub];
+  __appStoreQuery_isset = YES;
   __appName = [appName retain_stub];
   __appName_isset = YES;
   __appDescription = [appDescription retain_stub];
   __appDescription_isset = YES;
-  __appStoreQuery = [appStoreQuery retain_stub];
-  __appStoreQuery_isset = YES;
   __appOpenURLPattern = [appOpenURLPattern retain_stub];
   __appOpenURLPattern_isset = YES;
   __appLogoURL = [appLogoURL retain_stub];
@@ -49,10 +47,10 @@
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
-  if ([decoder containsValueForKey: @"appId"])
+  if ([decoder containsValueForKey: @"appStoreQuery"])
   {
-    __appId = [decoder decodeInt32ForKey: @"appId"];
-    __appId_isset = YES;
+    __appStoreQuery = [[decoder decodeObjectForKey: @"appStoreQuery"] retain_stub];
+    __appStoreQuery_isset = YES;
   }
   if ([decoder containsValueForKey: @"appName"])
   {
@@ -63,11 +61,6 @@
   {
     __appDescription = [[decoder decodeObjectForKey: @"appDescription"] retain_stub];
     __appDescription_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"appStoreQuery"])
-  {
-    __appStoreQuery = [[decoder decodeObjectForKey: @"appStoreQuery"] retain_stub];
-    __appStoreQuery_isset = YES;
   }
   if ([decoder containsValueForKey: @"appOpenURLPattern"])
   {
@@ -84,9 +77,9 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  if (__appId_isset)
+  if (__appStoreQuery_isset)
   {
-    [encoder encodeInt32: __appId forKey: @"appId"];
+    [encoder encodeObject: __appStoreQuery forKey: @"appStoreQuery"];
   }
   if (__appName_isset)
   {
@@ -95,10 +88,6 @@
   if (__appDescription_isset)
   {
     [encoder encodeObject: __appDescription forKey: @"appDescription"];
-  }
-  if (__appStoreQuery_isset)
-  {
-    [encoder encodeObject: __appStoreQuery forKey: @"appStoreQuery"];
   }
   if (__appOpenURLPattern_isset)
   {
@@ -112,29 +101,33 @@
 
 - (void) dealloc
 {
+  [__appStoreQuery release_stub];
   [__appName release_stub];
   [__appDescription release_stub];
-  [__appStoreQuery release_stub];
   [__appOpenURLPattern release_stub];
   [__appLogoURL release_stub];
   [super dealloc_stub];
 }
 
-- (int32_t) appId {
-  return __appId;
+- (NSString *) appStoreQuery {
+  return [[__appStoreQuery retain_stub] autorelease_stub];
 }
 
-- (void) setAppId: (int32_t) appId {
-  __appId = appId;
-  __appId_isset = YES;
+- (void) setAppStoreQuery: (NSString *) appStoreQuery {
+  [appStoreQuery retain_stub];
+  [__appStoreQuery release_stub];
+  __appStoreQuery = appStoreQuery;
+  __appStoreQuery_isset = YES;
 }
 
-- (BOOL) appIdIsSet {
-  return __appId_isset;
+- (BOOL) appStoreQueryIsSet {
+  return __appStoreQuery_isset;
 }
 
-- (void) unsetAppId {
-  __appId_isset = NO;
+- (void) unsetAppStoreQuery {
+  [__appStoreQuery release_stub];
+  __appStoreQuery = nil;
+  __appStoreQuery_isset = NO;
 }
 
 - (NSString *) appName {
@@ -177,27 +170,6 @@
   [__appDescription release_stub];
   __appDescription = nil;
   __appDescription_isset = NO;
-}
-
-- (NSString *) appStoreQuery {
-  return [[__appStoreQuery retain_stub] autorelease_stub];
-}
-
-- (void) setAppStoreQuery: (NSString *) appStoreQuery {
-  [appStoreQuery retain_stub];
-  [__appStoreQuery release_stub];
-  __appStoreQuery = appStoreQuery;
-  __appStoreQuery_isset = YES;
-}
-
-- (BOOL) appStoreQueryIsSet {
-  return __appStoreQuery_isset;
-}
-
-- (void) unsetAppStoreQuery {
-  [__appStoreQuery release_stub];
-  __appStoreQuery = nil;
-  __appStoreQuery_isset = NO;
 }
 
 - (NSString *) appOpenURLPattern {
@@ -258,9 +230,9 @@
     switch (fieldID)
     {
       case 1:
-        if (fieldType == TType_I32) {
-          int32_t fieldValue = [inProtocol readI32];
-          [self setAppId: fieldValue];
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setAppStoreQuery: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
@@ -284,20 +256,12 @@
       case 4:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
-          [self setAppStoreQuery: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 5:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
           [self setAppOpenURLPattern: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 6:
+      case 5:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setAppLogoURL: fieldValue];
@@ -316,10 +280,12 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"RecommendedApp"];
-  if (__appId_isset) {
-    [outProtocol writeFieldBeginWithName: @"appId" type: TType_I32 fieldID: 1];
-    [outProtocol writeI32: __appId];
-    [outProtocol writeFieldEnd];
+  if (__appStoreQuery_isset) {
+    if (__appStoreQuery != nil) {
+      [outProtocol writeFieldBeginWithName: @"appStoreQuery" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __appStoreQuery];
+      [outProtocol writeFieldEnd];
+    }
   }
   if (__appName_isset) {
     if (__appName != nil) {
@@ -335,23 +301,16 @@
       [outProtocol writeFieldEnd];
     }
   }
-  if (__appStoreQuery_isset) {
-    if (__appStoreQuery != nil) {
-      [outProtocol writeFieldBeginWithName: @"appStoreQuery" type: TType_STRING fieldID: 4];
-      [outProtocol writeString: __appStoreQuery];
-      [outProtocol writeFieldEnd];
-    }
-  }
   if (__appOpenURLPattern_isset) {
     if (__appOpenURLPattern != nil) {
-      [outProtocol writeFieldBeginWithName: @"appOpenURLPattern" type: TType_STRING fieldID: 5];
+      [outProtocol writeFieldBeginWithName: @"appOpenURLPattern" type: TType_STRING fieldID: 4];
       [outProtocol writeString: __appOpenURLPattern];
       [outProtocol writeFieldEnd];
     }
   }
   if (__appLogoURL_isset) {
     if (__appLogoURL != nil) {
-      [outProtocol writeFieldBeginWithName: @"appLogoURL" type: TType_STRING fieldID: 6];
+      [outProtocol writeFieldBeginWithName: @"appLogoURL" type: TType_STRING fieldID: 5];
       [outProtocol writeString: __appLogoURL];
       [outProtocol writeFieldEnd];
     }
@@ -366,14 +325,12 @@
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"RecommendedApp("];
-  [ms appendString: @"appId:"];
-  [ms appendFormat: @"%i", __appId];
+  [ms appendString: @"appStoreQuery:"];
+  [ms appendFormat: @"\"%@\"", __appStoreQuery];
   [ms appendString: @",appName:"];
   [ms appendFormat: @"\"%@\"", __appName];
   [ms appendString: @",appDescription:"];
   [ms appendFormat: @"\"%@\"", __appDescription];
-  [ms appendString: @",appStoreQuery:"];
-  [ms appendFormat: @"\"%@\"", __appStoreQuery];
   [ms appendString: @",appOpenURLPattern:"];
   [ms appendFormat: @"\"%@\"", __appOpenURLPattern];
   [ms appendString: @",appLogoURL:"];
