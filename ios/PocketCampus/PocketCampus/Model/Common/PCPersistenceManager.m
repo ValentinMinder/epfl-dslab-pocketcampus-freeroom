@@ -107,7 +107,7 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
 + (void)migrateDataOnceToSharedAppGroupPersistence {
     static NSString* const kDefaultsMigrationDoneBoolKey = @"PCPersistenceManagerDefaultsMigrationToAppGroupPersistenceDoneBool";
     static NSString* const kBundleIdentifierMigrationDoneBoolKey = @"PCPersistenceManagerBundleIdentifierMigrationToAppGroupPersistenceDoneBool";
-#ifndef TARGET_IS_EXTENSION
+#ifdef TARGET_IS_MAIN_APP
     // Ok, not in extension, so let's migrate containing (main) app standardDefaults
     // to share defaults. TARGET_IS_EXENSION is defined in preprocessor macros of the extensions targets.
     // http://stackoverflow.com/a/25048440/1423774
@@ -134,7 +134,7 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
         }
         
         if (![defaults boolForKey:kBundleIdentifierMigrationDoneBoolKey]) {
-            NSString* oldBundleIdentifierPath = [self oldBundleIdentifierPersistencePath];
+            NSString* oldBundleIdentifierPath = [self classicBundleIdentifierPersistencePath];
             NSString* newBundleIdentifierPath = [self appGroupBundleIdentifierPersistencePath];
             
             [self createComponentsForPath:oldBundleIdentifierPath];
@@ -196,6 +196,16 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
         path = [path stringByAppendingPathComponent:@"Application Support"];
         path = [path stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
         appSupportBundlePath = path;
+    });
+    return appSupportBundlePath;
+}
+
++ (NSString*)classicBundleIdentifierPersistencePath {
+    static NSString* appSupportBundlePath = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString* dir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+        appSupportBundlePath = [dir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
     });
     return appSupportBundlePath;
 }
@@ -365,16 +375,6 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
 }
 
 #pragma mark - Private
-
-+ (NSString*)oldBundleIdentifierPersistencePath {
-    static NSString* appSupportBundlePath = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSString* dir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-        appSupportBundlePath = [dir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-    });
-    return appSupportBundlePath;
-}
 
 + (void)checkPluginName:(NSString*)pluginName {
     if (![[MainController publicController] isPluginAnycaseIdentifierValid:pluginName]) {

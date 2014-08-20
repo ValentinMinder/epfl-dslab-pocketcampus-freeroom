@@ -81,6 +81,7 @@ static NSString* const kGetConfigAppVersionParameterName = @"app_version";
 
 static NSTimeInterval const kConfigRequestTimeoutIntervalSeconds = 3.0; //should not be too large, otherwsie slows app startup in case of bad connection
 
+static NSString* const kConfigFilename = @"Config.plist";
 static NSString* const kPersistedServerConfigFilename = @"ConfigFromServer.plist";
 
 static BOOL loaded = NO;
@@ -193,22 +194,46 @@ static BOOL loaded = NO;
 }
 
 + (void)registerDevDefaultsFromAppSupportIfExists {
-    NSString* pathAppSupportConfig = [PCPersistenceManager appGroupBundleIdentifierPersistencePath];
-    pathAppSupportConfig = [pathAppSupportConfig stringByAppendingPathComponent:@"Config.plist"];
+    
+    NSString* appGroupConfigPath = [PCPersistenceManager appGroupBundleIdentifierPersistencePath];
+    appGroupConfigPath = [appGroupConfigPath stringByAppendingPathComponent:kConfigFilename];
+    
+    NSString* classicConfigPath = [PCPersistenceManager classicBundleIdentifierPersistencePath];
+    classicConfigPath = [classicConfigPath stringByAppendingPathComponent:kConfigFilename];
     
     @try {
+        // Step 1: if main app, delete potentially previously copied dev config, so that
+        // if there is no new in app classic bundle identifier folder, we don't
+        // load an old one.
+#ifdef TARGET_IS_MAIN_APP
         NSFileManager* fileManager = [NSFileManager defaultManager];
-        if ([fileManager fileExistsAtPath:pathAppSupportConfig]) {
-            [[self _defaults] registerDefaults:[NSDictionary dictionaryWithContentsOfFile:pathAppSupportConfig]];
+        [fileManager removeItemAtPath:appGroupConfigPath error:nil];
+#endif
+        
+        // Step 2: if exists a dev config in classic bundle identifier folder,
+        // copy it to app group folder, so that other apps/exentsions from group can
+        // access it.
+        if ([fileManager fileExistsAtPath:classicConfigPath]) {
+            NSError* error = nil;
+            [fileManager copyItemAtPath:classicConfigPath toPath:appGroupConfigPath error:&error];
+            if (error) {
+                CLSNSLog(@"   !! ERROR: detected DEV config in classic bundle identifier folder, but could NOT copy to app group folder.");
+            }
+        }
+        
+        // Step 3: finally, if exists app group config, load this config
+        if ([fileManager fileExistsAtPath:appGroupConfigPath]) {
+            [[self _defaults] registerDefaults:[NSDictionary dictionaryWithContentsOfFile:appGroupConfigPath]];
             [[self _defaults] setBool:YES forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
-            CLSNSLog(@"   4. Detected and loaded overriding DEV config (%@)", pathAppSupportConfig);
+            CLSNSLog(@"   4. Detected and loaded overriding DEV config");
         } else {
             [[self _defaults] setBool:NO forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
         }
+        
     }
     @catch (NSException *exception) {
         [[self _defaults] setBool:NO forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
-        CLSNSLog(@"   !! ERROR: Detected but unable to parse overriding DEV config (%@)", pathAppSupportConfig);
+        CLSNSLog(@"   !! ERROR: Detected but unable to parse overriding DEV config (%@)", classicConfigPath);
     }
 }
 

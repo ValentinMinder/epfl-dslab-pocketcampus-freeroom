@@ -71,14 +71,26 @@
 #pragma mark - Complex objects persistence
 
 /**
- * @return path of PocketCampus group container.
- * @discussion WARNING: from plugins, you should typically not access complex object persistence
+ * @return path of PocketCampus group container. This path is accessible
+ * from all apps in the PocketCampus app group (including extensions).
+ * @discussion From plugins, you should typically not access complex object / file persistence
  * with this method, because they don't prevent key collisions between plugins.
  * Use PCPersistenceManager::saveObject:forKey:pluginName: ... instead
  * You can use this path if you ensure that your keys are totally unique container-wide,
  * or by using subfolders for example.
  */
 + (NSString*)appGroupBundleIdentifierPersistencePath;
+
+/**
+ * @return path for PocketCampus persistence. This path is accessible
+ * ONLY by the main PocketCampus app, not by any other app/extension in the group.
+ * @discussion From plugins, you should typically not access complex object / file persistence
+ * with this method, because they don't prevent key collisions between plugins.
+ * Use PCPersistenceManager::saveObject:forKey:pluginName: ... instead
+ * You can use this path if you ensure that your keys are totally unique container-wide,
+ * or by using subfolders for example.
+ */
++ (NSString*)classicBundleIdentifierPersistencePath;
 
 /**
  * Same as next with isCache = NO
@@ -118,7 +130,7 @@
 
 #pragma mark - Utils
 
-/*
+/**
  * Creates all the *intermediary* components required to store file at path.
  * WARNING: path must be a file (will not create folder if last element is a folder)
  */
