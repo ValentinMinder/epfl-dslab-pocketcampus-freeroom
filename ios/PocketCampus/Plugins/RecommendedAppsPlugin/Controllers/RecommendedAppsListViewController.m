@@ -35,6 +35,8 @@
 
 #import "RecommendedAppThumbView.h"
 
+#import "PCTableViewSectionHeader.h"
+
 @import StoreKit;
 
 @interface RecommendedAppsListViewController()<RecommendedAppsServiceDelegate, SKStoreProductViewControllerDelegate>
@@ -116,7 +118,7 @@
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RecommendedAppCategory* category = self.recommendedAppsResponse.categories[indexPath.row];
+    RecommendedAppCategory* category = self.recommendedAppsResponse.categories[indexPath.section];
     RecommendedAppTableViewCell* cell = nil;
     __weak __typeof(self) welf = self;
     if (!cell) {
@@ -145,9 +147,15 @@
     return self.recommendedAppsResponse.categories.count;
 }
 
-- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     RecommendedAppCategory* category = self.recommendedAppsResponse.categories[section];
-    return [category.categoryName uppercaseString];
+    NSString* title = [category.categoryName uppercaseString];
+    PCTableViewSectionHeader* header = [[PCTableViewSectionHeader alloc] initWithSectionTitle:title tableView:tableView showInfoButton:NO];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return [PCTableViewSectionHeader preferredHeightWithInfoButton:NO]; //we want all section headers to be same height
 }
 
 #pragma mark - SKStoreProductViewControllerDelegate
