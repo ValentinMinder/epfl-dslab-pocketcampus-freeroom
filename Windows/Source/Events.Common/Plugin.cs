@@ -2,7 +2,9 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using PocketCampus.Common;
 using PocketCampus.Events.Models;
 using PocketCampus.Events.Services;
@@ -23,6 +25,7 @@ namespace PocketCampus.Events
         private const string ViewItemQuery = "showEventItem";
         private const string EventIdParameter = "eventItemId";
 
+        private IPluginSettings _settings;
 
         /// <summary>
         /// Gets the plugin's ID.
@@ -45,8 +48,8 @@ namespace PocketCampus.Events
         /// </summary>
         public void Initialize( INavigationService navigationService )
         {
+            _settings = Container.Bind<IPluginSettings, PluginSettings>();
             Container.Bind<IEventsService, EventsService>();
-            Container.Bind<IPluginSettings, PluginSettings>();
         }
 
         /// <summary>
@@ -54,8 +57,7 @@ namespace PocketCampus.Events
         /// </summary>
         public void NavigateTo( INavigationService navigationService )
         {
-            var request = new ViewEventPoolRequest( EventPool.RootId );
-            navigationService.NavigateTo<EventPoolViewModel, ViewEventPoolRequest>( request );
+            navigationService.NavigateTo<EventPoolViewModel, long>( EventPool.RootId );
         }
 
         /// <summary>
@@ -67,28 +69,36 @@ namespace PocketCampus.Events
             {
                 case ViewPoolQuery:
                     string ticket = null;
-                    parameters.TryGetValue( UserTicketParameter, out ticket );
+                    if ( parameters.TryGetValue( UserTicketParameter, out ticket ) && !_settings.UserTickets.Contains( ticket ) )
+                    {
+                        // TODO once this is an observablecollection, make this simpler
+                        string[] newTickets = new string[_settings.UserTickets.Length + 1];
+                        Array.Copy( _settings.UserTickets, newTickets, _settings.UserTickets.Length );
+                        newTickets[_settings.UserTickets.Length] = ticket;
+                        _settings.UserTickets = newTickets;
+                    }
 
                     string favoriteIdString = null;
                     if ( parameters.TryGetValue( MarkAsFavoriteParameter, out favoriteIdString ) )
                     {
                         long favoriteId = long.Parse( favoriteIdString );
-                        var request = new ViewEventItemRequest( favoriteId, EventItemFavoriteOption.Requested, ticket );
+                        _settings.FavoriteItemIds.Add( favoriteId );
+
+                        var request = new ViewEventItemRequest( favoriteId, true );
                         // Ignore the pool, go to the item
                         navigationService.NavigateTo<EventItemViewModel, ViewEventItemRequest>( request );
                     }
                     else
                     {
                         long poolId = long.Parse( parameters[PoolIdParameter] );
-                        var request = new ViewEventPoolRequest( poolId, ticket );
-                        navigationService.NavigateTo<EventPoolViewModel, ViewEventPoolRequest>( request );
+                        navigationService.NavigateTo<EventPoolViewModel, long>( poolId );
                     }
                     break;
 
                 case ViewItemQuery:
                     {
                         long itemId = long.Parse( parameters[EventIdParameter] );
-                        var request = new ViewEventItemRequest( itemId, EventItemFavoriteOption.Forbidden );
+                        var request = new ViewEventItemRequest( itemId, false );
                         navigationService.NavigateTo<EventItemViewModel, ViewEventItemRequest>( request );
                         break;
                     }

@@ -78,8 +78,7 @@ namespace PocketCampus.Events.ViewModels
                 {
                     if ( pool.OverrideTargetUrl == null )
                     {
-                        var request = new ViewEventPoolRequest( pool.Id );
-                        _navigationService.NavigateTo<EventPoolViewModel, ViewEventPoolRequest>( request );
+                        _navigationService.NavigateTo<EventPoolViewModel, long>( pool.Id );
                     }
                     else
                     {
@@ -113,17 +112,7 @@ namespace PocketCampus.Events.ViewModels
             _settings = settings;
             _itemId = request.ItemId;
 
-            CanBeFavorite = request.FavoriteOption != EventItemFavoriteOption.Forbidden;
-
-            if ( request.FavoriteOption == EventItemFavoriteOption.Requested )
-            {
-                _settings.FavoriteItemIds.Add( request.ItemId );
-            }
-
-            if ( request.UserTicket != null )
-            {
-                _settings.UserTickets.Add( request.UserTicket );
-            }
+            CanBeFavorite = request.CanBeFavorite;
         }
 
 

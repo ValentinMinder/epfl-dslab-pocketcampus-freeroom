@@ -3,7 +3,6 @@
 // File author: Solal Pirelli
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -20,7 +19,7 @@ namespace PocketCampus.Events.ViewModels
     /// ViewModel for pool details.
     /// </summary>
     [LogId( "/events/pool" )]
-    public sealed class EventPoolViewModel : CachedDataViewModel<ViewEventPoolRequest, EventPoolResponse>
+    public sealed class EventPoolViewModel : CachedDataViewModel<long, EventPoolResponse>
     {
         private static readonly TimeSpan CacheDuration = TimeSpan.FromDays( 7 );
 
@@ -86,8 +85,7 @@ namespace PocketCampus.Events.ViewModels
             {
                 return this.GetCommand<EventItem>( item =>
                 {
-                    var option = Pool.DisableFavorites == true ? EventItemFavoriteOption.Forbidden : EventItemFavoriteOption.Optional;
-                    var request = new ViewEventItemRequest( item.Id, option );
+                    var request = new ViewEventItemRequest( item.Id, Pool.DisableFavorites == true );
                     _navigationService.NavigateTo<EventItemViewModel, ViewEventItemRequest>( request );
                 } );
             }
@@ -144,7 +142,7 @@ namespace PocketCampus.Events.ViewModels
         /// </summary>
         public EventPoolViewModel( IDataCache cache, INavigationService navigationService, IEventsService eventsService,
                                    IPluginSettings settings, IEmailPrompt emailPrompt, ICodeScanner codeScanner,
-                                   ViewEventPoolRequest request )
+                                   long poolId )
             : base( cache )
         {
             _navigationService = navigationService;
@@ -152,14 +150,9 @@ namespace PocketCampus.Events.ViewModels
             _settings = settings;
             _emailPrompt = emailPrompt;
             _codeScanner = codeScanner;
-            _poolId = request.PoolId;
+            _poolId = poolId;
 
             _previousSettings = Tuple.Create( (SearchPeriod) 0, false );
-
-            if ( request.UserTicket != null )
-            {
-                _settings.UserTickets.Add( request.UserTicket );
-            }
         }
 
 
@@ -172,11 +165,11 @@ namespace PocketCampus.Events.ViewModels
             {
                 if ( !_settings.ExcludedCategoriesByPool.ContainsKey( _poolId ) )
                 {
-                    _settings.ExcludedCategoriesByPool.Add( _poolId, new List<int>() );
+                    _settings.ExcludedCategoriesByPool.Add( _poolId, new int[0] );
                 }
                 if ( !_settings.ExcludedTagsByPool.ContainsKey( _poolId ) )
                 {
-                    _settings.ExcludedTagsByPool.Add( _poolId, new List<string>() );
+                    _settings.ExcludedTagsByPool.Add( _poolId, new string[0] );
                 }
 
                 var request = new EventPoolRequest

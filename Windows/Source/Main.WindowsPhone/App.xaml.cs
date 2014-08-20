@@ -16,6 +16,7 @@ using PocketCampus.Main.Resources;
 using PocketCampus.Main.Services;
 using PocketCampus.Main.ViewModels;
 using ThinMvvm;
+using ThinMvvm.Logging;
 using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Main
@@ -42,8 +43,10 @@ namespace PocketCampus.Main
         private const char ParametersSeparator = '&';
         private const char KeyValueDelimiter = '=';
 
-        private IWindowsPhoneNavigationService _navigationService;
-        private IWindowsPhonePlugin[] _plugins;
+        private readonly IWindowsPhoneNavigationService _navigationService;
+        private readonly IPluginLoader _pluginLoader;
+        private readonly Logger _logger;
+        private readonly IWindowsPhonePlugin[] _plugins;
 
         protected override string Language
         {
@@ -62,9 +65,9 @@ namespace PocketCampus.Main
         {
             InitializeComponent();
 
+            // Services
+            _navigationService = Container.Bind<IWindowsPhoneNavigationService, WindowsPhoneNavigationService>();
             Container.Bind<ISettingsStorage, WindowsPhoneSettingsStorage>();
-            Container.Bind<IWindowsPhoneNavigationService, WindowsPhoneNavigationService>();
-
             Container.Bind<IHttpClient, HttpClient>();
             Container.Bind<IBrowserService, BrowserService>();
             Container.Bind<IEmailService, EmailService>();
@@ -75,14 +78,32 @@ namespace PocketCampus.Main
             Container.Bind<IRatingService, RatingService>();
             Container.Bind<IDataCache, WindowsPhoneDataCache>();
             Container.Bind<ICredentialsStore, WindowsPhoneCredentialsStore>();
-            Container.Bind<IPluginLoader, PluginLoader>();
+            _pluginLoader = Container.Bind<IPluginLoader, PluginLoader>();
+            _logger = Container.Bind<Logger, GoogleAnalyticsLogger>();
 
-            Container.Bind<AppDependencies, CustomAppDependencies>();
+            // Common services
+            AppInitializer.BindImplementations();
+
+            // View-ViewModels bindings for Main
+            _navigationService.Bind<MainViewModel>( "/Views/MainView.xaml" );
+            _navigationService.Bind<AuthenticationViewModel>( "/Views/AuthenticationView.xaml" );
+            _navigationService.Bind<SettingsViewModel>( "/Views/SettingsView.xaml" );
+            _navigationService.Bind<AboutViewModel>( "/Views/AboutView.xaml" );
+
+            // URI mapping
+            LauncherEx.RegisterProtocol( PocketCampusProtocol, NavigateToCustomUri );
+
+            // Common part of plugin initialization
+            AppInitializer.InitializePlugins( _pluginLoader, _navigationService );
+
+            // WP-specific part of plugin initialization
+            _plugins = _pluginLoader.GetPlugins().Cast<IWindowsPhonePlugin>().ToArray();
+            foreach ( var plugin in _plugins )
+            {
+                plugin.Initialize( _navigationService );
+            }
 
             // Debug settings
-            DebugSettings.EnableFrameRateCounter = false;
-            DebugSettings.EnableRedrawRegions = false;
-            DebugSettings.EnableCacheVisualization = false;
             DebugSettings.UserIdleDetectionMode = IdleDetectionMode.Disabled;
 
             // Theme initialization
@@ -99,41 +120,16 @@ namespace PocketCampus.Main
             return new OrientationChangingFrame();
         }
 
-        protected override void Start( AppDependencies dependencies, AppArguments arguments )
+        protected override void Start( AppArguments arguments )
         {
-            var deps = (CustomAppDependencies) dependencies;
-            _navigationService = deps.NavigationService;
-
-            // URI mapping
-            LauncherEx.RegisterProtocol( PocketCampusProtocol, NavigateToCustomUri );
-
-            // ViewModels from Main
-            deps.NavigationService.Bind<MainViewModel>( "/Views/MainView.xaml" );
-            deps.NavigationService.Bind<AuthenticationViewModel>( "/Views/AuthenticationView.xaml" );
-            deps.NavigationService.Bind<SettingsViewModel>( "/Views/SettingsView.xaml" );
-            deps.NavigationService.Bind<AboutViewModel>( "/Views/AboutView.xaml" );
-
             // Logging
-            new GoogleAnalyticsLogger( deps.NavigationService ).Start();
-
-            // Common services
-            AppInitializer.BindImplementations();
-
-            // Common part of plugin initialization
-            AppInitializer.InitializePlugins( deps.PluginLoader, deps.NavigationService );
-
-            // WP-specific part of plugin initialization
-            _plugins = deps.PluginLoader.GetPlugins().Cast<IWindowsPhonePlugin>().ToArray();
-            foreach ( var plugin in _plugins )
-            {
-                plugin.Initialize( deps.NavigationService );
-            }
+            _logger.Start();
 
             // Go to a specific plugin if needed
             string id;
             if ( arguments.NavigationArguments.TryGetValue( TileService.PluginKey, out id ) )
             {
-                deps.NavigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest( id ) );
+                _navigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest( id ) );
                 return;
             }
 
@@ -146,7 +142,7 @@ namespace PocketCampus.Main
             }
 
             // Go to main
-            deps.NavigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest() );
+            _navigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest() );
         }
 
         /// <summary>

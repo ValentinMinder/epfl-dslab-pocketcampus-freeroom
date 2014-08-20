@@ -16,9 +16,9 @@ namespace PocketCampus.Events
         /// <summary>
         /// Gets or sets the stored user tickets.
         /// </summary>
-        public ObservableCollection<string> UserTickets
+        public string[] UserTickets
         {
-            get { return Get<ObservableCollection<string>>(); }
+            get { return Get<string[]>(); }
             set { Set( value ); }
         }
 
@@ -70,18 +70,18 @@ namespace PocketCampus.Events
         /// <summary>
         /// Gets or sets the excluded category IDs by pool.
         /// </summary>
-        public Dictionary<long, List<int>> ExcludedCategoriesByPool
+        public Dictionary<long, int[]> ExcludedCategoriesByPool
         {
-            get { return Get<Dictionary<long, List<int>>>(); }
+            get { return Get<Dictionary<long, int[]>>(); }
             set { Set( value ); }
         }
 
         /// <summary>
         /// Gets or sets the excluded tag IDs by pool.
         /// </summary>
-        public Dictionary<long, List<string>> ExcludedTagsByPool
+        public Dictionary<long, string[]> ExcludedTagsByPool
         {
-            get { return Get<Dictionary<long, List<string>>>(); }
+            get { return Get<Dictionary<long, string[]>>(); }
             set { Set( value ); }
         }
 
@@ -99,14 +99,14 @@ namespace PocketCampus.Events
         {
             return new SettingsDefaultValues
             {
-                { x => x.UserTickets, () => new ObservableCollection<string>() },
+                { x => x.UserTickets, () => new string[0] },
                 { x => x.SearchPeriod,() => SearchPeriod.OneMonth },
                 { x => x.SearchInPast, () => false },
                 { x => x.EventCategories, () => new Dictionary<int, string>() },
                 { x => x.EventTags, () => new Dictionary<string, string>() },
                 { x => x.FavoriteItemIds, () => new ObservableCollection<long>() },
-                { x => x.ExcludedCategoriesByPool, () => new Dictionary<long, List<int>>() },
-                { x => x.ExcludedTagsByPool, () => new Dictionary<long, List<string>>() }
+                { x => x.ExcludedCategoriesByPool, () => new Dictionary<long, int[]>() },
+                { x => x.ExcludedTagsByPool, () => new Dictionary<long, string[]>() }
             };
         }
     }

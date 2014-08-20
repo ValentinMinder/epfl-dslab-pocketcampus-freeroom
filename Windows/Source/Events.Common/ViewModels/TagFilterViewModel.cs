@@ -50,7 +50,7 @@ namespace PocketCampus.Events.ViewModels
         public override void OnNavigatedFrom()
         {
             var excluded = _settings.ExcludedTagsByPool;
-            excluded[_pool.Id] = Tags.Where( t => !t.Include ).Select( t => t.Id ).ToList();
+            excluded[_pool.Id] = Tags.Where( t => !t.Include ).Select( t => t.Id ).ToArray();
             _settings.ExcludedTagsByPool = excluded;
         }
     }

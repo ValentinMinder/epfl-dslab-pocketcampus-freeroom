@@ -26,14 +26,14 @@ namespace PocketCampus.Events.ViewModels.Design
 
         private sealed class DesignSettings : IPluginSettings
         {
-            public ObservableCollection<string> UserTickets { get; set; }
+            public string[] UserTickets { get; set; }
             public SearchPeriod SearchPeriod { get; set; }
             public bool SearchInPast { get; set; }
             public Dictionary<int, string> EventCategories { get; set; }
             public Dictionary<string, string> EventTags { get; set; }
             public ObservableCollection<long> FavoriteItemIds { get; set; }
-            public Dictionary<long, List<int>> ExcludedCategoriesByPool { get; set; }
-            public Dictionary<long, List<string>> ExcludedTagsByPool { get; set; }
+            public Dictionary<long, int[]> ExcludedCategoriesByPool { get; set; }
+            public Dictionary<long, string[]> ExcludedTagsByPool { get; set; }
 
             public event PropertyChangedEventHandler PropertyChanged;
             public void IgnoreWarning() { PropertyChanged( this, null ); }

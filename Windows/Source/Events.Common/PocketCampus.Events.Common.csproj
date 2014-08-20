@@ -35,7 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="EventItemFavoriteOption.cs" />
     <Compile Include="Filter.cs" />
     <Compile Include="EventItemGroup.cs" />
     <Compile Include="IPluginSettings.cs" />
@@ -57,7 +56,6 @@
     <Compile Include="Services\IEventsService.cs" />
     <Compile Include="Services\IEmailPrompt.cs" />
     <Compile Include="ViewEventItemRequest.cs" />
-    <Compile Include="ViewEventPoolRequest.cs" />
     <Compile Include="ViewModels\Design\DesignCategoryFilterViewModel.cs" />
     <Compile Include="ViewModels\Design\DesignEventItemViewModel.cs" />
     <Compile Include="ViewModels\Design\DesignEventPoolViewModel.cs" />
@@ -77,10 +75,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThinMvvm">
-      <HintPath>..\..\packages\ThinMvvm.0.9.9.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.0.9.10.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
     </Reference>
     <Reference Include="ThinMvvm.Logging">
-      <HintPath>..\..\packages\ThinMvvm.Logging.0.9.9.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.Logging.0.9.10.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
     </Reference>
     <Reference Include="ThriftSharp">
       <HintPath>..\..\packages\ThriftSharp.2.0.5\lib\portable-net45+wp8+win8+wpa81\ThriftSharp.dll</HintPath>

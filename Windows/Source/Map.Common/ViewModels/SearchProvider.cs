@@ -116,8 +116,8 @@ namespace PocketCampus.Map.ViewModels
         /// </summary>
         private static IEnumerable<char> NormalizeName( string name )
         {
-            return name.ToUpperInvariant()
-                       .Replace( IgnoredNamePrefix, "" )
+            return name.Replace( IgnoredNamePrefix, "" )
+                       .ToUpperInvariant()
                        .ToCharArray()
                        .Where( c => !char.IsWhiteSpace( c ) );
         }

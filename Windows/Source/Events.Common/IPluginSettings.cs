@@ -16,7 +16,9 @@ namespace PocketCampus.Events
         /// <summary>
         /// Gets or sets the stored user tickets.
         /// </summary>
-        ObservableCollection<string> UserTickets { get; set; }
+        // TODO once we stop using WP8's dumb serializer, make that an ObservableCollection, 
+        // currently it can't because the serialized form is the same as string[] which is already used...
+        string[] UserTickets { get; set; }
 
         /// <summary>
         /// Gets or sets the search period for events.
@@ -46,11 +48,11 @@ namespace PocketCampus.Events
         /// <summary>
         /// Gets or sets the excluded category IDs by pool.
         /// </summary>
-        Dictionary<long, List<int>> ExcludedCategoriesByPool { get; set; }
+        Dictionary<long, int[]> ExcludedCategoriesByPool { get; set; }
 
         /// <summary>
         /// Gets or sets the excluded tag IDs by pool.
         /// </summary>
-        Dictionary<long, List<string>> ExcludedTagsByPool { get; set; }
+        Dictionary<long, string[]> ExcludedTagsByPool { get; set; }
     }
 }
