@@ -25,13 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 28.02.12.
 
-
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 #import "ServiceRequest.h"
 
@@ -43,7 +39,7 @@
 
 @protocol ServiceProtocol <NSObject>
 
-/*
+/**
  * Conforming services must implement this method and implement a weak singleton.
  * i.e. only one instance can live a time, but it can be relased.
  * This can be done with a dispatch_once and a weak static instance pointer.
@@ -54,7 +50,7 @@
 @end
 
 
-/*
+/**
  * Abstract class
  * Plugin services should sublcass it and conform to ServiceProtocol
  */
@@ -64,24 +60,24 @@
 
 @property (nonatomic, readonly) NSString* thriftServiceClientClassName;
 
-/*
- * Full URL of service. Initialized automatically at init, using [PCConfig default].
+/**
+ * Full URL of service. Initialized automatically at init, using [PCConfig defaults].
  * For e.g. : https://pocketcampus.epfl.ch:4433/v3r1/news
  */
 @property (nonatomic, readonly) NSURL* serviceURL;
 
-/*
+/**
  * Queue on which ServiceRequest (NSOperation) are scheduled.
  * You can add to this queue any NSOperation related to the service.
  */
 @property (nonatomic, readonly) NSOperationQueue* operationQueue;
 
-/*
+/**
  * Pass nil thriftServiceClientClassName if your service does not talk to a thrift server
  */
 - (id)initWithServiceName:(NSString*)serviceName thriftServiceClientClassName:(NSString*)thriftServiceClientClassName;
 
-/*
+/**
  * Returns nil if thriftServiceClientClassName passed at init is invalid or nil
  */
 - (id)thriftServiceClientInstance;
@@ -98,7 +94,7 @@
  * @return a mutable URL request pointing to raw service
  * You can then add parameters to this request, corresponding
  * to the action you want to execute.
- * WARNING: you must NOT remove the request headers.
+ * @discussion WARNING: you must NOT remove the request headers.
  */
 - (NSMutableURLRequest*)pcProxiedRequest;
 
