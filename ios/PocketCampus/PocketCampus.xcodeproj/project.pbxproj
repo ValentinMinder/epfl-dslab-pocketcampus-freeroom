@@ -3314,8 +3314,8 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CODE_SIGN_ENTITLEMENTS = org.pocketcampus.dev.CamiproWidget.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "$(inherited)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "$(inherited)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -3335,7 +3335,8 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				METAL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "org.pocketcampus.dev.$(TARGET_NAME:rfc1034identifier)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "$(inherited)";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3353,8 +3354,8 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CODE_SIGN_ENTITLEMENTS = org.pocketcampus.dev.CamiproWidget.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "$(inherited)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "$(inherited)";
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3375,7 +3376,8 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				METAL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "org.pocketcampus.dev.$(TARGET_NAME:rfc1034identifier)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "$(inherited)";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3453,8 +3455,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "1688CD38-8163-49D3-8F84-B540EE4460AE";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1688CD38-8163-49D3-8F84-B540EE4460AE";
+				PROVISIONING_PROFILE = "c9d35200-9463-4149-8212-405bdb7bdf84";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "c9d35200-9463-4149-8212-405bdb7bdf84";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "Plugins/**";
 				VALIDATE_PRODUCT = YES;
@@ -3472,8 +3474,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CODE_SIGN_ENTITLEMENTS = PocketCampus/PocketCampus.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "$(inherited)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "$(inherited)";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
@@ -3486,8 +3488,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "$(inherited)";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
 				WRAPPER_EXTENSION = app;
@@ -3504,8 +3506,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CODE_SIGN_ENTITLEMENTS = PocketCampus/PocketCampus.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "$(inherited)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "$(inherited)";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
@@ -3518,8 +3520,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "$(inherited)";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
 				WRAPPER_EXTENSION = app;

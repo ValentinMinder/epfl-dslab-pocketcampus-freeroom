@@ -55,7 +55,9 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable>
+      <IDEBundleIdentifierRunnable>
+      </IDEBundleIdentifierRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3219EF4B14FCDE4900A271CD"
@@ -63,7 +65,7 @@
             BlueprintName = "PocketCampus"
             ReferencedContainer = "container:PocketCampus.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
