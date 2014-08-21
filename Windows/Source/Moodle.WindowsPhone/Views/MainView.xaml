@@ -48,6 +48,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -64,20 +65,23 @@
                        Style="{StaticResource AppTextTitleStyle}" />
         </Border>
         
+        <!-- Stale data indicator -->
+        <comControls:StaleDataIndicator Grid.Row="2" />
+        
         <!-- Courses -->
-        <ItemsControl Grid.Row="2"
+        <ItemsControl Grid.Row="3"
                       ItemsSource="{Binding Courses}"
                       ItemTemplate="{StaticResource CourseTemplate}" />
 
         <!-- "No courses" text -->
-        <Border Grid.Row="2"
+        <Border Grid.Row="3"
                 Visibility="{Binding Courses, Converter={StaticResource NoneToVisibility}}">
             <TextBlock Text="{Binding Resources.NoCourses, Source={StaticResource Strings}}"
                        Style="{StaticResource AppTextCenterStyle}" />
         </Border>
 
         <!-- Loading & error -->
-        <comControls:LoadingAndError Grid.Row="2" />
+        <comControls:LoadingAndError Grid.Row="3" />
     </Grid>
 
     <!-- App bar -->

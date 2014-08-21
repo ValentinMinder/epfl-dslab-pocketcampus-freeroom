@@ -135,15 +135,20 @@
             <DataTemplate x:Key="SectionTemplate">
                 <ScrollViewer>
                     <StackPanel>
-                        <comControls:HtmlTextBlock Html="{Binding Details}" />
+                        <comControls:StaleDataIndicator DataContext="{Binding DataContext, ElementName=LayoutRoot}" />
+                        
+                        <comControls:HtmlTextBlock Html="{Binding Details}"
+                                                   Margin="12,20,12,0" />
 
                         <ItemsControl ItemsSource="{Binding Resources}"
-                                      ItemTemplate="{StaticResource ResourceTemplate}" />
+                                      ItemTemplate="{StaticResource ResourceTemplate}"
+                                      Margin="12,0" />
                         
                         <TextBlock Text="{Binding Resources.NoFiles, Source={StaticResource Strings}}"
                                    Style="{StaticResource ResourceTextBlock}"
                                    Foreground="{StaticResource PhoneSubtleBrush}"
-                                   Visibility="{Binding Resources, Converter={StaticResource NoneToVisibility}}" />
+                                   Visibility="{Binding Resources, Converter={StaticResource NoneToVisibility}}"
+                                   Margin="12,0" />
                     </StackPanel>
                 </ScrollViewer>
             </DataTemplate>
@@ -169,7 +174,7 @@
     <Grid x:Name="LayoutRoot">
         <!-- Title & header background -->
         <Rectangle Fill="{StaticResource AppHeaderBackgroundBrush}"
-                   Height="115"
+                   Height="114"
                    VerticalAlignment="Top" />
 
         <!-- Sections pivot -->
@@ -178,7 +183,8 @@
                      SelectedItem="{Binding SelectedSection}"
                      ItemTemplate="{StaticResource SectionTemplate}"
                      HeaderTemplate="{StaticResource SectionHeaderTemplate}"
-                     Foreground="{StaticResource AppHeaderForegroundBrush}" />
+                     Foreground="{StaticResource AppHeaderForegroundBrush}"
+                     Padding="-12,-24,-12,0" />
 
         <!-- Loading & error -->
         <comControls:LoadingAndError Margin="0,65,0,0" />
