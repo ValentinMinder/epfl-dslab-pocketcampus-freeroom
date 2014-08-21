@@ -39,6 +39,75 @@ public class TransportFormatter {
 		if (mNiceNames.containsKey(stationName)) {
 			return mNiceNames.get(stationName);
 		}
+
+		if(stationName.contains("BUS"))
+			return "Bus";
+		
+		// Keeps only the type "Bus" and its number
+		if (stationName.contains("Bus")) {
+			int index = stationName.indexOf("Bus");
+			return "Bus " + stationName.substring(index + 3);
+		}
+
+		// Keeps only the type "Tram" and its nuber
+		if (stationName.contains("Tram")) {
+			int index = stationName.indexOf("Tram");
+			return "Tram " + stationName.substring(index + 3);
+		}
+
+		// Keeps only the type "RE"
+		if (stationName.contains("RE")) {
+			return "RE";
+		}
+
+		// Keeps only the type "IR"
+		if (stationName.contains("IR")) {
+			return "IR";
+		}
+
+		// Then gets rid of any other nuber which are only the id of the train
+		// or bus and that we don't need to display.
+		while (stationName.matches(".*(1).*")) {
+			String[] s = stationName.split("1");
+			stationName = s[0];
+		}
+		while (stationName.matches(".*(2).*")) {
+			String[] s = stationName.split("2");
+			stationName = s[0];
+		}
+		while (stationName.matches(".*(3).*")) {
+			String[] s = stationName.split("3");
+			stationName = s[0];
+		}
+		while (stationName.matches(".*(4).*")) {
+			String[] s = stationName.split("4");
+			stationName = s[0];
+		}
+		while (stationName.matches(".*(5).*")) {
+			String[] s = stationName.split("5");
+			stationName = s[0];
+		}
+		while (stationName.matches(".*(6).*")) {
+			String[] s = stationName.split("6");
+			stationName = s[0];
+		}
+		while (stationName.matches(".*(7).*")) {
+			String[] s = stationName.split("7");
+			stationName = s[0];
+		}
+		while (stationName.matches(".*(8).*")) {
+			String[] s = stationName.split("8");
+			stationName = s[0];
+		}
+		while (stationName.matches(".*(9).*")) {
+			String[] s = stationName.split("9");
+			stationName = s[0];
+		}
+
+		if (stationName.startsWith("I")) {
+			stationName = stationName.substring(1);
+		}
+
 		return stationName;
 	}
 
