@@ -130,10 +130,16 @@
     <comment>Must be empty</comment>
   </data>
   <data name="MainViewTitle" xml:space="preserve">
-    <value>MOODLE</value>
+    <value>courses</value>
   </data>
   <data name="NoCourses" xml:space="preserve">
-    <value>No files were found.</value>
+    <value>No courses were found.</value>
+  </data>
+  <data name="NoFiles" xml:space="preserve">
+    <value>No files.</value>
+  </data>
+  <data name="PagesHeader" xml:space="preserve">
+    <value>MOODLE</value>
   </data>
   <data name="PluginName" xml:space="preserve">
     <value>Moodle</value>

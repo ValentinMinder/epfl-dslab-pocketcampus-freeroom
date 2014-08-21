@@ -7,8 +7,8 @@ using System.Windows;
 using System.Windows.Data;
 using Microsoft.Phone.Controls;
 using PocketCampus.Common.Controls;
-using ThinMvvm;
 using PocketCampus.Transport.ViewModels;
+using ThinMvvm;
 
 namespace PocketCampus.Transport.Views
 {

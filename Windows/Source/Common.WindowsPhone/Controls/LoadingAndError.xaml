@@ -15,7 +15,7 @@
     <!-- Main grid -->
     <Grid>
         <!-- Loading message -->
-        <Grid Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}"
+        <Grid Visibility="{Binding DataStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=Loading}"
               Background="{StaticResource PhoneBackgroundBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -33,7 +33,7 @@
         </Grid>
 
         <!-- Error message -->
-        <Border Visibility="{Binding HasError, Converter={StaticResource BoolToVisibility}}"
+        <Border Visibility="{Binding DataStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=Error}"
                 Background="{StaticResource PhoneBackgroundBrush}">
             <!-- Text -->
             <TextBlock Text="{Binding Resources.Error, Source={StaticResource Strings}}"
@@ -41,7 +41,7 @@
         </Border>
 
         <!-- Network error message -->
-        <Border Visibility="{Binding HasNetworkError, Converter={StaticResource BoolToVisibility}}"
+        <Border Visibility="{Binding DataStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=NetworkError}"
                 Background="{StaticResource PhoneBackgroundBrush}">
             <!-- Text -->
             <TextBlock Text="{Binding Resources.NetworkError, Source={StaticResource Strings}}"

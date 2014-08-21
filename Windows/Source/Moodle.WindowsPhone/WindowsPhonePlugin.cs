@@ -38,6 +38,7 @@ namespace PocketCampus.Moodle
         public void Initialize( IWindowsPhoneNavigationService navigationService )
         {
             navigationService.Bind<MainViewModel>( "/PocketCampus.Moodle.WindowsPhone;component/Views/MainView.xaml" );
+            navigationService.Bind<CourseViewModel>( "/PocketCampus.Moodle.WindowsPhone;component/Views/CourseView.xaml" );
 
             Container.Bind<IMoodleDownloader, MoodleDownloader>();
             Container.Bind<IFileStorage, FileStorage>();

@@ -18,10 +18,12 @@ namespace PocketCampus.Moodle.Services
     /// </summary>
     public sealed class FileStorage : IFileStorage
     {
+        private const string NameExtensionSeparator = ".";
+
         /// <summary>
         /// Asynchronously stores the specified Moodle file with the specified content.
         /// </summary>
-        public async Task StoreFileAsync( CourseFile moodleFile, byte[] content )
+        public async Task StoreFileAsync( MoodleFile moodleFile, byte[] content )
         {
             var file = await GetFileAsync( moodleFile, true );
             using ( var stream = await file.OpenStreamForWriteAsync() )
@@ -33,7 +35,7 @@ namespace PocketCampus.Moodle.Services
         /// <summary>
         /// Asynchronously indicates whether the specified Moodle file is stored on the device.
         /// </summary>
-        public async Task<bool> IsStoredAsync( CourseFile moodleFile )
+        public async Task<bool> IsStoredAsync( MoodleFile moodleFile )
         {
             return await GetFileAsync( moodleFile, false ) != null;
         }
@@ -41,20 +43,23 @@ namespace PocketCampus.Moodle.Services
         /// <summary>
         /// Asynchronously opens the specified Moodle file.
         /// </summary>
-        public async Task OpenFileAsync( CourseFile moodleFile )
+        public async Task OpenFileAsync( MoodleFile moodleFile )
         {
             var file = await GetFileAsync( moodleFile, false );
             await Launcher.LaunchFileAsync( file );
         }
 
         /// <summary>
-        /// Gets a file. Optionally create it if it doesn't exist.
+        /// Gets a file. Optionally creates it if it doesn't exist.
         /// </summary>
-        private static async Task<StorageFile> GetFileAsync( CourseFile file, bool create )
+        private static async Task<StorageFile> GetFileAsync( MoodleFile file, bool create )
         {
             var folder = ApplicationData.Current.LocalFolder;
-            folder = await folder.CreateFolderAsync( FixName( file.Course.Name, Path.GetInvalidPathChars() ), CreationCollisionOption.OpenIfExists );
-            string fileName = FixName( file.Name, Path.GetInvalidFileNameChars() );
+            foreach ( string name in file.PathComponents )
+            {
+                folder = await folder.CreateFolderAsync( FixName( name, Path.GetInvalidPathChars() ), CreationCollisionOption.OpenIfExists );
+            }
+            string fileName = FixName( file.Name, Path.GetInvalidFileNameChars() ) + NameExtensionSeparator + file.Extension;
 
             // GetFileAsync throws an exception if the file doesn't exist
             // and there's no API to check for a file's existence

@@ -105,9 +105,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Camipro.Common\PocketCampus.Camipro.Common.csproj">
+    <ProjectReference Include="..\Camipro\PocketCampus.Camipro.csproj">
       <Project>{2AB0060F-5611-4AEB-9210-D8496CFC421D}</Project>
-      <Name>PocketCampus.Camipro.Common</Name>
+      <Name>PocketCampus.Camipro</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common.WindowsPhone\PocketCampus.Common.WindowsPhone.csproj">
       <Project>{DA337688-F11F-48A8-A1E6-AF0798C0651F}</Project>
@@ -137,13 +137,13 @@
       <HintPath>..\..\packages\BindableApplicationBar.1.1.0.0\lib\wp8\BindableApplicationBar.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
-    <Reference Include="ThinMvvm, Version=0.9.1.14986, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ThinMvvm, Version=0.9.11.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\ThinMvvm.0.9.1\lib\portable-net45+wp8+win8\ThinMvvm.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.0.9.11.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
     </Reference>
-    <Reference Include="ThinMvvm.WindowsPhone, Version=0.9.1.14987, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ThinMvvm.WindowsPhone, Version=0.9.11.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\ThinMvvm.WindowsPhone.0.9.1\lib\wp8\ThinMvvm.WindowsPhone.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.WindowsPhone.0.9.11.0\lib\wp80\ThinMvvm.WindowsPhone.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -162,4 +162,11 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
 </Project>
