@@ -142,7 +142,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kMoodleFavoritesMoodleResourcesUpdatedNotification object:self.moodleService];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -152,10 +151,10 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     [self.moodleService cancelDownloadOfMoodleResourceForDelegate:self];
     [self removeSplitViewControllerObserver];
     [self removeScrollViewContentSizeObserver];
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if (!self.isDisappearingBecauseOtherPushed) {
+        [self.webView loadHTMLString:@"" baseURL:nil]; //prevent major memory leak, see http://stackoverflow.com/a/16514274/1423774
     }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -169,6 +168,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
     return UIStatusBarAnimationSlide;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    [self.webView reload]; //should release a bit of memory
 }
 
 #pragma mark - Observers
@@ -301,7 +306,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         [self.docController dismissMenuAnimated:YES];
         self.docController = nil;
     } else {
-        [self trackAction:PCGAITrackerActionActionButtonPressed];
+        [self trackAction:PCGAITrackerActionActionButtonPressed contentInfo:self.moodleResource.iName];
         NSURL* resourceLocalURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleResource:self.moodleResource]];
         self.docController = [UIDocumentInteractionController interactionControllerWithURL:resourceLocalURL];
         self.docController.delegate = self;
@@ -311,10 +316,10 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)favoriteButtonPressed {
     if ([self.moodleService isFavoriteMoodleResource:self.moodleResource]) {
-        [self trackAction:PCGAITrackerActionUnmarkFavorite];
+        [self trackAction:PCGAITrackerActionUnmarkFavorite contentInfo:self.moodleResource.iName];
         [self.moodleService removeFavoriteMoodleResource:self.moodleResource];
     } else {
-        [self trackAction:PCGAITrackerActionMarkFavorite];
+        [self trackAction:PCGAITrackerActionMarkFavorite contentInfo:self.moodleResource.iName];
         [self.moodleService addFavoriteMoodleResource:self.moodleResource];;
     }
 }
@@ -438,7 +443,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) { //delete button, starts from the top, cancel button not included
-        [self trackAction:PCGAITrackerActionDelete];
+        [self trackAction:PCGAITrackerActionDelete contentInfo:self.moodleResource.iName];
         [self removeSplitViewControllerObserver];
         if (![self.moodleService deleteDownloadedMoodleResource:self.moodleResource]) {
             UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ImpossibleDeleteFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -504,7 +509,7 @@ static NSString* const kZoomScaleKey = @"ZoomScale";
 }
 
 - (void)restoreScrollViewSateIfExists {
-    if (![[PCPersistenceManager defaultsForPluginName:@"moodle"] boolForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey]) {
+    if (![[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey]) {
         return;
     }
     NSDictionary* resourceDic = [MoodleResource defaultsDictionaryForMoodleResource:self.moodleResource];
@@ -542,16 +547,12 @@ static NSString* const kZoomScaleKey = @"ZoomScale";
 
 - (void)dealloc
 {
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [self removeSplitViewControllerObserver];
     [self removeScrollViewContentSizeObserver];
     [self.hideNavbarTimer invalidate];
     [self.moodleService cancelOperationsForDelegate:self];
-    [self.webView stopLoading];
     self.webView.delegate = nil; //docs says so
     self.deleteActionSheet.delegate = nil;
     self.docController.delegate = nil;

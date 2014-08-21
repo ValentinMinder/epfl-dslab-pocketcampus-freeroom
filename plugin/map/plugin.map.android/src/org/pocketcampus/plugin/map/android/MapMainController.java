@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.map.android;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.map.android.req.LayerItemsRequest;
 import org.pocketcampus.plugin.map.android.req.LayerRequest;
 import org.pocketcampus.plugin.map.android.req.SearchRequest;

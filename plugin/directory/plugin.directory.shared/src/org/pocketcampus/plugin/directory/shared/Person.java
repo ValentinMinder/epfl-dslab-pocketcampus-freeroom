@@ -18,8 +18,6 @@ import java.util.Collections;
 import java.util.BitSet;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Person");
@@ -35,18 +33,22 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
   private static final org.apache.thrift.protocol.TField GASPAR_FIELD_DESC = new org.apache.thrift.protocol.TField("gaspar", org.apache.thrift.protocol.TType.STRING, (short)9);
   private static final org.apache.thrift.protocol.TField ORGANISATIONAL_UNITS_FIELD_DESC = new org.apache.thrift.protocol.TField("organisationalUnits", org.apache.thrift.protocol.TType.LIST, (short)10);
   private static final org.apache.thrift.protocol.TField PICTURE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("pictureUrl", org.apache.thrift.protocol.TType.STRING, (short)11);
+  private static final org.apache.thrift.protocol.TField ROLES_FIELD_DESC = new org.apache.thrift.protocol.TField("roles", org.apache.thrift.protocol.TType.MAP, (short)12);
+  private static final org.apache.thrift.protocol.TField HOMEPAGES_FIELD_DESC = new org.apache.thrift.protocol.TField("homepages", org.apache.thrift.protocol.TType.MAP, (short)13);
 
-  public String firstName; // required
-  public String lastName; // required
-  public String sciper; // required
-  public String email; // required
-  public String web; // required
-  public String privatePhoneNumber; // required
-  public String officePhoneNumber; // required
-  public String office; // required
-  public String gaspar; // required
-  public List<String> organisationalUnits; // required
-  public String pictureUrl; // required
+  private String firstName; // required
+  private String lastName; // required
+  private String sciper; // required
+  private String email; // required
+  private String web; // required
+  private String privatePhoneNumber; // required
+  private String officePhoneNumber; // required
+  private String office; // required
+  private String gaspar; // required
+  private List<String> organisationalUnits; // required
+  private String pictureUrl; // required
+  private Map<String,DirectoryPersonRole> roles; // required
+  private Map<String,String> homepages; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -60,7 +62,9 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     OFFICE((short)8, "office"),
     GASPAR((short)9, "gaspar"),
     ORGANISATIONAL_UNITS((short)10, "organisationalUnits"),
-    PICTURE_URL((short)11, "pictureUrl");
+    PICTURE_URL((short)11, "pictureUrl"),
+    ROLES((short)12, "roles"),
+    HOMEPAGES((short)13, "homepages");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -97,6 +101,10 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
           return ORGANISATIONAL_UNITS;
         case 11: // PICTURE_URL
           return PICTURE_URL;
+        case 12: // ROLES
+          return ROLES;
+        case 13: // HOMEPAGES
+          return HOMEPAGES;
         default:
           return null;
       }
@@ -164,6 +172,14 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     tmpMap.put(_Fields.PICTURE_URL, new org.apache.thrift.meta_data.FieldMetaData("pictureUrl", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.ROLES, new org.apache.thrift.meta_data.FieldMetaData("roles", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING), 
+            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, DirectoryPersonRole.class))));
+    tmpMap.put(_Fields.HOMEPAGES, new org.apache.thrift.meta_data.FieldMetaData("homepages", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING), 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Person.class, metaDataMap);
   }
@@ -223,6 +239,36 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     if (other.isSetPictureUrl()) {
       this.pictureUrl = other.pictureUrl;
     }
+    if (other.isSetRoles()) {
+      Map<String,DirectoryPersonRole> __this__roles = new HashMap<String,DirectoryPersonRole>();
+      for (Map.Entry<String, DirectoryPersonRole> other_element : other.roles.entrySet()) {
+
+        String other_element_key = other_element.getKey();
+        DirectoryPersonRole other_element_value = other_element.getValue();
+
+        String __this__roles_copy_key = other_element_key;
+
+        DirectoryPersonRole __this__roles_copy_value = new DirectoryPersonRole(other_element_value);
+
+        __this__roles.put(__this__roles_copy_key, __this__roles_copy_value);
+      }
+      this.roles = __this__roles;
+    }
+    if (other.isSetHomepages()) {
+      Map<String,String> __this__homepages = new HashMap<String,String>();
+      for (Map.Entry<String, String> other_element : other.homepages.entrySet()) {
+
+        String other_element_key = other_element.getKey();
+        String other_element_value = other_element.getValue();
+
+        String __this__homepages_copy_key = other_element_key;
+
+        String __this__homepages_copy_value = other_element_value;
+
+        __this__homepages.put(__this__homepages_copy_key, __this__homepages_copy_value);
+      }
+      this.homepages = __this__homepages;
+    }
   }
 
   public Person deepCopy() {
@@ -242,6 +288,8 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     this.gaspar = null;
     this.organisationalUnits = null;
     this.pictureUrl = null;
+    this.roles = null;
+    this.homepages = null;
   }
 
   public String getFirstName() {
@@ -523,6 +571,76 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     }
   }
 
+  public int getRolesSize() {
+    return (this.roles == null) ? 0 : this.roles.size();
+  }
+
+  public void putToRoles(String key, DirectoryPersonRole val) {
+    if (this.roles == null) {
+      this.roles = new HashMap<String,DirectoryPersonRole>();
+    }
+    this.roles.put(key, val);
+  }
+
+  public Map<String,DirectoryPersonRole> getRoles() {
+    return this.roles;
+  }
+
+  public Person setRoles(Map<String,DirectoryPersonRole> roles) {
+    this.roles = roles;
+    return this;
+  }
+
+  public void unsetRoles() {
+    this.roles = null;
+  }
+
+  /** Returns true if field roles is set (has been assigned a value) and false otherwise */
+  public boolean isSetRoles() {
+    return this.roles != null;
+  }
+
+  public void setRolesIsSet(boolean value) {
+    if (!value) {
+      this.roles = null;
+    }
+  }
+
+  public int getHomepagesSize() {
+    return (this.homepages == null) ? 0 : this.homepages.size();
+  }
+
+  public void putToHomepages(String key, String val) {
+    if (this.homepages == null) {
+      this.homepages = new HashMap<String,String>();
+    }
+    this.homepages.put(key, val);
+  }
+
+  public Map<String,String> getHomepages() {
+    return this.homepages;
+  }
+
+  public Person setHomepages(Map<String,String> homepages) {
+    this.homepages = homepages;
+    return this;
+  }
+
+  public void unsetHomepages() {
+    this.homepages = null;
+  }
+
+  /** Returns true if field homepages is set (has been assigned a value) and false otherwise */
+  public boolean isSetHomepages() {
+    return this.homepages != null;
+  }
+
+  public void setHomepagesIsSet(boolean value) {
+    if (!value) {
+      this.homepages = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case FIRST_NAME:
@@ -613,6 +731,22 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       }
       break;
 
+    case ROLES:
+      if (value == null) {
+        unsetRoles();
+      } else {
+        setRoles((Map<String,DirectoryPersonRole>)value);
+      }
+      break;
+
+    case HOMEPAGES:
+      if (value == null) {
+        unsetHomepages();
+      } else {
+        setHomepages((Map<String,String>)value);
+      }
+      break;
+
     }
   }
 
@@ -651,6 +785,12 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     case PICTURE_URL:
       return getPictureUrl();
 
+    case ROLES:
+      return getRoles();
+
+    case HOMEPAGES:
+      return getHomepages();
+
     }
     throw new IllegalStateException();
   }
@@ -684,6 +824,10 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       return isSetOrganisationalUnits();
     case PICTURE_URL:
       return isSetPictureUrl();
+    case ROLES:
+      return isSetRoles();
+    case HOMEPAGES:
+      return isSetHomepages();
     }
     throw new IllegalStateException();
   }
@@ -800,6 +944,24 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         return false;
     }
 
+    boolean this_present_roles = true && this.isSetRoles();
+    boolean that_present_roles = true && that.isSetRoles();
+    if (this_present_roles || that_present_roles) {
+      if (!(this_present_roles && that_present_roles))
+        return false;
+      if (!this.roles.equals(that.roles))
+        return false;
+    }
+
+    boolean this_present_homepages = true && this.isSetHomepages();
+    boolean that_present_homepages = true && that.isSetHomepages();
+    if (this_present_homepages || that_present_homepages) {
+      if (!(this_present_homepages && that_present_homepages))
+        return false;
+      if (!this.homepages.equals(that.homepages))
+        return false;
+    }
+
     return true;
   }
 
@@ -861,6 +1023,16 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     builder.append(present_pictureUrl);
     if (present_pictureUrl)
       builder.append(pictureUrl);
+
+    boolean present_roles = true && (isSetRoles());
+    builder.append(present_roles);
+    if (present_roles)
+      builder.append(roles);
+
+    boolean present_homepages = true && (isSetHomepages());
+    builder.append(present_homepages);
+    if (present_homepages)
+      builder.append(homepages);
 
     return builder.toHashCode();
   }
@@ -983,6 +1155,26 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetRoles()).compareTo(typedOther.isSetRoles());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetRoles()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.roles, typedOther.roles);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetHomepages()).compareTo(typedOther.isSetHomepages());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetHomepages()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.homepages, typedOther.homepages);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -1087,6 +1279,45 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 12: // ROLES
+          if (field.type == org.apache.thrift.protocol.TType.MAP) {
+            {
+              org.apache.thrift.protocol.TMap _map3 = iprot.readMapBegin();
+              this.roles = new HashMap<String,DirectoryPersonRole>(2*_map3.size);
+              for (int _i4 = 0; _i4 < _map3.size; ++_i4)
+              {
+                String _key5; // required
+                DirectoryPersonRole _val6; // required
+                _key5 = iprot.readString();
+                _val6 = new DirectoryPersonRole();
+                _val6.read(iprot);
+                this.roles.put(_key5, _val6);
+              }
+              iprot.readMapEnd();
+            }
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 13: // HOMEPAGES
+          if (field.type == org.apache.thrift.protocol.TType.MAP) {
+            {
+              org.apache.thrift.protocol.TMap _map7 = iprot.readMapBegin();
+              this.homepages = new HashMap<String,String>(2*_map7.size);
+              for (int _i8 = 0; _i8 < _map7.size; ++_i8)
+              {
+                String _key9; // required
+                String _val10; // required
+                _key9 = iprot.readString();
+                _val10 = iprot.readString();
+                this.homepages.put(_key9, _val10);
+              }
+              iprot.readMapEnd();
+            }
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -1164,9 +1395,9 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         oprot.writeFieldBegin(ORGANISATIONAL_UNITS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.organisationalUnits.size()));
-          for (String _iter3 : this.organisationalUnits)
+          for (String _iter11 : this.organisationalUnits)
           {
-            oprot.writeString(_iter3);
+            oprot.writeString(_iter11);
           }
           oprot.writeListEnd();
         }
@@ -1177,6 +1408,36 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       if (isSetPictureUrl()) {
         oprot.writeFieldBegin(PICTURE_URL_FIELD_DESC);
         oprot.writeString(this.pictureUrl);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.roles != null) {
+      if (isSetRoles()) {
+        oprot.writeFieldBegin(ROLES_FIELD_DESC);
+        {
+          oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRUCT, this.roles.size()));
+          for (Map.Entry<String, DirectoryPersonRole> _iter12 : this.roles.entrySet())
+          {
+            oprot.writeString(_iter12.getKey());
+            _iter12.getValue().write(oprot);
+          }
+          oprot.writeMapEnd();
+        }
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.homepages != null) {
+      if (isSetHomepages()) {
+        oprot.writeFieldBegin(HOMEPAGES_FIELD_DESC);
+        {
+          oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, this.homepages.size()));
+          for (Map.Entry<String, String> _iter13 : this.homepages.entrySet())
+          {
+            oprot.writeString(_iter13.getKey());
+            oprot.writeString(_iter13.getValue());
+          }
+          oprot.writeMapEnd();
+        }
         oprot.writeFieldEnd();
       }
     }
@@ -1289,6 +1550,26 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         sb.append("null");
       } else {
         sb.append(this.pictureUrl);
+      }
+      first = false;
+    }
+    if (isSetRoles()) {
+      if (!first) sb.append(", ");
+      sb.append("roles:");
+      if (this.roles == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.roles);
+      }
+      first = false;
+    }
+    if (isSetHomepages()) {
+      if (!first) sb.append(", ");
+      sb.append("homepages:");
+      if (this.homepages == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.homepages);
       }
       first = false;
     }

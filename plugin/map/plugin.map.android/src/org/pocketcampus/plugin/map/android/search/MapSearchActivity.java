@@ -2,17 +2,16 @@ package org.pocketcampus.plugin.map.android.search;
 
 import java.util.List;
 
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.map.R;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.map.android.MapMainController;
 import org.pocketcampus.plugin.map.android.MapMainView;
 import org.pocketcampus.plugin.map.android.MapModel;
 import org.pocketcampus.plugin.map.android.iface.IMapView;
 import org.pocketcampus.plugin.map.shared.MapItem;
 
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -34,8 +33,6 @@ import android.widget.ListView;
  * 
  */
 public class MapSearchActivity extends PluginView implements IMapView {
-	private ProgressDialog progressDialog_;
-
 	private MapMainController mController;
 	private MapModel mModel;
 
@@ -59,6 +56,8 @@ public class MapSearchActivity extends PluginView implements IMapView {
 
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mLayout.addView(inflater.inflate(R.layout.map_search_result, null));
+		
+		setActionBarTitle(getString(R.string.map_plugin_title));
 	}
 
 	/**
@@ -128,6 +127,7 @@ public class MapSearchActivity extends PluginView implements IMapView {
 	 *            a map element to be displayed.
 	 */
 	private void startMapActivity(MapItem mapItem) {
+		trackEvent("SelectResult", mapItem.getTitle());
 		Intent startMapActivity = new Intent(this, MapMainView.class);
 		startMapActivity.putExtra("MapElement", mapItem);
 		startMapActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -163,5 +163,10 @@ public class MapSearchActivity extends PluginView implements IMapView {
 
 	@Override
 	public void layerItemsUpdated() {
+	}
+	
+	@Override
+	protected String screenName() {
+		return "/map/searchResultsList";
 	}
 }

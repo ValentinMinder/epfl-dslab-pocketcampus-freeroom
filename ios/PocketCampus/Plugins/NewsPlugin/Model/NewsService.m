@@ -69,71 +69,50 @@ static NewsService* instance __weak = nil;
 
 #pragma mark - Service methods
 
-- (void)getNewsItemsForLanguage:(NSString*)language delegate:(id)delegate {
-    if (![language isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad language" reason:@"language is either nil or not of class NSString" userInfo:nil];
-    }
+- (void)getAllFeedsForRequest:(NewsFeedsRequest*)request delegate:(id<NewsServiceDelegate>)delegate {
+    [PCUtils throwExceptionIfObject:request notKindOfClass:[NewsFeedsRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.keepInCache = YES;
     operation.skipCache = YES;
-    operation.serviceClientSelector = @selector(getNewsItems:);
-    operation.delegateDidReturnSelector = @selector(newsItemsForLanguage:didReturn:);
-    operation.delegateDidFailSelector = @selector(newsItemsFailedForLanguage:);
-    [operation addObjectArgument:language];
+    operation.keepInCache = YES;
+    operation.keepInCacheBlock = ^BOOL(void* returnedValue) {
+        NewsFeedsResponse* response = (__bridge id)returnedValue;
+        return (response.statusCode == NewsStatusCode_OK);
+    };
+    operation.serviceClientSelector = @selector(getAllFeeds:);
+    operation.delegateDidReturnSelector = @selector(getAllFeedsForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getAllFeedsFailedForRequest:);
+    [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
 }
 
-- (void)getNewsItemContentForId:(int64_t)newsItemId delegate:(id)delegate {
-    //cannot check int
+- (void)getFeedItemContentForRequest:(NewsFeedItemContentRequest*)request delegate:(id<NewsServiceDelegate>)delegate {
+    [PCUtils throwExceptionIfObject:request notKindOfClass:[NewsFeedItemContentRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
-    operation.cacheValidityInterval = 2419200; //seconds = 4 weeks. Could theoritically put more as News item is not likely to change
-    operation.serviceClientSelector = @selector(getNewsItemContent:);
-    operation.delegateDidReturnSelector = @selector(newsItemContentForId:didReturn:);
-    operation.delegateDidFailSelector = @selector(newsItemContentFailedForId:);
-    [operation addLongLongArgument:newsItemId];
+    operation.keepInCacheBlock = ^BOOL(void* returnedValue) {
+        NewsFeedItemContentResponse* response = (__bridge id)returnedValue;
+        return (response.statusCode == NewsStatusCode_OK);
+    };
+    operation.cacheValidityInterval = 2419200; //seconds = 4 weeks. Could theoritically put more as content is not likely to change
+    operation.serviceClientSelector = @selector(getFeedItemContent:);
+    operation.delegateDidReturnSelector = @selector(getFeedItemContentForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getFeedItemContentFailedForRequest:);
+    [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
 }
 
-- (void)getFeedUrlsForLanguage:(NSString*)language delegate:(id)delegate {
-    if (![language isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad language" reason:@"language is either nil or not of class NSString" userInfo:nil];
-    }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getFeedUrls:);
-    operation.delegateDidReturnSelector = @selector(feedUrlsForLanguage:didReturn:);
-    operation.delegateDidFailSelector = @selector(feedUrlsFailedForLanguage:);
-    [operation addObjectArgument:language];
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
 
-- (void)getFeedsForLanguage:(NSString*)language delegate:(id)delegate {
-    if (![language isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad language" reason:@"language is either nil or not of class NSString" userInfo:nil];
-    }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getFeeds:);
-    operation.delegateDidReturnSelector = @selector(feedsForLanguage:didReturn:);
-    operation.delegateDidFailSelector = @selector(feedsFailedForLanguage:);
-    [operation addObjectArgument:language];
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
+#pragma mark - Cached versions
 
-#pragma mark - Cached
-
-- (NSArray*)getFromCacheNewsItemsForLanguage:(NSString*)language {
-    if (![language isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad language" reason:@"language is either nil or not of class NSString" userInfo:nil];
-    }
+- (NSArray*)getFromCacheAllFeedsForRequest:(NewsFeedsRequest*)request {
+    [PCUtils throwExceptionIfObject:request notKindOfClass:[NewsFeedsRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
-    operation.serviceClientSelector = @selector(getNewsItems:);
-    operation.delegateDidReturnSelector = @selector(newsItemsForLanguage:didReturn:);
-    operation.delegateDidFailSelector = @selector(newsItemsFailedForLanguage:);
-    [operation addObjectArgument:language];
+    operation.serviceClientSelector = @selector(getAllFeeds:);
+    operation.delegateDidReturnSelector = @selector(getAllFeedsForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getAllFeedsFailedForRequest:);
+    [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
     return [operation cachedResponseObjectEvenIfStale:YES];
 }

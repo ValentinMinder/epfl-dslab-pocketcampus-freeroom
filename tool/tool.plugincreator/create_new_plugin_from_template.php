@@ -6,15 +6,25 @@
   It copies all the files from the blank's plugin directory
   and renames everything
   
-  You should specify $new_plugin
+  Usage: $0 [template=<Blank>] [target=<MyPlugin>]
+  (Replace the default values <...> by those useful to you)
   
   @Author: Amer C (amer.chamseddine@epfl.ch)
 */
 
 chdir(dirname(__FILE__));
 
-$template_plugin = "Blank";
-$new_plugin = "MyPlugin";
+// Parsing arguments
+$args_default = [
+  'template' => 'Blank',
+  'target' => 'MyPlugin'
+];
+// Puts CLI args into $args, with default values if necessary
+parse_str(implode('&', array_slice($argv, 1)), $args);
+$args = array_merge($args_default, $args);
+
+$template_plugin = $args['template'];
+$new_plugin = $args['target'];
 
 $deleted_dirs = array();
 $emptied_dirs = array();

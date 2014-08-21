@@ -1,28 +1,30 @@
 package org.pocketcampus.plugin.authentication.android;
 
 import java.net.URI;
+import java.util.Arrays;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.RedirectHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
+import org.pocketcampus.platform.android.core.AuthenticationListener;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.authentication.R;
-import org.pocketcampus.android.platform.sdk.core.GlobalContext;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel.LocalCredentials;
-import org.pocketcampus.plugin.authentication.android.AuthenticationModel.TokenCookieComplex;
+import org.pocketcampus.plugin.authentication.android.AuthenticationModel.TokenCredentialsComplex;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationController;
 import org.pocketcampus.plugin.authentication.android.req.AuthenticateTokenWithTequilaRequest;
+import org.pocketcampus.plugin.authentication.android.req.FetchUserAttributes;
 import org.pocketcampus.plugin.authentication.android.req.GetPcSessionRequest;
 import org.pocketcampus.plugin.authentication.android.req.GetPcTokenRequest;
 import org.pocketcampus.plugin.authentication.android.req.GetServiceDetailsRequest;
 import org.pocketcampus.plugin.authentication.android.req.LoginToTequilaRequest;
-import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface;
+import org.pocketcampus.plugin.authentication.shared.AuthSessionRequest;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Client;
+import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface;
+import org.pocketcampus.plugin.authentication.shared.UserAttributesRequest;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -82,16 +84,6 @@ import android.widget.Toast;
  */
 public class AuthenticationController extends PluginController implements IAuthenticationController {
 	
-	public static class Logouter extends BroadcastReceiver {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			Log.v("DEBUG", "AuthenticationController$Logouter logging out");
-			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.LOGOUT",
-					Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/logout"));
-			context.startService(authIntent);
-		}
-	};
-
 	/**
 	 * Some constants.
 	 */
@@ -126,23 +118,16 @@ public class AuthenticationController extends PluginController implements IAuthe
 	 */
 	private Iface mClient;
 
+	public Iface getThriftClient() {
+		return mClient;
+	}
+	
 	/**
 	 * HTTP Client used to communicate directly with servers.
 	 * Used to communicate with Tequila Server, ISA Server, etc.
 	 */
 	private DefaultHttpClient threadSafeClient = null;
 	
-	/**
-	 * Temporarily stores the credentials of the user
-	 * in order to authenticate them.
-	 */
-	//private LocalCredentials iLocalCredentials = new LocalCredentials();
-	
-	/**
-	 * Keeps track of the service that is requesting authentication.
-	 */
-	//private TypeOfService iTypeOfService;
-
 	/**
 	 * Builds the Controller.
 	 * Here we instantiate the Model.
@@ -168,15 +153,6 @@ public class AuthenticationController extends PluginController implements IAuthe
 	 */
 	@Override
 	public int onStartCommand(Intent aIntent, int flags, int startId) {
-		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
-			Log.v("DEBUG", "AuthenticationController::onStartCommand logout");
-			mModel.setSavedGasparPassword(null);
-			mModel.setGasparUsername(null);
-			mModel.setStorePassword(true);
-			((GlobalContext) getApplicationContext()).setPcSessionId(null, true);
-			stopSelf();
-			return START_NOT_STICKY;
-		}
 		
 		boolean argsOk = false;
 		// parse args
@@ -185,8 +161,8 @@ public class AuthenticationController extends PluginController implements IAuthe
 			if(intentUri != null && "pocketcampus".equals(intentUri.getScheme())) {
 				Bundle extras = aIntent.getExtras();
 				if(extras != null &&
-						extras.getString("callbackurl") != null &&
-						(extras.getString("tequilatoken") != null || extras.getBoolean("selfauth"))) {
+						( (extras.getString("callbackurl") != null && extras.getString("tequilatoken") != null) || 
+								extras.getBoolean("selfauth")) ) {
 					mModel.setCallbackUrl(extras.getString("callbackurl"));
 					mModel.setTequilaToken(extras.getString("tequilatoken"));
 					mModel.setSelfAuth(extras.getBoolean("selfauth"));
@@ -203,7 +179,19 @@ public class AuthenticationController extends PluginController implements IAuthe
 		if(mModel.getSelfAuth()) {
 			mModel.setTequilaToken(null);
 		}
-		
+
+		if(mModel.getSelfAuth() && mModel.getPcSessionId() != null)
+			checkSession();
+		else 
+			startAuth();
+		return START_NOT_STICKY;
+	}
+	
+	public void checkSession() {
+		new FetchUserAttributes(null).start(this, mClient, new UserAttributesRequest(mModel.getPcSessionId(), Arrays.asList("sciper")));
+	}
+	
+	public void startAuth() {
 		if(mModel.getSavedGasparPassword() != null) {
 			// use saved password
 			mModel.setTempGasparPassword(mModel.getSavedGasparPassword());
@@ -212,9 +200,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 			// ELSE open dialog to login
 			openDialog(null);
 		}
-		return START_NOT_STICKY;
 	}
-	
 	
 
 	/**
@@ -234,13 +220,18 @@ public class AuthenticationController extends PluginController implements IAuthe
 	}
 	
 	private void pingBack(String tequilaToken, String extra) {
-		if(mModel.getFromBrowser()) {
-			if(mModel.getCallbackUrl() != null) {
-				Intent intenteye = new Intent(Intent.ACTION_VIEW, Uri.parse(mModel.getCallbackUrl()));
-				intenteye.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				startActivity(intenteye);
-			}
-		} else {
+		if(mModel.getFromBrowser() && mModel.getCallbackUrl() != null) {
+			Intent intenteye = new Intent(Intent.ACTION_VIEW, Uri.parse(mModel.getCallbackUrl()));
+			intenteye.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			startActivity(intenteye);
+		} else if(mModel.getSelfAuth()) {
+			Intent intent = new Intent();
+			intent.setAction("org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED");
+			intent.putExtra(AuthenticationListener.PC_SESSION_ID_EXTRA, mModel.getPcSessionId());
+			if(extra != null)
+				intent.putExtra(extra, 1);
+			sendBroadcast(intent, "org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA"); 
+		} else if(mModel.getCallbackUrl() != null) {
 			Intent intenteye = new Intent("org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED", Uri.parse(mModel.getCallbackUrl()));
 			if(tequilaToken != null)
 				intenteye.putExtra("tequilatoken", tequilaToken); // success
@@ -250,140 +241,6 @@ public class AuthenticationController extends PluginController implements IAuthe
 		}
 		mModel.mListeners.shouldFinish();
 	}
-	
-	/**
-	 * Helper function that maps host to TypeOfService.
-	 * 
-	 * It reads the host part of the URL that Tequila
-	 * redirects to after successful authentication,
-	 * and maps it to the corresponding TypeOfService.
-	 * 
-	 * @param aData is the URL that Tequila redirected to.
-	 * @return the corresponding TypeOfService.
-	 */
-	/*public static TypeOfService mapHostToTypeOfService(Uri aData) {
-		if(aData == null)
-			return null;
-		String pcService = aData.getHost();
-		if(pcService == null)
-			return null;
-		if("login.pocketcampus.org".equals(pcService)) {
-			return TypeOfService.SERVICE_POCKETCAMPUS;
-		} else if("moodle.epfl.ch".equals(pcService)) {
-			return TypeOfService.SERVICE_MOODLE;
-		} else if("cmp2www.epfl.ch".equals(pcService)) {
-			return TypeOfService.SERVICE_CAMIPRO;
-		} else {
-			return null;
-		}
-	}*/
-	
-	/**
-	 * Helper function that maps QueryStringParameter to TypeOfService.
-	 * 
-	 * It reads the parameter "service" from the query string of the URI
-	 * of the Intent that was sent by a plugin requesting authentication,
-	 * and maps it to the corresponding TypeOfService.
-	 * 
-	 * @param aData is the URI of the Intent that we received.
-	 * @return the corresponding TypeOfService.
-	 */
-	/*public static TypeOfService mapQueryParameterToTypeOfService(Uri aData) {
-		if(aData == null)
-			return null;
-		String pcService = aData.getQueryParameter("service");
-		if(pcService == null)
-			return null;
-		if("moodle".equals(pcService)) {
-			return TypeOfService.SERVICE_MOODLE;
-		} else if("camipro".equals(pcService)) {
-			return TypeOfService.SERVICE_CAMIPRO;
-		} else if("isacademia".equals(pcService)) {
-			return TypeOfService.SERVICE_ISA;
-		} else {
-			return null;
-		}
-	}*/
-	
-	/**
-	 * Helper function that returns true if the current service is tequila enabled.
-	 */
-	/*public boolean isTequilaEnabledService() {
-		switch(iTypeOfService) {
-		case SERVICE_CAMIPRO:
-		case SERVICE_MOODLE:
-		case SERVICE_POCKETCAMPUS:
-			return true;
-		case SERVICE_ISA:
-			return false;
-		default:
-			throw new RuntimeException("isTequilaEnabledService: Unknown Service");
-		}
-	} */
-
-	/**
-	 * Sets the internal TypeOfService.
-	 */
-	/*public void nSetTypeOfService(TypeOfService tos) {
-		iTypeOfService = tos;
-	}*/
-
-	/**
-	 * Sets the internal LocalCredentials.
-	 */
-	/*public void nSetLocalCredentials(String user, String pass) {
-		iLocalCredentials.username = user;
-		iLocalCredentials.password = pass;
-	}*/
-	
-	/**
-	 * Gets the username from the LocalCredentials.
-	 * 
-	 * If the user types their password incorrectly,
-	 * they will not have to retype their username.
-	 * 
-	 * @return the user's username
-	 */
-	/*public String nGetLastUsername() {
-		return iLocalCredentials.username;
-	}*/
-
-	/**
-	 * Initiates a GetTequilaKeyForServiceRequest.
-	 */
-	/*public void nGetTequilaKey() {
-		new GetTequilaKeyForServiceRequest().start(this, mClient, iTypeOfService);
-	}*/
-	
-	/**
-	 * Initiates a LoginToTequilaRequest.
-	 */
-	
-	/**
-	 * Initiates a AuthenticateTokenWithTequilaRequest.
-	 */
-	
-	/**
-	 * Initiates a GetSessionIdForServiceRequest.
-	 */
-	/*public void nGetSessionId() {
-		new GetSessionIdForServiceRequest().start(this, mClient, mModel.getTequilaKey());
-	}*/
-	
-	/**
-	 * Initiates a GetSessionIdDirectlyFromProviderRequest.
-	 */
-	/*public void nGetSessionIdDirectlyFromProvider() {
-		TOSCredentialsComplex tc = new TOSCredentialsComplex();
-		tc.tos = iTypeOfService;
-		tc.credentials = iLocalCredentials;
-		new GetSessionIdDirectlyFromProviderRequest().start(this, threadSafeClient, tc);
-	}*/
-
-	/*public void logoutFinished() {
-		Log.v("DEBUG", "AuthenticationController::logoutFinished {Shutting down}");
-		stopSelf();
-	}*/
 	
 	private void checkServiceAuthorized() {
 		Log.v("DEBUG", "checkServiceAuthorized");
@@ -424,9 +281,10 @@ public class AuthenticationController extends PluginController implements IAuthe
 	}
 
 	public void authenticateToken() {
-		TokenCookieComplex tc = new TokenCookieComplex();
-		tc.cookie = mModel.getTequilaCookie();
+		TokenCredentialsComplex tc = new TokenCredentialsComplex();
 		tc.token = mModel.getTequilaToken();
+		tc.username = mModel.getGasparUsername();
+		tc.password = mModel.getTempGasparPassword();
 		new AuthenticateTokenWithTequilaRequest().start(this, threadSafeClient, tc);
 	}
 	
@@ -460,7 +318,10 @@ public class AuthenticationController extends PluginController implements IAuthe
 
 	public void fetchedServiceDetails() {
 		Log.v("DEBUG", "fetchedServiceDetails");
-		startActualLogin();
+		if(mModel.getNotFromEpfl())
+			openDialog("doshibboleth");
+		else
+			startActualLogin();
 	}
 	
 	public void tequilaLoginFinished(String tequilaCookie) {
@@ -475,20 +336,32 @@ public class AuthenticationController extends PluginController implements IAuthe
 	public void tokenAuthenticationFinished() {
 		Log.v("DEBUG", "tokenAuthenticationFinished");
 		if(mModel.getSelfAuth()) {
-			new GetPcSessionRequest().start(this, mClient, mModel.getTequilaToken());
+			AuthSessionRequest req = new AuthSessionRequest(mModel.getTequilaToken());
+			req.setRememberMe(mModel.getStorePassword());
+			new GetPcSessionRequest().start(this, mClient, req);
 		} else {
 			pingBack(mModel.getTequilaToken(), ( mModel.getStorePassword() ? null : "forcereauth" ));
 			stopSelf();
 		}
 	}
 	
-	public void pcAuthenticationFinished() {
+	public void pcAuthenticationFinished(String sessId) {
 		Log.v("DEBUG", "pcAuthenticationFinished");
+		mModel.setPcSessionId(sessId);
+		pingBack(null, "selfauthok");
+		stopSelf();
+	}
+	
+	public void sessionIsValid() {
 		pingBack(null, "selfauthok");
 		stopSelf();
 	}
 	
 	//// NACKS
+	
+	public void sessionIsInvalid() {
+		startAuth();
+	}
 	
 	public void notifyInvalidToken() {
 		Log.v("DEBUG", "notifyInvalidToken");
@@ -504,8 +377,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 	
 	public void notifyBadCredentials() {
 		Log.v("DEBUG", "notifyBadCredentials");
-		Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_invalid_credentials), Toast.LENGTH_SHORT).show();
-		openDialog(null);
+		openDialog("badcredentials");
 	}
 	
 }

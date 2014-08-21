@@ -1,6 +1,10 @@
 namespace java org.pocketcampus.plugin.directory.shared
-namespace csharp org.pocketcampus.plugin.directory.shared
 
+
+struct DirectoryPersonRole {
+	1: required string extendedLocalizedUnit;
+	2: required string localizedTitle;
+}
 
 struct Person {
 	1: required string firstName;
@@ -15,6 +19,8 @@ struct Person {
 	10: optional list<string> organisationalUnits;
 	11: optional string pictureUrl;
 	
+	12: optional map<string, DirectoryPersonRole> roles;
+	13: optional map<string, string> homepages;
 }
 
 exception LDAPException {
@@ -25,14 +31,9 @@ exception NoPictureFound{
 	1: string message;
 }
 
-struct DirectoryToken {
-	1: required string iTequilaKey;
-	2: optional string loginCookie;
-}
-
 struct DirectoryRequest {
 	1: required string query;
-	2: optional string directorySession;
+	4: optional string language;
 	3: optional binary resultSetCookie;
 }
 
@@ -47,7 +48,5 @@ service DirectoryService {
 	string getProfilePicture(1: string sciper) throws (1: NoPictureFound npf);
 	list<string> autocomplete(1:string constraint);
 	
-	DirectoryToken getTequilaTokenForDirectory();
-	string getDirectorySession(1: DirectoryToken dirToken);
 	DirectoryResponse searchDirectory(1: DirectoryRequest req);
 }

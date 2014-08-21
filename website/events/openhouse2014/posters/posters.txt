@@ -1,0 +1,73 @@
+117070001	swissnoise
+117070002	Pong Designer: Game Programming by Demonstration
+117070003	Computational Caustics
+117070004	Transactions Chasing Instruction Locality
+117070006	How Students' Learn using MOOCs: Insights from Eye-tracking
+117070007	Degrees of Freedom in Wireless Communication
+117070008	Displacement Convexity, A Useful Framework for the Study of Spatially Coupled Codes
+117070009	Acquiring Commonsense Knowledge for Sentiment Analysis using Human Computation
+117070010	Privacy-Enhancing Technologies for Disease Risk Tests Based on Genomic and Non-Genomic Data 
+117070011	Towards Privacy Compliance in the Management of Raw Genomic Data
+117070012	Defining the Operating Region of the ADN Communication Network
+117070013	Real-Time Control of Electrical Grids by Using Explicit Power Setpoints
+117070014	Impact of Storage on the Efficiency and Prices in Real-Time Electricity Markets
+117070015	Privacy and Utility in Location-Based Check-in Systems
+117070016	X-Stream: Edge-centric Graph Processing using Streaming Partitions
+117070017	Cyber-secure Communication Architecture for Active Power Distribution Networks
+117070018	Shadow And-Inverter Cones
+117070020	Mining Democray
+117070021	Multi-Round Computation of Type-Threshold Functions in Gaussian Networks
+117070022	Robust Query Processing with Smooth Operators
+117070023	Quantifying Kin Genomic Privacy
+117070024	Whole Genome Sequencing: Innovation Dream or Privacy Nightmare?
+117070026	Research topic in IIG
+117070027	Closing The Performance Gap between Causal Consistency and Eventual Consistency
+117070028	CloudSpaces: Privacy Regained
+117070029	CrowdSense: Crowdsourcing High-Resolution Air Quality Sensing
+117070030	MemorySense: Reconstructing and Ranking User Memories on Mobile Devices
+117070031	Scale-Out NUMA
+117070032	Clearing the Clouds: A Study of Emerging Scale-Out Workloads on Modern Hardware
+117070033	On the Effect of Co-location Information on User Privacy
+117070034	Scale-Out Processors
+117070035	SHIFT: Shared History Instruction Fetch
+117070036	Bulk Memory Page Access Prediction and Streaming
+117070037	Predictors of Life Satisfaction Based on Daily Activities from Mobile Sensor Data
+117070038	Compute-and-Forward with Channel State Information
+117070039	Sketching Combinational Circuits
+117070040	Digital Design and Fabrication
+117070042	Wear Unleveling: Improving NAND Flash Lifetime by Balancing Page Endurance
+117070043	Coordination of OSGi Bundles with BIP
+117070044	Web Credibility: Features Exploration and Credibility Prediction
+117070045	Meet the Walkers: Accelerating Index Traversals for In-Memory Databases
+117070046	INSYNTH: TYPE-DRIVEN INTERACTIVE SYNTHESIS OF CODE SNIPPET
+117070047	Towards Hybrid Power-line/Wireless Communications
+117070048	Sentiments and Opinions : We know what you mean !
+117070049	RaceMob: Crowdsourced Data Race Detection
+117070050	Achilles: Finding Trojan Message Vulnerabilities in Distributed Systems
+117070051	Chef: Prototyping Symbolic Execution Engines for Interpreted Languages
+117070052	S2E: Selective Symbolic Execution
+117070054	ABSTRACT BFT
+117070055	Obstruction degree: measuring concurrency in shared memory systems
+117070056	Everything You Always Wanted to Know About Synchronization but Were Afraid to Ask
+117070057	DORA: Scalable data-oriented transaction execution
+117070058	ATraPos: Adaptive Transaction Processing on Hardware Islands
+117070059	Truthful Elicitation of Private Signals
+117070060	Un peu, beaucoup, passionnément: How tangible does an interface need to be?
+117070061	NoDB: Efficient Query Processing on Raw Data Files
+117070062	PREDIcT: Predicting the Runtime of Iterative Analytics
+117070065	Sciencewise your research!
+117070066	Data-driven Neuroscience: Enabling Breakthroughs Via Innovative Data Management
+117070067	Dynamic Matching of Crowd Workers and Tasks
+117070069	GECN: Primary Voltage Control for Active Distribution Networks via Real-Time Demand-Response
+117070071	Automatic Failure Recovery for Software-Defined Networks
+117070072	Data Management Challenges in Brain Simulations
+117070074	EmotionWatch: Visualizing Fine-Grained Emotions In Event-Related Tweets
+117070075	Detecting Influential Reviews in Social Media
+117070076	Modeling of Reconfigurable Pipelines for QoS on Medical Ultrasonic Applications
+117070077	Die-Stacked DRAM Caches for Servers
+117070078	BugSifter: A Generalized Accelerator for Flexible Instruction-Grain Monitoring
+117070079	Scale-up Graph Processing in the Cloud: Challenges and Solutions
+117070081	Architectural Geometry
+117070082	Sharing Data and Work Across Concurrent Analytical Queries
+117070083	PocketCampus
+117070085	Diversity Analysis of Free-Space Optical Networks with Multihop Transmissions

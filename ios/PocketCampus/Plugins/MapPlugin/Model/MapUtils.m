@@ -101,6 +101,18 @@ double WGStoCHy(double lat, double lng) {
     return y;
 }
 
+/*
+ * http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
+ */
+
+double tilex2long(int x, int z) {
+	return x / pow(2.0, z) * 360.0 - 180;
+}
+
+double tiley2lat(int y, int z) {
+	double n = M_PI - 2.0 * M_PI * y / pow(2.0, z);
+	return 180.0 / M_PI * atan(0.5 * (exp(n) - exp(-n)));
+}
 
 @implementation MapUtils
 
@@ -421,6 +433,37 @@ double WGStoCHy(double lat, double lng) {
     bbox.end_y = WGStoCHy(bottomRightWGS.latitude, bottomRightWGS.longitude);
     return bbox;
     
+}
+
++ (CH1903BBox)tilePathToCH1903:(MKTileOverlayPath)tilePath tileSize:(CGSize)tileSize {
+    double lat = tiley2lat((int)tilePath.y, (int)tilePath.z);
+    double lon = tilex2long((int)tilePath.x, (int)tilePath.z);
+    
+    CLLocationDegrees latSpan = (360.0*cos(lat * M_PI / 180.0)) / (double)(pow(2,tilePath.z));
+    CLLocationDegrees lonSpan = (360.0*cos(lon * M_PI / 180.0)) / (double)(pow(2,tilePath.z));
+    
+    lat -= latSpan/2.0;
+    lon += lonSpan/2.0;
+    
+    MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(lat, lon), MKCoordinateSpanMake(latSpan, lonSpan));
+    
+    MKMapRect mapRect = MKMapRectForCoordinateRegion(region);
+    
+    return [self WGStoCH1903:mapRect];
+}
+
+MKMapRect MKMapRectForCoordinateRegion(MKCoordinateRegion region) {
+    MKMapPoint a = MKMapPointForCoordinate(CLLocationCoordinate2DMake(
+                                                                      region.center.latitude + region.span.latitudeDelta / 2,
+                                                                      region.center.longitude - region.span.longitudeDelta / 2));
+    MKMapPoint b = MKMapPointForCoordinate(CLLocationCoordinate2DMake(
+                                                                      region.center.latitude - region.span.latitudeDelta / 2,
+                                                                      region.center.longitude + region.span.longitudeDelta / 2));
+    return MKMapRectMake(MIN(a.x,b.x), MIN(a.y,b.y), ABS(a.x-b.x), ABS(a.y-b.y));
+}
+
+NSString* NSStringFromMKTileOverlayPath(MKTileOverlayPath path) {
+    return [NSString stringWithFormat:@"x:%ld, y:%ld, z:%ld, contentScaleFactor:%f", path.x, path.y, path.z, path.contentScaleFactor];
 }
 
 @end

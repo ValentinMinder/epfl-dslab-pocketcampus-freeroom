@@ -23,6 +23,7 @@ import java.util.Date;
 /**
  * @author Andreas Schildbach
  */
+@SuppressWarnings("serial")
 public final class Stop implements Serializable
 {
 	public final Location location;

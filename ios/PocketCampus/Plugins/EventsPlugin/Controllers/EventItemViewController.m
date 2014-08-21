@@ -174,10 +174,10 @@
 
 - (void)addRemoveFavoritesButtonPressed {
     if ([self.eventsService isEventItemIdFavorite:self.eventItem.eventId]) {
-        [self trackAction:PCGAITrackerActionUnmarkFavorite];
+        [self trackAction:PCGAITrackerActionUnmarkFavorite contentInfo:[NSString stringWithFormat:@"%lld-%@", self.eventId, self.eventItem.eventTitle]];
         [self.eventsService removeFavoriteEventItemId:self.eventItem.eventId];
     } else {
-        [self trackAction:PCGAITrackerActionMarkFavorite];
+        [self trackAction:PCGAITrackerActionMarkFavorite contentInfo:[NSString stringWithFormat:@"%lld-%@", self.eventId, self.eventItem.eventTitle]];
         [self.eventsService addFavoriteEventItemId:self.eventItem.eventId];
     }
     [self refreshFavoriteButton];

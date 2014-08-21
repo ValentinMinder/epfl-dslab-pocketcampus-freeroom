@@ -1,24 +1,22 @@
-
+# Eclipse
 /.metadata
-
-/html5/offline/log.log
-
-/ios/PocketCampus/AutomationScripts/Instruments Device.trace
-/ios/PocketCampus/AutomationScripts/Instruments Simulator.trace
-/ios/PocketCampus/AutomationScripts/*.trace
-/ios/PocketCampus/AutomationScripts/Credentials.js
-
-
-
-android/PocketCampus/*
-server/PocketCampusServer/*
 local.properties
-*~
 bin/
 gen/
 target/
 
+# Merged projects
+/android/PocketCampus
+/server/PocketCampusServer
+
+# OS X
 .DS_Store
+
+# iOS-specific stuff
+/ios/PocketCampus/AutomationScripts/Instruments Device.trace
+/ios/PocketCampus/AutomationScripts/Instruments Simulator.trace
+/ios/PocketCampus/AutomationScripts/*.trace
+/ios/PocketCampus/AutomationScripts/Credentials.js
 
 # Visual Studio
 *.suo
@@ -27,6 +25,7 @@ target/
 [Bb]in/
 TestResults/
 [Pp]ackages/
-# WP app
+
+# Windows Phone hidden files
 Windows/Source/Main.WindowsPhone/analytics.xml
 Windows/Source/Map.WindowsPhone/MapTokens.txt

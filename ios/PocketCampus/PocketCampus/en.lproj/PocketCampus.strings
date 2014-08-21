@@ -23,7 +23,9 @@
 "Clear" = "Clear";
 "MainMenu" = "Main menu";
 "EditMainMenu" = "Customize main menu";
+"RestoreDefaultMainMenu..." = "Default main menu...";
 "RestoreDefaultMainMenu" = "Default main menu";
+"RestoreDefaultMainMenuExplanation" = "All features will be reenabled and\ndefault order restored.";
 "Misc" = "Misc";
 "Usage" = "Usage";
 "Close" = "Close";
@@ -48,6 +50,8 @@
 "All" = "All";
 "Favorites" = "Favorites";
 "Attention" = "Attention";
+"OpenInSafari" = "Open in Safari";
+"SelectDate" = "Select a date";
 
 //Accessbility
 

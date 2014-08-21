@@ -1,8 +1,13 @@
 package org.pocketcampus.plugin.events.android;
 
-import static org.pocketcampus.android.platform.sdk.utils.SetUtils.*;
-import static org.pocketcampus.android.platform.sdk.utils.MapUtils.*;
-import static org.pocketcampus.android.platform.sdk.utils.DialogUtils.*;
+import static org.pocketcampus.platform.android.utils.DialogUtils.showInputDialog;
+import static org.pocketcampus.platform.android.utils.DialogUtils.showMultiChoiceDialog;
+import static org.pocketcampus.platform.android.utils.DialogUtils.showSingleChoiceDialog;
+import static org.pocketcampus.platform.android.utils.MapUtils.subMap;
+import static org.pocketcampus.platform.android.utils.SetUtils.difference;
+import static org.pocketcampus.platform.android.utils.SetUtils.intersect;
+import static org.pocketcampus.plugin.events.android.EventDetailView.EXTRAS_KEY_EVENTITEMID;
+import static org.pocketcampus.plugin.events.android.EventsController.getEventItemComp4sort;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,29 +19,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuated;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuator;
+import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
+import org.pocketcampus.platform.android.ui.layout.StandardLayout;
+import org.pocketcampus.platform.android.utils.DialogUtils.MultiChoiceHandler;
+import org.pocketcampus.platform.android.utils.DialogUtils.SingleChoiceHandler;
+import org.pocketcampus.platform.android.utils.DialogUtils.TextInputHandler;
+import org.pocketcampus.platform.android.utils.Preparated;
+import org.pocketcampus.platform.android.utils.Preparator;
+import org.pocketcampus.platform.android.utils.ScrollStateSaver;
 import org.pocketcampus.plugin.events.R;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuated;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuator;
-import org.pocketcampus.android.platform.sdk.ui.adapter.SeparatedListAdapter;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
-import org.pocketcampus.android.platform.sdk.utils.Preparated;
-import org.pocketcampus.android.platform.sdk.utils.Preparator;
-import org.pocketcampus.android.platform.sdk.utils.ScrollStateSaver;
 import org.pocketcampus.plugin.events.android.iface.IEventsView;
 import org.pocketcampus.plugin.events.shared.Constants;
 import org.pocketcampus.plugin.events.shared.EventItem;
 import org.pocketcampus.plugin.events.shared.EventPool;
-
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
-import com.markupartist.android.widget.ActionBar.Action;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -47,12 +47,15 @@ import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
-import static org.pocketcampus.plugin.events.android.EventDetailView.*;
-import static org.pocketcampus.plugin.events.android.EventsController.*;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.markupartist.android.widget.ActionBar.Action;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 /**
  * EventsMainView - Main view that shows list of Events.
@@ -74,6 +77,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	public static final String QUERYSTRING_KEY_TEMPLATEID = "templateId";
 	public static final String QUERYSTRING_KEY_MARKFAVORITE = "markFavorite";
 	public static final String MAP_KEY_EVENTITEMID = "EVENT_ITEM_ID";
+	public static final String MAP_KEY_EVENTITEMTITLE = "EVENT_ITEM_TITLE";
 	
 	private boolean displayingList;
 	
@@ -82,16 +86,6 @@ public class EventsMainView extends PluginView implements IEventsView {
 	private List<Long> eventsInRS = new LinkedList<Long>();
 	private Set<Integer> categsInRS = new HashSet<Integer>();
 	private Set<String> tagsInRS = new HashSet<String>();
-	
-	Action scanBarcodeAction = new Action() {
-		public void performAction(View view) {
-			IntentIntegrator integrator = new IntentIntegrator(EventsMainView.this);
-			integrator.initiateScan();
-		}
-		public int getDrawable() {
-			return R.drawable.events_camera;
-		}
-	};
 	
 	EventPool thisEventPool;
 	Map<String, List<EventItem>> eventsByTags;
@@ -117,6 +111,8 @@ public class EventsMainView extends PluginView implements IEventsView {
 		setContentView(R.layout.events_main);
 		mList = (ListView) findViewById(R.id.events_main_list);
 		displayingList = true;
+		
+		setActionBarTitle(getString(R.string.events_plugin_title));
 	}
 	
 
@@ -147,11 +143,13 @@ public class EventsMainView extends PluginView implements IEventsView {
 		if(!processedIntent)
 			mController.refreshEventPool(this, eventPoolId, fetchPast, false);
 		
-		//Tracker
-		if(eventPoolId == Constants.CONTAINER_EVENT_ID) Tracker.getInstance().trackPageView("events");
-		else Tracker.getInstance().trackPageView("events/" + eventPoolId + "/subevents");
 	}
 
+	@Override
+	protected String screenName() {
+		return "/events/pool";
+	}
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -164,7 +162,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if(displayingList)
+		if(displayingList && mList != null)
 			scrollState = new ScrollStateSaver(mList);
 	}
 	
@@ -184,13 +182,16 @@ public class EventsMainView extends PluginView implements IEventsView {
 			return;
 		if(aData.getQueryParameter(QUERYSTRING_KEY_TICKET) != null) {
 			System.out.println("Got also a token :-)");
-			mModel.addTicket(aData.getQueryParameter(QUERYSTRING_KEY_TICKET));
+			String ticket = aData.getQueryParameter(QUERYSTRING_KEY_TICKET);
+			trackEvent("UserTicketInURL", ticket);
+			mModel.addTicket(ticket);
 			mController.refreshEventPool(this, eventPoolId, fetchPast, false);
 			return;
 		}
 		if(aData.getQueryParameter(QUERYSTRING_KEY_MARKFAVORITE) != null) {
 			System.out.println("Should mark as favorite");
 			String fav = aData.getQueryParameter(QUERYSTRING_KEY_MARKFAVORITE);
+			trackEvent("MarkFavoriteInURL", fav);
 			mModel.markFavorite(Long.parseLong(fav), true);
 			Intent i = new Intent(EventsMainView.this, EventDetailView.class);
 			i.putExtra(EXTRAS_KEY_EVENTITEMID, fav);
@@ -258,7 +259,8 @@ public class EventsMainView extends PluginView implements IEventsView {
 			if(subMap.size() > 0) {
 				addActionToActionBar(new Action() {
 					public void performAction(View view) {
-						showMultiChoiceDialog(EventsMainView.this, subMap, "Filter by category", filteredCategs, new MultiChoiceHandler<Integer>() {
+						trackEvent("ShowCategories", null);
+						showMultiChoiceDialog(EventsMainView.this, subMap, getString(R.string.events_filter_by_categ), filteredCategs, new MultiChoiceHandler<Integer>() {
 							public void saveSelection(Integer t, boolean isChecked) {
 								if(isChecked)
 									filteredCategs.add(t);
@@ -279,7 +281,8 @@ public class EventsMainView extends PluginView implements IEventsView {
 			if(subMap.size() > 0) {
 				addActionToActionBar(new Action() {
 					public void performAction(View view) {
-						showMultiChoiceDialog(EventsMainView.this, subMap, "Filter by areas", filteredTags, new MultiChoiceHandler<String>() {
+						trackEvent("ShowTags", null);
+						showMultiChoiceDialog(EventsMainView.this, subMap, getString(R.string.events_filter_by_tags), filteredTags, new MultiChoiceHandler<String>() {
 							public void saveSelection(String t, boolean isChecked) {
 								if(isChecked)
 									filteredTags.add(t);
@@ -296,12 +299,22 @@ public class EventsMainView extends PluginView implements IEventsView {
 			}
 		}
 		if(thisEventPool.isEnableScan()) {
-			addActionToActionBar(scanBarcodeAction);
+			addActionToActionBar(new Action() {
+				public void performAction(View view) {
+					trackEvent("ShowCodeScanner", null);
+					IntentIntegrator integrator = new IntentIntegrator(EventsMainView.this);
+					integrator.initiateScan();
+				}
+				public int getDrawable() {
+					return R.drawable.events_camera;
+				}
+			});
 		}
 		if(thisEventPool.isSendStarredItems()) {
 			addActionToActionBar(new Action() {
 				public void performAction(View view) {
-					showInputDialog(EventsMainView.this, "Send by email", "Email address to send starred items", "OK", new TextInputHandler() {
+					trackEvent("RequestEmail", null);
+					showInputDialog(EventsMainView.this, getString(R.string.events_email_popup_title), getString(R.string.events_email_popup_body), getString(R.string.events_ok), new TextInputHandler() {
 						public void gotText(String s) {
 							mController.sendFavoritesByEmail(EventsMainView.this, eventPoolId, s);
 						}
@@ -342,7 +355,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 		}
 		
 		
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.event_list_header);
+		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.sdk_separated_list_header2);
 		List<Integer> categList = new ArrayList<Integer>(filteredCategs);
 		Collections.sort(categList);
 		for(int i : categList) {
@@ -367,8 +380,8 @@ public class EventsMainView extends PluginView implements IEventsView {
 							return e.getTimeSnippet();
 						if(!e.isSetStartDate())
 							return null;
-						String startTime = simpleTimeFormat.format(new Date(e.getStartDate()));
-						String startDay = simpleDateFormat.format(new Date(e.getStartDate()));
+						String startTime = EventsController.getTimeFormat(EventsMainView.this).format(new Date(e.getStartDate()));
+						String startDay = EventsController.getDateFormat(EventsMainView.this).format(new Date(e.getStartDate()));
 						if(e.isFullDay())
 							return startDay;
 						else
@@ -392,6 +405,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 				}
 				public void finalize(Map<String, Object> map, EventItem item) {
 					map.put(MAP_KEY_EVENTITEMID, item.getEventId() + "");
+					map.put(MAP_KEY_EVENTITEMTITLE, item.getEventTitle());
 				}
 			});
 			adapter.addSection(Constants.EVENTS_CATEGS.get(i), new LazyAdapter(this, p.getMap(), 
@@ -423,9 +437,12 @@ public class EventsMainView extends PluginView implements IEventsView {
 				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 					Object o = arg0.getItemAtPosition(arg2);
 					if(o instanceof Map<?, ?>) {
+						String eId = ((Map<?, ?>) o).get(MAP_KEY_EVENTITEMID).toString();
+						String eTitle = ((Map<?, ?>) o).get(MAP_KEY_EVENTITEMTITLE).toString();
 						Intent i = new Intent(EventsMainView.this, EventDetailView.class);
-						i.putExtra(EXTRAS_KEY_EVENTITEMID, ((Map<?, ?>) o).get(MAP_KEY_EVENTITEMID).toString());
+						i.putExtra(EXTRAS_KEY_EVENTITEMID, eId);
 						EventsMainView.this.startActivity(i);
+						trackEvent("ShowEventItem", eId + "-" + eTitle);
 					} else {
 						Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
 					}
@@ -510,6 +527,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 					showSingleChoiceDialog(EventsMainView.this, Constants.EVENTS_PERIODS, "Choose period", mModel.getPeriod(), new SingleChoiceHandler<Integer>() {
 						public void saveSelection(Integer t) {
 							mModel.setPeriod(t);
+							trackEvent("ChangePeriod", "" + t);
 							mController.refreshEventPool(EventsMainView.this, eventPoolId, fetchPast, false);
 						}
 					});
@@ -520,6 +538,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 			pastMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
 					fetchPast = !fetchPast;
+					trackEvent((fetchPast ? "SwitchToPastEvents" : "SwitchBackToUpcomingEvents"), null);
 					mController.refreshEventPool(EventsMainView.this, eventPoolId, fetchPast, false);
 					return true;
 				}

@@ -2,7 +2,7 @@ package org.pocketcampus.plugin.map.android.req;
 
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.io.Request;
+import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.map.android.MapMainController;
 import org.pocketcampus.plugin.map.android.MapModel;
 import org.pocketcampus.plugin.map.shared.MapItem;

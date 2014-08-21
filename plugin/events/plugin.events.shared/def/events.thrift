@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.events.shared
-namespace csharp org.pocketcampus.plugin.events.shared
 
 const i64 CONTAINER_EVENT_ID = -1;
 

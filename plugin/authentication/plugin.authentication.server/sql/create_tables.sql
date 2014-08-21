@@ -1,12 +1,25 @@
-
---
--- Table structure for table `pc_authentication`
---
-
-CREATE TABLE IF NOT EXISTS `pc_authentication` (
-  `plugin` varchar(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `userid` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `platform` varchar(8) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `pushtoken` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`plugin`,`userid`,`platform`,`pushtoken`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+CREATE TABLE `pocketcampus`.`authsessions` (
+	`sessionid` VARCHAR(50) NOT NULL, 
+	`expiry` BIGINT NOT NULL, 
+	`timeout` BIGINT NOT NULL, 
+	`clienthost` TEXT NULL, 
+	`office` TEXT NULL, 
+	`phone` TEXT NULL, 
+	`status` TEXT NULL, 
+	`firstname` TEXT NULL, 
+	`where` TEXT NULL, 
+	`requesthost` TEXT NULL, 
+	`version` TEXT NULL, 
+	`unit` TEXT NULL, 
+	`sciper` TEXT NULL, 
+	`title` TEXT NULL, 
+	`gaspar` TEXT NULL, 
+	`email` TEXT NULL, 
+	`category` TEXT NULL, 
+	`lastname` TEXT NULL, 
+	`authorig` TEXT NULL, 
+	`unixid` TEXT NULL, 
+	`groupid` TEXT NULL, 
+	`authstrength` TEXT NULL, 
+	PRIMARY KEY (`sessionid`)
+) ENGINE = MyISAM DEFAULT CHARSET=utf8;

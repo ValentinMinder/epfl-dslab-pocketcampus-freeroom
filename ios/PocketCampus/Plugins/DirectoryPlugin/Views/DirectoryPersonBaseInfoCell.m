@@ -27,6 +27,11 @@
 
 //  Created by Loïc Gardiol on 25.09.13.
 
+@import CoreText;
+@import QuartzCore;
+
+#import <TTTAttributedLabel/TTTAttributedLabel.h>
+
 #import "DirectoryPersonBaseInfoCell.h"
 
 #import "Person+Extras.h"
@@ -35,9 +40,9 @@
 
 #import "UIImageView+AFNetworking.h"
 
-#import <QuartzCore/QuartzCore.h>
+static CGFloat const kNormalWidthMinusLabelWidth = 114.0;
 
-@interface DirectoryPersonBaseInfoCell ()
+@interface DirectoryPersonBaseInfoCell ()<TTTAttributedLabelDelegate>
 
 @property (nonatomic, strong) DirectoryService* directoryService;
 
@@ -46,11 +51,13 @@
 @property (nonatomic, readwrite, strong) UIImage* profilePicture;
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* imageLoadingIndicator;
-@property (nonatomic, strong) IBOutlet UILabel* titleLabel;
+@property (nonatomic, strong) IBOutlet TTTAttributedLabel* titleLabel;
 
 @end
 
 @implementation DirectoryPersonBaseInfoCell
+
+#pragma mark - Init
 
 - (id)initWithDirectoryPersonBaseInfoCellStyle:(DirectoryPersonBaseInfoCellStyle)style reuseIdentifer:(NSString*)reuseIdentifier; {
     self = [[NSBundle mainBundle] loadNibNamed:@"DirectoryPersonBaseInfoCell" owner:self options:nil][0];
@@ -70,12 +77,31 @@
         self.backgroundView = backgroundView;
         self.backgroundColor = [UIColor clearColor];
         self.separatorInset = UIEdgeInsetsMake(0, 50, 0, 0);
+        self.titleLabel.delegate = self;
+        self.titleLabel.linkAttributes = @{NSForegroundColorAttributeName:[PCValues pocketCampusRed],  NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle)};
     }
     return self;
 }
 
-+ (CGFloat)heightForStyle:(DirectoryPersonBaseInfoCellStyle)style {
-    return 106.0;
+#pragma mark - UIView overrides
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    self.titleLabel.preferredMaxLayoutWidth = self.superview.frame.size.width - kNormalWidthMinusLabelWidth;
+}
+
+#pragma mark - Public
+
++ (CGFloat)preferredHeightForStyle:(DirectoryPersonBaseInfoCellStyle)style person:(Person*)person inTableView:(UITableView*)tableView {
+    [PCUtils throwExceptionIfObject:person notKindOfClass:[Person class]];
+    NSAttributedString* attrString = [self attributedStringForPerson:person];
+    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attrString);
+    CGSize targetSize = CGSizeMake(tableView.frame.size.width - kNormalWidthMinusLabelWidth, CGFLOAT_MAX); //account for text left and right insets of the text view
+    CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, [attrString length]), NULL, targetSize, NULL);
+    CFRelease(framesetter);
+    size.height += 20.0;
+    static CGFloat const kMinHeight = 106.0;
+    return size.height > kMinHeight ? size.height : kMinHeight;
 }
 
 - (void)setPerson:(Person *)person {
@@ -111,23 +137,84 @@
         [self noProfilePictureOrError];
     }
     
+    NSAttributedString* attrString = [self.class attributedStringForPerson:person];
     
-    NSString* firstLastName = self.person.fullFirstnameLastname;
-    NSString* organizations = self.person.organizationsString;
+    [self.titleLabel setText:nil afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+        return [attrString mutableCopy];
+    }];
+    [self.person.roles enumerateKeysAndObjectsUsingBlock:^(NSString* unit, DirectoryPersonRole* role, BOOL *stop) {
+        NSRange range = [attrString.string rangeOfString:role.extendedLocalizedUnit];
+        if (range.location == NSNotFound) {
+            return;
+        }
+        NSURL* url = [Person directoryWebpageURLForUnit:unit];
+        if (url) {
+            [self.titleLabel addLinkToURL:url withRange:range];
+        }
+    }];
+}
+
+#pragma mark - TTTAttributedLabelDelegate
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+    if (self.unitTappedBlock) {
+        self.unitTappedBlock(url);
+    }
+}
+
+#pragma mark - Private
+
++ (NSAttributedString*)attributedStringForPerson:(Person*)person {
+    
+    static NSCache* attrStringCache = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        attrStringCache = [NSCache new];
+    });
+    
+    NSString* cacheKey = person.sciper;
+    if (attrStringCache[cacheKey]) {
+        return attrStringCache[cacheKey];
+    }
+    
+    NSString* firstLastName = person.fullFirstnameLastname;
+    NSString* organizations = person.rolesString;
     NSString* finalString = [NSString stringWithFormat:@"%@\n%@", firstLastName, organizations];
     
     NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:finalString];
     
-    [attrString setAttributes:[NSDictionary dictionaryWithObject:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] forKey:NSFontAttributeName] range:[finalString rangeOfString:firstLastName]];
+    UIFont* headlineFont = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    UIFont* footnoteFont = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    UIFont* bolderFootnoteFont = [UIFont boldSystemFontOfSize:footnoteFont.pointSize];
     
-    [attrString setAttributes:[NSDictionary dictionaryWithObject:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] forKey:NSFontAttributeName] range:[finalString rangeOfString:organizations]];
+    [attrString setAttributes:@{NSFontAttributeName:headlineFont} range:[finalString rangeOfString:firstLastName]];
+    [attrString setAttributes:@{NSFontAttributeName:footnoteFont, NSForegroundColorAttributeName:[UIColor darkGrayColor]} range:[finalString rangeOfString:organizations]];
     
-    [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:[finalString rangeOfString:organizations]];
+    for (NSString* unit in person.organisationalUnits) {
+        DirectoryPersonRole* role = person.roles[unit];
+        NSRegularExpression* titleRegex = [NSRegularExpression regularExpressionWithPattern:role.localizedTitle options:0 error:nil];
+        [titleRegex enumerateMatchesInString:finalString options:0 range:NSMakeRange(0, finalString.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+            [attrString addAttribute:NSFontAttributeName value:bolderFootnoteFont range:result.range];
+        }];
+    }
     
-    self.titleLabel.attributedText = attrString;
+    [person.roles enumerateKeysAndObjectsUsingBlock:^(NSString* unit, DirectoryPersonRole* role, BOOL *stop) {
+        NSRange range = [attrString.string rangeOfString:role.extendedLocalizedUnit];
+        if (range.location == NSNotFound) {
+            return;
+        }
+        NSURL* url = [Person directoryWebpageURLForUnit:unit];
+        if (url) {
+            [attrString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range]; //TTTAttributedLabel does it automatically, but might influance final text size => returned attr string must reflect it
+        }
+    }];
+    
+    attrStringCache[cacheKey] = attrString;
+    
+    return attrString;
 }
 
-#pragma mark - ImageView stuff
+#pragma mark ImageView stuff
 
 - (void)noProfilePictureOrError {
     self.profilePictureImageView.layer.borderWidth = 1.0;

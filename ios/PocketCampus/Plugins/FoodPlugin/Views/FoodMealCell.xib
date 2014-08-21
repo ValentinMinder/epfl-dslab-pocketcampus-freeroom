@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5051" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -85,7 +85,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="happyButton" destination="Uff-ag-V1r" id="Hu0-Ga-ziA"/>
+                <outlet property="happyButton" destination="aYb-Ii-zrA" id="BiG-Wp-2P4"/>
                 <outlet property="horizontalLineHeightConstraint" destination="ped-h9-NTD" id="YTU-Gg-p2h"/>
                 <outlet property="infoContentView" destination="4NI-e9-UFL" id="7vY-Ii-a60"/>
                 <outlet property="infoContentViewLeftConstraint" destination="Lsz-5B-2Ih" id="wfj-JJ-inT"/>
@@ -97,7 +97,7 @@
                 <outlet property="pricesLabel" destination="wsD-q2-2Fb" id="Wnl-Yl-da7"/>
                 <outlet property="rateControlsView" destination="N0r-hK-E6s" id="vrd-pJ-nmM"/>
                 <outlet property="rateControlsViewTopLabel" destination="ibB-oa-Rpg" id="osz-aG-8Wv"/>
-                <outlet property="sadButton" destination="aYb-Ii-zrA" id="hTo-O1-auj"/>
+                <outlet property="sadButton" destination="Uff-ag-V1r" id="F2b-AQ-aqT"/>
                 <outlet property="satRateButton" destination="V5e-gG-xtp" id="EJ3-iF-cva"/>
                 <outlet property="textView" destination="vt7-Ga-tJo" id="88s-K8-4H9"/>
                 <outlet property="textViewBottomConstraint" destination="gWP-BJ-UKe" id="6UY-5C-wV1"/>
@@ -115,7 +115,7 @@
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aYb-Ii-zrA" userLabel="Sad Button">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aYb-Ii-zrA" userLabel="Happy button">
                     <rect key="frame" x="170" y="42" width="60" height="60"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
@@ -123,7 +123,7 @@
                         <constraint firstAttribute="width" constant="60" id="pZP-lr-z3o"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <state key="normal" image="FoodSmileySad.png">
+                    <state key="normal" image="FoodSmileyHappy.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -145,7 +145,7 @@
                         <action selector="smileyButtonTapped:" destination="BPJ-Vf-ZpH" eventType="touchUpInside" id="s3y-KX-PRR"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uff-ag-V1r" userLabel="Happy Button">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uff-ag-V1r" userLabel="Sad Button">
                     <rect key="frame" x="18" y="42" width="60" height="60"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
@@ -153,7 +153,7 @@
                         <constraint firstAttribute="width" constant="60" id="sIs-Ow-Mdw"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <state key="normal" image="FoodSmileyHappy.png">
+                    <state key="normal" image="FoodSmileySad.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>

@@ -29,5 +29,8 @@
      <string name="directory_results_found">results found</string>
 
      <string name="directory_loading">Loading...</string>
-   
+     
+     <string name="directory_ambiguous_query">Ambiguous query</string>
+     <string name="directory_popup_title">Contact details</string>
+     
 </resources>

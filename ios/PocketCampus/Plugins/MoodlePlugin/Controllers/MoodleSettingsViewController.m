@@ -56,7 +56,7 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
+        self.title = NSLocalizedStringFromTable(@"MoodleSettings", @"MoodlePlugin", nil);
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.gaiScreenName = @"/moodle/settings";
         self.tmpTotalNbResourcesSize = -2;
@@ -68,13 +68,17 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
+    if (![PCUtils isIdiomPad]) {
+        //in popover controller on iPad => no need for OK button
+        
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.tmpTotalNbResourcesSize = -2;
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kFilesSection] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadData];
     [self trackScreen];
 }
 
@@ -87,11 +91,11 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 #pragma mark - Properties
 
 - (BOOL)saveDocsPositionGeneralSetting {
-    return [[[PCPersistenceManager defaultsForPluginName:@"moodle"] objectForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey] boolValue];
+    return [[[PCPersistenceManager userDefaultsForPluginName:@"moodle"] objectForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey] boolValue];
 }
 
 - (void)setSaveDocsPositionGeneralSetting:(BOOL)saveDocsPositionGeneralSetting {
-    [[PCPersistenceManager defaultsForPluginName:@"moodle"] setObject:[NSNumber numberWithBool:saveDocsPositionGeneralSetting] forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
+    [[PCPersistenceManager userDefaultsForPluginName:@"moodle"] setObject:[NSNumber numberWithBool:saveDocsPositionGeneralSetting] forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
 }
 
 #pragma mark - UITableViewDelegate
@@ -124,7 +128,7 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
                     } else {
                         welf.tmpTotalNbResourcesSize = (long long)totalNbBytes;
                     }
-                    [welf.tableView reloadSections:[NSIndexSet indexSetWithIndex:kFilesSection] withRowAnimation:UITableViewRowAnimationNone];
+                    [welf.tableView reloadData];
                 }];
             }
             
@@ -233,7 +237,7 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
             [self trackAction:@"DeleteAllDownloadedDocuments"];
             [[MoodleService sharedInstanceToRetain] deleteAllDownloadedMoodleResources];
             self.tmpTotalNbResourcesSize = -2;
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kFilesSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView reloadData];
         }
         self.deleteAllDocsActionSheet = nil;
         [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];

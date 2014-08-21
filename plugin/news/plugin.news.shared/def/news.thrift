@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.news.shared
-namespace csharp org.pocketcampus.plugin.news.shared
 
 // OLD STUFF - DO NOT TOUCH
 struct NewsItem {
@@ -45,6 +44,8 @@ struct NewsFeed {
     1: required string name;
     // The feed items
     2: required list<NewsFeedItem> items;
+    // The feed's ID, which is language-independent (useful to store a list of feeds on a client)
+    3: required string feedId;
 }
 
 struct NewsFeedItemContent {

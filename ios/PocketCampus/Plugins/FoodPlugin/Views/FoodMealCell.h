@@ -25,16 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 01.11.13.
-
-
-
-#import <UIKit/UIKit.h>
 
 /*
  * Posted by self everytime rateModeEnabled goes from NO to YES

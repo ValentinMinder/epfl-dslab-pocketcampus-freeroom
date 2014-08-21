@@ -1,7 +1,11 @@
 package org.pocketcampus.plugin.authentication.server;
 
+import java.util.List;
+
+import ch.epfl.tequila.client.model.TequilaPrincipal;
+
 public interface SessionManager {
-	String insert(String gaspar, String sciper);
-	String getGaspar(String sessionId);
-	String getSciper(String sessionId);
+	String insert(TequilaPrincipal principal, boolean rememberMe);
+	List<String> getFields(String sessionId, List<String> fields);
+	Integer destroySessions(String sciper);
 }

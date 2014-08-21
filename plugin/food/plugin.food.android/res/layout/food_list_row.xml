@@ -10,7 +10,6 @@
 		android:layout_height="wrap_content"
 		android:padding="0dip"		
         android:layout_alignParentLeft="true"
-        android:background="@drawable/food_image_bg" 
 	    android:layout_marginRight="5dip">
         
 		<ImageView     

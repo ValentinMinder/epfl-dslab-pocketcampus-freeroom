@@ -117,19 +117,6 @@ static TransportService* instance __weak = nil;
     [self.operationQueue addOperation:operation];
 }
 
-- (void)getLocationsForIDs:(NSArray*)ids delegate:(id)delegate {
-    if (![ids isKindOfClass:[NSArray class]]) {
-        @throw [NSException exceptionWithName:@"bad ids" reason:@"ids is either nil or not of class NSArray" userInfo:nil];
-    }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getLocationsFromIDs:);
-    operation.delegateDidReturnSelector = @selector(locationsForIDs:didReturn:);
-    operation.delegateDidFailSelector = @selector(locationsFailedForIDs:);
-    [operation addObjectArgument:ids];
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
 - (void)getLocationsForNames:(NSArray*)names delegate:(id)delegate {
     if (![names isKindOfClass:[NSArray class]]) {
         @throw [NSException exceptionWithName:@"bad names" reason:@"names is either nil or not of class NSArray" userInfo:nil];
@@ -160,44 +147,6 @@ static TransportService* instance __weak = nil;
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
 }
-
-- (void)getTripsFrom:(NSString*)from to:(NSString*)to atTimestamp:(timestamp)time isDeparture:(BOOL)isDeparture delegate:(id)delegate {
-    //time and isDeperture not verifiable (primitives)
-    if (![from isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad 'from' argument" reason:@"'from' argument is either nil or not of class NSString" userInfo:nil];
-    }
-    if (![to isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad 'to' argument" reason:@"'to' argument is either nil or not of class NSString" userInfo:nil];
-    }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstanceWithCustomTimeoutInterval:40.0] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getTripsAtTime::::);
-    operation.delegateDidReturnSelector = @selector(tripsFrom:to:atTimestamp:isDeparture:didReturn:);
-    operation.delegateDidFailSelector = @selector(tripsFailedFrom:to:atTimestamp:isDeparture:);
-    [operation addObjectArgument:from];
-    [operation addObjectArgument:to];
-    [operation addLongLongArgument:time];
-    [operation addBoolArgument:isDeparture];
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
-- (void)getTripsFromStationID:(NSString*)fromStationID toStationID:(NSString*)toStationID delegate:(id)delegate {
-    if (![fromStationID isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad fromStationID" reason:@"fromStationID is either nil or not of class NSString" userInfo:nil];
-    }
-    if (![toStationID isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad toStationID" reason:@"toStationID is either nil or not of class NSString" userInfo:nil];
-    }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getTripsFromStationsIDs::);
-    operation.delegateDidReturnSelector = @selector(tripsFromStationID:toStationID:didReturn:);
-    operation.delegateDidFailSelector = @selector(tripsFailedFromStationID:toStationID:);
-    [operation addObjectArgument:fromStationID];
-    [operation addObjectArgument:toStationID];
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
 
 #pragma mark - Properties
 

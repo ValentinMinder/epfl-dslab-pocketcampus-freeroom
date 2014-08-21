@@ -113,13 +113,14 @@
 
 - (UIImage *)imageScaledToSize:(CGSize)size applyDeviceScreenMultiplyingFactor:(BOOL)applyFactor;
 {
-    if (applyFactor && [PCUtils isRetinaDevice]) {
-        size.width *= 2.0;
-        size.height *= 2.0;
+    if (applyFactor) {
+        CGFloat screenScale = [UIScreen mainScreen].scale;
+        size.width *= screenScale;
+        size.height *= screenScale;
     }
     
     //create drawing context
-    UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
+    UIGraphicsBeginImageContextWithOptions(size, NO, 1.0f);
     
     //draw
     [self drawInRect:CGRectMake(0.0f, 0.0f, size.width, size.height)];

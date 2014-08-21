@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,7 +22,7 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 
@@ -48,9 +48,170 @@
 }
 @end
 
+@implementation DirectoryPersonRole
+
+- (id) initWithExtendedLocalizedUnit: (NSString *) extendedLocalizedUnit localizedTitle: (NSString *) localizedTitle
+{
+  self = [super init];
+  __extendedLocalizedUnit = [extendedLocalizedUnit retain];
+  __extendedLocalizedUnit_isset = YES;
+  __localizedTitle = [localizedTitle retain];
+  __localizedTitle_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"extendedLocalizedUnit"])
+  {
+    __extendedLocalizedUnit = [[decoder decodeObjectForKey: @"extendedLocalizedUnit"] retain];
+    __extendedLocalizedUnit_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"localizedTitle"])
+  {
+    __localizedTitle = [[decoder decodeObjectForKey: @"localizedTitle"] retain];
+    __localizedTitle_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__extendedLocalizedUnit_isset)
+  {
+    [encoder encodeObject: __extendedLocalizedUnit forKey: @"extendedLocalizedUnit"];
+  }
+  if (__localizedTitle_isset)
+  {
+    [encoder encodeObject: __localizedTitle forKey: @"localizedTitle"];
+  }
+}
+
+- (void) dealloc
+{
+  [__extendedLocalizedUnit release];
+  [__localizedTitle release];
+  [super dealloc];
+}
+
+- (NSString *) extendedLocalizedUnit {
+  return [[__extendedLocalizedUnit retain] autorelease];
+}
+
+- (void) setExtendedLocalizedUnit: (NSString *) extendedLocalizedUnit {
+  [extendedLocalizedUnit retain];
+  [__extendedLocalizedUnit release];
+  __extendedLocalizedUnit = extendedLocalizedUnit;
+  __extendedLocalizedUnit_isset = YES;
+}
+
+- (BOOL) extendedLocalizedUnitIsSet {
+  return __extendedLocalizedUnit_isset;
+}
+
+- (void) unsetExtendedLocalizedUnit {
+  [__extendedLocalizedUnit release];
+  __extendedLocalizedUnit = nil;
+  __extendedLocalizedUnit_isset = NO;
+}
+
+- (NSString *) localizedTitle {
+  return [[__localizedTitle retain] autorelease];
+}
+
+- (void) setLocalizedTitle: (NSString *) localizedTitle {
+  [localizedTitle retain];
+  [__localizedTitle release];
+  __localizedTitle = localizedTitle;
+  __localizedTitle_isset = YES;
+}
+
+- (BOOL) localizedTitleIsSet {
+  return __localizedTitle_isset;
+}
+
+- (void) unsetLocalizedTitle {
+  [__localizedTitle release];
+  __localizedTitle = nil;
+  __localizedTitle_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setExtendedLocalizedUnit: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setLocalizedTitle: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"DirectoryPersonRole"];
+  if (__extendedLocalizedUnit_isset) {
+    if (__extendedLocalizedUnit != nil) {
+      [outProtocol writeFieldBeginWithName: @"extendedLocalizedUnit" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __extendedLocalizedUnit];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__localizedTitle_isset) {
+    if (__localizedTitle != nil) {
+      [outProtocol writeFieldBeginWithName: @"localizedTitle" type: TType_STRING fieldID: 2];
+      [outProtocol writeString: __localizedTitle];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"DirectoryPersonRole("];
+  [ms appendString: @"extendedLocalizedUnit:"];
+  [ms appendFormat: @"\"%@\"", __extendedLocalizedUnit];
+  [ms appendString: @",localizedTitle:"];
+  [ms appendFormat: @"\"%@\"", __localizedTitle];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @implementation Person
 
-- (id) initWithFirstName: (NSString *) firstName lastName: (NSString *) lastName sciper: (NSString *) sciper email: (NSString *) email web: (NSString *) web privatePhoneNumber: (NSString *) privatePhoneNumber officePhoneNumber: (NSString *) officePhoneNumber office: (NSString *) office gaspar: (NSString *) gaspar organisationalUnits: (NSArray *) organisationalUnits pictureUrl: (NSString *) pictureUrl
+- (id) initWithFirstName: (NSString *) firstName lastName: (NSString *) lastName sciper: (NSString *) sciper email: (NSString *) email web: (NSString *) web privatePhoneNumber: (NSString *) privatePhoneNumber officePhoneNumber: (NSString *) officePhoneNumber office: (NSString *) office gaspar: (NSString *) gaspar organisationalUnits: (NSArray *) organisationalUnits pictureUrl: (NSString *) pictureUrl roles: (NSDictionary *) roles homepages: (NSDictionary *) homepages
 {
   self = [super init];
   __firstName = [firstName retain];
@@ -75,6 +236,10 @@
   __organisationalUnits_isset = YES;
   __pictureUrl = [pictureUrl retain];
   __pictureUrl_isset = YES;
+  __roles = [roles retain];
+  __roles_isset = YES;
+  __homepages = [homepages retain];
+  __homepages_isset = YES;
   return self;
 }
 
@@ -136,6 +301,16 @@
     __pictureUrl = [[decoder decodeObjectForKey: @"pictureUrl"] retain];
     __pictureUrl_isset = YES;
   }
+  if ([decoder containsValueForKey: @"roles"])
+  {
+    __roles = [[decoder decodeObjectForKey: @"roles"] retain];
+    __roles_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"homepages"])
+  {
+    __homepages = [[decoder decodeObjectForKey: @"homepages"] retain];
+    __homepages_isset = YES;
+  }
   return self;
 }
 
@@ -185,6 +360,14 @@
   {
     [encoder encodeObject: __pictureUrl forKey: @"pictureUrl"];
   }
+  if (__roles_isset)
+  {
+    [encoder encodeObject: __roles forKey: @"roles"];
+  }
+  if (__homepages_isset)
+  {
+    [encoder encodeObject: __homepages forKey: @"homepages"];
+  }
 }
 
 - (void) dealloc
@@ -200,6 +383,8 @@
   [__gaspar release];
   [__organisationalUnits release];
   [__pictureUrl release];
+  [__roles release];
+  [__homepages release];
   [super dealloc];
 }
 
@@ -434,6 +619,48 @@
   __pictureUrl_isset = NO;
 }
 
+- (NSDictionary *) roles {
+  return [[__roles retain] autorelease];
+}
+
+- (void) setRoles: (NSDictionary *) roles {
+  [roles retain];
+  [__roles release];
+  __roles = roles;
+  __roles_isset = YES;
+}
+
+- (BOOL) rolesIsSet {
+  return __roles_isset;
+}
+
+- (void) unsetRoles {
+  [__roles release];
+  __roles = nil;
+  __roles_isset = NO;
+}
+
+- (NSDictionary *) homepages {
+  return [[__homepages retain] autorelease];
+}
+
+- (void) setHomepages: (NSDictionary *) homepages {
+  [homepages retain];
+  [__homepages release];
+  __homepages = homepages;
+  __homepages_isset = YES;
+}
+
+- (BOOL) homepagesIsSet {
+  return __homepages_isset;
+}
+
+- (void) unsetHomepages {
+  [__homepages release];
+  __homepages = nil;
+  __homepages_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -547,6 +774,46 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 12:
+        if (fieldType == TType_MAP) {
+          int _size3;
+          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size3];
+          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size3];
+          int _i4;
+          for (_i4 = 0; _i4 < _size3; ++_i4)
+          {
+            NSString * _key5 = [inProtocol readString];
+            DirectoryPersonRole *_val6 = [[DirectoryPersonRole alloc] init];
+            [_val6 read: inProtocol];
+            [fieldValue setObject: _val6 forKey: _key5];
+            [_val6 release];
+          }
+          [inProtocol readMapEnd];
+          [self setRoles: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 13:
+        if (fieldType == TType_MAP) {
+          int _size7;
+          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size7];
+          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size7];
+          int _i8;
+          for (_i8 = 0; _i8 < _size7; ++_i8)
+          {
+            NSString * _key9 = [inProtocol readString];
+            NSString * _val10 = [inProtocol readString];
+            [fieldValue setObject: _val10 forKey: _key9];
+          }
+          [inProtocol readMapEnd];
+          [self setHomepages: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -626,10 +893,10 @@
       [outProtocol writeFieldBeginWithName: @"organisationalUnits" type: TType_LIST fieldID: 10];
       {
         [outProtocol writeListBeginWithElementType: TType_STRING size: [__organisationalUnits count]];
-        int i4;
-        for (i4 = 0; i4 < [__organisationalUnits count]; i4++)
+        int i12;
+        for (i12 = 0; i12 < [__organisationalUnits count]; i12++)
         {
-          [outProtocol writeString: [__organisationalUnits objectAtIndex: i4]];
+          [outProtocol writeString: [__organisationalUnits objectAtIndex: i12]];
         }
         [outProtocol writeListEnd];
       }
@@ -640,6 +907,40 @@
     if (__pictureUrl != nil) {
       [outProtocol writeFieldBeginWithName: @"pictureUrl" type: TType_STRING fieldID: 11];
       [outProtocol writeString: __pictureUrl];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__roles_isset) {
+    if (__roles != nil) {
+      [outProtocol writeFieldBeginWithName: @"roles" type: TType_MAP fieldID: 12];
+      {
+        [outProtocol writeMapBeginWithKeyType: TType_STRING valueType: TType_STRUCT size: [__roles count]];
+        NSEnumerator * _iter13 = [__roles keyEnumerator];
+        id key14;
+        while ((key14 = [_iter13 nextObject]))
+        {
+          [outProtocol writeString: key14];
+          [[__roles objectForKey: key14] write: outProtocol];
+        }
+        [outProtocol writeMapEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__homepages_isset) {
+    if (__homepages != nil) {
+      [outProtocol writeFieldBeginWithName: @"homepages" type: TType_MAP fieldID: 13];
+      {
+        [outProtocol writeMapBeginWithKeyType: TType_STRING valueType: TType_STRING size: [__homepages count]];
+        NSEnumerator * _iter15 = [__homepages keyEnumerator];
+        id key16;
+        while ((key16 = [_iter15 nextObject]))
+        {
+          [outProtocol writeString: key16];
+          [outProtocol writeString: [__homepages objectForKey: key16]];
+        }
+        [outProtocol writeMapEnd];
+      }
       [outProtocol writeFieldEnd];
     }
   }
@@ -671,6 +972,10 @@
   [ms appendFormat: @"%@", __organisationalUnits];
   [ms appendString: @",pictureUrl:"];
   [ms appendFormat: @"\"%@\"", __pictureUrl];
+  [ms appendString: @",roles:"];
+  [ms appendFormat: @"%@", __roles];
+  [ms appendString: @",homepages:"];
+  [ms appendFormat: @"%@", __homepages];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -909,176 +1214,15 @@
 
 @end
 
-@implementation DirectoryToken
-
-- (id) initWithITequilaKey: (NSString *) iTequilaKey loginCookie: (NSString *) loginCookie
-{
-  self = [super init];
-  __iTequilaKey = [iTequilaKey retain];
-  __iTequilaKey_isset = YES;
-  __loginCookie = [loginCookie retain];
-  __loginCookie_isset = YES;
-  return self;
-}
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  if ([decoder containsValueForKey: @"iTequilaKey"])
-  {
-    __iTequilaKey = [[decoder decodeObjectForKey: @"iTequilaKey"] retain];
-    __iTequilaKey_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"loginCookie"])
-  {
-    __loginCookie = [[decoder decodeObjectForKey: @"loginCookie"] retain];
-    __loginCookie_isset = YES;
-  }
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-  if (__iTequilaKey_isset)
-  {
-    [encoder encodeObject: __iTequilaKey forKey: @"iTequilaKey"];
-  }
-  if (__loginCookie_isset)
-  {
-    [encoder encodeObject: __loginCookie forKey: @"loginCookie"];
-  }
-}
-
-- (void) dealloc
-{
-  [__iTequilaKey release];
-  [__loginCookie release];
-  [super dealloc];
-}
-
-- (NSString *) iTequilaKey {
-  return [[__iTequilaKey retain] autorelease];
-}
-
-- (void) setITequilaKey: (NSString *) iTequilaKey {
-  [iTequilaKey retain];
-  [__iTequilaKey release];
-  __iTequilaKey = iTequilaKey;
-  __iTequilaKey_isset = YES;
-}
-
-- (BOOL) iTequilaKeyIsSet {
-  return __iTequilaKey_isset;
-}
-
-- (void) unsetITequilaKey {
-  [__iTequilaKey release];
-  __iTequilaKey = nil;
-  __iTequilaKey_isset = NO;
-}
-
-- (NSString *) loginCookie {
-  return [[__loginCookie retain] autorelease];
-}
-
-- (void) setLoginCookie: (NSString *) loginCookie {
-  [loginCookie retain];
-  [__loginCookie release];
-  __loginCookie = loginCookie;
-  __loginCookie_isset = YES;
-}
-
-- (BOOL) loginCookieIsSet {
-  return __loginCookie_isset;
-}
-
-- (void) unsetLoginCookie {
-  [__loginCookie release];
-  __loginCookie = nil;
-  __loginCookie_isset = NO;
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      case 1:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
-          [self setITequilaKey: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 2:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
-          [self setLoginCookie: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"DirectoryToken"];
-  if (__iTequilaKey_isset) {
-    if (__iTequilaKey != nil) {
-      [outProtocol writeFieldBeginWithName: @"iTequilaKey" type: TType_STRING fieldID: 1];
-      [outProtocol writeString: __iTequilaKey];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  if (__loginCookie_isset) {
-    if (__loginCookie != nil) {
-      [outProtocol writeFieldBeginWithName: @"loginCookie" type: TType_STRING fieldID: 2];
-      [outProtocol writeString: __loginCookie];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"DirectoryToken("];
-  [ms appendString: @"iTequilaKey:"];
-  [ms appendFormat: @"\"%@\"", __iTequilaKey];
-  [ms appendString: @",loginCookie:"];
-  [ms appendFormat: @"\"%@\"", __loginCookie];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
 @implementation DirectoryRequest
 
-- (id) initWithQuery: (NSString *) query directorySession: (NSString *) directorySession resultSetCookie: (NSData *) resultSetCookie
+- (id) initWithQuery: (NSString *) query language: (NSString *) language resultSetCookie: (NSData *) resultSetCookie
 {
   self = [super init];
   __query = [query retain];
   __query_isset = YES;
-  __directorySession = [directorySession retain];
-  __directorySession_isset = YES;
+  __language = [language retain];
+  __language_isset = YES;
   __resultSetCookie = [resultSetCookie retain];
   __resultSetCookie_isset = YES;
   return self;
@@ -1092,10 +1236,10 @@
     __query = [[decoder decodeObjectForKey: @"query"] retain];
     __query_isset = YES;
   }
-  if ([decoder containsValueForKey: @"directorySession"])
+  if ([decoder containsValueForKey: @"language"])
   {
-    __directorySession = [[decoder decodeObjectForKey: @"directorySession"] retain];
-    __directorySession_isset = YES;
+    __language = [[decoder decodeObjectForKey: @"language"] retain];
+    __language_isset = YES;
   }
   if ([decoder containsValueForKey: @"resultSetCookie"])
   {
@@ -1111,9 +1255,9 @@
   {
     [encoder encodeObject: __query forKey: @"query"];
   }
-  if (__directorySession_isset)
+  if (__language_isset)
   {
-    [encoder encodeObject: __directorySession forKey: @"directorySession"];
+    [encoder encodeObject: __language forKey: @"language"];
   }
   if (__resultSetCookie_isset)
   {
@@ -1124,7 +1268,7 @@
 - (void) dealloc
 {
   [__query release];
-  [__directorySession release];
+  [__language release];
   [__resultSetCookie release];
   [super dealloc];
 }
@@ -1150,25 +1294,25 @@
   __query_isset = NO;
 }
 
-- (NSString *) directorySession {
-  return [[__directorySession retain] autorelease];
+- (NSString *) language {
+  return [[__language retain] autorelease];
 }
 
-- (void) setDirectorySession: (NSString *) directorySession {
-  [directorySession retain];
-  [__directorySession release];
-  __directorySession = directorySession;
-  __directorySession_isset = YES;
+- (void) setLanguage: (NSString *) language {
+  [language retain];
+  [__language release];
+  __language = language;
+  __language_isset = YES;
 }
 
-- (BOOL) directorySessionIsSet {
-  return __directorySession_isset;
+- (BOOL) languageIsSet {
+  return __language_isset;
 }
 
-- (void) unsetDirectorySession {
-  [__directorySession release];
-  __directorySession = nil;
-  __directorySession_isset = NO;
+- (void) unsetLanguage {
+  [__language release];
+  __language = nil;
+  __language_isset = NO;
 }
 
 - (NSData *) resultSetCookie {
@@ -1215,10 +1359,10 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 2:
+      case 4:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
-          [self setDirectorySession: fieldValue];
+          [self setLanguage: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
@@ -1249,10 +1393,10 @@
       [outProtocol writeFieldEnd];
     }
   }
-  if (__directorySession_isset) {
-    if (__directorySession != nil) {
-      [outProtocol writeFieldBeginWithName: @"directorySession" type: TType_STRING fieldID: 2];
-      [outProtocol writeString: __directorySession];
+  if (__language_isset) {
+    if (__language != nil) {
+      [outProtocol writeFieldBeginWithName: @"language" type: TType_STRING fieldID: 4];
+      [outProtocol writeString: __language];
       [outProtocol writeFieldEnd];
     }
   }
@@ -1271,8 +1415,8 @@
   NSMutableString * ms = [NSMutableString stringWithString: @"DirectoryRequest("];
   [ms appendString: @"query:"];
   [ms appendFormat: @"\"%@\"", __query];
-  [ms appendString: @",directorySession:"];
-  [ms appendFormat: @"\"%@\"", __directorySession];
+  [ms appendString: @",language:"];
+  [ms appendFormat: @"\"%@\"", __language];
   [ms appendString: @",resultSetCookie:"];
   [ms appendFormat: @"\"%@\"", __resultSetCookie];
   [ms appendString: @")"];
@@ -1423,16 +1567,16 @@
         break;
       case 2:
         if (fieldType == TType_LIST) {
-          int _size5;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size5];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size5];
-          int _i6;
-          for (_i6 = 0; _i6 < _size5; ++_i6)
+          int _size17;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size17];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size17];
+          int _i18;
+          for (_i18 = 0; _i18 < _size17; ++_i18)
           {
-            Person *_elem7 = [[Person alloc] init];
-            [_elem7 read: inProtocol];
-            [fieldValue addObject: _elem7];
-            [_elem7 release];
+            Person *_elem19 = [[Person alloc] init];
+            [_elem19 read: inProtocol];
+            [fieldValue addObject: _elem19];
+            [_elem19 release];
           }
           [inProtocol readListEnd];
           [self setResults: fieldValue];
@@ -1470,10 +1614,10 @@
       [outProtocol writeFieldBeginWithName: @"results" type: TType_LIST fieldID: 2];
       {
         [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__results count]];
-        int i9;
-        for (i9 = 0; i9 < [__results count]; i9++)
+        int i21;
+        for (i21 = 0; i21 < [__results count]; i21++)
         {
-          [[__results objectAtIndex: i9] write: outProtocol];
+          [[__results objectAtIndex: i21] write: outProtocol];
         }
         [outProtocol writeListEnd];
       }
@@ -1771,16 +1915,16 @@
     {
       case 0:
         if (fieldType == TType_LIST) {
-          int _size10;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size10];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size10];
-          int _i11;
-          for (_i11 = 0; _i11 < _size10; ++_i11)
+          int _size22;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size22];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size22];
+          int _i23;
+          for (_i23 = 0; _i23 < _size22; ++_i23)
           {
-            Person *_elem12 = [[Person alloc] init];
-            [_elem12 read: inProtocol];
-            [fieldValue addObject: _elem12];
-            [_elem12 release];
+            Person *_elem24 = [[Person alloc] init];
+            [_elem24 read: inProtocol];
+            [fieldValue addObject: _elem24];
+            [_elem24 release];
           }
           [inProtocol readListEnd];
           [self setSuccess: fieldValue];
@@ -1816,10 +1960,10 @@
       [outProtocol writeFieldBeginWithName: @"success" type: TType_LIST fieldID: 0];
       {
         [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__success count]];
-        int i14;
-        for (i14 = 0; i14 < [__success count]; i14++)
+        int i26;
+        for (i26 = 0; i26 < [__success count]; i26++)
         {
-          [[__success objectAtIndex: i14] write: outProtocol];
+          [[__success objectAtIndex: i26] write: outProtocol];
         }
         [outProtocol writeListEnd];
       }
@@ -2397,14 +2541,14 @@
     {
       case 0:
         if (fieldType == TType_LIST) {
-          int _size15;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size15];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size15];
-          int _i16;
-          for (_i16 = 0; _i16 < _size15; ++_i16)
+          int _size27;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size27];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size27];
+          int _i28;
+          for (_i28 = 0; _i28 < _size27; ++_i28)
           {
-            NSString * _elem17 = [inProtocol readString];
-            [fieldValue addObject: _elem17];
+            NSString * _elem29 = [inProtocol readString];
+            [fieldValue addObject: _elem29];
           }
           [inProtocol readListEnd];
           [self setSuccess: fieldValue];
@@ -2430,10 +2574,10 @@
       [outProtocol writeFieldBeginWithName: @"success" type: TType_LIST fieldID: 0];
       {
         [outProtocol writeListBeginWithElementType: TType_STRING size: [__success count]];
-        int i19;
-        for (i19 = 0; i19 < [__success count]; i19++)
+        int i31;
+        for (i31 = 0; i31 < [__success count]; i31++)
         {
-          [outProtocol writeString: [__success objectAtIndex: i19]];
+          [outProtocol writeString: [__success objectAtIndex: i31]];
         }
         [outProtocol writeListEnd];
       }
@@ -2448,467 +2592,6 @@
   NSMutableString * ms = [NSMutableString stringWithString: @"Autocomplete_result("];
   [ms appendString: @"success:"];
   [ms appendFormat: @"%@", __success];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
-@interface getTequilaTokenForDirectory_args : NSObject <NSCoding> {
-}
-
-
-- (void) read: (id <TProtocol>) inProtocol;
-- (void) write: (id <TProtocol>) outProtocol;
-
-@end
-
-@implementation getTequilaTokenForDirectory_args
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"getTequilaTokenForDirectory_args"];
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"getTequilaTokenForDirectory_args("];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
-@interface GetTequilaTokenForDirectory_result : NSObject <NSCoding> {
-  DirectoryToken * __success;
-
-  BOOL __success_isset;
-}
-
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=success, setter=setSuccess:) DirectoryToken * success;
-#endif
-
-- (id) initWithSuccess: (DirectoryToken *) success;
-
-- (void) read: (id <TProtocol>) inProtocol;
-- (void) write: (id <TProtocol>) outProtocol;
-
-- (DirectoryToken *) success;
-- (void) setSuccess: (DirectoryToken *) success;
-- (BOOL) successIsSet;
-
-@end
-
-@implementation GetTequilaTokenForDirectory_result
-
-- (id) initWithSuccess: (DirectoryToken *) success
-{
-  self = [super init];
-  __success = [success retain];
-  __success_isset = YES;
-  return self;
-}
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  if ([decoder containsValueForKey: @"success"])
-  {
-    __success = [[decoder decodeObjectForKey: @"success"] retain];
-    __success_isset = YES;
-  }
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-  if (__success_isset)
-  {
-    [encoder encodeObject: __success forKey: @"success"];
-  }
-}
-
-- (void) dealloc
-{
-  [__success release];
-  [super dealloc];
-}
-
-- (DirectoryToken *) success {
-  return [[__success retain] autorelease];
-}
-
-- (void) setSuccess: (DirectoryToken *) success {
-  [success retain];
-  [__success release];
-  __success = success;
-  __success_isset = YES;
-}
-
-- (BOOL) successIsSet {
-  return __success_isset;
-}
-
-- (void) unsetSuccess {
-  [__success release];
-  __success = nil;
-  __success_isset = NO;
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      case 0:
-        if (fieldType == TType_STRUCT) {
-          DirectoryToken *fieldValue = [[DirectoryToken alloc] init];
-          [fieldValue read: inProtocol];
-          [self setSuccess: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"GetTequilaTokenForDirectory_result"];
-
-  if (__success_isset) {
-    if (__success != nil) {
-      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
-      [__success write: outProtocol];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"GetTequilaTokenForDirectory_result("];
-  [ms appendString: @"success:"];
-  [ms appendFormat: @"%@", __success];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
-@interface getDirectorySession_args : NSObject <NSCoding> {
-  DirectoryToken * __dirToken;
-
-  BOOL __dirToken_isset;
-}
-
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=dirToken, setter=setDirToken:) DirectoryToken * dirToken;
-#endif
-
-- (id) initWithDirToken: (DirectoryToken *) dirToken;
-
-- (void) read: (id <TProtocol>) inProtocol;
-- (void) write: (id <TProtocol>) outProtocol;
-
-- (DirectoryToken *) dirToken;
-- (void) setDirToken: (DirectoryToken *) dirToken;
-- (BOOL) dirTokenIsSet;
-
-@end
-
-@implementation getDirectorySession_args
-
-- (id) initWithDirToken: (DirectoryToken *) dirToken
-{
-  self = [super init];
-  __dirToken = [dirToken retain];
-  __dirToken_isset = YES;
-  return self;
-}
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  if ([decoder containsValueForKey: @"dirToken"])
-  {
-    __dirToken = [[decoder decodeObjectForKey: @"dirToken"] retain];
-    __dirToken_isset = YES;
-  }
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-  if (__dirToken_isset)
-  {
-    [encoder encodeObject: __dirToken forKey: @"dirToken"];
-  }
-}
-
-- (void) dealloc
-{
-  [__dirToken release];
-  [super dealloc];
-}
-
-- (DirectoryToken *) dirToken {
-  return [[__dirToken retain] autorelease];
-}
-
-- (void) setDirToken: (DirectoryToken *) dirToken {
-  [dirToken retain];
-  [__dirToken release];
-  __dirToken = dirToken;
-  __dirToken_isset = YES;
-}
-
-- (BOOL) dirTokenIsSet {
-  return __dirToken_isset;
-}
-
-- (void) unsetDirToken {
-  [__dirToken release];
-  __dirToken = nil;
-  __dirToken_isset = NO;
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      case 1:
-        if (fieldType == TType_STRUCT) {
-          DirectoryToken *fieldValue = [[DirectoryToken alloc] init];
-          [fieldValue read: inProtocol];
-          [self setDirToken: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"getDirectorySession_args"];
-  if (__dirToken_isset) {
-    if (__dirToken != nil) {
-      [outProtocol writeFieldBeginWithName: @"dirToken" type: TType_STRUCT fieldID: 1];
-      [__dirToken write: outProtocol];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"getDirectorySession_args("];
-  [ms appendString: @"dirToken:"];
-  [ms appendFormat: @"%@", __dirToken];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
-@interface GetDirectorySession_result : NSObject <NSCoding> {
-  NSString * __success;
-
-  BOOL __success_isset;
-}
-
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=success, setter=setSuccess:) NSString * success;
-#endif
-
-- (id) initWithSuccess: (NSString *) success;
-
-- (void) read: (id <TProtocol>) inProtocol;
-- (void) write: (id <TProtocol>) outProtocol;
-
-- (NSString *) success;
-- (void) setSuccess: (NSString *) success;
-- (BOOL) successIsSet;
-
-@end
-
-@implementation GetDirectorySession_result
-
-- (id) initWithSuccess: (NSString *) success
-{
-  self = [super init];
-  __success = [success retain];
-  __success_isset = YES;
-  return self;
-}
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  if ([decoder containsValueForKey: @"success"])
-  {
-    __success = [[decoder decodeObjectForKey: @"success"] retain];
-    __success_isset = YES;
-  }
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-  if (__success_isset)
-  {
-    [encoder encodeObject: __success forKey: @"success"];
-  }
-}
-
-- (void) dealloc
-{
-  [__success release];
-  [super dealloc];
-}
-
-- (NSString *) success {
-  return [[__success retain] autorelease];
-}
-
-- (void) setSuccess: (NSString *) success {
-  [success retain];
-  [__success release];
-  __success = success;
-  __success_isset = YES;
-}
-
-- (BOOL) successIsSet {
-  return __success_isset;
-}
-
-- (void) unsetSuccess {
-  [__success release];
-  __success = nil;
-  __success_isset = NO;
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      case 0:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
-          [self setSuccess: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"GetDirectorySession_result"];
-
-  if (__success_isset) {
-    if (__success != nil) {
-      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRING fieldID: 0];
-      [outProtocol writeString: __success];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"GetDirectorySession_result("];
-  [ms appendString: @"success:"];
-  [ms appendFormat: @"\"%@\"", __success];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -3331,81 +3014,6 @@
   return [self recv_autocomplete];
 }
 
-- (void) send_getTequilaTokenForDirectory
-{
-  [outProtocol writeMessageBeginWithName: @"getTequilaTokenForDirectory" type: TMessageType_CALL sequenceID: 0];
-  [outProtocol writeStructBeginWithName: @"getTequilaTokenForDirectory_args"];
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-  [outProtocol writeMessageEnd];
-  [[outProtocol transport] flush];
-}
-
-- (DirectoryToken *) recv_getTequilaTokenForDirectory
-{
-  int msgType = 0;
-  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
-  if (msgType == TMessageType_EXCEPTION) {
-    TApplicationException * x = [TApplicationException read: inProtocol];
-    [inProtocol readMessageEnd];
-    @throw x;
-  }
-  GetTequilaTokenForDirectory_result * result = [[[GetTequilaTokenForDirectory_result alloc] init] autorelease];
-  [result read: inProtocol];
-  [inProtocol readMessageEnd];
-  if ([result successIsSet]) {
-    return [result success];
-  }
-  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
-                                           reason: @"getTequilaTokenForDirectory failed: unknown result"];
-}
-
-- (DirectoryToken *) getTequilaTokenForDirectory
-{
-  [self send_getTequilaTokenForDirectory];
-  return [self recv_getTequilaTokenForDirectory];
-}
-
-- (void) send_getDirectorySession: (DirectoryToken *) dirToken
-{
-  [outProtocol writeMessageBeginWithName: @"getDirectorySession" type: TMessageType_CALL sequenceID: 0];
-  [outProtocol writeStructBeginWithName: @"getDirectorySession_args"];
-  if (dirToken != nil)  {
-    [outProtocol writeFieldBeginWithName: @"dirToken" type: TType_STRUCT fieldID: 1];
-    [dirToken write: outProtocol];
-    [outProtocol writeFieldEnd];
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-  [outProtocol writeMessageEnd];
-  [[outProtocol transport] flush];
-}
-
-- (NSString *) recv_getDirectorySession
-{
-  int msgType = 0;
-  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
-  if (msgType == TMessageType_EXCEPTION) {
-    TApplicationException * x = [TApplicationException read: inProtocol];
-    [inProtocol readMessageEnd];
-    @throw x;
-  }
-  GetDirectorySession_result * result = [[[GetDirectorySession_result alloc] init] autorelease];
-  [result read: inProtocol];
-  [inProtocol readMessageEnd];
-  if ([result successIsSet]) {
-    return [result success];
-  }
-  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
-                                           reason: @"getDirectorySession failed: unknown result"];
-}
-
-- (NSString *) getDirectorySession: (DirectoryToken *) dirToken
-{
-  [self send_getDirectorySession: dirToken];
-  return [self recv_getDirectorySession];
-}
-
 - (void) send_searchDirectory: (DirectoryRequest *) req
 {
   [outProtocol writeMessageBeginWithName: @"searchDirectory" type: TMessageType_CALL sequenceID: 0];
@@ -3481,22 +3089,6 @@
     [invocation setSelector: s];
     [invocation retainArguments];
     [mMethodMap setValue: invocation forKey: @"autocomplete"];
-  }
-  {
-    SEL s = @selector(process_getTequilaTokenForDirectory_withSequenceID:inProtocol:outProtocol:);
-    NSMethodSignature * sig = [self methodSignatureForSelector: s];
-    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
-    [invocation setSelector: s];
-    [invocation retainArguments];
-    [mMethodMap setValue: invocation forKey: @"getTequilaTokenForDirectory"];
-  }
-  {
-    SEL s = @selector(process_getDirectorySession_withSequenceID:inProtocol:outProtocol:);
-    NSMethodSignature * sig = [self methodSignatureForSelector: s];
-    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
-    [invocation setSelector: s];
-    [invocation retainArguments];
-    [mMethodMap setValue: invocation forKey: @"getDirectorySession"];
   }
   {
     SEL s = @selector(process_searchDirectory_withSequenceID:inProtocol:outProtocol:);
@@ -3589,40 +3181,6 @@
   Autocomplete_result * result = [[Autocomplete_result alloc] init];
   [result setSuccess: [mService autocomplete: [args constraint]]];
   [outProtocol writeMessageBeginWithName: @"autocomplete"
-                                    type: TMessageType_REPLY
-                              sequenceID: seqID];
-  [result write: outProtocol];
-  [outProtocol writeMessageEnd];
-  [[outProtocol transport] flush];
-  [result release];
-  [args release];
-}
-
-- (void) process_getTequilaTokenForDirectory_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
-{
-  getTequilaTokenForDirectory_args * args = [[getTequilaTokenForDirectory_args alloc] init];
-  [args read: inProtocol];
-  [inProtocol readMessageEnd];
-  GetTequilaTokenForDirectory_result * result = [[GetTequilaTokenForDirectory_result alloc] init];
-  [result setSuccess: [mService getTequilaTokenForDirectory]];
-  [outProtocol writeMessageBeginWithName: @"getTequilaTokenForDirectory"
-                                    type: TMessageType_REPLY
-                              sequenceID: seqID];
-  [result write: outProtocol];
-  [outProtocol writeMessageEnd];
-  [[outProtocol transport] flush];
-  [result release];
-  [args release];
-}
-
-- (void) process_getDirectorySession_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
-{
-  getDirectorySession_args * args = [[getDirectorySession_args alloc] init];
-  [args read: inProtocol];
-  [inProtocol readMessageEnd];
-  GetDirectorySession_result * result = [[GetDirectorySession_result alloc] init];
-  [result setSuccess: [mService getDirectorySession: [args dirToken]]];
-  [outProtocol writeMessageBeginWithName: @"getDirectorySession"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
   [result write: outProtocol];

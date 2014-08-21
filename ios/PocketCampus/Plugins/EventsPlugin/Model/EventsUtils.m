@@ -38,7 +38,7 @@ static NSNumber* featuredCategNSNumber = nil;
 
 @implementation EventsUtils
 
-+ (NSDictionary*)sectionsOfEventItem:(NSArray*)eventItems forCategories:(NSDictionary*)categs andTags:(NSDictionary*)tags inverseSort:(BOOL)inverseSort; {
++ (NSDictionary*)sectionsOfEventItem:(NSArray*)eventItems forCategories:(NSDictionary*)categs andTags:(NSDictionary*)tags inverseSort:(BOOL)inverseSort {
     NSMutableDictionary* itemsForCategs = [NSMutableDictionary dictionaryWithCapacity:[categs count]];
     NSSet* tagSet = [NSSet setWithArray:[tags allKeys]]; //set of NSString (tags shortname)
     
@@ -47,9 +47,10 @@ static NSNumber* featuredCategNSNumber = nil;
     for (EventItem* event in eventItems) {
         
         NSSet* eventTagSet = [NSSet setWithArray:event.eventTags];
+        
         NSNumber* eventCategNumber = [NSNumber numberWithInt:event.eventCateg];
         if ([eventsService isEventItemIdFavorite:event.eventId]) {
-            eventCategNumber = [NSNumber numberWithInt:-2];
+            eventCategNumber = [NSNumber numberWithInt:(int)[EventsUtils favoriteCategory]];
         }
         NSString* eventCategName = categs[eventCategNumber];
         if ([eventTagSet intersectsSet:tagSet] //returns YES if at least one tag in common

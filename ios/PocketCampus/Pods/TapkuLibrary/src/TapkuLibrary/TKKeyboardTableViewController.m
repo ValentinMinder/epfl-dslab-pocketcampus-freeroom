@@ -39,13 +39,13 @@
 
 @implementation TKKeyboardTableViewController
 
-- (id) init{
+- (instancetype) init{
 	if(!(self=[super init])) return nil;
 	self.scrollToTextField = YES;
 	self.hideKeyboardOnScroll = [UIDevice phoneIdiom];
 	return self;
 }
-- (id) initWithStyle:(UITableViewStyle)style{
+- (instancetype) initWithStyle:(UITableViewStyle)style{
 	if(!(self=[super initWithStyle:style])) return nil;
 	self.scrollToTextField = YES;
 	self.hideKeyboardOnScroll = [UIDevice phoneIdiom];
@@ -78,7 +78,7 @@
 	self.scrollLock = YES;
 	
 	self.keyboardRect = [sender.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-
+	
 	[self _updateInsetWithKeyboard];
 	
 }
@@ -86,7 +86,7 @@
 	self.keyboardRect = CGRectZero;
 	
 	if(!self.isViewLoaded || self.view.superview == nil) return;
-
+	
 	[UIView beginAnimations:nil context:nil];
 	[UIView setAnimationBeginsFromCurrentState:YES];
 	[UIView setAnimationCurve:UIViewAnimationCurveLinear];
@@ -151,13 +151,24 @@
 
 #pragma mark Public Functions
 - (void) scrollToView:(UIView*)view{
+	
+	if([view isKindOfClass:[UITextView class]]){
+		UITextView *textView = (UITextView*)view;
+		CGRect cursorPosition = [textView caretRectForPosition:textView.selectedTextRange.start];
+		CGRect rect = [view convertRect:cursorPosition toView:self.tableView];
+		rect = CGRectInset(rect, 0, -50);
+		[self.tableView scrollRectToVisible:rect animated:YES];
+		[self performSelector:@selector(_unlock) withObject:nil afterDelay:0.35];
+		return;
+	}
+	
 	CGRect rect = [view convertRect:view.bounds toView:self.tableView];
-	rect = CGRectInset(rect, 0, -30);
+	rect = CGRectInset(rect, 0, -15);
 	[self.tableView scrollRectToVisible:rect animated:YES];
 	[self performSelector:@selector(_unlock) withObject:nil afterDelay:0.35];
 }
 - (void) resignResponders{
-
+	
 }
 
 @end

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.pocketcampus.platform.sdk.server.HttpClient;
+import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.plugin.food.shared.*;
 
 import com.google.gson.GsonBuilder;
@@ -79,7 +79,7 @@ public final class MenuImpl implements Menu {
 
 		String json = null;
 		try {
-			json = _client.getString(url, MEAL_LIST_CHARSET);
+			json = _client.get(url, MEAL_LIST_CHARSET);
 		} catch (Exception e) {
 			return new FoodResponse().setStatusCode(FoodStatusCode.NETWORK_ERROR);
 		}

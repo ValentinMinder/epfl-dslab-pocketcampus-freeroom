@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.directory.android.iface;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
+import org.pocketcampus.platform.android.core.IView;
+import org.pocketcampus.plugin.directory.shared.Person;
 
 /**
  * Interface for the public methods of the DirectoryViews
@@ -8,24 +9,23 @@ import org.pocketcampus.android.platform.sdk.core.IView;
  *
  */
 public interface IDirectoryView extends IView {
-	/**
-	 * Notifies the view that the autocomplete has been updated
-	 */
-	void autoCompletedUpdated();
 	
 	/**
-	 * Notifies the view that the results of the search request has been updated
+	 * Update display when we get data.
+	 * Called from Model
+	 * Called on ALL listeners
 	 */
-	void resultsUpdated();
+	void resultListUpdated();
+	
+	/**
+	 * Display errors and notices.
+	 * Called from Request
+	 * Called on the particular object that issued the request
+	 */
+	void networkErrorHappened();
+	void ldapServersDown();
+	
+	void gotPerson(Person p);
+	void ambiguousQuery();
 
-	/**
-	 * Notifies the view that there is too many results
-	 * @param nb Number of maximum results that the server is allowed to return
-	 */
-	void tooManyResults(int nb);
-	
-	/**
-	 * Notifies the view that the picture has been updated
-	 */
-	void pictureUpdated();
 }

@@ -1,0 +1,34 @@
+13004001	Finding Program Bugs for Free
+13004002	Clearing the Clouds: A Study of Emerging Scale-out Workloads on Modern Hardware
+13004003	DEEDS: Design for the End of the Era of Dennard Scaling
+13004004	Die-Stacked DRAM Caches for Servers
+13004005	Shared Instruction History for Many Cores
+13004006	Scale-Out Processors
+13004007	NOC-Out: Microarchitecting a Scale-Out Processor
+13004008	Scale-out NUMA Systems
+13004009	Answering "what-if" Configuration Questions in Virtualized Environments
+13004010	Transactions Chasing Instructions
+13004011	Scalable transaction processing on Hardware Islands
+13004012	NoDB: Efficient Query Processing on Raw Data Files
+13004013	Data Management Challenges in Brain Simulations
+13004014	Dynamic Modeling of a Two-Phase On-Chip Cooling System for Multiple High Performance Microprocessors in Parallel 
+13004015	LTCM Research Activities on Fundamentals of Microscale Two-Phase Flow and Heat Transfer 1
+13004016	LTCM Research Activities on Fundamentals of Microscale Two-Phase Flow and Heat Transfer 2
+13004017	Cloud9: Parallel symbolic execution for automated real-world software testing
+13004018	ConfErr: Automatically testing web servers against human configuration errors
+13004019	Execution Synthesis: A Technique for Automated Software Debugging
+13004020	AutoSRS: Automated Software Reliability Services
+13004021	Efficiently Scheduling Data-Parallel Computations on Very Large Clusters
+13004022	Processing Multi-billion Edge Graphs with X-Stream
+13004023	Correlation-Aware Virtual Machine Allocation for Energy-Efficient Datacenters
+13004024	Fast and Scalable System Simulation of Many-Core Heterogeneous SoCs
+13004025	A new Micro-scale Cooling Solution for Macro-scale Energy Efficiency in Datacenter Servers
+13004026	Peering Filtering Agreements
+13004027	Network Neutrality Inference
+13004028	Automatic Verification of Systems using Eldarica
+13004029	 [ LARA 2 ]
+13004030	InSynth: Type-Driven Interactive Synthesis of Code Snippets
+13004032	TM2C: a Software Transactional Memory for Many-Cores
+13004033	Protection of Genomic Data in the Cloud
+13004034	 [ Volkan Cevher ]
+13004035	Building Evolvable Networks

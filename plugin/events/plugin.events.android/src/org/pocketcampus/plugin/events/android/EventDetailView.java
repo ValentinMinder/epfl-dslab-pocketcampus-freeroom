@@ -1,40 +1,40 @@
 package org.pocketcampus.plugin.events.android;
 
-import static org.pocketcampus.android.platform.sdk.utils.SetUtils.*;
+import static org.pocketcampus.platform.android.utils.SetUtils.intersect;
+import static org.pocketcampus.plugin.events.android.EventsController.getEventPoolComp4sort;
+import static org.pocketcampus.plugin.events.android.EventsController.oneItemList;
+import static org.pocketcampus.plugin.events.android.EventsMainView.EXTRAS_KEY_EVENTPOOLID;
 
+import java.text.DateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.ui.adapter.MultiListAdapter;
+import org.pocketcampus.platform.android.utils.Preparated;
+import org.pocketcampus.platform.android.utils.Preparator;
+import org.pocketcampus.platform.android.utils.ScrollStateSaver;
 import org.pocketcampus.plugin.events.R;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
-import org.pocketcampus.android.platform.sdk.ui.adapter.MultiListAdapter;
-import org.pocketcampus.android.platform.sdk.utils.Preparated;
-import org.pocketcampus.android.platform.sdk.utils.Preparator;
-import org.pocketcampus.android.platform.sdk.utils.ScrollStateSaver;
 import org.pocketcampus.plugin.events.android.iface.IEventsView;
 import org.pocketcampus.plugin.events.shared.EventItem;
 import org.pocketcampus.plugin.events.shared.EventPool;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
-import static org.pocketcampus.plugin.events.android.EventsController.*;
-import static org.pocketcampus.plugin.events.android.EventsMainView.*;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 /**
  * EventDetailView - View that shows an Event details.
@@ -50,6 +50,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 	public static final String EXTRAS_KEY_EVENTITEMID = "eventItemId";
 	public static final String QUERYSTRING_KEY_EVENTITEMID = "eventItemId";
     public final static String MAP_KEY_EVENTPOOLID = "EVENT_POOL_ID";
+    public final static String MAP_KEY_EVENTPOOLTITLE = "EVENT_POOL_TITLE";
     public final static String MAP_KEY_EVENTPOOLCLICKLINK = "EVENT_POOL_CLICKLINK";  
 	
 	private ListView mList;
@@ -77,6 +78,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 		mList = (ListView) findViewById(R.id.events_main_list);
 		
 
+		setActionBarTitle(getString(R.string.events_plugin_title));
 	}
 
 	/**
@@ -103,13 +105,15 @@ public class EventDetailView extends PluginView implements IEventsView {
 			return;
 		}
 		
-		//Tracker
-		Tracker.getInstance().trackPageView("events/" + eventItemId);
-		
 		mController.refreshEventItem(this, eventItemId, false);
 		eventItemsUpdated(null);
 	}
 
+	@Override
+	protected String screenName() {
+		return "/events/item";
+	}
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -119,8 +123,9 @@ public class EventDetailView extends PluginView implements IEventsView {
 	
 	@Override
 	protected void onPause() {
-		super.onResume();
-		scrollState = new ScrollStateSaver(mList);
+		super.onPause();
+		if(mList != null)
+			scrollState = new ScrollStateSaver(mList);
 	}
 	
 	@Override
@@ -143,16 +148,18 @@ public class EventDetailView extends PluginView implements IEventsView {
 			public int[] resources() {
 				return new int[] { R.id.event_list_complex_title, R.id.event_list_complex_subtitle, R.id.event_list_item_details, R.id.event_list_complex_image, R.id.event_list_complex_caption, R.id.event_big_image };
 			}
+			DateFormat timeFormat = EventsController.getTimeFormat(EventDetailView.this);
+			DateFormat dateFormat = EventsController.getDateFormat(EventDetailView.this);
 			private String getFormattedTimeInterval(EventItem e) {
-				String eventTime = simpleTimeFormat.format(new Date(e.getStartDate()));
-				String eventTime1 = simpleTimeFormat.format(new Date(e.getEndDate()));
+				String eventTime = timeFormat.format(new Date(e.getStartDate()));
+				String eventTime1 = timeFormat.format(new Date(e.getEndDate()));
 				if(e.getEndDate() > e.getStartDate())
 					return eventTime + " - " + eventTime1;
 				return eventTime;
 			}
 			private String getFormattedDateInterval(EventItem e) {
-				String eventDate = simpleDateFormat.format(new Date(e.getStartDate()));
-				String eventDate1 = simpleDateFormat.format(new Date(e.getEndDate()));
+				String eventDate = dateFormat.format(new Date(e.getStartDate()));
+				String eventDate1 = dateFormat.format(new Date(e.getEndDate()));
 				if(e.getEndDate() > e.getStartDate() && eventDate1.compareTo(eventDate) > 0)
 					return eventDate + " - " + eventDate1;
 				return eventDate;
@@ -199,64 +206,6 @@ public class EventDetailView extends PluginView implements IEventsView {
 				R.layout.event_details, p1.getKeys(), p1.getResources())  );
 		
 		
-		/*if(thisEvent.isSetEventPicture()) {
-		} else {
-			security = new LinkedList<Map<String, ?>>();
-			security.add(createItem(null, eventDateStr, null, null));
-
-			adapter.addSection(Constants.EVENTS_CATEGS.get(thisEvent.getEventCateg()), new LazyAdapter(this, security,
-					R.layout.event_list_complex,
-					new String[] { ITEM_CAPTION }, new int[] {
-							R.id.event_list_complex_caption }));
-			
-		}*/
-		
-		
-		
-		/*Preparated<EventItem> p2 = new Preparated<EventItem>(oneItemList(parentEvent), new Preparator<EventItem>() {
-			public int[] resources() {
-				return new int[] { R.id.event_list_complex_title, R.id.event_list_complex_caption };
-			}
-			public Object content(int res, EventItem e) {
-				switch (res) {
-				case R.id.event_list_complex_title:
-					return e.getEventTitle();
-				case R.id.event_list_complex_caption:
-					return e.getEventDetails();
-				default:
-					return null;
-				}
-			}
-			public void finalize(Map<String, Object> map, EventItem item) {
-			}
-		});
-		adapter.addSection("Event details", new LazyAdapter(this, p2.getMap(),
-				R.layout.event_list_complex, p2.getKeys(), p2.getResources()));*/
-
-		/*if(parentEvent.isSetEventPlace()) {
-			Preparated<EventItem> p3 = new Preparated<EventItem>(oneItemList(parentEvent), new Preparator<EventItem>() {
-				public int[] resources() {
-					return new int[] { R.id.event_title, R.id.event_speaker, R.id.event_thumbnail, R.id.event_time };
-				}
-				public Object content(int res, EventItem e) {
-					switch (res) {
-					case R.id.event_title:
-					case R.id.event_speaker:
-						return e.getEventPlace();
-					case R.id.event_thumbnail:
-						return android.R.drawable.ic_dialog_map;
-					case R.id.event_time:
-					default:
-						return null;
-					}
-				}
-				public void finalize(Map<String, Object> map, EventItem item) {
-				}
-			});
-			adapter.addSection("Location", new SimpleAdapter(this, p3.getMap(),
-					R.layout.events_list_row, p3.getKeys(), p3.getResources()));
-		}*/
-
 		if(parentEvent.isSetChildrenPools() && parentEvent.getChildrenPools().size() > 0) {
 			LinkedList<EventPool> eventPools = new LinkedList<EventPool>();
 			displayedPools.clear();
@@ -285,10 +234,12 @@ public class EventDetailView extends PluginView implements IEventsView {
 					}
 				}
 				public void finalize(Map<String, Object> map, EventPool item) {
-					if(item.isSetOverrideLink())
+					if(item.isSetOverrideLink()) {
 						map.put(MAP_KEY_EVENTPOOLCLICKLINK, item.getOverrideLink());
-					else
+					} else {
 						map.put(MAP_KEY_EVENTPOOLID, item.getPoolId() + "");
+						map.put(MAP_KEY_EVENTPOOLTITLE, item.getPoolTitle());
+					}
 				}
 			});
 			adapter.addSection( new LazyAdapter(this, p4.getMap(),
@@ -296,38 +247,6 @@ public class EventDetailView extends PluginView implements IEventsView {
 		}
 
 	
-		/*
-		
-		System.out.println("eventsListUpdated building hash");
-		Map<Integer, List<EventItem>> eventsByCateg = new HashMap<Integer, List<EventItem>>();
-		for(long eventId : allEvents.get(Constants.CONTAINER_EVENT_ID).getChildrenEvents()) {
-			EventItem e = allEvents.get(eventId);
-			//e.setEventCateg(1);
-			if(!e.isSetEventCateg())
-				continue;
-			if(!eventsByCateg.containsKey(e.getEventCateg()))
-				eventsByCateg.put(e.getEventCateg(), new LinkedList<EventItem>());
-			eventsByCateg.get(e.getEventCateg()).add(e);
-		}
-		
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.event_list_header);
-		for(int i : eventsByCateg.keySet()) {
-			List<Map<String, String>> eventsInCateg = new LinkedList<Map<String, String>>();
-			for(EventItem e : eventsByCateg.get(i)) {
-				eventsInCateg.add(createItem(e));
-			}
-			adapter.addSection(Constants.EVENTS_CATEGS.get(i), new LazyAdapter(this, eventsInCateg,
-					0, R.layout.events_list_row,
-					new String[] { ITEM_TITLE, ITEM_CAPTION, ITEM_IMAGE, ITEM_TIME }, new int[] {
-							R.id.event_title, R.id.event_speaker, R.id.event_thumbnail, R.id.event_time }));
-			
-			//adapter.addSection(Constants.EVENTS_CATEGS.get(i), new LazyAdapter(this, eventsInCateg,
-			//		0, R.layout.event_list_complex,
-			//		new String[] { ITEM_TITLE, ITEM_CAPTION, ITEM_IMAGE }, new int[] {
-			//		R.id.event_list_complex_title, R.id.event_list_complex_caption, R.id.event_list_complex_image }));
-		}
-		*/
-		
 		
 		mList.setAdapter(adapter);
 		//mLayout.setCacheColorHint(Color.TRANSPARENT);
@@ -347,9 +266,12 @@ public class EventDetailView extends PluginView implements IEventsView {
 					i.setData(Uri.parse(((Map<?, ?>) o).get(MAP_KEY_EVENTPOOLCLICKLINK).toString()));
 					EventDetailView.this.startActivity(i);
 				} else if(o instanceof Map<?, ?> && ((Map<?, ?>) o).containsKey(MAP_KEY_EVENTPOOLID)) {
+					String eId = ((Map<?, ?>) o).get(MAP_KEY_EVENTPOOLID).toString();
+					String eTitle = ((Map<?, ?>) o).get(MAP_KEY_EVENTPOOLTITLE).toString();
 					Intent i = new Intent(EventDetailView.this, EventsMainView.class);
-					i.putExtra(EXTRAS_KEY_EVENTPOOLID, ((Map<?, ?>) o).get(MAP_KEY_EVENTPOOLID).toString());
+					i.putExtra(EXTRAS_KEY_EVENTPOOLID, eId);
 					EventDetailView.this.startActivity(i);
+					trackEvent("ShowEventPool", eId + "-" + eTitle);
 				} else {
 					Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
 				}

@@ -256,6 +256,23 @@ static MainController<MainControllerPublic>* instance = nil;
     return YES;
 }
 
+- (UIViewController*)viewControllerForWebURL:(NSURL*)url {
+    if (![url isKindOfClass:[NSURL class]]) {
+        return nil;
+    }
+    UIViewController* viewController = nil;
+    for (NSString* identifierName in self.pluginsList) {
+        Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:identifierName]);
+        if ([pluginClass respondsToSelector:@selector(viewControllerForWebURL:)]) {
+            viewController = [pluginClass viewControllerForWebURL:url];
+            if (viewController) {
+                break;
+            }
+        }
+    }
+    return viewController;
+}
+
 - (BOOL)isPluginAnycaseIdentifierValid:(NSString*)anycaseIdentifier {
     return [self existsPluginWithIdentifier:[self validPluginIdentifierForAnycasePluginIdentifier:anycaseIdentifier]];
 }
@@ -568,10 +585,7 @@ static MainController<MainControllerPublic>* instance = nil;
 
 - (void)pcConfigUserDefaultsDidChange {
     [self initAnalytics];
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:[PCConfig defaults]];
-    }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:[PCConfig defaults]];
 }
 
 #pragma mark - Called by MainMenuViewController
@@ -720,6 +734,11 @@ static MainController<MainControllerPublic>* instance = nil;
             return validIdentifier;
         }
     }
+    for (NSString* validIdentifier in self.logicOnlyPluginsList){
+        if ([[validIdentifier lowercaseString] isEqualToString:lowercaseIdentifier]) {
+            return validIdentifier;
+        }
+    }
     return nil;
 }
 
@@ -736,6 +755,12 @@ static MainController<MainControllerPublic>* instance = nil;
     
     NSString* identifierName = nil;
     for (NSString* originalIdentifier in self.pluginsList) {
+        if ([lowerCaseIdentifier isEqualToString:[originalIdentifier lowercaseString]]) {
+            identifierName = originalIdentifier;
+        }
+    }
+    
+    for (NSString* originalIdentifier in self.logicOnlyPluginsList) {
         if ([lowerCaseIdentifier isEqualToString:[originalIdentifier lowercaseString]]) {
             identifierName = originalIdentifier;
         }
@@ -760,6 +785,12 @@ static MainController<MainControllerPublic>* instance = nil;
             return YES;
         }
         for (NSString* originalIdentifier in self.pluginsList) {
+            if ([[identifier lowercaseString] isEqualToString:[originalIdentifier lowercaseString]]) {
+                [self.validatedPluginNamesCache addObject:identifier];
+                return YES;
+            }
+        }
+        for (NSString* originalIdentifier in self.logicOnlyPluginsList) {
             if ([[identifier lowercaseString] isEqualToString:[originalIdentifier lowercaseString]]) {
                 [self.validatedPluginNamesCache addObject:identifier];
                 return YES;
@@ -934,13 +965,13 @@ static MainController<MainControllerPublic>* instance = nil;
  */
 - (void)throwExceptionIfPluginIdentifierNameIsNotValid:(NSString*)identifier {
     if (!identifier) {
-        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifierName cannot be nil." userInfo:nil];
+        @throw [NSException exceptionWithName:@"Illegal argument" reason:@"pluginIdentifierName cannot be nil." userInfo:nil];
     }
     if (![identifier isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifierName is not kind of class NSString." userInfo:nil];
+        @throw [NSException exceptionWithName:@"Illegal argument" reason:@"pluginIdentifierName is not kind of class NSString." userInfo:nil];
     }
-    if (![self.pluginsList containsObject:identifier]) {
-        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifierName does not correspond to any existing identifier. Please use [PluginControllerProtocol identifierName] as argument." userInfo:nil];
+    if (![self.pluginsList containsObject:identifier] && ![self.logicOnlyPluginsList containsObject:identifier]) {
+        @throw [NSException exceptionWithName:@"Illegal argument" reason:@"pluginIdentifierName does not correspond to any existing identifier. Please use [PluginControllerProtocol identifierName] as argument." userInfo:nil];
     }
 }
 

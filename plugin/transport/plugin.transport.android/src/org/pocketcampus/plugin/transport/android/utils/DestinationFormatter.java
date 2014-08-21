@@ -36,7 +36,7 @@ public class DestinationFormatter {
 	 *         station's name.
 	 */
 	public static String getNiceName(TransportStation station) {
-		return getNiceName(station.name);
+		return getNiceName(station.getName());
 	}
 
 	/**

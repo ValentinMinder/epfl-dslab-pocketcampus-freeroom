@@ -22,6 +22,7 @@ import java.io.Serializable;
 /**
  * @author Andreas Schildbach
  */
+@SuppressWarnings("serial")
 public final class Point implements Serializable
 {
 	public final int lat, lon;

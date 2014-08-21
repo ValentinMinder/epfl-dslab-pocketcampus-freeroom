@@ -1,8 +1,3 @@
-
---
--- Table structure for table `pc_pushnotif`
---
-
 CREATE TABLE IF NOT EXISTS `pc_pushnotif` (
   `plugin` varchar(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `userid` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,

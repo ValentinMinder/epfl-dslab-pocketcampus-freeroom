@@ -174,7 +174,9 @@
             NSArray* pairComponents = [keyValuePair componentsSeparatedByString:@"="];
             NSString* key = pairComponents[0];
             NSString* value = pairComponents[1];
-            [queryStringDictionary setObject:value forKey:key];
+            value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // convert HTML entities
+            value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "]; //sometimes + are used for spaces in URLs
+            queryStringDictionary[key] = value;
         }
     }
     @catch (NSException *exception) {
@@ -235,6 +237,13 @@
     if (![object isKindOfClass:class]) {
         @throw [NSException exceptionWithName:@"Illegal argument" reason:[NSString stringWithFormat:@"object '%@' must be kind of class %@", object, NSStringFromClass(class)] userInfo:nil];
     }
+}
+
+void PCRoundCGRect(CGRect rect) {
+    rect.origin.x = roundf(rect.origin.x);
+    rect.origin.y = roundf(rect.origin.y);
+    rect.size.width = roundf(rect.size.width);
+    rect.size.height = roundf(rect.size.height);
 }
 
 @end

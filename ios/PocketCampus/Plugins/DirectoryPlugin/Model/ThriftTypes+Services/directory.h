@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,7 +22,7 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 
@@ -40,6 +40,34 @@
 #import <TProcessor.h>
 
 
+@interface DirectoryPersonRole : NSObject <NSCoding> {
+  NSString * __extendedLocalizedUnit;
+  NSString * __localizedTitle;
+
+  BOOL __extendedLocalizedUnit_isset;
+  BOOL __localizedTitle_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=extendedLocalizedUnit, setter=setExtendedLocalizedUnit:) NSString * extendedLocalizedUnit;
+@property (nonatomic, retain, getter=localizedTitle, setter=setLocalizedTitle:) NSString * localizedTitle;
+#endif
+
+- (id) initWithExtendedLocalizedUnit: (NSString *) extendedLocalizedUnit localizedTitle: (NSString *) localizedTitle;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (NSString *) extendedLocalizedUnit;
+- (void) setExtendedLocalizedUnit: (NSString *) extendedLocalizedUnit;
+- (BOOL) extendedLocalizedUnitIsSet;
+
+- (NSString *) localizedTitle;
+- (void) setLocalizedTitle: (NSString *) localizedTitle;
+- (BOOL) localizedTitleIsSet;
+
+@end
+
 @interface Person : NSObject <NSCoding> {
   NSString * __firstName;
   NSString * __lastName;
@@ -52,6 +80,8 @@
   NSString * __gaspar;
   NSArray * __organisationalUnits;
   NSString * __pictureUrl;
+  NSDictionary * __roles;
+  NSDictionary * __homepages;
 
   BOOL __firstName_isset;
   BOOL __lastName_isset;
@@ -64,6 +94,8 @@
   BOOL __gaspar_isset;
   BOOL __organisationalUnits_isset;
   BOOL __pictureUrl_isset;
+  BOOL __roles_isset;
+  BOOL __homepages_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
@@ -78,9 +110,11 @@
 @property (nonatomic, retain, getter=gaspar, setter=setGaspar:) NSString * gaspar;
 @property (nonatomic, retain, getter=organisationalUnits, setter=setOrganisationalUnits:) NSArray * organisationalUnits;
 @property (nonatomic, retain, getter=pictureUrl, setter=setPictureUrl:) NSString * pictureUrl;
+@property (nonatomic, retain, getter=roles, setter=setRoles:) NSDictionary * roles;
+@property (nonatomic, retain, getter=homepages, setter=setHomepages:) NSDictionary * homepages;
 #endif
 
-- (id) initWithFirstName: (NSString *) firstName lastName: (NSString *) lastName sciper: (NSString *) sciper email: (NSString *) email web: (NSString *) web privatePhoneNumber: (NSString *) privatePhoneNumber officePhoneNumber: (NSString *) officePhoneNumber office: (NSString *) office gaspar: (NSString *) gaspar organisationalUnits: (NSArray *) organisationalUnits pictureUrl: (NSString *) pictureUrl;
+- (id) initWithFirstName: (NSString *) firstName lastName: (NSString *) lastName sciper: (NSString *) sciper email: (NSString *) email web: (NSString *) web privatePhoneNumber: (NSString *) privatePhoneNumber officePhoneNumber: (NSString *) officePhoneNumber office: (NSString *) office gaspar: (NSString *) gaspar organisationalUnits: (NSArray *) organisationalUnits pictureUrl: (NSString *) pictureUrl roles: (NSDictionary *) roles homepages: (NSDictionary *) homepages;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -129,6 +163,14 @@
 - (void) setPictureUrl: (NSString *) pictureUrl;
 - (BOOL) pictureUrlIsSet;
 
+- (NSDictionary *) roles;
+- (void) setRoles: (NSDictionary *) roles;
+- (BOOL) rolesIsSet;
+
+- (NSDictionary *) homepages;
+- (void) setHomepages: (NSDictionary *) homepages;
+- (BOOL) homepagesIsSet;
+
 @end
 
 @interface LDAPException : NSException <NSCoding> {
@@ -173,51 +215,23 @@
 
 @end
 
-@interface DirectoryToken : NSObject <NSCoding> {
-  NSString * __iTequilaKey;
-  NSString * __loginCookie;
-
-  BOOL __iTequilaKey_isset;
-  BOOL __loginCookie_isset;
-}
-
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=iTequilaKey, setter=setITequilaKey:) NSString * iTequilaKey;
-@property (nonatomic, retain, getter=loginCookie, setter=setLoginCookie:) NSString * loginCookie;
-#endif
-
-- (id) initWithITequilaKey: (NSString *) iTequilaKey loginCookie: (NSString *) loginCookie;
-
-- (void) read: (id <TProtocol>) inProtocol;
-- (void) write: (id <TProtocol>) outProtocol;
-
-- (NSString *) iTequilaKey;
-- (void) setITequilaKey: (NSString *) iTequilaKey;
-- (BOOL) iTequilaKeyIsSet;
-
-- (NSString *) loginCookie;
-- (void) setLoginCookie: (NSString *) loginCookie;
-- (BOOL) loginCookieIsSet;
-
-@end
-
 @interface DirectoryRequest : NSObject <NSCoding> {
   NSString * __query;
-  NSString * __directorySession;
+  NSString * __language;
   NSData * __resultSetCookie;
 
   BOOL __query_isset;
-  BOOL __directorySession_isset;
+  BOOL __language_isset;
   BOOL __resultSetCookie_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 @property (nonatomic, retain, getter=query, setter=setQuery:) NSString * query;
-@property (nonatomic, retain, getter=directorySession, setter=setDirectorySession:) NSString * directorySession;
+@property (nonatomic, retain, getter=language, setter=setLanguage:) NSString * language;
 @property (nonatomic, retain, getter=resultSetCookie, setter=setResultSetCookie:) NSData * resultSetCookie;
 #endif
 
-- (id) initWithQuery: (NSString *) query directorySession: (NSString *) directorySession resultSetCookie: (NSData *) resultSetCookie;
+- (id) initWithQuery: (NSString *) query language: (NSString *) language resultSetCookie: (NSData *) resultSetCookie;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -226,9 +240,9 @@
 - (void) setQuery: (NSString *) query;
 - (BOOL) queryIsSet;
 
-- (NSString *) directorySession;
-- (void) setDirectorySession: (NSString *) directorySession;
-- (BOOL) directorySessionIsSet;
+- (NSString *) language;
+- (void) setLanguage: (NSString *) language;
+- (BOOL) languageIsSet;
 
 - (NSData *) resultSetCookie;
 - (void) setResultSetCookie: (NSData *) resultSetCookie;
@@ -275,8 +289,6 @@
 - (NSArray *) searchPersons: (NSString *) nameOrSciper;  // throws LDAPException *, TException
 - (NSString *) getProfilePicture: (NSString *) sciper;  // throws NoPictureFound *, TException
 - (NSArray *) autocomplete: (NSString *) constraint;  // throws TException
-- (DirectoryToken *) getTequilaTokenForDirectory;  // throws TException
-- (NSString *) getDirectorySession: (DirectoryToken *) dirToken;  // throws TException
 - (DirectoryResponse *) searchDirectory: (DirectoryRequest *) req;  // throws TException
 @end
 

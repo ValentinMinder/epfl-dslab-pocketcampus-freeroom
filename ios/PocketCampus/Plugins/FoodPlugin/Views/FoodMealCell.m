@@ -386,7 +386,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         //should not happen
         return;
     }
-    [[PCGAITracker sharedTracker] trackAction:@"RateMeal" inScreenWithName:@"/food/restaurant"];
+    [[PCGAITracker sharedTracker] trackAction:@"RateMeal" inScreenWithName:@"/food/restaurant" contentInfo:[NSString stringWithFormat:@"%lld-%@", self.meal.mId, self.meal.mName]];
     self.ratingStatus = RatingStatusLoading;
     NSString* identifier = [PCUtils uniqueDeviceIdentifier];
     VoteRequest* req = [[VoteRequest alloc] initWithMealId:self.meal.mId rating:ratingValue deviceId:identifier];
@@ -400,12 +400,12 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         case SubmitStatus_VALID:
         {
             self.ratingStatus = RatingStatusRated;
-            FoodMealCell* weakSelf __weak = self;
+            __weak __typeof(self) welf = self;
             [NSTimer scheduledTimerWithTimeInterval:1.0 block:^{
-                [weakSelf infoContentViewTapped]; //hide rating controls, not longer need them
+                [welf infoContentViewTapped]; //hide rating controls, not longer need them
             } repeats:NO];
             [NSTimer scheduledTimerWithTimeInterval:1.4 block:^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:kFoodMealCellUserSuccessfullyRatedMealNotification object:weakSelf];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kFoodMealCellUserSuccessfullyRatedMealNotification object:welf];
             } repeats:NO];
             break;
         }
@@ -449,10 +449,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
 - (void)dealloc {
     [self.mealTypeImageView cancelImageRequestOperation];
     [self.foodService cancelOperationsForDelegate:self];
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

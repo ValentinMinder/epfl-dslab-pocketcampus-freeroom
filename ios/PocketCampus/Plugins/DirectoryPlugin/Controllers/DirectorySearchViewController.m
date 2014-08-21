@@ -260,7 +260,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
         return;
     }
     [self.barActivityIndicator startAnimating];
-    DirectoryRequest* request = [[DirectoryRequest alloc] initWithQuery:self.searchBar.text directorySession:nil resultSetCookie:nil];
+    DirectoryRequest* request = [[DirectoryRequest alloc] initWithQuery:self.searchBar.text language:[PCUtils userLanguageCode] resultSetCookie:nil];
     [self.directoryService searchForRequest:request delegate:self];
 }
 
@@ -298,10 +298,10 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
                 self.tableView.alpha = 1.0;
             }];
         }
-        return;
+    } else {
+        [self.typingTimer invalidate];
+        self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startSearchRequest) userInfo:nil repeats:NO];
     }
-    [self.typingTimer invalidate];
-    self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startSearchRequest) userInfo:nil repeats:NO];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar_ {
@@ -359,7 +359,9 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
         }
-        @catch (NSException *exception) {}
+        @catch (NSException *exception) {
+            [self.tableView reloadData];
+        }
     }
 
 }
@@ -417,8 +419,13 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
 
 - (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.resultsMode == ResultsModeSearch) {
-        [self trackAction:@"ViewPerson"];
+        if (indexPath.row >= self.searchResults.count) {
+            //should not be required but crash report shows it can still happen...
+            // https://www.crashlytics.com/pocketcampusorg/ios/apps/org.pocketcampus/issues/536b9213e3de5099ba2d40d0?km_variation=view+new+issue&kme=Clicked+from+Email&kmi=pocketcampus.ios%40gmail.com
+            return;
+        }
         Person* person = self.searchResults[indexPath.row];
+        [self trackAction:@"ViewPerson" contentInfo:person.fullFirstnameLastname];
         if (self.splitViewController && [person.sciper isEqualToString:self.displayedPerson.sciper]) { //isEqual not implemented in Thrift
             [self.personViewController.navigationController popToRootViewControllerAnimated:YES]; //return to contact info if in map for example
             return;
@@ -430,7 +437,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
             }
         }
     } else if (self.resultsMode == ResultsModeRecentSearches) {
-        [self trackAction:@"ViewRecentPerson"];
+        
         UIActivityIndicatorView* activityIndicatorView = (UIActivityIndicatorView*)[[self.tableView cellForRowAtIndexPath:indexPath] accessoryView];
          NSString* searchString = [NSString stringWithFormat:@"%@", [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text];
         if ([activityIndicatorView isAnimating] || (self.displayedPerson && [searchString rangeOfString:self.displayedPerson.firstName].location != NSNotFound && [searchString rangeOfString:self.displayedPerson.lastName].location != NSNotFound)) {
@@ -438,8 +445,9 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
         }
         [activityIndicatorView startAnimating];
         [self.directoryService cancelOperationsForDelegate:self];
-        [self.directoryService searchForRequest:[[DirectoryRequest alloc] initWithQuery:searchString directorySession:nil resultSetCookie:nil] delegate:self];
+        [self.directoryService searchForRequest:[[DirectoryRequest alloc] initWithQuery:searchString language:[PCUtils userLanguageCode] resultSetCookie:nil] delegate:self];
         [self.searchBar resignFirstResponder];
+        [self trackAction:@"ViewRecentPerson" contentInfo:searchString];
     } else {
         //Unsupported mode
     }
@@ -470,7 +478,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
             }
             Person* person = self.searchResults[indexPath.row];
             cell.textLabel.text = person.firstnameLastname;
-            cell.detailTextLabel.text = person.organizationsString;
+            cell.detailTextLabel.text = person.organizationalUnitsStrings;
             NSURL* url = person.pictureUrl ? [NSURL URLWithString:person.pictureUrl] : nil;
             [self.tableView setImageURL:url forCell:cell atIndexPath:indexPath];
             break;

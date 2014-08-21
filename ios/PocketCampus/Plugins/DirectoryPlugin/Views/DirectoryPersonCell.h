@@ -25,16 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 04.01.14.
-
-
-
-#import <UIKit/UIKit.h>
 
 @interface DirectoryPersonCell : PCTableViewCellAdditions
 

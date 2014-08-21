@@ -25,14 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 06.03.13.
-
-
 
 @import UIKit;
 
@@ -40,38 +33,62 @@
 
 #pragma mark - Cell remote images
 
-/*
+/**
  * If image for URL is cached, sets cell image immediately, using cellsImageViewSelectorString to know which image view
  * to update. If not cached, starts a request for the image and sets it when request returns using indexPath to get pointer to cell.
  * If the request fails (no internet, timeout, etc.) the indexPath is marked as failed and started again later (when internet comes
  * back for e.g.).
- * IMPORTANT: if you reloadData/Sections/Rows, add, remove or reorder rows, failed index paths are invalidated
- * and it is *your* responsability to call this method again.
+ * IMPORTANT: if you reloadData/Sections/Rows, add, remove or reorder rows, requests are cancelled and
+ * failed index paths are invalidated. It is *your* responsability to call this method again (typically in cellForRowAtIndexPath).
+ * IMPORTANT 2: the 3 following methods are *not* thread-safe
+ * IMPORTANT 3: if temporaryImage (below) is nil, it is *your* responsability to clear the cell's image when reusing it,
+ * otherwise a wrong image will be temporarily displayed until the url request for the new one completes.
  */
 - (void)setImageURL:(NSURL*)url forCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath;
 
+/**
+ * Cancels image download request for all indexPaths.
+ * Does not do anything if no request exists (or finished) for this indexPath.
+ */
+- (void)cancelImageDownloadForIndexPaths:(NSArray*)indexPaths;
+
+/**
+ * Cancels image download request for all indexPaths in each sections.
+ * Does not do anything if no request exists (or finished) for this indexPath.
+ */
+- (void)cancelImageDownloadForSections:(NSIndexSet*)sections;
+
+/**
+ * Cancels all image download requests
+ */
+- (void)cancelAllImageDownloads;
+
+/**
+ * Image that is displayed while image download is still in progress
+ * or if the download fails or returns empty data.
+ */
 @property (nonatomic, strong) UIImage* temporaryImage;
 
-/*
+/**
  * If image as been downloaded, returns it, nil otherwise.
  * If imageProcessingBlock is not NULL, this method returns the processed image.
  * INFO: can return nil if image was downloaded but later evicted because of memory limitations
  */
 - (UIImage*)cachedImageAtIndexPath:(NSIndexPath*)indexPath;
 
-/*
+/**
  * Same as previous but returns image as it was before being processed by imageProcessingBlock
  * INFO: can return nil if image was downloaded but later evicted because of memory limitations
  */
 - (UIImage*)cachedRawImageAtIndexPath:(NSIndexPath*)indexPath;
 
-/*
+/**
  * Specify the keypath of the UIImageView in the cells.
  * Default: @"imageView"
  */
 @property (nonatomic, strong) NSString* cellsImageViewSelectorString;
 
-/*
+/**
  * This block will be executed when image is downloaded but before caching it.
  * If this block is not NULL, returned image replaces downloaded image.
  * IMPORTANT 1: when set, all existing (if any) cached images are discarded and re-processed on main queue from rawImage.
@@ -84,7 +101,7 @@ typedef UIImage* (^ImageProcessingBlock)(PCTableViewAdditions* tableView, NSInde
 
 #pragma mark - Content size updates
 
-/*
+/**
  * This section adds features to support user content size category changes (UIContentSizeCategoryDidChangeNotification)
  * The sequence is the following:
  * 1) contentSizeCategoryDidChangeBlock is executed if not NULL.
@@ -93,14 +110,14 @@ typedef UIImage* (^ImageProcessingBlock)(PCTableViewAdditions* tableView, NSInde
  * 4) [self reloadData] is executed if reloadsDataWhenContentSizeCategoryChanges is YES.
  */
 
-/*
+/**
  * 1)
  * Default: NULL
  */
 typedef void (^ContentSizeCategoryDidChangeBlock)(PCTableViewAdditions* tableView);
 @property (nonatomic, copy) ContentSizeCategoryDidChangeBlock contentSizeCategoryDidChangeBlock;
 
-/*
+/**
  * 2)
  * Should return rowHeight for tableView.
  * Automatically sets tableView.rowHeight to result of block when set.
@@ -109,19 +126,19 @@ typedef void (^ContentSizeCategoryDidChangeBlock)(PCTableViewAdditions* tableVie
 typedef CGFloat (^RowHeightBlock)(PCTableViewAdditions* tableView);
 @property (nonatomic, copy) RowHeightBlock rowHeightBlock;
 
-/*
+/**
  * 3)
  * Default: NO
  */
 @property (nonatomic) BOOL reprocessesImagesWhenContentSizeCategoryChanges;
 
-/*
+/**
  * 4)
  * Default: YES
  */
 @property (nonatomic) BOOL reloadsDataWhenContentSizeCategoryChanges;
 
-/*
+/**
  * Use this method to get for cells a reuseIdentifier that is automatically modified
  * when the cell should be reconstructed (typically when content size category changes).
  * Returns nil if identifier is nil.
@@ -130,7 +147,7 @@ typedef CGFloat (^RowHeightBlock)(PCTableViewAdditions* tableView);
 
 #pragma mark - Other utils
 
-/*
+/**
  * Saves (in memory) current contentOffset under identifier.
  * identifier cannot be nil
  * You can the user restoreContentOffsetForIdentifier: to restore the contentOffset
@@ -138,7 +155,7 @@ typedef CGFloat (^RowHeightBlock)(PCTableViewAdditions* tableView);
  */
 - (void)saveContentOffsetForIdentifier:(NSString*)identifier;
 
-/*
+/**
  * See saveContentOffsetForIdentifier:
  * identifier cannot be nil
  * Does nothing if not saved state found for identifier

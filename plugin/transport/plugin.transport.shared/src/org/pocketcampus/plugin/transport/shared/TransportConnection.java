@@ -26,44 +26,35 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
 
   private static final org.apache.thrift.protocol.TField DEPARTURE_FIELD_DESC = new org.apache.thrift.protocol.TField("departure", org.apache.thrift.protocol.TType.STRUCT, (short)1);
   private static final org.apache.thrift.protocol.TField ARRIVAL_FIELD_DESC = new org.apache.thrift.protocol.TField("arrival", org.apache.thrift.protocol.TType.STRUCT, (short)2);
-  private static final org.apache.thrift.protocol.TField PATH_FIELD_DESC = new org.apache.thrift.protocol.TField("path", org.apache.thrift.protocol.TType.LIST, (short)3);
   private static final org.apache.thrift.protocol.TField LINE_FIELD_DESC = new org.apache.thrift.protocol.TField("line", org.apache.thrift.protocol.TType.STRUCT, (short)4);
-  private static final org.apache.thrift.protocol.TField DESTINATION_FIELD_DESC = new org.apache.thrift.protocol.TField("destination", org.apache.thrift.protocol.TType.STRUCT, (short)5);
   private static final org.apache.thrift.protocol.TField DEPARTURE_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("departureTime", org.apache.thrift.protocol.TType.I64, (short)6);
   private static final org.apache.thrift.protocol.TField DEPARTURE_POSITION_FIELD_DESC = new org.apache.thrift.protocol.TField("departurePosition", org.apache.thrift.protocol.TType.STRING, (short)7);
   private static final org.apache.thrift.protocol.TField ARRIVAL_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("arrivalTime", org.apache.thrift.protocol.TType.I64, (short)8);
   private static final org.apache.thrift.protocol.TField ARRIVAL_POSITION_FIELD_DESC = new org.apache.thrift.protocol.TField("arrivalPosition", org.apache.thrift.protocol.TType.STRING, (short)9);
-  private static final org.apache.thrift.protocol.TField INTERMEDIATE_STOPS_FIELD_DESC = new org.apache.thrift.protocol.TField("intermediateStops", org.apache.thrift.protocol.TType.LIST, (short)10);
   private static final org.apache.thrift.protocol.TField FOOT_FIELD_DESC = new org.apache.thrift.protocol.TField("foot", org.apache.thrift.protocol.TType.BOOL, (short)11);
-  private static final org.apache.thrift.protocol.TField MIN_FIELD_DESC = new org.apache.thrift.protocol.TField("min", org.apache.thrift.protocol.TType.I32, (short)12);
+  private static final org.apache.thrift.protocol.TField FOOT_DURATION_FIELD_DESC = new org.apache.thrift.protocol.TField("footDuration", org.apache.thrift.protocol.TType.I32, (short)12);
 
-  public TransportStation departure; // required
-  public TransportStation arrival; // required
-  public List<Point> path; // required
-  public TransportLine line; // required
-  public TransportStation destination; // required
-  public long departureTime; // required
-  public String departurePosition; // required
-  public long arrivalTime; // required
-  public String arrivalPosition; // required
-  public List<Stop> intermediateStops; // required
-  public boolean foot; // required
-  public int min; // required
+  private TransportStation departure; // required
+  private TransportStation arrival; // required
+  private TransportLine line; // required
+  private long departureTime; // required
+  private String departurePosition; // required
+  private long arrivalTime; // required
+  private String arrivalPosition; // required
+  private boolean foot; // required
+  private int footDuration; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     DEPARTURE((short)1, "departure"),
     ARRIVAL((short)2, "arrival"),
-    PATH((short)3, "path"),
     LINE((short)4, "line"),
-    DESTINATION((short)5, "destination"),
     DEPARTURE_TIME((short)6, "departureTime"),
     DEPARTURE_POSITION((short)7, "departurePosition"),
     ARRIVAL_TIME((short)8, "arrivalTime"),
     ARRIVAL_POSITION((short)9, "arrivalPosition"),
-    INTERMEDIATE_STOPS((short)10, "intermediateStops"),
     FOOT((short)11, "foot"),
-    MIN((short)12, "min");
+    FOOT_DURATION((short)12, "footDuration");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -82,12 +73,8 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
           return DEPARTURE;
         case 2: // ARRIVAL
           return ARRIVAL;
-        case 3: // PATH
-          return PATH;
         case 4: // LINE
           return LINE;
-        case 5: // DESTINATION
-          return DESTINATION;
         case 6: // DEPARTURE_TIME
           return DEPARTURE_TIME;
         case 7: // DEPARTURE_POSITION
@@ -96,12 +83,10 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
           return ARRIVAL_TIME;
         case 9: // ARRIVAL_POSITION
           return ARRIVAL_POSITION;
-        case 10: // INTERMEDIATE_STOPS
-          return INTERMEDIATE_STOPS;
         case 11: // FOOT
           return FOOT;
-        case 12: // MIN
-          return MIN;
+        case 12: // FOOT_DURATION
+          return FOOT_DURATION;
         default:
           return null;
       }
@@ -145,7 +130,7 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
   private static final int __DEPARTURETIME_ISSET_ID = 0;
   private static final int __ARRIVALTIME_ISSET_ID = 1;
   private static final int __FOOT_ISSET_ID = 2;
-  private static final int __MIN_ISSET_ID = 3;
+  private static final int __FOOTDURATION_ISSET_ID = 3;
   private BitSet __isset_bit_vector = new BitSet(4);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
@@ -155,27 +140,19 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class)));
     tmpMap.put(_Fields.ARRIVAL, new org.apache.thrift.meta_data.FieldMetaData("arrival", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class)));
-    tmpMap.put(_Fields.PATH, new org.apache.thrift.meta_data.FieldMetaData("path", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Point.class))));
     tmpMap.put(_Fields.LINE, new org.apache.thrift.meta_data.FieldMetaData("line", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportLine.class)));
-    tmpMap.put(_Fields.DESTINATION, new org.apache.thrift.meta_data.FieldMetaData("destination", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class)));
     tmpMap.put(_Fields.DEPARTURE_TIME, new org.apache.thrift.meta_data.FieldMetaData("departureTime", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.DEPARTURE_POSITION, new org.apache.thrift.meta_data.FieldMetaData("departurePosition", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.ARRIVAL_TIME, new org.apache.thrift.meta_data.FieldMetaData("arrivalTime", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.ARRIVAL_POSITION, new org.apache.thrift.meta_data.FieldMetaData("arrivalPosition", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.INTERMEDIATE_STOPS, new org.apache.thrift.meta_data.FieldMetaData("intermediateStops", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Stop.class))));
-    tmpMap.put(_Fields.FOOT, new org.apache.thrift.meta_data.FieldMetaData("foot", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.FOOT, new org.apache.thrift.meta_data.FieldMetaData("foot", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
-    tmpMap.put(_Fields.MIN, new org.apache.thrift.meta_data.FieldMetaData("min", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.FOOT_DURATION, new org.apache.thrift.meta_data.FieldMetaData("footDuration", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(TransportConnection.class, metaDataMap);
@@ -186,11 +163,14 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
 
   public TransportConnection(
     TransportStation departure,
-    TransportStation arrival)
+    TransportStation arrival,
+    boolean foot)
   {
     this();
     this.departure = departure;
     this.arrival = arrival;
+    this.foot = foot;
+    setFootIsSet(true);
   }
 
   /**
@@ -205,18 +185,8 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
     if (other.isSetArrival()) {
       this.arrival = new TransportStation(other.arrival);
     }
-    if (other.isSetPath()) {
-      List<Point> __this__path = new ArrayList<Point>();
-      for (Point other_element : other.path) {
-        __this__path.add(new Point(other_element));
-      }
-      this.path = __this__path;
-    }
     if (other.isSetLine()) {
       this.line = new TransportLine(other.line);
-    }
-    if (other.isSetDestination()) {
-      this.destination = new TransportStation(other.destination);
     }
     this.departureTime = other.departureTime;
     if (other.isSetDeparturePosition()) {
@@ -226,15 +196,8 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
     if (other.isSetArrivalPosition()) {
       this.arrivalPosition = other.arrivalPosition;
     }
-    if (other.isSetIntermediateStops()) {
-      List<Stop> __this__intermediateStops = new ArrayList<Stop>();
-      for (Stop other_element : other.intermediateStops) {
-        __this__intermediateStops.add(new Stop(other_element));
-      }
-      this.intermediateStops = __this__intermediateStops;
-    }
     this.foot = other.foot;
-    this.min = other.min;
+    this.footDuration = other.footDuration;
   }
 
   public TransportConnection deepCopy() {
@@ -245,20 +208,17 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
   public void clear() {
     this.departure = null;
     this.arrival = null;
-    this.path = null;
     this.line = null;
-    this.destination = null;
     setDepartureTimeIsSet(false);
     this.departureTime = 0;
     this.departurePosition = null;
     setArrivalTimeIsSet(false);
     this.arrivalTime = 0;
     this.arrivalPosition = null;
-    this.intermediateStops = null;
     setFootIsSet(false);
     this.foot = false;
-    setMinIsSet(false);
-    this.min = 0;
+    setFootDurationIsSet(false);
+    this.footDuration = 0;
   }
 
   public TransportStation getDeparture() {
@@ -309,45 +269,6 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
     }
   }
 
-  public int getPathSize() {
-    return (this.path == null) ? 0 : this.path.size();
-  }
-
-  public java.util.Iterator<Point> getPathIterator() {
-    return (this.path == null) ? null : this.path.iterator();
-  }
-
-  public void addToPath(Point elem) {
-    if (this.path == null) {
-      this.path = new ArrayList<Point>();
-    }
-    this.path.add(elem);
-  }
-
-  public List<Point> getPath() {
-    return this.path;
-  }
-
-  public TransportConnection setPath(List<Point> path) {
-    this.path = path;
-    return this;
-  }
-
-  public void unsetPath() {
-    this.path = null;
-  }
-
-  /** Returns true if field path is set (has been assigned a value) and false otherwise */
-  public boolean isSetPath() {
-    return this.path != null;
-  }
-
-  public void setPathIsSet(boolean value) {
-    if (!value) {
-      this.path = null;
-    }
-  }
-
   public TransportLine getLine() {
     return this.line;
   }
@@ -369,30 +290,6 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
   public void setLineIsSet(boolean value) {
     if (!value) {
       this.line = null;
-    }
-  }
-
-  public TransportStation getDestination() {
-    return this.destination;
-  }
-
-  public TransportConnection setDestination(TransportStation destination) {
-    this.destination = destination;
-    return this;
-  }
-
-  public void unsetDestination() {
-    this.destination = null;
-  }
-
-  /** Returns true if field destination is set (has been assigned a value) and false otherwise */
-  public boolean isSetDestination() {
-    return this.destination != null;
-  }
-
-  public void setDestinationIsSet(boolean value) {
-    if (!value) {
-      this.destination = null;
     }
   }
 
@@ -490,45 +387,6 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
     }
   }
 
-  public int getIntermediateStopsSize() {
-    return (this.intermediateStops == null) ? 0 : this.intermediateStops.size();
-  }
-
-  public java.util.Iterator<Stop> getIntermediateStopsIterator() {
-    return (this.intermediateStops == null) ? null : this.intermediateStops.iterator();
-  }
-
-  public void addToIntermediateStops(Stop elem) {
-    if (this.intermediateStops == null) {
-      this.intermediateStops = new ArrayList<Stop>();
-    }
-    this.intermediateStops.add(elem);
-  }
-
-  public List<Stop> getIntermediateStops() {
-    return this.intermediateStops;
-  }
-
-  public TransportConnection setIntermediateStops(List<Stop> intermediateStops) {
-    this.intermediateStops = intermediateStops;
-    return this;
-  }
-
-  public void unsetIntermediateStops() {
-    this.intermediateStops = null;
-  }
-
-  /** Returns true if field intermediateStops is set (has been assigned a value) and false otherwise */
-  public boolean isSetIntermediateStops() {
-    return this.intermediateStops != null;
-  }
-
-  public void setIntermediateStopsIsSet(boolean value) {
-    if (!value) {
-      this.intermediateStops = null;
-    }
-  }
-
   public boolean isFoot() {
     return this.foot;
   }
@@ -552,27 +410,27 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
     __isset_bit_vector.set(__FOOT_ISSET_ID, value);
   }
 
-  public int getMin() {
-    return this.min;
+  public int getFootDuration() {
+    return this.footDuration;
   }
 
-  public TransportConnection setMin(int min) {
-    this.min = min;
-    setMinIsSet(true);
+  public TransportConnection setFootDuration(int footDuration) {
+    this.footDuration = footDuration;
+    setFootDurationIsSet(true);
     return this;
   }
 
-  public void unsetMin() {
-    __isset_bit_vector.clear(__MIN_ISSET_ID);
+  public void unsetFootDuration() {
+    __isset_bit_vector.clear(__FOOTDURATION_ISSET_ID);
   }
 
-  /** Returns true if field min is set (has been assigned a value) and false otherwise */
-  public boolean isSetMin() {
-    return __isset_bit_vector.get(__MIN_ISSET_ID);
+  /** Returns true if field footDuration is set (has been assigned a value) and false otherwise */
+  public boolean isSetFootDuration() {
+    return __isset_bit_vector.get(__FOOTDURATION_ISSET_ID);
   }
 
-  public void setMinIsSet(boolean value) {
-    __isset_bit_vector.set(__MIN_ISSET_ID, value);
+  public void setFootDurationIsSet(boolean value) {
+    __isset_bit_vector.set(__FOOTDURATION_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
@@ -593,27 +451,11 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
       }
       break;
 
-    case PATH:
-      if (value == null) {
-        unsetPath();
-      } else {
-        setPath((List<Point>)value);
-      }
-      break;
-
     case LINE:
       if (value == null) {
         unsetLine();
       } else {
         setLine((TransportLine)value);
-      }
-      break;
-
-    case DESTINATION:
-      if (value == null) {
-        unsetDestination();
-      } else {
-        setDestination((TransportStation)value);
       }
       break;
 
@@ -649,14 +491,6 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
       }
       break;
 
-    case INTERMEDIATE_STOPS:
-      if (value == null) {
-        unsetIntermediateStops();
-      } else {
-        setIntermediateStops((List<Stop>)value);
-      }
-      break;
-
     case FOOT:
       if (value == null) {
         unsetFoot();
@@ -665,11 +499,11 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
       }
       break;
 
-    case MIN:
+    case FOOT_DURATION:
       if (value == null) {
-        unsetMin();
+        unsetFootDuration();
       } else {
-        setMin((Integer)value);
+        setFootDuration((Integer)value);
       }
       break;
 
@@ -684,14 +518,8 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
     case ARRIVAL:
       return getArrival();
 
-    case PATH:
-      return getPath();
-
     case LINE:
       return getLine();
-
-    case DESTINATION:
-      return getDestination();
 
     case DEPARTURE_TIME:
       return Long.valueOf(getDepartureTime());
@@ -705,14 +533,11 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
     case ARRIVAL_POSITION:
       return getArrivalPosition();
 
-    case INTERMEDIATE_STOPS:
-      return getIntermediateStops();
-
     case FOOT:
       return Boolean.valueOf(isFoot());
 
-    case MIN:
-      return Integer.valueOf(getMin());
+    case FOOT_DURATION:
+      return Integer.valueOf(getFootDuration());
 
     }
     throw new IllegalStateException();
@@ -729,12 +554,8 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
       return isSetDeparture();
     case ARRIVAL:
       return isSetArrival();
-    case PATH:
-      return isSetPath();
     case LINE:
       return isSetLine();
-    case DESTINATION:
-      return isSetDestination();
     case DEPARTURE_TIME:
       return isSetDepartureTime();
     case DEPARTURE_POSITION:
@@ -743,12 +564,10 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
       return isSetArrivalTime();
     case ARRIVAL_POSITION:
       return isSetArrivalPosition();
-    case INTERMEDIATE_STOPS:
-      return isSetIntermediateStops();
     case FOOT:
       return isSetFoot();
-    case MIN:
-      return isSetMin();
+    case FOOT_DURATION:
+      return isSetFootDuration();
     }
     throw new IllegalStateException();
   }
@@ -784,30 +603,12 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
         return false;
     }
 
-    boolean this_present_path = true && this.isSetPath();
-    boolean that_present_path = true && that.isSetPath();
-    if (this_present_path || that_present_path) {
-      if (!(this_present_path && that_present_path))
-        return false;
-      if (!this.path.equals(that.path))
-        return false;
-    }
-
     boolean this_present_line = true && this.isSetLine();
     boolean that_present_line = true && that.isSetLine();
     if (this_present_line || that_present_line) {
       if (!(this_present_line && that_present_line))
         return false;
       if (!this.line.equals(that.line))
-        return false;
-    }
-
-    boolean this_present_destination = true && this.isSetDestination();
-    boolean that_present_destination = true && that.isSetDestination();
-    if (this_present_destination || that_present_destination) {
-      if (!(this_present_destination && that_present_destination))
-        return false;
-      if (!this.destination.equals(that.destination))
         return false;
     }
 
@@ -847,17 +648,8 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
         return false;
     }
 
-    boolean this_present_intermediateStops = true && this.isSetIntermediateStops();
-    boolean that_present_intermediateStops = true && that.isSetIntermediateStops();
-    if (this_present_intermediateStops || that_present_intermediateStops) {
-      if (!(this_present_intermediateStops && that_present_intermediateStops))
-        return false;
-      if (!this.intermediateStops.equals(that.intermediateStops))
-        return false;
-    }
-
-    boolean this_present_foot = true && this.isSetFoot();
-    boolean that_present_foot = true && that.isSetFoot();
+    boolean this_present_foot = true;
+    boolean that_present_foot = true;
     if (this_present_foot || that_present_foot) {
       if (!(this_present_foot && that_present_foot))
         return false;
@@ -865,12 +657,12 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
         return false;
     }
 
-    boolean this_present_min = true && this.isSetMin();
-    boolean that_present_min = true && that.isSetMin();
-    if (this_present_min || that_present_min) {
-      if (!(this_present_min && that_present_min))
+    boolean this_present_footDuration = true && this.isSetFootDuration();
+    boolean that_present_footDuration = true && that.isSetFootDuration();
+    if (this_present_footDuration || that_present_footDuration) {
+      if (!(this_present_footDuration && that_present_footDuration))
         return false;
-      if (this.min != that.min)
+      if (this.footDuration != that.footDuration)
         return false;
     }
 
@@ -891,20 +683,10 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
     if (present_arrival)
       builder.append(arrival);
 
-    boolean present_path = true && (isSetPath());
-    builder.append(present_path);
-    if (present_path)
-      builder.append(path);
-
     boolean present_line = true && (isSetLine());
     builder.append(present_line);
     if (present_line)
       builder.append(line);
-
-    boolean present_destination = true && (isSetDestination());
-    builder.append(present_destination);
-    if (present_destination)
-      builder.append(destination);
 
     boolean present_departureTime = true && (isSetDepartureTime());
     builder.append(present_departureTime);
@@ -926,20 +708,15 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
     if (present_arrivalPosition)
       builder.append(arrivalPosition);
 
-    boolean present_intermediateStops = true && (isSetIntermediateStops());
-    builder.append(present_intermediateStops);
-    if (present_intermediateStops)
-      builder.append(intermediateStops);
-
-    boolean present_foot = true && (isSetFoot());
+    boolean present_foot = true;
     builder.append(present_foot);
     if (present_foot)
       builder.append(foot);
 
-    boolean present_min = true && (isSetMin());
-    builder.append(present_min);
-    if (present_min)
-      builder.append(min);
+    boolean present_footDuration = true && (isSetFootDuration());
+    builder.append(present_footDuration);
+    if (present_footDuration)
+      builder.append(footDuration);
 
     return builder.toHashCode();
   }
@@ -972,32 +749,12 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetPath()).compareTo(typedOther.isSetPath());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetPath()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.path, typedOther.path);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     lastComparison = Boolean.valueOf(isSetLine()).compareTo(typedOther.isSetLine());
     if (lastComparison != 0) {
       return lastComparison;
     }
     if (isSetLine()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.line, typedOther.line);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetDestination()).compareTo(typedOther.isSetDestination());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetDestination()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.destination, typedOther.destination);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -1042,16 +799,6 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetIntermediateStops()).compareTo(typedOther.isSetIntermediateStops());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetIntermediateStops()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.intermediateStops, typedOther.intermediateStops);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     lastComparison = Boolean.valueOf(isSetFoot()).compareTo(typedOther.isSetFoot());
     if (lastComparison != 0) {
       return lastComparison;
@@ -1062,12 +809,12 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetMin()).compareTo(typedOther.isSetMin());
+    lastComparison = Boolean.valueOf(isSetFootDuration()).compareTo(typedOther.isSetFootDuration());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetMin()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.min, typedOther.min);
+    if (isSetFootDuration()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.footDuration, typedOther.footDuration);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -1105,36 +852,10 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // PATH
-          if (field.type == org.apache.thrift.protocol.TType.LIST) {
-            {
-              org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
-              this.path = new ArrayList<Point>(_list4.size);
-              for (int _i5 = 0; _i5 < _list4.size; ++_i5)
-              {
-                Point _elem6; // required
-                _elem6 = new Point();
-                _elem6.read(iprot);
-                this.path.add(_elem6);
-              }
-              iprot.readListEnd();
-            }
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
         case 4: // LINE
           if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
             this.line = new TransportLine();
             this.line.read(iprot);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 5: // DESTINATION
-          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.destination = new TransportStation();
-            this.destination.read(iprot);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -1169,24 +890,6 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 10: // INTERMEDIATE_STOPS
-          if (field.type == org.apache.thrift.protocol.TType.LIST) {
-            {
-              org.apache.thrift.protocol.TList _list7 = iprot.readListBegin();
-              this.intermediateStops = new ArrayList<Stop>(_list7.size);
-              for (int _i8 = 0; _i8 < _list7.size; ++_i8)
-              {
-                Stop _elem9; // required
-                _elem9 = new Stop();
-                _elem9.read(iprot);
-                this.intermediateStops.add(_elem9);
-              }
-              iprot.readListEnd();
-            }
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
         case 11: // FOOT
           if (field.type == org.apache.thrift.protocol.TType.BOOL) {
             this.foot = iprot.readBool();
@@ -1195,10 +898,10 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 12: // MIN
+        case 12: // FOOT_DURATION
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.min = iprot.readI32();
-            setMinIsSet(true);
+            this.footDuration = iprot.readI32();
+            setFootDurationIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -1211,6 +914,9 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
+    if (!isSetFoot()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'foot' was not found in serialized data! Struct: " + toString());
+    }
     validate();
   }
 
@@ -1228,31 +934,10 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
       this.arrival.write(oprot);
       oprot.writeFieldEnd();
     }
-    if (this.path != null) {
-      if (isSetPath()) {
-        oprot.writeFieldBegin(PATH_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.path.size()));
-          for (Point _iter10 : this.path)
-          {
-            _iter10.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
-    }
     if (this.line != null) {
       if (isSetLine()) {
         oprot.writeFieldBegin(LINE_FIELD_DESC);
         this.line.write(oprot);
-        oprot.writeFieldEnd();
-      }
-    }
-    if (this.destination != null) {
-      if (isSetDestination()) {
-        oprot.writeFieldBegin(DESTINATION_FIELD_DESC);
-        this.destination.write(oprot);
         oprot.writeFieldEnd();
       }
     }
@@ -1280,28 +965,12 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
         oprot.writeFieldEnd();
       }
     }
-    if (this.intermediateStops != null) {
-      if (isSetIntermediateStops()) {
-        oprot.writeFieldBegin(INTERMEDIATE_STOPS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.intermediateStops.size()));
-          for (Stop _iter11 : this.intermediateStops)
-          {
-            _iter11.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
-    }
-    if (isSetFoot()) {
-      oprot.writeFieldBegin(FOOT_FIELD_DESC);
-      oprot.writeBool(this.foot);
-      oprot.writeFieldEnd();
-    }
-    if (isSetMin()) {
-      oprot.writeFieldBegin(MIN_FIELD_DESC);
-      oprot.writeI32(this.min);
+    oprot.writeFieldBegin(FOOT_FIELD_DESC);
+    oprot.writeBool(this.foot);
+    oprot.writeFieldEnd();
+    if (isSetFootDuration()) {
+      oprot.writeFieldBegin(FOOT_DURATION_FIELD_DESC);
+      oprot.writeI32(this.footDuration);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -1328,16 +997,6 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
       sb.append(this.arrival);
     }
     first = false;
-    if (isSetPath()) {
-      if (!first) sb.append(", ");
-      sb.append("path:");
-      if (this.path == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.path);
-      }
-      first = false;
-    }
     if (isSetLine()) {
       if (!first) sb.append(", ");
       sb.append("line:");
@@ -1345,16 +1004,6 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
         sb.append("null");
       } else {
         sb.append(this.line);
-      }
-      first = false;
-    }
-    if (isSetDestination()) {
-      if (!first) sb.append(", ");
-      sb.append("destination:");
-      if (this.destination == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.destination);
       }
       first = false;
     }
@@ -1390,26 +1039,14 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
       }
       first = false;
     }
-    if (isSetIntermediateStops()) {
+    if (!first) sb.append(", ");
+    sb.append("foot:");
+    sb.append(this.foot);
+    first = false;
+    if (isSetFootDuration()) {
       if (!first) sb.append(", ");
-      sb.append("intermediateStops:");
-      if (this.intermediateStops == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.intermediateStops);
-      }
-      first = false;
-    }
-    if (isSetFoot()) {
-      if (!first) sb.append(", ");
-      sb.append("foot:");
-      sb.append(this.foot);
-      first = false;
-    }
-    if (isSetMin()) {
-      if (!first) sb.append(", ");
-      sb.append("min:");
-      sb.append(this.min);
+      sb.append("footDuration:");
+      sb.append(this.footDuration);
       first = false;
     }
     sb.append(")");
@@ -1424,6 +1061,7 @@ public class TransportConnection implements org.apache.thrift.TBase<TransportCon
     if (arrival == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'arrival' was not present! Struct: " + toString());
     }
+    // alas, we cannot check 'foot' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

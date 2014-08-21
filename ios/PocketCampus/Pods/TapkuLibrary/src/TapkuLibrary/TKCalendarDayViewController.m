@@ -38,20 +38,20 @@
 #pragma mark View Lifecycle
 - (void) loadView{
 	[super loadView];
+	
+	CGRect frame = self.view.frame;
+	frame.size.width = 320;
+	self.view.frame = frame;
+	
 	if([self respondsToSelector:@selector(edgesForExtendedLayout)])
 		self.edgesForExtendedLayout = UIRectEdgeNone;
-
-
-	
 	self.dayView = [[TKCalendarDayView alloc] initWithFrame:self.view.bounds];
 	self.dayView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.dayView.delegate = self;
 	self.dayView.dataSource = self;
 	[self.view addSubview:self.dayView];
 }
-- (void) viewDidUnload {
-	self.dayView = nil;
-}
+
 
 #pragma mark TKCalendarDayViewDelegate
 - (NSArray *) calendarDayTimelineView:(TKCalendarDayView*)calendarDayTimeline eventsForDate:(NSDate *)eventDate{

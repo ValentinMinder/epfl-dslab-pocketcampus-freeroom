@@ -47,7 +47,6 @@
 
 #import "MoodleSettingsViewController.h"
 
-
 static const NSTimeInterval kRefreshValiditySeconds = 86400; //1 day
 
 static const UISearchBarStyle kSearchBarDefaultStyle = UISearchBarStyleDefault;
@@ -181,7 +180,32 @@ static const NSInteger kSegmentIndexFavorites = 2;
     if (!self.sections || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
+//#warning REMOVE
+    //[NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(test) userInfo:nil repeats:YES];
+    
 }
+
+// STRESS TEST
+// Also need to set animated:NO for iPhone in didSelectRowAtIndexPath
+/*
+static int i = 0;
+- (void)test {
+    NSUInteger randSection = arc4random() % (self.sections.count - 1);
+    MoodleSection* section = self.sections[randSection];
+    NSUInteger randRow = 0;
+    if (section.iResources.count == 0) {
+        return;
+    }
+    if (![PCUtils isIdiomPad] && (i % 2 == 1)) {
+        [self.navigationController popViewControllerAnimated:NO];
+    } else {
+        if (section.iResources.count > 1) {
+            randRow = arc4random() % (section.iResources.count - 1);
+        }
+        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:randRow inSection:randSection]];
+    }
+    i++;
+}*/
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -232,6 +256,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
 #pragma mark - Refresh
 
 - (void)refresh {
+    CLSLog(@"-> Refresh course sections");
     [self.moodleService cancelOperationsForDelegate:self]; //cancel before retrying
     [self.lgRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingCourse", @"MoodlePlugin", nil)];
     [self startGetCourseSectionsRequest];
@@ -340,11 +365,11 @@ static const NSInteger kSegmentIndexFavorites = 2;
             cell.favoriteIndicationVisible = [self.moodleService isFavoriteMoodleResource:resource];
             cell.durablySelected = [self.selectedResource isEqualToMoodleResource:resource];
             
-            MoodleCourseSectionsViewController* weakSelf __weak = self;
-            PCTableViewCellAdditions* cellWeak __weak = cell;
+            __weak __typeof(self) welf = self;
+            PCTableViewCellAdditions* weakCell __weak = cell;
             
             [cell setAccessibilityLabelBlock:^NSString *{
-                return [NSString stringWithFormat:NSLocalizedStringFromTable(@"DocumentDescriptionWithFormat", @"MoodlePlugin", nil), resource.iName, resource.fileExtension, [weakSelf.moodleService isMoodleResourceDownloaded:resource] ? NSLocalizedStringFromTable(@"yes", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"no", @"PocketCampus", nil)];
+                return [NSString stringWithFormat:NSLocalizedStringFromTable(@"DocumentDescriptionWithFormat", @"MoodlePlugin", nil), resource.iName, resource.fileExtension, [welf.moodleService isMoodleResourceDownloaded:resource] ? NSLocalizedStringFromTable(@"yes", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"no", @"PocketCampus", nil)];
             }];
             
             [cell setAccessibilityTraitsBlock:^UIAccessibilityTraits{
@@ -353,23 +378,26 @@ static const NSInteger kSegmentIndexFavorites = 2;
             
             [self.moodleService removeMoodleResourceObserver:self forResource:resource];
             [self.moodleService addMoodleResourceObserver:self forResource:resource eventBlock:^(MoodleResourceEvent event) {
+                if (!weakCell) {
+                    return;
+                }
                 if (event == MoodleResourceEventDeleted) {
-                    cellWeak.durablySelected = NO;
-                    cellWeak.downloadedIndicationVisible  = NO;
-                    if (weakSelf.splitViewController && [weakSelf.selectedResource isEqual:resource]) { //iPad //resource deleted => hide ResourceViewController
-                        [weakSelf.tableView deselectRowAtIndexPath:[weakSelf.tableView indexPathForSelectedRow] animated:YES];
-                        [weakSelf.searchController.searchResultsTableView deselectRowAtIndexPath:[weakSelf.searchController.searchResultsTableView indexPathForSelectedRow] animated:YES];
-                        weakSelf.selectedResource = nil;
+                    weakCell.durablySelected = NO;
+                    weakCell.downloadedIndicationVisible  = NO;
+                    if (welf.splitViewController && [welf.selectedResource isEqual:resource]) { //iPad //resource deleted => hide ResourceViewController
+                        [welf.tableView deselectRowAtIndexPath:[welf.tableView indexPathForSelectedRow] animated:YES];
+                        [welf.searchController.searchResultsTableView deselectRowAtIndexPath:[welf.searchController.searchResultsTableView indexPathForSelectedRow] animated:YES];
+                        welf.selectedResource = nil;
                         MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
-                        weakSelf.splitViewController.viewControllers = @[weakSelf.splitViewController.viewControllers[0], [[PCNavigationController alloc] initWithRootViewController:splashViewController]];
-                        [NSTimer scheduledTimerWithTimeInterval:0.2 target:weakSelf selector:@selector(showMasterViewController) userInfo:nil repeats:NO];
+                        welf.splitViewController.viewControllers = @[welf.splitViewController.viewControllers[0], [[PCNavigationController alloc] initWithRootViewController:splashViewController]];
+                        [NSTimer scheduledTimerWithTimeInterval:0.2 target:welf selector:@selector(showMasterViewController) userInfo:nil repeats:NO];
                     }
                 } else if (event == MoodleResourceEventDownloaded) {
-                    cellWeak.downloadedIndicationVisible = YES;
+                    weakCell.downloadedIndicationVisible = YES;
                 } else {
                     //not supported
                 }
-                [cell setNeedsLayout];
+                [weakCell setNeedsLayout];
             }];
 
             cellsTemp[(id<NSCopying>)resource] = cell; //NSCopying is implemented in Comparison category
@@ -397,13 +425,13 @@ static const NSInteger kSegmentIndexFavorites = 2;
 - (void)settingsButtonPressed {
     [self trackAction:@"OpenSettings"];
     MoodleSettingsViewController* settingsViewController = [[MoodleSettingsViewController alloc] init];
+    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:settingsViewController];
     if (self.splitViewController) {
         if (!self.settingsPopover) {
-            self.settingsPopover = [[UIPopoverController alloc] initWithContentViewController:settingsViewController];
+            self.settingsPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
         }
         [self.settingsPopover togglePopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
     } else {
-        PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:settingsViewController];
         [self presentViewController:navController animated:YES completion:NULL];
     }
 }
@@ -568,7 +596,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
     if (self.splitViewController && [resource isEqualToMoodleResource:self.selectedResource]) {
         return;
     }
-    [self trackAction:@"DownloadAndOpenFile"];
+    [self trackAction:@"DownloadAndOpenFile" contentInfo:resource.iName];
     MoodleResourceViewController* detailViewController = [[MoodleResourceViewController alloc] initWithMoodleResource:resource];
     if (self.splitViewController) { // iPad
         if (self.selectedResource) {
@@ -678,7 +706,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         MoodleSection* section = tableView == self.tableView ? self.sections[indexPath.section] : self.searchFilteredSections[indexPath.section];
         MoodleResource* resource = section.iResources[indexPath.row];
-        [self trackAction:PCGAITrackerActionDelete];
+        [self trackAction:PCGAITrackerActionDelete contentInfo:resource.iName];
         if ([self.moodleService deleteDownloadedMoodleResource:resource]) {
             [tableView setEditing:NO animated:YES];
         } else {
@@ -786,8 +814,8 @@ static const NSInteger kSegmentIndexFavorites = 2;
     [self.moodleService cancelOperationsForDelegate:self];
     [self.searchQueue cancelAllOperations];
     [self.typingTimer invalidate];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
         [self.segmentedControl removeObserver:self forKeyPath:NSStringFromSelector(@selector(frame))];
     }
     @catch (NSException *exception) {}

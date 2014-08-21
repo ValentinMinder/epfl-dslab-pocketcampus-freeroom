@@ -100,12 +100,8 @@
     
     if (!params) {
         params = [NSMutableDictionary dictionary]; //empty dictionary
-    } else {
-        for (NSString* param in [params copy]) {
-            params[param] = [params[param] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // convert HTML entities
-            params[param] = [params[param] stringByReplacingOccurrencesOfString:@"+" withString:@" "]; //sometimes + are used for spaces in URLs
-        }
     }
+    
     return [params copy]; //non-mutable copy
 }
 

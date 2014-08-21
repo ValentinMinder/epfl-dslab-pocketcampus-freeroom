@@ -39,6 +39,8 @@
 
 #import "MBProgressHUD.h"
 
+#import "PCDatePickerView.h"
+
 @interface IsAcademiaDayScheduleViewController ()<IsAcademiaServiceDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) IsAcademiaService* isaService;
@@ -78,7 +80,9 @@
     self.dayView.is24hClock = [PCUtils userLocaleIs24Hour];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshPressed)];
     UIBarButtonItem* todayItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Today", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(todayPressed)];
-    self.toolbarItems = @[todayItem];
+    UIBarButtonItem* flexibleSpaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem* goToDateItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"GoToDate", @"IsAcademiaPlugin", nil) style:UIBarButtonItemStylePlain target:self action:@selector(goToDatePressed)];
+    self.toolbarItems = @[todayItem, flexibleSpaceItem, goToDateItem];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferredContentSizeChanged) name:UIContentSizeCategoryDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     
@@ -100,13 +104,13 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
-    self.navigationController.navigationBar.hairlineDividerImageView.hidden = YES;
+    self.navigationController.navigationBar.hairlineDividerView.hidden = YES;
     [self.navigationController setToolbarHidden:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.hairlineDividerImageView.hidden = NO;
+    self.navigationController.navigationBar.hairlineDividerView.hidden = NO;
     [self.navigationController setToolbarHidden:YES];
 }
 
@@ -157,6 +161,22 @@
     [self trackAction:@"Today"];
     self.dayView.date = [NSDate date];
     [self calendarDayTimelineView:self.dayView didMoveToDate:self.dayView.date]; //force refresh
+}
+
+- (void)goToDatePressed {
+    PCDatePickerView* pcDatePicker = [PCDatePickerView new];
+    pcDatePicker.datePicker.datePickerMode = UIDatePickerModeDate;
+    pcDatePicker.datePicker.date = self.dayView.date;
+    __weak __typeof(self) welf = self;
+    [pcDatePicker setUserValidatedDateBlock:^(PCDatePickerView* view, NSDate* date) {
+        welf.dayView.date = date;
+        [welf calendarDayTimelineView:welf.dayView didMoveToDate:welf.dayView.date]; //force refresh
+        [view dismiss];
+    }];
+    [pcDatePicker setUserCancelledBlock:^(PCDatePickerView* view) {
+        [view dismiss];
+    }];
+    [pcDatePicker presentInView:self.view];
 }
 
 #pragma mark - Date utils
@@ -250,7 +270,7 @@
             NSString* room = [actionSheet buttonTitleAtIndex:buttonIndex];
             UIViewController* viewController = [MapController viewControllerWithInitialSearchQuery:room];
             [self.navigationController pushViewController:viewController animated:YES];
-            [self trackAction:@"ViewRoomOnMap"];
+            [self trackAction:@"ViewRoomOnMap" contentInfo:room];
         }
         self.detailsActionSheet = nil;
     }
@@ -294,7 +314,7 @@
     [self.detailsActionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil)];
     self.detailsActionSheet.cancelButtonIndex = self.detailsActionSheet.numberOfButtons-1;
     [self.detailsActionSheet showFromToolbar:self.navigationController.toolbar];
-    [self trackAction:@"ViewPeriodProperties"];
+    [self trackAction:@"ViewPeriodProperties" contentInfo:period.name];
 }
 
 #pragma mark - TKCalendarDayViewDataSource

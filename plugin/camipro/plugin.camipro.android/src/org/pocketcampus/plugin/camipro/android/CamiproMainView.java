@@ -3,12 +3,11 @@ package org.pocketcampus.plugin.camipro.android;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.layout.StandardLayout;
+import org.pocketcampus.platform.android.ui.layout.StandardTitledDoubleSeparatedLayout;
 import org.pocketcampus.plugin.camipro.R;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleSeparatedLayout;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
 import org.pocketcampus.plugin.camipro.shared.Transaction;
 
@@ -27,7 +26,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 
 /**
@@ -57,8 +55,6 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
-		//Tracker
-		Tracker.getInstance().trackPageView("camipro");
 		
 		// Get and cast the controller and model
 		mController = (CamiproController) controller;
@@ -72,11 +68,8 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		mLayout.hideFirstTitle();
 		mLayout.hideSecondTitle();
 
-		ActionBar a = getActionBar();
-		if (a != null) {
-			RefreshAction refresh = new RefreshAction();
-			a.addAction(refresh, 0);
-		}
+		addActionToActionBar(new RefreshAction(), 0);
+		setActionBarTitle(getString(R.string.camipro_plugin_title));
 	}
 
 	/**
@@ -145,6 +138,11 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 			// Whenever we switch back to this activity, update contents
 			mController.refreshBalanceAndTransactions();
 		}*/
+	}
+	
+	@Override
+	protected String screenName() {
+		return "/camipro";
 	}
 
 	@Override
@@ -223,6 +221,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		if(item.getItemId() == R.id.camipro_recharge) {
 			Intent i = new Intent(this, CamiproCardRechargeView.class);
 			startActivity(i);
+			trackEvent("OpenStatsAndRefill", null);
 		}
 		return true;
 	}
@@ -373,8 +372,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		 */
 		@Override
 		public void performAction(View view) {
-			//Tracker
-			Tracker.getInstance().trackPageView("camipro/refresh");
+			trackEvent("Refresh", null);
 			mController.refreshBalanceAndTransactions();
 		}
 	}

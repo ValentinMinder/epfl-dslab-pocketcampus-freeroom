@@ -25,12 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 05.05.12.
-
-
 
 
 #import "NewsListViewController.h"
@@ -39,11 +34,11 @@
 
 #import "NewsUtils.h"
 
+#import "NewsModelAdditions.h"
+
 #import "NewsItemViewController.h"
 
 #import "PCTableViewSectionHeader.h"
-
-#import "PCTableViewAdditions.h"
 
 #import "UIImage+Additions.h"
 
@@ -54,13 +49,15 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 @interface NewsListViewController ()<NewsServiceDelegate>
 
 @property (nonatomic, strong) NewsService* newsService;
-@property (nonatomic, strong) NSArray* sections; //array of arrays, as returned by [NewsUtils eliminateDuplicateNewsItemsInArray:]
+@property (nonatomic, strong) NSArray* sections; //array of arrays of NewsFeedItem
 @property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
-@property (nonatomic, strong) NewsItem* selectedItem;
+@property (nonatomic, strong) NewsFeedItem* selectedItem;
 
 @end
 
 @implementation NewsListViewController
+
+#pragma mark - Init
 
 - (id)init 
 {
@@ -72,19 +69,19 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
         });
         self.gaiScreenName = @"/news";
         self.newsService = [NewsService sharedInstanceToRetain];
-        NSArray* newsItems = [self.newsService getFromCacheNewsItemsForLanguage:[PCUtils userLanguageCode]];
-        if (newsItems) {
-            newsItems = [NewsUtils eliminateDuplicateNewsItemsInArray:newsItems];
-            self.sections = [NewsUtils newsItemsSectionsSortedByDate:newsItems];
-        }
+        NewsFeedsRequest* request = [[NewsFeedsRequest alloc] initWithLanguage:[PCUtils userLanguageCode] generalFeedIncluded:YES];
+        NewsFeedsResponse* cachedResponse = [self.newsService getFromCacheAllFeedsForRequest:request];
+        [self fillSectionsFromNewsFeedsResponse:cachedResponse];
     }
     return self;
 }
 
+#pragma mark - UIViewController overrides
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] init];
+    PCTableViewAdditions* tableViewAdditions = [PCTableViewAdditions new];
     self.tableView = tableViewAdditions;
     tableViewAdditions.imageProcessingBlock = ^UIImage*(PCTableViewAdditions* tableView, NSIndexPath* indexPath, UIImage* image) {
         return [image imageByScalingAndCroppingForSize:CGSizeMake(106.0, tableView.rowHeight) applyDeviceScreenMultiplyingFactor:YES];
@@ -110,7 +107,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     
 }
 
-#pragma mark - refresh control
+#pragma mark - Refresh control
 
 - (void)refreshIfNeeded {
     if (!self.sections || [self.lgRefreshControl shouldRefreshDataForValidity:kAutomaticRefreshPeriodSeconds]) {
@@ -121,38 +118,61 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 - (void)refresh {
     [self.newsService cancelOperationsForDelegate:self];
     [self.lgRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingNews", @"NewsPlugin", nil)];
-    [self.newsService getNewsItemsForLanguage:[PCUtils userLanguageCode] delegate:self];
+    NewsFeedsRequest* request = [[NewsFeedsRequest alloc] initWithLanguage:[PCUtils userLanguageCode] generalFeedIncluded:YES];
+    [self.newsService getAllFeedsForRequest:request delegate:self];
+}
+
+- (void)fillSectionsFromNewsFeedsResponse:(NewsFeedsResponse*)response {
+    if (!response) {
+        self.sections = nil;
+        return;
+    }
+    NSMutableArray* mAllNewsFeedItems = [NSMutableArray arrayWithCapacity:response.feeds.count*20]; //magic estimate
+    for (NewsFeed* feed in response.feeds) {
+        [mAllNewsFeedItems addObjectsFromArray:feed.items];
+    }
+    self.sections = [NewsUtils newsFeedItemsSectionsSortedByDate:mAllNewsFeedItems makeItemsUnique:YES];
 }
 
 #pragma mark - NewsServiceDelegate
 
-- (void)newsItemsForLanguage:(NSString*)language didReturn:(NSArray*)newsItems {
-    newsItems = [NewsUtils eliminateDuplicateNewsItemsInArray:newsItems];
-    self.sections = [NewsUtils newsItemsSectionsSortedByDate:newsItems];
+- (void)getAllFeedsForRequest:(NewsFeedsRequest *)request didReturn:(NewsFeedsResponse *)response {
     
-    [self.tableView reloadData];
-    
-    if (self.selectedItem) {
-        BOOL found __block = NO;
-        [self.sections enumerateObjectsUsingBlock:^(NSArray* items, NSUInteger section, BOOL *stop1) {
-            [items enumerateObjectsUsingBlock:^(NewsItem* item, NSUInteger row, BOOL *stop2) {
-                if ([item isEqual:self.selectedItem]) {
-                    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
-                    self.selectedItem = item;
-                    *stop1 = YES;
-                    *stop2 = YES;
-                    found = YES;
+    switch (response.statusCode) {
+        case NewsStatusCode_OK:
+        {
+            
+            [self fillSectionsFromNewsFeedsResponse:response];
+            [self.tableView reloadData];
+            __weak __typeof(self) welf = self;
+            if (self.selectedItem) {
+                BOOL found __block = NO;
+                [self.sections enumerateObjectsUsingBlock:^(NSArray* items, NSUInteger section, BOOL *stop1) {
+                    [items enumerateObjectsUsingBlock:^(NewsFeedItem* item, NSUInteger row, BOOL *stop2) {
+                        if ([item isEqual:self.selectedItem]) {
+                            [welf.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                            self.selectedItem = item;
+                            *stop1 = YES;
+                            *stop2 = YES;
+                            found = YES;
+                        }
+                    }];
+                }];
+                if (!found) {
+                    self.selectedItem = nil;
                 }
-            }];
-        }];
-        if (!found) {
-            self.selectedItem = nil;
+            }
+            [self.lgRefreshControl endRefreshingAndMarkSuccessful];
+            break;
         }
+        default:
+            [self getAllFeedsFailedForRequest:request];
+            break;
     }
-    [self.lgRefreshControl endRefreshingAndMarkSuccessful];
+    
 }
 
-- (void)newsItemsFailedForLanguage:(NSString*)language {
+- (void)getAllFeedsFailedForRequest:(NewsFeedsRequest *)request {
     [PCUtils showServerErrorAlert];
     [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil)];
 }
@@ -200,16 +220,15 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NewsItem* newsItem = self.sections[indexPath.section][indexPath.row];
+    NewsFeedItem* newsFeedItem = self.sections[indexPath.section][indexPath.row];
     
-    if ([self.selectedItem isEqual:newsItem]) {
+    if ([self.selectedItem isEqual:newsFeedItem]) {
         return;
     }
-    [self trackAction:@"OpenNewsItem"];
-    NewsItemViewController* newsItemViewController = [[NewsItemViewController alloc] initWithNewsItem:newsItem cachedImageOrNil:[(PCTableViewAdditions*)(self.tableView) cachedRawImageAtIndexPath:indexPath]];
-    
+    [self trackAction:@"OpenNewsItem"  contentInfo:[NSString stringWithFormat:@"%ld-%@", newsFeedItem.itemId, newsFeedItem.title]];
+    NewsItemViewController* newsItemViewController = [[NewsItemViewController alloc] initWithNewsFeedItem:newsFeedItem];
     if (self.splitViewController) { // iPad
-        self.selectedItem = newsItem;
+        self.selectedItem = newsFeedItem;
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], [[PCNavigationController alloc] initWithRootViewController:newsItemViewController]];
     } else {
         [self.navigationController pushViewController:newsItemViewController animated:YES];
@@ -220,7 +239,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString* const identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"NewsCell"];
-    NewsItem* newsItem = self.sections[indexPath.section][indexPath.row];
+    NewsFeedItem* newsFeedItem = self.sections[indexPath.section][indexPath.row];
     PCTableViewCellAdditions* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -236,9 +255,12 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
         }];
     }
     
-    cell.textLabel.text = newsItem.title;
+    cell.textLabel.text = newsFeedItem.title;
     
-    [(PCTableViewAdditions*)(self.tableView) setImageURL:[NSURL URLWithString:newsItem.imageUrl] forCell:cell atIndexPath:indexPath];
+    NSString* imageUrlString = [newsFeedItem imageUrlStringForSize:CGSizeMake(106.0, tableView.rowHeight) applyDeviceScreenMultiplyingFactor:YES];
+    
+    cell.imageView.image = nil; // as said in PCTableViewAdditions doc for setImageURL:forCell:atIndexPath:
+    [(PCTableViewAdditions*)(self.tableView) setImageURL:[NSURL URLWithString:imageUrlString] forCell:cell atIndexPath:indexPath];
     
     return cell;
 }
@@ -261,11 +283,8 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 
 - (void)dealloc
 {
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
     [self.newsService cancelOperationsForDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

@@ -18,22 +18,23 @@ import java.util.Collections;
 import java.util.BitSet;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("NewsFeed");
 
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField ITEMS_FIELD_DESC = new org.apache.thrift.protocol.TField("items", org.apache.thrift.protocol.TType.LIST, (short)2);
+  private static final org.apache.thrift.protocol.TField FEED_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("feedId", org.apache.thrift.protocol.TType.STRING, (short)3);
 
   private String name; // required
   private List<NewsFeedItem> items; // required
+  private String feedId; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     NAME((short)1, "name"),
-    ITEMS((short)2, "items");
+    ITEMS((short)2, "items"),
+    FEED_ID((short)3, "feedId");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -52,6 +53,8 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
           return NAME;
         case 2: // ITEMS
           return ITEMS;
+        case 3: // FEED_ID
+          return FEED_ID;
         default:
           return null;
       }
@@ -101,6 +104,8 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
     tmpMap.put(_Fields.ITEMS, new org.apache.thrift.meta_data.FieldMetaData("items", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, NewsFeedItem.class))));
+    tmpMap.put(_Fields.FEED_ID, new org.apache.thrift.meta_data.FieldMetaData("feedId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(NewsFeed.class, metaDataMap);
   }
@@ -110,11 +115,13 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
 
   public NewsFeed(
     String name,
-    List<NewsFeedItem> items)
+    List<NewsFeedItem> items,
+    String feedId)
   {
     this();
     this.name = name;
     this.items = items;
+    this.feedId = feedId;
   }
 
   /**
@@ -131,6 +138,9 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
       }
       this.items = __this__items;
     }
+    if (other.isSetFeedId()) {
+      this.feedId = other.feedId;
+    }
   }
 
   public NewsFeed deepCopy() {
@@ -141,6 +151,7 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
   public void clear() {
     this.name = null;
     this.items = null;
+    this.feedId = null;
   }
 
   public String getName() {
@@ -206,6 +217,30 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
     }
   }
 
+  public String getFeedId() {
+    return this.feedId;
+  }
+
+  public NewsFeed setFeedId(String feedId) {
+    this.feedId = feedId;
+    return this;
+  }
+
+  public void unsetFeedId() {
+    this.feedId = null;
+  }
+
+  /** Returns true if field feedId is set (has been assigned a value) and false otherwise */
+  public boolean isSetFeedId() {
+    return this.feedId != null;
+  }
+
+  public void setFeedIdIsSet(boolean value) {
+    if (!value) {
+      this.feedId = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case NAME:
@@ -224,6 +259,14 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
       }
       break;
 
+    case FEED_ID:
+      if (value == null) {
+        unsetFeedId();
+      } else {
+        setFeedId((String)value);
+      }
+      break;
+
     }
   }
 
@@ -234,6 +277,9 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
 
     case ITEMS:
       return getItems();
+
+    case FEED_ID:
+      return getFeedId();
 
     }
     throw new IllegalStateException();
@@ -250,6 +296,8 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
       return isSetName();
     case ITEMS:
       return isSetItems();
+    case FEED_ID:
+      return isSetFeedId();
     }
     throw new IllegalStateException();
   }
@@ -285,6 +333,15 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
         return false;
     }
 
+    boolean this_present_feedId = true && this.isSetFeedId();
+    boolean that_present_feedId = true && that.isSetFeedId();
+    if (this_present_feedId || that_present_feedId) {
+      if (!(this_present_feedId && that_present_feedId))
+        return false;
+      if (!this.feedId.equals(that.feedId))
+        return false;
+    }
+
     return true;
   }
 
@@ -301,6 +358,11 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
     builder.append(present_items);
     if (present_items)
       builder.append(items);
+
+    boolean present_feedId = true && (isSetFeedId());
+    builder.append(present_feedId);
+    if (present_feedId)
+      builder.append(feedId);
 
     return builder.toHashCode();
   }
@@ -329,6 +391,16 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
     }
     if (isSetItems()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.items, typedOther.items);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetFeedId()).compareTo(typedOther.isSetFeedId());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetFeedId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.feedId, typedOther.feedId);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -375,6 +447,13 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 3: // FEED_ID
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.feedId = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -407,6 +486,11 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
       }
       oprot.writeFieldEnd();
     }
+    if (this.feedId != null) {
+      oprot.writeFieldBegin(FEED_ID_FIELD_DESC);
+      oprot.writeString(this.feedId);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -431,6 +515,14 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
       sb.append(this.items);
     }
     first = false;
+    if (!first) sb.append(", ");
+    sb.append("feedId:");
+    if (this.feedId == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.feedId);
+    }
+    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -442,6 +534,9 @@ public class NewsFeed implements org.apache.thrift.TBase<NewsFeed, NewsFeed._Fie
     }
     if (items == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'items' was not present! Struct: " + toString());
+    }
+    if (feedId == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'feedId' was not present! Struct: " + toString());
     }
   }
 

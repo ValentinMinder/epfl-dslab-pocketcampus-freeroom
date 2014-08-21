@@ -5,13 +5,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.adapter.IconTextArrayAdapter;
+import org.pocketcampus.platform.android.ui.dialog.StyledDialog;
+import org.pocketcampus.platform.android.ui.layout.StandardTitledDoubleSeparatedLayout;
 import org.pocketcampus.plugin.transport.R;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
-import org.pocketcampus.android.platform.sdk.ui.adapter.IconTextArrayAdapter;
-import org.pocketcampus.android.platform.sdk.ui.dialog.StyledDialog;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleSeparatedLayout;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -72,14 +71,17 @@ public class TransportEditView extends PluginView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
-		// Tracker
-		Tracker.getInstance().trackPageView("transport/editView");
-
 		mContext = getApplicationContext();
 		mDestPrefs = getSharedPreferences(DEST_PREFS_NAME, 0);
 		mDestPrefsEditor = mDestPrefs.edit();
 		// Set up the layout
 		setUpLayout();
+		setActionBarTitle(getString(R.string.transport_plugin_name));
+	}
+	
+	@Override
+	protected String screenName() {
+		return "/transport/userStations";
 	}
 
 	/**
@@ -119,8 +121,7 @@ public class TransportEditView extends PluginView {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				// Tracker
-				Tracker.getInstance().trackPageView("transport/editView/add");
+				trackEvent("Add", null);
 
 				Intent i = new Intent(getApplicationContext(),
 						TransportAddView.class);
@@ -157,10 +158,7 @@ public class TransportEditView extends PluginView {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				// Tracker
-				Tracker.getInstance().trackPageView(
-						"transport/editView/remove/"
-								+ arg0.getItemAtPosition(arg2).toString());
+				trackEvent("Delete", arg0.getItemAtPosition(arg2).toString());
 
 				// Show the confirmation dialog
 				confirmationDialog(arg0.getItemAtPosition(arg2).toString());
@@ -200,9 +198,7 @@ public class TransportEditView extends PluginView {
 					@SuppressWarnings("unchecked")
 					@Override
 					public void onClick(DialogInterface dialog, int arg1) {
-						// Tracker
-						Tracker.getInstance().trackPageView(
-								"transport/editView/dialog/remove");
+						trackEvent("DeleteDialogConfirm", null);
 
 						// Remove the destination and update the list
 						mDestPrefsEditor.remove(dest);
@@ -241,9 +237,7 @@ public class TransportEditView extends PluginView {
 					 */
 					@Override
 					public void onClick(DialogInterface dialog, int arg1) {
-						// Tracker
-						Tracker.getInstance().trackPageView(
-								"transport/editView/dialog/dontRemove");
+						trackEvent("DeleteDialogCancel", null);
 
 						// Do nothing and dismiss the dialog
 						dialog.dismiss();
