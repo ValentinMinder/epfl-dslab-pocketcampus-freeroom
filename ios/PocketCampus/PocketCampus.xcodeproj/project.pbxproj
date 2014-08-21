@@ -160,6 +160,8 @@
 		326B925215027A1400DB4AEE /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B925115027A1400DB4AEE /* AddressBook.framework */; };
 		326E3E3D1963FF7F00017F0C /* CellEmptyPicture.png in Resources */ = {isa = PBXBuildFile; fileRef = 326E3E3B1963FF7F00017F0C /* CellEmptyPicture.png */; };
 		326E3E3E1963FF7F00017F0C /* CellEmptyPicture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 326E3E3C1963FF7F00017F0C /* CellEmptyPicture@2x.png */; };
+		326FE23A19A5E8FF001A5056 /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */; };
+		326FE23B19A5E9E2001A5056 /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */; };
 		32704C7C15002F67002BCB75 /* Plugins.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32704C7B15002F67002BCB75 /* Plugins.plist */; };
 		3270B7F118056E6F007EE85B /* ListBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3270B7EF18056E6F007EE85B /* ListBarButton.png */; };
 		3270B7F218056E6F007EE85B /* ListBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3270B7F018056E6F007EE85B /* ListBarButton@2x.png */; };
@@ -689,6 +691,8 @@
 		326B925115027A1400DB4AEE /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		326E3E3B1963FF7F00017F0C /* CellEmptyPicture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CellEmptyPicture.png; sourceTree = "<group>"; };
 		326E3E3C1963FF7F00017F0C /* CellEmptyPicture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CellEmptyPicture@2x.png"; sourceTree = "<group>"; };
+		326FE23819A5E8FF001A5056 /* NSUserDefaults+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+Additions.h"; sourceTree = "<group>"; };
+		326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Additions.m"; sourceTree = "<group>"; };
 		32704C65150016B3002BCB75 /* PluginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PluginController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32704C66150016B3002BCB75 /* PluginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PluginController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32704C7B15002F67002BCB75 /* Plugins.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Plugins.plist; sourceTree = "<group>"; };
@@ -1391,6 +1395,8 @@
 				322FB01717EC938E00D1A466 /* PCGAITracker.m */,
 				32FB441E17650268008C8282 /* NSDate+Addtions.h */,
 				32FB441F17650268008C8282 /* NSDate+Addtions.m */,
+				326FE23819A5E8FF001A5056 /* NSUserDefaults+Additions.h */,
+				326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -2923,6 +2929,7 @@
 				32D834A019A4D15000844901 /* authentication.m in Sources */,
 				32B5613519A4CD5F0006BEC8 /* PCConfig.m in Sources */,
 				32D834B419A4D98C00844901 /* TProtocolException.m in Sources */,
+				326FE23B19A5E9E2001A5056 /* NSUserDefaults+Additions.m in Sources */,
 				32B5613619A4CD620006BEC8 /* PCService.m in Sources */,
 				32D834A319A4D20B00844901 /* MainController.m in Sources */,
 				32D834A119A4D15700844901 /* CamiproService.m in Sources */,
@@ -2997,6 +3004,7 @@
 				32CCB4CC155520FE00220282 /* authentication.m in Sources */,
 				32CCB4E91555237500220282 /* MoodleController.m in Sources */,
 				32CCB4EB1555237500220282 /* MoodleService.m in Sources */,
+				326FE23A19A5E8FF001A5056 /* NSUserDefaults+Additions.m in Sources */,
 				27B74CE319A205E6006B2F17 /* RecommendedAppsService.m in Sources */,
 				32CCB4EC1555237500220282 /* moodle.m in Sources */,
 				32CCB501155546C100220282 /* news.m in Sources */,
@@ -3335,7 +3343,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				METAL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "org.pocketcampus.dev.$(TARGET_NAME:rfc1034identifier)";
-				PROVISIONING_PROFILE = "$(inherited)";
+				PROVISIONING_PROFILE = "e9208e52-c77f-432b-95c5-51415003baeb";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3376,7 +3384,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				METAL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "org.pocketcampus.dev.$(TARGET_NAME:rfc1034identifier)";
-				PROVISIONING_PROFILE = "$(inherited)";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3488,7 +3496,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "$(inherited)";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -3520,7 +3528,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "$(inherited)";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";

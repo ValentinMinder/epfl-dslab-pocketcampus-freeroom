@@ -31,6 +31,8 @@
 
 #import "AFNetworking.h"
 
+#import "NSUserDefaults+Additions.h"
+
 NSString* const PC_CONFIG_SERVER_PROTOCOL_KEY = @"SERVER_PROTOCOL";
 
 NSString* const PC_CONFIG_SERVER_ADDRESS_KEY = @"SERVER_ADDRESS";
@@ -103,6 +105,11 @@ static BOOL loaded = NO;
             // Finally load potential overriding dev config Config.plist in ApplicationSupport/<bundle_identifier>/
             [self registerDevDefaultsFromAppSupportIfExists];
             [self registerDefaultsUserConfigDefaultValuesIfNotDefined];
+            
+#warning TMP
+            
+            [[self _defaults] setObject:[[NSDate date] description] forKey:@"TEST_TIMESTAMP"];
+            
             [[self _defaults] synchronize]; //persist to disk
             CLSNSLog(@"-> Config loaded.");
             loaded = YES;
@@ -134,7 +141,7 @@ static BOOL loaded = NO;
     if (!bundleConfig) {
         @throw [NSException exceptionWithName:@"File error" reason:@"Bundle Config.plist could not be loaded" userInfo:nil];
     }
-    [[self _defaults] registerDefaults:bundleConfig];
+    [[self _defaults] setDictionary:bundleConfig];
     [[self _defaults] setBool:YES forKey:PC_CONFIG_LOADED_FROM_BUNDLE_KEY];
     CLSNSLog(@"   1. Config loaded from bundle");
 }
@@ -142,7 +149,7 @@ static BOOL loaded = NO;
 + (void)registerDefaultsFromPersistedServerConfigIfExists {
     NSDictionary* persistedServerConfig = [self persistedServerConfig];
     if (persistedServerConfig) {
-        [[self _defaults] registerDefaults:persistedServerConfig];
+        [[self _defaults] setDictionary:persistedServerConfig];
         CLSNSLog(@"   2. Config loaded from persisted server config");
     } else {
         CLSNSLog(@"   2. No persisted server config");
@@ -169,7 +176,7 @@ static BOOL loaded = NO;
     NSURLSessionTask* task = [manager GET:kGetConfigURLString
       parameters:@{kGetConfigPlatformParameterName:@"ios", kGetConfigAppVersionParameterName:[PCUtils appVersion]}
          success:^(NSURLSessionDataTask *task, NSDictionary* jsonServerConfig) {
-             [[self _defaults] registerDefaults:jsonServerConfig];
+             [[self _defaults] setDictionary:jsonServerConfig];
              [[self _defaults] setBool:YES forKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];
              if ([self persistServerConfig:jsonServerConfig]) {
                  CLSNSLog(@"   3. Config loaded from server and persisted");
@@ -222,7 +229,7 @@ static BOOL loaded = NO;
         
         // Step 3: finally, if exists app group config, load this config
         if ([fileManager fileExistsAtPath:appGroupConfigPath]) {
-            [[self _defaults] registerDefaults:[NSDictionary dictionaryWithContentsOfFile:appGroupConfigPath]];
+            [[self _defaults] setDictionary:[NSDictionary dictionaryWithContentsOfFile:appGroupConfigPath]];
             [[self _defaults] setBool:YES forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
             CLSNSLog(@"   4. Detected and loaded overriding DEV config");
         } else {

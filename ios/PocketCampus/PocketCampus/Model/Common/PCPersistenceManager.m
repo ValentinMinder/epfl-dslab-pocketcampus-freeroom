@@ -32,6 +32,8 @@
 
 #import "MainController.h"
 
+#import "NSUserDefaults+Additions.h"
+
 static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcampus";
 
 @interface PCUserDefaults : NSUserDefaults
@@ -123,7 +125,7 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
             // copying data from standardUserDefaults to shared user defaults
             @try {
                 NSUserDefaults* oldStandardDefaults = [NSUserDefaults standardUserDefaults];
-                [defaults registerDefaults:oldStandardDefaults.dictionaryRepresentation];
+                [defaults setDictionary:oldStandardDefaults.dictionaryRepresentation];
                 [defaults setBool:YES forKey:kDefaultsMigrationDoneBoolKey];
                 [defaults synchronize];
                 CLSNSLog(@"   1. Standard defaults successfully migrated to app group defaults.");

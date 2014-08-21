@@ -95,6 +95,7 @@ static AuthenticationService* instance __weak = nil;
 }
 
 + (NSString*)savedPasswordForUsername:(NSString*)username {
+#warning NEED TO USE SHARED KEYCHAIN
     NSError* error = nil;
     NSString* password = [SSKeychain passwordForService:kKeychainServiceKey account:username error:&error];
     if (error) {

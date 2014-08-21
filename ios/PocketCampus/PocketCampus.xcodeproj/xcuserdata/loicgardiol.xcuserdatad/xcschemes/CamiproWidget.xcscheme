@@ -2,7 +2,7 @@
 <Scheme
    LastUpgradeVersion = "0600"
    wasCreatedForAppExtension = "YES"
-   version = "1.3">
+   version = "1.8">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -55,8 +55,9 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <IDEBundleIdentifierRunnable>
-      </IDEBundleIdentifierRunnable>
+      <PathRunnable
+         FilePath = "/Today-View">
+      </PathRunnable>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
@@ -68,6 +69,8 @@
       </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
+      <IDEBundleIdentifierRunnable>
+      </IDEBundleIdentifierRunnable>
    </LaunchAction>
    <ProfileAction
       shouldUseLaunchSchemeArgsEnv = "YES"

@@ -121,6 +121,7 @@ static CamiproController* instance __weak = nil;
     [super removeLoginObserver:observer];
     if ([self.loginObservers count] == 0) {
         [self.camiproService cancelOperationsForDelegate:self]; //abandon login attempt if no more observer interested
+        self.authenticationStarted = NO;
     }
 }
 
@@ -128,7 +129,7 @@ static CamiproController* instance __weak = nil;
 
 - (void)getTequilaTokenForCamiproDidReturn:(TequilaToken *)tequilaKey {
     self.tequilaToken = tequilaKey;
-    [self.authController authenticateToken:tequilaKey.iTequilaKey delegate:self];
+    [[AuthenticationController sharedInstance] authenticateToken:tequilaKey.iTequilaKey delegate:self];
 }
 
 - (void)getTequilaTokenForCamiproFailed {

@@ -27,6 +27,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    self.preferredContentSize = CGSizeMake(300.0, 38.0);
     [self widgetPerformUpdateWithCompletionHandler:NULL];
 }
 
