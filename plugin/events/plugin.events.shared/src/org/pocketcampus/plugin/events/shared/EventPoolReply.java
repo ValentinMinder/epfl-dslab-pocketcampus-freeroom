@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.BitSet;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EventPoolReply implements org.apache.thrift.TBase<EventPoolReply, EventPoolReply._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("EventPoolReply");
@@ -28,11 +30,11 @@ public class EventPoolReply implements org.apache.thrift.TBase<EventPoolReply, E
   private static final org.apache.thrift.protocol.TField CATEGS_FIELD_DESC = new org.apache.thrift.protocol.TField("categs", org.apache.thrift.protocol.TType.MAP, (short)5);
   private static final org.apache.thrift.protocol.TField TAGS_FIELD_DESC = new org.apache.thrift.protocol.TField("tags", org.apache.thrift.protocol.TType.MAP, (short)6);
 
-  public int status; // required
-  public EventPool eventPool; // required
-  public Map<Long,EventItem> childrenItems; // required
-  public Map<Integer,String> categs; // required
-  public Map<String,String> tags; // required
+  private int status; // required
+  private EventPool eventPool; // required
+  private Map<Long,EventItem> childrenItems; // required
+  private Map<Integer,String> categs; // required
+  private Map<String,String> tags; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

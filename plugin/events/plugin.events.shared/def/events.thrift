@@ -148,6 +148,7 @@ struct EventPoolRequest {
 	
 	5: optional string lang;
 	6: optional i32 period;
+	8: optional i32 periodInHours;
 	7: optional bool fetchPast;
 }
 

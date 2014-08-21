@@ -118,20 +118,6 @@ public class EventsServiceImpl implements EventsService.Iface {
 				PocketCampusServer.CONFIG.getString("DB_USERNAME"), PocketCampusServer.CONFIG.getString("DB_PASSWORD"));
 	}
 
-	String[] ballouta = new String[] { "http://api.androidhive.info/music/images/adele.png", "http://api.androidhive.info/music/images/eminem.png",
-			"http://api.androidhive.info/music/images/mj.png", "http://api.androidhive.info/music/images/rihanna.png", "http://api.androidhive.info/music/images/arrehman.png",
-			"http://api.androidhive.info/music/images/alexi_murdoch.png", "http://api.androidhive.info/music/images/dido.png",
-			"http://api.androidhive.info/music/images/enrique.png", "http://api.androidhive.info/music/images/ennio.png",
-			"http://api.androidhive.info/music/images/backstreet_boys.png", "http://api.androidhive.info/music/images/adele.png",
-			"http://api.androidhive.info/music/images/eminem.png", "http://api.androidhive.info/music/images/mj.png", "http://api.androidhive.info/music/images/rihanna.png",
-			"http://api.androidhive.info/music/images/arrehman.png", "http://api.androidhive.info/music/images/alexi_murdoch.png",
-			"http://api.androidhive.info/music/images/dido.png", "http://api.androidhive.info/music/images/enrique.png", "http://api.androidhive.info/music/images/ennio.png",
-			"http://api.androidhive.info/music/images/backstreet_boys.png", "http://api.androidhive.info/music/images/adele.png",
-			"http://api.androidhive.info/music/images/eminem.png", "http://api.androidhive.info/music/images/mj.png", "http://api.androidhive.info/music/images/rihanna.png",
-			"http://api.androidhive.info/music/images/arrehman.png", "http://api.androidhive.info/music/images/alexi_murdoch.png",
-			"http://api.androidhive.info/music/images/dido.png", "http://api.androidhive.info/music/images/enrique.png", "http://api.androidhive.info/music/images/ennio.png",
-			"http://api.androidhive.info/music/images/backstreet_boys.png" };
-
 	@Override
 	public EventItemReply getEventItem(EventItemRequest req) throws TException {
 		System.out.println("getEventItem id=" + req.getEventItemId());
@@ -169,11 +155,11 @@ public class EventsServiceImpl implements EventsService.Iface {
 		List<String> tokens = (req.isSetUserTickets() ? req.getUserTickets() : new LinkedList<String>());
 		registerForPush(req, tokens);
 		long parentId = req.getEventPoolId();
-		int period = (req.isSetPeriod() ? req.getPeriod() : 1);
+		int periodInHours = (req.isSetPeriodInHours() ? req.getPeriodInHours() : (req.isSetPeriod() ? (req.getPeriod() * 24) : 30 * 24));
 		if (req.isFetchPast())
-			period = -period;
+			periodInHours = -periodInHours;
 		if (parentId != Constants.CONTAINER_EVENT_ID)
-			period = 0;
+			periodInHours = 0;
 		try {
 			Connection conn = connMgr.getConnection();
 			logPageView(conn, tokens, parentId, "eventpool");
@@ -187,7 +173,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 				pool.setChildrenEvents(filterStarred(conn, req.getStarredEventItems(), pool.getParentEvent()));
 				childrenItems = eventItemsByIds(conn, pool.getChildrenEvents(), tokens);
 			} else {
-				childrenItems = eventItemsFromDb(conn, parentId, period, tokens);
+				childrenItems = eventItemsFromDb(conn, parentId, periodInHours * 60, tokens);
 			}
 			for (EventItem e : childrenItems.values())
 				fixCategAndTags(e);
@@ -1033,23 +1019,23 @@ public class EventsServiceImpl implements EventsService.Iface {
 		}
 	}
 
-	private static Map<Long, EventItem> eventItemsFromDb(Connection conn, long parentId, int period, List<String> token) throws SQLException {
+	private static Map<Long, EventItem> eventItemsFromDb(Connection conn, long parentId, int periodInMinutes, List<String> token) throws SQLException {
 		MyQuery publicEvents = EventItemDecoderFromDb.getSelectPublicEventItemsQuery().
 				addPartWithValue(" AND (parentPool=?)", new Long(parentId));
 		MyQuery accessibleEvents = EventItemDecoderFromDb.getSelectAccessibleEventItemsQuery(token).
 				addPartWithValue(" AND (parentPool=?)", new Long(parentId));
 		MyQuery fillChildren = EventItemDecoderFromDb.getFillChildrenEventPoolsQuery().
 				addPartWithValue(" AND (parentPool=?)", new Long(parentId));
-		if (period > 0) {
-			String timeConstraint = " AND (DATEDIFF(startDate,NOW())<? AND DATEDIFF(endDate,NOW())>=0)";
-			publicEvents.addPartWithValue(timeConstraint, new Integer(period));
-			accessibleEvents.addPartWithValue(timeConstraint, new Integer(period));
-			fillChildren.addPartWithValue(timeConstraint, new Integer(period));
-		} else if (period < 0) {
-			String timeConstraint = " AND (DATEDIFF(endDate,NOW())<0 AND DATEDIFF(endDate,NOW())>=?)";
-			publicEvents.addPartWithValue(timeConstraint, new Integer(period));
-			accessibleEvents.addPartWithValue(timeConstraint, new Integer(period));
-			fillChildren.addPartWithValue(timeConstraint, new Integer(period));
+		if (periodInMinutes > 0) {
+			String timeConstraint = " AND (TIMESTAMPDIFF(MINUTE,NOW(),startDate)<? AND TIMESTAMPDIFF(MINUTE,NOW(),endDate)>=0)";
+			publicEvents.addPartWithValue(timeConstraint, new Integer(periodInMinutes));
+			accessibleEvents.addPartWithValue(timeConstraint, new Integer(periodInMinutes));
+			fillChildren.addPartWithValue(timeConstraint, new Integer(periodInMinutes));
+		} else if (periodInMinutes < 0) {
+			String timeConstraint = " AND (TIMESTAMPDIFF(MINUTE,NOW(),endDate)<0 AND TIMESTAMPDIFF(MINUTE,NOW(),endDate)>=?)";
+			publicEvents.addPartWithValue(timeConstraint, new Integer(periodInMinutes));
+			accessibleEvents.addPartWithValue(timeConstraint, new Integer(periodInMinutes));
+			fillChildren.addPartWithValue(timeConstraint, new Integer(periodInMinutes));
 		}
 		return EventItemDecoderFromDb.getEventItemsUsingQueries(conn, publicEvents, accessibleEvents, fillChildren, token);
 	}
