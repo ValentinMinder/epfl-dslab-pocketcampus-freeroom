@@ -1,6 +1,7 @@
 // Created by Loïc Gardiol on 01.03.12.
 
 "PluginName" = "Camipro";
+"Balance" = "Solde";
 "CamiproBalance" = "Solde Camipro";
 "TransactionsHistory" = "Historique";
 "ReloadCard" = "Recharger la carte";
@@ -17,7 +18,8 @@
 
 // Camipro Widget
 
-"TapToOpenAppAndLogin" = "Login requis. Touchez pour ouvrir PocketCampus.";
+"LoginRequired" = "Login requis";
+"TapToOpenPocketCampus" = "Touchez pour ouvrir PocketCampus";
 
 //Accessibility
 

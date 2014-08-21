@@ -49,7 +49,6 @@
 		32125BC01536F215009B8D37 /* TransportFeetConnection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBE1536F215009B8D37 /* TransportFeetConnection@2x.png */; };
 		32136F34193FBCFF002905A9 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32136E89193F6934002905A9 /* NotificationCenter.framework */; };
 		32136F3F193FBCFF002905A9 /* org.pocketcampus.dev.CamiproWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 32136F33193FBCFF002905A9 /* org.pocketcampus.dev.CamiproWidget.appex */; };
-		32136F4B193FBD20002905A9 /* CamiproWidget.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32136F47193FBD20002905A9 /* CamiproWidget.storyboard */; };
 		32141FA718D8D16F0084FE44 /* IsAcademiaModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32141FA618D8D16F0084FE44 /* IsAcademiaModelAdditions.m */; };
 		32148A3E18101D6C00AF2F8E /* CamiproLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32148A3D18101D6C00AF2F8E /* CamiproLarge@2x.png */; };
 		32150DD4197D693300CCF2AB /* LinkIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 32150DD2197D693300CCF2AB /* LinkIcon.png */; };
@@ -162,6 +161,8 @@
 		326E3E3E1963FF7F00017F0C /* CellEmptyPicture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 326E3E3C1963FF7F00017F0C /* CellEmptyPicture@2x.png */; };
 		326FE23A19A5E8FF001A5056 /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */; };
 		326FE23B19A5E9E2001A5056 /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */; };
+		326FE23C19A63D17001A5056 /* CamiproWidget.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 326FE23E19A63D17001A5056 /* CamiproWidget.storyboard */; };
+		326FE24019A64DDE001A5056 /* PocketCampus.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3296570914FF9DDB00C44C12 /* PocketCampus.strings */; };
 		32704C7C15002F67002BCB75 /* Plugins.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32704C7B15002F67002BCB75 /* Plugins.plist */; };
 		3270B7F118056E6F007EE85B /* ListBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3270B7EF18056E6F007EE85B /* ListBarButton.png */; };
 		3270B7F218056E6F007EE85B /* ListBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3270B7F018056E6F007EE85B /* ListBarButton@2x.png */; };
@@ -524,7 +525,6 @@
 		32136E89193F6934002905A9 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		32136F33193FBCFF002905A9 /* org.pocketcampus.dev.CamiproWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = org.pocketcampus.dev.CamiproWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		32136F46193FBD20002905A9 /* CamiproWidget-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "CamiproWidget-Info.plist"; sourceTree = "<group>"; };
-		32136F47193FBD20002905A9 /* CamiproWidget.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CamiproWidget.storyboard; sourceTree = "<group>"; };
 		32136F48193FBD20002905A9 /* CamiproWidgetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CamiproWidgetViewController.h; sourceTree = "<group>"; };
 		32136F49193FBD20002905A9 /* CamiproWidgetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CamiproWidgetViewController.m; sourceTree = "<group>"; };
 		32141FA518D8D16F0084FE44 /* IsAcademiaModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IsAcademiaModelAdditions.h; sourceTree = "<group>"; };
@@ -693,6 +693,7 @@
 		326E3E3C1963FF7F00017F0C /* CellEmptyPicture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CellEmptyPicture@2x.png"; sourceTree = "<group>"; };
 		326FE23819A5E8FF001A5056 /* NSUserDefaults+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+Additions.h"; sourceTree = "<group>"; };
 		326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Additions.m"; sourceTree = "<group>"; };
+		326FE23D19A63D17001A5056 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/CamiproWidget.storyboard; sourceTree = "<group>"; };
 		32704C65150016B3002BCB75 /* PluginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PluginController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32704C66150016B3002BCB75 /* PluginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PluginController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32704C7B15002F67002BCB75 /* Plugins.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Plugins.plist; sourceTree = "<group>"; };
@@ -1212,7 +1213,7 @@
 			isa = PBXGroup;
 			children = (
 				32136F46193FBD20002905A9 /* CamiproWidget-Info.plist */,
-				32136F47193FBD20002905A9 /* CamiproWidget.storyboard */,
+				326FE23E19A63D17001A5056 /* CamiproWidget.storyboard */,
 				32136F48193FBD20002905A9 /* CamiproWidgetViewController.h */,
 				32136F49193FBD20002905A9 /* CamiproWidgetViewController.m */,
 			);
@@ -2599,12 +2600,18 @@
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
 						};
 					};
 					3219EF4B14FCDE4900A271CD = {
 						DevelopmentTeam = 7KPBSVCYLZ;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
 								enabled = 1;
 							};
 						};
@@ -2635,9 +2642,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32136F4B193FBD20002905A9 /* CamiproWidget.storyboard in Resources */,
+				326FE23C19A63D17001A5056 /* CamiproWidget.storyboard in Resources */,
 				32D834C219A4DE5100844901 /* CamiproPlugin.strings in Resources */,
 				32975CF119A34EB600146390 /* InfoPlist.strings in Resources */,
+				326FE24019A64DDE001A5056 /* PocketCampus.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3179,6 +3187,14 @@
 			name = FoodPlugin.strings;
 			sourceTree = "<group>";
 		};
+		326FE23E19A63D17001A5056 /* CamiproWidget.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				326FE23D19A63D17001A5056 /* en */,
+			);
+			name = CamiproWidget.storyboard;
+			sourceTree = "<group>";
+		};
 		32777B4215D1BFB400A29F56 /* PCAbout.html */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -3322,8 +3338,8 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CODE_SIGN_ENTITLEMENTS = org.pocketcampus.dev.CamiproWidget.entitlements;
-				CODE_SIGN_IDENTITY = "$(inherited)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "$(inherited)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -3338,12 +3354,12 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/Plugins/CamiproPlugin/Extensions/CamiproWidget/CamiproWidget-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				METAL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "org.pocketcampus.dev.$(TARGET_NAME:rfc1034identifier)";
-				PROVISIONING_PROFILE = "e9208e52-c77f-432b-95c5-51415003baeb";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3362,8 +3378,8 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CODE_SIGN_ENTITLEMENTS = org.pocketcampus.dev.CamiproWidget.entitlements;
-				CODE_SIGN_IDENTITY = "$(inherited)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "$(inherited)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3379,7 +3395,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/Plugins/CamiproPlugin/Extensions/CamiproWidget/CamiproWidget-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				METAL_ENABLE_DEBUG_INFO = NO;
@@ -3482,8 +3498,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CODE_SIGN_ENTITLEMENTS = PocketCampus/PocketCampus.entitlements;
-				CODE_SIGN_IDENTITY = "$(inherited)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "$(inherited)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
@@ -3514,8 +3530,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CODE_SIGN_ENTITLEMENTS = PocketCampus/PocketCampus.entitlements;
-				CODE_SIGN_IDENTITY = "$(inherited)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "$(inherited)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";

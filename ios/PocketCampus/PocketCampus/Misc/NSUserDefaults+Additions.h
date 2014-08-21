@@ -31,6 +31,10 @@
 
 @interface NSUserDefaults (Additions)
 
-- (void)setDictionary:(NSDictionary*)dictionary;
+/**
+ * Similar to registerDefaults: but values registered with registerDefaults: seem to not work with
+ * app group defaults. This works.
+ */
+- (void)replaceKeyValuesWithOnesFromDictionary:(NSDictionary*)dictionary;
 
 @end

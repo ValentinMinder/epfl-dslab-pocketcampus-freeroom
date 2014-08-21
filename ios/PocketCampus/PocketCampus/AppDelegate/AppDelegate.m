@@ -59,7 +59,7 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
+
     [PCPersistenceManager migrateDataOnceToSharedAppGroupPersistence];
     
     // Need to start monitoring, otherwise sharedManager.networkReachabilityStatus is wrong

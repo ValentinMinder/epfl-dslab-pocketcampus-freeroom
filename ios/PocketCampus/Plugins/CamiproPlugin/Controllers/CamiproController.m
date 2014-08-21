@@ -70,6 +70,8 @@ static CamiproController* instance __weak = nil;
     }
 }
 
+#pragma mark - PluginController
+
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
@@ -102,6 +104,10 @@ static CamiproController* instance __weak = nil;
 
 + (NSString*)identifierName {
     return @"Camipro";
+}
+
+- (BOOL)handleURLQueryAction:(NSString *)action parameters:(NSDictionary *)parameters {
+    return YES; //just support for opening plugin, not special action/parameters supported
 }
 
 #pragma mark - PluginControllerAuthentified
@@ -164,6 +170,10 @@ static CamiproController* instance __weak = nil;
         case AuthenticationFailureReasonUserCancelled:
             [self.camiproService cancelOperationsForDelegate:self];
             [self cleanAndNotifyUserCancelledToObservers];
+            break;
+        case AuthenticationFailureReasonCannotAskForCredentials:
+            [self.camiproService cancelOperationsForDelegate:self];
+            [self cleanAndNotifyFailureToObservers];
             break;
         case AuthenticationFailureReasonInvalidToken:
             [self.camiproService getTequilaTokenForCamiproDelegate:self]; //restart to get new token

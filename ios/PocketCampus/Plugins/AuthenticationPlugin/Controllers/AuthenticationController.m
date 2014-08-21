@@ -547,7 +547,21 @@ static AuthenticationController* instance __strong = nil;
 #else
         // Cannot present AuthenticationViewController is exentsion
         // => auth fails is no or wrong credentials. User should open main app.
-        [self cleanAndNotifyFailureToObservers];
+        
+        if (self.delegate) { //old-style authentication
+            dispatch_async(dispatch_get_main_queue(), ^{
+                id<AuthenticationControllerDelegate> delegate = self.delegate;
+                [self cleanAndDismissAuthenticationViewControllerCompletion:^{
+                    if ([(NSObject*)delegate respondsToSelector:@selector(authenticationFailedWithReason:)]) {
+                        [delegate authenticationFailedWithReason:AuthenticationFailureReasonCannotAskForCredentials];
+                    }
+                }];
+            });
+        } else { //new-style (PocketCampus session) authentication
+            [self dismissAuthenticationViewControllerCompletion:^{
+                [self cleanAndNotifyFailureToObservers];
+            }];
+        }
 #endif
     }
 }

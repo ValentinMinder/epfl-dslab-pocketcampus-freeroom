@@ -125,7 +125,7 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
             // copying data from standardUserDefaults to shared user defaults
             @try {
                 NSUserDefaults* oldStandardDefaults = [NSUserDefaults standardUserDefaults];
-                [defaults setDictionary:oldStandardDefaults.dictionaryRepresentation];
+                [defaults replaceKeyValuesWithOnesFromDictionary:oldStandardDefaults.dictionaryRepresentation];
                 [defaults setBool:YES forKey:kDefaultsMigrationDoneBoolKey];
                 [defaults synchronize];
                 CLSNSLog(@"   1. Standard defaults successfully migrated to app group defaults.");
@@ -201,6 +201,12 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
 
 #pragma mark - Complex objects persistence
 
+#ifdef DEBUG
+static NSString* const kBundleIdentifier = @"org.pocketcampus.dev";
+#else
+static NSString* const kBundleIdentifier = @"org.pocketcampus";
+#endif
+
 + (NSString*)appGroupBundleIdentifierPersistencePath {
     static NSString* appSupportBundlePath = nil;
     static dispatch_once_t onceToken;
@@ -208,7 +214,7 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
         NSString* path = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.org.pocketcampus"].path;
         path = [path stringByAppendingPathComponent:@"Library"];
         path = [path stringByAppendingPathComponent:@"Application Support"];
-        path = [path stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+        path = [path stringByAppendingPathComponent:kBundleIdentifier];
         appSupportBundlePath = path;
     });
     return appSupportBundlePath;
@@ -219,7 +225,7 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSString* dir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-        appSupportBundlePath = [dir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+        appSupportBundlePath = [dir stringByAppendingPathComponent:kBundleIdentifier];
     });
     return appSupportBundlePath;
 }

@@ -31,7 +31,7 @@
 
 @implementation NSUserDefaults (Additions)
 
-- (void)setDictionary:(NSDictionary*)dictionary {
+- (void)replaceKeyValuesWithOnesFromDictionary:(NSDictionary*)dictionary {
     for (NSString* key in dictionary) {
         if (![key isKindOfClass:[NSString class]]) {
             CLSNSLog(@"-> key '%@' will be ignored because it is not kind of class NSString.");
