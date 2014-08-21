@@ -101,7 +101,8 @@ namespace PocketCampus.IsAcademia.ViewModels
 
             if ( DateTime.Now >= WeekDate && ( DateTime.Now - WeekDate ).TotalDays < DaysInWeek )
             {
-                return CachedTask.Create( getter, expirationDate: WeekDate.AddDays( DaysInWeek ) );
+                // cache ID must be non-zero so that other requests don't think this can be used as a placeholder
+                return CachedTask.Create( getter, 1, WeekDate.AddDays( DaysInWeek ) );
             }
             return CachedTask.DoNotCache( getter );
         }
