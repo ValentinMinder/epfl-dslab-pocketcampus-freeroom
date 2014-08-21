@@ -15,7 +15,7 @@
                       mc:Ignorable="d">
     <!-- Design-time DataContext -->
     <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Camipro.ViewModels.Design;assembly=PocketCampus.Camipro.Common" />
+        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Camipro.ViewModels.Design;assembly=PocketCampus.Camipro" />
     </d:DesignProperties.DataContext>
 
     <!-- Page resources -->

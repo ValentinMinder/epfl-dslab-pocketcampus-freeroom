@@ -103,11 +103,13 @@
     <Compile Include="WindowsPhonePlugin.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ThinMvvm">
-      <HintPath>..\..\packages\ThinMvvm.0.9.10.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
+    <Reference Include="ThinMvvm, Version=0.9.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\ThinMvvm.0.9.11.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
     </Reference>
-    <Reference Include="ThinMvvm.WindowsPhone">
-      <HintPath>..\..\packages\ThinMvvm.WindowsPhone.0.9.10.0\lib\wp80\ThinMvvm.WindowsPhone.dll</HintPath>
+    <Reference Include="ThinMvvm.WindowsPhone, Version=0.9.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\ThinMvvm.WindowsPhone.0.9.11.0\lib\wp80\ThinMvvm.WindowsPhone.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

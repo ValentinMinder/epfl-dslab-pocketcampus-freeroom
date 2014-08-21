@@ -6,7 +6,6 @@ using PocketCampus.Common;
 using PocketCampus.Moodle.Resources;
 using PocketCampus.Moodle.Services;
 using PocketCampus.Moodle.ViewModels;
-using PocketCampus.Moodle.Views.Design;
 using ThinMvvm;
 using ThinMvvm.WindowsPhone;
 
@@ -43,9 +42,6 @@ namespace PocketCampus.Moodle
 
             Container.Bind<IMoodleDownloader, MoodleDownloader>();
             Container.Bind<IFileStorage, FileStorage>();
-
-#warning Remove this!
-            var x = new DesignCourseViewModel().ViewModelPublic;
         }
     }
 }

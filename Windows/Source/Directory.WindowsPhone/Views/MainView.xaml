@@ -15,7 +15,7 @@
                       mc:Ignorable="d">
     <!-- Design-time DataContext -->
     <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Directory.ViewModels.Design;assembly=PocketCampus.Directory.Common" />
+        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Directory.ViewModels.Design;assembly=PocketCampus.Directory" />
     </d:DesignProperties.DataContext>
 
     <!-- Page resources -->

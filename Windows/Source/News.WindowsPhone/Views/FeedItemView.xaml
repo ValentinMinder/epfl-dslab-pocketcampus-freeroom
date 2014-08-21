@@ -13,7 +13,7 @@
                       mc:Ignorable="d">
     <!-- Design-time DataContext -->
     <d:DesignProperties.DataContext>
-        <design:DesignFeedItemViewModel xmlns:design="clr-namespace:PocketCampus.News.ViewModels.Design;assembly=PocketCampus.News.Common" />
+        <design:DesignFeedItemViewModel xmlns:design="clr-namespace:PocketCampus.News.ViewModels.Design;assembly=PocketCampus.News" />
     </d:DesignProperties.DataContext>
 
     <!-- Page resources -->

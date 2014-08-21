@@ -4,7 +4,6 @@
 
 // Design data for MainViewModel
 
-using System;
 using PocketCampus.Common.Services.Design;
 using PocketCampus.Moodle.Services.Design;
 using PocketCampus.Moodle.ViewModels;
@@ -13,7 +12,7 @@ using ThinMvvm.WindowsPhone.Design;
 
 namespace PocketCampus.Moodle.Views.Design
 {
-    public sealed class DesignMainViewModel : DesignViewModel<MainViewModel>
+    public sealed class DesignMainViewModel : DesignViewModel<MainViewModel, NoParameter>
     {
 #if DEBUG
         private MainViewModel _viewModel;
@@ -27,18 +26,6 @@ namespace PocketCampus.Moodle.Views.Design
                     _viewModel.OnNavigatedToAsync().Wait();
                 }
                 return _viewModel;
-            }
-        }
-
-#warning this should not exist
-        private sealed class DesignDataCache : IDataCache
-        {
-            public void Set( Type owner, long id, DateTime expirationDate, object value ) { }
-
-            public bool TryGet<T>( Type owner, long id, out T value )
-            {
-                value = default( T );
-                return false;
             }
         }
 #endif

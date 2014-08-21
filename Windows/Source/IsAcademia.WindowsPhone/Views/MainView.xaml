@@ -18,7 +18,7 @@
                       OrientationChanged="Page_OrientationChanged">
     <!-- Design-time DataContext -->
     <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.IsAcademia.ViewModels.Design;assembly=PocketCampus.IsAcademia.Common" />
+        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.IsAcademia.ViewModels.Design;assembly=PocketCampus.IsAcademia" />
     </d:DesignProperties.DataContext>
 
     <!-- Page resources-->

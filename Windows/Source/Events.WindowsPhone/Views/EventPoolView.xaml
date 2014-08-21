@@ -11,7 +11,7 @@
 
     <!-- Design-time DataContext -->
     <d:DesignProperties.DataContext>
-        <design:DesignEventPoolViewModel xmlns:design="clr-namespace:PocketCampus.Events.ViewModels.Design;assembly=PocketCampus.Events.Common" />
+        <design:DesignEventPoolViewModel xmlns:design="clr-namespace:PocketCampus.Events.ViewModels.Design;assembly=PocketCampus.Events" />
     </d:DesignProperties.DataContext>
 
     <!-- Page resources -->

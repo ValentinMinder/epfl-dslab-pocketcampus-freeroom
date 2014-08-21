@@ -13,7 +13,7 @@
                       mc:Ignorable="d">
     <!-- Design-time DataContext -->
     <d:DesignerProperties.DataContext>
-        <design:DesignAuthenticationViewModel xmlns:design="clr-namespace:PocketCampus.Authentication.ViewModels.Design;assembly=PocketCampus.Authentication.Common" />
+        <design:DesignAuthenticationViewModel xmlns:design="clr-namespace:PocketCampus.Authentication.ViewModels.Design;assembly=PocketCampus.Authentication" />
     </d:DesignerProperties.DataContext>
 
     <!-- Page resources -->
