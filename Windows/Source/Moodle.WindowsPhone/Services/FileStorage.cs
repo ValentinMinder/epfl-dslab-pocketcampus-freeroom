@@ -18,6 +18,8 @@ namespace PocketCampus.Moodle.Services
     /// </summary>
     public sealed class FileStorage : IFileStorage
     {
+        private const string NameExtensionSeparator = ".";
+
         /// <summary>
         /// Asynchronously stores the specified Moodle file with the specified content.
         /// </summary>
@@ -57,8 +59,7 @@ namespace PocketCampus.Moodle.Services
             {
                 folder = await folder.CreateFolderAsync( FixName( name, Path.GetInvalidPathChars() ), CreationCollisionOption.OpenIfExists );
             }
-
-            string fileName = FixName( file.Name, Path.GetInvalidFileNameChars() );
+            string fileName = FixName( file.Name, Path.GetInvalidFileNameChars() ) + NameExtensionSeparator + file.Extension;
 
             // GetFileAsync throws an exception if the file doesn't exist
             // and there's no API to check for a file's existence

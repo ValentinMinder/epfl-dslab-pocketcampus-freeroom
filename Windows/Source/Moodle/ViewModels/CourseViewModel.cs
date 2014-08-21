@@ -51,11 +51,11 @@ namespace PocketCampus.Moodle.ViewModels
 
 
         /// <summary>
-        /// Gets the command executed to download and open a file.
+        /// Gets the command executed to open a file, downloading if needed.
         /// </summary>
-        public AsyncCommand<MoodleFile> DownloadAndOpenCommand
+        public AsyncCommand<MoodleFile> OpenFileCommand
         {
-            get { return this.GetAsyncCommand<MoodleFile>( DownloadAndOpenAsync ); }
+            get { return this.GetAsyncCommand<MoodleFile>( OpenFileAsync ); }
         }
 
         /// <summary>
@@ -132,8 +132,11 @@ namespace PocketCampus.Moodle.ViewModels
                 }
 
                 Sections = data.Sections;
-                SelectedSection = Sections.FirstOrDefault( s => s.Title == null && s.StartDate.Value <= DateTime.Now && DateTime.Now <= s.EndDate.Value )
-                               ?? Sections.FirstOrDefault();
+                if ( SelectedSection == null )
+                {
+                    SelectedSection = Sections.FirstOrDefault( s => s.Title == null && s.StartDate.Value <= DateTime.Now && DateTime.Now <= s.EndDate.Value )
+                                   ?? Sections.FirstOrDefault();
+                }
             }
 
             return true;
@@ -143,7 +146,7 @@ namespace PocketCampus.Moodle.ViewModels
         /// <summary>
         /// Downloads (if it hasn't already been downloaded) and opens the specified file.
         /// </summary>
-        private async Task DownloadAndOpenAsync( MoodleFile file )
+        private async Task OpenFileAsync( MoodleFile file )
         {
             if ( DownloadState == DownloadState.Downloading )
             {

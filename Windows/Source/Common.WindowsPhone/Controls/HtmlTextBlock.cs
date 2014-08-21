@@ -18,7 +18,7 @@ namespace PocketCampus.Common.Controls
     /// </summary>
     /// <remarks>
     /// Or, rather, attempts to do so by emulating some of the most common tags.
-    /// Also, it needs multiple RichTextBoxes because the maximum size for a control is 2048x2048, and some articles are longer.
+    /// Also, it needs multiple RichTextBoxes because the maximum size for a control is 2048x2048.
     /// </remarks>
     public sealed class HtmlTextBlock : UserControl
     {

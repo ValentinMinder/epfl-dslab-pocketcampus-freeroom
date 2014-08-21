@@ -23,7 +23,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
             <!-- Strings -->
             <my:LocalizedStrings x:Key="Strings" />
 
@@ -32,47 +32,66 @@
             <com:EnumToLocalizedStringConverter x:Key="EnumToString"
                                                 Strings="{StaticResource Strings}" />
 
+            <!-- Style for resource TextBlocks -->
+            <Style x:Key="ResourceTextBlock" TargetType="TextBlock" BasedOn="{StaticResource PhoneTextNormalStyle}">
+                <Setter Property="TextTrimming" Value="WordEllipsis" />
+                <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="6,0" />
+            </Style>
+
             <!-- File template -->
             <DataTemplate x:Key="FileTemplate">
-                <!-- TODO download on click -->
-                <Button Style="{StaticResource SimpleButtonStyle}">
+                <Button Command="{Binding DataContext.OpenFileCommand, ElementName=LayoutRoot}"
+                        CommandParameter="{Binding}"
+                        Style="{StaticResource SimpleButtonStyle}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        
-                        <!-- TODO file icon (known, or icon, or default) here -->
+
+                        <ContentControl Content="{Binding Converter={StaticResource FileToIcon}}"
+                                        Width="38"
+                                        Height="46"
+                                        Margin="1,0,0,0" />
 
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Name}"
-                                   TextTrimming="WordEllipsis"
-                                   Style="{StaticResource PhoneTextNormalStyle}"
-                                   FontSize="{StaticResource PhoneFontSizeMediumLarge}"
-                                   Margin="0" />
+                                   Style="{StaticResource ResourceTextBlock}" />
                     </Grid>
                 </Button>
             </DataTemplate>
 
             <!-- Folder template -->
             <DataTemplate x:Key="FolderTemplate">
-                <tool:ExpanderView ItemsSource="{Binding Files}"
-                                   ItemTemplate="{StaticResource FileTemplate}">
+                <tool:ExpanderView x:Name="Expander"
+                                   ItemsSource="{Binding Files}"
+                                   ItemTemplate="{StaticResource FileTemplate}"
+                                   Margin="11,0">
                     <tool:ExpanderView.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            
-                            <!-- TODO folder icon here -->
-                            <!-- TODO fix the default ugly line when it's not expanded -->
 
+                            <!-- Closed folder icon -->
+                            <ContentControl Visibility="{Binding IsExpanded, ElementName=Expander, Converter={StaticResource BoolToOppositeVisibility}}"
+                                            Template="{StaticResource ClosedFolderIcon}"
+                                            Width="40"
+                                            Height="40" />
+
+                            <!-- Open folder icon -->
+                            <ContentControl Visibility="{Binding IsExpanded, ElementName=Expander, Converter={StaticResource BoolToVisibility}}"
+                                            Template="{StaticResource OpenFolderIcon}"
+                                            Width="40"
+                                            Height="40" />
+
+                            <!-- Name -->
                             <TextBlock Grid.Column="1"
                                        Text="{Binding Name}"
-                                       TextTrimming="WordEllipsis"
-                                       Style="{StaticResource PhoneTextNormalStyle}"
-                                       FontSize="{StaticResource PhoneFontSizeMediumLarge}" />
+                                       Style="{StaticResource ResourceTextBlock}" />
                         </Grid>
                     </tool:ExpanderView.Header>
                 </tool:ExpanderView>
@@ -80,22 +99,23 @@
 
             <!-- Link template -->
             <DataTemplate x:Key="LinkTemplate">
-                <!-- TODO open on click -->
-                <Button Style="{StaticResource SimpleButtonStyle}">
+                <Button Command="{Binding DataContext.OpenLinkCommand, ElementName=LayoutRoot}"
+                        CommandParameter="{Binding}"
+                        Style="{StaticResource SimpleButtonStyle}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        
-                        <!-- TODO link icon here -->
+
+                        <ContentControl Template="{StaticResource LinkIcon}"
+                                        Width="40"
+                                        Height="40"
+                                        Margin="1,0,0,0" />
 
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Name}"
-                                   TextTrimming="WordEllipsis"
-                                   Style="{StaticResource PhoneTextNormalStyle}"
-                                   FontSize="{StaticResource PhoneFontSizeMediumLarge}"
-                                   Margin="0" />
+                                   Style="{StaticResource ResourceTextBlock}" />
                     </Grid>
                 </Button>
             </DataTemplate>
@@ -107,13 +127,25 @@
                                           LinkTemplate="{StaticResource LinkTemplate}"
                                           Content="{Binding}"
                                           HorizontalAlignment="Stretch" 
-                                          HorizontalContentAlignment="Stretch" />
+                                          HorizontalContentAlignment="Stretch"
+                                          Margin="0,10" />
             </DataTemplate>
 
             <!-- Section template -->
             <DataTemplate x:Key="SectionTemplate">
-                <ItemsControl ItemsSource="{Binding Resources}"
-                              ItemTemplate="{StaticResource ResourceTemplate}" />
+                <ScrollViewer>
+                    <StackPanel>
+                        <comControls:HtmlTextBlock Html="{Binding Details}" />
+
+                        <ItemsControl ItemsSource="{Binding Resources}"
+                                      ItemTemplate="{StaticResource ResourceTemplate}" />
+                        
+                        <TextBlock Text="{Binding Resources.NoFiles, Source={StaticResource Strings}}"
+                                   Style="{StaticResource ResourceTextBlock}"
+                                   Foreground="{StaticResource PhoneSubtleBrush}"
+                                   Visibility="{Binding Resources, Converter={StaticResource NoneToVisibility}}" />
+                    </StackPanel>
+                </ScrollViewer>
             </DataTemplate>
 
             <!-- Section header template -->
@@ -140,14 +172,14 @@
                    Height="115"
                    VerticalAlignment="Top" />
 
-        <!-- Sections pivot SelectedItem="{Binding SelectedSection}"-->
+        <!-- Sections pivot -->
         <phone:Pivot Title="{Binding Resources.PagesHeader, Source={StaticResource Strings}}"
                      ItemsSource="{Binding Sections}"
-                     SelectedIndex="1"
+                     SelectedItem="{Binding SelectedSection}"
                      ItemTemplate="{StaticResource SectionTemplate}"
                      HeaderTemplate="{StaticResource SectionHeaderTemplate}"
                      Foreground="{StaticResource AppHeaderForegroundBrush}" />
-             
+
         <!-- Loading & error -->
         <comControls:LoadingAndError Margin="0,65,0,0" />
     </Grid>
