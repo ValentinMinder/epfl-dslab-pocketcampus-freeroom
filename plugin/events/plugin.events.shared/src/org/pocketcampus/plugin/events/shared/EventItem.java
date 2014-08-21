@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.BitSet;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("EventItem");
@@ -46,29 +48,29 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
   private static final org.apache.thrift.protocol.TField CHILDREN_POOLS_FIELD_DESC = new org.apache.thrift.protocol.TField("childrenPools", org.apache.thrift.protocol.TType.LIST, (short)30);
   private static final org.apache.thrift.protocol.TField PARENT_POOL_FIELD_DESC = new org.apache.thrift.protocol.TField("parentPool", org.apache.thrift.protocol.TType.I64, (short)31);
 
-  public long eventId; // required
-  public long startDate; // required
-  public long endDate; // required
-  public boolean fullDay; // required
-  public String eventPicture; // required
-  public String eventTitle; // required
-  public String eventPlace; // required
-  public String eventSpeaker; // required
-  public String eventDetails; // required
-  public String eventThumbnail; // required
-  public String eventUri; // required
-  public String vcalUid; // required
-  public String locationHref; // required
-  public String detailsLink; // required
-  public String secondLine; // required
-  public String timeSnippet; // required
-  public boolean hideTitle; // required
-  public boolean hideThumbnail; // required
-  public boolean hideEventInfo; // required
-  public int eventCateg; // required
-  public List<String> eventTags; // required
-  public List<Long> childrenPools; // required
-  public long parentPool; // required
+  private long eventId; // required
+  private long startDate; // required
+  private long endDate; // required
+  private boolean fullDay; // required
+  private String eventPicture; // required
+  private String eventTitle; // required
+  private String eventPlace; // required
+  private String eventSpeaker; // required
+  private String eventDetails; // required
+  private String eventThumbnail; // required
+  private String eventUri; // required
+  private String vcalUid; // required
+  private String locationHref; // required
+  private String detailsLink; // required
+  private String secondLine; // required
+  private String timeSnippet; // required
+  private boolean hideTitle; // required
+  private boolean hideThumbnail; // required
+  private boolean hideEventInfo; // required
+  private int eventCateg; // required
+  private List<String> eventTags; // required
+  private List<Long> childrenPools; // required
+  private long parentPool; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

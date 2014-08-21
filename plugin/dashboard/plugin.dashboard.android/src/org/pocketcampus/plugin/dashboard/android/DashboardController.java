@@ -1,6 +1,8 @@
 package org.pocketcampus.plugin.dashboard.android;
 
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreProtocolPNames;
+import org.pocketcampus.platform.android.core.GlobalContext;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.platform.android.core.PushNotificationListener;
@@ -50,6 +52,7 @@ public class DashboardController extends PluginController {
 	public void onCreate() {
 		mModel = new DashboardModel(getApplicationContext());
 		threadSafeClient = getThreadSafeClient();
+		threadSafeClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, GlobalContext.USER_AGENT);
 		
 		// initialize ImageLoader
 		ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
