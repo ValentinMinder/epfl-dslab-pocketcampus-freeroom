@@ -4,7 +4,7 @@ enum AppStore{
 }
 
 struct RecommendedApp{
-	1: string appStoreQuery;
+	1: required string appStoreQuery;
 	2: optional string appName;
 	3: optional string appDescription;
 	4: optional string appOpenURLPattern;
@@ -12,11 +12,10 @@ struct RecommendedApp{
 }
 
 struct RecommendedAppCategory{
-	1: i32 categoryId;
-	2: string categoryName;
-	3: string categoryLogoURL;
-	4: string categoryDescription;
-	5: list<i32> appIds;
+	1: required string categoryName;
+	2: optional string categoryLogoURL;
+	3: required string categoryDescription;
+	4: required list<i32> appIds;
 }
 
 enum RecommendedAppsResponseStatus{
@@ -24,14 +23,14 @@ enum RecommendedAppsResponseStatus{
 }
 
 struct RecommendedAppsResponse{
-	1: RecommendedAppsResponseStatus status;
-	2: list<RecommendedAppCategory> categories;
-	3: map<i32, RecommendedApp> apps;
+	1: required RecommendedAppsResponseStatus status;
+	2: required list<RecommendedAppCategory> categories;
+	3: required map<i32, RecommendedApp> apps;
 }
 
 struct RecommendedAppsRequest{
-	1: string language;
-	2: AppStore appStore;
+	1: required string language;
+	2: required AppStore appStore;
 }
 
 service RecommendedAppsService{

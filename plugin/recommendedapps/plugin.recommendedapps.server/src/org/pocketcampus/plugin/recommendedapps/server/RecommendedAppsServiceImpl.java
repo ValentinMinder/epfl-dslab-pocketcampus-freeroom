@@ -119,7 +119,6 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 			RecommendedAppCategory category = new RecommendedAppCategory();
 
 			int categoryId = results.getInt("CategoryId");
-			category.setCategoryId(categoryId);
 
 			// String categoryLogoURL = results.getString("CategoryLogoURL");
 			// category.setCategoryLogoURL(categoryLogoURL);

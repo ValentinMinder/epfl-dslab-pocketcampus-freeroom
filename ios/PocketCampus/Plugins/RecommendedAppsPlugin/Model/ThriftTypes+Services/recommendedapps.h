@@ -90,13 +90,11 @@ enum RecommendedAppsResponseStatus {
 @end
 
 @interface RecommendedAppCategory : NSObject <TBase, NSCoding> {
-  int32_t __categoryId;
   NSString * __categoryName;
   NSString * __categoryLogoURL;
   NSString * __categoryDescription;
   NSMutableArray * __appIds;
 
-  BOOL __categoryId_isset;
   BOOL __categoryName_isset;
   BOOL __categoryLogoURL_isset;
   BOOL __categoryDescription_isset;
@@ -104,7 +102,6 @@ enum RecommendedAppsResponseStatus {
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, getter=categoryId, setter=setCategoryId:) int32_t categoryId;
 @property (nonatomic, retain, getter=categoryName, setter=setCategoryName:) NSString * categoryName;
 @property (nonatomic, retain, getter=categoryLogoURL, setter=setCategoryLogoURL:) NSString * categoryLogoURL;
 @property (nonatomic, retain, getter=categoryDescription, setter=setCategoryDescription:) NSString * categoryDescription;
@@ -112,18 +109,12 @@ enum RecommendedAppsResponseStatus {
 #endif
 
 - (id) init;
-- (id) initWithCategoryId: (int32_t) categoryId categoryName: (NSString *) categoryName categoryLogoURL: (NSString *) categoryLogoURL categoryDescription: (NSString *) categoryDescription appIds: (NSMutableArray *) appIds;
+- (id) initWithCategoryName: (NSString *) categoryName categoryLogoURL: (NSString *) categoryLogoURL categoryDescription: (NSString *) categoryDescription appIds: (NSMutableArray *) appIds;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 
 - (void) validate;
-
-#if !__has_feature(objc_arc)
-- (int32_t) categoryId;
-- (void) setCategoryId: (int32_t) categoryId;
-#endif
-- (BOOL) categoryIdIsSet;
 
 #if !__has_feature(objc_arc)
 - (NSString *) categoryName;

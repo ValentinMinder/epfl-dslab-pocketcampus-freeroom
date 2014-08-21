@@ -24,13 +24,11 @@ import org.slf4j.LoggerFactory;
 public class RecommendedAppCategory implements org.apache.thrift.TBase<RecommendedAppCategory, RecommendedAppCategory._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("RecommendedAppCategory");
 
-  private static final org.apache.thrift.protocol.TField CATEGORY_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("categoryId", org.apache.thrift.protocol.TType.I32, (short)1);
-  private static final org.apache.thrift.protocol.TField CATEGORY_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("categoryName", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField CATEGORY_LOGO_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("categoryLogoURL", org.apache.thrift.protocol.TType.STRING, (short)3);
-  private static final org.apache.thrift.protocol.TField CATEGORY_DESCRIPTION_FIELD_DESC = new org.apache.thrift.protocol.TField("categoryDescription", org.apache.thrift.protocol.TType.STRING, (short)4);
-  private static final org.apache.thrift.protocol.TField APP_IDS_FIELD_DESC = new org.apache.thrift.protocol.TField("appIds", org.apache.thrift.protocol.TType.LIST, (short)5);
+  private static final org.apache.thrift.protocol.TField CATEGORY_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("categoryName", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField CATEGORY_LOGO_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("categoryLogoURL", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField CATEGORY_DESCRIPTION_FIELD_DESC = new org.apache.thrift.protocol.TField("categoryDescription", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField APP_IDS_FIELD_DESC = new org.apache.thrift.protocol.TField("appIds", org.apache.thrift.protocol.TType.LIST, (short)4);
 
-  private int categoryId; // required
   private String categoryName; // required
   private String categoryLogoURL; // required
   private String categoryDescription; // required
@@ -38,11 +36,10 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    CATEGORY_ID((short)1, "categoryId"),
-    CATEGORY_NAME((short)2, "categoryName"),
-    CATEGORY_LOGO_URL((short)3, "categoryLogoURL"),
-    CATEGORY_DESCRIPTION((short)4, "categoryDescription"),
-    APP_IDS((short)5, "appIds");
+    CATEGORY_NAME((short)1, "categoryName"),
+    CATEGORY_LOGO_URL((short)2, "categoryLogoURL"),
+    CATEGORY_DESCRIPTION((short)3, "categoryDescription"),
+    APP_IDS((short)4, "appIds");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -57,15 +54,13 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // CATEGORY_ID
-          return CATEGORY_ID;
-        case 2: // CATEGORY_NAME
+        case 1: // CATEGORY_NAME
           return CATEGORY_NAME;
-        case 3: // CATEGORY_LOGO_URL
+        case 2: // CATEGORY_LOGO_URL
           return CATEGORY_LOGO_URL;
-        case 4: // CATEGORY_DESCRIPTION
+        case 3: // CATEGORY_DESCRIPTION
           return CATEGORY_DESCRIPTION;
-        case 5: // APP_IDS
+        case 4: // APP_IDS
           return APP_IDS;
         default:
           return null;
@@ -107,21 +102,17 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
   }
 
   // isset id assignments
-  private static final int __CATEGORYID_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.CATEGORY_ID, new org.apache.thrift.meta_data.FieldMetaData("categoryId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.CATEGORY_NAME, new org.apache.thrift.meta_data.FieldMetaData("categoryName", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.CATEGORY_NAME, new org.apache.thrift.meta_data.FieldMetaData("categoryName", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.CATEGORY_LOGO_URL, new org.apache.thrift.meta_data.FieldMetaData("categoryLogoURL", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.CATEGORY_LOGO_URL, new org.apache.thrift.meta_data.FieldMetaData("categoryLogoURL", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.CATEGORY_DESCRIPTION, new org.apache.thrift.meta_data.FieldMetaData("categoryDescription", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.CATEGORY_DESCRIPTION, new org.apache.thrift.meta_data.FieldMetaData("categoryDescription", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.APP_IDS, new org.apache.thrift.meta_data.FieldMetaData("appIds", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.APP_IDS, new org.apache.thrift.meta_data.FieldMetaData("appIds", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -132,17 +123,12 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
   }
 
   public RecommendedAppCategory(
-    int categoryId,
     String categoryName,
-    String categoryLogoURL,
     String categoryDescription,
     List<Integer> appIds)
   {
     this();
-    this.categoryId = categoryId;
-    setCategoryIdIsSet(true);
     this.categoryName = categoryName;
-    this.categoryLogoURL = categoryLogoURL;
     this.categoryDescription = categoryDescription;
     this.appIds = appIds;
   }
@@ -151,9 +137,6 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
    * Performs a deep copy on <i>other</i>.
    */
   public RecommendedAppCategory(RecommendedAppCategory other) {
-    __isset_bit_vector.clear();
-    __isset_bit_vector.or(other.__isset_bit_vector);
-    this.categoryId = other.categoryId;
     if (other.isSetCategoryName()) {
       this.categoryName = other.categoryName;
     }
@@ -178,35 +161,10 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
 
   @Override
   public void clear() {
-    setCategoryIdIsSet(false);
-    this.categoryId = 0;
     this.categoryName = null;
     this.categoryLogoURL = null;
     this.categoryDescription = null;
     this.appIds = null;
-  }
-
-  public int getCategoryId() {
-    return this.categoryId;
-  }
-
-  public RecommendedAppCategory setCategoryId(int categoryId) {
-    this.categoryId = categoryId;
-    setCategoryIdIsSet(true);
-    return this;
-  }
-
-  public void unsetCategoryId() {
-    __isset_bit_vector.clear(__CATEGORYID_ISSET_ID);
-  }
-
-  /** Returns true if field categoryId is set (has been assigned a value) and false otherwise */
-  public boolean isSetCategoryId() {
-    return __isset_bit_vector.get(__CATEGORYID_ISSET_ID);
-  }
-
-  public void setCategoryIdIsSet(boolean value) {
-    __isset_bit_vector.set(__CATEGORYID_ISSET_ID, value);
   }
 
   public String getCategoryName() {
@@ -322,14 +280,6 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case CATEGORY_ID:
-      if (value == null) {
-        unsetCategoryId();
-      } else {
-        setCategoryId((Integer)value);
-      }
-      break;
-
     case CATEGORY_NAME:
       if (value == null) {
         unsetCategoryName();
@@ -367,9 +317,6 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case CATEGORY_ID:
-      return Integer.valueOf(getCategoryId());
-
     case CATEGORY_NAME:
       return getCategoryName();
 
@@ -393,8 +340,6 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
     }
 
     switch (field) {
-    case CATEGORY_ID:
-      return isSetCategoryId();
     case CATEGORY_NAME:
       return isSetCategoryName();
     case CATEGORY_LOGO_URL:
@@ -419,15 +364,6 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
   public boolean equals(RecommendedAppCategory that) {
     if (that == null)
       return false;
-
-    boolean this_present_categoryId = true;
-    boolean that_present_categoryId = true;
-    if (this_present_categoryId || that_present_categoryId) {
-      if (!(this_present_categoryId && that_present_categoryId))
-        return false;
-      if (this.categoryId != that.categoryId)
-        return false;
-    }
 
     boolean this_present_categoryName = true && this.isSetCategoryName();
     boolean that_present_categoryName = true && that.isSetCategoryName();
@@ -472,11 +408,6 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_categoryId = true;
-    builder.append(present_categoryId);
-    if (present_categoryId)
-      builder.append(categoryId);
-
     boolean present_categoryName = true && (isSetCategoryName());
     builder.append(present_categoryName);
     if (present_categoryName)
@@ -508,16 +439,6 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
     int lastComparison = 0;
     RecommendedAppCategory typedOther = (RecommendedAppCategory)other;
 
-    lastComparison = Boolean.valueOf(isSetCategoryId()).compareTo(typedOther.isSetCategoryId());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetCategoryId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.categoryId, typedOther.categoryId);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     lastComparison = Boolean.valueOf(isSetCategoryName()).compareTo(typedOther.isSetCategoryName());
     if (lastComparison != 0) {
       return lastComparison;
@@ -575,36 +496,28 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
         break;
       }
       switch (field.id) {
-        case 1: // CATEGORY_ID
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.categoryId = iprot.readI32();
-            setCategoryIdIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 2: // CATEGORY_NAME
+        case 1: // CATEGORY_NAME
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.categoryName = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // CATEGORY_LOGO_URL
+        case 2: // CATEGORY_LOGO_URL
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.categoryLogoURL = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // CATEGORY_DESCRIPTION
+        case 3: // CATEGORY_DESCRIPTION
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.categoryDescription = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 5: // APP_IDS
+        case 4: // APP_IDS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
               org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
@@ -636,18 +549,17 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    oprot.writeFieldBegin(CATEGORY_ID_FIELD_DESC);
-    oprot.writeI32(this.categoryId);
-    oprot.writeFieldEnd();
     if (this.categoryName != null) {
       oprot.writeFieldBegin(CATEGORY_NAME_FIELD_DESC);
       oprot.writeString(this.categoryName);
       oprot.writeFieldEnd();
     }
     if (this.categoryLogoURL != null) {
-      oprot.writeFieldBegin(CATEGORY_LOGO_URL_FIELD_DESC);
-      oprot.writeString(this.categoryLogoURL);
-      oprot.writeFieldEnd();
+      if (isSetCategoryLogoURL()) {
+        oprot.writeFieldBegin(CATEGORY_LOGO_URL_FIELD_DESC);
+        oprot.writeString(this.categoryLogoURL);
+        oprot.writeFieldEnd();
+      }
     }
     if (this.categoryDescription != null) {
       oprot.writeFieldBegin(CATEGORY_DESCRIPTION_FIELD_DESC);
@@ -675,10 +587,6 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
     StringBuilder sb = new StringBuilder("RecommendedAppCategory(");
     boolean first = true;
 
-    sb.append("categoryId:");
-    sb.append(this.categoryId);
-    first = false;
-    if (!first) sb.append(", ");
     sb.append("categoryName:");
     if (this.categoryName == null) {
       sb.append("null");
@@ -686,14 +594,16 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
       sb.append(this.categoryName);
     }
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("categoryLogoURL:");
-    if (this.categoryLogoURL == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.categoryLogoURL);
+    if (isSetCategoryLogoURL()) {
+      if (!first) sb.append(", ");
+      sb.append("categoryLogoURL:");
+      if (this.categoryLogoURL == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.categoryLogoURL);
+      }
+      first = false;
     }
-    first = false;
     if (!first) sb.append(", ");
     sb.append("categoryDescription:");
     if (this.categoryDescription == null) {
@@ -716,6 +626,15 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    if (categoryName == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'categoryName' was not present! Struct: " + toString());
+    }
+    if (categoryDescription == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'categoryDescription' was not present! Struct: " + toString());
+    }
+    if (appIds == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'appIds' was not present! Struct: " + toString());
+    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -728,8 +647,6 @@ public class RecommendedAppCategory implements org.apache.thrift.TBase<Recommend
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
-      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);

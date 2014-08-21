@@ -111,7 +111,7 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.APP_STORE_QUERY, new org.apache.thrift.meta_data.FieldMetaData("appStoreQuery", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.APP_STORE_QUERY, new org.apache.thrift.meta_data.FieldMetaData("appStoreQuery", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.APP_NAME, new org.apache.thrift.meta_data.FieldMetaData("appName", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
@@ -689,6 +689,9 @@ public class RecommendedApp implements org.apache.thrift.TBase<RecommendedApp, R
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    if (appStoreQuery == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'appStoreQuery' was not present! Struct: " + toString());
+    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

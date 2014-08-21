@@ -321,6 +321,10 @@
 
 - (void) validate {
   // check for required fields
+  if (!__appStoreQuery_isset) {
+    @throw [TProtocolException exceptionWithName: @"TProtocolException"
+                               reason: @"Required field 'appStoreQuery' is not set."];
+  }
 }
 
 - (NSString *) description {
@@ -351,11 +355,9 @@
   return self;
 }
 
-- (id) initWithCategoryId: (int32_t) categoryId categoryName: (NSString *) categoryName categoryLogoURL: (NSString *) categoryLogoURL categoryDescription: (NSString *) categoryDescription appIds: (NSMutableArray *) appIds
+- (id) initWithCategoryName: (NSString *) categoryName categoryLogoURL: (NSString *) categoryLogoURL categoryDescription: (NSString *) categoryDescription appIds: (NSMutableArray *) appIds
 {
   self = [super init];
-  __categoryId = categoryId;
-  __categoryId_isset = YES;
   __categoryName = [categoryName retain_stub];
   __categoryName_isset = YES;
   __categoryLogoURL = [categoryLogoURL retain_stub];
@@ -370,11 +372,6 @@
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
-  if ([decoder containsValueForKey: @"categoryId"])
-  {
-    __categoryId = [decoder decodeInt32ForKey: @"categoryId"];
-    __categoryId_isset = YES;
-  }
   if ([decoder containsValueForKey: @"categoryName"])
   {
     __categoryName = [[decoder decodeObjectForKey: @"categoryName"] retain_stub];
@@ -400,10 +397,6 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  if (__categoryId_isset)
-  {
-    [encoder encodeInt32: __categoryId forKey: @"categoryId"];
-  }
   if (__categoryName_isset)
   {
     [encoder encodeObject: __categoryName forKey: @"categoryName"];
@@ -429,23 +422,6 @@
   [__categoryDescription release_stub];
   [__appIds release_stub];
   [super dealloc_stub];
-}
-
-- (int32_t) categoryId {
-  return __categoryId;
-}
-
-- (void) setCategoryId: (int32_t) categoryId {
-  __categoryId = categoryId;
-  __categoryId_isset = YES;
-}
-
-- (BOOL) categoryIdIsSet {
-  return __categoryId_isset;
-}
-
-- (void) unsetCategoryId {
-  __categoryId_isset = NO;
 }
 
 - (NSString *) categoryName {
@@ -548,14 +524,6 @@
     switch (fieldID)
     {
       case 1:
-        if (fieldType == TType_I32) {
-          int32_t fieldValue = [inProtocol readI32];
-          [self setCategoryId: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 2:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setCategoryName: fieldValue];
@@ -563,7 +531,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 3:
+      case 2:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setCategoryLogoURL: fieldValue];
@@ -571,7 +539,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 4:
+      case 3:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setCategoryDescription: fieldValue];
@@ -579,7 +547,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 5:
+      case 4:
         if (fieldType == TType_LIST) {
           int _size0;
           [inProtocol readListBeginReturningElementType: NULL size: &_size0];
@@ -608,35 +576,30 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"RecommendedAppCategory"];
-  if (__categoryId_isset) {
-    [outProtocol writeFieldBeginWithName: @"categoryId" type: TType_I32 fieldID: 1];
-    [outProtocol writeI32: __categoryId];
-    [outProtocol writeFieldEnd];
-  }
   if (__categoryName_isset) {
     if (__categoryName != nil) {
-      [outProtocol writeFieldBeginWithName: @"categoryName" type: TType_STRING fieldID: 2];
+      [outProtocol writeFieldBeginWithName: @"categoryName" type: TType_STRING fieldID: 1];
       [outProtocol writeString: __categoryName];
       [outProtocol writeFieldEnd];
     }
   }
   if (__categoryLogoURL_isset) {
     if (__categoryLogoURL != nil) {
-      [outProtocol writeFieldBeginWithName: @"categoryLogoURL" type: TType_STRING fieldID: 3];
+      [outProtocol writeFieldBeginWithName: @"categoryLogoURL" type: TType_STRING fieldID: 2];
       [outProtocol writeString: __categoryLogoURL];
       [outProtocol writeFieldEnd];
     }
   }
   if (__categoryDescription_isset) {
     if (__categoryDescription != nil) {
-      [outProtocol writeFieldBeginWithName: @"categoryDescription" type: TType_STRING fieldID: 4];
+      [outProtocol writeFieldBeginWithName: @"categoryDescription" type: TType_STRING fieldID: 3];
       [outProtocol writeString: __categoryDescription];
       [outProtocol writeFieldEnd];
     }
   }
   if (__appIds_isset) {
     if (__appIds != nil) {
-      [outProtocol writeFieldBeginWithName: @"appIds" type: TType_LIST fieldID: 5];
+      [outProtocol writeFieldBeginWithName: @"appIds" type: TType_LIST fieldID: 4];
       {
         [outProtocol writeListBeginWithElementType: TType_I32 size: [__appIds count]];
         int i4;
@@ -655,13 +618,23 @@
 
 - (void) validate {
   // check for required fields
+  if (!__categoryName_isset) {
+    @throw [TProtocolException exceptionWithName: @"TProtocolException"
+                               reason: @"Required field 'categoryName' is not set."];
+  }
+  if (!__categoryDescription_isset) {
+    @throw [TProtocolException exceptionWithName: @"TProtocolException"
+                               reason: @"Required field 'categoryDescription' is not set."];
+  }
+  if (!__appIds_isset) {
+    @throw [TProtocolException exceptionWithName: @"TProtocolException"
+                               reason: @"Required field 'appIds' is not set."];
+  }
 }
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"RecommendedAppCategory("];
-  [ms appendString: @"categoryId:"];
-  [ms appendFormat: @"%i", __categoryId];
-  [ms appendString: @",categoryName:"];
+  [ms appendString: @"categoryName:"];
   [ms appendFormat: @"\"%@\"", __categoryName];
   [ms appendString: @",categoryLogoURL:"];
   [ms appendFormat: @"\"%@\"", __categoryLogoURL];
@@ -918,6 +891,18 @@
 
 - (void) validate {
   // check for required fields
+  if (!__status_isset) {
+    @throw [TProtocolException exceptionWithName: @"TProtocolException"
+                               reason: @"Required field 'status' is not set."];
+  }
+  if (!__categories_isset) {
+    @throw [TProtocolException exceptionWithName: @"TProtocolException"
+                               reason: @"Required field 'categories' is not set."];
+  }
+  if (!__apps_isset) {
+    @throw [TProtocolException exceptionWithName: @"TProtocolException"
+                               reason: @"Required field 'apps' is not set."];
+  }
 }
 
 - (NSString *) description {
@@ -1086,6 +1071,14 @@
 
 - (void) validate {
   // check for required fields
+  if (!__language_isset) {
+    @throw [TProtocolException exceptionWithName: @"TProtocolException"
+                               reason: @"Required field 'language' is not set."];
+  }
+  if (!__appStore_isset) {
+    @throw [TProtocolException exceptionWithName: @"TProtocolException"
+                               reason: @"Required field 'appStore' is not set."];
+  }
 }
 
 - (NSString *) description {
