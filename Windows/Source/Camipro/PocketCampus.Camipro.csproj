@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\AccountInfo.cs" />
-    <Compile Include="Models\CamiproInfo.cs" />
     <Compile Include="Services\CamiproService.cs" />
     <Compile Include="Models\EbankingInfo.cs" />
     <Compile Include="Services\ICamiproService.cs" />

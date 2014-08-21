@@ -17,12 +17,12 @@ namespace PocketCampus.Common.Services.Design
             return attempt();
         }
 
-        public Task<TResult> ExecuteAsync<TViewModel, TToken, TSession, TResult>( ITwoStepAuthenticator<TToken, TSession> authenticator, Func<TSession, Task<TResult>> attempt )
+        public Task ExecuteAsync<TViewModel, TToken, TSession>( ITwoStepAuthenticator<TToken, TSession> authenticator, Func<TSession, Task> attempt )
             where TViewModel : ViewModel<NoParameter>
             where TToken : IAuthenticationToken
             where TSession : class
         {
-            return attempt( null );
+            return Task.FromResult( 0 );
         }
 
         public void Authenticate<TViewModel>() where TViewModel : ViewModel<NoParameter> { }

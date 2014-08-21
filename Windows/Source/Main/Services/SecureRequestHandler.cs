@@ -81,7 +81,7 @@ namespace PocketCampus.Main.Services
         /// <summary>
         /// Asynchronously executes the specified request, with the specified authenticator, for the specified ViewModel type.
         /// </summary>
-        public async Task<TResult> ExecuteAsync<TViewModel, TToken, TSession, TResult>( ITwoStepAuthenticator<TToken, TSession> authenticator, Func<TSession, Task<TResult>> attempt )
+        public async Task ExecuteAsync<TViewModel, TToken, TSession>( ITwoStepAuthenticator<TToken, TSession> authenticator, Func<TSession, Task> attempt )
             where TViewModel : ViewModel<NoParameter>
             where TToken : IAuthenticationToken
             where TSession : class
@@ -99,11 +99,11 @@ namespace PocketCampus.Main.Services
                 else
                 {
                     _mainSettings.SessionStatus = SessionStatus.NotLoggedIn;
-                    return default( TResult );
+                    return;
                 }
             }
 
-            return await attempt( session );
+            await attempt( session );
         }
 
         /// <summary>

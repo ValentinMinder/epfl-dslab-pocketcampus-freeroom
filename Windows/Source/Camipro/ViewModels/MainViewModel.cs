@@ -19,7 +19,7 @@ namespace PocketCampus.Camipro.ViewModels
     /// The main (and only) ViewModel.
     /// </summary>
     [LogId( "/camipro" )]
-    public sealed class MainViewModel : CachedDataViewModel<NoParameter, CamiproInfo>
+    public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private readonly ICamiproService _camiproService;
         private readonly ISecureRequestHandler _requestHandler;
@@ -68,8 +68,7 @@ namespace PocketCampus.Camipro.ViewModels
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
-        public MainViewModel( IDataCache cache, ICamiproService camiproService, ISecureRequestHandler requestHandler )
-            : base( cache )
+        public MainViewModel( ICamiproService camiproService, ISecureRequestHandler requestHandler )
         {
             _camiproService = camiproService;
             _requestHandler = requestHandler;
@@ -78,9 +77,9 @@ namespace PocketCampus.Camipro.ViewModels
         /// <summary>
         /// Requests an e-mail with e-banking information.
         /// </summary>
-        private async Task RequestEbankingEmailAsync()
+        private Task RequestEbankingEmailAsync()
         {
-            EmailStatus = await _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession, EmailSendingStatus>( _camiproService, async session =>
+            return _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession>( _camiproService, async session =>
             {
                 var request = new CamiproRequest
                 {
@@ -91,27 +90,27 @@ namespace PocketCampus.Camipro.ViewModels
                 try
                 {
                     var result = await _camiproService.RequestEBankingEMailAsync( request );
-                    return result.Status == ResponseStatus.Success ? EmailSendingStatus.Success : EmailSendingStatus.Error;
+                    EmailStatus = result.Status == ResponseStatus.Success ? EmailSendingStatus.Success : EmailSendingStatus.Error;
                 }
                 catch
                 {
-                    return EmailSendingStatus.Error;
+                    EmailStatus = EmailSendingStatus.Error;
                 }
             } );
         }
 
         /// <summary>
-        /// Gets data from the server.
+        /// Asynchronously refreshes the data.
         /// </summary>
-        protected override CachedTask<CamiproInfo> GetData( bool force, CancellationToken token )
+        protected override Task RefreshAsync( bool force, CancellationToken token )
         {
-            if ( !force )
+            return _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession>( _camiproService, async session =>
             {
-                return CachedTask.NoNewData<CamiproInfo>();
-            }
+                if ( !force )
+                {
+                    return;
+                }
 
-            return CachedTask.Create( () => _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession, CamiproInfo>( _camiproService, async session =>
-            {
                 var request = new CamiproRequest
                 {
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
@@ -121,34 +120,26 @@ namespace PocketCampus.Camipro.ViewModels
                 var accountTask = _camiproService.GetAccountInfoAsync( request, token );
                 var ebankingTask = _camiproService.GetEBankingInfoAsync( request, token );
 
-                await Task.WhenAll( accountTask, ebankingTask );
+                // parrallel requests
+                var accountInfo = await accountTask;
+                var ebankingInfo = await ebankingTask;
 
-                return new CamiproInfo( accountTask.Result, ebankingTask.Result );
-            } ) );
-        }
+                if ( accountInfo.Status == ResponseStatus.NetworkError || ebankingInfo.Status == ResponseStatus.NetworkError )
+                {
+                    throw new Exception( "Server error while getting the account or e-banking info." );
+                }
+                if ( accountInfo.Status == ResponseStatus.AuthenticationError || ebankingInfo.Status == ResponseStatus.AuthenticationError )
+                {
+                    _requestHandler.Authenticate<MainViewModel>();
+                    return;
+                }
 
-        /// <summary>
-        /// Handles data received from the server.
-        /// </summary>
-        protected override bool HandleData( CamiproInfo data, CancellationToken token )
-        {
-            if ( data.AccountInfo.Status == ResponseStatus.NetworkError || data.EbankingInfo.Status == ResponseStatus.NetworkError )
-            {
-                throw new Exception( "Server error while getting the account or e-banking info." );
-            }
-            if ( data.AccountInfo.Status == ResponseStatus.AuthenticationError || data.EbankingInfo.Status == ResponseStatus.AuthenticationError )
-            {
-                _requestHandler.Authenticate<MainViewModel>();
-                return false;
-            }
-
-            if ( !token.IsCancellationRequested )
-            {
-                AccountInfo = data.AccountInfo;
-                EbankingInfo = data.EbankingInfo;
-            }
-
-            return true;
+                if ( !token.IsCancellationRequested )
+                {
+                    AccountInfo = accountInfo;
+                    EbankingInfo = ebankingInfo;
+                }
+            } );
         }
     }
 }

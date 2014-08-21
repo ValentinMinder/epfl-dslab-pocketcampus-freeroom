@@ -104,9 +104,6 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     
-                    <!-- Stale data indicator -->
-                    <comControls:StaleDataIndicator Margin="0,-11,0,6" />
-
                     <!-- Current balance -->
                     <StackPanel Grid.Row="1"
                                 Orientation="Horizontal"
@@ -183,9 +180,6 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <!-- Stale data indicator -->
-                    <comControls:StaleDataIndicator Margin="0,-11,0,6" />
-
                     <!-- Payment type -->
                     <TextBlock Grid.Row="1"
                                Text="{Binding Resources.EbankingPaymentType, Source={StaticResource Strings}}"
@@ -235,7 +229,8 @@
                     <Button Grid.Row="9"
                             Command="{Binding RequestEbankingEmailCommand}"
                             Content="{Binding Resources.RequestEbankingEmail, Source={StaticResource Strings}}"
-                            Visibility="{Binding EmailStatus, Converter={StaticResource NoEmailRequestToVisibility}}" />
+                            Visibility="{Binding EmailStatus, Converter={StaticResource NoEmailRequestToVisibility}}"
+                            Margin="12,20" />
 
                     <!-- E-mail status text -->
                     <TextBlock Grid.Row="9"

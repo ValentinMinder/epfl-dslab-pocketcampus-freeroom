@@ -15,7 +15,6 @@ namespace PocketCampus.Camipro.ViewModels.Design
     {
 #if DEBUG
         public DataStatus DataStatus { get { return DataStatus.DataLoaded; } }
-        public CacheStatus CacheStatus { get { return CacheStatus.Unused; } }
 
         public AccountInfo AccountInfo
         {

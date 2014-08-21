@@ -25,7 +25,7 @@ namespace PocketCampus.Common.Services
         /// <summary>
         /// Asynchronously executes the specified request, with the specified authenticator, for the specified ViewModel type.
         /// </summary>
-        Task<TResult> ExecuteAsync<TViewModel, TToken, TSession, TResult>( ITwoStepAuthenticator<TToken, TSession> authenticator, Func<TSession, Task<TResult>> attempt )
+        Task ExecuteAsync<TViewModel, TToken, TSession>( ITwoStepAuthenticator<TToken, TSession> authenticator, Func<TSession, Task> attempt )
             where TViewModel : ViewModel<NoParameter>
             where TToken : IAuthenticationToken
             where TSession : class;
