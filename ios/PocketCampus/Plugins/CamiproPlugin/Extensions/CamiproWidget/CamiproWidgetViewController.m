@@ -48,6 +48,7 @@
     // If there's no update required, use NCUpdateResultNoData
     // If there's an update, use NCUpdateResultNewData
     
+    self.preferredContentSize = CGSizeMake(320.0, 50.0);
     self.completionHandler = completionHandler;
     
     [self.camiproService cancelOperationsForDelegate:self];
@@ -75,9 +76,10 @@
 }
 
 - (void)startBalanceAndTransactionsRequest {
+    __weak __typeof(self) welf = self;
     VoidBlock successBlock = ^{
-        CamiproRequest* request = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:self.camiproService.camiproSession] iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
-        [self.camiproService getBalanceAndTransactions:request delegate:self];
+        CamiproRequest* request = [[CamiproRequest alloc] initWithISessionId:[welf buildSessionIdFromCamiproSession:welf.camiproService.camiproSession] iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
+        [welf.camiproService getBalanceAndTransactions:request delegate:welf];
     };
     if (self.camiproService.camiproSession) {
         successBlock();
@@ -85,7 +87,6 @@
         if (!self.camiproController) {
             self.camiproController = [CamiproController sharedInstanceToRetain];
         }
-        __weak __typeof(self) welf = self;
         [self.camiproController removeLoginObserver:self];
         [self.camiproController addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
             [welf showError];
