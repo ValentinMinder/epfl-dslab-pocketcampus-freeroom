@@ -2,19 +2,20 @@
 if [ -z "$1" ]
 then
 	echo "usage examples:"
-	echo "    ./tool/tool.global/upload_and_run.sh http://dev.pocketcampus.ch/"
-	echo "    ./tool/tool.global/upload_and_run.sh https://test-pocketcampus.epfl.ch/dev/"
+	echo "    ./tool/tool.global/upload_and_run.sh http://dev.pocketcampus.ch/%s/dummy/?t=%s"
+	echo "    ./tool/tool.global/upload_and_run.sh https://test-pocketcampus.epfl.ch/dev/%s/kissrv120/?t=%s"
+	echo "    ./tool/tool.global/upload_and_run.sh https://prod-pocketcampus.epfl.ch/dev/%s/kissrv119/?t=%s"
+	echo "    ./tool/tool.global/upload_and_run.sh https://prod-pocketcampus.epfl.ch/dev/%s/kissrv118/?t=%s"
 	exit
 fi
 
-server=$1
-
-echo "Access token for $server :"
+echo "Access token for $1 :"
 read token
 
 echo "UPLOADING JAR"
 
-uploadstatus=`curl -F file=@server/PocketCampusServer/PocketCampusServer.jar $server/upload_jar.php?t=$token`
+url=`printf $1 upload_jar.php $token`
+uploadstatus=`curl -F file=@server/PocketCampusServer/PocketCampusServer.jar $url`
 
 if [[ "$uploadstatus" != "Uploaded"* ]]
 then
@@ -24,7 +25,8 @@ fi
 
 echo "STARTING NEW SERVER"
 
-restartstatus=`curl -F field=value $server/restart_server.php?t=$token`
+url=`printf $1 restart_server.php $token`
+restartstatus=`curl -F field=value $url`
 
 if [[ "$restartstatus" != *"started with pid"* ]]
 then

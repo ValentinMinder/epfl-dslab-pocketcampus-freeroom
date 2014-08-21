@@ -16,18 +16,11 @@ $config or die("CANNOT FIND OR OPEN CONFIG FILE");
 
 
 
-if($_SESSION["t"] == "{$config["POCKETCAMPUS_DEV_ACCESS"]}")
-	$team = "pcdev";
-elseif($_SESSION["t"] == "{$config["SEMPROJ_FREEROOM_ACCESS_TOKEN"]}")
-	$team = "freeroom";
-elseif($_SESSION["t"] == "{$config["SEMPROJ_MICROPHONE_ACCESS_TOKEN"]}")
-	$team = "microphone";
-elseif($_SESSION["t"] == "{$config["SEMPROJ_BLEBEACONS_ACCESS_TOKEN"]}")
-	$team = "blebeacons";
-elseif($_SESSION["t"] == "{$config["SEMPROJ_ROOMRATINGS_ACCESS_TOKEN"]}")
-	$team = "roomrating";
+if(isset($config[$_SESSION["t"]]))
+	$team = $config[$_SESSION["t"]];
 else
 	exit;
+
 
 
 
