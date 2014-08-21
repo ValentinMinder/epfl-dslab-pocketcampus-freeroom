@@ -35,6 +35,7 @@ public final class StationServiceImpl implements StationService {
 	private static final String REQUEST_ID = "_"; // The ID must not be empty, but we're not using multiple requests so it can be anything
 	private static final int REQUEST_MAX_RESULTS = 5; // 1-50
 	private static final String REQUEST_TYPE = "ST"; // Search for stations only; other options are POI, ADR (address) and ALLTYPES (all)
+	private static final String REQUEST_QUERY_WILDCARD_SUFFIX = "*"; // Required, otherwise the results are messed up
 
 	// Attributes of the response elements
 	private static final String RESPONSE_CONTAINER = "LocValRes";
@@ -74,7 +75,7 @@ public final class StationServiceImpl implements StationService {
 		final XElement request = buildRequest(token, query, maxResultsCount);
 		final String responseXml = client.post(API_URL, request.toBytes(API_CHARSET), API_CHARSET);
 		final List<TransportStation> stations = parseResponse(responseXml);
-
+		
 		if (location != null) {
 			Collections.sort(stations, new Comparator<TransportStation>() {
 				@Override
@@ -104,7 +105,7 @@ public final class StationServiceImpl implements StationService {
 
 		container.addChild(REQUEST_ELEMENT)
 				.setAttribute(REQUEST_TYPE_ATTRIBUTE, REQUEST_TYPE)
-				.setAttribute(REQUEST_QUERY_ATTRIBUTE, query);
+				.setAttribute(REQUEST_QUERY_ATTRIBUTE, query + REQUEST_QUERY_WILDCARD_SUFFIX);
 
 		return root;
 	}
