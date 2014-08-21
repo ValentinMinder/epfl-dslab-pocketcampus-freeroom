@@ -105,11 +105,6 @@ static BOOL loaded = NO;
             // Finally load potential overriding dev config Config.plist in ApplicationSupport/<bundle_identifier>/
             [self registerDevDefaultsFromAppSupportIfExists];
             [self registerDefaultsUserConfigDefaultValuesIfNotDefined];
-            
-#warning TMP
-            
-            [[self _defaults] setObject:[[NSDate date] description] forKey:@"TEST_TIMESTAMP"];
-            
             [[self _defaults] synchronize]; //persist to disk
             CLSNSLog(@"-> Config loaded.");
             loaded = YES;

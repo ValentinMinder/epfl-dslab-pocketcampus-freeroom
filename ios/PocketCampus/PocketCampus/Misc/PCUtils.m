@@ -281,11 +281,11 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 
 + (BOOL)hasAppAccessToLocation {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
-    if ([PCUtils isOSVersionSmallerThan:8.0]) {
-        return (status == kCLAuthorizationStatusAuthorized || status == kCLAuthorizationStatusNotDetermined);
-    } else {
-        return (status == kCLAuthorizationStatusAuthorizedAlways || status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusNotDetermined);
-    }
+#ifdef __IPHONE_8_0
+    return (status == kCLAuthorizationStatusAuthorizedAlways || status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusNotDetermined);
+#else
+    return (status == kCLAuthorizationStatusAuthorized || status == kCLAuthorizationStatusNotDetermined);
+#endif
 }
 
 + (void)throwExceptionIfObject:(id)object notKindOfClass:(Class)class; {
