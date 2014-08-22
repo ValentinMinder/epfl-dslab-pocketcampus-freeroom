@@ -38,6 +38,7 @@
 NSString* const kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification = @"AppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification";
 NSString* const kAppDelegatePushDeviceTokenStringUserInfoKey = @"AppDelegatePushDeviceTokenStringUserInfoKey";
 NSString* const kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification = @"AppDelegateAppFailedToRegisterForRemoteNotificationsNotification";
+NSString* const kAppDelegateAppDidRegisterUserNotificationSettingsNotification = @"AppDelegateAppDidRegisterUserNotificationSettingsNotification";
 
 static id test __strong __unused = nil;
 
@@ -134,6 +135,10 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
 
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
     return [window.rootViewController supportedInterfaceOrientations];
+}
+
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAppDelegateAppDidRegisterUserNotificationSettingsNotification object:self];
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {

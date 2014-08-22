@@ -37,22 +37,27 @@ typedef enum {
     PushNotifRegistrationErrorInternal = 0,
 } PushNotifDeviceRegistrationError;
 
+typedef void (^PushNotifDeviceRegistrationSuccessBlock)(BOOL alertAllowed, BOOL badgeAllowed, BOOL soundAllowed);
 typedef void (^PushNotifDeviceRegistrationFailureBlock)(PushNotifDeviceRegistrationError error);
-
-typedef void (^NewNotificationBlock)(NSString* notifMessage, NSDictionary* notifFullDictionary);
 
 /*
  * This class is used both as observer for registration and delegate for unregistration
  */
-@interface PushNotifDeviceRegistrationObserver: NSObject<PushNotifServiceDelegate> 
+@interface PushNotifDeviceRegistrationObserver: NSObject
 
-@property (nonatomic, copy) VoidBlock successBlock;
+@property (nonatomic, copy) PushNotifDeviceRegistrationSuccessBlock successBlock;
 @property (nonatomic, copy) PushNotifDeviceRegistrationFailureBlock failureBlock;
 
 @end
 
 @interface PushNotifController : PluginController<PluginControllerProtocol>
 
+/*
+ * Same as sharedInstanceToRetain
+ * Only indicates that sharedInstanceToRetain actually does not
+ * need to be retained (singleton).
+ */
++ (instancetype)sharedInstance;
 
 /*
  * Returns token of the device, when notifications were accepted
@@ -69,7 +74,7 @@ typedef void (^NewNotificationBlock)(NSString* notifMessage, NSDictionary* notif
  * rejected the first time respectively.
  * You may display a message telling the user what he is missing in your failure message.
  */
-- (void)registerDeviceForPushNotificationsWithPluginLowerIdentifier:(NSString*)pluginLowerIdentifier reason:(NSString*)reason success:(VoidBlock)success failure:(PushNotifDeviceRegistrationFailureBlock)failure NS_EXTENSION_UNAVAILABLE_IOS("You cannot register for push notifications from extensions.");
+- (void)registerDeviceForPushNotificationsWithPluginLowerIdentifier:(NSString*)pluginLowerIdentifier reason:(NSString*)reason success:(PushNotifDeviceRegistrationSuccessBlock)success failure:(PushNotifDeviceRegistrationFailureBlock)failure NS_EXTENSION_UNAVAILABLE_IOS("You cannot register for push notifications from extensions.");
 
 /*
  * Any class from <pluginLowerIdentifier> can observe arrival of new notifications destinated
@@ -78,7 +83,7 @@ typedef void (^NewNotificationBlock)(NSString* notifMessage, NSDictionary* notif
  * WARNING: classes must remove themselves with removeObserver:forPluginLowerIdentifier:
  * when being deallocated.
  */
-- (void)addPushNotificationObserver:(id)observer forPluginLowerIdentifier:(NSString*)pluginLowerIdentifier newNotificationBlock:(NewNotificationBlock)newNotificationBlock NS_EXTENSION_UNAVAILABLE_IOS("You cannot observe push notifications from extensions.");
+- (void)addPushNotificationObserver:(id)observer forPluginLowerIdentifier:(NSString*)pluginLowerIdentifier newNotificationBlock:(void (^)(NSString* notifMessage, NSDictionary* notifFullDictionary))newNotificationBlock NS_EXTENSION_UNAVAILABLE_IOS("You cannot observe push notifications from extensions.");
 
 /*
  * Classes that observe arrival of notifications (previous method) must use this method
