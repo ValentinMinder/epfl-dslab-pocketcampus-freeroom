@@ -350,7 +350,6 @@
 		32D834A719A4D38000844901 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927F15458BAB0058E472 /* MobileCoreServices.framework */; };
 		32D834A819A4D38300844901 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927D15458BA10058E472 /* SystemConfiguration.framework */; };
 		32D834A919A4D38F00844901 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5014FCDE4900A271CD /* UIKit.framework */; };
-		32D834AF19A4D3D600844901 /* PCUsageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3245DF2F18881B5F0072E086 /* PCUsageViewController.m */; };
 		32D834B019A4D6B500844901 /* PluginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32704C66150016B3002BCB75 /* PluginController.m */; };
 		32D834B119A4D6B900844901 /* PluginControllerAuthentified.m in Sources */ = {isa = PBXBuildFile; fileRef = 324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */; };
 		32D834B219A4D71200844901 /* PushNotifController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F427C8F702CC10F288D8C /* PushNotifController.m */; };
@@ -2931,7 +2930,6 @@
 				32B5613719A4CD640006BEC8 /* NSOperationWithDelegate.m in Sources */,
 				32B5613419A4CD5D0006BEC8 /* PCPersistenceManager.m in Sources */,
 				32D834B719A4D99C00844901 /* TApplicationException.m in Sources */,
-				32D834AF19A4D3D600844901 /* PCUsageViewController.m in Sources */,
 				32D834B019A4D6B500844901 /* PluginController.m in Sources */,
 				32D834BC19A4D9AB00844901 /* TNSFileHandleTransport.m in Sources */,
 				32D834A019A4D15000844901 /* authentication.m in Sources */,

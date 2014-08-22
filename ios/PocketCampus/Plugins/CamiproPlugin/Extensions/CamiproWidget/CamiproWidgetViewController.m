@@ -66,6 +66,7 @@
 #pragma mark - Actions
 
 - (void)widgetTapped {
+#warning does not seem to work on iPad
     [self.extensionContext openURL:[NSURL URLWithString:@"pocketcampus://camipro.plugin.pocketcampus.org"] completionHandler:NULL];
 }
 
@@ -108,9 +109,7 @@
 
 - (void)showError {
     [self.loadingIndicator stopAnimating];
-    NSMutableParagraphStyle* paragraphStyle = [NSMutableParagraphStyle new];
-    paragraphStyle.alignment = NSTextAlignmentLeft;
-    NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:16.0], NSForegroundColorAttributeName:[UIColor redColor], NSParagraphStyleAttributeName:paragraphStyle}];
+    NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:16.0], NSForegroundColorAttributeName:[UIColor redColor]}];
     self.balanceLabel.attributedText = attrString;
 }
 
@@ -122,10 +121,6 @@
     
     NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:finalString];
     
-    NSMutableParagraphStyle* paragraphStyle = [NSMutableParagraphStyle new];
-    paragraphStyle.alignment = NSTextAlignmentLeft;
-    
-    [attrString setAttributes:@{NSParagraphStyleAttributeName:paragraphStyle} range:NSMakeRange(0, finalString.length)];
     [attrString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:14.0], NSForegroundColorAttributeName:[UIColor redColor]} range:[finalString rangeOfString:loginRequiredString]];
     [attrString addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:11.0]} range:[finalString rangeOfString:tapToOpenPCString]];
     
@@ -168,9 +163,7 @@
 
 - (void)serviceConnectionToServerFailed {
     [self.loadingIndicator stopAnimating];
-    NSMutableParagraphStyle* paragraphStyle = [NSMutableParagraphStyle new];
-    paragraphStyle.alignment = NSTextAlignmentLeft;
-    NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil) attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:16.0], NSForegroundColorAttributeName:[UIColor redColor], NSParagraphStyleAttributeName:paragraphStyle}];
+    NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil) attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:16.0], NSForegroundColorAttributeName:[UIColor redColor]}];
     self.balanceLabel.attributedText = attrString;
     self.camiproController = nil;
     self.camiproService = nil;

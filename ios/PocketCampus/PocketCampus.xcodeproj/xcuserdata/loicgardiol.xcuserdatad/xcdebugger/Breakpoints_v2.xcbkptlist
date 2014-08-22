@@ -1627,8 +1627,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "719"
             endingLineNumber = "719"
-            landmarkName = "@implementation ZUUIRevealController"
-            landmarkType = "3">
+            landmarkName = "-didRotateFromInterfaceOrientation:"
+            landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">

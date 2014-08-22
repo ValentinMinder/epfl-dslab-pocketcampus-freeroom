@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sNj-S0-tBN">
-                                <rect key="frame" x="2" y="18" width="60" height="15"/>
+                                <rect key="frame" x="2" y="16" width="60" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="8XN-Re-ktv"/>
                                     <constraint firstAttribute="height" constant="15" id="TQP-OI-in7"/>
@@ -27,8 +27,8 @@
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="GcN-lo-r42" userLabel="Balance label">
-                                <rect key="frame" x="70" y="10" width="226" height="31"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="GcN-lo-r42" userLabel="Balance label">
+                                <rect key="frame" x="70" y="8" width="226" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="31" id="o6v-Qp-TUu"/>
                                 </constraints>
@@ -37,16 +37,16 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="pR3-LJ-ihf">
-                                <rect key="frame" x="173" y="16" width="20" height="20"/>
+                                <rect key="frame" x="75" y="14" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="sNj-S0-tBN" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leading" constant="2" id="GbS-4D-Dfe"/>
                             <constraint firstItem="GcN-lo-r42" firstAttribute="centerY" secondItem="pR3-LJ-ihf" secondAttribute="centerY" id="Pvg-AR-h8e"/>
-                            <constraint firstItem="GcN-lo-r42" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" constant="10" id="RLs-Pb-3tH"/>
+                            <constraint firstItem="GcN-lo-r42" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" constant="8" id="RLs-Pb-3tH"/>
                             <constraint firstItem="GcN-lo-r42" firstAttribute="leading" secondItem="sNj-S0-tBN" secondAttribute="trailing" constant="8" id="di4-qi-Lzm"/>
-                            <constraint firstAttribute="centerY" secondItem="sNj-S0-tBN" secondAttribute="centerY" id="qsX-Dq-t27"/>
-                            <constraint firstItem="GcN-lo-r42" firstAttribute="centerX" secondItem="pR3-LJ-ihf" secondAttribute="centerX" id="tTG-GI-BLV"/>
+                            <constraint firstItem="pR3-LJ-ihf" firstAttribute="leading" secondItem="GcN-lo-r42" secondAttribute="leading" constant="5" id="dqd-13-vIX"/>
+                            <constraint firstAttribute="centerY" secondItem="sNj-S0-tBN" secondAttribute="centerY" constant="1" id="qsX-Dq-t27"/>
                             <constraint firstItem="GcN-lo-r42" firstAttribute="trailing" secondItem="S3S-Oj-5AN" secondAttribute="trailingMargin" constant="-8" id="vkN-x5-9eC"/>
                         </constraints>
                     </view>
