@@ -4,8 +4,10 @@ session_start();
 
 if(!empty($_GET["t"])) {
 	$_SESSION["t"] = $_GET["t"];
-	header("Location: ?");
-	exit;
+	if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+		header("Location: ?");
+		exit;
+	}
 }
 
 if(empty($_SESSION["t"])) {
