@@ -2,11 +2,18 @@
 
 session_start();
 
-if(!empty($_GET["t"]))
+if(!empty($_GET["t"])) {
 	$_SESSION["t"] = $_GET["t"];
-
-if(empty($_SESSION["t"]))
+	header("Location: ?");
 	exit;
+}
+
+if(empty($_SESSION["t"])) {
+	header('HTTP/1.0 403 Forbidden');
+	exit;
+}
+
+
 
 
 
@@ -16,11 +23,11 @@ $config or die("CANNOT FIND OR OPEN CONFIG FILE");
 
 
 
-if(isset($config[$_SESSION["t"]]))
+if(isset($config[$_SESSION["t"]])) {
 	$team = $config[$_SESSION["t"]];
-else
+} else {
 	exit;
-
+}
 
 
 
