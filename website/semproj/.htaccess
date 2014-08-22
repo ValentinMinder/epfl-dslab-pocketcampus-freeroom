@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteRule ^/?12500/(.*)$ http://localhost:12500/v3r1/$1 [L,P]
+

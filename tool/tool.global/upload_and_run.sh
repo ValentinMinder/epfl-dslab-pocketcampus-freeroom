@@ -2,20 +2,21 @@
 if [ -z "$1" ]
 then
 	echo "usage examples:"
-	echo "    ./tool/tool.global/upload_and_run.sh http://dev.pocketcampus.ch/%s/dummy/?t=%s"
-	echo "    ./tool/tool.global/upload_and_run.sh https://test-pocketcampus.epfl.ch/dev/%s/kissrv120/?t=%s"
-	echo "    ./tool/tool.global/upload_and_run.sh https://prod-pocketcampus.epfl.ch/dev/%s/kissrv119/?t=%s"
-	echo "    ./tool/tool.global/upload_and_run.sh https://prod-pocketcampus.epfl.ch/dev/%s/kissrv118/?t=%s"
+	echo "    ./tool/tool.global/upload_and_run.sh http://dev.pocketcampus.ch/"
+	echo "    ./tool/tool.global/upload_and_run.sh https://test-pocketcampus.epfl.ch/dev/kissrv120/"
+	echo "    ./tool/tool.global/upload_and_run.sh https://prod-pocketcampus.epfl.ch/dev/kissrv119/"
+	echo "    ./tool/tool.global/upload_and_run.sh https://prod-pocketcampus.epfl.ch/dev/kissrv118/"
 	exit
 fi
 
-echo "Access token for $1 :"
+server=$1
+
+echo "Access token for $server :"
 read token
 
-echo "UPLOADING JAR"
+echo "======================= UPLOADING JAR ======================="
 
-url=`printf $1 upload_jar.php $token`
-uploadstatus=`curl -F file=@server/PocketCampusServer/PocketCampusServer.jar $url`
+uploadstatus=`curl -F file=@server/PocketCampusServer/PocketCampusServer.jar $server/upload_jar.php?t=$token`
 
 if [[ "$uploadstatus" != "Uploaded"* ]]
 then
@@ -23,10 +24,9 @@ then
 	exit 1
 fi
 
-echo "STARTING NEW SERVER"
+echo "==================== STARTING NEW SERVER ===================="
 
-url=`printf $1 restart_server.php $token`
-restartstatus=`curl -F field=value $url`
+restartstatus=`curl -F field=value $server/restart_server.php?t=$token`
 
 if [[ "$restartstatus" != *"started with pid"* ]]
 then
@@ -34,5 +34,5 @@ then
 	exit 1
 fi
 
-echo "DONE"
+echo "=========================== DONE  ==========================="
 
