@@ -131,6 +131,7 @@
                 if(canOpen){
                     NSString* actualAppOpenURL = [NSString stringWithFormat:appOpenURLPattern, @"org.pocketcampus"];
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:actualAppOpenURL]];
+                    return;
                 }
             }
             NSString* appStoreQuery = app.appStoreQuery;
