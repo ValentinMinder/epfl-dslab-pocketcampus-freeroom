@@ -100,7 +100,7 @@
     self.tableView.tableHeaderView = elements[0];
 }
 
-- (void)getRecommendedAppsFailed {
+- (void)getRecommendedAppsFailedForRequest:(RecommendedAppsRequest*)request {
 #warning TODO show error message and stop loading
 }
 
@@ -124,6 +124,15 @@
     if (!cell) {
         cell = [[RecommendedAppTableViewCell alloc] initWithRecommendedApps:[self recommendedAppsInCategory:category] forCategory:category andAppThumbTappedBlock:^(RecommendedAppThumbView *thumbView) {
             RecommendedApp* app = thumbView.recommendedApp;
+            
+            NSString* appOpenURLPattern = app.appOpenURLPattern;
+            if(appOpenURLPattern){
+                BOOL canOpen = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:appOpenURLPattern]];
+                if(canOpen){
+                    NSString* actualAppOpenURL = [NSString stringWithFormat:appOpenURLPattern, @"org.pocketcampus"];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:actualAppOpenURL]];
+                }
+            }
             NSString* appStoreQuery = app.appStoreQuery;
             NSNumber* appStoreAppId = @([appStoreQuery integerValue]);
             SKStoreProductViewController* productViewController = [SKStoreProductViewController new];
