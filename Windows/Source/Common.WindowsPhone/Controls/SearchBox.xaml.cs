@@ -81,7 +81,7 @@ namespace PocketCampus.Common.Controls
         /// </summary>
         public Command EndSearchCommand
         {
-            get { return GetCommand( EndSearch ); }
+            get { return this.GetCommand( EndSearch ); }
         }
 
 

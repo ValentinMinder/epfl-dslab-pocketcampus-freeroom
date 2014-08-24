@@ -79,7 +79,7 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to support.epfl@pocketcampus.org.
+        ///   Looks up a localized string similar to team@pocketcampus.org.
         /// </summary>
         public static string AboutContact {
             get {
@@ -88,7 +88,7 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to contact &amp; support.
+        ///   Looks up a localized string similar to contact.
         /// </summary>
         public static string AboutContactHeader {
             get {
@@ -155,6 +155,24 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1234@epfl.ch.
+        /// </summary>
+        public static string AboutSupport {
+            get {
+                return ResourceManager.GetString("AboutSupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to support.
+        /// </summary>
+        public static string AboutSupportHeader {
+            get {
+                return ResourceManager.GetString("AboutSupportHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://pocketcampus.epfl.ch.
         /// </summary>
         public static string AboutWebsite {
@@ -182,74 +200,11 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Authenticating....
+        ///   Looks up a localized string similar to you are logged in as.
         /// </summary>
-        public static string Authenticating {
+        public static string AuthenticatedMessage {
             get {
-                return ResourceManager.GetString("Authenticating", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An error occurred while connecting to Tequila. Please try again later..
-        /// </summary>
-        public static string AuthenticationAttemptStatus_Error {
-            get {
-                return ResourceManager.GetString("AuthenticationAttemptStatus_Error", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string AuthenticationAttemptStatus_NotAuthenticated {
-            get {
-                return ResourceManager.GetString("AuthenticationAttemptStatus_NotAuthenticated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Your credentials are invalid. Please verify them..
-        /// </summary>
-        public static string AuthenticationAttemptStatus_WrongCredentials {
-            get {
-                return ResourceManager.GetString("AuthenticationAttemptStatus_WrongCredentials", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to password.
-        /// </summary>
-        public static string AuthenticationPassword {
-            get {
-                return ResourceManager.GetString("AuthenticationPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to remember me.
-        /// </summary>
-        public static string AuthenticationSaveCredentials {
-            get {
-                return ResourceManager.GetString("AuthenticationSaveCredentials", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GASPAR user name.
-        /// </summary>
-        public static string AuthenticationUserName {
-            get {
-                return ResourceManager.GetString("AuthenticationUserName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to authenticate.
-        /// </summary>
-        public static string AuthenticationViewTitle {
-            get {
-                return ResourceManager.GetString("AuthenticationViewTitle", resourceCulture);
+                return ResourceManager.GetString("AuthenticatedMessage", resourceCulture);
             }
         }
         
@@ -263,22 +218,20 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Welcome!.
+        ///   Looks up a localized string similar to log off all devices.
         /// </summary>
-        public static string FirstRunCaption {
+        public static string DestroySessions {
             get {
-                return ResourceManager.GetString("FirstRunCaption", resourceCulture);
+                return ResourceManager.GetString("DestroySessions", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thanks for downloading PocketCampus!
-        ///
-        ///Our privacy policy is simple: Your data and location are not stored or transmitted anywhere..
+        ///   Looks up a localized string similar to If you use PocketCampus on more than one device, this will log off all of them.
         /// </summary>
-        public static string FirstRunMessage {
+        public static string DestroySessionsExplanation {
             get {
-                return ResourceManager.GetString("FirstRunMessage", resourceCulture);
+                return ResourceManager.GetString("DestroySessionsExplanation", resourceCulture);
             }
         }
         
@@ -297,6 +250,15 @@ namespace PocketCampus.Main.Resources {
         public static string LogOff {
             get {
                 return ResourceManager.GetString("LogOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to you are not logged in.
+        /// </summary>
+        public static string NotAuthenticatedMessage {
+            get {
+                return ResourceManager.GetString("NotAuthenticatedMessage", resourceCulture);
             }
         }
         
@@ -364,6 +326,15 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to your credentials will be forgotten when the app becomes inactive.
+        /// </summary>
+        public static string TemporarilyAuthenticatedMessage {
+            get {
+                return ResourceManager.GetString("TemporarilyAuthenticatedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to use colored application tile.
         /// </summary>
         public static string UseColoredTile {
@@ -378,24 +349,6 @@ namespace PocketCampus.Main.Resources {
         public static string UseColoredTileExplanation {
             get {
                 return ResourceManager.GetString("UseColoredTileExplanation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to you are logged in as.
-        /// </summary>
-        public static string YouAreAuthenticatedAs {
-            get {
-                return ResourceManager.GetString("YouAreAuthenticatedAs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to you are not logged in.
-        /// </summary>
-        public static string YouAreNotAuthenticated {
-            get {
-                return ResourceManager.GetString("YouAreNotAuthenticated", resourceCulture);
             }
         }
     }

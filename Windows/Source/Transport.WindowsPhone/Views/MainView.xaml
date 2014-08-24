@@ -16,7 +16,7 @@
                       mc:Ignorable="d">
     <!-- Design-time DataContext -->
     <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Transport.ViewModels.Design;assembly=PocketCampus.Transport.Common" />
+        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Transport.ViewModels.Design;assembly=PocketCampus.Transport" />
     </d:DesignProperties.DataContext>
 
     <!-- Page resources -->
@@ -133,7 +133,8 @@
             <DataTemplate x:Key="TripFullTemplate">
                 <Grid Margin="0,0,0,24">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="110" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     
@@ -169,8 +170,16 @@
                                    Margin="0" />
                     </Grid>
 
+                    <!-- Separator -->
+                    <Rectangle Grid.Column="1"
+                               Width="1"
+                               HorizontalAlignment="Right"
+                               Fill="Black"
+                               Opacity="0.1"
+                               Margin="0,0,20,0"/>
+                    
                     <!-- Connections -->
-                    <ItemsControl Grid.Column="1"
+                    <ItemsControl Grid.Column="2"
                                   ItemsSource="{Binding Connections}"
                                   ItemTemplate="{StaticResource ConnectionTemplate}" />
                 </Grid>

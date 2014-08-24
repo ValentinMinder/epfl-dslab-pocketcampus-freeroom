@@ -39,6 +39,10 @@ public class TransportFormatter {
 		if (mNiceNames.containsKey(stationName)) {
 			return mNiceNames.get(stationName);
 		}
+		if(stationName.contains("BBus")){
+			return stationName.replace("BBus", "Bus ");
+		}
+
 		return stationName;
 	}
 

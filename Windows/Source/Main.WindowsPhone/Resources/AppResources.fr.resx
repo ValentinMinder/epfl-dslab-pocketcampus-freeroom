@@ -128,50 +128,17 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>PocketCampus EPFL</value>
   </data>
-  <data name="AuthenticationViewTitle" xml:space="preserve">
-    <value>connexion</value>
-  </data>
-  <data name="AuthenticationPassword" xml:space="preserve">
-    <value>mot de passe</value>
-  </data>
-  <data name="AuthenticationUserName" xml:space="preserve">
-    <value>nom d'utilisateur GASPAR</value>
-  </data>
   <data name="AboutButton" xml:space="preserve">
     <value>à propos...</value>
   </data>
   <data name="LogOff" xml:space="preserve">
     <value>se déconnecter</value>
   </data>
-  <data name="LogIn" xml:space="preserve">
-    <value>se connecter</value>
-  </data>
-  <data name="FirstRunCaption" xml:space="preserve">
-    <value>Bienvenue !</value>
-  </data>
-  <data name="FirstRunMessage" xml:space="preserve">
-    <value>Merci d'avoir téléchargé PocketCampus !
-
-Notre politique de confidentialité est simple : vos données et votre position ne ni stockées ni transmises où que ce soit.</value>
-  </data>
   <data name="AboutAppName" xml:space="preserve">
     <value>PocketCampus EPFL</value>
   </data>
   <data name="AboutPageTitle" xml:space="preserve">
     <value>À propos</value>
-  </data>
-  <data name="AuthenticationAttemptStatus_Error" xml:space="preserve">
-    <value>Une erreur est survenue lors de la connexion à Tequila. Veuillez réessayer.</value>
-  </data>
-  <data name="AuthenticationAttemptStatus_NotAuthenticated" xml:space="preserve">
-    <value />
-    <comment>Must be empty</comment>
-  </data>
-  <data name="AuthenticationAttemptStatus_WrongCredentials" xml:space="preserve">
-    <value>Vos identifiants ont été refusés par Tequila. Veuillez réessayer.</value>
-  </data>
-  <data name="Authenticating" xml:space="preserve">
-    <value>Connexion en cours...</value>
   </data>
   <data name="PrivacyPolicyCaption" xml:space="preserve">
     <value>Politique de confidentialité</value>
@@ -181,9 +148,6 @@ Notre politique de confidentialité est simple : vos données et votre position 
   </data>
   <data name="AboutPrivacyPolicy" xml:space="preserve">
     <value>politique de confidentialité</value>
-  </data>
-  <data name="AboutAppVersion" xml:space="preserve">
-    <value>version</value>
   </data>
   <data name="AboutDevelopers" xml:space="preserve">
     <value>Solal Pirelli
@@ -201,10 +165,10 @@ George Candea</value>
   <data name="AboutWebsiteHeader" xml:space="preserve">
     <value>site web</value>
   </data>
-  <data name="YouAreAuthenticatedAs" xml:space="preserve">
+  <data name="AuthenticatedMessage" xml:space="preserve">
     <value>vous êtes connecté en tant que</value>
   </data>
-  <data name="YouAreNotAuthenticated" xml:space="preserve">
+  <data name="NotAuthenticatedMessage" xml:space="preserve">
     <value>vous n'êtes pas connecté</value>
   </data>
   <data name="PagesHeader" xml:space="preserve">
@@ -223,21 +187,36 @@ George Candea</value>
     <value>évaluer l'app sur le store</value>
   </data>
   <data name="AboutContact" xml:space="preserve">
-    <value>support.epfl@pocketcampus.org</value>
+    <value>team@pocketcampus.org</value>
   </data>
   <data name="AboutContactHeader" xml:space="preserve">
-    <value>contact &amp; support</value>
+    <value>contact</value>
   </data>
   <data name="AboutOrganizationName" xml:space="preserve">
     <value>PocketCampus.Org</value>
-  </data>
-  <data name="AuthenticationSaveCredentials" xml:space="preserve">
-    <value>se souvenir de moi</value>
   </data>
   <data name="UseColoredTile" xml:space="preserve">
     <value>utiliser une tuile colorée</value>
   </data>
   <data name="UseColoredTileExplanation" xml:space="preserve">
     <value>désactivez cette option si la tuile colorée rend mal sur votre fond d'écran démarrer</value>
+  </data>
+  <data name="TemporarilyAuthenticatedMessage" xml:space="preserve">
+    <value>vos identifiants seront oubliés quand l'application deviendra inactive</value>
+  </data>
+  <data name="AboutSupport" xml:space="preserve">
+    <value>1234@epfl.ch</value>
+  </data>
+  <data name="AboutSupportHeader" xml:space="preserve">
+    <value>support</value>
+  </data>
+  <data name="DestroySessions" xml:space="preserve">
+    <value>se déconnecter de tous les appareils</value>
+  </data>
+  <data name="DestroySessionsExplanation" xml:space="preserve">
+    <value>Si vous utilisez PocketCampus sur plus d'un appareil, ceci les déconnectera tous</value>
+  </data>
+  <data name="LogIn" xml:space="preserve">
+    <value>se connecter</value>
   </data>
 </root>

@@ -13,7 +13,7 @@
                       mc:Ignorable="d">
     <!-- Design-time DataContext -->
     <d:DesignProperties.DataContext>
-        <design:DesignFeedItemViewModel xmlns:design="clr-namespace:PocketCampus.News.ViewModels.Design;assembly=PocketCampus.News.Common" />
+        <design:DesignFeedItemViewModel xmlns:design="clr-namespace:PocketCampus.News.ViewModels.Design;assembly=PocketCampus.News" />
     </d:DesignProperties.DataContext>
 
     <!-- Page resources -->
@@ -62,6 +62,9 @@
                                Style="{StaticResource AppTextSecondaryHeaderStyle}"
                                Margin="24,4,24,10" />
                 </Border>
+                
+                <!-- Stale data indicator -->
+                <comControls:StaleDataIndicator />
 
                 <!-- Image -->
                 <Image Source="{Binding ItemContent.ImageUrl, Converter={StaticResource ImageDisplay}}"

@@ -20,5 +20,10 @@ namespace PocketCampus.Common
         /// Gets or sets the session for the server.
         /// </summary>
         string Session { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user's authentication status.
+        /// </summary>
+        SessionStatus SessionStatus { get; set; }
     }
 }

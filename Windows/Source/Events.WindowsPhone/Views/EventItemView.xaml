@@ -7,7 +7,7 @@
                       mc:Ignorable="d">
     <!-- Design-time DataContext -->
     <d:DesignProperties.DataContext>
-        <design:DesignEventItemViewModel xmlns:design="clr-namespace:PocketCampus.Events.ViewModels.Design;assembly=PocketCampus.Events.Common" />
+        <design:DesignEventItemViewModel xmlns:design="clr-namespace:PocketCampus.Events.ViewModels.Design;assembly=PocketCampus.Events" />
     </d:DesignProperties.DataContext>
 
     <!-- Page resources -->
@@ -47,6 +47,7 @@
     <!-- Main grid -->
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -98,9 +99,11 @@
                    Visibility="{Binding Item.HidePictureThumbnail, Converter={StaticResource BoolToOppositeVisibility}}"/>
         </Grid>
 
+        <!-- Stale data indicator -->
+        <comControls:StaleDataIndicator Grid.Row="2" />
 
         <!-- Everything needs to scroll, sometimes some values are extremely long -->
-        <ScrollViewer Grid.Row="2">
+        <ScrollViewer Grid.Row="3">
             <StackPanel>
                 <!-- Information -->
                 <Grid Margin="12,0"
@@ -155,8 +158,7 @@
 
                         <HyperlinkButton Grid.Column="1"
                                          Content="{Binding Item.Location}"
-                                         Command="{Binding OpenLinkCommand}"
-                                         CommandParameter="{Binding Item.LocationUrl}"
+                                         Command="{Binding ViewOnMapCommand}"
                                          Style="{StaticResource HyperlinkButtonWrappedStyle}"
                                          FontSize="{StaticResource PhoneFontSizeNormal}"
                                          HorizontalContentAlignment="Left"
@@ -219,8 +221,7 @@
 
                 <!-- "More details" button -->
                 <HyperlinkButton Content="{Binding Resources.MoreEventDetailsButton, Source={StaticResource Strings}}"
-                                 Command="{Binding OpenLinkCommand}"
-                                 CommandParameter="{Binding Item.DetailsUrl}"
+                                 Command="{Binding ViewMoreDetailsCommand}"
                                  Foreground="{StaticResource PhoneSubtleBrush}"
                                  HorizontalAlignment="Left"
                                  Margin="12,0"

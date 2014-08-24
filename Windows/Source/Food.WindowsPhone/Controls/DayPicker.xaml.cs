@@ -48,7 +48,7 @@ namespace PocketCampus.Food.Controls
         [LogId( "PreviousDay" )]
         public Command PreviousCommand
         {
-            get { return GetCommand( () => Value = Value.AddDays( -1 ) ); }
+            get { return this.GetCommand( () => Value = Value.AddDays( -1 ) ); }
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace PocketCampus.Food.Controls
         [LogId( "NextDay" )]
         public Command NextCommand
         {
-            get { return GetCommand( () => Value = Value.AddDays( 1 ) ); }
+            get { return this.GetCommand( () => Value = Value.AddDays( 1 ) ); }
         }
 
 

@@ -8,9 +8,9 @@
     <application android:label="@string/app_name"
         android:theme="@style/PocketCampusTheme"
         android:icon="@drawable/camipro_icon"
-        android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext">
-        
-        
+        android:name="org.pocketcampus.platform.android.core.GlobalContext">
+
+
 		<activity android:name="org.pocketcampus.plugin.camipro.android.CamiproMainView"
 			xmlns:android="http://schemas.android.com/apk/res/android"
 			android:icon="@drawable/camipro_icon"
@@ -21,11 +21,11 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
 			</intent-filter>
-			
-			    
-			    
-			    
-			    
+
+
+
+
+
 <!-- 			Communication with authentication plugin     -->
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
@@ -33,22 +33,22 @@
 				<category android:name="android.intent.category.BROWSABLE" />
 				<data android:scheme="pocketcampus-authenticate" android:host="camipro.plugin.pocketcampus.org" />
 			</intent-filter>
-			
-			    			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		</activity>
 		<service android:name="org.pocketcampus.plugin.camipro.android.CamiproController"
 			xmlns:android="http://schemas.android.com/apk/res/android">
@@ -58,29 +58,29 @@
 				<category android:name="org.pocketcampus.plugin.authentication" />
 				<data  android:scheme="pocketcampus" android:host="camipro.plugin.pocketcampus.org" />
 			</intent-filter>
-		    		    
+
 		</service>
-            
+
 		<activity android:name="org.pocketcampus.plugin.camipro.android.CamiproCardRechargeView"
 		    android:screenOrientation="nosensor"
 			xmlns:android="http://schemas.android.com/apk/res/android" >
 		</activity>
-		
-		    
+
+
 		<receiver android:name="org.pocketcampus.plugin.camipro.android.CamiproController$Logouter" >
             <intent-filter>
                 <action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
             </intent-filter>
-        </receiver>		    
-		    
-		    
+        </receiver>
+
+
 	</application>
-    
-        
+
+
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	
+
 	<uses-permission android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA" />
-				
+
 </manifest>

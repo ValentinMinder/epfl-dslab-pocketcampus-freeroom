@@ -15,63 +15,57 @@
                       mc:Ignorable="d">
     <!-- Design-time DataContext -->
     <d:DesignProperties.DataContext>
-        <design:DesignPersonViewModel xmlns:design="clr-namespace:PocketCampus.Directory.ViewModels.Design;assembly=PocketCampus.Directory.Common" />
+        <design:DesignPersonViewModel xmlns:design="clr-namespace:PocketCampus.Directory.ViewModels.Design;assembly=PocketCampus.Directory" />
     </d:DesignProperties.DataContext>
 
     <!-- Page resources -->
     <comControls:BasePage.Resources>
         <!-- Localized strings -->
         <my:LocalizedStrings x:Key="Strings" />
-
-        <!-- Converters -->
-        <com:StringToVisibilityConverter x:Key="StringToVisibility" />
-
-        <!-- Items panel that wraps its elements if they overflow -->
-        <ItemsPanelTemplate x:Key="WrapItemsPanel">
-            <tool:WrapPanel />
-        </ItemsPanelTemplate>
-
-        <!-- Unit template -->
-        <DataTemplate x:Key="UnitTemplate">
-            <TextBlock Text="{Binding}"
-                       Style="{StaticResource PhoneTextTitle3Style}"
-                       FontSize="{StaticResource PhoneFontSizeMediumLarge}" />
-        </DataTemplate>
-
-        <!-- Style for labels -->
-        <Style TargetType="TextBlock" BasedOn="{StaticResource PhoneTextSubtleStyle}">
-            <Setter Property="Grid.ColumnSpan" Value="2" />
-            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeNormal}" />
-            <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
-        </Style>
-
+        
         <!-- Style for hyperlinks -->
         <Style TargetType="HyperlinkButton">
-            <Setter Property="Grid.ColumnSpan" Value="2" />
             <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}" />
-            <Setter Property="Margin" Value="0,0" />
             <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Top" />
             <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
         </Style>
 
-        <!-- Style for viewboxes that contain hyperlinks -->
-        <Style TargetType="Viewbox">
-            <Setter Property="Grid.ColumnSpan" Value="2" />
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Top" />
-            <Setter Property="StretchDirection" Value="DownOnly" />
-        </Style>
+        <!-- Role template -->
+        <DataTemplate x:Key="RoleTemplate">
+            <StackPanel Margin="0,0,0,15">
+                <TextBlock Text="{Binding Unit}"
+                           TextWrapping="Wrap"
+                           Style="{StaticResource PhoneTextSubtleStyle}" />
+
+                <TextBlock Text="{Binding Title}"
+                           TextWrapping="Wrap"
+                           Style="{StaticResource PhoneTextTitle3Style}"
+                           FontSize="{StaticResource PhoneFontSizeMediumLarge}" />
+            </StackPanel>
+        </DataTemplate>
+        
+        <!-- Homepage template -->
+        <DataTemplate x:Key="HomepageTemplate">
+            <StackPanel Margin="0,0,0,15">
+                <TextBlock Text="{Binding Key}"
+                           TextWrapping="Wrap"
+                           Style="{StaticResource PhoneTextSubtleStyle}" />
+                
+                <Viewbox StretchDirection="DownOnly"
+                         HorizontalAlignment="Left">
+                    <HyperlinkButton Content="{Binding Value}"
+                                     Command="{Binding DataContext.OpenWebsiteCommand, ElementName=LayoutRoot}"
+                                     CommandParameter="{Binding Value}" />
+                </Viewbox>
+            </StackPanel>
+        </DataTemplate>
     </comControls:BasePage.Resources>
 
     <!-- Main grid -->
     <ScrollViewer>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+        <Grid x:Name="LayoutRoot">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -98,129 +92,102 @@
             <!-- Name -->
             <TextBlock Grid.Row="1"
                        Text="{Binding Person.FullName}"
+                       VerticalAlignment="Center"
                        Style="{StaticResource PhoneTextTitle1Style}"
                        Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}"
                        FontSize="{StaticResource PhoneFontSizeExtraLarge}"
                        TextWrapping="Wrap"
                        Margin="24,10" />
-
+            
             <!-- Picture -->
-            <Canvas Grid.RowSpan="7"
-                    Grid.Column="1"
-                    Grid.Row="1"
-                    Width="150">
-                <!-- HACK: Use a Canvas to avoid weird row height issues in the parent grid when using RowSpan -->
-                <Image x:Name="PictureImage"
-                       Source="{Binding Person.PictureUrl}"
-                       MaxWidth="150"
-                       MaxHeight="200" />
-            </Canvas>
+            <Image Grid.Row="2"
+                   Source="{Binding Person.PictureUrl}"
+                   HorizontalAlignment="Left"
+                   Margin="24,12"
+                   MaxHeight="150" />
 
+            <!-- Roles -->
+            <ItemsControl Grid.Row="3"
+                          Grid.ColumnSpan="2"
+                          Margin="12,12,12,0"
+                          ItemsSource="{Binding Person.Roles.Values}"
+                          ItemTemplate="{StaticResource RoleTemplate}" />
 
-            <!-- Units -->
-            <Grid Grid.Row="2"
-                  Margin="12"
-                  Visibility="{Binding Person.Units, Converter={StaticResource NonNullToVisibility}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <TextBlock Text="{Binding Resources.PersonUnits, Source={StaticResource Strings}}" />
-                <ItemsControl Grid.Row="1"
-                              ItemsSource="{Binding Person.Units}"
-                              ItemTemplate="{StaticResource UnitTemplate}"
-                              ItemsPanel="{StaticResource WrapItemsPanel}"
-                              Margin="0,0,0,15" />
-            </Grid>
-
-            <!-- Office-->
-            <Grid Grid.ColumnSpan="2"
-                  Grid.Row="3"
-                  Margin="12"
+            <!-- Office -->
+            <Grid Grid.Row="4"
+                  Margin="12,0,12,15"
                   Visibility="{Binding Person.Office, Converter={StaticResource StringToVisibility}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="{Binding Resources.PersonOffice, Source={StaticResource Strings}}" />
+                <TextBlock Text="{Binding Resources.PersonOffice, Source={StaticResource Strings}}"
+                           Style="{StaticResource PhoneTextSubtleStyle}" />
                 <HyperlinkButton Grid.Row="1"
                                  Content="{Binding Person.Office}"
-                                 Command="{Binding ViewOfficeCommand}"
-                                 Margin="0,0,0,15" />
+                                 Command="{Binding ViewOfficeCommand}" />
             </Grid>
 
             <!-- E-mail -->
-            <Grid Grid.ColumnSpan="2"
-                  Grid.Row="4"
-                  Margin="12"
+            <Grid Grid.Row="5"
+                  Margin="12,0,12,15"
                   Visibility="{Binding Person.EmailAddress, Converter={StaticResource StringToVisibility}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="{Binding Resources.PersonEmail, Source={StaticResource Strings}}" />
-                <Viewbox Grid.Row="1">
+                <TextBlock Text="{Binding Resources.PersonEmail, Source={StaticResource Strings}}"
+                           Style="{StaticResource PhoneTextSubtleStyle}" />
+                <Viewbox Grid.Row="1"
+                         StretchDirection="DownOnly"
+                         HorizontalAlignment="Left">
                     <HyperlinkButton Content="{Binding Person.EmailAddress}"
-                                    Command="{Binding SendEmailCommand}"
-                                    Margin="0,0,0,15"  />
+                                     Command="{Binding SendEmailCommand}" />
                 </Viewbox>
             </Grid>
 
-            <!-- Website -->
-            <Grid Grid.ColumnSpan="2"
-                  Grid.Row="5"
-                  Margin="12"
-                  Visibility="{Binding Person.Website, Converter={StaticResource NonNullToVisibility}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <TextBlock Text="{Binding Resources.PersonWebsite, Source={StaticResource Strings}}" />
-                <Viewbox Grid.Row="1">
-                    <HyperlinkButton Content="{Binding Person.Website}"
-                                     Command="{Binding OpenWebsiteCommand}"
-                                     Margin="0,0,0,15"  />
-                </Viewbox>
-            </Grid>
+            <!-- Homepages -->
+            <ItemsControl Grid.Row="6"
+                          Margin="12,0"
+                          ItemsSource="{Binding Person.Homepages}"
+                          ItemTemplate="{StaticResource HomepageTemplate}" />
 
             <!-- Private phone number -->
             <Grid Grid.ColumnSpan="2"
-                  Grid.Row="6"
-                  Margin="12"
+                  Grid.Row="7"
+                  Margin="12,0,12,15"
                   Visibility="{Binding Person.PrivatePhoneNumber, Converter={StaticResource StringToVisibility}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="{Binding Resources.PersonPrivatePhone, Source={StaticResource Strings}}" />
+                <TextBlock Text="{Binding Resources.PersonPrivatePhone, Source={StaticResource Strings}}"
+                           Style="{StaticResource PhoneTextSubtleStyle}" />
                 <HyperlinkButton Grid.Row="1"
                                  Content="{Binding Person.PrivatePhoneNumber}"
                                  Command="{Binding CallCommand}"
-                                 CommandParameter="{Binding Person.OfficePhoneNumber}"
-                                 Margin="0,0,0,15"  />
+                                 CommandParameter="{Binding Person.OfficePhoneNumber}" />
             </Grid>
 
             <!-- Office phone number -->
             <Grid Grid.ColumnSpan="2"
-                  Grid.Row="7"
-                  Margin="12"
+                  Grid.Row="8"
+                  Margin="12,0,12,15"
                   Visibility="{Binding Person.OfficePhoneNumber, Converter={StaticResource StringToVisibility}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="{Binding Resources.PersonOfficePhone, Source={StaticResource Strings}}" />
+                <TextBlock Text="{Binding Resources.PersonOfficePhone, Source={StaticResource Strings}}"
+                           Style="{StaticResource PhoneTextSubtleStyle}" />
                 <HyperlinkButton Grid.Row="1"
                                  Content="{Binding Person.OfficePhoneNumber}"
                                  Command="{Binding CallCommand}"
-                                 CommandParameter="{Binding Person.OfficePhoneNumber}"
-                                 Margin="0,0,0,15"  />
+                                 CommandParameter="{Binding Person.OfficePhoneNumber}" />
             </Grid>
         </Grid>
     </ScrollViewer>
