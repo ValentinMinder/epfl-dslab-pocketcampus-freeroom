@@ -25,13 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 04.07.12.
 
-
-#import <Foundation/Foundation.h>
+/**
+ * You can use this constants for +iconForFileExtension
+ */
+extern NSString* const kPCUtilsExtensionLink;
+extern NSString* const kPCUtilsExtensionFolder;
 
 @interface PCUtils : NSObject
 
@@ -66,6 +66,13 @@
  * error is YES if there was an error while reading the file
  */
 + (void)fileOrFolderSizeWithPath:(NSString*)path completion:(void (^)(unsigned long long totalNbBytes, BOOL error))completion;
+
+/**
+ * @return an system icon for the extension, or a generic file icon if extension is nil or a specific one could not be found.
+ * @param normal file extension, or constants defined above (not copies, it must be the same address)
+ * @discussion uses UIDocumentInteractionController for that. Images are cached for each extension.
+ */
++ (UIImage*)iconForFileExtension:(NSString*)extension;
 
 /*
  * Returns [[Reachability reachabilityForInternetConnection] isReachable], i.e. whether internet is reachable

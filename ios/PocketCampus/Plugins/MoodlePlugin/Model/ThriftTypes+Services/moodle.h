@@ -12,372 +12,330 @@
 #import <TProcessor.h>
 
 
-enum MoodleEventType {
-  MoodleEventType_MOODLE_EVENT_UNKNOWN = 0,
-  MoodleEventType_MOODLE_EVENT_ASSIGNMENT = 1,
-  MoodleEventType_MOODLE_EVENT_USEREVENT = 2
+enum MoodleStatusCode2 {
+  MoodleStatusCode2_OK = 200,
+  MoodleStatusCode2_AUTHENTICATION_ERROR = 403,
+  MoodleStatusCode2_NETWORK_ERROR = 404
 };
 
-@interface MoodleCourse : NSObject <NSCoding> {
-  int32_t __iId;
-  NSString * __iTitle;
+@interface MoodleFile2 : NSObject <NSCoding> {
+  NSString * __name;
+  NSString * __extension;
+  NSString * __url;
+  NSString * __icon;
 
-  BOOL __iId_isset;
-  BOOL __iTitle_isset;
+  BOOL __name_isset;
+  BOOL __extension_isset;
+  BOOL __url_isset;
+  BOOL __icon_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, getter=iId, setter=setIId:) int32_t iId;
-@property (nonatomic, retain, getter=iTitle, setter=setITitle:) NSString * iTitle;
+@property (nonatomic, retain, getter=name, setter=setName:) NSString * name;
+@property (nonatomic, retain, getter=extension, setter=setExtension:) NSString * extension;
+@property (nonatomic, retain, getter=url, setter=setUrl:) NSString * url;
+@property (nonatomic, retain, getter=icon, setter=setIcon:) NSString * icon;
 #endif
 
-- (id) initWithIId: (int32_t) iId iTitle: (NSString *) iTitle;
+- (id) initWithName: (NSString *) name extension: (NSString *) extension url: (NSString *) url icon: (NSString *) icon;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 
-- (int32_t) iId;
-- (void) setIId: (int32_t) iId;
-- (BOOL) iIdIsSet;
+- (NSString *) name;
+- (void) setName: (NSString *) name;
+- (BOOL) nameIsSet;
 
-- (NSString *) iTitle;
-- (void) setITitle: (NSString *) iTitle;
-- (BOOL) iTitleIsSet;
+- (NSString *) extension;
+- (void) setExtension: (NSString *) extension;
+- (BOOL) extensionIsSet;
+
+- (NSString *) url;
+- (void) setUrl: (NSString *) url;
+- (BOOL) urlIsSet;
+
+- (NSString *) icon;
+- (void) setIcon: (NSString *) icon;
+- (BOOL) iconIsSet;
 
 @end
 
-@interface CoursesListReply : NSObject <NSCoding> {
-  NSArray * __iCourses;
-  int32_t __iStatus;
+@interface MoodleFolder2 : NSObject <NSCoding> {
+  NSString * __name;
+  NSArray * __files;
 
-  BOOL __iCourses_isset;
-  BOOL __iStatus_isset;
+  BOOL __name_isset;
+  BOOL __files_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=iCourses, setter=setICourses:) NSArray * iCourses;
-@property (nonatomic, getter=iStatus, setter=setIStatus:) int32_t iStatus;
+@property (nonatomic, retain, getter=name, setter=setName:) NSString * name;
+@property (nonatomic, retain, getter=files, setter=setFiles:) NSArray * files;
 #endif
 
-- (id) initWithICourses: (NSArray *) iCourses iStatus: (int32_t) iStatus;
+- (id) initWithName: (NSString *) name files: (NSArray *) files;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 
-- (NSArray *) iCourses;
-- (void) setICourses: (NSArray *) iCourses;
-- (BOOL) iCoursesIsSet;
+- (NSString *) name;
+- (void) setName: (NSString *) name;
+- (BOOL) nameIsSet;
 
-- (int32_t) iStatus;
-- (void) setIStatus: (int32_t) iStatus;
-- (BOOL) iStatusIsSet;
+- (NSArray *) files;
+- (void) setFiles: (NSArray *) files;
+- (BOOL) filesIsSet;
 
 @end
 
-@interface MoodleAssignment : NSObject <NSCoding> {
-  int32_t __iId;
-  NSString * __iTitle;
-  NSString * __iDesc;
-  MoodleCourse * __iCourse;
-  int64_t __iPostingDate;
-  int64_t __iDueDate;
-  NSString * __iGrade;
+@interface MoodleUrl2 : NSObject <NSCoding> {
+  NSString * __name;
+  NSString * __url;
 
-  BOOL __iId_isset;
-  BOOL __iTitle_isset;
-  BOOL __iDesc_isset;
-  BOOL __iCourse_isset;
-  BOOL __iPostingDate_isset;
-  BOOL __iDueDate_isset;
-  BOOL __iGrade_isset;
+  BOOL __name_isset;
+  BOOL __url_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, getter=iId, setter=setIId:) int32_t iId;
-@property (nonatomic, retain, getter=iTitle, setter=setITitle:) NSString * iTitle;
-@property (nonatomic, retain, getter=iDesc, setter=setIDesc:) NSString * iDesc;
-@property (nonatomic, retain, getter=iCourse, setter=setICourse:) MoodleCourse * iCourse;
-@property (nonatomic, getter=iPostingDate, setter=setIPostingDate:) int64_t iPostingDate;
-@property (nonatomic, getter=iDueDate, setter=setIDueDate:) int64_t iDueDate;
-@property (nonatomic, retain, getter=iGrade, setter=setIGrade:) NSString * iGrade;
+@property (nonatomic, retain, getter=name, setter=setName:) NSString * name;
+@property (nonatomic, retain, getter=url, setter=setUrl:) NSString * url;
 #endif
 
-- (id) initWithIId: (int32_t) iId iTitle: (NSString *) iTitle iDesc: (NSString *) iDesc iCourse: (MoodleCourse *) iCourse iPostingDate: (int64_t) iPostingDate iDueDate: (int64_t) iDueDate iGrade: (NSString *) iGrade;
+- (id) initWithName: (NSString *) name url: (NSString *) url;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 
-- (int32_t) iId;
-- (void) setIId: (int32_t) iId;
-- (BOOL) iIdIsSet;
+- (NSString *) name;
+- (void) setName: (NSString *) name;
+- (BOOL) nameIsSet;
 
-- (NSString *) iTitle;
-- (void) setITitle: (NSString *) iTitle;
-- (BOOL) iTitleIsSet;
-
-- (NSString *) iDesc;
-- (void) setIDesc: (NSString *) iDesc;
-- (BOOL) iDescIsSet;
-
-- (MoodleCourse *) iCourse;
-- (void) setICourse: (MoodleCourse *) iCourse;
-- (BOOL) iCourseIsSet;
-
-- (int64_t) iPostingDate;
-- (void) setIPostingDate: (int64_t) iPostingDate;
-- (BOOL) iPostingDateIsSet;
-
-- (int64_t) iDueDate;
-- (void) setIDueDate: (int64_t) iDueDate;
-- (BOOL) iDueDateIsSet;
-
-- (NSString *) iGrade;
-- (void) setIGrade: (NSString *) iGrade;
-- (BOOL) iGradeIsSet;
+- (NSString *) url;
+- (void) setUrl: (NSString *) url;
+- (BOOL) urlIsSet;
 
 @end
 
-@interface MoodleUserEvent : NSObject <NSCoding> {
-  int32_t __iId;
-  NSString * __iTitle;
-  NSString * __iDesc;
-  int64_t __iStartDate;
-  int64_t __iEndDate;
+@interface MoodleResource2 : NSObject <NSCoding> {
+  MoodleFile2 * __file;
+  MoodleFolder2 * __folder;
+  MoodleUrl2 * __url;
 
-  BOOL __iId_isset;
-  BOOL __iTitle_isset;
-  BOOL __iDesc_isset;
-  BOOL __iStartDate_isset;
-  BOOL __iEndDate_isset;
+  BOOL __file_isset;
+  BOOL __folder_isset;
+  BOOL __url_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, getter=iId, setter=setIId:) int32_t iId;
-@property (nonatomic, retain, getter=iTitle, setter=setITitle:) NSString * iTitle;
-@property (nonatomic, retain, getter=iDesc, setter=setIDesc:) NSString * iDesc;
-@property (nonatomic, getter=iStartDate, setter=setIStartDate:) int64_t iStartDate;
-@property (nonatomic, getter=iEndDate, setter=setIEndDate:) int64_t iEndDate;
+@property (nonatomic, retain, getter=file, setter=setFile:) MoodleFile2 * file;
+@property (nonatomic, retain, getter=folder, setter=setFolder:) MoodleFolder2 * folder;
+@property (nonatomic, retain, getter=url, setter=setUrl:) MoodleUrl2 * url;
 #endif
 
-- (id) initWithIId: (int32_t) iId iTitle: (NSString *) iTitle iDesc: (NSString *) iDesc iStartDate: (int64_t) iStartDate iEndDate: (int64_t) iEndDate;
+- (id) initWithFile: (MoodleFile2 *) file folder: (MoodleFolder2 *) folder url: (MoodleUrl2 *) url;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 
-- (int32_t) iId;
-- (void) setIId: (int32_t) iId;
-- (BOOL) iIdIsSet;
+- (MoodleFile2 *) file;
+- (void) setFile: (MoodleFile2 *) file;
+- (BOOL) fileIsSet;
 
-- (NSString *) iTitle;
-- (void) setITitle: (NSString *) iTitle;
-- (BOOL) iTitleIsSet;
+- (MoodleFolder2 *) folder;
+- (void) setFolder: (MoodleFolder2 *) folder;
+- (BOOL) folderIsSet;
 
-- (NSString *) iDesc;
-- (void) setIDesc: (NSString *) iDesc;
-- (BOOL) iDescIsSet;
-
-- (int64_t) iStartDate;
-- (void) setIStartDate: (int64_t) iStartDate;
-- (BOOL) iStartDateIsSet;
-
-- (int64_t) iEndDate;
-- (void) setIEndDate: (int64_t) iEndDate;
-- (BOOL) iEndDateIsSet;
+- (MoodleUrl2 *) url;
+- (void) setUrl: (MoodleUrl2 *) url;
+- (BOOL) urlIsSet;
 
 @end
 
-@interface MoodleEvent : NSObject <NSCoding> {
-  int32_t __iId;
-  NSString * __iTitle;
-  int64_t __iDate;
-  int __iType;
-  MoodleAssignment * __iAssignment;
-  MoodleUserEvent * __iUserEvent;
+@interface MoodleCourseSection2 : NSObject <NSCoding> {
+  NSArray * __resources;
+  NSString * __title;
+  int64_t __startDate;
+  int64_t __endDate;
+  NSString * __details;
 
-  BOOL __iId_isset;
-  BOOL __iTitle_isset;
-  BOOL __iDate_isset;
-  BOOL __iType_isset;
-  BOOL __iAssignment_isset;
-  BOOL __iUserEvent_isset;
+  BOOL __resources_isset;
+  BOOL __title_isset;
+  BOOL __startDate_isset;
+  BOOL __endDate_isset;
+  BOOL __details_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, getter=iId, setter=setIId:) int32_t iId;
-@property (nonatomic, retain, getter=iTitle, setter=setITitle:) NSString * iTitle;
-@property (nonatomic, getter=iDate, setter=setIDate:) int64_t iDate;
-@property (nonatomic, getter=iType, setter=setIType:) int iType;
-@property (nonatomic, retain, getter=iAssignment, setter=setIAssignment:) MoodleAssignment * iAssignment;
-@property (nonatomic, retain, getter=iUserEvent, setter=setIUserEvent:) MoodleUserEvent * iUserEvent;
+@property (nonatomic, retain, getter=resources, setter=setResources:) NSArray * resources;
+@property (nonatomic, retain, getter=title, setter=setTitle:) NSString * title;
+@property (nonatomic, getter=startDate, setter=setStartDate:) int64_t startDate;
+@property (nonatomic, getter=endDate, setter=setEndDate:) int64_t endDate;
+@property (nonatomic, retain, getter=details, setter=setDetails:) NSString * details;
 #endif
 
-- (id) initWithIId: (int32_t) iId iTitle: (NSString *) iTitle iDate: (int64_t) iDate iType: (int) iType iAssignment: (MoodleAssignment *) iAssignment iUserEvent: (MoodleUserEvent *) iUserEvent;
+- (id) initWithResources: (NSArray *) resources title: (NSString *) title startDate: (int64_t) startDate endDate: (int64_t) endDate details: (NSString *) details;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 
-- (int32_t) iId;
-- (void) setIId: (int32_t) iId;
-- (BOOL) iIdIsSet;
+- (NSArray *) resources;
+- (void) setResources: (NSArray *) resources;
+- (BOOL) resourcesIsSet;
 
-- (NSString *) iTitle;
-- (void) setITitle: (NSString *) iTitle;
-- (BOOL) iTitleIsSet;
+- (NSString *) title;
+- (void) setTitle: (NSString *) title;
+- (BOOL) titleIsSet;
 
-- (int64_t) iDate;
-- (void) setIDate: (int64_t) iDate;
-- (BOOL) iDateIsSet;
+- (int64_t) startDate;
+- (void) setStartDate: (int64_t) startDate;
+- (BOOL) startDateIsSet;
 
-- (int) iType;
-- (void) setIType: (int) iType;
-- (BOOL) iTypeIsSet;
+- (int64_t) endDate;
+- (void) setEndDate: (int64_t) endDate;
+- (BOOL) endDateIsSet;
 
-- (MoodleAssignment *) iAssignment;
-- (void) setIAssignment: (MoodleAssignment *) iAssignment;
-- (BOOL) iAssignmentIsSet;
-
-- (MoodleUserEvent *) iUserEvent;
-- (void) setIUserEvent: (MoodleUserEvent *) iUserEvent;
-- (BOOL) iUserEventIsSet;
+- (NSString *) details;
+- (void) setDetails: (NSString *) details;
+- (BOOL) detailsIsSet;
 
 @end
 
-@interface EventsListReply : NSObject <NSCoding> {
-  NSArray * __iEvents;
-  int32_t __iStatus;
+@interface MoodleCourse2 : NSObject <NSCoding> {
+  int32_t __courseId;
+  NSString * __name;
 
-  BOOL __iEvents_isset;
-  BOOL __iStatus_isset;
+  BOOL __courseId_isset;
+  BOOL __name_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=iEvents, setter=setIEvents:) NSArray * iEvents;
-@property (nonatomic, getter=iStatus, setter=setIStatus:) int32_t iStatus;
+@property (nonatomic, getter=courseId, setter=setCourseId:) int32_t courseId;
+@property (nonatomic, retain, getter=name, setter=setName:) NSString * name;
 #endif
 
-- (id) initWithIEvents: (NSArray *) iEvents iStatus: (int32_t) iStatus;
+- (id) initWithCourseId: (int32_t) courseId name: (NSString *) name;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 
-- (NSArray *) iEvents;
-- (void) setIEvents: (NSArray *) iEvents;
-- (BOOL) iEventsIsSet;
+- (int32_t) courseId;
+- (void) setCourseId: (int32_t) courseId;
+- (BOOL) courseIdIsSet;
 
-- (int32_t) iStatus;
-- (void) setIStatus: (int32_t) iStatus;
-- (BOOL) iStatusIsSet;
+- (NSString *) name;
+- (void) setName: (NSString *) name;
+- (BOOL) nameIsSet;
 
 @end
 
-@interface MoodleResource : NSObject <NSCoding> {
-  NSString * __iName;
-  NSString * __iUrl;
+@interface MoodleCoursesRequest2 : NSObject <NSCoding> {
+  NSString * __language;
 
-  BOOL __iName_isset;
-  BOOL __iUrl_isset;
+  BOOL __language_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=iName, setter=setIName:) NSString * iName;
-@property (nonatomic, retain, getter=iUrl, setter=setIUrl:) NSString * iUrl;
+@property (nonatomic, retain, getter=language, setter=setLanguage:) NSString * language;
 #endif
 
-- (id) initWithIName: (NSString *) iName iUrl: (NSString *) iUrl;
+- (id) initWithLanguage: (NSString *) language;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 
-- (NSString *) iName;
-- (void) setIName: (NSString *) iName;
-- (BOOL) iNameIsSet;
-
-- (NSString *) iUrl;
-- (void) setIUrl: (NSString *) iUrl;
-- (BOOL) iUrlIsSet;
+- (NSString *) language;
+- (void) setLanguage: (NSString *) language;
+- (BOOL) languageIsSet;
 
 @end
 
-@interface MoodleSection : NSObject <NSCoding> {
-  NSArray * __iResources;
-  NSString * __iText;
-  int64_t __iStartDate;
-  int64_t __iEndDate;
-  BOOL __iCurrent;
+@interface MoodleCoursesResponse2 : NSObject <NSCoding> {
+  int __statusCode;
+  NSArray * __courses;
 
-  BOOL __iResources_isset;
-  BOOL __iText_isset;
-  BOOL __iStartDate_isset;
-  BOOL __iEndDate_isset;
-  BOOL __iCurrent_isset;
+  BOOL __statusCode_isset;
+  BOOL __courses_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=iResources, setter=setIResources:) NSArray * iResources;
-@property (nonatomic, retain, getter=iText, setter=setIText:) NSString * iText;
-@property (nonatomic, getter=iStartDate, setter=setIStartDate:) int64_t iStartDate;
-@property (nonatomic, getter=iEndDate, setter=setIEndDate:) int64_t iEndDate;
-@property (nonatomic, getter=iCurrent, setter=setICurrent:) BOOL iCurrent;
+@property (nonatomic, getter=statusCode, setter=setStatusCode:) int statusCode;
+@property (nonatomic, retain, getter=courses, setter=setCourses:) NSArray * courses;
 #endif
 
-- (id) initWithIResources: (NSArray *) iResources iText: (NSString *) iText iStartDate: (int64_t) iStartDate iEndDate: (int64_t) iEndDate iCurrent: (BOOL) iCurrent;
+- (id) initWithStatusCode: (int) statusCode courses: (NSArray *) courses;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 
-- (NSArray *) iResources;
-- (void) setIResources: (NSArray *) iResources;
-- (BOOL) iResourcesIsSet;
+- (int) statusCode;
+- (void) setStatusCode: (int) statusCode;
+- (BOOL) statusCodeIsSet;
 
-- (NSString *) iText;
-- (void) setIText: (NSString *) iText;
-- (BOOL) iTextIsSet;
-
-- (int64_t) iStartDate;
-- (void) setIStartDate: (int64_t) iStartDate;
-- (BOOL) iStartDateIsSet;
-
-- (int64_t) iEndDate;
-- (void) setIEndDate: (int64_t) iEndDate;
-- (BOOL) iEndDateIsSet;
-
-- (BOOL) iCurrent;
-- (void) setICurrent: (BOOL) iCurrent;
-- (BOOL) iCurrentIsSet;
+- (NSArray *) courses;
+- (void) setCourses: (NSArray *) courses;
+- (BOOL) coursesIsSet;
 
 @end
 
-@interface SectionsListReply : NSObject <NSCoding> {
-  NSArray * __iSections;
-  int32_t __iStatus;
+@interface MoodleCourseSectionsRequest2 : NSObject <NSCoding> {
+  NSString * __language;
+  int32_t __courseId;
 
-  BOOL __iSections_isset;
-  BOOL __iStatus_isset;
+  BOOL __language_isset;
+  BOOL __courseId_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=iSections, setter=setISections:) NSArray * iSections;
-@property (nonatomic, getter=iStatus, setter=setIStatus:) int32_t iStatus;
+@property (nonatomic, retain, getter=language, setter=setLanguage:) NSString * language;
+@property (nonatomic, getter=courseId, setter=setCourseId:) int32_t courseId;
 #endif
 
-- (id) initWithISections: (NSArray *) iSections iStatus: (int32_t) iStatus;
+- (id) initWithLanguage: (NSString *) language courseId: (int32_t) courseId;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 
-- (NSArray *) iSections;
-- (void) setISections: (NSArray *) iSections;
-- (BOOL) iSectionsIsSet;
+- (NSString *) language;
+- (void) setLanguage: (NSString *) language;
+- (BOOL) languageIsSet;
 
-- (int32_t) iStatus;
-- (void) setIStatus: (int32_t) iStatus;
-- (BOOL) iStatusIsSet;
+- (int32_t) courseId;
+- (void) setCourseId: (int32_t) courseId;
+- (BOOL) courseIdIsSet;
+
+@end
+
+@interface MoodleCourseSectionsResponse2 : NSObject <NSCoding> {
+  int __statusCode;
+  NSArray * __sections;
+
+  BOOL __statusCode_isset;
+  BOOL __sections_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=statusCode, setter=setStatusCode:) int statusCode;
+@property (nonatomic, retain, getter=sections, setter=setSections:) NSArray * sections;
+#endif
+
+- (id) initWithStatusCode: (int) statusCode sections: (NSArray *) sections;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (int) statusCode;
+- (void) setStatusCode: (int) statusCode;
+- (BOOL) statusCodeIsSet;
+
+- (NSArray *) sections;
+- (void) setSections: (NSArray *) sections;
+- (BOOL) sectionsIsSet;
 
 @end
 
 @protocol MoodleService <NSObject>
-- (CoursesListReply *) getCoursesListAPI: (NSString *) dummy;  // throws TException
-- (SectionsListReply *) getCourseSectionsAPI: (NSString *) courseId;  // throws TException
+- (MoodleCoursesResponse2 *) getCourses: (MoodleCoursesRequest2 *) request;  // throws TException
+- (MoodleCourseSectionsResponse2 *) getSections: (MoodleCourseSectionsRequest2 *) request;  // throws TException
 @end
 
 @interface MoodleServiceClient : NSObject <MoodleService> {

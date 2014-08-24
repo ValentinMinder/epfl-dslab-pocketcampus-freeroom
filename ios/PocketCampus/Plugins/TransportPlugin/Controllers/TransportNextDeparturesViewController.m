@@ -550,6 +550,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     }
     TransportTripsListViewController* viewController = [[TransportTripsListViewController alloc] initWithQueryTripResult:queryTripResult];
     [self.navigationController pushViewController:viewController animated:YES];
+    [self trackAction:@"ViewTrips" contentInfo:cell.destinationStation.name];
 }
 
 #pragma mark - UITableViewDataSource

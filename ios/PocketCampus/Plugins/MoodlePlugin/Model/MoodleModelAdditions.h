@@ -31,10 +31,73 @@
 
 extern NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey;
 
-@interface MoodleResource (Additions)<NSCopying>
+@protocol MoodleItemDefaults <NSObject>
 
-/*
- * Returns last path component of iUrl
+/**
+ * @param item must be of the type of the class implementing the protocol
+ * Should empty dictionary if setDefaultsDictionary:forMoodleItem: never called before
+ */
+@required
++ (NSDictionary*)defaultsDictionaryForMoodleItem:(id)item;
++ (void)setDefaultsDictionary:(NSDictionary*)defaultsDic forMoodleItem:(id)item;
+
+@end
+
+@interface MoodleCourseSection2 (Additions)<NSCopying> // Shallow copy (no property is deep copied, just pointing to same things)
+
+/**
+ * @return YES if current date is between startDate and endDate
+ */
+@property (nonatomic, readonly) BOOL isCurrent;
+
+/**
+ * @return self.title if not nil, or date range of localized string
+ * of the form <start-date> - <end-date>
+ */
+@property (nonatomic, readonly) NSString* titleOrDateRangeString;
+
+/**
+ * @return self.details, surrounded by some CSS and HTML tags
+ * to make them appear nice a a web view. Returns nil if self.details is nil.
+ */
+@property (nonatomic, readonly) NSString* webViewReadyDetails;
+
+@end
+
+@interface MoodleResource2 (Additions)<NSCopying>
+
+/**
+ * @return first non-nil among self.file, self.folder, self.url, or nil if all are nil
+ */
+@property (nonatomic, readonly) id item;
+
+/**
+ * @return name of self.item if exists
+ */
+@property (nonatomic, readonly) NSString* name;
+
+/**
+ * @return systemIcon of self.item if exists
+ */
+@property (nonatomic, readonly) UIImage* systemIcon;
+
+/**
+ * Propagates equality to self.item
+ */
+- (BOOL)isEqual:(id)object;
+- (BOOL)isEqualToMoodleResource:(MoodleResource2*)otherResource;
+
+/**
+ * Propagates hash to self.item
+ */
+- (NSUInteger)hash;
+
+@end
+
+@interface MoodleFile2 (Additions)<MoodleItemDefaults>
+
+/**
+ * @return last path component of url
  * E.g. homework1.pdf
  */
 @property (nonatomic, readonly) NSString* filename;
@@ -45,18 +108,49 @@ extern NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey;
  */
 @property (nonatomic, readonly) NSString* fileExtension;
 
-- (BOOL)isEqual:(id)object;
-- (BOOL)isEqualToMoodleResource:(MoodleResource*)moodleResource;
-- (NSUInteger)hash;
+@property (nonatomic, readonly) UIImage* systemIcon;
 
-/*
- * Returns empty dictionary if setDefaultsDictionary:forMoodleResource: never called before
+/**
+ * @return URL for self.icon that has a square side length of at least <length>
+ * @param length can be between 1 and 256
+ * nil if self.icon is nil
  */
-+ (NSDictionary*)defaultsDictionaryForMoodleResource:(MoodleResource*)resource;
-+ (void)setDefaultsDictionary:(NSDictionary*)defaultsDic forMoodleResource:(MoodleResource*)resource;
+- (NSURL*)iconURLForMinimalSquareSideLength:(CGFloat)length;
+
+/**
+ * @return YES if urls are equal
+ */
+- (BOOL)isEqual:(id)object;
+- (BOOL)isEqualToMoodleFile:(MoodleFile2*)otherFile;
+
+- (NSUInteger)hash;
 
 @end
 
-@interface MoodleSection (Additions)<NSCopying>
+@interface MoodleFolder2 (Additions)
+
+@property (nonatomic, readonly) UIImage* systemIcon;
+
+/**
+ * @return YES if name and all files are equal
+ */
+- (BOOL)isEqual:(id)object;
+- (BOOL)isEqualToMoodleFolder:(MoodleFolder2*)otherFolder;
+
+- (NSUInteger)hash;
+
+@end
+
+@interface MoodleUrl2 (Additions)
+
+@property (nonatomic, readonly) UIImage* systemIcon;
+
+/**
+ * @return YES if name and all files are equal
+ */
+- (BOOL)isEqual:(id)object;
+- (BOOL)isEqualToMoodleUrl:(MoodleUrl2*)otherUrl;
+
+- (NSUInteger)hash;
 
 @end
