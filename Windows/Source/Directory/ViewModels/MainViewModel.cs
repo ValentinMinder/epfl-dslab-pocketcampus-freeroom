@@ -39,8 +39,7 @@ namespace PocketCampus.Directory.ViewModels
         public string Query
         {
             get { return _query; }
-            // HACK: Task.Run shouldn't add anything here, but it does prevent slowdowns...why?
-            set { SetProperty( ref _query, value ); Task.Run( () => OnQueryChanged() ); }
+            set { SetProperty( ref _query, value ); }
         }
 
         /// <summary>
@@ -191,14 +190,6 @@ namespace PocketCampus.Directory.ViewModels
             }
 
             IsLoadingMoreResults = false;
-        }
-
-        private async void OnQueryChanged()
-        {
-            if ( Query.Length >= MinimumQueryLengthForRefresh )
-            {
-                await SearchAsync( Query, false );
-            }
         }
     }
 }
