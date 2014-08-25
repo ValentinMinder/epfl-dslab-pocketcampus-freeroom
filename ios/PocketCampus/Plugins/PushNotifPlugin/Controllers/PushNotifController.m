@@ -34,13 +34,20 @@
 
 #import "AppDelegate.h"
 
-static NSMutableDictionary* observerInstanceForNSNotificationCenterObserver __strong = nil;
+@interface PushNotifDeviceRegistrationObserver: NSObject
 
-@interface PushNotifController ()<UIAlertViewDelegate>
+@property (nonatomic, copy) PushNotifDeviceRegistrationSuccessBlock successBlock;
+@property (nonatomic, copy) PushNotifDeviceRegistrationFailureBlock failureBlock;
 
 @end
 
 @implementation PushNotifDeviceRegistrationObserver
+
+@end
+
+static NSMutableDictionary* observerInstanceForNSNotificationCenterObserver __strong = nil;
+
+@interface PushNotifController ()<UIAlertViewDelegate>
 
 @end
 
@@ -116,12 +123,10 @@ static PushNotifController* instance __strong = nil;
 - (void)registerDeviceForPushNotificationsWithPluginLowerIdentifier:(NSString*)pluginLowerIdentifier reason:(NSString*)reason success:(PushNotifDeviceRegistrationSuccessBlock)success failure:(PushNotifDeviceRegistrationFailureBlock)failure {
     @synchronized(self) {
         NSString* token = [PushNotifController notificationsDeviceToken];
-#warning test if pop-up already presented
         if (!token && reason && !self.pushNotifsReasonAlert) {
             //first plugin to ask will be the one that will get his reason poped-up
             NSString* localizedIdentifier = [[MainController publicController] localizedPluginIdentifierForAnycaseIdentifier:pluginLowerIdentifier];
-
-            self.pushNotifsReasonAlert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"PushNotifsAlertTitleWithFormat", @"PushNotifPlugin", nil), localizedIdentifier] message:reason delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            self.pushNotifsReasonAlert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"PushNotifsAlertTitleWithFormat", @"PushNotifPlugin", nil), localizedIdentifier] message:reason delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"PushNotifsAlertRejectButtonTitle", @"PushNotifPlugin", nil) otherButtonTitles:NSLocalizedStringFromTable(@"PushNotifsAlertAcceptButtonTitle", @"PushNotifPlugin", nil), nil];
         }
         
 		PushNotifDeviceRegistrationObserver* regObserver = [PushNotifDeviceRegistrationObserver new];
@@ -181,9 +186,18 @@ static PushNotifController* instance __strong = nil;
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (alertView == self.pushNotifsReasonAlert) {
+        if (buttonIndex == alertView.cancelButtonIndex) {
+            for (PushNotifDeviceRegistrationObserver* observer in self.regObservers) {
+                if (observer.failureBlock) {
+                    observer.failureBlock(PushNotifRegistrationErrorUserDeniedBufferAlert);
+                }
+            }
+            [self cleanupAfterRegistration];
+        } else {
 #ifndef TARGET_IS_EXTENSION
-        [self observeAndStartDeviceRegistrationProcessOnOS];
+            [self observeAndStartDeviceRegistrationProcessOnOS];
 #endif
+        }
         //now starting registration to iOS
         self.pushNotifsReasonAlert = nil;
     }
@@ -211,19 +225,19 @@ static PushNotifController* instance __strong = nil;
     __weak __typeof(self) welf = self;
     
     if ([UIUserNotificationSettings class]) { // >= iOS 8
-        // Need to both register for remote notifs (not permission required from user) and notifs settings (permission required)
-        welf.remoteSuccessObserver = [[NSNotificationCenter defaultCenter] addObserverForName:remoteSuccessNotifName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        // Need to both register for notifs settings (permission required) and remote notifs (not permission required from user)
+        self.notifSettingsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:didRegisterSettingsNotifName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif1) {
             
-            NSString* token = notif.userInfo[tokenKey];
-            [welf.class saveNotificationsDeviceToken:token];
+            [[NSNotificationCenter defaultCenter] removeObserver:welf.notifSettingsObserver];
             
-            CLSNSLog(@"-> (iOS 8) PushNotif device token registration success (%@). Now registering UIUserNotificationSettings...", token);
+            CLSNSLog(@"-> (iOS 8) UIUserNotificationSettings registration done. Now registering to get device token...");
             
-            welf.notifSettingsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:didRegisterSettingsNotifName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            welf.remoteSuccessObserver = [[NSNotificationCenter defaultCenter] addObserverForName:remoteSuccessNotifName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif2) {
+
+                NSString* token = notif2.userInfo[tokenKey];
+                [welf.class saveNotificationsDeviceToken:token];
                 
-                [[NSNotificationCenter defaultCenter] removeObserver:welf.notifSettingsObserver];
-                
-                CLSNSLog(@"-> (iOS 8) UIUserNotificationSettings registration done. Calling success on observers.");
+                CLSNSLog(@"-> (iOS 8) Push notif token obtained (%@). Calling success on observers.", token);
                 
                 UIUserNotificationSettings* currentSettings = [sharedApplication currentUserNotificationSettings];
                 for (PushNotifDeviceRegistrationObserver* observer in welf.regObservers) {
@@ -232,23 +246,25 @@ static PushNotifController* instance __strong = nil;
                     }
                 }
                 [welf cleanupAfterRegistration];
+            
             }];
-            [sharedApplication registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
-        }];
-        self.remoteFailureObserver = [[NSNotificationCenter defaultCenter] addObserverForName:remoteFailureNotifName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-            
-            [welf.class deleteNotificationsDeviceToken];
-            
-            CLSNSLog(@"-> (iOS 8) ERROR: PushNotif device token registration failure. Calling failure on observers.");
-            
-            for (PushNotifDeviceRegistrationObserver* observer in welf.regObservers) {
-                if (observer.failureBlock) {
-                    observer.failureBlock(PushNotifRegistrationErrorInternal);
+            welf.remoteFailureObserver = [[NSNotificationCenter defaultCenter] addObserverForName:remoteFailureNotifName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+                
+                [welf.class deleteNotificationsDeviceToken];
+                
+                CLSNSLog(@"-> (iOS 8) ERROR: PushNotif device token registration failure. Calling failure on observers.");
+                
+                for (PushNotifDeviceRegistrationObserver* observer in welf.regObservers) {
+                    if (observer.failureBlock) {
+                        observer.failureBlock(PushNotifRegistrationErrorInternal);
+                    }
                 }
-            }
-            [welf cleanupAfterRegistration];
+                [welf cleanupAfterRegistration];
+            }];
+            [sharedApplication registerForRemoteNotifications];
         }];
-        [sharedApplication registerForRemoteNotifications];
+        [sharedApplication registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+        
     } else {
         // Prior to iOS 8, register for remote notifs and notifs UI is done in one shot
         self.remoteSuccessObserver = [[NSNotificationCenter defaultCenter] addObserverForName:remoteSuccessNotifName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -280,7 +296,7 @@ static PushNotifController* instance __strong = nil;
             [welf cleanupAfterRegistration];
             
         }];
-#ifndef __IPHONE_8_0
+#ifndef TARGET_IS_EXTENSION
         [sharedApplication registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
 #endif
     }

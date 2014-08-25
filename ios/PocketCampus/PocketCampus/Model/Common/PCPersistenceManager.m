@@ -49,7 +49,12 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
     static NSUserDefaults* defaults = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        defaults = [[NSUserDefaults alloc] initWithSuiteName:kPCUserDefaultsSharedAppGroupName];
+        if ([PCUtils isOSVersionSmallerThan:8.0]) {
+            defaults = [[NSUserDefaults alloc] init];
+            [defaults addSuiteNamed:kPCUserDefaultsSharedAppGroupName];
+        } else {
+            defaults = [[NSUserDefaults alloc] initWithSuiteName:kPCUserDefaultsSharedAppGroupName];
+        }
         [defaults synchronize];
     });
     return defaults;

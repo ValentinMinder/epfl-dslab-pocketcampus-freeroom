@@ -1196,7 +1196,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "137"
             endingLineNumber = "137"
-            landmarkName = "-application:didRegisterUserNotificationSettings:"
+            landmarkName = "-application:supportedInterfaceOrientationsForWindow:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -2863,17 +2863,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "147"
             endingLineNumber = "147"
-            landmarkName = "-application:didFailToRegisterForRemoteNotificationsWithError:"
+            landmarkName = "-application:didRegisterForRemoteNotificationsWithDeviceToken:"
             landmarkType = "5">
-            <Actions>
-               <BreakpointActionProxy
-                  ActionExtensionID = "Xcode.BreakpointAction.Log">
-                  <ActionContent
-                     message = "application:didFailToRegisterForRemoteNotificationsWithError:"
-                     conveyanceType = "0">
-                  </ActionContent>
-               </BreakpointActionProxy>
-            </Actions>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2967,29 +2958,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Plugins/PushNotifPlugin/Controllers/PushNotifController.m"
-            timestampString = "430235456.592351"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "198"
-            endingLineNumber = "198"
-            landmarkName = "-removeObserver:forPluginLowerIdentifier:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "Yes"
             filePath = "PocketCampus/AppDelegate/AppDelegate.m"
             timestampString = "430349874.949525"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "141"
             endingLineNumber = "141"
-            landmarkName = "-application:didRegisterForRemoteNotificationsWithDeviceToken:"
+            landmarkName = "-application:didRegisterUserNotificationSettings:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -3023,12 +2998,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/PushNotifPlugin/Controllers/PushNotifController.m"
-            timestampString = "414517287.179697"
+            timestampString = "430670632.20974"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
-            landmarkName = "-registerDeviceForPushNotificationsWithPluginLowerIdentifier:reason:success:failure:"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
+            landmarkName = "-addPushNotificationObserver:forPluginLowerIdentifier:newNotificationBlock:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3039,12 +3014,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/PushNotifPlugin/Controllers/PushNotifController.m"
-            timestampString = "430235456.592351"
+            timestampString = "430670632.20974"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "167"
-            endingLineNumber = "167"
-            landmarkName = "-registerDeviceForPushNotificationsWithPluginLowerIdentifier:reason:success:failure:"
+            startingLineNumber = "172"
+            endingLineNumber = "172"
+            landmarkName = "-removeObserver:forPluginLowerIdentifier:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
