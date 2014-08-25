@@ -8,7 +8,7 @@
                       mc:Ignorable="d">
     <!-- Design-time DataContext -->
     <d:DesignProperties.DataContext>
-        <design:DesignSettingsViewModel xmlns:design="clr-namespace:PocketCampus.Events.ViewModels.Design;assembly=PocketCampus.Events.Common" />
+        <design:DesignSettingsViewModel xmlns:design="clr-namespace:PocketCampus.Events.ViewModels.Design;assembly=PocketCampus.Events" />
     </d:DesignProperties.DataContext>
     
     <!-- Page resources -->

@@ -12,7 +12,7 @@
                       mc:Ignorable="d">
     <!-- Design-time DataContext -->
     <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Map.ViewModels.Design;assembly=PocketCampus.Map.Common" />
+        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Map.ViewModels.Design;assembly=PocketCampus.Map" />
     </d:DesignProperties.DataContext>
 
     <!-- Page resources -->

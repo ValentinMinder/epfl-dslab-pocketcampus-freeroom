@@ -12,7 +12,7 @@ public final class PictureSourceImpl implements PictureSource {
 	private static final Map<MealType, String> MEAL_TYPE_PICTURE_URLS = new HashMap<MealType, String>();
 
 	private static final String RESTAURANTS_PHOTOS_FOLDER_URL = "http://pocketcampus.epfl.ch/backend/restaurant-pics/";
-	private static final String RESTAURANTS_PHOTOS_FOLDER_LOCAL_PATH = "/var/www/backend/restaurant-pics/";
+	private static final String RESTAURANTS_PHOTOS_FOLDER_LOCAL_PATH = "/var/www/vhosts/pocketcampus/htdocs/backend/restaurant-pics/";
 	private static final String RESTAURANTS_PHOTOS_FILE_EXTENSION = ".jpg";
 
 	static {

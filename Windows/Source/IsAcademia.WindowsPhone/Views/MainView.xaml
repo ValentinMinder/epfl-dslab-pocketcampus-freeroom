@@ -18,7 +18,7 @@
                       OrientationChanged="Page_OrientationChanged">
     <!-- Design-time DataContext -->
     <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.IsAcademia.ViewModels.Design;assembly=PocketCampus.IsAcademia.Common" />
+        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.IsAcademia.ViewModels.Design;assembly=PocketCampus.IsAcademia" />
     </d:DesignProperties.DataContext>
 
     <!-- Page resources-->
@@ -203,6 +203,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -223,14 +224,17 @@
                                Value="{Binding WeekDate, Mode=TwoWay}"
                                TextStyle="{StaticResource AppTextSecondaryHeaderStyle}"
                                Margin="10,0" />
-
+        
+        <!-- Stale data indicator -->
+        <comControls:StaleDataIndicator Grid.ColumnSpan="2"
+                                        Grid.Row="2" />
 
         <!-- Portrait schedule -->
         <!-- HACK: It must not use virtualization because of the datacontext issues... 
                    Maybe there's a solution? -->
         <ScrollViewer x:Name="PortraitDays"
                       Grid.ColumnSpan="2"
-                      Grid.Row="2">
+                      Grid.Row="3">
             <ItemsControl ItemsSource="{Binding Days}"
                           ItemTemplate="{StaticResource PortraitDayTemplate}" />
         </ScrollViewer>
@@ -238,7 +242,7 @@
         <!-- Landscape schedule -->
         <myControls:DayDisplay x:Name="LandscapeDays"
                                Grid.ColumnSpan="2"
-                               Grid.Row="2"
+                               Grid.Row="3"
                                Day="{x:Null}"
                                Days="{Binding Days}"
                                HourIncrement="2"
@@ -250,7 +254,7 @@
 
         <!-- Loading & error -->
         <comControls:LoadingAndError Grid.ColumnSpan="2"
-                                     Grid.Row="2" />
+                                     Grid.Row="3" />
 
         <!-- Handles orientation changes -->
         <VisualStateManager.VisualStateGroups>

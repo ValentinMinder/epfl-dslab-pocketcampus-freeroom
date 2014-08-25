@@ -56,7 +56,6 @@ namespace PocketCampus.Map
         {
             var control = (Control) obj;
             control.Opacity = GetLevel( control ) == GetDisplayedLevel( control ) ? FullOpacity : PartialOpacity;
-
         }
     }
 }

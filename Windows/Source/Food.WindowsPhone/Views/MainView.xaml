@@ -16,7 +16,7 @@
                       mc:Ignorable="d">
     <!-- Design-time DataContext -->
     <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Food.ViewModels.Design;assembly=PocketCampus.Food.Common" />
+        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Food.ViewModels.Design;assembly=PocketCampus.Food" />
     </d:DesignProperties.DataContext>
 
     <!-- Page resources -->
@@ -32,8 +32,7 @@
 
             <!-- Meal template -->
             <DataTemplate x:Key="MealItemTemplate">
-                <Grid Margin="24,10,24,30"
-                      Width="432">
+                <Grid Margin="24,10,0,30">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition />
@@ -76,7 +75,8 @@
                         </StackPanel>
                     </Grid>
 
-                    <Grid Grid.Column="1">
+                    <Grid Grid.Column="1"
+                          Margin="0,0,10,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -181,6 +181,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="55" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -208,9 +209,12 @@
                                   TextStyle="{StaticResource AppTextSecondaryHeaderStyle}"
                                   Margin="10,0" Height="55" />
         </Border>
+        
+        <!-- Stale data indicator -->
+        <comControls:StaleDataIndicator Grid.Row="2" />
 
         <!-- Meal list -->
-        <phone:LongListSelector Grid.Row="2"
+        <phone:LongListSelector Grid.Row="3"
                                 ItemsSource="{Binding Menu, Converter={StaticResource RestaurantsToGroups}}"
                                 ItemTemplate="{StaticResource MealItemTemplate}"
                                 IsGroupingEnabled="True"
@@ -219,13 +223,13 @@
                                 JumpListStyle="{StaticResource JumpListStyle}" />
 
         <!-- "No filter results" text -->
-        <TextBlock Grid.Row="2"
+        <TextBlock Grid.Row="3"
                    Text="{Binding Resources.AllResultsFilteredOut, Source={StaticResource Strings}}"
                    Visibility="{Binding AnyFilterResults, Converter={StaticResource BoolToOppositeVisibility}}"
                    Style="{StaticResource AppTextCenterStyle}" />
 
         <!-- "No meals" text (the container is needed to hide the "no filter results" text) -->
-        <Border Grid.Row="2"
+        <Border Grid.Row="3"
                 Visibility="{Binding AnyMeals, Converter={StaticResource BoolToOppositeVisibility}}"
                 Background="{StaticResource PhoneBackgroundBrush}">
             <TextBlock Text="{Binding Resources.NoMeals, Source={StaticResource Strings}}"
@@ -233,7 +237,8 @@
         </Border>
 
         <!-- Loading & error -->
-        <comControls:LoadingAndError Grid.Row="2" />
+        <comControls:LoadingAndError Grid.RowSpan="2"
+                                     Grid.Row="2" />
     </Grid>
 
     <!-- App bar -->
