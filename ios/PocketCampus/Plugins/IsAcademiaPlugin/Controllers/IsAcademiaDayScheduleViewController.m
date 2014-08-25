@@ -51,6 +51,8 @@
 
 @property (nonatomic, strong) UIActionSheet* detailsActionSheet;
 
+@property (nonatomic, strong) PCDatePickerView* datePickerView;
+
 @property (nonatomic, strong) NSDate* lastRefreshDate;
 
 @end
@@ -85,6 +87,9 @@
     self.toolbarItems = @[todayItem, flexibleSpaceItem, goToDateItem];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferredContentSizeChanged) name:UIContentSizeCategoryDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
+    [[MainController publicController] addPluginStateObserver:self selector:@selector(willLoseForeground) notification:PluginWillLoseForegroundNotification pluginIdentifierName:@"IsAcademia"];
+    [[MainController publicController] addPluginStateObserver:self selector:@selector(didEnterForeground) notification:PluginDidEnterForegroundNotification pluginIdentifierName:@"IsAcademia"];
     
     self.progressHUD = [[MBProgressHUD alloc] initWithView:self.dayView];
     self.progressHUD.userInteractionEnabled = NO;
@@ -131,6 +136,18 @@
     [self refreshAndGoToTodayIfNeeded];
 }
 
+- (void)willLoseForeground {
+    [self.datePickerView dismiss];
+}
+
+- (void)didEnterForeground {
+    if (self.datePickerView) {
+        //check uncessary, just to make clear that
+        //self.datePickerView != nil means it was presented
+        [self.datePickerView presentInView:self.view];
+    }
+}
+
 #pragma mark - Refresh & actions
 
 - (void)refreshAndGoToTodayIfNeeded {
@@ -172,11 +189,21 @@
         welf.dayView.date = date;
         [welf calendarDayTimelineView:welf.dayView didMoveToDate:welf.dayView.date]; //force refresh
         [view dismiss];
+        welf.datePickerView = nil;
+        
+        //GA stuff
+        NSDateFormatter* formatter = [NSDateFormatter new];
+        formatter.dateFormat = @"yyyy-MM-dd";
+        NSString* dateString = [formatter stringFromDate:date];
+        [welf trackAction:@"GoToDateSelected" contentInfo:dateString];
     }];
     [pcDatePicker setUserCancelledBlock:^(PCDatePickerView* view) {
         [view dismiss];
+        welf.datePickerView = nil;
     }];
     [pcDatePicker presentInView:self.view];
+    self.datePickerView = pcDatePicker;
+    [self trackAction:@"GoToDate"];
 }
 
 #pragma mark - Date utils
@@ -218,13 +245,13 @@
         }
         case IsaStatusCode_INVALID_SESSION:
         {
-            __weak __typeof(self) weakSelf = self;
+            __weak __typeof(self) welf = self;
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
-                [weakSelf refreshForDisplayedDaySkipCache:YES];
+                [welf refreshForDisplayedDaySkipCache:YES];
             } userCancelled:^{
                 //nothing to do
             } failure:^{
-                [weakSelf getScheduleFailedForRequest:request];
+                [welf getScheduleFailedForRequest:request];
             }];
             break;
         }

@@ -104,7 +104,7 @@ static MoodleController* instance __weak = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-            [[MoodleService sharedInstanceToRetain] deleteAllDownloadedMoodleResources]; //removing all downloaded Moodle files
+            [[MoodleService sharedInstanceToRetain] deleteAllDownloadedMoodleFiles]; //removing all downloaded Moodle files
             [PCPersistenceManager deleteCacheForPluginName:@"moodle"];
             [[MainController publicController] requestLeavePlugin:@"Moodle"];
         }];

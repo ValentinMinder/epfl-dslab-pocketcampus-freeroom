@@ -26,17 +26,12 @@
  */
 
 
-
-
 //  Created by Loïc Gardiol on 04.12.12.
 
+@class MoodleCourse2;
 
-#import <UIKit/UIKit.h>
+@interface MoodleCourseSectionsViewController : UITableViewController
 
-#import "MoodleService.h"
-
-@interface MoodleCourseSectionsViewController : UITableViewController<MoodleServiceDelegate>
-
-- (id)initWithCourse:(MoodleCourse*)course;
+- (id)initWithCourse:(MoodleCourse2*)course;
 
 @end

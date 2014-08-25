@@ -37,8 +37,6 @@
 
 #import "UIImageView+AFNetworking.h"
 
-#import "UIImage+Additions.h"
-
 static const CGFloat kTopBarHeight = 30.0;
 
 @interface FoodRestaurantInfoCell ()

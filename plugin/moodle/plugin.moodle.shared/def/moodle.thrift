@@ -69,7 +69,10 @@ struct MoodleFile2 {
     2: required string extension;
     // Download URL (use the PocketCampus moodle proxy for it)
     3: required string url;
-    // Moodle file icon URL, contains a {size} token which can be powers of 2 up to 256, as well as smaller sizes like 24.
+    // Moodle file icon URL, contains a {size} token which must be replaced by a size.
+    //   32, 64, 128, and other common sizes are supported for (almost) all files;
+    //   see https://github.com/moodle/moodle/tree/master/pix/f for detailed info.
+    //   You can also replace('-{size}', '') to get the original image, but it's very small.
     // Not provided for files inside a folder, unfortunately.
     4: optional string icon;
 }

@@ -32,8 +32,6 @@
 
 #import "AFNetworking.h"
 
-#import "UIImage+Additions.h"
-
 #import "AppDelegate.h"
 
 static id kEmptyImageValue;

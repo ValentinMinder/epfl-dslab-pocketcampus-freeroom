@@ -69,7 +69,7 @@ if($platform == "ios" && comparble_version($app_version) < comparble_version("1.
         $resp["status"] = 200;
         $resp["server_protocol"] = "https";
         $resp["server_address"] = "pocketcampus.epfl.ch";
-        $resp["server_port"] = "4433";
+        $resp["server_port"] = "14611";
         $resp["server_uri"] = "v3r1";
 	die(echo_compatible($resp));
 }
@@ -82,7 +82,8 @@ $resp = array();
 $resp["SERVER_PROTOCOL"] = "https";
 //$resp["SERVER_PROTOCOL"] = "http";
 //$resp["GCM_SENDER_ID"] = "384589660983";
-$resp["SERVER_PORT"] = "4433";
+$resp["SERVER_PORT"] = "14611";
+//$resp["SERVER_PORT"] = "4433";
 //$resp["SERVER_PORT"] = "9090";
 //$resp["GA_TRACKING_CODE"] = "UA-22135241-3"; //Old Google Analytics
 //$resp["GA_TRACKING_CODE"] = "UA-22135241-5"; //New Google Universal Analytics

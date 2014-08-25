@@ -7,7 +7,7 @@
 	<key>SERVER_ADDRESS</key>
 	<string>pocketcampus.epfl.ch</string>
 	<key>SERVER_PORT</key>
-	<string>4433</string>
+	<string>14611</string>
 	<key>SERVER_URI</key>
 	<string>v3r1</string>
 	<key>GA_ENABLED</key>

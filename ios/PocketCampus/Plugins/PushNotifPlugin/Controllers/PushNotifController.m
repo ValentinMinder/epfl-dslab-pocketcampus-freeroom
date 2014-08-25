@@ -147,7 +147,7 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
     @synchronized(self) {
         
         NSString* token = [PushNotifController notificationsDeviceToken];
-#warning TEST IF POPUP ALREADY PRESENTED
+#warning test if pop-up already presented
         if (!token && reason && !self.pushNotifsReasonAlert) {
             //first plugin to ask will be the one that will get his reason poped-up
             NSString* localizedIdentifier = [[MainController publicController] localizedPluginIdentifierForAnycaseIdentifier:pluginLowerIdentifier];
