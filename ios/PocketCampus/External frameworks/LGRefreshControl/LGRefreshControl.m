@@ -167,7 +167,7 @@
         return [PCUtils hasDeviceInternetConnection];
     }
     NSTimeInterval diffWithLastRefresh = [[NSDate date] timeIntervalSinceDate:self.lastSuccessfulRefreshDate];
-    if (diffWithLastRefresh > validitySeconds) {
+    if (diffWithLastRefresh > validitySeconds || isnan(diffWithLastRefresh)) {
         return [PCUtils hasDeviceInternetConnection];
     }
     return NO;

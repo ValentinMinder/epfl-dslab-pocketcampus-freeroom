@@ -43,8 +43,14 @@
 
 @property (nonatomic, strong) RecommendedAppsService* recommendedAppService;
 @property (nonatomic, strong) RecommendedAppsResponse* recommendedAppsResponse;
+@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
 
 @end
+
+/*
+ * Will refresh if last refresh date is older than kRefreshValiditySeconds ago.
+ */
+static const NSTimeInterval kRefreshValiditySeconds = 1.0;//300.0; //5 min.
 
 @implementation RecommendedAppsListViewController
 
@@ -71,8 +77,10 @@
         return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
     };
     
-    RecommendedAppsRequest* request = [[RecommendedAppsRequest alloc] initWithLanguage:[PCUtils userLanguageCode] appStore:AppStore_iOS];
-    [self.recommendedAppService getRecommendedApps:request delegate:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
+    
+    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"recommendedapps" dataName:@"recommendedapps"]];
+    [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -80,7 +88,31 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated  {
+    [super viewWillAppear:animated];
+    [self trackScreen];
+    [self refreshIfNeeded];
+}
+
 #pragma mark - Private
+
+- (void)refresh {
+    [self.recommendedAppService cancelOperationsForDelegate:self];
+    [self.lgRefreshControl startRefreshing];
+    RecommendedAppsRequest* request = [[RecommendedAppsRequest alloc] initWithLanguage:[PCUtils userLanguageCode] appStore:AppStore_iOS];
+    [self.recommendedAppService getRecommendedApps:request delegate:self];
+    
+}
+
+- (void)refreshIfNeeded {
+    if (!self.recommendedAppService || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
+        if (!self.splitViewController && self.navigationController.topViewController != self) {
+            [self.navigationController popToViewController:self animated:NO];
+        }
+        [self refresh];
+    }
+    [self.tableView reloadData];
+}
 
 - (NSArray*)recommendedAppsInCategory:(RecommendedAppCategory*)category{
     NSMutableArray* appsInCategory = [NSMutableArray new];
@@ -94,19 +126,26 @@
 #pragma mark - RecommendedAppsServiceDelegate
 
 - (void)getRecommendedAppsForRequest:(RecommendedAppsRequest *)request didReturn:(RecommendedAppsResponse *)response{
-    self.recommendedAppsResponse = response;
-    [self.tableView reloadData];
-    NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"RecommendedAppsDisclaimerView" owner:nil options:nil];
-    self.tableView.tableHeaderView = elements[0];
+    if(response.status){
+        self.recommendedAppsResponse = response;
+        [self.tableView reloadData];
+        NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"RecommendedAppsDisclaimerView" owner:nil options:nil];
+        self.tableView.tableHeaderView = elements[0];
+        [self.lgRefreshControl endRefreshingAndMarkSuccessful];
+    }else{
+        [self getRecommendedAppsFailedForRequest:request];
+    }
 }
 
 - (void)getRecommendedAppsFailedForRequest:(RecommendedAppsRequest*)request {
-#warning TODO show error message and stop loading
+    [PCUtils showServerErrorAlert];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil)];
+
 }
 
 - (void)serviceConnectionToServerFailed{
-#warning TODO show error message and stop loading
-    CLS_LOG(@"serviceConnectionToServerFailed");
+    [PCUtils showConnectionToServerTimedOutAlert];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil)];
 }
 
 #pragma mark - UITableViewDelegate
