@@ -173,8 +173,9 @@ public class StyledDialog extends Dialog {
 			return this;
 		}
 
-		public void setCanceledOnTouchOutside(boolean cancel) {
+		public Builder setCanceledOnTouchOutside(boolean cancel) {
 			mCanceledOnTouchOutside = cancel;
+			return this;
 		}
 
 		/**
