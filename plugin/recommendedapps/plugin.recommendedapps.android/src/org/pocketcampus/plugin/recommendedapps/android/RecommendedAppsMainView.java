@@ -20,6 +20,8 @@ import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppCategory;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -163,6 +165,19 @@ public class RecommendedAppsMainView extends PluginView implements
 					public void onClick(View v) {
 						System.out.println("CLICKED ON " + app);
 						final String appPackageName = app.getAppStoreQuery();
+
+						if (isAppInstalled(appPackageName)) {
+							Intent launchIntent = getPackageManager()
+									.getLaunchIntentForPackage(appPackageName);
+							String startingAppParameter = app.getAppOpenURLPattern().trim();
+							if(startingAppParameter != null && startingAppParameter.length() != 0){
+								String value = RecommendedAppsMainView.this.getApplicationContext().getPackageName();
+								System.out.println("Setting "+startingAppParameter+ " to "+value);
+								launchIntent.putExtra(startingAppParameter, value);
+							}
+							startActivity(launchIntent);
+							return;
+						}
 						try {
 							startActivity(new Intent(Intent.ACTION_VIEW, Uri
 									.parse("market://details?id="
@@ -268,5 +283,16 @@ public class RecommendedAppsMainView extends PluginView implements
 		}
 
 		setContentView(storeLayout);
+	}
+
+	private boolean isAppInstalled(String appPackageName) {
+		PackageManager pm = this.getPackageManager();
+		try {
+			pm.getPackageInfo(appPackageName, PackageManager.GET_ACTIVITIES);
+			return true;
+		} catch (NameNotFoundException e) {
+			System.err.println(e);
+			return false;
+		}
 	}
 }
