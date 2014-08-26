@@ -175,7 +175,7 @@ namespace PocketCampus.Events.ViewModels
                 var request = new EventPoolRequest
                 {
                     PoolId = _poolId,
-                    DayCount = (int) _settings.SearchPeriod,
+                    HoursCount = (int) _settings.SearchPeriod,
                     IsInPast = _settings.SearchInPast,
                     UserTickets = _settings.UserTickets.ToArray(),
                     FavoriteEventIds = _settings.FavoriteItemIds.ToArray(),

@@ -42,8 +42,8 @@ namespace PocketCampus.Events.Models
         /// <summary>
         /// The period of time, in days, in which to search for events.
         /// </summary>
-        [ThriftField( 6, false, "period" )]
-        public int? DayCount { get; set; }
+        [ThriftField( 8, false, "periodInHours" )]
+        public int? HoursCount { get; set; }
 
         /// <summary>
         /// A value indicating whether events should be searched for in the past.
