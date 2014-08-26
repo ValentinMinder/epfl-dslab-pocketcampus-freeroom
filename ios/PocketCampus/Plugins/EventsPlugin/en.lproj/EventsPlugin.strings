@@ -39,6 +39,9 @@
 "PastEvents" = "Past events";
 "PastEventsShort" = "Past events";
 "ShowPastEventsFor..." = "Show past events back to";
+"RightNow" = "Right Now";
+"All(FilterActive)" = "All (filter active)";
+"EventsRightNow" = "Events right row";
 
 //Accessibility
 "PresentationOptions" = "Presentation options";

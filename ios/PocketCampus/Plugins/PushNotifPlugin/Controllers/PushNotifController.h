@@ -68,6 +68,7 @@ typedef void (^PushNotifDeviceRegistrationFailureBlock)(PushNotifDeviceRegistrat
  * Note: if the user has denied the "buffert" alert for notifications, it will be displayed again
  * when you call this method. It is *your* responsability to not spam user multiple times
  * if failure is PushNotifRegistrationErrorUserDeniedBufferAlert.
+ * To know wether you have to register, you can check if [PushNotifController notificationsDeviceToken] is nil.
  */
 - (void)registerDeviceForPushNotificationsWithPluginLowerIdentifier:(NSString*)pluginLowerIdentifier reason:(NSString*)reason success:(PushNotifDeviceRegistrationSuccessBlock)success failure:(PushNotifDeviceRegistrationFailureBlock)failure NS_EXTENSION_UNAVAILABLE_IOS("You cannot register for push notifications from extensions.");
 

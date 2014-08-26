@@ -39,6 +39,9 @@
 "PastEvents" = "Événements passés";
 "PastEventsShort" = "Évén. passés";
 "ShowPastEventsFor..." = "Voir les événements passés jusqu'à";
+"RightNow" = "Maintenant";
+"All(FilterActive)" = "Tous (filtre actif)";
+"EventsRightNow" = "Maintenant";
 
 //Accessibility
 "AddEventToFavorites" = "Ajouter cet événement aux favoris";

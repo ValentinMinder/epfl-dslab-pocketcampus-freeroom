@@ -53,10 +53,12 @@
 
 #import "EventsShareFavoriteItemsViewController.h"
 
+static NSInteger const kSegmentIndexAll = 0;
+static NSInteger const kSegmentIndexRightNow = 1;
 
 @interface EventPoolViewController ()<UIActionSheetDelegate, EventsServiceDelegate>
 
-@property (nonatomic) int64_t poolId;
+@property (nonatomic, readwrite) int64_t poolId;
 @property (nonatomic, strong) EventPool* eventPool;
 @property (nonatomic, strong) EventPoolReply* poolReply;
 @property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
@@ -80,6 +82,8 @@
 @property (nonatomic, strong) UIBarButtonItem* actionButton;
 @property (nonatomic, strong) UIBarButtonItem* filterButton;
 @property (nonatomic, strong) UIBarButtonItem* scanButton;
+
+@property (nonatomic, strong) UISegmentedControl* segmentedControl;
 
 @property (nonatomic, strong) EventItem* selectedItem;
 
@@ -172,6 +176,23 @@ static const NSInteger kOneYearPeriodIndex = 3;
         return [EventItemCell preferredHeight];
     };
     
+    if (self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
+        //show [All | Right Now] toggle only in root pool
+        NSArray* segmentedControlItems = @[NSLocalizedStringFromTable(@"All", @"PocketCampus", nil), NSLocalizedStringFromTable(@"RightNow", @"EventsPlugin", nil)];
+        self.segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentedControlItems];
+        
+        self.segmentedControl.tintColor = [PCValues pocketCampusRed];
+        self.segmentedControl.selectedSegmentIndex = kSegmentIndexAll;
+        [self.segmentedControl addTarget:self action:@selector(segmentedControlValueChanged) forControlEvents:UIControlEventValueChanged];
+        UIBarButtonItem* segmentedControlBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.segmentedControl];
+        
+        [self.segmentedControl addObserver:self forKeyPath:NSStringFromSelector(@selector(frame)) options:0 context:NULL];
+        
+        UIBarButtonItem* flexibleSpaceLeft = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        UIBarButtonItem* flexibleSpaceRight = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        self.toolbarItems = @[flexibleSpaceLeft, segmentedControlBarItem, flexibleSpaceRight];
+    }
+    
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"events" dataName:[NSString stringWithFormat:@"eventPool-%lld", self.poolId]]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     [self updateButtonsConditionally];
@@ -180,10 +201,16 @@ static const NSInteger kOneYearPeriodIndex = 3;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:(self.poolId != [eventsConstants CONTAINER_EVENT_ID]) animated:animated];
     [self trackScreen];
     if (!self.poolReply || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds] || self.eventPool.sendStarredItems) { //if sendStarredItems then list can change anytime and should be refreshed
         [self refresh];
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController setToolbarHidden:YES animated:animated];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -208,6 +235,38 @@ static const NSInteger kOneYearPeriodIndex = 3;
     _poolReply = poolReply;
     if (poolReply.eventPool) {
         self.eventPool = self.poolReply.eventPool;
+    }
+}
+
+- (int32_t)selectedPeriod {
+    if (self.segmentedControl && self.segmentedControl.selectedSegmentIndex == kSegmentIndexRightNow) {
+        return EventsPeriods_ONE_DAY;
+    } else {
+        return _selectedPeriod;
+    }
+}
+
+- (NSMutableDictionary*)selectedCategories {
+    if (self.segmentedControl && self.segmentedControl.selectedSegmentIndex == kSegmentIndexRightNow) {
+        return [self.poolReply.categs mutableCopy];
+    } else {
+        return _selectedCategories;
+    }
+}
+
+- (NSMutableDictionary*)selectedTags {
+    if (self.segmentedControl && self.segmentedControl.selectedSegmentIndex == kSegmentIndexRightNow) {
+        return [self.poolReply.tags mutableCopy];
+    } else {
+        return _selectedTags;
+    }
+}
+
+- (BOOL)pastMode {
+    if (self.segmentedControl && self.segmentedControl.selectedSegmentIndex == kSegmentIndexRightNow) {
+        return NO;
+    } else {
+        return _pastMode;
     }
 }
 
@@ -275,20 +334,23 @@ static const NSInteger kOneYearPeriodIndex = 3;
         [rightElements addObject:self.scanButton];
     }
     
-    if (!self.eventPool.disableFilterByCateg || !self.eventPool.disableFilterByTags) { //will also disable period filtering
+    NSSet* selectedTagsSet = [NSSet setWithArray:[_selectedTags allKeys]]; //by pass property getter (yes, this is a bit ugly)
+    NSSet* selectableTagsSet = [NSSet setWithArray:[self.tagsInPresentItems allKeys]];
+    BOOL filterActive = !(self.poolReply.tags.count == 0 || [selectedTagsSet isEqualToSet:selectableTagsSet] || [selectableTagsSet isSubsetOfSet:selectedTagsSet]);
+#warning buggy
+    if (!(self.segmentedControl && self.segmentedControl.selectedSegmentIndex != kSegmentIndexAll)
+        && (!self.eventPool.disableFilterByCateg || !self.eventPool.disableFilterByTags)) { //will also disable period filtering
         
-        NSSet* selectedTagsSet = [NSSet setWithArray:[self.selectedTags allKeys]];
-        NSSet* selectableTagsSet = [NSSet setWithArray:[self.tagsInPresentItems allKeys]];
-        NSString* filterButtonImageName = nil;
-        if (self.poolReply.tags.count == 0 || [selectedTagsSet isEqualToSet:selectableTagsSet] || [selectableTagsSet isSubsetOfSet:selectedTagsSet]) {
-            filterButtonImageName = @"FilterBarButton";
-        } else {
-            filterButtonImageName = @"FilterBarButtonSelected";
-        }
+        NSString* filterButtonImageName = filterActive ? @"FilterBarButtonSelected" : @"FilterBarButton";
         
         self.filterButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:filterButtonImageName] style:UIBarButtonItemStylePlain target:self action:@selector(filterButtonPressed)];
         self.filterButton.accessibilityLabel = NSLocalizedStringFromTable(@"PresentationOptions", @"EventsPlugin", nil);
         [rightElements addObject:self.filterButton];
+    }
+    
+    if (self.segmentedControl) {
+        NSString* segmentAllTitle = filterActive ? NSLocalizedStringFromTable(@"All(FilterActive)", @"EventsPlugin", nil) : NSLocalizedStringFromTable(@"All", @"PocketCampus", nil);
+        [self.segmentedControl setTitle:segmentAllTitle forSegmentAtIndex:kSegmentIndexAll];
     }
     
     if (self.eventPool.sendStarredItems) {
@@ -568,6 +630,34 @@ static const NSInteger kOneYearPeriodIndex = 3;
     [self.periodsSelectionActionSheet showFromBarButtonItem:self.filterButton animated:YES];
 }
 
+- (void)segmentedControlValueChanged {
+    if (!self.normalTitle) {
+        self.normalTitle = self.title;
+    }
+    self.title = (self.segmentedControl.selectedSegmentIndex == kSegmentIndexRightNow) ? NSLocalizedStringFromTable(@"EventsRightNow", @"EventsPlugin", nil) : self.normalTitle;
+    [self updateButtonsConditionally];
+    [self refresh];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (object == self.segmentedControl && [keyPath isEqualToString:NSStringFromSelector(@selector(frame))]) {
+        if (!self.segmentedControl.superview) {
+            return;
+        }
+        CGFloat width = self.segmentedControl.superview.frame.size.width-18.0;
+        if (width > 350.0) {
+            width = 350.0;
+        }
+        CGFloat height = self.segmentedControl.superview.frame.size.height-16.0;
+        if (height < 20.0) {
+            height = 20.0;
+        }
+        self.segmentedControl.bounds = CGRectMake(0, 0, width, height);
+    }
+}
+
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -598,27 +688,21 @@ static const NSInteger kOneYearPeriodIndex = 3;
         }
         self.filterSelectionActionSheet = nil;
     } else if (actionSheet == self.periodsSelectionActionSheet) {
-        NSInteger nbDays = 0;
         switch (buttonIndex) {
             case kOneWeekPeriodIndex:
                 self.selectedPeriod = EventsPeriods_ONE_WEEK;
-                nbDays = 7;
                 break;
             case kOneMonthPeriodIndex:
                 self.selectedPeriod = EventsPeriods_ONE_MONTH;
-                nbDays = 31;
                 break;
             case kSixMonthsPeriodIndex:
                 self.selectedPeriod = EventsPeriods_SIX_MONTHS;
-                nbDays = 6 * 31;
                 break;
             case kOneYearPeriodIndex:
                 self.selectedPeriod = EventsPeriods_ONE_YEAR;
-                nbDays = 365;
                 break;
         }
-        [self trackAction:@"ChangePeriod" contentInfo:[NSString stringWithFormat:@"%d", (int)nbDays]];
-        
+        [self trackAction:@"ChangePeriod" contentInfo:[NSString stringWithFormat:@"%d", (int)self.selectedPeriod]];
         [self.eventsService saveSelectedPoolPeriod:self.selectedPeriod];
         if (buttonIndex >= 0 && (buttonIndex != [self.periodsSelectionActionSheet cancelButtonIndex])) {
             [self.tableView scrollsToTop];
@@ -850,6 +934,10 @@ static const NSInteger kOneYearPeriodIndex = 3;
 - (void)dealloc {
     [self.eventsService cancelOperationsForDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    @try {
+        [self.segmentedControl removeObserver:self forKeyPath:NSStringFromSelector(@selector(frame))];
+    }
+    @catch (NSException *exception) {}
 }
 
 @end
