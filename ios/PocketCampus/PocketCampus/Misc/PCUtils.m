@@ -185,7 +185,7 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
         }
     }
     @catch (NSException *exception) {
-        CLSNSLog(@"!! ERROR: wrong URL format");
+        return nil;
     }
     return  [queryStringDictionary copy]; //non-mutable copy
 }

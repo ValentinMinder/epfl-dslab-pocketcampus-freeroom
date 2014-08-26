@@ -195,7 +195,7 @@ static MainController<MainControllerPublic>* instance = nil;
     if (![urlTmp isKindOfClass:[NSURL class]]) {
         //do that instead of exception to prevent crashes
         [self showActionNotSupportedAlert];
-        CLSNSLog(@"!! ERROR: tried to handlePocketCampusURL: with URL not kind of class NSURL. Ignoring.");
+        CLSNSLog(@"!! ERROR: tried to handlePocketCampusURL: with URL not kind of class NSURL. Returning NO.");
         return NO;
     }
     
@@ -205,19 +205,21 @@ static MainController<MainControllerPublic>* instance = nil;
         return NO;
     }
     
+    CLSNSLog(@"-> Handling URL: %@", urlTmp.absoluteString);
+    
     NSURL* url = [urlTmp copy];
     self.pcURLToHandle = nil; //prevent handling same URL twice
     
     NSString* pluginIdentifier = [self.urlSchemeHander pluginIdentifierForPocketCampusURL:url];
     if (!pluginIdentifier) {
         [self showActionNotSupportedAlert];
-        CLSNSLog(@"!! ERROR: unkown pluginIdentifier in handlePocketCampusURL:");
+        CLSNSLog(@"    !! ERROR: cannot parse plugin identifer. Returning NO.");
         return NO;
     }
     PluginController<PluginControllerProtocol>* pluginController = [self pluginControllerForPluginIdentifier:[self validPluginIdentifierForAnycasePluginIdentifier:pluginIdentifier]];
     if (!pluginController) {
         [self showActionNotSupportedAlert];
-        CLSNSLog(@"!! ERROR: nil pluginController in handlePocketCampusURL:");
+        CLSNSLog(@"    !! ERROR: could not find plugin controller for identifier '%@'. Returning NO.", pluginIdentifier);
         return NO;
     }
     
@@ -227,28 +229,21 @@ static MainController<MainControllerPublic>* instance = nil;
         [self.revealController revealToggle:self];
     }
     
+    CLSNSLog(@"    1. Opening plugin '%@'", pluginIdentifier);
+    
     [self setActivePluginWithIdentifier:[[pluginController class] identifierName]];
     
     NSString* action = [self.urlSchemeHander actionForPocketCampusURL:url];
     NSDictionary* params = [self.urlSchemeHander parametersForPocketCampusURL:url];
     
-    if (!action || !params) {
-        [self showActionNotSupportedAlert];
-        CLSNSLog(@"!! ERROR: nil action/parameters in handlePocketCampusURL:");
-        return NO;
-    }
-    
-    CLSNSLog(@"-> Handling PocketCampus URL with action: %@, parameters: %@", action, params);
-    
-    if (![pluginController respondsToSelector:@selector(handleURLQueryAction:parameters:)]) {
-        [self showActionNotSupportedAlert];
-        CLSNSLog(@"!! ERROR: pluginController does not respond to handleURLQueryAction:parameters:. Ignoring.");
-        return NO;
-    }
-    
-    if (![pluginController handleURLQueryAction:action parameters:params]) {
-        [self showActionNotSupportedAlert];
-        return NO;
+    if ((action || params) && [pluginController respondsToSelector:@selector(handleURLQueryAction:parameters:)]) {
+        if ([pluginController handleURLQueryAction:action parameters:params]) {
+            CLSNSLog(@"    2. Plugin successfully handled action '%@' with parameters %@", action, params);
+        } else {
+            CLSNSLog(@"    !! ERROR: plugin failed to handle action '%@' with parameters %@", action, params);
+            [self showActionNotSupportedAlert];
+            return NO;
+        }
     }
     
     [[PCGAITracker sharedTracker] trackAction:@"OpenPocketCampusURL" inScreenWithName:@"/" contentInfo:[url absoluteString]];

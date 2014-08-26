@@ -106,10 +106,6 @@ static CamiproController* instance __weak = nil;
     return @"Camipro";
 }
 
-- (BOOL)handleURLQueryAction:(NSString *)action parameters:(NSDictionary *)parameters {
-    return YES; //just support for opening plugin, not special action/parameters supported
-}
-
 #pragma mark - PluginControllerAuthentified
 
 - (void)addLoginObserver:(id)observer successBlock:(VoidBlock)successBlock

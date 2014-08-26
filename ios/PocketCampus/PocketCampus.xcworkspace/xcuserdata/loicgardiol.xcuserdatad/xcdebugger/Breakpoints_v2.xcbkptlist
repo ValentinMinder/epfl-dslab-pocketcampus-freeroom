@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "430238422.971348"
+            timestampString = "430748057.188031"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1034"
-            endingLineNumber = "1034"
+            startingLineNumber = "1029"
+            endingLineNumber = "1029"
             landmarkName = "-gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1890,11 +1890,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "430238422.971348"
+            timestampString = "430748057.188031"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "713"
-            endingLineNumber = "713"
+            startingLineNumber = "708"
+            endingLineNumber = "708"
             landmarkName = "-setActivePluginWithIdentifier:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2248,27 +2248,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CamiproPlugin/Controllers/CamiproController.m"
-            timestampString = "430324589.953295"
+            timestampString = "430748089.016123"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
-            landmarkName = "-handleURLQueryAction:parameters:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Plugins/CamiproPlugin/Controllers/CamiproController.m"
-            timestampString = "430324589.953295"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
             landmarkName = "-addLoginObserver:successBlock:userCancelledBlock:failureBlock:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2280,11 +2264,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CamiproPlugin/Controllers/CamiproController.m"
-            timestampString = "430324589.953295"
+            timestampString = "430748089.016123"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
+            startingLineNumber = "133"
+            endingLineNumber = "133"
             landmarkName = "-getTequilaTokenForCamiproDidReturn:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2912,11 +2896,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "430238422.971348"
+            timestampString = "430748057.188031"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1063"
-            endingLineNumber = "1063"
+            startingLineNumber = "1058"
+            endingLineNumber = "1058"
             landmarkName = "-revealController:didRevealRearViewController:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2928,11 +2912,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "430238422.971348"
+            timestampString = "430748057.188031"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1043"
-            endingLineNumber = "1043"
+            startingLineNumber = "1038"
+            endingLineNumber = "1038"
             landmarkName = "-gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3434,11 +3418,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CamiproPlugin/Controllers/CamiproController.m"
-            timestampString = "430324589.953295"
+            timestampString = "430748089.016123"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
             landmarkName = "-authenticationSucceeded"
             landmarkType = "5">
          </BreakpointContent>
@@ -4504,8 +4488,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "228"
             endingLineNumber = "228"
-            landmarkName = "@implementation EventPoolViewController"
-            landmarkType = "3">
+            landmarkName = "-createEventPoolRequest"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -5147,11 +5131,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CamiproPlugin/Controllers/CamiproController.m"
-            timestampString = "430324589.953295"
+            timestampString = "430748089.016123"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
             landmarkName = "-getTequilaTokenForCamiproFailed"
             landmarkType = "5">
          </BreakpointContent>
@@ -5163,11 +5147,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CamiproPlugin/Controllers/CamiproController.m"
-            timestampString = "430324589.953295"
+            timestampString = "430748089.016123"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
             landmarkName = "-getSessionIdForServiceWithTequilaKey:didReturn:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5179,11 +5163,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CamiproPlugin/Controllers/CamiproController.m"
-            timestampString = "430324589.953295"
+            timestampString = "430748089.016123"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
             landmarkName = "-getSessionIdForServiceFailedForTequilaKey:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5195,11 +5179,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CamiproPlugin/Controllers/CamiproController.m"
-            timestampString = "430324589.953295"
+            timestampString = "430748089.016123"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
             landmarkName = "-serviceConnectionToServerFailed"
             landmarkType = "5">
          </BreakpointContent>
@@ -5211,11 +5195,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CamiproPlugin/Controllers/CamiproController.m"
-            timestampString = "430324589.953295"
+            timestampString = "430748089.016123"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "169"
-            endingLineNumber = "169"
+            startingLineNumber = "165"
+            endingLineNumber = "165"
             landmarkName = "-authenticationFailedWithReason:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5227,11 +5211,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CamiproPlugin/Controllers/CamiproController.m"
-            timestampString = "430324589.953295"
+            timestampString = "430748089.016123"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "127"
-            endingLineNumber = "127"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
             landmarkName = "-removeLoginObserver:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5551,6 +5535,22 @@
             startingLineNumber = "71"
             endingLineNumber = "71"
             landmarkName = "-objectForKey:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PocketCampus/Controllers/Main/MainController.m"
+            timestampString = "430746980.895258"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
+            landmarkName = "-handlePocketCampusURL:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

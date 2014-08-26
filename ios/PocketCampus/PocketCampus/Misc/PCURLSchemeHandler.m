@@ -98,10 +98,6 @@
     }
     NSMutableDictionary* params = [[PCUtils urlStringParameters:url.absoluteString] mutableCopy];
     
-    if (!params) {
-        params = [NSMutableDictionary dictionary]; //empty dictionary
-    }
-    
     return [params copy]; //non-mutable copy
 }
 
@@ -126,7 +122,6 @@
     }
     
     NSString* action = [self actionForPocketCampusURL:url];
-    
     NSDictionary* params = [self parametersForPocketCampusURL:url];
     
     return [pluginController viewControllerForURLQueryAction:action parameters:params];
