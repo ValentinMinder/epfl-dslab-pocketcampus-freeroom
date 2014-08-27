@@ -178,7 +178,7 @@
                    VerticalAlignment="Top" />
 
         <!-- Sections pivot -->
-        <phone:Pivot Title="{Binding Resources.PagesHeader, Source={StaticResource Strings}}"
+        <phone:Pivot Title="{Binding Course.Name}"
                      ItemsSource="{Binding Sections}"
                      SelectedItem="{Binding SelectedSection}"
                      ItemTemplate="{StaticResource SectionTemplate}"

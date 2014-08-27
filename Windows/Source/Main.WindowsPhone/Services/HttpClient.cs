@@ -27,7 +27,6 @@ namespace PocketCampus.Main.Services
         // The client used to perform requests; its full name is required to avoid ambiguity
         // HACK: HttpClient is thread-safe, so we use one shared instance to avoid disposal problems
         private static readonly System.Net.Http.HttpClient _client;
-        private static readonly string _userAgent;
 
 
         /// <summary>
