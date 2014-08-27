@@ -59,7 +59,7 @@ public final class ScheduleTests {
 	public void exerciseSessionWithManyRooms() {
 		StudyPeriod period = getDays("fr").get(1).getPeriods().get(0);
 
-		assertEquals(Arrays.asList("INF 2", "BC 07-08"), period.getRooms());
+		assertEquals(Arrays.asList("INF 2", "BC 07", "BC 08"), period.getRooms());
 	}
 
 	// English works, too

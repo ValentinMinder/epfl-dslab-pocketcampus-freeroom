@@ -453,8 +453,14 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 					if (!results.containsKey(p.getSciper()))
 						results.put(p.getSciper(), p);
 					else {
-						results.get(p.getSciper()).getOrganisationalUnits().addAll(p.getOrganisationalUnits());
-						results.get(p.getSciper()).getRoles().putAll(p.getRoles());
+						Person op = results.get(p.getSciper());
+						op.getOrganisationalUnits().addAll(p.getOrganisationalUnits());
+						op.getRoles().putAll(p.getRoles());
+						// TODO should make all these Lists
+						if(!op.isSetOffice())
+							op.setOffice(p.getOffice());
+						if(!op.isSetOfficePhoneNumber())
+							op.setOfficePhoneNumber(p.getOfficePhoneNumber());
 					}
 
 				}
