@@ -736,8 +736,10 @@ public class EventsServiceImpl implements EventsService.Iface {
 	}
 
 	private static void updateEventItem(EventItem ei, Connection conn) throws SQLException {
-		if(ei.isSetStartDate() && (!ei.isSetEndDate() || ei.getEndDate() < ei.getStartDate()))
+		if(ei.isSetStartDate() && !ei.isSetEndDate()) // because memento decided to drop the end date; is it any useful?
 			ei.setEndDate(ei.getStartDate());
+		if(ei.isFullDay() && ei.isSetEndDate()) // if it's a full day, add 1 day to the end date
+			ei.setEndDate(ei.getEndDate() + 24 * 3600 * 1000);
 		PreparedStatement stm = conn.prepareStatement("REPLACE INTO eventitems (eventId,startDate,endDate,fullDay,eventThumbnail,eventTitle,eventPlace,eventSpeaker,eventDetails,parentPool,eventUri,vcalUid,eventCateg,broadcastInFeeds,locationHref,detailsLink) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
 		stm.setLong(1, ei.getEventId());
 		stm.setTimestamp(2, (ei.isSetStartDate() ? new Timestamp(ei.getStartDate()) : null));
