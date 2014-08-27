@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/platform.shared"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/plugin.food.shared"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="src" path="gen"/>
@@ -10,6 +9,5 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/plugin.map.shared"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.7.0.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/universal-image-loader-1.8.0.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/platform.android"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
