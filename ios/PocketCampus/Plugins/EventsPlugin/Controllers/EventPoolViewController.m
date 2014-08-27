@@ -87,11 +87,17 @@ static NSInteger const kSegmentIndexRightNow = 1;
 
 @property (nonatomic, strong) EventItem* selectedItem;
 
-@property (nonatomic, copy) NSString* normalTitle;
+@property (nonatomic, readonly, getter=isFilterByTagActive) BOOL filterByTagActive;
 
 @property (nonatomic) BOOL pastMode;
 
 @property (nonatomic) BOOL highlightNowCells;
+
+//Following are used to keep state when switching to Right Now mode
+@property (nonatomic) int32_t prevSelectedPeriod;
+@property (nonatomic, strong) NSMutableDictionary* prevSelectedCategories;
+@property (nonatomic, strong) NSMutableDictionary* prevSelectedTags;
+@property (nonatomic) BOOL prevPastMode;
 
 @end
 
@@ -101,6 +107,8 @@ static const NSInteger kOneWeekPeriodIndex = 0;
 static const NSInteger kOneMonthPeriodIndex = 1;
 static const NSInteger kSixMonthsPeriodIndex = 2;
 static const NSInteger kOneYearPeriodIndex = 3;
+
+static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
 
 @implementation EventPoolViewController
 
@@ -115,7 +123,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
         self.eventsService = [EventsService sharedInstanceToRetain];
         self.selectedPeriod = [self.eventsService lastSelectedPoolPeriod];
         if (self.selectedPeriod == 0) {
-            self.selectedPeriod = EventsPeriods_ONE_MONTH; //default
+            self.selectedPeriod = kDefaultEventsPeriod;
         }
     }
     return self;
@@ -127,8 +135,8 @@ static const NSInteger kOneYearPeriodIndex = 3;
     if (self) {
         self.eventPool = pool;
         self.poolId = pool.poolId;
-        self.title = pool.poolTitle;
         self.poolReply = [self.eventsService getFromCacheEventPoolForRequest:[self createEventPoolRequest]];
+        [self updateTitleForCurrentParameters];
     }
     return self;
 }
@@ -138,7 +146,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
     if (self) {
         self.poolId = [eventsConstants CONTAINER_EVENT_ID];
         self.poolReply = [self.eventsService getFromCacheEventPoolForRequest:[self createEventPoolRequest]];
-        self.title = NSLocalizedStringFromTable(@"PluginName", @"EventsPlugin", nil);
+        [self updateTitleForCurrentParameters];
     }
     return self;
 }
@@ -148,9 +156,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
     if (self) {
         self.poolId = poolId;
         self.poolReply = [self.eventsService getFromCacheEventPoolForRequest:[self createEventPoolRequest]];
-        if (self.eventPool) {
-            self.title = self.eventPool.poolTitle;
-        }
+        [self updateTitleForCurrentParameters];
     }
     return self;
 }
@@ -161,7 +167,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
     return _poolId;
 }
 
-#pragma mark - View load and visibility
+#pragma mark - UIViewController overrides
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -195,7 +201,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
     
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"events" dataName:[NSString stringWithFormat:@"eventPool-%lld", self.poolId]]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
-    [self updateButtonsConditionally];
+    [self updateUI];
     [self fillCollectionsFromReplyAndSelection];
 }
 
@@ -238,42 +244,10 @@ static const NSInteger kOneYearPeriodIndex = 3;
     }
 }
 
-- (int32_t)selectedPeriod {
-    if (self.segmentedControl && self.segmentedControl.selectedSegmentIndex == kSegmentIndexRightNow) {
-        return EventsPeriods_ONE_DAY;
-    } else {
-        return _selectedPeriod;
-    }
-}
-
-- (NSMutableDictionary*)selectedCategories {
-    if (self.segmentedControl && self.segmentedControl.selectedSegmentIndex == kSegmentIndexRightNow) {
-        return [self.poolReply.categs mutableCopy];
-    } else {
-        return _selectedCategories;
-    }
-}
-
-- (NSMutableDictionary*)selectedTags {
-    if (self.segmentedControl && self.segmentedControl.selectedSegmentIndex == kSegmentIndexRightNow) {
-        return [self.poolReply.tags mutableCopy];
-    } else {
-        return _selectedTags;
-    }
-}
-
-- (BOOL)pastMode {
-    if (self.segmentedControl && self.segmentedControl.selectedSegmentIndex == kSegmentIndexRightNow) {
-        return NO;
-    } else {
-        return _pastMode;
-    }
-}
-
 #pragma mark - Refresh control
 
 - (void)refreshFromCurrentData {
-    [self updateButtonsConditionally];
+    [self updateUI];
     [self fillCollectionsFromReplyAndSelection];
     [self.tableView reloadData];
     [self reselectLastSelectedItem];
@@ -319,9 +293,114 @@ static const NSInteger kOneYearPeriodIndex = 3;
     }
 }
 
-#pragma mark - Buttons preparation and actions
+#pragma mark - Data fill and utils
 
-- (void)updateButtonsConditionally {
+/**
+ * Add categs and tags from reply into selectedCategories and selectedTags,
+ * to ensure "selected" by default behavior (if categ/tag was not available before)
+ * IMPORTANT: call this *before* updating self.poolReply
+ */
+- (void)addMissingCategsAndTagsFromReply:(EventPoolReply*)reply {
+    
+    //on purpose using self.poolReply
+    NSSet* categIdsSet = [NSSet setWithArray:self.poolReply.categs.allKeys];
+    NSSet* shortTagNamesSet = [NSSet setWithArray:self.poolReply.tags.allKeys];
+    
+    //now comparing on reply parameter
+    for (NSNumber* categId in reply.categs) {
+        if (![categIdsSet containsObject:categId]) {
+            self.selectedCategories[categId] = reply.categs[categId];
+        }
+    }
+    
+    for (NSString* shortTagName in reply.tags) {
+        if (![shortTagNamesSet containsObject:shortTagName]) {
+            self.selectedTags[shortTagName] = reply.tags[shortTagName];
+        }
+    }
+}
+
+- (void)fillCollectionsFromReplyAndSelection {
+    if (!self.poolReply) {
+        return;
+    }
+    
+    if (!self.selectedCategories) { //select all categories (available in reply) by default
+        self.selectedCategories = [self.poolReply.categs mutableCopy];
+    }
+    
+    if (!self.selectedTags) { //select all tags (available in reply) by default
+        self.selectedTags = [self.poolReply.tags mutableCopy];
+    }
+    
+    NSMutableDictionary* tmpTagsInPresentItems = [NSMutableDictionary dictionary];
+    for (EventItem* item in [self.poolReply.childrenItems allValues]) {
+        for (NSString* tagKey in item.eventTags) {
+            if (!tmpTagsInPresentItems[tagKey] && self.poolReply.tags[tagKey]) {
+                tmpTagsInPresentItems[tagKey] = self.poolReply.tags[tagKey];
+            }
+        }
+    }
+    
+    self.tagsInPresentItems = tmpTagsInPresentItems;
+    
+    //Force Favorites and Features to be always selected
+    self.selectedCategories[[EventsUtils favoriteCategory]] = self.poolReply.categs[[EventsUtils favoriteCategory]];
+    self.selectedCategories[[EventsUtils featuredCategory]] = self.poolReply.categs[[EventsUtils featuredCategory]];
+    
+    NSDictionary* itemsForCategNumber = [EventsUtils sectionsOfEventItem:[self.poolReply.childrenItems allValues] forCategories:self.selectedCategories andTags:self.selectedTags inverseSort:self.pastMode]; //if pastMode, show older events at bottom (=> inverse sort)
+    
+    
+    NSArray* sortedCategNumbers = [[itemsForCategNumber allKeys] sortedArrayUsingSelector:@selector(compare:)];
+    
+    NSMutableArray* tmpSectionsNames = [NSMutableArray arrayWithCapacity:[sortedCategNumbers count]];
+    NSMutableArray* tmpItemsForSection = [NSMutableArray arrayWithCapacity:[sortedCategNumbers count]];
+    
+    BOOL foundFavorite = NO;
+    
+    for (NSNumber* categNumber in sortedCategNumbers) {
+        if (!foundFavorite && [categNumber isEqualToNumber:[EventsUtils favoriteCategory]]) {
+            [tmpSectionsNames addObject:NSLocalizedStringFromTable(@"Favorites", @"EventsPlugin", nil)];
+            foundFavorite = YES;
+        } else {
+            [tmpSectionsNames addObject:self.poolReply.categs[categNumber]];
+        }
+        [tmpItemsForSection addObject:itemsForCategNumber[categNumber]];
+    }
+    self.sectionsNames = tmpSectionsNames;
+    self.itemsForSection = tmpItemsForSection;
+}
+
+- (BOOL)isFilterByTagActive {
+    if (!self.selectedTags) {
+        return NO;
+    }
+    NSSet* selectedTagsSet = [NSSet setWithArray:[self.selectedTags allKeys]];
+    NSSet* selectableTagsSet = [NSSet setWithArray:[self.tagsInPresentItems allKeys]];
+    BOOL filterByTagActive = !(self.poolReply.tags.count == 0 || [selectedTagsSet isEqualToSet:selectableTagsSet] || [selectableTagsSet isSubsetOfSet:selectedTagsSet]);
+    return filterByTagActive;
+}
+
+#pragma mark - UI update
+
+- (void)updateTitleForCurrentParameters {
+    if (self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
+        if (self.pastMode) {
+            self.title = NSLocalizedStringFromTable(@"PastEventsShort", @"EventsPlugin", nil);
+        } else if (self.segmentedControl && self.segmentedControl.selectedSegmentIndex == kSegmentIndexRightNow) {
+            self.title = NSLocalizedStringFromTable(@"EventsRightNow", @"EventsPlugin", nil);
+        } else {
+            self.title = NSLocalizedStringFromTable(@"PluginName", @"EventsPlugin", nil);
+        }
+    } else if (self.eventPool.poolTitle) {
+        self.title = self.eventPool.poolTitle;
+    }
+}
+
+- (void)updateUI {
+    
+    [self updateTitleForCurrentParameters];
+    
     if (!self.poolReply) {
         return;
     }
@@ -334,22 +413,32 @@ static const NSInteger kOneYearPeriodIndex = 3;
         [rightElements addObject:self.scanButton];
     }
     
-    NSSet* selectedTagsSet = [NSSet setWithArray:[_selectedTags allKeys]]; //by pass property getter (yes, this is a bit ugly)
-    NSSet* selectableTagsSet = [NSSet setWithArray:[self.tagsInPresentItems allKeys]];
-    BOOL filterActive = !(self.poolReply.tags.count == 0 || [selectedTagsSet isEqualToSet:selectableTagsSet] || [selectableTagsSet isSubsetOfSet:selectedTagsSet]);
-#warning buggy
+    BOOL filterByTagActive = self.isFilterByTagActive;
     if (!(self.segmentedControl && self.segmentedControl.selectedSegmentIndex != kSegmentIndexAll)
         && (!self.eventPool.disableFilterByCateg || !self.eventPool.disableFilterByTags)) { //will also disable period filtering
         
-        NSString* filterButtonImageName = filterActive ? @"FilterBarButtonSelected" : @"FilterBarButton";
+        NSString* filterButtonImageName = filterByTagActive || self.pastMode ? @"FilterBarButtonSelected" : @"FilterBarButton";
         
         self.filterButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:filterButtonImageName] style:UIBarButtonItemStylePlain target:self action:@selector(filterButtonPressed)];
         self.filterButton.accessibilityLabel = NSLocalizedStringFromTable(@"PresentationOptions", @"EventsPlugin", nil);
         [rightElements addObject:self.filterButton];
     }
     
-    if (self.segmentedControl) {
-        NSString* segmentAllTitle = filterActive ? NSLocalizedStringFromTable(@"All(FilterActive)", @"EventsPlugin", nil) : NSLocalizedStringFromTable(@"All", @"PocketCampus", nil);
+    if (self.segmentedControl && self.segmentedControl.selectedSegmentIndex == kSegmentIndexAll) {
+        
+        NSString* periodString = [EventsUtils periodStringForEventsPeriod:self.selectedPeriod selected:NO];
+        
+        NSString* segmentAllTitle = nil;
+        if (self.pastMode && filterByTagActive) {
+            segmentAllTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodWithFormat(Past,FilteredByTag)", @"EventsPlugin", nil), periodString];
+        } else if (self.pastMode) {
+            segmentAllTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodWithFormat(Past)", @"EventsPlugin", nil), periodString];
+        } else if (filterByTagActive) {
+            segmentAllTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodWithFormat(FilteredByTag)", @"EventsPlugin", nil), periodString];
+        } else {
+            segmentAllTitle = periodString;
+        }
+        
         [self.segmentedControl setTitle:segmentAllTitle forSegmentAtIndex:kSegmentIndexAll];
     }
     
@@ -363,6 +452,8 @@ static const NSInteger kOneYearPeriodIndex = 3;
     
     self.navigationItem.rightBarButtonItems = rightElements;
 }
+
+#pragma mark - Actions
 
 - (void)actionButtonPressed {
     if (!self.eventPool) {
@@ -416,12 +507,22 @@ static const NSInteger kOneYearPeriodIndex = 3;
             [buttonTitles addObject:periodString];
         }
         
+        BOOL showResetFilterButton = self.isFilterByTagActive || self.pastMode;
+        
+        if (showResetFilterButton) {
+            [buttonTitles addObject:NSLocalizedStringFromTable(@"ResetFilter", @"EventsPlugin", nil)];
+        }
+        
         [buttonTitles addObject:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil)];
         
         self.filterSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
         
         for (NSString* title in buttonTitles) {
             [self.filterSelectionActionSheet addButtonWithTitle:title];
+        }
+        
+        if (showResetFilterButton) {
+            self.filterSelectionActionSheet.destructiveButtonIndex = self.filterSelectionActionSheet.numberOfButtons-2;
         }
         
         self.filterSelectionActionSheet.cancelButtonIndex = self.filterSelectionActionSheet.numberOfButtons-1;
@@ -474,6 +575,14 @@ static const NSInteger kOneYearPeriodIndex = 3;
         return 2;
     }
     return 3;
+}
+
+- (NSInteger)resetFilterButtonIndex {
+    NSInteger periodButtonIndex = [self periodButtonIndex];
+    if (periodButtonIndex >= 0 && (self.isFilterByTagActive || self.pastMode)) {
+        return periodButtonIndex + 1;
+    }
+    return -1;
 }
 
 - (void)cameraButtonPressed {
@@ -631,11 +740,34 @@ static const NSInteger kOneYearPeriodIndex = 3;
 }
 
 - (void)segmentedControlValueChanged {
-    if (!self.normalTitle) {
-        self.normalTitle = self.title;
+    switch (self.segmentedControl.selectedSegmentIndex) {
+        case kSegmentIndexAll:
+            [self trackAction:@"SwitchBackToAllEvents"];
+            self.selectedCategories = self.prevSelectedCategories ?: self.selectedCategories;
+            self.selectedTags = self.prevSelectedTags ?: self.selectedTags;
+            self.pastMode = self.prevPastMode;
+            self.selectedPeriod = self.prevSelectedPeriod != 0 ? self.prevSelectedPeriod : [self.eventsService lastSelectedPoolPeriod];
+            break;
+        case kSegmentIndexRightNow:
+            [self trackAction:@"SwitchToHapenningNowEvents"];
+            //Saving filter state for All tab
+            self.prevSelectedCategories = self.selectedCategories;
+            self.prevSelectedTags = self.selectedTags;
+            self.prevPastMode = self.pastMode;
+            self.prevSelectedPeriod = self.selectedPeriod;
+            
+            //Now setting filter for Right Now tab
+            self.selectedCategories = nil;
+            self.selectedTags = nil;
+            self.pastMode = NO;
+#warning Temporary, need to use hours
+            self.selectedPeriod = EventsPeriods_ONE_DAY;
+        default:
+            break;
     }
-    self.title = (self.segmentedControl.selectedSegmentIndex == kSegmentIndexRightNow) ? NSLocalizedStringFromTable(@"EventsRightNow", @"EventsPlugin", nil) : self.normalTitle;
-    [self updateButtonsConditionally];
+    self.itemsForSection = @[];
+    [self.tableView reloadData];
+    [self updateUI];
     [self refresh];
 }
 
@@ -673,16 +805,19 @@ static const NSInteger kOneYearPeriodIndex = 3;
             if (self.pastMode) {
                 [self trackAction:@"SwitchBackToUpcomingEvents"];
                 self.pastMode = NO;
-                self.title = self.normalTitle;
             } else {
                 [self trackAction:@"SwitchToPastEvents"];
                 self.pastMode = YES;
-                self.normalTitle = self.title;
-                self.title = NSLocalizedStringFromTable(@"PastEventsShort", @"EventsPlugin", nil);
             }
             [self refresh];
         } else if (buttonIndex == [self periodButtonIndex]) {
             [self presentPeriodSelectionActionSheet];
+        } else if (buttonIndex == [self resetFilterButtonIndex]) {
+            [self trackAction:@"ResetFilter"];
+            self.selectedCategories = nil;
+            self.selectedTags = nil;
+            self.pastMode = NO;
+            [self refresh];
         } else {
             //ignore
         }
@@ -712,84 +847,6 @@ static const NSInteger kOneYearPeriodIndex = 3;
     }
 }
 
-#pragma mark - Data fill
-
-/**
- * Add categs and tags from reply into selectedCategories and selectedTags,
- * to ensure "selected" by default behavior (if categ/tag was not available before)
- * IMPORTANT: call this *before* updating self.poolReply
- */
-- (void)addMissingCategsAndTagsFromReply:(EventPoolReply*)reply {
-    
-    //on purpose using self.poolReply
-    NSSet* categIdsSet = [NSSet setWithArray:self.poolReply.categs.allKeys];
-    NSSet* shortTagNamesSet = [NSSet setWithArray:self.poolReply.tags.allKeys];
-    
-    //now comparing on reply parameter
-    for (NSNumber* categId in reply.categs) {
-        if (![categIdsSet containsObject:categId]) {
-            self.selectedCategories[categId] = reply.categs[categId];
-        }
-    }
-    
-    for (NSString* shortTagName in reply.tags) {
-        if (![shortTagNamesSet containsObject:shortTagName]) {
-            self.selectedTags[shortTagName] = reply.tags[shortTagName];
-        }
-    }
-}
-
-- (void)fillCollectionsFromReplyAndSelection {
-    if (!self.poolReply) {
-        return;
-    }
-    
-    if (!self.selectedCategories) { //select all categories (available in reply) by default
-        self.selectedCategories = [self.poolReply.categs mutableCopy];
-    }
-    
-    if (!self.selectedTags) { //select all tags (available in reply) by default
-        self.selectedTags = [self.poolReply.tags mutableCopy];
-    }
-    
-    NSMutableDictionary* tmpTagsInPresentItems = [NSMutableDictionary dictionary];
-    for (EventItem* item in [self.poolReply.childrenItems allValues]) {
-        for (NSString* tagKey in item.eventTags) {
-            if (!tmpTagsInPresentItems[tagKey] && self.poolReply.tags[tagKey]) {
-                tmpTagsInPresentItems[tagKey] = self.poolReply.tags[tagKey];
-            }
-        }
-    }
-    
-    self.tagsInPresentItems = tmpTagsInPresentItems;
-    
-    //Force Favorites and Features to be always selected
-    self.selectedCategories[[EventsUtils favoriteCategory]] = self.poolReply.categs[[EventsUtils favoriteCategory]];
-    self.selectedCategories[[EventsUtils featuredCategory]] = self.poolReply.categs[[EventsUtils featuredCategory]];
-    
-    NSDictionary* itemsForCategNumber = [EventsUtils sectionsOfEventItem:[self.poolReply.childrenItems allValues] forCategories:self.selectedCategories andTags:self.selectedTags inverseSort:self.pastMode]; //if pastMode, show older events at bottom (=> inverse sort)
-    
-    
-    NSArray* sortedCategNumbers = [[itemsForCategNumber allKeys] sortedArrayUsingSelector:@selector(compare:)];
-    
-    NSMutableArray* tmpSectionsNames = [NSMutableArray arrayWithCapacity:[sortedCategNumbers count]];
-    NSMutableArray* tmpItemsForSection = [NSMutableArray arrayWithCapacity:[sortedCategNumbers count]];
-    
-    BOOL foundFavorite = NO;
-    
-    for (NSNumber* categNumber in sortedCategNumbers) {
-        if (!foundFavorite && [categNumber isEqualToNumber:[EventsUtils favoriteCategory]]) {
-            [tmpSectionsNames addObject:NSLocalizedStringFromTable(@"Favorites", @"EventsPlugin", nil)];
-            foundFavorite = YES;
-        } else {
-            [tmpSectionsNames addObject:self.poolReply.categs[categNumber]];
-        }
-        [tmpItemsForSection addObject:itemsForCategNumber[categNumber]];
-    }
-    self.sectionsNames = tmpSectionsNames;
-    self.itemsForSection = tmpItemsForSection;
-}
-
 #pragma mark - EventsServiceDelegate
 
 - (void)getEventPoolForRequest:(EventPoolRequest *)request didReturn:(EventPoolReply *)reply {
@@ -797,10 +854,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
         case 200:
             [self addMissingCategsAndTagsFromReply:reply];
             self.poolReply = reply;
-            if (self.eventPool.poolTitle) {
-                self.title = self.eventPool.poolTitle;
-            }
-            [self updateButtonsConditionally];
+            [self updateUI];
             [self fillCollectionsFromReplyAndSelection];
             [self.tableView reloadData];
             [self reselectLastSelectedItem];
@@ -929,7 +983,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
     return [self.itemsForSection count];
 }
 
-#pragma mark - dealloc
+#pragma mark - Dealloc
 
 - (void)dealloc {
     [self.eventsService cancelOperationsForDelegate:self];
