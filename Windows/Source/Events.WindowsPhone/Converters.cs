@@ -39,12 +39,19 @@ namespace PocketCampus.Events
                 return startDate.ToString( dateFormat );
             }
 
-            if ( value.EndDate == null || startDate == value.EndDate.Value || value.EndDate.Value.TimeOfDay == Midnight )
+            if ( value.EndDate == null || startDate == value.EndDate.Value )
             {
                 return string.Format( PluginResources.SingleDateTimeFormat, startDate.ToString( dateFormat ), startDate.ToShortTimeString() );
             }
 
             var endDate = value.EndDate.Value;
+
+            if ( endDate.TimeOfDay == Midnight )
+            {
+                // need to subtract 1 day for reasons I don't really understand
+                return string.Format( PluginResources.DifferentDateFormat, startDate.ToString( dateFormat ), startDate.ToShortTimeString(),
+                      endDate.ToString( dateFormat ), endDate.AddDays( -1 ).ToShortTimeString() );
+            }
 
             if ( startDate.Date == endDate.Date )
             {
