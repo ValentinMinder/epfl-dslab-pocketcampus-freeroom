@@ -5,13 +5,15 @@
 namespace PocketCampus.Events
 {
     /// <summary>
-    /// The available search periods for events.
+    /// The available search periods for events, in hours.
     /// </summary>
-    /// <remarks>
-    /// * 24 since the period is in hours.
-    /// </remarks>
     public enum SearchPeriod
     {
+        /// <summary>
+        /// Right now (4 hours).
+        /// </summary>
+        Now = 4,
+
         /// <summary>
         /// One day.
         /// </summary>

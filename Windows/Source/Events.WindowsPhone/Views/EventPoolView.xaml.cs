@@ -19,6 +19,9 @@ namespace PocketCampus.Events.Views
     {
         public EventPoolView()
         {
+            ApplicationBar = new ApplicationBar();
+            ApplicationBar.IsVisible = false;
+
             Loaded += This_Loaded;
             InitializeComponent();
         }
@@ -43,28 +46,38 @@ namespace PocketCampus.Events.Views
                     buttons.Add( button );
                 }
 
-                // Filter categories
-                if ( vm.FilterByCategoryCommand.CanExecute() )
+                // "Right now"
+                if ( vm.Pool.Id == EventPool.RootId )
                 {
                     var button = new ApplicationBarIconButton
                     {
-                        IconUri = new Uri( "/Assets/Filter.png", UriKind.Relative ),
+                        IconUri = new Uri( "/Assets/Now.png", UriKind.Relative ),
+                        Text = PluginResources.CurrentEventsButton
+                    };
+                    button.Click += ( _, __ ) => vm.ShowCurrentEventsCommand.Execute();
+                    buttons.Add( button );
+                }
+
+                // Filter categories
+                if ( vm.FilterByCategoryCommand.CanExecute() )
+                {
+                    var item = new ApplicationBarMenuItem
+                    {
                         Text = PluginResources.FilterCategoriesButton
                     };
-                    button.Click += ( _, __ ) => vm.FilterByCategoryCommand.Execute();
-                    buttons.Add( button );
+                    item.Click += ( _, __ ) => vm.FilterByCategoryCommand.Execute();
+                    items.Add( item );
                 }
 
                 // Filter tags
                 if ( vm.FilterByTagCommand.CanExecute() )
                 {
-                    var button = new ApplicationBarIconButton
+                    var item = new ApplicationBarMenuItem
                     {
-                        IconUri = new Uri( "/Assets/Tags.png", UriKind.Relative ),
                         Text = PluginResources.FilterTagsButton
                     };
-                    button.Click += ( _, __ ) => vm.FilterByTagCommand.Execute();
-                    buttons.Add( button );
+                    item.Click += ( _, __ ) => vm.FilterByTagCommand.Execute();
+                    items.Add( item );
                 }
 
                 // Scan code
@@ -90,28 +103,28 @@ namespace PocketCampus.Events.Views
                     items.Add( item );
                 }
 
+                ApplicationBar.Buttons.Clear();
+                ApplicationBar.MenuItems.Clear();
+
                 if ( buttons.Count + items.Count == 0 )
                 {
-                    ApplicationBar = null;
+                    ApplicationBar.IsVisible = false;
                 }
                 else
                 {
-                    var bar = new ApplicationBar();
-
                     foreach ( var button in buttons )
                     {
-                        bar.Buttons.Add( button );
+                        ApplicationBar.Buttons.Add( button );
                     }
 
                     foreach ( var item in items )
                     {
-                        bar.MenuItems.Add( item );
+                        ApplicationBar.MenuItems.Add( item );
                     }
 
-                    bar.Mode = buttons.Count == 0 ? ApplicationBarMode.Minimized : ApplicationBarMode.Default;
-                    bar.MatchOverriddenTheme();
-
-                    ApplicationBar = bar;
+                    ApplicationBar.Mode = buttons.Count == 0 ? ApplicationBarMode.Minimized : ApplicationBarMode.Default;
+                    ApplicationBar.MatchOverriddenTheme();
+                    ApplicationBar.IsVisible = true;
                 }
             } );
         }

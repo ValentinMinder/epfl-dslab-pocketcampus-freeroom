@@ -92,6 +92,15 @@ namespace PocketCampus.Events.ViewModels
         }
 
         /// <summary>
+        /// Gets the command executed to show current events only.
+        /// </summary>
+        [LogId( "RightNow" )]
+        public Command ShowCurrentEventsCommand
+        {
+            get { return this.GetCommand( ShowCurrentEvents ); }
+        }
+
+        /// <summary>
         /// Gets the command executed to show the category filters.
         /// </summary>
         [LogId( "ShowCategories" )]
@@ -224,6 +233,13 @@ namespace PocketCampus.Events.ViewModels
             ItemGroups = groups.ToArray();
 
             return true;
+        }
+
+        private void ShowCurrentEvents()
+        {
+            _settings.SearchPeriod = SearchPeriod.Now;
+            _settings.SearchInPast = false;
+            RefreshAsync( true, CurrentCancellationToken );
         }
 
 
