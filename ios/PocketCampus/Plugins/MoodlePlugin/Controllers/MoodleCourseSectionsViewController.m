@@ -506,22 +506,22 @@ static int i = 0;
         return YES;
     } else {
         //perform search in background
-        typeof(self) weakSelf __weak = self;
+        typeof(self) welf __weak = self;
         self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:self.searchFilteredSections.count ? 0.2 : 0.0 block:^{ //interval: so that first search is not delayed (would display "No results" otherwise)
-            [weakSelf.searchQueue addOperationWithBlock:^{
-                if (!weakSelf) {
+            [welf.searchQueue addOperationWithBlock:^{
+                if (!welf) {
                     return;
                 }
-                __strong __typeof(weakSelf) strongSelf = weakSelf;
+                __strong __typeof(welf) strongSelf = welf;
                 NSArray* filteredSections = [strongSelf filteredSectionsFromPattern:searchString]; //heavy-computation line
-                if (!weakSelf) {
+                if (!welf) {
                     return;
                 }
                 NSRegularExpression* currentSearchRegex = [NSRegularExpression regularExpressionWithPattern:searchString options:NSRegularExpressionCaseInsensitive error:NULL];
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    weakSelf.searchFilteredSections = filteredSections;
-                    weakSelf.currentSearchRegex = currentSearchRegex;
-                    [weakSelf.searchController.searchResultsTableView reloadData];
+                    welf.searchFilteredSections = filteredSections;
+                    welf.currentSearchRegex = currentSearchRegex;
+                    [welf.searchController.searchResultsTableView reloadData];
                 }];
             }];
         } repeats:NO];

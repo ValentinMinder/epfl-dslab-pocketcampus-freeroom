@@ -43,6 +43,8 @@
 
 #import "PCURLSchemeHandler.h"
 
+#import "PCWebViewController.h"
+
 @interface EventItemViewController ()<EventsServiceDelegate, UIWebViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic) int64_t eventId;
@@ -318,7 +320,8 @@
         if (viewController) {
             [self.navigationController pushViewController:viewController animated:YES];
         } else {
-            [[UIApplication sharedApplication] openURL:request.URL];
+            PCWebViewController* webViewController = [[PCWebViewController alloc] initWithURL:request.URL title:nil];
+            [self.navigationController pushViewController:webViewController animated:YES];
         }
         return NO;
     }

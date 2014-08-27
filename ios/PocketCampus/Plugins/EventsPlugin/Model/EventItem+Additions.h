@@ -42,30 +42,32 @@
 - (BOOL)isEqualToEventItem:(EventItem*)eventItem;
 - (NSUInteger)hash;
 
-/*
+/**
  * Compares on endDate if exists, then startDate if exists, then title
  * Date comparison is asending
  */
 - (NSComparisonResult)compare:(EventItem*)object;
 
-/*
- * Returns inversed result of compare:
+/**
+ * @return inversed result of compare:
  */
 - (NSComparisonResult)inverseCompare:(EventItem*)object;
 
-/*
+/**
  * Nil if startDate is 0
  */
 @property (nonatomic, readonly) NSString* shortDateString;
 
-/*
+/**
  * Nil if startDate is 0
  */
 @property (nonatomic, readonly) NSString* dateString;
 
-/*
- * Returns YES if now is in range [startDate, endDate], NO otherwise
+/**
+ * @return YES if now is in range [startDate, endDate], NO otherwise
  */
-- (BOOL)isNow;
+@property (nonatomic, readonly) BOOL isNow;
+
+@property (nonatomic, readonly) int64_t realEndDate;
 
 @end

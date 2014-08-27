@@ -56,7 +56,23 @@
 static NSInteger const kSegmentIndexAll = 0;
 static NSInteger const kSegmentIndexRightNow = 1;
 
-@interface EventPoolViewController ()<UIActionSheetDelegate, EventsServiceDelegate>
+static const NSTimeInterval kRefreshValiditySeconds = 1800; //30 min
+
+static const NSInteger kOneWeekPeriodIndex = 0;
+static const NSInteger kOneMonthPeriodIndex = 1;
+static const NSInteger kSixMonthsPeriodIndex = 2;
+static const NSInteger kOneYearPeriodIndex = 3;
+
+static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
+
+static NSInteger const kRightNowEventsPeriodProxyValue = -5; //set self.selectedPeriod to this value to indicate that you want events right now (translated by createEventPoolRequest)
+
+static NSInteger const kRightNowEventsPeriod = 1;
+
+static const UISearchBarStyle kSearchBarDefaultStyle = UISearchBarStyleDefault;
+static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
+
+@interface EventPoolViewController ()<UIActionSheetDelegate, UISearchDisplayDelegate, EventsServiceDelegate>
 
 @property (nonatomic, readwrite) int64_t poolId;
 @property (nonatomic, strong) EventPool* eventPool;
@@ -73,8 +89,13 @@ static NSInteger const kSegmentIndexRightNow = 1;
 @property (nonatomic, strong) NSDictionary* tagsInPresentItems; //tags that are present in items of poolReply. key = tag short name, value = tag full name
 
 @property (nonatomic, strong) NSArray* itemsForSection; //array of arrays of EventItem
+@property (nonatomic, strong) NSArray* searchFilteredItemsForSection; //for search
 
+@property (nonatomic, strong) UISearchDisplayController* searchController;
 @property (nonatomic, strong) UISearchBar* searchBar;
+@property (nonatomic, strong) NSOperationQueue* searchQueue;
+@property (nonatomic, strong) NSTimer* typingTimer;
+@property (nonatomic, strong) NSRegularExpression* currentSearchRegex;
 
 @property (nonatomic, strong) UIActionSheet* filterSelectionActionSheet;
 @property (nonatomic, strong) UIActionSheet* periodsSelectionActionSheet;
@@ -100,15 +121,6 @@ static NSInteger const kSegmentIndexRightNow = 1;
 @property (nonatomic) BOOL prevPastMode;
 
 @end
-
-static const NSTimeInterval kRefreshValiditySeconds = 1800; //30 min
-
-static const NSInteger kOneWeekPeriodIndex = 0;
-static const NSInteger kOneMonthPeriodIndex = 1;
-static const NSInteger kSixMonthsPeriodIndex = 2;
-static const NSInteger kOneYearPeriodIndex = 3;
-
-static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
 
 @implementation EventPoolViewController
 
@@ -178,9 +190,11 @@ static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
         return [image imageByScalingAndCroppingForSize:[EventItemCell preferredImageSize] applyDeviceScreenMultiplyingFactor:YES];
     };
     tableViewAdditions.reprocessesImagesWhenContentSizeCategoryChanges = YES;
-    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+
+    RowHeightBlock rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
         return [EventItemCell preferredHeight];
     };
+    tableViewAdditions.rowHeightBlock = rowHeightBlock;
     
     if (self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
         //show [All | Right Now] toggle only in root pool
@@ -199,6 +213,23 @@ static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
         self.toolbarItems = @[flexibleSpaceLeft, segmentedControlBarItem, flexibleSpaceRight];
     }
     
+    self.searchQueue = [NSOperationQueue new];
+    self.searchQueue.maxConcurrentOperationCount = 1;
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 1.0)];
+    [self.searchBar sizeToFit];
+    self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    //self.searchBar.placeholder = NSLocalizedStringFromTable(@"Search", @"PocketCampus", nil);
+    self.searchBar.searchBarStyle = kSearchBarDefaultStyle;
+    
+    self.tableView.tableHeaderView = self.searchBar;
+    
+    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+    self.searchController.searchResultsDelegate = self;
+    self.searchController.searchResultsDataSource = self;
+    self.searchController.delegate = self;
+    self.searchController.searchResultsTableView.rowHeight = rowHeightBlock(tableViewAdditions);
+    self.searchController.searchResultsTableView.allowsMultipleSelection = NO;
+    
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"events" dataName:[NSString stringWithFormat:@"eventPool-%lld", self.poolId]]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     [self updateUI];
@@ -207,7 +238,9 @@ static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:(self.poolId != [eventsConstants CONTAINER_EVENT_ID]) animated:animated];
+    if (!self.searchController.isActive) {
+        [self.navigationController setToolbarHidden:(self.poolId != [eventsConstants CONTAINER_EVENT_ID]) animated:animated];
+    }
     [self trackScreen];
     if (!self.poolReply || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds] || self.eventPool.sendStarredItems) { //if sendStarredItems then list can change anytime and should be refreshed
         [self refresh];
@@ -264,7 +297,16 @@ static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
     if (self.eventPool.sendStarredItems) {
         starredItems = [self.eventsService allFavoriteEventItemIds];
     }
-    return [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:nil userTickets:[self.eventsService allUserTickets] starredEventItems:starredItems lang:[PCUtils userLanguageCode] period:self.selectedPeriod fetchPast:self.pastMode];
+    
+    EventPoolRequest* poolRequest = [EventPoolRequest new];
+    poolRequest.eventPoolId = self.poolId;
+    poolRequest.userTickets = [self.eventsService allUserTickets];
+    poolRequest.starredEventItems = starredItems;
+    poolRequest.lang = [PCUtils userLanguageCode];
+    poolRequest.periodInHours = self.selectedPeriod == kRightNowEventsPeriodProxyValue ? kRightNowEventsPeriod : self.selectedPeriod * 24;
+    poolRequest.fetchPast = self.pastMode;
+    
+    return poolRequest;
 }
 
 - (void)startGetEventPoolRequest {
@@ -379,6 +421,32 @@ static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
     NSSet* selectableTagsSet = [NSSet setWithArray:[self.tagsInPresentItems allKeys]];
     BOOL filterByTagActive = !(self.poolReply.tags.count == 0 || [selectedTagsSet isEqualToSet:selectableTagsSet] || [selectableTagsSet isSubsetOfSet:selectedTagsSet]);
     return filterByTagActive;
+}
+
+- (NSArray*)searchFilteredItemsForSectionFromPattern:(NSString*)pattern {
+    static NSUInteger const options = NSDiacriticInsensitiveSearch | NSCaseInsensitiveSearch;
+    NSPredicate* predicate = [NSPredicate predicateWithBlock:^BOOL(EventItem* eventItem, NSDictionary *bindings) {
+        if (eventItem.eventTitle && [eventItem.eventTitle rangeOfString:pattern options:options].location != NSNotFound) {
+            return YES;
+        }
+        if (eventItem.eventPlace && [eventItem.eventPlace rangeOfString:pattern options:options].location != NSNotFound) {
+            return YES;
+        }
+        if (eventItem.eventSpeaker && [eventItem.eventSpeaker rangeOfString:pattern options:options].location != NSNotFound) {
+            return YES;
+        }
+        if (eventItem.eventDetails && [eventItem.eventDetails rangeOfString:pattern options:options].location != NSNotFound) {
+            return YES;
+        }
+        return NO;
+    }];
+    
+    NSMutableArray* searchFilteredItemsForSection = [NSMutableArray arrayWithCapacity:self.itemsForSection.count];
+    for (NSArray* items in self.itemsForSection) {
+        NSArray* filteredItems = [items filteredArrayUsingPredicate:predicate];
+        [searchFilteredItemsForSection addObject:filteredItems];
+    }
+    return searchFilteredItemsForSection;
 }
 
 #pragma mark - UI update
@@ -743,6 +811,7 @@ static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
     switch (self.segmentedControl.selectedSegmentIndex) {
         case kSegmentIndexAll:
             [self trackAction:@"SwitchBackToAllEvents"];
+            self.tableView.tableHeaderView = self.searchBar;
             self.selectedCategories = self.prevSelectedCategories ?: self.selectedCategories;
             self.selectedTags = self.prevSelectedTags ?: self.selectedTags;
             self.pastMode = self.prevPastMode;
@@ -750,6 +819,7 @@ static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
             break;
         case kSegmentIndexRightNow:
             [self trackAction:@"SwitchToHapenningNowEvents"];
+            self.tableView.tableHeaderView = nil;
             //Saving filter state for All tab
             self.prevSelectedCategories = self.selectedCategories;
             self.prevSelectedTags = self.selectedTags;
@@ -760,8 +830,7 @@ static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
             self.selectedCategories = nil;
             self.selectedTags = nil;
             self.pastMode = NO;
-#warning Temporary, need to use hours
-            self.selectedPeriod = EventsPeriods_ONE_DAY;
+            self.selectedPeriod = kRightNowEventsPeriodProxyValue;
         default:
             break;
     }
@@ -847,6 +916,66 @@ static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
     }
 }
 
+#pragma mark - UISearchDisplayDelegate
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+    [self.typingTimer invalidate];
+    [self.searchQueue cancelAllOperations];
+    if (searchString.length == 0) {
+        self.searchFilteredItemsForSection = nil;
+        self.currentSearchRegex = nil;
+        return YES;
+    } else {
+        //perform search in background
+        typeof(self) welf __weak = self;
+        self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:self.searchFilteredItemsForSection.count ? 0.2 : 0.0 block:^{ //interval: so that first search is not delayed (would display "No results" otherwise)
+            [welf.searchQueue addOperationWithBlock:^{
+                if (!welf) {
+                    return;
+                }
+                __strong __typeof(welf) strongSelf = welf;
+                NSArray* filteredSections = [strongSelf searchFilteredItemsForSectionFromPattern:searchString]; //heavy-computation line
+                if (!welf) {
+                    return;
+                }
+                NSRegularExpression* currentSearchRegex = [NSRegularExpression regularExpressionWithPattern:searchString options:NSRegularExpressionCaseInsensitive error:NULL];
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    welf.searchFilteredItemsForSection = filteredSections;
+                    welf.currentSearchRegex = currentSearchRegex;
+                    [welf.searchController.searchResultsTableView reloadData];
+                }];
+            }];
+        } repeats:NO];
+        self.typingTimer.tolerance = 0.05;
+        return NO;
+    }
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
+    [self.typingTimer invalidate];
+    [self.searchQueue cancelAllOperations];
+    //[self fillCellForMoodleResource];
+    [self.tableView reloadData];
+}
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
+    [self trackAction:PCGAITrackerActionSearch];
+    if ([PCUtils isIdiomPad]) {
+        self.searchBar.searchBarStyle = kSearchBarActiveStyle;
+    }
+    [self.navigationController setToolbarHidden:YES animated:YES];
+    [self.eventsService cancelOperationsForDelegate:self];
+    [self.lgRefreshControl endRefreshing];
+}
+
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+    if ([PCUtils isIdiomPad]) {
+        self.searchBar.searchBarStyle = kSearchBarDefaultStyle;
+    }
+    [self.navigationController setToolbarHidden:NO animated:YES];
+}
+
+
 #pragma mark - EventsServiceDelegate
 
 - (void)getEventPoolForRequest:(EventPoolRequest *)request didReturn:(EventPoolReply *)reply {
@@ -887,15 +1016,28 @@ static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if ([self.itemsForSection count] == 0 || [(NSArray*)(self.itemsForSection[section]) count] == 0) {
-        return 0.0;
+    if (tableView == self.tableView) {
+        if ([self.itemsForSection count] == 0 || [(NSArray*)(self.itemsForSection[section]) count] == 0) {
+            return 0.0;
+        }
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        if ([self.searchFilteredItemsForSection count] == 0 || [(NSArray*)(self.searchFilteredItemsForSection[section]) count] == 0) {
+            return 0.0;
+        }
     }
+    
     return [PCTableViewSectionHeader preferredHeight];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if ([(NSArray*)(self.itemsForSection[section]) count] == 0) {
-        return nil;
+    if (tableView == self.tableView) {
+        if ([(NSArray*)(self.itemsForSection[section]) count] == 0) {
+            return nil;
+        }
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        if ([(NSArray*)(self.searchFilteredItemsForSection[section]) count] == 0) {
+            return nil;
+        }
     }
     
     NSString* title = self.sectionsNames[section];
@@ -903,10 +1045,20 @@ static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (!self.itemsForSection.count) {
-        return;
+    
+    EventItem* eventItem = nil;
+    if (tableView == self.tableView) {
+        if (!self.itemsForSection.count) {
+            return;
+        }
+        eventItem = self.itemsForSection[indexPath.section][indexPath.row];
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        if (!self.searchFilteredItemsForSection.count) {
+            return;
+        }
+        eventItem = self.searchFilteredItemsForSection[indexPath.section][indexPath.row];
+        [self.searchController.searchBar resignFirstResponder];
     }
-    EventItem* eventItem = self.itemsForSection[indexPath.section][indexPath.row];
     
     EventItemViewController* eventItemViewController = [[EventItemViewController alloc] initWithEventItem:eventItem];
     
@@ -924,9 +1076,8 @@ static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
 
 #pragma mark - UITableViewDataSource
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (self.poolReply && [self.poolReply.childrenItems count] == 0) {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (tableView == self.tableView && self.poolReply && [self.poolReply.childrenItems count] == 0) {
         if (indexPath.row == 1) {
             NSString* message = self.eventPool.noResultText;
             if (!message) {
@@ -939,8 +1090,22 @@ static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
             return cell;
         }
     }
-    NSString* const identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"EventCell"];
-    EventItem* eventItem = self.itemsForSection[indexPath.section][indexPath.row];
+    
+    if (tableView == self.searchController.searchResultsTableView) {
+        //UISearchDisplayController takes care itself to show a "No result" message when
+        //filteredSections is empty
+    }
+    
+    static NSString* const kIdentifierName = @"EventCell";
+    NSString* identifier = nil;
+    EventItem* eventItem = nil;
+    if (tableView == self.tableView) {
+        identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:kIdentifierName];
+        eventItem = self.itemsForSection[indexPath.section][indexPath.row];
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        identifier = kIdentifierName;
+        eventItem = self.searchFilteredItemsForSection[indexPath.section][indexPath.row];
+    }
     EventItemCell *cell = (EventItemCell*)[tableView dequeueReusableCellWithIdentifier:identifier];
     
     if (!cell) {
@@ -961,26 +1126,37 @@ static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
 }
 
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    if ([self.poolReply.childrenItems count] == 0 && self.eventPool.noResultText) {
-        return 2; //first empty cell, second cell says no content
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (tableView == self.tableView) {
+        if ([self.poolReply.childrenItems count] == 0 && self.eventPool.noResultText) {
+            return 2; //first empty cell, second cell says no content
+        }
+        return [(NSArray*)(self.itemsForSection[section]) count];
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        if (!self.searchFilteredItemsForSection) {
+            return 0;
+        }
+        NSArray* items = self.searchFilteredItemsForSection[section];
+        return items.count;
     }
-    return [(NSArray*)(self.itemsForSection[section]) count];
+    return 0;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    if (!self.poolReply) {
-        return 0;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (tableView == self.tableView) {
+        if (!self.poolReply) {
+            return 0;
+        }
+        
+        if ([self.poolReply.childrenItems count] == 0 && self.eventPool.noResultText) {
+            return 1;
+        }
+        return [self.itemsForSection count];
     }
-    
-    if ([self.poolReply.childrenItems count] == 0 && self.eventPool.noResultText) {
-        return 1;
+    if (tableView == self.searchController.searchResultsTableView) {
+        return self.searchFilteredItemsForSection.count;
     }
-    return [self.itemsForSection count];
+    return 0;
 }
 
 #pragma mark - Dealloc
