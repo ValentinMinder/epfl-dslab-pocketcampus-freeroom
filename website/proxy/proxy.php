@@ -25,7 +25,7 @@ $opts = array('http' =>
         'method'             => $_SERVER["REQUEST_METHOD"],
         'header'             => $headers,
         'ignore_errors'      => true,
-        'follow_location'    => 0,
+        'follow_location'    => (empty($FOLLOW_REDIRECTS) ? 0 : 1),
         'max_redirects'      => 1,
         'protocol_version'   => 1.1,
         'content'            => file_get_contents('php://input')
