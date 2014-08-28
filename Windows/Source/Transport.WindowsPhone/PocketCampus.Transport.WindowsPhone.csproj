@@ -90,7 +90,7 @@
       <DependentUpon>BiStateExpander.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters.cs" />
-    <Compile Include="PluginSettings.cs" />
+    <Compile Include="Services\PluginSettings.cs" />
     <Compile Include="Resources\PluginResources.fr.Designer.cs">
       <DependentUpon>PluginResources.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -99,6 +99,9 @@
     <Compile Include="Views\AddStationView.xaml.cs">
       <DependentUpon>AddStationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Design\DesignAddStationViewModel.cs" />
+    <Compile Include="Views\Design\DesignMainViewModel.cs" />
+    <Compile Include="Views\Design\DesignSettingsViewModel.cs" />
     <Compile Include="WindowsPhonePlugin.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

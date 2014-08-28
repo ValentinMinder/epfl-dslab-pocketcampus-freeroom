@@ -2,9 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-// Uncomment this line if you are connected to the EPFL network (which, for now, means being at EPFL physically)
-// #define IS_AT_EPFL
-
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -29,8 +26,8 @@ namespace PocketCampus.Main.Services
 
         // The format of the server URL
         // Parameters are the protocol and the port
-#if DEBUG && IS_AT_EPFL
-        private const string ThriftServerUrlFormat = "http://dslabpc36.epfl.ch:9090/v3r1";
+#if DEBUG
+        private const string ThriftServerUrlFormat = "http://test-pocketcampus.epfl.ch:14610/v3r1";
 #else
         private const string ThriftServerUrlFormat = "{0}://pocketcampus.epfl.ch:{1}/v3r1";
 #endif

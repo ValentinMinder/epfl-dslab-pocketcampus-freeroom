@@ -2,7 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
@@ -21,28 +20,19 @@ namespace PocketCampus.Transport.Services
 
         }
 
-        public Task<Station[]> GetSuggestionsAsync( string query, CancellationToken cancellationToken )
+        public Task<StationSearchResponse> SearchStationsAsync( StationSearchRequest request, CancellationToken cancellationToken )
         {
-            return CallAsync<string, CancellationToken, Station[]>( x => x.GetSuggestionsAsync, query, cancellationToken );
+            return CallAsync<StationSearchRequest, CancellationToken, StationSearchResponse>( x => x.SearchStationsAsync, request, cancellationToken );
         }
 
-        public Task<Station[]> GetStationsAsync( string[] names, CancellationToken cancellationToken )
+        public Task<DefaultStationsResponse> GetDefaultStationsAsync( CancellationToken cancellationToken )
         {
-            return CallAsync<string[], CancellationToken, Station[]>( x => x.GetStationsAsync, names, cancellationToken );
+            return CallAsync<CancellationToken, DefaultStationsResponse>( x => x.GetDefaultStationsAsync, cancellationToken );
         }
 
-        public async Task<TripsResult> GetTripsAsync( string fromName, string toName, CancellationToken cancellationToken )
+        public Task<TripSearchResponse> SearchTripsAsync( TripSearchRequest request, CancellationToken cancellationToken )
         {
-            var result = await CallAsync<string, string, CancellationToken, TripsResult>( x => x.GetTripsAsync, fromName, toName, cancellationToken );
-            foreach ( var trip in result.Trips )
-            {
-                // remove weird connections without a line
-                // they often happen when going to a station
-                // e.g. Lausanne-Flon -> Lausanne Gare -> Lausanne (no line, no arrival/departure times) -> Zürich HB
-                trip.Connections = trip.Connections.Where( c => c.Line != null ).ToArray();
-            }
-            result.Trips = result.Trips.OrderBy( t => t.DepartureTime ).ToArray();
-            return result;
+            return CallAsync<TripSearchRequest, CancellationToken, TripSearchResponse>( x => x.SearchTripsAsync, request, cancellationToken );
         }
     }
 }

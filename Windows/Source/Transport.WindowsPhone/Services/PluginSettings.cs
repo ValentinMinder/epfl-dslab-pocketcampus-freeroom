@@ -8,7 +8,7 @@ using PocketCampus.Transport.Models;
 using PocketCampus.Transport.Resources;
 using ThinMvvm;
 
-namespace PocketCampus.Transport
+namespace PocketCampus.Transport.Services
 {
     /// <summary>
     /// Plugin-specific settings.

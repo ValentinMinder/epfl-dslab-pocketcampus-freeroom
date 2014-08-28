@@ -5,19 +5,19 @@
 // Design data for MainViewModel
 
 using PocketCampus.Common.Services.Design;
-using PocketCampus.Moodle.Services.Design;
-using PocketCampus.Moodle.ViewModels;
+using PocketCampus.Transport.Services.Design;
+using PocketCampus.Transport.ViewModels;
 using ThinMvvm;
 using ThinMvvm.WindowsPhone.Design;
 
-namespace PocketCampus.Moodle.Views.Design
+namespace PocketCampus.Transport.Views.Design
 {
     public sealed class DesignMainViewModel : DesignViewModel<MainViewModel, NoParameter>
     {
 #if DEBUG
         protected override MainViewModel ViewModel
         {
-            get { return new MainViewModel( new DesignDataCache(), new DesignSecureRequestHandler(), new DesignNavigationService(), new DesignMoodleService() ); }
+            get { return new MainViewModel( new DesignTransportService(), new DesignPluginSettings(), new DesignNavigationService(), new DesignLocationService() ); }
         }
 #endif
     }

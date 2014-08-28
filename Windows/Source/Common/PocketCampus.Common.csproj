@@ -46,6 +46,7 @@
     <Compile Include="IServerSettings.cs" />
     <Compile Include="ServerConfiguration.cs" />
     <Compile Include="Services\Design\DesignBrowserService.cs" />
+    <Compile Include="Services\Design\DesignLocationService.cs" />
     <Compile Include="Services\Design\DesignSecureRequestHandler.cs" />
     <Compile Include="Services\IBrowserService.cs" />
     <Compile Include="Services\IDeviceIdentifier.cs" />

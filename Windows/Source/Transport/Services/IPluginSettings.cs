@@ -5,7 +5,7 @@
 using System.Collections.ObjectModel;
 using PocketCampus.Transport.Models;
 
-namespace PocketCampus.Transport
+namespace PocketCampus.Transport.Services
 {
     /// <summary>
     /// Plugin-specific settings.

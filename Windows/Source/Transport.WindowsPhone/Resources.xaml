@@ -12,6 +12,7 @@
     <!-- Converters -->
     <com:EnumToLocalizedStringConverter x:Key="EnumToString"
                                         Strings="{StaticResource Strings}" />
+    <com:EnumToVisibilityConverter x:Key="EnumToVisibility" />
     <my:DateToStringConverter x:Key="DateToString"
                               Format="HH:mm" />
 </ResourceDictionary>

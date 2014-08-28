@@ -11,14 +11,11 @@
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:my="clr-namespace:PocketCampus.Transport"
                       xmlns:myControls="clr-namespace:PocketCampus.Transport.Controls"
+                      xmlns:myDesign="clr-namespace:PocketCampus.Transport.Views.Design"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      mc:Ignorable="d">
-    <!-- Design-time DataContext -->
-    <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Transport.ViewModels.Design;assembly=PocketCampus.Transport" />
-    </d:DesignProperties.DataContext>
-
+                      mc:Ignorable="d"
+                      d:DataContext="{myDesign:DesignMainViewModel}">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
         <ResourceDictionary>
@@ -53,6 +50,12 @@
                                Text="{Binding Line.Name}"
                                Style="{StaticResource PhoneTextNormalStyle}"
                                Margin="0" />
+                    
+                    <!-- Foot symbol for walking connections -->
+                    <TextBlock Grid.Column="1"
+                               Text="🚶"
+                               Visibility="{Binding IsOnFoot, Converter={StaticResource BoolToVisibility}}"
+                               Style="{StaticResource PhoneTextNormalStyle}" />
 
                     <!-- Departure and arrival time -->
                     <StackPanel Grid.Row="1"
@@ -137,7 +140,7 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    
+
                     <!-- Times -->
                     <Grid VerticalAlignment="Top">
                         <Grid.RowDefinitions>
@@ -177,7 +180,7 @@
                                Fill="Black"
                                Opacity="0.1"
                                Margin="0,0,20,0"/>
-                    
+
                     <!-- Connections -->
                     <ItemsControl Grid.Column="2"
                                   ItemsSource="{Binding Connections}"
@@ -194,11 +197,44 @@
             <DataTemplate x:Key="StationTripsTemplate">
                 <myControls:BiStateExpander Margin="24,0,24,40">
                     <myControls:BiStateExpander.Header>
-                        <!-- Header: station name -->
+                        <!-- Header: destination name -->
                         <Grid Background="Transparent">
-                            <TextBlock Text="{Binding Station.Name}"
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Text="{Binding Destination.Name}"
                                        Style="{StaticResource PhoneTextTitle2Style}"
                                        Margin="0" />
+
+                            <!-- Custom, small loading and error indicator -->
+                            <Grid Grid.Row="1">
+                                <!-- Loading message -->
+                                <Grid Background="{StaticResource PhoneBackgroundBrush}"
+                                      Margin="20,10">
+                                    <!-- Progress bar -->
+                                    <ProgressBar Grid.Row="1"
+                                         Visibility="{Binding DataStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=Loading}"
+                                         IsIndeterminate="True" />
+                                </Grid>
+
+                                <!-- Error message -->
+                                <Border Visibility="{Binding DataStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=Error}"
+                                        Background="{StaticResource PhoneBackgroundBrush}">
+                                    <!-- Text -->
+                                    <TextBlock Text="{Binding Resources.TripError, Source={StaticResource Strings}}"
+                                               Style="{StaticResource PhoneTextSubtleStyle}" />
+                                </Border>
+
+                                <!-- Network error message -->
+                                <Border Visibility="{Binding DataStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=NetworkError}"
+                                        Background="{StaticResource PhoneBackgroundBrush}">
+                                    <!-- Text -->
+                                    <TextBlock Text="{Binding Resources.TripNetworkError, Source={StaticResource Strings}}"
+                                               Style="{StaticResource PhoneTextSubtleStyle}" />
+                                </Border>
+                            </Grid>
 
                             <!-- Context menu -->
                             <tool:ContextMenuService.ContextMenu>
@@ -210,7 +246,6 @@
                                 </tool:ContextMenu>
                             </tool:ContextMenuService.ContextMenu>
                         </Grid>
-
                     </myControls:BiStateExpander.Header>
 
                     <myControls:BiStateExpander.CollapsedContent>
@@ -302,7 +337,7 @@
 
         <!-- Loading & error -->
         <comControls:LoadingAndError Grid.RowSpan="2"
-                                     Grid.Row="2" />        
+                                     Grid.Row="2" />
     </Grid>
 
     <!-- App bar -->
