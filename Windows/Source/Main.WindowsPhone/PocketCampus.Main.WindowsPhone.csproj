@@ -122,13 +122,16 @@
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Design\DesignAboutViewModel.cs" />
+    <Compile Include="Views\Design\DesignMainViewModel.cs" />
+    <Compile Include="Views\Design\DesignSettingsViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsPhoneCredentialsStore.cs" />
+    <Compile Include="WindowsPhoneCredentialsStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -188,6 +191,10 @@
     <ProjectReference Include="..\Authentication.WindowsPhone\PocketCampus.Authentication.WindowsPhone.csproj">
       <Project>{0093183a-cab3-4e91-907d-0f6c48d98993}</Project>
       <Name>PocketCampus.Authentication.WindowsPhone</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Authentication\PocketCampus.Authentication.csproj">
+      <Project>{b1780e96-7e18-47c0-9e93-1086d9491815}</Project>
+      <Name>PocketCampus.Authentication</Name>
     </ProjectReference>
     <ProjectReference Include="..\Camipro.WindowsPhone\PocketCampus.Camipro.WindowsPhone.csproj">
       <Project>{D16579BC-07A7-4B3C-9611-798D6D0721E5}</Project>

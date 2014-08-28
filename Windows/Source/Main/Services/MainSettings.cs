@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using PocketCampus.Common;
 using ThinMvvm;
 
-namespace PocketCampus.Main
+namespace PocketCampus.Main.Services
 {
     /// <summary>
     /// Contains application-level settings.

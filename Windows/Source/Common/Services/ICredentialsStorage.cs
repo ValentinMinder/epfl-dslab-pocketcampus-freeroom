@@ -3,12 +3,13 @@
 // File author: Solal Pirelli
 
 using System.ComponentModel;
-namespace PocketCampus.Common
+
+namespace PocketCampus.Common.Services
 {
     /// <summary>
-    /// Store for credentials, which should be encrypted.
+    /// Storage for credentials, which should be encrypted.
     /// </summary>
-    public interface ICredentialsStore : INotifyPropertyChanged
+    public interface ICredentialsStorage : INotifyPropertyChanged
     {
         /// <summary>
         /// Gets or sets the user name.

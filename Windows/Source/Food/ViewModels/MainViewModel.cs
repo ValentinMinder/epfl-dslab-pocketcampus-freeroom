@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common;
+using PocketCampus.Common.Services;
 using PocketCampus.Food.Models;
 using PocketCampus.Food.Services;
 using PocketCampus.Map;
@@ -27,7 +28,7 @@ namespace PocketCampus.Food.ViewModels
 
         private readonly INavigationService _navigationService;
         private readonly IFoodService _menuService;
-        private readonly ICredentialsStore _credentials;
+        private readonly ICredentialsStorage _credentials;
 
         // The unfiltered menu
         private Restaurant[] _fullMenu;
@@ -118,7 +119,7 @@ namespace PocketCampus.Food.ViewModels
         /// Creates a new MainViewModel.
         /// </summary>
         public MainViewModel( IDataCache cache, INavigationService navigationService, IFoodService menuService,
-                              ICredentialsStore credentials, IPluginSettings settings, IServerSettings serverSettings )
+                              ICredentialsStorage credentials, IPluginSettings settings, IServerSettings serverSettings )
             : base( cache )
         {
             _navigationService = navigationService;

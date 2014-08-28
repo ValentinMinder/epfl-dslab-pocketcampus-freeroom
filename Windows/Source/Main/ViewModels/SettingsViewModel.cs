@@ -34,7 +34,7 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the credentials.
         /// </summary>
-        public ICredentialsStore Credentials { get; private set; }
+        public ICredentialsStorage Credentials { get; private set; }
 
         /// <summary>
         /// Gets the command executed to log on.
@@ -64,7 +64,7 @@ namespace PocketCampus.Main.ViewModels
         /// Creates a new SettingsViewModel.
         /// </summary>
         public SettingsViewModel( IMainSettings settings, ITequilaAuthenticator authenticator, INavigationService navigationService,
-                                  IAuthenticationService authenticationService, ICredentialsStore credentials, ITileService tileService )
+                                  IAuthenticationService authenticationService, ICredentialsStorage credentials, ITileService tileService )
         {
             Settings = settings;
             Credentials = credentials;

@@ -42,12 +42,16 @@
     <Compile Include="GeoPosition.cs" />
     <Compile Include="HttpResponse.cs" />
     <Compile Include="IAuthenticationToken.cs" />
-    <Compile Include="ICredentialsStore.cs" />
+    <Compile Include="Services\Design\DesignCredentialsStorage.cs" />
+    <Compile Include="Services\ICredentialsStorage.cs" />
     <Compile Include="IServerSettings.cs" />
     <Compile Include="ServerConfiguration.cs" />
+    <Compile Include="Services\Design\DesignEmailService.cs" />
+    <Compile Include="Services\Design\DesignServerAccess.cs" />
     <Compile Include="Services\Design\DesignBrowserService.cs" />
     <Compile Include="Services\Design\DesignLocationService.cs" />
     <Compile Include="Services\Design\DesignSecureRequestHandler.cs" />
+    <Compile Include="Services\Design\DesignTequilaAuthenticator.cs" />
     <Compile Include="Services\IBrowserService.cs" />
     <Compile Include="Services\IDeviceIdentifier.cs" />
     <Compile Include="Services\IEmailService.cs" />

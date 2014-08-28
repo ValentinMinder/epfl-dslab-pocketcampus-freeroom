@@ -1,40 +1,34 @@
-// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+// Design implementation for IPluginLoader
+
+#if DEBUG
 using System.Collections.Generic;
 using PocketCampus.Common;
 using ThinMvvm;
 
-// Design data for the MainViewModel
-
-namespace PocketCampus.Main.ViewModels.Design
+namespace PocketCampus.Main.Services.Design
 {
-    public sealed class DesignMainViewModel
+    public sealed class DesignPluginLoader : IPluginLoader
     {
-#if DEBUG
-        public DataStatus DataStatus { get { return DataStatus.DataLoaded; } }
-
-        public IPlugin[] Plugins
+        public IPlugin[] GetPlugins()
         {
-            get
+            return new[]
             {
-                return new[]
-                {
-                    new DesignPlugin( "Camipro" ),
-                    new DesignPlugin( "Directory" ),
-                    new DesignPlugin( "Events"  ),
-                    new DesignPlugin( "Food" ),
-                    new DesignPlugin( "IsAcademia" ),
-                    new DesignPlugin( "Map" ),
-                    new DesignPlugin( "Moodle" ),
-                    new DesignPlugin( "News" ),
-                    new DesignPlugin( "Satellite" ),
-                    new DesignPlugin( "Transport" )
-                };
-            }
+                new DesignPlugin( "Camipro" ),
+                new DesignPlugin( "Directory" ),
+                new DesignPlugin( "Events"  ),
+                new DesignPlugin( "Food" ),
+                new DesignPlugin( "IsAcademia" ),
+                new DesignPlugin( "Map" ),
+                new DesignPlugin( "Moodle" ),
+                new DesignPlugin( "News" ),
+                new DesignPlugin( "Satellite" ),
+                new DesignPlugin( "Transport" )
+            };
         }
-
 
         // This also "implements" IWindowsPhonePlugin for the WP designer
         private sealed class DesignPlugin : IPlugin
@@ -58,6 +52,6 @@ namespace PocketCampus.Main.ViewModels.Design
 
             public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService ) { }
         }
-#endif
     }
 }
+#endif

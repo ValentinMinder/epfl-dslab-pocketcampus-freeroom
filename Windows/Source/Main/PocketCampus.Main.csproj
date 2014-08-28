@@ -46,8 +46,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppInitializer.cs" />
-    <Compile Include="IMainSettings.cs" />
-    <Compile Include="MainSettings.cs" />
+    <Compile Include="Services\Design\DesignMainSettings.cs" />
+    <Compile Include="Services\IMainSettings.cs" />
+    <Compile Include="Services\MainSettings.cs" />
+    <Compile Include="Services\Design\DesignPluginLoader.cs" />
+    <Compile Include="Services\Design\DesignRatingService.cs" />
+    <Compile Include="Services\Design\DesignTileService.cs" />
     <Compile Include="Services\IRatingService.cs" />
     <Compile Include="Services\IPluginLoader.cs" />
     <Compile Include="Services\ITileService.cs" />
@@ -55,9 +59,6 @@
     <Compile Include="Services\SecureRequestHandler.cs" />
     <Compile Include="Services\ServerAccess.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
-    <Compile Include="ViewModels\Design\DesignAboutViewModel.cs" />
-    <Compile Include="ViewModels\Design\DesignMainViewModel.cs" />
-    <Compile Include="ViewModels\Design\DesignSettingsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewPluginRequest.cs" />

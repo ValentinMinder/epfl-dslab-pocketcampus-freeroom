@@ -1,14 +1,14 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using PocketCampus.Common;
+using PocketCampus.Common.Services;
 using ThinMvvm;
 
 namespace PocketCampus.Main
 {
     /// <summary>
-    /// Windows Phone implementation of ICredentialsStore.
+    /// Windows Phone implementation of ICredentialsStorage.
     /// </summary>
-    public sealed class WindowsPhoneCredentialsStore : SettingsBase<WindowsPhoneCredentialsStore>, ICredentialsStore
+    public sealed class WindowsPhoneCredentialsStorage : SettingsBase<WindowsPhoneCredentialsStorage>, ICredentialsStorage
     {
         // Encoding used when (de)crypting strings as byte arrays
         private static readonly Encoding Encoding = Encoding.UTF8;
@@ -37,9 +37,9 @@ namespace PocketCampus.Main
 
 
         /// <summary>
-        /// Creates a new instance of the WindowsPhoneCredentialsStore class.
+        /// Creates a new instance of the WindowsPhoneCredentialsStorage class.
         /// </summary>
-        public WindowsPhoneCredentialsStore( ISettingsStorage settings ) : base( settings ) { }
+        public WindowsPhoneCredentialsStorage( ISettingsStorage settings ) : base( settings ) { }
 
 
         /// <summary>
