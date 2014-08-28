@@ -50,7 +50,7 @@ static NSNumber* featuredCategNSNumber = nil;
         
         NSNumber* eventCategNumber = [NSNumber numberWithInt:event.eventCateg];
         if ([eventsService isEventItemIdFavorite:event.eventId]) {
-            eventCategNumber = [NSNumber numberWithInt:(int)[EventsUtils favoriteCategory]];
+            eventCategNumber = [EventsUtils favoriteCategory];
         }
         NSString* eventCategName = categs[eventCategNumber];
         if ([eventTagSet intersectsSet:tagSet] //returns YES if at least one tag in common
