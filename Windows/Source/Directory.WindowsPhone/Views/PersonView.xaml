@@ -75,6 +75,8 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
+                <!-- Bottom padding -->
+                <RowDefinition Height="95" />
             </Grid.RowDefinitions>
 
             <!-- Header -->

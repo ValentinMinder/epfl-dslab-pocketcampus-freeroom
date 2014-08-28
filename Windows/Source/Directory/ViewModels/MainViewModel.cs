@@ -5,6 +5,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Directory.Models;
 using PocketCampus.Directory.Services;
@@ -105,6 +106,8 @@ namespace PocketCampus.Directory.ViewModels
             _navigationService = navigationService;
             _anySearchResults = true;
             _request = request;
+
+            this.ListenToProperty( x => x.Query, OnQueryChanged );
         }
 
 
@@ -161,6 +164,11 @@ namespace PocketCampus.Directory.ViewModels
         /// </summary>
         private async Task SearchForMoreAsync()
         {
+            if ( _currentPaginationToken == null )
+            {
+                return;
+            }
+
             var token = CurrentCancellationToken;
             IsLoadingMoreResults = true;
 
@@ -190,6 +198,36 @@ namespace PocketCampus.Directory.ViewModels
             }
 
             IsLoadingMoreResults = false;
+        }
+
+        private async void OnQueryChanged()
+        {
+            if ( string.IsNullOrWhiteSpace( Query ) )
+            {
+                SearchResults.Clear();
+                AnySearchResults = true;
+                return;
+            }
+
+            await TryExecuteAsync( async _ =>
+            {
+                var request = new SearchRequest
+                {
+                    Query = Query,
+                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
+                };
+
+                var response = await _directoryService.SearchAsync( request, CancellationToken.None );
+
+                if ( response.Status != SearchStatus.Success )
+                {
+                    throw new Exception( "An error occurred while searching." );
+                }
+
+                _currentPaginationToken = null;
+                SearchResults = new ObservableCollection<Person>( response.Results );
+                AnySearchResults = SearchResults.Count > 0;
+            } );
         }
     }
 }
