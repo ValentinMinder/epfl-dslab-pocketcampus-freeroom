@@ -1078,7 +1078,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     EventItemViewController* eventItemViewController = [[EventItemViewController alloc] initWithEventItem:eventItem];
     
 #warning REMOVE
-    eventItemViewController.showFavoriteButton = YES;//!self.eventPool.disableStar;
+    eventItemViewController.showFavoriteButton = !self.eventPool.disableStar;
     
     if (self.splitViewController && self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
         self.selectedItem = eventItem;
