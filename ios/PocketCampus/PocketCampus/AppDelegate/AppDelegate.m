@@ -61,6 +61,9 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 
+#if TARGET_IPHONE_SIMULATOR
+    NSLog(@"Application Support: %@", [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject]);
+#endif
     [PCPersistenceManager migrateDataOnceToSharedAppGroupPersistence];
     
     // Need to start monitoring, otherwise sharedManager.networkReachabilityStatus is wrong
