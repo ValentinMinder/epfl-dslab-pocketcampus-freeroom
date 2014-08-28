@@ -387,8 +387,8 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     self.tagsInPresentItems = tmpTagsInPresentItems;
     
     //Force Favorites and Features to be always selected
-    self.selectedCategories[[EventsUtils favoriteCategory]] = self.poolReply.categs[[EventsUtils favoriteCategory]];
-    self.selectedCategories[[EventsUtils featuredCategory]] = self.poolReply.categs[[EventsUtils featuredCategory]];
+    self.selectedCategories[kEventItemCategoryFavorite] = self.poolReply.categs[kEventItemCategoryFavorite];
+    self.selectedCategories[kEventItemCategoryFeatured] = self.poolReply.categs[kEventItemCategoryFeatured];
     
     NSDictionary* itemsForCategNumber = [EventsUtils sectionsOfEventItem:[self.poolReply.childrenItems allValues] forCategories:self.selectedCategories andTags:self.selectedTags inverseSort:self.pastMode]; //if pastMode, show older events at bottom (=> inverse sort)
     
@@ -401,7 +401,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     BOOL foundFavorite = NO;
     
     for (NSNumber* categNumber in sortedCategNumbers) {
-        if (!foundFavorite && [categNumber isEqualToNumber:[EventsUtils favoriteCategory]]) {
+        if (!foundFavorite && [categNumber isEqualToNumber:kEventItemCategoryFavorite]) {
             [tmpSectionsNames addObject:NSLocalizedStringFromTable(@"Favorites", @"EventsPlugin", nil)];
             foundFavorite = YES;
         } else {
@@ -410,6 +410,21 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         [tmpItemsForSection addObject:itemsForCategNumber[categNumber]];
     }
     self.sectionsNames = tmpSectionsNames;
+    
+    /*
+#warning REMOVE
+    
+    NSMutableSet* allSet =  [NSMutableSet setWithArray:self.poolReply.childrenItems.allValues];
+    NSMutableSet* afterSet = [NSMutableSet set];
+    for (NSArray* items in tmpItemsForSection) {
+        [afterSet addObjectsFromArray:items];
+    }
+    
+    NSMutableSet* minusSet = [allSet mutableCopy];
+    [minusSet minusSet:afterSet];
+    
+#warning END OF REMOVE
+    */
     self.itemsForSection = tmpItemsForSection;
 }
 
@@ -1062,7 +1077,8 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     
     EventItemViewController* eventItemViewController = [[EventItemViewController alloc] initWithEventItem:eventItem];
     
-    eventItemViewController.showFavoriteButton = !self.eventPool.disableStar;
+#warning REMOVE
+    eventItemViewController.showFavoriteButton = YES;//!self.eventPool.disableStar;
     
     if (self.splitViewController && self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
         self.selectedItem = eventItem;

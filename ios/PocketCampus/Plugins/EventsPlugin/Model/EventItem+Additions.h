@@ -25,16 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 01.03.13.
 
-
-
 #import "events.h"
+
+extern NSNumber* kEventItemCategoryFavorite;
+extern NSNumber* kEventItemCategoryFeatured;
 
 @interface EventItem (Additions)
 

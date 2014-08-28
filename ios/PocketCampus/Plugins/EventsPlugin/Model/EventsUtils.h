@@ -38,9 +38,7 @@
  */
 + (NSDictionary*)sectionsOfEventItem:(NSArray*)eventItems forCategories:(NSDictionary*)categs andTags:(NSDictionary*)tags inverseSort:(BOOL)inverseSort;
 
-+ (NSNumber*)nsNumberForEventId:(int64_t)eventId;
-+ (NSNumber*)favoriteCategory;
-+ (NSNumber*)featuredCategory;
++ (NSNumber*)nsNumberForEventId:(int64_t)eventId;;
 
 + (NSString*)periodStringForEventsPeriod:(int)period selected:(BOOL)selected;
 

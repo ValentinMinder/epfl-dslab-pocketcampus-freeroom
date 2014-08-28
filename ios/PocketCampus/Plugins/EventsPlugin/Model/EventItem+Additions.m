@@ -31,7 +31,15 @@
 
 #import "NSDate+Addtions.h"
 
+NSNumber* kEventItemCategoryFavorite;
+NSNumber* kEventItemCategoryFeatured;
+
 @implementation EventItem (Additions)
+
++ (void)initialize {
+    kEventItemCategoryFavorite = [NSNumber numberWithInt:-2];
+    kEventItemCategoryFeatured = [NSNumber numberWithInt:-1];
+}
 
 - (BOOL)isEqual:(id)object {
     if (self == object) {
