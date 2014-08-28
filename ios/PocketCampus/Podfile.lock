@@ -28,6 +28,7 @@ PODS:
   - NSTimer-Blocks (0.0.1)
   - SSKeychain (1.2.2)
   - TapkuLibrary (0.3.5)
+  - thrift (0.9.1)
   - TTTAttributedLabel (1.10.1)
   - TUSafariActivity (1.0.0)
 
@@ -41,6 +42,7 @@ DEPENDENCIES:
   - NSTimer-Blocks
   - SSKeychain (~> 1.2)
   - TapkuLibrary (from `git@github.com:loicgardiol/tapkulibrary.git`)
+  - thrift (~> 0.9.1)
   - TTTAttributedLabel
   - TUSafariActivity
 
@@ -58,6 +60,7 @@ SPEC CHECKSUMS:
   NSTimer-Blocks: 0a653b84ab33068a085f5c03c82c18be1f61eba9
   SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9
   TapkuLibrary: 187d3cd6b9b68064105954afe534f962611b6d48
+  thrift: b69f9820045ffa76eabe35674cdcc8daa5b1f75c
   TTTAttributedLabel: 94bb04f1e005616002dd2cee0262a0082e533627
   TUSafariActivity: afff9b1d2eacf7cbace752c5f2bf56db852714de
 

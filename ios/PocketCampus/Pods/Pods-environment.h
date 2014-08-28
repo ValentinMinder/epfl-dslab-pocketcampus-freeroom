@@ -108,3 +108,9 @@
 #define COCOAPODS_VERSION_MINOR_TapkuLibrary 3
 #define COCOAPODS_VERSION_PATCH_TapkuLibrary 5
 
+// thrift
+#define COCOAPODS_POD_AVAILABLE_thrift
+#define COCOAPODS_VERSION_MAJOR_thrift 0
+#define COCOAPODS_VERSION_MINOR_thrift 9
+#define COCOAPODS_VERSION_PATCH_thrift 1
+

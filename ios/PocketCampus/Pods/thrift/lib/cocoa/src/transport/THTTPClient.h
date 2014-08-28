@@ -22,14 +22,12 @@
 
 @interface THTTPClient : NSObject <TTransport> {
   NSURL * mURL;
-  
+  NSMutableURLRequest * mRequest;
   NSMutableData * mRequestData;
   NSData * mResponseData;
   int mResponseDataOffset;
   NSString * mUserAgent;
   int mTimeout;
-    
-@public NSMutableURLRequest * mRequest; //changed for PocketCampus
 }
 
 - (id) initWithURL: (NSURL *) aURL;

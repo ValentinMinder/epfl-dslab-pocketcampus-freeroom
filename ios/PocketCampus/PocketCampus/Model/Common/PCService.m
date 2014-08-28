@@ -32,6 +32,7 @@
 #import "PushNotifController.h"
 
 #import "THTTPClient.h"
+#import "THTTPClient+MutableRequest.h"
 #import "TBinaryProtocol.h"
 
 
@@ -145,7 +146,7 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
 
 - (id)thriftProtocolInstanceWithCustomTimeoutInterval:(NSTimeInterval)timeoutInterval {
     THTTPClient* client = [[THTTPClient alloc] initWithURL:self.serviceURL userAgent:nil timeout:timeoutInterval];
-    [self addSpecificHeadersToRequest:client->mRequest];
+    [self addSpecificHeadersToRequest:client.mRequest];
     return [[TBinaryProtocol alloc] initWithTransport:client strictRead:YES strictWrite:YES];
 }
 
