@@ -33,8 +33,7 @@ namespace PocketCampus.Food.ViewModels
         private Restaurant[] _fullMenu;
 
         private Restaurant[] _menu;
-        private bool _anyMeals;
-        private bool _anyFilterResults;
+        private bool _allResultsFilteredOut;
         private MealTime _mealTime;
         private DateTime _mealDate;
 
@@ -48,21 +47,12 @@ namespace PocketCampus.Food.ViewModels
         }
 
         /// <summary>
-        /// Gets a value indicating whether there are any meals, even filtered ones.
+        /// Gets a value indicating whether all meals are hidden by filters.
         /// </summary>
-        public bool AnyMeals
+        public bool AllResultsFilteredOut
         {
-            get { return _anyMeals; }
-            private set { SetProperty( ref _anyMeals, value ); }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether there are any filter results.
-        /// </summary>
-        public bool AnyFilterResults
-        {
-            get { return _anyFilterResults; }
-            private set { SetProperty( ref _anyFilterResults, value ); }
+            get { return _allResultsFilteredOut; }
+            private set { SetProperty( ref _allResultsFilteredOut, value ); }
         }
 
         /// <summary>
@@ -146,7 +136,7 @@ namespace PocketCampus.Food.ViewModels
                 if ( _fullMenu != null )
                 {
                     Menu = FilterMenu( _fullMenu );
-                    AnyFilterResults = Menu.Any();
+                    AllResultsFilteredOut = Menu.Length == 0 && _fullMenu.Length > 0;
                 }
             };
         }
@@ -208,8 +198,7 @@ namespace PocketCampus.Food.ViewModels
             {
                 _fullMenu = data.Menu;
                 Menu = FilterMenu( _fullMenu );
-                AnyMeals = _fullMenu.Any();
-                AnyFilterResults = Menu.Any();
+                AllResultsFilteredOut = Menu.Length == 0 && _fullMenu.Length > 0;
             }
 
             return true;

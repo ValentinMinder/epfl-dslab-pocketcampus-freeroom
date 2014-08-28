@@ -154,7 +154,7 @@
         <TextBlock Grid.Row="2"
                    Text="{Binding Pool.NoEventsFallbackText}"
                    Style="{StaticResource AppTextCenterStyle}"
-                   Visibility="{Binding AnyItems, Converter={StaticResource BoolToOppositeVisibility}}" />
+                   Visibility="{Binding ItemGroups, Converter={StaticResource NoneToVisibility}}" />
 
         <!-- Loading & error -->
         <comControls:LoadingAndError Grid.RowSpan="2"

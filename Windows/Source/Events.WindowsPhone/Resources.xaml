@@ -13,6 +13,7 @@
     <com:EnumToLocalizedStringConverter x:Key="EnumToString"
                                         Strings="{StaticResource Strings}" />
     <com:EmailRequestedToBooleanConverter x:Key="EmailRequestToBool" />
+    <com:NoElementsToVisibilityConverter x:Key="NoneToVisibility" />
     <my:EventItemToHumanDateConverter x:Key="EventItemToDate" />
     <my:EventItemToHumanDateConverter x:Key="EventItemToShortDate" 
                                       IsCompact="True" />
