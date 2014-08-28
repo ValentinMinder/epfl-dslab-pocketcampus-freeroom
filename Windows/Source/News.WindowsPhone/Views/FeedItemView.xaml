@@ -8,14 +8,11 @@
                       xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:my="clr-namespace:PocketCampus.News"
+                      xmlns:myDesign="clr-namespace:PocketCampus.News.Views.Design"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      mc:Ignorable="d">
-    <!-- Design-time DataContext -->
-    <d:DesignProperties.DataContext>
-        <design:DesignFeedItemViewModel xmlns:design="clr-namespace:PocketCampus.News.ViewModels.Design;assembly=PocketCampus.News" />
-    </d:DesignProperties.DataContext>
-
+                      mc:Ignorable="d"
+                      d:DataContext="{myDesign:DesignFeedItemViewModel}">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
         <!-- Localized strings -->
