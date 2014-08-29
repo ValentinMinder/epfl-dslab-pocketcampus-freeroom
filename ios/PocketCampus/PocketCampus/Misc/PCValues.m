@@ -55,6 +55,10 @@
     return [image resizableImageWithCapInsets:UIEdgeInsetsMake(1, 1, 1, 1)];
 }
 
++ (UIColor*)defaultBlueTintColor {
+    return [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+}
+
 + (UIColor*)pocketCampusRed {
     //return [UIColor redColor];
     return [UIColor colorWithRed:0.858824 green:0.062745 blue:0.062745 alpha:1.0]; //220, 16, 16

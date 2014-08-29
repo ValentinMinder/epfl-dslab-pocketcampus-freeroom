@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -319,10 +319,12 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         return;
     }
     BOOL found __block = NO;
-    [self.itemsForSection enumerateObjectsUsingBlock:^(NSArray* items, NSUInteger section, BOOL *stop1) {
+    UITableView* tableView = self.searchController.isActive ? self.searchController.searchResultsTableView : self.tableView;
+    NSArray* itemsForSection = self.searchController.isActive ? self.searchFilteredItemsForSection : self.itemsForSection;
+    [itemsForSection enumerateObjectsUsingBlock:^(NSArray* items, NSUInteger section, BOOL *stop1) {
         [items enumerateObjectsUsingBlock:^(EventItem* item, NSUInteger row, BOOL *stop2) {
             if ([item isEqual:self.selectedItem]) {
-                [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                [tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
                 self.selectedItem = item;
                 *stop1 = YES;
                 *stop2 = YES;
@@ -330,9 +332,6 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
             }
         }];
     }];
-    if (!found) {
-        self.selectedItem = nil;
-    }
 }
 
 #pragma mark - Data fill and utils
@@ -599,6 +598,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         [buttonTitles addObject:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil)];
         
         self.filterSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+#warning actionsheet buttons will take color of UIWindow tintColor in iOS 8 on iPad. Not nice because all buttons red then (they all look destructive then. Need to find a solution. Setting tintColor does not work. Open discussion here https://devforums.apple.com/message/1030544#1030544
         
         for (NSString* title in buttonTitles) {
             [self.filterSelectionActionSheet addButtonWithTitle:title];
@@ -803,7 +803,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 }
 
 - (void)presentPeriodSelectionActionSheet {
-    if (!self.periodsSelectionActionSheet) {
+    if (self.periodsSelectionActionSheet) {
         [self.periodsSelectionActionSheet dismissWithClickedButtonIndex:self.periodsSelectionActionSheet.cancelButtonIndex animated:NO];
     }
     NSString* title = nil;
@@ -877,58 +877,61 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (actionSheet == self.filterSelectionActionSheet) {
-        
-        if (buttonIndex == [self goToCategoryButtonIndex]) {
-            [self trackAction:@"ShowCategories"];
-            [self presentCategoriesController];
-        } else if (buttonIndex == [self filterByTagsButtonIndex]) {
-            [self trackAction:@"ShowTags"];
-            [self presentTagsController];
-        } else if (buttonIndex == [self  pastModeButtonIndex]) {
-            if (self.pastMode) {
-                [self trackAction:@"SwitchBackToUpcomingEvents"];
+#warning ugly, see if next betas of iOS 8 solve this problem
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (actionSheet == self.filterSelectionActionSheet) {
+            if (buttonIndex == [self goToCategoryButtonIndex]) {
+                [self trackAction:@"ShowCategories"];
+                [self presentCategoriesController];
+            } else if (buttonIndex == [self filterByTagsButtonIndex]) {
+                [self trackAction:@"ShowTags"];
+                [self presentTagsController];
+            } else if (buttonIndex == [self  pastModeButtonIndex]) {
+                if (self.pastMode) {
+                    [self trackAction:@"SwitchBackToUpcomingEvents"];
+                    self.pastMode = NO;
+                } else {
+                    [self trackAction:@"SwitchToPastEvents"];
+                    self.pastMode = YES;
+                }
+                [self refresh];
+            } else if (buttonIndex == [self periodButtonIndex]) {
+                [self presentPeriodSelectionActionSheet];
+            } else if (buttonIndex == [self resetFilterButtonIndex]) {
+                [self trackAction:@"ResetFilter"];
+                self.selectedCategories = nil;
+                self.selectedTags = nil;
                 self.pastMode = NO;
+                [self refresh];
             } else {
-                [self trackAction:@"SwitchToPastEvents"];
-                self.pastMode = YES;
+                //ignore
             }
-            [self refresh];
-        } else if (buttonIndex == [self periodButtonIndex]) {
-            [self presentPeriodSelectionActionSheet];
-        } else if (buttonIndex == [self resetFilterButtonIndex]) {
-            [self trackAction:@"ResetFilter"];
-            self.selectedCategories = nil;
-            self.selectedTags = nil;
-            self.pastMode = NO;
-            [self refresh];
-        } else {
-            //ignore
+            self.filterSelectionActionSheet = nil;
+        } else if (actionSheet == self.periodsSelectionActionSheet) {
+            switch (buttonIndex) {
+                case kOneWeekPeriodIndex:
+                    self.selectedPeriod = EventsPeriods_ONE_WEEK;
+                    break;
+                case kOneMonthPeriodIndex:
+                    self.selectedPeriod = EventsPeriods_ONE_MONTH;
+                    break;
+                case kSixMonthsPeriodIndex:
+                    self.selectedPeriod = EventsPeriods_SIX_MONTHS;
+                    break;
+                case kOneYearPeriodIndex:
+                    self.selectedPeriod = EventsPeriods_ONE_YEAR;
+                    break;
+            }
+            [self trackAction:@"ChangePeriod" contentInfo:[NSString stringWithFormat:@"%d", (int)self.selectedPeriod]];
+            [self.eventsService saveSelectedPoolPeriod:self.selectedPeriod];
+            if (buttonIndex >= 0 && (buttonIndex != [self.periodsSelectionActionSheet cancelButtonIndex])) {
+                [self.tableView scrollsToTop];
+                [self refresh];
+            }
+            self.periodsSelectionActionSheet = nil;
         }
-        self.filterSelectionActionSheet = nil;
-    } else if (actionSheet == self.periodsSelectionActionSheet) {
-        switch (buttonIndex) {
-            case kOneWeekPeriodIndex:
-                self.selectedPeriod = EventsPeriods_ONE_WEEK;
-                break;
-            case kOneMonthPeriodIndex:
-                self.selectedPeriod = EventsPeriods_ONE_MONTH;
-                break;
-            case kSixMonthsPeriodIndex:
-                self.selectedPeriod = EventsPeriods_SIX_MONTHS;
-                break;
-            case kOneYearPeriodIndex:
-                self.selectedPeriod = EventsPeriods_ONE_YEAR;
-                break;
-        }
-        [self trackAction:@"ChangePeriod" contentInfo:[NSString stringWithFormat:@"%d", (int)self.selectedPeriod]];
-        [self.eventsService saveSelectedPoolPeriod:self.selectedPeriod];
-        if (buttonIndex >= 0 && (buttonIndex != [self.periodsSelectionActionSheet cancelButtonIndex])) {
-            [self.tableView scrollsToTop];
-            [self refresh];
-        }
-        self.periodsSelectionActionSheet = nil;
-    }
+
+    });
 }
 
 #pragma mark - UISearchDisplayDelegate
@@ -958,6 +961,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
                     welf.searchFilteredItemsForSection = filteredSections;
                     welf.currentSearchRegex = currentSearchRegex;
                     [welf.searchController.searchResultsTableView reloadData];
+                    [welf reselectLastSelectedItem];
                 }];
             }];
         } repeats:NO];
@@ -969,7 +973,6 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 - (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
     [self.typingTimer invalidate];
     [self.searchQueue cancelAllOperations];
-    //[self fillCellForMoodleResource];
     [self.tableView reloadData];
 }
 
@@ -987,6 +990,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     if ([PCUtils isIdiomPad]) {
         self.searchBar.searchBarStyle = kSearchBarDefaultStyle;
     }
+    [self reselectLastSelectedItem];
     [self.navigationController setToolbarHidden:NO animated:YES];
 }
 

@@ -43,7 +43,7 @@
 "EventsRightNow" = "Right Now at EPFL";
 "PeriodWithFormat(Past,FilteredByTag)" = "%@ (past, filtered)";
 "PeriodWithFormat(Past)" = "%@ (past)";
-"PeriodWithFormat(FilteredByTag)" = "%@ (filtered by tag)";
+"PeriodWithFormat(FilteredByTag)" = "%@ (filt. by tag)";
 "RightNow" = "Right Now";
 
 //Accessibility

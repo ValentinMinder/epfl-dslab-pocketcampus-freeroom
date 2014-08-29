@@ -41,6 +41,7 @@
 
 + (UIImage*)resizableCellEmptyImage;
 
++ (UIColor*)defaultBlueTintColor;
 + (UIColor*)pocketCampusRed;
 + (UIColor*)backgroundColor1;
 + (UIColor*)textColor1;
