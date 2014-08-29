@@ -168,11 +168,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectoryPersonViewController.m"
-            timestampString = "431001247.171637"
+            timestampString = "431002166.269838"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "430"
-            endingLineNumber = "430"
+            startingLineNumber = "437"
+            endingLineNumber = "437"
             landmarkName = "-tableView:performAction:forRowAtIndexPath:withSender:"
             landmarkType = "5">
          </BreakpointContent>
@@ -214,11 +214,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectoryPersonViewController.m"
-            timestampString = "431001247.171637"
+            timestampString = "431002166.269838"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "314"
-            endingLineNumber = "314"
+            startingLineNumber = "321"
+            endingLineNumber = "321"
             landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -230,11 +230,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectoryPersonViewController.m"
-            timestampString = "431001247.171637"
+            timestampString = "431002166.269838"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "324"
-            endingLineNumber = "324"
+            startingLineNumber = "331"
+            endingLineNumber = "331"
             landmarkName = "-tableView:heightForHeaderInSection:"
             landmarkType = "5">
             <Actions>
@@ -286,11 +286,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectoryPersonViewController.m"
-            timestampString = "431001247.171637"
+            timestampString = "431002166.269838"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "362"
-            endingLineNumber = "362"
+            startingLineNumber = "369"
+            endingLineNumber = "369"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2571,11 +2571,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectoryPersonViewController.m"
-            timestampString = "431001247.171637"
+            timestampString = "431002166.269838"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "487"
-            endingLineNumber = "487"
+            startingLineNumber = "494"
+            endingLineNumber = "494"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2587,11 +2587,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectoryPersonViewController.m"
-            timestampString = "431001247.171637"
+            timestampString = "431002166.269838"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "442"
-            endingLineNumber = "442"
+            startingLineNumber = "449"
+            endingLineNumber = "449"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2777,11 +2777,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectoryPersonViewController.m"
-            timestampString = "424813107.70067"
+            timestampString = "431001963.619022"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "245"
-            endingLineNumber = "245"
+            startingLineNumber = "244"
+            endingLineNumber = "244"
             landmarkName = "-peoplePickerNavigationController:shouldContinueAfterSelectingPerson:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5789,6 +5789,54 @@
             startingLineNumber = "765"
             endingLineNumber = "765"
             landmarkName = "-presentTagsController"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/DirectoryPlugin/Controllers/DirectoryPersonViewController.m"
+            timestampString = "431001972.361743"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "256"
+            endingLineNumber = "256"
+            landmarkName = "-peoplePickerNavigationController:shouldContinueAfterSelectingPerson:property:identifier:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/DirectoryPlugin/Controllers/DirectoryPersonViewController.m"
+            timestampString = "431002166.269838"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "267"
+            endingLineNumber = "267"
+            landmarkName = "-peoplePickerNavigationControllerDidCancel:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/DirectoryPlugin/Controllers/DirectoryPersonViewController.m"
+            timestampString = "431002176.322882"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "263"
+            endingLineNumber = "263"
+            landmarkName = "-peoplePickerNavigationController:didSelectPerson:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

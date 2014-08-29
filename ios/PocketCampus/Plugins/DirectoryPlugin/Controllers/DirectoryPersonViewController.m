@@ -256,6 +256,13 @@ static CGFloat kRowHeight;
     return NO;
 }
 
+/*
+ * On iOS 8, this method is called instead of peoplePickerNavigationController:shouldContinueAfterSelectingPerson: so, redirecting.
+ */
+- (void)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker didSelectPerson:(ABRecordRef)person {
+    [self peoplePickerNavigationController:peoplePicker shouldContinueAfterSelectingPerson:person];
+}
+
 - (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker {
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
