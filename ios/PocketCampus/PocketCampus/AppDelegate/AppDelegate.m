@@ -66,6 +66,9 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
 #endif
     [PCPersistenceManager migrateDataOnceToSharedAppGroupPersistence];
     
+    // So that [[UIDevice currentDevice] orientation] returns a correct value (see doc)
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    
     // Need to start monitoring, otherwise sharedManager.networkReachabilityStatus is wrong
     // Bug in AFNetworkReachabilityManager ?
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
