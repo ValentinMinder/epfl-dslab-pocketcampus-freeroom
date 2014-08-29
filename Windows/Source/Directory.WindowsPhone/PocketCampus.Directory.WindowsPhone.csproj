@@ -93,6 +93,8 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Services\ContactsService.cs" />
+    <Compile Include="Views\Design\DesignMainViewModel.cs" />
+    <Compile Include="Views\Design\DesignPersonViewModel.cs" />
     <Compile Include="WindowsPhonePlugin.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

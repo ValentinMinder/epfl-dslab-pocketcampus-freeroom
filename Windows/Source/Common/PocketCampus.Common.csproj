@@ -43,6 +43,7 @@
     <Compile Include="HttpResponse.cs" />
     <Compile Include="IAuthenticationToken.cs" />
     <Compile Include="Services\Design\DesignCredentialsStorage.cs" />
+    <Compile Include="Services\Design\DesignPhoneService.cs" />
     <Compile Include="Services\ICredentialsStorage.cs" />
     <Compile Include="IServerSettings.cs" />
     <Compile Include="ServerConfiguration.cs" />
