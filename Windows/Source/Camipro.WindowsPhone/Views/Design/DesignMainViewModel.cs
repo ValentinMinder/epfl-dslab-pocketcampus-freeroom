@@ -1,4 +1,10 @@
-﻿using PocketCampus.Camipro.Services.Design;
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+// Design data for MainViewModel
+
+using PocketCampus.Camipro.Services.Design;
 using PocketCampus.Camipro.ViewModels;
 using PocketCampus.Common.Services.Design;
 using ThinMvvm;

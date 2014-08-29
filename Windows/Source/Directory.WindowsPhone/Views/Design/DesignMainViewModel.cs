@@ -1,4 +1,10 @@
-﻿using PocketCampus.Directory.Services.Design;
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+// Design data for MainViewModel
+
+using PocketCampus.Directory.Services.Design;
 using PocketCampus.Directory.ViewModels;
 using ThinMvvm.WindowsPhone.Design;
 

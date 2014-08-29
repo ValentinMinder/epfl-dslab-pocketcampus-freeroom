@@ -2,56 +2,152 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
-using PocketCampus.Common;
-using PocketCampus.Events.Models;
-using ThinMvvm;
+// Design implementation for IEventsService
 
-// Design data for EventPoolViewModel
-
-namespace PocketCampus.Events.ViewModels.Design
-{
-    public sealed class DesignEventPoolViewModel
-    {
 #if DEBUG
-        public DataStatus DataStatus { get { return DataStatus.DataLoaded; } }
-        public CacheStatus CacheStatus { get { return CacheStatus.Unused; } }
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using PocketCampus.Events.Models;
 
-        public EmailSendingStatus EmailStatus { get { return EmailSendingStatus.Success; } }
-
-        public EventPool Pool
+namespace PocketCampus.Events.Services.Design
+{
+    public sealed class DesignEventsService : IEventsService
+    {
+        public Task<EventItemResponse> GetEventItemAsync( EventItemRequest request, CancellationToken cancellationToken )
         {
-            get
-            {
-                return new EventPool
+            return Task.FromResult
+            (
+                new EventItemResponse
                 {
-                    Name = "",
-                    AlwaysRefresh = false,
-                    DisableCategoryFiltering = false,
-                    DisableFavorites = false,
-                    DisableTagFiltering = false,
-                    EnableCodeScanning = true,
-                    EnableFavoriteEmailRequest = false,
-                    Location = "",
-                    NoEventsFallbackText = "",
-                    OverrideTargetUrl = "",
-                    PictureUrl = null
-                }; ;
-            }
+                    Status = EventsStatus.Success,
+                    Item = GetEventPoolAsync( null, cancellationToken ).Result.ChildrenItems[13]
+                }
+            );
         }
 
-        public bool AnyItems { get { return true; } }
-
-        public EventItemGroup[] ItemGroups
+        public Task<EventPoolResponse> GetEventPoolAsync( EventPoolRequest request, CancellationToken cancellationToken )
         {
-            get
-            {
-                return new[]
+            return Task.FromResult
+            (
+                new EventPoolResponse
                 {
-                    new EventItemGroup( "Conferences - Seminars", new[]
+                    Status = EventsStatus.Success,
+                    EventCategories = new Dictionary<int, string>
                     {
-                        new EventItem
+                        { 1, "Conferences - Seminars" },
+                        { 2, "Thesis defenses" },
+                        { 3, "Cultural events" },
+                        { 4, "Miscellaneous" },
+                        { 5, "Academic calendar" },
+                        { 6, "Exhibitions" },
+                        { 7, "Inaugural lessons - Lessons of honor" }
+                    },
+                    EventTags = new Dictionary<string, string>
+                    {
+                        { "0", "Civil Engineering" },
+                        { "1", "Pedagogical Research and Support" },
+                        { "2", "Seminars at the Automatic Control Lab" },
+                        { "3", "Academic calendar" },
+                        { "4", "Computational Biology" },
+                        { "5", "IEEE Student Branch" },
+                        { "6", "Chair of Geometry" },
+                        { "7", "Environmental engineering seminar series" },
+                        { "8", "Computational Solid Mechanics Laboratory" },
+                        { "9", "Architecture" },
+                        { "10", "Data Management & Information Retrieval" },
+                        { "11", "Swiss Finance Institute @ EPFL" },
+                        { "12", "Physics Section" },
+                        { "13", "Swiss Institute for Experimental Cancer Research" },
+                        { "14", "Environmental engineering" },
+                        { "15", "EDCE Civil and Environmental Engineering" },
+                        { "16", "Hydraulic Constructions Laboratory LCH" },
+                        { "17", "PolyProg" },
+                        { "18", "SV" },
+                        { "19", "Agenda LCAV" },
+                        { "20", "Sustainable campus" },
+                        { "21", "Travel GC" },
+                        { "22", "Systems & Networks" },
+                        { "23", "Swiss Finance Institute at EPFL" },
+                        { "24", "EDIC Candidacy Exams schedule" },
+                        { "25", "kis" },
+                        { "26", "Brown Bag Seminars in Finance" },
+                        { "27", "Brain Mind Institute" },
+                        { "28", "LCPM related" },
+                        { "29", "ENAC - Ongoing and upcoming field campaigns" },
+                        { "30", "IC Colloquium" },
+                        { "31", "Maths" },
+                        { "32", "STI" },
+                        { "33", "BMI Seminars Series" },
+                        { "34", "Security & Cryptography" },
+                        { "35", "Center for Research In Plasma Physics" },
+                        { "36", "Archizoom" },
+                        { "37", "Civil engineering seminar series" },
+                        { "38", "Digital Humanities Laboratory" },
+                        { "39", "Computational Neuroscience Seminars" },
+                        { "40", "CDM" },
+                        { "41", "SB" },
+                        { "43", "Lab Logs" },
+                        { "44", "Associations" },
+                        { "45", "venturelab" },
+                        { "46", "Highschool teachers" },
+                        { "47", "CdH" },
+                        { "48", "Teaching Support Centre" },
+                        { "49", "Architecture & Sciences of the City" },
+                        { "50", "LESO LUNCHTIME LECTURES" },
+                        { "51", "Graphics & Vision" },
+                        { "52", "cultural events" },
+                        { "53", "Robopoly" },
+                        { "54", "EPFL Start-up" },
+                        { "55", "Laboratoire of space studies HD" },
+                        { "56", "Flow Cytometry Core Facility" },
+                        { "57", "Laboratory of Astrophysics" },
+                        { "58", "IC" },
+                        { "59", "CHAIR \"GAZ NATUREL\"" },
+                        { "60", "Solar Energy and Building Physics Laboratory" },
+                        { "61", "Algorithms & Theoretical Computer Science" },
+                        { "62", "Swiss Finance Institute @ EPFL" },
+                        { "63", "Equal Opportunities Office" },
+                        { "64", "Global Health Institute" },
+                        { "65", "BMI Seminars" },
+                        { "66", "IN SILICO | BUILDING" },
+                        { "67", "ENAC" },
+                        { "68", "Management of Technology and Entrepreneurship Institute" },
+                        { "69", "Computer Architecture & Integrated Systems" },
+                        { "70", "Programming Languages & Formal Methods" },
+                        { "71", "Section de génie civil" },
+                        { "71", "INNOVATION PARK" },
+                        { "72", "Steel Structures Laboratory ICOM" },
+                        { "73", "Information & Communication Theory" },
+                        { "74", "Massive Open Online Courses" },
+                        { "75", "Signal & Image Processing" },
+                        { "76", "Artificial Intelligence & Machine Learning" },
+                        { "77", "LAST EVENTS" },
+                        { "78", "Centre for Area and Cultural Studies" },
+                        { "79", "CNP Center for Neuroprosthetics" },
+                        { "80", "FIFA 13 tournament" },
+                        { "81", "Center on Risk Analysis and Risk Governance" },
+                        { "82", "study programs promotion" },
+                        { "83", "Institute of Bioengineering - IBI" },
+                        { "84", "National Centre of Competence in Research Synapsy" },
+                        { "85", "Institute of Microengineering Talks" },
+                        { "86", "Human-Computer Interaction" },
+                        { "87", "Urban Planning" },
+                        { "88", "Finance Research Seminars" },
+                        { "89", "Institute of Chemical Sciences and Engineering" },
+                        { "90", "Technology & Public Policy" },
+                        { "91", "Prof. Naef Group" },
+                        { "92", "LCPM meetings" },
+                        { "93", "EPFL" },
+                        { "94", "Laboratory of Soil Mechanics LMS" },
+                        { "95", "Unlabeled" },
+                    },
+                    ChildrenItems = new Dictionary<long, EventItem>
+                    {
+                        { 0, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"TBA",
                             SpeakerName = @"Paul Biran, ETH Zürich",
                             Location = "MA A331",
@@ -67,9 +163,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 1, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"To be announced",
                             SpeakerName = @"Thierry Gacoin, Ecole Polytechnique Paris, France",
                             Location = "MXF1",
@@ -85,9 +182,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = @"http://pmc.polytechnique.fr/groupes/chimie/accueil_chimie_fr.html"
-                        },
-                        new EventItem
+                        } },
+                        { 2, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"MTEI Seminar by Dr. Evangelos Syrigos, University of Zurich",
                             SpeakerName = @"Dr. Evangelos Syrigos, University of Zurich",
                             Location = "ODY 4.03 - VIP Room",
@@ -108,9 +206,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br /> Resource value is among the most debated concepts in the resource-based theory. In this paper, we test recent arguments that resource value is a function of a resource’s ex ante standalone value, the presence of complementary resources, and demand-side factors using a dataset of all patents filed by the 33 largest pharmaceutical corporations in the US market during 1980-1985.&nbsp; In line with our predictions, we find a positive direct effect of standalone technological value of a new patented molecule. We further find that the level of demand and the firm’s position in the therapeutic class positively moderate the influence of a patented molecules standalone value on the likelihood of that molecule being further developed through clinical trials. Contrary to our predictions, we find that scientific and technological strength negatively moderate this relationship, a finding that suggests negative complementarity in the form of increased selectiveness in further developing molecules into drugs.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 3, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"No Title",
                             SpeakerName = @"Toni WHITED (University of Rocherster)",
                             Location = "Extranef, room 126",
@@ -126,9 +225,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 4, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"LCPM Presentation",
                             SpeakerName = @"Aleksandr Pereverzev",
                             Location = "CH G1 495",
@@ -144,9 +244,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 5, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"An ultrafast camera for chemical imaging",
                             SpeakerName = @"Dr Claire Vallance University of Oxford",
                             Location = "CH G1 495",
@@ -162,9 +263,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"The development of sensors capable of detecting particles with both high time and high positional resolution is key to improving our understanding in many areas of science.&nbsp; Example application areas range from fundamental scattering studies of chemical reaction mechanisms through to imaging mass spectrometry of surfaces, neutron scattering studies aimed at probing the structure of materials, and time?resolved fluorescence measurements to elucidate the structure and function of biomolecules. In addition to improved throughput resulting from parallelisation of data collection – imaging of multiple different fragments in velocity?map imaging studies, for example - fast image sensors also offer a number of fundamentally new capabilities in areas such as coincidence detection.&nbsp; This talk will review recent developments in fast image sensor technology, with particular reference to the PImMS (Pixel Imaging Mass Spectrometry) sensors developed in Oxford, and will showcase results from a range of different imaging applications.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 6, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Space-time and hp-adaptive discontinuous Galerkin methods for time-domain electromagnetics",
                             SpeakerName = @"Dr. Sascha SCHNEPP (ETH Zürich, Switzerland)",
                             Location = "MA A3 30",
@@ -180,9 +282,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"Serminar of Numerical Analysis",
                             DetailsUrl = @"http://mathicse.epfl.ch/seminars"
-                        },
-                        new EventItem
+                        } },
+                        { 7, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Molecular mechanisms involved in neurodegenerative diseases: a genetic, environmental and biological factors study",
                             SpeakerName = @"Carl JULIEN, Post-doc, Ph.D. Labs of Dr Alex Parker and Pierre Drapeau, Pathology and Cellular Biology, Department of Neurosciences, Université de Montréal, CRCHUM, Montréal, Québec, CANADA",
                             Location = "AI 1153",
@@ -198,9 +301,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"For many neurodegenerative diseases, environmental and biological factors may interfere with genetic susceptibilities and lead or not to disease manifestation. Here, we found changes in fatty acid profiles from human brain samples of Alzheimer’s disease (AD) and Parkinson’s disease (PD) patients and a decrease of SIRT1 levels in AD brain. We also observed in mouse models of type 1 and type 2 diabetes and in mice anesthetized an aggravation of tau and A? pathologies, the two hallmarks of AD. We also found changes in synaptic markers and in brain fatty acid profiles in mice fed a high-fat diet. Moreover, using genetic models in C. elegans and mouse, we observed involvement of endoplasmic reticulum (ER) stress pathway, the DNA-binding proteins TDP-43 and FUS, and the secreted growth factor progranulin in polyglutamine (polyQ) toxicity found in Huntington’s disease (HD). We also investigated drugs targeting these pathways to identify disease modifiers.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 8, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"BMI Seminar // NeuroTechnologies for the restoration of sensory-motor function in disabled people",
                             SpeakerName = @"Silvestro Micera Translational Neural Engineering Lab, Head Center for Neuroprosthetics and Institute of Bioengineering, School of Engineering, EPFL, Lausanne, Switzerland",
                             Location = "SV1717A",
@@ -216,9 +320,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 9, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"How roots reinforce soil and enhance slope stability",
                             SpeakerName = @"Dr Massimiliano Schwarz, Forest and Food Science. School of Agriculture, Bern University of Applied Sciences CH",
                             Location = "GR A3 32",
@@ -243,9 +348,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br /> His professional interest is oriented on different issues related to landscape and resources management in mountain regions. In particular, his research focuses on the quantification of the interaction between vegetation and hydro-mechanical processes at different temporal and spatial scales. His teaching activity at the University of Applied Sciences in Bern covers the topics of bioengineering, natural hazards (landslides, debris flow, and floods), and pedology.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 10, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"A New Perspective on Shear Thickening of Dense Suspensions",
                             SpeakerName = @"Prof. Heinrich M. Jaeger, University of Chicago",
                             Location = "ME B3 31",
@@ -263,9 +369,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br /> Bio: Heinrich Jaeger is the William J. Friedman and Alicia Townsend Professor of Physics at the University of Chicago. He received his Ph.D. in physics in 1987, under Allen Goldman at the University of Minnesota, working on ultrathin superconducting films.&nbsp; After a postdoc at the University of Chicago 1987-89, Jaeger spent two years at the Centre for Submicron Technology of the University of Delft in The Netherlands. He has been on the faculty at Chicago since 1991, directing the Chicago Materials Research Center from 2001 – 2006, and the James Franck Institute from 2007-2010. Jaeger’s current research focuses on investigations of self-assembled nanoparticle-based structures, on the rheology of dense suspensions, and on studies of the packing and flow of granular materials.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 11, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"La morphogenèse: la construction du vivant",
                             SpeakerName = @"Annick Lesne, mathématicienne, biologiste, directrice de recherche au CNRS, Paris",
                             Location = "Archizoom",
@@ -281,9 +388,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"Conf&eacute;rence dans le cadre de l'exposition Patrick Berger &agrave; Archizoom",
                             DetailsUrl = @"http://archizoom.epfl.ch/op/edit/annick_lesne"
-                        },
-                        new EventItem
+                        } },
+                        { 12, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"TBA",
                             SpeakerName = @"Claude Sabbah, CNRS Strasbourg",
                             Location = "MA A331",
@@ -299,9 +407,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 13, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Finite-temperature properties of Ba(Zr,Ti)O3 relaxors from first principles",
                             SpeakerName = @"Laurent Bellaiche, University of Arkansas, USA",
                             Location = "MXF1",
@@ -351,9 +460,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br /> His primary research interests are to reveal the properties of ferroelectric systems at the nanoscale level, in general, and to understand how and why they differ from the corresponding bulks, in particular. He thinks such research can lead to smart cards with higher storage, ultrasound machines with sharper resolutions and sonar-listening devices that can scan greater distances.",
                             DetailsUrl = @"http://www.uark.edu/misc/aaron5/index.html"
-                        },
-                        new EventItem
+                        } },
+                        { 14, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Density-based embedding for multiscale simulations",
                             SpeakerName = @"Christoph Jacob, Tomasz Wesolowski",
                             Location = "BCH 2103",
@@ -369,9 +479,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = @"http://www.cecam.org/workshop-965.html"
-                        },
-                        new EventItem
+                        } },
+                        { 15, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"No Title",
                             SpeakerName = @"Xavier GIROUD (MIT)",
                             Location = "Extranef, room 126",
@@ -387,9 +498,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 16, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Discussion meeting",
                             SpeakerName = "",
                             Location = "CH G1 495",
@@ -405,9 +517,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 17, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"EDIC Open House",
                             SpeakerName = "",
                             Location = "BC Atrium",
@@ -426,9 +539,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br /> The exact program of this year's edition to be announced.",
                             DetailsUrl = @"http://phd.epfl.ch/edic/openhouse"
-                        },
-                        new EventItem
+                        } },
+                        { 18, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Tunneling Control of Chemical Reactions",
                             SpeakerName = @"Prof. Peter Schreiner, Institute of Organic Chemistry, Justus-Liebig Universität Giessen, Germany",
                             Location = "BCH 2218",
@@ -444,9 +558,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 19, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Nuclear spin isomers and long-lived spin states: how the right kind of symmetry keeps NMR signals alive",
                             SpeakerName = @"Prof. Malcolm Levitt School of Chemistry University of Southampton",
                             Location = "BCH4310",
@@ -462,9 +577,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 20, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Synapsy Happy Hour Lausanne - Margot Fournier & Aline Monin",
                             SpeakerName = "",
                             Location = "SV 2.510",
@@ -491,9 +607,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br /> Every student and researcher interested in the field of neuroscience and psychiatry is very welcome to join!",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 21, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Methane in aquatic systems - Formation, mixing, oxidation, and emission",
                             SpeakerName = @"Dr Carsten Schubert, Surface Waters Research and Management, EAWAG, Duebendorf, CH",
                             Location = "GR A3 32",
@@ -516,9 +633,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br /> Carsten Schubert is head of the department “Surface Waters-Research and Management” at the Swiss Federal Institute of Aquatic Science and Technology (Eawag).",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 22, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"No Title",
                             SpeakerName = @"Elise GOURIER (PhD in Finance at the Swiss Banking Institute, University of Zurich)",
                             Location = "Extranef, room 125",
@@ -534,9 +652,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 23, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"TBA",
                             SpeakerName = @"Ezra Getzler, Northwestern",
                             Location = "MAA331",
@@ -552,9 +671,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 24, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Molecular and cellular basis of bitter taste",
                             SpeakerName = @"Prof. Wolfgang MEYERHOF, Dept of Molecular Genetics, German Institute of Human Nutrition, Potsdam-Rehbrücke/Germany",
                             Location = "CH G1 495",
@@ -570,9 +690,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 25, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Investigation of the creep of cementitious materials by indentation",
                             SpeakerName = @"Matthieu Vandamme, École des Ponts ParisTech, France",
                             Location = "MXF1",
@@ -605,9 +726,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> &nbsp;&nbsp;&nbsp; Nanoindentation technique
 <br /> &nbsp;&nbsp;&nbsp; Computed X-ray microtomography",
                             DetailsUrl = @"http://navier.enpc.fr/"
-                        },
-                        new EventItem
+                        } },
+                        { 26, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"ITPP Seminar by Prof. Julia Lane, American Institutes for Research",
                             SpeakerName = @"Prof. Julia Lane, Senior Managing Economist, American Institutes for Research",
                             Location = "ODY 4.03 - VIP Room",
@@ -632,9 +754,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <strong>Authors</strong>
 <br /> Julia Lane, Jacques Mairesse, Michele Pezzoni and Paula Stephan",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 27, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Workshop II",
                             SpeakerName = "",
                             Location = "TBA",
@@ -650,9 +773,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"Part of the Tropical geometry in its complex and symplectic aspects semester organized by the CIB.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 28, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"No Title",
                             SpeakerName = @"S. Vish VISWANATHAN (Duke University)",
                             Location = "Extranef, room 126",
@@ -668,9 +792,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 29, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Thermal decomposition of Cumene Hydroperoxide: chemical and kinetic characterization",
                             SpeakerName = @"Sergio Vernuccio",
                             Location = "Batochime5310",
@@ -686,9 +811,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"PhD applicant to EDCH program",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 30, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"LCPM Presentation",
                             SpeakerName = @"Ludmila Voronina",
                             Location = "CH H5 625",
@@ -704,9 +830,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 31, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Neuroscience meets cell and molecular biology",
                             SpeakerName = "",
                             Location = "EPFL-SV1717A",
@@ -727,9 +854,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Information and registration on: 
 <a href=""http://bmi.epfl.ch/jointsymposium2014"">bmi.epfl.ch/jointsymposium2014</a>",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 32, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Des nouvelles de Spetses, ou GLn(x) pour x une indéterminée?",
                             SpeakerName = @"Prof. Michel Broué, Université Paris Diderot",
                             Location = "CM4",
@@ -745,9 +873,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"Colloque de Math&eacute;matiques",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 33, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"TBD",
                             SpeakerName = @"Peter Carmeliet VIB Vesalius Research Center Katholieke Universiteit Leuven Leuven, Belgium",
                             Location = "SV 1717A",
@@ -763,9 +892,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 34, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"""Science! On tourne"" : La fonte des glaces, un drame magnifique",
                             SpeakerName = @"Robert Bolognesi et Martin Beniston",
                             Location = "Rolex Learning Center",
@@ -785,9 +915,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br /> Comment faire dialoguer un regard artistique et une approche scientifique autour d'un tel ph&eacute;nom&egrave;ne? Robert Bolognesi et Martin Beniston se pr&ecirc;teront au jeu &agrave; l'occasion d'une nouvelle &eacute;dition de &quot;Science! on tourne&quot; le mercredi 12 mars 2014, &agrave; 12h15, au caf&eacute; Klee du Rolex Learning Center (vid&eacute;o disponible sur le site web de l'EPFL apr&egrave;s la rencontre).",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 35, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Responses of soil bacterial and fungal communities to summer desiccation and rewetting in Mediterranean grasslands: summer precipitation pattern matters",
                             SpeakerName = @"Dr Romain Barnard, Groupe de recherche Agroecologie, INRA Dijon, FR",
                             Location = "GR A3 32",
@@ -812,9 +943,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <u>Short biography</u>
 <br /> As&nbsp; a functional ecologist, Romain Barnard investigates the response of terrestrial ecosystem functioning to global change. His research activities are directed towards better understanding the responses of soil C and N cycles in relation to plant physiology. After a Ph.D. at Paris-Sud University on the effects of elevated CO2 on soil nitrogen cycling, he worked at ETH Z&uuml;rich for six years in Nina Buchmann’s lab, using stable isotopes to study the controls of time-lags between the assimilation of carbon by the plant and its respiration by the soil. More microbiological aspects of the effects of changes in precipitation patterns on ecosystem functioning were later developed during a two-year stay at University of California, Berkeley in Mary Firestone’s lab. He is now a research scientist at the INRA (French National Institute for Agricultural Research) in Dijon, where he focuses on the effects of precipitation patterns on plant-soil interactions.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 36, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Radioscopy of Fatigue Cracks",
                             SpeakerName = @"Prof. François Hild, Laboratory of Mechanics and Technology, Cachan (France) Bio : François Hild is Research Professor at the Laboratory of Mechanics and Technology in Cachan (France).  He graduated from École Normale Supérieure de Cachan in 1989.  He received his Ph.D. degrees in Mechanical Engineering from the University of Paris 6 in 1992 and from the University of California in 1995, and his habilitation from the University of Paris 6 in 1998.  His research interests include advanced experimental techniques, digital image and volume correlation, identification and validation procedures for material models.",
                             Location = "ME B1 10",
@@ -831,9 +963,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             Details = @"<u>Abstract</u> : 3D imaging techniques (e.g., X-ray computed microtomography or XRCMT) of in situ mechanical tests allow for the measurement of 3D displacement fields by resorting to digital volume correlation.&nbsp; More importantly, it enables for the identification of mechanical properties of opaque materials.&nbsp; When using XRCMT reconstructed volumes, measurement uncertainties and correlation residuals are assessed when finite element based volume correlation is used. In particular, artifacts related to the use of lab tomographs are discussed.
 <br /> For a tensile test of cracked cast iron sample imaged by XRCMT, a fully coupled experimental / numerical procedure is based on an enriched kinematic basis as in eXtended finite element analyses.&nbsp; The crack surface, crack front, and stress intensity factor profiles are extracted from the measured displacements and compared with numerical predictions.&nbsp; It is also possible to evaluate local crack propagation features by analyzing different propagation steps.&nbsp; This type of analysis shows that there are direct ways to bridge the gap between experiments and simulations thanks to consistent kinematic bases and identification procedures, and opens the way for the validation of fracture laws and numerical models.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 37, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Architecture souterraine vs génie civil: possibilités et limites",
                             SpeakerName = @"Miguel Gómez Navarro, ingénieur civil, dr ès sciences techniques EPFL",
                             Location = "AAC 1 14",
@@ -849,9 +982,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"Conf&eacute;rence de Miguel G&oacute;mez Navarro, Directeur de l'Ecole d'architecture de l'Universit&eacute; Europ&eacute;enne&nbsp;de Madrid",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 38, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Partial Fourier-Mukai transform for algebraically integrable systems",
                             SpeakerName = @"Roman Fedorov, Kansas State",
                             Location = "MAA331",
@@ -879,9 +1013,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> of the 'dual integrable system' and construct the corresponding partial
 <br /> Fourier-Mukai transform. Applications to Hitchin systems will be discussed.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 39, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Information Release and the Fit of the Fama-French Model",
                             SpeakerName = @"Thomas GILBERT (University of Washington)",
                             Location = "Extranef, room 118",
@@ -897,9 +1032,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 40, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"New metallic materials for biodegradable implant applications",
                             SpeakerName = @"Jörg Löffler, ETHZ, Zürich",
                             Location = "MXF1",
@@ -930,9 +1066,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br /> The principal areas of J&ouml;rg L&ouml;ffler’s research are the synthesis and characterization of novel nanostructured and amorphous materials; magnetic, optical, and mechanical properties on the nanoscale; the use of metals for medical applications (in particular bioresorbable implants); and neutron scattering and synchrotron radiation. His work has received distinctions at several international conferences. Other awards include the ETH Zurich Medal for the excellence of his Ph.D. dissertation and the Masing Memorial Award for his contributions to materials science. J&ouml;rg L&ouml;ffler was a member of the German National Merit Foundation from 1991 to 1997, holds a Visiting Faculty position at the California Institute of Technology, and is Adjunct Professor at the World Premier Institute (WPI) of Tohoku University in Sendai. He is a member of the editorial boards of Intermetallics, Metallurgical and Materials Transactions A, Journal of Nanoscience and Nanotechnology, and the open-access journal Results in Physics. He is also member of the Science Advisory Council of the European Spallation Neutron Source.",
                             DetailsUrl = @"http://www.metphys.mat.ethz.ch/"
-                        },
-                        new EventItem
+                        } },
+                        { 41, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Brain Awareness Week 2014",
                             SpeakerName = "",
                             Location = "CHUV - Auditoire César-Roux",
@@ -948,9 +1085,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 42, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Removing unwanted variation: from principal components to random effects",
                             SpeakerName = @"Prof. Terry Speed, Walter and Eliza Hall Institute of Medical Research and UC Berkeley",
                             Location = "CE2",
@@ -966,9 +1104,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"Statistics Seminar",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 43, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Mind and Magic: Manipulating Perception Through Physical Misdirection",
                             SpeakerName = @"Mark Mitton",
                             Location = "SV 1717A",
@@ -994,9 +1133,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <a href=""http://www.youtube.com/watch?v=ToDMG7ptZss"">http://www.youtube.com/watch?v=ToDMG7ptZss</a>
 <br /> Mitton's CV (attached to announcement on memento.epfl.ch)",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 44, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Nanowire superconducting single-photon detectors: towards the ultimate optical detector",
                             SpeakerName = @"Prof. Andrea Fiore, COBRA Research Institute, Eindhoven Univ. Technol., The Netherlands",
                             Location = "PH L1 503",
@@ -1012,9 +1152,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"In this talk single-photon detectors based on superconducting nanowires will be described, which provide unmatched sensitivity, speed and temporal resolution at telecom wavelengths. After a general overview of the operation principle and performance, the physical processes governing the detector's single- and multi-photon response will be addressed.&nbsp; Novel detector concepts leading to more advanced functionalities, such as photon-number-resolution, will also be discussed.",
                             DetailsUrl = @"http://www.tue.nl/en/university/departments/electrical-engineering/research/research-institutes/research-institute-cobra/"
-                        },
-                        new EventItem
+                        } },
+                        { 45, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Supramolecules, Nanoswitches and Nanorotors in Action",
                             SpeakerName = @" Prof. Michael Schmittel, University of Siegen (Germany), Dep. of Organic Chemistry I",
                             Location = "BCH 3118",
@@ -1031,9 +1172,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             Details = @"<a href=""http://www.uni-siegen.de/fb8/oc/oc1"">www.uni-siegen.de/fb8/oc/oc1</a>
 <br type=""_moz"" />",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 46, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Flexibility in Engineering Design",
                             SpeakerName = @"Prof. Richard de Neufville (MIT)",
                             Location = "GC B330",
@@ -1055,9 +1197,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br /> Bio: Dr. Richard de Neufville is Professor of Engineering Systems and of Civil and Environmental Engineering at MIT. He specializes in Systems Analysis and Design of major infrastructure. His work now focuses on flexibility in technological systems. This is logically equivalent to using “real options”, but in engineering the analysis differs substantially from that of financial options. This approach implies a fundamental shift in engineering design, from a focus on fixed specifications, to a concern with system performance under the range of possible risks and opportunities. He has worked widely – geographically and substantively -- on many projects, including hydropower, oil platforms, copper mines, and his substantive specialty, airports. He is author of Flexibility in Engineering Design (MIT Press, 2011), Airport Systems Planning, Design and Management, (McGraw-Hill, 2nd edition, 2013); Applied Systems Analysis (McGraw-Hill) and other texts. Numerous prizes have recognized his work, including the Sizer Award for the Most Significant Contribution to MIT Education for having founded and led the MIT Technology and Policy Program. He has an MIT PhD and a Delft Dr.Hc. Born in the United States, he enjoyed 7 years of school in Switzerland.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 47, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Epidermal-dermal communication in healthy skin and in cancer",
                             SpeakerName = @"Dr. Fiona Watt",
                             Location = "SV 1717a",
@@ -1073,9 +1216,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 48, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"No Title",
                             SpeakerName = @"Peter DE MARZO (Stanford GBS)",
                             Location = "Extranef, room 126",
@@ -1091,9 +1235,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 49, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Mastering the Design of Modern Complex Distributed Systems",
                             SpeakerName = @"Dr. Iuliana Bacivarov, ETHZ",
                             Location = "MEB1 B10",
@@ -1116,9 +1261,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br /> Dr. Bacivarov’s main research interests are focused on the optimization of applications distributed onto massively parallel architectures, targeting both embedded systems and high performance computing systems. Her work addresses system-level models and methods for programming, analyzing the performance, and optimizing such systems as part of large scale EU-funded projects: SHAPES, EURETILE, PRO3D, COMBEST, and PREDATOR and Swiss nano-tera.ch founded projects: Ultrasound To Go and Extreme. She is coordinating project activities in SHAPES (January 2006-December 2009), EURETILE (started January 2010), and PRO3D (January 2010 – December 2012). Dr. Bacivarov has authored or co-authored more than 50 publications, of which two have received best paper awards and two have been nominated. She is an established researcher in her community, having given more than 35 talks at prestigious international conferences such as DAC, DATE, and ES Week, of which 26 have been invited.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 50, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Discussion meeting",
                             SpeakerName = "",
                             Location = "CH H5 625",
@@ -1134,9 +1280,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 51, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Oxidative Amination with and without Metals",
                             SpeakerName = @"Prof. Kilian Muniz, ICIQ, Tarragona, Spain",
                             Location = "BCH 2218",
@@ -1166,9 +1313,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> (10) J. A. Souto, D. Zian, K. Mu&ntilde;iz, K. J. Am. Chem. Soc. 2012, 134, 7242.
 <br /> (11) J. A. Souto, P. Becker, A. Iglesias, K. Mu&ntilde;iz, K. J. Am. Chem. Soc. 2012, 134, 15505.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 52, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Adaptive low-rank methods for high dimensional elliptic partial differential equations",
                             SpeakerName = @"Dr. Markus BACHMAYR (Institut für Geometrie und Praktische Mathematik, RWTH Aachen / Germany)",
                             Location = "MA A3 30",
@@ -1184,9 +1332,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"Seminar of Numerical Analysis",
                             DetailsUrl = @"http://mathicse.epfl.ch/seminars"
-                        },
-                        new EventItem
+                        } },
+                        { 53, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Improving system energy efficiency by leveraging context awareness",
                             SpeakerName = @"Prof. Tajana Simuni? Rosing, University of California, San Diego",
                             Location = "ME B1 B10",
@@ -1204,9 +1353,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br /> Bio: Tajana Simuni? Rosing is currently an Associate Professor of Computer Science and Adjunct Associate Professor in the Electrical and Computer Engineering Department at UCSD.&nbsp; She is currently heading the effort in SmartCities as a part of DARPA and industry funded TerraSwarm center. Prior to that she led the energy efficient datacenters theme as a part of the MuSyC center.&nbsp; Her research interests are energy efficient computing, embedded and large scale distributed systems.&nbsp; Prior to this she was a full time researcher at HP Labs while being leading research part-time at Stanford University.&nbsp; She finished her PhD in 2001 at Stanford University, concurrently with finishing her Masters in Engineering Management.&nbsp; Her PhD topic was Dynamic Management of Power Consumption.&nbsp; Prior to pursuing the PhD, she worked as a Senior Design Engineer at Altera Corporation.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 54, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"BMI Seminar // Vision Assessment on Mobile Devices",
                             SpeakerName = @"Peter Bex Schepens Eye Research Institute, Department of Ophthalmology, Harvard Medical School, Boston, USA",
                             Location = "SV1717A",
@@ -1222,9 +1372,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 55, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Pizzas&Start-up",
                             SpeakerName = @": Pix4D - Olivier Küng, Co-Founder & Sonja Betschart, CMO Citiviz - Nicolas Lachance-Bernard, CEO Gait Up - Benoît Mariani, CEO Fastree 3D - Pierre-Yves Cattin, Co-Founder",
                             Location = "EPFL Innovation Park - Room Uranus",
@@ -1244,9 +1395,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Mandatory registration on 
 <a href=""http://vpiv.epfl.ch/pizzas-start-up-en"">http://vpiv.epfl.ch/pizzas-start-up-en</a>",
                             DetailsUrl = @"http://inform.epfl.ch/index.php?form=PS_March_5_2014"
-                        },
-                        new EventItem
+                        } },
+                        { 56, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"OPERA@NOH-Theater",
                             SpeakerName = @"Affaires culturelles et artistiques de l'EPFL & Cercle Suisse-Japon",
                             Location = "Forum Rolex",
@@ -1266,9 +1418,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br /> Tickets to the show in the Rolex Learning Center Forum will be on sale in February 2014. At that time, 200 free tickets will be raffled off to EPFL students and collaborators on EPFL’s culture BLOG.",
                             DetailsUrl = @"http://culture.epfl.ch/opera-noh-theater_en"
-                        },
-                        new EventItem
+                        } },
+                        { 57, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Geomicrobiology of an acid impacted uranium mine in Kazakhstan",
                             SpeakerName = @"Dr Brian Reinsch, GR-CEL, CEMBL EPFL",
                             Location = "GR A3 32",
@@ -1289,9 +1442,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <u>Short Biography</u>:
 <br /> Brian Reinsch is a postdoctoral researcher at EPFL (ENAC, CEL) originally from San Diego, California. He received a B.S. in chemistry, and minor in mathematics from Chapman University (Orange, CA) and both a M.S. and Ph.D. from the Department of Civil and Environmental Engineering at Carnegie Mellon University (Pittsburgh, PA) under Greg Lowry. Throughout his career the environmental fate, transformations, and effects of heavy metals has been the main focus of his research. This current work is a collaboration between academia (EPFL) and industry (AREVA Mines in France).",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 58, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Trapped Reeb orbits do not imply periodic ones",
                             SpeakerName = @"Nena Röttgen (Freiburg i. Br.)",
                             Location = "MA A3 31",
@@ -1308,9 +1462,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             Details = @"<strong>Geometry and Dynamics Seminar<br /><br /> Abstract: </strong>The aim of the talk will be the construction of a contact form on R^{2n + 1} with n greater or equal to 2, yielding the standard contact structure, that is standard outside a compact set and induces a Reeb vector field with a compact invariant set, but no closed orbit. This gives a counterexample to a conjecture by H. Hofer. I will provide an overview of connected results. These will include a global Darboux Theorem by Eliashberg and Hofer showing that Reeb flows in higher dimension differ substantially from Reeb dynamics in dimension three.
 <br />",
                             DetailsUrl = @"http://cag.epfl.ch/page-39531-en.html"
-                        },
-                        new EventItem
+                        } },
+                        { 59, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"xxx",
                             SpeakerName = @"Dr Susan Gaskin, Civil Engineering and Applied Mechanics, Mc Gill University, CA - visiting professor to CRYOS",
                             Location = "GR A3 32",
@@ -1326,9 +1481,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 60, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Targeted Nanomedicines for the Resolution of Inflammation",
                             SpeakerName = @"Nazila Kamaly, Ph.D., Harvard Medical School, MIT Koch Institute, Brigham and Women’s Hospital, Boston, MA (USA) Bio: - MSci, Medicinal Chemistry, University College London, U. of London (2002) - Chemical Data Editor, Chapman & Hall/CRC Press, UK Publishing House (2003) - PhD degree, Imperial College London, Department of Chemistry (2007) - Postdoc Chemist, Medical Research Council, Hammersmith Hospital (2007-09) - Research Associate, Imperial College London, Comprehensive Cancer Imaging Centre (2009-10) - Postdoctoral Research Fellow, Brigham Women's Hospital, Harvard Medical School and David H. Koch Institute for Integrative Cancer Research at MIT, Boston, MA, USA (2011-current) - Instructor, Harvard Medical School & Brigham and Women's Hospital, Boston, MA, USA (2013-current)",
                             Location = "SV1717A",
@@ -1352,9 +1508,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> This talk will present investigations into the development of targeted anti-inflammatory controlled-release polymeric nanomedicines for the treatment of inflammation driven diseases including atherosclerosis and colitis. The synthesis, nanoengineering, characterization and 
 <em>in vivo</em> biological investigations of polymeric nanoparticles containing a payload of biologic drugs including a potent mediator biomimetic peptide and the anti-inflammatory cytokine IL-10 will be presented.",
                             DetailsUrl = @"http://bioengineering.epfl.ch/files/content/sites/ibi/files/shared/pdf/140304_Kamaly.pdf"
-                        },
-                        new EventItem
+                        } },
+                        { 61, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Triangulated lattice polytopes",
                             SpeakerName = @"Victor Batyrev  (University of Tübingen)",
                             Location = "BI A0 448",
@@ -1372,9 +1529,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br />",
                             DetailsUrl = @"http://bernoulli.epfl.ch/PublicEvent.php?event=1036"
-                        },
-                        new EventItem
+                        } },
+                        { 62, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"On the Impact of Hidden Liquidity on Upstairs and Downstairs Markets",
                             SpeakerName = @"Ulrich HORST (Humboldt University Berlin)",
                             Location = "Extranef, room 126",
@@ -1390,9 +1548,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = "",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 63, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"IC Colloquium : Machine Learning for Social Systems: Modeling Opinions, Activities and Interactions",
                             SpeakerName = "",
                             Location = "BC 420",
@@ -1422,9 +1581,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <a href=""http://i.stanford.edu/~julian/"">More information</a>",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 64, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Specialized Macdonald polynomials, quantum K-theory, and Kirillov-Reshetikhin modules",
                             SpeakerName = @"Cristian Lenart, Max-Planck-Institut, Bonn, and State University of New York at Albany",
                             Location = "MAA331",
@@ -1440,9 +1600,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"The (symmetric) Macdonald polynomials are Weyl group invariant polynomials with rational function coefficients in q,t, which specialize to the irreducible Lie algebra characters upon setting q=t=0. Quantum K-theory is a K-theoretic generalization of quantum cohomology. Kirillov-Reshetikhin (KR) modules are certain finite-dimensional modules for affine Lie algebras. Braverman and Finkelberg related the Macdonald polynomials specialized at t=0 to the quantum K-theory of flag varieties.&nbsp; With S. Naito, D. Sagaki, A. Schilling, and M. Shimozono, I proved that the same specialization of Macdonald polynomials equals the graded character of a tensor product of (one-column) KR modules. I will discuss the combinatorics underlying these connections.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 65, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"High-Efficiency Computation in Embedded Systems",
                             SpeakerName = @"Dr. Phillip Stanley-Marbell, Apple Inc., Cupertino",
                             Location = "ME B1 B10",
@@ -1467,9 +1628,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> His research interests are in architectures for high-efficiency embedded data processing, approximate compute architectures for future device technologies, and domain-specific programming languages for implementing precision-efficient algorithms.
 <br />",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 66, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Nanoscale structuring and patterning of polymeric materials",
                             SpeakerName = @"Holger Schönherr, University of Siegen, Germany Bio: Holger Schönherr studied chemistry and polymer chemistry & physics at the Universities of Mainz and Toronto and finished his diploma thesis with Helmut Ringsdorf in 1995. He obtained his Ph.D. at the University of Twente, The Netherlands in 1999, working with G. Julius Vancso. Following a postdoctoral stay at Stanford University with Curtis W. Frank he joined the MESA+ Institute for Nanotechnology in Twente as assistant (later associate) professor before joining the University of Siegen in 2008 as a University Professor in Physical Chemistry. In April 2013 he was also appointed as guest professor at the Shanghai Jiaotong University. He was awarded, among others, with the Schloessmann award (Biology and Materials Science) of the Max Planck Society (1995), the DSM Award (2nd) for Chemistry & Technology (1999), a NWO vernieuwingsimpuls (VIDI) grant (2001), the Raphael-Eduard-Liesegang award of the German Colloid Society (2011), an ERC starting grant (2011), the POLYCHAR Materials Science Award 2013 and Research Prize of the Faculty of Science and Technology of the University of Siegen (2013). His research interests comprise the chemistry and physics of biointerfaces, self-assembled and nanostructured polymer systems, and surface analysis with atomic force microscopy. Currently running research projects: Polymer brushes and 3D  cell microenvironments, enzyme-labile block copolymer nanocapsules for the detection and treatment of bacterial wound infections, surface nanobubbles, nanostructured polymers via templating with anodic alumina, surface structuring with light-induced mass transport, and investigation of ligand-quadruplex DNA-interactions on structured surfaces.",
                             Location = "MXF1",
@@ -1511,9 +1673,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> [8] Joost Duvigneau, Holger Sch&ouml;nherr, G. Julius Vancso ACS Applied Materials and Interfaces 2011, 3, 3855-65.
 <br /> [9] Qi &amp; K.-S. T&uuml;cking, S. Handschuh-Wang, H. Sch&ouml;nherr Australian Journal of Chemistry 2014, in press.",
                             DetailsUrl = @"http://www.chemie-biologie.uni-siegen.de/pc/hs/index.html?lang=de"
-                        },
-                        new EventItem
+                        } },
+                        { 67, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Marches aléatoires sur les groupes : les premiers pas, I",
                             SpeakerName = @"Alex Monnard (EPFL)",
                             Location = "MA3 31",
@@ -1529,9 +1692,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"Group Theory Seminar",
                             DetailsUrl = @"http://ctg.epfl.ch/seminar"
-                        },
-                        new EventItem
+                        } },
+                        { 68, new EventItem
                         {
+                            CategoryId = 1,
                             Name = @"Tropical Geometry and Topology",
                             SpeakerName = @"Grigory Mikhalkin ( University of Geneva)",
                             Location = "BI A0 448",
@@ -1555,12 +1719,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br /> Schedule on the website.",
                             DetailsUrl = @"http://cib.epfl.ch/PublicEvent.php?event=1034"
-                        }
-                    } ),
-                    new EventItemGroup( "Thesis defenses", new[]
-                    {
-                        new EventItem
+                        } },
+                        { 69, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"Friction feedback actuators using squeeze film effect",
                             SpeakerName = @"Christophe WINTER",
                             Location = "Auditoire Charles-Edouard Guillaume - Bâtiment Microcity - Rue de la Maladière 71b - 2000 Neuchâtel",
@@ -1578,9 +1740,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Systems and Robotics doctoral program.
 <br /> Thesis 6128",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 70, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"Theories of Experimentally Observed Excitation Spectra of Square Lattice Antiferromagnets",
                             SpeakerName = @"Bastien DALLA PIAZZA",
                             Location = "Auditoire CE4",
@@ -1598,9 +1761,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Physics doctoral program.
 <br /> Thesis 6090",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 71, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"Ionic Liquid Based Field Effect Studies on La2-xSrxCuO4 Films and Related Materials",
                             SpeakerName = @"Guy Joseph Günter DUBUIS",
                             Location = "Auditoire CE3",
@@ -1618,9 +1782,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Physics doctoral program.
 <br /> Thesis 6133",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 72, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"Electronic Interfaces for Carbon Nanotube Electromechanical Oscillators and Sensors",
                             SpeakerName = @"Christian KAUTH",
                             Location = "Auditoire ELA 1",
@@ -1639,9 +1804,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Thesis 6127
 <br />",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 73, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"Hydrodynamics and nonlinear phenomena in polariton fluids.",
                             SpeakerName = @"Gabriele GROSSO",
                             Location = "Auditoire CE4",
@@ -1659,9 +1825,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Physics doctoral program.
 <br /> Thesis 6117",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 74, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"On Voltage and Frequency Control in Multi-Area Power Systems Security",
                             SpeakerName = @"Omid ALIZADEH MOUSAVI",
                             Location = "Auditoire EL A2",
@@ -1679,9 +1846,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Electrical Engineering doctoral program.
 <br /> Thesis 6053",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 75, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"Fatigue behaviour of UHPFRC and R-UHPFRC - RC composite members",
                             SpeakerName = @"Tohru MAKITA",
                             Location = "Salle GC B3 30",
@@ -1699,9 +1867,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Structures doctoral program.
 <br /> Thesis 6068",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 76, new EventItem
                         {
+                             CategoryId = 2,
                             Name = @"Monte Carlo Modeling of Crystal Channeling at High Energies",
                             SpeakerName = @"Philippe Jean SCHOOFS",
                             Location = "CERN - Salle Dirac (40-S2-D01) - 1211 Genève 23",
@@ -1719,9 +1888,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Physics doctoral program.
 <br /> Thesis 6064",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 77, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"Decomposition optimization strategy for the design and operation of district energy systems",
                             SpeakerName = @"Samira FAZLOLLAHI",
                             Location = "Auditoire CM4",
@@ -1739,9 +1909,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Energy doctoral program.
 <br /> Thesis 6130",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 78, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"High gradient proton linacs for medical applications",
                             SpeakerName = @"Alberto DEGIOVANNI",
                             Location = "CERN - auditoire Kjell Johnsen 30-7-018, 1211 Genève 23",
@@ -1759,9 +1930,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Physics doctoral program.
 <br /> Thesis 6069",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 79, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"Near-Field Enhancement in Plasmonic Arrays",
                             SpeakerName = @"Thomas Gerd SIEGFRIED",
                             Location = "Paul Scherrer Institute - Building: SZ-OSGA Room: EG06 - 5232 Villigen-PSI",
@@ -1780,9 +1952,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Thesis 6114
 <br />",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 80, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"Three Dimensional Microstructures for Cell Culture with Engineered Stiffness and Geometry",
                             SpeakerName = @"Mattia MARELLI",
                             Location = "Auditoire ELA 2",
@@ -1800,9 +1973,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Microsystems and Microelectronics doctoral program
 <br /> Thesis 6076",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 81, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"Experimental and theoretical studies on the effects of smooth muscle on the mechanical response and remodeling of arteries",
                             SpeakerName = @"Aristotelis AGIANNIOTIS",
                             Location = "Auditoire CE4",
@@ -1820,9 +1994,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Biotechnology and Bioengineering doctoral program.
 <br /> Thesis 5793",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 82, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"On Multi-Dimensional Privacy in Context-Aware Mobile Networks",
                             SpeakerName = @"Igor BILOGREVIC",
                             Location = "Salle BC 420",
@@ -1840,9 +2015,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Computer, Communication and Information Sciences doctoral program.
 <br /> Thesis 6066",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 83, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"Objective Assessment of Swimming Biomechanics Using Wearable Inertial Sensors",
                             SpeakerName = @"Farzin DADASHI",
                             Location = "Auditoire EL A1",
@@ -1860,9 +2036,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Electrical Engineering doctoral program
 <br /> Thesis 6055",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 84, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"Choix d'un label énergétique par les promoteurs immobiliers en France et en Suisse",
                             SpeakerName = @"Virginie SILBERSTEIN",
                             Location = "Auditoire MXF1",
@@ -1880,9 +2057,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Environment doctoral program.
 <br /> Thesis 6103",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 85, new EventItem
                         {
+                            CategoryId = 2,
                             Name = @"Quench tests of LHC magnets with beam: studies on beam loss development and determination of quench levels",
                             SpeakerName = @"Agnieszka PRIEBE",
                             Location = "Salle 503-1-001 Council Chamber, CERN, 1211 Genève 23",
@@ -1900,12 +2078,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Physics doctoral program.
 <br /> Thesis 6116",
                             DetailsUrl = null
-                        }
-                    } ),
-                    new EventItemGroup( "Cultural events", new[]
-                    {
-                        new EventItem
+                        } },
+                        { 86, new EventItem
                         {
+                            CategoryId = 3,
                             Name = @"Learning DAHU – Contemporary Dance",
                             SpeakerName = @"Cie Philippe Saire",
                             Location = "Rolex Learning Center",
@@ -1929,9 +2105,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <strong>The performances </strong>will be carried out on Wednesday 26 and Thursday 27 March, at 12:00 p.m. and 7:00 p.m.",
                             DetailsUrl = @"http://culture.epfl.ch/learning-dahu"
-                        },
-                        new EventItem
+                        } },
+                        { 87, new EventItem
                         {
+                            CategoryId = 3,
                             Name = @"Spectacle ""Couvre-feux""",
                             SpeakerName = "",
                             Location = "Théâtre La Grange de Dorigny",
@@ -1972,9 +2149,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <a href=""http://www3.unil.ch/wpmu/grangededorigny/2013/06/couvre-feux/"">en ligne</a>
 <br /> Le bar et la billetterie ouvrent une heure avant le d&eacute;but de la repr&eacute;sentation et les billets se retirent sur place.",
                             DetailsUrl = @"http://www3.unil.ch/wpmu/grangededorigny/2013/06/couvre-feux/"
-                        },
-                        new EventItem
+                        } },
+                        { 88, new EventItem
                         {
+                            CategoryId = 3,
                             Name = @"Midi_Classics – Unil-EPFL Choir",
                             SpeakerName = @"Lausanne University Choir",
                             Location = "Salle Polyvalente",
@@ -1990,9 +2168,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"During a musical lunch break, the Lausanne University Choir will interpret Missa Brevis by Kod&aacute;ly and the Requiem by Durufl&eacute;, under the direction of Fruzsina Szuromi.",
                             DetailsUrl = @"http://culture.epfl.ch/Midi_Classics-choeur-unil-epfl"
-                        },
-                        new EventItem
+                        } },
+                        { 89, new EventItem
                         {
+                            CategoryId = 3,
                             Name = @"Brain Awareness Week Lausanne",
                             SpeakerName = "",
                             Location = "CHUV - Auditoire César-Roux",
@@ -2011,9 +2190,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Find all the info in the attached program or on the event website: 
 <a href=""http://www.lasemaineducerveau.ch"">lasemaineducerveau.ch</a>",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 90, new EventItem
                         {
+                            CategoryId = 3,
                             Name = @"Spectacle ""Yvonne, princesse de Bourgogne""",
                             SpeakerName = "",
                             Location = "Théâtre La Grange de Dorigny",
@@ -2052,9 +2232,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Le bar et la billetterie ouvrent une heure avant le d&eacute;but de la repr&eacute;sentation et les billets se retirent sur place.
 <br />",
                             DetailsUrl = @"http://www3.unil.ch/wpmu/grangededorigny/2013/06/yvonne-princesse-de-bourgogne/"
-                        },
-                        new EventItem
+                        } },
+                        { 91, new EventItem
                         {
+                            CategoryId = 3,
                             Name = @"ERBRA - an artistic performance by Anne Rochat",
                             SpeakerName = @"Anne Rochat, artist",
                             Location = "Rolex Learning Center - Patios extérieurs",
@@ -2074,12 +2255,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <strong>Performances with the artist:</strong> 2nd of October 2013 and 1st of May 2014",
                             DetailsUrl = @"http://culture.epfl.ch/ERBRA"
-                        }
-                    } ),
-                    new EventItemGroup( "Miscellaneous", new[]
-                    {
-                        new EventItem
+                        } },
+                        { 92, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"Discrete Choice Analysis: Predicting Demand and Market Shares",
                             SpeakerName = @"Prof. Michel Bierlaire, EPFL ENAC INTER TRANSP-OR; Prof. Moshe Ben-Akiva, MIT, Cambridge, USA; Prof. Daniel McFadden, University of California, Berkeley, USA (Nobel Prize Laureate, 2000); Prof. Joan Walker, University of California, Berkeley, USA.",
                             Location = "QIE 0108",
@@ -2095,9 +2274,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"The course is designed for professionals (from industry and public authorities) and academic researchers (professors, researchers, PhD students), interested in understanding and predicting consumer choices, demand and market share, such as marketing analysts, managers, planners, economists, engineers, operations researchers",
                             DetailsUrl = @"http://transp-or.epfl.ch/dca/index.php"
-                        },
-                        new EventItem
+                        } },
+                        { 93, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"Journée sans viande",
                             SpeakerName = "",
                             Location = "Toutes les cafétérias et restaurants de l'EPFL et de l'UNIL",
@@ -2114,9 +2294,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             Details = @"A l'occasion de la Journ&eacute;e internationale sans viande, Unipoly organise le 20 mars, conjointement avec l'UNIL et l'EPFL une journ&eacute;e sans viande dans toutes les caf&eacute;t&eacute;rias et restaurants du campus. Les restaurateurs se sont engag&eacute;s &agrave; exclure la viande des plats servis ce jour-l&agrave;.
 <br /> L'objectif de cette journ&eacute;e est de sensibiliser les &eacute;tudiants et les collaborateurs de l'UNIL et de l'EPFL aux impacts environnementaux li&eacute;s &agrave; la consommation de viande.",
                             DetailsUrl = @"https://unipoly.epfl.ch/public/projets/journee_sans_viande"
-                        },
-                        new EventItem
+                        } },
+                        { 94, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"Journée sans viande",
                             SpeakerName = "",
                             Location = "",
@@ -2133,9 +2314,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             Details = @"A l'occasion de la Journ&eacute;e internationale sans viande, Unipoly organise le 20 mars, conjointement avec l'Unil et l'EPFL une journ&eacute;e sans viande dans toutes les caf&eacute;t&eacute;rias et restaurants du campus. Les restaurateurs se sont engag&eacute;s &agrave; exclure la viande des plats servis ce jour-l&agrave;.
 <br /> L'objectif de cette journ&eacute;e est de sensibiliser les &eacute;tudiants et les collaborateurs de l'Unil et de l'EPFL aux impacts environnementaux li&eacute;s &agrave; la consommation de viande.",
                             DetailsUrl = @"https://unipoly.epfl.ch/public/projets/journee_sans_viande"
-                        },
-                        new EventItem
+                        } },
+                        { 95, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"Démon Robopoly, invité: Jean-Daniel Nicoud",
                             SpeakerName = @"Jean-Daniel Nicoud",
                             Location = "ELA2",
@@ -2154,9 +2336,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Les robots mobiles ont peu &eacute;volu&eacute;s en 20 ans car la loi de Moore ne s'applique pas aux capteurs et aux sources d'&eacute;nergie. Les projets sont plus facile actuellement, et un peu plus complexes, ce qui force une bonne approche modulaire pour le mat&eacute;riel et le logiciel.
 <br /> La pr&eacute;sentation commentera des robots p&eacute;dagogiques anciens et r&eacute;cents et analysera quelques difficult&eacute;s rencontr&eacute;es dans les projets.",
                             DetailsUrl = @"http://robopoly.epfl.ch/"
-                        },
-                        new EventItem
+                        } },
+                        { 96, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"1st Symposium of the Pôle Thématique de Recherche (PTR) Métabolisme-Nutrition-Vieillissement LIMNA Lausanne Integrative Metabolism and Nutrition Alliance",
                             SpeakerName = @"Speakers: (SEE ENCLOSED PROGRAM) Prof. Graham Hardie, University of Dundee, Scotland Prof. Philippe Froguel, University Lille 2, France Prof. Johan Auwerx - EPFL Prof. Nelly Pitteloup - CHUV Prof. David Gatfield – CIG, UNIL Prof. Lluis Fajas Coll – DP, UNIL Prof. Luc Tappy – DP, UNIL Prof. Beatrice Desvergne – CIG, UNIL Prof. Bernard Thorens – CIG, UNIL",
                             Location = "Casino de Montreux",
@@ -2173,9 +2356,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             Details = @"1st Symposium of the P&ocirc;le Th&eacute;matique de Recherche (PTR) M&eacute;tabolisme-Nutrition-Vieillissement
 <br /> LIMNA (Lausanne Integrative Metabolism and Nutrition Alliance)",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 97, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"Conférence avec Fabrice Hadjadj, philosophe et écrivain à succès",
                             SpeakerName = @"Fabrice Hadjadj, philosophe et écrivain d'origine juive, de nom arabe, catholique et français.",
                             Location = "auditoire CO1",
@@ -2195,9 +2379,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Quelle est r&eacute;ellement la place de Dieu s'il y en a une encore? Au-del&agrave; des fondamentalismes et de la morale comment arriver &agrave; une civilisation de la paix et du respect de la diff&eacute;rence?
 <br />",
                             DetailsUrl = @"http://aumonerie.epfl.ch/"
-                        },
-                        new EventItem
+                        } },
+                        { 98, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"Journées d'information",
                             SpeakerName = "",
                             Location = "Forum Rolex Learning Center",
@@ -2215,9 +2400,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Les jeudis, des s&eacute;ances d'information permettront aux gymnasiens de d&eacute;couvrir les diff&eacute;rentes sections d'&eacute;tudes de l'EPFL, d'obtenir des renseignements sur les aspects pratiques (logement, inscription, etc), ainsi que de visiter le campus.
 <br /> Les vendredis, les gymnasiens pourront participer &agrave; un stage ou une visite plus pouss&eacute;e dans la section de leur choix.",
                             DetailsUrl = @"http://bachelor.epfl.ch/journees-info"
-                        },
-                        new EventItem
+                        } },
+                        { 99, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"Des labos et TP : pour acquérir quelles compétences?",
                             SpeakerName = @"Jean-Louis Ricci Ingrid Le Duc",
                             Location = "salle BI A2 468",
@@ -2233,9 +2419,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"This workshop reviews different types of laboratory and practicals (TP), assisting you in clarifying and defining appropriate learning outcomes.",
                             DetailsUrl = @"https://docs.google.com/document/d/1JLAcz5JP1KDh7YoOIYXjE0KxPYIABzgYfK679-zzKCg/edit"
-                        },
-                        new EventItem
+                        } },
+                        { 100, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"UNIPOLY Recrute!",
                             SpeakerName = "",
                             Location = "CM 1221",
@@ -2251,9 +2438,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"S&eacute;ance d'information et pr&eacute;sentation de l'association, de nos activit&eacute;s etc.",
                             DetailsUrl = @"https://unipoly.epfl.ch//start"
-                        },
-                        new EventItem
+                        } },
+                        { 101, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"PUBLICA, les changements et mesures d'accompagnement",
                             SpeakerName = @"Albert Meyer, DRH, responsable salaires et prévoyance",
                             Location = "EPFL, SG1",
@@ -2271,9 +2459,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Le responsable salaires et pr&eacute;voyance &agrave; l'EPFL, Albert Meyer, vient expliquer cette m&eacute;canique et les mesures d'accompagnement prises et r&eacute;ponde &agrave; vos questions.
 <br /> Seront &eacute;galement pr&eacute;sents pour discussion : Philippe Thalmann, membre de la Commission de Caisse Publica (repr&eacute;sentant du domaine des EPF), MM. Robert Dalang et Xavier Llobet, membres de la commission paritaire EPFL.",
                             DetailsUrl = @"http://rh.epfl.ch/page-40803.html"
-                        },
-                        new EventItem
+                        } },
+                        { 102, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"Journées d'information",
                             SpeakerName = "",
                             Location = "Forum Rolex Learning Center",
@@ -2292,9 +2481,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Les vendredis, les gymnasiens pourront participer &agrave; un stage ou une visite plus pouss&eacute;e dans la section de leur choix.
 <br />",
                             DetailsUrl = @"http://bachelor.epfl.ch/journees-info"
-                        },
-                        new EventItem
+                        } },
+                        { 103, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"Specialized Masters Day",
                             SpeakerName = "",
                             Location = "Hall SG, SG0211 and SG0213",
@@ -2328,9 +2518,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <a href=""http://master.epfl.ch/page-103766-en.html"">Program and registration</a>",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 104, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"Effective Assessment",
                             SpeakerName = @"Roland Tormey",
                             Location = "salle BI A2 458",
@@ -2346,9 +2537,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"To develop assessment techniques which are valid and objective, notably to test if students have met the required learning outcomes.",
                             DetailsUrl = @"https://docs.google.com/document/d/15UZwLFBMcgndeDxHbydSC8VfORtp1fY7p3y7N0g-a5w/edit"
-                        },
-                        new EventItem
+                        } },
+                        { 105, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"""From Farm to Fork"" Fusebox Challenge Kick Off by Bühler",
                             SpeakerName = @"Ian Roberts, CTO Bühler Group",
                             Location = "Rolex Learning Center Espace Hodler",
@@ -2365,9 +2557,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             Details = @"More than 30% of the food produced is lost. How can we improve the current food value chain to feed 8 billion people by 2025?
 <br /> Ian Roberts, Chief Technology Officer at B&uuml;hler Group will introduce the key challenges of the current food value chain and provide you with some key insights to stir your creativity for&nbsp;the upcoming Fusebox&nbsp;challenge that will take place from March 4th-March 21st on fusebox.epfl.ch.A networking cocktail will be offered after the conference.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 106, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"Take the challenge and launch your startup !",
                             SpeakerName = @"A different field expert every week will share his/her entrepreneurial knowledge and exeprience.",
                             Location = "Odyssea",
@@ -2396,9 +2589,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br />",
                             DetailsUrl = @"http://venturelab.ch/index.cfm?page=130298"
-                        },
-                        new EventItem
+                        } },
+                        { 107, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"The Open Education Challenge: Funding Opportunity for Education Start-ups in Europe",
                             SpeakerName = "",
                             Location = "",
@@ -2427,9 +2621,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <a href=""http://www.facebook.com/openeducationchallenge"">Facebook</a> and 
 <a href=""http://twitter.com/OpenEdChallenge"">Twitter</a>.",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 108, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"La Sélection de Vin des étudiants de génie civil - événement prolongé",
                             SpeakerName = "",
                             Location = "",
@@ -2464,9 +2659,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br />
 <br />",
                             DetailsUrl = @"http://aegc.epfl.ch/page-95643.html"
-                        },
-                        new EventItem
+                        } },
+                        { 109, new EventItem
                         {
+                            CategoryId = 4,
                             Name = @"Certificate of Advanced Studies in Management of Development Projects",
                             SpeakerName = "",
                             Location = "",
@@ -2516,12 +2712,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <strong>closing date for receipt of applications is 31 July 2013</strong>, by midnight local Swiss time.
 <br />",
                             DetailsUrl = @"http://cooperation.epfl.ch/madepro"
-                        }
-                    } ),
-                    new EventItemGroup( "Academic calendar", new[]
-                    {
-                        new EventItem
+                        } },
+                        { 110, new EventItem
                         {
+                            CategoryId = 5,
                             Name = @"Study trip",
                             SpeakerName = "",
                             Location = "",
@@ -2537,9 +2731,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"One day, for following classes : 2nd year Bachelor and 1st year Master of all Sections",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 111, new EventItem
                         {
+                            CategoryId = 5,
                             Name = @"Study trip",
                             SpeakerName = "",
                             Location = "",
@@ -2555,9 +2750,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"One day, for following classes : 1st and 2nd year Bachelor and 1st year Master of all Sections",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 112, new EventItem
                         {
+                            CategoryId = 5,
                             Name = @"Study trip",
                             SpeakerName = "",
                             Location = "",
@@ -2573,9 +2769,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"One day, for following classes : 1st and 2nd year Bachelor and 1st year Master of all Sections",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 113, new EventItem
                         {
+                            CategoryId = 5,
                             Name = @"Checking of enrolment to Master project",
                             SpeakerName = "",
                             Location = "",
@@ -2591,9 +2788,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"deadline",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 114, new EventItem
                         {
+                            CategoryId = 5,
                             Name = @"Checking of enrolment to Master project",
                             SpeakerName = "",
                             Location = "",
@@ -2609,9 +2807,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"deadline",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 115, new EventItem
                         {
+                            CategoryId = 5,
                             Name = @"Enrolment for Masters projects titles checking",
                             SpeakerName = "",
                             Location = "",
@@ -2627,9 +2826,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"deadline",
                             DetailsUrl = null
-                        },
-                        new EventItem
+                        } },
+                        { 116, new EventItem
                         {
+                            CategoryId = 5,
                             Name = @"Enrolment for Masters projects titles checking",
                             SpeakerName = "",
                             Location = "",
@@ -2645,12 +2845,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"deadline",
                             DetailsUrl = null
-                        }
-                    } ),
-                    new EventItemGroup( "Exhibitions", new[]
-                    {
-                        new EventItem
+                        } },
+                        { 117, new EventItem
                         {
+                            CategoryId = 6,
                             Name = @"PATRICK BERGER - Architecte, Paris",
                             SpeakerName = "",
                             Location = "Espace Archizoom",
@@ -2666,9 +2864,10 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"Du 6 mars au 8 mai 2014, l’espace Archizoom &agrave; l’Ecole polytechnique f&eacute;d&eacute;rale de Lausanne donne carte blanche &agrave; Patrick Berger &agrave; travers l’exposition et le livre qui l’accompagne. L’occasion de (re)d&eacute;couvrir les recherches que l’architecte parisien a men&eacute;es au cours de ses 20 ann&eacute;es d’enseignement en tant que professeur &agrave; l’EPFL.",
                             DetailsUrl = @"http://archizoom.epfl.ch/exposition"
-                        },
-                        new EventItem
+                        } },
+                        { 118, new EventItem
                         {
+                            CategoryId = 6,
                             Name = @"ICE - a Journey to the Land of Icebergs",
                             SpeakerName = @"Robert Bolognesi & EPFL's Cultural and Arts Affairs",
                             Location = "Rolex Learning Center",
@@ -2690,12 +2889,10 @@ namespace PocketCampus.Events.ViewModels.Design
 <br /> Robert Bolognesi and Martin Beniston will join us for a debate at the next edition of 
 <a href=""http://actu.epfl.ch/news/melting-ice-a-sublime-drama/""><strong>Science! on tourne &quot;Melting ice - a sublime drama&quot;: on Wednesday, March 12, 2014, at 12:15 p.m., at the Caf&eacute; Klee in the Rolex Learning Center</strong></a>",
                             DetailsUrl = @"http://culture.epfl.ch/ICE_en"
-                        }
-                    } ),
-                    new EventItemGroup( "Inaugural lessons - Lessons of honor", new[]
-                    {
-                        new EventItem
+                        } },
+                        { 119, new EventItem
                         {
+                            CategoryId = 7,
                             Name = @"Animal ? Itinéraire d'une intuition",
                             SpeakerName = @"Patrick Berger, architecte, Paris",
                             Location = "Auditoire SG1",
@@ -2711,11 +2908,22 @@ namespace PocketCampus.Events.ViewModels.Design
                             HideInformation = false,
                             Details = @"Le&ccedil;on d'honneur et vernissage de l'exposition &agrave; Archizoom",
                             DetailsUrl = @"http://archizoom.epfl.ch/op/edit/patrick_berger"
-                        }
-                    } )
-                };
-            }
+                        } }
+                    }
+                }
+            );
         }
-#endif
+
+        public Task<FavoriteEmailResponse> SendFavoriteItemsByEmailAsync( FavoriteEmailRequest request )
+        {
+            return Task.FromResult
+            (
+                new FavoriteEmailResponse
+                {
+                    Status = EventsStatus.Success
+                }
+            );
+        }
     }
 }
+#endif

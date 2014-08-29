@@ -1,4 +1,10 @@
-﻿using System.Threading;
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+// Design data for PersonViewModel
+
+using System.Threading;
 using PocketCampus.Common.Services.Design;
 using PocketCampus.Directory.Models;
 using PocketCampus.Directory.Services.Design;

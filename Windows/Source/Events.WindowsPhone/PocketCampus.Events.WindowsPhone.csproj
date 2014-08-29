@@ -104,6 +104,11 @@
     <Compile Include="Controls\CodeScannerPopup.xaml.cs">
       <DependentUpon>CodeScannerPopup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Design\DesignCategoryFilterViewModel.cs" />
+    <Compile Include="Views\Design\DesignEventItemViewModel.cs" />
+    <Compile Include="Views\Design\DesignEventPoolViewModel.cs" />
+    <Compile Include="Views\Design\DesignSettingsViewModel.cs" />
+    <Compile Include="Views\Design\DesignTagFilterViewModel.cs" />
     <Compile Include="Views\TagFilterView.xaml.cs">
       <DependentUpon>TagFilterView.xaml</DependentUpon>
     </Compile>

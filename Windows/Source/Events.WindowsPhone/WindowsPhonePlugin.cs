@@ -9,7 +9,7 @@ using PocketCampus.Events.ViewModels;
 using ThinMvvm;
 using ThinMvvm.WindowsPhone;
 
-namespace PocketCampus.Events.WindowsPhone
+namespace PocketCampus.Events
 {
     /// <summary>
     /// The Events Windows Phone plugin.

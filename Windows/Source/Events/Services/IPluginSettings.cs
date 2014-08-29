@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace PocketCampus.Events
+namespace PocketCampus.Events.Services
 {
     /// <summary>
     /// Settings for the Events plugin.

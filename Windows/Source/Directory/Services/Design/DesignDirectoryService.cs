@@ -1,4 +1,10 @@
-﻿#if DEBUG
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+// Design implementation for IDirectoryService
+
+#if DEBUG
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;

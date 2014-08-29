@@ -4,7 +4,7 @@ using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using ThinMvvm;
 
-namespace PocketCampus.Authentication.Common
+namespace PocketCampus.Authentication
 {
     /// <summary>
     /// The authentication plugin.

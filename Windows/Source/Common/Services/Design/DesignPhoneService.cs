@@ -1,4 +1,10 @@
-﻿#if DEBUG
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+// Design implementation for IPhoneService
+
+#if DEBUG
 namespace PocketCampus.Common.Services.Design
 {
     public sealed class DesignPhoneService : IPhoneService
