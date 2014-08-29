@@ -1,15 +1,32 @@
 //
-//  LGRefreshControl.m
+// Copyright (c) 2014 Loic Gardiol <loic.gardiol@gmail.com>
 //
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
 //  Created by Loïc Gardiol on 30.10.12.
-//  Copyright (c) 2013. All rights reserved.
-//
 
-#import "LGRefreshControl.h"
+#import "LGARefreshControl.h"
 
-#import "AFNetworkReachabilityManager.h"
+#import <AFNetworking/AFNetworking.h>
 
-@interface LGRefreshControl ()
+@interface LGARefreshControl ()
 
 @property (nonatomic, strong) UITableViewController* strongTableViewController; //used when init with tableview, should retain it
 @property (nonatomic, weak, readwrite) UITableViewController* tableViewController;
@@ -25,18 +42,22 @@
 
 @end
 
-@implementation LGRefreshControl
-
+@implementation LGARefreshControl
 
 - (id)initWithTableViewController:(UITableViewController*)tableViewController refreshedDataIdentifier:(NSString*)dataIdentifier {
     self = [super init];
     if (self) {
         if (!tableViewController) {
-            @throw [NSException exceptionWithName:@"Illegal argument" reason:@"tableviewcontroller cannot be nil" userInfo:nil];
+            [NSException raise:@"Illegal argument" format:@"tableviewcontroller cannot be nil"];
         }
         if (dataIdentifier && dataIdentifier.length == 0) {
-            @throw [NSException exceptionWithName:@"Illegal argument" reason:@"refreshedDataIdentifier cannot be not nil with length 0" userInfo:nil];
+            [NSException raise:@"Illegal argument" format:@"refreshedDataIdentifier cannot be of length 0 if not nil"];
         }
+        
+        // Need to start monitoring, otherwise sharedManager.networkReachabilityStatus is wrong
+        // Bug in AFNetworkReachabilityManager ?
+        [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+        
         self.tableViewController = tableViewController;
         self.refreshedDataIdentifier = dataIdentifier;
         
@@ -54,50 +75,14 @@
     return self;
 }
 
-/*- (id)initWithTableView:(UITableView*)tableView parentViewController:(UIViewController*)viewController refreshedDataIdentifier:(NSString*)dataIdentifier {
-    if (!tableView) {
-        [NSException raise:@"Illegal argument" format:@"tableView cannot be nil"];
-    }
-    if (!viewController) {
-        [NSException raise:@"Illegal argument" format:@"viewController cannot be nil. Pass the viewcontroller that hosts your tableview"];
-    }
-    if (!dataIdentifier || dataIdentifier.length == 0) {
-        @throw [NSException exceptionWithName:@"Illegal argument" reason:@"refreshedDataIdentifier cannot be nil or length 0" userInfo:nil];
-    }
-    self = [super init];
-    if (self) {
-        _showsDefaultRefreshingMessage = YES;
-        self.errorMessageColor = [UIColor colorWithRed:0.827451 green:0.000000 blue:0.000000 alpha:1.0];
-        self.strongTableViewController = [[UITableViewController alloc] initWithStyle:tableView.style];
-        self.tableViewController = self.strongTableViewController;
-        [viewController addChildViewController:self.tableViewController];
-        self.tableViewController.refreshControl = [UIRefreshControl new];
-        self.refreshControl = self.tableViewController.refreshControl;
-        @try {
-            self.tableViewController.tableView = tableView;
-        }
-        @catch (NSException *exception) {
-            [NSException exceptionWithName:@"Illegal usage" reason:[NSString stringWithFormat:@"you must use initWithTableViewController if you are using a UITableViewController. (Original Exception: %@)", exception] userInfo:nil];
-        }
-        self.tableView = tableView;
-        self.refreshedDataIdentifier = dataIdentifier;
-        if (self.lastSuccessfulRefreshDate) {
-            self.message = nil;
-        }
-    }
-    return self;
-}*/
-
 - (void)uiRefreshControlValueChanged {
     [self.target performSelectorOnMainThread:self.selector withObject:nil waitUntilDone:YES];
 }
 
 - (void)setTarget:(id)target selector:(SEL)selector {
-    
     if (!target) {
-        @throw [NSException exceptionWithName:@"illegal argument" reason:@"target cannot be nil" userInfo:nil];
+        [NSException raise:@"Illegal argument" format:@"target cannot be nil"];
     }
-    
     [self.refreshControl removeTarget:self.target action:self.selector forControlEvents:UIControlEventValueChanged];
     [self.refreshControl addTarget:self action:@selector(uiRefreshControlValueChanged) forControlEvents:UIControlEventValueChanged];
     self.target = target;
@@ -106,7 +91,7 @@
 
 - (void)startRefreshing {
     if (self.showsDefaultRefreshingMessage) {
-        [self startRefreshingWithMessage:NSLocalizedStringFromTable(@"Refreshing", @"LGRefreshControl", nil)];
+        [self startRefreshingWithMessage:NSLocalizedStringFromTable(@"Refreshing", @"LGALibrary", nil)];
     } else {
         [self startRefreshingWithMessage:@""];
     }
@@ -156,19 +141,26 @@
 
 - (void)markRefreshSuccessful {
     if (!self.refreshedDataIdentifier) {
-        @throw [NSException exceptionWithName:@"Illegal operation" reason:@"PCRefreshControl does not support markRefreshSuccessful without being initilized with a nil refreshedDataIdentifier" userInfo:nil];
+        [NSException raise:@"Unsupported operation" format:@"PCRefreshControl does not support markRefreshSuccessful without being initilized with a nil refreshedDataIdentifier"];
     }
     self.lastSuccessfulRefreshDate = [NSDate date]; //now
     self.message = nil; //will set last message to default => last refresh message
 }
 
 - (BOOL)shouldRefreshDataForValidity:(NSTimeInterval)validitySeconds {
+    BOOL internetAvailable = NO;
+    AFNetworkReachabilityManager* manager = [AFNetworkReachabilityManager sharedManager];
+    if (manager.networkReachabilityStatus == AFNetworkReachabilityStatusUnknown) {
+        internetAvailable = YES;
+    } else {
+        internetAvailable = [manager isReachable];
+    }
     if (!self.refreshedDataIdentifier) {
-        return [PCUtils hasDeviceInternetConnection];
+        return internetAvailable;
     }
     NSTimeInterval diffWithLastRefresh = [[NSDate date] timeIntervalSinceDate:self.lastSuccessfulRefreshDate];
     if (diffWithLastRefresh > validitySeconds) {
-        return [PCUtils hasDeviceInternetConnection];
+        return internetAvailable;
     }
     return NO;
 }
@@ -188,11 +180,11 @@
 - (NSMutableAttributedString*)attributedTimeStringForLastRefresh {
     NSMutableAttributedString* attrString = nil;
     if (!self.lastSuccessfulRefreshDate) {
-        attrString = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"LastUpdateNever", @"LGRefreshControl", nil)];
+        attrString = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"LastUpdateNever", @"LGALibrary", nil)];
     } else if (fabs([self.lastSuccessfulRefreshDate timeIntervalSinceNow]) < 60.0) {
-        attrString = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"LastUpdateJustNow", @"LGRefreshControl", nil)];
+        attrString = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"LastUpdateJustNow", @"LGALibrary", nil)];
     } else {
-        NSString* lastUpdateLocalized = NSLocalizedStringFromTable(@"LastUpdate", @"LGRefreshControl", nil);
+        NSString* lastUpdateLocalized = NSLocalizedStringFromTable(@"LastUpdate", @"LGALibrary", nil);
         NSDateFormatter* dateFormatter = [NSDateFormatter new];
         dateFormatter.timeStyle = NSDateFormatterNoStyle;
         dateFormatter.dateStyle = NSDateFormatterShortStyle;
@@ -221,7 +213,6 @@
 
 - (void)setTintColor:(UIColor *)tintColor {
     _tintColor = tintColor;
-    //self.refreshControl.tintColor = tintColor;
     NSMutableAttributedString* attrString = ((NSMutableAttributedString*)self.refreshControl.attributedTitle); //we can assume that because UIRefreshControl retains it and we never set a non-mutable instance
     [attrString removeAttribute:NSForegroundColorAttributeName range:NSMakeRange(0, attrString.length)];
     [attrString addAttribute:NSForegroundColorAttributeName value:tintColor range:NSMakeRange(0, attrString.length)];

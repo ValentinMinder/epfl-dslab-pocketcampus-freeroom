@@ -3631,8 +3631,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "195"
             endingLineNumber = "195"
-            landmarkName = "@implementation FoodRestaurantsListViewController"
-            landmarkType = "3">
+            landmarkName = "-getFoodFailedForRequest:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

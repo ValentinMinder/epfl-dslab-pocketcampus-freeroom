@@ -94,7 +94,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 @property (nonatomic, strong) IBOutlet UIBarButtonItem* stationsListButton;
 
 @property (nonatomic, strong) UITableViewController* tableViewController;
-@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+@property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 
 @property (nonatomic, strong) TransportService* transportService;
 @property (nonatomic, strong) NSOrderedSet* usersStations;
@@ -131,7 +131,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     [super viewDidLoad];
     self.tableViewController = [[UITableViewController alloc] initWithStyle:self.tableView.style];
     [self addChildViewController:self.tableViewController];
-    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self.tableViewController refreshedDataIdentifier:nil];
+    self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self.tableViewController refreshedDataIdentifier:nil];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     self.tableViewController.tableView = self.tableView;
     self.tableView.hidden = YES;

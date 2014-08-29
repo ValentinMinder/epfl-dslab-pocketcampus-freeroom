@@ -41,6 +41,8 @@ install_resource()
       ;;
   esac
 }
+install_resource "LGALibrary/Pod/Assets/en.lproj"
+install_resource "LGALibrary/Pod/Assets/fr.lproj"
 install_resource "TUSafariActivity/TUSafariActivity/Safari.png"
 install_resource "TUSafariActivity/TUSafariActivity/Safari@2x.png"
 install_resource "TUSafariActivity/TUSafariActivity/Safari@2x~ipad.png"

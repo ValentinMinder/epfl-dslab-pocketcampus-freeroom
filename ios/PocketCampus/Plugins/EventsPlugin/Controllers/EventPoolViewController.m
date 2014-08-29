@@ -77,7 +77,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 @property (nonatomic, readwrite) int64_t poolId;
 @property (nonatomic, strong) EventPool* eventPool;
 @property (nonatomic, strong) EventPoolReply* poolReply;
-@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+@property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 @property (nonatomic, strong) EventsService* eventsService;
 
 @property (nonatomic) int32_t selectedPeriod; //see enum EventsPeriod in events.h
@@ -230,7 +230,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     self.searchController.searchResultsTableView.rowHeight = rowHeightBlock(tableViewAdditions);
     self.searchController.searchResultsTableView.allowsMultipleSelection = NO;
     
-    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"events" dataName:[NSString stringWithFormat:@"eventPool-%lld", self.poolId]]];
+    self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGARefreshControl dataIdentifierForPluginName:@"events" dataName:[NSString stringWithFormat:@"eventPool-%lld", self.poolId]]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     [self updateUI];
     [self fillCollectionsFromReplyAndSelection];

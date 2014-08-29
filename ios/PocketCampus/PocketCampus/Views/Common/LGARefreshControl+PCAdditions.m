@@ -25,19 +25,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 29.09.13.
 
+#import "LGARefreshControl+PCAdditions.h"
 
+@implementation LGARefreshControl (PCAdditions)
 
-#import "LGRefreshControl.h"
-
-@interface LGRefreshControl (PCAdditions)
-
-+ (NSString*)dataIdentifierForPluginName:(NSString*)pluginName dataName:(NSString*)dataName;
++ (NSString*)dataIdentifierForPluginName:(NSString*)pluginName dataName:(NSString*)dataName {
+    [PCUtils throwExceptionIfObject:pluginName notKindOfClass:NSString.class];
+    [PCUtils throwExceptionIfObject:dataName notKindOfClass:NSString.class];
+    return [NSString stringWithFormat:@"%@-%@", pluginName, dataName];
+}
 
 @end

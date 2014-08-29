@@ -53,7 +53,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 @property (nonatomic, strong) MoodleService* moodleService;
 @property (nonatomic, strong) MoodleCoursesResponse2* coursesResponse;
 @property (nonatomic, readonly) NSArray* courses;
-@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+@property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 @property (nonatomic, strong) UIPopoverController* settingsPopover;
 
 @end
@@ -89,7 +89,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
         return floorf([PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault]*1.3);
     };
-    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:@"coursesList"]];
+    self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGARefreshControl dataIdentifierForPluginName:@"moodle" dataName:@"coursesList"]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
 }
 

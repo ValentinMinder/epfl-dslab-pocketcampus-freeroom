@@ -281,6 +281,7 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 
 + (BOOL)hasAppAccessToLocation {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+#warning THIS DOES NOT WORK
 #ifdef __IPHONE_8_0
     return (status == kCLAuthorizationStatusAuthorizedAlways || status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusNotDetermined);
 #else

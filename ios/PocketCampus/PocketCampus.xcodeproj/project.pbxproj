@@ -222,9 +222,7 @@
 		328A72E3184A503C002C5A6B /* PCSplashView.m in Sources */ = {isa = PBXBuildFile; fileRef = 328A72E2184A503C002C5A6B /* PCSplashView.m */; };
 		328D3828174794B5006FE6F3 /* EventsTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328D3827174794B5006FE6F3 /* EventsTagsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 328D38291747A8C9006FE6F3 /* EventsTagView.xib */; };
-		32930A7517F882010025F864 /* LGRefreshControl+PCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A7417F882010025F864 /* LGRefreshControl+PCAdditions.m */; };
-		32930AA817F898910025F864 /* LGRefreshControl.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32930A7817F898910025F864 /* LGRefreshControl.strings */; };
-		32930AA917F898910025F864 /* LGRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A7C17F898910025F864 /* LGRefreshControl.m */; };
+		32930A7517F882010025F864 /* LGARefreshControl+PCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A7417F882010025F864 /* LGARefreshControl+PCAdditions.m */; };
 		32930AB817F898910025F864 /* ZUUIRevealController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930AA717F898910025F864 /* ZUUIRevealController.m */; };
 		3293AD2015D1BC7C0097D414 /* PCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293AD1F15D1BC7C0097D414 /* PCAboutViewController.m */; };
 		3293AD2315D1BC930097D414 /* PCAboutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3293AD2215D1BC930097D414 /* PCAboutView.xib */; };
@@ -744,12 +742,8 @@
 		328D3826174794B5006FE6F3 /* EventsTagsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsTagsViewController.h; sourceTree = "<group>"; };
 		328D3827174794B5006FE6F3 /* EventsTagsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsTagsViewController.m; sourceTree = "<group>"; };
 		328D38291747A8C9006FE6F3 /* EventsTagView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventsTagView.xib; sourceTree = "<group>"; };
-		32930A7317F882010025F864 /* LGRefreshControl+PCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LGRefreshControl+PCAdditions.h"; sourceTree = "<group>"; };
-		32930A7417F882010025F864 /* LGRefreshControl+PCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LGRefreshControl+PCAdditions.m"; sourceTree = "<group>"; };
-		32930A7917F898910025F864 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGRefreshControl.strings; sourceTree = "<group>"; };
-		32930A7A17F898910025F864 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGRefreshControl.strings; sourceTree = "<group>"; };
-		32930A7B17F898910025F864 /* LGRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRefreshControl.h; sourceTree = "<group>"; };
-		32930A7C17F898910025F864 /* LGRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRefreshControl.m; sourceTree = "<group>"; };
+		32930A7317F882010025F864 /* LGARefreshControl+PCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "LGARefreshControl+PCAdditions.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		32930A7417F882010025F864 /* LGARefreshControl+PCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "LGARefreshControl+PCAdditions.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32930AA517F898910025F864 /* ZUUIRevealController-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZUUIRevealController-Prefix.pch"; sourceTree = "<group>"; };
 		32930AA617F898910025F864 /* ZUUIRevealController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZUUIRevealController.h; sourceTree = "<group>"; };
 		32930AA717F898910025F864 /* ZUUIRevealController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZUUIRevealController.m; sourceTree = "<group>"; };
@@ -1644,8 +1638,8 @@
 				32A77DC516A565600018976F /* UIActionSheet+Additions.m */,
 				32BBA916187454A600B2A7D3 /* UILabel+Additions.h */,
 				32BBA917187454A600B2A7D3 /* UILabel+Additions.m */,
-				32930A7317F882010025F864 /* LGRefreshControl+PCAdditions.h */,
-				32930A7417F882010025F864 /* LGRefreshControl+PCAdditions.m */,
+				32930A7317F882010025F864 /* LGARefreshControl+PCAdditions.h */,
+				32930A7417F882010025F864 /* LGARefreshControl+PCAdditions.m */,
 				329C52AC187EE6200045ECB8 /* UISearchBar+Additions.h */,
 				329C52AD187EE6200045ECB8 /* UISearchBar+Additions.m */,
 				329C52AF187EE6600045ECB8 /* UIView+Additions.h */,
@@ -1661,20 +1655,9 @@
 		32930A7617F898910025F864 /* External frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				32930A7717F898910025F864 /* LGRefreshControl */,
 				32930AA417F898910025F864 /* ZUUIRevealController */,
 			);
 			path = "External frameworks";
-			sourceTree = "<group>";
-		};
-		32930A7717F898910025F864 /* LGRefreshControl */ = {
-			isa = PBXGroup;
-			children = (
-				32930A7B17F898910025F864 /* LGRefreshControl.h */,
-				32930A7C17F898910025F864 /* LGRefreshControl.m */,
-				32930A7817F898910025F864 /* LGRefreshControl.strings */,
-			);
-			path = LGRefreshControl;
 			sourceTree = "<group>";
 		};
 		32930AA417F898910025F864 /* ZUUIRevealController */ = {
@@ -2597,7 +2580,6 @@
 				3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */,
 				3218CD2415B8359F00CEB238 /* MoodleLarge.png in Resources */,
 				328A132118296E2D00F4C622 /* FoodSmileyMeh.png in Resources */,
-				32930AA817F898910025F864 /* LGRefreshControl.strings in Resources */,
 				3293AD2315D1BC930097D414 /* PCAboutView.xib in Resources */,
 				32777B4615D1BFBC00A29F56 /* PCAbout.html in Resources */,
 				32675C2415F50F4A00880387 /* Config.plist in Resources */,
@@ -2935,7 +2917,7 @@
 				322207F91689E3A3003F6622 /* PCUtils.m in Sources */,
 				3289F2BD183FB80600D833C2 /* TransportStationsManagerViewController.m in Sources */,
 				322207FA1689E3A3003F6622 /* PCValues.m in Sources */,
-				32930A7517F882010025F864 /* LGRefreshControl+PCAdditions.m in Sources */,
+				32930A7517F882010025F864 /* LGARefreshControl+PCAdditions.m in Sources */,
 				27B74CE219A205E6006B2F17 /* RecommendedAppsController.m in Sources */,
 				324654C7168BA2D400F2782D /* PluginControllerAuthentified.m in Sources */,
 				329C52AE187EE6200045ECB8 /* UISearchBar+Additions.m in Sources */,
@@ -2972,7 +2954,6 @@
 				32290ACF18200A0A005869E7 /* FoodSplashDetailViewController.m in Sources */,
 				32BDB42D18C74E790014F821 /* PCScanningViewController.m in Sources */,
 				32EB6182180D7CC4001AE852 /* MapRecentSearchesListViewController.m in Sources */,
-				32930AA917F898910025F864 /* LGRefreshControl.m in Sources */,
 				3210FD1A197C050000EEDCBF /* MoodleResourceCell.m in Sources */,
 				32E3E5D11899370600D263C5 /* MapModelAdditions.m in Sources */,
 				324FD736176574FE0003EE30 /* CamiproTransactionCell.m in Sources */,
@@ -3059,15 +3040,6 @@
 				327BF2381666043500C67937 /* fr */,
 			);
 			name = PushNotifPlugin.strings;
-			sourceTree = "<group>";
-		};
-		32930A7817F898910025F864 /* LGRefreshControl.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				32930A7917F898910025F864 /* en */,
-				32930A7A17F898910025F864 /* fr */,
-			);
-			name = LGRefreshControl.strings;
 			sourceTree = "<group>";
 		};
 		3296570914FF9DDB00C44C12 /* PocketCampus.strings */ = {

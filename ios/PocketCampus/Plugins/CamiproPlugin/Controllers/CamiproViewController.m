@@ -53,7 +53,7 @@
 @property (nonatomic, weak) IBOutlet UIToolbar* toolbar;
 
 @property (nonatomic, strong) UITableViewController* tableViewController;
-@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+@property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 
 // iPad only
 @property (nonatomic, strong) IBOutlet UILabel* statsLabel;
@@ -97,7 +97,7 @@
     
     self.tableViewController = [[UITableViewController alloc] initWithStyle:self.tableView.style];
     [self addChildViewController:self.tableViewController];
-    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self.tableViewController refreshedDataIdentifier:nil];
+    self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self.tableViewController refreshedDataIdentifier:nil];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     self.tableViewController.tableView = self.tableView;
     

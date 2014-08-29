@@ -66,7 +66,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
 
 @interface MoodleCourseSectionsViewController ()<UISearchDisplayDelegate, MoodleServiceDelegate>
 
-@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+@property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 @property (nonatomic, strong) UISearchBar* searchBar;
 @property (nonatomic, strong) UISearchDisplayController* searchController;
 @property (nonatomic, strong) NSOperationQueue* searchQueue;
@@ -168,7 +168,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
     self.searchController.searchResultsTableView.rowHeight = rowHeightBlock(tableViewAdditions);
     self.searchController.searchResultsTableView.allowsMultipleSelection = NO;
     
-    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.courseId]]];
+    self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGARefreshControl dataIdentifierForPluginName:@"moodle" dataName:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.courseId]]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoriteMoodleResourcesUpdated:) name:kMoodleFavoritesMoodleItemsUpdatedNotification object:self.moodleService];
