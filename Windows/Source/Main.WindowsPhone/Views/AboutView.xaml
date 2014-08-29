@@ -8,12 +8,10 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
-                      xmlns:myDesign="clr-namespace:PocketCampus.Main.Views.Design"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       mc:Ignorable="d"
-                      d:DataContext="{myDesign:DesignAboutViewModel}">
-
+                      d:DataContext="{Binding About, Source={StaticResource Design}}">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
         <ResourceDictionary>

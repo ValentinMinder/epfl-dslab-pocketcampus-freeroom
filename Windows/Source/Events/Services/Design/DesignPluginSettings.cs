@@ -8,12 +8,17 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading;
 
 namespace PocketCampus.Events.Services.Design
 {
     public sealed class DesignPluginSettings : IPluginSettings
     {
-        public string[] UserTickets { get; set; }
+        public string[] UserTickets
+        {
+            get { return new string[0]; }
+            set { }
+        }
 
         public SearchPeriod SearchPeriod
         {
@@ -25,13 +30,19 @@ namespace PocketCampus.Events.Services.Design
 
         public Dictionary<int, string> EventCategories
         {
-            get { return new Dictionary<int, string>(); }
+            get
+            {
+                return new DesignEventsService().GetEventPoolAsync( null, CancellationToken.None ).Result.EventCategories;
+            }
             set { }
         }
 
         public Dictionary<string, string> EventTags
         {
-            get { return new Dictionary<string, string>(); }
+            get
+            {
+                return new DesignEventsService().GetEventPoolAsync( null, CancellationToken.None ).Result.EventTags;
+            }
             set { }
         }
 
@@ -41,9 +52,17 @@ namespace PocketCampus.Events.Services.Design
             set { }
         }
 
-        public Dictionary<long, int[]> ExcludedCategoriesByPool { get; set; }
+        public Dictionary<long, int[]> ExcludedCategoriesByPool
+        {
+            get { return new Dictionary<long, int[]> { { -1, new int[0] } }; }
+            set { }
+        }
 
-        public Dictionary<long, string[]> ExcludedTagsByPool { get; set; }
+        public Dictionary<long, string[]> ExcludedTagsByPool
+        {
+            get { return new Dictionary<long, string[]> { { -1, new string[0] } }; }
+            set { }
+        }
 
 #pragma warning disable 0067 // unused event
         public event PropertyChangedEventHandler PropertyChanged;

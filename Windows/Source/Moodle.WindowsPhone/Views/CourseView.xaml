@@ -11,12 +11,11 @@
                       xmlns:com="clr-namespace:PocketCampus.Common;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:my="clr-namespace:PocketCampus.Moodle"
-                      xmlns:myDesign="clr-namespace:PocketCampus.Moodle.Views.Design"
                       xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       mc:Ignorable="d"
-                      d:DataContext="{myDesign:DesignCourseViewModel}">
+                      d:DataContext="{Binding Course, Source={StaticResource Design}}">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
         <ResourceDictionary>

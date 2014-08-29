@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using PocketCampus.Common;
+using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Models;
 
 namespace PocketCampus.Moodle.Services

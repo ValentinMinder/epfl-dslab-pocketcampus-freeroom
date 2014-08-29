@@ -11,9 +11,17 @@ namespace PocketCampus.Common.Services.Design
 {
     public sealed class DesignCredentialsStorage : ICredentialsStorage
     {
-        public string UserName { get; set; }
+        public string UserName
+        {
+            get { return "johndoe"; }
+            set { }
+        }
 
-        public string Password { get; set; }
+        public string Password
+        {
+            get { return "123456"; }
+            set { }
+        }
 
 #pragma warning disable 0067 // unused event
         public event PropertyChangedEventHandler PropertyChanged;

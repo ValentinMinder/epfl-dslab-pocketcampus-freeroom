@@ -43,16 +43,18 @@
     <Compile Include="HttpResponse.cs" />
     <Compile Include="IAuthenticationToken.cs" />
     <Compile Include="Services\Design\DesignCredentialsStorage.cs" />
+    <Compile Include="Services\Design\DesignDeviceIdentifier.cs" />
     <Compile Include="Services\Design\DesignPhoneService.cs" />
+    <Compile Include="Services\Design\DesignServerSettings.cs" />
     <Compile Include="Services\ICredentialsStorage.cs" />
-    <Compile Include="IServerSettings.cs" />
+    <Compile Include="Services\IServerSettings.cs" />
     <Compile Include="ServerConfiguration.cs" />
     <Compile Include="Services\Design\DesignEmailService.cs" />
     <Compile Include="Services\Design\DesignServerAccess.cs" />
     <Compile Include="Services\Design\DesignBrowserService.cs" />
     <Compile Include="Services\Design\DesignLocationService.cs" />
     <Compile Include="Services\Design\DesignSecureRequestHandler.cs" />
-    <Compile Include="Services\Design\DesignTequilaAuthenticator.cs" />
+    <Compile Include="Services\Design\DesignAuthenticator.cs" />
     <Compile Include="Services\IBrowserService.cs" />
     <Compile Include="Services\IDeviceIdentifier.cs" />
     <Compile Include="Services\IEmailService.cs" />
@@ -62,7 +64,7 @@
     <Compile Include="IPlugin.cs" />
     <Compile Include="Services\ISecureRequestHandler.cs" />
     <Compile Include="Services\IServerAccess.cs" />
-    <Compile Include="Services\ITequilaAuthenticator.cs" />
+    <Compile Include="Services\IAuthenticator.cs" />
     <Compile Include="Services\ITwoStepAuthenticator.cs" />
     <Compile Include="LocationChangedEventArgs.cs" />
     <Compile Include="Pair.cs" />
@@ -73,10 +75,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThinMvvm">
-      <HintPath>..\..\packages\ThinMvvm.0.9.11.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.0.9.12.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
     </Reference>
     <Reference Include="ThinMvvm.Logging">
-      <HintPath>..\..\packages\ThinMvvm.Logging.0.9.11.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.Logging.0.9.12.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
     </Reference>
     <Reference Include="ThriftSharp">
       <HintPath>..\..\packages\ThriftSharp.2.1.1.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThriftSharp.dll</HintPath>

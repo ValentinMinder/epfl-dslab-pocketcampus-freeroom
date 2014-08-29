@@ -10,13 +10,16 @@
                       xmlns:my="clr-namespace:PocketCampus.Camipro"
                       xmlns:com="clr-namespace:PocketCampus.Common;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
-                      xmlns:myDesign="clr-namespace:PocketCampus.Camipro.Views.Design"
+                      xmlns:myDesign="clr-namespace:PocketCampus.Camipro.ViewModels.Design;assembly=PocketCampus.Camipro"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       mc:Ignorable="d"
-                      d:DataContext="{myDesign:DesignMainViewModel}">
+                      d:DataContext="{Binding Main, Source={StaticResource Design}}">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
+        <!-- Design-time DataContext -->
+        <myDesign:Design x:Key="Design" />
+        
         <!-- Localized strings -->
         <my:LocalizedStrings x:Key="Strings" />
 

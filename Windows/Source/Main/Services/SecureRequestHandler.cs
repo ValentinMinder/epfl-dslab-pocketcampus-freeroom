@@ -25,7 +25,7 @@ namespace PocketCampus.Main.Services
         private readonly IMainSettings _mainSettings;
         private readonly ICredentialsStorage _credentials;
         private readonly INavigationService _navigationService;
-        private readonly ITequilaAuthenticator _authenticator;
+        private readonly IAuthenticator _authenticator;
         private readonly IAuthenticationService _authenticationService;
 
 
@@ -33,7 +33,7 @@ namespace PocketCampus.Main.Services
         /// Creates a new SecureRequestHandler.
         /// </summary>
         public SecureRequestHandler( IMainSettings mainSettings, ICredentialsStorage credentials, INavigationService navigationService,
-                                     ITequilaAuthenticator authenticator, IAuthenticationService authenticationService )
+                                     IAuthenticator authenticator, IAuthenticationService authenticationService )
         {
             _mainSettings = mainSettings;
             _credentials = credentials;

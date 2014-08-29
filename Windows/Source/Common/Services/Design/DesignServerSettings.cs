@@ -1,0 +1,40 @@
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+// Design implementation for IServerSettings
+
+#if DEBUG
+using System.ComponentModel;
+
+namespace PocketCampus.Common.Services.Design
+{
+    public class DesignServerSettings : IServerSettings
+    {
+        public ServerConfiguration Configuration
+        {
+            get
+            {
+                return new ServerConfiguration
+                {
+                    AreFoodRatingsEnabled = 1,
+                    EnabledPlugins = new[] { "Authentication", "Camipro", "Directory", "Events", "Food", "IsAcademia", "Map", "Moodle", "News", "Satellite", "Transport" }
+                };
+            }
+            set { }
+        }
+
+        public string Session { get; set; }
+
+        public SessionStatus SessionStatus
+        {
+            get { return SessionStatus.LoggedInTemporarily; }
+            set { }
+        }
+
+#pragma warning disable 0067 // unused event
+        public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore 0067
+    }
+}
+#endif

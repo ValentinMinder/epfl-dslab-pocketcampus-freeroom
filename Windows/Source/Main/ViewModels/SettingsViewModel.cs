@@ -22,7 +22,7 @@ namespace PocketCampus.Main.ViewModels
     [LogId( "/dashboard/settings" )]
     public sealed class SettingsViewModel : ViewModel<NoParameter>
     {
-        private readonly ITequilaAuthenticator _authenticator;
+        private readonly IAuthenticator _authenticator;
         private readonly INavigationService _navigationService;
         private readonly IAuthenticationService _authenticationService;
 
@@ -63,7 +63,7 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Creates a new SettingsViewModel.
         /// </summary>
-        public SettingsViewModel( IMainSettings settings, ITequilaAuthenticator authenticator, INavigationService navigationService,
+        public SettingsViewModel( IMainSettings settings, IAuthenticator authenticator, INavigationService navigationService,
                                   IAuthenticationService authenticationService, ICredentialsStorage credentials, ITileService tileService )
         {
             Settings = settings;

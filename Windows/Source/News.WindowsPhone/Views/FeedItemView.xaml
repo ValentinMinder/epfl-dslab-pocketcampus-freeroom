@@ -8,20 +8,17 @@
                       xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:my="clr-namespace:PocketCampus.News"
-                      xmlns:myDesign="clr-namespace:PocketCampus.News.Views.Design"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       mc:Ignorable="d"
-                      d:DataContext="{myDesign:DesignFeedItemViewModel}">
+                      d:DataContext="{Binding FeedItem, Source={StaticResource Design}}">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
-        <!-- Localized strings -->
-        <my:LocalizedStrings x:Key="Strings" />
-
-        <!-- Converters -->
-        <my:ImageDisplayConverter x:Key="ImageDisplay"
-                                  Width="480"
-                                  Height="300" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </comControls:BasePage.Resources>
 
     <!-- Main grid -->
@@ -64,7 +61,7 @@
                 <comControls:StaleDataIndicator />
 
                 <!-- Image -->
-                <Image Source="{Binding ItemContent.ImageUrl, Converter={StaticResource ImageDisplay}}"
+                <Image Source="{Binding ItemContent.ImageUrl, Converter={StaticResource LargeImageDisplay}}"
                        Width="480"
                        MaxHeight="300"
                        Stretch="Uniform" />

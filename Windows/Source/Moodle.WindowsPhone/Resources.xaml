@@ -6,7 +6,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:tool="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
                     xmlns:my="clr-namespace:PocketCampus.Moodle"
+                    xmlns:myDesign="clr-namespace:PocketCampus.Moodle.ViewModels.Design;assembly=PocketCampus.Moodle"
                     xmlns:com="clr-namespace:PocketCampus.Common;assembly=PocketCampus.Common.WindowsPhone">
+    <!-- Design-time DataContexts -->
+    <myDesign:Design x:Key="Design" />
+    
     <!-- Localized strings -->
     <my:LocalizedStrings x:Key="Strings" />
 

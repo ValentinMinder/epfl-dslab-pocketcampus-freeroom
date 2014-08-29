@@ -12,13 +12,15 @@ namespace PocketCampus.Transport.Services.Design
 {
     public sealed class DesignPluginSettings : IPluginSettings
     {
-        public bool SortByPosition
-        {
-            get { return true; }
-            set { }
-        }
+        public bool SortByPosition { get; set; }
 
         public ObservableCollection<Station> Stations { get; set; }
+
+        public DesignPluginSettings()
+        {
+            SortByPosition = true;
+            Stations = new ObservableCollection<Station>();
+        }
     }
 }
 #endif

@@ -6,30 +6,15 @@
 
 #if DEBUG
 using System.Collections.Generic;
-using System.ComponentModel;
-using PocketCampus.Common;
+using PocketCampus.Common.Services.Design;
 
 namespace PocketCampus.Main.Services.Design
 {
-    public sealed class DesignMainSettings : IMainSettings
+    public sealed class DesignMainSettings : DesignServerSettings, IMainSettings
     {
         public Dictionary<string, string> Sessions { get; set; }
 
         public bool UseColoredTile { get; set; }
-
-        public ServerConfiguration Configuration { get; set; }
-
-        public string Session { get; set; }
-
-        public SessionStatus SessionStatus
-        {
-            get { return SessionStatus.LoggedInTemporarily; }
-            set { }
-        }
-
-#pragma warning disable 0067 // unused event
-        public event PropertyChangedEventHandler PropertyChanged;
-#pragma warning restore 0067
     }
 }
 #endif
