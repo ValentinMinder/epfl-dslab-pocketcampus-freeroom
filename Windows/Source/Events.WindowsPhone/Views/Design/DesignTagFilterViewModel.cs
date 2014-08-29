@@ -4,9 +4,11 @@
 
 // Design data for TagFilterViewModel
 
+#if DEBUG
 using System.Threading;
-using PocketCampus.Events.Models;
 using PocketCampus.Events.Services.Design;
+#endif
+using PocketCampus.Events.Models;
 using PocketCampus.Events.ViewModels;
 using ThinMvvm.WindowsPhone.Design;
 

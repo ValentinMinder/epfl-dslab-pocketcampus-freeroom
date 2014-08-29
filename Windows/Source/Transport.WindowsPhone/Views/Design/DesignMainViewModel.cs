@@ -4,8 +4,10 @@
 
 // Design data for MainViewModel
 
+#if DEBUG
 using PocketCampus.Common.Services.Design;
 using PocketCampus.Transport.Services.Design;
+#endif
 using PocketCampus.Transport.ViewModels;
 using ThinMvvm;
 using ThinMvvm.WindowsPhone.Design;

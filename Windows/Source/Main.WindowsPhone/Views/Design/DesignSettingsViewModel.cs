@@ -4,9 +4,11 @@
 
 // Design data for SettingsViewModel
 
+#if DEBUG
 using PocketCampus.Authentication.Services.Design;
 using PocketCampus.Common.Services.Design;
 using PocketCampus.Main.Services.Design;
+#endif
 using PocketCampus.Main.ViewModels;
 using ThinMvvm;
 using ThinMvvm.WindowsPhone.Design;

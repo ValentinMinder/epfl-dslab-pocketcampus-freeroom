@@ -4,9 +4,11 @@
 
 // Design data for MainViewModel
 
+#if DEBUG
 using PocketCampus.Camipro.Services.Design;
-using PocketCampus.Camipro.ViewModels;
 using PocketCampus.Common.Services.Design;
+#endif
+using PocketCampus.Camipro.ViewModels;
 using ThinMvvm;
 using ThinMvvm.WindowsPhone.Design;
 

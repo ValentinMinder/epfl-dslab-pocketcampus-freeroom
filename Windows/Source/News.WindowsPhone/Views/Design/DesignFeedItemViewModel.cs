@@ -4,10 +4,12 @@
 
 // Design data for FeedItemViewModel
 
+#if DEBUG
 using System.Threading;
 using PocketCampus.Common.Services.Design;
-using PocketCampus.News.Models;
 using PocketCampus.News.Services.Design;
+#endif
+using PocketCampus.News.Models;
 using PocketCampus.News.ViewModels;
 using ThinMvvm.WindowsPhone.Design;
 

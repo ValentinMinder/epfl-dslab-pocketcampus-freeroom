@@ -4,7 +4,9 @@
 
 // Design data for EventPoolViewModel
 
+#if DEBUG
 using PocketCampus.Events.Services.Design;
+#endif
 using PocketCampus.Events.ViewModels;
 using ThinMvvm.WindowsPhone.Design;
 

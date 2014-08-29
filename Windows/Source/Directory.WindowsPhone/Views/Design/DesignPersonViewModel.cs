@@ -4,10 +4,12 @@
 
 // Design data for PersonViewModel
 
+#if DEBUG
 using System.Threading;
 using PocketCampus.Common.Services.Design;
-using PocketCampus.Directory.Models;
 using PocketCampus.Directory.Services.Design;
+#endif
+using PocketCampus.Directory.Models;
 using PocketCampus.Directory.ViewModels;
 using ThinMvvm.WindowsPhone.Design;
 

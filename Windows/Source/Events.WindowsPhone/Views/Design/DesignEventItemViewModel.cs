@@ -4,8 +4,10 @@
 
 // Design data for EventItemViewModel
 
+#if DEBUG
 using PocketCampus.Common.Services.Design;
 using PocketCampus.Events.Services.Design;
+#endif
 using PocketCampus.Events.ViewModels;
 using ThinMvvm.WindowsPhone.Design;
 

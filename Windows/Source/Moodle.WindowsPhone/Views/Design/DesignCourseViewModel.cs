@@ -4,11 +4,13 @@
 
 // Design data for CourseViewModel
 
+#if DEBUG
 using System.Linq;
 using System.Threading;
 using PocketCampus.Common.Services.Design;
-using PocketCampus.Moodle.Models;
 using PocketCampus.Moodle.Services.Design;
+#endif
+using PocketCampus.Moodle.Models;
 using PocketCampus.Moodle.ViewModels;
 using ThinMvvm.WindowsPhone.Design;
 
