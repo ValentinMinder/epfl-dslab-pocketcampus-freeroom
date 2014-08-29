@@ -10,14 +10,11 @@
                       xmlns:my="clr-namespace:PocketCampus.Camipro"
                       xmlns:com="clr-namespace:PocketCampus.Common;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
+                      xmlns:myDesign="clr-namespace:PocketCampus.Camipro.Views.Design"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      mc:Ignorable="d">
-    <!-- Design-time DataContext -->
-    <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Camipro.ViewModels.Design;assembly=PocketCampus.Camipro" />
-    </d:DesignProperties.DataContext>
-
+                      mc:Ignorable="d"
+                      d:DataContext="{myDesign:DesignMainViewModel}">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
         <!-- Localized strings -->

@@ -1,27 +1,30 @@
-// Copyright (c) PocketCampus.Org 2014
-// See LICENSE file for more details
-// File author: Solal Pirelli
-
+﻿#if DEBUG
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using PocketCampus.Camipro.Models;
-using PocketCampus.Common;
-using ThinMvvm;
 
-// Design data for MainViewModel.
-
-namespace PocketCampus.Camipro.ViewModels.Design
+namespace PocketCampus.Camipro.Services.Design
 {
-    public sealed class DesignMainViewModel
+    public sealed class DesignCamiproService : ICamiproService
     {
-#if DEBUG
-        public DataStatus DataStatus { get { return DataStatus.DataLoaded; } }
-
-        public AccountInfo AccountInfo
+        public Task<TequilaToken> GetTokenAsync()
         {
-            get
-            {
-                return new AccountInfo
+            return Task.FromResult( new TequilaToken() );
+        }
+
+        public Task<CamiproSession> GetSessionAsync( TequilaToken token )
+        {
+            return Task.FromResult( new CamiproSession() );
+        }
+
+        public Task<AccountInfo> GetAccountInfoAsync( CamiproRequest request, CancellationToken token )
+        {
+            return Task.FromResult
+            (
+                new AccountInfo
                 {
+                    Status = ResponseStatus.Success,
                     Balance = 84.30,
                     Transactions = new[]
                     {
@@ -95,18 +98,18 @@ namespace PocketCampus.Camipro.ViewModels.Design
                             Place = "Le Négoce",
                             Date = new DateTime(2013, 5, 8, 12, 22, 48)
                         },
-                    },
-                    Status = ResponseStatus.Success
-                };
-            }
+                    }
+                }
+            );
         }
 
-        public EbankingInfo EbankingInfo
+        public Task<EbankingInfo> GetEBankingInfoAsync( CamiproRequest request, CancellationToken token )
         {
-            get
-            {
-                return new EbankingInfo
+            return Task.FromResult
+            (
+                new EbankingInfo
                 {
+                    Status = ResponseStatus.Success,
                     PaymentInfo = new PaymentInfo
                     {
                         AccountName = "Ecole Polytechnique Fédérale de Lausanne\nDébiteurs\n1015 Lausanne",
@@ -117,14 +120,21 @@ namespace PocketCampus.Camipro.ViewModels.Design
                     {
                         MonthTotal = 186.50,
                         ThreeMonthsTotal = 420.60
-                    },
-                    Status = ResponseStatus.Success
-                };
-            }
+                    }
+                }
+            );
         }
 
-        public EmailSendingStatus EmailStatus { get { return EmailSendingStatus.Success; } }
+        public Task<MailRequestResult> RequestEBankingEMailAsync( CamiproRequest request )
+        {
+            return Task.FromResult
+            (
+                new MailRequestResult
+                {
 
-#endif
+                }
+            );
+        }
     }
 }
+#endif

@@ -23,7 +23,7 @@ namespace PocketCampus.Common.Services.Design
             where TToken : IAuthenticationToken
             where TSession : class
         {
-            return Task.FromResult( 0 );
+            return attempt( null );
         }
 
         public void Authenticate<TViewModel>() where TViewModel : ViewModel<NoParameter> { }
