@@ -539,6 +539,7 @@ static MainController<MainControllerPublic>* instance = nil;
         [self setActivePluginWithIdentifier:self.initialActivePluginIdentifier];
         self.initialActivePluginIdentifier = nil; //initial plugin has been treated, prevent future use
         [self.revealController revealToggle:self];
+#warning weird animation on iPad with iOS 8.0
         [self.splashView hideWithAnimationDelay:kHideAnimationDelay duration:self.revealController.toggleAnimationDuration completion:^{
             [self.splashView removeFromSuperview];
         }];

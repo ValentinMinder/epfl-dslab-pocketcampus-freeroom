@@ -39,6 +39,9 @@
 - (UIEdgeInsets)widgetMarginInsetsForProposedMarginInsets:(UIEdgeInsets)defaultMarginInsets {
     defaultMarginInsets.top = 0.0;
     defaultMarginInsets.bottom = 0.0;
+    if ([PCUtils isIdiomPad]) {
+        defaultMarginInsets.left += 9.0;
+    }
     return defaultMarginInsets;
 }
 
@@ -66,7 +69,6 @@
 #pragma mark - Actions
 
 - (void)widgetTapped {
-#warning does not seem to work on iPad
     [self.extensionContext openURL:[NSURL URLWithString:@"pocketcampus://camipro.plugin.pocketcampus.org"] completionHandler:NULL];
 }
 
