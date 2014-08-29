@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.events.server;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,14 +41,22 @@ public class MyQuery {
 		PreparedStatement stm = conn.prepareStatement(query.toString());
 		int index = 1;
 		for (Object arg : values) {
-			if (arg instanceof Integer)
+			if (arg == null)
+				stm.setObject(index++, arg);
+			else if (arg instanceof Integer)
 				stm.setInt(index++, ((Integer) arg));
 			else if (arg instanceof Long)
 				stm.setLong(index++, ((Long) arg));
+			else if (arg instanceof Float)
+				stm.setFloat(index++, ((Float) arg));
+			else if (arg instanceof Double)
+				stm.setDouble(index++, ((Double) arg));
 			else if (arg instanceof String)
 				stm.setString(index++, ((String) arg));
 			else if (arg instanceof Boolean)
 				stm.setBoolean(index++, ((Boolean) arg));
+			else if (arg instanceof Timestamp)
+				stm.setTimestamp(index++, ((Timestamp) arg));
 			else
 				throw new RuntimeException("Hey, are you kidding me? What kind of obj is that?");
 		}
