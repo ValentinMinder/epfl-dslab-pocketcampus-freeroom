@@ -256,7 +256,8 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		LinkedList<Transaction> decodedTrx = new LinkedList<Transaction>();
 		if (tTransactions.LastTransactionsList.LastTransactions != null)
 			for (TransactionsJson.TransactionsListJson.TransactionJson t : tTransactions.LastTransactionsList.LastTransactions)
-				decodedTrx.add(new Transaction(transcribeDate(t.TransactionDate), t.TransactionType, t.ElementDescription, t.TransactionAmount));
+				// HACK since TransactionType isn't returned any more
+				decodedTrx.add(new Transaction(transcribeDate(t.TransactionDate), "" /*t.TransactionType*/, t.ElementDescription, t.TransactionAmount));
 
 		BalanceAndTransactions bt = new BalanceAndTransactions(200);
 		bt.setIBalance(tBalance.PersonalAccountBalance);
