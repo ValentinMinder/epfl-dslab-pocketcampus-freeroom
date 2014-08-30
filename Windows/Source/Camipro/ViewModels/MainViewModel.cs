@@ -121,7 +121,7 @@ namespace PocketCampus.Camipro.ViewModels
                 var accountTask = _camiproService.GetAccountInfoAsync( request, token );
                 var ebankingTask = _camiproService.GetEBankingInfoAsync( request, token );
 
-                // parrallel requests
+                // parallel requests
                 var accountInfo = await accountTask;
                 var ebankingInfo = await ebankingTask;
 
