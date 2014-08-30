@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.pocketcampus.platform.server.HttpClientImpl;
-import org.pocketcampus.plugin.events.server.MyQuery;
+import org.pocketcampus.plugin.events.server.utils.MyQuery;
 import org.pocketcampus.plugin.events.server.utils.Utils;
 import org.pocketcampus.plugin.events.shared.Constants;
 

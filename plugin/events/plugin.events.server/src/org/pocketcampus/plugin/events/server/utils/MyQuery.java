@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.events.server;
+package org.pocketcampus.plugin.events.server.utils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +7,6 @@ import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.pocketcampus.plugin.events.server.utils.Utils;
 
 
 public class MyQuery {
