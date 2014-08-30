@@ -148,6 +148,9 @@
                                    Foreground="{StaticResource PhoneSubtleBrush}"
                                    Visibility="{Binding Resources, Converter={StaticResource NoneToVisibility}}"
                                    Margin="12,0" />
+                        
+                        <!-- Bottom padding -->
+                        <Rectangle Height="95" />
                     </StackPanel>
                 </ScrollViewer>
             </DataTemplate>
