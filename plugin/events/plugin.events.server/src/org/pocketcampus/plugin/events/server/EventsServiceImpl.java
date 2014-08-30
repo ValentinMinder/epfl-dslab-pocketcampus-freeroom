@@ -66,7 +66,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 		try {
 			Connection conn = connMgr.getConnection();
 			DBUtils.logPageView(conn, tokens, parentId, "eventitem");
-			EventItem item = EventItemDecoder.eventItemFromDb(conn, parentId, tokens);
+			EventItem item = EventItemDecoder.eventItemFromDb(conn, parentId, tokens, req.getLang());
 			if (item == null)
 				return new EventItemReply(400);
 			Utils.fixCategAndTags(item);
@@ -108,9 +108,9 @@ public class EventsServiceImpl implements EventsService.Iface {
 				if (!req.isSetStarredEventItems() || !pool.isSetParentEvent())
 					return new EventPoolReply(400);
 				pool.setChildrenEvents(DBUtils.filterStarred(conn, req.getStarredEventItems(), pool.getParentEvent()));
-				childrenItems = EventItemDecoder.eventItemsByIds(conn, pool.getChildrenEvents(), tokens);
+				childrenItems = EventItemDecoder.eventItemsByIds(conn, pool.getChildrenEvents(), tokens, req.getLang());
 			} else {
-				childrenItems = EventItemDecoder.eventItemsFromDb(conn, parentId, periodInHours * 60, tokens);
+				childrenItems = EventItemDecoder.eventItemsFromDb(conn, parentId, periodInHours * 60, tokens, req.getLang());
 			}
 			for (EventItem e : childrenItems.values())
 				Utils.fixCategAndTags(e);
@@ -140,8 +140,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 			List<String> tokens = new LinkedList<String>();
 			if (req.isSetUserTickets() && req.getUserTickets().size() > 0)
 				tokens = req.getUserTickets();
-			EventItem mainEvent = EventItemDecoder.eventItemFromDb(conn, pool.getParentEvent(), tokens);
-			Map<Long, EventItem> childrenItems = EventItemDecoder.eventItemsByIds(conn, pool.getChildrenEvents(), tokens);
+			EventItem mainEvent = EventItemDecoder.eventItemFromDb(conn, pool.getParentEvent(), tokens, req.getLang());
+			Map<Long, EventItem> childrenItems = EventItemDecoder.eventItemsByIds(conn, pool.getChildrenEvents(), tokens, req.getLang());
 			for (EventItem e : childrenItems.values())
 				Utils.fixCategAndTags(e);
 			Map<Integer, String> categMap = DBUtils.getCategsFromDb(conn);

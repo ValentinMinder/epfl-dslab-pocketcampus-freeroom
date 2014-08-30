@@ -16,8 +16,10 @@ public class EventPoolDecoder {
 
 
 	private static class EventPoolDecoderFromDb {
-		private static final String EVENTPOOLS_SELECT_FIELDS = "poolId,poolPicture,poolTitle,poolPlace,poolDetails,disableStar,disableFilterByCateg,disableFilterByTags,enableScan,refreshOnBack,sendStarred,noResultText,overrideLink,parentEvent";
 
+		private static String getSelectFields() {
+			return "poolId,poolPicture,poolTitle,poolPlace,poolDetails,disableStar,disableFilterByCateg,disableFilterByTags,enableScan,refreshOnBack,sendStarred,noResultText,overrideLink,parentEvent";
+		}
 		private static EventPool decodeFromResultSet(ResultSet rs) throws SQLException {
 			EventPool ep = new EventPool();
 
@@ -45,7 +47,7 @@ public class EventPoolDecoder {
 
 		public static MyQuery getSelectEventPoolsQuery() {
 			return new MyQuery().
-					addPart("SELECT " + EVENTPOOLS_SELECT_FIELDS + " FROM eventpools");
+					addPart("SELECT " + getSelectFields() + " FROM eventpools");
 		}
 
 		public static MyQuery getFillChildrenEventItemsQuery() {

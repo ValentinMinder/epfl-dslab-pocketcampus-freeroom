@@ -18,8 +18,16 @@ public class EventItemDecoder {
 
 
 	private static class EventItemDecoderFromDb {
-		private static final String EVENTITEMS_SELECT_FIELDS = "eventId,startDate,endDate,fullDay,eventPicture,eventTitle,eventPlace,eventSpeaker,eventDetails,parentPool,eventUri,vcalUid,eventCateg,broadcastInFeeds,locationHref,detailsLink,secondLine,timeSnippet,hideEventInfo,hideTitle,eventThumbnail,hideThumbnail";
 
+		private static String getSelectFields(String lang) {
+			String eventTitle = "CASE WHEN eventTitle is not null THEN eventTitle ELSE eventTitle_fr END AS eventTitle"; 
+			String eventDetails = "CASE WHEN eventDetails is not null THEN eventDetails ELSE eventDetails_fr END AS eventDetails"; 
+			if("fr".equalsIgnoreCase(lang)) {
+				eventTitle = "CASE WHEN eventTitle_fr is not null THEN eventTitle_fr ELSE eventTitle END AS eventTitle_fr"; 
+				eventDetails = "CASE WHEN eventDetails_fr is not null THEN eventDetails_fr ELSE eventDetails END AS eventDetails_fr"; 
+			}
+			return "eventId,startDate,endDate,fullDay,eventPicture," + eventTitle + ",eventPlace,eventSpeaker," + eventDetails + ",parentPool,eventUri,vcalUid,eventCateg,broadcastInFeeds,locationHref,detailsLink,secondLine,timeSnippet,hideEventInfo,hideTitle,eventThumbnail,hideThumbnail";
+		}
 		private static EventItem decodeFromResultSet(ResultSet rs, int level) throws SQLException {
 			EventItem ei = new EventItem();
 
@@ -87,17 +95,17 @@ public class EventItemDecoder {
 			ei.setSecondLine("Allow others to scan your barcode to exchange contact information with them");
 		}
 
-		public static MyQuery getSelectPublicEventItemsQuery() {
+		public static MyQuery getSelectPublicEventItemsQuery(String lang) {
 			return new MyQuery().
-					addPart("SELECT " + EVENTITEMS_SELECT_FIELDS + ",userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN").
+					addPart("SELECT " + getSelectFields(lang) + ",userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN").
 					addPart(" FROM eventitems LEFT JOIN eventusers ON eventId=mappedEvent").
 					addPart(" WHERE (deleted IS NULL)").
 					addPart(" AND (isProtected IS NULL)");
 		}
 
-		public static MyQuery getSelectAccessibleEventItemsQuery(List<String> token) {
+		public static MyQuery getSelectAccessibleEventItemsQuery(List<String> token, String lang) {
 			return new MyQuery().
-					addPart("SELECT " + EVENTITEMS_SELECT_FIELDS + ",permLevel AS PERM_LEVEL,userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN").
+					addPart("SELECT " + getSelectFields(lang) + ",permLevel AS PERM_LEVEL,userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN").
 					addPart(" FROM eventitems INNER JOIN eventperms ON eventItemId=eventId LEFT JOIN eventusers ON eventId=mappedEvent").
 					addPart(" WHERE (deleted IS NULL)").
 					addPartWithList(" AND (userToken IN ?)", token, " AND (1=0)");
@@ -152,10 +160,10 @@ public class EventItemDecoder {
 		}
 	}
 
-	public static Map<Long, EventItem> eventItemsFromDb(Connection conn, long parentId, int periodInMinutes, List<String> token) throws SQLException {
-		MyQuery publicEvents = EventItemDecoderFromDb.getSelectPublicEventItemsQuery().
+	public static Map<Long, EventItem> eventItemsFromDb(Connection conn, long parentId, int periodInMinutes, List<String> token, String lang) throws SQLException {
+		MyQuery publicEvents = EventItemDecoderFromDb.getSelectPublicEventItemsQuery(lang).
 				addPartWithValue(" AND (parentPool=?)", new Long(parentId));
-		MyQuery accessibleEvents = EventItemDecoderFromDb.getSelectAccessibleEventItemsQuery(token).
+		MyQuery accessibleEvents = EventItemDecoderFromDb.getSelectAccessibleEventItemsQuery(token, lang).
 				addPartWithValue(" AND (parentPool=?)", new Long(parentId));
 		MyQuery fillChildren = EventItemDecoderFromDb.getFillChildrenEventPoolsQuery().
 				addPartWithValue(" AND (parentPool=?)", new Long(parentId));
@@ -173,10 +181,10 @@ public class EventItemDecoder {
 		return EventItemDecoderFromDb.getEventItemsUsingQueries(conn, publicEvents, accessibleEvents, fillChildren, token);
 	}
 
-	public static EventItem eventItemFromDb(Connection conn, long id, List<String> token) throws SQLException {
-		MyQuery publicEvents = EventItemDecoderFromDb.getSelectPublicEventItemsQuery().
+	public static EventItem eventItemFromDb(Connection conn, long id, List<String> token, String lang) throws SQLException {
+		MyQuery publicEvents = EventItemDecoderFromDb.getSelectPublicEventItemsQuery(lang).
 				addPartWithValue(" AND (eventId=?)", new Long(id));
-		MyQuery accessibleEvents = EventItemDecoderFromDb.getSelectAccessibleEventItemsQuery(token).
+		MyQuery accessibleEvents = EventItemDecoderFromDb.getSelectAccessibleEventItemsQuery(token, lang).
 				addPartWithValue(" AND (eventId=?)", new Long(id));
 		MyQuery fillChildren = EventItemDecoderFromDb.getFillChildrenEventPoolsQuery().
 				addPartWithValue(" AND (eventId=?)", new Long(id));
@@ -186,10 +194,10 @@ public class EventItemDecoder {
 		return res.get(res.keySet().iterator().next());
 	}
 
-	public static Map<Long, EventItem> eventItemsByIds(Connection conn, List<Long> ids, List<String> token) throws SQLException {
-		MyQuery publicEvents = EventItemDecoderFromDb.getSelectPublicEventItemsQuery().
+	public static Map<Long, EventItem> eventItemsByIds(Connection conn, List<Long> ids, List<String> token, String lang) throws SQLException {
+		MyQuery publicEvents = EventItemDecoderFromDb.getSelectPublicEventItemsQuery(lang).
 				addPartWithList(" AND (eventId IN ?)", ids, " AND (1=0)");
-		MyQuery accessibleEvents = EventItemDecoderFromDb.getSelectAccessibleEventItemsQuery(token).
+		MyQuery accessibleEvents = EventItemDecoderFromDb.getSelectAccessibleEventItemsQuery(token, lang).
 				addPartWithList(" AND (eventId IN ?)", ids, " AND (1=0)");
 		MyQuery fillChildren = EventItemDecoderFromDb.getFillChildrenEventPoolsQuery().
 				addPartWithList(" AND (eventId IN ?)", ids, " AND (1=0)");
