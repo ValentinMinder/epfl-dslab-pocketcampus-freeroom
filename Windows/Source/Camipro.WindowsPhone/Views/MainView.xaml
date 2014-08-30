@@ -19,7 +19,7 @@
     <comControls:BasePage.Resources>
         <!-- Design-time DataContext -->
         <myDesign:Design x:Key="Design" />
-        
+
         <!-- Localized strings -->
         <my:LocalizedStrings x:Key="Strings" />
 
@@ -31,52 +31,34 @@
 
         <!-- Transaction item template -->
         <DataTemplate x:Key="TransactionTemplate">
-            <!-- Double-grid system to ensure the transaction description takes as much space as possible
-                 instead of being cut off by the dates -->
             <Grid Margin="0,12"
                   Height="60">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                <!-- Description -->
+                <TextBlock Text="{Binding Place}"
+                           TextTrimming="WordEllipsis"
+                           Style="{StaticResource PhoneTextNormalStyle}" />
 
-                    <!-- Description -->
-                    <TextBlock Text="{Binding Place}"
-                               TextTrimming="WordEllipsis"
-                               Style="{StaticResource PhoneTextNormalStyle}" />
+                <!-- Amount -->
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Amount, StringFormat='{}{0:0.00} CHF'}"
+                           Style="{StaticResource PhoneTextNormalStyle}"
+                           Foreground="{Binding Amount, Converter={StaticResource MoneyToBrush}}"  />
 
-                    <!-- Amount -->
-                    <TextBlock Grid.Column="1"
-                               Text="{Binding Amount, StringFormat='{}{0:0.00} CHF'}"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               Foreground="{Binding Amount, Converter={StaticResource MoneyToBrush}}"  />
-                </Grid>
-
-                <Grid Grid.Row="1"
-                      VerticalAlignment="Top">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <!-- Operation -->
-                    <TextBlock Text="{Binding Operation}"
-                               TextTrimming="WordEllipsis"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               Foreground="{StaticResource PhoneSubtleBrush}" />
-
-                    <!-- Date -->
-                    <TextBlock Grid.Column="1"
-                               Text="{Binding Date, StringFormat='{}{0:m}, {0:t}'}"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               Foreground="{StaticResource PhoneSubtleBrush}" />
-                </Grid>
+                <!-- Date -->
+                <TextBlock Grid.Row="1"
+                           Grid.ColumnSpan="2"
+                           Text="{Binding Date, StringFormat='{}{0:m}, {0:t}'}"
+                           Style="{StaticResource PhoneTextNormalStyle}"
+                           Foreground="{StaticResource PhoneSubtleBrush}" />
             </Grid>
         </DataTemplate>
     </comControls:BasePage.Resources>
@@ -103,7 +85,7 @@
                         <RowDefinition Height="36" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    
+
                     <!-- Current balance -->
                     <StackPanel Grid.Row="1"
                                 Orientation="Horizontal"
