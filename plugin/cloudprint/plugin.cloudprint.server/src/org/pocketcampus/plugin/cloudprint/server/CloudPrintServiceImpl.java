@@ -62,18 +62,18 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 					response.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
 					return;
 				}
-			    String filename = getFilename(filePart);
+			    String filename = getFilenameFromContentDisposition(filePart.getHeader("Content-Disposition"));
 			    InputStream filecontent = filePart.getInputStream();
 			    FileOutputStream fos = new FileOutputStream(filePath + "/" + filename);
 			    IOUtils.copy(filecontent, fos);
-			    response.getOutputStream().write(new Gson().toJson(new JsonResponse(id)).getBytes());
+			    response.getOutputStream().write(new Gson().toJson(new CloudPrintUploadResponse(id)).getBytes());
 			}
 		};
 	}
 	
-	public static class JsonResponse {
+	public static class CloudPrintUploadResponse {
 		public long file_id;
-		public JsonResponse(long file_id){
+		public CloudPrintUploadResponse(long file_id){
 			this.file_id = file_id;
 		}
 	}
@@ -115,9 +115,9 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 		}
 		return new PrintDocumentResponse(CloudPrintStatusCode.PRINT_ERROR);
 	}
-	
-	private static String getFilename(Part part) {
-	    for (String cd : part.getHeader("content-disposition").split(";")) {
+
+	public static String getFilenameFromContentDisposition(String contentDisposition) {
+	    for (String cd : contentDisposition.split(";")) {
 	        if (cd.trim().startsWith("filename")) {
 	            String filename = cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
 	            return filename.substring(filename.lastIndexOf('/') + 1).substring(filename.lastIndexOf('\\') + 1); // MSIE fix.

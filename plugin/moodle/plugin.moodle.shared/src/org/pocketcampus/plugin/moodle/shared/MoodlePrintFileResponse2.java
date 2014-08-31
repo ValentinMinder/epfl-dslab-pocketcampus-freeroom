@@ -21,19 +21,23 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, MoodleCourse._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MoodleCourse");
+public class MoodlePrintFileResponse2 implements org.apache.thrift.TBase<MoodlePrintFileResponse2, MoodlePrintFileResponse2._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MoodlePrintFileResponse2");
 
-  private static final org.apache.thrift.protocol.TField I_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iId", org.apache.thrift.protocol.TType.I32, (short)1);
-  private static final org.apache.thrift.protocol.TField I_TITLE_FIELD_DESC = new org.apache.thrift.protocol.TField("iTitle", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField STATUS_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("statusCode", org.apache.thrift.protocol.TType.I32, (short)1);
+  private static final org.apache.thrift.protocol.TField PRINT_JOB_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("printJobId", org.apache.thrift.protocol.TType.I64, (short)2);
 
-  private int iId; // required
-  private String iTitle; // required
+  private MoodleStatusCode2 statusCode; // required
+  private long printJobId; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    I_ID((short)1, "iId"),
-    I_TITLE((short)2, "iTitle");
+    /**
+     * 
+     * @see MoodleStatusCode2
+     */
+    STATUS_CODE((short)1, "statusCode"),
+    PRINT_JOB_ID((short)2, "printJobId");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -48,10 +52,10 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // I_ID
-          return I_ID;
-        case 2: // I_TITLE
-          return I_TITLE;
+        case 1: // STATUS_CODE
+          return STATUS_CODE;
+        case 2: // PRINT_JOB_ID
+          return PRINT_JOB_ID;
         default:
           return null;
       }
@@ -92,118 +96,123 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
   }
 
   // isset id assignments
-  private static final int __IID_ISSET_ID = 0;
+  private static final int __PRINTJOBID_ISSET_ID = 0;
   private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.I_ID, new org.apache.thrift.meta_data.FieldMetaData("iId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.I_TITLE, new org.apache.thrift.meta_data.FieldMetaData("iTitle", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.STATUS_CODE, new org.apache.thrift.meta_data.FieldMetaData("statusCode", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, MoodleStatusCode2.class)));
+    tmpMap.put(_Fields.PRINT_JOB_ID, new org.apache.thrift.meta_data.FieldMetaData("printJobId", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MoodleCourse.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MoodlePrintFileResponse2.class, metaDataMap);
   }
 
-  public MoodleCourse() {
+  public MoodlePrintFileResponse2() {
   }
 
-  public MoodleCourse(
-    int iId,
-    String iTitle)
+  public MoodlePrintFileResponse2(
+    MoodleStatusCode2 statusCode)
   {
     this();
-    this.iId = iId;
-    setIIdIsSet(true);
-    this.iTitle = iTitle;
+    this.statusCode = statusCode;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public MoodleCourse(MoodleCourse other) {
+  public MoodlePrintFileResponse2(MoodlePrintFileResponse2 other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    this.iId = other.iId;
-    if (other.isSetITitle()) {
-      this.iTitle = other.iTitle;
+    if (other.isSetStatusCode()) {
+      this.statusCode = other.statusCode;
     }
+    this.printJobId = other.printJobId;
   }
 
-  public MoodleCourse deepCopy() {
-    return new MoodleCourse(this);
+  public MoodlePrintFileResponse2 deepCopy() {
+    return new MoodlePrintFileResponse2(this);
   }
 
   @Override
   public void clear() {
-    setIIdIsSet(false);
-    this.iId = 0;
-    this.iTitle = null;
+    this.statusCode = null;
+    setPrintJobIdIsSet(false);
+    this.printJobId = 0;
   }
 
-  public int getIId() {
-    return this.iId;
+  /**
+   * 
+   * @see MoodleStatusCode2
+   */
+  public MoodleStatusCode2 getStatusCode() {
+    return this.statusCode;
   }
 
-  public MoodleCourse setIId(int iId) {
-    this.iId = iId;
-    setIIdIsSet(true);
+  /**
+   * 
+   * @see MoodleStatusCode2
+   */
+  public MoodlePrintFileResponse2 setStatusCode(MoodleStatusCode2 statusCode) {
+    this.statusCode = statusCode;
     return this;
   }
 
-  public void unsetIId() {
-    __isset_bit_vector.clear(__IID_ISSET_ID);
+  public void unsetStatusCode() {
+    this.statusCode = null;
   }
 
-  /** Returns true if field iId is set (has been assigned a value) and false otherwise */
-  public boolean isSetIId() {
-    return __isset_bit_vector.get(__IID_ISSET_ID);
+  /** Returns true if field statusCode is set (has been assigned a value) and false otherwise */
+  public boolean isSetStatusCode() {
+    return this.statusCode != null;
   }
 
-  public void setIIdIsSet(boolean value) {
-    __isset_bit_vector.set(__IID_ISSET_ID, value);
-  }
-
-  public String getITitle() {
-    return this.iTitle;
-  }
-
-  public MoodleCourse setITitle(String iTitle) {
-    this.iTitle = iTitle;
-    return this;
-  }
-
-  public void unsetITitle() {
-    this.iTitle = null;
-  }
-
-  /** Returns true if field iTitle is set (has been assigned a value) and false otherwise */
-  public boolean isSetITitle() {
-    return this.iTitle != null;
-  }
-
-  public void setITitleIsSet(boolean value) {
+  public void setStatusCodeIsSet(boolean value) {
     if (!value) {
-      this.iTitle = null;
+      this.statusCode = null;
     }
+  }
+
+  public long getPrintJobId() {
+    return this.printJobId;
+  }
+
+  public MoodlePrintFileResponse2 setPrintJobId(long printJobId) {
+    this.printJobId = printJobId;
+    setPrintJobIdIsSet(true);
+    return this;
+  }
+
+  public void unsetPrintJobId() {
+    __isset_bit_vector.clear(__PRINTJOBID_ISSET_ID);
+  }
+
+  /** Returns true if field printJobId is set (has been assigned a value) and false otherwise */
+  public boolean isSetPrintJobId() {
+    return __isset_bit_vector.get(__PRINTJOBID_ISSET_ID);
+  }
+
+  public void setPrintJobIdIsSet(boolean value) {
+    __isset_bit_vector.set(__PRINTJOBID_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case I_ID:
+    case STATUS_CODE:
       if (value == null) {
-        unsetIId();
+        unsetStatusCode();
       } else {
-        setIId((Integer)value);
+        setStatusCode((MoodleStatusCode2)value);
       }
       break;
 
-    case I_TITLE:
+    case PRINT_JOB_ID:
       if (value == null) {
-        unsetITitle();
+        unsetPrintJobId();
       } else {
-        setITitle((String)value);
+        setPrintJobId((Long)value);
       }
       break;
 
@@ -212,11 +221,11 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case I_ID:
-      return Integer.valueOf(getIId());
+    case STATUS_CODE:
+      return getStatusCode();
 
-    case I_TITLE:
-      return getITitle();
+    case PRINT_JOB_ID:
+      return Long.valueOf(getPrintJobId());
 
     }
     throw new IllegalStateException();
@@ -229,10 +238,10 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
     }
 
     switch (field) {
-    case I_ID:
-      return isSetIId();
-    case I_TITLE:
-      return isSetITitle();
+    case STATUS_CODE:
+      return isSetStatusCode();
+    case PRINT_JOB_ID:
+      return isSetPrintJobId();
     }
     throw new IllegalStateException();
   }
@@ -241,30 +250,30 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof MoodleCourse)
-      return this.equals((MoodleCourse)that);
+    if (that instanceof MoodlePrintFileResponse2)
+      return this.equals((MoodlePrintFileResponse2)that);
     return false;
   }
 
-  public boolean equals(MoodleCourse that) {
+  public boolean equals(MoodlePrintFileResponse2 that) {
     if (that == null)
       return false;
 
-    boolean this_present_iId = true;
-    boolean that_present_iId = true;
-    if (this_present_iId || that_present_iId) {
-      if (!(this_present_iId && that_present_iId))
+    boolean this_present_statusCode = true && this.isSetStatusCode();
+    boolean that_present_statusCode = true && that.isSetStatusCode();
+    if (this_present_statusCode || that_present_statusCode) {
+      if (!(this_present_statusCode && that_present_statusCode))
         return false;
-      if (this.iId != that.iId)
+      if (!this.statusCode.equals(that.statusCode))
         return false;
     }
 
-    boolean this_present_iTitle = true && this.isSetITitle();
-    boolean that_present_iTitle = true && that.isSetITitle();
-    if (this_present_iTitle || that_present_iTitle) {
-      if (!(this_present_iTitle && that_present_iTitle))
+    boolean this_present_printJobId = true && this.isSetPrintJobId();
+    boolean that_present_printJobId = true && that.isSetPrintJobId();
+    if (this_present_printJobId || that_present_printJobId) {
+      if (!(this_present_printJobId && that_present_printJobId))
         return false;
-      if (!this.iTitle.equals(that.iTitle))
+      if (this.printJobId != that.printJobId)
         return false;
     }
 
@@ -275,43 +284,43 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_iId = true;
-    builder.append(present_iId);
-    if (present_iId)
-      builder.append(iId);
+    boolean present_statusCode = true && (isSetStatusCode());
+    builder.append(present_statusCode);
+    if (present_statusCode)
+      builder.append(statusCode.getValue());
 
-    boolean present_iTitle = true && (isSetITitle());
-    builder.append(present_iTitle);
-    if (present_iTitle)
-      builder.append(iTitle);
+    boolean present_printJobId = true && (isSetPrintJobId());
+    builder.append(present_printJobId);
+    if (present_printJobId)
+      builder.append(printJobId);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(MoodleCourse other) {
+  public int compareTo(MoodlePrintFileResponse2 other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    MoodleCourse typedOther = (MoodleCourse)other;
+    MoodlePrintFileResponse2 typedOther = (MoodlePrintFileResponse2)other;
 
-    lastComparison = Boolean.valueOf(isSetIId()).compareTo(typedOther.isSetIId());
+    lastComparison = Boolean.valueOf(isSetStatusCode()).compareTo(typedOther.isSetStatusCode());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iId, typedOther.iId);
+    if (isSetStatusCode()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.statusCode, typedOther.statusCode);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetITitle()).compareTo(typedOther.isSetITitle());
+    lastComparison = Boolean.valueOf(isSetPrintJobId()).compareTo(typedOther.isSetPrintJobId());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetITitle()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iTitle, typedOther.iTitle);
+    if (isSetPrintJobId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.printJobId, typedOther.printJobId);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -333,17 +342,17 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
         break;
       }
       switch (field.id) {
-        case 1: // I_ID
+        case 1: // STATUS_CODE
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.iId = iprot.readI32();
-            setIIdIsSet(true);
+            this.statusCode = MoodleStatusCode2.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // I_TITLE
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.iTitle = iprot.readString();
+        case 2: // PRINT_JOB_ID
+          if (field.type == org.apache.thrift.protocol.TType.I64) {
+            this.printJobId = iprot.readI64();
+            setPrintJobIdIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -356,9 +365,6 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetIId()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iId' was not found in serialized data! Struct: " + toString());
-    }
     validate();
   }
 
@@ -366,12 +372,14 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    oprot.writeFieldBegin(I_ID_FIELD_DESC);
-    oprot.writeI32(this.iId);
-    oprot.writeFieldEnd();
-    if (this.iTitle != null) {
-      oprot.writeFieldBegin(I_TITLE_FIELD_DESC);
-      oprot.writeString(this.iTitle);
+    if (this.statusCode != null) {
+      oprot.writeFieldBegin(STATUS_CODE_FIELD_DESC);
+      oprot.writeI32(this.statusCode.getValue());
+      oprot.writeFieldEnd();
+    }
+    if (isSetPrintJobId()) {
+      oprot.writeFieldBegin(PRINT_JOB_ID_FIELD_DESC);
+      oprot.writeI64(this.printJobId);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -380,29 +388,30 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("MoodleCourse(");
+    StringBuilder sb = new StringBuilder("MoodlePrintFileResponse2(");
     boolean first = true;
 
-    sb.append("iId:");
-    sb.append(this.iId);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("iTitle:");
-    if (this.iTitle == null) {
+    sb.append("statusCode:");
+    if (this.statusCode == null) {
       sb.append("null");
     } else {
-      sb.append(this.iTitle);
+      sb.append(this.statusCode);
     }
     first = false;
+    if (isSetPrintJobId()) {
+      if (!first) sb.append(", ");
+      sb.append("printJobId:");
+      sb.append(this.printJobId);
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'iId' because it's a primitive and you chose the non-beans generator.
-    if (iTitle == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iTitle' was not present! Struct: " + toString());
+    if (statusCode == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'statusCode' was not present! Struct: " + toString());
     }
   }
 

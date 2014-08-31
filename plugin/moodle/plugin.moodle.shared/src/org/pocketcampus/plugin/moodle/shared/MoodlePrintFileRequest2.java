@@ -21,19 +21,16 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MoodleUrl2 implements org.apache.thrift.TBase<MoodleUrl2, MoodleUrl2._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MoodleUrl2");
+public class MoodlePrintFileRequest2 implements org.apache.thrift.TBase<MoodlePrintFileRequest2, MoodlePrintFileRequest2._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MoodlePrintFileRequest2");
 
-  private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField URL_FIELD_DESC = new org.apache.thrift.protocol.TField("url", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField FILE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("fileUrl", org.apache.thrift.protocol.TType.STRING, (short)1);
 
-  private String name; // required
-  private String url; // required
+  private String fileUrl; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    NAME((short)1, "name"),
-    URL((short)2, "url");
+    FILE_URL((short)1, "fileUrl");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -48,10 +45,8 @@ public class MoodleUrl2 implements org.apache.thrift.TBase<MoodleUrl2, MoodleUrl
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // NAME
-          return NAME;
-        case 2: // URL
-          return URL;
+        case 1: // FILE_URL
+          return FILE_URL;
         default:
           return null;
       }
@@ -96,111 +91,71 @@ public class MoodleUrl2 implements org.apache.thrift.TBase<MoodleUrl2, MoodleUrl
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.URL, new org.apache.thrift.meta_data.FieldMetaData("url", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.FILE_URL, new org.apache.thrift.meta_data.FieldMetaData("fileUrl", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MoodleUrl2.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MoodlePrintFileRequest2.class, metaDataMap);
   }
 
-  public MoodleUrl2() {
+  public MoodlePrintFileRequest2() {
   }
 
-  public MoodleUrl2(
-    String name,
-    String url)
+  public MoodlePrintFileRequest2(
+    String fileUrl)
   {
     this();
-    this.name = name;
-    this.url = url;
+    this.fileUrl = fileUrl;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public MoodleUrl2(MoodleUrl2 other) {
-    if (other.isSetName()) {
-      this.name = other.name;
-    }
-    if (other.isSetUrl()) {
-      this.url = other.url;
+  public MoodlePrintFileRequest2(MoodlePrintFileRequest2 other) {
+    if (other.isSetFileUrl()) {
+      this.fileUrl = other.fileUrl;
     }
   }
 
-  public MoodleUrl2 deepCopy() {
-    return new MoodleUrl2(this);
+  public MoodlePrintFileRequest2 deepCopy() {
+    return new MoodlePrintFileRequest2(this);
   }
 
   @Override
   public void clear() {
-    this.name = null;
-    this.url = null;
+    this.fileUrl = null;
   }
 
-  public String getName() {
-    return this.name;
+  public String getFileUrl() {
+    return this.fileUrl;
   }
 
-  public MoodleUrl2 setName(String name) {
-    this.name = name;
+  public MoodlePrintFileRequest2 setFileUrl(String fileUrl) {
+    this.fileUrl = fileUrl;
     return this;
   }
 
-  public void unsetName() {
-    this.name = null;
+  public void unsetFileUrl() {
+    this.fileUrl = null;
   }
 
-  /** Returns true if field name is set (has been assigned a value) and false otherwise */
-  public boolean isSetName() {
-    return this.name != null;
+  /** Returns true if field fileUrl is set (has been assigned a value) and false otherwise */
+  public boolean isSetFileUrl() {
+    return this.fileUrl != null;
   }
 
-  public void setNameIsSet(boolean value) {
+  public void setFileUrlIsSet(boolean value) {
     if (!value) {
-      this.name = null;
-    }
-  }
-
-  public String getUrl() {
-    return this.url;
-  }
-
-  public MoodleUrl2 setUrl(String url) {
-    this.url = url;
-    return this;
-  }
-
-  public void unsetUrl() {
-    this.url = null;
-  }
-
-  /** Returns true if field url is set (has been assigned a value) and false otherwise */
-  public boolean isSetUrl() {
-    return this.url != null;
-  }
-
-  public void setUrlIsSet(boolean value) {
-    if (!value) {
-      this.url = null;
+      this.fileUrl = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case NAME:
+    case FILE_URL:
       if (value == null) {
-        unsetName();
+        unsetFileUrl();
       } else {
-        setName((String)value);
-      }
-      break;
-
-    case URL:
-      if (value == null) {
-        unsetUrl();
-      } else {
-        setUrl((String)value);
+        setFileUrl((String)value);
       }
       break;
 
@@ -209,11 +164,8 @@ public class MoodleUrl2 implements org.apache.thrift.TBase<MoodleUrl2, MoodleUrl
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case NAME:
-      return getName();
-
-    case URL:
-      return getUrl();
+    case FILE_URL:
+      return getFileUrl();
 
     }
     throw new IllegalStateException();
@@ -226,10 +178,8 @@ public class MoodleUrl2 implements org.apache.thrift.TBase<MoodleUrl2, MoodleUrl
     }
 
     switch (field) {
-    case NAME:
-      return isSetName();
-    case URL:
-      return isSetUrl();
+    case FILE_URL:
+      return isSetFileUrl();
     }
     throw new IllegalStateException();
   }
@@ -238,30 +188,21 @@ public class MoodleUrl2 implements org.apache.thrift.TBase<MoodleUrl2, MoodleUrl
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof MoodleUrl2)
-      return this.equals((MoodleUrl2)that);
+    if (that instanceof MoodlePrintFileRequest2)
+      return this.equals((MoodlePrintFileRequest2)that);
     return false;
   }
 
-  public boolean equals(MoodleUrl2 that) {
+  public boolean equals(MoodlePrintFileRequest2 that) {
     if (that == null)
       return false;
 
-    boolean this_present_name = true && this.isSetName();
-    boolean that_present_name = true && that.isSetName();
-    if (this_present_name || that_present_name) {
-      if (!(this_present_name && that_present_name))
+    boolean this_present_fileUrl = true && this.isSetFileUrl();
+    boolean that_present_fileUrl = true && that.isSetFileUrl();
+    if (this_present_fileUrl || that_present_fileUrl) {
+      if (!(this_present_fileUrl && that_present_fileUrl))
         return false;
-      if (!this.name.equals(that.name))
-        return false;
-    }
-
-    boolean this_present_url = true && this.isSetUrl();
-    boolean that_present_url = true && that.isSetUrl();
-    if (this_present_url || that_present_url) {
-      if (!(this_present_url && that_present_url))
-        return false;
-      if (!this.url.equals(that.url))
+      if (!this.fileUrl.equals(that.fileUrl))
         return false;
     }
 
@@ -272,43 +213,28 @@ public class MoodleUrl2 implements org.apache.thrift.TBase<MoodleUrl2, MoodleUrl
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_name = true && (isSetName());
-    builder.append(present_name);
-    if (present_name)
-      builder.append(name);
-
-    boolean present_url = true && (isSetUrl());
-    builder.append(present_url);
-    if (present_url)
-      builder.append(url);
+    boolean present_fileUrl = true && (isSetFileUrl());
+    builder.append(present_fileUrl);
+    if (present_fileUrl)
+      builder.append(fileUrl);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(MoodleUrl2 other) {
+  public int compareTo(MoodlePrintFileRequest2 other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    MoodleUrl2 typedOther = (MoodleUrl2)other;
+    MoodlePrintFileRequest2 typedOther = (MoodlePrintFileRequest2)other;
 
-    lastComparison = Boolean.valueOf(isSetName()).compareTo(typedOther.isSetName());
+    lastComparison = Boolean.valueOf(isSetFileUrl()).compareTo(typedOther.isSetFileUrl());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetName()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.name, typedOther.name);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetUrl()).compareTo(typedOther.isSetUrl());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetUrl()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.url, typedOther.url);
+    if (isSetFileUrl()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.fileUrl, typedOther.fileUrl);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -330,16 +256,9 @@ public class MoodleUrl2 implements org.apache.thrift.TBase<MoodleUrl2, MoodleUrl
         break;
       }
       switch (field.id) {
-        case 1: // NAME
+        case 1: // FILE_URL
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.name = iprot.readString();
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 2: // URL
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.url = iprot.readString();
+            this.fileUrl = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -359,14 +278,9 @@ public class MoodleUrl2 implements org.apache.thrift.TBase<MoodleUrl2, MoodleUrl
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.name != null) {
-      oprot.writeFieldBegin(NAME_FIELD_DESC);
-      oprot.writeString(this.name);
-      oprot.writeFieldEnd();
-    }
-    if (this.url != null) {
-      oprot.writeFieldBegin(URL_FIELD_DESC);
-      oprot.writeString(this.url);
+    if (this.fileUrl != null) {
+      oprot.writeFieldBegin(FILE_URL_FIELD_DESC);
+      oprot.writeString(this.fileUrl);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -375,22 +289,14 @@ public class MoodleUrl2 implements org.apache.thrift.TBase<MoodleUrl2, MoodleUrl
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("MoodleUrl2(");
+    StringBuilder sb = new StringBuilder("MoodlePrintFileRequest2(");
     boolean first = true;
 
-    sb.append("name:");
-    if (this.name == null) {
+    sb.append("fileUrl:");
+    if (this.fileUrl == null) {
       sb.append("null");
     } else {
-      sb.append(this.name);
-    }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("url:");
-    if (this.url == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.url);
+      sb.append(this.fileUrl);
     }
     first = false;
     sb.append(")");
@@ -399,11 +305,8 @@ public class MoodleUrl2 implements org.apache.thrift.TBase<MoodleUrl2, MoodleUrl
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (name == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'name' was not present! Struct: " + toString());
-    }
-    if (url == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'url' was not present! Struct: " + toString());
+    if (fileUrl == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'fileUrl' was not present! Struct: " + toString());
     }
   }
 
