@@ -25,16 +25,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-//  Created by Loïc Gardiol on 09.06.13.
+//  Created by Loïc Gardiol on 31.08.2014.
 
-@import UIKit;
+#import "PluginController.h"
 
-#import "camipro.h"
-
-@interface CamiproTransactionCell : PCTableViewCellAdditions
-
-- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
-
-@property (nonatomic, strong) Transaction* transaction;
+@interface PrintController : PluginController<PluginControllerProtocol>
 
 @end

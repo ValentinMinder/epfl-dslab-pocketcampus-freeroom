@@ -252,6 +252,12 @@
 		32AEEC861747DA61006DBA2F /* EventsShareFavoriteItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AEEC851747DA61006DBA2F /* EventsShareFavoriteItemsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32AF214415B193A200BB445D /* TransportHelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AF214515B193A200BB445D /* TransportHelpView.xib */; };
 		32AF214815B197DE00BB445D /* TransportHelp.html in Resources */ = {isa = PBXBuildFile; fileRef = 32AF214615B197DE00BB445D /* TransportHelp.html */; };
+		32AF953D19B3985A008CB161 /* PrintPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AF953F19B3985A008CB161 /* PrintPlugin.strings */; };
+		32AF954519B39929008CB161 /* CamiproInfoWidgetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AF954419B39929008CB161 /* CamiproInfoWidgetCell.m */; };
+		32AF954819B39F91008CB161 /* Cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AF954619B39F91008CB161 /* Cross.png */; };
+		32AF954919B39F91008CB161 /* Cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AF954619B39F91008CB161 /* Cross.png */; };
+		32AF954A19B39F91008CB161 /* Cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AF954719B39F91008CB161 /* Cross@2x.png */; };
+		32AF954B19B39F91008CB161 /* Cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AF954719B39F91008CB161 /* Cross@2x.png */; };
 		32B13A3F1634B0F4007B54A1 /* MainMenuNavbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B13A3D1634B0F4007B54A1 /* MainMenuNavbar.png */; };
 		32B13A401634B0F4007B54A1 /* MainMenuNavbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B13A3E1634B0F4007B54A1 /* MainMenuNavbar@2x.png */; };
 		32B1D9E317F08E1D000CC209 /* PCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B1D9E217F08E1D000CC209 /* PCNavigationController.m */; };
@@ -362,6 +368,7 @@
 		32EB6182180D7CC4001AE852 /* MapRecentSearchesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EB6181180D7CC4001AE852 /* MapRecentSearchesListViewController.m */; };
 		32EE9623166E19D5005B0F65 /* MoodleCoursesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9622166E19D5005B0F65 /* MoodleCoursesListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32EE9628166E25BD005B0F65 /* MoodleCourseSectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32EEBCCC19B3A38E0095801C /* CamiproInfoWidgetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32EEBCCE19B3A38E0095801C /* CamiproInfoWidgetCell.xib */; };
 		32F5308916EA974B00F66484 /* EventsCategorySelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32F5308D16EAB02400F66484 /* EventItemInfo.html in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308C16EAB02400F66484 /* EventItemInfo.html */; };
 		32F5308F16EAB89500F66484 /* EventsSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308E16EAB89500F66484 /* EventsSplashDetailView.xib */; };
@@ -388,7 +395,9 @@
 		38AE40F7B2AF51B65874011A /* Events@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0FF44E59AC0FAF424B57744 /* Events@2x.png */; };
 		3D60403F97790317C691C8A4 /* pushnotif.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4F4BE09D7B6CB26B98B895 /* pushnotif.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		435A47269DBBFFEEE4BC0920 /* PushNotifController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F427C8F702CC10F288D8C /* PushNotifController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		45B04F008B4C9FF3FC227FA6 /* Print.png in Resources */ = {isa = PBXBuildFile; fileRef = DC86496A8605BB9A3473CA1D /* Print.png */; };
 		4C3C4FEEB609B30BEFA34726 /* events.m in Sources */ = {isa = PBXBuildFile; fileRef = 62FB4BFDBB53089EB412B0C1 /* events.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		63E648D4AC9906041BD05B04 /* PrintService.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3D46B093CB9106988E468D /* PrintService.m */; };
 		718D4D56B3591F1306C1875F /* IsAcademiaService.m in Sources */ = {isa = PBXBuildFile; fileRef = 152945DD901E004926831E89 /* IsAcademiaService.m */; };
 		76515AD1AD2B4332BDAD1DA1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96AF5068222245668954256E /* libPods.a */; };
 		8193447294E5D065581CBAAD /* IsAcademia.png in Resources */ = {isa = PBXBuildFile; fileRef = 2EDE488982F3A13DD8BF17AF /* IsAcademia.png */; };
@@ -396,6 +405,8 @@
 		C5894949AFC59FDB4346CF53 /* IsAcademia@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51224CC590D66476EC4D0CFB /* IsAcademia@2x.png */; };
 		D4224276930AC66CEAA3E5A9 /* EventsService.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AE43D19400EAA046F5166E /* EventsService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		D57A786977F149C39D963A26 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96AF5068222245668954256E /* libPods.a */; };
+		DB324AA59AFBD5CFDE6C7303 /* Print@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B5A487FAF8D1F9E8D118FD1 /* Print@2x.png */; };
+		DE9F451FB28F6A2C921B88C4 /* PrintController.m in Sources */ = {isa = PBXBuildFile; fileRef = 629B4F5CB9C27831C8C95685 /* PrintController.m */; };
 		E9D24E52ACF3440B795D0F3A /* PushNotifService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2F4A5AA559021373171E91 /* PushNotifService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		F1AE44D191F279D3C0533B81 /* EventsController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8834ED985A01F6FB20543E8 /* EventsController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 /* End PBXBuildFile section */
@@ -787,6 +798,12 @@
 		32AF214515B193A200BB445D /* TransportHelpView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransportHelpView.xib; sourceTree = "<group>"; };
 		32AF214715B197DE00BB445D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/TransportHelp.html; sourceTree = "<group>"; };
 		32AF214915B1AE2000BB445D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/TransportHelp.html; sourceTree = "<group>"; };
+		32AF953E19B3985A008CB161 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PrintPlugin.strings; sourceTree = "<group>"; };
+		32AF954019B3985C008CB161 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PrintPlugin.strings; sourceTree = "<group>"; };
+		32AF954319B39929008CB161 /* CamiproInfoWidgetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CamiproInfoWidgetCell.h; sourceTree = "<group>"; };
+		32AF954419B39929008CB161 /* CamiproInfoWidgetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CamiproInfoWidgetCell.m; sourceTree = "<group>"; };
+		32AF954619B39F91008CB161 /* Cross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cross.png; sourceTree = "<group>"; };
+		32AF954719B39F91008CB161 /* Cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cross@2x.png"; sourceTree = "<group>"; };
 		32B13A3D1634B0F4007B54A1 /* MainMenuNavbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MainMenuNavbar.png; sourceTree = "<group>"; };
 		32B13A3E1634B0F4007B54A1 /* MainMenuNavbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MainMenuNavbar@2x.png"; sourceTree = "<group>"; };
 		32B1D9E117F08E1D000CC209 /* PCNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCNavigationController.h; sourceTree = "<group>"; };
@@ -912,6 +929,8 @@
 		32EE9622166E19D5005B0F65 /* MoodleCoursesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MoodleCoursesListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32EE9626166E25BD005B0F65 /* MoodleCourseSectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleCourseSectionsViewController.h; sourceTree = "<group>"; };
 		32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MoodleCourseSectionsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		32EEBCCD19B3A38E0095801C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CamiproInfoWidgetCell.xib; sourceTree = "<group>"; };
+		32EEBCCF19B3A38F0095801C /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/CamiproInfoWidgetCell.xib; sourceTree = "<group>"; };
 		32EF30391921007A00FB6421 /* PCScreenTileOverlay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCScreenTileOverlay.h; sourceTree = "<group>"; };
 		32F5308716EA973B00F66484 /* EventsCategorySelectorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventsCategorySelectorViewController.h; sourceTree = "<group>"; };
 		32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventsCategorySelectorViewController.m; sourceTree = "<group>"; };
@@ -954,20 +973,26 @@
 		32FFA798186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteGlowNavBarButtonLandscape.png; sourceTree = "<group>"; };
 		32FFA799186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteGlowNavBarButtonLandscape@2x.png"; sourceTree = "<group>"; };
 		39424C568B2FFD2731E4DCAE /* PushNotifService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PushNotifService.h; path = Plugins/PushNotifPlugin/Model/PushNotifService.h; sourceTree = SOURCE_ROOT; };
+		3B5A487FAF8D1F9E8D118FD1 /* Print@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Print@2x.png"; path = "Plugins/PrintPlugin/Views/Images/Print@2x.png"; sourceTree = SOURCE_ROOT; };
 		43F74C41A62B4C69936087B0 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		51224CC590D66476EC4D0CFB /* IsAcademia@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IsAcademia@2x.png"; path = "Plugins/IsAcademiaPlugin/Views/Images/IsAcademia@2x.png"; sourceTree = SOURCE_ROOT; };
+		629B4F5CB9C27831C8C95685 /* PrintController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PrintController.m; path = Plugins/PrintPlugin/Controllers/PrintController.m; sourceTree = SOURCE_ROOT; };
 		62FB4BFDBB53089EB412B0C1 /* events.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = events.m; path = "Plugins/EventsPlugin/Model/ThriftTypes+Services/events.m"; sourceTree = SOURCE_ROOT; };
 		6A644C4C92C6A59039C35391 /* IsAcademiaController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IsAcademiaController.h; path = Plugins/IsAcademiaPlugin/Controllers/IsAcademiaController.h; sourceTree = SOURCE_ROOT; };
 		7FB34D299D06660A1C768169 /* PushNotifController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PushNotifController.h; path = Plugins/PushNotifPlugin/Controllers/PushNotifController.h; sourceTree = SOURCE_ROOT; };
 		96AF5068222245668954256E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB4F4BE09D7B6CB26B98B895 /* pushnotif.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = pushnotif.m; path = "Plugins/PushNotifPlugin/Model/ThriftTypes+Services/pushnotif.m"; sourceTree = SOURCE_ROOT; };
 		B456406791FB5774D640F9DA /* IsAcademiaService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = IsAcademiaService.h; path = Plugins/IsAcademiaPlugin/Model/IsAcademiaService.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		B6404BCAAB9966ED0818748D /* PrintController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PrintController.h; path = Plugins/PrintPlugin/Controllers/PrintController.h; sourceTree = SOURCE_ROOT; };
 		BD4D44F5A831E245BEF1A101 /* events.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = events.h; path = "Plugins/EventsPlugin/Model/ThriftTypes+Services/events.h"; sourceTree = SOURCE_ROOT; };
 		C0FF44E59AC0FAF424B57744 /* Events@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Events@2x.png"; path = "Plugins/EventsPlugin/Views/Images/Events@2x.png"; sourceTree = SOURCE_ROOT; };
 		C8734797A297542D03FDAEBF /* pushnotif.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = pushnotif.h; path = "Plugins/PushNotifPlugin/Model/ThriftTypes+Services/pushnotif.h"; sourceTree = SOURCE_ROOT; };
 		C8AE43D19400EAA046F5166E /* EventsService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = EventsService.m; path = Plugins/EventsPlugin/Model/EventsService.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C9574A2CA3E21EEE6B620DE7 /* Events.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Events.png; path = Plugins/EventsPlugin/Views/Images/Events.png; sourceTree = SOURCE_ROOT; };
 		CA7F427C8F702CC10F288D8C /* PushNotifController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = PushNotifController.m; path = Plugins/PushNotifPlugin/Controllers/PushNotifController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CD3D46B093CB9106988E468D /* PrintService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PrintService.m; path = Plugins/PrintPlugin/Model/PrintService.m; sourceTree = SOURCE_ROOT; };
+		DC86496A8605BB9A3473CA1D /* Print.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Print.png; path = Plugins/PrintPlugin/Views/Images/Print.png; sourceTree = SOURCE_ROOT; };
+		DEF74816815CED6949067794 /* PrintService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PrintService.h; path = Plugins/PrintPlugin/Model/PrintService.h; sourceTree = SOURCE_ROOT; };
 		E8834ED985A01F6FB20543E8 /* EventsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EventsController.m; path = Plugins/EventsPlugin/Controllers/EventsController.m; sourceTree = SOURCE_ROOT; };
 		F06C4E1F91F02A0DA83BA1D7 /* EventsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EventsController.h; path = Plugins/EventsPlugin/Controllers/EventsController.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -1256,6 +1281,8 @@
 				3200375418118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png */,
 				32E67DBA16847A0900E5CFF6 /* ClockCell.png */,
 				32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */,
+				32AF954619B39F91008CB161 /* Cross.png */,
+				32AF954719B39F91008CB161 /* Cross@2x.png */,
 				326E3E3B1963FF7F00017F0C /* CellEmptyPicture.png */,
 				326E3E3C1963FF7F00017F0C /* CellEmptyPicture@2x.png */,
 				32ADC7171659AAEB0039F6A6 /* Download.png */,
@@ -1751,6 +1778,9 @@
 				324FD734176574FE0003EE30 /* CamiproTransactionCell.h */,
 				324FD735176574FE0003EE30 /* CamiproTransactionCell.m */,
 				324FD732176574DD0003EE30 /* CamiproTransactionCell.xib */,
+				32AF954319B39929008CB161 /* CamiproInfoWidgetCell.h */,
+				32AF954419B39929008CB161 /* CamiproInfoWidgetCell.m */,
+				32EEBCCE19B3A38E0095801C /* CamiproInfoWidgetCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2015,6 +2045,7 @@
 				324151C415373A1700CCFB22 /* MapPlugin */,
 				32CCB4D01555237500220282 /* MoodlePlugin */,
 				32CCB4F5155546C100220282 /* NewsPlugin */,
+				B3934EE38CE2B1412D8DF450 /* PrintPlugin */,
 				45F64094AC7F521F7FD1B828 /* PushNotifPlugin */,
 				27B74CD019A205E6006B2F17 /* RecommendedAppsPlugin */,
 				32FB2DFC15179014007AE82B /* TransportPlugin */,
@@ -2228,6 +2259,14 @@
 			path = Plugins/EventsPlugin/Model;
 			sourceTree = SOURCE_ROOT;
 		};
+		41CD4E81A31A9C689E7E8F28 /* ThriftTypes+Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "ThriftTypes+Services";
+			path = "Plugins/PrintPlugin/Model/ThriftTypes+Services";
+			sourceTree = SOURCE_ROOT;
+		};
 		45F64094AC7F521F7FD1B828 /* PushNotifPlugin */ = {
 			isa = PBXGroup;
 			children = (
@@ -2238,6 +2277,26 @@
 			);
 			name = PushNotifPlugin;
 			path = Plugins/PushNotifPlugin;
+			sourceTree = SOURCE_ROOT;
+		};
+		500D47F5A0C698D724AC229D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DEF74816815CED6949067794 /* PrintService.h */,
+				CD3D46B093CB9106988E468D /* PrintService.m */,
+				41CD4E81A31A9C689E7E8F28 /* ThriftTypes+Services */,
+			);
+			name = Model;
+			path = Plugins/PrintPlugin/Model;
+			sourceTree = SOURCE_ROOT;
+		};
+		5C384E9FA1DFCC5E3CBBB2F9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FE9642D0ACDC045F6421941E /* Images */,
+			);
+			name = Views;
+			path = Plugins/PrintPlugin/Views;
 			sourceTree = SOURCE_ROOT;
 		};
 		648B4B5AA89EE23F5FAE8958 /* Supporting Files */ = {
@@ -2332,6 +2391,36 @@
 			path = "Plugins/EventsPlugin/Model/ThriftTypes+Services";
 			sourceTree = SOURCE_ROOT;
 		};
+		B3934EE38CE2B1412D8DF450 /* PrintPlugin */ = {
+			isa = PBXGroup;
+			children = (
+				B42A4C6E8082676AE88E8512 /* Controllers */,
+				500D47F5A0C698D724AC229D /* Model */,
+				5C384E9FA1DFCC5E3CBBB2F9 /* Views */,
+				BAD14106BE6FDD245E0ADF8A /* Supporting Files */,
+			);
+			name = PrintPlugin;
+			path = Plugins/PrintPlugin;
+			sourceTree = SOURCE_ROOT;
+		};
+		B42A4C6E8082676AE88E8512 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B6404BCAAB9966ED0818748D /* PrintController.h */,
+				629B4F5CB9C27831C8C95685 /* PrintController.m */,
+			);
+			name = Controllers;
+			path = Plugins/PrintPlugin/Controllers;
+			sourceTree = SOURCE_ROOT;
+		};
+		BAD14106BE6FDD245E0ADF8A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				32AF953F19B3985A008CB161 /* PrintPlugin.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		CB2740D98A019EC1A19FF152 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2395,6 +2484,16 @@
 			);
 			name = Images;
 			path = Plugins/IsAcademiaPlugin/Views/Images;
+			sourceTree = SOURCE_ROOT;
+		};
+		FE9642D0ACDC045F6421941E /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				3B5A487FAF8D1F9E8D118FD1 /* Print@2x.png */,
+				DC86496A8605BB9A3473CA1D /* Print.png */,
+			);
+			name = Images;
+			path = Plugins/PrintPlugin/Views/Images;
 			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
@@ -2501,7 +2600,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				326FE23C19A63D17001A5056 /* CamiproWidget.storyboard in Resources */,
+				32AF954B19B39F91008CB161 /* Cross@2x.png in Resources */,
 				32D834C219A4DE5100844901 /* CamiproPlugin.strings in Resources */,
+				32AF954919B39F91008CB161 /* Cross.png in Resources */,
 				32975CF119A34EB600146390 /* InfoPlist.strings in Resources */,
 				326FE24019A64DDE001A5056 /* PocketCampus.strings in Resources */,
 			);
@@ -2616,6 +2717,7 @@
 				32763231166511B700C33DF9 /* MapView-pad.xib in Resources */,
 				327BF2371666043100C67937 /* PushNotifPlugin.strings in Resources */,
 				327585A018449347004215FC /* TransportLarge.png in Resources */,
+				32AF954A19B39F91008CB161 /* Cross@2x.png in Resources */,
 				32D0B260166ABEA200F68304 /* FloorDown.png in Resources */,
 				32FFA79A186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png in Resources */,
 				32D0B261166ABEA200F68304 /* FloorDown@2x.png in Resources */,
@@ -2643,6 +2745,8 @@
 				32E0E315194B1FDD003251CC /* FilterBarButton.png in Resources */,
 				32506D01181DC41E003F08D7 /* MasterVisible.png in Resources */,
 				3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */,
+				32AF954819B39F91008CB161 /* Cross.png in Resources */,
+				32EEBCCC19B3A38E0095801C /* CamiproInfoWidgetCell.xib in Resources */,
 				323676C316BDB42D0004D5AD /* AppLogoCellImage@2x.png in Resources */,
 				323676C516BDB5300004D5AD /* AppLogoCellImage.png in Resources */,
 				323676C816BDB6620004D5AD /* FacebookLikeCellImage.png in Resources */,
@@ -2696,6 +2800,9 @@
 				C5894949AFC59FDB4346CF53 /* IsAcademia@2x.png in Resources */,
 				8193447294E5D065581CBAAD /* IsAcademia.png in Resources */,
 				32D29719185B64FE006530B7 /* IsAcademiaPlugin.strings in Resources */,
+				DB324AA59AFBD5CFDE6C7303 /* Print@2x.png in Resources */,
+				45B04F008B4C9FF3FC227FA6 /* Print.png in Resources */,
+				32AF953D19B3985A008CB161 /* PrintPlugin.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2833,6 +2940,7 @@
 				32FB2E0B15179014007AE82B /* TransportService.m in Sources */,
 				32CFECE5151C789A00D8CBA6 /* TransportController.m in Sources */,
 				32CFECEF151CCB6800D8CBA6 /* PCPersistenceManager.m in Sources */,
+				32AF954519B39929008CB161 /* CamiproInfoWidgetCell.m in Sources */,
 				32442FEB151CF87100685D10 /* TransportNextDeparturesViewController.m in Sources */,
 				322FB01817EC938E00D1A466 /* PCGAITracker.m in Sources */,
 				32150DE0197E710E00CCF2AB /* MoodleUrlViewController.m in Sources */,
@@ -2961,6 +3069,8 @@
 				718D4D56B3591F1306C1875F /* IsAcademiaService.m in Sources */,
 				3219821E18D36A8B00118921 /* FoodRestaurantInfoView.m in Sources */,
 				1E8A476B975E7A7BDF71ABF5 /* isacademia.m in Sources */,
+				DE9F451FB28F6A2C921B88C4 /* PrintController.m in Sources */,
+				63E648D4AC9906041BD05B04 /* PrintService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3088,6 +3198,16 @@
 			name = TransportHelp.html;
 			sourceTree = "<group>";
 		};
+		32AF953F19B3985A008CB161 /* PrintPlugin.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32AF953E19B3985A008CB161 /* en */,
+				32AF954019B3985C008CB161 /* fr */,
+			);
+			name = PrintPlugin.strings;
+			path = Plugins/PrintPlugin;
+			sourceTree = SOURCE_ROOT;
+		};
 		32B58711156458FA0051C57E /* CamiproPlugin.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -3132,6 +3252,15 @@
 				32E3E5CE1897D1F500D263C5 /* fr */,
 			);
 			name = TransportPlugin.strings;
+			sourceTree = "<group>";
+		};
+		32EEBCCE19B3A38E0095801C /* CamiproInfoWidgetCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32EEBCCD19B3A38E0095801C /* en */,
+				32EEBCCF19B3A38F0095801C /* fr */,
+			);
+			name = CamiproInfoWidgetCell.xib;
 			sourceTree = "<group>";
 		};
 		32FAC0E81500F40700925180 /* DirectoryPlugin.strings */ = {

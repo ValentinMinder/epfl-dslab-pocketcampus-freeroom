@@ -2262,22 +2262,6 @@
          <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Plugins/CamiproPlugin/Controllers/CamiproViewController.m"
-            timestampString = "412697731.43538"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "513"
-            endingLineNumber = "513"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "PocketCampus/Views/Common/UILabel+Additions.m"
             timestampString = "410285913.431079"

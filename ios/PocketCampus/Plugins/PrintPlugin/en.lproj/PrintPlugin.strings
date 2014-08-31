@@ -25,16 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-//  Created by Loïc Gardiol on 09.06.13.
+//  Created by ___FULLUSERNAME___ on ___DATE___.
 
-@import UIKit;
-
-#import "camipro.h"
-
-@interface CamiproTransactionCell : PCTableViewCellAdditions
-
-- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
-
-@property (nonatomic, strong) Transaction* transaction;
-
-@end
+"PluginName" = "Print";
