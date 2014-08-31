@@ -14,20 +14,14 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JUb-bw-bv2" id="ND5-nQ-edc">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Camipro widget for iOS 8" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GXg-Cg-V2y">
-                        <rect key="frame" x="54" y="15" width="208" height="19.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Camipro widget for iOS 8" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GXg-Cg-V2y">
+                        <rect key="frame" x="54" y="32" width="258" height="19.5"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drag down Notification Center to install the widget and check your balance in a glance!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aJt-3a-gdV">
-                        <rect key="frame" x="54" y="37" width="256" height="30.5"/>
-                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7bN-vj-PB9">
-                        <rect key="frame" x="8" y="20.5" width="40" height="40"/>
+                        <rect key="frame" x="8" y="22" width="40" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="1aR-6M-Tac"/>
                             <constraint firstAttribute="width" constant="40" id="fD7-bp-1BE"/>
@@ -39,29 +33,31 @@
                         </connections>
                     </button>
                 </subviews>
+                <color key="backgroundColor" red="1" green="0.9158437781325266" blue="0.0" alpha="0.050000000000000003" colorSpace="calibratedRGB"/>
                 <constraints>
-                    <constraint firstItem="aJt-3a-gdV" firstAttribute="leading" secondItem="GXg-Cg-V2y" secondAttribute="leading" id="GfF-VJ-Ft9"/>
                     <constraint firstItem="GXg-Cg-V2y" firstAttribute="top" secondItem="ND5-nQ-edc" secondAttribute="topMargin" constant="7" id="KXu-AK-xML"/>
+                    <constraint firstAttribute="centerY" secondItem="GXg-Cg-V2y" secondAttribute="centerY" id="VfA-FD-YXJ"/>
                     <constraint firstItem="GXg-Cg-V2y" firstAttribute="leading" secondItem="7bN-vj-PB9" secondAttribute="trailing" constant="6" id="b0C-O9-7VM"/>
-                    <constraint firstItem="aJt-3a-gdV" firstAttribute="top" secondItem="GXg-Cg-V2y" secondAttribute="bottom" constant="2" id="ebu-H9-osR"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="GXg-Cg-V2y" secondAttribute="trailing" constant="50" id="fc2-O9-kBl"/>
-                    <constraint firstItem="7bN-vj-PB9" firstAttribute="leading" secondItem="aJt-3a-gdV" secondAttribute="trailing" constant="8" id="fux-cz-KQL"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="GXg-Cg-V2y" secondAttribute="trailing" id="fc2-O9-kBl"/>
                     <constraint firstItem="7bN-vj-PB9" firstAttribute="leading" secondItem="ND5-nQ-edc" secondAttribute="leadingMargin" id="ge0-8G-0um"/>
                     <constraint firstItem="7bN-vj-PB9" firstAttribute="leading" secondItem="GXg-Cg-V2y" secondAttribute="trailing" constant="10" id="kc6-1o-aAg"/>
-                    <constraint firstAttribute="centerY" secondItem="7bN-vj-PB9" secondAttribute="centerY" constant="1.75" id="sTq-am-dm9"/>
+                    <constraint firstAttribute="centerY" secondItem="7bN-vj-PB9" secondAttribute="centerY" id="sTq-am-dm9"/>
                     <constraint firstItem="7bN-vj-PB9" firstAttribute="trailing" secondItem="ND5-nQ-edc" secondAttribute="trailingMargin" id="u6y-50-vHa"/>
                     <constraint firstAttribute="bottomMargin" secondItem="GXg-Cg-V2y" secondAttribute="bottom" id="yEy-jd-6Qa"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="aJt-3a-gdV" secondAttribute="trailing" constant="2" id="z2S-oo-0o4"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
-                        <exclude reference="fux-cz-KQL"/>
                         <exclude reference="kc6-1o-aAg"/>
                         <exclude reference="u6y-50-vHa"/>
+                        <exclude reference="KXu-AK-xML"/>
                         <exclude reference="yEy-jd-6Qa"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+            <connections>
+                <outlet property="label" destination="GXg-Cg-V2y" id="WGG-te-3Cd"/>
+            </connections>
             <point key="canvasLocation" x="-42" y="200.5"/>
         </tableViewCell>
     </objects>

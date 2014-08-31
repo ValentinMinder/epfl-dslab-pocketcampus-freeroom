@@ -29,6 +29,14 @@
 
 #import "CamiproInfoWidgetCell.h"
 
+@import CoreText;
+
+@interface CamiproInfoWidgetCell ()
+
+@property (nonatomic, weak) IBOutlet UILabel* label;
+
+@end
+
 @implementation CamiproInfoWidgetCell
 
 #pragma mark - Init
@@ -38,14 +46,20 @@
     self = (CamiproInfoWidgetCell*)elements[0];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.label.attributedText = [self.class infoAttributedString];
     }
     return self;
 }
 
 #pragma mark - Public
 
-+ (CGFloat)preferredHeight {
-    return 85.0;
+- (CGFloat)preferredHeightInTableView:(UITableView*)tableView {
+    NSAttributedString* attrString = [self.class infoAttributedString];
+    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attrString);
+    CGSize targetSize = CGSizeMake(tableView.frame.size.width-52.0, CGFLOAT_MAX); //account for text left and right insets of the text view
+    CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, [attrString length]), NULL, targetSize, NULL);
+    CFRelease(framesetter);
+    return size.height+20.0;
 }
 
 #pragma mark - Private
@@ -54,6 +68,22 @@
     if (self.closeButtonTapped) {
         self.closeButtonTapped();
     }
+}
+
++ (NSAttributedString*)infoAttributedString {
+    static NSAttributedString* attrString = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString* title = NSLocalizedStringFromTable(@"CamiproWidgetTitle", @"CamiproPlugin", nil);
+        NSString* subtitle = NSLocalizedStringFromTable(@"CamiproWidgetSubtitle", @"CamiproPlugin", nil);
+        NSString* finalString = [NSString stringWithFormat:@"%@\n%@", title, subtitle];
+        NSMutableAttributedString* mAttrString = [[NSMutableAttributedString alloc] initWithString:finalString];
+        UIFont* footnoteFont = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        [mAttrString setAttributes:@{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]} range:[finalString rangeOfString:title]];
+        [mAttrString setAttributes:@{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1], NSForegroundColorAttributeName:[UIColor darkGrayColor]} range:[finalString rangeOfString:subtitle]];
+        attrString = [mAttrString copy];
+    });
+    return attrString;
 }
 
 @end

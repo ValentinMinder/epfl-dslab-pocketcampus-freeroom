@@ -33,7 +33,7 @@
 
 #import "__PluginID_low__.h"
 
-@interface __PluginID__Service : Service <PCServiceProtocol>
+@interface __PluginID__Service : PCService <PCServiceProtocol>
 
 // ---------------------------------------- TODO ----------------------------------------  //
 // Prototype an async method for each method provided by Thrift interface, defined in protocol

@@ -39,6 +39,6 @@
  */
 @property (nonatomic, copy) void (^closeButtonTapped)();
 
-+ (CGFloat)preferredHeight;
+- (CGFloat)preferredHeightInTableView:(UITableView*)tableView;
 
 @end

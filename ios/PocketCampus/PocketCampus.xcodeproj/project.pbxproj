@@ -930,7 +930,6 @@
 		32EE9626166E25BD005B0F65 /* MoodleCourseSectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleCourseSectionsViewController.h; sourceTree = "<group>"; };
 		32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MoodleCourseSectionsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32EEBCCD19B3A38E0095801C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CamiproInfoWidgetCell.xib; sourceTree = "<group>"; };
-		32EEBCCF19B3A38F0095801C /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/CamiproInfoWidgetCell.xib; sourceTree = "<group>"; };
 		32EF30391921007A00FB6421 /* PCScreenTileOverlay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCScreenTileOverlay.h; sourceTree = "<group>"; };
 		32F5308716EA973B00F66484 /* EventsCategorySelectorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventsCategorySelectorViewController.h; sourceTree = "<group>"; };
 		32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventsCategorySelectorViewController.m; sourceTree = "<group>"; };
@@ -3258,7 +3257,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				32EEBCCD19B3A38E0095801C /* en */,
-				32EEBCCF19B3A38F0095801C /* fr */,
 			);
 			name = CamiproInfoWidgetCell.xib;
 			sourceTree = "<group>";

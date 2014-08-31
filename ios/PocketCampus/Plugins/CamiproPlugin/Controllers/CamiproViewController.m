@@ -56,6 +56,8 @@ static NSInteger const kHistorySection = 1;
 @property (nonatomic, strong) UITableViewController* tableViewController;
 @property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 
+@property (nonatomic, strong, readonly) CamiproInfoWidgetCell* infoWidgetCell;
+
 // iPad only
 @property (nonatomic, strong) IBOutlet UILabel* statsLabel;
 @property (nonatomic, strong) IBOutlet UILabel* statsContentLabel;
@@ -451,7 +453,7 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
                 return [PCUtils isIdiomPad] ? kBalanceCellHeightPad : kBalanceCellHeightPhone;
             }
             if (indexPath.row == [self infoWidgetCellIndex]) {
-                return [CamiproInfoWidgetCell preferredHeight];
+                return [self.infoWidgetCell preferredHeightInTableView:self.tableView];
             }
             break;
         case kHistorySection:
@@ -511,11 +513,11 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
                 }];
                 [cell.contentView addSubview:balanceLabel];
             } else if (indexPath.row == [self infoWidgetCellIndex]) {
-                cell = [CamiproInfoWidgetCell new];
+                cell = self.infoWidgetCell;
                 __weak __typeof(self) welf = self;
                 [(CamiproInfoWidgetCell*)cell setCloseButtonTapped:^{
                     [welf saveWidgetInfoHidden:YES];
-                    [welf.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[welf infoWidgetCellIndex] inSection:kBalanceSection]] withRowAnimation:UITableViewRowAnimationTop];
+                    [welf.tableView reloadSections:[NSIndexSet indexSetWithIndex:kBalanceSection] withRowAnimation:UITableViewRowAnimationAutomatic];
                 }];
             }
             break;
@@ -562,6 +564,15 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
 }
 
 #pragma mark - Private
+
+@synthesize infoWidgetCell = _infoWidgetCell;
+
+- (CamiproInfoWidgetCell*)infoWidgetCell {
+    if (!_infoWidgetCell) {
+        _infoWidgetCell = [CamiproInfoWidgetCell new];
+    }
+    return _infoWidgetCell;
+}
 
 static NSString* const kHideWidgetInfoBoolKey = @"HideWidgetInfoBool";
 

@@ -40,7 +40,7 @@ static PrintService* instance __weak = nil;
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"PrintService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"print" thriftServiceClientClassName:NSStringFromClass(PrintServiceClient.class)];
+        //self = [super initWithServiceName:@"print" thriftServiceClientClassName:NSStringFromClass(PrintServiceClient.class)];
         if (self) {
             instance = self;
         }

@@ -31,9 +31,9 @@
 
 #import "PCService.h"
 
-#import "print.h"
+//#import "print.h"
 
-@interface PrintService : Service <PCServiceProtocol>
+@interface PrintService : PCService <PCServiceProtocol>
 
 // ---------------------------------------- TODO ----------------------------------------  //
 // Prototype an async method for each method provided by Thrift interface, defined in protocol
