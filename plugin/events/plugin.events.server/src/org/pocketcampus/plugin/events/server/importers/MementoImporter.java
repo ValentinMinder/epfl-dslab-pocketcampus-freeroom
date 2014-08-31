@@ -39,8 +39,9 @@ public class MementoImporter {
 					System.out.println("couldn't connect to db... aborting");
 					return;
 				}
-				EventImporter.importEventsFromMemento(conn);
-				EventSyncer.syncWithMemento(conn);
+				EventTagImporter.importTagsFromMemento(conn);
+				EventItemImporter.importEventsFromMemento(conn);
+				//EventItemSyncer.syncWithMemento(conn); // should read from translation_id now
 				System.out.println("Finished Async Import on " + dateLastImport);
 			}
 		}).start();

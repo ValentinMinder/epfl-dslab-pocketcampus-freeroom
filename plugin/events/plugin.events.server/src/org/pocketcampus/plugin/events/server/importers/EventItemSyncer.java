@@ -9,9 +9,10 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class EventSyncer {
+public class EventItemSyncer {
 
-	public static void syncWithMemento(Connection conn) {
+	@Deprecated
+	public static void syncWithMemento(Connection conn) { // should read from translation_id now
 		List<Long> ids = null;
 		try {
 			ids = getIdsOfMementoEventsFromDb(conn);

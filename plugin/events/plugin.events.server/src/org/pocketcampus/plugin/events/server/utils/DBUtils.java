@@ -13,9 +13,13 @@ import java.util.Set;
 
 public class DBUtils {
 
-	public static Map<String, String> getTagsFromDb(Connection conn, boolean mementoOnly) throws SQLException {
+	public static Map<String, String> getTagsFromDb(Connection conn, boolean mementoOnly, String lang) throws SQLException {
+		String feedValue = "CASE WHEN feedValue is not null THEN feedValue ELSE feedValue_fr END AS feedValue"; 
+		if("fr".equalsIgnoreCase(lang)) {
+			feedValue = "CASE WHEN feedValue_fr is not null THEN feedValue_fr ELSE feedValue END AS feedValue_fr"; 
+		}
 		Map<String, String> feeds = new HashMap<String, String>();
-		PreparedStatement stm = conn.prepareStatement("SELECT feedKey,feedValue FROM eventtags " + (mementoOnly ? "WHERE isMemento=1" : ""));
+		PreparedStatement stm = conn.prepareStatement("SELECT feedKey," + feedValue + " FROM eventtags " + (mementoOnly ? "WHERE isMemento=1" : ""));
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			feeds.put(rs.getString(1), rs.getString(2));
@@ -25,9 +29,13 @@ public class DBUtils {
 		return feeds;
 	}
 
-	public static Map<Integer, String> getCategsFromDb(Connection conn) throws SQLException {
+	public static Map<Integer, String> getCategsFromDb(Connection conn, String lang) throws SQLException {
+		String categValue = "CASE WHEN categValue is not null THEN categValue ELSE categValue_fr END AS categValue"; 
+		if("fr".equalsIgnoreCase(lang)) {
+			categValue = "CASE WHEN categValue_fr is not null THEN categValue_fr ELSE categValue END AS categValue_fr"; 
+		}
 		Map<Integer, String> categs = new HashMap<Integer, String>();
-		PreparedStatement stm = conn.prepareStatement("SELECT categKey,categValue FROM eventcategs;");
+		PreparedStatement stm = conn.prepareStatement("SELECT categKey," + categValue + " FROM eventcategs;");
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			categs.put(rs.getInt(1), rs.getString(2));

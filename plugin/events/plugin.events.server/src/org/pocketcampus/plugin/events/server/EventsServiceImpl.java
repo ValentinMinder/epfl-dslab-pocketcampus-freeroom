@@ -19,9 +19,9 @@ import org.pocketcampus.plugin.events.server.decoders.EventPoolDecoder;
 import org.pocketcampus.plugin.events.server.importers.MementoImporter;
 import org.pocketcampus.plugin.events.server.utils.DBUtils;
 import org.pocketcampus.plugin.events.server.utils.EmailSender;
-import org.pocketcampus.plugin.events.server.utils.Utils;
 import org.pocketcampus.plugin.events.server.utils.EmailSender.EmailTemplateInfo;
 import org.pocketcampus.plugin.events.server.utils.EmailSender.SendEmailInfo;
+import org.pocketcampus.plugin.events.server.utils.Utils;
 import org.pocketcampus.plugin.events.shared.AdminSendRegEmailReply;
 import org.pocketcampus.plugin.events.shared.AdminSendRegEmailRequest;
 import org.pocketcampus.plugin.events.shared.Constants;
@@ -75,8 +75,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 			EventItemReply reply = new EventItemReply(200);
 			reply.setEventItem(item);
 			reply.setChildrenPools(childrenPools);
-			reply.setTags(DBUtils.getTagsFromDb(conn, false));
-			reply.setCategs(DBUtils.getCategsFromDb(conn));
+			reply.setTags(DBUtils.getTagsFromDb(conn, false, req.getLang()));
+			reply.setCategs(DBUtils.getCategsFromDb(conn, req.getLang()));
 			System.out.println("returned " + reply.getChildrenPools().size() + " pools");
 			return reply;
 		} catch (SQLException e) {
@@ -118,8 +118,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 			EventPoolReply reply = new EventPoolReply(200);
 			reply.setEventPool(pool);
 			reply.setChildrenItems(childrenItems);
-			reply.setTags(DBUtils.getTagsFromDb(conn, false));
-			reply.setCategs(DBUtils.getCategsFromDb(conn));
+			reply.setTags(DBUtils.getTagsFromDb(conn, false, req.getLang()));
+			reply.setCategs(DBUtils.getCategsFromDb(conn, req.getLang()));
 			System.out.println("returned " + reply.getChildrenItems().size() + " items");
 			return reply;
 		} catch (SQLException e) {
@@ -144,7 +144,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 			Map<Long, EventItem> childrenItems = EventItemDecoder.eventItemsByIds(conn, pool.getChildrenEvents(), tokens, req.getLang());
 			for (EventItem e : childrenItems.values())
 				Utils.fixCategAndTags(e);
-			Map<Integer, String> categMap = DBUtils.getCategsFromDb(conn);
+			Map<Integer, String> categMap = DBUtils.getCategsFromDb(conn, req.getLang());
 			Map<Integer, List<EventItem>> eventsByCateg = new HashMap<Integer, List<EventItem>>();
 			for (EventItem e : childrenItems.values()) {
 				if (!eventsByCateg.containsKey(e.getEventCateg()))

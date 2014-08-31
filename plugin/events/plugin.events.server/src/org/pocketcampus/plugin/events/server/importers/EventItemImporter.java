@@ -18,7 +18,7 @@ import org.pocketcampus.plugin.events.shared.Constants;
 
 import com.google.gson.Gson;
 
-public class EventImporter {
+public class EventItemImporter {
 
 	public static class MementoEvent {
 		
@@ -33,7 +33,7 @@ public class EventImporter {
 		public String speaker; // : "xxx"
 		public String organizer; // : "EESS - IIE"
 		public String contact;
-		public int category;
+		public long category;
 		public static class Domain{
 			String label; // : "Neurosciences Brain Mind & Blue Brain";
 		}
@@ -48,8 +48,8 @@ public class EventImporter {
 		public String image; // : "http://memento.epfl.ch/image/2644/112x112.jpg"
 		public String image_description; // : ""
 		
-		public int id_event; // memento id: 14695
-		public int id_translation; // : 23162
+		public long id_event; // memento id: 14695
+		public long id_translation; // : 23162
 		public String lang; // : "en"
 		public static class Memento{
 			int id_memento; // : 9
@@ -130,9 +130,11 @@ public class EventImporter {
 		if("fr".equalsIgnoreCase(e.lang)) {
 			q.addPartWithValue("`eventTitle_fr` = ?,", e.title);
 			q.addPartWithValue("`eventDetails_fr` = ?,", e.description);
+			q.addPartWithValue("`translation_fr` = ?,", e.id_translation);
 		} else {
 			q.addPartWithValue("`eventTitle` = ?,", e.title);
 			q.addPartWithValue("`eventDetails` = ?,", e.description);
+			q.addPartWithValue("`translation` = ?,", e.id_translation);
 		}
 		q.addPartWithValue("`eventPlace` = ?,", e.place_and_room);
 		q.addPartWithValue("`locationHref` = ?,", e.url_place_and_room);
