@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
@@ -42,6 +43,14 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 		return CloudPrintController.class;
 	}
 
+	/**
+	 * Disables the Activity Title.
+	 */
+	@Override
+	protected void onPreCreate() {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+	}
+	
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		// Get and cast the controller and model
@@ -49,7 +58,8 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 		mModel = (CloudPrintModel) controller.getModel();
 
 
-		setActionBarTitle(getString(R.string.cloudprint_plugin_title));
+		// The ActionBar is added automatically when you call setContentView, unless we disable it :-)
+		disableActionBar();
 
 	}
 
@@ -129,7 +139,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 			TextView tv = (TextView) findViewById(R.id.cloudprint_preview_upload);
 			tv.setText("You are about to upload " + mModel.getFileToPrint().getLastPathSegment());
 			
-			Button b = (Button) findViewById(R.id.cloudprint_print_button);
+			Button b = (Button) findViewById(R.id.cloudprint_upload_button);
 			b.setOnClickListener(new OnClickListener() {
 				public void onClick(View arg0) {
 					showLoading();

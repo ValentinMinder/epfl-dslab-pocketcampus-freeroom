@@ -62,7 +62,7 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 					response.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
 					return;
 				}
-			    String filename = getFilenameFromContentDisposition(filePart.getHeader("Content-Disposition"));
+			    String filename = getFilenameFromContentDisposition(filePart.getHeader("content-disposition"));
 			    InputStream filecontent = filePart.getInputStream();
 			    FileOutputStream fos = new FileOutputStream(filePath + "/" + filename);
 			    IOUtils.copy(filecontent, fos);
@@ -109,7 +109,7 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 		command.add(filePath + "/" + files[0]);
 		try {
 			Runtime.getRuntime().exec(command.toArray(new String[command.size()]));
-			new PrintDocumentResponse(CloudPrintStatusCode.OK);
+			return new PrintDocumentResponse(CloudPrintStatusCode.OK);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
