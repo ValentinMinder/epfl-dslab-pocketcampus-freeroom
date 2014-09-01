@@ -271,6 +271,7 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 				new String[] {context.getString(R.string.moodle_filemenu_open), 
 						context.getString(R.string.moodle_filemenu_share),
 						context.getString(R.string.moodle_filemenu_redownload),
+						context.getString(R.string.moodle_filemenu_print),
 						context.getString(R.string.moodle_filemenu_delete)});
 		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 
@@ -290,6 +291,10 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 					controller.fetchFileResource(context, item.getUrl());
 					break;
 				case 3:
+					context.trackEvent("Print", item.getName());
+					controller.printFileResource(context, item.getUrl());
+					break;
+				case 4:
 					context.trackEvent("Delete", item.getName());
 					file.delete();
 					context.updateDisplay();

@@ -78,18 +78,20 @@ public class PrintFileServiceImpl implements PrintFileService {
 			connection.addRequestProperty(PCConstants.HTTP_HEADER_AUTH_PCSESSID, pcSessionId);
 			
 			OutputStream os = connection.getOutputStream();
-			os.write(("--" + boundary + "\n").getBytes());
-			os.write(("Content-Disposition: form-data; name=\"file\"; filename=\"" + fileName + "\"\n").getBytes());
-			os.write(("Content-Type: " + contentType + "\n").getBytes());
-			os.write(("Content-Length: " + contentLength + "\n").getBytes());
-			os.write("\n".getBytes());
+			os.write(("--" + boundary + "\r\n").getBytes());
+			os.write(("Content-Disposition: form-data; name=\"file\"; filename=\"" + fileName + "\"\r\n").getBytes());
+			os.write(("Content-Type: " + contentType + "\r\n").getBytes());
+			os.write(("Content-Length: " + contentLength + "\r\n").getBytes());
+			os.write("\r\n".getBytes());
 			IOUtils.copy(fileInputStream, os);
-			os.write(("--" + boundary + "--\n").getBytes());
+			os.write(("--" + boundary + "--\r\n").getBytes());
 
 			// Connection is lazily executed whenever you request any status.
 			int responseCode = connection.getResponseCode();
-			if(responseCode != 200)
+			if(responseCode != 200) {
+				System.out.println("ERROR: returned status " + responseCode);
 				return new MoodlePrintFileResponse2(MoodleStatusCode2.NETWORK_ERROR);
+			}
 			InputStreamReader isr = new InputStreamReader(connection.getInputStream(), "UTF-8");
 			CloudPrintUploadResponse resp = new Gson().fromJson(isr, CloudPrintUploadResponse.class);
 			MoodlePrintFileResponse2 ret = new MoodlePrintFileResponse2(MoodleStatusCode2.OK);
@@ -98,6 +100,7 @@ public class PrintFileServiceImpl implements PrintFileService {
 			
 			
 		} catch (IOException e) {
+			e.printStackTrace();
 			return new MoodlePrintFileResponse2(MoodleStatusCode2.NETWORK_ERROR);
 		}
 		

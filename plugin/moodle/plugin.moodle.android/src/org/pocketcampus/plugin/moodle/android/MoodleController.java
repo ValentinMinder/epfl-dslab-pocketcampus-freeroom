@@ -223,6 +223,7 @@ public class MoodleController extends PluginController implements IMoodleControl
 		builder.scheme("pocketcampus").authority("cloudprint.plugin.pocketcampus.org").appendPath("print");
 		Intent i = new Intent(Intent.ACTION_VIEW, builder.build());
 		i.putExtra("JOB_ID", printJobId);
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		c.startActivity(i);
 	}
 	
