@@ -92,14 +92,7 @@ public class EventItemImporter {
 	}
 	
 	private static void insertUpdateEventItem(MementoEvent e, Connection conn) throws SQLException, ParseException {
-		if(e.start_time != null && e.end_time == null) // if it doesn't have end time, set it to start time
-			e.end_time = e.start_time;
-		// empty string means not set
-		if("".equals(e.description)) e.description = null;
-		if("".equals(e.place_and_room)) e.place_and_room = null;
-		if("".equals(e.url_place_and_room)) e.url_place_and_room = null;
-		if("".equals(e.speaker)) e.speaker = null;
-		if("".equals(e.url_link)) e.url_link = null;
+		fixBrokenEvent(e);
 		long start, end;
 		if(e.start_time == null) { // if fullDay
 			start = new SimpleDateFormat("yyyy-MM-dd").parse(e.start_date).getTime();
@@ -118,6 +111,19 @@ public class EventItemImporter {
 		stm.executeUpdate();
 		stm.close();
 		System.out.println("inserted/updated event " + e.slug);
+	}
+	
+	private static void fixBrokenEvent(MementoEvent e) {
+		// if it doesn't have end time, set it to start time
+		if(e.start_time != null && e.end_time == null) 
+			e.end_time = e.start_time;
+		// empty string means not set
+		if("".equals(e.description)) e.description = null;
+		if("".equals(e.place_and_room)) e.place_and_room = null;
+		if("".equals(e.url_place_and_room)) e.url_place_and_room = null;
+		if("".equals(e.speaker)) e.speaker = null;
+		if("".equals(e.url_link)) e.url_link = null;
+		if("".equals(e.title)) e.title = ("fr".equalsIgnoreCase(e.lang) ? "Sans Titre" : "No Title");
 	}
 	
 	private static void addPartstoInsertQuery(MyQuery q, MementoEvent e, long start, long end) {
