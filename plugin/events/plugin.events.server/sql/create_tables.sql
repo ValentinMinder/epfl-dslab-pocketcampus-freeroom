@@ -9,6 +9,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 CREATE TABLE IF NOT EXISTS `eventcategs` (
   `categKey` int(11) NOT NULL,
   `categValue` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `categValue_fr` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`categKey`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -29,12 +30,16 @@ CREATE TABLE IF NOT EXISTS `eventitems` (
   `eventPicture` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `eventThumbnail` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `eventTitle` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `eventTitle_fr` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `eventPlace` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `eventSpeaker` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `eventDetails` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `eventDetails_fr` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `parentPool` bigint(20) DEFAULT NULL,
   `eventUri` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `vcalUid` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `translation` bigint(20) DEFAULT NULL,
+  `translation_fr` bigint(20) DEFAULT NULL,
   `eventCateg` int(11) DEFAULT NULL,
   `broadcastInFeeds` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `locationHref` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -47,9 +52,7 @@ CREATE TABLE IF NOT EXISTS `eventitems` (
   `isProtected` tinyint(1) DEFAULT NULL,
   `tempDetails` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `deleted` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`eventId`),
-  UNIQUE KEY `VCAL` (`vcalUid`),
-  UNIQUE KEY `URI` (`eventUri`)
+  PRIMARY KEY (`eventId`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `eventperms` (
@@ -81,6 +84,7 @@ CREATE TABLE IF NOT EXISTS `eventpools` (
 CREATE TABLE IF NOT EXISTS `eventtags` (
   `feedKey` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `feedValue` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `feedValue_fr` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `isMemento` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`feedKey`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;

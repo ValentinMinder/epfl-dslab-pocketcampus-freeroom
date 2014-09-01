@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
+import org.pocketcampus.plugin.events.R;
 import org.pocketcampus.plugin.events.android.iface.IEventsController;
 import org.pocketcampus.plugin.events.android.iface.IEventsView;
 import org.pocketcampus.plugin.events.android.req.ExchangeContactsRequest;
@@ -75,6 +76,9 @@ public class EventsController extends PluginController implements IEventsControl
 
 		// initialize ImageLoader
 		ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
+		
+		// fix periodsInHours
+		fixEventPeriods();
 	}
 
 	/**
@@ -89,7 +93,7 @@ public class EventsController extends PluginController implements IEventsControl
 	/**
 	 * Initiates a request to the server to get the events items.
 	 */
-	public void refreshEventPool(IEventsView caller, long eventPoolId, boolean fetchPast, boolean useCache) {
+	public void refreshEventPool(IEventsView caller, long eventPoolId, boolean happeningNow, boolean fetchPast, boolean useCache) {
 		if(currEventPoolRequest != null)
 			currEventPoolRequest.cancel(true);
 		EventPoolRequest req = new EventPoolRequest(eventPoolId);
@@ -97,7 +101,7 @@ public class EventsController extends PluginController implements IEventsControl
 		req.setStarredEventItems(mModel.getFavorites());
 		req.setFetchPast(fetchPast);
 		req.setLang(Locale.getDefault().getLanguage());
-		req.setPeriod(mModel.getPeriod());
+		req.setPeriodInHours(happeningNow ? 1 : mModel.getPeriodInHours());
 		currEventPoolRequest = new GetEventPoolRequest(caller);
 		currEventPoolRequest.setBypassCache(!useCache).start(this, mClientEP, req);
 	}
@@ -205,6 +209,17 @@ public class EventsController extends PluginController implements IEventsControl
 	public static void updateEventTags(Map<String, String> updated) {
 		Constants.EVENTS_TAGS.clear();
 		Constants.EVENTS_TAGS.putAll(updated);
+	}
+
+	public void fixEventPeriods() {
+		Constants.EVENTS_PERIODS.clear();
+		Constants.EVENTS_PERIODS.put(24 * 1, getString(R.string.events_periods_oneday));
+		Constants.EVENTS_PERIODS.put(24 * 2, getString(R.string.events_periods_twodays));
+		Constants.EVENTS_PERIODS.put(24 * 7, getString(R.string.events_periods_oneweek));
+		Constants.EVENTS_PERIODS.put(24 * 14, getString(R.string.events_periods_twoweeks));
+		Constants.EVENTS_PERIODS.put(24 * 30, getString(R.string.events_periods_onemonth));
+		Constants.EVENTS_PERIODS.put(24 * 180, getString(R.string.events_periods_sixmonths));
+		Constants.EVENTS_PERIODS.put(24 * 365, getString(R.string.events_periods_oneyear));
 	}
 
 }

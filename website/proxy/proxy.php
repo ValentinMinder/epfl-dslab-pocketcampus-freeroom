@@ -10,7 +10,7 @@ $headers = "";
 foreach (apache_request_headers() as $header => $value) {
 	$log .= "$header: $value\n";
 	if($header == "Host") {
-		$headers .= "$header: " . $PC_PROXY_CONFIG[$self_basename]["url"] . "\r\n";
+		//$headers .= "$header: " . $PC_PROXY_CONFIG[$self_basename]["url"] . "\r\n";
 	} else if($header == "Connection") {
 		$headers .= "$header: Close\r\n";
 	} else {
@@ -25,8 +25,8 @@ $opts = array('http' =>
         'method'             => $_SERVER["REQUEST_METHOD"],
         'header'             => $headers,
         'ignore_errors'      => true,
-        'follow_location'    => 0,
-        'max_redirects'      => 1,
+        'follow_location'    => (empty($FOLLOW_REDIRECTS) ? 0 : 1),
+        'max_redirects'      => 10,
         'protocol_version'   => 1.1,
         'content'            => file_get_contents('php://input')
     )

@@ -219,7 +219,7 @@ public final class CourseServiceImpl implements CourseService {
 					} else if (module.modname.equals(MODULE_URL) && module.contents.length > 0) {
 						final MoodleUrl2 url = new MoodleUrl2(moduleName, module.contents[0].fileurl);
 						moodleSection.addToResources(new MoodleResource2().setUrl(url));
-					} else if (module.modname.equals(MODULE_FOLDER)) {
+					} else if (module.modname.equals(MODULE_FOLDER) && module.contents != null) {
 						final MoodleFolder2 folder = new MoodleFolder2(moduleName, new ArrayList<MoodleFile2>());
 						for (final JsonSection.Module.Content content : module.contents) {
 							// in this case the names have an extension

@@ -23,7 +23,15 @@
 	<string name="events_email_popup_title">Send by email</string>
 	<string name="events_email_popup_body">Email address to send starred items</string>
 	<string name="events_ok">OK</string>
-					
+
+	<string name="events_periods_oneday">One day</string>
+	<string name="events_periods_twodays">Two days</string>	
+	<string name="events_periods_oneweek">One week</string>
+	<string name="events_periods_twoweeks">Two weeks</string>
+	<string name="events_periods_onemonth">One month</string>
+	<string name="events_periods_sixmonths">Six months</string>
+	<string name="events_periods_oneyear">One year</string>
+													
 	<string name="events_readmore">
 		<u>Read more...</u>
 	</string>

@@ -338,7 +338,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 
 	@Override
 	public DirectoryResponse searchDirectory(DirectoryRequest req) throws TException {
-		System.out.println("searchDirectory");
+		System.out.println("searchDirectory: " + req.getQuery());
 		try {
 			Pagination pag = new Pagination();
 			if (req.isSetResultSetCookie())
@@ -441,9 +441,9 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 					p.setPictureUrl("http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + p.getSciper());
 
 					String unitAcro = e.getAttributeValue("ou");
-					DirectoryPersonRole role = new DirectoryPersonRole(
-							last(e.getAttributeValues("ou" + attributeKeyAppendix)),
-							last(e.getAttributeValues("description" + attributeKeyAppendix)));
+					String [] units = e.getAttributeValues("ou" + attributeKeyAppendix);
+					String [] titles = e.getAttributeValues("description" + attributeKeyAppendix);
+					DirectoryPersonRole role = new DirectoryPersonRole(last(units), titles != null ? last(titles) : "");
 					Map<String, DirectoryPersonRole> roles = new HashMap<String, DirectoryPersonRole>();
 					roles.put(unitAcro, role);
 					p.setRoles(roles);
