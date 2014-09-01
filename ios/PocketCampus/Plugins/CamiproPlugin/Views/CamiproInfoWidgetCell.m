@@ -78,7 +78,6 @@
         NSString* subtitle = NSLocalizedStringFromTable(@"CamiproWidgetSubtitle", @"CamiproPlugin", nil);
         NSString* finalString = [NSString stringWithFormat:@"%@\n%@", title, subtitle];
         NSMutableAttributedString* mAttrString = [[NSMutableAttributedString alloc] initWithString:finalString];
-        UIFont* footnoteFont = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
         [mAttrString setAttributes:@{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]} range:[finalString rangeOfString:title]];
         [mAttrString setAttributes:@{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1], NSForegroundColorAttributeName:[UIColor darkGrayColor]} range:[finalString rangeOfString:subtitle]];
         attrString = [mAttrString copy];
