@@ -16,7 +16,7 @@
 "CamiproDown" = "Sorry, Camipro servers seem to be down. Please try again later.";
 "LastUpdate" = "Last update";
 "CamiproWidgetTitle" = "Camipro Widget for iOS 8";
-"CamiproWidgetSubtitle" = "You can pull down Notification Center to install the Camipro Widget and check your balance in a glance!";
+"CamiproWidgetSubtitle" = "Pull down Notification Center and tap Edit at the bottom of the list to install the Camipro Widget and check your balance in a glance!";
 
 // Camipro Widget
 

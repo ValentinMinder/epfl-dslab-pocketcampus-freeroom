@@ -16,7 +16,7 @@
 "CamiproDown" = "Désolé, les serveurs de Camipro semblent inaccessibles. Réessayez plus tard.";
 "LastUpdate" = "Dernière m.à.j.";
 "CamiproWidgetTitle" = "Widget Camipro pour iOS 8";
-"CamiproWidgetSubtitle" = "Vous pouvez ouvrir le Centre de Notifications et installer le widget Camipro pour vérifier votre solde d'un geste !";
+"CamiproWidgetSubtitle" = "Ouvrez le Centre de Notifications et touchez le bouton Modifier en bas de la liste pour installer le widget Camipro et vérifier votre solde d'un geste !";
 
 // Camipro Widget
 
