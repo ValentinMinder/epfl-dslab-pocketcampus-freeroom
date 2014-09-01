@@ -19,10 +19,12 @@ import org.pocketcampus.plugin.moodle.android.iface.IMoodleController;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.android.req.CoursesListRequest;
 import org.pocketcampus.plugin.moodle.android.req.DownloadMoodleFileRequest;
+import org.pocketcampus.plugin.moodle.android.req.PrintFileRequest;
 import org.pocketcampus.plugin.moodle.android.req.SectionsListRequest;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourse2;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourseSectionsRequest2;
 import org.pocketcampus.plugin.moodle.shared.MoodleCoursesRequest2;
+import org.pocketcampus.plugin.moodle.shared.MoodlePrintFileRequest2;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Client;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Iface;
 
@@ -163,6 +165,10 @@ public class MoodleController extends PluginController implements IMoodleControl
 		new DownloadMoodleFileRequest(caller, getHttpPost(mPluginName)).start(this, threadSafeClient, filePath);
 	}
 	
+	public void printFileResource(IMoodleView caller, String filePath) {
+		new PrintFileRequest(caller).start(this, mClient, new MoodlePrintFileRequest2(filePath));
+	}
+	
 
 	/*****
 	 * HELPER CLASSES AND FUNCTIONS
@@ -210,6 +216,14 @@ public class MoodleController extends PluginController implements IMoodleControl
 			Toast.makeText(c.getApplicationContext(), c.getResources().getString(
 					R.string.moodle_no_app_to_handle_filetype), Toast.LENGTH_SHORT).show();
 		}
+	}
+	
+	public static void openPrintDialog(Context c, long printJobId) {
+		Uri.Builder builder = new Uri.Builder();
+		builder.scheme("pocketcampus").authority("cloudprint.plugin.pocketcampus.org").appendPath("print");
+		Intent i = new Intent(Intent.ACTION_VIEW, builder.build());
+		i.putExtra("JOB_ID", printJobId);
+		c.startActivity(i);
 	}
 	
 

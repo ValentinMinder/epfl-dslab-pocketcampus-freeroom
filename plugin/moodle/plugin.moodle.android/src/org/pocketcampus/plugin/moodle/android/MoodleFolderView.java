@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -265,8 +266,78 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 	 * 
 	 */
 
+	private static <T extends PluginView & IMoodleView> void localFileMenu(final T context, final MoodleController controller, final MoodleFile2 item, final File file) {
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.select_dialog_item, 
+				new String[] {context.getString(R.string.moodle_filemenu_open), 
+						context.getString(R.string.moodle_filemenu_share),
+						context.getString(R.string.moodle_filemenu_redownload),
+						context.getString(R.string.moodle_filemenu_delete)});
+		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 
-	private static <T extends PluginView & IMoodleView> void fileMenu(final T context, final MoodleController controller, final MoodleFile2 item, final File file) {
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				switch(arg1) {
+				case 0:
+					context.trackEvent("Open", item.getName());
+					MoodleController.openFile(context, file);
+					break;
+				case 1:
+					context.trackEvent("Share", item.getName());
+					MoodleController.shareFile(context, file);
+					break;
+				case 2:
+					context.trackEvent("ReDownload", item.getName());
+					controller.fetchFileResource(context, item.getUrl());
+					break;
+				case 3:
+					context.trackEvent("Delete", item.getName());
+					file.delete();
+					context.updateDisplay();
+					break;
+				default:
+					Toast.makeText(context.getApplicationContext(), arg1, Toast.LENGTH_SHORT).show();
+					break;
+				}
+				
+			}
+			
+		};
+		fileMenu(context, controller, item, file, adapter, listener);
+	}
+	
+	private static <T extends PluginView & IMoodleView> void remoteFileMenu(final T context, final MoodleController controller, final MoodleFile2 item, final File file) {
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.select_dialog_item, 
+				new String[] {context.getString(R.string.moodle_filemenu_download),
+						context.getString(R.string.moodle_filemenu_print)});
+		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				switch(arg1) {
+				case 0:
+					context.trackEvent("Download", item.getName());
+					controller.fetchFileResource(context, item.getUrl());
+					break;
+				case 1:
+					context.trackEvent("Print", item.getName());
+					controller.printFileResource(context, item.getUrl());
+					break;
+				default:
+					Toast.makeText(context.getApplicationContext(), arg1, Toast.LENGTH_SHORT).show();
+					break;
+				}
+				
+			}
+			
+		};
+		fileMenu(context, controller, item, file, adapter, listener);
+		
+	}
+		
+
+	private static <T extends PluginView & IMoodleView> void fileMenu(final T context, 
+			final MoodleController controller, final MoodleFile2 item, final File file,
+			final ListAdapter adapter, final DialogInterface.OnClickListener listener) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View titleV = inflater.inflate(R.layout.sdk_actionbar_dialog, null);
@@ -274,41 +345,7 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 		
 		AlertDialog dialog = new AlertDialog.Builder(context)
 				.setCustomTitle(titleV)
-				.setAdapter(new ArrayAdapter<String>(context, android.R.layout.select_dialog_item, 
-						new String[] {context.getString(R.string.moodle_filemenu_open), 
-								context.getString(R.string.moodle_filemenu_share),
-								context.getString(R.string.moodle_filemenu_redownload),
-								context.getString(R.string.moodle_filemenu_delete)}), 
-						new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						switch(arg1) {
-						case 0:
-							context.trackEvent("Open", item.getName());
-							MoodleController.openFile(context, file);
-							break;
-						case 1:
-							context.trackEvent("Share", item.getName());
-							MoodleController.shareFile(context, file);
-							break;
-						case 2:
-							context.trackEvent("ReDownload", item.getName());
-							controller.fetchFileResource(context, item.getUrl());
-							break;
-						case 3:
-							context.trackEvent("Delete", item.getName());
-							file.delete();
-							context.updateDisplay();
-							break;
-						default:
-							Toast.makeText(context.getApplicationContext(), arg1, Toast.LENGTH_SHORT).show();
-							break;
-						}
-						
-					}
-					
-				})
+				.setAdapter(adapter, listener)
 				.setInverseBackgroundForced(true)
 				.create();
 		dialog.setCanceledOnTouchOutside(true);
@@ -331,10 +368,11 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 		context.trackEvent("ContextMenu", item.getName());
 		File resourceFile = new File(MoodleController.getLocalPath(item.getUrl(), false));
 		if(resourceFile.exists()) {
-			fileMenu(context, controller, item, resourceFile);
+			localFileMenu(context, controller, item, resourceFile);
 			return true;
 		} else {
-			return false;
+			remoteFileMenu(context, controller, item, resourceFile);
+			return true;
 		}
 	}
 	
