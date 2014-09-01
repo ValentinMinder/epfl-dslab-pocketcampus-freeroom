@@ -15,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Camipro widget for iOS 8" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GXg-Cg-V2y">
-                        <rect key="frame" x="54" y="32" width="258" height="19.5"/>
+                        <rect key="frame" x="54" y="32" width="258" height="20"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
@@ -26,7 +26,6 @@
                             <constraint firstAttribute="height" constant="40" id="1aR-6M-Tac"/>
                             <constraint firstAttribute="width" constant="40" id="fD7-bp-1BE"/>
                         </constraints>
-                        <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                         <state key="normal" image="Cross.png"/>
                         <connections>
                             <action selector="closeTapped" destination="JUb-bw-bv2" eventType="touchUpInside" id="19J-7n-aNr"/>

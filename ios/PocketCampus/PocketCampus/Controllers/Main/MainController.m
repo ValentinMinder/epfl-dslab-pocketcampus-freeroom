@@ -916,7 +916,7 @@ static MainController<MainControllerPublic>* instance = nil;
     if (([topViewController supportedInterfaceOrientations] | UIInterfaceOrientationMaskPortrait) == UIInterfaceOrientationMaskPortrait || ([viewController supportedInterfaceOrientations] | UIInterfaceOrientationMaskPortrait) == UIInterfaceOrientationMaskPortrait) {
         /* means only potrait mask is supported */
         UIDevice* device = [UIDevice currentDevice];
-        if ([device orientation] != UIInterfaceOrientationPortrait) {
+        if ([device orientation] == UIDeviceOrientationUnknown || ([device orientation] != UIDeviceOrientationPortrait && [device orientation] != UIDeviceOrientationFaceUp)) {
             /*
              * Best but forbidden method (private API)
              */
