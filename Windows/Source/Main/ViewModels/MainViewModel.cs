@@ -125,7 +125,7 @@ namespace PocketCampus.Main.ViewModels
                     var plugin = Plugins.FirstOrDefault( p => p.Id.Equals( _request.PluginName, StringComparison.OrdinalIgnoreCase ) );
                     if ( plugin != null )
                     {
-                        _navigationService.PopBackStack();
+                        _navigationService.RemoveCurrentFromBackStack();
                         OpenPlugin( plugin );
                     }
                 }

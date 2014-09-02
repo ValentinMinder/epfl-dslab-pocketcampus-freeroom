@@ -118,7 +118,7 @@ namespace PocketCampus.Directory.ViewModels
                 await SearchAsync( _request.Name, true );
                 if ( _searchResults.Count == 1 )
                 {
-                    _navigationService.PopBackStack();
+                    _navigationService.RemoveCurrentFromBackStack();
                 }
             }
 

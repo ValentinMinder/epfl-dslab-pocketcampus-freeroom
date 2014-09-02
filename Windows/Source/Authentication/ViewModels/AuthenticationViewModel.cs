@@ -164,8 +164,8 @@ namespace PocketCampus.Authentication.ViewModels
                 }
                 else
                 {
+                    _navigationService.RemoveCurrentFromBackStack();
                     _request.SuccessAction();
-                    _navigationService.PopBackStack();
                 }
             }
 

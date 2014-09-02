@@ -114,7 +114,7 @@ namespace PocketCampus.Main.Services
             where TViewModel : ViewModel<NoParameter>
         {
             var authRequest = new AuthenticationRequest( () => _navigationService.NavigateTo<TViewModel>() );
-            _navigationService.PopBackStack();
+            _navigationService.RemoveCurrentFromBackStack();
             _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
         }
 
