@@ -31,7 +31,7 @@
 
         <!-- Transaction item template -->
         <DataTemplate x:Key="TransactionTemplate">
-            <Grid Margin="0,12"
+            <Grid Margin="0,0,0,24"
                   Height="60">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
