@@ -50,7 +50,7 @@ public class EventCategImporter {
 		q.addPart("REPLACE INTO eventcategs SET ");
 		q.addPartWithValue("`categKey` = ?,", e.category_id);
 		q.addPartWithValue("`categValue` = ?,", e.en_label);
-		q.addPartWithValue("`categValue_fr` = ?,", e.fr_label);
+		q.addPartWithValue("`categValue_fr` = ?", e.fr_label);
 		PreparedStatement stm = q.getPreparedStatement(conn);
 		stm.executeUpdate();
 		stm.close();
