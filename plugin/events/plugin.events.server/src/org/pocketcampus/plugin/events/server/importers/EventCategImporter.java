@@ -16,6 +16,8 @@ public class EventCategImporter {
 	public static class MementoCateg {
 		public String code; // : "CONF", 
 		public long category_id; // : 1
+		public String en_label; // : "Conferences - Seminars", 
+		public String fr_label; // : "Conf\u00e9rences - S\u00e9minaires"
 	}
 	
 	public static void importCategsFromMemento(Connection conn) {
@@ -47,8 +49,8 @@ public class EventCategImporter {
 		MyQuery q = new MyQuery();
 		q.addPart("REPLACE INTO eventcategs SET ");
 		q.addPartWithValue("`categKey` = ?,", e.category_id);
-//		q.addPartWithValue("`categValue` = ?,", e.en_name);
-//		q.addPartWithValue("`categValue_fr` = ?,", e.fr_label);
+		q.addPartWithValue("`categValue` = ?,", e.en_label);
+		q.addPartWithValue("`categValue_fr` = ?,", e.fr_label);
 		PreparedStatement stm = q.getPreparedStatement(conn);
 		stm.executeUpdate();
 		stm.close();
