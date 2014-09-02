@@ -197,6 +197,7 @@
 		3281AB8216E221F700D8FAD1 /* EventItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3281AB8116E221F700D8FAD1 /* EventItemViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3281AB8316E2254600D8FAD1 /* EventItemView.xib */; };
 		3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3282C283181179E2002A4FAE /* EventsLarge@2x.png */; };
+		32870F9E19B674AE00A3BC68 /* CloudPrintRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32870F9D19B674AE00A3BC68 /* CloudPrintRequestViewController.m */; };
 		32875E5F194CF2EF0071CDF8 /* PCWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32875E5E194CF2EF0071CDF8 /* PCWebViewController.m */; };
 		32875E61194CF3100071CDF8 /* PCWebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32875E60194CF3100071CDF8 /* PCWebView.xib */; };
 		328860B9183B63590098C857 /* FoodModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 328860B8183B63590098C857 /* FoodModelAdditions.m */; };
@@ -722,6 +723,8 @@
 		3281AB8116E221F700D8FAD1 /* EventItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EventItemViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		3281AB8316E2254600D8FAD1 /* EventItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventItemView.xib; sourceTree = "<group>"; };
 		3282C283181179E2002A4FAE /* EventsLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EventsLarge@2x.png"; sourceTree = "<group>"; };
+		32870F9C19B674AE00A3BC68 /* CloudPrintRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintRequestViewController.h; sourceTree = "<group>"; };
+		32870F9D19B674AE00A3BC68 /* CloudPrintRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintRequestViewController.m; sourceTree = "<group>"; };
 		32875E5D194CF2EF0071CDF8 /* PCWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCWebViewController.h; sourceTree = "<group>"; };
 		32875E5E194CF2EF0071CDF8 /* PCWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCWebViewController.m; sourceTree = "<group>"; };
 		32875E60194CF3100071CDF8 /* PCWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PCWebView.xib; sourceTree = "<group>"; };
@@ -2051,6 +2054,8 @@
 			children = (
 				32DD524419B4DEAE00B5B241 /* CloudPrintController.h */,
 				32DD524519B4DEAE00B5B241 /* CloudPrintController.m */,
+				32870F9C19B674AE00A3BC68 /* CloudPrintRequestViewController.h */,
+				32870F9D19B674AE00A3BC68 /* CloudPrintRequestViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2917,6 +2922,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32870F9E19B674AE00A3BC68 /* CloudPrintRequestViewController.m in Sources */,
 				32B956231878BA60003B9330 /* DirectoryPersonCell.m in Sources */,
 				3219EF5D14FCDE4900A271CD /* main.m in Sources */,
 				324ADAC2191A44B1000737E7 /* EPFLLayersOverlay.m in Sources */,

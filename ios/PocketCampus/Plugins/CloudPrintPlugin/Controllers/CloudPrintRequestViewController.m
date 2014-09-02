@@ -25,60 +25,65 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 01.09.2014.
+//  Created by Loïc Gardiol on 02.09.14.
 
-#import "CloudPrintController.h"
+#import "CloudPrintRequestViewController.h"
 
-static CloudPrintController* instance __weak = nil;
+static NSInteger const kOptionsSections = 0;
 
-@interface CloudPrintController ()
+@interface CloudPrintRequestViewController ()
+
+@property (nonatomic, strong) PrintDocumentRequest* printRequest;
 
 @end
 
-@implementation CloudPrintController
+@implementation CloudPrintRequestViewController
 
 #pragma mark - Init
 
-- (id)init
-{
-    @synchronized(self) {
-        if (instance) {
-            @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"CloudPrintController cannot be instancied more than once at a time, use sharedInstance instead." userInfo:nil];
+- (instancetype)initWithDocumentName:(NSString*)docName printRequestOrNil:(PrintDocumentRequest*)printRequestOrNil {
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    if (self) {
+        if (printRequestOrNil) {
+            self.printRequest = printRequestOrNil;
+        } else {
+            self.printRequest = [PrintDocumentRequest new];
+            self.printRequest.doubleSided = YES; // Default
+            self.printRequest.blackAndWhite = YES; // Default
+            self.printRequest.numberOfCopies = 1; // Default
         }
-        self = [super init];
-        if (self) {
-            instance = self;
-        }
-        return self;
     }
+    return self;
 }
 
-#pragma mark - PluginControllerProtocol
+#pragma mark - UIViewController overrides
 
-+ (id)sharedInstanceToRetain {
-    @synchronized (self) {
-        if (instance) {
-            return instance;
-        }
-        return [[[self class] alloc] init];
+- (void)viewDidLoad {
+    [super viewDidLoad];
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+#pragma mark - UITableViewDataSource
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSInteger nbRows = 4;
+    if (self.printRequest.pageSelection) {
+        nbRows++;
     }
+    return nbRows;
 }
 
-+ (NSString*)localizedName {
-    return NSLocalizedStringFromTable(@"PluginName", @"CloudPrintPlugin", @"");
-}
-
-+ (NSString*)identifierName {
-    return @"CloudPrint";
-}
-
-#pragma mark - Dealloc
-
-- (void)dealloc
-{
-    @synchronized(self) {
-        instance = nil;
-    }
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
 }
 
 @end

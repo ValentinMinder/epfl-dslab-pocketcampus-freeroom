@@ -25,60 +25,33 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 01.09.2014.
+//  Created by Loïc Gardiol on 02.09.14.
 
-#import "CloudPrintController.h"
+#import "CloudPrintService.h"
 
-static CloudPrintController* instance __weak = nil;
+@import UIKit;
 
-@interface CloudPrintController ()
+@interface CloudPrintRequestViewController : UITableViewController
 
-@end
+/**
+ * @return a view controller ready for user to configure the print request
+ * @param docName the name of the document that will be displayed 
+ * (not part of print request, just there as indication that the right file was selected).
+ * @param printRequestOrNil you can pass an existing print request such that the UI displays
+ * this specific config (and let user potentially modify it).
+ */
+- (instancetype)initWithDocumentName:(NSString*)docName printRequestOrNil:(PrintDocumentRequest*)printRequestOrNil;
 
-@implementation CloudPrintController
+/**
+ * Exectued when user taps Print to validate the print request
+ * Default: nil
+ */
+@property (nonatomic, copy) void (^userValidatedRequestBlock)(PrintDocumentRequest* request);
 
-#pragma mark - Init
-
-- (id)init
-{
-    @synchronized(self) {
-        if (instance) {
-            @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"CloudPrintController cannot be instancied more than once at a time, use sharedInstance instead." userInfo:nil];
-        }
-        self = [super init];
-        if (self) {
-            instance = self;
-        }
-        return self;
-    }
-}
-
-#pragma mark - PluginControllerProtocol
-
-+ (id)sharedInstanceToRetain {
-    @synchronized (self) {
-        if (instance) {
-            return instance;
-        }
-        return [[[self class] alloc] init];
-    }
-}
-
-+ (NSString*)localizedName {
-    return NSLocalizedStringFromTable(@"PluginName", @"CloudPrintPlugin", @"");
-}
-
-+ (NSString*)identifierName {
-    return @"CloudPrint";
-}
-
-#pragma mark - Dealloc
-
-- (void)dealloc
-{
-    @synchronized(self) {
-        instance = nil;
-    }
-}
+/**
+ * Executed when user taps Cancel to cancel the print request
+ * Default: nil
+ */
+@property (nonatomic, copy) void (^userCancelledBlock)();
 
 @end
