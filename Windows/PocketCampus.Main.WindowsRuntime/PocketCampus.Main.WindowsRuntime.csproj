@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PocketCampus.Main</RootNamespace>
     <AssemblyName>PocketCampus.Main.WindowsRuntime</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
+    <DefaultLanguage>en</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -135,14 +135,20 @@
     <Reference Include="GoogleAnalytics.Core">
       <HintPath>..\packages\GoogleAnalyticsSDK.1.2.12\lib\wpa81\GoogleAnalytics.Core.winmd</HintPath>
     </Reference>
-    <Reference Include="ThinMvvm">
-      <HintPath>..\packages\ThinMvvm.0.9.15.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
+    <Reference Include="ThinMvvm, Version=0.9.17.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ThinMvvm.0.9.17.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
     </Reference>
-    <Reference Include="ThinMvvm.Logging">
-      <HintPath>..\packages\ThinMvvm.Logging.0.9.15.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
+    <Reference Include="ThinMvvm.Logging, Version=0.9.17.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ThinMvvm.Logging.0.9.17.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="ThinMvvm.WindowsRuntime">
-      <HintPath>..\packages\ThinMvvm.WindowsRuntime.0.9.15.0\lib\portable-win81+WindowsPhoneApp81\ThinMvvm.WindowsRuntime.dll</HintPath>
+    <Reference Include="ThinMvvm.WindowsRuntime, Version=0.9.17.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ThinMvvm.WindowsRuntime.0.9.17.0\lib\portable-win81+WindowsPhoneApp81\ThinMvvm.WindowsRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="ThriftSharp">
+      <HintPath>..\packages\ThriftSharp.2.1.1.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThriftSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +167,21 @@
       <Project>{a1a50035-9654-49c2-afa4-f21b25f7c3b7}</Project>
       <Name>PocketCampus.Main</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Source\PocketCampus.Authentication.WindowsRuntime\PocketCampus.Authentication.WindowsRuntime.csproj">
+      <Project>{5398203e-b2f3-499b-8c9e-5d46aa7cd2ae}</Project>
+      <Name>PocketCampus.Authentication.WindowsRuntime</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Source\PocketCampus.Common.WindowsRuntime\PocketCampus.Common.WindowsRuntime.csproj">
       <Project>{31858f5b-a2b5-4afc-bf65-d5a1554524eb}</Project>
       <Name>PocketCampus.Common.WindowsRuntime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Source\PocketCampus.Satellite.WindowsRuntime\PocketCampus.Satellite.WindowsRuntime.csproj">
+      <Project>{136e3c79-e778-49bc-8982-d622b0ed912b}</Project>
+      <Name>PocketCampus.Satellite.WindowsRuntime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Source\Satellite\PocketCampus.Satellite.csproj">
+      <Project>{94fb2b30-aa95-41e8-9b2f-6af7d37355e1}</Project>
+      <Name>PocketCampus.Satellite</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

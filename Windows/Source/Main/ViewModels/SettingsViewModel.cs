@@ -87,8 +87,7 @@ namespace PocketCampus.Main.ViewModels
             Settings.SessionStatus = SessionStatus.NotLoggedIn;
             Settings.Session = null;
             Settings.Sessions = new Dictionary<string, string>();
-            Credentials.UserName = null;
-            Credentials.Password = null;
+            Credentials.DeleteCredentials();
             await _authenticator.LogOffAsync();
         }
 

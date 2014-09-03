@@ -8,7 +8,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using PocketCampus.Common;
-using PocketCampus.Common.WindowsRuntime;
 using Windows.ApplicationModel;
 
 namespace PocketCampus.Main.Services
@@ -33,15 +32,24 @@ namespace PocketCampus.Main.Services
                     {
                         var assemblyName = new AssemblyName( file.DisplayName );
                         var assembly = Assembly.Load( assemblyName );
-                        var pluginType = assembly.ExportedTypes.First( t => WindowsRuntimePluginTypeInfo.IsAssignableFrom( t.GetTypeInfo() ) );
-                        var plugin = (IWindowsRuntimePlugin) Activator.CreateInstance( pluginType );
-                        plugins.Add( plugin );
+                        var pluginType = assembly.ExportedTypes.FirstOrDefault( IsWindowsRuntimePlugin );
+                        if ( pluginType != null )
+                        {
+                            var plugin = (IWindowsRuntimePlugin) Activator.CreateInstance( pluginType );
+                            plugins.Add( plugin );
+                        }
                     }
                 }
 
                 _plugins = plugins.ToArray();
             }
             return _plugins;
+        }
+
+        private static bool IsWindowsRuntimePlugin( Type type )
+        {
+            var typeInfo = type.GetTypeInfo();
+            return WindowsRuntimePluginTypeInfo.IsAssignableFrom( typeInfo ) && !typeInfo.IsInterface;
         }
     }
 }

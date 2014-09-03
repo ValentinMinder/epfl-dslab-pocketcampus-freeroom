@@ -24,8 +24,7 @@ namespace PocketCampus.Main.ViewModels.Design
         {
             About = new AboutViewModel( new DesignBrowserService(), new DesignEmailService(), new DesignRatingService() );
             Main = new MainViewModel( new DesignNavigationService(), new DesignServerAccess(), new DesignPluginLoader(),
-                                      new DesignMainSettings(), new DesignTileService(),
-                                      new ViewPluginRequest() );
+                                      new DesignMainSettings(), new DesignTileService() );
             Settings = new SettingsViewModel( new DesignMainSettings(), new DesignAuthenticator(), new DesignNavigationService(),
                                               new DesignAuthenticationService(), new DesignCredentialsStorage(), new DesignTileService() );
 

@@ -1,9 +1,16 @@
-﻿<mvvm:AppBase x:Class="PocketCampus.Main.WindowsRuntime.App"
+﻿<mvvm:AppBase x:Class="PocketCampus.Main.App"
               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:mvvm="using:ThinMvvm.WindowsRuntime"
               xmlns:myDesign="using:PocketCampus.Main.ViewModels.Design">
     <mvvm:AppBase.Resources>
         <myDesign:Design x:Key="Design" />
+        
+        <SolidColorBrush x:Key="AppAccentBrush"
+                         Color="#C30509" />
+        <SolidColorBrush x:Key="AppHeaderBackgroundBrush"
+                         Color="#C30509" />
+        <SolidColorBrush x:Key="AppHeaderForegroundBrush"
+                         Color="White" />
     </mvvm:AppBase.Resources>
 </mvvm:AppBase>

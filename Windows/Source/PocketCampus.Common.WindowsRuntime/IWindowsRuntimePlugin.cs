@@ -1,6 +1,6 @@
 ﻿using ThinMvvm.WindowsRuntime;
 
-namespace PocketCampus.Common.WindowsRuntime
+namespace PocketCampus.Common
 {
     /// <summary>
     /// Windows Runtime extensions for IPlugin.

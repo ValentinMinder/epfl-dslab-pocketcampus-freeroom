@@ -4,9 +4,36 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d"
-      d:DataContext="{Binding Main, Source={StaticResource Design}}">
-    <Grid>
-        <!-- TODO -->
+      d:DataContext="{Binding Main, Source={StaticResource Design}}"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <DataTemplate x:Key="PluginTemplate">
+            <Button Command="{Binding DataContext.OpenPluginCommand, ElementName=Root}"
+                    CommandParameter="{Binding}"
+                    Margin="12">
+                <TextBlock Text="{Binding Name}" />
+            </Button>
+        </DataTemplate>
+    </Page.Resources>
+    
+    <Grid x:Name="Root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+            <Viewbox StretchDirection="DownOnly">
+                <TextBlock Text="PocketCampus EPFL"
+                           Style="{StaticResource HeaderTextBlockStyle}"
+                           Foreground="{StaticResource AppHeaderForegroundBrush}"
+                           Margin="12,4"/>
+            </Viewbox>
+        </Border>
+        
+        <GridView Grid.Row="1"
+                  ItemsSource="{Binding Plugins}"
+                  ItemTemplate="{StaticResource PluginTemplate}" />
     </Grid>
     
     <Page.BottomAppBar>

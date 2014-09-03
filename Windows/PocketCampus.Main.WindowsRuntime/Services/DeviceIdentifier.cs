@@ -20,7 +20,7 @@ namespace PocketCampus.Main.Services
                 if ( _current == null )
                 {
                     var token = HardwareIdentification.GetPackageSpecificToken( null );
-                    return TokenToString( token );
+                    _current = TokenToString( token );
                 }
                 return _current;
             }

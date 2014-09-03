@@ -142,8 +142,7 @@ namespace PocketCampus.Authentication.ViewModels
                     _settings.Session = sessionResponse.Session;
 
                     _settings.SessionStatus = SaveCredentials ? SessionStatus.LoggedIn : SessionStatus.LoggedInTemporarily;
-                    _credentials.UserName = UserName;
-                    _credentials.Password = Password;
+                    _credentials.SetCredentials( UserName, Password );
                     authOk = true;
                 }
                 else

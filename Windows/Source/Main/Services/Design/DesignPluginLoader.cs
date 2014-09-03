@@ -6,6 +6,7 @@
 
 #if DEBUG
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using PocketCampus.Common;
 using ThinMvvm;
 
@@ -13,9 +14,9 @@ namespace PocketCampus.Main.Services.Design
 {
     public sealed class DesignPluginLoader : IPluginLoader
     {
-        public IPlugin[] GetPlugins()
+        public Task<IPlugin[]> GetPluginsAsync()
         {
-            return new[]
+            return Task.FromResult( new IPlugin[]
             {
                 new DesignPlugin( "Camipro" ),
                 new DesignPlugin( "Directory" ),
@@ -27,7 +28,7 @@ namespace PocketCampus.Main.Services.Design
                 new DesignPlugin( "News" ),
                 new DesignPlugin( "Satellite" ),
                 new DesignPlugin( "Transport" )
-            };
+            } );
         }
 
         // This also "implements" IWindowsPhonePlugin for the WP designer

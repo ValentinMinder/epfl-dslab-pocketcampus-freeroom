@@ -66,6 +66,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Common.Windows
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Main.WindowsRuntime", "PocketCampus.Main.WindowsRuntime\PocketCampus.Main.WindowsRuntime.csproj", "{6BB638D7-F391-4DEC-BD71-347A51430250}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Satellite.WindowsRuntime", "Source\PocketCampus.Satellite.WindowsRuntime\PocketCampus.Satellite.WindowsRuntime.csproj", "{136E3C79-E778-49BC-8982-D622B0ED912B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Authentication.WindowsRuntime", "Source\PocketCampus.Authentication.WindowsRuntime\PocketCampus.Authentication.WindowsRuntime.csproj", "{5398203E-B2F3-499B-8C9E-5D46AA7CD2AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -402,6 +406,30 @@ Global
 		{6BB638D7-F391-4DEC-BD71-347A51430250}.Release|x86.ActiveCfg = Release|x86
 		{6BB638D7-F391-4DEC-BD71-347A51430250}.Release|x86.Build.0 = Release|x86
 		{6BB638D7-F391-4DEC-BD71-347A51430250}.Release|x86.Deploy.0 = Release|x86
+		{136E3C79-E778-49BC-8982-D622B0ED912B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{136E3C79-E778-49BC-8982-D622B0ED912B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{136E3C79-E778-49BC-8982-D622B0ED912B}.Debug|ARM.ActiveCfg = Debug|ARM
+		{136E3C79-E778-49BC-8982-D622B0ED912B}.Debug|ARM.Build.0 = Debug|ARM
+		{136E3C79-E778-49BC-8982-D622B0ED912B}.Debug|x86.ActiveCfg = Debug|x86
+		{136E3C79-E778-49BC-8982-D622B0ED912B}.Debug|x86.Build.0 = Debug|x86
+		{136E3C79-E778-49BC-8982-D622B0ED912B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{136E3C79-E778-49BC-8982-D622B0ED912B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{136E3C79-E778-49BC-8982-D622B0ED912B}.Release|ARM.ActiveCfg = Release|ARM
+		{136E3C79-E778-49BC-8982-D622B0ED912B}.Release|ARM.Build.0 = Release|ARM
+		{136E3C79-E778-49BC-8982-D622B0ED912B}.Release|x86.ActiveCfg = Release|x86
+		{136E3C79-E778-49BC-8982-D622B0ED912B}.Release|x86.Build.0 = Release|x86
+		{5398203E-B2F3-499B-8C9E-5D46AA7CD2AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5398203E-B2F3-499B-8C9E-5D46AA7CD2AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5398203E-B2F3-499B-8C9E-5D46AA7CD2AE}.Debug|ARM.ActiveCfg = Debug|ARM
+		{5398203E-B2F3-499B-8C9E-5D46AA7CD2AE}.Debug|ARM.Build.0 = Debug|ARM
+		{5398203E-B2F3-499B-8C9E-5D46AA7CD2AE}.Debug|x86.ActiveCfg = Debug|x86
+		{5398203E-B2F3-499B-8C9E-5D46AA7CD2AE}.Debug|x86.Build.0 = Debug|x86
+		{5398203E-B2F3-499B-8C9E-5D46AA7CD2AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5398203E-B2F3-499B-8C9E-5D46AA7CD2AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5398203E-B2F3-499B-8C9E-5D46AA7CD2AE}.Release|ARM.ActiveCfg = Release|ARM
+		{5398203E-B2F3-499B-8C9E-5D46AA7CD2AE}.Release|ARM.Build.0 = Release|ARM
+		{5398203E-B2F3-499B-8C9E-5D46AA7CD2AE}.Release|x86.ActiveCfg = Release|x86
+		{5398203E-B2F3-499B-8C9E-5D46AA7CD2AE}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

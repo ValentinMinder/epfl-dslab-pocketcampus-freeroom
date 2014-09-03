@@ -4,7 +4,6 @@
 
 using System;
 using PocketCampus.Common;
-using PocketCampus.Common.WindowsRuntime;
 using Windows.UI.StartScreen;
 
 namespace PocketCampus.Main.Services

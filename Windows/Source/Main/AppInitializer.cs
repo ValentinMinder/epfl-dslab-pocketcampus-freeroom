@@ -5,6 +5,7 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using PocketCampus.Authentication.Services;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
 using ThinMvvm;

@@ -1,8 +1,9 @@
 ﻿using System.Linq;
+using PocketCampus.Common;
 using PocketCampus.Common.Services;
-using PocketCampus.Common.WindowsRuntime;
 using PocketCampus.Main.Services;
 using PocketCampus.Main.ViewModels;
+using PocketCampus.Main.Views;
 using ThinMvvm;
 using ThinMvvm.WindowsRuntime;
 using Windows.ApplicationModel.Activation;
@@ -34,6 +35,9 @@ namespace PocketCampus.Main
             _navigationService = Container.Bind<IWindowsRuntimeNavigationService, WindowsRuntimeNavigationService>();
             _pluginLoader = Container.Bind<IPluginLoader, PluginLoader>();
 
+            _navigationService.Bind<AboutViewModel, AboutView>();
+            _navigationService.Bind<MainViewModel, MainView>();
+            _navigationService.Bind<SettingsViewModel, SettingsView>();
         }
 
         protected override async void Launch( LaunchActivatedEventArgs e )
