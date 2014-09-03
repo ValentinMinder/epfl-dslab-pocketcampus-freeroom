@@ -1,0 +1,9 @@
+﻿<mvvm:AppBase x:Class="PocketCampus.Main.WindowsRuntime.App"
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:mvvm="using:ThinMvvm.WindowsRuntime"
+              xmlns:myDesign="using:PocketCampus.Main.ViewModels.Design">
+    <mvvm:AppBase.Resources>
+        <myDesign:Design x:Key="Design" />
+    </mvvm:AppBase.Resources>
+</mvvm:AppBase>

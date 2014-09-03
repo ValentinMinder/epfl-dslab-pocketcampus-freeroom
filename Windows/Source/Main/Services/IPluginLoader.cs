@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading.Tasks;
 using PocketCampus.Common;
 
 namespace PocketCampus.Main.Services
@@ -12,8 +13,8 @@ namespace PocketCampus.Main.Services
     public interface IPluginLoader
     {
         /// <summary>
-        /// Gets all available plugins.
+        /// Asynchronously gets all available plugins.
         /// </summary>
-        IPlugin[] GetPlugins();
+        Task<IPlugin[]> GetPluginsAsync();
     }
 }

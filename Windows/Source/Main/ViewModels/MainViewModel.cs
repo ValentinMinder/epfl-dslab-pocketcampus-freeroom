@@ -21,14 +21,13 @@ namespace PocketCampus.Main.ViewModels
     /// The main ViewModel.
     /// </summary>
     [LogId( "/dashboard" )]
-    public sealed class MainViewModel : DataViewModel<ViewPluginRequest>
+    public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private readonly INavigationService _navigationService;
         private readonly IServerAccess _serverAccess;
         private readonly IPluginLoader _pluginLoader;
         private readonly IMainSettings _settings;
         private readonly ITileService _tileCreator;
-        private readonly ViewPluginRequest _request;
 
         private IPlugin[] _plugins;
 
@@ -85,16 +84,13 @@ namespace PocketCampus.Main.ViewModels
         /// Creates a new MainViewModel.
         /// </summary>
         public MainViewModel( INavigationService navigationService, IServerAccess serverAccess,
-                              IPluginLoader pluginLoader, IMainSettings settings, ITileService tileCreator,
-                              ViewPluginRequest request )
+                              IPluginLoader pluginLoader, IMainSettings settings, ITileService tileCreator )
         {
             _navigationService = navigationService;
             _pluginLoader = pluginLoader;
             _serverAccess = serverAccess;
             _settings = settings;
             _tileCreator = tileCreator;
-
-            _request = request;
         }
 
 
@@ -105,33 +101,7 @@ namespace PocketCampus.Main.ViewModels
         {
             if ( Plugins == null )
             {
-                Plugins = _pluginLoader.GetPlugins().Where( p => p.IsVisible ).ToArray();
-
-                if ( _request.PluginName == null )
-                {
-                    ServerConfiguration config;
-                    try
-                    {
-                        config = await _serverAccess.LoadConfigurationAsync();
-                        _settings.Configuration = config;
-                    }
-                    catch
-                    {
-                        // something went wrong during the fetch, use the saved config
-                    }
-                }
-                else
-                {
-                    var plugin = Plugins.FirstOrDefault( p => p.Id.Equals( _request.PluginName, StringComparison.OrdinalIgnoreCase ) );
-                    if ( plugin != null )
-                    {
-                        _navigationService.RemoveCurrentFromBackStack();
-                        OpenPlugin( plugin );
-                    }
-                }
-
-                // Filter the plugins anyway, but let the user go to a plugin 
-                // from an outside source even if it's filtered out
+                Plugins = ( await _pluginLoader.GetPluginsAsync() ).Where( p => p.IsVisible ).ToArray();
                 FilterPlugins();
             }
         }

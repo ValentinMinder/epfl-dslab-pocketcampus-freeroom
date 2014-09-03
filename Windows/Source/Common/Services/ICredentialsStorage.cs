@@ -2,23 +2,31 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System.ComponentModel;
-
 namespace PocketCampus.Common.Services
 {
     /// <summary>
     /// Storage for credentials, which should be encrypted.
     /// </summary>
-    public interface ICredentialsStorage : INotifyPropertyChanged
+    public interface ICredentialsStorage
     {
         /// <summary>
-        /// Gets or sets the user name.
+        /// Gets the user name.
         /// </summary>
-        string UserName { get; set; }
+        string UserName { get; }
 
         /// <summary>
-        /// Gets or sets the password.
+        /// Gets the password.
         /// </summary>
-        string Password { get; set; }
+        string Password { get; }
+
+        /// <summary>
+        /// Sets the user name and the password.
+        /// </summary>
+        void SetCredentials( string userName, string password );
+
+        /// <summary>
+        /// Deletes the stored credentials.
+        /// </summary>
+        void DeleteCredentials();
     }
 }
