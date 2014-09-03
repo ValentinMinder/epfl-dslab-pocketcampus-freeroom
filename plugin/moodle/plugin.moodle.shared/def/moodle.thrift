@@ -155,6 +155,18 @@ struct MoodleCourseSectionsResponse2 {
     2: required list<MoodleCourseSection2> sections;
 }
 
+struct MoodlePrintFileRequest2 {
+    // Same as the URL used to download the file via the file proxy
+    1: required string fileUrl;
+}
+
+struct MoodlePrintFileResponse2 {
+    // Status code
+    1: required MoodleStatusCode2 statusCode;
+    // In case of success, will contain the print job id (as assigned by the CloudPrint plugin)
+    2: optional i64 printJobId;
+}
+
 
 service MoodleService {
     // EXTREMELY OLD STUFF - DO NOT USE
@@ -174,4 +186,6 @@ service MoodleService {
     MoodleCoursesResponse2 getCourses( 1: MoodleCoursesRequest2 request );
     // Get course sections
     MoodleCourseSectionsResponse2 getSections( 1: MoodleCourseSectionsRequest2 request );
+    // Print Moodle file
+    MoodlePrintFileResponse2 printFile( 1: MoodlePrintFileRequest2 request );
 }

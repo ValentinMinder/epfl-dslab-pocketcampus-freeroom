@@ -80,9 +80,10 @@ public abstract class ServerBase {
 	}
 
 	private Handler getServicesHandler() {
+		String prefix = PocketCampusServer.CONFIG.getString("SERVER_URI_PREFIX");
 		ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
 		handler.addLocaleEncoding("en_US", "UTF-8");
-		handler.addServlet(getPingServlet(), "/v3r1/ping"); // or use "/" to catch all unhandled URLs
+		handler.addServlet(getPingServlet(), "/" + prefix + "/ping"); // or use "/" to catch all unhandled URLs
 		addProcessorServlets(handler);
 		return handler;
 	}
@@ -99,16 +100,17 @@ public abstract class ServerBase {
 	}
 
 	private void addProcessorServlets(ServletContextHandler context) {
+		String prefix = PocketCampusServer.CONFIG.getString("SERVER_URI_PREFIX");
 		TProtocolFactory binProtocolFactory = new TBinaryProtocol.Factory();
 
 		for (ServiceInfo service : getServices()) {
 			TrackingThriftServlet binServlet = new TrackingThriftServlet(service.thriftProcessor, binProtocolFactory);
 
-			context.addServlet(new ServletHolder(binServlet), "/v3r1/" + service.name);
+			context.addServlet(new ServletHolder(binServlet), "/" + prefix + "/" + service.name);
 
 			// Special case for plugins that need a "raw" (non-Thrift) servlet
 			if (service.rawProcessor != null) {
-				context.addServlet(new ServletHolder(service.rawProcessor), "/v3r1/raw-" + service.name);
+				context.addServlet(new ServletHolder(service.rawProcessor), "/" + prefix + "/raw-" + service.name);
 			}
 		}
 	}

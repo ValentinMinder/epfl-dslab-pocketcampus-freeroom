@@ -10,6 +10,7 @@ $PC_PROXY_CONFIG = array (
 	"tequila.php" => array("protto" => "https://", "url" => "tequila.epfl.ch"),
 	"moodle.php" => array("protto" => "http://", "url" => "moodle.epfl.ch"),
 	"archibus.php" => array("protto" => "https://", "url" => "websrv.epfl.ch"),
+	"facebook.php" => array("protto" => "http://", "url" => "graph.facebook.com"),
 );
 
 ?>
