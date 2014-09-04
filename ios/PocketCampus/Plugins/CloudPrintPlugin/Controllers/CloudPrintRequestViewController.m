@@ -42,7 +42,8 @@ static NSInteger const kAllPagesSegmentIndex = 0;
 static NSInteger const kSelectedPagesSegmentIndex = 1;
 
 static NSInteger const kDoubleSidedRowIndex = 0;
-static NSInteger const kPagesPerSheetRowIndex = 1;
+static NSInteger const kNbPagesPerSheetRowIndex = 1;
+static NSInteger const kMultiPageLayoutRowIndex = 2;
 
 static NSInteger const kBlackAndWhiteRowIndex = 0;
 
@@ -165,7 +166,10 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
                     self.doubleSidedToggle.on = self.printRequest.doubleSided;
                     cell.accessoryView = self.doubleSidedToggle;
                     break;
-                case kPagesPerSheetRowIndex:
+                case kNbPagesPerSheetRowIndex:
+                    cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"PagesPerSheet", @"CloudPrint", nil);
+                    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", self.printRequest.la]
                     break;
                 default:
                     break;

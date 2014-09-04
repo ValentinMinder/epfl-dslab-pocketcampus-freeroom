@@ -18,6 +18,54 @@ enum CloudPrintStatusCode {
   CloudPrintStatusCode_PRINT_ERROR = 404
 };
 
+enum CloudPrintNbPagesPerSheet {
+  CloudPrintNbPagesPerSheet_ONE = 1,
+  CloudPrintNbPagesPerSheet_TWO = 2,
+  CloudPrintNbPagesPerSheet_FOUR = 4,
+  CloudPrintNbPagesPerSheet_SIX = 6,
+  CloudPrintNbPagesPerSheet_NINE = 9,
+  CloudPrintNbPagesPerSheet_SIXTEEN = 16
+};
+
+enum CloudPrintMultiPageLayout {
+  CloudPrintMultiPageLayout_LEFT_TO_RIGHT_TOP_TO_BOTTOM = 0,
+  CloudPrintMultiPageLayout_TOP_TO_BOTTOM_LEFT_TO_RIGHT = 1,
+  CloudPrintMultiPageLayout_BOTTOM_TO_TOP_LEFT_TO_RIGHT = 2,
+  CloudPrintMultiPageLayout_BOTTOM_TO_TOP_RIGHT_TO_LEFT = 3,
+  CloudPrintMultiPageLayout_LEFT_TO_RIGHT_BOTTOM_TO_TOP = 4,
+  CloudPrintMultiPageLayout_RIGHT_TO_LEFT_BOTTOM_TO_TOP = 5,
+  CloudPrintMultiPageLayout_RIGHT_TO_LEFT_TOP_TO_BOTTOM = 6,
+  CloudPrintMultiPageLayout_TOP_TO_BOTTOM_RIGHT_TO_LEFT = 7
+};
+
+@interface CloudPrintMultiPageConfig : NSObject <NSCoding> {
+  int __nbPagesPerSheet;
+  int __layout;
+
+  BOOL __nbPagesPerSheet_isset;
+  BOOL __layout_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=nbPagesPerSheet, setter=setNbPagesPerSheet:) int nbPagesPerSheet;
+@property (nonatomic, getter=layout, setter=setLayout:) int layout;
+#endif
+
+- (id) initWithNbPagesPerSheet: (int) nbPagesPerSheet layout: (int) layout;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (int) nbPagesPerSheet;
+- (void) setNbPagesPerSheet: (int) nbPagesPerSheet;
+- (BOOL) nbPagesPerSheetIsSet;
+
+- (int) layout;
+- (void) setLayout: (int) layout;
+- (BOOL) layoutIsSet;
+
+@end
+
 @interface CloudPrintPageRange : NSObject <NSCoding> {
   int32_t __pageFrom;
   int32_t __pageTo;
@@ -52,12 +100,14 @@ enum CloudPrintStatusCode {
   BOOL __blackAndWhite;
   int32_t __numberOfCopies;
   CloudPrintPageRange * __pageSelection;
+  CloudPrintMultiPageConfig * __multiPageConfig;
 
   BOOL __documentId_isset;
   BOOL __doubleSided_isset;
   BOOL __blackAndWhite_isset;
   BOOL __numberOfCopies_isset;
   BOOL __pageSelection_isset;
+  BOOL __multiPageConfig_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
@@ -66,9 +116,10 @@ enum CloudPrintStatusCode {
 @property (nonatomic, getter=blackAndWhite, setter=setBlackAndWhite:) BOOL blackAndWhite;
 @property (nonatomic, getter=numberOfCopies, setter=setNumberOfCopies:) int32_t numberOfCopies;
 @property (nonatomic, retain, getter=pageSelection, setter=setPageSelection:) CloudPrintPageRange * pageSelection;
+@property (nonatomic, retain, getter=multiPageConfig, setter=setMultiPageConfig:) CloudPrintMultiPageConfig * multiPageConfig;
 #endif
 
-- (id) initWithDocumentId: (int64_t) documentId doubleSided: (BOOL) doubleSided blackAndWhite: (BOOL) blackAndWhite numberOfCopies: (int32_t) numberOfCopies pageSelection: (CloudPrintPageRange *) pageSelection;
+- (id) initWithDocumentId: (int64_t) documentId doubleSided: (BOOL) doubleSided blackAndWhite: (BOOL) blackAndWhite numberOfCopies: (int32_t) numberOfCopies pageSelection: (CloudPrintPageRange *) pageSelection multiPageConfig: (CloudPrintMultiPageConfig *) multiPageConfig;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -92,6 +143,10 @@ enum CloudPrintStatusCode {
 - (CloudPrintPageRange *) pageSelection;
 - (void) setPageSelection: (CloudPrintPageRange *) pageSelection;
 - (BOOL) pageSelectionIsSet;
+
+- (CloudPrintMultiPageConfig *) multiPageConfig;
+- (void) setMultiPageConfig: (CloudPrintMultiPageConfig *) multiPageConfig;
+- (BOOL) multiPageConfigIsSet;
 
 @end
 

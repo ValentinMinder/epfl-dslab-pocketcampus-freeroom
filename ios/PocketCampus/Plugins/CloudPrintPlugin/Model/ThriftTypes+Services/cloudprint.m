@@ -20,6 +20,153 @@
 }
 @end
 
+@implementation CloudPrintMultiPageConfig
+
+- (id) initWithNbPagesPerSheet: (int) nbPagesPerSheet layout: (int) layout
+{
+  self = [super init];
+  __nbPagesPerSheet = nbPagesPerSheet;
+  __nbPagesPerSheet_isset = YES;
+  __layout = layout;
+  __layout_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"nbPagesPerSheet"])
+  {
+    __nbPagesPerSheet = [decoder decodeIntForKey: @"nbPagesPerSheet"];
+    __nbPagesPerSheet_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"layout"])
+  {
+    __layout = [decoder decodeIntForKey: @"layout"];
+    __layout_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__nbPagesPerSheet_isset)
+  {
+    [encoder encodeInt: __nbPagesPerSheet forKey: @"nbPagesPerSheet"];
+  }
+  if (__layout_isset)
+  {
+    [encoder encodeInt: __layout forKey: @"layout"];
+  }
+}
+
+- (void) dealloc
+{
+  [super dealloc];
+}
+
+- (int) nbPagesPerSheet {
+  return __nbPagesPerSheet;
+}
+
+- (void) setNbPagesPerSheet: (int) nbPagesPerSheet {
+  __nbPagesPerSheet = nbPagesPerSheet;
+  __nbPagesPerSheet_isset = YES;
+}
+
+- (BOOL) nbPagesPerSheetIsSet {
+  return __nbPagesPerSheet_isset;
+}
+
+- (void) unsetNbPagesPerSheet {
+  __nbPagesPerSheet_isset = NO;
+}
+
+- (int) layout {
+  return __layout;
+}
+
+- (void) setLayout: (int) layout {
+  __layout = layout;
+  __layout_isset = YES;
+}
+
+- (BOOL) layoutIsSet {
+  return __layout_isset;
+}
+
+- (void) unsetLayout {
+  __layout_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setNbPagesPerSheet: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setLayout: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"CloudPrintMultiPageConfig"];
+  if (__nbPagesPerSheet_isset) {
+    [outProtocol writeFieldBeginWithName: @"nbPagesPerSheet" type: TType_I32 fieldID: 1];
+    [outProtocol writeI32: __nbPagesPerSheet];
+    [outProtocol writeFieldEnd];
+  }
+  if (__layout_isset) {
+    [outProtocol writeFieldBeginWithName: @"layout" type: TType_I32 fieldID: 2];
+    [outProtocol writeI32: __layout];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"CloudPrintMultiPageConfig("];
+  [ms appendString: @"nbPagesPerSheet:"];
+  [ms appendFormat: @"%i", __nbPagesPerSheet];
+  [ms appendString: @",layout:"];
+  [ms appendFormat: @"%i", __layout];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @implementation CloudPrintPageRange
 
 - (id) initWithPageFrom: (int32_t) pageFrom pageTo: (int32_t) pageTo
@@ -169,7 +316,7 @@
 
 @implementation PrintDocumentRequest
 
-- (id) initWithDocumentId: (int64_t) documentId doubleSided: (BOOL) doubleSided blackAndWhite: (BOOL) blackAndWhite numberOfCopies: (int32_t) numberOfCopies pageSelection: (CloudPrintPageRange *) pageSelection
+- (id) initWithDocumentId: (int64_t) documentId doubleSided: (BOOL) doubleSided blackAndWhite: (BOOL) blackAndWhite numberOfCopies: (int32_t) numberOfCopies pageSelection: (CloudPrintPageRange *) pageSelection multiPageConfig: (CloudPrintMultiPageConfig *) multiPageConfig
 {
   self = [super init];
   __documentId = documentId;
@@ -182,6 +329,8 @@
   __numberOfCopies_isset = YES;
   __pageSelection = [pageSelection retain];
   __pageSelection_isset = YES;
+  __multiPageConfig = [multiPageConfig retain];
+  __multiPageConfig_isset = YES;
   return self;
 }
 
@@ -213,6 +362,11 @@
     __pageSelection = [[decoder decodeObjectForKey: @"pageSelection"] retain];
     __pageSelection_isset = YES;
   }
+  if ([decoder containsValueForKey: @"multiPageConfig"])
+  {
+    __multiPageConfig = [[decoder decodeObjectForKey: @"multiPageConfig"] retain];
+    __multiPageConfig_isset = YES;
+  }
   return self;
 }
 
@@ -238,11 +392,16 @@
   {
     [encoder encodeObject: __pageSelection forKey: @"pageSelection"];
   }
+  if (__multiPageConfig_isset)
+  {
+    [encoder encodeObject: __multiPageConfig forKey: @"multiPageConfig"];
+  }
 }
 
 - (void) dealloc
 {
   [__pageSelection release];
+  [__multiPageConfig release];
   [super dealloc];
 }
 
@@ -335,6 +494,27 @@
   __pageSelection_isset = NO;
 }
 
+- (CloudPrintMultiPageConfig *) multiPageConfig {
+  return [[__multiPageConfig retain] autorelease];
+}
+
+- (void) setMultiPageConfig: (CloudPrintMultiPageConfig *) multiPageConfig {
+  [multiPageConfig retain];
+  [__multiPageConfig release];
+  __multiPageConfig = multiPageConfig;
+  __multiPageConfig_isset = YES;
+}
+
+- (BOOL) multiPageConfigIsSet {
+  return __multiPageConfig_isset;
+}
+
+- (void) unsetMultiPageConfig {
+  [__multiPageConfig release];
+  __multiPageConfig = nil;
+  __multiPageConfig_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -392,6 +572,16 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 6:
+        if (fieldType == TType_STRUCT) {
+          CloudPrintMultiPageConfig *fieldValue = [[CloudPrintMultiPageConfig alloc] init];
+          [fieldValue read: inProtocol];
+          [self setMultiPageConfig: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -430,6 +620,13 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__multiPageConfig_isset) {
+    if (__multiPageConfig != nil) {
+      [outProtocol writeFieldBeginWithName: @"multiPageConfig" type: TType_STRUCT fieldID: 6];
+      [__multiPageConfig write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -446,6 +643,8 @@
   [ms appendFormat: @"%i", __numberOfCopies];
   [ms appendString: @",pageSelection:"];
   [ms appendFormat: @"%@", __pageSelection];
+  [ms appendString: @",multiPageConfig:"];
+  [ms appendFormat: @"%@", __multiPageConfig];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
