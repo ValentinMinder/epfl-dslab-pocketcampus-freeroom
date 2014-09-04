@@ -45,6 +45,8 @@
 
 #import "MoodleSettingsViewController.h"
 
+#import "CloudPrintController.h"
+
 
 static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 
@@ -100,6 +102,20 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
         [self refresh];
     }
 }
+
+#warning REMOVE
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    PrintDocumentRequest* request = [PrintDocumentRequest createDefaultRequest];
+    request.documentId = 1;
+    UIViewController* viewController = [CloudPrintController viewControllerForPrintWithDocumentName:@"Test.pdf" printDocumentRequest:request];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.navigationController presentViewController:viewController animated:YES completion:NULL];
+    });
+}
+
+#warning END OF REMOVE
 
 - (NSUInteger)supportedInterfaceOrientations
 {

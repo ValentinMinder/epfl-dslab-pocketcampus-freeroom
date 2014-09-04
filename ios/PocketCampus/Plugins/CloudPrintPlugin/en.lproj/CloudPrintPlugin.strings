@@ -25,6 +25,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-//  Created by ___FULLUSERNAME___ on ___DATE___.
+//  Created by Loïc Gardiol on 01.09.2014.
 
 "PluginName" = "CloudPrint";
+"BlackAndWhiteExplanations" = "Color printing is only available at certain printers.";
+"1Copy" = "1 copy";
+"NbCopiesWithFormat" = "%d copies";
+"Pages" = "Pages";
+"All" = "All";
+"Selected" = "Selected";
+"FromPageWithFormat" = "From page: %d";
+"ToPageWithFormat" = "To page: %d";
+"DoubleSided" = "Two-sided";
+"PagesPerSheet" = "Pages per sheet";
+"LayoutDirection" = "Layout direction";
+"BlackAndWhite" = "Black & white";

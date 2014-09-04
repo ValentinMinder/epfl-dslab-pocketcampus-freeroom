@@ -37,10 +37,9 @@
  * @return a view controller ready for user to configure the print request
  * @param docName the name of the document that will be displayed 
  * (not part of print request, just there as indication that the right file was selected).
- * @param printRequestOrNil you can pass an existing print request such that the UI displays
- * this specific config (and let user potentially modify it).
+ * @param printRequest will be reflected in UI. A default one is created if nil.
  */
-- (instancetype)initWithDocumentName:(NSString*)docName printRequestOrNil:(PrintDocumentRequest*)printRequestOrNil;
+- (instancetype)initWithDocumentName:(NSString*)docName printRequest:(PrintDocumentRequest*)printRequest;
 
 /**
  * Exectued when user taps Print to validate the print request

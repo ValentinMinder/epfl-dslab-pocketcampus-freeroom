@@ -29,6 +29,15 @@
 
 #import "PluginController.h"
 
+#import "CloudPrintModelAdditions.h"
+
 @interface CloudPrintController : PluginController<PluginControllerProtocol>
+
+/**
+ * @return a view controller that you can present to print a document, letting user validate/change print config and start the print
+ * @param docName the name of the document, is only used to show to user that he is printing the correct thing. Not used for identification.
+ * @param request documentId cannot be 0. You can create a request with default parameters using [PrintDocumentRequest createDefaultRequest]
+ */
++ (UIViewController*)viewControllerForPrintWithDocumentName:(NSString*)docName printDocumentRequest:(PrintDocumentRequest*)request;
 
 @end

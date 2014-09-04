@@ -29,6 +29,8 @@
 
 #import "CloudPrintController.h"
 
+#import "CloudPrintRequestViewController.h"
+
 static CloudPrintController* instance __weak = nil;
 
 @interface CloudPrintController ()
@@ -70,6 +72,16 @@ static CloudPrintController* instance __weak = nil;
 
 + (NSString*)identifierName {
     return @"CloudPrint";
+}
+
+#pragma mark - Public
+
++ (UIViewController*)viewControllerForPrintWithDocumentName:(NSString*)docName printDocumentRequest:(PrintDocumentRequest*)request {
+    if (request.documentId == 0) {
+        [NSException raise:@"Illegal argument" format:@"request.documentId cannot be 0"];
+    }
+    UIViewController* viewController = [[CloudPrintRequestViewController alloc] initWithDocumentName:docName printRequest:request];
+    return [[UINavigationController alloc] initWithRootViewController:viewController];
 }
 
 #pragma mark - Dealloc

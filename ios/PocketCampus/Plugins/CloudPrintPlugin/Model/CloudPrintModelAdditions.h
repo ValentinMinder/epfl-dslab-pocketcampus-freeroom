@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,21 +22,25 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 01.09.2014.
+//  Created by Loïc Gardiol on 04.09.14.
 
-"PluginName" = "CloudPrint";
-"BlackAndWhiteExplanations" = "Seules certaines imprimantes proposent l'impression couleur.";
-"1Copy" = "1 copie";
-"NbCopiesWithFormat" = "%d copies";
-"Pages" = "Pages";
-"All" = "Toutes";
-"Selected" = "Sélectionner";
-"FromPageWithFormat" = "De:\t %d";
-"ToPageWithFormat" = "À:\t %d";
-"DoubleSided" = "Recto verso";
-"PagesPerSheet" = "Pages par feuille";
-"LayoutDirection" = "Direction";
-"BlackAndWhite" = "Noir & blanc";
+#import "cloudprint.h"
+
+@interface CloudPrintModelAdditions : NSObject
+
+/**
+ * @return a localized title for an enum value of CloudPrintMultiPageLayout,
+ * nil if multiPageLayout does not exist.
+ */
++ (NSString*)localizedTitleForForMultiPageLayout:(NSInteger)multiPageLayout;
+
+@end
+
+@interface PrintDocumentRequest (Additions)
+
++ (PrintDocumentRequest*)createDefaultRequest;
+
+@end

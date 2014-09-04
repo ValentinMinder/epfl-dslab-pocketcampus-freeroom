@@ -29,6 +29,10 @@
 
 #import "CloudPrintRequestViewController.h"
 
+#import "CloudPrintModelAdditions.h"
+
+#import "CloudPrintController.h"
+
 static NSInteger const kSection0Index = 0;
 static NSInteger const kSection1Index = 1;
 static NSInteger const kSection2Index = 2;
@@ -50,6 +54,7 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
 
 @interface CloudPrintRequestViewController ()
 
+@property (nonatomic, strong) NSString* documentName;
 @property (nonatomic, strong) PrintDocumentRequest* printRequest;
 
 @property (nonatomic, strong) UIStepper* nbCopiesStepper;
@@ -59,6 +64,7 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
 @property (nonatomic, strong) UISwitch* doubleSidedToggle;
 @property (nonatomic, strong) UIActionSheet* pagesPerSheetActionSheet;
 @property (nonatomic, strong) UIActionSheet* multiPagesLayoutActionSheet;
+@property (nonatomic, strong) UISwitch* blackAndWhiteToggle;
 
 @end
 
@@ -66,17 +72,12 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
 
 #pragma mark - Init
 
-- (instancetype)initWithDocumentName:(NSString*)docName printRequestOrNil:(PrintDocumentRequest*)printRequestOrNil {
+- (instancetype)initWithDocumentName:(NSString*)docName printRequest:(PrintDocumentRequest*)printRequest {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        if (printRequestOrNil) {
-            self.printRequest = printRequestOrNil;
-        } else {
-            self.printRequest = [PrintDocumentRequest new];
-            self.printRequest.doubleSided = YES; // Default
-            self.printRequest.blackAndWhite = YES; // Default
-            self.printRequest.numberOfCopies = 1; // Default
-        }
+        self.title = [CloudPrintController localizedName];
+        self.documentName = docName;
+        self.printRequest = printRequest ?: [PrintDocumentRequest createDefaultRequest];
     }
     return self;
 }
@@ -85,25 +86,91 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] initWithFrame:self.tableView.frame style:self.tableView.style];
+    self.tableView = tableViewAdditions;
+    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+        return floorf([PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault]);
+    };
+    if (self.documentName) {
+        UITableViewHeaderFooterView* header = [[UITableViewHeaderFooterView alloc] init];
+        header.textLabel.text = self.documentName;
+        header.textLabel.textAlignment = NSTextAlignmentCenter;
+        header.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        self.tableView.tableHeaderView = header;
+    }
 }
 
 #pragma mark - Actions
 
+/*
+ 
+ @property (nonatomic, strong) UIStepper* nbCopiesStepper;
+ @property (nonatomic, strong) UISegmentedControl* pageRangeSegmentedControl;
+ @property (nonatomic, strong) UIStepper* pageFromStepper;
+ @property (nonatomic, strong) UIStepper * pageToStepper;
+ @property (nonatomic, strong) UISwitch* doubleSidedToggle;
+ @property (nonatomic, strong) UIActionSheet* pagesPerSheetActionSheet;
+ @property (nonatomic, strong) UIActionSheet* multiPagesLayoutActionSheet;
+ @property (nonatomic, strong) UISwitch* blackAndWhiteToggle;
+ 
+ */
+
 - (void)valueChanged:(id)sender {
-    
+    if (sender == self.nbCopiesStepper) {
+        self.printRequest.numberOfCopies = (int)(self.nbCopiesStepper.value);
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kNbCopiesRowIndex inSection:kSection0Index]] withRowAnimation:UITableViewRowAnimationNone];
+    } else if (sender == self.pageRangeSegmentedControl) {
+        switch (self.pageRangeSegmentedControl.selectedSegmentIndex) {
+            case kAllPagesSegmentIndex:
+                self.printRequest.pageSelection = nil;
+                break;
+            case kSelectedPagesSegmentIndex:
+                if (!self.printRequest.pageSelection) {
+                    self.printRequest.pageSelection = [[CloudPrintPageRange alloc] initWithPageFrom:1 pageTo:2];
+                }
+                break;
+            default:
+                break;
+        }
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kSection0Index] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } else if (sender == self.pageFromStepper || sender == self.pageToStepper) {
+        self.printRequest.pageSelection.pageFrom = (int)(self.pageFromStepper.value);
+        self.printRequest.pageSelection.pageTo = (int)(self.pageToStepper.value);
+        if (self.printRequest.pageSelection.pageFrom >= self.printRequest.pageSelection.pageTo) {
+            self.printRequest.pageSelection.pageTo = self.printRequest.pageSelection.pageFrom;
+        }
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPageFromRowIndex inSection:kSection0Index], [NSIndexPath indexPathForRow:kPageToRowIndex inSection:kSection0Index]] withRowAnimation:UITableViewRowAnimationNone];
+    } else if (sender == self.doubleSidedToggle) {
+        self.printRequest.doubleSided = self.doubleSidedToggle.isOn;
+    } else if (sender == self.blackAndWhiteToggle) {
+        self.printRequest.blackAndWhite = self.blackAndWhiteToggle.isOn;
+    }
 }
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+#warning TODO
 }
 
 #pragma mark - UITableViewDataSource
 
+- (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    if (section == kSection2Index) {
+        return NSLocalizedStringFromTable(@"BlackAndWhiteExplanations", @"CloudPrintPlugin", nil);
+    }
+    return nil;
+}
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    PCTableViewCellAdditions* cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    NSString* identifier = [NSString stringWithFormat:@"%d-%d", indexPath.section, indexPath.row];
+    PCTableViewCellAdditions* cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    }
     switch (indexPath.section) {
         case kSection0Index:
             switch (indexPath.row) {
@@ -114,22 +181,23 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
                         self.nbCopiesStepper.stepValue = 1.0;
                         self.nbCopiesStepper.minimumValue = 1;
                         self.nbCopiesStepper.maximumValue = 1000;
+                        self.nbCopiesStepper.value = self.printRequest.numberOfCopies;
                         [self.nbCopiesStepper addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
                     }
-                    self.nbCopiesStepper.value = self.printRequest.numberOfCopies;
                     cell.accessoryView = self.nbCopiesStepper;
                     break;
                 case kPagesRangeRowIndex:
                     cell.textLabel.text = NSLocalizedStringFromTable(@"Pages", @"CloudPrintPlugin", nil);
                     if (!self.pageRangeSegmentedControl) {
                         self.pageRangeSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedStringFromTable(@"All", @"CloudPrintPlugin", nil), NSLocalizedStringFromTable(@"Selected", @"CloudPrintPlugin", nil)]];
+                        self.pageRangeSegmentedControl.bounds = CGRectMake(0, 0, 180.0, self.pageRangeSegmentedControl.bounds.size.height);
                         [self.pageRangeSegmentedControl addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
                     }
-                    self.pageRangeSegmentedControl.selectedSegmentIndex = self.printRequest.pageSelection ? kAllPagesSegmentIndex : kSelectedPagesSegmentIndex;
+                    self.pageRangeSegmentedControl.selectedSegmentIndex = self.printRequest.pageSelection ? kSelectedPagesSegmentIndex : kAllPagesSegmentIndex;
                     cell.accessoryView = self.pageRangeSegmentedControl;
                     break;
                 case kPageFromRowIndex:
-                    cell.textLabel.text = NSLocalizedStringFromTable(@"From", @"CloudPrintPlugin", nil);
+                    cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"FromPageWithFormat", @"CloudPrintPlugin", nil), self.printRequest.pageSelection.pageFrom];
                     if (!self.pageFromStepper) {
                         self.pageFromStepper = [UIStepper new];
                         self.pageFromStepper.stepValue = 1.0;
@@ -141,7 +209,7 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
                     cell.accessoryView = self.pageFromStepper;
                     break;
                 case kPageToRowIndex:
-                    cell.textLabel.text = NSLocalizedStringFromTable(@"To", @"CloudPrintPlugin", nil);
+                    cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"ToPageWithFormat", @"CloudPrintPlugin", nil), self.printRequest.pageSelection.pageTo];
                     if (!self.pageToStepper) {
                         self.pageToStepper = [UIStepper new];
                         self.pageToStepper.stepValue = 1.0;
@@ -162,14 +230,20 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
                     cell.textLabel.text = NSLocalizedStringFromTable(@"DoubleSided", @"CloudPrintPlugin", nil);
                     if (!self.doubleSidedToggle) {
                         self.doubleSidedToggle = [UISwitch new];
+                        [self.doubleSidedToggle addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
                     }
                     self.doubleSidedToggle.on = self.printRequest.doubleSided;
                     cell.accessoryView = self.doubleSidedToggle;
                     break;
                 case kNbPagesPerSheetRowIndex:
-                    cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-                    cell.textLabel.text = NSLocalizedStringFromTable(@"PagesPerSheet", @"CloudPrint", nil);
-                    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", self.printRequest.la]
+                    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"PagesPerSheet", @"CloudPrintPlugin", nil);
+                    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", self.printRequest.multiPageConfig.nbPagesPerSheet];
+                    break;
+                case kMultiPageLayoutRowIndex:
+                    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"LayoutDirection", @"CloudPrintPlugin", nil);
+                    cell.detailTextLabel.text = [CloudPrintModelAdditions localizedTitleForForMultiPageLayout:self.printRequest.multiPageConfig.layout];
                     break;
                 default:
                     break;
@@ -178,11 +252,18 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
         case kSection2Index:
             switch (indexPath.row) {
                 case kBlackAndWhiteRowIndex:
-                    
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"BlackAndWhite", @"CloudPrintPlugin", nil);
+                    if (!self.blackAndWhiteToggle) {
+                        self.blackAndWhiteToggle = [UISwitch new];
+                        [self.blackAndWhiteToggle addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
+                    }
+                    self.blackAndWhiteToggle.on = self.printRequest.blackAndWhite;
+                    cell.accessoryView = self.blackAndWhiteToggle;
                     break;
                 default:
                     break;
             }
+            break;
         default:
             break;
     }
@@ -194,7 +275,7 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
         case kSection0Index:
             return self.printRequest.pageSelection ? 4 : 2;
         case kSection1Index:
-            return 2;
+            return self.printRequest.multiPageConfig ? 3 : 2;
         case kSection2Index:
             return 1;
     }
