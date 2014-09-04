@@ -50,7 +50,7 @@ namespace PocketCampus.Transport
 
         public override IEnumerable<object> Convert( IEnumerable<object> value )
         {
-            return value.Take( Count );
+            return value == null ? Enumerable.Empty<object>() : value.Take( Count );
         }
     }
 }

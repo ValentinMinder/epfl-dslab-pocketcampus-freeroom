@@ -23,17 +23,17 @@ namespace PocketCampus.Main.Services
     public sealed class SecureRequestHandler : ISecureRequestHandler
     {
         private readonly IMainSettings _mainSettings;
-        private readonly ICredentialsStore _credentials;
+        private readonly ICredentialsStorage _credentials;
         private readonly INavigationService _navigationService;
-        private readonly ITequilaAuthenticator _authenticator;
+        private readonly IAuthenticator _authenticator;
         private readonly IAuthenticationService _authenticationService;
 
 
         /// <summary>
         /// Creates a new SecureRequestHandler.
         /// </summary>
-        public SecureRequestHandler( IMainSettings mainSettings, ICredentialsStore credentials, INavigationService navigationService,
-                                     ITequilaAuthenticator authenticator, IAuthenticationService authenticationService )
+        public SecureRequestHandler( IMainSettings mainSettings, ICredentialsStorage credentials, INavigationService navigationService,
+                                     IAuthenticator authenticator, IAuthenticationService authenticationService )
         {
             _mainSettings = mainSettings;
             _credentials = credentials;
@@ -114,7 +114,7 @@ namespace PocketCampus.Main.Services
             where TViewModel : ViewModel<NoParameter>
         {
             var authRequest = new AuthenticationRequest( () => _navigationService.NavigateTo<TViewModel>() );
-            _navigationService.PopBackStack();
+            _navigationService.RemoveCurrentFromBackStack();
             _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
         }
 

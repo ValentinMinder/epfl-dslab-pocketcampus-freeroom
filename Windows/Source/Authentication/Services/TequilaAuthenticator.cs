@@ -11,7 +11,7 @@ namespace PocketCampus.Authentication.Services
     /// <summary>
     /// Authenticates users to Tequila.
     /// </summary>
-    public class TequilaAuthenticator : ITequilaAuthenticator
+    public class TequilaAuthenticator : IAuthenticator
     {
         // The URL to log in to the EPFL's Tequila instance.
         private const string TequilaLogInUrl = "https://tequila.epfl.ch/cgi-bin/tequila/login";

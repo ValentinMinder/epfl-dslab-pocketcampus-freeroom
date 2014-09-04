@@ -22,7 +22,7 @@ namespace PocketCampus.Main.ViewModels
     [LogId( "/dashboard/settings" )]
     public sealed class SettingsViewModel : ViewModel<NoParameter>
     {
-        private readonly ITequilaAuthenticator _authenticator;
+        private readonly IAuthenticator _authenticator;
         private readonly INavigationService _navigationService;
         private readonly IAuthenticationService _authenticationService;
 
@@ -34,7 +34,7 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the credentials.
         /// </summary>
-        public ICredentialsStore Credentials { get; private set; }
+        public ICredentialsStorage Credentials { get; private set; }
 
         /// <summary>
         /// Gets the command executed to log on.
@@ -63,8 +63,8 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Creates a new SettingsViewModel.
         /// </summary>
-        public SettingsViewModel( IMainSettings settings, ITequilaAuthenticator authenticator, INavigationService navigationService,
-                                  IAuthenticationService authenticationService, ICredentialsStore credentials, ITileService tileService )
+        public SettingsViewModel( IMainSettings settings, IAuthenticator authenticator, INavigationService navigationService,
+                                  IAuthenticationService authenticationService, ICredentialsStorage credentials, ITileService tileService )
         {
             Settings = settings;
             Credentials = credentials;

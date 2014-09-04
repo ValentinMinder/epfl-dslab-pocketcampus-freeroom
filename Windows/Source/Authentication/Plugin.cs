@@ -4,7 +4,7 @@ using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using ThinMvvm;
 
-namespace PocketCampus.Authentication.Common
+namespace PocketCampus.Authentication
 {
     /// <summary>
     /// The authentication plugin.
@@ -41,7 +41,7 @@ namespace PocketCampus.Authentication.Common
         public void Initialize( INavigationService navigationService )
         {
             Container.Bind<IAuthenticationService, AuthenticationService>();
-            Container.Bind<ITequilaAuthenticator, TequilaAuthenticator>();
+            Container.Bind<IAuthenticator, TequilaAuthenticator>();
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using PocketCampus.Transport.Services;
 using ThinMvvm;
 using ThinMvvm.Logging;
 

@@ -11,93 +11,87 @@
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      mc:Ignorable="d">
-    <!-- Design-time DataContext -->
-    <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.News.ViewModels.Design;assembly=PocketCampus.News" />
-    </d:DesignProperties.DataContext>
-
+                      mc:Ignorable="d"
+                      d:DataContext="{Binding Main, Source={StaticResource Design}}">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
-        <!-- Localized strings -->
-        <my:LocalizedStrings x:Key="Strings" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-        <!-- Converters -->
-        <my:ImageDisplayConverter x:Key="ImageDisplay"
-                                  Width="180"
-                                  Height="100" />
+            <!-- FeedItem template -->
+            <DataTemplate x:Key="FeedItemTemplate">
+                <Button Style="{StaticResource SimpleButtonStyle}"
+                        Command="{Binding DataContext.ViewFeedItemCommand, ElementName=LayoutRoot}"
+                        CommandParameter="{Binding}"
+                        Padding="12,10"
+                        Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
 
-        <!-- FeedItem template -->
-        <DataTemplate x:Key="FeedItemTemplate">
-            <Button Style="{StaticResource SimpleButtonStyle}"
-                    Command="{Binding DataContext.ViewFeedItemCommand, ElementName=LayoutRoot}"
-                    CommandParameter="{Binding}"
-                    Padding="12,10"
-                    Margin="0,0,0,20">
+                        <!-- Progress bar behind the image; will disappear when the image is displayed -->
+                        <ProgressBar Grid.RowSpan="2"
+                                     IsIndeterminate="True" />
+
+                        <!-- Image -->
+                        <Image Source="{Binding ImageUrl, Converter={StaticResource SmallImageDisplay}}"
+                               Width="180"
+                               Height="100"
+                               VerticalAlignment="Top" />
+
+                        <StackPanel Grid.Column="1">
+                            <!-- Title -->
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding Title}"
+                                       TextWrapping="Wrap"
+                                       Style="{StaticResource PhoneTextNormalStyle}"
+                                       Margin="12,0,0,0" />
+
+                            <!-- Date -->
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding Date, StringFormat='D'}"
+                                       Style="{StaticResource PhoneTextSmallStyle}"
+                                       Margin="12,6,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </Button>
+            </DataTemplate>
+
+            <!-- Feed pivot item template -->
+            <DataTemplate x:Key="FeedTemplate">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
 
-                    <!-- Progress bar behind the image; will disappear when the image is displayed -->
-                    <ProgressBar Grid.RowSpan="2"
-                                 IsIndeterminate="True" />
+                    <!-- Stale data indicator (put here because it needs to be inside the Pivot) -->
+                    <comControls:StaleDataIndicator DataContext="{Binding DataContext, ElementName=LayoutRoot}"
+                                                    Margin="0,-15,0,0" />
 
-                    <!-- Image -->
-                    <Image Source="{Binding ImageUrl, Converter={StaticResource ImageDisplay}}"
-                           Width="180"
-                           Height="100"
-                           VerticalAlignment="Top" />
-
-                    <StackPanel Grid.Column="1">
-                        <!-- Title -->
-                        <TextBlock Grid.Column="1"
-                                   Text="{Binding Title}"
-                                   TextWrapping="Wrap"
-                                   Style="{StaticResource PhoneTextNormalStyle}"
-                                   Margin="12,0,0,0" />
-
-                        <!-- Date -->
-                        <TextBlock Grid.Column="1"
-                                   Text="{Binding Date, StringFormat='D'}"
-                                   Style="{StaticResource PhoneTextSmallStyle}"
-                                   Margin="12,6,0,0"/>
-                    </StackPanel>
+                    <ItemsControl Grid.Row="1"
+                                  ItemsSource="{Binding Items}"
+                                  ItemTemplate="{StaticResource FeedItemTemplate}"
+                                  Style="{StaticResource ScrollingItemsControlStyle}" />
                 </Grid>
-            </Button>
-        </DataTemplate>
+            </DataTemplate>
 
-        <!-- Feed pivot item template -->
-        <DataTemplate x:Key="FeedTemplate">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                
-                <!-- Stale data indicator (put here because it needs to be inside the Pivot) -->
-                <comControls:StaleDataIndicator DataContext="{Binding DataContext, ElementName=LayoutRoot}"
-                                                Margin="0,-15,0,0" />
-                
-                <ItemsControl Grid.Row="1"
-                              ItemsSource="{Binding Items}"
-                              ItemTemplate="{StaticResource FeedItemTemplate}"
-                              Style="{StaticResource ScrollingItemsControlStyle}" />
-            </Grid>
-        </DataTemplate>
-
-        <!-- Feed pivot header template -->
-        <DataTemplate x:Key="FeedHeaderTemplate">
-            <Border Height="96">
-                <TextBlock Text="{Binding Name}"
-                           TextWrapping="Wrap"
-                           Style="{StaticResource AppTextTitle2Style}"
-                           Margin="2,0"
-                           VerticalAlignment="Bottom"
-                           MaxWidth="400" />
-            </Border>
-        </DataTemplate>
+            <!-- Feed pivot header template -->
+            <DataTemplate x:Key="FeedHeaderTemplate">
+                <Border Height="96">
+                    <TextBlock Text="{Binding Name}"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource AppTextTitle2Style}"
+                               Margin="2,0"
+                               VerticalAlignment="Bottom"
+                               MaxWidth="400" />
+                </Border>
+            </DataTemplate>
+        </ResourceDictionary>
     </comControls:BasePage.Resources>
 
     <!-- Main grid -->

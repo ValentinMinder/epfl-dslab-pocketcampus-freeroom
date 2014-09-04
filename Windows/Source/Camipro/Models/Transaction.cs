@@ -21,12 +21,6 @@ namespace PocketCampus.Camipro.Models
         public DateTime Date { get; set; }
 
         /// <summary>
-        /// The operation (selling or buying).
-        /// </summary>
-        [ThriftField( 2, true, "iOperation" )]
-        public string Operation { get; set; }
-
-        /// <summary>
         /// The place at which the transaction was performed.
         /// </summary>
         [ThriftField( 3, true, "iPlace" )]

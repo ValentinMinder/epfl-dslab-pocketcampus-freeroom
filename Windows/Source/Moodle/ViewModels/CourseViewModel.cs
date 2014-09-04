@@ -21,12 +21,13 @@ namespace PocketCampus.Moodle.ViewModels
         private readonly IMoodleDownloader _downloader;
         private readonly IFileStorage _storage;
         private readonly IBrowserService _browserService;
-        private readonly Course _course;
 
         private CourseSection[] _sections;
         private CourseSection _selectedSection;
         private DownloadState _downloadState;
 
+
+        public Course Course { get; set; }
 
         public CourseSection[] Sections
         {
@@ -77,7 +78,7 @@ namespace PocketCampus.Moodle.ViewModels
             _downloader = downloader;
             _storage = storage;
             _browserService = browserService;
-            _course = course;
+            Course = course;
         }
 
         protected override CachedTask<CourseSectionsResponse> GetData( bool force, CancellationToken token )
@@ -92,10 +93,10 @@ namespace PocketCampus.Moodle.ViewModels
                 var request = new CourseSectionsRequest
                 {
                     Language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName,
-                    CourseId = _course.Id
+                    CourseId = Course.Id
                 };
                 return _moodleService.GetSectionsAsync( request, token );
-            } ), _course.Id );
+            } ), Course.Id );
         }
 
         protected override bool HandleData( CourseSectionsResponse data, CancellationToken token )
@@ -119,13 +120,13 @@ namespace PocketCampus.Moodle.ViewModels
                     {
                         if ( resource.File != null )
                         {
-                            resource.File.PathComponents = new[] { _course.Name, section.DisplayTitle };
+                            resource.File.PathComponents = new[] { Course.Name, section.DisplayTitle };
                         }
                         if ( resource.Folder != null )
                         {
                             foreach ( var file in resource.Folder.Files )
                             {
-                                file.PathComponents = new[] { _course.Name, section.DisplayTitle, resource.Folder.Name };
+                                file.PathComponents = new[] { Course.Name, section.DisplayTitle, resource.Folder.Name };
                             }
                         }
                     }

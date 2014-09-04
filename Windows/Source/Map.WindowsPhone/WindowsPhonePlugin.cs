@@ -4,6 +4,7 @@
 
 using PocketCampus.Common;
 using PocketCampus.Map.Resources;
+using PocketCampus.Map.Services;
 using PocketCampus.Map.ViewModels;
 using ThinMvvm;
 using ThinMvvm.WindowsPhone;

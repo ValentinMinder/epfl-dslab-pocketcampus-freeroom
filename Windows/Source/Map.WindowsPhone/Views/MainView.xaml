@@ -9,15 +9,7 @@
                       xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:my="clr-namespace:PocketCampus.Map"
-                      xmlns:myControls="clr-namespace:PocketCampus.Map.Controls"
-                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      mc:Ignorable="d">
-    <!-- Design-time DataContext -->
-    <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Map.ViewModels.Design;assembly=PocketCampus.Map" />
-    </d:DesignProperties.DataContext>
-
+                      xmlns:myControls="clr-namespace:PocketCampus.Map.Controls">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
         <!-- Localized strings -->
@@ -101,7 +93,7 @@
                                   Value="{Binding Properties.BuildingsLevel, Mode=TwoWay}"
                                   Width="40"
                                   Height="140"
-                                  Margin="0,0,0,-1"
+                                  Margin="0,0,0,24"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Bottom" />
     </Grid>
