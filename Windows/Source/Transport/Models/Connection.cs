@@ -62,5 +62,15 @@ namespace PocketCampus.Transport.Models
         /// </remarks>
         [ThriftField( 9, false, "arrivalPosition" )]
         public string ArrivalPosition { get; set; }
+
+
+        /// <summary>
+        /// Whether the connection is on foot.
+        /// </summary>
+        /// <remarks>
+        /// If so, there is no line.
+        /// </remarks>
+        [ThriftField( 11, true, "foot" )]
+        public bool IsOnFoot { get; set; }
     }
 }

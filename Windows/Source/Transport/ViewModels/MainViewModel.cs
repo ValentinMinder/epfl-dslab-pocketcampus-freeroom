@@ -2,6 +2,8 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,8 +22,6 @@ namespace PocketCampus.Transport.ViewModels
     [LogId( "/transport" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
-        private static readonly string[] DefaultStations = { "EPFL", "Lausanne-Flon" };
-
         private readonly ITransportService _transportService;
         private readonly INavigationService _navigationService;
         private readonly ILocationService _locationService;
@@ -127,11 +127,14 @@ namespace PocketCampus.Transport.ViewModels
         {
             if ( Settings.Stations.Count == 0 )
             {
-                var defaultStations = await _transportService.GetStationsAsync( DefaultStations, token );
-                foreach ( var station in defaultStations )
+                var defaultStationsResponse = await _transportService.GetDefaultStationsAsync( token );
+
+                if ( defaultStationsResponse.Status != TransportStatus.Success )
                 {
-                    Settings.Stations.Add( station );
+                    throw new Exception( "An error occurred on the server while fetching the default stations." );
                 }
+
+                Settings.Stations = new ObservableCollection<Station>( defaultStationsResponse.Stations );
             }
 
             if ( SelectedStation == null && Settings.SortByPosition )
@@ -150,12 +153,17 @@ namespace PocketCampus.Transport.ViewModels
                 SelectedStation = Settings.Stations.First();
             }
 
-            var stations = Settings.Stations.Where( s => s != SelectedStation ).ToArray();
-            var trips = await Task.WhenAll( stations.Select( s => _transportService.GetTripsAsync( SelectedStation.Name, s.Name, token ) ) );
-
             if ( !token.IsCancellationRequested )
             {
-                Trips = stations.Zip( trips, ( s, ts ) => new StationTrips( s, ts.Trips ) ).ToArray();
+                Trips = Settings.Stations
+                                .Where( s => s != SelectedStation )
+                                .Select( to => new StationTrips( _transportService, SelectedStation, to ) )
+                                .ToArray();
+
+                foreach ( var trip in Trips )
+                {
+                    trip.StartRefresh();
+                }
             }
         }
 
@@ -165,7 +173,7 @@ namespace PocketCampus.Transport.ViewModels
         private void RemoveStation( Station station )
         {
             Settings.Stations.Remove( station );
-            Trips = Trips.Where( t => t.Station != station ).ToArray();
+            Trips = Trips.Where( t => t.Destination != station ).ToArray();
         }
     }
 }

@@ -6,8 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Phone.Info;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
 
@@ -18,6 +20,7 @@ namespace PocketCampus.Main.Services
     /// </summary>
     public sealed class HttpClient : IHttpClient
     {
+        private const string UserAgentFormat = "PocketCampus/{0} (Windows Phone {1}; {2} {3})";
         private static readonly TimeSpan Timeout = TimeSpan.FromSeconds( 5 );
         private static readonly Encoding DefaultEncoding = Encoding.UTF8;
 
@@ -33,6 +36,12 @@ namespace PocketCampus.Main.Services
         {
             _client = new System.Net.Http.HttpClient( new System.Net.Http.HttpClientHandler { AllowAutoRedirect = false } );
             _client.Timeout = Timeout;
+
+            // ParseAdd has to be used for whatever reason instead of directly setting it...
+            _client.DefaultRequestHeaders.UserAgent.ParseAdd( string.Format( UserAgentFormat,
+                Assembly.GetExecutingAssembly().GetName().Version.ToString( 2 ),
+                Environment.OSVersion.Version,
+                DeviceStatus.DeviceManufacturer, DeviceStatus.DeviceName ) );
         }
 
 

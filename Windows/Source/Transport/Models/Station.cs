@@ -14,6 +14,12 @@ namespace PocketCampus.Transport.Models
     public sealed class Station
     {
         /// <summary>
+        /// The station's ID.
+        /// </summary>
+        [ThriftField( 2, true, "id" )]
+        public int Id { get; set; }
+
+        /// <summary>
         /// The station's latitude.
         /// </summary>
         [ThriftField( 3, false, "latitude" )]

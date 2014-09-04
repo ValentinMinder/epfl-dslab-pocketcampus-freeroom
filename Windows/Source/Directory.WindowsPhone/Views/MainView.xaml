@@ -12,87 +12,85 @@
                       xmlns:myControls="clr-namespace:PocketCampus.Directory.Controls"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      mc:Ignorable="d">
-    <!-- Design-time DataContext -->
-    <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Directory.ViewModels.Design;assembly=PocketCampus.Directory" />
-    </d:DesignProperties.DataContext>
-
+                      mc:Ignorable="d"
+                      d:DataContext="{Binding Main, Source={StaticResource Design}}">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
-        <!-- Localized strings -->
-        <my:LocalizedStrings x:Key="Strings" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-        <!-- Person template -->
-        <DataTemplate x:Key="PersonTemplate">
-            <Button Command="{Binding DataContext.ViewPersonCommand, ElementName=LayoutRoot}"
-                    CommandParameter="{Binding}"
-                    Style="{StaticResource SimpleButtonStyle}"
-                    Padding="12,10"
-                    Margin="0,10">
-                <Grid Height="100">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
+            <!-- Person template -->
+            <DataTemplate x:Key="PersonTemplate">
+                <Button Command="{Binding DataContext.ViewPersonCommand, ElementName=LayoutRoot}"
+                        CommandParameter="{Binding}"
+                        Style="{StaticResource SimpleButtonStyle}"
+                        Padding="12,10"
+                        Margin="0,10">
+                    <Grid Height="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
 
-                    <!-- Default picture (hidden by the actual picture if there is one) -->
-                    <Image Grid.RowSpan="3"
-                           Source="/Assets/DefaultImage.png"
-                           Height="100" />
+                        <!-- Default picture (hidden by the actual picture if there is one) -->
+                        <Image Grid.RowSpan="3"
+                               Source="/Assets/DefaultImage.png"
+                               Height="100" />
 
-                    <!-- Picture (may not be there) -->
-                    <Image Grid.RowSpan="3"
-                           Source="{Binding PictureUrl}"
-                           Height="100" />
+                        <!-- Picture (may not be there) -->
+                        <Image Grid.RowSpan="3"
+                               Source="{Binding PictureUrl}"
+                               Height="100" />
 
-                    <!-- Name -->
-                    <Viewbox Grid.Column="1"
-                             HorizontalAlignment="Left"
-                             StretchDirection="DownOnly"
-                             Margin="12,-10,12,4">
-                        <TextBlock Text="{Binding FullName}"
-                                   Style="{StaticResource PhoneTextTitle2Style}"
-                                   Margin="0" />
-                    </Viewbox>
-    
-                    <!-- Units -->
-                    <ItemsControl Grid.Column="1"
-                                  Grid.Row="1"
-                                  ItemsSource="{Binding Roles.Keys}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <!-- This is an overview, we don't care about overflows -->
-                                <StackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding}"
-                                           Style="{StaticResource PhoneTextTitle3Style}"
-                                           Foreground="{StaticResource PhoneSubtleBrush}"
-                                           FontFamily="{StaticResource PhoneFontFamilySemiBold}"
-                                           Margin="12,0,6,0" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                        <!-- Name -->
+                        <Viewbox Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 StretchDirection="DownOnly"
+                                 Margin="12,-10,12,4">
+                            <TextBlock Text="{Binding FullName}"
+                                       Style="{StaticResource PhoneTextTitle2Style}"
+                                       Margin="0" />
+                        </Viewbox>
 
-                    <!-- Office -->
-                    <TextBlock Grid.Column="1"
-                               Grid.Row="2"
-                               Text="{Binding Office}"
-                               Style="{StaticResource PhoneTextTitle3Style}"
-                               Foreground="{StaticResource PhoneSubtleBrush}"
-                               Margin="12,6,12,0" />
+                        <!-- Units -->
+                        <ItemsControl Grid.Column="1"
+                                      Grid.Row="1"
+                                      ItemsSource="{Binding Roles.Keys}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <!-- This is an overview, we don't care about overflows -->
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"
+                                               Style="{StaticResource PhoneTextTitle3Style}"
+                                               Foreground="{StaticResource PhoneSubtleBrush}"
+                                               FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                               Margin="12,0,6,0" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
 
-                </Grid>
-            </Button>
-        </DataTemplate>
+                        <!-- Office -->
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="2"
+                                   Text="{Binding Office}"
+                                   Style="{StaticResource PhoneTextTitle3Style}"
+                                   Foreground="{StaticResource PhoneSubtleBrush}"
+                                   Margin="12,6,12,0" />
+                    </Grid>
+                </Button>
+            </DataTemplate>
+        </ResourceDictionary>
     </comControls:BasePage.Resources>
     
     <!-- Progress bar in the system tray for pagination loading -->

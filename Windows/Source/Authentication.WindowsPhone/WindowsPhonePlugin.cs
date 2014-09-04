@@ -1,5 +1,4 @@
-﻿using PocketCampus.Authentication.Common;
-using PocketCampus.Authentication.ViewModels;
+﻿using PocketCampus.Authentication.ViewModels;
 using PocketCampus.Common;
 
 namespace PocketCampus.Authentication

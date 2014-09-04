@@ -1,64 +1,100 @@
 package org.pocketcampus.plugin.events.server.importers;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class EventItemSyncer {
 
-	@Deprecated
-	public static void syncWithMemento(Connection conn) { // should read from translation_id now
-		List<Long> ids = null;
+	private static final String MEMENTO_EVENT_URL = "http://memento.epfl.ch/feeds/event/?id=";
+	
+	public static void syncWithMemento(Connection conn) {
+		Map<Long, Translations> idMap = null;
 		try {
-			ids = getIdsOfMementoEventsFromDb(conn);
+			idMap = getIdsOfMementoEventsFromDb(conn);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		if(ids == null) {
+		if(idMap == null) {
 			System.out.println("couldn't get non-deleted events from db... aborting");
 			return;
 		}
-		System.out.println(ids.size() + " non-deleted memento events in the db");
+		System.out.println(idMap.size() + " non-deleted memento events in the db");
 		int deleted = 0;
-		for(long i : ids) {
-			boolean toDelete = false;
-			try {
-				new URL("http://memento.epfl.ch/event/export/" + i).openConnection().getInputStream();
-			} catch (Exception e) {
-				if(e instanceof FileNotFoundException) {
-					toDelete = true;
-				} else {
-					e.printStackTrace();
+		for(Entry<Long, Translations> e : idMap.entrySet()) {
+			if(e.getValue().enTr == null && e.getValue().frTr == null) {
+				// make sure we don't delete non-memento events
+				// should never happen because they are excluded in select query
+				System.out.println("ERROR is this even a Memento event? skipping");
+				continue;
+			}
+			boolean oneTranslationAvailable = false;
+			if(e.getValue().enTr != null) {
+				try {
+					new URL(MEMENTO_EVENT_URL + e.getValue().enTr).openConnection().getInputStream();
+					oneTranslationAvailable = true;
+				} catch (FileNotFoundException ex) {
+					// silent because this is the behavior when event (translation object) is deleted
+				} catch (IOException ex) {
+					ex.printStackTrace();
+					System.out.println("ERROR IOException dunno what to do... skipping");
+					continue;
+				}
+			}
+			if(e.getValue().frTr != null) {
+				try {
+					new URL(MEMENTO_EVENT_URL + e.getValue().frTr).openConnection().getInputStream();
+					oneTranslationAvailable = true;
+				} catch (FileNotFoundException ex) {
+					// silent because this is the behavior when event (translation object) is deleted
+				} catch (IOException ex) {
+					ex.printStackTrace();
+					System.out.println("ERROR IOException dunno what to do... skipping");
+					continue;
 				}
 			}
 			try {
-				if(toDelete) {
-					markMementoEventDeleted(i, conn);
+				if(!oneTranslationAvailable) {
+					markMementoEventDeleted(e.getKey(), conn);
 					deleted++;
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				System.out.println("couldn't mark deleted event " + i + "... skipping");
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+				System.out.println("couldn't mark deleted event " + e.getKey() + "... skipping");
 			}
 		}
 		System.out.println(deleted + " memento events were marked as deleted");
 	}
+	
+	private static class Translations {
+		public Long frTr = null;
+		public Long enTr = null;
+	}
 
-	private static List<Long> getIdsOfMementoEventsFromDb(Connection conn) throws SQLException {
-		List<Long> ids = new LinkedList<Long>();
-		PreparedStatement stm = conn.prepareStatement("SELECT eventId FROM eventitems WHERE eventUri IS NOT NULL AND deleted IS NULL;");
+	private static Map<Long, Translations> getIdsOfMementoEventsFromDb(Connection conn) throws SQLException {
+		Map<Long, Translations> idMap = new HashMap<Long, Translations>();
+		PreparedStatement stm = conn.prepareStatement("SELECT eventId,translation,translation_fr FROM eventitems WHERE (translation IS NOT NULL OR translation_fr IS NOT NULL) AND deleted IS NULL;");
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
-			ids.add(rs.getLong(1));
+			Translations tr = new Translations();
+			idMap.put(rs.getLong(1), tr);
+			long enTr = rs.getLong(2);
+			if(!rs.wasNull())
+				tr.enTr = enTr;
+			long frTr = rs.getLong(3);
+			if(!rs.wasNull())
+				tr.frTr = frTr;
 		}
 		rs.close();
 		stm.close();
-		return ids;
+		return idMap;
 	}
 	
 	private static void markMementoEventDeleted(long id, Connection conn) throws SQLException {

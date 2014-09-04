@@ -4,6 +4,7 @@
 
 using System.Linq;
 using PocketCampus.Events.Models;
+using PocketCampus.Events.Services;
 using ThinMvvm;
 using ThinMvvm.Logging;
 

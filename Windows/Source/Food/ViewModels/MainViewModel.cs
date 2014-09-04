@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common;
+using PocketCampus.Common.Services;
 using PocketCampus.Food.Models;
 using PocketCampus.Food.Services;
 using PocketCampus.Map;
@@ -27,14 +28,13 @@ namespace PocketCampus.Food.ViewModels
 
         private readonly INavigationService _navigationService;
         private readonly IFoodService _menuService;
-        private readonly ICredentialsStore _credentials;
+        private readonly ICredentialsStorage _credentials;
 
         // The unfiltered menu
         private Restaurant[] _fullMenu;
 
         private Restaurant[] _menu;
-        private bool _anyMeals;
-        private bool _anyFilterResults;
+        private bool _allResultsFilteredOut;
         private MealTime _mealTime;
         private DateTime _mealDate;
 
@@ -48,21 +48,12 @@ namespace PocketCampus.Food.ViewModels
         }
 
         /// <summary>
-        /// Gets a value indicating whether there are any meals, even filtered ones.
+        /// Gets a value indicating whether all meals are hidden by filters.
         /// </summary>
-        public bool AnyMeals
+        public bool AllResultsFilteredOut
         {
-            get { return _anyMeals; }
-            private set { SetProperty( ref _anyMeals, value ); }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether there are any filter results.
-        /// </summary>
-        public bool AnyFilterResults
-        {
-            get { return _anyFilterResults; }
-            private set { SetProperty( ref _anyFilterResults, value ); }
+            get { return _allResultsFilteredOut; }
+            private set { SetProperty( ref _allResultsFilteredOut, value ); }
         }
 
         /// <summary>
@@ -128,7 +119,7 @@ namespace PocketCampus.Food.ViewModels
         /// Creates a new MainViewModel.
         /// </summary>
         public MainViewModel( IDataCache cache, INavigationService navigationService, IFoodService menuService,
-                              ICredentialsStore credentials, IPluginSettings settings, IServerSettings serverSettings )
+                              ICredentialsStorage credentials, IPluginSettings settings, IServerSettings serverSettings )
             : base( cache )
         {
             _navigationService = navigationService;
@@ -146,7 +137,7 @@ namespace PocketCampus.Food.ViewModels
                 if ( _fullMenu != null )
                 {
                     Menu = FilterMenu( _fullMenu );
-                    AnyFilterResults = Menu.Any();
+                    AllResultsFilteredOut = Menu.Length == 0 && _fullMenu.Length > 0;
                 }
             };
         }
@@ -208,8 +199,7 @@ namespace PocketCampus.Food.ViewModels
             {
                 _fullMenu = data.Menu;
                 Menu = FilterMenu( _fullMenu );
-                AnyMeals = _fullMenu.Any();
-                AnyFilterResults = Menu.Any();
+                AllResultsFilteredOut = Menu.Length == 0 && _fullMenu.Length > 0;
             }
 
             return true;

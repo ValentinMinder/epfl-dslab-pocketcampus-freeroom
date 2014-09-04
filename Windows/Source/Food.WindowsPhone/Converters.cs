@@ -11,6 +11,7 @@ using System.Windows.Media;
 using PocketCampus.Common;
 using PocketCampus.Food.Models;
 using PocketCampus.Food.Resources;
+using PocketCampus.Food.Services;
 
 namespace PocketCampus.Food
 {

@@ -114,13 +114,14 @@ namespace PocketCampus.Camipro.ViewModels
                 var request = new CamiproRequest
                 {
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
-                    Session = new SessionId { CamiproCookie = session.Cookie }
+                    // HACK to make design data work :(
+                    Session = new SessionId { CamiproCookie = session == null ? null : session.Cookie }
                 };
 
                 var accountTask = _camiproService.GetAccountInfoAsync( request, token );
                 var ebankingTask = _camiproService.GetEBankingInfoAsync( request, token );
 
-                // parrallel requests
+                // parallel requests
                 var accountInfo = await accountTask;
                 var ebankingInfo = await ebankingTask;
 

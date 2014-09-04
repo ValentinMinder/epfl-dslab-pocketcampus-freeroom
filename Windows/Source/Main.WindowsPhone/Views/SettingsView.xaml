@@ -8,12 +8,8 @@
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      mc:Ignorable="d">
-    <!-- Design-time DataContext -->
-    <d:DesignerProperties.DataContext>
-        <design:DesignSettingsViewModel xmlns:design="clr-namespace:PocketCampus.Main.ViewModels.Design;assembly=PocketCampus.Main" />
-    </d:DesignerProperties.DataContext>
-
+                      mc:Ignorable="d"
+                      d:DataContext="{Binding Settings, Source={StaticResource Design}}">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
         <ResourceDictionary>

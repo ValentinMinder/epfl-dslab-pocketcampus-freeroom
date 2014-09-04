@@ -15,22 +15,13 @@ namespace PocketCampus.Transport.Services
     [ThriftService( "TransportService" )]
     public interface ITransportService
     {
-        /// <summary>
-        /// Asynchronously gets station suggestions for the specified query.
-        /// </summary>
-        [ThriftMethod( "autocomplete" )]
-        Task<Station[]> GetSuggestionsAsync( [ThriftParameter( 1, "constraint" )] string query, CancellationToken cancellationToken );
+        [ThriftMethod( "searchForStations" )]
+        Task<StationSearchResponse> SearchStationsAsync( [ThriftParameter( 1, "request" )] StationSearchRequest request, CancellationToken cancellationToken );
 
-        /// <summary>
-        /// Asynchronously gets stations from the specified names.
-        /// </summary>
-        [ThriftMethod( "getLocationsFromNames" )]
-        Task<Station[]> GetStationsAsync( [ThriftParameter( 1, "names" )] string[] names, CancellationToken cancellationToken );
+        [ThriftMethod( "getDefaultStations" )]
+        Task<DefaultStationsResponse> GetDefaultStationsAsync( CancellationToken cancellationToken );
 
-        /// <summary>
-        /// Asynchronously gets the next trips from and to the specified stations.
-        /// </summary>
-        [ThriftMethod( "getTrips" )]
-        Task<TripsResult> GetTripsAsync( [ThriftParameter( 1, "from" )] string fromName, [ThriftParameter( 2, "to" )] string toName, CancellationToken cancellationToken );
+        [ThriftMethod( "searchForTrips" )]
+        Task<TripSearchResponse> SearchTripsAsync( [ThriftParameter( 1, "request" )] TripSearchRequest request, CancellationToken cancellationToken );
     }
 }

@@ -19,6 +19,11 @@ namespace PocketCampus.Common.Services
         bool IsEnabled { get; set; }
 
         /// <summary>
+        /// Gets the user's last known location, if any.
+        /// </summary>
+        GeoPosition LastKnownLocation { get; }
+
+        /// <summary>
         /// Asynchronously gets the user's location.
         /// </summary>
         Task<Tuple<GeoPosition, GeoLocationStatus>> GetLocationAsync();

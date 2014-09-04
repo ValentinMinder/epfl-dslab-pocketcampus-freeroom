@@ -12,53 +12,52 @@
                       xmlns:my="clr-namespace:PocketCampus.Directory"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      mc:Ignorable="d">
-    <!-- Design-time DataContext -->
-    <d:DesignProperties.DataContext>
-        <design:DesignPersonViewModel xmlns:design="clr-namespace:PocketCampus.Directory.ViewModels.Design;assembly=PocketCampus.Directory" />
-    </d:DesignProperties.DataContext>
-
+                      mc:Ignorable="d"
+                      d:DataContext="{Binding Person, Source={StaticResource Design}}">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
-        <!-- Localized strings -->
-        <my:LocalizedStrings x:Key="Strings" />
-        
-        <!-- Style for hyperlinks -->
-        <Style TargetType="HyperlinkButton">
-            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}" />
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-        <!-- Role template -->
-        <DataTemplate x:Key="RoleTemplate">
-            <StackPanel Margin="0,0,0,15">
-                <TextBlock Text="{Binding Unit}"
-                           TextWrapping="Wrap"
-                           Style="{StaticResource PhoneTextSubtleStyle}" />
+            <!-- Style for hyperlinks -->
+            <Style TargetType="HyperlinkButton">
+                <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+                <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
+            </Style>
 
-                <TextBlock Text="{Binding Title}"
-                           TextWrapping="Wrap"
-                           Style="{StaticResource PhoneTextTitle3Style}"
-                           FontSize="{StaticResource PhoneFontSizeMediumLarge}" />
-            </StackPanel>
-        </DataTemplate>
-        
-        <!-- Homepage template -->
-        <DataTemplate x:Key="HomepageTemplate">
-            <StackPanel Margin="0,0,0,15">
-                <TextBlock Text="{Binding Key}"
-                           TextWrapping="Wrap"
-                           Style="{StaticResource PhoneTextSubtleStyle}" />
-                
-                <Viewbox StretchDirection="DownOnly"
-                         HorizontalAlignment="Left">
-                    <HyperlinkButton Content="{Binding Value}"
-                                     Command="{Binding DataContext.OpenWebsiteCommand, ElementName=LayoutRoot}"
-                                     CommandParameter="{Binding Value}" />
-                </Viewbox>
-            </StackPanel>
-        </DataTemplate>
+            <!-- Role template -->
+            <DataTemplate x:Key="RoleTemplate">
+                <StackPanel Margin="0,0,0,15">
+                    <TextBlock Text="{Binding Unit}"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource PhoneTextSubtleStyle}" />
+
+                    <TextBlock Text="{Binding Title}"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource PhoneTextTitle3Style}"
+                               FontSize="{StaticResource PhoneFontSizeMediumLarge}" />
+                </StackPanel>
+            </DataTemplate>
+
+            <!-- Homepage template -->
+            <DataTemplate x:Key="HomepageTemplate">
+                <StackPanel Margin="0,0,0,15">
+                    <TextBlock Text="{Binding Key}"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource PhoneTextSubtleStyle}" />
+
+                    <Viewbox StretchDirection="DownOnly"
+                             HorizontalAlignment="Left">
+                        <HyperlinkButton Content="{Binding Value}"
+                                         Command="{Binding DataContext.OpenWebsiteCommand, ElementName=LayoutRoot}"
+                                         CommandParameter="{Binding Value}" />
+                    </Viewbox>
+                </StackPanel>
+            </DataTemplate>
+        </ResourceDictionary>
     </comControls:BasePage.Resources>
 
     <!-- Main grid -->
@@ -75,6 +74,8 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
+                <!-- Bottom padding -->
+                <RowDefinition Height="95" />
             </Grid.RowDefinitions>
 
             <!-- Header -->
@@ -83,7 +84,7 @@
                 <TextBlock Text="{Binding Resources.PagesHeader, Source={StaticResource Strings}}"
                            Style="{StaticResource AppTextTitle2Style}" />
             </Border>
-            
+
             <!-- Name background (not wrapping Name because of column span) -->
             <Rectangle Grid.ColumnSpan="2"
                        Grid.Row="1"
@@ -98,7 +99,7 @@
                        FontSize="{StaticResource PhoneFontSizeExtraLarge}"
                        TextWrapping="Wrap"
                        Margin="24,10" />
-            
+
             <!-- Picture -->
             <Image Grid.Row="2"
                    Source="{Binding Person.PictureUrl}"

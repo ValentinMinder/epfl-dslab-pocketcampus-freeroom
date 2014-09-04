@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using PocketCampus.Common;
+using PocketCampus.Events.Services;
 using ThinMvvm;
 using ThinMvvm.Logging;
 

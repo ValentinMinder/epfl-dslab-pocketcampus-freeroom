@@ -32,7 +32,6 @@ namespace PocketCampus.Events.ViewModels
 
         private EventPool _pool;
         private EventItemGroup[] _itemGroups;
-        private bool _anyItems;
         private EmailSendingStatus _emailStatus;
 
         private Tuple<SearchPeriod, bool> _previousSettings;
@@ -54,15 +53,6 @@ namespace PocketCampus.Events.ViewModels
         {
             get { return _itemGroups; }
             private set { SetProperty( ref _itemGroups, value ); }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether there are any child items.
-        /// </summary>
-        public bool AnyItems
-        {
-            get { return _anyItems; }
-            private set { SetProperty( ref _anyItems, value ); }
         }
 
         /// <summary>
@@ -89,6 +79,15 @@ namespace PocketCampus.Events.ViewModels
                     _navigationService.NavigateTo<EventItemViewModel, ViewEventItemRequest>( request );
                 } );
             }
+        }
+
+        /// <summary>
+        /// Gets the command executed to show current events only.
+        /// </summary>
+        [LogId( "RightNow" )]
+        public Command ShowCurrentEventsCommand
+        {
+            get { return this.GetCommand( ShowCurrentEvents ); }
         }
 
         /// <summary>
@@ -175,7 +174,7 @@ namespace PocketCampus.Events.ViewModels
                 var request = new EventPoolRequest
                 {
                     PoolId = _poolId,
-                    DayCount = (int) _settings.SearchPeriod,
+                    HoursCount = (int) _settings.SearchPeriod,
                     IsInPast = _settings.SearchInPast,
                     UserTickets = _settings.UserTickets.ToArray(),
                     FavoriteEventIds = _settings.FavoriteItemIds.ToArray(),
@@ -200,7 +199,6 @@ namespace PocketCampus.Events.ViewModels
 
             Pool = data.Pool;
             Pool.Items = data.ChildrenItems == null ? new EventItem[0] : data.ChildrenItems.Values.ToArray();
-            AnyItems = Pool.Items.Any();
 
 
             var groups = from item in Pool.Items
@@ -224,6 +222,13 @@ namespace PocketCampus.Events.ViewModels
             ItemGroups = groups.ToArray();
 
             return true;
+        }
+
+        private void ShowCurrentEvents()
+        {
+            _settings.SearchPeriod = SearchPeriod.Now;
+            _settings.SearchInPast = false;
+            RefreshAsync( true, CurrentCancellationToken );
         }
 
 

@@ -20,11 +20,11 @@ namespace PocketCampus.Authentication.ViewModels
     public sealed class AuthenticationViewModel : ViewModel<AuthenticationRequest>
     {
         private readonly IAuthenticationService _authenticationService;
-        private readonly ITequilaAuthenticator _authenticator;
+        private readonly IAuthenticator _authenticator;
         private readonly IServerAccess _serverAccess;
         private readonly INavigationService _navigationService;
         private readonly IServerSettings _settings;
-        private readonly ICredentialsStore _credentials;
+        private readonly ICredentialsStorage _credentials;
         private readonly AuthenticationRequest _request;
 
         private string _userName;
@@ -93,9 +93,9 @@ namespace PocketCampus.Authentication.ViewModels
         /// <summary>
         /// Creates a new AuthenticationViewModel.
         /// </summary>
-        public AuthenticationViewModel( IAuthenticationService authenticationService, ITequilaAuthenticator authenticator,
+        public AuthenticationViewModel( IAuthenticationService authenticationService, IAuthenticator authenticator,
                                         IServerAccess serverAccess, INavigationService navigationService,
-                                        IServerSettings settings, ICredentialsStore credentials,
+                                        IServerSettings settings, ICredentialsStorage credentials,
                                         AuthenticationRequest request )
         {
             _authenticationService = authenticationService;
@@ -164,8 +164,8 @@ namespace PocketCampus.Authentication.ViewModels
                 }
                 else
                 {
+                    _navigationService.RemoveCurrentFromBackStack();
                     _request.SuccessAction();
-                    _navigationService.PopBackStack();
                 }
             }
 

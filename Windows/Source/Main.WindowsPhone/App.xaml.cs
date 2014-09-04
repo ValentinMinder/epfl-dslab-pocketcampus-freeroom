@@ -77,7 +77,7 @@ namespace PocketCampus.Main
             Container.Bind<IDeviceIdentifier, DeviceIdentifier>();
             Container.Bind<IRatingService, RatingService>();
             Container.Bind<IDataCache, WindowsPhoneDataCache>();
-            Container.Bind<ICredentialsStore, WindowsPhoneCredentialsStore>();
+            Container.Bind<ICredentialsStorage, WindowsPhoneCredentialsStorage>();
             _pluginLoader = Container.Bind<IPluginLoader, PluginLoader>();
             _logger = Container.Bind<Logger, GoogleAnalyticsLogger>();
 
