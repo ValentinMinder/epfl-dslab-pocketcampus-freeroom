@@ -31,7 +31,7 @@ enum CloudPrintMultiPageLayout {
 struct CloudPrintMultiPageConfig {
 // http://www.math.fsu.edu/Computer/printer_cl.math
     1: required CloudPrintNbPagesPerSheet nbPagesPerSheet;
-    2: required CloudPrintMultiPageLayout layou;
+    2: required CloudPrintMultiPageLayout layout;
 }
 
 struct CloudPrintPageRange {
@@ -45,6 +45,7 @@ struct PrintDocumentRequest {
     3: required bool blackAndWhite;
     4: required i32 numberOfCopies;
     5: optional CloudPrintPageRange pageSelection;
+    6: optional CloudPrintMultiPageConfig multiPageConfig;
 }
 
 struct PrintDocumentResponse {
