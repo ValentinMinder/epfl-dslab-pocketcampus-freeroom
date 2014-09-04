@@ -17,7 +17,7 @@ namespace PocketCampus.Common
         }
 
         public static readonly DependencyProperty GroupStyleProperty =
-            DependencyProperty.RegisterAttached( "GroupStyle", typeof( GroupStyle ), typeof( ListViewEx ), new PropertyMetadata( null ) );
+            DependencyProperty.RegisterAttached( "GroupStyle", typeof( GroupStyle ), typeof( ListViewEx ), new PropertyMetadata( null, OnGroupStyleChanged ) );
 
         private static void OnGroupStyleChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
         {

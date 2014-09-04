@@ -4,13 +4,12 @@
               xmlns:mvvm="using:ThinMvvm.WindowsRuntime"
               xmlns:myDesign="using:PocketCampus.Main.ViewModels.Design">
     <mvvm:AppBase.Resources>
-        <myDesign:Design x:Key="Design" />
-        
-        <SolidColorBrush x:Key="AppAccentBrush"
-                         Color="#C30509" />
-        <SolidColorBrush x:Key="AppHeaderBackgroundBrush"
-                         Color="#C30509" />
-        <SolidColorBrush x:Key="AppHeaderForegroundBrush"
-                         Color="White" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///PocketCampus.Common.WindowsRuntime/Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+            <myDesign:Design x:Key="Design" />
+        </ResourceDictionary>
     </mvvm:AppBase.Resources>
 </mvvm:AppBase>

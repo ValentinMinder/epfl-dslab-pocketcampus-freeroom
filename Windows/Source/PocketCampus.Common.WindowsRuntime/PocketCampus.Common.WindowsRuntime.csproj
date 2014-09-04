@@ -12,18 +12,18 @@
     <AssemblyName>PocketCampus.Common.WindowsRuntime</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile32</TargetFrameworkProfile>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <ProjectTypeGuids>{76F1466A-8B6D-4E39-A767-685A06062A39};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetPlatformIdentifier>WindowsPhoneApp</TargetPlatformIdentifier>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_PHONE_APP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -31,7 +31,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_PHONE_APP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -43,11 +43,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <TargetPlatform Include="WindowsPhoneApp, Version=8.1" />
-    <TargetPlatform Include="Windows, Version=8.1" />
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="Controls\GroupedItemsControl.cs" />
     <Compile Include="ListViewEx.cs" />
+    <Compile Include="StatusBarBehavior.cs" />
     <Compile Include="StringFormatConverter.cs" />
     <Compile Include="ValueConverter.cs" />
     <Compile Include="IWindowsRuntimePlugin.cs" />
@@ -55,13 +53,13 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThinMvvm">
-      <HintPath>..\..\packages\ThinMvvm.0.9.17.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.0.9.18.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
     </Reference>
     <Reference Include="ThinMvvm.Logging">
-      <HintPath>..\..\packages\ThinMvvm.Logging.0.9.17.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.Logging.0.9.18.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
     </Reference>
     <Reference Include="ThinMvvm.WindowsRuntime">
-      <HintPath>..\..\packages\ThinMvvm.WindowsRuntime.0.9.17.0\lib\portable-win81+WindowsPhoneApp81\ThinMvvm.WindowsRuntime.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.WindowsRuntime.0.9.18.0\lib\portable-win81+WindowsPhoneApp81\ThinMvvm.WindowsRuntime.dll</HintPath>
     </Reference>
     <Reference Include="ThriftSharp">
       <HintPath>..\..\packages\ThriftSharp.2.1.1.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThriftSharp.dll</HintPath>
@@ -70,7 +68,19 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <ItemGroup>
+    <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
+      <Name>Behaviors SDK %28XAML%29</Name>
+    </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Resources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

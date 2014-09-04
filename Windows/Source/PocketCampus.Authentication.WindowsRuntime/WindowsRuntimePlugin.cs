@@ -13,7 +13,7 @@ namespace PocketCampus.Authentication
 
         public void Initialize( IWindowsRuntimeNavigationService navigationService )
         {
-#warning TODO
+            // TODO
         }
     }
 }

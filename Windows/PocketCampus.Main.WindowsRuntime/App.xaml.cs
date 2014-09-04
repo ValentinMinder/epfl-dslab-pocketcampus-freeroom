@@ -7,6 +7,7 @@ using PocketCampus.Main.Views;
 using ThinMvvm;
 using ThinMvvm.WindowsRuntime;
 using Windows.ApplicationModel.Activation;
+using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
 
 namespace PocketCampus.Main
@@ -38,6 +39,12 @@ namespace PocketCampus.Main
             _navigationService.Bind<AboutViewModel, AboutView>();
             _navigationService.Bind<MainViewModel, MainView>();
             _navigationService.Bind<SettingsViewModel, SettingsView>();
+
+            HardwareButtons.BackPressed += ( _, e ) =>
+            {
+                e.Handled = true;
+                _navigationService.NavigateBack();
+            };
         }
 
         protected override async void Launch( LaunchActivatedEventArgs e )
