@@ -34,8 +34,8 @@
 "Pages" = "Pages";
 "All" = "Toutes";
 "Selected" = "Sélectionner";
-"FromPageWithFormat" = "De:\t %d";
-"ToPageWithFormat" = "À:\t %d";
+"FromPageWithFormat" = "\tDe:\t %d";
+"ToPageWithFormat" = "\tÀ:\t %d";
 "DoubleSided" = "Recto verso";
 "PagesPerSheet" = "Pages par feuille";
 "LayoutDirection" = "Direction";

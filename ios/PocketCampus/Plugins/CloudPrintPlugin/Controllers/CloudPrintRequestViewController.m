@@ -52,7 +52,7 @@ static NSInteger const kMultiPageLayoutRowIndex = 2;
 static NSInteger const kBlackAndWhiteRowIndex = 0;
 
 
-@interface CloudPrintRequestViewController ()
+@interface CloudPrintRequestViewController ()<UIActionSheetDelegate>
 
 @property (nonatomic, strong) NSString* documentName;
 @property (nonatomic, strong) PrintDocumentRequest* printRequest;
@@ -139,6 +139,7 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
         if (self.printRequest.pageSelection.pageFrom >= self.printRequest.pageSelection.pageTo) {
             self.printRequest.pageSelection.pageTo = self.printRequest.pageSelection.pageFrom;
         }
+#warning support decreasing toPage
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPageFromRowIndex inSection:kSection0Index], [NSIndexPath indexPathForRow:kPageToRowIndex inSection:kSection0Index]] withRowAnimation:UITableViewRowAnimationNone];
     } else if (sender == self.doubleSidedToggle) {
         self.printRequest.doubleSided = self.doubleSidedToggle.isOn;
@@ -147,10 +148,36 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
     }
 }
 
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+#warning TODO
+}
+
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UIActionSheet* actionSheet = nil;
+    switch (indexPath.section) {
+        case kSection1Index:
+            switch (indexPath.row) {
+                case kNbPagesPerSheetRowIndex:
 #warning TODO
+                    actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"PagesPerSheet", @"CloudPrintPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:nil];
+                    self.pagesPerSheetActionSheet = actionSheet;
+                    break;
+                case kMultiPageLayoutRowIndex:
+                    
+                    break;
+                default:
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
+    [actionSheet showInView:self.view];
 }
 
 #pragma mark - UITableViewDataSource
@@ -238,7 +265,7 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
                 case kNbPagesPerSheetRowIndex:
                     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
                     cell.textLabel.text = NSLocalizedStringFromTable(@"PagesPerSheet", @"CloudPrintPlugin", nil);
-                    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", self.printRequest.multiPageConfig.nbPagesPerSheet];
+                    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", self.printRequest.multiPageConfig ? self.printRequest.multiPageConfig.nbPagesPerSheet : 1];
                     break;
                 case kMultiPageLayoutRowIndex:
                     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
