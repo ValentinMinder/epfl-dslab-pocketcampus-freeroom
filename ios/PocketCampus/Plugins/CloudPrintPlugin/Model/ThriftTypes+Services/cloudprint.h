@@ -19,7 +19,6 @@ enum CloudPrintStatusCode {
 };
 
 enum CloudPrintNbPagesPerSheet {
-  CloudPrintNbPagesPerSheet_ONE = 1,
   CloudPrintNbPagesPerSheet_TWO = 2,
   CloudPrintNbPagesPerSheet_FOUR = 4,
   CloudPrintNbPagesPerSheet_SIX = 6,
@@ -36,6 +35,11 @@ enum CloudPrintMultiPageLayout {
   CloudPrintMultiPageLayout_RIGHT_TO_LEFT_BOTTOM_TO_TOP = 5,
   CloudPrintMultiPageLayout_RIGHT_TO_LEFT_TOP_TO_BOTTOM = 6,
   CloudPrintMultiPageLayout_TOP_TO_BOTTOM_RIGHT_TO_LEFT = 7
+};
+
+enum CloudPrintDoubleSidedConfig {
+  CloudPrintDoubleSidedConfig_LONG_EDGE = 1,
+  CloudPrintDoubleSidedConfig_SHORT_EDGE = 2
 };
 
 @interface CloudPrintMultiPageConfig : NSObject <NSCoding> {
@@ -96,30 +100,30 @@ enum CloudPrintMultiPageLayout {
 
 @interface PrintDocumentRequest : NSObject <NSCoding> {
   int64_t __documentId;
-  BOOL __doubleSided;
   BOOL __blackAndWhite;
   int32_t __numberOfCopies;
   CloudPrintPageRange * __pageSelection;
   CloudPrintMultiPageConfig * __multiPageConfig;
+  int __doubleSided;
 
   BOOL __documentId_isset;
-  BOOL __doubleSided_isset;
   BOOL __blackAndWhite_isset;
   BOOL __numberOfCopies_isset;
   BOOL __pageSelection_isset;
   BOOL __multiPageConfig_isset;
+  BOOL __doubleSided_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 @property (nonatomic, getter=documentId, setter=setDocumentId:) int64_t documentId;
-@property (nonatomic, getter=doubleSided, setter=setDoubleSided:) BOOL doubleSided;
 @property (nonatomic, getter=blackAndWhite, setter=setBlackAndWhite:) BOOL blackAndWhite;
 @property (nonatomic, getter=numberOfCopies, setter=setNumberOfCopies:) int32_t numberOfCopies;
 @property (nonatomic, retain, getter=pageSelection, setter=setPageSelection:) CloudPrintPageRange * pageSelection;
 @property (nonatomic, retain, getter=multiPageConfig, setter=setMultiPageConfig:) CloudPrintMultiPageConfig * multiPageConfig;
+@property (nonatomic, getter=doubleSided, setter=setDoubleSided:) int doubleSided;
 #endif
 
-- (id) initWithDocumentId: (int64_t) documentId doubleSided: (BOOL) doubleSided blackAndWhite: (BOOL) blackAndWhite numberOfCopies: (int32_t) numberOfCopies pageSelection: (CloudPrintPageRange *) pageSelection multiPageConfig: (CloudPrintMultiPageConfig *) multiPageConfig;
+- (id) initWithDocumentId: (int64_t) documentId blackAndWhite: (BOOL) blackAndWhite numberOfCopies: (int32_t) numberOfCopies pageSelection: (CloudPrintPageRange *) pageSelection multiPageConfig: (CloudPrintMultiPageConfig *) multiPageConfig doubleSided: (int) doubleSided;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -127,10 +131,6 @@ enum CloudPrintMultiPageLayout {
 - (int64_t) documentId;
 - (void) setDocumentId: (int64_t) documentId;
 - (BOOL) documentIdIsSet;
-
-- (BOOL) doubleSided;
-- (void) setDoubleSided: (BOOL) doubleSided;
-- (BOOL) doubleSidedIsSet;
 
 - (BOOL) blackAndWhite;
 - (void) setBlackAndWhite: (BOOL) blackAndWhite;
@@ -147,6 +147,10 @@ enum CloudPrintMultiPageLayout {
 - (CloudPrintMultiPageConfig *) multiPageConfig;
 - (void) setMultiPageConfig: (CloudPrintMultiPageConfig *) multiPageConfig;
 - (BOOL) multiPageConfigIsSet;
+
+- (int) doubleSided;
+- (void) setDoubleSided: (int) doubleSided;
+- (BOOL) doubleSidedIsSet;
 
 @end
 

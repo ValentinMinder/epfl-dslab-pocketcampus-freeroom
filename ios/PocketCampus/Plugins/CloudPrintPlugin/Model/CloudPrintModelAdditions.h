@@ -35,7 +35,19 @@
  * @return a localized title for an enum value of CloudPrintMultiPageLayout,
  * nil if multiPageLayout does not exist.
  */
-+ (NSString*)localizedTitleForForMultiPageLayout:(NSInteger)multiPageLayout;
++ (NSString*)localizedTitleForMultiPageLayout:(NSInteger)multiPageLayout;
+
+/**
+ * @return a localized title for an enum value of CloudPrintDoubleSidedConfig,
+ * nil if doubleSidedConfig does not exist.
+ */
++ (NSString*)localizedTitleForDoubleSidedConfig:(NSInteger)doubleSidedConfig;
+
+/**
+ * @return a localized title for an enum value of CloudPrintNbPagesPerSheet,
+ * "1" if nbPagesPerSheet is 1, nil for any other value.
+ */
++ (NSString*)localizedTitleForNbPagesPerSheet:(NSInteger)nbPagesPerSheet;
 
 @end
 

@@ -28,15 +28,19 @@
 //  Created by Loïc Gardiol on 01.09.2014.
 
 "PluginName" = "CloudPrint";
-"BlackAndWhiteExplanations" = "Color printing is only available at certain printers.";
+"Print" = "Print";
 "1Copy" = "1 copy";
 "NbCopiesWithFormat" = "%d copies";
 "Pages" = "Pages";
 "All" = "All";
 "Selected" = "Selected";
-"FromPageWithFormat" = "From page: %d";
-"ToPageWithFormat" = "To page: %d";
+"FromPageWithFormat" = "From:\t%d";
+"ToPageWithFormat" = "To:\t\t%d";
 "DoubleSided" = "Two-sided";
+"FlipOn" = "Flip on";
+"LongEdge" = "Long edge";
+"ShortEdge" = "Short edge";
 "PagesPerSheet" = "Pages per sheet";
 "LayoutDirection" = "Layout direction";
 "BlackAndWhite" = "Black & white";
+"BlackAndWhiteExplanations" = "Color printing is only available at certain printers.";

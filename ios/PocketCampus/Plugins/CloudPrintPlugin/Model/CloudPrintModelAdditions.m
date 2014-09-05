@@ -31,9 +31,38 @@
 
 @implementation CloudPrintModelAdditions
 
-+ (NSString*)localizedTitleForForMultiPageLayout:(NSInteger)multiPageLayout {
++ (NSString*)localizedTitleForMultiPageLayout:(NSInteger)multiPageLayout {
 #warning TODO
-    return [NSString stringWithFormat:@"%d", multiPageLayout];
+    return [NSString stringWithFormat:@"dir %d", multiPageLayout];
+}
+
++ (NSString*)localizedTitleForDoubleSidedConfig:(NSInteger)doubleSidedConfig {
+    switch (doubleSidedConfig) {
+        case CloudPrintDoubleSidedConfig_SHORT_EDGE:
+            return NSLocalizedStringFromTable(@"ShortEdge", @"CloudPrintPlugin", nil);
+        case CloudPrintDoubleSidedConfig_LONG_EDGE:
+            return NSLocalizedStringFromTable(@"LongEdge", @"CloudPrintPlugin", nil);
+    }
+    return nil;
+}
+
++ (NSString*)localizedTitleForNbPagesPerSheet:(NSInteger)nbPagesPerSheet {
+    if (nbPagesPerSheet == 1) {
+        return [NSString stringWithFormat:@"%d", 1];
+    }
+    switch (nbPagesPerSheet) {
+        case CloudPrintNbPagesPerSheet_TWO:
+            return [NSString stringWithFormat:@"%d", 2];
+        case CloudPrintNbPagesPerSheet_FOUR:
+            return [NSString stringWithFormat:@"%d", 4];
+        case CloudPrintNbPagesPerSheet_SIX:
+            return [NSString stringWithFormat:@"%d", 6];
+        case CloudPrintNbPagesPerSheet_NINE:
+            return [NSString stringWithFormat:@"%d", 9];
+        case CloudPrintNbPagesPerSheet_SIXTEEN:
+            return [NSString stringWithFormat:@"%d", 16];
+    }
+    return nil;
 }
 
 @end

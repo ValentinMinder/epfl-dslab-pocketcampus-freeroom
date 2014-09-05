@@ -316,13 +316,11 @@
 
 @implementation PrintDocumentRequest
 
-- (id) initWithDocumentId: (int64_t) documentId doubleSided: (BOOL) doubleSided blackAndWhite: (BOOL) blackAndWhite numberOfCopies: (int32_t) numberOfCopies pageSelection: (CloudPrintPageRange *) pageSelection multiPageConfig: (CloudPrintMultiPageConfig *) multiPageConfig
+- (id) initWithDocumentId: (int64_t) documentId blackAndWhite: (BOOL) blackAndWhite numberOfCopies: (int32_t) numberOfCopies pageSelection: (CloudPrintPageRange *) pageSelection multiPageConfig: (CloudPrintMultiPageConfig *) multiPageConfig doubleSided: (int) doubleSided
 {
   self = [super init];
   __documentId = documentId;
   __documentId_isset = YES;
-  __doubleSided = doubleSided;
-  __doubleSided_isset = YES;
   __blackAndWhite = blackAndWhite;
   __blackAndWhite_isset = YES;
   __numberOfCopies = numberOfCopies;
@@ -331,6 +329,8 @@
   __pageSelection_isset = YES;
   __multiPageConfig = [multiPageConfig retain];
   __multiPageConfig_isset = YES;
+  __doubleSided = doubleSided;
+  __doubleSided_isset = YES;
   return self;
 }
 
@@ -341,11 +341,6 @@
   {
     __documentId = [decoder decodeInt64ForKey: @"documentId"];
     __documentId_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"doubleSided"])
-  {
-    __doubleSided = [decoder decodeBoolForKey: @"doubleSided"];
-    __doubleSided_isset = YES;
   }
   if ([decoder containsValueForKey: @"blackAndWhite"])
   {
@@ -367,6 +362,11 @@
     __multiPageConfig = [[decoder decodeObjectForKey: @"multiPageConfig"] retain];
     __multiPageConfig_isset = YES;
   }
+  if ([decoder containsValueForKey: @"doubleSided"])
+  {
+    __doubleSided = [decoder decodeIntForKey: @"doubleSided"];
+    __doubleSided_isset = YES;
+  }
   return self;
 }
 
@@ -375,10 +375,6 @@
   if (__documentId_isset)
   {
     [encoder encodeInt64: __documentId forKey: @"documentId"];
-  }
-  if (__doubleSided_isset)
-  {
-    [encoder encodeBool: __doubleSided forKey: @"doubleSided"];
   }
   if (__blackAndWhite_isset)
   {
@@ -395,6 +391,10 @@
   if (__multiPageConfig_isset)
   {
     [encoder encodeObject: __multiPageConfig forKey: @"multiPageConfig"];
+  }
+  if (__doubleSided_isset)
+  {
+    [encoder encodeInt: __doubleSided forKey: @"doubleSided"];
   }
 }
 
@@ -420,23 +420,6 @@
 
 - (void) unsetDocumentId {
   __documentId_isset = NO;
-}
-
-- (BOOL) doubleSided {
-  return __doubleSided;
-}
-
-- (void) setDoubleSided: (BOOL) doubleSided {
-  __doubleSided = doubleSided;
-  __doubleSided_isset = YES;
-}
-
-- (BOOL) doubleSidedIsSet {
-  return __doubleSided_isset;
-}
-
-- (void) unsetDoubleSided {
-  __doubleSided_isset = NO;
 }
 
 - (BOOL) blackAndWhite {
@@ -515,6 +498,23 @@
   __multiPageConfig_isset = NO;
 }
 
+- (int) doubleSided {
+  return __doubleSided;
+}
+
+- (void) setDoubleSided: (int) doubleSided {
+  __doubleSided = doubleSided;
+  __doubleSided_isset = YES;
+}
+
+- (BOOL) doubleSidedIsSet {
+  return __doubleSided_isset;
+}
+
+- (void) unsetDoubleSided {
+  __doubleSided_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -534,14 +534,6 @@
         if (fieldType == TType_I64) {
           int64_t fieldValue = [inProtocol readI64];
           [self setDocumentId: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 2:
-        if (fieldType == TType_BOOL) {
-          BOOL fieldValue = [inProtocol readBool];
-          [self setDoubleSided: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
@@ -582,6 +574,14 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 7:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setDoubleSided: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -596,11 +596,6 @@
   if (__documentId_isset) {
     [outProtocol writeFieldBeginWithName: @"documentId" type: TType_I64 fieldID: 1];
     [outProtocol writeI64: __documentId];
-    [outProtocol writeFieldEnd];
-  }
-  if (__doubleSided_isset) {
-    [outProtocol writeFieldBeginWithName: @"doubleSided" type: TType_BOOL fieldID: 2];
-    [outProtocol writeBool: __doubleSided];
     [outProtocol writeFieldEnd];
   }
   if (__blackAndWhite_isset) {
@@ -627,6 +622,11 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__doubleSided_isset) {
+    [outProtocol writeFieldBeginWithName: @"doubleSided" type: TType_I32 fieldID: 7];
+    [outProtocol writeI32: __doubleSided];
+    [outProtocol writeFieldEnd];
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -635,8 +635,6 @@
   NSMutableString * ms = [NSMutableString stringWithString: @"PrintDocumentRequest("];
   [ms appendString: @"documentId:"];
   [ms appendFormat: @"%qi", __documentId];
-  [ms appendString: @",doubleSided:"];
-  [ms appendFormat: @"%i", __doubleSided];
   [ms appendString: @",blackAndWhite:"];
   [ms appendFormat: @"%i", __blackAndWhite];
   [ms appendString: @",numberOfCopies:"];
@@ -645,6 +643,8 @@
   [ms appendFormat: @"%@", __pageSelection];
   [ms appendString: @",multiPageConfig:"];
   [ms appendFormat: @"%@", __multiPageConfig];
+  [ms appendString: @",doubleSided:"];
+  [ms appendFormat: @"%i", __doubleSided];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
