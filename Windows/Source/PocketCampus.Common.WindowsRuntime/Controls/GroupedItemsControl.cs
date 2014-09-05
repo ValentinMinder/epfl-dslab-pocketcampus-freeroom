@@ -2,6 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 
 namespace PocketCampus.Common.Controls
@@ -20,8 +21,11 @@ namespace PocketCampus.Common.Controls
         private static readonly Brush ZoomedOutBackgroundBrush = new SolidColorBrush( new Color { A = 192, R = 0, G = 0, B = 0 } );
         private static readonly Brush ZoomedOutForegroundBrush = new SolidColorBrush( Colors.White );
         private static readonly Thickness ZoomedOutViewPadding = new Thickness( 12 );
+        private const double ZoomedInViewTopMargin = 16;
+        private const double ZoomedInViewRightMargin = 19; // will be used to ensure the scrollbar isn't over the content
+        private const double ZoomedInGroupFooterSize = 24;
 
-        #region ItemsViewSource DependencyProperty
+        #region ItemsViewSource
         public CollectionViewSource ItemsViewSource
         {
             get { return (CollectionViewSource) GetValue( ItemsViewSourceProperty ); }
@@ -43,26 +47,15 @@ namespace PocketCampus.Common.Controls
             DependencyProperty.Register( "ItemTemplate", typeof( DataTemplate ), typeof( GroupedItemsControl ), new PropertyMetadata( null ) );
         #endregion
 
-        #region GroupHeaderTemplate
-        public DataTemplate GroupHeaderTemplate
+        #region GroupKeyPath
+        public string GroupKeyPath
         {
-            get { return (DataTemplate) GetValue( GroupHeaderTemplateProperty ); }
-            set { SetValue( GroupHeaderTemplateProperty, value ); }
+            get { return (string) GetValue( GroupKeyPathProperty ); }
+            set { SetValue( GroupKeyPathProperty, value ); }
         }
 
-        public static readonly DependencyProperty GroupHeaderTemplateProperty =
-            DependencyProperty.Register( "GroupHeaderTemplate", typeof( DataTemplate ), typeof( GroupedItemsControl ), new PropertyMetadata( null ) );
-        #endregion
-
-        #region GroupItemTemplate
-        public DataTemplate GroupItemTemplate
-        {
-            get { return (DataTemplate) GetValue( GroupItemTemplateProperty ); }
-            set { SetValue( GroupItemTemplateProperty, value ); }
-        }
-
-        public static readonly DependencyProperty GroupItemTemplateProperty =
-            DependencyProperty.Register( "GroupItemTemplate", typeof( DataTemplate ), typeof( GroupedItemsControl ), new PropertyMetadata( null ) );
+        public static readonly DependencyProperty GroupKeyPathProperty =
+            DependencyProperty.Register( "GroupKeyPath", typeof( string ), typeof( GroupedItemsControl ), new PropertyMetadata( null ) );
         #endregion
 
         public GroupedItemsControl()
@@ -85,7 +78,9 @@ namespace PocketCampus.Common.Controls
             {
                 ItemContainerStyle = StretchListViewItemStyle,
                 ItemTemplate = this.ItemTemplate,
-                GroupStyle = { new GroupStyle { HidesIfEmpty = true, HeaderTemplate = this.GroupHeaderTemplate } }
+                GroupStyle = { new GroupStyle { HidesIfEmpty = true, HeaderTemplate = GetGroupHeaderTemplate( GroupKeyPath ) } },
+                // HACK: The group header template contains a top margin, so we cancel the first one here
+                Padding = new Thickness( 0, ZoomedInViewTopMargin - ZoomedInGroupFooterSize, ZoomedInViewRightMargin, 0 )
             };
             // weird way CollectionViewSources have to be used
             view.SetBinding
@@ -100,8 +95,7 @@ namespace PocketCampus.Common.Controls
         {
             var view = new ListView
             {
-                ItemTemplate = this.GroupItemTemplate,
-
+                ItemTemplate = GetGroupItemTemplate( GroupKeyPath ),
                 ItemContainerStyle = StretchListViewItemStyle,
                 Foreground = ZoomedOutForegroundBrush,
                 Background = ZoomedOutBackgroundBrush,
@@ -114,6 +108,29 @@ namespace PocketCampus.Common.Controls
                 new Binding { Source = this.ItemsViewSource, Path = new PropertyPath( "CollectionGroups" ) }
             );
             return view;
+        }
+
+        // N.B. DataTemplates cannot be created in code directly...
+
+        private static DataTemplate GetGroupHeaderTemplate( string keyPath )
+        {
+            return (DataTemplate) XamlReader.Load(
+          @"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
+                <TextBlock Text=""{Binding " + keyPath + @"}""
+                           Style=""{StaticResource GroupHeaderTextBlockStyle}""
+                           Foreground=""{ThemeResource ApplicationForegroundThemeBrush}""
+                           Margin=""0," + ZoomedInGroupFooterSize + @",0,0"" />
+            </DataTemplate>" );
+        }
+
+        private static DataTemplate GetGroupItemTemplate( string keyPath )
+        {
+            return (DataTemplate) XamlReader.Load(
+           @"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
+                <TextBlock Text=""{Binding Group." + keyPath + @"}""
+                           FontSize=""{StaticResource TextStyleExtraLargeFontSize}""
+                           Margin=""0,0,0,25"" />
+            </DataTemplate>" );
         }
     }
 }

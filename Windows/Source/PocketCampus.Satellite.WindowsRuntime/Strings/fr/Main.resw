@@ -120,6 +120,9 @@
   <data name="BeersOfTheMonth" xml:space="preserve">
     <value>Du mois</value>
   </data>
+  <data name="RefreshButtonLabel" xml:space="preserve">
+    <value>actualiser</value>
+  </data>
   <data name="ViewTitle" xml:space="preserve">
     <value>SATELLITE</value>
   </data>

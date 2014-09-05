@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BeersOfTheMonth" xml:space="preserve">
-    <value>Of the month</value>
+  <data name="BigBottle" xml:space="preserve">
+    <value>à partager</value>
   </data>
-  <data name="RefreshButtonLabel" xml:space="preserve">
-    <value>refresh</value>
+  <data name="Bottle" xml:space="preserve">
+    <value>bouteille</value>
   </data>
-  <data name="ViewTitle" xml:space="preserve">
-    <value>SATELLITE</value>
+  <data name="Draft" xml:space="preserve">
+    <value>pression</value>
   </data>
 </root>

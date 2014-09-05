@@ -24,16 +24,8 @@
             <myDesign:Design x:Key="Design" />
 
             <com:StringFormatConverter x:Key="StringFormat" />
+            <com:EnumToStringConverter x:Key="EnumToString" />
             <my:BeerMenuPartToGroupConverter x:Key="MenuPartToGroup" />
-
-            <Style x:Key="StretchItemContainerStyle" TargetType="ContentPresenter">
-                <Setter Property="HorizontalAlignment" Value="Stretch" />
-            </Style>
-
-            <Style x:Key="StretchListViewItemContainerStyle" TargetType="ListViewItem">
-                <Setter Property="HorizontalAlignment" Value="Stretch" />
-                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            </Style>
 
             <DataTemplate x:Key="BeerTemplate">
                 <Grid Margin="0,0,0,24">
@@ -77,22 +69,9 @@
                 </Grid>
             </DataTemplate>
 
-            <DataTemplate x:Key="BeerListHeaderTemplate">
-                <TextBlock Text="{Binding Key}"
-                           Style="{StaticResource GroupHeaderTextBlockStyle}"
-                           Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
-            </DataTemplate>
-
-            <DataTemplate x:Key="BeerListItemTemplate">
-                <TextBlock Text="{Binding Group.Key}"
-                           FontSize="{StaticResource TextStyleExtraLargeFontSize}"
-                           Margin="0,0,0,25" />
-            </DataTemplate>
-
             <DataTemplate x:Key="MenuPartTemplate">
                 <comControls:GroupedItemsControl ItemTemplate="{StaticResource BeerTemplate}"
-                                                 GroupHeaderTemplate="{StaticResource BeerListHeaderTemplate}"
-                                                 GroupItemTemplate="{StaticResource BeerListItemTemplate}">
+                                                 GroupKeyPath="Key">
                     <comControls:GroupedItemsControl.ItemsViewSource>
                         <CollectionViewSource Source="{Binding Value, Converter={StaticResource MenuPartToGroup}}"
                                               IsSourceGrouped="True" />
@@ -101,13 +80,29 @@
             </DataTemplate>
 
             <DataTemplate x:Key="MenuPartHeaderTemplate">
-                <TextBlock Text="{Binding Key}" />
+                <TextBlock Text="{Binding Key, Converter={StaticResource EnumToString}}"
+                           OpticalMarginAlignment="TrimSideBearings" />
             </DataTemplate>
         </ResourceDictionary>
     </Page.Resources>
 
-    <Pivot ItemsSource="{Binding BeerMenu}"
-           ItemTemplate="{StaticResource MenuPartTemplate}"
-           HeaderTemplate="{StaticResource MenuPartHeaderTemplate}"
-           Title="Satellite" />
+    <Grid>
+        <Pivot Title="{CustomResource Main.ViewTitle}"
+               ItemsSource="{Binding BeerMenu}"
+               ItemTemplate="{StaticResource MenuPartTemplate}"
+               HeaderTemplate="{StaticResource MenuPartHeaderTemplate}" />
+        
+        <comControls:LoadingAndError />
+    </Grid>
+    
+    <Page.BottomAppBar>
+        <CommandBar IsOpen="False"
+                    ClosedDisplayMode="Minimal">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Label="{CustomResource Main.RefreshButtonLabel}"
+                              Command="{Binding RefreshCommand}"
+                              Icon="Refresh" />
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

@@ -22,4 +22,19 @@ namespace PocketCampus.Common
             throw new NotImplementedException();
         }
     }
+
+    public abstract class ValueConverter<TFrom, TParameter, TTo> : IValueConverter
+    {
+        public object Convert( object value, Type targetType, object parameter, string language )
+        {
+            return Convert( (TFrom) value, (TParameter) parameter );
+        }
+
+        public object ConvertBack( object value, Type targetType, object parameter, string language )
+        {
+            throw new NotSupportedException();
+        }
+
+        public abstract TTo Convert( TFrom value, TParameter parameter );
+    }
 }

@@ -117,13 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BeersOfTheMonth" xml:space="preserve">
-    <value>Of the month</value>
+  <data name="Error.Text" xml:space="preserve">
+    <value>Erreur.
+Réessayez plus tard.</value>
   </data>
-  <data name="RefreshButtonLabel" xml:space="preserve">
-    <value>refresh</value>
+  <data name="Loading.Text" xml:space="preserve">
+    <value>Chargement en cours...</value>
   </data>
-  <data name="ViewTitle" xml:space="preserve">
-    <value>SATELLITE</value>
+  <data name="NetworkError.Text" xml:space="preserve">
+    <value>Erreur.
+Vérifiez votre connexion à Internet.</value>
+  </data>
+  <data name="StatusBarLoading" xml:space="preserve">
+    <value>chargement en cours...</value>
   </data>
 </root>

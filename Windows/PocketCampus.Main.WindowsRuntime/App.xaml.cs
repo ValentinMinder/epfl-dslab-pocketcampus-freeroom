@@ -9,6 +9,7 @@ using ThinMvvm.WindowsRuntime;
 using Windows.ApplicationModel.Activation;
 using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Resources;
 
 namespace PocketCampus.Main
 {
@@ -45,6 +46,8 @@ namespace PocketCampus.Main
                 e.Handled = true;
                 _navigationService.NavigateBack();
             };
+
+            CustomXamlResourceLoader.Current = new MyXamlResourceLoader();
         }
 
         protected override async void Launch( LaunchActivatedEventArgs e )
@@ -52,6 +55,8 @@ namespace PocketCampus.Main
             // TODO launch from a tile
             // TODO launch from protocol
 
+            // must be done here, after window.current.content is set
+            LocalizationHelper.Initialize();
 
             await AppInitializer.InitializeAsync( _pluginLoader, _navigationService );
 
