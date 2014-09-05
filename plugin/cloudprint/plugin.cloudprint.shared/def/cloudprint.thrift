@@ -34,8 +34,9 @@ struct CloudPrintMultiPageConfig {
 }
 
 enum CloudPrintDoubleSidedConfig {
-    LONG_EDGE,
-    SHORT_EDGE
+    //starting from 1 such that can differentiate with not set in Objective-C
+    LONG_EDGE = 1,
+    SHORT_EDGE = 2
 }
 
 struct CloudPrintPageRange {
