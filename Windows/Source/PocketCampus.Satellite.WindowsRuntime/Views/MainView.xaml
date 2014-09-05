@@ -87,12 +87,22 @@
     </Page.Resources>
 
     <Grid>
-        <Pivot Title="{CustomResource Main.ViewTitle}"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+            <TextBlock Text="{CustomResource Main.ViewTitle}"
+                       Style="{StaticResource AppHeaderTextBlockStyle}" />
+        </Border>
+        
+        <Pivot Grid.Row="1" Title="{CustomResource Main.ViewTitle}"
                ItemsSource="{Binding BeerMenu}"
                ItemTemplate="{StaticResource MenuPartTemplate}"
                HeaderTemplate="{StaticResource MenuPartHeaderTemplate}" />
         
-        <comControls:LoadingAndError />
+        <comControls:LoadingAndError Grid.Row="1" />
     </Grid>
     
     <Page.BottomAppBar>
