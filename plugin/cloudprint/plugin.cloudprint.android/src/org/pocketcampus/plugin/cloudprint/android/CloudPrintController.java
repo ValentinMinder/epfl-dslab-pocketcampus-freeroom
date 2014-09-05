@@ -11,6 +11,11 @@ import org.pocketcampus.plugin.cloudprint.android.iface.ICloudPrintController;
 import org.pocketcampus.plugin.cloudprint.android.iface.ICloudPrintView;
 import org.pocketcampus.plugin.cloudprint.android.req.PrintFileRequest;
 import org.pocketcampus.plugin.cloudprint.android.req.UploadFileRequest;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintDoubleSidedConfig;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintMultiPageConfig;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintMultiPageLayout;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintNbPagesPerSheet;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintPageRange;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintService.Client;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintService.Iface;
 import org.pocketcampus.plugin.cloudprint.shared.PrintDocumentRequest;
@@ -125,8 +130,10 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 	
 
 	public void printFileJob(ICloudPrintView caller, long documentId) {
-		PrintDocumentRequest req = new PrintDocumentRequest(documentId, true, true, 1);
-		//req.setPageSelection(new CloudPrintPageRange(1, 10));
+		PrintDocumentRequest req = new PrintDocumentRequest(documentId, true, 1);
+		req.setPageSelection(new CloudPrintPageRange(1, 4));
+		req.setMultiPageConfig(new CloudPrintMultiPageConfig(CloudPrintNbPagesPerSheet.FOUR, CloudPrintMultiPageLayout.LEFT_TO_RIGHT_TOP_TO_BOTTOM));
+		req.setDoubleSided(CloudPrintDoubleSidedConfig.LONG_EDGE);
 		new PrintFileRequest(caller).start(this, mClient, req);
 	}
 	
