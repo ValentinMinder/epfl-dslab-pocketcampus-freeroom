@@ -117,7 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PluginName" xml:space="preserve">
-    <value>Satellite</value>
+  <data name="About" xml:space="preserve">
+    <value>about...</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>settings</value>
+  </data>
+  <data name="ViewTitle" xml:space="preserve">
+    <value>PocketCampus EPFL</value>
   </data>
 </root>

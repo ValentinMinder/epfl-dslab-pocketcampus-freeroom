@@ -11,6 +11,11 @@ namespace PocketCampus.Authentication
             get { throw new NotImplementedException(); }
         }
 
+        public object Icon
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         public void Initialize( IWindowsRuntimeNavigationService navigationService )
         {
             // TODO

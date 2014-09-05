@@ -31,20 +31,17 @@ namespace PocketCampus.Main.Services.Design
             } );
         }
 
-        // This also "implements" IWindowsPhonePlugin for the WP designer
         private sealed class DesignPlugin : IPlugin
         {
             public string Id { get; set; }
             public bool IsVisible { get; set; }
-            public string Name { get; set; }
+            public string Name { get; set; } // for the designer
             public bool RequiresAuthentication { get; set; }
-            public string IconKey { get; set; }
 
             public DesignPlugin( string name )
             {
                 Id = Name = name;
                 IsVisible = true;
-                IconKey = name + "Icon";
             }
 
             public void Initialize( INavigationService navigationService ) { }

@@ -13,6 +13,11 @@ namespace PocketCampus.Common
         string Name { get; }
 
         /// <summary>
+        /// Gets the plugin's icon.
+        /// </summary>
+        object Icon { get; }
+
+        /// <summary>
         /// Performs the Windows Runtime-specific initialization for the plugin.
         /// </summary>
         void Initialize( IWindowsRuntimeNavigationService navigationService );

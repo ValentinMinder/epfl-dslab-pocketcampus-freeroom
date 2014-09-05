@@ -154,6 +154,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <PRIResource Include="Strings\fr\Main.resw" />
+    <PRIResource Include="Strings\en\Main.resw" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Source\Authentication\PocketCampus.Authentication.csproj">

@@ -10,8 +10,24 @@
         <DataTemplate x:Key="PluginTemplate">
             <Button Command="{Binding DataContext.OpenPluginCommand, ElementName=Root}"
                     CommandParameter="{Binding}"
-                    Margin="12">
-                <TextBlock Text="{Binding Name}" />
+                    Style="{StaticResource TileButton}"
+                    Margin="0,0,17,17"
+                    Width="104"
+                    Height="104">
+                <Grid>
+                    <Viewbox Stretch="Uniform"
+                             Margin="0,-10,0,0">
+                        <ContentControl Template="{Binding Icon}" />
+                    </Viewbox>
+                    
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding Name}"
+                               FontSize="{StaticResource TextStyleMediumFontSize}"
+                               FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                               VerticalAlignment="Bottom"
+                               Margin="7,0,0,4" />
+
+                </Grid>
             </Button>
         </DataTemplate>
     </Page.Resources>
@@ -23,17 +39,18 @@
         </Grid.RowDefinitions>
         
         <Border Background="{StaticResource AppHeaderBackgroundBrush}">
-            <Viewbox StretchDirection="DownOnly">
-                <TextBlock Text="PocketCampus EPFL"
+            <Viewbox StretchDirection="DownOnly"
+                     Margin="19,5">
+                <TextBlock Text="{CustomResource Main.ViewTitle}"
                            Style="{StaticResource HeaderTextBlockStyle}"
-                           Foreground="{StaticResource AppHeaderForegroundBrush}"
-                           Margin="12,4"/>
+                           Foreground="{StaticResource AppHeaderForegroundBrush}" />
             </Viewbox>
         </Border>
         
         <GridView Grid.Row="1"
                   ItemsSource="{Binding Plugins}"
-                  ItemTemplate="{StaticResource PluginTemplate}" />
+                  ItemTemplate="{StaticResource PluginTemplate}"
+                  Margin="19,19,2,0"/>
     </Grid>
     
     <Page.BottomAppBar>
@@ -42,11 +59,11 @@
             <CommandBar.PrimaryCommands>
                 <AppBarButton Command="{Binding OpenSettingsPageCommand}"
                               Icon="Setting"
-                              Label="settings" />
+                              Label="{CustomResource Main.Settings}" />
             </CommandBar.PrimaryCommands>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Command="{Binding OpenAboutPageCommand}"
-                              Label="about..." />
+                              Label="{CustomResource Main.About}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
