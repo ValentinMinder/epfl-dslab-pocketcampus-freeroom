@@ -28,7 +28,7 @@ public class StyledDialog extends Dialog {
 
 	public static class Builder {
 		private Context mContext;
-		private String mTitle;
+		private CharSequence mTitle;
 		private CharSequence mMessage;
 		private View mContentView;
 		private Integer mContentResId;
@@ -70,7 +70,7 @@ public class StyledDialog extends Dialog {
 		 * @param title
 		 * @return
 		 */
-		public Builder setTitle(String title) {
+		public Builder setTitle(CharSequence title) {
 			mTitle = title;
 			return this;
 		}
