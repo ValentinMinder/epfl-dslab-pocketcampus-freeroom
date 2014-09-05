@@ -9,17 +9,46 @@
     <SolidColorBrush x:Key="AppHeaderForegroundBrush"
                      Color="White" />
     
-    <Style x:Key="AppHeaderTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleTextBlockStyle}">
+    <!-- Headers -->
+    <Style x:Key="AppHeaderTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource AppHeaderForegroundBrush}" />
-        <Setter Property="Margin" Value="20,12,0,0" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleMediumFontSize}" />
+        <Setter Property="Margin" Value="19,5,0,0" />
+    </Style>
+    
+    <!-- Titles -->
+    <Style x:Key="AppTitleTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource AppHeaderForegroundBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleExtraLargePlusFontSize}" />
+        <Setter Property="Margin" Value="19,0,0,5" />
+    </Style>
+    
+    <!-- Subtle text -->
+    <Style x:Key="AppSubtleTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource PhoneMidBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleMediumFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
+    </Style>
+
+    <!-- Large text -->
+    <Style x:Key="AppLargeTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleLargeFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
+    </Style>
+    
+    <!-- Group header text -->
+    <Style x:Key="AppGroupHeaderTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource PhoneMidBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleLargeFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
     </Style>
 
     <!-- Pivot style fix, inspired from http://modernography.wordpress.com/2014/07/31/fixing-pivot-control-layout-issues/
-         No more title, since we need it outside of the "loading..."
-         Header and content are aligned to the pixel, don't change a thing! -->
+         No more title, since we need it outside of the "loading..." -->
     <x:Int32 x:Key="PivotHeaderItemCharacterSpacing">0</x:Int32>
-    <Thickness x:Key="PivotItemMargin">20,0,0,0</Thickness>
-    <Thickness x:Key="PivotHeaderItemMargin">20,-6.5,5,0</Thickness>
+    <Thickness x:Key="PivotItemMargin">19,0,0,0</Thickness>
+    <Thickness x:Key="PivotHeaderItemMargin">19,-6.5,5,0</Thickness>
     <Style TargetType="Pivot">
         <Setter Property="Template">
             <Setter.Value>

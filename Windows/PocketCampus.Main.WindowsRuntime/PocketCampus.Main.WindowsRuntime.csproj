@@ -84,7 +84,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyXamlResourceLoader.cs" />
+    <Compile Include="LocalizingResourceLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BrowserService.cs" />
     <Compile Include="Services\CredentialsStorage.cs" />
@@ -154,6 +154,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <PRIResource Include="Strings\fr\Resources.resw" />
+    <PRIResource Include="Strings\en\Resources.resw" />
+    <PRIResource Include="Strings\fr\About.resw" />
+    <PRIResource Include="Strings\en\About.resw" />
     <PRIResource Include="Strings\fr\Main.resw" />
     <PRIResource Include="Strings\en\Main.resw" />
   </ItemGroup>

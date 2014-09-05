@@ -47,7 +47,7 @@ namespace PocketCampus.Main
                 _navigationService.NavigateBack();
             };
 
-            CustomXamlResourceLoader.Current = new MyXamlResourceLoader();
+            CustomXamlResourceLoader.Current = new LocalizingResourceLoader();
         }
 
         protected override async void Launch( LaunchActivatedEventArgs e )

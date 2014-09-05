@@ -26,6 +26,12 @@ namespace PocketCampus.Common
         private static void Frame_Navigating( object sender, NavigatingCancelEventArgs e )
         {
             _currentAssemblyNamePrefix = e.SourcePageType.GetTypeInfo().Assembly.GetName().Name + "/";
+
+            // I'm not sure why, but this is required; GetForViewIndepenentUse("PocketCampus.Main.WindowsRuntime/...") throws.
+            if ( _currentAssemblyNamePrefix == "PocketCampus.Main.WindowsRuntime/" )
+            {
+                _currentAssemblyNamePrefix = "";
+            }
         }
     }
 }

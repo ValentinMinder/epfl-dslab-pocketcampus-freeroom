@@ -15,6 +15,7 @@ namespace PocketCampus.Common
         /// <summary>
         /// Gets the plugin's icon.
         /// </summary>
+        // TODO: Find a clean way to represent it, and re-generate all icons to the right sizes (also for the live tiles on the start screen)
         object Icon { get; }
 
         /// <summary>

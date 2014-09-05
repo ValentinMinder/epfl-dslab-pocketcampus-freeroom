@@ -1,11 +1,104 @@
 ﻿<Page x:Class="PocketCampus.Main.Views.AboutView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:i="using:Microsoft.Xaml.Interactivity"
+      xmlns:com="using:PocketCampus.Common"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d"
-      d:DataContext="{Binding About, Source={StaticResource Design}}">
-    <Grid>
-        <!-- TODO -->
-    </Grid>
+      d:DataContext="{Binding About, Source={StaticResource Design}}"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <i:Interaction.Behaviors>
+        <com:StatusBarBehavior UseDefaultValues="True" />
+    </i:Interaction.Behaviors>
+    
+    <!-- Main grid -->
+    <StackPanel>
+        <!-- Page title -->
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+            <StackPanel>
+                <TextBlock Text="{CustomResource PagesHeader}"
+                           Style="{StaticResource AppHeaderTextBlockStyle}" />
+
+                <TextBlock Text="{CustomResource About.ViewTitle}"
+                           Style="{StaticResource AppTitleTextBlockStyle}" />
+            </StackPanel>
+        </Border>
+
+        <TextBlock Style="{StaticResource AppSubtleTextBlockStyle}"
+                   Margin="19,5">
+            <Run Text="{CustomResource About.AppVersion}" />
+            <Run Text="{Binding AppVersion}" />
+        </TextBlock>
+
+        <!-- Developers -->
+        <StackPanel Margin="19,10">
+            <TextBlock Text="{CustomResource About.DevelopersHeader}"
+                       Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
+            
+            <TextBlock Text="{CustomResource About.Developers}"
+                       Style="{StaticResource AppLargeTextBlockStyle}" />
+        </StackPanel>
+
+        <!-- Website -->
+        <StackPanel Margin="19,10">
+            <TextBlock Text="{CustomResource About.WebsiteHeader}"
+                       Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
+
+            <HyperlinkButton Command="{Binding BrowseUrlCommand}"
+                             CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}">
+                <TextBlock Style="{StaticResource AppLargeTextBlockStyle}">
+                    <Underline>
+                        <Run Text="{CustomResource About.Website}" />
+                    </Underline>
+                </TextBlock>
+            </HyperlinkButton>
+        </StackPanel>
+
+        <!-- Contact email -->
+        <StackPanel Margin="19,10">
+            <TextBlock Text="{CustomResource About.ContactHeader}"
+                       Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
+
+            <HyperlinkButton Command="{Binding SendEmailCommand}"
+                             CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}">
+                <TextBlock Style="{StaticResource AppLargeTextBlockStyle}">
+                    <Underline>
+                        <Run Text="{CustomResource About.Contact}" />
+                    </Underline>
+                </TextBlock>
+            </HyperlinkButton>
+        </StackPanel>
+
+        <!-- Support email -->
+        <StackPanel Margin="19,10">
+            <TextBlock Text="{CustomResource About.SupportHeader}"
+                       Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
+
+            <HyperlinkButton Command="{Binding SendEmailCommand}"
+                             CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}">
+                <TextBlock Style="{StaticResource AppLargeTextBlockStyle}">
+                    <Underline>
+                        <Run Text="{CustomResource About.Support}" />
+                    </Underline>
+                </TextBlock>
+            </HyperlinkButton>
+        </StackPanel>
+    </StackPanel>
+
+    <!-- App bar -->
+    <Page.BottomAppBar>
+        <CommandBar IsOpen="False"
+                    ClosedDisplayMode="Minimal">
+            <CommandBar.SecondaryCommands>
+                <!-- "Rate the app" menu item -->
+                <AppBarButton Command="{Binding RateAppCommand}"
+                              Label="{CustomResource About.RateAppButtonLabel}" />
+
+                <!-- "Privacy policy" menu item -->
+                <AppBarButton Click="AppBarButton_Click"
+                              Label="{CustomResource About.PrivacyPolicyButtonLabel}" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>
