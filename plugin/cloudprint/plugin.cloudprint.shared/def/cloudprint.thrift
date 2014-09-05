@@ -7,7 +7,6 @@ enum CloudPrintStatusCode {
 }
 
 enum CloudPrintNbPagesPerSheet {
-    ONE = 1,
     TWO = 2,
     FOUR = 4,
     SIX = 6,
@@ -34,6 +33,11 @@ struct CloudPrintMultiPageConfig {
     2: required CloudPrintMultiPageLayout layout;
 }
 
+enum CloudPrintDoubleSidedConfig {
+    LONG_EDGE,
+    SHORT_EDGE
+}
+
 struct CloudPrintPageRange {
     1: required i32 pageFrom;
     2: required i32 pageTo;
@@ -41,11 +45,11 @@ struct CloudPrintPageRange {
 
 struct PrintDocumentRequest {
     1: required i64 documentId;
-    2: required bool doubleSided;
     3: required bool blackAndWhite;
     4: required i32 numberOfCopies;
     5: optional CloudPrintPageRange pageSelection;
     6: optional CloudPrintMultiPageConfig multiPageConfig;
+    7: optional CloudPrintDoubleSidedConfig doubleSided;
 }
 
 struct PrintDocumentResponse {
