@@ -49,16 +49,16 @@ namespace PocketCampus.Common.Controls
         {
             switch ( (CacheStatus) ( (dynamic) DataContext ).CacheStatus )
             {
-                case CacheStatus.NoCache:
+                //case CacheStatus.NoCache:
                 case CacheStatus.OptedOut:
                 case CacheStatus.Used:
                 case CacheStatus.Unused:
                     RemoveLoadingTray();
                     break;
 
-                case CacheStatus.Loading:
-                    Visibility = Visibility.Visible;
-                    break;
+                //case CacheStatus.Loading:
+                //    Visibility = Visibility.Visible;
+                //    break;
 
                 case CacheStatus.UsedTemporarily:
                     Visibility = Visibility.Collapsed;

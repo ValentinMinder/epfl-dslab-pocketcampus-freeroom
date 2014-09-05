@@ -9,13 +9,20 @@ namespace PocketCampus.Satellite
 {
     public sealed class BeerMenuPartToGroupConverter : ValueConverter<BeerMenuPart, IEnumerable<IGrouping<string, Beer>>>
     {
-        private static readonly string OfTheMonth = ResourceLoader.GetForViewIndependentUse( "PocketCampus.Satellite.WindowsRuntime/Main" ).GetString( "BeersOfTheMonth" );
+        private static readonly string OfTheMonthText =
+            ResourceLoader.GetForViewIndependentUse( "PocketCampus.Satellite.WindowsRuntime/Main" ).GetString( "BeersOfTheMonth" );
 
         public override IEnumerable<IGrouping<string, Beer>> Convert( BeerMenuPart value )
         {
             var groups = new List<IGrouping<string, Beer>>();
-            groups.Add( new Group( OfTheMonth, value.BeersOfTheMonth ) );
+
+            if ( value.BeersOfTheMonth.Any() )
+            {
+                groups.Add( new Group( OfTheMonthText, value.BeersOfTheMonth ) );
+            }
+
             groups.AddRange( value.Beers.Select( p => new Group( p.Key, p.Value ) ) );
+
             return groups;
         }
 
