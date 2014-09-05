@@ -23,7 +23,9 @@ namespace PocketCampus.Common
     {
         public override Visibility Convert( Enum value, string parameter )
         {
-            return value == Enum.Parse( value.GetType(), parameter.ToString() ) ? Visibility.Visible : Visibility.Collapsed;
+            // for some reason, == returns false on equal enums...
+            // TODO: Investigate.
+            return object.Equals( value, Enum.Parse( value.GetType(), parameter ) ) ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

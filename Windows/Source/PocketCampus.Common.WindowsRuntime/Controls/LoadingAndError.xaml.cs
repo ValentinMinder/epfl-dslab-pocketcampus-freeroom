@@ -20,27 +20,9 @@ namespace PocketCampus.Common.Controls
     /// </summary>
     public partial class LoadingAndError : UserControl
     {
-        private static readonly ResourceLoader _resources = ResourceLoader.GetForViewIndependentUse( "PocketCampus.Common.WindowsRuntime/LoadingAndError" );
-
-        private static readonly string StatusBarLoadingText = _resources.GetString( "StatusBarLoading" );
-
-#warning HACK... figure out how to do this properly
-
-        public string LoadingText
-        {
-            get { return _resources.GetString( "Loading/Text" ); }
-        }
-
-        public string ErrorText
-        {
-            get { return _resources.GetString( "Error/Text" ); }
-        }
-
-        public string NetworkErrorText
-        {
-            get { return _resources.GetString( "NetworkError/Text" ); }
-        }
-
+        private static readonly string StatusBarLoadingText =
+            ResourceLoader.GetForViewIndependentUse( "PocketCampus.Common.WindowsRuntime/LoadingAndError" )
+                          .GetString( "StatusBarLoading" );
 
         public LoadingAndError()
         {
