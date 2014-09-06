@@ -117,39 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AuthenticationViewTitle" xml:space="preserve">
-    <value>connexion</value>
-  </data>
-  <data name="AuthenticationPassword" xml:space="preserve">
-    <value>mot de passe</value>
-  </data>
-  <data name="AuthenticationUserName" xml:space="preserve">
-    <value>nom d'utilisateur GASPAR</value>
-  </data>
-  <data name="AuthenticationAttemptStatus_Error" xml:space="preserve">
-    <value>Une erreur est survenue lors de la connexion à Tequila. Veuillez réessayer.</value>
-  </data>
-  <data name="AuthenticationAttemptStatus_NotAuthenticated" xml:space="preserve">
-    <value />
-    <comment>Must be empty</comment>
-  </data>
-  <data name="AuthenticationAttemptStatus_WrongCredentials" xml:space="preserve">
-    <value>Vos identifiants ont été refusés par Tequila. Veuillez réessayer.</value>
-  </data>
   <data name="Authenticating" xml:space="preserve">
-    <value>Connexion en cours...</value>
+    <value>Loading...</value>
+    <comment>Progress bar label</comment>
   </data>
-  <data name="AuthenticationSaveCredentials" xml:space="preserve">
-    <value>sauvegarder le mot de passe</value>
+  <data name="Error" xml:space="preserve">
+    <value>An error occurred.
+Please try again later.</value>
+    <comment>Sentence</comment>
   </data>
-  <data name="AuthenticationInfo" xml:space="preserve">
-    <value>Votre mot de passe est envoyé directement aux serveurs de l'EPFL de manière sécurisée.
-Si vous choisissez de le sauvegarder, il sera chiffré.</value>
+  <data name="NotRequested" xml:space="preserve">
+    <value />
+    <comment>Empty string</comment>
   </data>
-  <data name="LogIn" xml:space="preserve">
-    <value>se connecter</value>
+  <data name="Success" xml:space="preserve">
+    <value />
+    <comment>Empty string</comment>
   </data>
-  <data name="PagesHeader" xml:space="preserve">
-    <value>POCKETCAMPUS EPFL</value>
+  <data name="WrongCredentials" xml:space="preserve">
+    <value>These credentials are invalid.</value>
+    <comment>Sentence</comment>
   </data>
 </root>

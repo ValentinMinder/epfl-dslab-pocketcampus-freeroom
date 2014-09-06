@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Windows.UI.Xaml;
 
 namespace PocketCampus.Common
@@ -15,7 +16,19 @@ namespace PocketCampus.Common
     {
         public override string Convert( Enum value )
         {
-            return LocalizationHelper.GetLoaderForCurrentAssembly( value.GetType().Name ).GetString( value.ToString() );
+            string enumName = value.GetType().Name;
+            string val = value.ToString();
+
+            try
+            {
+                return LocalizationHelper.GetLoaderForCurrentAssembly( enumName ).GetString( val );
+            }
+            catch
+            {
+                // Happens when a binding in page A is updated after a navigation to page B.
+                Debug.WriteLine( "EnumToStringConverter: " + enumName + "." + val + " not found." );
+                return "";
+            }
         }
     }
 

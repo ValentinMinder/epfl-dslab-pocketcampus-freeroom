@@ -53,7 +53,7 @@ namespace PocketCampus.Main.Services
             {
                 var tokenResponse = await _authenticationService.GetTokenAsync();
 
-                if ( tokenResponse.Status == AuthenticationStatus.Success
+                if ( tokenResponse.Status == ResponseStatus.Success
                   && await _authenticator.AuthenticateAsync( _credentials.UserName, _credentials.Password, tokenResponse.Token ) )
                 {
                     var sessionRequest = new SessionRequest
@@ -63,7 +63,7 @@ namespace PocketCampus.Main.Services
                     };
                     var sessionResponse = await _authenticationService.GetSessionAsync( sessionRequest );
 
-                    if ( sessionResponse.Status == AuthenticationStatus.Success )
+                    if ( sessionResponse.Status == ResponseStatus.Success )
                     {
                         _mainSettings.Session = sessionResponse.Session;
                     }
@@ -115,7 +115,7 @@ namespace PocketCampus.Main.Services
         {
             var authRequest = new AuthenticationRequest( () => _navigationService.NavigateTo<TViewModel>() );
             _navigationService.RemoveCurrentFromBackStack();
-            _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
+            _navigationService.NavigateTo<MainViewModel, AuthenticationRequest>( authRequest );
         }
 
 

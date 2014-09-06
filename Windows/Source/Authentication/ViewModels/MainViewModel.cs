@@ -14,10 +14,10 @@ using ThinMvvm.Logging;
 namespace PocketCampus.Authentication.ViewModels
 {
     /// <summary>
-    /// The ViewModel that authenticates the user.
+    /// The main (and only) ViewModel.
     /// </summary>
     [LogId( "/authentication" )]
-    public sealed class AuthenticationViewModel : ViewModel<AuthenticationRequest>
+    public sealed class MainViewModel : ViewModel<AuthenticationRequest>
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly IAuthenticator _authenticator;
@@ -31,7 +31,7 @@ namespace PocketCampus.Authentication.ViewModels
         private string _password;
         private bool _saveCredentials;
         private bool _isAuthenticating;
-        private AuthenticationAttemptStatus _status;
+        private AuthenticationStatus _authenticationStatus;
 
         /// <summary>
         /// Gets or sets the user name (GASPAR identifier or SCIPER number).
@@ -61,21 +61,12 @@ namespace PocketCampus.Authentication.ViewModels
         }
 
         /// <summary>
-        /// Gets a value indicating whether authentication is in progress.
-        /// </summary>
-        public bool IsAuthenticating
-        {
-            get { return _isAuthenticating; }
-            private set { SetProperty( ref _isAuthenticating, value ); }
-        }
-
-        /// <summary>
         /// Gets the authentication attempt status.
         /// </summary>
-        public AuthenticationAttemptStatus Status
+        public AuthenticationStatus AuthenticationStatus
         {
-            get { return _status; }
-            private set { SetProperty( ref _status, value ); }
+            get { return _authenticationStatus; }
+            private set { SetProperty( ref _authenticationStatus, value ); }
         }
 
         /// <summary>
@@ -86,17 +77,17 @@ namespace PocketCampus.Authentication.ViewModels
         [LogValueConverter( typeof( SavePasswordLogValueConverter ) )]
         public AsyncCommand AuthenticateCommand
         {
-            get { return this.GetAsyncCommand( AuthenticateAsync, () => !IsAuthenticating ); }
+            get { return this.GetAsyncCommand( AuthenticateAsync, () => AuthenticationStatus != AuthenticationStatus.Authenticating ); }
         }
 
 
         /// <summary>
-        /// Creates a new AuthenticationViewModel.
+        /// Creates a new MainViewModel.
         /// </summary>
-        public AuthenticationViewModel( IAuthenticationService authenticationService, IAuthenticator authenticator,
-                                        IServerAccess serverAccess, INavigationService navigationService,
-                                        IServerSettings settings, ICredentialsStorage credentials,
-                                        AuthenticationRequest request )
+        public MainViewModel( IAuthenticationService authenticationService, IAuthenticator authenticator,
+                              IServerAccess serverAccess, INavigationService navigationService,
+                              IServerSettings settings, ICredentialsStorage credentials,
+                              AuthenticationRequest request )
         {
             _authenticationService = authenticationService;
             _authenticator = authenticator;
@@ -116,12 +107,12 @@ namespace PocketCampus.Authentication.ViewModels
         private async Task AuthenticateAsync()
         {
             bool authOk = false;
-            IsAuthenticating = true;
+            AuthenticationStatus = AuthenticationStatus.Authenticating;
 
             try
             {
                 var tokenResponse = await _authenticationService.GetTokenAsync();
-                if ( tokenResponse.Status != AuthenticationStatus.Success )
+                if ( tokenResponse.Status != ResponseStatus.Success )
                 {
                     throw new Exception( "An error occurred while getting a token." );
                 }
@@ -134,7 +125,7 @@ namespace PocketCampus.Authentication.ViewModels
                         RememberMe = SaveCredentials
                     };
                     var sessionResponse = await _authenticationService.GetSessionAsync( sessionRequest );
-                    if ( sessionResponse.Status != AuthenticationStatus.Success )
+                    if ( sessionResponse.Status != ResponseStatus.Success )
                     {
                         throw new Exception( "An error occurred while getting a session." );
                     }
@@ -147,16 +138,18 @@ namespace PocketCampus.Authentication.ViewModels
                 }
                 else
                 {
-                    Status = AuthenticationAttemptStatus.WrongCredentials;
+                    AuthenticationStatus = AuthenticationStatus.WrongCredentials;
                 }
             }
             catch
             {
-                Status = AuthenticationAttemptStatus.Error;
+                AuthenticationStatus = AuthenticationStatus.Error;
             }
 
             if ( authOk )
             {
+                AuthenticationStatus = AuthenticationStatus.Success;
+
                 if ( _request.SuccessAction == null )
                 {
                     _navigationService.NavigateBack();
@@ -167,8 +160,6 @@ namespace PocketCampus.Authentication.ViewModels
                     _request.SuccessAction();
                 }
             }
-
-            IsAuthenticating = false;
         }
 
 

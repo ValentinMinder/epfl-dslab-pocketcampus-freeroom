@@ -5,14 +5,24 @@
 namespace PocketCampus.Authentication
 {
     /// <summary>
-    /// Display-friendly values for the authentication attempt statuses.
+    /// Display-friendly values for the authentication statuses.
     /// </summary>
-    public enum AuthenticationAttemptStatus
+    public enum AuthenticationStatus
     {
         /// <summary>
         /// No authentication has been attempted.
         /// </summary>
-        NotAuthenticated,
+        NotRequested,
+
+        /// <summary>
+        /// Authentication is in progress.
+        /// </summary>
+        Authenticating,
+
+        /// <summary>
+        /// Authentication was successful.
+        /// </summary>
+        Success,
 
         /// <summary>
         /// The authentication server did not accept the provided credentials.

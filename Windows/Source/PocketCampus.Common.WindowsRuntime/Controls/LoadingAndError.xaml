@@ -7,15 +7,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:my="using:PocketCampus.Common">
     <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
         <my:EnumToVisibilityConverter x:Key="EnumToVisibility" />
-        
-        <Style x:Key="TextCenterStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
-            <Setter Property="FontSize" Value="{StaticResource TextStyleExtraLargeFontSize}" />
-            <Setter Property="TextWrapping" Value="WrapWholeWords" />
-        </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
     
     <Grid>
@@ -31,7 +29,7 @@
             
             <!-- Text -->
             <TextBlock Text="{CustomResource Common.LoadingAndError.Loading}"
-                       Style="{StaticResource TextCenterStyle}"
+                       Style="{StaticResource AppCenterTextBlockStyle}"
                        VerticalAlignment="Bottom" />
 
             <!-- Progress bar -->
@@ -46,7 +44,7 @@
                                      ConverterParameter=Error}"
                 Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <TextBlock Text="{CustomResource Common.LoadingAndError.Error}"
-                       Style="{StaticResource TextCenterStyle}" />
+                       Style="{StaticResource AppCenterTextBlockStyle}" />
         </Border>
 
         <!-- Network error message -->
@@ -55,7 +53,7 @@
                                      ConverterParameter=NetworkError}"
                 Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <TextBlock Text="{CustomResource Common.LoadingAndError.NetworkError}"
-                       Style="{StaticResource TextCenterStyle}" />
+                       Style="{StaticResource AppCenterTextBlockStyle}" />
         </Border>
     </Grid>
 </UserControl>

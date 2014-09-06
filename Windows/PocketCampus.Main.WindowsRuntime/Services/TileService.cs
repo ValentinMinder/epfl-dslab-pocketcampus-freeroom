@@ -21,7 +21,6 @@ namespace PocketCampus.Main.Services
         public void SetTileColoring( bool useColor )
         {
             // TODO
-            throw new NotImplementedException();
         }
     }
 }

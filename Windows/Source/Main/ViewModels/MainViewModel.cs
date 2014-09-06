@@ -8,12 +8,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Authentication;
-using PocketCampus.Authentication.ViewModels;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
 using ThinMvvm;
 using ThinMvvm.Logging;
+using AuthenticationViewModel = PocketCampus.Authentication.ViewModels.MainViewModel;
 
 namespace PocketCampus.Main.ViewModels
 {

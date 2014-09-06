@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PocketCampus.Authentication</RootNamespace>
     <AssemblyName>PocketCampus.Authentication</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
+    <DefaultLanguage>en</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
@@ -43,11 +43,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthenticationAttemptStatus.cs" />
+    <Compile Include="AuthenticationStatus.cs" />
     <Compile Include="AuthenticationRequest.cs" />
     <Compile Include="Models\LogoutRequest.cs" />
     <Compile Include="Models\LogoutResponse.cs" />
-    <Compile Include="Models\AuthenticationStatus.cs" />
+    <Compile Include="Models\ResponseStatus.cs" />
     <Compile Include="Models\SessionRequest.cs" />
     <Compile Include="Models\SessionResponse.cs" />
     <Compile Include="Models\TokenResponse.cs" />
@@ -57,7 +57,7 @@
     <Compile Include="Services\Design\DesignAuthenticationService.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\TequilaAuthenticator.cs" />
-    <Compile Include="ViewModels\AuthenticationViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Design\Design.cs" />
   </ItemGroup>
   <ItemGroup>

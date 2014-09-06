@@ -26,7 +26,7 @@ namespace PocketCampus.Authentication
         /// </summary>
         public void Initialize( ThinMvvm.WindowsPhone.IWindowsPhoneNavigationService navigationService )
         {
-            navigationService.Bind<AuthenticationViewModel>( "/PocketCampus.Authentication.WindowsPhone;component/Views/AuthenticationView.xaml" );
+            navigationService.Bind<MainViewModel>( "/PocketCampus.Authentication.WindowsPhone;component/Views/AuthenticationView.xaml" );
         }
     }
 }

@@ -10,6 +10,6 @@ namespace PocketCampus.Authentication.Models
     public sealed class LogoutResponse
     {
         [ThriftField( 1, true, "statusCode" )]
-        public AuthenticationStatus Status { get; set; }
+        public ResponseStatus Status { get; set; }
     }
 }

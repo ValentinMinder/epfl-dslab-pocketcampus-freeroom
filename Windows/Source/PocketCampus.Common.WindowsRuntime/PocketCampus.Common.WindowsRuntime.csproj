@@ -51,6 +51,7 @@
     <Compile Include="LocalizationHelper.cs" />
     <Compile Include="StatusBarBehavior.cs" />
     <Compile Include="Converters.cs" />
+    <Compile Include="TextBoxEx.cs" />
     <Compile Include="ValueConverter.cs" />
     <Compile Include="IWindowsRuntimePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

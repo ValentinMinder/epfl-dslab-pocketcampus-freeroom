@@ -52,6 +52,13 @@
         <Setter Property="FontSize" Value="{StaticResource TextStyleLargeFontSize}" />
         <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
     </Style>
+    
+    <!-- Large centered text -->
+    <Style x:Key="AppCenterTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource AppLargeTextBlockStyle}">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextWrapping" Value="WrapWholeWords" />
+    </Style>
 
     <!-- Pivot style fix, inspired from http://modernography.wordpress.com/2014/07/31/fixing-pivot-control-layout-issues/
          No more title, since we need it outside of the "loading..." -->

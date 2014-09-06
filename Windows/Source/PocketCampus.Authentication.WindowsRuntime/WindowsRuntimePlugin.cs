@@ -1,4 +1,6 @@
 ﻿using System;
+using PocketCampus.Authentication.ViewModels;
+using PocketCampus.Authentication.Views;
 using PocketCampus.Common;
 using ThinMvvm.WindowsRuntime;
 
@@ -8,17 +10,17 @@ namespace PocketCampus.Authentication
     {
         public string Name
         {
-            get { throw new NotImplementedException(); }
+            get { throw new NotSupportedException(); }
         }
 
         public object Icon
         {
-            get { throw new NotImplementedException(); }
+            get { throw new NotSupportedException(); }
         }
 
         public void Initialize( IWindowsRuntimeNavigationService navigationService )
         {
-            // TODO
+            navigationService.Bind<MainViewModel, MainView>();
         }
     }
 }
