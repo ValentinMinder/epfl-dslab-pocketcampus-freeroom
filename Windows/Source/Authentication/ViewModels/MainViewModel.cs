@@ -30,7 +30,6 @@ namespace PocketCampus.Authentication.ViewModels
         private string _userName;
         private string _password;
         private bool _saveCredentials;
-        private bool _isAuthenticating;
         private AuthenticationStatus _authenticationStatus;
 
         /// <summary>

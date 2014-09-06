@@ -27,8 +27,7 @@
         <StackPanel Visibility="{Binding Settings.SessionStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=NotLoggedIn}"
                     Margin="19,16">
             <!-- Text -->
-            <TextBlock Text="{CustomResource Settings.NotLoggedIn}"
-                       Style="{StaticResource AppNormalTextBlockStyle}" />
+            <TextBlock Text="{CustomResource Settings.NotLoggedIn}" />
 
             <!-- "Log in" button -->
             <Button Content="{CustomResource Settings.LogIn}"
@@ -39,7 +38,7 @@
         <StackPanel Visibility="{Binding Settings.SessionStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=LoggedInTemporarily}"
                     Margin="19,16">
             <!-- Text -->
-            <TextBlock Style="{StaticResource AppNormalTextBlockStyle}">
+            <TextBlock>
                 <Run Text="{CustomResource Settings.LoggedIn}" />
                 
                 <Bold>
@@ -62,7 +61,7 @@
         <StackPanel Visibility="{Binding Settings.SessionStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=LoggedIn}"
                     Margin="19,16">
             <!-- Text -->
-            <TextBlock Style="{StaticResource AppNormalTextBlockStyle}">
+            <TextBlock>
                 <Run Text="{CustomResource Settings.LoggedIn}" />
 
                 <Bold>

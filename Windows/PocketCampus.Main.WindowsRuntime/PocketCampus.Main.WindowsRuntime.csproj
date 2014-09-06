@@ -168,6 +168,10 @@
       <Project>{b1780e96-7e18-47c0-9e93-1086d9491815}</Project>
       <Name>PocketCampus.Authentication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Source\Camipro\PocketCampus.Camipro.csproj">
+      <Project>{2ab0060f-5611-4aeb-9210-d8496cfc421d}</Project>
+      <Name>PocketCampus.Camipro</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Source\Common\PocketCampus.Common.csproj">
       <Project>{f780f0dd-8a14-4e72-9525-a11d792cbfab}</Project>
       <Name>PocketCampus.Common</Name>
@@ -179,6 +183,10 @@
     <ProjectReference Include="..\Source\PocketCampus.Authentication.WindowsRuntime\PocketCampus.Authentication.WindowsRuntime.csproj">
       <Project>{5398203e-b2f3-499b-8c9e-5d46aa7cd2ae}</Project>
       <Name>PocketCampus.Authentication.WindowsRuntime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Source\PocketCampus.Camipro.WindowsRuntime\PocketCampus.Camipro.WindowsRuntime.csproj">
+      <Project>{b5cca7ef-a968-440f-9179-e282d5f95372}</Project>
+      <Name>PocketCampus.Camipro.WindowsRuntime</Name>
     </ProjectReference>
     <ProjectReference Include="..\Source\PocketCampus.Common.WindowsRuntime\PocketCampus.Common.WindowsRuntime.csproj">
       <Project>{31858f5b-a2b5-4afc-bf65-d5a1554524eb}</Project>

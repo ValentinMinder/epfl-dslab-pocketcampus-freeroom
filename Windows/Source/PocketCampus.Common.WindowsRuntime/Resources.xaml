@@ -23,8 +23,8 @@
         <Setter Property="Margin" Value="19,0,0,5" />
     </Style>
     
-    <!-- Normal text -->
-    <Style x:Key="AppNormalTextBlockStyle" TargetType="TextBlock">
+    <!-- Normal text (default) -->
+    <Style TargetType="TextBlock">
         <Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}" />
         <Setter Property="FontSize" Value="{StaticResource TextStyleMediumFontSize}" />
         <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
