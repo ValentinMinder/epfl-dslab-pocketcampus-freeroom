@@ -49,15 +49,15 @@ namespace PocketCampus.Main.ViewModels
         /// Gets the command executed to log off.
         /// </summary>
         [LogId( "LogOff" )]
-        public AsyncCommand LogOffCommand
+        public AsyncCommand LogOutCommand
         {
-            get { return this.GetAsyncCommand( ExecuteLogOffCommand ); }
+            get { return this.GetAsyncCommand( LogOutAsync ); }
         }
 
         [LogId( "DestroySessions" )]
         public AsyncCommand DestroySessionsCommand
         {
-            get { return this.GetAsyncCommand( ExecuteDestroySessionsCommand ); }
+            get { return this.GetAsyncCommand( DestroySessionsAsync ); }
         }
 
         /// <summary>
@@ -80,9 +80,9 @@ namespace PocketCampus.Main.ViewModels
 
 
         /// <summary>
-        /// Logs off.
+        /// Logs out.
         /// </summary>
-        private async Task ExecuteLogOffCommand()
+        private async Task LogOutAsync()
         {
             Settings.SessionStatus = SessionStatus.NotLoggedIn;
             Settings.Session = null;
@@ -92,14 +92,14 @@ namespace PocketCampus.Main.ViewModels
         }
 
         /// <summary>
-        /// Destroys all user sessions from the server and logs off.
+        /// Destroys all user sessions from the server and logs out.
         /// </summary>
-        private async Task ExecuteDestroySessionsCommand()
+        private async Task DestroySessionsAsync()
         {
             var request = new LogoutRequest { Session = Settings.Session };
             await _authenticationService.DestroyAllSessionsAsync( request );
 
-            await ExecuteLogOffCommand();
+            await LogOutAsync();
         }
     }
 }

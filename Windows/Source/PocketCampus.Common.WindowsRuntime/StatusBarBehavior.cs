@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xaml.Interactivity;
+using Windows.ApplicationModel;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -93,7 +94,13 @@ namespace PocketCampus.Common
 
         private static async void OnUseDefaultValuesChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
         {
-            // the value itself is ignored
+            // N.B.: False is not supported, just don't set it if you don't want the default values.
+
+            // StatusBar.GetForCurrentView throws a REGDB_E_CLASSNOTREG error if ran in the designer...
+            if ( DesignMode.DesignModeEnabled )
+            {
+                return;
+            }
 
             var bar = StatusBar.GetForCurrentView();
 
