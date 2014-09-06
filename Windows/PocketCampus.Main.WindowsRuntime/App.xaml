@@ -6,7 +6,7 @@
     <mvvm:AppBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ms-appx:///PocketCampusCommonWindowsRuntime/Resources.xaml" />
+                <ResourceDictionary Source="ms-appx:///PocketCampus.Common.WindowsRuntime/Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
             <myDesign:Design x:Key="Design" />

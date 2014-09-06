@@ -44,7 +44,7 @@
                     <TextBlock Grid.Column="1"
                                Text="{Binding Amount, 
                                               Converter={StaticResource CurrencyFormat}}"
-                               Foreground="{Binding Amount, Converter={StaticResource MoneyToBrush}}"  />
+                               Foreground="{Binding Amount, Converter={StaticResource MoneyToBrush}}" />
 
                     <!-- Date -->
                     <TextBlock Grid.Row="1"
