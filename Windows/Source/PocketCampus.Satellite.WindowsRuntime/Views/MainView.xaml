@@ -38,19 +38,19 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
+                    <!-- Beer name -->
                     <TextBlock Text="{Binding Name}"
-                           Style="{StaticResource BodyTextBlockStyle}" />
+                               Style="{StaticResource AppNormalTextBlockStyle}" />
 
+                    <!-- Price -->
                     <TextBlock Grid.Column="1"
-                           Text="{Binding Price, 
-                                          Converter={StaticResource StringFormat}, 
-                                          ConverterParameter='{}{0:0.00} CHF'}"
-                           Style="{StaticResource BodyTextBlockStyle}" />
+                               Text="{Binding Price, 
+                                              Converter={StaticResource StringFormat}, 
+                                              ConverterParameter='{}{0:0.00} CHF'}"
+                               Style="{StaticResource AppNormalTextBlockStyle}" />
 
                     <TextBlock Grid.Row="1"
-                           Style="{StaticResource BodyTextBlockStyle}"
-                           FontSize="{StaticResource TextStyleMediumFontSize}"
-                           Foreground="{StaticResource ApplicationSecondaryForegroundThemeBrush}">
+                               Style="{StaticResource AppSubtleTextBlockStyle}">
                     <Run Text="{Binding BreweryName}" />
                     <Run Text="{Binding CountryName, 
                                         Converter={StaticResource StringFormat}, 
@@ -58,14 +58,12 @@
                     </TextBlock>
 
                     <TextBlock Grid.Row="1"
-                           Grid.Column="1"
-                           Text="{Binding AlcoholRate, 
-                                          Converter={StaticResource StringFormat}, 
-                                          ConverterParameter='{}{0:0.0}°'}"
-                           Style="{StaticResource BodyTextBlockStyle}"
-                           FontSize="{StaticResource TextStyleMediumFontSize}"
-                           Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                           HorizontalAlignment="Right" />
+                               Grid.Column="1"
+                               Text="{Binding AlcoholRate, 
+                                              Converter={StaticResource StringFormat}, 
+                                              ConverterParameter='{}{0:0.0}°'}"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               HorizontalAlignment="Right" />
                 </Grid>
             </DataTemplate>
 
@@ -91,25 +89,25 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
+
         <Border Background="{StaticResource AppHeaderBackgroundBrush}">
             <TextBlock Text="{CustomResource Main.ViewTitle}"
                        Style="{StaticResource AppHeaderTextBlockStyle}" />
         </Border>
-        
-        <Pivot Grid.Row="1" Title="{CustomResource Main.ViewTitle}"
+
+        <Pivot Grid.Row="1"
                ItemsSource="{Binding BeerMenu}"
                ItemTemplate="{StaticResource MenuPartTemplate}"
                HeaderTemplate="{StaticResource MenuPartHeaderTemplate}" />
-        
+
         <comControls:LoadingAndError Grid.Row="1" />
     </Grid>
-    
+
     <Page.BottomAppBar>
         <CommandBar IsOpen="False"
                     ClosedDisplayMode="Minimal">
             <CommandBar.PrimaryCommands>
-                <AppBarButton Label="{CustomResource Main.RefreshButtonLabel}"
+                <AppBarButton Label="{CustomResource Main.Refresh}"
                               Command="{Binding RefreshCommand}"
                               Icon="Refresh" />
             </CommandBar.PrimaryCommands>

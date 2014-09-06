@@ -119,11 +119,14 @@
   </resheader>
   <data name="BigBottle" xml:space="preserve">
     <value>à partager</value>
+    <comment>Pivot item title</comment>
   </data>
   <data name="Bottle" xml:space="preserve">
     <value>bouteille</value>
+    <comment>Pivot item title</comment>
   </data>
   <data name="Draft" xml:space="preserve">
     <value>pression</value>
+    <comment>Pivot item title</comment>
   </data>
 </root>

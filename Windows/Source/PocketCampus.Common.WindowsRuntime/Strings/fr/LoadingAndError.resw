@@ -120,15 +120,19 @@
   <data name="Error" xml:space="preserve">
     <value>Erreur.
 Réessayez plus tard.</value>
+    <comment>Sentence</comment>
   </data>
   <data name="Loading" xml:space="preserve">
     <value>Chargement en cours...</value>
+    <comment>Progress bar text</comment>
   </data>
   <data name="NetworkError" xml:space="preserve">
     <value>Erreur.
 Vérifiez votre connexion à Internet.</value>
+    <comment>Sentence</comment>
   </data>
   <data name="StatusBarLoading" xml:space="preserve">
     <value>chargement en cours...</value>
+    <comment>Status bar text</comment>
   </data>
 </root>

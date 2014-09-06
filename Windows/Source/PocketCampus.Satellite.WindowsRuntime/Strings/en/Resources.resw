@@ -119,5 +119,6 @@
   </resheader>
   <data name="PluginName" xml:space="preserve">
     <value>Satellite</value>
+    <comment>Plugin name</comment>
   </data>
 </root>

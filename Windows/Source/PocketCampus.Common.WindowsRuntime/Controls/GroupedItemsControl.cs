@@ -117,7 +117,7 @@ namespace PocketCampus.Common.Controls
             return (DataTemplate) XamlReader.Load(
           @"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
                 <TextBlock Text=""{Binding " + keyPath + @"}""
-                           Style=""{StaticResource GroupHeaderTextBlockStyle}""
+                           Style=""{StaticResource AppGroupHeaderTextBlockStyle}""
                            Foreground=""{ThemeResource ApplicationForegroundThemeBrush}""
                            Margin=""0," + ZoomedInGroupFooterSize + @",0,0"" />
             </DataTemplate>" );
