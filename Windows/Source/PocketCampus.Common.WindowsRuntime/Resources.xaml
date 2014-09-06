@@ -8,21 +8,8 @@
                      Color="#E5060A" />
     <SolidColorBrush x:Key="AppHeaderForegroundBrush"
                      Color="White" />
-    
-    <!-- Headers -->
-    <Style x:Key="AppHeaderTextBlockStyle" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="{StaticResource AppHeaderForegroundBrush}" />
-        <Setter Property="FontSize" Value="{StaticResource TextStyleMediumFontSize}" />
-        <Setter Property="Margin" Value="19,5,0,0" />
-    </Style>
-    
-    <!-- Titles -->
-    <Style x:Key="AppTitleTextBlockStyle" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="{StaticResource AppHeaderForegroundBrush}" />
-        <Setter Property="FontSize" Value="{StaticResource TextStyleExtraLargePlusFontSize}" />
-        <Setter Property="Margin" Value="19,0,0,5" />
-    </Style>
-    
+
+
     <!-- Normal text (default) -->
     <Style TargetType="TextBlock">
         <Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}" />
@@ -30,7 +17,7 @@
         <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
         <Setter Property="TextWrapping" Value="WrapWholeWords" />
     </Style>
-    
+
     <!-- Subtle text -->
     <Style x:Key="AppSubtleTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource PhoneMidBrush}" />
@@ -45,20 +32,35 @@
         <Setter Property="FontSize" Value="{StaticResource TextStyleLargeFontSize}" />
         <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
     </Style>
-    
-    <!-- Group header text -->
-    <Style x:Key="AppGroupHeaderTextBlockStyle" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="{StaticResource PhoneMidBrush}" />
-        <Setter Property="FontSize" Value="{StaticResource TextStyleLargeFontSize}" />
-        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
-    </Style>
-    
+
     <!-- Large centered text -->
     <Style x:Key="AppCenterTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource AppLargeTextBlockStyle}">
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="TextWrapping" Value="WrapWholeWords" />
     </Style>
+
+    <!-- Group header text -->
+    <Style x:Key="AppGroupHeaderTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource PhoneMidBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleLargeFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
+    </Style>
+
+    <!-- Header text -->
+    <Style x:Key="AppHeaderTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource AppHeaderForegroundBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleMediumFontSize}" />
+        <Setter Property="Margin" Value="19,5,0,0" />
+    </Style>
+    
+    <!-- Title text -->
+    <Style x:Key="AppTitleTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource AppHeaderForegroundBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleExtraLargePlusFontSize}" />
+        <Setter Property="Margin" Value="19,0,0,5" />
+    </Style>
+    
 
     <!-- Pivot style fix, inspired from http://modernography.wordpress.com/2014/07/31/fixing-pivot-control-layout-issues/
          No more title, since we need it outside of the "loading..." -->
