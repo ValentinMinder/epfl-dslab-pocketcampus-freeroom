@@ -12,7 +12,6 @@
         <com:StatusBarBehavior UseDefaultValues="True" />
     </i:Interaction.Behaviors>
     
-    <!-- Main grid -->
     <StackPanel>
         <!-- Page title -->
         <Border Background="{StaticResource AppHeaderBackgroundBrush}">
@@ -93,11 +92,11 @@
             <CommandBar.SecondaryCommands>
                 <!-- "Rate the app" menu item -->
                 <AppBarButton Command="{Binding RateAppCommand}"
-                              Label="{CustomResource About.RateAppButtonLabel}" />
+                              Label="{CustomResource About.RateApp}" />
 
                 <!-- "Privacy policy" menu item -->
                 <AppBarButton Click="AppBarButton_Click"
-                              Label="{CustomResource About.PrivacyPolicyButtonLabel}" />
+                              Label="{CustomResource About.PrivacyPolicy}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

@@ -3,18 +3,16 @@
 // File author: Solal Pirelli
 
 using System;
+using Windows.ApplicationModel;
 using Windows.System;
 
 namespace PocketCampus.Main.Services
 {
     public sealed class RatingService : IRatingService
     {
-        // from Package.appxmanifest; do not change!
-        private const string AppPackageFamilyName = "a1ad3481-9e1b-455d-9d6b-cb6fd6cb0d94_292wqxwpch5dy";
-
         public async void RequestRating()
         {
-            await Launcher.LaunchUriAsync( new Uri( "ms-windows-store:REVIEW?PFN=" + AppPackageFamilyName ) );
+            await Launcher.LaunchUriAsync( new Uri( "ms-windows-store:REVIEW?PFN=" + Package.Current.Id.FamilyName ) );
         }
     }
 }

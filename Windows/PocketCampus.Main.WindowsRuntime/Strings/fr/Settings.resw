@@ -118,44 +118,44 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DestroyAllSessions" xml:space="preserve">
-    <value>log out of all devices</value>
+    <value>se déconnecter de tous les appareils</value>
     <comment>Button text</comment>
   </data>
   <data name="DestroyAllSessionsExplanation" xml:space="preserve">
-    <value>this will log you out of all devices on which you use PocketCampus.</value>
+    <value>ceci vous déconnectera de tous les appareils sur lesquels vous utilisez PocketCampus</value>
     <comment>Sentence</comment>
   </data>
   <data name="LoggedIn" xml:space="preserve">
-    <value>You're logged in as</value>
+    <value>Vous êtes connecté en tant que</value>
     <comment>Sentence part</comment>
   </data>
   <data name="LoggedInTemporarilyExplanation" xml:space="preserve">
-    <value>you will be logged out after you become inactive.
-your password has not been saved.</value>
+    <value>vous serez déconnecté après une période d'inactivité.
+votre mot de passe n'a pas été sauvegardé.</value>
     <comment>Sentence</comment>
   </data>
   <data name="LogIn" xml:space="preserve">
-    <value>log in</value>
+    <value>se connecter</value>
     <comment>Button text</comment>
   </data>
   <data name="LogOut" xml:space="preserve">
-    <value>log out</value>
+    <value>se déconnecter</value>
     <comment>Button text</comment>
   </data>
   <data name="NotLoggedIn" xml:space="preserve">
-    <value>You're not logged in.</value>
+    <value>Vous n'êtes pas connecté.</value>
     <comment>Sentence</comment>
   </data>
   <data name="UseColoredTile" xml:space="preserve">
-    <value>use a colored tile</value>
+    <value>utiliser une tuile colorée</value>
     <comment>Checkbox text</comment>
   </data>
   <data name="UseColoredTileExplanation" xml:space="preserve">
-    <value>disable this if it doesn't fit with your Start screen background</value>
+    <value>désactivez cette option si la tuile colorée rend mal sur votre écran Démarrer</value>
     <comment>Sentence</comment>
   </data>
   <data name="ViewTitle" xml:space="preserve">
-    <value>settings</value>
+    <value>paramètres</value>
     <comment>Title</comment>
   </data>
 </root>

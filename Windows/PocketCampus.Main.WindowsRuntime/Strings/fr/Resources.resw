@@ -119,8 +119,10 @@
   </resheader>
   <data name="AppName" xml:space="preserve">
     <value>PocketCampus EPFL</value>
+    <comment>Application name</comment>
   </data>
   <data name="PagesHeader" xml:space="preserve">
     <value>POCKETCAMPUS EPFL</value>
+    <comment>Header</comment>
   </data>
 </root>

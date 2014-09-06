@@ -5,11 +5,13 @@ using Windows.UI.Xaml.Resources;
 
 namespace PocketCampus.Main
 {
-    // Brilliant and awful hack to improve localization support; no more X.Content or Y.Title and x:Uid not working
+    // Brilliant and awful hack to improve localization support; no more X.Content or Y.Text and x:Uid not working
     public sealed class LocalizingResourceLoader : CustomXamlResourceLoader
     {
         protected override object GetResource( string resourceId, string objectType, string propertyName, string propertyType )
         {
+            // TODO: Find a way to get designer support.
+
             var parts = resourceId.Split( '.' );
 
             if ( parts.Length == 1 )
