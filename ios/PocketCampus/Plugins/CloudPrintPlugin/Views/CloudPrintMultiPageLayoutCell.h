@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,37 +22,21 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 01.09.2014.
+//  Created by Loïc Gardiol on 07.09.14.
 
-"PluginName" = "CloudPrint";
-"Print" = "Print";
-"1Copy" = "1 copy";
-"NbCopiesWithFormat" = "%d copies";
-"Pages" = "Pages";
-"All" = "All";
-"Selected" = "Selected";
-"FromPageWithFormat" = "From:\t%@";
-"ToPageWithFormat" = "To:\t\t%@";
-"TheEnd" = "The end";
-"Change" = "Change";
-"DoubleSided" = "Two-sided";
-"FlipOn" = "Flip on";
-"LongEdge" = "Long edge";
-"ShortEdge" = "Short edge";
-"PagesPerSheet" = "Pages per sheet";
-"LayoutDirection" = "Layout direction";
-"BlackAndWhite" = "Black & white";
-"BlackAndWhiteExplanations" = "Color printing is only available at certain printers.";
+#import "PCTableViewCellAdditions.h"
 
-//Multi-page layouts
-"LEFT_TO_RIGHT_TOP_TO_BOTTOM" = "De gauche à droite puis haut en bas (par défaut)";
-"TOP_TO_BOTTOM_LEFT_TO_RIGHT" = "De haut en bas puis de gauche à droite";
-"BOTTOM_TO_TOP_LEFT_TO_RIGHT" = "De bas en haut puis de gauche à droite";
-"BOTTOM_TO_TOP_RIGHT_TO_LEFT" = "De bas en haut puis de droite à gauche";
-"LEFT_TO_RIGHT_BOTTOM_TO_TOP" = "De gauche à droite puis de bas en haut";
-"RIGHT_TO_LEFT_BOTTOM_TO_TOP" = "De droite à gauche puis de bas en haut";
-"RIGHT_TO_LEFT_TOP_TO_BOTTOM" = "De droite à gauche puis de haut en bas";
-"TOP_TO_BOTTOM_RIGHT_TO_LEFT" = "De haut en bas puis de droite à gauche";
+@interface CloudPrintMultiPageLayoutCell : PCTableViewCellAdditions
+
+- (instancetype)initWithReuseIdentifier:(NSString*)reuseIdentifier;
+
+@property (nonatomic) NSInteger selectedMultiPageLayout;
+
+@property (nonatomic, copy) void (^userSelectedMultiPageLayout)(NSInteger multiPageLayout);
+
++ (CGFloat)preferredHeight;
+
+@end

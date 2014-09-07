@@ -32,8 +32,25 @@
 @implementation CloudPrintModelAdditions
 
 + (NSString*)localizedTitleForMultiPageLayout:(NSInteger)multiPageLayout {
-#warning TODO
-    return [NSString stringWithFormat:@"dir %d", multiPageLayout];
+    switch (multiPageLayout) {
+        case CloudPrintMultiPageLayout_LEFT_TO_RIGHT_TOP_TO_BOTTOM:
+            return NSLocalizedStringFromTable(@"LEFT_TO_RIGHT_TOP_TO_BOTTOM", @"CloudPrintPlugin", nil);
+        case CloudPrintMultiPageLayout_TOP_TO_BOTTOM_LEFT_TO_RIGHT:
+            return NSLocalizedStringFromTable(@"TOP_TO_BOTTOM_LEFT_TO_RIGHT", @"CloudPrintPlugin", nil);
+        case CloudPrintMultiPageLayout_BOTTOM_TO_TOP_LEFT_TO_RIGHT:
+            return NSLocalizedStringFromTable(@"BOTTOM_TO_TOP_LEFT_TO_RIGHT", @"CloudPrintPlugin", nil);
+        case CloudPrintMultiPageLayout_BOTTOM_TO_TOP_RIGHT_TO_LEFT:
+            return NSLocalizedStringFromTable(@"BOTTOM_TO_TOP_RIGHT_TO_LEFT", @"CloudPrintPlugin", nil);
+        case CloudPrintMultiPageLayout_LEFT_TO_RIGHT_BOTTOM_TO_TOP:
+            return NSLocalizedStringFromTable(@"LEFT_TO_RIGHT_BOTTOM_TO_TOP", @"CloudPrintPlugin", nil);
+        case CloudPrintMultiPageLayout_RIGHT_TO_LEFT_BOTTOM_TO_TOP:
+            return NSLocalizedStringFromTable(@"RIGHT_TO_LEFT_BOTTOM_TO_TOP", @"CloudPrintPlugin", nil);
+        case CloudPrintMultiPageLayout_RIGHT_TO_LEFT_TOP_TO_BOTTOM:
+            return NSLocalizedStringFromTable(@"RIGHT_TO_LEFT_TOP_TO_BOTTOM", @"CloudPrintPlugin", nil);
+        case CloudPrintMultiPageLayout_TOP_TO_BOTTOM_RIGHT_TO_LEFT:
+            return NSLocalizedStringFromTable(@"TOP_TO_BOTTOM_RIGHT_TO_LEFT", @"CloudPrintPlugin", nil);
+    }
+    return nil;
 }
 
 + (NSString*)localizedTitleForDoubleSidedConfig:(NSInteger)doubleSidedConfig {

@@ -33,6 +33,8 @@
 
 #import "CloudPrintController.h"
 
+#import "CloudPrintMultiPageLayoutCell.h"
+
 static NSInteger const kCopiesAndRangeSectionIndex = 0;
 static NSInteger const kDoubleSidedSectionIndex = 1;
 static NSInteger const kMultiPageSectionIndex = 2;
@@ -54,6 +56,7 @@ static NSInteger const kMultiPageLayoutRowIndex = 1;
 
 static NSInteger const kBlackAndWhiteRowIndex = 0;
 
+static NSInteger const kPageToTheEndValue = 10000;
 
 @interface CloudPrintRequestViewController ()<UIActionSheetDelegate>
 
@@ -63,11 +66,11 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
 @property (nonatomic, strong) UIStepper* nbCopiesStepper;
 @property (nonatomic, strong) UISegmentedControl* pageRangeSegmentedControl;
 @property (nonatomic, strong) UIStepper* pageFromStepper;
+@property (nonatomic, strong) UIButton* pageToChangeButton;
 @property (nonatomic, strong) UIStepper * pageToStepper;
 @property (nonatomic, strong) UISwitch* doubleSidedToggle;
 @property (nonatomic, strong) UIActionSheet* doubleSidedConfigActionSheet;
 @property (nonatomic, strong) UIActionSheet* pagesPerSheetActionSheet;
-@property (nonatomic, strong) UIActionSheet* multiPagesLayoutActionSheet;
 @property (nonatomic, strong) UISwitch* blackAndWhiteToggle;
 
 @end
@@ -79,7 +82,7 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
 - (instancetype)initWithDocumentName:(NSString*)docName printRequest:(PrintDocumentRequest*)printRequest {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = [CloudPrintController localizedName];
+        self.title = @"EPFLCloudPrint";
         self.documentName = docName;
         self.printRequest = printRequest ?: [PrintDocumentRequest createDefaultRequest];
     }
@@ -124,7 +127,7 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
                 break;
             case kSelectedPagesSegmentIndex:
                 if (!self.printRequest.pageSelection) {
-                    self.printRequest.pageSelection = [[CloudPrintPageRange alloc] initWithPageFrom:1 pageTo:2];
+                    self.printRequest.pageSelection = [[CloudPrintPageRange alloc] initWithPageFrom:1 pageTo:kPageToTheEndValue];
                 }
                 break;
             default:
@@ -151,6 +154,11 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
     } else if (sender == self.blackAndWhiteToggle) {
         self.printRequest.blackAndWhite = self.blackAndWhiteToggle.isOn;
     }
+}
+
+- (void)pageToChangeTapped {
+    self.printRequest.pageSelection.pageTo = 1;
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPageToRowIndex inSection:kCopiesAndRangeSectionIndex]] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -188,30 +196,17 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
         }
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kMultiPageSectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
         self.pagesPerSheetActionSheet = nil;
-    } else if (actionSheet == self.multiPagesLayoutActionSheet) {
-        if ([buttonTitle isEqualToString:[CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_LEFT_TO_RIGHT_TOP_TO_BOTTOM]]) {
-            self.printRequest.multiPageConfig.layout = CloudPrintMultiPageLayout_LEFT_TO_RIGHT_TOP_TO_BOTTOM;
-        } else if ([buttonTitle isEqualToString:[CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_TOP_TO_BOTTOM_LEFT_TO_RIGHT]]) {
-            self.printRequest.multiPageConfig.layout = CloudPrintMultiPageLayout_TOP_TO_BOTTOM_LEFT_TO_RIGHT;
-        } else if ([buttonTitle isEqualToString:[CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_BOTTOM_TO_TOP_LEFT_TO_RIGHT]]) {
-            self.printRequest.multiPageConfig.layout = CloudPrintMultiPageLayout_BOTTOM_TO_TOP_LEFT_TO_RIGHT;
-        } else if ([buttonTitle isEqualToString:[CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_BOTTOM_TO_TOP_RIGHT_TO_LEFT]]) {
-            self.printRequest.multiPageConfig.layout = CloudPrintMultiPageLayout_BOTTOM_TO_TOP_RIGHT_TO_LEFT;
-        } else if ([buttonTitle isEqualToString:[CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_LEFT_TO_RIGHT_BOTTOM_TO_TOP]]) {
-            self.printRequest.multiPageConfig.layout = CloudPrintMultiPageLayout_LEFT_TO_RIGHT_BOTTOM_TO_TOP;
-        } else if ([buttonTitle isEqualToString:[CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_RIGHT_TO_LEFT_TOP_TO_BOTTOM]]) {
-            self.printRequest.multiPageConfig.layout = CloudPrintMultiPageLayout_RIGHT_TO_LEFT_TOP_TO_BOTTOM;
-        } else if ([buttonTitle isEqualToString:[CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_RIGHT_TO_LEFT_BOTTOM_TO_TOP]]) {
-            self.printRequest.multiPageConfig.layout = CloudPrintMultiPageLayout_RIGHT_TO_LEFT_BOTTOM_TO_TOP;
-        } else if ([buttonTitle isEqualToString:[CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_TOP_TO_BOTTOM_RIGHT_TO_LEFT]]) {
-            self.printRequest.multiPageConfig.layout = CloudPrintMultiPageLayout_TOP_TO_BOTTOM_RIGHT_TO_LEFT;
-        }
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kMultiPageLayoutRowIndex inSection:kMultiPageSectionIndex]] withRowAnimation:UITableViewRowAnimationNone];
-        self.multiPagesLayoutActionSheet = nil;
     }
 }
 
 #pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == kMultiPageSectionIndex && indexPath.row == kMultiPageLayoutRowIndex) {
+        return [CloudPrintMultiPageLayoutCell preferredHeight];
+    }
+    return self.tableView.rowHeight;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -243,18 +238,6 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
                         nil];
                     self.pagesPerSheetActionSheet = actionSheet;
                     break;
-                case kMultiPageLayoutRowIndex:
-                    actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"LayoutDirection", @"CloudPrintPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:[CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_LEFT_TO_RIGHT_TOP_TO_BOTTOM],
-                        [CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_TOP_TO_BOTTOM_LEFT_TO_RIGHT],
-                        [CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_BOTTOM_TO_TOP_LEFT_TO_RIGHT],
-                        [CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_BOTTOM_TO_TOP_RIGHT_TO_LEFT],
-                        [CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_LEFT_TO_RIGHT_BOTTOM_TO_TOP],
-                        [CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_RIGHT_TO_LEFT_TOP_TO_BOTTOM],
-                        [CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_RIGHT_TO_LEFT_BOTTOM_TO_TOP],
-                        [CloudPrintModelAdditions localizedTitleForMultiPageLayout:CloudPrintMultiPageLayout_TOP_TO_BOTTOM_RIGHT_TO_LEFT],
-                       nil];
-                    self.multiPagesLayoutActionSheet = actionSheet;
-                    break;
                 default:
                     break;
             }
@@ -285,7 +268,7 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString* identifier = [NSString stringWithFormat:@"%d-%d", indexPath.section, indexPath.row];
     PCTableViewCellAdditions* cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (!cell) {
+    if (!cell && ![indexPath isEqual:[NSIndexPath indexPathForRow:kMultiPageLayoutRowIndex inSection:kMultiPageSectionIndex]]) {
         cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -301,7 +284,7 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
                         self.nbCopiesStepper = [UIStepper new];
                         self.nbCopiesStepper.stepValue = 1.0;
                         self.nbCopiesStepper.minimumValue = 1;
-                        self.nbCopiesStepper.maximumValue = 1000;
+                        self.nbCopiesStepper.maximumValue = 10000;
                         self.nbCopiesStepper.value = self.printRequest.numberOfCopies;
                         [self.nbCopiesStepper addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
                     }
@@ -318,29 +301,53 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
                     cell.accessoryView = self.pageRangeSegmentedControl;
                     break;
                 case kPageFromRowIndex:
-                    cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"FromPageWithFormat", @"CloudPrintPlugin", nil), self.printRequest.pageSelection.pageFrom];
+                {
+                    NSString* numberString = [NSString stringWithFormat:@"%d", self.printRequest.pageSelection.pageFrom];
+                    NSString* fullString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"FromPageWithFormat", @"CloudPrintPlugin", nil), numberString];
+                    NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
+                    [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:[fullString rangeOfString:numberString]];
+                    cell.textLabel.attributedText = attrString;
                     if (!self.pageFromStepper) {
                         self.pageFromStepper = [UIStepper new];
                         self.pageFromStepper.stepValue = 1.0;
                         self.pageFromStepper.minimumValue = 1;
-                        self.pageFromStepper.maximumValue = 1000;
+                        self.pageFromStepper.maximumValue = kPageToTheEndValue;
                         [self.pageFromStepper addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
                     }
                     self.pageFromStepper.value = (double)(self.printRequest.pageSelection.pageFrom);
                     cell.accessoryView = self.pageFromStepper;
                     break;
+                }
                 case kPageToRowIndex:
-                    cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"ToPageWithFormat", @"CloudPrintPlugin", nil), self.printRequest.pageSelection.pageTo];
-                    if (!self.pageToStepper) {
-                        self.pageToStepper = [UIStepper new];
-                        self.pageToStepper.stepValue = 1.0;
-                        self.pageToStepper.minimumValue = 1;
-                        self.pageToStepper.maximumValue = 1000;
-                        [self.pageToStepper addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
+                {
+                    NSString* numberString = self.printRequest.pageSelection.pageTo == kPageToTheEndValue ? NSLocalizedStringFromTable(@"TheEnd", @"CloudPrintPlugin", nil) : [NSString stringWithFormat:@"%d", self.printRequest.pageSelection.pageTo];
+                    NSString* fullString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"ToPageWithFormat", @"CloudPrintPlugin", nil), numberString];
+                    NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
+                    [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:[fullString rangeOfString:numberString]];
+                    cell.textLabel.attributedText = attrString;
+                    
+                    if (self.printRequest.pageSelection.pageTo == kPageToTheEndValue) {
+                        if (!self.pageToChangeButton) {
+                            self.pageToChangeButton = [UIButton buttonWithType:UIButtonTypeSystem];
+                            self.pageToChangeButton.frame = CGRectMake(0, 0, 100.0, 40.0);
+                            [self.pageToChangeButton setTitle:NSLocalizedStringFromTable(@"Change", @"CloudPrintPlugin", nil) forState:UIControlStateNormal];
+                            [self.pageToChangeButton addTarget:self action:@selector(pageToChangeTapped) forControlEvents:UIControlEventTouchUpInside];
+                            [self.pageToChangeButton sizeToFit];
+                        }
+                        cell.accessoryView = self.pageToChangeButton;
+                    } else {
+                        if (!self.pageToStepper) {
+                            self.pageToStepper = [UIStepper new];
+                            self.pageToStepper.stepValue = 1.0;
+                            self.pageToStepper.minimumValue = 1;
+                            self.pageToStepper.maximumValue = kPageToTheEndValue;
+                            [self.pageToStepper addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
+                        }
+                        self.pageToStepper.value = (double)(self.printRequest.pageSelection.pageTo);
+                        cell.accessoryView = self.pageToStepper;
                     }
-                    self.pageToStepper.value = (double)(self.printRequest.pageSelection.pageTo);
-                    cell.accessoryView = self.pageToStepper;
                     break;
+                }
                 default:
                     break;
             }
@@ -357,6 +364,7 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
                     cell.accessoryView = self.doubleSidedToggle;
                     break;
                 case kDoubleSidedConfigRowIndex:
+                    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
                     cell.textLabel.text = NSLocalizedStringFromTable(@"FlipOn", @"CloudPrintPlugin", nil);
                     cell.detailTextLabel.text = [CloudPrintModelAdditions localizedTitleForDoubleSidedConfig:self.printRequest.doubleSided];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -373,11 +381,17 @@ static NSInteger const kBlackAndWhiteRowIndex = 0;
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     break;
                 case kMultiPageLayoutRowIndex:
-                    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-                    cell.textLabel.text = NSLocalizedStringFromTable(@"LayoutDirection", @"CloudPrintPlugin", nil);
-                    cell.detailTextLabel.text = [CloudPrintModelAdditions localizedTitleForMultiPageLayout:self.printRequest.multiPageConfig.layout];
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                {
+                    if (!cell) {
+                        cell = [[CloudPrintMultiPageLayoutCell alloc] initWithReuseIdentifier:identifier];
+                    }
+                    [(CloudPrintMultiPageLayoutCell*)cell setSelectedMultiPageLayout:self.printRequest.multiPageConfig.layout];
+                    __weak __typeof(self) welf = self;
+                    [(CloudPrintMultiPageLayoutCell*)cell setUserSelectedMultiPageLayout:^(NSInteger multiPageLayout) {
+                        welf.printRequest.multiPageConfig.layout = multiPageLayout;
+                    }];
                     break;
+                }
                 default:
                     break;
             }

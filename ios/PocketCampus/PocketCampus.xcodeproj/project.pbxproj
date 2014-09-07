@@ -162,6 +162,10 @@
 		326B925215027A1400DB4AEE /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B925115027A1400DB4AEE /* AddressBook.framework */; };
 		326E3E3D1963FF7F00017F0C /* CellEmptyPicture.png in Resources */ = {isa = PBXBuildFile; fileRef = 326E3E3B1963FF7F00017F0C /* CellEmptyPicture.png */; };
 		326E3E3E1963FF7F00017F0C /* CellEmptyPicture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 326E3E3C1963FF7F00017F0C /* CellEmptyPicture@2x.png */; };
+		326F5A7219BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 326F5A7119BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.m */; };
+		326F5A7719BCDC65000693A2 /* CloudPrintMultiPageLayoutButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 326F5A7619BCDC65000693A2 /* CloudPrintMultiPageLayoutButton.m */; };
+		326F5A7919BCDC71000693A2 /* CloudPrintMultiPageLayoutButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A7819BCDC71000693A2 /* CloudPrintMultiPageLayoutButton.xib */; };
+		326F5A7A19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A7C19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib */; };
 		326FE23A19A5E8FF001A5056 /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */; };
 		326FE23B19A5E9E2001A5056 /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */; };
 		326FE23C19A63D17001A5056 /* CamiproWidget.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 326FE23E19A63D17001A5056 /* CamiproWidget.storyboard */; };
@@ -680,6 +684,13 @@
 		326B925115027A1400DB4AEE /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		326E3E3B1963FF7F00017F0C /* CellEmptyPicture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CellEmptyPicture.png; sourceTree = "<group>"; };
 		326E3E3C1963FF7F00017F0C /* CellEmptyPicture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CellEmptyPicture@2x.png"; sourceTree = "<group>"; };
+		326F5A7019BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintMultiPageLayoutCell.h; sourceTree = "<group>"; };
+		326F5A7119BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintMultiPageLayoutCell.m; sourceTree = "<group>"; };
+		326F5A7519BCDC65000693A2 /* CloudPrintMultiPageLayoutButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintMultiPageLayoutButton.h; sourceTree = "<group>"; };
+		326F5A7619BCDC65000693A2 /* CloudPrintMultiPageLayoutButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintMultiPageLayoutButton.m; sourceTree = "<group>"; };
+		326F5A7819BCDC71000693A2 /* CloudPrintMultiPageLayoutButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CloudPrintMultiPageLayoutButton.xib; sourceTree = "<group>"; };
+		326F5A7B19BCF135000693A2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CloudPrintMultiPageLayoutCell.xib; sourceTree = "<group>"; };
+		326F5A7D19BCF136000693A2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/CloudPrintMultiPageLayoutCell.xib; sourceTree = "<group>"; };
 		326FE23819A5E8FF001A5056 /* NSUserDefaults+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+Additions.h"; sourceTree = "<group>"; };
 		326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Additions.m"; sourceTree = "<group>"; };
 		326FE23D19A63D17001A5056 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/CamiproWidget.storyboard; sourceTree = "<group>"; };
@@ -2088,6 +2099,12 @@
 			isa = PBXGroup;
 			children = (
 				32DD524D19B4DEAE00B5B241 /* Images */,
+				326F5A7019BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.h */,
+				326F5A7119BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.m */,
+				326F5A7C19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib */,
+				326F5A7519BCDC65000693A2 /* CloudPrintMultiPageLayoutButton.h */,
+				326F5A7619BCDC65000693A2 /* CloudPrintMultiPageLayoutButton.m */,
+				326F5A7819BCDC71000693A2 /* CloudPrintMultiPageLayoutButton.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2632,6 +2649,7 @@
 				3289D28A15094739008DD299 /* Directory.png in Resources */,
 				3289D28B15094739008DD299 /* Directory@2x.png in Resources */,
 				3289D28E1509474A008DD299 /* Food.png in Resources */,
+				326F5A7919BCDC71000693A2 /* CloudPrintMultiPageLayoutButton.xib in Resources */,
 				32506D05181DC7AF003F08D7 /* MasterHidden.png in Resources */,
 				3289D28F1509474A008DD299 /* Food@2x.png in Resources */,
 				32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */,
@@ -2768,6 +2786,7 @@
 				329E1B3B16E693130054C3A8 /* FavoriteNavBarButton.png in Resources */,
 				329E1B3C16E693130054C3A8 /* FavoriteNavBarButton@2x.png in Resources */,
 				329E1B3F16E696F80054C3A8 /* FavoriteGlowNavBarButton.png in Resources */,
+				326F5A7A19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib in Resources */,
 				329E1B4016E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png in Resources */,
 				32150DD5197D693300CCF2AB /* LinkIcon@2x.png in Resources */,
 				32F5308D16EAB02400F66484 /* EventItemInfo.html in Resources */,
@@ -2967,12 +2986,14 @@
 				324151F415377B4C00CCFB22 /* MapItemAnnotation.m in Sources */,
 				3232C45919B8A0BF002BA3C6 /* CloudPrintModelAdditions.m in Sources */,
 				3275435F153872DF00C94F3D /* MapUtils.m in Sources */,
+				326F5A7219BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.m in Sources */,
 				32CCB4C8155520FE00220282 /* AuthenticationController.m in Sources */,
 				32DFDB0F190902AE008C61E2 /* NewsModelAdditions.m in Sources */,
 				32CCB4CB155520FE00220282 /* AuthenticationService.m in Sources */,
 				3268063219AF44B800E8CD22 /* THTTPClient+MutableRequest.m in Sources */,
 				32CCB4CC155520FE00220282 /* authentication.m in Sources */,
 				32CCB4E91555237500220282 /* MoodleController.m in Sources */,
+				326F5A7719BCDC65000693A2 /* CloudPrintMultiPageLayoutButton.m in Sources */,
 				32CCB4EB1555237500220282 /* MoodleService.m in Sources */,
 				326FE23A19A5E8FF001A5056 /* NSUserDefaults+Additions.m in Sources */,
 				27B74CE319A205E6006B2F17 /* RecommendedAppsService.m in Sources */,
@@ -3135,6 +3156,15 @@
 				3247C3B21504F2E10079522A /* fr */,
 			);
 			name = FoodPlugin.strings;
+			sourceTree = "<group>";
+		};
+		326F5A7C19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				326F5A7B19BCF135000693A2 /* en */,
+				326F5A7D19BCF136000693A2 /* fr */,
+			);
+			name = CloudPrintMultiPageLayoutCell.xib;
 			sourceTree = "<group>";
 		};
 		326FE23E19A63D17001A5056 /* CamiproWidget.storyboard */ = {

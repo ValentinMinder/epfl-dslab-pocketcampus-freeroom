@@ -34,8 +34,10 @@
 "Pages" = "Pages";
 "All" = "Toutes";
 "Selected" = "Sélectionner";
-"FromPageWithFormat" = "De:\t %d";
-"ToPageWithFormat" = "À:\t %d";
+"FromPageWithFormat" = "De:\t %@";
+"ToPageWithFormat" = "À:\t %@";
+"TheEnd" = "La fin";
+"Change" = "Changer";
 "DoubleSided" = "Recto verso";
 "FlipOn" = "Retourner sur";
 "LongEdge" = "Bord long";
@@ -44,3 +46,13 @@
 "LayoutDirection" = "Direction";
 "BlackAndWhite" = "Noir & blanc";
 "BlackAndWhiteExplanations" = "Seules certaines imprimantes proposent l'impression couleur.";
+
+//Multi-page layouts
+"LEFT_TO_RIGHT_TOP_TO_BOTTOM" = "De gauche à droite puis haut en bas (par défaut)";
+"TOP_TO_BOTTOM_LEFT_TO_RIGHT" = "De haut en bas puis de gauche à droite";
+"BOTTOM_TO_TOP_LEFT_TO_RIGHT" = "De bas en haut puis de gauche à droite";
+"BOTTOM_TO_TOP_RIGHT_TO_LEFT" = "De bas en haut puis de droite à gauche";
+"LEFT_TO_RIGHT_BOTTOM_TO_TOP" = "De gauche à droite puis de bas en haut";
+"RIGHT_TO_LEFT_BOTTOM_TO_TOP" = "De droite à gauche puis de bas en haut";
+"RIGHT_TO_LEFT_TOP_TO_BOTTOM" = "De droite à gauche puis de haut en bas";
+"TOP_TO_BOTTOM_RIGHT_TO_LEFT" = "De haut en bas puis de droite à gauche";
