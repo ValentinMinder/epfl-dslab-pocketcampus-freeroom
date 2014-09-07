@@ -24,8 +24,8 @@
             <myDesign:Design x:Key="Design" />
 
             <com:StringFormatConverter x:Key="StringFormat" />
+            <com:MoneyFormatConverter x:Key="MoneyFormat" />
             <com:EnumToStringConverter x:Key="EnumToString" />
-            <com:CurrencyFormatter x:Key="CurrencyFormat" />
             <my:BeerMenuPartToGroupConverter x:Key="MenuPartToGroup" />
 
             <DataTemplate x:Key="BeerTemplate">
@@ -40,19 +40,21 @@
                     </Grid.RowDefinitions>
 
                     <!-- Beer name -->
-                    <TextBlock Text="{Binding Name}" />
+                    <TextBlock Text="{Binding Name}"
+                               Style="{StaticResource AppNormalTextBlockStyle}" />
 
                     <!-- Price -->
                     <TextBlock Grid.Column="1"
                                Text="{Binding Price, 
-                                              Converter={StaticResource CurrencyFormat}}" />
+                                              Converter={StaticResource MoneyFormat}}"
+                               Style="{StaticResource AppNormalTextBlockStyle}" />
 
                     <TextBlock Grid.Row="1"
                                Style="{StaticResource AppSubtleTextBlockStyle}">
-                    <Run Text="{Binding BreweryName}" />
-                    <Run Text="{Binding CountryName, 
-                                        Converter={StaticResource StringFormat}, 
-                                        ConverterParameter='({0})'}" />
+                        <Run Text="{Binding BreweryName}" />
+                        <Run Text="{Binding CountryName, 
+                                            Converter={StaticResource StringFormat}, 
+                                            ConverterParameter='({0})'}" />
                     </TextBlock>
 
                     <TextBlock Grid.Row="1"

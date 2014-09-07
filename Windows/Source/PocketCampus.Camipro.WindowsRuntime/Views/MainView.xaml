@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:i="using:Microsoft.Xaml.Interactivity"
       xmlns:com="using:PocketCampus.Common"
-      xmlns:comControls="PocketCampus.Common.Controls"
+      xmlns:comControls="using:PocketCampus.Common.Controls"
       xmlns:my="using:PocketCampus.Camipro"
       xmlns:myDesign="using:PocketCampus.Camipro.ViewModels.Design"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -20,14 +20,14 @@
             <myDesign:Design x:Key="Design" />
             
             <com:StringFormatConverter x:Key="StringFormat" />
-            <com:CurrencyFormatter x:Key="CurrencyFormat" />
+            <com:MoneyFormatConverter x:Key="MoneyFormat" />
             <com:EnumToStringConverter x:Key="EnumToString" />
             <my:MoneyToBrushConverter x:Key="MoneyToBrush" />
             
             
             <!-- Transaction item template -->
             <DataTemplate x:Key="TransactionTemplate">
-                <Grid>
+                <Grid Margin="0,0,19,16">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
@@ -38,12 +38,15 @@
                     </Grid.RowDefinitions>
 
                     <!-- Description -->
-                    <TextBlock Text="{Binding Place}" />
+                    <TextBlock Text="{Binding Place}"
+                               Style="{StaticResource AppNormalTextBlockStyle}" />
 
                     <!-- Amount -->
                     <TextBlock Grid.Column="1"
                                Text="{Binding Amount, 
-                                              Converter={StaticResource CurrencyFormat}}"
+                                              Converter={StaticResource StringFormat},
+                                              ConverterParameter='{}{0:0.00}'}"
+                               Style="{StaticResource AppNormalTextBlockStyle}" 
                                Foreground="{Binding Amount, Converter={StaticResource MoneyToBrush}}" />
 
                     <!-- Date -->
@@ -51,7 +54,8 @@
                                Grid.ColumnSpan="2"
                                Text="{Binding Date,
                                               Converter={StaticResource StringFormat},
-                                              ConverterParameter='{}{0:m}, {0:t}'}" />
+                                              ConverterParameter='{}{0:m}, {0:t}'}"
+                               Style="{StaticResource AppSubtleTextBlockStyle}" />
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>
@@ -77,46 +81,49 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
                     <!-- Current balance -->
-                    <TextBlock Grid.Row="1"
-                               Style="{StaticResource AppLargeTextBlockStyle}">
+                    <TextBlock Style="{StaticResource AppLargeTextBlockStyle}"
+                               Margin="0,16,0,0">
                         <Run Text="{CustomResource Main.CurrentBalance}" />
                         <Run Text="{Binding AccountInfo.Balance,
-                                            Converter={StaticResource CurrencyFormat}}"
+                                            Converter={StaticResource MoneyFormat}}"
                              Foreground="{Binding AccountInfo.Balance, 
                                                   Converter={StaticResource MoneyToBrush}}" />
                     </TextBlock>
 
                     <!-- Last month -->
-                    <TextBlock Grid.Row="2"
-                               Style="{StaticResource AppLargeTextBlockStyle}">
+                    <TextBlock Grid.Row="1"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               Margin="0,8,0,0">
                         <Run Text="{CustomResource Main.MonthTotal}" />
                         <Run Text="{Binding EbankingInfo.CardStatistics.MonthTotal,
-                                            Converter={StaticResource CurrencyFormat}}" />
+                                            Converter={StaticResource MoneyFormat}}" />
                     </TextBlock>
 
                     <!-- Three months total -->
-                    <TextBlock Grid.Row="3"
-                               Style="{StaticResource AppLargeTextBlockStyle}">
+                    <TextBlock Grid.Row="2"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               Margin="0,8,0,0">
                         <Run Text="{CustomResource Main.ThreeMonthsTotal}"/>
                         <Run Text="{Binding EbankingInfo.CardStatistics.ThreeMonthsTotal,
-                                            Converter={StaticResource CurrencyFormat}}" />
+                                            Converter={StaticResource MoneyFormat}}" />
                     </TextBlock>
 
                     <!-- Three months average -->
-                    <TextBlock Grid.Row="4"
-                               Style="{StaticResource AppLargeTextBlockStyle}">
+                    <TextBlock Grid.Row="3"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               Margin="0,8,0,0">
                         <Run Text="{CustomResource Main.ThreeMonthsAverage}" />
                         <Run Text="{Binding EbankingInfo.CardStatistics.ThreeMonthsAverage,
-                                            Converter={StaticResource CurrencyFormat}}" />
+                                            Converter={StaticResource MoneyFormat}}" />
                     </TextBlock>
 
                     <!-- Transactions -->
-                    <ScrollViewer Grid.Row="5">
+                    <ScrollViewer Grid.Row="4"
+                                  Margin="0,32,0,0">
                         <ItemsControl ItemsSource="{Binding AccountInfo.Transactions}"
                                       ItemTemplate="{StaticResource TransactionTemplate}" />
                     </ScrollViewer>
@@ -125,7 +132,7 @@
 
 
             <!-- E-banking part -->
-            <PivotItem Header="{CustomResource Ebanking}">
+            <PivotItem Header="{CustomResource Main.Ebanking}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -141,46 +148,60 @@
                     </Grid.RowDefinitions>
 
                     <!-- Payment type -->
-                    <TextBlock Grid.Row="1"
-                               Text="{CustomResource EbankingPaymentType}" />
+                    <TextBlock Text="{CustomResource Main.EbankingPaymentType}"
+                               Style="{StaticResource AppNormalTextBlockStyle}"
+                               Margin="0,16" />
 
                     <!-- Account name -->
                     <TextBlock Grid.Row="2"
-                               Text="{CustomResource EbankingAccountName}"
+                               Text="{CustomResource Main.EbankingAccountName}"
                                Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
                     <TextBlock Grid.Row="3"
-                               Text="{Binding EbankingInfo.PaymentInfo.AccountName}" />
+                               Text="{Binding EbankingInfo.PaymentInfo.AccountName}"
+                               Style="{StaticResource AppNormalTextBlockStyle}"
+                               Margin="0,0,0,16" />
 
                     <!-- Account number -->
                     <TextBlock Grid.Row="4"
-                               Text="{CustomResource EbankingAccountNumber}"
+                               Text="{CustomResource Main.EbankingAccountNumber}"
                                Style="{StaticResource AppGroupHeaderTextBlockStyle}"
                                VerticalAlignment="Bottom" />
                     <TextBlock Grid.Row="5"
-                               Text="{Binding EbankingInfo.PaymentInfo.AccountNumber}" />
+                               Text="{Binding EbankingInfo.PaymentInfo.AccountNumber}"
+                               Style="{StaticResource AppNormalTextBlockStyle}"
+                               Margin="0,0,0,16" />
 
                     <!-- Reference number -->
                     <TextBlock Grid.Row="6"
-                               Text="{CustomResource EbankingReferenceNumber}"
+                               Text="{CustomResource Main.EbankingReferenceNumber}"
                                Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
                     <TextBlock Grid.Row="7"
-                               Text="{Binding EbankingInfo.PaymentInfo.ReferenceNumber}" />
+                               Text="{Binding EbankingInfo.PaymentInfo.ReferenceNumber}"
+                               Style="{StaticResource AppNormalTextBlockStyle}"
+                               Margin="0,0,0,32" />
 
                     <!-- Various info -->
                     <TextBlock Grid.Row="8"
-                               Text="{CustomResource EbankingInfo}" />
+                               Text="{CustomResource Main.EbankingInfo}"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               Margin="0,0,0,32" />
 
                     <!-- 'Request e-mail with info' button -->
                     <Button Grid.Row="9"
                             Command="{Binding RequestEbankingEmailCommand}"
-                            Content="{CustomResource RequestEbankingEmail}"
-                            Visibility="{Binding EmailStatus}" />
+                            Content="{CustomResource Main.RequestEbankingEmail}"
+                            Visibility="{Binding EmailStatus}"
+                            HorizontalAlignment="Stretch"
+                            Margin="0,0,19,0" />
 
                     <!-- E-mail status text -->
                     <TextBlock Grid.Row="9"
-                               Text="{Binding EmailStatus, Converter={StaticResource EnumToString}}" />
+                               Text="{Binding EmailStatus, Converter={StaticResource EnumToString}}"
+                               Style="{StaticResource AppNormalTextBlockStyle}" />
                 </Grid>
             </PivotItem>
         </Pivot>
+        
+        <comControls:LoadingAndError Grid.Row="1" />
     </Grid>
 </Page>

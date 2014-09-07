@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Globalization;
 using Windows.UI.Xaml;
 
 namespace PocketCampus.Common
@@ -10,6 +9,14 @@ namespace PocketCampus.Common
         public override string Convert( object value, string parameter )
         {
             return string.Format( parameter.ToString(), value );
+        }
+    }
+
+    public sealed class MoneyFormatConverter : ValueConverter<double, string>
+    {
+        public override string Convert( double value )
+        {
+            return string.Format( "{0:0.00} CHF", value );
         }
     }
 
@@ -40,17 +47,6 @@ namespace PocketCampus.Common
             // for some reason, == returns false on equal enums...
             // TODO: Investigate.
             return object.Equals( value, Enum.Parse( value.GetType(), parameter ) ) ? Visibility.Visible : Visibility.Collapsed;
-        }
-    }
-
-    public sealed class CurrencyFormatter : ValueConverter<double, string>
-    {
-        public override string Convert( double value )
-        {
-            var format = (NumberFormatInfo) CultureInfo.CurrentUICulture.NumberFormat.Clone();
-            format.CurrencySymbol = "CHF";
-            // C = currency, 2 = decimal places
-            return value.ToString( "C2", format );
         }
     }
 }

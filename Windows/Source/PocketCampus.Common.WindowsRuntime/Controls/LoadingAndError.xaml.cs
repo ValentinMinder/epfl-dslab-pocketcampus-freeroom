@@ -50,7 +50,6 @@ namespace PocketCampus.Common.Controls
         private void SwitchState()
         {
             CacheStatus status = ( (dynamic) DataContext ).CacheStatus;
-            System.Diagnostics.Debug.WriteLine( status );
             switch ( status )
             {
                 case CacheStatus.NoData:

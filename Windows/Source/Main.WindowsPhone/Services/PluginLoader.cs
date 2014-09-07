@@ -90,5 +90,10 @@ namespace PocketCampus.Main.Services
         {
             return type.GetConstructor( Type.EmptyTypes ).Invoke( null );
         }
+
+        public System.Threading.Tasks.Task<IPlugin[]> GetPluginsAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -82,7 +82,7 @@ namespace PocketCampus.Main
             _logger = Container.Bind<Logger, GoogleAnalyticsLogger>();
 
             // Common part of plugins & services initialization
-            AppInitializer.Initialize( _pluginLoader, _navigationService );
+            AppInitializer.InitializeAsync( _pluginLoader, _navigationService ).Wait();
 
             // View-ViewModels bindings for Main
             _navigationService.Bind<MainViewModel>( "/Views/MainView.xaml" );
@@ -93,7 +93,7 @@ namespace PocketCampus.Main
             LauncherEx.RegisterProtocol( PocketCampusProtocol, NavigateToCustomUri );
 
             // WP-specific part of plugin initialization
-            _plugins = _pluginLoader.GetPlugins().Cast<IWindowsPhonePlugin>().ToArray();
+            _plugins = _pluginLoader.GetPluginsAsync().Result.Cast<IWindowsPhonePlugin>().ToArray();
             foreach ( var plugin in _plugins )
             {
                 plugin.Initialize( _navigationService );
@@ -125,7 +125,7 @@ namespace PocketCampus.Main
             string id;
             if ( arguments.NavigationArguments.TryGetValue( TileService.PluginKey, out id ) )
             {
-                _navigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest( id ) );
+                _navigationService.NavigateTo<MainViewModel>();
                 return;
             }
 
@@ -140,7 +140,7 @@ namespace PocketCampus.Main
             }
 
             // Go to main
-            _navigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest() );
+            _navigationService.NavigateTo<MainViewModel>();
         }
 
         /// <summary>

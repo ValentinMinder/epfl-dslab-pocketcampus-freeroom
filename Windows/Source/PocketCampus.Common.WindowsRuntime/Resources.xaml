@@ -10,8 +10,8 @@
                      Color="White" />
 
 
-    <!-- Normal text (default) -->
-    <Style TargetType="TextBlock">
+    <!-- Normal text (can't set it as default for whatever reason) -->
+    <Style x:Key="AppNormalTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}" />
         <Setter Property="FontSize" Value="{StaticResource TextStyleMediumFontSize}" />
         <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
@@ -60,7 +60,6 @@
         <Setter Property="FontSize" Value="{StaticResource TextStyleExtraLargePlusFontSize}" />
         <Setter Property="Margin" Value="19,0,0,5" />
     </Style>
-    
 
     <!-- Pivot style fix, inspired from http://modernography.wordpress.com/2014/07/31/fixing-pivot-control-layout-issues/
          No more title, since we need it outside of the "loading..." -->
@@ -75,7 +74,6 @@
                           VerticalAlignment="{TemplateBinding VerticalAlignment}"
                           Background="{TemplateBinding Background}">
                         <ScrollViewer x:Name="ScrollViewer"
-                                      Margin="{TemplateBinding Padding}"
                                       HorizontalSnapPointsType="MandatorySingle"
                                       HorizontalSnapPointsAlignment="Center"
                                       HorizontalScrollBarVisibility="Hidden"

@@ -82,5 +82,16 @@ namespace PocketCampus.Main
             byte[] plainBytes = Encoding.GetBytes( plain );
             return ProtectedData.Protect( plainBytes, EntropyBytes );
         }
+
+
+        public void SetCredentials( string userName, string password )
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DeleteCredentials()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
