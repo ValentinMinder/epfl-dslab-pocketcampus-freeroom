@@ -15,7 +15,7 @@ namespace PocketCampus.Common
     /// </summary>
     public sealed class TextBoxEx : DependencyObject
     {
-        #region EnterCommandProperty
+        #region EnterCommand
         // The command executed when the user presses the Enter key inside the textbox.
 
         public static ICommand GetEnterCommand( DependencyObject obj )

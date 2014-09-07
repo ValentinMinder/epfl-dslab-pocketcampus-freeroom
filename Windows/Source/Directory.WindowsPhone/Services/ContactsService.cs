@@ -22,7 +22,6 @@ namespace PocketCampus.Directory.Services
             {
                 FirstName = person.FirstName,
                 LastName = person.LastName,
-                HomePhone = person.PrivatePhoneNumber,
                 WorkPhone = person.OfficePhoneNumber,
                 WorkEmail = person.EmailAddress,
                 Website = person.Homepages.Any() ? person.Homepages.First().Value : null

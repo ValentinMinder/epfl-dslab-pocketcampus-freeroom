@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Xaml.Controls;
 
-namespace PocketCampus.Satellite.Views
+namespace PocketCampus.Directory.Views
 {
     public sealed partial class MainView : Page
     {

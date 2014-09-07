@@ -10,7 +10,7 @@ namespace PocketCampus.Main.Views
     {
         public AboutView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private async void AppBarButton_Click( object sender, RoutedEventArgs e )

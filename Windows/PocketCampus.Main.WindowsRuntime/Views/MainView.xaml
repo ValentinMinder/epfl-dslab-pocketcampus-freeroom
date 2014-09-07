@@ -12,7 +12,7 @@
         <DataTemplate x:Key="PluginTemplate">
             <Button Command="{Binding DataContext.OpenPluginCommand, ElementName=Root}"
                     CommandParameter="{Binding}"
-                    Style="{StaticResource TileButton}"
+                    Style="{StaticResource AppTileButtonStyle}"
                     Margin="0,0,17,17"
                     Width="104"
                     Height="104">

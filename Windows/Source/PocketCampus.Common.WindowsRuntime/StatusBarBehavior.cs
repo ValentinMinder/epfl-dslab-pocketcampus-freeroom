@@ -5,12 +5,13 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 
-// from http://www.visuallylocated.com/post/2014/04/08/Creating-a-behavior-to-control-the-new-StatusBar-(SystemTray)-in-Windows-Phone-81-XAML-apps.aspx
-
 namespace PocketCampus.Common
 {
     public class StatusBarBehavior : DependencyObject, IBehavior
     {
+        // N.B.: Only indeterminate progress is supported
+        // N.B. 2: StatusBar.GetForCurrentView throws a REGDB_E_CLASSNOTREG error if ran in the designer
+
         #region IsVisible
         public bool IsVisible
         {
@@ -23,6 +24,11 @@ namespace PocketCampus.Common
 
         private static async void OnIsVisibleChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
         {
+            if ( DesignMode.DesignModeEnabled )
+            {
+                return;
+            }
+
             if ( (bool) args.NewValue )
             {
                 await StatusBar.GetForCurrentView().ShowAsync();
@@ -46,7 +52,10 @@ namespace PocketCampus.Common
 
         private static void OnBackgroundOpacityChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
         {
-            StatusBar.GetForCurrentView().BackgroundOpacity = (double) args.NewValue;
+            if ( !DesignMode.DesignModeEnabled )
+            {
+                StatusBar.GetForCurrentView().BackgroundOpacity = (double) args.NewValue;
+            }
         }
         #endregion
 
@@ -62,7 +71,10 @@ namespace PocketCampus.Common
 
         private static void OnForegroundColorChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
         {
-            StatusBar.GetForCurrentView().ForegroundColor = (Color) args.NewValue;
+            if ( !DesignMode.DesignModeEnabled )
+            {
+                StatusBar.GetForCurrentView().ForegroundColor = (Color) args.NewValue;
+            }
         }
         #endregion
 
@@ -78,7 +90,58 @@ namespace PocketCampus.Common
 
         private static void OnBackgroundColorChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
         {
-            StatusBar.GetForCurrentView().BackgroundColor = (Color) args.NewValue;
+            if ( !DesignMode.DesignModeEnabled )
+            {
+                StatusBar.GetForCurrentView().BackgroundColor = (Color) args.NewValue;
+            }
+        }
+        #endregion
+
+        #region ProgressText
+        public string Text
+        {
+            get { return (string) GetValue( TextProperty ); }
+            set { SetValue( TextProperty, value ); }
+        }
+
+        public static readonly DependencyProperty TextProperty =
+            DependencyProperty.Register( "Text", typeof( string ), typeof( StatusBarBehavior ), new PropertyMetadata( null, OnProgressTextChanged ) );
+
+
+        private static void OnProgressTextChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
+        {
+            if ( !DesignMode.DesignModeEnabled )
+            {
+                StatusBar.GetForCurrentView().ProgressIndicator.Text = (string) args.NewValue;
+            }
+        }
+        #endregion
+
+        #region ShowProgress
+        public bool ShowProgress
+        {
+            get { return (bool) GetValue( ShowProgressProperty ); }
+            set { SetValue( ShowProgressProperty, value ); }
+        }
+
+        public static readonly DependencyProperty ShowProgressProperty =
+            DependencyProperty.Register( "ShowProgress", typeof( bool ), typeof( StatusBarBehavior ), new PropertyMetadata( false, OnShowProgressChanged ) );
+
+        private static async void OnShowProgressChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
+        {
+            if ( DesignMode.DesignModeEnabled )
+            {
+                return;
+            }
+
+            if ( (bool) args.NewValue )
+            {
+                await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
+            }
+            else
+            {
+                await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
+            }
         }
         #endregion
 
@@ -95,8 +158,6 @@ namespace PocketCampus.Common
         private static async void OnUseDefaultValuesChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
         {
             // N.B.: False is not supported, just don't set it if you don't want the default values.
-
-            // StatusBar.GetForCurrentView throws a REGDB_E_CLASSNOTREG error if ran in the designer...
             if ( DesignMode.DesignModeEnabled )
             {
                 return;
@@ -115,5 +176,4 @@ namespace PocketCampus.Common
         public void Detach() { }
         public DependencyObject AssociatedObject { get; private set; }
     }
-
 }

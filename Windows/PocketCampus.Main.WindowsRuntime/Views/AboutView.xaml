@@ -45,7 +45,7 @@
                        Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
 
             <HyperlinkButton Command="{Binding BrowseUrlCommand}"
-                             CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}">
+                             CommandParameter="{CustomResource About.Website}">
                 <TextBlock Style="{StaticResource AppLargeTextBlockStyle}">
                     <Underline>
                         <Run Text="{CustomResource About.Website}" />
@@ -60,7 +60,7 @@
                        Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
 
             <HyperlinkButton Command="{Binding SendEmailCommand}"
-                             CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}">
+                             CommandParameter="{CustomResource About.Contact}">
                 <TextBlock Style="{StaticResource AppLargeTextBlockStyle}">
                     <Underline>
                         <Run Text="{CustomResource About.Contact}" />
@@ -75,7 +75,7 @@
                        Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
 
             <HyperlinkButton Command="{Binding SendEmailCommand}"
-                             CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}">
+                             CommandParameter="{CustomResource About.Support}">
                 <TextBlock Style="{StaticResource AppLargeTextBlockStyle}">
                     <Underline>
                         <Run Text="{CustomResource About.Support}" />

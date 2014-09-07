@@ -176,6 +176,10 @@
       <Project>{f780f0dd-8a14-4e72-9525-a11d792cbfab}</Project>
       <Name>PocketCampus.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Source\Directory\PocketCampus.Directory.csproj">
+      <Project>{c3793263-070c-4da7-994c-e116e63f9de6}</Project>
+      <Name>PocketCampus.Directory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Source\Main\PocketCampus.Main.csproj">
       <Project>{a1a50035-9654-49c2-afa4-f21b25f7c3b7}</Project>
       <Name>PocketCampus.Main</Name>
@@ -191,6 +195,10 @@
     <ProjectReference Include="..\Source\PocketCampus.Common.WindowsRuntime\PocketCampus.Common.WindowsRuntime.csproj">
       <Project>{31858f5b-a2b5-4afc-bf65-d5a1554524eb}</Project>
       <Name>PocketCampus.Common.WindowsRuntime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Source\PocketCampus.Directory.WindowsRuntime\PocketCampus.Directory.WindowsRuntime.csproj">
+      <Project>{0f85a43b-cb55-475c-850b-0053b9f1f93e}</Project>
+      <Name>PocketCampus.Directory.WindowsRuntime</Name>
     </ProjectReference>
     <ProjectReference Include="..\Source\PocketCampus.Satellite.WindowsRuntime\PocketCampus.Satellite.WindowsRuntime.csproj">
       <Project>{136e3c79-e778-49bc-8982-d622b0ed912b}</Project>

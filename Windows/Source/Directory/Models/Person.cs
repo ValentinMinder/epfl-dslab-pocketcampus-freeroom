@@ -34,12 +34,6 @@ namespace PocketCampus.Directory.Models
         public string EmailAddress { get; set; }
 
         /// <summary>
-        /// The person's private phone number, if it's visible.
-        /// </summary>
-        [ThriftField( 6, false, "privatePhoneNumber" )]
-        public string PrivatePhoneNumber { get; set; }
-
-        /// <summary>
         /// The person's office phone number, if it's visible.
         /// </summary>
         [ThriftField( 7, false, "officePhoneNumber" )]

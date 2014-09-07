@@ -6,7 +6,7 @@ namespace PocketCampus.Main.Views
     {
         public SettingsView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

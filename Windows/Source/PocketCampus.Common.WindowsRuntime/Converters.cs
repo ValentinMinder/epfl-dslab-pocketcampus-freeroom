@@ -1,9 +1,32 @@
 ﻿using System;
+using System.Collections;
 using System.Diagnostics;
+using System.Linq;
 using Windows.UI.Xaml;
 
 namespace PocketCampus.Common
 {
+    // HACK. TODO this should be deleted once the bug with Dictionary<K,V> binding is fixed
+    public sealed class DictionaryFixer : ValueConverter<IDictionary, IEnumerable>
+    {
+        public override IEnumerable Convert( IDictionary value )
+        {
+            return value.Cast<dynamic>().Select( d => new KeyValuePair( d.Key, d.Value ) ).ToArray();
+        }
+
+        private sealed class KeyValuePair
+        {
+            public object Key { get; private set; }
+            public object Value { get; private set; }
+
+            public KeyValuePair( object key, object value )
+            {
+                Key = key;
+                Value = value;
+            }
+        }
+    }
+
     public sealed class StringFormatConverter : ValueConverter<object, string, string>
     {
         public override string Convert( object value, string parameter )
@@ -47,6 +70,28 @@ namespace PocketCampus.Common
             // for some reason, == returns false on equal enums...
             // TODO: Investigate.
             return object.Equals( value, Enum.Parse( value.GetType(), parameter ) ) ? Visibility.Visible : Visibility.Collapsed;
+        }
+    }
+
+    public sealed class NoItemsToVisibilityConverter : ValueConverter<IEnumerable, Visibility>
+    {
+        public override Visibility Convert( IEnumerable value )
+        {
+            if ( value == null )
+            {
+                // this will be used to show "no items" messages, if items is null then it hasn't been populated yet
+                return Visibility.Collapsed;
+            }
+
+            return value.GetEnumerator().MoveNext() ? Visibility.Collapsed : Visibility.Visible;
+        }
+    }
+
+    public sealed class StringToVisibilityConverter : ValueConverter<string, Visibility>
+    {
+        public override Visibility Convert( string value )
+        {
+            return string.IsNullOrWhiteSpace( value ) ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 }

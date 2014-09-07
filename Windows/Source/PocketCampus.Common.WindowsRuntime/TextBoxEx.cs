@@ -7,6 +7,22 @@ namespace PocketCampus.Common
 {
     public sealed class TextBoxEx
     {
+        #region EnterCommandParameter
+        public static object GetEnterCommandParameter( DependencyObject obj )
+        {
+            return (object) obj.GetValue( EnterCommandParameterProperty );
+        }
+
+        public static void SetEnterCommandParameter( DependencyObject obj, object value )
+        {
+            obj.SetValue( EnterCommandParameterProperty, value );
+        }
+
+        public static readonly DependencyProperty EnterCommandParameterProperty =
+            DependencyProperty.RegisterAttached( "EnterCommandParameter", typeof( object ), typeof( TextBoxEx ), new PropertyMetadata( null ) );
+        #endregion
+
+        #region EnterCommand
         public static ICommand GetEnterCommand( DependencyObject obj )
         {
             return (ICommand) obj.GetValue( EnterCommandProperty );
@@ -23,7 +39,6 @@ namespace PocketCampus.Common
         private static void OnEnterCommandChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
         {
             // N.B.: No support for changing the command.
-            //       Also, no support for command arguments.
 
             var box = (Control) obj; // cast to Control to support PasswordBox as well as TextBox
             var command = (ICommand) args.NewValue;
@@ -32,9 +47,10 @@ namespace PocketCampus.Common
             {
                 if ( e.Key == VirtualKey.Enter )
                 {
-                    if ( command.CanExecute( null ) )
+                    var param = GetEnterCommandParameter( box );
+                    if ( command.CanExecute( param ) )
                     {
-                        command.Execute( null );
+                        command.Execute( param );
                         // HACK to dismiss the keyboard
                         box.IsEnabled = false;
                         box.IsEnabled = true;
@@ -42,5 +58,6 @@ namespace PocketCampus.Common
                 }
             };
         }
+        #endregion
     }
 }
