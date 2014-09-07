@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
-public enum CloudPrintDoubleSidedConfig implements org.apache.thrift.TEnum {
-  LONG_EDGE(1),
-  SHORT_EDGE(2);
+public enum CloudPrintColorConfig implements org.apache.thrift.TEnum {
+  BLACK_WHITE(1),
+  COLOR(2);
 
   private final int value;
 
-  private CloudPrintDoubleSidedConfig(int value) {
+  private CloudPrintColorConfig(int value) {
     this.value = value;
   }
 
@@ -31,12 +31,12 @@ public enum CloudPrintDoubleSidedConfig implements org.apache.thrift.TEnum {
    * Find a the enum type by its integer value, as defined in the Thrift IDL.
    * @return null if the value is not found.
    */
-  public static CloudPrintDoubleSidedConfig findByValue(int value) { 
+  public static CloudPrintColorConfig findByValue(int value) { 
     switch (value) {
       case 1:
-        return LONG_EDGE;
+        return BLACK_WHITE;
       case 2:
-        return SHORT_EDGE;
+        return COLOR;
       default:
         return null;
     }
