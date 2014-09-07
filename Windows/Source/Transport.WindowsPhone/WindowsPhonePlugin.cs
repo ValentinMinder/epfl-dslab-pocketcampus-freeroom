@@ -4,9 +4,7 @@
 
 using PocketCampus.Common;
 using PocketCampus.Transport.Resources;
-using PocketCampus.Transport.Services;
 using PocketCampus.Transport.ViewModels;
-using ThinMvvm;
 using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Transport
@@ -40,8 +38,6 @@ namespace PocketCampus.Transport
             navigationService.Bind<MainViewModel>( "/PocketCampus.Transport.WindowsPhone;component/Views/MainView.xaml" );
             navigationService.Bind<AddStationViewModel>( "/PocketCampus.Transport.WindowsPhone;component/Views/AddStationView.xaml" );
             navigationService.Bind<SettingsViewModel>( "/PocketCampus.Transport.WindowsPhone;component/Views/SettingsView.xaml" );
-
-            Container.Bind<IPluginSettings, PluginSettings>();
         }
     }
 }

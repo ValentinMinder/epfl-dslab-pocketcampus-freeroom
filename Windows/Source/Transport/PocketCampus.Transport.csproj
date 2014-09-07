@@ -51,6 +51,7 @@
     <Compile Include="Services\Design\DesignPluginSettings.cs" />
     <Compile Include="Services\Design\DesignTransportService.cs" />
     <Compile Include="Services\ITransportService.cs" />
+    <Compile Include="Services\PluginSettings.cs" />
     <Compile Include="Services\TransportService.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

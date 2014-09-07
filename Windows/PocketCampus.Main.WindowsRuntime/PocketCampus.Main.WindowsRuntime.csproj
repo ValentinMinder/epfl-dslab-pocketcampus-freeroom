@@ -204,9 +204,17 @@
       <Project>{136e3c79-e778-49bc-8982-d622b0ed912b}</Project>
       <Name>PocketCampus.Satellite.WindowsRuntime</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Source\PocketCampus.Transport.WindowsRuntime\PocketCampus.Transport.WindowsRuntime.csproj">
+      <Project>{e1c98ace-fe3d-4b9b-b4d9-43e611b6f744}</Project>
+      <Name>PocketCampus.Transport.WindowsRuntime</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Source\Satellite\PocketCampus.Satellite.csproj">
       <Project>{94fb2b30-aa95-41e8-9b2f-6af7d37355e1}</Project>
       <Name>PocketCampus.Satellite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Source\Transport\PocketCampus.Transport.csproj">
+      <Project>{7d663977-d179-4af3-b3b8-671159c976e6}</Project>
+      <Name>PocketCampus.Transport</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

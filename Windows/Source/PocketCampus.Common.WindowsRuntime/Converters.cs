@@ -63,6 +63,14 @@ namespace PocketCampus.Common
         }
     }
 
+    public sealed class BoolToVisibilityConverter : ValueConverter<bool, Visibility>
+    {
+        public override Visibility Convert( bool value )
+        {
+            return value ? Visibility.Visible : Visibility.Collapsed;
+        }
+    }
+
     public sealed class EnumToVisibilityConverter : ValueConverter<Enum, string, Visibility>
     {
         public override Visibility Convert( Enum value, string parameter )
@@ -92,6 +100,14 @@ namespace PocketCampus.Common
         public override Visibility Convert( string value )
         {
             return string.IsNullOrWhiteSpace( value ) ? Visibility.Collapsed : Visibility.Visible;
+        }
+    }
+
+    public sealed class NonNullToVisibilityConverter : ValueConverter<object, Visibility>
+    {
+        public override Visibility Convert( object value )
+        {
+            return value == null ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 }

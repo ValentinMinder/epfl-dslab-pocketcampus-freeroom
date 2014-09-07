@@ -3,9 +3,7 @@
 // File author: Solal Pirelli
 
 using System.Collections.ObjectModel;
-using PocketCampus.Common;
 using PocketCampus.Transport.Models;
-using PocketCampus.Transport.Resources;
 using ThinMvvm;
 
 namespace PocketCampus.Transport.Services
@@ -48,9 +46,8 @@ namespace PocketCampus.Transport.Services
         {
             return new SettingsDefaultValues
             {
-                { x => x.SortByPosition, () => MessageBoxEx.ShowPrompt( PluginResources.UseGeolocationCaption, PluginResources.UseGeolocationMessage ) },
+                { x => x.SortByPosition, () => true },
                 { x => x.Stations, () => new ObservableCollection<Station>() }
             };
         }
-    }
-}
+    }}

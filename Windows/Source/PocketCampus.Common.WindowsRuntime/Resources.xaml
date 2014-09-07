@@ -3,7 +3,6 @@
     <Color x:Key="AppStatusBarBackgroundColor">#E5060A</Color>
     <Color x:Key="AppStatusBarForegroundColor">White</Color>
 
-
     <SolidColorBrush x:Key="AppHeaderBackgroundBrush"
                      Color="#E5060A" />
     <SolidColorBrush x:Key="AppHeaderForegroundBrush"
@@ -13,6 +12,9 @@
                      Color="#E0E0E0" />
     <SolidColorBrush x:Key="AppSecondaryHeaderForegroundBrush" 
                      Color="Black" />
+    
+    <SolidColorBrush x:Key="AppSubtleBrush"
+                     Color="{StaticResource PhoneBaseLowColor}" />
 
 
     <!-- Normal text (can't set it as default for whatever reason) -->
@@ -25,7 +27,7 @@
 
     <!-- Subtle text -->
     <Style x:Key="AppSubtleTextBlockStyle" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="{StaticResource PhoneMidBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource AppSubtleBrush}" />
         <Setter Property="FontSize" Value="{StaticResource TextStyleMediumFontSize}" />
         <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
         <Setter Property="TextWrapping" Value="WrapWholeWords" />
@@ -48,8 +50,7 @@
 
     <!-- Group header text -->
     <Style x:Key="AppGroupHeaderTextBlockStyle" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="{StaticResource PhoneMidBrush}" />
-        <Setter Property="FontSize" Value="{StaticResource TextStyleLargeFontSize}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleExtraLargeFontSize}" />
         <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
         <Setter Property="TextWrapping" Value="WrapWholeWords" />
     </Style>
@@ -69,10 +70,142 @@
     </Style>
 
 
-    <!-- ListViewItem style that stretches its contents -->
-    <Style x:Key="AppStretchListViewItemStyle" TargetType="ListViewItem">
+    <!-- ItemsControl style that stretches its contents -->
+    <Style TargetType="ItemsControl">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <!-- BUG: This crashes, why? -->
+        <!--<Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                </Style>
+            </Setter.Value>
+        </Setter>-->
+    </Style>
+    
+    <!-- ListView style that stretches its contents-->
+    <Style TargetType="ListView">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ToggleSwitch that doesn't display the traditional thumb; tapping the header switches the content -->
+    <Style x:Key="AppHeaderedToggleSwitch" TargetType="ToggleSwitch">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleSwitch">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver" />
+                                <VisualState x:Name="Pressed" />
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderContentPresenter"
+                                                                   Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ToggleSwitchHeaderDisabledForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OffContentPresenter"
+                                                                   Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ToggleSwitchDisabledForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OnContentPresenter"
+                                                                   Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ToggleSwitchDisabledForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ToggleStates">
+                                <VisualState x:Name="Dragging" />
+                                <VisualState x:Name="Off" />
+                                <VisualState x:Name="On" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ContentStates">
+                                <VisualState x:Name="OffContent">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OffContentPresenter"
+                                                                       Storyboard.TargetProperty="Visibility"
+                                                                       Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsHitTestVisible" Storyboard.TargetName="OffContentPresenter">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="OnContent">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OnContentPresenter"
+                                                                       Storyboard.TargetProperty="Visibility"
+                                                                       Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsHitTestVisible" Storyboard.TargetName="OnContentPresenter">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused" />
+                                <VisualState x:Name="Unfocused" />
+                                <VisualState x:Name="PointerFocused" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <ContentPresenter x:Name="HeaderContentPresenter"
+                                          Content="{TemplateBinding Header}"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          HorizontalAlignment="Stretch"
+                                          AutomationProperties.AccessibilityView="Raw" />
+
+                        <ContentPresenter x:Name="OffContentPresenter"
+                                          Grid.Row="1"
+                                          Visibility="Collapsed"
+                                          IsHitTestVisible="False"
+                                          Content="{TemplateBinding OffContent}"
+                                          ContentTemplate="{TemplateBinding OffContentTemplate}"
+                                          HorizontalAlignment="Stretch"
+                                          AutomationProperties.AccessibilityView="Raw" />
+
+                        <ContentPresenter x:Name="OnContentPresenter"
+                                          Grid.Row="1"
+                                          Visibility="Collapsed"
+                                          IsHitTestVisible="False"
+                                          Content="{TemplateBinding OnContent}"
+                                          ContentTemplate="{TemplateBinding OnContentTemplate}"
+                                          HorizontalAlignment="Stretch"
+                                          AutomationProperties.AccessibilityView="Raw" />
+
+                        <Thumb x:Name="SwitchThumb" 
+                               AutomationProperties.AccessibilityView="Raw">
+                            <Thumb.Template>
+                                <ControlTemplate TargetType="Thumb">
+                                    <Rectangle Fill="Transparent" />
+                                </ControlTemplate>
+                            </Thumb.Template>
+                        </Thumb>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 

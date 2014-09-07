@@ -45,6 +45,7 @@ namespace PocketCampus.Transport
         public void Initialize( INavigationService navigationService )
         {
             Container.Bind<ITransportService, TransportService>();
+            Container.Bind<IPluginSettings, PluginSettings>();
         }
 
         /// <summary>

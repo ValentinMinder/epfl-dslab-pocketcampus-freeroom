@@ -122,11 +122,10 @@
                     </TextBlock>
 
                     <!-- Transactions -->
-                    <ScrollViewer Grid.Row="4"
-                                  Margin="0,32,0,0">
-                        <ItemsControl ItemsSource="{Binding AccountInfo.Transactions}"
-                                      ItemTemplate="{StaticResource TransactionTemplate}" />
-                    </ScrollViewer>
+                    <ListView Grid.Row="4"
+                              ItemsSource="{Binding AccountInfo.Transactions}"
+                              ItemTemplate="{StaticResource TransactionTemplate}" 
+                              Margin="0,32,0,0" />
                 </Grid>
             </PivotItem>
 
