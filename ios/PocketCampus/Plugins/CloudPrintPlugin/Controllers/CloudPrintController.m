@@ -31,9 +31,35 @@
 
 #import "CloudPrintRequestViewController.h"
 
-static CloudPrintController* instance __weak = nil;
+#import "CloudPrintStatusViewController.h"
 
-@interface CloudPrintController ()
+#import "CloudPrintService.h"
+
+#import "AuthenticationController.h"
+
+@interface CloudPrintJob : NSObject
+
+@property (nonatomic, strong) PrintDocumentRequest* request;
+@property (nonatomic, copy) NSString* docName;
+@property (nonatomic, copy) NSURL* documentLocalURL;
+@property (nonatomic, copy) CloudPrintCompletionBlock completion;
+
+@property (nonatomic, strong) PCNavigationController* navController;
+@property (nonatomic, weak) CloudPrintRequestViewController* requestViewController;
+@property (nonatomic, strong) CloudPrintStatusViewController* statusViewController;
+
+@end
+
+@implementation CloudPrintJob
+
+@end
+
+static CloudPrintController* instance __strong = nil;
+
+@interface CloudPrintController ()<CloudPrintServiceDelegate>
+
+@property (nonatomic, strong) CloudPrintService* cloudPrintService;
+@property (nonatomic, strong) NSMutableDictionary* jobForJobUniqueId;
 
 @end
 
@@ -50,20 +76,24 @@ static CloudPrintController* instance __weak = nil;
         self = [super init];
         if (self) {
             instance = self;
+            instance.jobForJobUniqueId = [NSMutableDictionary dictionary];
         }
         return self;
     }
 }
 
-#pragma mark - PluginControllerProtocol
++ (instancetype)sharedInstance {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[self alloc] init];
+    });
+    return instance;
+}
+
+#pragma mark - PluginController
 
 + (id)sharedInstanceToRetain {
-    @synchronized (self) {
-        if (instance) {
-            return instance;
-        }
-        return [[[self class] alloc] init];
-    }
+    return [self sharedInstance];
 }
 
 + (NSString*)localizedName {
@@ -75,13 +105,146 @@ static CloudPrintController* instance __weak = nil;
 }
 
 #pragma mark - Public
+    
++ (BOOL)isSupportedFileWithLocalURL:(NSURL*)localURL {
+#warning TODO
+    return YES;
+}
 
-+ (UIViewController*)viewControllerForPrintWithDocumentName:(NSString*)docName printDocumentRequest:(PrintDocumentRequest*)request {
+- (UIViewController*)viewControllerForPrintDocumentWithLocalURL:(NSURL*)localURL docName:(NSString*)docName printDocumentRequestOrNil:(PrintDocumentRequest*)request completion:(void (^)(CloudPrintCompletionStatusCode printStatusCode))completion {
+#warning TODO
+    return nil;
+}
+
+- (UIViewController*)viewControllerForPrintWithDocumentName:(NSString*)docName printDocumentRequest:(PrintDocumentRequest*)request completion:(void (^)(CloudPrintCompletionStatusCode printStatusCode))completion {
     if (request.documentId == 0) {
         [NSException raise:@"Illegal argument" format:@"request.documentId cannot be 0"];
     }
-    UIViewController* viewController = [[CloudPrintRequestViewController alloc] initWithDocumentName:docName printRequest:request];
-    return [[UINavigationController alloc] initWithRootViewController:viewController];
+    
+    CloudPrintRequestViewController* requestViewController = [[CloudPrintRequestViewController alloc] initWithDocumentName:docName printRequest:request];
+    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:requestViewController];
+    
+    CloudPrintJob* job = [CloudPrintJob new];
+    job.request = request;
+    job.docName = docName;
+    job.completion = completion;
+    job.navController = navController;
+    job.requestViewController = requestViewController;
+    self.jobForJobUniqueId[request.jobUniqueId] = job;
+    
+    __weak __typeof(job) wjob = job;
+    
+    __weak __typeof(self) welf = self;
+    [requestViewController setUserValidatedRequestBlock:^(PrintDocumentRequest* request) {
+        if (!wjob.statusViewController) {
+            wjob.statusViewController = [CloudPrintStatusViewController new];
+            
+            [wjob.statusViewController setUserCancelledBlock:^{
+                [welf.cloudPrintService cancelJobsWithUniqueId:wjob.request.jobUniqueId];
+                [wjob.navController popToViewController:wjob.requestViewController animated:YES];
+            }];
+        }
+        
+        wjob.statusViewController.documentName = wjob.docName;
+        wjob.statusViewController.statusMessage = CloudPrintStatusMessageSendingToPrinter;
+        wjob.statusViewController.progress = 0.05;
+        
+        if (wjob.navController.topViewController != wjob.statusViewController) {
+            [wjob.navController pushViewController:wjob.statusViewController animated:YES];
+        }
+        
+        if (!welf.cloudPrintService) {
+            welf.cloudPrintService = [CloudPrintService sharedInstanceToRetain];
+        }
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (wjob.navController.topViewController == wjob.statusViewController) {
+                // if user tapped cancel so quickly that it was before this dispatch triggered, we should
+                // not start the request
+                [welf.cloudPrintService printDocumentWithRequest:request delegate:welf];
+            }
+        });
+    }];
+    [requestViewController setUserCancelledBlock:^{
+        [welf job:wjob completedWithStatusCode:CloudPrintCompletionStatusCodeUserCancelled];
+    }];
+    return navController;
+}
+
+#pragma mark - CloudPrintService
+
+- (void)printDocumentForRequest:(PrintDocumentRequest *)request didReturn:(PrintDocumentResponse *)response {
+    CloudPrintJob* job = self.jobForJobUniqueId[request.jobUniqueId];
+    if (!job) {
+        NSLog(@"!! ERROR: could not find job in printDocumentForRequest:didReturn for job id: %@. Returning.", request.jobUniqueId);
+        return;
+    }
+    switch (response.statusCode) {
+        case CloudPrintStatusCode_OK:
+        {
+            [job.statusViewController setProgress:1.0 animated:YES];
+            job.statusViewController.statusMessage = CloudPrintStatusMessageSuccess;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ //give time for success message and animation
+                [self job:job completedWithStatusCode:CloudPrintCompletionStatusCodePrintSuccess];
+            });
+            break;
+        }
+        case CloudPrintStatusCode_AUTHENTICATION_ERROR:
+        {
+            [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
+                job.requestViewController.userValidatedRequestBlock(job.request);
+            } userCancelled:^{
+                job.statusViewController.progress = 0.0;
+                job.statusViewController.statusMessage = CloudPrintStatusMessageError;
+                [job.navController popToViewController:job.requestViewController animated:YES];
+            } failure:^{
+                job.statusViewController.progress = 0.0;
+                job.statusViewController.statusMessage = CloudPrintStatusMessageError;
+                [PCUtils showServerErrorAlert];
+                [job.navController popToViewController:job.requestViewController animated:YES];
+            }];
+            break;
+        }
+        case CloudPrintStatusCode_PRINT_ERROR:
+            job.statusViewController.progress = 0.0;
+            job.statusViewController.statusMessage = CloudPrintStatusMessageError;
+            [PCUtils showServerErrorAlert];
+            [job.navController popToViewController:job.requestViewController animated:YES];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)printDocumentFailedForRequest:(PrintDocumentRequest *)request {
+    CloudPrintJob* job = self.jobForJobUniqueId[request.jobUniqueId];
+    if (!job) {
+        NSLog(@"!! ERROR: could not find job in printDocumentFailedForRequest: for job id: %@. Returning.", request.jobUniqueId);
+        return;
+    }
+    job.statusViewController.progress = 0.0;
+    job.statusViewController.statusMessage = CloudPrintStatusMessageError;
+    [PCUtils showServerErrorAlert];
+    [job.navController popToViewController:job.requestViewController animated:YES];
+}
+
+- (void)serviceConnectionToServerFailed {
+    [PCUtils showConnectionToServerTimedOutAlert];
+    for (CloudPrintJob* job in self.jobForJobUniqueId.allValues) {
+        job.statusViewController.progress = 0.0;
+        job.statusViewController.statusMessage = CloudPrintStatusMessageError;
+        [job.navController popToViewController:job.requestViewController animated:YES];
+    }
+}
+
+#pragma mark - Private
+
+- (void)job:(CloudPrintJob*)job completedWithStatusCode:(CloudPrintCompletionStatusCode)statusCode {
+    @synchronized (self) {
+        if (job.completion) {
+            job.completion(statusCode);
+        }
+        [self.jobForJobUniqueId removeObjectForKey:job.request.jobUniqueId];
+    }
 }
 
 #pragma mark - Dealloc

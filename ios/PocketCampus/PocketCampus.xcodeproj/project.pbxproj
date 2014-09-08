@@ -166,6 +166,8 @@
 		326F5A7719BCDC65000693A2 /* CloudPrintMultiPageLayoutButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 326F5A7619BCDC65000693A2 /* CloudPrintMultiPageLayoutButton.m */; };
 		326F5A7919BCDC71000693A2 /* CloudPrintMultiPageLayoutButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A7819BCDC71000693A2 /* CloudPrintMultiPageLayoutButton.xib */; };
 		326F5A7A19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A7C19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib */; };
+		326F5A8019BDA2AA000693A2 /* CloudPrintStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 326F5A7F19BDA2AA000693A2 /* CloudPrintStatusViewController.m */; };
+		326F5A8219BDA2D0000693A2 /* CloudPrintStatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A8119BDA2D0000693A2 /* CloudPrintStatusView.xib */; };
 		326FE23A19A5E8FF001A5056 /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */; };
 		326FE23B19A5E9E2001A5056 /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */; };
 		326FE23C19A63D17001A5056 /* CamiproWidget.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 326FE23E19A63D17001A5056 /* CamiproWidget.storyboard */; };
@@ -691,6 +693,9 @@
 		326F5A7819BCDC71000693A2 /* CloudPrintMultiPageLayoutButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CloudPrintMultiPageLayoutButton.xib; sourceTree = "<group>"; };
 		326F5A7B19BCF135000693A2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CloudPrintMultiPageLayoutCell.xib; sourceTree = "<group>"; };
 		326F5A7D19BCF136000693A2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/CloudPrintMultiPageLayoutCell.xib; sourceTree = "<group>"; };
+		326F5A7E19BDA2AA000693A2 /* CloudPrintStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintStatusViewController.h; sourceTree = "<group>"; };
+		326F5A7F19BDA2AA000693A2 /* CloudPrintStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintStatusViewController.m; sourceTree = "<group>"; };
+		326F5A8119BDA2D0000693A2 /* CloudPrintStatusView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CloudPrintStatusView.xib; sourceTree = "<group>"; };
 		326FE23819A5E8FF001A5056 /* NSUserDefaults+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+Additions.h"; sourceTree = "<group>"; };
 		326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Additions.m"; sourceTree = "<group>"; };
 		326FE23D19A63D17001A5056 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/CamiproWidget.storyboard; sourceTree = "<group>"; };
@@ -2070,6 +2075,8 @@
 				32DD524519B4DEAE00B5B241 /* CloudPrintController.m */,
 				32870F9C19B674AE00A3BC68 /* CloudPrintRequestViewController.h */,
 				32870F9D19B674AE00A3BC68 /* CloudPrintRequestViewController.m */,
+				326F5A7E19BDA2AA000693A2 /* CloudPrintStatusViewController.h */,
+				326F5A7F19BDA2AA000693A2 /* CloudPrintStatusViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2105,6 +2112,7 @@
 				326F5A7519BCDC65000693A2 /* CloudPrintMultiPageLayoutButton.h */,
 				326F5A7619BCDC65000693A2 /* CloudPrintMultiPageLayoutButton.m */,
 				326F5A7819BCDC71000693A2 /* CloudPrintMultiPageLayoutButton.xib */,
+				326F5A8119BDA2D0000693A2 /* CloudPrintStatusView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2714,6 +2722,7 @@
 				32CACD97183E366B00BD36F9 /* LocationArrow.png in Resources */,
 				327513331825465D0037FE00 /* FavoriteCornerSelected.png in Resources */,
 				32B3F3941621956C007A75C7 /* MainMenuView.xib in Resources */,
+				326F5A8219BDA2D0000693A2 /* CloudPrintStatusView.xib in Resources */,
 				325C47AB1621D8FC006752B4 /* MainMenuItemCell.xib in Resources */,
 				325C47B4162200E8006752B4 /* BlankPluginView.xib in Resources */,
 				3200375918119B4100901F6A /* Info.png in Resources */,
@@ -3053,6 +3062,7 @@
 				27B74CFF19A21146006B2F17 /* RecommendedAppTableViewCell.m in Sources */,
 				322207EF1688F097003F6622 /* NewsItemViewController.m in Sources */,
 				32930AB817F898910025F864 /* ZUUIRevealController.m in Sources */,
+				326F5A8019BDA2AA000693A2 /* CloudPrintStatusViewController.m in Sources */,
 				32EB617F180D5A3C001AE852 /* MapResultsListViewController.m in Sources */,
 				32D1DE161846614500D0C866 /* TransportTripCell.m in Sources */,
 				322207F91689E3A3003F6622 /* PCUtils.m in Sources */,

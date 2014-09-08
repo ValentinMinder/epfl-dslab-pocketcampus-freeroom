@@ -31,13 +31,44 @@
 
 #import "CloudPrintModelAdditions.h"
 
+typedef NS_ENUM(NSInteger, CloudPrintCompletionStatusCode) {
+    CloudPrintCompletionStatusCodePrintSuccess,
+    CloudPrintCompletionStatusCodeUserCancelled,
+};
+
+typedef void (^CloudPrintCompletionBlock)(CloudPrintCompletionStatusCode printStatusCode);
+
 @interface CloudPrintController : PluginController<PluginControllerProtocol>
 
 /**
- * @return a view controller that you can present to print a document, letting user validate/change print config and start the print
+ * Same as sharedInstanceToRetain
+ * Only indicates that sharedInstanceToRetain actually does not
+ * need to be retained (singleton).
+ */
++ (instancetype)sharedInstance;
+
+/**
+ * @return YES if file with localURL is accessible and has a format that is supported for printing. NO otherwise.
+ */
++ (BOOL)isSupportedFileWithLocalURL:(NSURL*)localURL;
+
+/**
+ * @return a view controller that you can present to print a local file. Upload will be handled and user will be able to validate/change print config and start the print.
+ * @param localURL must be the URL of a readable local file. See isSupportedFileWithLocalURL: to know wether your file can be printed.
+ * @param printDocumentRequestOrNil you can pass a print request to pre-fill the config. The documentId attribute will be ignored.
+ * @discussion you're excpected to dismiss the returned view controller when completion is executed (no matter the status code value)
+ */
+- (UIViewController*)viewControllerForPrintDocumentWithLocalURL:(NSURL*)localURL docName:(NSString*)docName printDocumentRequestOrNil:(PrintDocumentRequest*)request completion:(CloudPrintCompletionBlock)completion;
+
+/**
+ * @return a view controller that you can present to print a document for which you already have an id for, letting user validate/change print config and start the print.
  * @param docName the name of the document, is only used to show to user that he is printing the correct thing. Not used for identification.
  * @param request documentId cannot be 0. You can create a request with default parameters using [PrintDocumentRequest createDefaultRequest]
+ * @discussion Use this method when you *already* have a PrintDocumentRequest.documentId (i.e. the document is already known by the server).
+ * You're excpected to dismiss the returned view controller when completion is executed (no matter the status code value).
+ * If you want to print a local file, use viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil.
  */
-+ (UIViewController*)viewControllerForPrintWithDocumentName:(NSString*)docName printDocumentRequest:(PrintDocumentRequest*)request;
+- (UIViewController*)viewControllerForPrintWithDocumentName:(NSString*)docName printDocumentRequest:(PrintDocumentRequest*)request completion:(CloudPrintCompletionBlock)completion;
+
 
 @end

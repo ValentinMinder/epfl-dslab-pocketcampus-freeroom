@@ -29,6 +29,8 @@
 
 #import "CloudPrintModelAdditions.h"
 
+#import <objc/runtime.h>
+
 @implementation CloudPrintModelAdditions
 
 + (NSString*)localizedTitleForMultiPageLayout:(NSInteger)multiPageLayout {
@@ -92,6 +94,21 @@
     request.blackAndWhite = YES;
     request.numberOfCopies = 1;
     return request;
+}
+
+- (NSString*)jobUniqueId {
+    static NSString* key;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        key = NSStringFromSelector(_cmd);
+    });
+    id value = objc_getAssociatedObject(self, (__bridge const void *)(key));
+    if (!value) {
+        unsigned int r = arc4random();
+        value = [NSString stringWithFormat:@"%u", r];
+        objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return value;
 }
 
 @end

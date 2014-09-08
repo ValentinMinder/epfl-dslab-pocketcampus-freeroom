@@ -117,4 +117,9 @@ typedef enum {
  */
 @property (nonatomic) BOOL returnEvenStaleCacheIfNoInternetConnection;
 
+/**
+ * You can attach any dictionary to keep context whe accessing this service request later
+ */
+@property (nonatomic, strong) NSDictionary* userInfo;
+
 @end

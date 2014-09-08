@@ -56,3 +56,10 @@
 "RIGHT_TO_LEFT_BOTTOM_TO_TOP" = "De droite à gauche puis de bas en haut";
 "RIGHT_TO_LEFT_TOP_TO_BOTTOM" = "De droite à gauche puis de haut en bas";
 "TOP_TO_BOTTOM_RIGHT_TO_LEFT" = "De haut en bas puis de droite à gauche";
+
+//CloudPrintStatusViewController
+"Loading" = "Chargement";
+"UploadingFile" = "Upload du fichier";
+"SendingToPrinter" = "Envoi à l'imprimante";
+"Success" = "Succès";
+"Error" = "Erreur";

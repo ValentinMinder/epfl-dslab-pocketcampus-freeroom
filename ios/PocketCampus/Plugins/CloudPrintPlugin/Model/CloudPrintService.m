@@ -33,6 +33,8 @@
 
 static CloudPrintService* instance __weak = nil;
 
+static NSString* const kCloudPrintServiceJobUniqueIdServiceRequestUserInfoKey = @"JobUniqueId";
+
 #pragma mark - Init
 
 - (id)init {
@@ -63,12 +65,26 @@ static CloudPrintService* instance __weak = nil;
 
 - (void)printDocumentWithRequest:(PrintDocumentRequest*)request delegate:(id<CloudPrintServiceDelegate>)delegate {
     PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.userInfo = @{kCloudPrintServiceJobUniqueIdServiceRequestUserInfoKey:request.jobUniqueId};
     operation.serviceClientSelector = @selector(printDocument:);
     operation.delegateDidReturnSelector = @selector(printDocumentForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(printDocumentFailedForRequest:);
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
+}
+
+#pragma mark - Utils
+
+- (void)cancelJobsWithUniqueId:(NSString*)jobUniqueId {
+    for (NSOperation* operation in self.operationQueue.operations) {
+        if ([operation isKindOfClass:[PCServiceRequest class]]) {
+            NSString* opJobUniqueId = [(PCServiceRequest*)operation userInfo][kCloudPrintServiceJobUniqueIdServiceRequestUserInfoKey];
+            if (opJobUniqueId && [opJobUniqueId isEqualToString:jobUniqueId]) {
+                [operation cancel];
+            }
+        }
+    }
 }
 
 #pragma mark - Dealloc

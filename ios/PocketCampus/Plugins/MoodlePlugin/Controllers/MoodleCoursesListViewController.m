@@ -109,8 +109,11 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     [super viewDidAppear:animated];
     PrintDocumentRequest* request = [PrintDocumentRequest createDefaultRequest];
     request.documentId = 1;
-    UIViewController* viewController = [CloudPrintController viewControllerForPrintWithDocumentName:@"Test.pdf" printDocumentRequest:request];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    UIViewController* viewController = [[CloudPrintController sharedInstance] viewControllerForPrintWithDocumentName:@"Test.pdf" printDocumentRequest:request completion:^(CloudPrintCompletionStatusCode printStatusCode) {
+        NSLog(@"completion: %d", printStatusCode);
+        [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
+    }];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.navigationController presentViewController:viewController animated:YES completion:NULL];
     });
 }

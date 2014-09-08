@@ -388,7 +388,7 @@ static NSInteger const kPageToTheEndValue = 10000;
                     [(CloudPrintMultiPageLayoutCell*)cell setSelectedMultiPageLayout:self.printRequest.multiPageConfig.layout];
                     __weak __typeof(self) welf = self;
                     [(CloudPrintMultiPageLayoutCell*)cell setUserSelectedMultiPageLayout:^(NSInteger multiPageLayout) {
-                        welf.printRequest.multiPageConfig.layout = multiPageLayout;
+                        welf.printRequest.multiPageConfig.layout = (int)multiPageLayout;
                     }];
                     break;
                 }

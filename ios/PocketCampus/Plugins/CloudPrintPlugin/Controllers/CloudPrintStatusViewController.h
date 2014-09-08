@@ -25,39 +25,29 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 01.09.2014.
+//  Created by Loïc Gardiol on 08.09.14.
 
-@import Foundation;
+typedef NS_ENUM(NSInteger, CloudPrintStatusMessage) {
+    CloudPrintStatusMessageLoading = 0,
+    CloudPrintStatusMessageUploadingFile,
+    CloudPrintStatusMessageSendingToPrinter,
+    CloudPrintStatusMessageSuccess,
+    CloudPrintStatusMessageError
+};
 
-#import "PCService.h"
+@interface CloudPrintStatusViewController : UIViewController
 
-#import "CloudPrintModelAdditions.h"
+- (instancetype)init;
 
-@protocol CloudPrintServiceDelegate <PCServiceDelegate>
+@property (nonatomic, copy) NSString* documentName;
+@property (nonatomic) CloudPrintStatusMessage statusMessage;
+@property (nonatomic) float progress; // [0.0, 1.0]
 
-@optional
-
-- (void)printDocumentForRequest:(PrintDocumentRequest*)request didReturn:(PrintDocumentResponse*)response;
-- (void)printDocumentFailedForRequest:(PrintDocumentRequest*)request;
-
-@end
-
-@interface CloudPrintService : PCService <PCServiceProtocol>
-
-/*
- * Thrift service methods
- *
- * - (PrintDocumentResponse *) printDocument: (PrintDocumentRequest *) request;  // throws TException
- */
-
-- (void)printDocumentWithRequest:(PrintDocumentRequest*)request delegate:(id<CloudPrintServiceDelegate>)delegate;
+- (void)setProgress:(float)progress animated:(BOOL)animated;
 
 /**
- * Loops through self.operationQueue.operations and cancels all operations
- * with userInfo key-value corresponding to jobUniqueId.
+ * Executed when user taps on cancel
  */
-- (void)cancelJobsWithUniqueId:(NSString*)jobUniqueId;
+@property (nonatomic, copy) void (^userCancelledBlock)();
 
 @end
-
-
