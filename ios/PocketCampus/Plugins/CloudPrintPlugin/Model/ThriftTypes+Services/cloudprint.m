@@ -314,23 +314,172 @@
 
 @end
 
+@implementation CloudPrintMultipleCopies
+
+- (id) initWithNumberOfCopies: (int32_t) numberOfCopies collate: (BOOL) collate
+{
+  self = [super init];
+  __numberOfCopies = numberOfCopies;
+  __numberOfCopies_isset = YES;
+  __collate = collate;
+  __collate_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"numberOfCopies"])
+  {
+    __numberOfCopies = [decoder decodeInt32ForKey: @"numberOfCopies"];
+    __numberOfCopies_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"collate"])
+  {
+    __collate = [decoder decodeBoolForKey: @"collate"];
+    __collate_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__numberOfCopies_isset)
+  {
+    [encoder encodeInt32: __numberOfCopies forKey: @"numberOfCopies"];
+  }
+  if (__collate_isset)
+  {
+    [encoder encodeBool: __collate forKey: @"collate"];
+  }
+}
+
+- (void) dealloc
+{
+  [super dealloc];
+}
+
+- (int32_t) numberOfCopies {
+  return __numberOfCopies;
+}
+
+- (void) setNumberOfCopies: (int32_t) numberOfCopies {
+  __numberOfCopies = numberOfCopies;
+  __numberOfCopies_isset = YES;
+}
+
+- (BOOL) numberOfCopiesIsSet {
+  return __numberOfCopies_isset;
+}
+
+- (void) unsetNumberOfCopies {
+  __numberOfCopies_isset = NO;
+}
+
+- (BOOL) collate {
+  return __collate;
+}
+
+- (void) setCollate: (BOOL) collate {
+  __collate = collate;
+  __collate_isset = YES;
+}
+
+- (BOOL) collateIsSet {
+  return __collate_isset;
+}
+
+- (void) unsetCollate {
+  __collate_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setNumberOfCopies: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_BOOL) {
+          BOOL fieldValue = [inProtocol readBool];
+          [self setCollate: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"CloudPrintMultipleCopies"];
+  if (__numberOfCopies_isset) {
+    [outProtocol writeFieldBeginWithName: @"numberOfCopies" type: TType_I32 fieldID: 1];
+    [outProtocol writeI32: __numberOfCopies];
+    [outProtocol writeFieldEnd];
+  }
+  if (__collate_isset) {
+    [outProtocol writeFieldBeginWithName: @"collate" type: TType_BOOL fieldID: 2];
+    [outProtocol writeBool: __collate];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"CloudPrintMultipleCopies("];
+  [ms appendString: @"numberOfCopies:"];
+  [ms appendFormat: @"%i", __numberOfCopies];
+  [ms appendString: @",collate:"];
+  [ms appendFormat: @"%i", __collate];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @implementation PrintDocumentRequest
 
-- (id) initWithDocumentId: (int64_t) documentId blackAndWhite: (BOOL) blackAndWhite numberOfCopies: (int32_t) numberOfCopies pageSelection: (CloudPrintPageRange *) pageSelection multiPageConfig: (CloudPrintMultiPageConfig *) multiPageConfig doubleSided: (int) doubleSided
+- (id) initWithDocumentId: (int64_t) documentId pageSelection: (CloudPrintPageRange *) pageSelection multiPageConfig: (CloudPrintMultiPageConfig *) multiPageConfig doubleSided: (int) doubleSided orientation: (int) orientation multipleCopies: (CloudPrintMultipleCopies *) multipleCopies colorConfig: (int) colorConfig
 {
   self = [super init];
   __documentId = documentId;
   __documentId_isset = YES;
-  __blackAndWhite = blackAndWhite;
-  __blackAndWhite_isset = YES;
-  __numberOfCopies = numberOfCopies;
-  __numberOfCopies_isset = YES;
   __pageSelection = [pageSelection retain];
   __pageSelection_isset = YES;
   __multiPageConfig = [multiPageConfig retain];
   __multiPageConfig_isset = YES;
   __doubleSided = doubleSided;
   __doubleSided_isset = YES;
+  __orientation = orientation;
+  __orientation_isset = YES;
+  __multipleCopies = [multipleCopies retain];
+  __multipleCopies_isset = YES;
+  __colorConfig = colorConfig;
+  __colorConfig_isset = YES;
   return self;
 }
 
@@ -341,16 +490,6 @@
   {
     __documentId = [decoder decodeInt64ForKey: @"documentId"];
     __documentId_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"blackAndWhite"])
-  {
-    __blackAndWhite = [decoder decodeBoolForKey: @"blackAndWhite"];
-    __blackAndWhite_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"numberOfCopies"])
-  {
-    __numberOfCopies = [decoder decodeInt32ForKey: @"numberOfCopies"];
-    __numberOfCopies_isset = YES;
   }
   if ([decoder containsValueForKey: @"pageSelection"])
   {
@@ -367,6 +506,21 @@
     __doubleSided = [decoder decodeIntForKey: @"doubleSided"];
     __doubleSided_isset = YES;
   }
+  if ([decoder containsValueForKey: @"orientation"])
+  {
+    __orientation = [decoder decodeIntForKey: @"orientation"];
+    __orientation_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"multipleCopies"])
+  {
+    __multipleCopies = [[decoder decodeObjectForKey: @"multipleCopies"] retain];
+    __multipleCopies_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"colorConfig"])
+  {
+    __colorConfig = [decoder decodeIntForKey: @"colorConfig"];
+    __colorConfig_isset = YES;
+  }
   return self;
 }
 
@@ -375,14 +529,6 @@
   if (__documentId_isset)
   {
     [encoder encodeInt64: __documentId forKey: @"documentId"];
-  }
-  if (__blackAndWhite_isset)
-  {
-    [encoder encodeBool: __blackAndWhite forKey: @"blackAndWhite"];
-  }
-  if (__numberOfCopies_isset)
-  {
-    [encoder encodeInt32: __numberOfCopies forKey: @"numberOfCopies"];
   }
   if (__pageSelection_isset)
   {
@@ -396,12 +542,25 @@
   {
     [encoder encodeInt: __doubleSided forKey: @"doubleSided"];
   }
+  if (__orientation_isset)
+  {
+    [encoder encodeInt: __orientation forKey: @"orientation"];
+  }
+  if (__multipleCopies_isset)
+  {
+    [encoder encodeObject: __multipleCopies forKey: @"multipleCopies"];
+  }
+  if (__colorConfig_isset)
+  {
+    [encoder encodeInt: __colorConfig forKey: @"colorConfig"];
+  }
 }
 
 - (void) dealloc
 {
   [__pageSelection release];
   [__multiPageConfig release];
+  [__multipleCopies release];
   [super dealloc];
 }
 
@@ -420,40 +579,6 @@
 
 - (void) unsetDocumentId {
   __documentId_isset = NO;
-}
-
-- (BOOL) blackAndWhite {
-  return __blackAndWhite;
-}
-
-- (void) setBlackAndWhite: (BOOL) blackAndWhite {
-  __blackAndWhite = blackAndWhite;
-  __blackAndWhite_isset = YES;
-}
-
-- (BOOL) blackAndWhiteIsSet {
-  return __blackAndWhite_isset;
-}
-
-- (void) unsetBlackAndWhite {
-  __blackAndWhite_isset = NO;
-}
-
-- (int32_t) numberOfCopies {
-  return __numberOfCopies;
-}
-
-- (void) setNumberOfCopies: (int32_t) numberOfCopies {
-  __numberOfCopies = numberOfCopies;
-  __numberOfCopies_isset = YES;
-}
-
-- (BOOL) numberOfCopiesIsSet {
-  return __numberOfCopies_isset;
-}
-
-- (void) unsetNumberOfCopies {
-  __numberOfCopies_isset = NO;
 }
 
 - (CloudPrintPageRange *) pageSelection {
@@ -515,6 +640,61 @@
   __doubleSided_isset = NO;
 }
 
+- (int) orientation {
+  return __orientation;
+}
+
+- (void) setOrientation: (int) orientation {
+  __orientation = orientation;
+  __orientation_isset = YES;
+}
+
+- (BOOL) orientationIsSet {
+  return __orientation_isset;
+}
+
+- (void) unsetOrientation {
+  __orientation_isset = NO;
+}
+
+- (CloudPrintMultipleCopies *) multipleCopies {
+  return [[__multipleCopies retain] autorelease];
+}
+
+- (void) setMultipleCopies: (CloudPrintMultipleCopies *) multipleCopies {
+  [multipleCopies retain];
+  [__multipleCopies release];
+  __multipleCopies = multipleCopies;
+  __multipleCopies_isset = YES;
+}
+
+- (BOOL) multipleCopiesIsSet {
+  return __multipleCopies_isset;
+}
+
+- (void) unsetMultipleCopies {
+  [__multipleCopies release];
+  __multipleCopies = nil;
+  __multipleCopies_isset = NO;
+}
+
+- (int) colorConfig {
+  return __colorConfig;
+}
+
+- (void) setColorConfig: (int) colorConfig {
+  __colorConfig = colorConfig;
+  __colorConfig_isset = YES;
+}
+
+- (BOOL) colorConfigIsSet {
+  return __colorConfig_isset;
+}
+
+- (void) unsetColorConfig {
+  __colorConfig_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -534,22 +714,6 @@
         if (fieldType == TType_I64) {
           int64_t fieldValue = [inProtocol readI64];
           [self setDocumentId: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 3:
-        if (fieldType == TType_BOOL) {
-          BOOL fieldValue = [inProtocol readBool];
-          [self setBlackAndWhite: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 4:
-        if (fieldType == TType_I32) {
-          int32_t fieldValue = [inProtocol readI32];
-          [self setNumberOfCopies: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
@@ -582,6 +746,32 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 8:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setOrientation: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 9:
+        if (fieldType == TType_STRUCT) {
+          CloudPrintMultipleCopies *fieldValue = [[CloudPrintMultipleCopies alloc] init];
+          [fieldValue read: inProtocol];
+          [self setMultipleCopies: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 10:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setColorConfig: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -596,16 +786,6 @@
   if (__documentId_isset) {
     [outProtocol writeFieldBeginWithName: @"documentId" type: TType_I64 fieldID: 1];
     [outProtocol writeI64: __documentId];
-    [outProtocol writeFieldEnd];
-  }
-  if (__blackAndWhite_isset) {
-    [outProtocol writeFieldBeginWithName: @"blackAndWhite" type: TType_BOOL fieldID: 3];
-    [outProtocol writeBool: __blackAndWhite];
-    [outProtocol writeFieldEnd];
-  }
-  if (__numberOfCopies_isset) {
-    [outProtocol writeFieldBeginWithName: @"numberOfCopies" type: TType_I32 fieldID: 4];
-    [outProtocol writeI32: __numberOfCopies];
     [outProtocol writeFieldEnd];
   }
   if (__pageSelection_isset) {
@@ -627,6 +807,23 @@
     [outProtocol writeI32: __doubleSided];
     [outProtocol writeFieldEnd];
   }
+  if (__orientation_isset) {
+    [outProtocol writeFieldBeginWithName: @"orientation" type: TType_I32 fieldID: 8];
+    [outProtocol writeI32: __orientation];
+    [outProtocol writeFieldEnd];
+  }
+  if (__multipleCopies_isset) {
+    if (__multipleCopies != nil) {
+      [outProtocol writeFieldBeginWithName: @"multipleCopies" type: TType_STRUCT fieldID: 9];
+      [__multipleCopies write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__colorConfig_isset) {
+    [outProtocol writeFieldBeginWithName: @"colorConfig" type: TType_I32 fieldID: 10];
+    [outProtocol writeI32: __colorConfig];
+    [outProtocol writeFieldEnd];
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -635,16 +832,18 @@
   NSMutableString * ms = [NSMutableString stringWithString: @"PrintDocumentRequest("];
   [ms appendString: @"documentId:"];
   [ms appendFormat: @"%qi", __documentId];
-  [ms appendString: @",blackAndWhite:"];
-  [ms appendFormat: @"%i", __blackAndWhite];
-  [ms appendString: @",numberOfCopies:"];
-  [ms appendFormat: @"%i", __numberOfCopies];
   [ms appendString: @",pageSelection:"];
   [ms appendFormat: @"%@", __pageSelection];
   [ms appendString: @",multiPageConfig:"];
   [ms appendFormat: @"%@", __multiPageConfig];
   [ms appendString: @",doubleSided:"];
   [ms appendFormat: @"%i", __doubleSided];
+  [ms appendString: @",orientation:"];
+  [ms appendFormat: @"%i", __orientation];
+  [ms appendString: @",multipleCopies:"];
+  [ms appendFormat: @"%@", __multipleCopies];
+  [ms appendString: @",colorConfig:"];
+  [ms appendFormat: @"%i", __colorConfig];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }

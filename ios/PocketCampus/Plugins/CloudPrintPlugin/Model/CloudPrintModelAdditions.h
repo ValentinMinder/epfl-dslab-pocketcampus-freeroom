@@ -49,6 +49,12 @@
  */
 + (NSString*)localizedTitleForNbPagesPerSheet:(NSInteger)nbPagesPerSheet;
 
+/**
+ * @return a localized title for an enum value of CloudPrintOrientation,
+ * nil if orientation does not exist.
+ */
++ (NSString*)localizedTitleForOrientation:(NSInteger)orientation;
+
 @end
 
 @interface PrintDocumentRequest (Additions)

@@ -36,9 +36,10 @@
 #import "CloudPrintMultiPageLayoutCell.h"
 
 static NSInteger const kCopiesAndRangeSectionIndex = 0;
-static NSInteger const kDoubleSidedSectionIndex = 1;
-static NSInteger const kMultiPageSectionIndex = 2;
-static NSInteger const kBlackAndWhiteSectionIndex = 3;
+static NSInteger const kOrientationSectionIndex = 1;
+static NSInteger const kDoubleSidedSectionIndex = 2;
+static NSInteger const kMultiPageSectionIndex = 3;
+static NSInteger const kColorSectionIndex = 4;
 
 static NSInteger const kNbCopiesRowIndex = 0;
 static NSInteger const kPagesRangeRowIndex = 1;
@@ -48,13 +49,15 @@ static NSInteger const kPageToRowIndex = 3;
 static NSInteger const kAllPagesSegmentIndex = 0;
 static NSInteger const kSelectedPagesSegmentIndex = 1;
 
+static NSInteger const kOrientationRowIndex = 0;
+
 static NSInteger const kDoubleSidedRowIndex = 0;
 static NSInteger const kDoubleSidedConfigRowIndex = 1;
 
 static NSInteger const kNbPagesPerSheetRowIndex = 0;
 static NSInteger const kMultiPageLayoutRowIndex = 1;
 
-static NSInteger const kBlackAndWhiteRowIndex = 0;
+static NSInteger const kColorRowIndex = 0;
 
 static NSInteger const kPageToTheEndValue = 10000;
 
@@ -68,10 +71,12 @@ static NSInteger const kPageToTheEndValue = 10000;
 @property (nonatomic, strong) UIStepper* pageFromStepper;
 @property (nonatomic, strong) UIButton* pageToChangeButton;
 @property (nonatomic, strong) UIStepper * pageToStepper;
+@property (nonatomic, strong) UISwitch* collateToggle;
+@property (nonatomic, strong) UIActionSheet* orientationActionSheet;
 @property (nonatomic, strong) UISwitch* doubleSidedToggle;
 @property (nonatomic, strong) UIActionSheet* doubleSidedConfigActionSheet;
 @property (nonatomic, strong) UIActionSheet* pagesPerSheetActionSheet;
-@property (nonatomic, strong) UISwitch* blackAndWhiteToggle;
+@property (nonatomic, strong) UISwitch* colorToggle;
 
 @end
 
@@ -118,8 +123,11 @@ static NSInteger const kPageToTheEndValue = 10000;
 
 - (void)valueChanged:(id)sender {
     if (sender == self.nbCopiesStepper) {
-        self.printRequest.numberOfCopies = (int)(self.nbCopiesStepper.value);
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kNbCopiesRowIndex inSection:kCopiesAndRangeSectionIndex]] withRowAnimation:UITableViewRowAnimationNone];
+        if (!self.printRequest.multipleCopies) {
+            self.printRequest.multipleCopies = [CloudPrintMultipleCopies new];
+        }
+        self.printRequest.multipleCopies.numberOfCopies = (int)(self.nbCopiesStepper.value);
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kCopiesAndRangeSectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
     } else if (sender == self.pageRangeSegmentedControl) {
         switch (self.pageRangeSegmentedControl.selectedSegmentIndex) {
             case kAllPagesSegmentIndex:
@@ -149,11 +157,17 @@ static NSInteger const kPageToTheEndValue = 10000;
             self.printRequest.pageSelection.pageFrom = self.printRequest.pageSelection.pageTo;
         }
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPageFromRowIndex inSection:kCopiesAndRangeSectionIndex], [NSIndexPath indexPathForRow:kPageToRowIndex inSection:kCopiesAndRangeSectionIndex]] withRowAnimation:UITableViewRowAnimationNone];
+    } else if (sender == self.collateToggle) {
+        if (!self.printRequest.multipleCopies) {
+            self.printRequest.multipleCopies = [CloudPrintMultipleCopies new];
+        }
+        self.printRequest.multipleCopies.collate = self.collateToggle.isOn;
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kCopiesAndRangeSectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
     } else if (sender == self.doubleSidedToggle) {
         self.printRequest.doubleSided = self.doubleSidedToggle.isOn ? CloudPrintDoubleSidedConfig_LONG_EDGE : 0;
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kDoubleSidedSectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
-    } else if (sender == self.blackAndWhiteToggle) {
-        self.printRequest.blackAndWhite = self.blackAndWhiteToggle.isOn;
+    } else if (sender == self.colorToggle) {
+        self.printRequest.colorConfig = self.colorToggle.isOn ? CloudPrintColorConfig_COLOR : CloudPrintColorConfig_BLACK_WHITE;
     }
 }
 
@@ -174,6 +188,14 @@ static NSInteger const kPageToTheEndValue = 10000;
         }
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kDoubleSidedConfigRowIndex inSection:kDoubleSidedSectionIndex]] withRowAnimation:UITableViewRowAnimationNone];
         self.doubleSidedConfigActionSheet = nil;
+    } else if (actionSheet == self.orientationActionSheet) {
+        if ([buttonTitle isEqualToString:[CloudPrintModelAdditions localizedTitleForOrientation:CloudPrintOrientation_PORTRAIT]]) {
+            self.printRequest.orientation = CloudPrintOrientation_PORTRAIT;
+        } else if ([buttonTitle isEqualToString:[CloudPrintModelAdditions localizedTitleForOrientation:CloudPrintOrientation_LANDSCAPE]]) {
+            self.printRequest.orientation = CloudPrintOrientation_LANDSCAPE;
+        }
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kOrientationSectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
+        self.orientationActionSheet = nil;
     } else if (actionSheet == self.pagesPerSheetActionSheet) {
         if ([buttonTitle isEqualToString:[CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:1]]) {
             self.printRequest.multiPageConfig = nil;
@@ -213,6 +235,19 @@ static NSInteger const kPageToTheEndValue = 10000;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UIActionSheet* actionSheet = nil;
     switch (indexPath.section) {
+        case kOrientationSectionIndex:
+            switch (indexPath.row) {
+                case kOrientationRowIndex:
+                    actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"Orientation", @"CloudPrintPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
+                       [CloudPrintModelAdditions localizedTitleForOrientation:CloudPrintOrientation_PORTRAIT],
+                       [CloudPrintModelAdditions localizedTitleForOrientation:CloudPrintOrientation_LANDSCAPE],
+                       nil];
+                    self.orientationActionSheet = actionSheet;
+                    break;
+                default:
+                    break;
+            }
+            break;
         case kDoubleSidedSectionIndex:
             switch (indexPath.row) {
                 case kDoubleSidedConfigRowIndex:
@@ -260,8 +295,14 @@ static NSInteger const kPageToTheEndValue = 10000;
 }
 
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    if (section == kBlackAndWhiteSectionIndex) {
-        return NSLocalizedStringFromTable(@"BlackAndWhiteExplanations", @"CloudPrintPlugin", nil);
+    switch (section) {
+        case kCopiesAndRangeSectionIndex:
+            if (self.printRequest.multipleCopies.numberOfCopies > 1 && self.printRequest.multipleCopies.collate) {
+                return NSLocalizedStringFromTable(@"CollateExplanations", @"CloudPrintPlugin", nil);
+            }
+            break;
+        case kColorSectionIndex:
+            return NSLocalizedStringFromTable(@"ColorExplanations", @"CloudPrintPlugin", nil);
     }
     return nil;
 }
@@ -280,13 +321,13 @@ static NSInteger const kPageToTheEndValue = 10000;
         case kCopiesAndRangeSectionIndex:
             switch (indexPath.row) {
                 case kNbCopiesRowIndex:
-                    cell.textLabel.text = self.printRequest.numberOfCopies == 1 ? NSLocalizedStringFromTable(@"1Copy", @"CloudPrintPlugin", nil) : [NSString stringWithFormat:NSLocalizedStringFromTable(@"NbCopiesWithFormat", @"CloudPrintPlugin", nil), self.printRequest.numberOfCopies];
+                    cell.textLabel.text = self.printRequest.multipleCopies.numberOfCopies > 1 ? [NSString stringWithFormat:NSLocalizedStringFromTable(@"NbCopiesWithFormat", @"CloudPrintPlugin", nil), self.printRequest.multipleCopies.numberOfCopies] : NSLocalizedStringFromTable(@"1Copy", @"CloudPrintPlugin", nil);
                     if (!self.nbCopiesStepper) {
                         self.nbCopiesStepper = [UIStepper new];
                         self.nbCopiesStepper.stepValue = 1.0;
                         self.nbCopiesStepper.minimumValue = 1;
                         self.nbCopiesStepper.maximumValue = 10000;
-                        self.nbCopiesStepper.value = self.printRequest.numberOfCopies;
+                        self.nbCopiesStepper.value = self.printRequest.multipleCopies.numberOfCopies;
                         [self.nbCopiesStepper addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
                     }
                     cell.accessoryView = self.nbCopiesStepper;
@@ -344,6 +385,31 @@ static NSInteger const kPageToTheEndValue = 10000;
                     cell.accessoryView = self.printRequest.pageSelection.pageTo == kPageToTheEndValue ? self.pageToChangeButton : self.pageToStepper;
                     break;
                 }
+                /*case kCollateRowIndex:
+                {
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"Collate", @"CloudPrintPlugin", nil);
+                    if (!self.collateToggle) {
+                        self.collateToggle = [UISwitch new];
+                        [self.collateToggle addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
+                    }
+                    self.collateToggle.on = self.printRequest.multipleCopies.collate;
+                    cell.accessoryView = self.collateToggle;
+                    break;
+                }*/
+                default:
+                    break;
+            }
+            break;
+        case kOrientationSectionIndex:
+            switch (indexPath.row) {
+                case kOrientationRowIndex:
+                {
+                    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"Orientation", @"CloudPrintPlugin", nil);
+                    cell.detailTextLabel.text = [CloudPrintModelAdditions localizedTitleForOrientation:self.printRequest.orientation];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    break;
+                }
                 default:
                     break;
             }
@@ -364,6 +430,7 @@ static NSInteger const kPageToTheEndValue = 10000;
                     cell.textLabel.text = NSLocalizedStringFromTable(@"FlipOn", @"CloudPrintPlugin", nil);
                     cell.detailTextLabel.text = [CloudPrintModelAdditions localizedTitleForDoubleSidedConfig:self.printRequest.doubleSided];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    break;
                 default:
                     break;
             }
@@ -392,16 +459,16 @@ static NSInteger const kPageToTheEndValue = 10000;
                     break;
             }
             break;
-        case kBlackAndWhiteSectionIndex:
+        case kColorSectionIndex:
             switch (indexPath.row) {
-                case kBlackAndWhiteRowIndex:
-                    cell.textLabel.text = NSLocalizedStringFromTable(@"BlackAndWhite", @"CloudPrintPlugin", nil);
-                    if (!self.blackAndWhiteToggle) {
-                        self.blackAndWhiteToggle = [UISwitch new];
-                        [self.blackAndWhiteToggle addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
+                case kColorRowIndex:
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"Color", @"CloudPrintPlugin", nil);
+                    if (!self.colorToggle) {
+                        self.colorToggle = [UISwitch new];
+                        [self.colorToggle addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
                     }
-                    self.blackAndWhiteToggle.on = self.printRequest.blackAndWhite;
-                    cell.accessoryView = self.blackAndWhiteToggle;
+                    self.colorToggle.on = (self.printRequest.colorConfig == CloudPrintColorConfig_COLOR);
+                    cell.accessoryView = self.colorToggle;
                     break;
                 default:
                     break;
@@ -417,18 +484,20 @@ static NSInteger const kPageToTheEndValue = 10000;
     switch (section) {
         case kCopiesAndRangeSectionIndex:
             return self.printRequest.pageSelection ? 4 : 2;
+        case kOrientationSectionIndex:
+            return 1;
         case kDoubleSidedSectionIndex:
             return self.printRequest.doubleSided ? 2 : 1;
         case kMultiPageSectionIndex:
             return self.printRequest.multiPageConfig ? 2 : 1;
-        case kBlackAndWhiteSectionIndex:
+        case kColorSectionIndex:
             return 1;
     }
     return 0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 5;
 }
 
 @end

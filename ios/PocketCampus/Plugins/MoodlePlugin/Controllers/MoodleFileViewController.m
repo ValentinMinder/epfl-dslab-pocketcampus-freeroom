@@ -337,6 +337,14 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 }
 
 - (void)printButtonTapped {
+    
+#warning REMOVE
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[AuthenticationController sharedInstance] performSelector:@selector(deletePocketCampusAuthSessionId) withObject:nil];
+        [AuthenticationService deleteSavedPasswordForUsername:@"gardiol"];
+    });
+    
     MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.opacity = 0.6;
     hud.labelText = NSLocalizedStringFromTable(@"Preparing", @"MoodlePlugin", nil);

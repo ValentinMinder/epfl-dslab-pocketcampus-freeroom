@@ -84,15 +84,29 @@
     return nil;
 }
 
++ (NSString*)localizedTitleForOrientation:(NSInteger)orientation {
+    switch (orientation) {
+        case CloudPrintOrientation_PORTRAIT:
+            return NSLocalizedStringFromTable(@"Portrait", @"CloudPrintPlugin", nil);
+        case CloudPrintOrientation_LANDSCAPE:
+            return NSLocalizedStringFromTable(@"Landscape", @"CloudPrintPlugin", nil);
+        case CloudPrintOrientation_REVERSE_PORTRAIT:
+            return NSLocalizedStringFromTable(@"ReversePortrait", @"CloudPrintPlugin", nil);
+        case CloudPrintOrientation_REVERSE_LANDSCAPE:
+            return NSLocalizedStringFromTable(@"ReverseLandscape", @"CloudPrintPlugin", nil);
+    }
+    return nil;
+}
+
 @end
 
 @implementation PrintDocumentRequest (Additions)
 
 + (PrintDocumentRequest*)createDefaultRequest {
     PrintDocumentRequest* request = [PrintDocumentRequest new];
-    request.doubleSided = YES;
-    request.blackAndWhite = YES;
-    request.numberOfCopies = 1;
+    request.orientation = CloudPrintOrientation_PORTRAIT;
+    request.colorConfig = CloudPrintColorConfig_BLACK_WHITE;
+    request.doubleSided = CloudPrintDoubleSidedConfig_LONG_EDGE;
     return request;
 }
 

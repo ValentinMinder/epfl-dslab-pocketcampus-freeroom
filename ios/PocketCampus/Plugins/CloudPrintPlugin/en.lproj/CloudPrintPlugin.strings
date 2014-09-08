@@ -38,14 +38,21 @@
 "ToPageWithFormat" = "To:\t\t%@";
 "TheEnd" = "The end";
 "Change" = "Change";
+"Collate" = "Collate";
+"Orientation" = "Orientation";
+"Potrait" = "Portrait";
+"Landscape" = "Landscape";
+"ReversePortrait" = "Reverse potrait";
+"ReverseLandscape" = "Reverse landscape";
 "DoubleSided" = "Two-sided";
 "FlipOn" = "Flip on";
 "LongEdge" = "Long edge";
 "ShortEdge" = "Short edge";
 "PagesPerSheet" = "Pages per sheet";
 "LayoutDirection" = "Layout direction";
-"BlackAndWhite" = "Black & white";
-"BlackAndWhiteExplanations" = "Color printing is only available at certain printers.";
+"Color" = "Color";
+"ColorExplanations" = "Color printing is only available at certain printers.";
+"CollateExplanations" = "When pages are collated, they are printed the order [1,1,2,2] instead of [1,2,1,2] (example for 2 copies of a two-page document).";
 
 //Multi-page layouts
 "LEFT_TO_RIGHT_TOP_TO_BOTTOM" = "De gauche à droite puis haut en bas (par défaut)";
