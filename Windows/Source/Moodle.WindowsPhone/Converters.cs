@@ -15,11 +15,11 @@ namespace PocketCampus.Moodle
     /// <summary>
     /// Convers a download state to a boolean indicating whether to display a progress indicator.
     /// </summary>
-    public sealed class DownloadStateToBooleanConverter : ValueConverter<DownloadState, bool>
+    public sealed class DownloadStateToBooleanConverter : ValueConverter<DownloadStatus, bool>
     {
-        public override bool Convert( DownloadState value )
+        public override bool Convert( DownloadStatus value )
         {
-            return value == DownloadState.Downloading;
+            return value == DownloadStatus.Downloading;
         }
     }
 

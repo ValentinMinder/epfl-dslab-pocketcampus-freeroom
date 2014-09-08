@@ -24,7 +24,7 @@ namespace PocketCampus.Moodle.ViewModels
 
         private CourseSection[] _sections;
         private CourseSection _selectedSection;
-        private DownloadState _downloadState;
+        private DownloadStatus _downloadStatus;
 
 
         public Course Course { get; set; }
@@ -44,10 +44,10 @@ namespace PocketCampus.Moodle.ViewModels
         /// <summary>
         /// Gets the state of the current download (or lack thereof).
         /// </summary>
-        public DownloadState DownloadState
+        public DownloadStatus DownloadStatus
         {
-            get { return _downloadState; }
-            private set { SetProperty( ref _downloadState, value ); }
+            get { return _downloadStatus; }
+            private set { SetProperty( ref _downloadStatus, value ); }
         }
 
 
@@ -149,27 +149,27 @@ namespace PocketCampus.Moodle.ViewModels
         /// </summary>
         private async Task OpenFileAsync( MoodleFile file )
         {
-            if ( DownloadState == DownloadState.Downloading )
+            if ( DownloadStatus == DownloadStatus.Downloading )
             {
                 return;
             }
 
             if ( !( await _storage.IsStoredAsync( file ) ) )
             {
-                DownloadState = DownloadState.Downloading;
+                DownloadStatus = DownloadStatus.Downloading;
 
                 try
                 {
                     var bytes = await _downloader.DownloadAsync( file );
                     await _storage.StoreFileAsync( file, bytes );
-                    DownloadState = DownloadState.None;
+                    DownloadStatus = DownloadStatus.None;
                 }
                 catch
                 {
-                    DownloadState = DownloadState.Error;
+                    DownloadStatus = DownloadStatus.Error;
                 }
             }
-            if ( DownloadState == DownloadState.None )
+            if ( DownloadStatus == DownloadStatus.None )
             {
                 await _storage.OpenFileAsync( file );
             }

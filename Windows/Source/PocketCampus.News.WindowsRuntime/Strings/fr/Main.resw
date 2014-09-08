@@ -119,5 +119,6 @@
   </resheader>
   <data name="Refresh" xml:space="preserve">
     <value>actualiser</value>
+    <comment>Button label</comment>
   </data>
 </root>

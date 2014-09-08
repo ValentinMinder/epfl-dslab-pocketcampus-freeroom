@@ -114,7 +114,7 @@
     </Style>
 
     <!-- ToggleSwitch that doesn't display the traditional thumb; tapping the header switches the content -->
-    <Style x:Key="AppHeaderedToggleSwitch" TargetType="ToggleSwitch">
+    <Style x:Key="AppHeaderedToggleSwitchStyle" TargetType="ToggleSwitch">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="Template">
             <Setter.Value>
@@ -274,6 +274,7 @@
 
     <!-- Button that simply displays its contents; only the "pressed" effects are kept -->
     <Style x:Key="AppTransparentButtonStyle" TargetType="Button">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">

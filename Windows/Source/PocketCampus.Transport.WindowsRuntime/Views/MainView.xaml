@@ -161,7 +161,7 @@
 
             <!-- Template for trips to a station -->
             <DataTemplate x:Key="StationTripsTemplate">
-                <ToggleSwitch Style="{StaticResource AppHeaderedToggleSwitch}"
+                <ToggleSwitch Style="{StaticResource AppHeaderedToggleSwitchStyle}"
                               Margin="0,16,0,0">
                     <ToggleSwitch.Header>
                         <!-- Header: destination name -->

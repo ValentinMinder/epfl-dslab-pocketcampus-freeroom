@@ -184,6 +184,10 @@
       <Project>{a1a50035-9654-49c2-afa4-f21b25f7c3b7}</Project>
       <Name>PocketCampus.Main</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Source\Moodle\PocketCampus.Moodle.csproj">
+      <Project>{1be81a3a-e8ed-4659-ade1-394450e59b69}</Project>
+      <Name>PocketCampus.Moodle</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Source\News\PocketCampus.News.csproj">
       <Project>{3e4ade30-7398-4612-a390-b68bf6175620}</Project>
       <Name>PocketCampus.News</Name>
@@ -203,6 +207,10 @@
     <ProjectReference Include="..\Source\PocketCampus.Directory.WindowsRuntime\PocketCampus.Directory.WindowsRuntime.csproj">
       <Project>{0f85a43b-cb55-475c-850b-0053b9f1f93e}</Project>
       <Name>PocketCampus.Directory.WindowsRuntime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Source\PocketCampus.Moodle.WindowsRuntime\PocketCampus.Moodle.WindowsRuntime.csproj">
+      <Project>{e4d866fe-e3ad-4309-9730-0f3ae64916eb}</Project>
+      <Name>PocketCampus.Moodle.WindowsRuntime</Name>
     </ProjectReference>
     <ProjectReference Include="..\Source\PocketCampus.News.WindowsRuntime\PocketCampus.News.WindowsRuntime.csproj">
       <Project>{e4b7950a-4dd8-42be-9b05-4537cf6abfef}</Project>

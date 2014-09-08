@@ -7,7 +7,7 @@ namespace PocketCampus.Moodle
     /// <summary>
     /// Display-friendly file download statuses.
     /// </summary>
-    public enum DownloadState
+    public enum DownloadStatus
     {
         /// <summary>
         /// No file download is in progress.

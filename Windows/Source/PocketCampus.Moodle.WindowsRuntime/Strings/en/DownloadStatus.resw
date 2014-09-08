@@ -117,12 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Refresh" xml:space="preserve">
-    <value>refresh</value>
-    <comment>Button label</comment>
+  <data name="Downloading" xml:space="preserve">
+    <value>Downloading...</value>
+    <comment>Status bar text</comment>
   </data>
-  <data name="ViewInBrowser" xml:space="preserve">
-    <value>original</value>
-    <comment>Button label</comment>
+  <data name="Error" xml:space="preserve">
+    <value>Download error</value>
+    <comment>Status bar text</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value />
+    <comment>Empty string</comment>
   </data>
 </root>

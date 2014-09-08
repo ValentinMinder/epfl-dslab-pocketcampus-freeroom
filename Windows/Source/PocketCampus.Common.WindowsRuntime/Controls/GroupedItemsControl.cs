@@ -10,14 +10,6 @@ namespace PocketCampus.Common.Controls
     // Simpler way to deal with SemanticZoom
     public sealed class GroupedItemsControl : ContentControl
     {
-        private static readonly Style StretchListViewItemStyle = new Style( typeof( ListViewItem ) )
-        {
-            Setters = 
-            {
-                new Setter( ListViewItem.HorizontalAlignmentProperty, HorizontalAlignment.Stretch ),
-                new Setter( ListViewItem.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch )
-            }
-        };
         private static readonly Brush ZoomedOutBackgroundBrush = new SolidColorBrush( new Color { A = 192, R = 0, G = 0, B = 0 } );
         private static readonly Brush ZoomedOutForegroundBrush = new SolidColorBrush( Colors.White );
         private static readonly Thickness ZoomedOutViewPadding = new Thickness( 12 );
@@ -76,7 +68,6 @@ namespace PocketCampus.Common.Controls
         {
             var view = new ListView
             {
-                ItemContainerStyle = StretchListViewItemStyle,
                 ItemTemplate = this.ItemTemplate,
                 GroupStyle = { new GroupStyle { HidesIfEmpty = true, HeaderTemplate = GetGroupHeaderTemplate( GroupKeyPath ) } },
                 // HACK: The group header template contains a top margin, so we cancel the first one here
@@ -96,7 +87,6 @@ namespace PocketCampus.Common.Controls
             var view = new ListView
             {
                 ItemTemplate = GetGroupItemTemplate( GroupKeyPath ),
-                ItemContainerStyle = StretchListViewItemStyle,
                 Foreground = ZoomedOutForegroundBrush,
                 Background = ZoomedOutBackgroundBrush,
                 Padding = ZoomedOutViewPadding
