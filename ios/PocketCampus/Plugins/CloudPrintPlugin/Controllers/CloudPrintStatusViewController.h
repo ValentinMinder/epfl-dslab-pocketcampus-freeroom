@@ -41,9 +41,12 @@ typedef NS_ENUM(NSInteger, CloudPrintStatusMessage) {
 
 @property (nonatomic, copy) NSString* documentName;
 @property (nonatomic) CloudPrintStatusMessage statusMessage;
-@property (nonatomic) float progress; // [0.0, 1.0]
 
-- (void)setProgress:(float)progress animated:(BOOL)animated;
+/**
+ * @discussion value of progress is observed by CloudPrintStatusViewController and progress bar updated accordingly
+ * Default: nil
+ */
+@property (nonatomic, strong) NSProgress* progress;
 
 /**
  * Executed when user taps on cancel

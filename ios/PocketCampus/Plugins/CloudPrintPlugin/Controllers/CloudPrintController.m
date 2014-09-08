@@ -56,7 +56,9 @@
 
 static CloudPrintController* instance __strong = nil;
 
-static float const kSendToPrinterProgressStart = 0.8;
+static float const kUploadFileProgressStart = 5;
+static float const kSendToPrinterProgressStart = 80;
+static float const kProgressMax = 100;
 
 @interface CloudPrintController ()<CloudPrintServiceDelegate>
 
@@ -113,12 +115,90 @@ static float const kSendToPrinterProgressStart = 0.8;
     return YES;
 }
 
-- (UIViewController*)viewControllerForPrintDocumentWithLocalURL:(NSURL*)localURL docName:(NSString*)docName printDocumentRequestOrNil:(PrintDocumentRequest*)request completion:(void (^)(CloudPrintCompletionStatusCode printStatusCode))completion {
-#warning TODO
-    return nil;
+- (UIViewController*)viewControllerForPrintDocumentWithLocalURL:(NSURL*)localURL docName:(NSString*)docName printDocumentRequestOrNil:(PrintDocumentRequest*)requestOrNil completion:(void (^)(CloudPrintCompletionStatusCode printStatusCode))completion {
+    
+    [PCUtils throwExceptionIfObject:localURL notKindOfClass:[NSURL class]];
+    
+    PrintDocumentRequest* request = requestOrNil ?: [PrintDocumentRequest createDefaultRequest];
+    request.documentId = -1; //otherwise viewControllerForPrintWithDocumentName: complains...
+    UIViewController* viewController = [self viewControllerForPrintWithDocumentName:docName printDocumentRequest:request completion:completion]; //will create the job and add it to jobForUniqueId
+    
+    CloudPrintJob* job = self.jobForJobUniqueId[request.jobUniqueId];
+    
+    __weak __typeof(job) wjob = job;
+    __weak __typeof(self) welf = self;
+    
+    [job.requestViewController setUserValidatedRequestBlock:^(PrintDocumentRequest* request) {
+        if (!wjob.statusViewController) {
+            wjob.statusViewController = [CloudPrintStatusViewController new];
+            
+            [wjob.statusViewController setUserCancelledBlock:^{
+                [welf.cloudPrintService cancelJobsWithUniqueId:wjob.request.jobUniqueId];
+                [wjob.navController popToViewController:wjob.requestViewController animated:YES];
+            }];
+        }
+        
+        wjob.statusViewController.documentName = wjob.docName;
+        wjob.statusViewController.statusMessage = CloudPrintStatusMessageUploadingFile;
+        wjob.statusViewController.progress = [NSProgress progressWithTotalUnitCount:kProgressMax];
+        wjob.statusViewController.progress.completedUnitCount = kUploadFileProgressStart;
+        
+        if (wjob.navController.topViewController != wjob.statusViewController) {
+            [wjob.navController pushViewController:wjob.statusViewController animated:YES];
+        }
+        if (!welf.cloudPrintService) {
+            welf.cloudPrintService = [CloudPrintService sharedInstanceToRetain];
+        }
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (wjob.navController.topViewController == wjob.statusViewController) {
+                // if user tapped cancel so quickly that it was before this dispatch triggered, we should
+                // not start the request
+                [welf.cloudPrintService uploadForPrintDocumentWithLocalURL:localURL jobUniqueId:wjob.request.jobUniqueId success:^(int64_t documentId) {
+                    wjob.statusViewController.statusMessage = CloudPrintStatusMessageSendingToPrinter;
+                    wjob.statusViewController.progress.completedUnitCount = kSendToPrinterProgressStart;
+                    wjob.request.documentId  = documentId;
+                    [welf.cloudPrintService printDocumentWithRequest:request delegate:welf];
+                } progress:wjob.statusViewController.progress failure:^(CloudPrintUploadFailureReason failureReason) {
+                    switch (failureReason) {
+                        case CloudPrintUploadFailureReasonAuthenticationError:
+                        {
+                            [[AuthenticationController sharedInstance] addLoginObserver:welf success:^{
+                                wjob.requestViewController.userValidatedRequestBlock(job.request);
+                            } userCancelled:^{
+                                wjob.statusViewController.progress.completedUnitCount = 0;
+                                wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
+                                [wjob.navController popToViewController:wjob.requestViewController animated:YES];
+                            } failure:^{
+                                wjob.statusViewController.progress.completedUnitCount = 0;
+                                wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
+                                [PCUtils showServerErrorAlert];
+                                [wjob.navController popToViewController:wjob.requestViewController animated:YES];
+                            }];
+                            break;
+                        }
+                        case CloudPrintUploadFailureReasonNetworkError:
+                            wjob.statusViewController.progress.completedUnitCount = 0;
+                            wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
+                            [PCUtils showConnectionToServerTimedOutAlert];
+                            [wjob.navController popToViewController:wjob.requestViewController animated:YES];
+                            break;
+                        default:
+                            wjob.statusViewController.progress.completedUnitCount = 0;
+                            wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
+                            [PCUtils showServerErrorAlert];
+                            [job.navController popToViewController:wjob.requestViewController animated:YES];
+                            break;
+                    }
+                }];
+            }
+        });
+        
+    }];
+    return viewController;
 }
 
 - (UIViewController*)viewControllerForPrintWithDocumentName:(NSString*)docName printDocumentRequest:(PrintDocumentRequest*)request completion:(void (^)(CloudPrintCompletionStatusCode printStatusCode))completion {
+    
     if (request.documentId == 0) {
         [NSException raise:@"Illegal argument" format:@"request.documentId cannot be 0"];
     }
@@ -149,7 +229,8 @@ static float const kSendToPrinterProgressStart = 0.8;
         
         wjob.statusViewController.documentName = wjob.docName;
         wjob.statusViewController.statusMessage = CloudPrintStatusMessageSendingToPrinter;
-        wjob.statusViewController.progress = kSendToPrinterProgressStart;
+        wjob.statusViewController.progress = [NSProgress progressWithTotalUnitCount:kProgressMax];
+        wjob.statusViewController.progress.completedUnitCount = kSendToPrinterProgressStart;
         
         if (wjob.navController.topViewController != wjob.statusViewController) {
             [wjob.navController pushViewController:wjob.statusViewController animated:YES];
@@ -184,7 +265,7 @@ static float const kSendToPrinterProgressStart = 0.8;
     switch (response.statusCode) {
         case CloudPrintStatusCode_OK:
         {
-            [job.statusViewController setProgress:1.0 animated:YES];
+            job.statusViewController.progress.completedUnitCount = kProgressMax;
             job.statusViewController.statusMessage = CloudPrintStatusMessageSuccess;
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ //give time for success message and animation
                 [self job:job completedWithStatusCode:CloudPrintCompletionStatusCodePrintSuccess];
@@ -196,11 +277,11 @@ static float const kSendToPrinterProgressStart = 0.8;
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
                 job.requestViewController.userValidatedRequestBlock(job.request);
             } userCancelled:^{
-                job.statusViewController.progress = 0.0;
+                job.statusViewController.progress.completedUnitCount = 0;
                 job.statusViewController.statusMessage = CloudPrintStatusMessageError;
                 [job.navController popToViewController:job.requestViewController animated:YES];
             } failure:^{
-                job.statusViewController.progress = 0.0;
+                job.statusViewController.progress.completedUnitCount = 0;
                 job.statusViewController.statusMessage = CloudPrintStatusMessageError;
                 [PCUtils showServerErrorAlert];
                 [job.navController popToViewController:job.requestViewController animated:YES];
@@ -208,7 +289,7 @@ static float const kSendToPrinterProgressStart = 0.8;
             break;
         }
         case CloudPrintStatusCode_PRINT_ERROR:
-            job.statusViewController.progress = 0.0;
+            job.statusViewController.progress.completedUnitCount = 0;
             job.statusViewController.statusMessage = CloudPrintStatusMessageError;
             [PCUtils showServerErrorAlert];
             [job.navController popToViewController:job.requestViewController animated:YES];
@@ -224,7 +305,7 @@ static float const kSendToPrinterProgressStart = 0.8;
         NSLog(@"!! ERROR: could not find job in printDocumentFailedForRequest: for job id: %@. Returning.", request.jobUniqueId);
         return;
     }
-    job.statusViewController.progress = 0.0;
+    job.statusViewController.progress.completedUnitCount = 0;
     job.statusViewController.statusMessage = CloudPrintStatusMessageError;
     [PCUtils showServerErrorAlert];
     [job.navController popToViewController:job.requestViewController animated:YES];
@@ -233,7 +314,7 @@ static float const kSendToPrinterProgressStart = 0.8;
 - (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
     for (CloudPrintJob* job in self.jobForJobUniqueId.allValues) {
-        job.statusViewController.progress = 0.0;
+        job.statusViewController.progress.completedUnitCount = 0;
         job.statusViewController.statusMessage = CloudPrintStatusMessageError;
         [job.navController popToViewController:job.requestViewController animated:YES];
     }

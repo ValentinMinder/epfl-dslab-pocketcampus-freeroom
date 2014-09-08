@@ -469,6 +469,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     switch (response.statusCode) {
         case MoodleStatusCode2_OK:
         {
+            
             PrintDocumentRequest* printRequest = [PrintDocumentRequest createDefaultRequest];
             printRequest.documentId = response.printJobId;
             __weak __typeof(self) welf = self;
@@ -480,7 +481,18 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
                 }
                 [welf showNavbarAnimated:NO];
             }];
-
+            
+            /*__weak __typeof(self) welf = self;
+            NSURL* localFileURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleFile:self.moodleFile]];
+            UIViewController* printViewController = [[CloudPrintController sharedInstance] viewControllerForPrintDocumentWithLocalURL:localFileURL docName:self.moodleFile.filename printDocumentRequestOrNil:nil completion:^(CloudPrintCompletionStatusCode printStatusCode) {
+                if (welf.printPopoverController) {
+                    [welf.printPopoverController dismissPopoverAnimated:YES];
+                } else {
+                    [welf dismissViewControllerAnimated:YES completion:NULL];
+                }
+                [welf showNavbarAnimated:NO];
+            }];*/
+            
             if ([PCUtils isIdiomPad]) {
                 self.printPopoverController = [[UIPopoverController alloc] initWithContentViewController:printViewController];
                 [self.printPopoverController presentPopoverFromBarButtonItem:[self printButton] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];

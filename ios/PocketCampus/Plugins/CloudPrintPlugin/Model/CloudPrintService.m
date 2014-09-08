@@ -29,11 +29,21 @@
  
 #import "CloudPrintService.h"
 
-@implementation CloudPrintService
+#import "AFNetworking.h"
 
 static CloudPrintService* instance __weak = nil;
 
 static NSString* const kCloudPrintServiceJobUniqueIdServiceRequestUserInfoKey = @"JobUniqueId";
+
+static NSString* const kCloudPrintRawUploadJSONResponseDocumentIdKey = @"file_id";
+
+@interface CloudPrintService ()
+
+@property (nonatomic, strong) AFHTTPSessionManager* filesUploadSessionManager;
+
+@end
+
+@implementation CloudPrintService
 
 #pragma mark - Init
 
@@ -74,15 +84,86 @@ static NSString* const kCloudPrintServiceJobUniqueIdServiceRequestUserInfoKey = 
     [self.operationQueue addOperation:operation];
 }
 
-#pragma mark - Utils
+#pragma mark - Misc
+
+- (void)uploadForPrintDocumentWithLocalURL:(NSURL*)localURL jobUniqueId:(NSString*)jobUniqueId success:(void (^)(int64_t documentId))success progress:(NSProgress*)progress failure:(void (^)(CloudPrintUploadFailureReason failureReason))failure {
+    
+    [PCUtils throwExceptionIfObject:localURL notKindOfClass:[NSURL class]];
+    
+    NSMutableURLRequest* request = [self pcProxiedRequest];
+    request.cachePolicy = NSURLRequestReloadIgnoringCacheData;
+    request.HTTPMethod = @"POST";
+    
+    if (!self.filesUploadSessionManager) {
+        self.filesUploadSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        self.filesUploadSessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
+    }
+    
+    NSURLSessionUploadTask* uploadTask = [self.filesUploadSessionManager uploadTaskWithRequest:request fromFile:localURL progress:&progress completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        if (error.code == NSURLErrorCancelled) {
+            return;
+        }
+        
+        if (![response isKindOfClass:[NSHTTPURLResponse class]]) {
+            failure(CloudPrintUploadFailureReasonNetworkError);
+            return;
+        }
+        
+        NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+        if (error && httpResponse.statusCode == 0) {
+            failure(CloudPrintUploadFailureReasonUnknown);
+        } else {
+            switch (httpResponse.statusCode) {
+                case 200:
+                {
+                    NSDictionary* responseDic = (NSDictionary*)responseObject;
+                    if (![responseDic isKindOfClass:[NSDictionary class]]) {
+                        failure(CloudPrintUploadFailureReasonUnknown);
+                    }
+                    NSString* documentIdString = responseDic[kCloudPrintRawUploadJSONResponseDocumentIdKey];
+                    if (!documentIdString) {
+                        failure(CloudPrintUploadFailureReasonUnknown);
+                    }
+                    int64_t documentId = [documentIdString longLongValue];
+                    if (documentId <= 0) {
+                        failure(CloudPrintUploadFailureReasonUnknown);
+                    }
+                    success(documentId);
+                }
+                case 407:
+                {
+                    failure(CloudPrintUploadFailureReasonAuthenticationError);
+                    break;
+                }
+                default:
+                    failure(CloudPrintUploadFailureReasonUnknown);
+                    break;
+            }
+            
+        }
+    }];
+    
+    uploadTask.taskDescription = jobUniqueId;
+    [uploadTask resume];
+}
 
 - (void)cancelJobsWithUniqueId:(NSString*)jobUniqueId {
+    if (!jobUniqueId) {
+        return;
+    }
     for (NSOperation* operation in self.operationQueue.operations) {
         if ([operation isKindOfClass:[PCServiceRequest class]]) {
             NSString* opJobUniqueId = [(PCServiceRequest*)operation userInfo][kCloudPrintServiceJobUniqueIdServiceRequestUserInfoKey];
             if (opJobUniqueId && [opJobUniqueId isEqualToString:jobUniqueId]) {
                 [operation cancel];
+                NSLog(@"-> Cancelled CloudPrint job service request operation (%@)", jobUniqueId);
             }
+        }
+    }
+    for (NSURLSessionUploadTask* task in self.filesUploadSessionManager.uploadTasks) {
+        if ([task.taskDescription isEqualToString:jobUniqueId]) {
+            [task cancel];
+            NSLog(@"-> Cancelled CloudPrint job upload task operation (%@)", jobUniqueId);
         }
     }
 }

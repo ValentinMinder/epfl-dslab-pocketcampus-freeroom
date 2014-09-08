@@ -48,6 +48,7 @@
         self.documentName = nil;
         self.statusMessage = CloudPrintStatusMessageLoading;
         self.progressView.progress = 0.0;
+        self.progress = [NSProgress progressWithTotalUnitCount:1];
     }
     return self;
 }
@@ -59,7 +60,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
     self.documentName = self.documentName;
     self.statusMessage = self.statusMessage;
-    self.progress = self.progress;
+    [self updateProgress];
 }
 
 #pragma mark - Actions
@@ -101,13 +102,37 @@
     }
 }
 
-- (void)setProgress:(float)progress {
-    [self setProgress:progress animated:NO];
+- (void)setProgress:(NSProgress *)progress {
+    @try {
+        [self.progress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
+    }
+    @catch (NSException *exception) {}
+    
+    _progress = progress;
+    [self.progress addObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted)) options:0 context:NULL];
 }
 
-- (void)setProgress:(float)progress animated:(BOOL)animated {
-    _progress = progress;
-    [self.progressView setProgress:progress animated:animated];
+#pragma mark - Private
+
+- (void)updateProgress {
+    [self.progressView setProgress:self.progress.fractionCompleted animated:YES];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateProgress];
+    });
+}
+
+#pragma mark - Dealloc
+
+- (void)dealloc {
+    @try {
+        [self.progress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
+    }
+    @catch (NSException *exception) {}
 }
 
 @end

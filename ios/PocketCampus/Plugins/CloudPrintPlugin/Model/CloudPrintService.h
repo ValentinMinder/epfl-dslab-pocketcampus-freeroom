@@ -33,6 +33,12 @@
 
 #import "CloudPrintModelAdditions.h"
 
+typedef NS_ENUM(NSInteger, CloudPrintUploadFailureReason) {
+    CloudPrintUploadFailureReasonAuthenticationError,
+    CloudPrintUploadFailureReasonNetworkError,
+    CloudPrintUploadFailureReasonUnknown
+};
+
 @protocol CloudPrintServiceDelegate <PCServiceDelegate>
 
 @optional
@@ -53,8 +59,17 @@
 - (void)printDocumentWithRequest:(PrintDocumentRequest*)request delegate:(id<CloudPrintServiceDelegate>)delegate;
 
 /**
- * Loops through self.operationQueue.operations and cancels all operations
- * with userInfo key-value corresponding to jobUniqueId.
+ * @param localURL must be the URL of a readable local file. Cannot be nil.
+ * @param jobUniqueId this parameter is optional, it's there only to give the opportunity to cancel it afterwards using cancelJobsWithUniqueId:
+ * @param success executed when upload is successfull. documentId can be then used in PrintDocumentRequest to trigger the request.
+ * @param progress [0.0, 1.0] regularly executed with new progress of operation
+ * @param failure executed when the operation fails.
+ */
+- (void)uploadForPrintDocumentWithLocalURL:(NSURL*)localURL jobUniqueId:(NSString*)jobUniqueId success:(void (^)(int64_t documentId))success progress:(NSProgress*)progress failure:(void (^)(CloudPrintUploadFailureReason failureReason))failure;
+
+/**
+ * @discussion Loops through self.operationQueue.operations and cancels all operations
+ * with userInfo key-value corresponding to jobUniqueId
  */
 - (void)cancelJobsWithUniqueId:(NSString*)jobUniqueId;
 
