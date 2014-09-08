@@ -39,10 +39,14 @@
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
             <constraints>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LQm-X3-3Ow" secondAttribute="trailing" constant="10" id="4mK-x3-Ro6"/>
                 <constraint firstAttribute="centerX" secondItem="P8X-Ad-JOo" secondAttribute="centerX" id="9WX-nA-6p7"/>
                 <constraint firstAttribute="centerY" secondItem="AOg-vQ-Y4d" secondAttribute="centerY" constant="-15" id="EQi-jc-ehR"/>
                 <constraint firstAttribute="centerX" secondItem="AOg-vQ-Y4d" secondAttribute="centerX" id="Ege-Tr-haP"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="P8X-Ad-JOo" secondAttribute="trailing" constant="10" id="HlZ-My-x4u"/>
+                <constraint firstItem="LQm-X3-3Ow" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="M24-sp-M6y"/>
                 <constraint firstAttribute="centerX" secondItem="LQm-X3-3Ow" secondAttribute="centerX" id="VX2-ty-NnH"/>
+                <constraint firstItem="P8X-Ad-JOo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="ca9-uf-evA"/>
                 <constraint firstItem="AOg-vQ-Y4d" firstAttribute="top" secondItem="P8X-Ad-JOo" secondAttribute="bottom" constant="20" id="gHL-BG-trf"/>
                 <constraint firstItem="P8X-Ad-JOo" firstAttribute="top" secondItem="LQm-X3-3Ow" secondAttribute="bottom" constant="5" id="imt-Dx-DrV"/>
                 <constraint firstAttribute="centerY" secondItem="P8X-Ad-JOo" secondAttribute="centerY" constant="10" id="rzU-gr-GeI"/>

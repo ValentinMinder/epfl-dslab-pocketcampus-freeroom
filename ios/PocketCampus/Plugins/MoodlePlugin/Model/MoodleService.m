@@ -315,6 +315,16 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
     [self.operationQueue addOperation:operation];
 }
 
+- (void)printFileWithRequest:(MoodlePrintFileRequest2*)request delegate:(id<MoodleServiceDelegate>)delegate {
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(printFile:);
+    operation.delegateDidReturnSelector = @selector(printFileForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(printFileFailedForRequest:);
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    [self.operationQueue addOperation:operation];
+}
+
 #pragma mark - Cached versions
 
 - (MoodleCoursesResponse2*)getFromCacheCoursesWithRequest:(MoodleCoursesRequest2*)request {

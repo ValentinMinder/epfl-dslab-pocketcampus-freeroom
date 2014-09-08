@@ -1963,6 +1963,264 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
 
 @end
 
+@implementation MoodlePrintFileRequest2
+
+- (id) initWithFileUrl: (NSString *) fileUrl
+{
+  self = [super init];
+  __fileUrl = [fileUrl retain];
+  __fileUrl_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"fileUrl"])
+  {
+    __fileUrl = [[decoder decodeObjectForKey: @"fileUrl"] retain];
+    __fileUrl_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__fileUrl_isset)
+  {
+    [encoder encodeObject: __fileUrl forKey: @"fileUrl"];
+  }
+}
+
+- (void) dealloc
+{
+  [__fileUrl release];
+  [super dealloc];
+}
+
+- (NSString *) fileUrl {
+  return [[__fileUrl retain] autorelease];
+}
+
+- (void) setFileUrl: (NSString *) fileUrl {
+  [fileUrl retain];
+  [__fileUrl release];
+  __fileUrl = fileUrl;
+  __fileUrl_isset = YES;
+}
+
+- (BOOL) fileUrlIsSet {
+  return __fileUrl_isset;
+}
+
+- (void) unsetFileUrl {
+  [__fileUrl release];
+  __fileUrl = nil;
+  __fileUrl_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setFileUrl: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"MoodlePrintFileRequest2"];
+  if (__fileUrl_isset) {
+    if (__fileUrl != nil) {
+      [outProtocol writeFieldBeginWithName: @"fileUrl" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __fileUrl];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"MoodlePrintFileRequest2("];
+  [ms appendString: @"fileUrl:"];
+  [ms appendFormat: @"\"%@\"", __fileUrl];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation MoodlePrintFileResponse2
+
+- (id) initWithStatusCode: (int) statusCode printJobId: (int64_t) printJobId
+{
+  self = [super init];
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
+  __printJobId = printJobId;
+  __printJobId_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"statusCode"])
+  {
+    __statusCode = [decoder decodeIntForKey: @"statusCode"];
+    __statusCode_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"printJobId"])
+  {
+    __printJobId = [decoder decodeInt64ForKey: @"printJobId"];
+    __printJobId_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__statusCode_isset)
+  {
+    [encoder encodeInt: __statusCode forKey: @"statusCode"];
+  }
+  if (__printJobId_isset)
+  {
+    [encoder encodeInt64: __printJobId forKey: @"printJobId"];
+  }
+}
+
+- (void) dealloc
+{
+  [super dealloc];
+}
+
+- (int) statusCode {
+  return __statusCode;
+}
+
+- (void) setStatusCode: (int) statusCode {
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
+}
+
+- (BOOL) statusCodeIsSet {
+  return __statusCode_isset;
+}
+
+- (void) unsetStatusCode {
+  __statusCode_isset = NO;
+}
+
+- (int64_t) printJobId {
+  return __printJobId;
+}
+
+- (void) setPrintJobId: (int64_t) printJobId {
+  __printJobId = printJobId;
+  __printJobId_isset = YES;
+}
+
+- (BOOL) printJobIdIsSet {
+  return __printJobId_isset;
+}
+
+- (void) unsetPrintJobId {
+  __printJobId_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setStatusCode: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_I64) {
+          int64_t fieldValue = [inProtocol readI64];
+          [self setPrintJobId: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"MoodlePrintFileResponse2"];
+  if (__statusCode_isset) {
+    [outProtocol writeFieldBeginWithName: @"statusCode" type: TType_I32 fieldID: 1];
+    [outProtocol writeI32: __statusCode];
+    [outProtocol writeFieldEnd];
+  }
+  if (__printJobId_isset) {
+    [outProtocol writeFieldBeginWithName: @"printJobId" type: TType_I64 fieldID: 2];
+    [outProtocol writeI64: __printJobId];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"MoodlePrintFileResponse2("];
+  [ms appendString: @"statusCode:"];
+  [ms appendFormat: @"%i", __statusCode];
+  [ms appendString: @",printJobId:"];
+  [ms appendFormat: @"%qi", __printJobId];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @interface getCourses_args : NSObject <NSCoding> {
   MoodleCoursesRequest2 * __request;
 
@@ -2501,6 +2759,275 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
 
 @end
 
+@interface printFile_args : NSObject <NSCoding> {
+  MoodlePrintFileRequest2 * __request;
+
+  BOOL __request_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=request, setter=setRequest:) MoodlePrintFileRequest2 * request;
+#endif
+
+- (id) initWithRequest: (MoodlePrintFileRequest2 *) request;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (MoodlePrintFileRequest2 *) request;
+- (void) setRequest: (MoodlePrintFileRequest2 *) request;
+- (BOOL) requestIsSet;
+
+@end
+
+@implementation printFile_args
+
+- (id) initWithRequest: (MoodlePrintFileRequest2 *) request
+{
+  self = [super init];
+  __request = [request retain];
+  __request_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"request"])
+  {
+    __request = [[decoder decodeObjectForKey: @"request"] retain];
+    __request_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__request_isset)
+  {
+    [encoder encodeObject: __request forKey: @"request"];
+  }
+}
+
+- (void) dealloc
+{
+  [__request release];
+  [super dealloc];
+}
+
+- (MoodlePrintFileRequest2 *) request {
+  return [[__request retain] autorelease];
+}
+
+- (void) setRequest: (MoodlePrintFileRequest2 *) request {
+  [request retain];
+  [__request release];
+  __request = request;
+  __request_isset = YES;
+}
+
+- (BOOL) requestIsSet {
+  return __request_isset;
+}
+
+- (void) unsetRequest {
+  [__request release];
+  __request = nil;
+  __request_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          MoodlePrintFileRequest2 *fieldValue = [[MoodlePrintFileRequest2 alloc] init];
+          [fieldValue read: inProtocol];
+          [self setRequest: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"printFile_args"];
+  if (__request_isset) {
+    if (__request != nil) {
+      [outProtocol writeFieldBeginWithName: @"request" type: TType_STRUCT fieldID: 1];
+      [__request write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"printFile_args("];
+  [ms appendString: @"request:"];
+  [ms appendFormat: @"%@", __request];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface PrintFile_result : NSObject <NSCoding> {
+  MoodlePrintFileResponse2 * __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=success, setter=setSuccess:) MoodlePrintFileResponse2 * success;
+#endif
+
+- (id) initWithSuccess: (MoodlePrintFileResponse2 *) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (MoodlePrintFileResponse2 *) success;
+- (void) setSuccess: (MoodlePrintFileResponse2 *) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation PrintFile_result
+
+- (id) initWithSuccess: (MoodlePrintFileResponse2 *) success
+{
+  self = [super init];
+  __success = [success retain];
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [[decoder decodeObjectForKey: @"success"] retain];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeObject: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [__success release];
+  [super dealloc];
+}
+
+- (MoodlePrintFileResponse2 *) success {
+  return [[__success retain] autorelease];
+}
+
+- (void) setSuccess: (MoodlePrintFileResponse2 *) success {
+  [success retain];
+  [__success release];
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  [__success release];
+  __success = nil;
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_STRUCT) {
+          MoodlePrintFileResponse2 *fieldValue = [[MoodlePrintFileResponse2 alloc] init];
+          [fieldValue read: inProtocol];
+          [self setSuccess: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"PrintFile_result"];
+
+  if (__success_isset) {
+    if (__success != nil) {
+      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
+      [__success write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"PrintFile_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%@", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @implementation MoodleServiceClient
 - (id) initWithProtocol: (id <TProtocol>) protocol
 {
@@ -2602,6 +3129,46 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
   return [self recv_getSections];
 }
 
+- (void) send_printFile: (MoodlePrintFileRequest2 *) request
+{
+  [outProtocol writeMessageBeginWithName: @"printFile" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"printFile_args"];
+  if (request != nil)  {
+    [outProtocol writeFieldBeginWithName: @"request" type: TType_STRUCT fieldID: 1];
+    [request write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (MoodlePrintFileResponse2 *) recv_printFile
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  PrintFile_result * result = [[[PrintFile_result alloc] init] autorelease];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"printFile failed: unknown result"];
+}
+
+- (MoodlePrintFileResponse2 *) printFile: (MoodlePrintFileRequest2 *) request
+{
+  [self send_printFile: request];
+  return [self recv_printFile];
+}
+
 @end
 
 @implementation MoodleServiceProcessor
@@ -2629,6 +3196,14 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
     [invocation setSelector: s];
     [invocation retainArguments];
     [mMethodMap setValue: invocation forKey: @"getSections"];
+  }
+  {
+    SEL s = @selector(process_printFile_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"printFile"];
   }
   return self;
 }
@@ -2696,6 +3271,23 @@ static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
   GetSections_result * result = [[GetSections_result alloc] init];
   [result setSuccess: [mService getSections: [args request]]];
   [outProtocol writeMessageBeginWithName: @"getSections"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release];
+  [args release];
+}
+
+- (void) process_printFile_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  printFile_args * args = [[printFile_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  PrintFile_result * result = [[PrintFile_result alloc] init];
+  [result setSuccess: [mService printFile: [args request]]];
+  [outProtocol writeMessageBeginWithName: @"printFile"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
   [result write: outProtocol];

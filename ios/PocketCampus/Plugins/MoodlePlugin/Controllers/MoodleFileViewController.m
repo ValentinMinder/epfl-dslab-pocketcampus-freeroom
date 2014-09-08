@@ -41,6 +41,10 @@
 
 #import "NSTimer+Blocks.h"
 
+#import "CloudPrintController.h"
+
+#import "MBProgressHUD.h"
+
 static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 @interface MoodleFileViewController ()<UIGestureRecognizerDelegate, UIWebViewDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate>
@@ -53,10 +57,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 @property (nonatomic, strong) MoodleFile2* moodleFile;
 @property (nonatomic, strong) UIActionSheet* deleteActionSheet;
 @property (nonatomic, strong) UIDocumentInteractionController* docController;
+@property (nonatomic, strong) UIPopoverController* printPopoverController;
 @property (nonatomic, strong) UITapGestureRecognizer* tapGestureReco;
 @property (nonatomic) CGFloat navbarOriginalAlpha;
 @property (nonatomic, strong) NSTimer* hideNavbarTimer;
 @property (nonatomic) BOOL isShowingActionMenu;
+@property (nonatomic) BOOL printFileOperationInProgress;
 
 @property (nonatomic) CGSize lastKnownContentSize;
 
@@ -103,6 +109,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     actionButton.enabled = NO;
     [rightButtons addObject:actionButton];
     
+    
+    UIBarButtonItem* printButton = [[UIBarButtonItem alloc] initWithImage:[PCValues imageForPrintBarButtonLandscapePhone:NO] landscapeImagePhone:[PCValues imageForPrintBarButtonLandscapePhone:YES] style:UIBarButtonItemStyleBordered target:self action:@selector(printButtonTapped)];
+    printButton.accessibilityHint = NSLocalizedStringFromTable(@"PrintThisDocumentAtEPFL", @"MoodlePlugin", nil);
+    printButton.enabled = NO;
+    [rightButtons addObject:printButton];
+    
     BOOL isFavorite = [self.moodleService isFavoriteMoodleItem:self.moodleFile];
     UIImage* favoriteImage = [PCValues imageForFavoriteNavBarButtonLandscapePhone:NO glow:isFavorite];
     UIImage* favoriteImageLandscape = [PCValues imageForFavoriteNavBarButtonLandscapePhone:YES glow:isFavorite];
@@ -122,10 +134,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         self.centerMessageLabel.hidden = YES;
         self.progressView.hidden = YES;
         [self deleteButton].enabled = YES;
+        [self printButton].enabled = YES;
         [self actionButton].enabled = YES;
         [self loadDownloadedMoodleResourceInWebView];
     } else {
         [self deleteButton].enabled = NO;
+        [self printButton].enabled = NO;
         [self actionButton].enabled = NO;
         [self startMoodleResourceDownload];
     }
@@ -283,18 +297,25 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     return self.navigationItem.rightBarButtonItems[0];
 }
 
-- (UIBarButtonItem*)favoriteButton {
+- (UIBarButtonItem*)printButton {
     if (self.navigationItem.rightBarButtonItems.count < 2) {
         return nil;
     }
     return self.navigationItem.rightBarButtonItems[1];
 }
 
-- (UIBarButtonItem*)deleteButton {
+- (UIBarButtonItem*)favoriteButton {
     if (self.navigationItem.rightBarButtonItems.count < 3) {
         return nil;
     }
     return self.navigationItem.rightBarButtonItems[2];
+}
+
+- (UIBarButtonItem*)deleteButton {
+    if (self.navigationItem.rightBarButtonItems.count < 4) {
+        return nil;
+    }
+    return self.navigationItem.rightBarButtonItems[3];
 }
 
 #pragma mark - Buttons actions
@@ -313,6 +334,25 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         self.docController.delegate = self;
         [self.docController presentOptionsMenuFromBarButtonItem:[self actionButton] animated:YES];
     }
+}
+
+- (void)printButtonTapped {
+    MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.opacity = 0.6;
+    hud.labelText = NSLocalizedStringFromTable(@"Preparing", @"MoodlePlugin", nil);
+    hud.detailsLabelText = NSLocalizedStringFromTable(@"TapToCancel", @"MoodlePlugin", nil);
+    UITapGestureRecognizer* cancelGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelPrintTapped)];
+    [hud addGestureRecognizer:cancelGesture];
+    
+    [self printButton].enabled = NO;
+    MoodlePrintFileRequest2* request = [[MoodlePrintFileRequest2 alloc] initWithFileUrl:self.moodleFile.url];
+    [self.moodleService printFileWithRequest:request delegate:self];
+}
+
+- (void)cancelPrintTapped {
+    [self printButton].enabled = YES;
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    [self.moodleService cancelOperationsForDelegate:self];
 }
 
 - (void)favoriteButtonPressed {
@@ -340,7 +380,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 #pragma mark - Moodle Resource loading
 
 - (void)startMoodleResourceDownload {
-
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"DownloadingFile", @"MoodlePlugin", nil);
     self.centerMessageLabel.hidden = NO;
     self.progressView.hidden = NO;
@@ -386,6 +425,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     self.centerMessageLabel.hidden = YES;
     self.progressView.hidden = YES;
     [self deleteButton].enabled = YES;
+    [self printButton].enabled = YES;
     [self actionButton].enabled = YES;
     [self loadDownloadedMoodleResourceInWebView];
 }
@@ -417,11 +457,70 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     }
 }
 
+- (void)printFileForRequest:(MoodlePrintFileRequest2 *)request didReturn:(MoodlePrintFileResponse2 *)response {
+    [self printButton].enabled = YES;
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    switch (response.statusCode) {
+        case MoodleStatusCode2_OK:
+        {
+            PrintDocumentRequest* printRequest = [PrintDocumentRequest createDefaultRequest];
+            printRequest.documentId = response.printJobId;
+            __weak __typeof(self) welf = self;
+            UIViewController* printViewController = [[CloudPrintController sharedInstance] viewControllerForPrintWithDocumentName:self.moodleFile.filename printDocumentRequest:printRequest completion:^(CloudPrintCompletionStatusCode printStatusCode) {
+                if (welf.printPopoverController) {
+                    [welf.printPopoverController dismissPopoverAnimated:YES];
+                } else {
+                    [welf dismissViewControllerAnimated:YES completion:NULL];
+                }
+            }];
+            
+            if ([PCUtils isIdiomPad]) {
+                self.printPopoverController = [[UIPopoverController alloc] initWithContentViewController:printViewController];
+                [self.printPopoverController presentPopoverFromBarButtonItem:[self printButton] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            } else {
+                [self presentViewController:printViewController animated:YES completion:NULL];
+            }
+            break;
+        }
+        case MoodleStatusCode2_AUTHENTICATION_ERROR:
+        {
+            __weak __typeof(self) welf = self;
+            [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
+                [welf printButtonTapped];
+            } userCancelled:^{
+                // nothing to do
+            } failure:^{
+                [PCUtils showServerErrorAlert];
+            }];
+            break;
+        }
+        case MoodleStatusCode2_NETWORK_ERROR:
+        {
+            [PCUtils showServerErrorAlert];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void)printFileFailedForRequest:(MoodlePrintFileRequest2 *)request {
+    [self printButton].enabled = YES;
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    [PCUtils showServerErrorAlert];
+}
+
 - (void)serviceConnectionToServerFailed {
-    self.webView.hidden = YES;
-    self.progressView.hidden = YES;
-    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ErrorWhileDownloadingFile", @"MoodlePlugin", nil);
-    self.centerMessageLabel.hidden = NO;
+    if (self.printFileOperationInProgress) {
+        [self printButton].enabled = YES;
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        [PCUtils showConnectionToServerTimedOutAlert];
+    } else {
+        self.webView.hidden = YES;
+        self.progressView.hidden = YES;
+        self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ErrorWhileDownloadingFile", @"MoodlePlugin", nil);
+        self.centerMessageLabel.hidden = NO;
+    }
 }
 
 #pragma mark - UIGestureRecognizerDelegate

@@ -103,7 +103,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     }
 }
 
-#warning REMOVE
+/*#warning REMOVE
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -118,7 +118,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     });
 }
 
-#warning END OF REMOVE
+#warning END OF REMOVE*/
 
 - (NSUInteger)supportedInterfaceOrientations
 {

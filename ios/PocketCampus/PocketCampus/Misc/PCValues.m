@@ -50,6 +50,10 @@
     return [UIImage imageNamed:imageName];
 }
 
++ (UIImage*)imageForPrintBarButtonLandscapePhone:(BOOL)landscapePhone {
+    return [UIImage imageNamed:landscapePhone ? @"PrintBarButtonLandscape" : @"PrintBarButton"];
+}
+
 + (UIImage*)resizableCellEmptyImage {
     UIImage* image = [UIImage imageNamed:@"CellEmptyPicture"];
     return [image resizableImageWithCapInsets:UIEdgeInsetsMake(1, 1, 1, 1)];

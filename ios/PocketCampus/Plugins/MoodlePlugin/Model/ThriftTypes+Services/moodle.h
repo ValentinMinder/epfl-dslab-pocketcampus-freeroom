@@ -360,9 +360,59 @@ enum MoodleStatusCode2 {
 
 @end
 
+@interface MoodlePrintFileRequest2 : NSObject <NSCoding> {
+  NSString * __fileUrl;
+
+  BOOL __fileUrl_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=fileUrl, setter=setFileUrl:) NSString * fileUrl;
+#endif
+
+- (id) initWithFileUrl: (NSString *) fileUrl;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (NSString *) fileUrl;
+- (void) setFileUrl: (NSString *) fileUrl;
+- (BOOL) fileUrlIsSet;
+
+@end
+
+@interface MoodlePrintFileResponse2 : NSObject <NSCoding> {
+  int __statusCode;
+  int64_t __printJobId;
+
+  BOOL __statusCode_isset;
+  BOOL __printJobId_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=statusCode, setter=setStatusCode:) int statusCode;
+@property (nonatomic, getter=printJobId, setter=setPrintJobId:) int64_t printJobId;
+#endif
+
+- (id) initWithStatusCode: (int) statusCode printJobId: (int64_t) printJobId;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (int) statusCode;
+- (void) setStatusCode: (int) statusCode;
+- (BOOL) statusCodeIsSet;
+
+- (int64_t) printJobId;
+- (void) setPrintJobId: (int64_t) printJobId;
+- (BOOL) printJobIdIsSet;
+
+@end
+
 @protocol MoodleService <NSObject>
 - (MoodleCoursesResponse2 *) getCourses: (MoodleCoursesRequest2 *) request;  // throws TException
 - (MoodleCourseSectionsResponse2 *) getSections: (MoodleCourseSectionsRequest2 *) request;  // throws TException
+- (MoodlePrintFileResponse2 *) printFile: (MoodlePrintFileRequest2 *) request;  // throws TException
 @end
 
 @interface MoodleServiceClient : NSObject <MoodleService> {

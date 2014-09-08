@@ -22,9 +22,17 @@
                     </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="71X-oe-RaM" firstAttribute="leading" secondItem="9gZ-4I-Xym" secondAttribute="leading" constant="15" id="3JR-9m-j0n"/>
                     <constraint firstItem="71X-oe-RaM" firstAttribute="top" secondItem="9gZ-4I-Xym" secondAttribute="topMargin" id="JcP-5y-X2G"/>
+                    <constraint firstItem="71X-oe-RaM" firstAttribute="top" secondItem="9gZ-4I-Xym" secondAttribute="top" constant="8" id="SvF-qk-1bA"/>
                     <constraint firstItem="71X-oe-RaM" firstAttribute="leading" secondItem="9gZ-4I-Xym" secondAttribute="leadingMargin" constant="7" id="fIZ-uO-gNJ"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="JcP-5y-X2G"/>
+                        <exclude reference="fIZ-uO-gNJ"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <point key="canvasLocation" x="379" y="193"/>
         </tableViewCell>

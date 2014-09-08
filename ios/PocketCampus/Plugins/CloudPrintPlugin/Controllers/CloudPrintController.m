@@ -56,6 +56,8 @@
 
 static CloudPrintController* instance __strong = nil;
 
+static float const kSendToPrinterProgressStart = 0.8;
+
 @interface CloudPrintController ()<CloudPrintServiceDelegate>
 
 @property (nonatomic, strong) CloudPrintService* cloudPrintService;
@@ -147,7 +149,7 @@ static CloudPrintController* instance __strong = nil;
         
         wjob.statusViewController.documentName = wjob.docName;
         wjob.statusViewController.statusMessage = CloudPrintStatusMessageSendingToPrinter;
-        wjob.statusViewController.progress = 0.05;
+        wjob.statusViewController.progress = kSendToPrinterProgressStart;
         
         if (wjob.navController.topViewController != wjob.statusViewController) {
             [wjob.navController pushViewController:wjob.statusViewController animated:YES];

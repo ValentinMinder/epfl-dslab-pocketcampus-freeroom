@@ -129,6 +129,7 @@ static NSInteger const kPageToTheEndValue = 10000;
                 if (!self.printRequest.pageSelection) {
                     self.printRequest.pageSelection = [[CloudPrintPageRange alloc] initWithPageFrom:1 pageTo:kPageToTheEndValue];
                 }
+                self.pageToStepper.value = (double)kPageToTheEndValue;
                 break;
             default:
                 break;
@@ -157,7 +158,7 @@ static NSInteger const kPageToTheEndValue = 10000;
 }
 
 - (void)pageToChangeTapped {
-    self.printRequest.pageSelection.pageTo = 1;
+    self.printRequest.pageSelection.pageTo = self.printRequest.pageSelection.pageFrom;
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPageToRowIndex inSection:kCopiesAndRangeSectionIndex]] withRowAnimation:UITableViewRowAnimationFade];
 }
 
@@ -325,27 +326,22 @@ static NSInteger const kPageToTheEndValue = 10000;
                     NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
                     [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:[fullString rangeOfString:numberString]];
                     cell.textLabel.attributedText = attrString;
-                    
-                    if (self.printRequest.pageSelection.pageTo == kPageToTheEndValue) {
-                        if (!self.pageToChangeButton) {
-                            self.pageToChangeButton = [UIButton buttonWithType:UIButtonTypeSystem];
-                            self.pageToChangeButton.frame = CGRectMake(0, 0, 100.0, 40.0);
-                            [self.pageToChangeButton setTitle:NSLocalizedStringFromTable(@"Change", @"CloudPrintPlugin", nil) forState:UIControlStateNormal];
-                            [self.pageToChangeButton addTarget:self action:@selector(pageToChangeTapped) forControlEvents:UIControlEventTouchUpInside];
-                            [self.pageToChangeButton sizeToFit];
-                        }
-                        cell.accessoryView = self.pageToChangeButton;
-                    } else {
-                        if (!self.pageToStepper) {
-                            self.pageToStepper = [UIStepper new];
-                            self.pageToStepper.stepValue = 1.0;
-                            self.pageToStepper.minimumValue = 1;
-                            self.pageToStepper.maximumValue = kPageToTheEndValue;
-                            [self.pageToStepper addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
-                        }
-                        self.pageToStepper.value = (double)(self.printRequest.pageSelection.pageTo);
-                        cell.accessoryView = self.pageToStepper;
+                    if (!self.pageToChangeButton) {
+                        self.pageToChangeButton = [UIButton buttonWithType:UIButtonTypeSystem];
+                        self.pageToChangeButton.frame = CGRectMake(0, 0, 100.0, 40.0);
+                        [self.pageToChangeButton setTitle:NSLocalizedStringFromTable(@"Change", @"CloudPrintPlugin", nil) forState:UIControlStateNormal];
+                        [self.pageToChangeButton addTarget:self action:@selector(pageToChangeTapped) forControlEvents:UIControlEventTouchUpInside];
+                        [self.pageToChangeButton sizeToFit];
                     }
+                    if (!self.pageToStepper) {
+                        self.pageToStepper = [UIStepper new];
+                        self.pageToStepper.stepValue = 1.0;
+                        self.pageToStepper.minimumValue = 1;
+                        self.pageToStepper.maximumValue = kPageToTheEndValue;
+                        [self.pageToStepper addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
+                    }
+                    self.pageToStepper.value = (double)(self.printRequest.pageSelection.pageTo);
+                    cell.accessoryView = self.printRequest.pageSelection.pageTo == kPageToTheEndValue ? self.pageToChangeButton : self.pageToStepper;
                     break;
                 }
                 default:

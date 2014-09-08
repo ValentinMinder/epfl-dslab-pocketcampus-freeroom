@@ -168,6 +168,10 @@
 		326F5A7A19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A7C19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib */; };
 		326F5A8019BDA2AA000693A2 /* CloudPrintStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 326F5A7F19BDA2AA000693A2 /* CloudPrintStatusViewController.m */; };
 		326F5A8219BDA2D0000693A2 /* CloudPrintStatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A8119BDA2D0000693A2 /* CloudPrintStatusView.xib */; };
+		326F5A8519BDCE8C000693A2 /* PrintBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A8319BDCE8C000693A2 /* PrintBarButton.png */; };
+		326F5A8619BDCE8C000693A2 /* PrintBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A8419BDCE8C000693A2 /* PrintBarButton@2x.png */; };
+		326F5A8919BDD815000693A2 /* PrintBarButtonLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A8719BDD815000693A2 /* PrintBarButtonLandscape.png */; };
+		326F5A8A19BDD815000693A2 /* PrintBarButtonLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A8819BDD815000693A2 /* PrintBarButtonLandscape@2x.png */; };
 		326FE23A19A5E8FF001A5056 /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */; };
 		326FE23B19A5E9E2001A5056 /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */; };
 		326FE23C19A63D17001A5056 /* CamiproWidget.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 326FE23E19A63D17001A5056 /* CamiproWidget.storyboard */; };
@@ -696,6 +700,10 @@
 		326F5A7E19BDA2AA000693A2 /* CloudPrintStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintStatusViewController.h; sourceTree = "<group>"; };
 		326F5A7F19BDA2AA000693A2 /* CloudPrintStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintStatusViewController.m; sourceTree = "<group>"; };
 		326F5A8119BDA2D0000693A2 /* CloudPrintStatusView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CloudPrintStatusView.xib; sourceTree = "<group>"; };
+		326F5A8319BDCE8C000693A2 /* PrintBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PrintBarButton.png; sourceTree = "<group>"; };
+		326F5A8419BDCE8C000693A2 /* PrintBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PrintBarButton@2x.png"; sourceTree = "<group>"; };
+		326F5A8719BDD815000693A2 /* PrintBarButtonLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PrintBarButtonLandscape.png; sourceTree = "<group>"; };
+		326F5A8819BDD815000693A2 /* PrintBarButtonLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PrintBarButtonLandscape@2x.png"; sourceTree = "<group>"; };
 		326FE23819A5E8FF001A5056 /* NSUserDefaults+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+Additions.h"; sourceTree = "<group>"; };
 		326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Additions.m"; sourceTree = "<group>"; };
 		326FE23D19A63D17001A5056 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/CamiproWidget.storyboard; sourceTree = "<group>"; };
@@ -1351,6 +1359,10 @@
 				32506D04181DC7AF003F08D7 /* MasterHidden@2x.png */,
 				32506CFF181DC41E003F08D7 /* MasterVisible.png */,
 				32506D00181DC41E003F08D7 /* MasterVisible@2x.png */,
+				326F5A8319BDCE8C000693A2 /* PrintBarButton.png */,
+				326F5A8419BDCE8C000693A2 /* PrintBarButton@2x.png */,
+				326F5A8719BDD815000693A2 /* PrintBarButtonLandscape.png */,
+				326F5A8819BDD815000693A2 /* PrintBarButtonLandscape@2x.png */,
 				329CA501166D452E00F7B1AE /* SettingsBarButton.png */,
 				329CA502166D452E00F7B1AE /* SettingsBarButton@2x.png */,
 				32C509E817FC6D73005A5635 /* SortBarButton.png */,
@@ -2665,6 +2677,7 @@
 				32290AD118200A25005869E7 /* FoodSplashDetailView.xib in Resources */,
 				320037511811843500901F6A /* CheckmarkRoundedSquare.png in Resources */,
 				32148A3E18101D6C00AF2F8E /* CamiproLarge@2x.png in Resources */,
+				326F5A8A19BDD815000693A2 /* PrintBarButtonLandscape@2x.png in Resources */,
 				32442FEE151CFDED00685D10 /* Transport.png in Resources */,
 				32442FEF151CFDED00685D10 /* Transport@2x.png in Resources */,
 				32442FF1151D0F3000685D10 /* TransportNextDeparturesView.xib in Resources */,
@@ -2672,6 +2685,7 @@
 				32506CFE181D4195003F08D7 /* MoodleLarge@2x.png in Resources */,
 				27B74CE619A205E6006B2F17 /* RecommendedApps.png in Resources */,
 				327513311825465D0037FE00 /* FavoriteCorner.png in Resources */,
+				326F5A8519BDCE8C000693A2 /* PrintBarButton.png in Resources */,
 				324A599A151DFDF700977F33 /* TransportAddStationView.xib in Resources */,
 				3289F2BA183FAB8C00D833C2 /* LocationArrow2Active@2x.png in Resources */,
 				32A63A4B1535FFF400237841 /* TransportTripsHeaderCell.xib in Resources */,
@@ -2728,6 +2742,7 @@
 				3200375918119B4100901F6A /* Info.png in Resources */,
 				327513341825465D0037FE00 /* FavoriteCornerSelected@2x.png in Resources */,
 				32CBF059163450E500FD92E5 /* PocketCampusDrawing.png in Resources */,
+				326F5A8619BDCE8C000693A2 /* PrintBarButton@2x.png in Resources */,
 				32E0E319194B206D003251CC /* FilterBarButtonSelected.png in Resources */,
 				32574ED7182140AE008F3163 /* DirectoryEmptyPictureSmall@2x.png in Resources */,
 				327585A91844DE93004215FC /* TransportSmallBus@2x.png in Resources */,
@@ -2799,6 +2814,7 @@
 				329E1B4016E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png in Resources */,
 				32150DD5197D693300CCF2AB /* LinkIcon@2x.png in Resources */,
 				32F5308D16EAB02400F66484 /* EventItemInfo.html in Resources */,
+				326F5A8919BDD815000693A2 /* PrintBarButtonLandscape.png in Resources */,
 				32F5308F16EAB89500F66484 /* EventsSplashDetailView.xib in Resources */,
 				3200375A18119B4100901F6A /* Info@2x.png in Resources */,
 				32F5309416EABA0F00F66484 /* EventsLarge.png in Resources */,

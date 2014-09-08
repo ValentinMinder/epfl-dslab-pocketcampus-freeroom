@@ -39,6 +39,8 @@
 
 + (UIImage*)imageForFavoriteNavBarButtonLandscapePhone:(BOOL)landscapePhone glow:(BOOL)glow;
 
++ (UIImage*)imageForPrintBarButtonLandscapePhone:(BOOL)landscapePhone;
+
 + (UIImage*)resizableCellEmptyImage;
 
 + (UIColor*)defaultBlueTintColor;
