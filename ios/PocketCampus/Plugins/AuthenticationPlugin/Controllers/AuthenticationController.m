@@ -519,10 +519,21 @@ static AuthenticationController* instance __strong = nil;
         }];
         [self.authenticationViewController setUserTappedCancelBlock:^{
             [AuthenticationService deleteSavedPasswordForUsername:[AuthenticationService savedUsername]];
-            [welf dismissAuthenticationViewControllerCompletion:^{
-                [welf cleanAndNotifyUserCancelledToObservers];
-                [AuthenticationService enqueueLogoutNotification];
-            }];
+            if (welf.delegate) { //old-style authentication
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    id<AuthenticationControllerDelegate> delegate = welf.delegate;
+                    [welf cleanAndDismissAuthenticationViewControllerCompletion:^{
+                        if ([(NSObject*)delegate respondsToSelector:@selector(authenticationFailedWithReason:)]) {
+                            [delegate authenticationFailedWithReason:AuthenticationFailureReasonUserCancelled];
+                        }
+                    }];
+                });
+            } else { //new-style (PocketCampus session) authentication
+                [welf dismissAuthenticationViewControllerCompletion:^{
+                    [welf cleanAndNotifyUserCancelledToObservers];
+                    //[AuthenticationService enqueueLogoutNotification];
+                }];
+            }
         }];
         [self.authenticationViewController setUserClearedUsernameBlock:^{
             [AuthenticationService saveUsername:nil];
@@ -540,8 +551,11 @@ static AuthenticationController* instance __strong = nil;
         self.authenticationNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
         
 
-        UIViewController* rootViewController = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
-        [rootViewController presentViewController:self.authenticationNavigationController animated:YES completion:^{
+        UIViewController* topViewController = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
+        while (topViewController.presentedViewController) {
+            topViewController = topViewController.presentedViewController;
+        }
+        [topViewController presentViewController:self.authenticationNavigationController animated:YES completion:^{
             [self.authenticationViewController focusOnInput];
         }];
 #else

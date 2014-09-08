@@ -267,10 +267,14 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 }
 
 - (void)showNavbar {
+    [self showNavbarAnimated:YES];
+}
+
+- (void)showNavbarAnimated:(BOOL)animated {
     if (!self.navigationController.navigationBarHidden) {
         return;
     }
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
     [self.navigationController setNeedsStatusBarAppearanceUpdate];
     [self.navigationController.navigationBar layoutSubviews]; //workaround for API bug: otherwise, bar button items landscape image is not used, even in landscape
     self.webView.scrollView.contentInset = [PCUtils edgeInsetsForViewController:self];
@@ -337,14 +341,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 }
 
 - (void)printButtonTapped {
-    
-#warning REMOVE
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        [[AuthenticationController sharedInstance] performSelector:@selector(deletePocketCampusAuthSessionId) withObject:nil];
-        [AuthenticationService deleteSavedPasswordForUsername:@"gardiol"];
-    });
-    
     MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.opacity = 0.6;
     hud.labelText = NSLocalizedStringFromTable(@"Preparing", @"MoodlePlugin", nil);
@@ -353,6 +349,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     [hud addGestureRecognizer:cancelGesture];
     
     [self printButton].enabled = NO;
+    self.printFileOperationInProgress = YES;
     MoodlePrintFileRequest2* request = [[MoodlePrintFileRequest2 alloc] initWithFileUrl:self.moodleFile.url];
     [self.moodleService printFileWithRequest:request delegate:self];
 }
@@ -466,8 +463,9 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 }
 
 - (void)printFileForRequest:(MoodlePrintFileRequest2 *)request didReturn:(MoodlePrintFileResponse2 *)response {
+    self.printFileOperationInProgress = NO;
     [self printButton].enabled = YES;
-    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:NO];
     switch (response.statusCode) {
         case MoodleStatusCode2_OK:
         {
@@ -480,8 +478,9 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
                 } else {
                     [welf dismissViewControllerAnimated:YES completion:NULL];
                 }
+                [welf showNavbarAnimated:NO];
             }];
-            
+
             if ([PCUtils isIdiomPad]) {
                 self.printPopoverController = [[UIPopoverController alloc] initWithContentViewController:printViewController];
                 [self.printPopoverController presentPopoverFromBarButtonItem:[self printButton] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -513,15 +512,17 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 }
 
 - (void)printFileFailedForRequest:(MoodlePrintFileRequest2 *)request {
+    self.printFileOperationInProgress = NO;
     [self printButton].enabled = YES;
-    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:NO];
     [PCUtils showServerErrorAlert];
 }
 
 - (void)serviceConnectionToServerFailed {
     if (self.printFileOperationInProgress) {
+        self.printFileOperationInProgress = NO;
         [self printButton].enabled = YES;
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        [MBProgressHUD hideAllHUDsForView:self.view animated:NO];
         [PCUtils showConnectionToServerTimedOutAlert];
     } else {
         self.webView.hidden = YES;

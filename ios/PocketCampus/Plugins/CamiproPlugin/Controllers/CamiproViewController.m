@@ -169,6 +169,7 @@ static NSInteger const kHistorySection = 1;
     } else {
         [[CamiproController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
             [self.centerActivityIndicator stopAnimating];
+            [[MainController publicController] requestLeavePlugin:[CamiproController identifierName]];
         } failureBlock:^{
             [self getBalanceAndTransactionsFailedForCamiproRequest:nil];
         }];

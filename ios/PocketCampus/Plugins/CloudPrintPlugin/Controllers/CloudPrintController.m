@@ -180,6 +180,7 @@ static float const kSendToPrinterProgressStart = 0.8;
         NSLog(@"!! ERROR: could not find job in printDocumentForRequest:didReturn for job id: %@. Returning.", request.jobUniqueId);
         return;
     }
+    
     switch (response.statusCode) {
         case CloudPrintStatusCode_OK:
         {
@@ -245,7 +246,9 @@ static float const kSendToPrinterProgressStart = 0.8;
         if (job.completion) {
             job.completion(statusCode);
         }
-        [self.jobForJobUniqueId removeObjectForKey:job.request.jobUniqueId];
+        if (job.request.jobUniqueId) {
+            [self.jobForJobUniqueId removeObjectForKey:job.request.jobUniqueId];
+        }
     }
 }
 

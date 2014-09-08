@@ -574,7 +574,7 @@ static int i = 0;
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
                 [welf startGetSectionsRequest];
             } userCancelled:^{
-                [welf.lgRefreshControl endRefreshing];
+                [welf.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"LoginRequired", @"PocketCampus", nil)];
             } failure:^{
                 [welf error];
             }];

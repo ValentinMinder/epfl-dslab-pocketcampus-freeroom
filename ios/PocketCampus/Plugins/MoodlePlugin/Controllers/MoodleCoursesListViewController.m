@@ -182,13 +182,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
             break;
         case MoodleStatusCode2_AUTHENTICATION_ERROR:
         {
-            __weak __typeof(self) weakSelf = self;
+            __weak __typeof(self) welf = self;
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
-                [weakSelf startGetCoursesListRequest];
+                [welf startGetCoursesListRequest];
             } userCancelled:^{
-                [weakSelf.lgRefreshControl endRefreshing];
+                [welf.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"LoginRequired", @"PocketCampus", nil)];
             } failure:^{
-                [weakSelf error];
+                [welf error];
             }];
             break;
         }
