@@ -21,6 +21,7 @@ import org.apache.thrift.TException;
 import org.pocketcampus.platform.server.RawPlugin;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintColorConfig;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintMultiPageLayout;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintService;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintStatusCode;
@@ -96,11 +97,11 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 		command.add("lpr");
 		command.add("-P");command.add("mainPrinter");
 		command.add("-U");command.add(gaspar);
-		command.add("-#");command.add(request.getNumberOfCopies() + "");
-		command.add("-r");
+		command.add("-r"); // delete file afterward
 		if(request.isSetPageSelection()) {
 			command.add("-o");command.add("page-ranges=" + request.getPageSelection().getPageFrom() + "-" + request.getPageSelection().getPageTo());
 		}
+
 		if(request.isSetDoubleSided()) {
 			switch (request.getDoubleSided()) {
 			case LONG_EDGE:
@@ -117,8 +118,18 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 			command.add("-o");command.add("number-up=" + nup);
 			command.add("-o");command.add("number-up-layout=" + layout);
 		}
-		if(request.isBlackAndWhite()) {
-			command.add("-o");command.add("JCLColorCorrection=BlackWhite");
+		if(request.isSetOrientation()) {
+			int ori = request.getOrientation().getValue();
+			command.add("-o");command.add("orientation-requested=" + ori);
+		}
+		if(request.isSetMultipleCopies()) {
+			command.add("-n");command.add("" + request.getMultipleCopies().getNumberOfCopies());
+			if(request.getMultipleCopies().isCollate())
+				command.add("-o");command.add("Collate=True");
+		}
+		if(request.isSetColorConfig()) {
+			if(request.getColorConfig() == CloudPrintColorConfig.BLACK_WHITE)
+				command.add("-o");command.add("JCLColorCorrection=BlackWhite");
 		}
 		command.add("-T");command.add(files[0]);
 		command.add(filePath + "/" + files[0]);
