@@ -33,6 +33,14 @@
         <Setter Property="TextWrapping" Value="WrapWholeWords" />
     </Style>
 
+    <!-- Small (and subtle) text -->
+    <Style x:Key="AppSmallTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource AppSubtleBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleSmallFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
+        <Setter Property="TextWrapping" Value="WrapWholeWords" />
+    </Style>
+
     <!-- Large text -->
     <Style x:Key="AppLargeTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}" />
@@ -66,6 +74,13 @@
     <Style x:Key="AppTitleTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource AppHeaderForegroundBrush}" />
         <Setter Property="FontSize" Value="{StaticResource TextStyleExtraLargePlusFontSize}" />
+        <Setter Property="Margin" Value="19,0,0,5" />
+    </Style>
+    
+    <!-- Title text -->
+    <Style x:Key="AppSecondaryTitleTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource AppSecondaryHeaderForegroundBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleExtraLargeFontSize}" />
         <Setter Property="Margin" Value="19,0,0,5" />
     </Style>
 

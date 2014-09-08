@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using ThinMvvm;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.ViewManagement;
@@ -49,24 +50,31 @@ namespace PocketCampus.Common.Controls
 
         private void SwitchState()
         {
-            CacheStatus status = ( (dynamic) DataContext ).CacheStatus;
-            switch ( status )
+            try
             {
-                case CacheStatus.NoData:
-                    Visibility = Visibility.Visible;
-                    break;
+                CacheStatus status = ( (dynamic) DataContext ).CacheStatus;
+                switch ( status )
+                {
+                    case CacheStatus.NoData:
+                        Visibility = Visibility.Visible;
+                        break;
 
-                case CacheStatus.UsedTemporarily:
-                    Visibility = Visibility.Collapsed;
-                    SetLoadingTray();
-                    break;
+                    case CacheStatus.UsedTemporarily:
+                        Visibility = Visibility.Collapsed;
+                        SetLoadingTray();
+                        break;
 
-                case CacheStatus.OptedOut:
-                case CacheStatus.Used:
-                case CacheStatus.Unused:
-                    Visibility = Visibility.Collapsed;
-                    RemoveLoadingTray();
-                    break;
+                    case CacheStatus.OptedOut:
+                    case CacheStatus.Used:
+                    case CacheStatus.Unused:
+                        Visibility = Visibility.Collapsed;
+                        RemoveLoadingTray();
+                        break;
+                }
+            }
+            catch ( COMException )
+            {
+                // TODO: Investigate.
             }
         }
 

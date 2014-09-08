@@ -51,6 +51,9 @@
     <Compile Include="Controls\SearchBox.xaml.cs">
       <DependentUpon>SearchBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Html2Xaml\Html2XamlConverter.cs" />
+    <Compile Include="Html2Xaml\Properties.cs" />
+    <Compile Include="Html2Xaml\TagDefinition.cs" />
     <Compile Include="ListViewEx.cs" />
     <Compile Include="LocalizationHelper.cs" />
     <Compile Include="StatusBarBehavior.cs" />
@@ -61,6 +64,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\..\packages\HtmlAgilityPack.1.4.8\lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="ThinMvvm, Version=0.9.21.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\ThinMvvm.0.9.21.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>

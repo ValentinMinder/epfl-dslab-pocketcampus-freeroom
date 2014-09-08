@@ -20,7 +20,7 @@ namespace PocketCampus.Common
         }
 
         public static readonly DependencyProperty IsVisibleProperty =
-            DependencyProperty.Register( "IsVisible", typeof( bool ), typeof( StatusBarBehavior ), new PropertyMetadata( true, OnIsVisibleChanged ) );
+            DependencyProperty.Register( "IsVisible", typeof( bool ), typeof( StatusBarBehavior ), new PropertyMetadata( false, OnIsVisibleChanged ) );
 
         private static async void OnIsVisibleChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
         {
