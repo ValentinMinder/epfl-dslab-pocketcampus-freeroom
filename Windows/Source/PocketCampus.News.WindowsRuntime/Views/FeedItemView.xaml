@@ -59,4 +59,18 @@
         
         <comControls:LoadingAndError />
     </Grid>
+    
+    <Page.BottomAppBar>
+        <CommandBar IsOpen="False"
+                    ClosedDisplayMode="Minimal">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Command="{Binding RefreshCommand}"
+                              Icon="Refresh"
+                              Label="{CustomResource FeedItem.Refresh}" />
+                <AppBarButton Command="{Binding OpenInBrowserCommand}"
+                              Icon="NewWindow"
+                              Label="{CustomResource FeedItem.ViewInBrowser}" />
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

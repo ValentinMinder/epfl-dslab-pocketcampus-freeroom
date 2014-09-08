@@ -86,4 +86,15 @@
         
         <comControls:LoadingAndError Grid.Row="1" />
     </Grid>
+    
+    <Page.BottomAppBar>
+        <CommandBar IsOpen="False"
+                    ClosedDisplayMode="Minimal">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Command="{Binding RefreshCommand}"
+                              Icon="Refresh"
+                              Label="{CustomResource Main.Refresh}" />
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>
