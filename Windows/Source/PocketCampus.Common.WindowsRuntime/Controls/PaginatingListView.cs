@@ -57,7 +57,6 @@ namespace PocketCampus.Common.Controls
             _view = new ListView();
             _view.SetBinding( ListView.ItemsSourceProperty, new Binding { Path = new PropertyPath( "ItemsSource" ), Source = this } );
             _view.SetBinding( ListView.ItemTemplateProperty, new Binding { Path = new PropertyPath( "ItemTemplate" ), Source = this } );
-            _view.ItemContainerStyle = (Style) Application.Current.Resources["AppStretchListViewItemStyle"];
             _view.Loaded += Items_Loaded;
 
             Content = _view;

@@ -13,36 +13,36 @@ namespace PocketCampus.Map.ViewModels
     /// </summary>
     public sealed class MapProperties : ObservableObject
     {
-        private int _buildingsLevel;
-        private int _zoomLevel;
+        private int _floor;
+        private double _zoomLevel;
         private GeoPosition _userPosition;
         private GeoPosition _center;
 
         /// <summary>
-        /// Gets or sets the map's buildings level.
+        /// Gets or sets the map's floor.
         /// </summary>
-        public int BuildingsLevel
+        public int Floor
         {
-            get { return _buildingsLevel; }
+            get { return _floor; }
             set
             {
-                if ( value > _buildingsLevel )
+                if ( value > _floor )
                 {
                     Messenger.Send( new EventLogRequest( "IncreaseFloor", null ) );
                 }
-                else if ( value < _buildingsLevel )
+                else if ( value < _floor )
                 {
                     Messenger.Send( new EventLogRequest( "DecreaseFloor", null ) );
                 }
 
-                SetProperty( ref _buildingsLevel, value );
+                SetProperty( ref _floor, value );
             }
         }
 
         /// <summary>
         /// Gets or sets the map's zoom level.
         /// </summary>
-        public int ZoomLevel
+        public double ZoomLevel
         {
             get { return _zoomLevel; }
             set { SetProperty( ref _zoomLevel, value ); }

@@ -28,10 +28,22 @@ namespace PocketCampus.Common.Controls
             DependencyProperty.Register( "SearchCommand", typeof( ICommand ), typeof( SearchBox ), new PropertyMetadata( null ) );
         #endregion
 
+        #region PlaceholderText
+        public string PlaceholderText
+        {
+            get { return (string) GetValue( PlaceholderTextProperty ); }
+            set { SetValue( PlaceholderTextProperty, value ); }
+        }
+
+        public static readonly DependencyProperty PlaceholderTextProperty =
+            DependencyProperty.Register( "PlaceholderText", typeof( string ), typeof( SearchBox ), new PropertyMetadata( null ) );
+        #endregion
+
 
         public SearchBox()
         {
             InitializeComponent();
+            Root.DataContext = this;
         }
     }
 }

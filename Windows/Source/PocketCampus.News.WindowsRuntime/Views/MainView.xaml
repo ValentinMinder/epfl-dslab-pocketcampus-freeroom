@@ -22,9 +22,8 @@
                                       Width="125" />
             
             <DataTemplate x:Key="FeedItemTemplate">
-                <Button Command="{Binding DataContext.ViewFeedItemCommand, ElementName=Root}"
-                        CommandParameter="{Binding}"
-                        Style="{StaticResource AppTransparentButtonStyle}">
+                <comControls:SimpleButton Command="{Binding DataContext.ViewFeedItemCommand, ElementName=Root}"
+                                          CommandParameter="{Binding}">
                     <Grid Margin="0,16,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition MaxWidth="125" />
@@ -53,7 +52,7 @@
                         </StackPanel>
 
                     </Grid>
-                </Button>
+                </comControls:SimpleButton>
             </DataTemplate>
         </ResourceDictionary>
     </Page.Resources>

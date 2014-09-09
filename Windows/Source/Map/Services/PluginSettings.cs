@@ -2,8 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using PocketCampus.Common;
-using PocketCampus.Map.Resources;
 using ThinMvvm;
 
 namespace PocketCampus.Map.Services
@@ -36,7 +34,7 @@ namespace PocketCampus.Map.Services
         {
             return new SettingsDefaultValues
             {
-                { x => x.UseGeolocation, () => MessageBoxEx.ShowPrompt( PluginResources.UseGeolocationCaption, PluginResources.UseGeolocationMessage ) },
+                { x => x.UseGeolocation, () => true },
             };
         }
     }

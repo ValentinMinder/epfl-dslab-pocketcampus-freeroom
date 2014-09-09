@@ -45,35 +45,7 @@ namespace PocketCampus.Map.Controls
             var map = (EpflMap) obj;
             var props = (MapProperties) args.NewValue;
             props.ListenToProperty( x => x.UserPosition, map.UserPositionChanged );
-            props.ListenToProperty( x => x.BuildingsLevel, map.BuildingsLevelChanged );
-        }
-        #endregion
-
-        #region Layers DependencyProperty
-        /// <summary>
-        /// The map layers.
-        /// </summary>
-        public PocketCampus.Map.Models.MapLayer[] Layers
-        {
-            get { return (PocketCampus.Map.Models.MapLayer[]) GetValue( LayersProperty ); }
-            set { SetValue( LayersProperty, value ); }
-        }
-
-        public static readonly DependencyProperty LayersProperty =
-            DependencyProperty.Register( "Layers", typeof( PocketCampus.Map.Models.MapLayer[] ), typeof( EpflMap ), new PropertyMetadata( OnLayersChanged ) );
-
-        private static void OnLayersChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
-        {
-            var map = (EpflMap) obj;
-            var itemsContainer = MapExtensions.GetChildren( map.LayoutRoot ).OfType<MapItemsControl>().ElementAt( 1 );
-            itemsContainer.Items.Clear();
-            foreach ( var layer in (PocketCampus.Map.Models.MapLayer[]) args.NewValue )
-            {
-                foreach ( var item in layer.Items )
-                {
-                    itemsContainer.Items.Add( item );
-                }
-            }
+            props.ListenToProperty( x => x.Floor, map.BuildingsLevelChanged );
         }
         #endregion
 
@@ -137,7 +109,7 @@ namespace PocketCampus.Map.Controls
         {
             var loc = (MapItem) ( (Pushpin) sender ).DataContext;
             Properties.Center = loc.Position;
-            Properties.BuildingsLevel = loc.Floor ?? 0;
+            Properties.Floor = loc.Floor ?? 0;
         }
 
         /// <summary>
@@ -159,12 +131,12 @@ namespace PocketCampus.Map.Controls
             if ( coords.Length == 1 )
             {
                 LayoutRoot.Center = coords[0];
-                Properties.BuildingsLevel = PinnedLocations[0].Floor ?? 0;
+                Properties.Floor = PinnedLocations[0].Floor ?? 0;
             }
             else if ( coords.Length > 1 )
             {
                 LayoutRoot.SetView( LocationRectangle.CreateBoundingRectangle( coords ) );
-                Properties.BuildingsLevel = PinnedLocations[0].Floor ?? 0;
+                Properties.Floor = PinnedLocations[0].Floor ?? 0;
             }
         }
 
@@ -185,7 +157,7 @@ namespace PocketCampus.Map.Controls
         private void BuildingsLevelChanged()
         {
             var source = (EpflBuildingsTileSource) LayoutRoot.TileSources[0];
-            source.Level = Properties.BuildingsLevel;
+            source.Level = Properties.Floor;
             LayoutRoot.TileSources.Remove( source );
             LayoutRoot.TileSources.Add( source );
         }

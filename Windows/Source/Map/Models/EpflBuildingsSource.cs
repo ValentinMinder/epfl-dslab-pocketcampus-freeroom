@@ -12,19 +12,20 @@ namespace PocketCampus.Map.Models
     public static class EpflBuildingsSource
     {
         // The buildings URL format
-        // Parameters are the server number, the level, the zoon level, the X coordinate and the Y coordinate
+        // Parameters are the server number, the floor, the zoom level, the X coordinate and the Y coordinate
         private const string Url = "http://plan-epfl-tile{0}.epfl.ch/batiments{1}-merc/{2}/{3:000/000/000}/{4:000/000/000}.png";
         private const int ServerCount = 5;
         private static uint _server = 0;
 
         /// <summary>
-        /// Gets an Uri for the tile at the specified X/Y coordinates, zoom level and buildings level.
+        /// Gets an Uri for the tile at the specified X/Y coordinates, zoom level and optional floor.
         /// </summary>
-        public static Uri GetUri( int buildingsLevel, int x, int y, int zoomLevel )
+        public static Uri GetUri( int x, int y, int zoomLevel, int? floor )
         {
             y = FixY( y, zoomLevel );
             _server = ( _server + 1 ) % ServerCount;
-            return new Uri( string.Format( Url, _server, buildingsLevel, zoomLevel, x, y ), UriKind.Absolute );
+            string floorString = floor == null ? "all" : floor.ToString();
+            return new Uri( string.Format( Url, _server, floorString, zoomLevel, x, y ), UriKind.Absolute );
         }
 
         /// <summary>

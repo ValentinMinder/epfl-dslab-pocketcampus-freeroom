@@ -16,18 +16,6 @@ namespace PocketCampus.Map.Services
     public interface IMapService
     {
         /// <summary>
-        /// Asynchronously gets the map layers.
-        /// </summary>
-        [ThriftMethod( "getLayerList" )]
-        Task<MapLayer[]> GetLayersAsync();
-
-        /// <summary>
-        /// Asynchronously gets the map items for the specified layer.
-        /// </summary>
-        [ThriftMethod( "getLayerItems" )]
-        Task<MapItem[]> GetLayerItemsAsync( [ThriftParameter( 1, "layerId" )] long layerId, CancellationToken cancellationToken );
-
-        /// <summary>
         /// Asynchronously searches the map items with the specified query.
         /// </summary>
         [ThriftMethod( "search" )]

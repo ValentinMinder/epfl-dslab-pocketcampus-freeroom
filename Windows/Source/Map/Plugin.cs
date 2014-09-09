@@ -48,6 +48,7 @@ namespace PocketCampus.Map
         public void Initialize( INavigationService navigationService )
         {
             Container.Bind<IMapService, MapService>();
+            Container.Bind<IPluginSettings, PluginSettings>();
 
             Messenger.Register<MapSearchRequest>( navigationService.NavigateTo<MainViewModel, MapSearchRequest> );
         }

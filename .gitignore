@@ -29,3 +29,5 @@ TestResults/
 # Windows Phone hidden files
 Windows/Source/Main.WindowsPhone/analytics.xml
 Windows/Source/Map.WindowsPhone/MapTokens.txt
+Windows/Source/Main.WindowsRuntime/analytics.xml
+Windows/Source/Map.WindowsRuntime/MapToken.xml

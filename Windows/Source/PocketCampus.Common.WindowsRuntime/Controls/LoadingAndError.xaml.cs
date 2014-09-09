@@ -12,6 +12,7 @@ using Windows.ApplicationModel.Resources;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace PocketCampus.Common.Controls
 {
@@ -28,6 +29,11 @@ namespace PocketCampus.Common.Controls
         public LoadingAndError()
         {
             InitializeComponent();
+
+            // Default values, useful for most scenarios
+            HorizontalContentAlignment = HorizontalAlignment.Center;
+            VerticalContentAlignment = VerticalAlignment.Center;
+            Background = (Brush) Application.Current.Resources["ApplicationPageBackgroundThemeBrush"];
 
             Loaded += ( _, __ ) =>
             {

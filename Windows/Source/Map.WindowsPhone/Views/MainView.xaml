@@ -83,7 +83,6 @@
         <!-- Map -->
         <myControls:EpflMap Grid.Row="2"
                             Properties="{Binding Properties}"
-                            Layers="{Binding MapLayers}"
                             PinnedLocations="{Binding SearchProvider.SearchResults}" />
 
         <!-- Buildings level selector -->

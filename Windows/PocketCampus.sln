@@ -80,6 +80,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.News.WindowsRu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Moodle.WindowsRuntime", "Source\PocketCampus.Moodle.WindowsRuntime\PocketCampus.Moodle.WindowsRuntime.csproj", "{E4D866FE-E3AD-4309-9730-0F3AE64916EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Map.WindowsRuntime", "Source\PocketCampus.Map.WindowsRuntime\PocketCampus.Map.WindowsRuntime.csproj", "{EB96A9BE-48EC-4FD8-9755-61D667CD8225}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -500,6 +502,18 @@ Global
 		{E4D866FE-E3AD-4309-9730-0F3AE64916EB}.Release|ARM.Build.0 = Release|ARM
 		{E4D866FE-E3AD-4309-9730-0F3AE64916EB}.Release|x86.ActiveCfg = Release|x86
 		{E4D866FE-E3AD-4309-9730-0F3AE64916EB}.Release|x86.Build.0 = Release|x86
+		{EB96A9BE-48EC-4FD8-9755-61D667CD8225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB96A9BE-48EC-4FD8-9755-61D667CD8225}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB96A9BE-48EC-4FD8-9755-61D667CD8225}.Debug|ARM.ActiveCfg = Debug|ARM
+		{EB96A9BE-48EC-4FD8-9755-61D667CD8225}.Debug|ARM.Build.0 = Debug|ARM
+		{EB96A9BE-48EC-4FD8-9755-61D667CD8225}.Debug|x86.ActiveCfg = Debug|x86
+		{EB96A9BE-48EC-4FD8-9755-61D667CD8225}.Debug|x86.Build.0 = Debug|x86
+		{EB96A9BE-48EC-4FD8-9755-61D667CD8225}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB96A9BE-48EC-4FD8-9755-61D667CD8225}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB96A9BE-48EC-4FD8-9755-61D667CD8225}.Release|ARM.ActiveCfg = Release|ARM
+		{EB96A9BE-48EC-4FD8-9755-61D667CD8225}.Release|ARM.Build.0 = Release|ARM
+		{EB96A9BE-48EC-4FD8-9755-61D667CD8225}.Release|x86.ActiveCfg = Release|x86
+		{EB96A9BE-48EC-4FD8-9755-61D667CD8225}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

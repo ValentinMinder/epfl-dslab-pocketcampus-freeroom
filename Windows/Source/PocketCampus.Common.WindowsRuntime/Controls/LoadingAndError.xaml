@@ -21,7 +21,7 @@
         <Grid Visibility="{Binding DataStatus,
                                    Converter={StaticResource EnumToVisibility}, 
                                    ConverterParameter=Loading}"
-              Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+              Background="{Binding Background}">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
@@ -30,6 +30,7 @@
             <!-- Text -->
             <TextBlock Text="{CustomResource Common.LoadingAndError.Loading}"
                        Style="{StaticResource AppCenterTextBlockStyle}"
+                       HorizontalAlignment="{Binding HorizontalContentAlignment}"
                        VerticalAlignment="Bottom" />
 
             <!-- Progress bar -->
@@ -42,16 +43,18 @@
         <Border Visibility="{Binding DataStatus, 
                                      Converter={StaticResource EnumToVisibility}, 
                                      ConverterParameter=Error}"
-                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                Background="{Binding Background}">
             <TextBlock Text="{CustomResource Common.LoadingAndError.Error}"
-                       Style="{StaticResource AppCenterTextBlockStyle}" />
+                       Style="{StaticResource AppCenterTextBlockStyle}"
+                       HorizontalAlignment="{Binding HorizontalContentAlignment}"
+                       VerticalAlignment="{Binding VerticalContentAlignment}" />
         </Border>
 
         <!-- Network error message -->
         <Border Visibility="{Binding DataStatus, 
                                      Converter={StaticResource EnumToVisibility}, 
                                      ConverterParameter=NetworkError}"
-                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                Background="{Binding Background}">
             <TextBlock Text="{CustomResource Common.LoadingAndError.NetworkError}"
                        Style="{StaticResource AppCenterTextBlockStyle}" />
         </Border>

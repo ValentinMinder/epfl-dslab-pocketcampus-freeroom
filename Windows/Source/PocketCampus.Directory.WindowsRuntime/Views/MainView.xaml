@@ -27,11 +27,10 @@
 
             <!-- Person template -->
             <DataTemplate x:Key="PersonTemplate">
-                <Button Command="{Binding DataContext.ViewPersonCommand, ElementName=Root}"
-                        CommandParameter="{Binding}"
-                        Style="{StaticResource AppTransparentButtonStyle}"
-                        Height="100"
-                        Margin="19,16,19,0">
+                <comControls:SimpleButton Command="{Binding DataContext.ViewPersonCommand, ElementName=Root}"
+                                          CommandParameter="{Binding}"
+                                          Height="100"
+                                          Margin="19,16,19,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -83,7 +82,7 @@
                                    Text="{Binding Office}"
                                    Style="{StaticResource AppNormalTextBlockStyle}" />
                     </Grid>
-                </Button>
+                </comControls:SimpleButton>
             </DataTemplate>
         </ResourceDictionary>
     </Page.Resources>

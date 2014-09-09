@@ -22,10 +22,9 @@
             <my:FileToIconElementConverter x:Key="FileToIcon" />
 
             <DataTemplate x:Key="FileTemplate">
-                <Button Command="{Binding DataContext.OpenFileCommand, ElementName=Root}"
-                        CommandParameter="{Binding}"
-                        Style="{StaticResource AppTransparentButtonStyle}"
-                        Margin="0,8,0,0">
+                <comControls:SimpleButton Command="{Binding DataContext.OpenFileCommand, ElementName=Root}"
+                                          CommandParameter="{Binding}"
+                                          Margin="0,8,0,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -39,14 +38,13 @@
                                    Style="{StaticResource AppLargeTextBlockStyle}"
                                    Margin="8,0,0,0" />
                     </Grid>
-                </Button>
+                </comControls:SimpleButton>
             </DataTemplate>
 
             <DataTemplate x:Key="LinkTemplate">
-                <Button Command="{Binding DataContext.OpenLinkCommand, ElementName=Root}"
-                        CommandParameter="{Binding}"
-                        Style="{StaticResource AppTransparentButtonStyle}"
-                        Margin="0,8,0,0">
+                <comControls:SimpleButton Command="{Binding DataContext.OpenLinkCommand, ElementName=Root}"
+                                          CommandParameter="{Binding}"
+                                          Margin="0,8,0,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -62,7 +60,7 @@
                                    Style="{StaticResource AppLargeTextBlockStyle}"
                                    Margin="8,0,0,0" />
                     </Grid>
-                </Button>
+                </comControls:SimpleButton>
             </DataTemplate>
 
             <DataTemplate x:Key="FolderTemplate">

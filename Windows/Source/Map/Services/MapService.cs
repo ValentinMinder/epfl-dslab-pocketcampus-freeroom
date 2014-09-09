@@ -20,16 +20,6 @@ namespace PocketCampus.Map.Services
 
         }
 
-        public Task<MapLayer[]> GetLayersAsync()
-        {
-            return CallAsync<MapLayer[]>( x => x.GetLayersAsync );
-        }
-
-        public Task<MapItem[]> GetLayerItemsAsync( long layerId, CancellationToken cancellationToken )
-        {
-            return CallAsync<long, CancellationToken, MapItem[]>( x => x.GetLayerItemsAsync, layerId, cancellationToken );
-        }
-
         public Task<MapItem[]> SearchAsync( string query, CancellationToken cancellationToken )
         {
             return CallAsync<string, CancellationToken, MapItem[]>( x => x.SearchAsync, query, cancellationToken );

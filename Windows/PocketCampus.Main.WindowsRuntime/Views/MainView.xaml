@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:i="using:Microsoft.Xaml.Interactivity"
       xmlns:com="using:PocketCampus.Common"
+      xmlns:comControls="using:PocketCampus.Common.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d"
@@ -10,12 +11,12 @@
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <DataTemplate x:Key="PluginTemplate">
-            <Button Command="{Binding DataContext.OpenPluginCommand, ElementName=Root}"
-                    CommandParameter="{Binding}"
-                    Style="{StaticResource AppTileButtonStyle}"
-                    Margin="0,0,17,17"
-                    Width="104"
-                    Height="104">
+            <comControls:SimpleButton Command="{Binding DataContext.OpenPluginCommand, ElementName=Root}"
+                                      CommandParameter="{Binding}"
+                                      Style="{StaticResource AppTileButtonStyle}"
+                                      Margin="0,0,17,17"
+                                      Width="104"
+                                      Height="104">
                 <Grid>
                     <Viewbox Stretch="Uniform"
                              Margin="0,-10,0,0">
@@ -25,12 +26,11 @@
                     <TextBlock Grid.Row="1"
                                Text="{Binding Name}"
                                FontSize="{StaticResource TextStyleMediumFontSize}"
-                               FontFamily="{StaticResource PhoneFontFamilySemiLight}"
                                VerticalAlignment="Bottom"
                                Margin="7,0,0,4" />
 
                 </Grid>
-            </Button>
+            </comControls:SimpleButton>
         </DataTemplate>
     </Page.Resources>
 

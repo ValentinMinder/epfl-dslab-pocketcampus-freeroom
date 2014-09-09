@@ -16,13 +16,12 @@
             </ResourceDictionary.MergedDictionaries>
             
             <DataTemplate x:Key="CourseTemplate">
-                <Button Command="{Binding DataContext.ViewCourseCommand, ElementName=Root}"
-                        CommandParameter="{Binding}"
-                        Style="{StaticResource AppTransparentButtonStyle}"
-                        Margin="19,16,19,0">
+                <comControls:SimpleButton Command="{Binding DataContext.ViewCourseCommand, ElementName=Root}"
+                                          CommandParameter="{Binding}"
+                                          Margin="19,16,19,0">
                     <TextBlock Text="{Binding Name}"
                                Style="{StaticResource AppLargeTextBlockStyle}" />
-                </Button>
+                </comControls:SimpleButton>
             </DataTemplate>
         </ResourceDictionary>
     </Page.Resources>

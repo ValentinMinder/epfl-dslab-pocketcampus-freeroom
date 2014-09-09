@@ -22,7 +22,6 @@ namespace PocketCampus.Map.ViewModels
         private readonly IMapService _mapService;
 
         private MapItem[] _searchResults;
-        private bool _anySearchResults;
 
         /// <summary>
         /// Gets the search results.
@@ -31,15 +30,6 @@ namespace PocketCampus.Map.ViewModels
         {
             get { return _searchResults; }
             private set { SetProperty( ref _searchResults, value ); }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether there are any search results.
-        /// </summary>
-        public bool AnySearchResults
-        {
-            get { return _anySearchResults; }
-            private set { SetProperty( ref _anySearchResults, value ); }
         }
 
         /// <summary>
@@ -59,9 +49,6 @@ namespace PocketCampus.Map.ViewModels
         public SearchProvider( IMapService mapService )
         {
             _mapService = mapService;
-
-            AnySearchResults = true;
-
             Messenger.Send( new CommandLoggingRequest( this ) );
         }
 
@@ -78,7 +65,6 @@ namespace PocketCampus.Map.ViewModels
             else if ( request.Item != null )
             {
                 SearchResults = new[] { request.Item };
-                AnySearchResults = true;
             }
         }
 
@@ -89,17 +75,12 @@ namespace PocketCampus.Map.ViewModels
         {
             return TryExecuteAsync( async token =>
             {
-                // Pretend there are results for now, don't show any kind of "no results" message
-                // while the search is taking place
-                AnySearchResults = true;
-
                 var results = await _mapService.SearchAsync( query, token );
                 var uniqueResult = results.FirstOrDefault( r => AreNamesEqual( r.Name, query ) );
 
                 if ( !token.IsCancellationRequested )
                 {
                     SearchResults = uniqueResult == null ? results : new[] { uniqueResult };
-                    AnySearchResults = SearchResults.Length > 0;
                 }
             } );
         }

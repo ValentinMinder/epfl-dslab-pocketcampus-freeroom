@@ -95,7 +95,6 @@
     </Compile>
     <Compile Include="Converters.cs" />
     <Compile Include="LocalizedStrings.cs" />
-    <Compile Include="Services\PluginSettings.cs" />
     <Compile Include="Resources\PluginResources.fr.Designer.cs">
       <DependentUpon>PluginResources.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>

@@ -3,12 +3,8 @@
 // File author: Solal Pirelli
 
 using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
-using PocketCampus.Map.Models;
 using PocketCampus.Map.Services;
 using ThinMvvm;
 using ThinMvvm.Logging;
@@ -19,10 +15,8 @@ namespace PocketCampus.Map.ViewModels
     /// The main ViewModel, with the map and search functionality.
     /// </summary>
     [LogId( "/map" )]
-    public sealed class MainViewModel : DataViewModel<MapSearchRequest>
+    public sealed class MainViewModel : ViewModel<MapSearchRequest>, IDisposable
     {
-        // The default zoom level.
-        private const int DefaultZoomLevel = 17;
         // The zoom level used when centering the map on the campus.
         private const int CampusZoomLevel = 16;
         // The coordinates of the campus center.
@@ -34,7 +28,7 @@ namespace PocketCampus.Map.ViewModels
         private readonly IPluginSettings _settings;
 
         private GeoLocationStatus _locationStatus;
-        private MapLayer[] _mapLayers;
+        private bool _isCenteredOnUser;
 
         /// <summary>
         /// Gets the map properties.
@@ -55,14 +49,13 @@ namespace PocketCampus.Map.ViewModels
             private set { SetProperty( ref _locationStatus, value ); }
         }
 
-        /// <summary>
-        /// Gets the map layers.
-        /// </summary>
-        public MapLayer[] MapLayers
+        public bool IsCenteredOnUser
         {
-            get { return _mapLayers; }
-            private set { SetProperty( ref _mapLayers, value ); }
+            get { return _isCenteredOnUser; }
+            set { SetProperty( ref _isCenteredOnUser, value ); }
         }
+
+
 
         /// <summary>
         /// Gets the command executed to center the map on the campus.
@@ -74,12 +67,14 @@ namespace PocketCampus.Map.ViewModels
         }
 
         /// <summary>
-        /// Gets the command executed to center the map on the user's position.
+        /// Gets the command executed to toggle centering the map on the user's position.
         /// </summary>
-        [LogId( "CenterOnSelf" )]
-        public ICommand CenterOnPositionCommand
+        [LogId( "ToggleCenterOnUser" )]
+        [LogParameter( "IsCenteredOnUser" )]
+        [LogValueConverter( typeof( ToggleCenterOnUserLogConverter ) )]
+        public Command ToggleCenterOnUserCommand
         {
-            get { return this.GetCommand( CenterOnPosition, () => _settings.UseGeolocation ); }
+            get { return this.GetCommand( () => ToggleCenterOnUser(), () => _settings.UseGeolocation ); }
         }
 
         /// <summary>
@@ -97,20 +92,19 @@ namespace PocketCampus.Map.ViewModels
         /// </summary>
         public MainViewModel( ILocationService locationService, INavigationService navigationService,
                               IMapService mapService, IPluginSettings settings,
-                              SearchProvider searchProvider,
                               MapSearchRequest request )
         {
             _mapService = mapService;
             _locationService = locationService;
             _navigationService = navigationService;
             _settings = settings;
-            SearchProvider = searchProvider;
+            SearchProvider = new SearchProvider( _mapService );
 
             _locationService.Ready += LocationService_Ready;
             _locationService.LocationChanged += LocationService_LocationChanged;
             _locationService.Error += LocationService_Error;
 
-            Properties = new MapProperties { ZoomLevel = DefaultZoomLevel };
+            Properties = new MapProperties();
 
             SearchProvider.ExecuteRequest( request );
         }
@@ -119,43 +113,16 @@ namespace PocketCampus.Map.ViewModels
         /// <summary>
         /// Executed when the user opens the plugin, or comes back from the settings page.
         /// </summary>
-        protected override async Task RefreshAsync( bool force, CancellationToken token )
+        public override void OnNavigatedTo()
         {
-            if ( force )
-            {
-                // TODO: Find a correct way to display that
-                await Task.Delay( 0 ); // make the compiler happy for now
-                //var layers = (IEnumerable<MapLayer>) await _mapService.GetLayersAsync();
-                //layers = layers.Where( l => l.CanDisplay );
-                //foreach ( var layer in layers )
-                //{
-                //    layer.Items = await _mapService.GetLayerItemsAsync( layer.Id, token );
-                //    foreach ( var item in layer.Items )
-                //    {
-                //        item.ImageUrl = "http://pocketcampus.epfl.ch/" + layer.ImageUrl;
-                //    }
-                //}
-
-                //MapLayers = layers.ToArray();
-            }
-
             if ( Properties.Center == null )
             {
-                Properties.Center = CampusPosition;
+                CenterOnCampus();
             }
 
             if ( _settings.UseGeolocation )
             {
                 _locationService.IsEnabled = true;
-
-                // This task should not be awaited; assigning it to a variable removes the compiler warning
-                var _ = _locationService.GetLocationAsync().ContinueWith( task =>
-                {
-                    Properties.UserPosition = task.Result.Item1;
-                    LocationStatus = task.Result.Item2;
-
-                    Properties.Center = Properties.UserPosition;
-                } );
             }
             else
             {
@@ -170,17 +137,23 @@ namespace PocketCampus.Map.ViewModels
         /// </summary>
         private void CenterOnCampus()
         {
+            IsCenteredOnUser = false;
             Properties.ZoomLevel = CampusZoomLevel;
             Properties.Center = CampusPosition;
         }
 
         /// <summary>
-        /// Centers the map on the user's position.
+        /// Toggles centering the map on the user's position.
         /// </summary>
-        private void CenterOnPosition()
+        private void ToggleCenterOnUser()
         {
-            Properties.ZoomLevel = DefaultZoomLevel;
-            Properties.Center = Properties.UserPosition;
+            IsCenteredOnUser = !IsCenteredOnUser;
+
+            if ( IsCenteredOnUser )
+            {
+                Properties.UserPosition = _locationService.LastKnownLocation;
+                Properties.Center = Properties.UserPosition;
+            }
         }
 
         /// <summary>
@@ -197,6 +170,10 @@ namespace PocketCampus.Map.ViewModels
         private void LocationService_LocationChanged( object sender, LocationChangedEventArgs e )
         {
             Properties.UserPosition = e.Location;
+            if ( IsCenteredOnUser )
+            {
+                Properties.Center = Properties.UserPosition;
+            }
         }
 
         /// <summary>
@@ -206,6 +183,25 @@ namespace PocketCampus.Map.ViewModels
         {
             Properties.UserPosition = null;
             LocationStatus = GeoLocationStatus.Error;
+        }
+
+
+        // avoid memory leaks, since the locator is static
+        public void Dispose()
+        {
+            _locationService.Ready -= LocationService_Ready;
+            _locationService.LocationChanged -= LocationService_LocationChanged;
+            _locationService.Error -= LocationService_Error;
+        }
+
+
+        // for logging purposes only
+        private sealed class ToggleCenterOnUserLogConverter : ILogValueConverter
+        {
+            public string Convert( object value ) // the parameter is the current value of IsCenteredOnUser, we need the next one to log
+            {
+                return ( !( (bool) value ) ).ToString();
+            }
         }
     }
 }
