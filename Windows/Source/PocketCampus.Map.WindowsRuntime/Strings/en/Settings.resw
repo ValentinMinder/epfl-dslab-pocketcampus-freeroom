@@ -117,12 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PagesHeader" xml:space="preserve">
-    <value>MAP</value>
-    <comment>Header</comment>
+  <data name="UseGeolocation" xml:space="preserve">
+    <value>show my position on the map</value>
+    <comment>Checkbox text</comment>
   </data>
-  <data name="PluginName" xml:space="preserve">
-    <value>Map</value>
-    <comment>Plugin name</comment>
+  <data name="ViewTitle" xml:space="preserve">
+    <value>settings</value>
+    <comment>Title</comment>
   </data>
 </root>

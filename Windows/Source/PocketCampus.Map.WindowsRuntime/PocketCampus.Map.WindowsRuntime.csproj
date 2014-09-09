@@ -104,6 +104,9 @@
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowsRuntimePlugin.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +130,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <PRIResource Include="Strings\fr\Settings.resw" />
+    <PRIResource Include="Strings\fr\Resources.resw" />
+    <PRIResource Include="Strings\fr\Main.resw" />
+    <PRIResource Include="Strings\en\Main.resw" />
+    <PRIResource Include="Strings\en\Settings.resw" />
     <PRIResource Include="Strings\en\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
@@ -144,10 +152,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Strings\fr\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="MapToken.txt" />
   </ItemGroup>

@@ -54,6 +54,8 @@
                 Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
             <comControls:SearchBox x:Name="Box"
                                    Grid.Row="2"
+                                   Query="{Binding Query, 
+                                                   Mode=TwoWay}"
                                    SearchCommand="{Binding AddStationByNameCommand}"
                                    Margin="19,5" />
         </Border>

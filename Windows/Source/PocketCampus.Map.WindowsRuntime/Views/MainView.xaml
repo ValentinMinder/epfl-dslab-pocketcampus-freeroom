@@ -12,6 +12,7 @@
       mc:Ignorable="d"
       d:DataContext="{Binding Main, Source={StaticResource Design}}"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <!-- TODO geolocationstatus in statusbar -->
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -56,18 +57,24 @@
         </Grid.RowDefinitions>
 
         <Border Background="{StaticResource AppHeaderBackgroundBrush}">
-            <TextBlock Text="HEADER"
+            <TextBlock Text="{CustomResource PagesHeader}"
                        Style="{StaticResource AppHeaderTextBlockStyle}" />
         </Border>
         
-        <Border Grid.Row="1"
-                Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+        <StackPanel Grid.Row="1"
+                    Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
             <comControls:SearchBox SearchCommand="{Binding SearchProvider.SearchCommand}"
-                                   PlaceholderText="search..."
+                                   PlaceholderText="{CustomResource Main.Search}"
                                    Background="{StaticResource AppSecondaryHeaderBackgroundBrush}"
                                    Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}"
                                    Margin="19,0" />
-        </Border>
+            
+            <comControls:LoadingAndError DataContext="{Binding SearchProvider}"
+                                         FontSize="{StaticResource TextStyleLargeFontSize}"
+                                         Background="Transparent"
+                                         HorizontalContentAlignment="Left"
+                                         Margin="19,4" />
+        </StackPanel>
 
         <map:MapControl x:Name="Map"
                         Grid.Row="2"
@@ -121,15 +128,15 @@
             <CommandBar.PrimaryCommands>
                 <AppBarButton Command="{Binding CenterOnCampusCommand}"
                               Icon="Home"
-                              Label="center on campus" />
+                              Label="{CustomResource Main.CenterOnCampus}" />
                 <AppBarToggleButton Command="{Binding ToggleCenterOnUserCommand}"
                                     IsChecked="{Binding IsCenteredOnUser,
-                                                        Mode=TwoWay}"
+                                                        Mode=OneWay}"
                                     Icon="MapPin"
-                                    Label="center on me" />
+                                    Label="{CustomResource Main.CenterOnUser}" />
                 <AppBarButton Command="{Binding ViewSettingsCommand}"
                               Icon="Setting"
-                              Label="settings" />
+                              Label="{CustomResource Main.Settings}" />
             </CommandBar.PrimaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

@@ -14,6 +14,11 @@ namespace PocketCampus.Transport
 
         public override IEnumerable<object> Convert( IEnumerable<object> value )
         {
+            if ( value == null )
+            {
+                return Enumerable.Empty<object>();
+            }
+
             return value.Take( Count );
         }
     }

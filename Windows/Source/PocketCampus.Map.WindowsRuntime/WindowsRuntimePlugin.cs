@@ -29,6 +29,7 @@ namespace PocketCampus.Map
         public void Initialize( IWindowsRuntimeNavigationService navigationService )
         {
             navigationService.Bind<MainViewModel, MainView>();
+            navigationService.Bind<SettingsViewModel, SettingsView>();
         }
     }
 }

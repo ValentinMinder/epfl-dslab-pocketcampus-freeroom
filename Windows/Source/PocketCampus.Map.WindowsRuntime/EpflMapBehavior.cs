@@ -4,6 +4,7 @@ using Microsoft.Xaml.Interactivity;
 using PocketCampus.Map.Models;
 using PocketCampus.Map.ViewModels;
 using ThinMvvm;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
@@ -15,6 +16,7 @@ using Windows.UI.Xaml.Controls.Maps;
 namespace PocketCampus.Map
 {
     // HACK: The way children are set/accessed is ugly, slow and brittle
+    // TODO: Names layer (and disable road names on the map too... if we can...)
     public sealed class EpflMapBehavior : DependencyObject, IBehavior
     {
         #region ItemTemplate
@@ -71,6 +73,11 @@ namespace PocketCampus.Map
 
         public void Attach( DependencyObject associatedObject )
         {
+            if ( DesignMode.DesignModeEnabled )
+            {
+                return;
+            }
+
             AssociatedObject = associatedObject;
             _map = (MapControl) associatedObject;
 

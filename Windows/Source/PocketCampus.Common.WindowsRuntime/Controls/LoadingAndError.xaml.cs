@@ -31,9 +31,14 @@ namespace PocketCampus.Common.Controls
             InitializeComponent();
 
             // Default values, useful for most scenarios
+            // TODO make that into a style, and make this control appearance-less while we're at it
+            // TODO separate loading/error from statusbar
             HorizontalContentAlignment = HorizontalAlignment.Center;
             VerticalContentAlignment = VerticalAlignment.Center;
+            FontSize = (double) Application.Current.Resources["TextStyleExtraLargePlusFontSize"];
+            FontFamily = (FontFamily) Application.Current.Resources["PhoneFontFamilySemiLight"];
             Background = (Brush) Application.Current.Resources["ApplicationPageBackgroundThemeBrush"];
+            Root.DataContext = this;
 
             Loaded += ( _, __ ) =>
             {

@@ -153,12 +153,4 @@
     <value>départ</value>
     <comment>Field label (small)</comment>
   </data>
-  <data name="TripError" xml:space="preserve">
-    <value>Erreur. Réessayez plus tard.</value>
-    <comment>Sentence (small)</comment>
-  </data>
-  <data name="TripNetworkError" xml:space="preserve">
-    <value>Erreur. Vérifiez votre connexion à Internet.</value>
-    <comment>Sentence (small)</comment>
-  </data>
 </root>

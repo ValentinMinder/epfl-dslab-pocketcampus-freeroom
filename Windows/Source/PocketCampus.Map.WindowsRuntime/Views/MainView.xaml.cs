@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using Windows.ApplicationModel;
+using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.Map.Views
 {
@@ -8,7 +9,10 @@ namespace PocketCampus.Map.Views
         {
             InitializeComponent();
 
-            MapTokenLoader.SetToken( Map, "ms-appx:///PocketCampus.Map.WindowsRuntime/MapToken.txt" );
+            if ( !DesignMode.DesignModeEnabled )
+            {
+                MapTokenLoader.SetToken( Map, "ms-appx:///PocketCampus.Map.WindowsRuntime/MapToken.txt" );
+            }
         }
     }
 }

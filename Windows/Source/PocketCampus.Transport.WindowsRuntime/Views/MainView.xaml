@@ -180,34 +180,9 @@
                                 </FlyoutBase.AttachedFlyout>
                             </Border>
 
-                            <!-- Custom, small loading and error indicator -->
-                            <Grid Grid.Row="1">
-                                <!-- Loading message -->
-                                <Grid Visibility="{Binding DataStatus, 
-                                                           Converter={StaticResource EnumToVisibility}, 
-                                                           ConverterParameter=Loading}">
-                                    <!-- Progress bar -->
-                                    <ProgressBar IsIndeterminate="True" />
-                                </Grid>
-
-                                <!-- Error message -->
-                                <Border Visibility="{Binding DataStatus, 
-                                                             Converter={StaticResource EnumToVisibility}, 
-                                                             ConverterParameter=Error}">
-                                    <!-- Text -->
-                                    <TextBlock Text="{CustomResource Main.TripError}"
-                                               Style="{StaticResource AppSubtleTextBlockStyle}" />
-                                </Border>
-
-                                <!-- Network error message -->
-                                <Border Visibility="{Binding DataStatus, 
-                                                             Converter={StaticResource EnumToVisibility}, 
-                                                             ConverterParameter=NetworkError}">
-                                    <!-- Text -->
-                                    <TextBlock Text="{CustomResource Main.TripNetworkError}"
-                                               Style="{StaticResource AppSubtleTextBlockStyle}" />
-                                </Border>
-                            </Grid>
+                            <!-- Small loading and error indicator -->
+                            <comControls:LoadingAndError HorizontalAlignment="Left"
+                                                         FontSize="{StaticResource TextStyleMediumFontSize}" />
                         </StackPanel>
                     </ToggleSwitch.Header>
 
