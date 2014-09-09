@@ -1,8 +1,8 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using PocketCampus.Common.Controls;
 
 namespace PocketCampus.Directory.Views
 {
-    public sealed partial class MainView : Page
+    public sealed partial class MainView : PageBase
     {
         public MainView()
         {

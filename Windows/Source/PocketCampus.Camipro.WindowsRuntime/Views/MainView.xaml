@@ -1,17 +1,15 @@
-﻿<Page x:Class="PocketCampus.Camipro.Views.MainView"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:i="using:Microsoft.Xaml.Interactivity"
-      xmlns:com="using:PocketCampus.Common"
-      xmlns:comControls="using:PocketCampus.Common.Controls"
-      xmlns:my="using:PocketCampus.Camipro"
-      xmlns:myDesign="using:PocketCampus.Camipro.ViewModels.Design"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      mc:Ignorable="d"
-      d:DataContext="{Binding Main, Source={StaticResource Design}}"
-      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <Page.Resources>
+﻿<cc:PageBase x:Class="PocketCampus.Camipro.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="using:PocketCampus.Common"
+             xmlns:cc="using:PocketCampus.Common.Controls"
+             xmlns:my="using:PocketCampus.Camipro"
+             xmlns:myDesign="using:PocketCampus.Camipro.ViewModels.Design"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DataContext="{Binding Main, Source={StaticResource Design}}">
+    <cc:PageBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ms-appx:///PocketCampus.Common.WindowsRuntime/Resources.xaml" />
@@ -19,9 +17,9 @@
             
             <myDesign:Design x:Key="Design" />
             
-            <com:StringFormatConverter x:Key="StringFormat" />
-            <com:MoneyFormatConverter x:Key="MoneyFormat" />
-            <com:EnumToStringConverter x:Key="EnumToString" />
+            <c:StringFormatConverter x:Key="StringFormat" />
+            <c:MoneyFormatConverter x:Key="MoneyFormat" />
+            <c:EnumToStringConverter x:Key="EnumToString" />
             <my:MoneyToBrushConverter x:Key="MoneyToBrush" />
             
             
@@ -59,7 +57,7 @@
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>
-    </Page.Resources>
+    </cc:PageBase.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
@@ -201,6 +199,6 @@
             </PivotItem>
         </Pivot>
         
-        <comControls:LoadingAndError Grid.Row="1" />
+        <cc:LoadingAndError Grid.Row="1" />
     </Grid>
-</Page>
+</cc:PageBase>

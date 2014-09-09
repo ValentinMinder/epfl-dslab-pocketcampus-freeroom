@@ -1,8 +1,8 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using PocketCampus.Common.Controls;
 
 namespace PocketCampus.Transport.Views
 {
-    public sealed partial class AddStationView : Page
+    public sealed partial class AddStationView : PageBase
     {
         public AddStationView()
         {

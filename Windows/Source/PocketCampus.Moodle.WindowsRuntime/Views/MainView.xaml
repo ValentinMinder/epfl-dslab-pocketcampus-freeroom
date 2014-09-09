@@ -1,35 +1,28 @@
-﻿<Page x:Class="PocketCampus.Moodle.Views.MainView"
+﻿<cc:PageBase x:Class="PocketCampus.Moodle.Views.MainView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:i="using:Microsoft.Xaml.Interactivity"
-      xmlns:com="using:PocketCampus.Common"
-      xmlns:comControls="using:PocketCampus.Common.Controls"
+      xmlns:cc="using:PocketCampus.Common.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d"
-      d:DataContext="{Binding Main, Source={StaticResource Design}}"
-      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <Page.Resources>
+      d:DataContext="{Binding Main, Source={StaticResource Design}}">
+    <cc:PageBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
             <DataTemplate x:Key="CourseTemplate">
-                <comControls:SimpleButton Command="{Binding DataContext.ViewCourseCommand, ElementName=Root}"
-                                          CommandParameter="{Binding}"
-                                          Margin="19,16,19,0">
+                <cc:SimpleButton Command="{Binding DataContext.ViewCourseCommand, ElementName=Root}"
+                                 CommandParameter="{Binding}"
+                                 Margin="19,16,19,0">
                     <TextBlock Text="{Binding Name}"
                                Style="{StaticResource AppLargeTextBlockStyle}" />
-                </comControls:SimpleButton>
+                </cc:SimpleButton>
             </DataTemplate>
         </ResourceDictionary>
-    </Page.Resources>
-    
-    <i:Interaction.Behaviors>
-        <com:StatusBarBehavior UseDefaultValues="True" />
-    </i:Interaction.Behaviors>
-    
+    </cc:PageBase.Resources>
+
     <Grid x:Name="Root">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -48,6 +41,6 @@
                   ItemsSource="{Binding Courses}"
                   ItemTemplate="{StaticResource CourseTemplate}" />
         
-        <comControls:LoadingAndError Grid.Row="1" />
+        <cc:LoadingAndError Grid.Row="1" />
     </Grid>
-</Page>
+</cc:PageBase>

@@ -1,30 +1,33 @@
-﻿<Page x:Class="PocketCampus.Moodle.Views.CourseView"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:i="using:Microsoft.Xaml.Interactivity"
-      xmlns:com="using:PocketCampus.Common"
-      xmlns:comControls="using:PocketCampus.Common.Controls"
-      xmlns:my="using:PocketCampus.Moodle"
-      xmlns:myControls="using:PocketCampus.Moodle.Controls"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      mc:Ignorable="d"
-      d:DataContext="{Binding Course, Source={StaticResource Design}}"
-      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <Page.Resources>
+﻿<cc:PageBase x:Class="PocketCampus.Moodle.Views.CourseView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="using:Microsoft.Xaml.Interactivity"
+             xmlns:c="using:PocketCampus.Common"
+             xmlns:cc="using:PocketCampus.Common.Controls"
+             xmlns:my="using:PocketCampus.Moodle"
+             xmlns:myc="using:PocketCampus.Moodle.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DataContext="{Binding Course, Source={StaticResource Design}}"
+             StatusBarText="{Binding DownloadStatus, 
+                                     Converter={StaticResource EnumToString}}"
+             StatusBarShowsProgress="{Binding DownloadStatus, 
+                                              Converter={StaticResource DownloadStatusToBool}}">
+    <cc:PageBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <com:EnumToStringConverter x:Key="EnumToString" />
+            <c:EnumToStringConverter x:Key="EnumToString" />
             <my:DownloadStatusToBooleanConverter x:Key="DownloadStatusToBool" />
             <my:FileToIconElementConverter x:Key="FileToIcon" />
 
             <DataTemplate x:Key="FileTemplate">
-                <comControls:SimpleButton Command="{Binding DataContext.OpenFileCommand, ElementName=Root}"
-                                          CommandParameter="{Binding}"
-                                          Margin="0,8,0,0">
+                <cc:SimpleButton Command="{Binding DataContext.OpenFileCommand, ElementName=Root}"
+                                 CommandParameter="{Binding}"
+                                 Margin="0,8,0,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -38,13 +41,13 @@
                                    Style="{StaticResource AppLargeTextBlockStyle}"
                                    Margin="8,0,0,0" />
                     </Grid>
-                </comControls:SimpleButton>
+                </cc:SimpleButton>
             </DataTemplate>
 
             <DataTemplate x:Key="LinkTemplate">
-                <comControls:SimpleButton Command="{Binding DataContext.OpenLinkCommand, ElementName=Root}"
-                                          CommandParameter="{Binding}"
-                                          Margin="0,8,0,0">
+                <cc:SimpleButton Command="{Binding DataContext.OpenLinkCommand, ElementName=Root}"
+                                 CommandParameter="{Binding}"
+                                 Margin="0,8,0,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -60,7 +63,7 @@
                                    Style="{StaticResource AppLargeTextBlockStyle}"
                                    Margin="8,0,0,0" />
                     </Grid>
-                </comControls:SimpleButton>
+                </cc:SimpleButton>
             </DataTemplate>
 
             <DataTemplate x:Key="FolderTemplate">
@@ -100,21 +103,13 @@
             </DataTemplate>
 
             <DataTemplate x:Key="ResourceTemplate">
-                <myControls:MoodleResourceControl Resource="{Binding}"
-                                                  FileTemplate="{StaticResource FileTemplate}"
-                                                  LinkTemplate="{StaticResource LinkTemplate}"
-                                                  FolderTemplate="{StaticResource FolderTemplate}" />
+                <myc:MoodleResourceControl Resource="{Binding}"
+                                           FileTemplate="{StaticResource FileTemplate}"
+                                           LinkTemplate="{StaticResource LinkTemplate}"
+                                           FolderTemplate="{StaticResource FolderTemplate}" />
             </DataTemplate>
         </ResourceDictionary>
-    </Page.Resources>
-    
-    <i:Interaction.Behaviors>
-        <com:StatusBarBehavior UseDefaultValues="True"
-                               Text="{Binding DownloadStatus, 
-                                              Converter={StaticResource EnumToString}}"
-                               ShowProgress="{Binding DownloadStatus, 
-                                                      Converter={StaticResource DownloadStatusToBool}}" />
-    </i:Interaction.Behaviors>
+    </cc:PageBase.Resources>
 
     <Grid x:Name="Root">
         <Grid.RowDefinitions>
@@ -132,17 +127,17 @@
 
         <!-- TODO selected section binding
              TODO details -->
-        <comControls:GroupedItemsControl Grid.Row="1"
-                                         ItemTemplate="{StaticResource ResourceTemplate}"
-                                         GroupKeyPath="DisplayTitle"
-                                         Margin="19,0,0,0">
-            <comControls:GroupedItemsControl.ItemsViewSource>
+        <cc:GroupedItemsControl Grid.Row="1"
+                                ItemTemplate="{StaticResource ResourceTemplate}"
+                                GroupKeyPath="DisplayTitle"
+                                Margin="19,0,0,0">
+            <cc:GroupedItemsControl.ItemsViewSource>
                 <CollectionViewSource Source="{Binding Sections}"
                                       IsSourceGrouped="True"
                                       ItemsPath="Resources" />
-            </comControls:GroupedItemsControl.ItemsViewSource>
-        </comControls:GroupedItemsControl>
+            </cc:GroupedItemsControl.ItemsViewSource>
+        </cc:GroupedItemsControl>
         
-        <comControls:LoadingAndError Grid.Row="1" />
+        <cc:LoadingAndError Grid.Row="1" />
     </Grid>
-</Page>
+</cc:PageBase>

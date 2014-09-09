@@ -1,8 +1,8 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using PocketCampus.Common.Controls;
 
 namespace PocketCampus.News.Views
 {
-    public sealed partial class FeedItemView : Page
+    public sealed partial class FeedItemView : PageBase
     {
         public FeedItemView()
         {

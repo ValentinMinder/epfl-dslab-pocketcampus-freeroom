@@ -43,6 +43,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\PageBase.cs" />
     <Compile Include="Controls\GroupedItemsControl.cs" />
     <Compile Include="Controls\LoadingAndError.xaml.cs">
       <DependentUpon>LoadingAndError.xaml</DependentUpon>
@@ -60,7 +61,6 @@
     <Compile Include="Html2Xaml\TagDefinition.cs" />
     <Compile Include="ListViewEx.cs" />
     <Compile Include="LocalizationHelper.cs" />
-    <Compile Include="StatusBarBehavior.cs" />
     <Compile Include="Converters.cs" />
     <Compile Include="TextBoxEx.cs" />
     <Compile Include="ValueConverter.cs" />

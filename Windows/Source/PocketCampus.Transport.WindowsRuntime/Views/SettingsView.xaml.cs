@@ -1,8 +1,8 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using PocketCampus.Common.Controls;
 
 namespace PocketCampus.Transport.Views
 {
-    public sealed partial class SettingsView : Page
+    public sealed partial class SettingsView : PageBase
     {
         public SettingsView()
         {

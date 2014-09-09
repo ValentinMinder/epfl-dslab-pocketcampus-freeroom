@@ -1,8 +1,8 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using PocketCampus.Common.Controls;
 
 namespace PocketCampus.Moodle.Views
 {
-    public sealed partial class CourseView : Page
+    public sealed partial class CourseView : PageBase
     {
         public CourseView()
         {

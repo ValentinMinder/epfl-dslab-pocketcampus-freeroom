@@ -1,9 +1,9 @@
-﻿using Windows.ApplicationModel;
-using Windows.UI.Xaml.Controls;
+﻿using PocketCampus.Common.Controls;
+using Windows.ApplicationModel;
 
 namespace PocketCampus.Map.Views
 {
-    public sealed partial class MainView : Page
+    public sealed partial class MainView : PageBase
     {
         public MainView()
         {

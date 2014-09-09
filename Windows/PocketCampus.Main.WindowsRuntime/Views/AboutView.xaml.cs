@@ -1,18 +1,19 @@
 ﻿using System;
 using PocketCampus.Common;
+using PocketCampus.Common.Controls;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.Main.Views
 {
-    public sealed partial class AboutView : Page
+    public sealed partial class AboutView : PageBase
     {
         public AboutView()
         {
             InitializeComponent();
         }
 
+        // TODO could this be a flyout?
         private async void AppBarButton_Click( object sender, RoutedEventArgs e )
         {
             var loader = LocalizationHelper.GetLoaderForCurrentAssembly( "About" );
