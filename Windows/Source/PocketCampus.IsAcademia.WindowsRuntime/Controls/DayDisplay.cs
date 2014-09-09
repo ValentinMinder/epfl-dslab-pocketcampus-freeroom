@@ -133,8 +133,14 @@ namespace PocketCampus.IsAcademia.Controls
         /// </summary>
         protected override Size MeasureOverride( Size availableSize )
         {
+            if ( Days == null )
+            {
+                return availableSize;
+            }
+
             Children.Clear();
             _arrangeSizes.Clear();
+
 
             var minMax = GetHourBoundaries( Days );
             _minHour = minMax.Item1;
@@ -189,10 +195,10 @@ namespace PocketCampus.IsAcademia.Controls
                     var block = new TextBlock
                     {
                         Text = hour.ToString( HourFormat ),
-                        Style = (Style) Application.Current.Resources["PhoneTextSmallStyle"],
+                        // TODO make that a parameter
+                        Style = (Style) Application.Current.Resources["AppSubtleTextBlockStyle"],
                         VerticalAlignment = VerticalAlignment.Top,
-                        HorizontalAlignment = HorizontalAlignment.Left,
-                        Margin = new Thickness( 1, -5, 1, 0 )
+                        HorizontalAlignment = HorizontalAlignment.Left
                     };
                     Grid.SetRow( block, hour - _minHour );
                     grid.Children.Add( block );

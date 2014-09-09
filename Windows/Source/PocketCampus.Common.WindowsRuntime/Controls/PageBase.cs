@@ -67,7 +67,7 @@ namespace PocketCampus.Common.Controls
         public PageBase()
         {
             InitializeStatusBar();
-            SizeChanged += OnSizeChanged;
+            SizeChanged += ( _, __ ) => UpdateOrientation();
             Background = (Brush) Application.Current.Resources["ApplicationPageBackgroundThemeBrush"];
         }
 
@@ -77,6 +77,7 @@ namespace PocketCampus.Common.Controls
             base.OnNavigatedTo( e );
 
             SetSupportedOrientations();
+            UpdateOrientation();
         }
 
 
@@ -132,10 +133,17 @@ namespace PocketCampus.Common.Controls
             DisplayInformation.AutoRotationPreferences = orientations;
         }
 
-        private void OnSizeChanged( object sender, SizeChangedEventArgs e )
+        private void UpdateOrientation()
         {
-            var orientation = ApplicationView.GetForCurrentView().Orientation;
-            VisualStateManager.GoToState( this, orientation.ToString(), true );
+            if ( SupportsLandscape )
+            {
+                var orientation = ApplicationView.GetForCurrentView().Orientation;
+                bool b = VisualStateManager.GoToState( this, orientation.ToString(), true );
+            }
+            else
+            {
+                VisualStateManager.GoToState( this, "Portrait", true );
+            }
         }
 
         private static void OnStatusBarPropertyChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )

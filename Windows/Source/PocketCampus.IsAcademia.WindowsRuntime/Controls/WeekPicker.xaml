@@ -25,15 +25,17 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <comControls:SimpleButton Command="{Binding NextCommand}"
+        <comControls:SimpleButton Command="{Binding PreviousCommand}"
                                   Content="◀" />
         
         <TextBlock Grid.Column="1"
                    Text="{Binding Value,
-                                  Converter={StaticResource DateToWeek}}" />
+                                  Converter={StaticResource DateToWeek}}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center" />
         
         <comControls:SimpleButton Grid.Column="2"
-                                  Command="{Binding PreviousCommand}"
+                                  Command="{Binding NextCommand}"
                                   Content="▶" />
     </Grid>
 </UserControl>

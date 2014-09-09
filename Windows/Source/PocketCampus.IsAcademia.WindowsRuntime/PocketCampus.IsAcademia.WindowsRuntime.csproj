@@ -96,9 +96,7 @@
     </Compile>
     <Compile Include="WindowsRuntimePlugin.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Strings\fr\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Common\PocketCampus.Common.csproj">
       <Project>{f780f0dd-8a14-4e72-9525-a11d792cbfab}</Project>
@@ -149,6 +147,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <PRIResource Include="Strings\fr\Main.resw" />
+    <PRIResource Include="Strings\en\Main.resw" />
+    <PRIResource Include="Strings\fr\Resources.resw" />
+    <PRIResource Include="Strings\fr\PeriodType.resw" />
+    <PRIResource Include="Strings\en\PeriodType.resw" />
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">

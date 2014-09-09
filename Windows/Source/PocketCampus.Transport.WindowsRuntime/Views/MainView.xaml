@@ -164,19 +164,19 @@
                     <ToggleSwitch.Header>
                         <!-- Header: destination name -->
                         <StackPanel>
-                            <Border>
+                            <cc:SimpleButton>
                                 <TextBlock Text="{Binding Destination.Name}"
                                            Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
 
-                                <!-- Context menu -->
-                                <FlyoutBase.AttachedFlyout>
+                                <!-- TODO: Context menu -->
+                                <!--<FlyoutBase.AttachedFlyout>
                                     <MenuFlyout>
                                         <MenuFlyoutItem Text="{CustomResource Main.RemoveStation}"
                                                         Command="{Binding DataContext.RemoveStationCommand, ElementName=Root}"
                                                         CommandParameter="{Binding Station}" />
                                     </MenuFlyout>
-                                </FlyoutBase.AttachedFlyout>
-                            </Border>
+                                </FlyoutBase.AttachedFlyout>-->
+                            </cc:SimpleButton>
 
                             <!-- Small loading and error indicator -->
                             <cc:LoadingAndError HorizontalAlignment="Left"

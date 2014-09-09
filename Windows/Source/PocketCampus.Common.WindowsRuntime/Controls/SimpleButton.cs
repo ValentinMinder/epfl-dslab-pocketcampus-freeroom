@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace PocketCampus.Common.Controls
 {
@@ -49,6 +50,17 @@ namespace PocketCampus.Common.Controls
             DependencyProperty.Register( "CommandParameter", typeof( object ), typeof( SimpleButton ), new PropertyMetadata( null ) );
         #endregion
 
+        #region Flyout
+        public FlyoutBase Flyout
+        {
+            get { return (FlyoutBase) GetValue( FlyoutProperty ); }
+            set { SetValue( FlyoutProperty, value ); }
+        }
+
+        public static readonly DependencyProperty FlyoutProperty =
+            DependencyProperty.Register( "Flyout", typeof( FlyoutBase ), typeof( SimpleButton ), new PropertyMetadata( null ) );
+        #endregion
+
         public SimpleButton()
         {
             DefaultStyleKey = typeof( SimpleButton );
@@ -62,6 +74,11 @@ namespace PocketCampus.Common.Controls
                     if ( Command != null )
                     {
                         Command.Execute( CommandParameter );
+                    }
+
+                    if ( Flyout != null )
+                    {
+                        Flyout.ShowAt( this );
                     }
                 }
             };
