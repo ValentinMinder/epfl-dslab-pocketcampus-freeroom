@@ -16,6 +16,10 @@
     
     <SolidColorBrush x:Key="AppSubtleBrush"
                      Color="{StaticResource PhoneBaseMidColor}" />
+    
+    <!-- TODO override accent color -->
+    <SolidColorBrush x:Key="AppAccentBrush"
+                     Color="#C9060C" />
 
 
     <!-- Normal text (can't set it as default for whatever reason) -->
@@ -109,6 +113,16 @@
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalAlignment" Value="Stretch" />
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <ContentPresenter Content="{TemplateBinding Content}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                  HorizontalAlignment="Stretch"
+                                                  VerticalAlignment="Stretch" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </Setter.Value>
         </Setter>

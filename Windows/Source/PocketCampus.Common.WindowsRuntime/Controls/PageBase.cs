@@ -74,10 +74,10 @@ namespace PocketCampus.Common.Controls
 
         protected override void OnNavigatedTo( NavigationEventArgs e )
         {
-            base.OnNavigatedTo( e );
-
             SetSupportedOrientations();
             UpdateOrientation();
+
+            base.OnNavigatedTo( e );
         }
 
 

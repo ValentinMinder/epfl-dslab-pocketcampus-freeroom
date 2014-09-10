@@ -1,0 +1,165 @@
+﻿<cc:PageBase x:Class="PocketCampus.Food.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="using:PocketCampus.Common"
+             xmlns:cc="using:PocketCampus.Common.Controls"
+             xmlns:my="using:PocketCampus.Food"
+             xmlns:myc="using:PocketCampus.Food.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DataContext="{Binding Main, Source={StaticResource Design}}">
+    <cc:PageBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converters -->
+            <c:NonNullToVisibilityConverter x:Key="NonNullToVisibility" />
+            <c:MoneyFormatConverter x:Key="MoneyFormat" />
+            <c:StringToVisibilityConverter x:Key="StringToVisibility" />
+            <c:BoolToVisibilityConverter x:Key="BoolToVisibility" />
+            <my:MealPriceConverter x:Key="MealToPrice"
+                                   Settings="{Binding Settings}" />
+            <my:MealToImageConverter x:Key="MealToImage" />
+
+            <!-- Meal template -->
+            <DataTemplate x:Key="MealTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <!-- Image -->
+                        <Image Source="{Binding Converter={StaticResource MealToImage}}"
+                               Width="100"
+                               Height="100" />
+
+                        <!-- Price -->
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding Converter={StaticResource MealToPrice}}"
+                                   TextAlignment="Center"
+                                   Style="{StaticResource AppNormalTextBlockStyle}" />
+
+                        <!-- Half-portion price -->
+                        <StackPanel Grid.Row="2"
+                                    Visibility="{Binding HalfPortionPrice, Converter={StaticResource NonNullToVisibility}}">
+                            <TextBlock Text="HalfPrice"
+                                       Style="{StaticResource AppSubtleTextBlockStyle}"
+                                       TextAlignment="Center" />
+
+                            <TextBlock Text="{Binding HalfPortionPrice, 
+                                                      Converter={StaticResource MoneyFormat}}"
+                                       Style="{StaticResource AppSubtleTextBlockStyle}"
+                                       TextAlignment="Center" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <!-- Name -->
+                        <TextBlock Text="{Binding Name}"
+                                   Style="{StaticResource AppLargeTextBlockStyle}" />
+
+                        <!-- Description -->
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding Description}"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource AppSubtleTextBlockStyle}"
+                                   Visibility="{Binding Description, 
+                                                        Converter={StaticResource StringToVisibility}}"/>
+
+                        <!-- Rating & vote button -->
+                        <StackPanel Grid.Row="2"
+                                    Orientation="Horizontal"
+                                    Visibility="{Binding DataContext.AreRatingsEnabled, 
+                                                         ElementName=LayoutRoot, 
+                                                         Converter={StaticResource BoolToVisibility}}">
+                            <myc:RatingDisplay Rating="{Binding Rating}"
+                                               TextStyle="{StaticResource AppSubtleTextBlockStyle}" />
+
+                            <TextBlock Text="-"
+                                       Style="{StaticResource AppSubtleTextBlockStyle}" />
+
+                            <cc:SimpleButton Command="{Binding DataContext.RateMealCommand, 
+                                                               ElementName=Root}"
+                                             CommandParameter="{Binding}">
+                                <TextBlock Text="rate"
+                                           Style="{StaticResource AppNormalTextBlockStyle}"
+                                           Foreground="{StaticResource AppAccentBrush}" />
+                            </cc:SimpleButton>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </cc:PageBase.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <Grid Background="{StaticResource AppHeaderBackgroundBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Text="header"
+                       Style="{StaticResource AppHeaderTextBlockStyle}" />
+            
+            <myc:MealTimePicker Grid.Column="1"
+                                Value="{Binding MealTime,
+                                                Mode=TwoWay}" />
+        </Grid>
+        
+        <Border Grid.Row="1"
+                Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+            <myc:DayPicker Value="{Binding MealDate, 
+                                           Mode=TwoWay}"
+                           TextStyle="{StaticResource AppLargeTextBlockStyle}"
+                           Margin="19,4" />
+        </Border>
+        
+        <cc:GroupedItemsControl Grid.Row="2"
+                                ItemTemplate="{StaticResource MealTemplate}"
+                                GroupKeyPath="Name">
+            <cc:GroupedItemsControl.ItemsViewSource>
+                <CollectionViewSource Source="{Binding Menu}"
+                                      IsSourceGrouped="True"
+                                      ItemsPath="Meals" />
+            </cc:GroupedItemsControl.ItemsViewSource>
+        </cc:GroupedItemsControl>
+    </Grid>
+    
+    <cc:PageBase.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Minimal">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Command="{Binding RefreshCommand}"
+                              Label="Refresh"
+                              Icon="Refresh" />
+                <AppBarButton Command="{Binding ViewSettingsCommand}"
+                              Label="Settings"
+                              Icon="Setting" />
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </cc:PageBase.BottomAppBar>
+</cc:PageBase>

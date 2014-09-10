@@ -180,6 +180,10 @@
       <Project>{c3793263-070c-4da7-994c-e116e63f9de6}</Project>
       <Name>PocketCampus.Directory</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Source\Food\PocketCampus.Food.csproj">
+      <Project>{36ed8ce4-44df-4af0-9f42-138289f663a9}</Project>
+      <Name>PocketCampus.Food</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Source\IsAcademia\PocketCampus.IsAcademia.csproj">
       <Project>{6b1e34fe-ab5d-49e8-923c-2ce10472bbcb}</Project>
       <Name>PocketCampus.IsAcademia</Name>
@@ -215,6 +219,10 @@
     <ProjectReference Include="..\Source\PocketCampus.Directory.WindowsRuntime\PocketCampus.Directory.WindowsRuntime.csproj">
       <Project>{0f85a43b-cb55-475c-850b-0053b9f1f93e}</Project>
       <Name>PocketCampus.Directory.WindowsRuntime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Source\PocketCampus.Food.WindowsRuntime\PocketCampus.Food.WindowsRuntime.csproj">
+      <Project>{3d28a417-59dc-40d7-94ec-6fcb0fbd3e36}</Project>
+      <Name>PocketCampus.Food.WindowsRuntime</Name>
     </ProjectReference>
     <ProjectReference Include="..\Source\PocketCampus.IsAcademia.WindowsRuntime\PocketCampus.IsAcademia.WindowsRuntime.csproj">
       <Project>{2b8508a4-77e2-42e8-bd5b-2b60c9ce7757}</Project>

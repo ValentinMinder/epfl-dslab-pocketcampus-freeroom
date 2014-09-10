@@ -69,9 +69,18 @@ namespace PocketCampus.Common
 
     public sealed class BoolToVisibilityConverter : ValueConverter<bool, Visibility>
     {
+        public bool IsReversed { get; set; }
+
         public override Visibility Convert( bool value )
         {
-            return value ? Visibility.Visible : Visibility.Collapsed;
+            if ( IsReversed )
+            {
+                return value ? Visibility.Collapsed : Visibility.Visible;
+            }
+            else
+            {
+                return value ? Visibility.Visible : Visibility.Collapsed;
+            }
         }
     }
 
@@ -112,6 +121,14 @@ namespace PocketCampus.Common
         public override Visibility Convert( object value )
         {
             return value == null ? Visibility.Collapsed : Visibility.Visible;
+        }
+    }
+
+    public sealed class NonZeroToVisibilityConverter : ValueConverter<int, Visibility>
+    {
+        public override Visibility Convert( int value )
+        {
+            return value == 0 ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 }
