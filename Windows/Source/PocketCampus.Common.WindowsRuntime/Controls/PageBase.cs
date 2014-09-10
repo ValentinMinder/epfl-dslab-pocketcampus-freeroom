@@ -66,6 +66,11 @@ namespace PocketCampus.Common.Controls
 
         public PageBase()
         {
+            if ( DesignMode.DesignModeEnabled )
+            {
+                return; // weird errors happen otherwise
+            }
+
             InitializeStatusBar();
             SizeChanged += ( _, __ ) => UpdateOrientation();
             Background = (Brush) Application.Current.Resources["ApplicationPageBackgroundThemeBrush"];
@@ -83,12 +88,6 @@ namespace PocketCampus.Common.Controls
 
         private async void InitializeStatusBar()
         {
-            if ( DesignMode.DesignModeEnabled )
-            {
-                // weird errors happen when manipulating the statusbar in design mode
-                return;
-            }
-
             var bar = StatusBar.GetForCurrentView();
             bar.ForegroundColor = (Color) Application.Current.Resources["AppStatusBarForegroundColor"];
             bar.BackgroundColor = (Color) Application.Current.Resources["AppStatusBarBackgroundColor"];

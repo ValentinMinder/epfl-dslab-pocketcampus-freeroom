@@ -31,6 +31,7 @@ namespace PocketCampus.Common
         }
     }
 
+    // TODO sort this mess of converters, make some more generic ones
     public sealed class StringFormatConverter : ValueConverter<object, string, string>
     {
         public override string Convert( object value, string parameter )
@@ -82,10 +83,8 @@ namespace PocketCampus.Common
             {
                 return value ? Visibility.Collapsed : Visibility.Visible;
             }
-            else
-            {
-                return value ? Visibility.Visible : Visibility.Collapsed;
-            }
+
+            return value ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 
@@ -115,8 +114,15 @@ namespace PocketCampus.Common
 
     public sealed class StringToVisibilityConverter : ValueConverter<string, Visibility>
     {
+        public bool IsReversed { get; set; }
+
         public override Visibility Convert( string value )
         {
+            if ( IsReversed )
+            {
+                return string.IsNullOrWhiteSpace( value ) ? Visibility.Visible : Visibility.Collapsed;
+            }
+
             return string.IsNullOrWhiteSpace( value ) ? Visibility.Collapsed : Visibility.Visible;
         }
     }
