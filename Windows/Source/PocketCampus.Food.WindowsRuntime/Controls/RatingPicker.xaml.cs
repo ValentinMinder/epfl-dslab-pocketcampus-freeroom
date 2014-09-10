@@ -16,6 +16,12 @@ namespace PocketCampus.Food.Controls
             DependencyProperty.Register( "Value", typeof( UserRating ), typeof( RatingPicker ), new PropertyMetadata( UserRating.Neutral ) );
         #endregion
 
+        // HACK: Declaring these in XAML makes them ints :-/
+        public UserRating[] AvailableRatings
+        {
+            get { return new[] { UserRating.Bad, UserRating.Neutral, UserRating.Good }; }
+        }
+
 
         public RatingPicker()
         {

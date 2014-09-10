@@ -26,7 +26,7 @@
 
             <!-- Meal template -->
             <DataTemplate x:Key="MealTemplate">
-                <Grid>
+                <Grid Margin="0,8,0,16">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition />
@@ -53,8 +53,9 @@
 
                         <!-- Half-portion price -->
                         <StackPanel Grid.Row="2"
-                                    Visibility="{Binding HalfPortionPrice, Converter={StaticResource NonNullToVisibility}}">
-                            <TextBlock Text="HalfPrice"
+                                    Visibility="{Binding HalfPortionPrice, 
+                                                         Converter={StaticResource NonNullToVisibility}}">
+                            <TextBlock Text="{CustomResource Main.HalfPortionPrice}"
                                        Style="{StaticResource AppSubtleTextBlockStyle}"
                                        TextAlignment="Center" />
 
@@ -65,7 +66,8 @@
                         </StackPanel>
                     </Grid>
 
-                    <Grid Grid.Column="1">
+                    <Grid Grid.Column="1"
+                          Margin="8,0,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -74,32 +76,33 @@
 
                         <!-- Name -->
                         <TextBlock Text="{Binding Name}"
-                                   Style="{StaticResource AppLargeTextBlockStyle}" />
+                                   Style="{StaticResource AppLargeTextBlockStyle}"
+                                   Margin="0,0,0,8" />
 
                         <!-- Description -->
                         <TextBlock Grid.Row="1"
                                    Text="{Binding Description}"
-                                   TextWrapping="Wrap"
                                    Style="{StaticResource AppSubtleTextBlockStyle}"
                                    Visibility="{Binding Description, 
-                                                        Converter={StaticResource StringToVisibility}}"/>
+                                                        Converter={StaticResource StringToVisibility}}"
+                                   Margin="0,0,0,8" />
 
                         <!-- Rating & vote button -->
                         <StackPanel Grid.Row="2"
                                     Orientation="Horizontal"
                                     Visibility="{Binding DataContext.AreRatingsEnabled, 
-                                                         ElementName=LayoutRoot, 
+                                                         ElementName=Root, 
                                                          Converter={StaticResource BoolToVisibility}}">
                             <myc:RatingDisplay Rating="{Binding Rating}"
                                                TextStyle="{StaticResource AppSubtleTextBlockStyle}" />
 
-                            <TextBlock Text="-"
+                            <TextBlock Text=" - "
                                        Style="{StaticResource AppSubtleTextBlockStyle}" />
 
                             <cc:SimpleButton Command="{Binding DataContext.RateMealCommand, 
                                                                ElementName=Root}"
                                              CommandParameter="{Binding}">
-                                <TextBlock Text="rate"
+                                <TextBlock Text="{CustomResource Main.Vote}"
                                            Style="{StaticResource AppNormalTextBlockStyle}"
                                            Foreground="{StaticResource AppAccentBrush}" />
                             </cc:SimpleButton>
@@ -110,7 +113,7 @@
         </ResourceDictionary>
     </cc:PageBase.Resources>
     
-    <Grid>
+    <Grid x:Name="Root">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -123,12 +126,14 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             
-            <TextBlock Text="header"
-                       Style="{StaticResource AppHeaderTextBlockStyle}" />
+            <TextBlock Text="{CustomResource PagesHeader}"
+                       Style="{StaticResource AppHeaderTextBlockStyle}"
+                       VerticalAlignment="Center" />
             
             <myc:MealTimePicker Grid.Column="1"
                                 Value="{Binding MealTime,
-                                                Mode=TwoWay}" />
+                                                Mode=TwoWay}"
+                                Foreground="{StaticResource AppHeaderForegroundBrush}" />
         </Grid>
         
         <Border Grid.Row="1"
@@ -136,28 +141,31 @@
             <myc:DayPicker Value="{Binding MealDate, 
                                            Mode=TwoWay}"
                            TextStyle="{StaticResource AppLargeTextBlockStyle}"
-                           Margin="19,4" />
+                           Margin="19,8" />
         </Border>
         
         <cc:GroupedItemsControl Grid.Row="2"
                                 ItemTemplate="{StaticResource MealTemplate}"
-                                GroupKeyPath="Name">
+                                GroupKeyPath="Name"
+                                Margin="19,0">
             <cc:GroupedItemsControl.ItemsViewSource>
                 <CollectionViewSource Source="{Binding Menu}"
                                       IsSourceGrouped="True"
                                       ItemsPath="Meals" />
             </cc:GroupedItemsControl.ItemsViewSource>
         </cc:GroupedItemsControl>
+        
+        <cc:LoadingAndError Grid.Row="2" />
     </Grid>
     
     <cc:PageBase.BottomAppBar>
         <CommandBar ClosedDisplayMode="Minimal">
             <CommandBar.PrimaryCommands>
                 <AppBarButton Command="{Binding RefreshCommand}"
-                              Label="Refresh"
+                              Label="{CustomResource Main.Refresh}"
                               Icon="Refresh" />
                 <AppBarButton Command="{Binding ViewSettingsCommand}"
-                              Label="Settings"
+                              Label="{CustomResource Main.Settings}"
                               Icon="Setting" />
             </CommandBar.PrimaryCommands>
         </CommandBar>

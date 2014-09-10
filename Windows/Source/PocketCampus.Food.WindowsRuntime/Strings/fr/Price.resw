@@ -117,20 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="HalfPortionPrice" xml:space="preserve">
-    <value>1/2 portion</value>
+  <data name="Unknown" xml:space="preserve">
+    <value>prix inconnu</value>
     <comment>Sentence (small)</comment>
-  </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>refresh</value>
-    <comment>Button label</comment>
-  </data>
-  <data name="Settings" xml:space="preserve">
-    <value>settings</value>
-    <comment>Button label</comment>
-  </data>
-  <data name="Vote" xml:space="preserve">
-    <value>rate</value>
-    <comment>Button content (small)</comment>
   </data>
 </root>

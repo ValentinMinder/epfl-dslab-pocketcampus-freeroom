@@ -39,10 +39,15 @@ namespace PocketCampus.Common
         }
     }
 
-    public sealed class MoneyFormatConverter : ValueConverter<double, string>
+    public sealed class MoneyFormatConverter : ValueConverter<object, string>
     {
-        public override string Convert( double value )
+        public override string Convert( object value )
         {
+            if ( value == null )
+            {
+                return ""; // for nullable prices
+            }
+
             return string.Format( "{0:0.00} CHF", value );
         }
     }

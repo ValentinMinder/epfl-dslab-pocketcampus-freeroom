@@ -137,6 +137,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <PRIResource Include="Strings\fr\VoteStatus.resw" />
+    <PRIResource Include="Strings\fr\Votes.resw" />
+    <PRIResource Include="Strings\fr\UserRating.resw" />
+    <PRIResource Include="Strings\fr\Settings.resw" />
+    <PRIResource Include="Strings\fr\Resources.resw" />
+    <PRIResource Include="Strings\fr\Rating.resw" />
+    <PRIResource Include="Strings\fr\PriceTarget.resw" />
+    <PRIResource Include="Strings\fr\Price.resw" />
+    <PRIResource Include="Strings\fr\MealType.resw" />
+    <PRIResource Include="Strings\fr\MealTime.resw" />
+    <PRIResource Include="Strings\fr\Main.resw" />
+    <PRIResource Include="Strings\en\MealTime.resw" />
     <PRIResource Include="Strings\en\MealType.resw" />
     <PRIResource Include="Strings\en\PriceTarget.resw" />
     <PRIResource Include="Strings\en\VoteStatus.resw" />
@@ -148,9 +160,7 @@
     <PRIResource Include="Strings\en\Main.resw" />
     <PRIResource Include="Strings\en\Resources.resw" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Strings\fr\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Controls\DayPicker.xaml">
       <SubType>Designer</SubType>

@@ -117,20 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="HalfPortionPrice" xml:space="preserve">
-    <value>1/2 portion</value>
-    <comment>Sentence (small)</comment>
+  <data name="PhDStudent" xml:space="preserve">
+    <value>doctorant(e)</value>
+    <comment>Combobox item</comment>
   </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>refresh</value>
-    <comment>Button label</comment>
+  <data name="Staff" xml:space="preserve">
+    <value>employé(e) EPFL</value>
+    <comment>Combobox item</comment>
   </data>
-  <data name="Settings" xml:space="preserve">
-    <value>settings</value>
-    <comment>Button label</comment>
+  <data name="Student" xml:space="preserve">
+    <value>étudiant(e)</value>
+    <comment>Combobox item</comment>
   </data>
-  <data name="Vote" xml:space="preserve">
-    <value>rate</value>
-    <comment>Button content (small)</comment>
+  <data name="Visitor" xml:space="preserve">
+    <value>visiteur/se</value>
+    <comment>Combobox item</comment>
   </data>
 </root>

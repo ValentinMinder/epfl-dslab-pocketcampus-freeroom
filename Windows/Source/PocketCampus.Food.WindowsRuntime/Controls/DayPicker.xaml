@@ -34,7 +34,7 @@
 
         <!-- "Next" button -->
         <cc:SimpleButton Grid.Column="2"
-                         Command="{Binding PreviousCommand}">
+                         Command="{Binding NextCommand}">
             <TextBlock Text="▶"
                        Style="{Binding TextStyle}"
                        HorizontalAlignment="Center"

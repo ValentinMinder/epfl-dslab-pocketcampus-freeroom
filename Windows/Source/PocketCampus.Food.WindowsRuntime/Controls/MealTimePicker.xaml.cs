@@ -16,46 +16,25 @@ namespace PocketCampus.Food.Controls
         }
 
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register( "Value", typeof( MealTime ), typeof( MealTimePicker ), new PropertyMetadata( MealTime.Lunch ) );
+            DependencyProperty.Register( "Value", typeof( MealTime ), typeof( MealTimePicker ), new PropertyMetadata( MealTime.Lunch, OnValueChanged ) );
+
+        private static void OnValueChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
+        {
+            var time = args.NewValue.ToString();
+            Messenger.Send( new EventLogRequest( "View" + time, null ) );
+        }
         #endregion
 
-        #region TextStyle DependencyProperty
-        public Style TextStyle
+        // HACK when defined in XAML they're ints :(
+        public MealTime[] AvailableTimes
         {
-            get { return (Style) GetValue( TextStyleProperty ); }
-            set { SetValue( TextStyleProperty, value ); }
+            get { return new[] { MealTime.Lunch, MealTime.Dinner }; }
         }
-
-        public static readonly DependencyProperty TextStyleProperty =
-            DependencyProperty.Register( "TextStyle", typeof( Style ), typeof( MealTimePicker ), new PropertyMetadata( null ) );
-        #endregion
-
-
-        /// <summary>
-        /// Gets the command executed to set the meal to Lunch.
-        /// </summary>
-        [LogId( "ViewLunch" )]
-        public Command SetLunchCommand
-        {
-            get { return this.GetCommand( () => Value = MealTime.Lunch ); }
-        }
-
-        /// <summary>
-        /// Gets the command executed to set the meal to Dinner.
-        /// </summary>
-        [LogId( "ViewDinner" )]
-        public Command SetDinnerCommand
-        {
-            get { return this.GetCommand( () => Value = MealTime.Dinner ); }
-        }
-
 
         public MealTimePicker()
         {
             InitializeComponent();
             Root.DataContext = this;
-
-            Messenger.Send( new CommandLoggingRequest( this ) );
         }
     }
 }

@@ -42,7 +42,8 @@
                 <ToggleButton IsChecked="{Binding Item2, 
                                                   Mode=TwoWay}"
                               Template="{StaticResource SimpleToggleButtonTemplate}">
-                    <Grid Width="135">
+                    <Grid Width="104"
+                          Margin="0,0,17,17">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -77,10 +78,10 @@
 
         <!-- Page header & title -->
         <StackPanel Background="{StaticResource AppHeaderBackgroundBrush}">
-            <TextBlock Text="PagesHeader"
+            <TextBlock Text="{CustomResource PagesHeader}"
                        Style="{StaticResource AppHeaderTextBlockStyle}" />
 
-            <TextBlock Text="SettingsViewTitle"
+            <TextBlock Text="{CustomResource Settings.ViewTitle}"
                        Style="{StaticResource AppTitleTextBlockStyle}" />
         </StackPanel>
 
@@ -90,7 +91,7 @@
                   SelectedItem="{Binding Settings.PriceTarget,
                                          Mode=TwoWay}"
                   ItemTemplate="{StaticResource PriceTargetTemplate}"
-                  Header="Price target"
+                  Header="{CustomResource Settings.PriceTarget}"
                   Margin="19,16,19,8" />
 
         <!-- Maximum budget picker -->
@@ -98,12 +99,12 @@
                  InputScope="Number"
                  Text="{Binding Settings.MaximumBudget, 
                                 Mode=TwoWay}"
-                 Header="max price (CHF)"
+                 Header="{CustomResource Settings.MaximumBudget}"
                  Margin="19,8" />
 
         <!-- Meal type filters explanation -->
         <TextBlock Grid.Row="3"
-                   Text="MealTypeFilterExplanation"
+                   Text="{CustomResource Settings.MealTypePickerExplanation}"
                    Style="{StaticResource AppSmallTextBlockStyle}"
                    Margin="19,8,19,0" />
 
@@ -111,6 +112,6 @@
         <GridView Grid.Row="4"
                   ItemsSource="{Binding DisplayedMealTypes}"
                   ItemTemplate="{StaticResource MealTypeTemplate}"
-                  Margin="19,0" />
+                  Margin="19,8,2,0" />
     </Grid>
 </cc:PageBase>

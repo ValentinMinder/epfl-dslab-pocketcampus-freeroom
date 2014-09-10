@@ -117,20 +117,48 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="HalfPortionPrice" xml:space="preserve">
-    <value>1/2 portion</value>
-    <comment>Sentence (small)</comment>
+  <data name="Fish" xml:space="preserve">
+    <value>Poisson</value>
+    <comment>Description (very small)</comment>
   </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>refresh</value>
-    <comment>Button label</comment>
+  <data name="GreenFork" xml:space="preserve">
+    <value>Fourch. verte</value>
+    <comment>Description (very small)</comment>
   </data>
-  <data name="Settings" xml:space="preserve">
-    <value>settings</value>
-    <comment>Button label</comment>
+  <data name="Indian" xml:space="preserve">
+    <value>Indien</value>
+    <comment>Description (very small)</comment>
   </data>
-  <data name="Vote" xml:space="preserve">
-    <value>rate</value>
-    <comment>Button content (small)</comment>
+  <data name="Lebanese" xml:space="preserve">
+    <value>Libanais</value>
+    <comment>Description (very small)</comment>
+  </data>
+  <data name="Meat" xml:space="preserve">
+    <value>Viande</value>
+    <comment>Description (very small)</comment>
+  </data>
+  <data name="Pasta" xml:space="preserve">
+    <value>Pâtes</value>
+    <comment>Description (very small)</comment>
+  </data>
+  <data name="Pizza" xml:space="preserve">
+    <value>Pizza</value>
+    <comment>Description (very small)</comment>
+  </data>
+  <data name="Poultry" xml:space="preserve">
+    <value>Volaille</value>
+    <comment>Description (very small)</comment>
+  </data>
+  <data name="Thai" xml:space="preserve">
+    <value>Thaï</value>
+    <comment>Description (very small)</comment>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>???</value>
+    <comment>Description (very small)</comment>
+  </data>
+  <data name="Vegetarian" xml:space="preserve">
+    <value>Végétarien</value>
+    <comment>Description (very small)</comment>
   </data>
 </root>

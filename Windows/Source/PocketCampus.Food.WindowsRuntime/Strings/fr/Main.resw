@@ -122,15 +122,15 @@
     <comment>Sentence (small)</comment>
   </data>
   <data name="Refresh" xml:space="preserve">
-    <value>refresh</value>
+    <value>actualiser</value>
     <comment>Button label</comment>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>settings</value>
+    <value>paramètres</value>
     <comment>Button label</comment>
   </data>
   <data name="Vote" xml:space="preserve">
-    <value>rate</value>
+    <value>voter</value>
     <comment>Button content (small)</comment>
   </data>
 </root>
