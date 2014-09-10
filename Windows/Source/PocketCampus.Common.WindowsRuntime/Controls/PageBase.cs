@@ -138,7 +138,7 @@ namespace PocketCampus.Common.Controls
             if ( SupportsLandscape )
             {
                 var orientation = ApplicationView.GetForCurrentView().Orientation;
-                bool b = VisualStateManager.GoToState( this, orientation.ToString(), true );
+                VisualStateManager.GoToState( this, orientation.ToString(), true );
             }
             else
             {

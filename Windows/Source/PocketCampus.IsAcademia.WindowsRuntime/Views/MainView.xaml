@@ -56,9 +56,12 @@
                 <HyperlinkButton Command="{Binding DataContext.ViewRoomOnMapCommand, 
                                                    ElementName=Root}"
                                  CommandParameter="{Binding}"
-                                 Margin="0,0,8,8">
-                    <TextBlock Text="{Binding}"
-                               Style="{StaticResource AppSubtleTextBlockStyle}" />
+                                 Margin="0,0,16,8">
+                    <TextBlock Style="{StaticResource AppSubtleTextBlockStyle}">
+                        <Underline>
+                            <Run Text="{Binding}" />
+                        </Underline>
+                    </TextBlock>
                 </HyperlinkButton>
             </DataTemplate>
 
@@ -108,7 +111,7 @@
                     <TextBlock Grid.Column="2"
                                Grid.Row="1"
                                Text="{Binding PeriodType, Converter={StaticResource EnumToString}}"
-                               Style="{StaticResource AppSmallTextBlockStyle}"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
                                VerticalAlignment="Bottom"
                                Opacity="0.5" />
                 </Grid>
@@ -172,7 +175,7 @@
                                               Converter={StaticResource StringFormat},
                                               ConverterParameter='{}{0:dddd}'}"
                                Style="{StaticResource AppGroupHeaderTextBlockStyle}"
-                               Margin="19,8,8,4" />
+                               Margin="4,8,8,4" />
 
                     <!-- Day schedule -->
                     <!-- It must have a height -->
@@ -222,12 +225,11 @@
 
             <!-- Landscape week picker -->
             <myc:WeekPicker x:Name="LandscapeWeekPicker"
-                            Grid.Row="1"
+                            Grid.Column="1"
                             Value="{Binding WeekDate, 
                                             Mode=TwoWay}"
                             Visibility="Collapsed"
-                            Foreground="{StaticResource AppHeaderForegroundBrush}"
-                            FontSize="{StaticResource TextStyleMediumFontSize}"
+                            TextStyle="{StaticResource AppHeaderTextBlockStyle}"
                             Margin="4,2" />
         </Grid>
 
@@ -237,8 +239,7 @@
                 Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
             <myc:WeekPicker Value="{Binding WeekDate, 
                                             Mode=TwoWay}"
-                            Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}"
-                            FontSize="{StaticResource TextStyleLargeFontSize}"
+                            TextStyle="{StaticResource AppLargeTextBlockStyle}"
                             Margin="19,4" />
         </Border>
 

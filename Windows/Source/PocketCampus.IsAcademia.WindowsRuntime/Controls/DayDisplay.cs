@@ -198,7 +198,8 @@ namespace PocketCampus.IsAcademia.Controls
                         // TODO make that a parameter
                         Style = (Style) Application.Current.Resources["AppSubtleTextBlockStyle"],
                         VerticalAlignment = VerticalAlignment.Top,
-                        HorizontalAlignment = HorizontalAlignment.Left
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Margin = new Thickness( 0, -4, 0, 0 )
                     };
                     Grid.SetRow( block, hour - _minHour );
                     grid.Children.Add( block );

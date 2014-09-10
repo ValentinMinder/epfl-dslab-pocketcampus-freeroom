@@ -78,7 +78,7 @@
         <Setter Property="Margin" Value="19,0,0,5" />
     </Style>
     
-    <!-- Title text -->
+    <!-- Secondary title text -->
     <Style x:Key="AppSecondaryTitleTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource AppSecondaryHeaderForegroundBrush}" />
         <Setter Property="FontSize" Value="{StaticResource TextStyleExtraLargeFontSize}" />
