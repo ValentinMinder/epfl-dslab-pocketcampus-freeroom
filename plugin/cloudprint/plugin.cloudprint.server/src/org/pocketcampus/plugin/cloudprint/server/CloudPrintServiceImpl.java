@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,10 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.server.RawPlugin;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintColorConfig;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintMultiPageLayout;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintService;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintStatusCode;
 import org.pocketcampus.plugin.cloudprint.shared.PrintDocumentRequest;
@@ -93,27 +97,74 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 		command.add("lpr");
 		command.add("-P");command.add("mainPrinter");
 		command.add("-U");command.add(gaspar);
-		command.add("-#");command.add(request.getNumberOfCopies() + "");
-		command.add("-r");
+		command.add("-r"); // delete file afterward
 		if(request.isSetPageSelection()) {
 			command.add("-o");command.add("page-ranges=" + request.getPageSelection().getPageFrom() + "-" + request.getPageSelection().getPageTo());
 		}
-		if(request.isDoubleSided()) {
-			command.add("-o");command.add("sides=two-sided-long-edge");			
+
+		if(request.isSetDoubleSided()) {
+			switch (request.getDoubleSided()) {
+			case LONG_EDGE:
+				command.add("-o");command.add("sides=two-sided-long-edge");			
+				break;
+			case SHORT_EDGE:
+				command.add("-o");command.add("sides=two-sided-short-edge");			
+				break;
+			}
 		}
-		if(request.isBlackAndWhite()) {
-			command.add("-o");command.add("JCLColorCorrection=BlackWhite");
+		if(request.isSetMultiPageConfig()) {
+			int nup = request.getMultiPageConfig().getNbPagesPerSheet().getValue();
+			String layout = decodeLayout(request.getMultiPageConfig().getLayout());
+			command.add("-o");command.add("number-up=" + nup);
+			command.add("-o");command.add("number-up-layout=" + layout);
 		}
-		
+		if(request.isSetOrientation()) {
+			int ori = request.getOrientation().getValue();
+			command.add("-o");command.add("orientation-requested=" + ori);
+		}
+		if(request.isSetMultipleCopies()) {
+			command.add("-n");command.add("" + request.getMultipleCopies().getNumberOfCopies());
+			if(request.getMultipleCopies().isCollate())
+				command.add("-o");command.add("Collate=True");
+		}
+		if(request.isSetColorConfig()) {
+			if(request.getColorConfig() == CloudPrintColorConfig.BLACK_WHITE)
+				command.add("-o");command.add("JCLColorCorrection=BlackWhite");
+		}
 		command.add("-T");command.add(files[0]);
 		command.add(filePath + "/" + files[0]);
 		try {
+			System.out.println("$ " + StringUtils.join(command, " "));
 			Runtime.getRuntime().exec(command.toArray(new String[command.size()]));
 			return new PrintDocumentResponse(CloudPrintStatusCode.OK);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return new PrintDocumentResponse(CloudPrintStatusCode.PRINT_ERROR);
+	}
+	
+	/** 
+		convert 
+			LEFT_TO_RIGHT_TOP_TO_BOTTOM
+			TOP_TO_BOTTOM_LEFT_TO_RIGHT
+			BOTTOM_TO_TOP_LEFT_TO_RIGHT
+			BOTTOM_TO_TOP_RIGHT_TO_LEFT
+			LEFT_TO_RIGHT_BOTTOM_TO_TOP
+			RIGHT_TO_LEFT_BOTTOM_TO_TOP
+			RIGHT_TO_LEFT_TOP_TO_BOTTOM
+			TOP_TO_BOTTOM_RIGHT_TO_LEFT
+		to
+			lrtb
+			tblr
+			btlr
+			btrl
+			lrbt
+			rlbt
+			rltb
+			tbrl
+	 */
+	private static String decodeLayout(CloudPrintMultiPageLayout layout) {
+		return layout.name().toLowerCase(Locale.US).replace("to_", "").replaceAll("([a-z])[a-z]+_([a-z])[a-z]+_([a-z])[a-z]+_([a-z])[a-z]+", "$1$2$3$4");
 	}
 
 	public static String getFilenameFromContentDisposition(String contentDisposition) {

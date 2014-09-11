@@ -25,24 +25,42 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("PrintDocumentRequest");
 
   private static final org.apache.thrift.protocol.TField DOCUMENT_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("documentId", org.apache.thrift.protocol.TType.I64, (short)1);
-  private static final org.apache.thrift.protocol.TField DOUBLE_SIDED_FIELD_DESC = new org.apache.thrift.protocol.TField("doubleSided", org.apache.thrift.protocol.TType.BOOL, (short)2);
-  private static final org.apache.thrift.protocol.TField BLACK_AND_WHITE_FIELD_DESC = new org.apache.thrift.protocol.TField("blackAndWhite", org.apache.thrift.protocol.TType.BOOL, (short)3);
-  private static final org.apache.thrift.protocol.TField NUMBER_OF_COPIES_FIELD_DESC = new org.apache.thrift.protocol.TField("numberOfCopies", org.apache.thrift.protocol.TType.I32, (short)4);
   private static final org.apache.thrift.protocol.TField PAGE_SELECTION_FIELD_DESC = new org.apache.thrift.protocol.TField("pageSelection", org.apache.thrift.protocol.TType.STRUCT, (short)5);
+  private static final org.apache.thrift.protocol.TField MULTI_PAGE_CONFIG_FIELD_DESC = new org.apache.thrift.protocol.TField("multiPageConfig", org.apache.thrift.protocol.TType.STRUCT, (short)6);
+  private static final org.apache.thrift.protocol.TField DOUBLE_SIDED_FIELD_DESC = new org.apache.thrift.protocol.TField("doubleSided", org.apache.thrift.protocol.TType.I32, (short)7);
+  private static final org.apache.thrift.protocol.TField ORIENTATION_FIELD_DESC = new org.apache.thrift.protocol.TField("orientation", org.apache.thrift.protocol.TType.I32, (short)8);
+  private static final org.apache.thrift.protocol.TField MULTIPLE_COPIES_FIELD_DESC = new org.apache.thrift.protocol.TField("multipleCopies", org.apache.thrift.protocol.TType.STRUCT, (short)9);
+  private static final org.apache.thrift.protocol.TField COLOR_CONFIG_FIELD_DESC = new org.apache.thrift.protocol.TField("colorConfig", org.apache.thrift.protocol.TType.I32, (short)10);
 
   private long documentId; // required
-  private boolean doubleSided; // required
-  private boolean blackAndWhite; // required
-  private int numberOfCopies; // required
   private CloudPrintPageRange pageSelection; // required
+  private CloudPrintMultiPageConfig multiPageConfig; // required
+  private CloudPrintDoubleSidedConfig doubleSided; // required
+  private CloudPrintOrientation orientation; // required
+  private CloudPrintMultipleCopies multipleCopies; // required
+  private CloudPrintColorConfig colorConfig; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     DOCUMENT_ID((short)1, "documentId"),
-    DOUBLE_SIDED((short)2, "doubleSided"),
-    BLACK_AND_WHITE((short)3, "blackAndWhite"),
-    NUMBER_OF_COPIES((short)4, "numberOfCopies"),
-    PAGE_SELECTION((short)5, "pageSelection");
+    PAGE_SELECTION((short)5, "pageSelection"),
+    MULTI_PAGE_CONFIG((short)6, "multiPageConfig"),
+    /**
+     * 
+     * @see CloudPrintDoubleSidedConfig
+     */
+    DOUBLE_SIDED((short)7, "doubleSided"),
+    /**
+     * 
+     * @see CloudPrintOrientation
+     */
+    ORIENTATION((short)8, "orientation"),
+    MULTIPLE_COPIES((short)9, "multipleCopies"),
+    /**
+     * 
+     * @see CloudPrintColorConfig
+     */
+    COLOR_CONFIG((short)10, "colorConfig");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -59,14 +77,18 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
       switch(fieldId) {
         case 1: // DOCUMENT_ID
           return DOCUMENT_ID;
-        case 2: // DOUBLE_SIDED
-          return DOUBLE_SIDED;
-        case 3: // BLACK_AND_WHITE
-          return BLACK_AND_WHITE;
-        case 4: // NUMBER_OF_COPIES
-          return NUMBER_OF_COPIES;
         case 5: // PAGE_SELECTION
           return PAGE_SELECTION;
+        case 6: // MULTI_PAGE_CONFIG
+          return MULTI_PAGE_CONFIG;
+        case 7: // DOUBLE_SIDED
+          return DOUBLE_SIDED;
+        case 8: // ORIENTATION
+          return ORIENTATION;
+        case 9: // MULTIPLE_COPIES
+          return MULTIPLE_COPIES;
+        case 10: // COLOR_CONFIG
+          return COLOR_CONFIG;
         default:
           return null;
       }
@@ -108,24 +130,25 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
 
   // isset id assignments
   private static final int __DOCUMENTID_ISSET_ID = 0;
-  private static final int __DOUBLESIDED_ISSET_ID = 1;
-  private static final int __BLACKANDWHITE_ISSET_ID = 2;
-  private static final int __NUMBEROFCOPIES_ISSET_ID = 3;
-  private BitSet __isset_bit_vector = new BitSet(4);
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.DOCUMENT_ID, new org.apache.thrift.meta_data.FieldMetaData("documentId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
-    tmpMap.put(_Fields.DOUBLE_SIDED, new org.apache.thrift.meta_data.FieldMetaData("doubleSided", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
-    tmpMap.put(_Fields.BLACK_AND_WHITE, new org.apache.thrift.meta_data.FieldMetaData("blackAndWhite", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
-    tmpMap.put(_Fields.NUMBER_OF_COPIES, new org.apache.thrift.meta_data.FieldMetaData("numberOfCopies", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.PAGE_SELECTION, new org.apache.thrift.meta_data.FieldMetaData("pageSelection", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CloudPrintPageRange.class)));
+    tmpMap.put(_Fields.MULTI_PAGE_CONFIG, new org.apache.thrift.meta_data.FieldMetaData("multiPageConfig", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CloudPrintMultiPageConfig.class)));
+    tmpMap.put(_Fields.DOUBLE_SIDED, new org.apache.thrift.meta_data.FieldMetaData("doubleSided", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, CloudPrintDoubleSidedConfig.class)));
+    tmpMap.put(_Fields.ORIENTATION, new org.apache.thrift.meta_data.FieldMetaData("orientation", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, CloudPrintOrientation.class)));
+    tmpMap.put(_Fields.MULTIPLE_COPIES, new org.apache.thrift.meta_data.FieldMetaData("multipleCopies", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CloudPrintMultipleCopies.class)));
+    tmpMap.put(_Fields.COLOR_CONFIG, new org.apache.thrift.meta_data.FieldMetaData("colorConfig", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, CloudPrintColorConfig.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(PrintDocumentRequest.class, metaDataMap);
   }
@@ -134,20 +157,11 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
   }
 
   public PrintDocumentRequest(
-    long documentId,
-    boolean doubleSided,
-    boolean blackAndWhite,
-    int numberOfCopies)
+    long documentId)
   {
     this();
     this.documentId = documentId;
     setDocumentIdIsSet(true);
-    this.doubleSided = doubleSided;
-    setDoubleSidedIsSet(true);
-    this.blackAndWhite = blackAndWhite;
-    setBlackAndWhiteIsSet(true);
-    this.numberOfCopies = numberOfCopies;
-    setNumberOfCopiesIsSet(true);
   }
 
   /**
@@ -157,11 +171,23 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.documentId = other.documentId;
-    this.doubleSided = other.doubleSided;
-    this.blackAndWhite = other.blackAndWhite;
-    this.numberOfCopies = other.numberOfCopies;
     if (other.isSetPageSelection()) {
       this.pageSelection = new CloudPrintPageRange(other.pageSelection);
+    }
+    if (other.isSetMultiPageConfig()) {
+      this.multiPageConfig = new CloudPrintMultiPageConfig(other.multiPageConfig);
+    }
+    if (other.isSetDoubleSided()) {
+      this.doubleSided = other.doubleSided;
+    }
+    if (other.isSetOrientation()) {
+      this.orientation = other.orientation;
+    }
+    if (other.isSetMultipleCopies()) {
+      this.multipleCopies = new CloudPrintMultipleCopies(other.multipleCopies);
+    }
+    if (other.isSetColorConfig()) {
+      this.colorConfig = other.colorConfig;
     }
   }
 
@@ -173,13 +199,12 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
   public void clear() {
     setDocumentIdIsSet(false);
     this.documentId = 0;
-    setDoubleSidedIsSet(false);
-    this.doubleSided = false;
-    setBlackAndWhiteIsSet(false);
-    this.blackAndWhite = false;
-    setNumberOfCopiesIsSet(false);
-    this.numberOfCopies = 0;
     this.pageSelection = null;
+    this.multiPageConfig = null;
+    this.doubleSided = null;
+    this.orientation = null;
+    this.multipleCopies = null;
+    this.colorConfig = null;
   }
 
   public long getDocumentId() {
@@ -203,75 +228,6 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
 
   public void setDocumentIdIsSet(boolean value) {
     __isset_bit_vector.set(__DOCUMENTID_ISSET_ID, value);
-  }
-
-  public boolean isDoubleSided() {
-    return this.doubleSided;
-  }
-
-  public PrintDocumentRequest setDoubleSided(boolean doubleSided) {
-    this.doubleSided = doubleSided;
-    setDoubleSidedIsSet(true);
-    return this;
-  }
-
-  public void unsetDoubleSided() {
-    __isset_bit_vector.clear(__DOUBLESIDED_ISSET_ID);
-  }
-
-  /** Returns true if field doubleSided is set (has been assigned a value) and false otherwise */
-  public boolean isSetDoubleSided() {
-    return __isset_bit_vector.get(__DOUBLESIDED_ISSET_ID);
-  }
-
-  public void setDoubleSidedIsSet(boolean value) {
-    __isset_bit_vector.set(__DOUBLESIDED_ISSET_ID, value);
-  }
-
-  public boolean isBlackAndWhite() {
-    return this.blackAndWhite;
-  }
-
-  public PrintDocumentRequest setBlackAndWhite(boolean blackAndWhite) {
-    this.blackAndWhite = blackAndWhite;
-    setBlackAndWhiteIsSet(true);
-    return this;
-  }
-
-  public void unsetBlackAndWhite() {
-    __isset_bit_vector.clear(__BLACKANDWHITE_ISSET_ID);
-  }
-
-  /** Returns true if field blackAndWhite is set (has been assigned a value) and false otherwise */
-  public boolean isSetBlackAndWhite() {
-    return __isset_bit_vector.get(__BLACKANDWHITE_ISSET_ID);
-  }
-
-  public void setBlackAndWhiteIsSet(boolean value) {
-    __isset_bit_vector.set(__BLACKANDWHITE_ISSET_ID, value);
-  }
-
-  public int getNumberOfCopies() {
-    return this.numberOfCopies;
-  }
-
-  public PrintDocumentRequest setNumberOfCopies(int numberOfCopies) {
-    this.numberOfCopies = numberOfCopies;
-    setNumberOfCopiesIsSet(true);
-    return this;
-  }
-
-  public void unsetNumberOfCopies() {
-    __isset_bit_vector.clear(__NUMBEROFCOPIES_ISSET_ID);
-  }
-
-  /** Returns true if field numberOfCopies is set (has been assigned a value) and false otherwise */
-  public boolean isSetNumberOfCopies() {
-    return __isset_bit_vector.get(__NUMBEROFCOPIES_ISSET_ID);
-  }
-
-  public void setNumberOfCopiesIsSet(boolean value) {
-    __isset_bit_vector.set(__NUMBEROFCOPIES_ISSET_ID, value);
   }
 
   public CloudPrintPageRange getPageSelection() {
@@ -298,6 +254,150 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
     }
   }
 
+  public CloudPrintMultiPageConfig getMultiPageConfig() {
+    return this.multiPageConfig;
+  }
+
+  public PrintDocumentRequest setMultiPageConfig(CloudPrintMultiPageConfig multiPageConfig) {
+    this.multiPageConfig = multiPageConfig;
+    return this;
+  }
+
+  public void unsetMultiPageConfig() {
+    this.multiPageConfig = null;
+  }
+
+  /** Returns true if field multiPageConfig is set (has been assigned a value) and false otherwise */
+  public boolean isSetMultiPageConfig() {
+    return this.multiPageConfig != null;
+  }
+
+  public void setMultiPageConfigIsSet(boolean value) {
+    if (!value) {
+      this.multiPageConfig = null;
+    }
+  }
+
+  /**
+   * 
+   * @see CloudPrintDoubleSidedConfig
+   */
+  public CloudPrintDoubleSidedConfig getDoubleSided() {
+    return this.doubleSided;
+  }
+
+  /**
+   * 
+   * @see CloudPrintDoubleSidedConfig
+   */
+  public PrintDocumentRequest setDoubleSided(CloudPrintDoubleSidedConfig doubleSided) {
+    this.doubleSided = doubleSided;
+    return this;
+  }
+
+  public void unsetDoubleSided() {
+    this.doubleSided = null;
+  }
+
+  /** Returns true if field doubleSided is set (has been assigned a value) and false otherwise */
+  public boolean isSetDoubleSided() {
+    return this.doubleSided != null;
+  }
+
+  public void setDoubleSidedIsSet(boolean value) {
+    if (!value) {
+      this.doubleSided = null;
+    }
+  }
+
+  /**
+   * 
+   * @see CloudPrintOrientation
+   */
+  public CloudPrintOrientation getOrientation() {
+    return this.orientation;
+  }
+
+  /**
+   * 
+   * @see CloudPrintOrientation
+   */
+  public PrintDocumentRequest setOrientation(CloudPrintOrientation orientation) {
+    this.orientation = orientation;
+    return this;
+  }
+
+  public void unsetOrientation() {
+    this.orientation = null;
+  }
+
+  /** Returns true if field orientation is set (has been assigned a value) and false otherwise */
+  public boolean isSetOrientation() {
+    return this.orientation != null;
+  }
+
+  public void setOrientationIsSet(boolean value) {
+    if (!value) {
+      this.orientation = null;
+    }
+  }
+
+  public CloudPrintMultipleCopies getMultipleCopies() {
+    return this.multipleCopies;
+  }
+
+  public PrintDocumentRequest setMultipleCopies(CloudPrintMultipleCopies multipleCopies) {
+    this.multipleCopies = multipleCopies;
+    return this;
+  }
+
+  public void unsetMultipleCopies() {
+    this.multipleCopies = null;
+  }
+
+  /** Returns true if field multipleCopies is set (has been assigned a value) and false otherwise */
+  public boolean isSetMultipleCopies() {
+    return this.multipleCopies != null;
+  }
+
+  public void setMultipleCopiesIsSet(boolean value) {
+    if (!value) {
+      this.multipleCopies = null;
+    }
+  }
+
+  /**
+   * 
+   * @see CloudPrintColorConfig
+   */
+  public CloudPrintColorConfig getColorConfig() {
+    return this.colorConfig;
+  }
+
+  /**
+   * 
+   * @see CloudPrintColorConfig
+   */
+  public PrintDocumentRequest setColorConfig(CloudPrintColorConfig colorConfig) {
+    this.colorConfig = colorConfig;
+    return this;
+  }
+
+  public void unsetColorConfig() {
+    this.colorConfig = null;
+  }
+
+  /** Returns true if field colorConfig is set (has been assigned a value) and false otherwise */
+  public boolean isSetColorConfig() {
+    return this.colorConfig != null;
+  }
+
+  public void setColorConfigIsSet(boolean value) {
+    if (!value) {
+      this.colorConfig = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case DOCUMENT_ID:
@@ -305,30 +405,6 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
         unsetDocumentId();
       } else {
         setDocumentId((Long)value);
-      }
-      break;
-
-    case DOUBLE_SIDED:
-      if (value == null) {
-        unsetDoubleSided();
-      } else {
-        setDoubleSided((Boolean)value);
-      }
-      break;
-
-    case BLACK_AND_WHITE:
-      if (value == null) {
-        unsetBlackAndWhite();
-      } else {
-        setBlackAndWhite((Boolean)value);
-      }
-      break;
-
-    case NUMBER_OF_COPIES:
-      if (value == null) {
-        unsetNumberOfCopies();
-      } else {
-        setNumberOfCopies((Integer)value);
       }
       break;
 
@@ -340,6 +416,46 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
       }
       break;
 
+    case MULTI_PAGE_CONFIG:
+      if (value == null) {
+        unsetMultiPageConfig();
+      } else {
+        setMultiPageConfig((CloudPrintMultiPageConfig)value);
+      }
+      break;
+
+    case DOUBLE_SIDED:
+      if (value == null) {
+        unsetDoubleSided();
+      } else {
+        setDoubleSided((CloudPrintDoubleSidedConfig)value);
+      }
+      break;
+
+    case ORIENTATION:
+      if (value == null) {
+        unsetOrientation();
+      } else {
+        setOrientation((CloudPrintOrientation)value);
+      }
+      break;
+
+    case MULTIPLE_COPIES:
+      if (value == null) {
+        unsetMultipleCopies();
+      } else {
+        setMultipleCopies((CloudPrintMultipleCopies)value);
+      }
+      break;
+
+    case COLOR_CONFIG:
+      if (value == null) {
+        unsetColorConfig();
+      } else {
+        setColorConfig((CloudPrintColorConfig)value);
+      }
+      break;
+
     }
   }
 
@@ -348,17 +464,23 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
     case DOCUMENT_ID:
       return Long.valueOf(getDocumentId());
 
-    case DOUBLE_SIDED:
-      return Boolean.valueOf(isDoubleSided());
-
-    case BLACK_AND_WHITE:
-      return Boolean.valueOf(isBlackAndWhite());
-
-    case NUMBER_OF_COPIES:
-      return Integer.valueOf(getNumberOfCopies());
-
     case PAGE_SELECTION:
       return getPageSelection();
+
+    case MULTI_PAGE_CONFIG:
+      return getMultiPageConfig();
+
+    case DOUBLE_SIDED:
+      return getDoubleSided();
+
+    case ORIENTATION:
+      return getOrientation();
+
+    case MULTIPLE_COPIES:
+      return getMultipleCopies();
+
+    case COLOR_CONFIG:
+      return getColorConfig();
 
     }
     throw new IllegalStateException();
@@ -373,14 +495,18 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
     switch (field) {
     case DOCUMENT_ID:
       return isSetDocumentId();
-    case DOUBLE_SIDED:
-      return isSetDoubleSided();
-    case BLACK_AND_WHITE:
-      return isSetBlackAndWhite();
-    case NUMBER_OF_COPIES:
-      return isSetNumberOfCopies();
     case PAGE_SELECTION:
       return isSetPageSelection();
+    case MULTI_PAGE_CONFIG:
+      return isSetMultiPageConfig();
+    case DOUBLE_SIDED:
+      return isSetDoubleSided();
+    case ORIENTATION:
+      return isSetOrientation();
+    case MULTIPLE_COPIES:
+      return isSetMultipleCopies();
+    case COLOR_CONFIG:
+      return isSetColorConfig();
     }
     throw new IllegalStateException();
   }
@@ -407,39 +533,57 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
         return false;
     }
 
-    boolean this_present_doubleSided = true;
-    boolean that_present_doubleSided = true;
-    if (this_present_doubleSided || that_present_doubleSided) {
-      if (!(this_present_doubleSided && that_present_doubleSided))
-        return false;
-      if (this.doubleSided != that.doubleSided)
-        return false;
-    }
-
-    boolean this_present_blackAndWhite = true;
-    boolean that_present_blackAndWhite = true;
-    if (this_present_blackAndWhite || that_present_blackAndWhite) {
-      if (!(this_present_blackAndWhite && that_present_blackAndWhite))
-        return false;
-      if (this.blackAndWhite != that.blackAndWhite)
-        return false;
-    }
-
-    boolean this_present_numberOfCopies = true;
-    boolean that_present_numberOfCopies = true;
-    if (this_present_numberOfCopies || that_present_numberOfCopies) {
-      if (!(this_present_numberOfCopies && that_present_numberOfCopies))
-        return false;
-      if (this.numberOfCopies != that.numberOfCopies)
-        return false;
-    }
-
     boolean this_present_pageSelection = true && this.isSetPageSelection();
     boolean that_present_pageSelection = true && that.isSetPageSelection();
     if (this_present_pageSelection || that_present_pageSelection) {
       if (!(this_present_pageSelection && that_present_pageSelection))
         return false;
       if (!this.pageSelection.equals(that.pageSelection))
+        return false;
+    }
+
+    boolean this_present_multiPageConfig = true && this.isSetMultiPageConfig();
+    boolean that_present_multiPageConfig = true && that.isSetMultiPageConfig();
+    if (this_present_multiPageConfig || that_present_multiPageConfig) {
+      if (!(this_present_multiPageConfig && that_present_multiPageConfig))
+        return false;
+      if (!this.multiPageConfig.equals(that.multiPageConfig))
+        return false;
+    }
+
+    boolean this_present_doubleSided = true && this.isSetDoubleSided();
+    boolean that_present_doubleSided = true && that.isSetDoubleSided();
+    if (this_present_doubleSided || that_present_doubleSided) {
+      if (!(this_present_doubleSided && that_present_doubleSided))
+        return false;
+      if (!this.doubleSided.equals(that.doubleSided))
+        return false;
+    }
+
+    boolean this_present_orientation = true && this.isSetOrientation();
+    boolean that_present_orientation = true && that.isSetOrientation();
+    if (this_present_orientation || that_present_orientation) {
+      if (!(this_present_orientation && that_present_orientation))
+        return false;
+      if (!this.orientation.equals(that.orientation))
+        return false;
+    }
+
+    boolean this_present_multipleCopies = true && this.isSetMultipleCopies();
+    boolean that_present_multipleCopies = true && that.isSetMultipleCopies();
+    if (this_present_multipleCopies || that_present_multipleCopies) {
+      if (!(this_present_multipleCopies && that_present_multipleCopies))
+        return false;
+      if (!this.multipleCopies.equals(that.multipleCopies))
+        return false;
+    }
+
+    boolean this_present_colorConfig = true && this.isSetColorConfig();
+    boolean that_present_colorConfig = true && that.isSetColorConfig();
+    if (this_present_colorConfig || that_present_colorConfig) {
+      if (!(this_present_colorConfig && that_present_colorConfig))
+        return false;
+      if (!this.colorConfig.equals(that.colorConfig))
         return false;
     }
 
@@ -455,25 +599,35 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
     if (present_documentId)
       builder.append(documentId);
 
-    boolean present_doubleSided = true;
-    builder.append(present_doubleSided);
-    if (present_doubleSided)
-      builder.append(doubleSided);
-
-    boolean present_blackAndWhite = true;
-    builder.append(present_blackAndWhite);
-    if (present_blackAndWhite)
-      builder.append(blackAndWhite);
-
-    boolean present_numberOfCopies = true;
-    builder.append(present_numberOfCopies);
-    if (present_numberOfCopies)
-      builder.append(numberOfCopies);
-
     boolean present_pageSelection = true && (isSetPageSelection());
     builder.append(present_pageSelection);
     if (present_pageSelection)
       builder.append(pageSelection);
+
+    boolean present_multiPageConfig = true && (isSetMultiPageConfig());
+    builder.append(present_multiPageConfig);
+    if (present_multiPageConfig)
+      builder.append(multiPageConfig);
+
+    boolean present_doubleSided = true && (isSetDoubleSided());
+    builder.append(present_doubleSided);
+    if (present_doubleSided)
+      builder.append(doubleSided.getValue());
+
+    boolean present_orientation = true && (isSetOrientation());
+    builder.append(present_orientation);
+    if (present_orientation)
+      builder.append(orientation.getValue());
+
+    boolean present_multipleCopies = true && (isSetMultipleCopies());
+    builder.append(present_multipleCopies);
+    if (present_multipleCopies)
+      builder.append(multipleCopies);
+
+    boolean present_colorConfig = true && (isSetColorConfig());
+    builder.append(present_colorConfig);
+    if (present_colorConfig)
+      builder.append(colorConfig.getValue());
 
     return builder.toHashCode();
   }
@@ -496,6 +650,26 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetPageSelection()).compareTo(typedOther.isSetPageSelection());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetPageSelection()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.pageSelection, typedOther.pageSelection);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetMultiPageConfig()).compareTo(typedOther.isSetMultiPageConfig());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetMultiPageConfig()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.multiPageConfig, typedOther.multiPageConfig);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetDoubleSided()).compareTo(typedOther.isSetDoubleSided());
     if (lastComparison != 0) {
       return lastComparison;
@@ -506,32 +680,32 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetBlackAndWhite()).compareTo(typedOther.isSetBlackAndWhite());
+    lastComparison = Boolean.valueOf(isSetOrientation()).compareTo(typedOther.isSetOrientation());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetBlackAndWhite()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.blackAndWhite, typedOther.blackAndWhite);
+    if (isSetOrientation()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.orientation, typedOther.orientation);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetNumberOfCopies()).compareTo(typedOther.isSetNumberOfCopies());
+    lastComparison = Boolean.valueOf(isSetMultipleCopies()).compareTo(typedOther.isSetMultipleCopies());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetNumberOfCopies()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.numberOfCopies, typedOther.numberOfCopies);
+    if (isSetMultipleCopies()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.multipleCopies, typedOther.multipleCopies);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetPageSelection()).compareTo(typedOther.isSetPageSelection());
+    lastComparison = Boolean.valueOf(isSetColorConfig()).compareTo(typedOther.isSetColorConfig());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetPageSelection()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.pageSelection, typedOther.pageSelection);
+    if (isSetColorConfig()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.colorConfig, typedOther.colorConfig);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -561,34 +735,47 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // DOUBLE_SIDED
-          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
-            this.doubleSided = iprot.readBool();
-            setDoubleSidedIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 3: // BLACK_AND_WHITE
-          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
-            this.blackAndWhite = iprot.readBool();
-            setBlackAndWhiteIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 4: // NUMBER_OF_COPIES
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.numberOfCopies = iprot.readI32();
-            setNumberOfCopiesIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
         case 5: // PAGE_SELECTION
           if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
             this.pageSelection = new CloudPrintPageRange();
             this.pageSelection.read(iprot);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 6: // MULTI_PAGE_CONFIG
+          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+            this.multiPageConfig = new CloudPrintMultiPageConfig();
+            this.multiPageConfig.read(iprot);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 7: // DOUBLE_SIDED
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.doubleSided = CloudPrintDoubleSidedConfig.findByValue(iprot.readI32());
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 8: // ORIENTATION
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.orientation = CloudPrintOrientation.findByValue(iprot.readI32());
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 9: // MULTIPLE_COPIES
+          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+            this.multipleCopies = new CloudPrintMultipleCopies();
+            this.multipleCopies.read(iprot);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 10: // COLOR_CONFIG
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.colorConfig = CloudPrintColorConfig.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -604,15 +791,6 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
     if (!isSetDocumentId()) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'documentId' was not found in serialized data! Struct: " + toString());
     }
-    if (!isSetDoubleSided()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'doubleSided' was not found in serialized data! Struct: " + toString());
-    }
-    if (!isSetBlackAndWhite()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'blackAndWhite' was not found in serialized data! Struct: " + toString());
-    }
-    if (!isSetNumberOfCopies()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'numberOfCopies' was not found in serialized data! Struct: " + toString());
-    }
     validate();
   }
 
@@ -623,19 +801,45 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
     oprot.writeFieldBegin(DOCUMENT_ID_FIELD_DESC);
     oprot.writeI64(this.documentId);
     oprot.writeFieldEnd();
-    oprot.writeFieldBegin(DOUBLE_SIDED_FIELD_DESC);
-    oprot.writeBool(this.doubleSided);
-    oprot.writeFieldEnd();
-    oprot.writeFieldBegin(BLACK_AND_WHITE_FIELD_DESC);
-    oprot.writeBool(this.blackAndWhite);
-    oprot.writeFieldEnd();
-    oprot.writeFieldBegin(NUMBER_OF_COPIES_FIELD_DESC);
-    oprot.writeI32(this.numberOfCopies);
-    oprot.writeFieldEnd();
     if (this.pageSelection != null) {
       if (isSetPageSelection()) {
         oprot.writeFieldBegin(PAGE_SELECTION_FIELD_DESC);
         this.pageSelection.write(oprot);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.multiPageConfig != null) {
+      if (isSetMultiPageConfig()) {
+        oprot.writeFieldBegin(MULTI_PAGE_CONFIG_FIELD_DESC);
+        this.multiPageConfig.write(oprot);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.doubleSided != null) {
+      if (isSetDoubleSided()) {
+        oprot.writeFieldBegin(DOUBLE_SIDED_FIELD_DESC);
+        oprot.writeI32(this.doubleSided.getValue());
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.orientation != null) {
+      if (isSetOrientation()) {
+        oprot.writeFieldBegin(ORIENTATION_FIELD_DESC);
+        oprot.writeI32(this.orientation.getValue());
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.multipleCopies != null) {
+      if (isSetMultipleCopies()) {
+        oprot.writeFieldBegin(MULTIPLE_COPIES_FIELD_DESC);
+        this.multipleCopies.write(oprot);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.colorConfig != null) {
+      if (isSetColorConfig()) {
+        oprot.writeFieldBegin(COLOR_CONFIG_FIELD_DESC);
+        oprot.writeI32(this.colorConfig.getValue());
         oprot.writeFieldEnd();
       }
     }
@@ -651,18 +855,6 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
     sb.append("documentId:");
     sb.append(this.documentId);
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("doubleSided:");
-    sb.append(this.doubleSided);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("blackAndWhite:");
-    sb.append(this.blackAndWhite);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("numberOfCopies:");
-    sb.append(this.numberOfCopies);
-    first = false;
     if (isSetPageSelection()) {
       if (!first) sb.append(", ");
       sb.append("pageSelection:");
@@ -673,6 +865,56 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
       }
       first = false;
     }
+    if (isSetMultiPageConfig()) {
+      if (!first) sb.append(", ");
+      sb.append("multiPageConfig:");
+      if (this.multiPageConfig == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.multiPageConfig);
+      }
+      first = false;
+    }
+    if (isSetDoubleSided()) {
+      if (!first) sb.append(", ");
+      sb.append("doubleSided:");
+      if (this.doubleSided == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.doubleSided);
+      }
+      first = false;
+    }
+    if (isSetOrientation()) {
+      if (!first) sb.append(", ");
+      sb.append("orientation:");
+      if (this.orientation == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.orientation);
+      }
+      first = false;
+    }
+    if (isSetMultipleCopies()) {
+      if (!first) sb.append(", ");
+      sb.append("multipleCopies:");
+      if (this.multipleCopies == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.multipleCopies);
+      }
+      first = false;
+    }
+    if (isSetColorConfig()) {
+      if (!first) sb.append(", ");
+      sb.append("colorConfig:");
+      if (this.colorConfig == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.colorConfig);
+      }
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }
@@ -680,9 +922,6 @@ public class PrintDocumentRequest implements org.apache.thrift.TBase<PrintDocume
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
     // alas, we cannot check 'documentId' because it's a primitive and you chose the non-beans generator.
-    // alas, we cannot check 'doubleSided' because it's a primitive and you chose the non-beans generator.
-    // alas, we cannot check 'blackAndWhite' because it's a primitive and you chose the non-beans generator.
-    // alas, we cannot check 'numberOfCopies' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
