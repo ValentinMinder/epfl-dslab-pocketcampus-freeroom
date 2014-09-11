@@ -3,9 +3,11 @@
 // File author: Solal Pirelli
 
 using System.Reflection;
+using System.Resources;
 
-[assembly: AssemblyTitle( "PocketCampus.Authentication.Common" )]
+[assembly: AssemblyTitle( "PocketCampus.Authentication.WindowsRuntime" )]
 [assembly: AssemblyCopyright( "Copyright © PocketCampus.Org 2014" )]
 [assembly: AssemblyCulture( "" )]
+[assembly: NeutralResourcesLanguageAttribute( "en" )]
 
 [assembly: AssemblyVersion( "2.4.*" )]

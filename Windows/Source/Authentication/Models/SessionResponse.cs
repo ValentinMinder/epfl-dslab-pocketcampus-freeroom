@@ -6,21 +6,12 @@ using ThriftSharp;
 
 namespace PocketCampus.Authentication.Models
 {
-    /// <summary>
-    /// Response to a request for an authentication session.
-    /// </summary>
     [ThriftStruct( "AuthSessionResponse" )]
     public sealed class SessionResponse
     {
-        /// <summary>
-        /// The request's status.
-        /// </summary>
         [ThriftField( 2, true, "statusCode" )]
         public ResponseStatus Status { get; set; }
 
-        /// <summary>
-        /// The authentication session.
-        /// </summary>
         [ThriftField( 1, false, "sessionId" )]
         public string Session { get; set; }
     }

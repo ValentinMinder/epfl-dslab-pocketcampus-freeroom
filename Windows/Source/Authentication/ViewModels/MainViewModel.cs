@@ -13,9 +13,6 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.Authentication.ViewModels
 {
-    /// <summary>
-    /// The main (and only) ViewModel.
-    /// </summary>
     [LogId( "/authentication" )]
     public sealed class MainViewModel : ViewModel<AuthenticationRequest>
     {
@@ -27,50 +24,39 @@ namespace PocketCampus.Authentication.ViewModels
         private readonly ICredentialsStorage _credentials;
         private readonly AuthenticationRequest _request;
 
+
         private string _userName;
         private string _password;
         private bool _saveCredentials;
         private AuthenticationStatus _authenticationStatus;
 
-        /// <summary>
-        /// Gets or sets the user name (GASPAR identifier or SCIPER number).
-        /// </summary>
+
+        // Can be GASPAR or SCIPER
         public string UserName
         {
             get { return _userName; }
             set { SetProperty( ref _userName, value ); }
         }
 
-        /// <summary>
-        /// Gets or sets the password.
-        /// </summary>
         public string Password
         {
             get { return _password; }
             set { SetProperty( ref _password, value ); }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether credentials should be saved.
-        /// </summary>
         public bool SaveCredentials
         {
             get { return _saveCredentials; }
             set { SetProperty( ref _saveCredentials, value ); }
         }
 
-        /// <summary>
-        /// Gets the authentication attempt status.
-        /// </summary>
         public AuthenticationStatus AuthenticationStatus
         {
             get { return _authenticationStatus; }
             private set { SetProperty( ref _authenticationStatus, value ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to attempt to authenticate the user.
-        /// </summary>
+
         [LogId( "LogIn" )]
         [LogParameter( "SaveCredentials" )]
         [LogValueConverter( typeof( SavePasswordLogValueConverter ) )]
@@ -80,9 +66,6 @@ namespace PocketCampus.Authentication.ViewModels
         }
 
 
-        /// <summary>
-        /// Creates a new MainViewModel.
-        /// </summary>
         public MainViewModel( IAuthenticationService authenticationService, IAuthenticator authenticator,
                               IServerAccess serverAccess, INavigationService navigationService,
                               IServerSettings settings, ICredentialsStorage credentials,
@@ -100,17 +83,14 @@ namespace PocketCampus.Authentication.ViewModels
         }
 
 
-        /// <summary>
-        /// Asynchronously attempts to authenticate the user.
-        /// </summary>
         private async Task AuthenticateAsync()
         {
-            bool authOk = false;
             AuthenticationStatus = AuthenticationStatus.Authenticating;
 
             try
             {
                 var tokenResponse = await _authenticationService.GetTokenAsync();
+
                 if ( tokenResponse.Status != ResponseStatus.Success )
                 {
                     throw new Exception( "An error occurred while getting a token." );
@@ -123,17 +103,28 @@ namespace PocketCampus.Authentication.ViewModels
                         TequilaToken = tokenResponse.Token,
                         RememberMe = SaveCredentials
                     };
+
                     var sessionResponse = await _authenticationService.GetSessionAsync( sessionRequest );
+
                     if ( sessionResponse.Status != ResponseStatus.Success )
                     {
                         throw new Exception( "An error occurred while getting a session." );
                     }
 
                     _settings.Session = sessionResponse.Session;
-
                     _settings.SessionStatus = SaveCredentials ? SessionStatus.LoggedIn : SessionStatus.LoggedInTemporarily;
                     _credentials.SetCredentials( UserName, Password );
-                    authOk = true;
+                    AuthenticationStatus = AuthenticationStatus.Success;
+
+                    if ( _request.SuccessAction == null )
+                    {
+                        _navigationService.NavigateBack();
+                    }
+                    else
+                    {
+                        _navigationService.RemoveCurrentFromBackStack();
+                        _request.SuccessAction();
+                    }
                 }
                 else
                 {
@@ -144,27 +135,10 @@ namespace PocketCampus.Authentication.ViewModels
             {
                 AuthenticationStatus = AuthenticationStatus.Error;
             }
-
-            if ( authOk )
-            {
-                AuthenticationStatus = AuthenticationStatus.Success;
-
-                if ( _request.SuccessAction == null )
-                {
-                    _navigationService.NavigateBack();
-                }
-                else
-                {
-                    _navigationService.RemoveCurrentFromBackStack();
-                    _request.SuccessAction();
-                }
-            }
         }
 
 
-        /// <summary>
-        /// Utility class for analytics.
-        /// </summary>
+        // Convert log parameters, for analytics
         private sealed class SavePasswordLogValueConverter : ILogValueConverter
         {
             public string Convert( object value )
