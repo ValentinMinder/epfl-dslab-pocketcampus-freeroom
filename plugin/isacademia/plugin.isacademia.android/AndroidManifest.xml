@@ -11,7 +11,7 @@
         android:name="org.pocketcampus.platform.android.core.GlobalContext">
 
 
-		<activity android:name="org.pocketcampus.plugin.isacademia.android.IsAcademiaScheduleView"
+		<activity android:name="org.pocketcampus.plugin.isacademia.android.IsAcademiaMainView"
 			xmlns:android="http://schemas.android.com/apk/res/android"
 			android:icon="@drawable/isacademia_icon"
 			android:screenOrientation="nosensor"
@@ -23,53 +23,22 @@
 			</intent-filter>
 
 
-
-
-
-<!-- 			Communication with authentication plugin     -->
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="pocketcampus-authenticate" android:host="isacademia.plugin.pocketcampus.org" />
-			</intent-filter>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		</activity>
 
-
-
-<!-- 		<activity android:name="org.pocketcampus.plugin.isacademia.android.IsacademiaScheduleView" -->
+<!-- 		<activity android:name="org.pocketcampus.plugin.isacademia.android.IsAcademiaCourseView" -->
 <!-- 		    android:screenOrientation="nosensor" -->
 <!-- 			xmlns:android="http://schemas.android.com/apk/res/android" /> -->
 
-<!-- 		<activity android:name="org.pocketcampus.plugin.isacademia.android.IsacademiaExamsView" -->
+<!-- 		<activity android:name="org.pocketcampus.plugin.isacademia.android.IsAcademiaFolderView" -->
 <!-- 		    android:screenOrientation="nosensor" -->
 <!-- 			xmlns:android="http://schemas.android.com/apk/res/android" /> -->
-
-
-
 
 		<service android:name="org.pocketcampus.plugin.isacademia.android.IsAcademiaController"
 			xmlns:android="http://schemas.android.com/apk/res/android">
 			<intent-filter>
 				<action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
 				<action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
-				<category android:name="org.pocketcampus.plugin.authentication" />
+				<category android:name="org.pocketcampus" />
 				<data  android:scheme="pocketcampus" android:host="isacademia.plugin.pocketcampus.org" />
 			</intent-filter>
 
@@ -77,14 +46,19 @@
 
 
 
-		<receiver android:name="org.pocketcampus.plugin.isacademia.android.IsacademiaController$Logouter" >
+		<receiver android:name="org.pocketcampus.plugin.isacademia.android.IsAcademiaController$Logouter" >
             <intent-filter>
                 <action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
             </intent-filter>
         </receiver>
 
+		<receiver android:name="org.pocketcampus.plugin.isacademia.android.IsAcademiaController$AuthListener" >
+            <intent-filter>
+                <action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
+            </intent-filter>
+        </receiver>
 
-    </application>
+	</application>
 
 
 	<uses-permission android:name="android.permission.INTERNET" />

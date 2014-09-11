@@ -123,13 +123,15 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 			command.add("-o");command.add("orientation-requested=" + ori);
 		}
 		if(request.isSetMultipleCopies()) {
-			command.add("-n");command.add("" + request.getMultipleCopies().getNumberOfCopies());
-			if(request.getMultipleCopies().isCollate())
+			command.add("-#" + request.getMultipleCopies().getNumberOfCopies());
+			if(request.getMultipleCopies().isCollate()) {
 				command.add("-o");command.add("Collate=True");
+			}
 		}
 		if(request.isSetColorConfig()) {
-			if(request.getColorConfig() == CloudPrintColorConfig.BLACK_WHITE)
-				command.add("-o");command.add("JCLColorCorrection=BlackWhite");
+			if(request.getColorConfig() == CloudPrintColorConfig.BLACK_WHITE) {
+				command.add("-o");command.add("saturation=0");
+			}
 		}
 		command.add("-T");command.add(files[0]);
 		command.add(filePath + "/" + files[0]);

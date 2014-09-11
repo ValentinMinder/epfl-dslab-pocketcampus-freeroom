@@ -75,8 +75,7 @@ public class PocketCampusServer extends ServerBase {
 
 		try {
 			return serviceClass.getConstructor().newInstance();
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+		} catch (Exception e) {
 			throw new RuntimeException("Error while fetching the " + pluginName + " plugin.", e);
 		}
 	}
@@ -104,8 +103,7 @@ public class PocketCampusServer extends ServerBase {
 			return (TProcessor) processorClass
 					.getConstructor(interfaceClass)
 					.newInstance(pluginService);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+		} catch (Exception e) {
 			throw new RuntimeException("Error while creating the Thrift processor for the " + pluginName + " plugin.", e);
 		}
 	}
