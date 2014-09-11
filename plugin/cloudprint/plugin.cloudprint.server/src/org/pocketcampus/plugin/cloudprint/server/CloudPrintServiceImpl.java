@@ -123,7 +123,7 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 			command.add("-o");command.add("orientation-requested=" + ori);
 		}
 		if(request.isSetMultipleCopies()) {
-			command.add("-n");command.add("" + request.getMultipleCopies().getNumberOfCopies());
+			command.add("-#" + request.getMultipleCopies().getNumberOfCopies());
 			if(request.getMultipleCopies().isCollate()) {
 				command.add("-o");command.add("Collate=True");
 			}
