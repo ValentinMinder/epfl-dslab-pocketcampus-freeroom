@@ -9,12 +9,14 @@ using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Models;
 using PocketCampus.Moodle.Services;
 using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Moodle.ViewModels
 {
     /// <summary>
     /// The main ViewModel.
     /// </summary>
+    [LogId( "/moodle" )]
     public sealed class MainViewModel : CachedDataViewModel<NoParameter, CoursesResponse>
     {
         private readonly ISecureRequestHandler _requestHandler;
@@ -36,6 +38,8 @@ namespace PocketCampus.Moodle.ViewModels
         /// <summary>
         /// Gets the command executed to view a course.
         /// </summary>
+        [LogId( "ViewCourse" )]
+        [LogParameter( "$Param.LogId" )]
         public Command<Course> ViewCourseCommand
         {
             get { return this.GetCommand<Course>( _navigationService.NavigateTo<CourseViewModel, Course> ); }

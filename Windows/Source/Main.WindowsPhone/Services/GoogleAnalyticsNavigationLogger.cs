@@ -2,7 +2,9 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-#if !DEBUG
+#if DEBUG
+using System.Diagnostics;
+#else
 using GoogleAnalytics;
 #endif
 using ThinMvvm.Logging;
@@ -26,7 +28,9 @@ namespace PocketCampus.Main.Services
 
         protected override void LogAction( string viewModelId, LoggedSpecialAction action )
         {
-#if !DEBUG
+#if DEBUG
+            Debug.WriteLine( "Action on '" + viewModelId + "': " + action );
+#else
             switch ( action )
             {
                 case LoggedSpecialAction.ForwardsNavigation:
@@ -43,7 +47,9 @@ namespace PocketCampus.Main.Services
 
         protected override void LogCommand( string viewModelId, string eventId, string label )
         {
-#if !DEBUG
+#if DEBUG
+            Debug.WriteLine( "Event on '" + viewModelId + "': " + eventId + " (label: " + label + ")" );
+#else
             EasyTracker.GetTracker().SendEvent( EventCategory, viewModelId + "-" + eventId, label, 0 );
 #endif
         }

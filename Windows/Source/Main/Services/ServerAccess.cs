@@ -27,13 +27,10 @@ namespace PocketCampus.Main.Services
         // The format of the server URL
         // Parameters are the protocol and the port
 #if DEBUG
-        private const string ThriftServerUrlFormat = "http://test-pocketcampus.epfl.ch:14610/v3r1";
+        private const string ThriftServerUrlFormat = "http://test-pocketcampus.epfl.ch:14610/v3r1/{3}";
 #else
-        private const string ThriftServerUrlFormat = "{0}://pocketcampus.epfl.ch:{1}/v3r1";
+        private const string ThriftServerUrlFormat = "{0}://{1}:{2}/v3r1/{3}";
 #endif
-        // The format of a service URL
-        // Parameters are the server URL and the service name
-        private const string ThriftServiceUrlFormat = "{0}/{1}";
 
 
         private readonly IHttpClient _client;
@@ -71,8 +68,7 @@ namespace PocketCampus.Main.Services
         /// </summary>
         public ThriftCommunication CreateCommunication( string pluginName )
         {
-            string format = string.Format( ThriftServerUrlFormat, _settings.Configuration.Protocol, _settings.Configuration.Port );
-            string url = string.Format( ThriftServiceUrlFormat, format, pluginName );
+            string url = string.Format( ThriftServerUrlFormat, _settings.Configuration.Protocol, _settings.Configuration.Address, _settings.Configuration.Port, pluginName );
             return ThriftCommunication.Binary().OverHttp( url, ThriftConnectionTimeout, _headers );
         }
 
