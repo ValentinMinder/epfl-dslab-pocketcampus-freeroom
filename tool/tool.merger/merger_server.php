@@ -13,7 +13,7 @@
 
 chdir(dirname(__FILE__));
 
-$plugins_to_merge = array("Authentication", "Camipro", "Moodle", "Food", "Transport", "News", "Satellite", "Map", "Bikes", "Directory", "PushNotif", "MyEdu", "Events", "QAforum", "IsAcademia", "EdX");
+$plugins_to_merge = array("Authentication", "Camipro", "Moodle", "Food", "Transport", "News", "Satellite", "Map", "Directory", "PushNotif", "Events", "IsAcademia", "EdX", "CloudPrint");
 
 $libs_to_export = array(
 		"backport-util-concurrent-3.1.jar", "bcprov-jdk15-146.jar",
