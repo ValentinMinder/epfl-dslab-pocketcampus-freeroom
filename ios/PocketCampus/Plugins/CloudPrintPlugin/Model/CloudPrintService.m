@@ -37,6 +37,8 @@ static NSString* const kCloudPrintServiceJobUniqueIdServiceRequestUserInfoKey = 
 
 static NSString* const kCloudPrintRawUploadJSONResponseDocumentIdKey = @"file_id";
 
+static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
+
 @interface CloudPrintService ()
 
 @property (nonatomic, strong) AFHTTPSessionManager* filesUploadSessionManager;
@@ -90,16 +92,31 @@ static NSString* const kCloudPrintRawUploadJSONResponseDocumentIdKey = @"file_id
     
     [PCUtils throwExceptionIfObject:localURL notKindOfClass:[NSURL class]];
     
-    NSMutableURLRequest* request = [self pcProxiedRequest];
-    request.cachePolicy = NSURLRequestReloadIgnoringCacheData;
-    request.HTTPMethod = @"POST";
-    
     if (!self.filesUploadSessionManager) {
         self.filesUploadSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         self.filesUploadSessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
     }
     
-    NSURLSessionUploadTask* uploadTask = [self.filesUploadSessionManager uploadTaskWithRequest:request fromFile:localURL progress:&progress completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+    NSMutableURLRequest* rawRequest = [self pcProxiedRequest];
+    
+    NSError* error = nil;
+    NSMutableURLRequest* finalRequest = [[self.filesUploadSessionManager requestSerializer] multipartFormRequestWithMethod:@"POST" URLString:rawRequest.URL.absoluteString parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileURL:localURL name:kCloudPrintRawUploadFileParameterNameKey fileName:[localURL lastPathComponent] mimeType:@"application/pdf" error:nil];
+    } error:&error];
+    
+    if (error) {
+        failure(CloudPrintUploadFailureReasonUnknown);
+        return;
+    }
+    
+    NSMutableDictionary* allHeaders = [finalRequest.allHTTPHeaderFields mutableCopy] ?: [NSMutableDictionary dictionary];
+    for (NSString* key in rawRequest.allHTTPHeaderFields) {
+        allHeaders[key] = rawRequest.allHTTPHeaderFields[key];
+    }
+    finalRequest.allHTTPHeaderFields = allHeaders;
+    finalRequest.cachePolicy = NSURLRequestReloadIgnoringCacheData;
+    
+    NSURLSessionUploadTask* uploadTask = [self.filesUploadSessionManager uploadTaskWithStreamedRequest:finalRequest progress:&progress completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
         if (error.code == NSURLErrorCancelled) {
             return;
         }

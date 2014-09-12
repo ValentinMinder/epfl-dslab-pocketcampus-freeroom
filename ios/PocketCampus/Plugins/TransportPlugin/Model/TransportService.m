@@ -445,8 +445,17 @@ static NSInteger const kAuthorizationErrorCodeDeniedSystem = 21;
         return;
     }
     
-    if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
-        return;
+    CLAuthorizationStatus authStatus = [CLLocationManager authorizationStatus];
+    if ([PCUtils isOSVersionSmallerThan:8.0]) {
+        if (authStatus != kCLAuthorizationStatusAuthorized) {
+            CLSLog(@"-> Will not handle location update because status is not authorized.");
+            return;
+        }
+    } else {
+        if (authStatus != kCLAuthorizationStatusAuthorizedWhenInUse && authStatus != kCLAuthorizationStatusAuthorizedAlways) {
+            CLSLog(@"-> Will not handle location update because status is not authorized.");
+            return;
+        }
     }
     
     CLSLog(@"-> Handling location with accuracy : %lf | desired accuarcy : %lf", newLocation.horizontalAccuracy, self.locationManager.desiredAccuracy);

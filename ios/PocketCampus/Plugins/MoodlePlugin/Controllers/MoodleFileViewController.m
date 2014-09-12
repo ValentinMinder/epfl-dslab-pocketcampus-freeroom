@@ -483,6 +483,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
             }];
             
             /*__weak __typeof(self) welf = self;
+#warning CHANGE
             NSURL* localFileURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleFile:self.moodleFile]];
             UIViewController* printViewController = [[CloudPrintController sharedInstance] viewControllerForPrintDocumentWithLocalURL:localFileURL docName:self.moodleFile.filename printDocumentRequestOrNil:nil completion:^(CloudPrintCompletionStatusCode printStatusCode) {
                 if (welf.printPopoverController) {

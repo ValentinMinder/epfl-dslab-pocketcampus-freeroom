@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/TransportPlugin/Model/TransportService.m"
-            timestampString = "430137870.578885"
+            timestampString = "432229638.805574"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "607"
-            endingLineNumber = "607">
+            startingLineNumber = "616"
+            endingLineNumber = "616">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
