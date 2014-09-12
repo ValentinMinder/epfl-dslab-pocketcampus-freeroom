@@ -87,6 +87,13 @@
 		32290ACF18200A0A005869E7 /* FoodSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32290ACE18200A0A005869E7 /* FoodSplashDetailViewController.m */; };
 		32290AD118200A25005869E7 /* FoodSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32290AD018200A25005869E7 /* FoodSplashDetailView.xib */; };
 		32290AD318200C68005869E7 /* FoodLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32290AD218200C67005869E7 /* FoodLarge@2x.png */; };
+		322AC9B219C3AF3500BADA69 /* CloudPrintShare.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 322AC9A719C3AF3500BADA69 /* CloudPrintShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		322AC9BD19C3AF7000BADA69 /* CloudPrintShare-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 322AC9B919C3AF7000BADA69 /* CloudPrintShare-Info.plist */; };
+		322AC9BE19C3AF7000BADA69 /* CloudPrintShare-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 322AC9B919C3AF7000BADA69 /* CloudPrintShare-Info.plist */; };
+		322AC9BF19C3AF7000BADA69 /* CloudPrintShare.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 322AC9BA19C3AF7000BADA69 /* CloudPrintShare.storyboard */; };
+		322AC9C019C3AF7000BADA69 /* CloudPrintShare.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 322AC9BA19C3AF7000BADA69 /* CloudPrintShare.storyboard */; };
+		322AC9C119C3AF7000BADA69 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322AC9BC19C3AF7000BADA69 /* ShareViewController.m */; };
+		322AC9C219C3AF7000BADA69 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322AC9BC19C3AF7000BADA69 /* ShareViewController.m */; };
 		322C4ACD16E1FD8300DE418E /* EventItem+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F8E3F316E1FA1100AF365C /* EventItem+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		322FB01817EC938E00D1A466 /* PCGAITracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 322FB01717EC938E00D1A466 /* PCGAITracker.m */; };
 		32308C0D18DA3678008BE037 /* IsAcademiaStudyPeriodCalendarDayEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32308C0C18DA3678008BE037 /* IsAcademiaStudyPeriodCalendarDayEventView.m */; };
@@ -439,6 +446,20 @@
 			remoteGlobalIDString = 32136F32193FBCFF002905A9;
 			remoteInfo = "Camipro EPFL";
 		};
+		322AC9B019C3AF3500BADA69 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3219EF4314FCDE4800A271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 322AC9A619C3AF3500BADA69;
+			remoteInfo = CloudPrintShare;
+		};
+		322AC9B319C3AF3500BADA69 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3219EF4314FCDE4800A271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 322AC9A619C3AF3500BADA69;
+			remoteInfo = CloudPrintShare;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -448,6 +469,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				322AC9B219C3AF3500BADA69 /* CloudPrintShare.appex in Embed App Extensions */,
 				32136F3F193FBCFF002905A9 /* org.pocketcampus.dev.CamiproWidget.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -577,6 +599,11 @@
 		32290ACE18200A0A005869E7 /* FoodSplashDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodSplashDetailViewController.m; sourceTree = "<group>"; };
 		32290AD018200A25005869E7 /* FoodSplashDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FoodSplashDetailView.xib; sourceTree = "<group>"; };
 		32290AD218200C67005869E7 /* FoodLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FoodLarge@2x.png"; sourceTree = "<group>"; };
+		322AC9A719C3AF3500BADA69 /* CloudPrintShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CloudPrintShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		322AC9B919C3AF7000BADA69 /* CloudPrintShare-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "CloudPrintShare-Info.plist"; sourceTree = "<group>"; };
+		322AC9BA19C3AF7000BADA69 /* CloudPrintShare.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CloudPrintShare.storyboard; sourceTree = "<group>"; };
+		322AC9BB19C3AF7000BADA69 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
+		322AC9BC19C3AF7000BADA69 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
 		322FB01617EC938E00D1A466 /* PCGAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCGAITracker.h; sourceTree = "<group>"; };
 		322FB01717EC938E00D1A466 /* PCGAITracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCGAITracker.m; sourceTree = "<group>"; };
 		32308C0B18DA3678008BE037 /* IsAcademiaStudyPeriodCalendarDayEventView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IsAcademiaStudyPeriodCalendarDayEventView.h; sourceTree = "<group>"; };
@@ -1073,6 +1100,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		322AC9A419C3AF3500BADA69 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -1228,6 +1262,7 @@
 			children = (
 				3219EF4C14FCDE4900A271CD /* PocketCampus.app */,
 				32136F33193FBCFF002905A9 /* org.pocketcampus.dev.CamiproWidget.appex */,
+				322AC9A719C3AF3500BADA69 /* CloudPrintShare.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1399,6 +1434,25 @@
 				3268063119AF44B800E8CD22 /* THTTPClient+MutableRequest.m */,
 			);
 			path = Misc;
+			sourceTree = "<group>";
+		};
+		322AC9A219C3AEF000BADA69 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				322AC9B819C3AF7000BADA69 /* CloudPrintShare */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		322AC9B819C3AF7000BADA69 /* CloudPrintShare */ = {
+			isa = PBXGroup;
+			children = (
+				322AC9B919C3AF7000BADA69 /* CloudPrintShare-Info.plist */,
+				322AC9BA19C3AF7000BADA69 /* CloudPrintShare.storyboard */,
+				322AC9BB19C3AF7000BADA69 /* ShareViewController.h */,
+				322AC9BC19C3AF7000BADA69 /* ShareViewController.m */,
+			);
+			path = CloudPrintShare;
 			sourceTree = "<group>";
 		};
 		324151C415373A1700CCFB22 /* MapPlugin */ = {
@@ -2075,6 +2129,7 @@
 				32DD524319B4DEAE00B5B241 /* Controllers */,
 				32DD524619B4DEAE00B5B241 /* Model */,
 				32DD524C19B4DEAE00B5B241 /* Views */,
+				322AC9A219C3AEF000BADA69 /* Extensions */,
 				32DD525A19B4DEC000B5B241 /* Supporting Files */,
 			);
 			path = CloudPrintPlugin;
@@ -2580,11 +2635,30 @@
 			dependencies = (
 				32136F3E193FBCFF002905A9 /* PBXTargetDependency */,
 				32136F41193FBCFF002905A9 /* PBXTargetDependency */,
+				322AC9B119C3AF3500BADA69 /* PBXTargetDependency */,
+				322AC9B419C3AF3500BADA69 /* PBXTargetDependency */,
 			);
 			name = PocketCampus;
 			productName = PocketCampus;
 			productReference = 3219EF4C14FCDE4900A271CD /* PocketCampus.app */;
 			productType = "com.apple.product-type.application";
+		};
+		322AC9A619C3AF3500BADA69 /* CloudPrintShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 322AC9B519C3AF3500BADA69 /* Build configuration list for PBXNativeTarget "CloudPrintShare" */;
+			buildPhases = (
+				322AC9A319C3AF3500BADA69 /* Sources */,
+				322AC9A419C3AF3500BADA69 /* Frameworks */,
+				322AC9A519C3AF3500BADA69 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CloudPrintShare;
+			productName = CloudPrintShare;
+			productReference = 322AC9A719C3AF3500BADA69 /* CloudPrintShare.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -2618,6 +2692,10 @@
 							};
 						};
 					};
+					322AC9A619C3AF3500BADA69 = {
+						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = 7KPBSVCYLZ;
+					};
 				};
 			};
 			buildConfigurationList = 3219EF4614FCDE4800A271CD /* Build configuration list for PBXProject "PocketCampus" */;
@@ -2635,6 +2713,7 @@
 			targets = (
 				3219EF4B14FCDE4900A271CD /* PocketCampus */,
 				32136F32193FBCFF002905A9 /* CamiproWidget */,
+				322AC9A619C3AF3500BADA69 /* CloudPrintShare */,
 			);
 		};
 /* End PBXProject section */
@@ -2758,6 +2837,7 @@
 				320F859A194EED8C00BF3228 /* ArrowLeftBarButton@2x.png in Resources */,
 				32574ED6182140AE008F3163 /* DirectoryEmptyPictureSmall.png in Resources */,
 				327513321825465D0037FE00 /* FavoriteCorner@2x.png in Resources */,
+				322AC9BF19C3AF7000BADA69 /* CloudPrintShare.storyboard in Resources */,
 				327585A51844C5B1004215FC /* ArrowSimpleRight@2x.png in Resources */,
 				32C509EB17FC6D73005A5635 /* SortBarButton@2x.png in Resources */,
 				32150DD4197D693300CCF2AB /* LinkIcon.png in Resources */,
@@ -2844,6 +2924,7 @@
 				3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */,
 				32456C0C184373FE00993F8B /* TransportNextDeparturesCell.xib in Resources */,
 				32449D5D17C3F248003269E5 /* DirectoryLarge@2x.png in Resources */,
+				322AC9BD19C3AF7000BADA69 /* CloudPrintShare-Info.plist in Resources */,
 				3289F2B7183FAB8C00D833C2 /* LocationArrow2.png in Resources */,
 				320F8599194EED8C00BF3228 /* ArrowLeftBarButton.png in Resources */,
 				27B74CF919A21059006B2F17 /* RecommendedAppTableViewCell.xib in Resources */,
@@ -2855,6 +2936,15 @@
 				C5894949AFC59FDB4346CF53 /* IsAcademia@2x.png in Resources */,
 				8193447294E5D065581CBAAD /* IsAcademia.png in Resources */,
 				32D29719185B64FE006530B7 /* IsAcademiaPlugin.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		322AC9A519C3AF3500BADA69 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				322AC9BE19C3AF7000BADA69 /* CloudPrintShare-Info.plist in Resources */,
+				322AC9C019C3AF7000BADA69 /* CloudPrintShare.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2987,6 +3077,7 @@
 				3245DF3018881B5F0072E086 /* PCUsageViewController.m in Sources */,
 				32102B6C15050C000076537E /* FoodService.m in Sources */,
 				3242DE1F150577050082D720 /* PCService.m in Sources */,
+				322AC9C119C3AF7000BADA69 /* ShareViewController.m in Sources */,
 				32DD525319B4DEAE00B5B241 /* cloudprint.m in Sources */,
 				3217CE0A1508E31200BF94F7 /* FoodController.m in Sources */,
 				3217CE0F1508F92700BF94F7 /* FoodRestaurantsListViewController.m in Sources */,
@@ -3132,6 +3223,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		322AC9A319C3AF3500BADA69 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				322AC9C219C3AF7000BADA69 /* ShareViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -3144,6 +3243,16 @@
 			isa = PBXTargetDependency;
 			target = 32136F32193FBCFF002905A9 /* CamiproWidget */;
 			targetProxy = 32136F40193FBCFF002905A9 /* PBXContainerItemProxy */;
+		};
+		322AC9B119C3AF3500BADA69 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 322AC9A619C3AF3500BADA69 /* CloudPrintShare */;
+			targetProxy = 322AC9B019C3AF3500BADA69 /* PBXContainerItemProxy */;
+		};
+		322AC9B419C3AF3500BADA69 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 322AC9A619C3AF3500BADA69 /* CloudPrintShare */;
+			targetProxy = 322AC9B319C3AF3500BADA69 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3566,6 +3675,59 @@
 			};
 			name = Release;
 		};
+		322AC9B619C3AF3500BADA69 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "$(SRCROOT)/Plugins/CloudPrintPlugin/Extensions/CloudPrintShare/CloudPrintShare-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		322AC9B719C3AF3500BADA69 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "$(SRCROOT)/Plugins/CloudPrintPlugin/Extensions/CloudPrintShare/CloudPrintShare-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -3595,6 +3757,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		322AC9B519C3AF3500BADA69 /* Build configuration list for PBXNativeTarget "CloudPrintShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				322AC9B619C3AF3500BADA69 /* Debug */,
+				322AC9B719C3AF3500BADA69 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

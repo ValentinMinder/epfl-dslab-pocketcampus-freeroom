@@ -345,6 +345,29 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 }
 
 - (void)printButtonTapped {
+    
+    /*#warning REMOVE
+    __weak __typeof(self) welf = self;
+    NSURL* localFileURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleFile:self.moodleFile]];
+    UIViewController* printViewController = [[CloudPrintController sharedInstance] viewControllerForPrintDocumentWithLocalURL:localFileURL docName:self.moodleFile.filename printDocumentRequestOrNil:nil completion:^(CloudPrintCompletionStatusCode printStatusCode) {
+    if (welf.printPopoverController) {
+    [welf.printPopoverController dismissPopoverAnimated:YES];
+    } else {
+    [welf dismissViewControllerAnimated:YES completion:NULL];
+    }
+    [welf showNavbarAnimated:NO];
+    }];
+    
+    if ([PCUtils isIdiomPad]) {
+        self.printPopoverController = [[UIPopoverController alloc] initWithContentViewController:printViewController];
+        [self.printPopoverController presentPopoverFromBarButtonItem:[self printButton] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        [self presentViewController:printViewController animated:YES completion:NULL];
+    }
+    return;
+#warning END OF REMOVE*/
+    
+    
     [self trackAction:@"Print"];
     MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.opacity = 0.6;

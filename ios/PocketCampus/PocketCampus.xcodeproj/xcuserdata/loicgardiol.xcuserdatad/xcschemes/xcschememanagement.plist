@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
+		<key>CloudPrintShare.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>18</integer>
+		</dict>
 		<key>PocketCampus (NSZombie).xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -53,6 +58,11 @@
 			<true/>
 		</dict>
 		<key>3219EF4B14FCDE4900A271CD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>322AC9A619C3AF3500BADA69</key>
 		<dict>
 			<key>primary</key>
 			<true/>
