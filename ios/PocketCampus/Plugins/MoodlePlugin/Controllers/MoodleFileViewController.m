@@ -344,7 +344,8 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     }
 }
 
-- (void)printButtonTapped {    
+- (void)printButtonTapped {
+    [self trackAction:@"Print"];
     MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.opacity = 0.6;
     hud.labelText = NSLocalizedStringFromTable(@"Preparing", @"MoodlePlugin", nil);

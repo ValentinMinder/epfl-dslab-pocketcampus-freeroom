@@ -215,7 +215,7 @@ static const int kUsageRow = 0;
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-#warning ugly, see if next betas of iOS 8 solve this problem
+#warning ugly, see if updates of iOS 8 solve this problem
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if (buttonIndex == actionSheet.cancelButtonIndex) {
             [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
