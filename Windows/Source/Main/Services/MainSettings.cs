@@ -72,8 +72,9 @@ namespace PocketCampus.Main.Services
         {
             return new SettingsDefaultValues
             {
-                { x => x.Configuration, () => new ServerConfiguration( "https", 4433, "Camipro", "Directory", "Events", "Food", "IsAcademia", 
-                                                                                      "Map", "Moodle", "News", "Satellite", "Transport" ) },
+                { x => x.Configuration, () => new ServerConfiguration( "https", "prod-pocketcampus.epfl.ch", 14611, 
+                                                                       "Camipro", "Directory", "Events", "Food", "IsAcademia", 
+                                                                       "Map", "Moodle", "News", "Satellite", "Transport" ) },
                 { x => x.SessionStatus, () => SessionStatus.NotLoggedIn },
                 { x => x.UseColoredTile, () => true },
                 { x => x.Session, () => null },

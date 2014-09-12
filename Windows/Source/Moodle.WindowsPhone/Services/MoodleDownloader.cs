@@ -17,7 +17,7 @@ namespace PocketCampus.Moodle.Services
     {
         private const string SessionHeaderName = "X-PC-AUTH-PCSESSID";
 
-        private const string DownloadUrlFormat = "{0}://pocketcampus.epfl.ch:{1}/v3r1/raw-moodle";
+        private const string DownloadUrlFormat = "{0}://{1}:{2}/v3r1/raw-moodle";
         private const string ActionKey = "action";
         private const string ActionValue = "download_file";
         private const string FilePathKey = "file_path";
@@ -46,7 +46,7 @@ namespace PocketCampus.Moodle.Services
                 { ActionKey, ActionValue },
                 { FilePathKey, file.DownloadUrl }
             };
-            string downloadUrl = string.Format( DownloadUrlFormat, _serverSettings.Configuration.Protocol, _serverSettings.Configuration.Port );
+            string downloadUrl = string.Format( DownloadUrlFormat, _serverSettings.Configuration.Protocol, _serverSettings.Configuration.Address, _serverSettings.Configuration.Port );
 
             var response = await client.PostAsync( downloadUrl, new FormUrlEncodedContent( postParams ) );
             return await response.Content.ReadAsByteArrayAsync();

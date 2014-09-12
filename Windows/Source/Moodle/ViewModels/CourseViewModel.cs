@@ -11,9 +11,11 @@ using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Models;
 using PocketCampus.Moodle.Services;
 using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Moodle.ViewModels
 {
+    [LogId( "/moodle/course" )]
     public sealed class CourseViewModel : CachedDataViewModel<Course, CourseSectionsResponse>
     {
         private readonly ISecureRequestHandler _requestHandler;
@@ -54,6 +56,8 @@ namespace PocketCampus.Moodle.ViewModels
         /// <summary>
         /// Gets the command executed to open a file, downloading if needed.
         /// </summary>
+        [LogId( "DownloadAndOpenFile" )]
+        [LogParameter( "$Param.Name" )]
         public AsyncCommand<MoodleFile> OpenFileCommand
         {
             get { return this.GetAsyncCommand<MoodleFile>( OpenFileAsync ); }
@@ -62,6 +66,8 @@ namespace PocketCampus.Moodle.ViewModels
         /// <summary>
         /// Gets the command executed to open a link.
         /// </summary>
+        [LogId( "OpenLink" )]
+        [LogParameter( "$Param.Name" )]
         public Command<MoodleLink> OpenLinkCommand
         {
             get { return this.GetCommand<MoodleLink>( l => _browserService.NavigateTo( l.Url ) ); }
