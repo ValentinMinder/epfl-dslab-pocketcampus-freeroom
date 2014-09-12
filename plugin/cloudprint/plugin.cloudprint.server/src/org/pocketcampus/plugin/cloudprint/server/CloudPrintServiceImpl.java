@@ -70,6 +70,7 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 			    InputStream filecontent = filePart.getInputStream();
 			    FileOutputStream fos = new FileOutputStream(filePath + "/" + filename);
 			    IOUtils.copy(filecontent, fos);
+			    response.setContentType("application/json");
 			    response.getOutputStream().write(new Gson().toJson(new CloudPrintUploadResponse(id)).getBytes());
 			}
 		};
