@@ -29,6 +29,8 @@
 
 #import "CloudPrintController.h"
 
+@import MobileCoreServices;
+
 #import "CloudPrintRequestViewController.h"
 
 #import "CloudPrintStatusViewController.h"
@@ -111,8 +113,20 @@ static float const kProgressMax = 100;
 #pragma mark - Public
     
 + (BOOL)isSupportedFileWithLocalURL:(NSURL*)localURL {
-#warning TODO
-    return YES;
+    NSString* path = localURL.path;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        return NO;
+    }
+
+    CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[path pathExtension], NULL);
+    CFStringRef mimeType = UTTypeCopyPreferredTagWithClass (UTI, kUTTagClassMIMEType);
+    CFRelease(UTI);
+    BOOL isSupported = NO;
+    if ([(__bridge NSString*)mimeType isEqualToString:@"application/pdf"]) {
+        isSupported = YES;
+    }
+    CFRelease(mimeType);
+    return isSupported;
 }
 
 - (UIViewController*)viewControllerForPrintDocumentWithLocalURL:(NSURL*)localURL docName:(NSString*)docName printDocumentRequestOrNil:(PrintDocumentRequest*)requestOrNil completion:(void (^)(CloudPrintCompletionStatusCode printStatusCode))completion {

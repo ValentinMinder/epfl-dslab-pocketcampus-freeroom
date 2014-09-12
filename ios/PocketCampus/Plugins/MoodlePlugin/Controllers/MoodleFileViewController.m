@@ -134,7 +134,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         self.centerMessageLabel.hidden = YES;
         self.progressView.hidden = YES;
         [self deleteButton].enabled = YES;
-        [self printButton].enabled = YES;
+        [self printButton].enabled = [self isPrintAvailable];
         [self actionButton].enabled = YES;
         [self loadDownloadedMoodleResourceInWebView];
     } else {
@@ -308,6 +308,10 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     return self.navigationItem.rightBarButtonItems[1];
 }
 
+- (BOOL)isPrintAvailable {
+    return [CloudPrintController isSupportedFileWithLocalURL:[NSURL fileURLWithPath:[self.moodleService localPathForMoodleFile:self.moodleFile]]];
+}
+
 - (UIBarButtonItem*)favoriteButton {
     if (self.navigationItem.rightBarButtonItems.count < 3) {
         return nil;
@@ -340,7 +344,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     }
 }
 
-- (void)printButtonTapped {
+- (void)printButtonTapped {    
     MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.opacity = 0.6;
     hud.labelText = NSLocalizedStringFromTable(@"Preparing", @"MoodlePlugin", nil);
@@ -430,7 +434,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     self.centerMessageLabel.hidden = YES;
     self.progressView.hidden = YES;
     [self deleteButton].enabled = YES;
-    [self printButton].enabled = YES;
+    [self printButton].enabled = [self isPrintAvailable];
     [self actionButton].enabled = YES;
     [self loadDownloadedMoodleResourceInWebView];
 }
@@ -481,18 +485,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
                 }
                 [welf showNavbarAnimated:NO];
             }];
-            
-            /*__weak __typeof(self) welf = self;
-#warning CHANGE
-            NSURL* localFileURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleFile:self.moodleFile]];
-            UIViewController* printViewController = [[CloudPrintController sharedInstance] viewControllerForPrintDocumentWithLocalURL:localFileURL docName:self.moodleFile.filename printDocumentRequestOrNil:nil completion:^(CloudPrintCompletionStatusCode printStatusCode) {
-                if (welf.printPopoverController) {
-                    [welf.printPopoverController dismissPopoverAnimated:YES];
-                } else {
-                    [welf dismissViewControllerAnimated:YES completion:NULL];
-                }
-                [welf showNavbarAnimated:NO];
-            }];*/
             
             if ([PCUtils isIdiomPad]) {
                 self.printPopoverController = [[UIPopoverController alloc] initWithContentViewController:printViewController];
