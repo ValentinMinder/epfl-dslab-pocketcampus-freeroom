@@ -15,14 +15,14 @@ namespace PocketCampus.Camipro
             get { return ResourceLoader.GetForViewIndependentUse( "PocketCampus.Camipro.WindowsRuntime/Resources" ).GetString( "PluginName" ); }
         }
 
-        public object Icon
+        public string Icon
         {
             get
             {
-                return new ResourceDictionary
+                return (string) new ResourceDictionary
                 {
                     Source = new Uri( "ms-appx:///PocketCampus.Camipro.WindowsRuntime/Icons.xaml", UriKind.Absolute )
-                }["CamiproIcon"];
+                }["PluginIcon"];
             }
         }
 

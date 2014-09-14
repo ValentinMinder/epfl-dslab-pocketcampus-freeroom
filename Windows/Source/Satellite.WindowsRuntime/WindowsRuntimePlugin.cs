@@ -15,7 +15,8 @@ namespace PocketCampus.Satellite
             get { return ResourceLoader.GetForViewIndependentUse( "PocketCampus.Satellite.WindowsRuntime/Resources" ).GetString( "PluginName" ); }
         }
 
-        public object Icon
+        public string Icon { get { return null; } }
+        public object OLD_Icon
         {
             get
             {

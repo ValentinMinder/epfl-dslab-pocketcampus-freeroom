@@ -12,7 +12,7 @@ namespace PocketCampus.Common
         /// <summary>
         /// Nothing was requested (yet).
         /// </summary>
-        NoneRequested,
+        NotRequested,
 
         /// <summary>
         /// The request was successfully completed.

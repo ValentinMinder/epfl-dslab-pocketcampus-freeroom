@@ -7,28 +7,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:c="using:PocketCampus.Common"
              xmlns:cc="using:PocketCampus.Common.Controls"
-             xmlns:myDesign="using:PocketCampus.Authentication.ViewModels.Design"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             d:DataContext="{Binding Main, Source={StaticResource Design}}">
-    <!-- Page resources -->
+             DesignDataContext="{Binding Main, Source={StaticResource Design}}">
     <cc:PageBase.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ms-appx:///PocketCampus.Common.WindowsRuntime/Resources.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-
-            <!-- Design-time DataContext -->
-            <myDesign:Design x:Key="Design" />
-
-            <!-- Converters -->
-            <c:EnumToStringConverter x:Key="EnumToString" />
-            <c:EnumToVisibilityConverter x:Key="EnumToVisibility" />
-        </ResourceDictionary>
+        <ResourceDictionary Source="../Resources.xaml" />
     </cc:PageBase.Resources>
     
-    <!-- Main grid -->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

@@ -43,6 +43,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\Icon.cs" />
+    <Compile Include="Controls\Switch.cs" />
+    <Compile Include="Controls\StatusDisplay.cs" />
     <Compile Include="Controls\PageBase.cs" />
     <Compile Include="Controls\GroupedItemsControl.cs" />
     <Compile Include="Controls\LoadingAndError.xaml.cs">
@@ -109,6 +112,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <PRIResource Include="Strings\fr\StatusDisplay.resw" />
+    <PRIResource Include="Strings\en\StatusDisplay.resw" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
 </Project>

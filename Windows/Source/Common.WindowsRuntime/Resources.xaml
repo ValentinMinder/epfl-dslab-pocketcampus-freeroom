@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:my="using:PocketCampus.Common"
                     xmlns:myControls="using:PocketCampus.Common.Controls">
     <Color x:Key="AppStatusBarBackgroundColor">#E5060A</Color>
     <Color x:Key="AppStatusBarForegroundColor">White</Color>
@@ -20,6 +21,24 @@
     <!-- TODO override accent color -->
     <SolidColorBrush x:Key="AppAccentBrush"
                      Color="#C9060C" />
+    
+    <!-- All converters declared in Common
+         TODO: Evaluate the utility of each of them. -->
+    <my:BoolToVisibilityConverter x:Key="BoolToVisibility" />
+    <my:BoolToVisibilityConverter x:Key="BoolToOppositeVisibility"
+                                  IsReversed="True" />
+    <my:DictionaryFixer x:Key="DictionaryFixer" />
+    <my:EnumToStringConverter x:Key="EnumToString" />
+    <!-- TODO not needed any more thanks to Switch -->
+    <my:EnumToVisibilityConverter x:Key="EnumToVisibility" />
+    <my:MoneyFormatConverter x:Key="MoneyFormat" />
+    <my:NoItemsToVisibilityConverter x:Key="NoItemsToVisibility" />
+    <my:NonNullToVisibilityConverter x:Key="NonNullToVisibility" />
+    <my:NonZeroToVisibilityConverter x:Key="NonZeroToVisibility" />
+    <my:StringFormatConverter x:Key="StringFormat" />
+    <my:StringToVisibilityConverter x:Key="StringToVisibility" />
+    <my:StringToVisibilityConverter x:Key="EmptyStringToVisibility"
+                                    IsReversed="True" />
 
 
     <!-- Normal text (can't set it as default for whatever reason) -->
@@ -286,7 +305,14 @@
         </Setter>
     </Style>
 
-
+   
+    <!-- Default style for Switch -->
+    <Style TargetType="myControls:Switch">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    </Style>
+    
+    <!-- Default style for SimpleButton -->
     <Style TargetType="myControls:SimpleButton">
         <Setter Property="Template">
             <Setter.Value>
@@ -364,6 +390,43 @@
         </Setter>
     </Style>
 
+    <!-- Default style for StatusDisplay -->
+    <Style TargetType="myControls:StatusDisplay">
+        <Setter Property="TextStyle" Value="{StaticResource AppCenterTextBlockStyle}" />
+        <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="myControls:StatusDisplay">
+                    <myControls:Switch Value="{TemplateBinding Data}"
+                                       Background="{TemplateBinding Background}">
+                        <myControls:SwitchCase Values="Loading">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                
+                                <TextBlock Text="{CustomResource Common.StatusDisplay.Loading}"
+                                           Style="{TemplateBinding TextStyle}"
+                                           VerticalAlignment="Bottom" />
+                                
+                                <ProgressBar Grid.Row="1"
+                                             IsIndeterminate="True" />
+                            </Grid>
+                        </myControls:SwitchCase>
+                        <myControls:SwitchCase Values="Error">
+                            <TextBlock Text="{CustomResource Common.StatusDisplay.Error}"
+                                       Style="{TemplateBinding TextStyle}" />
+                        </myControls:SwitchCase>
+                        <myControls:SwitchCase Values="NetworkError">
+                            <TextBlock Text="{CustomResource Common.StatusDisplay.NetworkError}"
+                                       Style="{TemplateBinding TextStyle}" />
+                        </myControls:SwitchCase>
+                    </myControls:Switch>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <!-- "Live tile" button style -->
     <SolidColorBrush x:Key="AppTileBackgroundBrush"

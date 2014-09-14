@@ -6,7 +6,7 @@ using System;
 using System.Globalization;
 using ThriftSharp;
 
-namespace PocketCampus.Camipro
+namespace PocketCampus.Camipro.Models.Thrift
 {
     /// <summary>
     /// Converts DateTimes from strings in the format the server uses.

@@ -237,7 +237,7 @@ namespace PocketCampus.Events.ViewModels
         /// </summary>
         private async Task RequestFavoriteEmailAsync()
         {
-            EmailStatus = EmailSendingStatus.NoneRequested;
+            EmailStatus = EmailSendingStatus.NotRequested;
 
             string emailAddress = _emailPrompt.GetEmail();
 

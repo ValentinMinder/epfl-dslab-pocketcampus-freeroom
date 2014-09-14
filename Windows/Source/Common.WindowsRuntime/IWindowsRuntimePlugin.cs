@@ -13,10 +13,9 @@ namespace PocketCampus.Common
         string Name { get; }
 
         /// <summary>
-        /// Gets the plugin's icon.
+        /// Gets the plugin's vector icon.
         /// </summary>
-        // TODO: Find a clean way to represent it, and re-generate all icons to the right sizes (also for the live tiles on the start screen)
-        object Icon { get; }
+        string Icon { get; }
 
         /// <summary>
         /// Performs the Windows Runtime-specific initialization for the plugin.

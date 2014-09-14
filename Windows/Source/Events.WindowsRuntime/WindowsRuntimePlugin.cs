@@ -17,7 +17,8 @@ namespace PocketCampus.Events
             get { return ResourceLoader.GetForViewIndependentUse( "PocketCampus.Events.WindowsRuntime/Resources" ).GetString( "PluginName" ); }
         }
 
-        public object Icon
+        public string Icon { get { return null; } }
+        public object OLD_Icon
         {
             get
             {

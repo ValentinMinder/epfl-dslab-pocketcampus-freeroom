@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:my="using:PocketCampus.Camipro"
+                    xmlns:myDesign="using:PocketCampus.Camipro.ViewModels.Design">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ms-appx:///PocketCampus.Common.WindowsRuntime/Resources.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <myDesign:Design x:Key="Design" />
+
+    <my:MoneyToBrushConverter x:Key="MoneyToBrush" />
+</ResourceDictionary>

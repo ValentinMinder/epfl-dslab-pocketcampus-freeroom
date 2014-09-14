@@ -127,7 +127,7 @@ namespace PocketCampus.Camipro.Services.Design
             (
                 new MailRequestResult
                 {
-
+                    Status = ResponseStatus.Success
                 }
             );
         }

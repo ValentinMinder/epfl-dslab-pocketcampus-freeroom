@@ -63,6 +63,25 @@ namespace PocketCampus.Common.Controls
             DependencyProperty.Register( "StatusBarShowsProgress", typeof( bool ), typeof( PageBase ), new PropertyMetadata( false, OnStatusBarPropertyChanged ) );
         #endregion
 
+        #region DesignDataContext
+        public object DesignDataContext
+        {
+            get { return (object) GetValue( DesignDataContextProperty ); }
+            set { SetValue( DesignDataContextProperty, value ); }
+        }
+
+        public static readonly DependencyProperty DesignDataContextProperty =
+            DependencyProperty.Register( "DesignDataContext", typeof( object ), typeof( PageBase ), new PropertyMetadata( null, OnDesignDataContextChanged ) );
+
+        private static void OnDesignDataContextChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
+        {
+            if ( DesignMode.DesignModeEnabled )
+            {
+                ( (PageBase) obj ).DataContext = args.NewValue;
+            }
+        }
+        #endregion
+
 
         public PageBase()
         {

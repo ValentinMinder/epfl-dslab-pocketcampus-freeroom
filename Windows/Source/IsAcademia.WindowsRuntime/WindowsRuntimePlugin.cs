@@ -15,7 +15,8 @@ namespace PocketCampus.IsAcademia
             get { return ResourceLoader.GetForViewIndependentUse( "PocketCampus.IsAcademia.WindowsRuntime/Resources" ).GetString( "PluginName" ); }
         }
 
-        public object Icon
+        public string Icon { get { return null; } }
+        public object OLD_Icon
         {
             get
             {

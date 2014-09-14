@@ -17,7 +17,7 @@ namespace PocketCampus.Authentication
             get { throw new NotSupportedException(); }
         }
 
-        public object Icon
+        public string Icon
         {
             get { throw new NotSupportedException(); }
         }

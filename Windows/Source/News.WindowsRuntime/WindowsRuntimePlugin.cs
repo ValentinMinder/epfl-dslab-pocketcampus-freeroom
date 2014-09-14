@@ -15,7 +15,8 @@ namespace PocketCampus.News
             get { return ResourceLoader.GetForViewIndependentUse( "PocketCampus.News.WindowsRuntime/Resources" ).GetString( "PluginName" ); }
         }
 
-        public object Icon
+        public string Icon { get { return null; } }
+        public object OLD_Icon
         {
             get
             {
