@@ -29,11 +29,11 @@
 
 #import "CloudPrintActionViewController.h"
 
+#import "CloudPrintController.h"
+
 @import MobileCoreServices;
 
 @interface CloudPrintActionViewController ()
-
-@property(strong,nonatomic) IBOutlet UIImageView *imageView;
 
 @end
 
@@ -49,10 +49,10 @@
     BOOL imageFound = NO;
     for (NSExtensionItem *item in self.extensionContext.inputItems) {
         for (NSItemProvider *itemProvider in item.attachments) {
-            if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeImage]) {
-                // This is an image. We'll load it, then place it in our image view.
-                __weak UIImageView *imageView = self.imageView;
-                [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeImage options:nil completionHandler:^(UIImage *image, NSError *error) {
+            if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeScalableVectorGraphics]) {
+                
+                __weak UIImageView *imageView = nil;
+                [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeScalableVectorGraphics options:nil completionHandler:^(UIImage *image, NSError *error) {
                     if(image) {
                         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                             [imageView setImage:image];
@@ -70,17 +70,14 @@
             break;
         }
     }
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)done {
-    // Return any edited content to the host app.
-    // This template doesn't do anything, so we just echo the passed in items.
-    [self.extensionContext completeRequestReturningItems:self.extensionContext.inputItems completionHandler:nil];
+    
+    PrintDocumentRequest* request = [PrintDocumentRequest createDefaultRequest];
+    request.documentId = -1;
+    self.view.tintColor = [PCValues pocketCampusRed];
+    UIViewController* viewController = [[CloudPrintController sharedInstance] viewControllerForPrintWithDocumentName:@"test" printDocumentRequest:request completion:^(CloudPrintCompletionStatusCode printStatusCode) {
+        
+    }];
+    [self presentViewController:viewController animated:NO completion:NULL];
 }
 
 @end

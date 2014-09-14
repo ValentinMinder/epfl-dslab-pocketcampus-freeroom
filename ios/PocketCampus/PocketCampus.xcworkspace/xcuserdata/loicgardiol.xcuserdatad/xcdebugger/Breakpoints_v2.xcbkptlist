@@ -5037,11 +5037,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CamiproPlugin/Extensions/CamiproWidget/CamiproWidgetViewController.m"
-            timestampString = "430995131.447742"
+            timestampString = "432420039.653516"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
             landmarkName = "-startBalanceAndTransactionsRequest"
             landmarkType = "5">
             <Locations>
@@ -5259,11 +5259,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CamiproPlugin/Extensions/CamiproWidget/CamiproWidgetViewController.m"
-            timestampString = "430396816.6332"
+            timestampString = "432420039.653516"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
             landmarkName = "-widgetMarginInsetsForProposedMarginInsets:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6172,9 +6172,9 @@
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "__112-[CloudPrintController viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil:completion:]_block_invoke159"
-                  moduleName = "PocketCampus"
+                  moduleName = "CloudPrintAction"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-                  timestampString = "432412455.760405"
+                  timestampString = "432420861.707761"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "184"
@@ -6186,9 +6186,9 @@
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "__112-[CloudPrintController viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil:completion:]_block_invoke_2161"
-                  moduleName = "PocketCampus"
+                  moduleName = "CloudPrintAction"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-                  timestampString = "432412455.760587"
+                  timestampString = "432420861.708951"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "184"
@@ -6243,6 +6243,22 @@
             startingLineNumber = "112"
             endingLineNumber = "112"
             landmarkName = "-uploadForPrintDocumentWithLocalURL:jobUniqueId:success:progress:failure:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Extensions/CloudPrintAction/CloudPrintActionViewController.m"
+            timestampString = "432420870.381915"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

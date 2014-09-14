@@ -451,8 +451,8 @@
 		32FF91EC19C62FC300559E1E /* CloudPrintActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF91E919C62FC300559E1E /* CloudPrintActionViewController.m */; };
 		32FF91ED19C62FC300559E1E /* CloudPrintActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF91E919C62FC300559E1E /* CloudPrintActionViewController.m */; };
 		32FF91EE19C62FC300559E1E /* CloudPrintAction-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32FF91EA19C62FC300559E1E /* CloudPrintAction-Info.plist */; };
-		32FF91F019C62FC300559E1E /* CloudPrintShare.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32FF91EB19C62FC300559E1E /* CloudPrintShare.storyboard */; };
-		32FF91F119C62FC300559E1E /* CloudPrintShare.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32FF91EB19C62FC300559E1E /* CloudPrintShare.storyboard */; };
+		32FF91F019C62FC300559E1E /* CloudPrintAction.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32FF91EB19C62FC300559E1E /* CloudPrintAction.storyboard */; };
+		32FF91F119C62FC300559E1E /* CloudPrintAction.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32FF91EB19C62FC300559E1E /* CloudPrintAction.storyboard */; };
 		32FFA796186DDD5500237957 /* FavoriteNavBarButtonLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA794186DDD5500237957 /* FavoriteNavBarButtonLandscape.png */; };
 		32FFA797186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA795186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png */; };
 		32FFA79A186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA798186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png */; };
@@ -1077,7 +1077,7 @@
 		32FF91E819C62FC300559E1E /* CloudPrintActionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintActionViewController.h; sourceTree = "<group>"; };
 		32FF91E919C62FC300559E1E /* CloudPrintActionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintActionViewController.m; sourceTree = "<group>"; };
 		32FF91EA19C62FC300559E1E /* CloudPrintAction-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "CloudPrintAction-Info.plist"; sourceTree = "<group>"; };
-		32FF91EB19C62FC300559E1E /* CloudPrintShare.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CloudPrintShare.storyboard; sourceTree = "<group>"; };
+		32FF91EB19C62FC300559E1E /* CloudPrintAction.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CloudPrintAction.storyboard; sourceTree = "<group>"; };
 		32FFA794186DDD5500237957 /* FavoriteNavBarButtonLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteNavBarButtonLandscape.png; sourceTree = "<group>"; };
 		32FFA795186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteNavBarButtonLandscape@2x.png"; sourceTree = "<group>"; };
 		32FFA798186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteGlowNavBarButtonLandscape.png; sourceTree = "<group>"; };
@@ -2460,10 +2460,10 @@
 		32FF91E719C62FC300559E1E /* CloudPrintAction */ = {
 			isa = PBXGroup;
 			children = (
+				32FF91EA19C62FC300559E1E /* CloudPrintAction-Info.plist */,
+				32FF91EB19C62FC300559E1E /* CloudPrintAction.storyboard */,
 				32FF91E819C62FC300559E1E /* CloudPrintActionViewController.h */,
 				32FF91E919C62FC300559E1E /* CloudPrintActionViewController.m */,
-				32FF91EA19C62FC300559E1E /* CloudPrintAction-Info.plist */,
-				32FF91EB19C62FC300559E1E /* CloudPrintShare.storyboard */,
 			);
 			path = CloudPrintAction;
 			sourceTree = "<group>";
@@ -2916,7 +2916,7 @@
 				327585A018449347004215FC /* TransportLarge.png in Resources */,
 				32AF954A19B39F91008CB161 /* Cross@2x.png in Resources */,
 				32D0B260166ABEA200F68304 /* FloorDown.png in Resources */,
-				32FF91F019C62FC300559E1E /* CloudPrintShare.storyboard in Resources */,
+				32FF91F019C62FC300559E1E /* CloudPrintAction.storyboard in Resources */,
 				32FFA79A186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png in Resources */,
 				32D0B261166ABEA200F68304 /* FloorDown@2x.png in Resources */,
 				32D0B262166ABEA200F68304 /* FloorUp.png in Resources */,
@@ -3015,7 +3015,7 @@
 				32F9619319C63104006A4C46 /* CloudPrintMultiPageLayoutCell.xib in Resources */,
 				32F9619419C63104006A4C46 /* CloudPrintMultiPageLayoutButton.xib in Resources */,
 				32F9619519C63104006A4C46 /* CloudPrintStatusView.xib in Resources */,
-				32FF91F119C62FC300559E1E /* CloudPrintShare.storyboard in Resources */,
+				32FF91F119C62FC300559E1E /* CloudPrintAction.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
