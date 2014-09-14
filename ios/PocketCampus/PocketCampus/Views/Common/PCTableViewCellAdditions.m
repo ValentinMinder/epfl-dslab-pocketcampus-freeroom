@@ -318,6 +318,9 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
     });
     if (height == 0.0) {
         CGFloat coefficient;
+#ifdef TARGET_IS_EXTENSION
+        coefficient = 1.0;
+#else
         NSString* contentSize = [[UIApplication sharedApplication] preferredContentSizeCategory];
         if ([contentSize isEqualToString:UIContentSizeCategoryLarge]) { //Default => common case first
             coefficient = 1.0;
@@ -336,6 +339,7 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
         } else {
             coefficient = 1.0; //Default
         }
+#endif
         height = floorf(kCellHeightForDefaultPreferredContentSizeCategory * coefficient);
     }
     return height;

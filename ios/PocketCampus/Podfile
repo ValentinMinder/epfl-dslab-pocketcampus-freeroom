@@ -1,5 +1,5 @@
 platform :ios, '7.0'
-link_with ['PocketCampus', 'CamiproWidget']
+link_with ['PocketCampus', 'CamiproWidget', 'CloudPrintShare']
 pod 'AFNetworking', '~> 2.0'
 pod 'thrift', '~> 0.9.1'
 pod 'GoogleAnalytics-iOS-SDK',  '~> 3.0'

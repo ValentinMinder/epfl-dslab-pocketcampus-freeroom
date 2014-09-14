@@ -412,6 +412,48 @@
 		32FDA99D1854A06F00C6393A /* NSOperationWithDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA99C1854A06F00C6393A /* NSOperationWithDelegate.m */; };
 		32FDA9A11854B5E600C6393A /* PCServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA9A01854B5E600C6393A /* PCServiceRequest.m */; settings = {COMPILER_FLAGS = "-fobjc-arc-exceptions"; }; };
 		32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF46541636FB2500932FF5 /* PluginNavigationController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32FF91A219C6268900559E1E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5014FCDE4900A271CD /* UIKit.framework */; };
+		32FF91A319C6268D00559E1E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B7322715C2070E0091757D /* QuartzCore.framework */; };
+		32FF91A419C6269A00559E1E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927D15458BA10058E472 /* SystemConfiguration.framework */; };
+		32FF91A519C626A200559E1E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927F15458BAB0058E472 /* MobileCoreServices.framework */; };
+		32FF91A619C626A900559E1E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32D97C9B15AF1BB8004384A5 /* Security.framework */; };
+		32FF91A719C6273D00559E1E /* PCValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 322207F81689E3A3003F6622 /* PCValues.m */; };
+		32FF91A819C6274200559E1E /* NSOperationWithDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA99C1854A06F00C6393A /* NSOperationWithDelegate.m */; };
+		32FF91A919C6275600559E1E /* PCPersistenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* PCPersistenceManager.m */; };
+		32FF91AA19C6276600559E1E /* PluginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32704C66150016B3002BCB75 /* PluginController.m */; };
+		32FF91AB19C6277400559E1E /* authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4C4155520FE00220282 /* authentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		32FF91AC19C6277F00559E1E /* PCConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3258D65016AF1FE20040DAE3 /* PCConfig.m */; };
+		32FF91AD19C6279200559E1E /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */; };
+		32FF91AE19C6279A00559E1E /* PCService.m in Sources */ = {isa = PBXBuildFile; fileRef = 324715AD15001381007C230C /* PCService.m */; };
+		32FF91AF19C627A000559E1E /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47AD1621E91A006752B4 /* MainController.m */; };
+		32FF91B019C627AE00559E1E /* PluginControllerAuthentified.m in Sources */ = {isa = PBXBuildFile; fileRef = 324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */; };
+		32FF91B119C628AE00559E1E /* AuthenticationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4B9155520FE00220282 /* AuthenticationController.m */; };
+		32FF91B219C628B600559E1E /* PCGAITracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 322FB01717EC938E00D1A466 /* PCGAITracker.m */; };
+		32FF91B319C628C000559E1E /* THTTPClient+MutableRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268063119AF44B800E8CD22 /* THTTPClient+MutableRequest.m */; };
+		32FF91B419C628C800559E1E /* PCURLSchemeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 321CCF9D16E3B537002CBEA2 /* PCURLSchemeHandler.m */; };
+		32FF91B519C628D200559E1E /* PCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 322207F61689E3A3003F6622 /* PCUtils.m */; };
+		32FF91B619C628D900559E1E /* NSDate+Addtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB441F17650268008C8282 /* NSDate+Addtions.m */; };
+		32FF91B719C628E100559E1E /* AuthenticationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4C1155520FE00220282 /* AuthenticationService.m */; };
+		32FF91B819C628EB00559E1E /* PCServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA9A01854B5E600C6393A /* PCServiceRequest.m */; };
+		32FF91B919C628F500559E1E /* PushNotifController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F427C8F702CC10F288D8C /* PushNotifController.m */; };
+		32FF91BA19C628FF00559E1E /* CloudPrintController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DD524519B4DEAE00B5B241 /* CloudPrintController.m */; };
+		32FF91BB19C6291F00559E1E /* CloudPrintRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32870F9D19B674AE00A3BC68 /* CloudPrintRequestViewController.m */; };
+		32FF91BC19C6291F00559E1E /* CloudPrintStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 326F5A7F19BDA2AA000693A2 /* CloudPrintStatusViewController.m */; };
+		32FF91BD19C6291F00559E1E /* CloudPrintService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DD524819B4DEAE00B5B241 /* CloudPrintService.m */; };
+		32FF91BE19C6291F00559E1E /* CloudPrintModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3232C45819B8A0BF002BA3C6 /* CloudPrintModelAdditions.m */; };
+		32FF91BF19C6291F00559E1E /* cloudprint.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DD524B19B4DEAE00B5B241 /* cloudprint.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		32FF91C019C6291F00559E1E /* CloudPrintMultiPageLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 326F5A7119BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.m */; };
+		32FF91C119C6291F00559E1E /* CloudPrintMultiPageLayoutButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 326F5A7619BCDC65000693A2 /* CloudPrintMultiPageLayoutButton.m */; };
+		32FF91C219C6293400559E1E /* CloudPrintMultiPageLayoutCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A7C19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib */; };
+		32FF91C319C6293400559E1E /* CloudPrintMultiPageLayoutButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A7819BCDC71000693A2 /* CloudPrintMultiPageLayoutButton.xib */; };
+		32FF91C419C6293400559E1E /* CloudPrintStatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A8119BDA2D0000693A2 /* CloudPrintStatusView.xib */; };
+		32FF91C519C6293400559E1E /* CloudPrintPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32DD525819B4DEB600B5B241 /* CloudPrintPlugin.strings */; };
+		32FF91C619C6294900559E1E /* PocketCampus.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3296570914FF9DDB00C44C12 /* PocketCampus.strings */; };
+		32FF91CB19C62B4E00559E1E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5214FCDE4900A271CD /* Foundation.framework */; };
+		32FF91CD19C62BC000559E1E /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32FF91CC19C62BC000559E1E /* Social.framework */; };
+		32FF91CE19C62CE900559E1E /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32C879AA183D6C8E00750A11 /* Crashlytics.framework */; };
+		32FF91CF19C62D0300559E1E /* PCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B1D9E217F08E1D000CC209 /* PCNavigationController.m */; };
+		32FF91D119C62D1300559E1E /* PCTableViewCellAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 327412E4167E824F001E8C62 /* PCTableViewCellAdditions.m */; };
 		32FFA796186DDD5500237957 /* FavoriteNavBarButtonLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA794186DDD5500237957 /* FavoriteNavBarButtonLandscape.png */; };
 		32FFA797186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA795186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png */; };
 		32FFA79A186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA798186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png */; };
@@ -427,6 +469,7 @@
 		C5894949AFC59FDB4346CF53 /* IsAcademia@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51224CC590D66476EC4D0CFB /* IsAcademia@2x.png */; };
 		D4224276930AC66CEAA3E5A9 /* EventsService.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AE43D19400EAA046F5166E /* EventsService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		D57A786977F149C39D963A26 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96AF5068222245668954256E /* libPods.a */; };
+		E2AE5FB43C9F4052BE47DBDD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96AF5068222245668954256E /* libPods.a */; };
 		E9D24E52ACF3440B795D0F3A /* PushNotifService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2F4A5AA559021373171E91 /* PushNotifService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		F1AE44D191F279D3C0533B81 /* EventsController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8834ED985A01F6FB20543E8 /* EventsController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 /* End PBXBuildFile section */
@@ -1033,6 +1076,8 @@
 		32FDA9A01854B5E600C6393A /* PCServiceRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PCServiceRequest.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32FF46531636FB2400932FF5 /* PluginNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PluginNavigationController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32FF46541636FB2500932FF5 /* PluginNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PluginNavigationController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		32FF91C819C62B3300559E1E /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		32FF91CC19C62BC000559E1E /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		32FFA794186DDD5500237957 /* FavoriteNavBarButtonLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteNavBarButtonLandscape.png; sourceTree = "<group>"; };
 		32FFA795186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteNavBarButtonLandscape@2x.png"; sourceTree = "<group>"; };
 		32FFA798186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteGlowNavBarButtonLandscape.png; sourceTree = "<group>"; };
@@ -1104,6 +1149,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32FF91A319C6268D00559E1E /* QuartzCore.framework in Frameworks */,
+				32FF91CB19C62B4E00559E1E /* Foundation.framework in Frameworks */,
+				32FF91A219C6268900559E1E /* UIKit.framework in Frameworks */,
+				32FF91CE19C62CE900559E1E /* Crashlytics.framework in Frameworks */,
+				32FF91CD19C62BC000559E1E /* Social.framework in Frameworks */,
+				32FF91A619C626A900559E1E /* Security.framework in Frameworks */,
+				32FF91A519C626A200559E1E /* MobileCoreServices.framework in Frameworks */,
+				32FF91A419C6269A00559E1E /* SystemConfiguration.framework in Frameworks */,
+				E2AE5FB43C9F4052BE47DBDD /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1270,6 +1324,8 @@
 		3219EF4F14FCDE4900A271CD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				32FF91CC19C62BC000559E1E /* Social.framework */,
+				32FF91C819C62B3300559E1E /* CoreFoundation.framework */,
 				27E43950185F63E100D03974 /* XCTest.framework */,
 				32930A7617F898910025F864 /* External frameworks */,
 				32B8928115458BD70058E472 /* libz.dylib */,
@@ -2647,9 +2703,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 322AC9B519C3AF3500BADA69 /* Build configuration list for PBXNativeTarget "CloudPrintShare" */;
 			buildPhases = (
+				4ECAFEF251874C03919792A6 /* Check Pods Manifest.lock */,
 				322AC9A319C3AF3500BADA69 /* Sources */,
 				322AC9A419C3AF3500BADA69 /* Frameworks */,
 				322AC9A519C3AF3500BADA69 /* Resources */,
+				D0DD842F1AB34CE7B86F9E08 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2943,6 +3001,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32FF91C619C6294900559E1E /* PocketCampus.strings in Resources */,
+				32FF91C219C6293400559E1E /* CloudPrintMultiPageLayoutCell.xib in Resources */,
+				32FF91C319C6293400559E1E /* CloudPrintMultiPageLayoutButton.xib in Resources */,
+				32FF91C419C6293400559E1E /* CloudPrintStatusView.xib in Resources */,
+				32FF91C519C6293400559E1E /* CloudPrintPlugin.strings in Resources */,
 				322AC9BE19C3AF7000BADA69 /* CloudPrintShare-Info.plist in Resources */,
 				322AC9C019C3AF7000BADA69 /* CloudPrintShare.storyboard in Resources */,
 			);
@@ -3009,7 +3072,37 @@
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		4ECAFEF251874C03919792A6 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		5BC697C521FB416CA4EB2C52 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D0DD842F1AB34CE7B86F9E08 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3227,7 +3320,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32FF91D119C62D1300559E1E /* PCTableViewCellAdditions.m in Sources */,
+				32FF91CF19C62D0300559E1E /* PCNavigationController.m in Sources */,
+				32FF91B919C628F500559E1E /* PushNotifController.m in Sources */,
+				32FF91B819C628EB00559E1E /* PCServiceRequest.m in Sources */,
+				32FF91B719C628E100559E1E /* AuthenticationService.m in Sources */,
+				32FF91B619C628D900559E1E /* NSDate+Addtions.m in Sources */,
+				32FF91B519C628D200559E1E /* PCUtils.m in Sources */,
+				32FF91B419C628C800559E1E /* PCURLSchemeHandler.m in Sources */,
+				32FF91B319C628C000559E1E /* THTTPClient+MutableRequest.m in Sources */,
+				32FF91B219C628B600559E1E /* PCGAITracker.m in Sources */,
+				32FF91B119C628AE00559E1E /* AuthenticationController.m in Sources */,
+				32FF91B019C627AE00559E1E /* PluginControllerAuthentified.m in Sources */,
+				32FF91AF19C627A000559E1E /* MainController.m in Sources */,
+				32FF91AE19C6279A00559E1E /* PCService.m in Sources */,
+				32FF91AD19C6279200559E1E /* NSUserDefaults+Additions.m in Sources */,
+				32FF91AC19C6277F00559E1E /* PCConfig.m in Sources */,
+				32FF91AB19C6277400559E1E /* authentication.m in Sources */,
+				32FF91AA19C6276600559E1E /* PluginController.m in Sources */,
+				32FF91A919C6275600559E1E /* PCPersistenceManager.m in Sources */,
+				32FF91A819C6274200559E1E /* NSOperationWithDelegate.m in Sources */,
+				32FF91A719C6273D00559E1E /* PCValues.m in Sources */,
 				322AC9C219C3AF7000BADA69 /* CloudPrintShareViewController.m in Sources */,
+				32FF91BB19C6291F00559E1E /* CloudPrintRequestViewController.m in Sources */,
+				32FF91BC19C6291F00559E1E /* CloudPrintStatusViewController.m in Sources */,
+				32FF91BD19C6291F00559E1E /* CloudPrintService.m in Sources */,
+				32FF91BE19C6291F00559E1E /* CloudPrintModelAdditions.m in Sources */,
+				32FF91BF19C6291F00559E1E /* cloudprint.m in Sources */,
+				32FF91C019C6291F00559E1E /* CloudPrintMultiPageLayoutCell.m in Sources */,
+				32FF91C119C6291F00559E1E /* CloudPrintMultiPageLayoutButton.m in Sources */,
+				32FF91BA19C628FF00559E1E /* CloudPrintController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3677,8 +3799,9 @@
 		};
 		322AC9B619C3AF3500BADA69 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43F74C41A62B4C69936087B0 /* Pods.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -3687,9 +3810,15 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					TARGET_IS_EXTENSION,
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -3705,8 +3834,9 @@
 		};
 		322AC9B719C3AF3500BADA69 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43F74C41A62B4C69936087B0 /* Pods.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -3716,6 +3846,16 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					TARGET_IS_EXTENSION,
+				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/Plugins/CloudPrintPlugin/Extensions/CloudPrintShare/CloudPrintShare-Info.plist";

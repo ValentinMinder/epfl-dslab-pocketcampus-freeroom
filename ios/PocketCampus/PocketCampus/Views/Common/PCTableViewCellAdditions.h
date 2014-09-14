@@ -80,13 +80,13 @@ extern NSString* PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle;
  * The result of this method is not cached.
  * The implementation assumes that the cell has no image and labels have nubmerOfLines set to 1.
  */
-+ (CGFloat)preferredHeightForStyle:(UITableViewCellStyle)style textLabelTextStyle:(NSString*)textLabelTextStyle detailTextLabelTextStyle:(NSString*)detailTextLabelTextStyle;
++ (CGFloat)preferredHeightForStyle:(UITableViewCellStyle)style textLabelTextStyle:(NSString*)textLabelTextStyle detailTextLabelTextStyle:(NSString*)detailTextLabelTextStyle NS_EXTENSION_UNAVAILABLE_IOS("");
 
 /*
  * Same as previous, with textLabelTextStyle = PCTableViewCellAdditionsDefaultTextLabelTextStyle
  * and detailTextLabelTextStyle = PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle
  */
-+ (CGFloat)preferredHeightForDefaultTextStylesForCellStyle:(UITableViewCellStyle)style;
++ (CGFloat)preferredHeightForDefaultTextStylesForCellStyle:(UITableViewCellStyle)style NS_EXTENSION_UNAVAILABLE_IOS("");
 
 
 /*
