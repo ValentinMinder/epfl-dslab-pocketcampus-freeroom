@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -163,16 +163,21 @@ static float const kProgressMax = 100;
         if (!welf.cloudPrintService) {
             welf.cloudPrintService = [CloudPrintService sharedInstanceToRetain];
         }
+        
+        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             if (wjob.navController.topViewController == wjob.statusViewController) {
                 // if user tapped cancel so quickly that it was before this dispatch triggered, we should
                 // not start the request
+            
+                NSProgress* progress = [NSProgress progressWithTotalUnitCount:kProgressMax];
+                
                 [welf.cloudPrintService uploadForPrintDocumentWithLocalURL:localURL jobUniqueId:wjob.request.jobUniqueId success:^(int64_t documentId) {
                     wjob.statusViewController.statusMessage = CloudPrintStatusMessageSendingToPrinter;
                     wjob.statusViewController.progress.completedUnitCount = kSendToPrinterProgressStart;
                     wjob.request.documentId  = documentId;
                     [welf.cloudPrintService printDocumentWithRequest:request delegate:welf];
-                } progress:wjob.statusViewController.progress failure:^(CloudPrintUploadFailureReason failureReason) {
+                } progress:&progress failure:^(CloudPrintUploadFailureReason failureReason) {
                     switch (failureReason) {
                         case CloudPrintUploadFailureReasonAuthenticationError:
                         {
@@ -204,6 +209,7 @@ static float const kProgressMax = 100;
                             break;
                     }
                 }];
+                [progress addObserver:welf forKeyPath:NSStringFromSelector(@selector(fractionCompleted)) options:0 context:(__bridge void *)(wjob).request.jobUniqueId];
             }
         });
         
@@ -332,6 +338,22 @@ static float const kProgressMax = 100;
         job.statusViewController.statusMessage = CloudPrintStatusMessageError;
         [job.navController popToViewController:job.requestViewController animated:YES];
     }
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (![object isKindOfClass:[NSProgress class]]) {
+        return;
+    }
+    NSString* jobUniqueId = (__bridge NSString*)context;
+    CloudPrintJob* job = self.jobForJobUniqueId[jobUniqueId];
+    if (!job) {
+        NSLog(@"!! ERROR: could not find job in KVO observeration for job id %@. Ignoring.", jobUniqueId);
+        return;
+    }
+    NSProgress* progress = object;
+    job.statusViewController.progress.completedUnitCount = kSendToPrinterProgressStart * progress.fractionCompleted;
 }
 
 #pragma mark - Private

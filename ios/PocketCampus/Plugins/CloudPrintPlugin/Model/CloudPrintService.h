@@ -65,7 +65,7 @@ typedef NS_ENUM(NSInteger, CloudPrintUploadFailureReason) {
  * @param progress [0.0, 1.0] regularly executed with new progress of operation
  * @param failure executed when the operation fails.
  */
-- (void)uploadForPrintDocumentWithLocalURL:(NSURL*)localURL jobUniqueId:(NSString*)jobUniqueId success:(void (^)(int64_t documentId))success progress:(NSProgress*)progress failure:(void (^)(CloudPrintUploadFailureReason failureReason))failure;
+- (void)uploadForPrintDocumentWithLocalURL:(NSURL*)localURL jobUniqueId:(NSString*)jobUniqueId success:(void (^)(int64_t documentId))success progress:(NSProgress* __autoreleasing*)progress failure:(void (^)(CloudPrintUploadFailureReason failureReason))failure;
 
 /**
  * @discussion Loops through self.operationQueue.operations and cancels all operations

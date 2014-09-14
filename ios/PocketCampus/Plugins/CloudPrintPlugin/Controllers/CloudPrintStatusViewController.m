@@ -109,7 +109,7 @@
     @catch (NSException *exception) {}
     
     _progress = progress;
-    [self.progress addObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted)) options:0 context:NULL];
+    [self.progress addObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted)) options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 #pragma mark - Private

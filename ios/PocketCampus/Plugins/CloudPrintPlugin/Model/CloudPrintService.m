@@ -88,7 +88,7 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
 
 #pragma mark - Misc
 
-- (void)uploadForPrintDocumentWithLocalURL:(NSURL*)localURL jobUniqueId:(NSString*)jobUniqueId success:(void (^)(int64_t documentId))success progress:(NSProgress*)progress failure:(void (^)(CloudPrintUploadFailureReason failureReason))failure {
+- (void)uploadForPrintDocumentWithLocalURL:(NSURL*)localURL jobUniqueId:(NSString*)jobUniqueId success:(void (^)(int64_t documentId))success progress:(NSProgress* __autoreleasing*)progress failure:(void (^)(CloudPrintUploadFailureReason failureReason))failure {
     
     [PCUtils throwExceptionIfObject:localURL notKindOfClass:[NSURL class]];
     
@@ -116,7 +116,7 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
     finalRequest.allHTTPHeaderFields = allHeaders;
     finalRequest.cachePolicy = NSURLRequestReloadIgnoringCacheData;
     
-    NSURLSessionUploadTask* uploadTask = [self.filesUploadSessionManager uploadTaskWithStreamedRequest:finalRequest progress:&progress completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+    NSURLSessionUploadTask* uploadTask = [self.filesUploadSessionManager uploadTaskWithStreamedRequest:finalRequest progress:progress completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
         if (error.code == NSURLErrorCancelled) {
             return;
         }
@@ -146,6 +146,7 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
                         failure(CloudPrintUploadFailureReasonUnknown);
                     }
                     success(documentId);
+                    break;
                 }
                 case 407:
                 {
