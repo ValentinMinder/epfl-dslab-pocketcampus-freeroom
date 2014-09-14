@@ -25,31 +25,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 13.09.14.
+//  Created by Loïc Gardiol on 14.09.14.
 
-#import "CloudPrintShareViewController.h"
+@import UIKit;
 
-@interface CloudPrintShareViewController ()
-
-@end
-
-@implementation CloudPrintShareViewController
-
-- (BOOL)isContentValid {
-    // Do validation of contentText and/or NSExtensionContext attachments here
-    return YES;
-}
-
-- (void)didSelectPost {
-    // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.
-    
-    // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
-    [self.extensionContext completeRequestReturningItems:@[] completionHandler:nil];
-}
-
-- (NSArray *)configurationItems {
-    // To add configuration options via table cells at the bottom of the sheet, return an array of SLComposeSheetConfigurationItem here.
-    return @[];
-}
+@interface CloudPrintActionViewController : UIViewController
 
 @end

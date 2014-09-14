@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "322AC9A619C3AF3500BADA69"
-               BuildableName = "CloudPrintShare.appex"
-               BlueprintName = "CloudPrintShare"
+               BlueprintIdentifier = "32FF91D519C62F7A00559E1E"
+               BuildableName = "CloudPrintAction.appex"
+               BlueprintName = "CloudPrintAction"
                ReferencedContainer = "container:PocketCampus.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -47,9 +47,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "322AC9A619C3AF3500BADA69"
-            BuildableName = "CloudPrintShare.appex"
-            BlueprintName = "CloudPrintShare"
+            BlueprintIdentifier = "32FF91D519C62F7A00559E1E"
+            BuildableName = "CloudPrintAction.appex"
+            BlueprintName = "CloudPrintAction"
             ReferencedContainer = "container:PocketCampus.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
