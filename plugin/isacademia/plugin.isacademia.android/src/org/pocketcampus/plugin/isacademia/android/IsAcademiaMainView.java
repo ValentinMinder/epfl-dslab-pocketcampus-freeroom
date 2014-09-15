@@ -33,11 +33,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
@@ -73,6 +76,8 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 	
 	private long currentTime;
 	private SimpleDateFormat keyFormatter;
+	
+	private GestureDetector gestureDetector;
 
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -100,8 +105,14 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 //		} catch (ParseException e) {
 //			e.printStackTrace();
 //		}
-	}
 
+		
+
+		gestureDetector = buildGestureDetector();
+
+	
+	}
+	
 	/**
 	 * Handles the intent that was used to start this plugin.
 	 * 
@@ -260,7 +271,7 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 			public void finalize(Map<String, Object> map, StudyPeriod item) {
 //				map.put(MAP_KEY_ISACADEMIASTUDYPERIOD, item);
 				map.put(LazyAdapter.NOT_SELECTABLE, "1");
-				map.put(LazyAdapter.LINK_CLICKABLE, "1");
+				//map.put(LazyAdapter.LINK_CLICKABLE, "1");
 
 			}
 		});
@@ -272,6 +283,7 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 			StandardLayout sl = new StandardLayout(this);
 			sl.setText(formatStringWithDate(R.string.isacademia_no_classes_on));
 			setContentView(sl);
+			attachGestureDetector(sl);
 		} else {
 			
 			
@@ -281,6 +293,8 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 				displayingList = true;
 			}
 			mList.setAdapter(adapter);
+			
+			attachGestureDetector(mList);
 			
 //			mList.setOnItemClickListener(new OnItemClickListener() {
 //				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
@@ -302,6 +316,7 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 				scrollState.restore(mList);
 			
 		}
+//		attachGestureDetector(findViewById(android.R.id.content));
 		
 				
 		
@@ -428,4 +443,56 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 		
 	}
 
+	
+	
+
+	private GestureDetector buildGestureDetector() {
+		return new GestureDetector(this,
+				new GestureDetector.SimpleOnGestureListener() {
+
+					private static final int SWIPE_MIN_DISTANCE = 120;
+					private static final int SWIPE_MAX_OFF_PATH = 250;
+					private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+					@Override
+					public boolean onFling(MotionEvent e1, MotionEvent e2,
+							float velocityX, float velocityY) {
+						try {
+							if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+								return false;
+							if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+//								Toast.makeText(IsAcademiaMainView.this, "LeftSwipe", Toast.LENGTH_SHORT).show();
+								currentTime += 24 * 3600 * 1000;
+								updateDisplay();
+								trackEvent("LeftSwipe", null);
+							} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+//								Toast.makeText(IsAcademiaMainView.this, "RightSwipe", Toast.LENGTH_SHORT).show();
+								currentTime -= 24 * 3600 * 1000;
+								updateDisplay();
+								trackEvent("RightSwipe", null);
+							}
+						} catch (Exception e) {
+							// nothing
+						}
+						return false;
+					}
+
+					@Override
+					public boolean onDown(MotionEvent e) {
+						return true;
+					}
+				});
+
+	}
+
+	private void attachGestureDetector(View v) {
+
+		v.setOnTouchListener(new OnTouchListener() {
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				return gestureDetector.onTouchEvent(arg1);
+			}
+		});
+	}
+	
+	
 }
