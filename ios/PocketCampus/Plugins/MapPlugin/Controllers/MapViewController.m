@@ -190,7 +190,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     self.leftBarButtonItemsAtLoad = self.navigationItem.leftBarButtonItems;
     self.mapView.pitchEnabled = NO; //epflLayersOverlay are fucked up otherwise
-    self.mapView.rotateEnabled = NO; //for some reason, allows higher zoom, thus allowing to see room names! Amazing!
+    self.mapView.rotateEnabled = NO; //for some reason, allows higher zoom on iOS 7, thus allowing to see room names! Amazing!
     [self.mapView setRegion:self.epflRegion animated:NO];
     
     self.searchState = SearchStateReady; //will set nav bar elements, see implementation

@@ -416,8 +416,6 @@
 		32F9618819C630C4006A4C46 /* PCService.m in Sources */ = {isa = PBXBuildFile; fileRef = 324715AD15001381007C230C /* PCService.m */; };
 		32F9618919C630C4006A4C46 /* NSOperationWithDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA99C1854A06F00C6393A /* NSOperationWithDelegate.m */; };
 		32F9618A19C630C4006A4C46 /* PCServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA9A01854B5E600C6393A /* PCServiceRequest.m */; };
-		32F9618B19C630DF006A4C46 /* CloudPrintController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DD524519B4DEAE00B5B241 /* CloudPrintController.m */; };
-		32F9618C19C630DF006A4C46 /* CloudPrintRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32870F9D19B674AE00A3BC68 /* CloudPrintRequestViewController.m */; };
 		32F9618D19C630DF006A4C46 /* CloudPrintStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 326F5A7F19BDA2AA000693A2 /* CloudPrintStatusViewController.m */; };
 		32F9618E19C630DF006A4C46 /* CloudPrintService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DD524819B4DEAE00B5B241 /* CloudPrintService.m */; };
 		32F9618F19C630DF006A4C46 /* CloudPrintModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3232C45819B8A0BF002BA3C6 /* CloudPrintModelAdditions.m */; };
@@ -3351,8 +3349,6 @@
 				32F9618919C630C4006A4C46 /* NSOperationWithDelegate.m in Sources */,
 				32F9618A19C630C4006A4C46 /* PCServiceRequest.m in Sources */,
 				32FF91ED19C62FC300559E1E /* CloudPrintActionViewController.m in Sources */,
-				32F9618B19C630DF006A4C46 /* CloudPrintController.m in Sources */,
-				32F9618C19C630DF006A4C46 /* CloudPrintRequestViewController.m in Sources */,
 				32F9618D19C630DF006A4C46 /* CloudPrintStatusViewController.m in Sources */,
 				32F9618E19C630DF006A4C46 /* CloudPrintService.m in Sources */,
 				32F9618F19C630DF006A4C46 /* CloudPrintModelAdditions.m in Sources */,

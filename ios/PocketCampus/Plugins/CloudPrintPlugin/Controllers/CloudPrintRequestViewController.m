@@ -233,10 +233,10 @@ static NSInteger const kPageToTheEndValue = 10000;
         case kOrientationSectionIndex:
             switch (indexPath.row) {
                 case kOrientationRowIndex:
-                    /*actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"Orientation", @"CloudPrintPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
+                    actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"Orientation", @"CloudPrintPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
                        [CloudPrintModelAdditions localizedTitleForOrientation:CloudPrintOrientation_PORTRAIT],
                        [CloudPrintModelAdditions localizedTitleForOrientation:CloudPrintOrientation_LANDSCAPE],
-                       nil];*/
+                       nil];
                     self.orientationActionSheet = actionSheet;
                     break;
                 default:
@@ -246,10 +246,10 @@ static NSInteger const kPageToTheEndValue = 10000;
         case kDoubleSidedSectionIndex:
             switch (indexPath.row) {
                 case kDoubleSidedConfigRowIndex:
-                    /*actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"FlipOn", @"CloudPrintPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
+                    actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"FlipOn", @"CloudPrintPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
                         [CloudPrintModelAdditions localizedTitleForDoubleSidedConfig:CloudPrintDoubleSidedConfig_LONG_EDGE],
                         [CloudPrintModelAdditions localizedTitleForDoubleSidedConfig:CloudPrintDoubleSidedConfig_SHORT_EDGE],
-                        nil];*/
+                        nil];
                     self.doubleSidedConfigActionSheet = actionSheet;
                     break;
                 default:
@@ -259,14 +259,14 @@ static NSInteger const kPageToTheEndValue = 10000;
         case kMultiPageSectionIndex:
             switch (indexPath.row) {
                 case kNbPagesPerSheetRowIndex:
-                    /*actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"PagesPerSheet", @"CloudPrintPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
+                    actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"PagesPerSheet", @"CloudPrintPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
                         [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:1],
                         [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_TWO],
                         [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_FOUR],
                         [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_SIX],
                         [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_NINE],
                         [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_SIXTEEN],
-                        nil];*/
+                        nil];
                     self.pagesPerSheetActionSheet = actionSheet;
                     break;
                 default:

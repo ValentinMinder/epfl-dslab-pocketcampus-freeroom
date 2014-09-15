@@ -46,7 +46,7 @@
     
     // For example, look for an image and place it into an image view.
     // Replace this with something appropriate for the type[s] your extension supports.
-    BOOL imageFound = NO;
+    /*BOOL imageFound = NO;
     for (NSExtensionItem *item in self.extensionContext.inputItems) {
         for (NSItemProvider *itemProvider in item.attachments) {
             if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeScalableVectorGraphics]) {
@@ -77,7 +77,7 @@
     UIViewController* viewController = [[CloudPrintController sharedInstance] viewControllerForPrintWithDocumentName:@"test" printDocumentRequest:request completion:^(CloudPrintCompletionStatusCode printStatusCode) {
         
     }];
-    [self presentViewController:viewController animated:NO completion:NULL];
+    [self presentViewController:viewController animated:NO completion:NULL];*/
 }
 
 @end
