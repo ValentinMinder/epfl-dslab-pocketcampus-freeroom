@@ -48,7 +48,6 @@
 		32125BBF1536F215009B8D37 /* TransportFeetConnection.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBD1536F215009B8D37 /* TransportFeetConnection.png */; };
 		32125BC01536F215009B8D37 /* TransportFeetConnection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBE1536F215009B8D37 /* TransportFeetConnection@2x.png */; };
 		32136F34193FBCFF002905A9 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32136E89193F6934002905A9 /* NotificationCenter.framework */; };
-		32136F3F193FBCFF002905A9 /* org.pocketcampus.dev.CamiproWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 32136F33193FBCFF002905A9 /* org.pocketcampus.dev.CamiproWidget.appex */; };
 		32141FA718D8D16F0084FE44 /* IsAcademiaModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32141FA618D8D16F0084FE44 /* IsAcademiaModelAdditions.m */; };
 		32148A3E18101D6C00AF2F8E /* CamiproLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32148A3D18101D6C00AF2F8E /* CamiproLarge@2x.png */; };
 		32150DD4197D693300CCF2AB /* LinkIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 32150DD2197D693300CCF2AB /* LinkIcon.png */; };
@@ -153,6 +152,7 @@
 		325C47AB1621D8FC006752B4 /* MainMenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325C47AA1621D8FC006752B4 /* MainMenuItemCell.xib */; };
 		325C47AE1621E91A006752B4 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47AD1621E91A006752B4 /* MainController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		325C47B4162200E8006752B4 /* BlankPluginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325C47B3162200E8006752B4 /* BlankPluginView.xib */; };
+		325FABC819C6FF600075370F /* CamiproWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 32136F33193FBCFF002905A9 /* CamiproWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		32617BCE16E7DA5F004F9CF9 /* PCTableViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32617BCD16E7DA5F004F9CF9 /* PCTableViewAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32649B23160DD7DA002E6498 /* DirectoryPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32649B22160DD7DA002E6498 /* DirectoryPersonViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32675C2415F50F4A00880387 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32675C2315F50F4A00880387 /* Config.plist */; };
@@ -472,19 +472,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		32136F3D193FBCFF002905A9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3219EF4314FCDE4800A271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 32136F32193FBCFF002905A9;
-			remoteInfo = "Camipro EPFL";
-		};
 		32136F40193FBCFF002905A9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3219EF4314FCDE4800A271CD /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 32136F32193FBCFF002905A9;
 			remoteInfo = "Camipro EPFL";
+		};
+		325FABC919C6FF610075370F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3219EF4314FCDE4800A271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 32136F32193FBCFF002905A9;
+			remoteInfo = CamiproWidget;
 		};
 		32FF91DF19C62F7A00559E1E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -509,7 +509,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				32136F3F193FBCFF002905A9 /* org.pocketcampus.dev.CamiproWidget.appex in Embed App Extensions */,
+				325FABC819C6FF600075370F /* CamiproWidget.appex in Embed App Extensions */,
 				32FF91E119C62F7A00559E1E /* CloudPrintAction.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -580,7 +580,7 @@
 		32125BBD1536F215009B8D37 /* TransportFeetConnection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TransportFeetConnection.png; sourceTree = "<group>"; };
 		32125BBE1536F215009B8D37 /* TransportFeetConnection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TransportFeetConnection@2x.png"; sourceTree = "<group>"; };
 		32136E89193F6934002905A9 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
-		32136F33193FBCFF002905A9 /* org.pocketcampus.dev.CamiproWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = org.pocketcampus.dev.CamiproWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		32136F33193FBCFF002905A9 /* CamiproWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CamiproWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		32136F46193FBD20002905A9 /* CamiproWidget-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "CamiproWidget-Info.plist"; sourceTree = "<group>"; };
 		32136F48193FBD20002905A9 /* CamiproWidgetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CamiproWidgetViewController.h; sourceTree = "<group>"; };
 		32136F49193FBD20002905A9 /* CamiproWidgetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CamiproWidgetViewController.m; sourceTree = "<group>"; };
@@ -715,7 +715,7 @@
 		324CB5801671585B008C7B3D /* MoodleSplashDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleSplashDetailViewController.h; sourceTree = "<group>"; };
 		324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleSplashDetailViewController.m; sourceTree = "<group>"; };
 		324D6E2B19A3A7DF000CCB2C /* PocketCampus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PocketCampus.entitlements; sourceTree = "<group>"; };
-		324D6E2C19A3A7E5000CCB2C /* org.pocketcampus.dev.CamiproWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = org.pocketcampus.dev.CamiproWidget.entitlements; sourceTree = "<group>"; };
+		324D6E2C19A3A7E5000CCB2C /* CamiproWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = CamiproWidget.entitlements; sourceTree = "<group>"; };
 		324FD732176574DD0003EE30 /* CamiproTransactionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CamiproTransactionCell.xib; sourceTree = "<group>"; };
 		324FD734176574FE0003EE30 /* CamiproTransactionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CamiproTransactionCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		324FD735176574FE0003EE30 /* CamiproTransactionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CamiproTransactionCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -1300,7 +1300,7 @@
 			isa = PBXGroup;
 			children = (
 				32F9619E19C632AE006A4C46 /* CloudPrintAction.entitlements */,
-				324D6E2C19A3A7E5000CCB2C /* org.pocketcampus.dev.CamiproWidget.entitlements */,
+				324D6E2C19A3A7E5000CCB2C /* CamiproWidget.entitlements */,
 				3219EF5614FCDE4900A271CD /* PocketCampus */,
 				32FAC0DF1500F40700925180 /* Plugins */,
 				3219EF4F14FCDE4900A271CD /* Frameworks */,
@@ -1313,7 +1313,7 @@
 			isa = PBXGroup;
 			children = (
 				3219EF4C14FCDE4900A271CD /* PocketCampus.app */,
-				32136F33193FBCFF002905A9 /* org.pocketcampus.dev.CamiproWidget.appex */,
+				32136F33193FBCFF002905A9 /* CamiproWidget.appex */,
 				32FF91D619C62F7A00559E1E /* CloudPrintAction.appex */,
 			);
 			name = Products;
@@ -2669,7 +2669,7 @@
 			);
 			name = CamiproWidget;
 			productName = "Camipro EPFL";
-			productReference = 32136F33193FBCFF002905A9 /* org.pocketcampus.dev.CamiproWidget.appex */;
+			productReference = 32136F33193FBCFF002905A9 /* CamiproWidget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		3219EF4B14FCDE4900A271CD /* PocketCampus */ = {
@@ -2687,10 +2687,10 @@
 			buildRules = (
 			);
 			dependencies = (
-				32136F3E193FBCFF002905A9 /* PBXTargetDependency */,
 				32136F41193FBCFF002905A9 /* PBXTargetDependency */,
 				32FF91E019C62F7A00559E1E /* PBXTargetDependency */,
 				32FF91E319C62F7A00559E1E /* PBXTargetDependency */,
+				325FABCA19C6FF610075370F /* PBXTargetDependency */,
 			);
 			name = PocketCampus;
 			productName = PocketCampus;
@@ -2753,10 +2753,10 @@
 						DevelopmentTeam = 7KPBSVCYLZ;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.Keychain = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -3360,15 +3360,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		32136F3E193FBCFF002905A9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 32136F32193FBCFF002905A9 /* CamiproWidget */;
-			targetProxy = 32136F3D193FBCFF002905A9 /* PBXContainerItemProxy */;
-		};
 		32136F41193FBCFF002905A9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 32136F32193FBCFF002905A9 /* CamiproWidget */;
 			targetProxy = 32136F40193FBCFF002905A9 /* PBXContainerItemProxy */;
+		};
+		325FABCA19C6FF610075370F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 32136F32193FBCFF002905A9 /* CamiproWidget */;
+			targetProxy = 325FABC919C6FF610075370F /* PBXContainerItemProxy */;
 		};
 		32FF91E019C62F7A00559E1E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3586,7 +3586,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_ENTITLEMENTS = org.pocketcampus.dev.CamiproWidget.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CamiproWidget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3607,7 +3607,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				METAL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = "org.pocketcampus.dev.$(TARGET_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:rfc1034identifier)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				SKIP_INSTALL = YES;
@@ -3626,7 +3626,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_ENTITLEMENTS = org.pocketcampus.dev.CamiproWidget.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CamiproWidget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -3648,7 +3648,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				METAL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "org.pocketcampus.dev.$(TARGET_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:rfc1034identifier)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				SKIP_INSTALL = YES;
@@ -3728,8 +3728,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "c9d35200-9463-4149-8212-405bdb7bdf84";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "c9d35200-9463-4149-8212-405bdb7bdf84";
+				PROVISIONING_PROFILE = "0895460c-6b75-4b06-89a8-7e0149f20001";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0895460c-6b75-4b06-89a8-7e0149f20001";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "Plugins/**";
 				VALIDATE_PRODUCT = YES;
@@ -3812,7 +3812,6 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_ENTITLEMENTS = CloudPrintAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3848,7 +3847,6 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_ENTITLEMENTS = CloudPrintAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;

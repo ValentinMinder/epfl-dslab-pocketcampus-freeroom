@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "32136F32193FBCFF002905A9"
-               BuildableName = "org.pocketcampus.dev.CamiproWidget.appex"
+               BuildableName = "CamiproWidget.appex"
                BlueprintName = "CamiproWidget"
                ReferencedContainer = "container:PocketCampus.xcodeproj">
             </BuildableReference>
