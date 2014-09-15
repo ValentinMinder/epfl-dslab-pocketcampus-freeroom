@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6206.9" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
-        <capability name="Constraints with attributes relative to the layout margin" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -22,18 +21,15 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="71X-oe-RaM" firstAttribute="leading" secondItem="9gZ-4I-Xym" secondAttribute="leading" constant="15" id="3JR-9m-j0n"/>
-                    <constraint firstItem="71X-oe-RaM" firstAttribute="top" secondItem="9gZ-4I-Xym" secondAttribute="topMargin" id="JcP-5y-X2G"/>
                     <constraint firstItem="71X-oe-RaM" firstAttribute="top" secondItem="9gZ-4I-Xym" secondAttribute="top" constant="8" id="SvF-qk-1bA"/>
-                    <constraint firstItem="71X-oe-RaM" firstAttribute="leading" secondItem="9gZ-4I-Xym" secondAttribute="leadingMargin" constant="7" id="fIZ-uO-gNJ"/>
                 </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="JcP-5y-X2G"/>
-                        <exclude reference="fIZ-uO-gNJ"/>
-                    </mask>
-                </variation>
             </tableViewCellContentView>
             <point key="canvasLocation" x="379" y="193"/>
         </tableViewCell>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

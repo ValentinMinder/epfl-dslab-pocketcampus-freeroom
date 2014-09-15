@@ -42,7 +42,7 @@
 @implementation PCValues
 
 + (void)applyAppearenceProxy {
-    //nothing for now
+    [[UICollectionView appearanceWhenContainedIn:[UIAlertController class], nil] setTintColor:[self defaultBlueTintColor]];
 }
 
 + (UIImage*)imageForFavoriteNavBarButtonLandscapePhone:(BOOL)landscapePhone glow:(BOOL)glow {

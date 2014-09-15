@@ -598,7 +598,6 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         [buttonTitles addObject:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil)];
         
         self.filterSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-#warning actionsheet buttons will take color of UIWindow tintColor in iOS 8 on iPad. Not nice because all buttons red then (they all look destructive then. Need to find a solution. Setting tintColor does not work. Open discussion here https://devforums.apple.com/message/1030544#1030544
         
         for (NSString* title in buttonTitles) {
             [self.filterSelectionActionSheet addButtonWithTitle:title];
