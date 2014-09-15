@@ -254,7 +254,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     if (self.navigationController.navigationBarHidden) {
         return;
     }
-    if (self.deleteActionSheet.isVisible || self.docController) {
+    if (self.deleteActionSheet.isVisible || self.docController || self.printPopoverController) {
         return;
     }
     if ([PCUtils isIdiomPad] && ![(PluginSplitViewController*)(self.splitViewController) isMasterViewControllerHidden]) {

@@ -114,44 +114,48 @@
     [self willChangeValueForKey:NSStringFromSelector(@selector(isMasterViewControllerHidden))];
     _masterViewControllerHidden = hidden;
     [self didChangeValueForKey:NSStringFromSelector(@selector(isMasterViewControllerHidden))];
-    CGRect newFrame = self.view.frame;
-    UIViewController* masterViewController = self.viewControllers[0];
-    UIViewController* detailViewControler = self.viewControllers[1];
-    CGRect masterFrame = masterViewController.view.frame;
-    CGRect detailFrame = detailViewControler.view.frame;
     
-    CGFloat newFrameX;
-    CGFloat newFrameY;
-    CGFloat newFrameWidth;
-    CGFloat newFrameHeight;
+    CGFloat duration = animated ? 0.3 : 0.0;
     
-    CGFloat detailNewWidth;
-    
-    if (hidden) {
-        newFrameX = -masterFrame.size.width;
-        newFrameY = 0.0;
-        newFrameWidth = newFrame.size.width + masterFrame.size.width;
-        newFrameHeight = newFrame.size.height;
-        detailNewWidth = detailFrame.size.width + masterFrame.size.width;
+    if ([self respondsToSelector:@selector(preferredDisplayMode)]) {
+        // >= iOS 8.0
+        [UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.preferredDisplayMode = hidden ? UISplitViewControllerDisplayModePrimaryHidden : UISplitViewControllerDisplayModeAllVisible;
+        } completion:NULL];
+        return;
     } else {
-        newFrameX = 0.0;
-        newFrameY = 0.0;
-        newFrameWidth = newFrame.size.width - masterFrame.size.width;
-        newFrameHeight = newFrame.size.height;
-        detailNewWidth = detailFrame.size.width - masterFrame.size.width;
+        CGRect newFrame = self.view.frame;
+        UIViewController* masterViewController = self.viewControllers[0];
+        UIViewController* detailViewControler = self.viewControllers[1];
+        CGRect masterFrame = masterViewController.view.frame;
+        CGRect detailFrame = detailViewControler.view.frame;
+        
+        CGFloat newFrameX;
+        CGFloat newFrameY;
+        CGFloat newFrameWidth;
+        CGFloat newFrameHeight;
+        
+        CGFloat detailNewWidth;
+        
+        if (hidden) {
+            newFrameX = -masterFrame.size.width;
+            newFrameY = 0.0;
+            newFrameWidth = newFrame.size.width + masterFrame.size.width;
+            newFrameHeight = newFrame.size.height;
+            detailNewWidth = detailFrame.size.width + masterFrame.size.width;
+        } else {
+            newFrameX = 0.0;
+            newFrameY = 0.0;
+            newFrameWidth = newFrame.size.width - masterFrame.size.width;
+            newFrameHeight = newFrame.size.height;
+            detailNewWidth = detailFrame.size.width - masterFrame.size.width;
+        }
+        
+        [UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.view.frame = CGRectMake(newFrameX, newFrameY, newFrameWidth, newFrameHeight);
+            detailViewControler.view.frame = CGRectMake(detailFrame.origin.x, detailFrame.origin.y, detailNewWidth, detailFrame.size.height);
+        } completion:NULL];
     }
-    
-    CGFloat duration = 0.0;
-    
-    if (animated) {
-        duration = 0.3;
-    }
-    
-    [UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self.view.frame = CGRectMake(newFrameX, newFrameY, newFrameWidth, newFrameHeight);
-        detailViewControler.view.frame = CGRectMake(detailFrame.origin.x, detailFrame.origin.y, detailNewWidth, detailFrame.size.height);
-    } completion:NULL];
-    
 }
 
 - (BOOL)prefersStatusBarHidden {
