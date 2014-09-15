@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -13,6 +12,8 @@ import java.util.Map;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuated;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuator;
 import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
 import org.pocketcampus.platform.android.ui.layout.StandardLayout;
 import org.pocketcampus.platform.android.utils.Preparated;
@@ -22,18 +23,26 @@ import org.pocketcampus.plugin.isacademia.R;
 import org.pocketcampus.plugin.isacademia.android.iface.IIsAcademiaView;
 import org.pocketcampus.plugin.isacademia.shared.StudyPeriod;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.markupartist.android.widget.ActionBar.Action;
@@ -177,13 +186,22 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 	}
 	
 	private static String getRoomsString(StudyPeriod p) {
-		List<String> rooms = new LinkedList<String>();
-		for(String r : p.getRooms()) {
-			Uri.Builder builder = new Uri.Builder();
-			builder.scheme("pocketcampus").authority("map.plugin.pocketcampus.org").appendPath("search").appendQueryParameter("q", r);
-			rooms.add("<a href=\"" + builder.build() + "\">" + r + "</a>");
+//		List<String> rooms = new LinkedList<String>();
+//		for(String r : p.getRooms()) {
+//			rooms.add("<a href=\"" + buildLink(r) + "\">" + r + "</a>");
+//		}
+//		return TextUtils.join(", ", rooms);
+		if(p.getRoomsSize() > 2) {
+			return TextUtils.join(", ", p.getRooms().subList(0, 2)) + ", &hellip;"; 
+		} else {
+			return TextUtils.join(", ", p.getRooms()); 
 		}
-		return TextUtils.join(", ", rooms);
+	}
+	
+	private static Uri buildLink(String room) {
+		Uri.Builder builder = new Uri.Builder();
+		builder.scheme("pocketcampus").authority("map.plugin.pocketcampus.org").appendPath("search").appendQueryParameter("q", room);
+		return builder.build();
 	}
 
 	private String getLocalizedPeriodType(String aString) {
@@ -224,7 +242,15 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 				case R.id.isacademia_period_type:
 					return getLocalizedPeriodType(e.getPeriodType().name());
 				case R.id.isacademia_period_room:
-					return getRoomsString(e);
+					return new Actuated(getRoomsString(e), new Actuator() {
+						public void triggered() {
+							if(e.getRoomsSize() > 1) {
+								roomsMenu(e);
+							} else {
+								openMap(e.getRooms().get(0));
+							}
+						}
+					});
 				case R.id.isacademia_period_time:
 					return fmt.format(new Date(e.getStartTime())) + " - " + fmt.format(new Date(e.getEndTime()));
 				default:
@@ -319,6 +345,45 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 			return null;
 		}
 	}
+	
+	private void openMap(String room) {
+		try {
+			trackEvent("ViewRoomOnMap", room);
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, buildLink(room));
+			startActivity(browserIntent);
+			
+		} catch (ActivityNotFoundException e) {
+			// should never happen
+			Toast.makeText(getApplicationContext(), "Map plugin not found", Toast.LENGTH_SHORT).show();
+			
+		}
+	}
+
+	private void roomsMenu(final StudyPeriod m) {
+		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		View titleV = inflater.inflate(R.layout.sdk_actionbar_dialog, new LinearLayout(this));
+		((TextView) titleV.findViewById(R.id.actionbar_title)).setText(getString(R.string.isacademia_show_on_map));
+		
+		AlertDialog dialog = new AlertDialog.Builder(this)
+				.setCustomTitle(titleV)
+				.setAdapter(new ArrayAdapter<String>(this, android.R.layout.select_dialog_item,
+						m.getRooms().toArray(new String[m.getRoomsSize()])), 
+						new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						openMap(m.getRooms().get(arg1));
+					}
+					
+				})
+				.setInverseBackgroundForced(true)
+				.create();
+		dialog.setCanceledOnTouchOutside(true);
+		dialog.show();
+		
+	}
+	
 
 	@Override
 	public void networkErrorHappened() {

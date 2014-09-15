@@ -14,6 +14,8 @@
     <string name="isacademia_period_type_PROJECT">Project</string>
     <string name="isacademia_period_type_ORAL_EXAM">Oral exam</string>
     <string name="isacademia_period_type_WRITTEN_EXAM">Written exam</string>
+
+    <string name="isacademia_show_on_map">Show on map</string>
     
     <string name="isacademia_error_isacademia_down">PocketCampus tried to connect to IsAcademia servers, but they seem down.</string>
         
