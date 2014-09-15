@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using System;
 using PocketCampus.Camipro.ViewModels;
 using PocketCampus.Camipro.Views;
 using PocketCampus.Common;
