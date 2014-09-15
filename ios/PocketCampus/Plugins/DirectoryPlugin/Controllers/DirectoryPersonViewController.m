@@ -377,10 +377,12 @@ static CGFloat kRowHeight;
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         case kWebpageSection:
+        {
             [self trackAction:@"ViewWebsite" contentInfo:self.person.web];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.person.web]];
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            PCWebViewController* webViewController = [[PCWebViewController alloc] initWithURL:[NSURL URLWithString:self.person.web] title:nil];
+            [self.navigationController pushViewController:webViewController animated:YES];
             break;
+        }
         case kOfficeSection:
         {
             if (self.allowShowOfficeOnMap) {
@@ -491,6 +493,7 @@ static CGFloat kRowHeight;
             break;
         case kWebpageSection:
             cell.textLabel.text = NSLocalizedStringFromTable(@"Webpage", @"DirectoryPlugin", nil);
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.detailTextLabel.text = self.person.web;
             cell.detailTextLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
             cell.detailTextLabel.adjustsFontSizeToFitWidth = NO;

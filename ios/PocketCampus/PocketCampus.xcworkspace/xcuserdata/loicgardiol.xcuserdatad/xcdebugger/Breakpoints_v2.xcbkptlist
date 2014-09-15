@@ -168,11 +168,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectoryPersonViewController.m"
-            timestampString = "431002166.269838"
+            timestampString = "432488948.373941"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "437"
-            endingLineNumber = "437"
+            startingLineNumber = "439"
+            endingLineNumber = "439"
             landmarkName = "-tableView:performAction:forRowAtIndexPath:withSender:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2530,11 +2530,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectoryPersonViewController.m"
-            timestampString = "431002166.269838"
+            timestampString = "432488948.373941"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "494"
-            endingLineNumber = "494"
+            startingLineNumber = "497"
+            endingLineNumber = "497"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2546,11 +2546,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectoryPersonViewController.m"
-            timestampString = "431002166.269838"
+            timestampString = "432488948.373941"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "449"
-            endingLineNumber = "449"
+            startingLineNumber = "451"
+            endingLineNumber = "451"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6147,7 +6147,7 @@
                   symbolName = "__112-[CloudPrintController viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil:completion:]_block_invoke159"
                   moduleName = "PocketCampus"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-                  timestampString = "432485107.299093"
+                  timestampString = "432489076.530647"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "184"
@@ -6161,7 +6161,7 @@
                   symbolName = "__112-[CloudPrintController viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil:completion:]_block_invoke_2161"
                   moduleName = "PocketCampus"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-                  timestampString = "432485107.299353"
+                  timestampString = "432489076.530832"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "184"
@@ -6248,6 +6248,22 @@
             startingLineNumber = "123"
             endingLineNumber = "123"
             landmarkName = "-dateStringShort:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PocketCampus/Controllers/Common/PCWebViewController.m"
+            timestampString = "432489076.39153"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "133"
+            endingLineNumber = "133"
+            landmarkName = "-openInSafariTapped"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
