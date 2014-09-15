@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.Common.Controls
 {
-    public sealed class StatusDisplay : Control
+    public sealed class DataStatusDisplay : Control
     {
         #region DataStatus
         public DataStatus Data
@@ -18,7 +18,7 @@ namespace PocketCampus.Common.Controls
         }
 
         public static readonly DependencyProperty DataProperty =
-            DependencyProperty.Register( "Data", typeof( DataStatus ), typeof( StatusDisplay ), new PropertyMetadata( DataStatus.NoData ) );
+            DependencyProperty.Register( "Data", typeof( DataStatus ), typeof( DataStatusDisplay ), new PropertyMetadata( DataStatus.NoData ) );
         #endregion
 
         #region CacheStatus
@@ -29,11 +29,11 @@ namespace PocketCampus.Common.Controls
         }
 
         public static readonly DependencyProperty CacheProperty =
-            DependencyProperty.Register( "Cache", typeof( CacheStatus? ), typeof( StatusDisplay ), new PropertyMetadata( null, OnCacheChanged ) );
+            DependencyProperty.Register( "Cache", typeof( CacheStatus? ), typeof( DataStatusDisplay ), new PropertyMetadata( null, OnCacheChanged ) );
 
         private static void OnCacheChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
         {
-            ( (StatusDisplay) obj ).Update();
+            ( (DataStatusDisplay) obj ).Update();
         }
         #endregion
 
@@ -45,7 +45,7 @@ namespace PocketCampus.Common.Controls
         }
 
         public static readonly DependencyProperty RetryCommandProperty =
-            DependencyProperty.Register( "RetryCommand", typeof( ICommand ), typeof( StatusDisplay ), new PropertyMetadata( null ) );
+            DependencyProperty.Register( "RetryCommand", typeof( ICommand ), typeof( DataStatusDisplay ), new PropertyMetadata( null ) );
         #endregion
 
         #region TextStyle
@@ -56,11 +56,11 @@ namespace PocketCampus.Common.Controls
         }
 
         public static readonly DependencyProperty TextStyleProperty =
-            DependencyProperty.Register( "TextStyle", typeof( Style ), typeof( StatusDisplay ), new PropertyMetadata( null ) );
+            DependencyProperty.Register( "TextStyle", typeof( Style ), typeof( DataStatusDisplay ), new PropertyMetadata( null ) );
         #endregion
 
 
-        private static readonly ResourceLoader _resources = ResourceLoader.GetForViewIndependentUse( "PocketCampus.Common.WindowsRuntime/StatusDisplay" );
+        private static readonly ResourceLoader _resources = ResourceLoader.GetForViewIndependentUse( "PocketCampus.Common.WindowsRuntime/DataStatusDisplay" );
 
 
         private bool _progressIndicatorWasVisible;
@@ -68,9 +68,9 @@ namespace PocketCampus.Common.Controls
         private string _oldProgressIndicatorText;
 
 
-        public StatusDisplay()
+        public DataStatusDisplay()
         {
-            DefaultStyleKey = typeof( StatusDisplay );
+            DefaultStyleKey = typeof( DataStatusDisplay );
         }
 
 

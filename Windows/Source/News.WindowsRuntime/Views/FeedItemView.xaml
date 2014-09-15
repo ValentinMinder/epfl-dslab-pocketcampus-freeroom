@@ -51,7 +51,7 @@
             </Grid>
         </ScrollViewer>
         
-        <cc:LoadingAndError />
+        <!--<cc:LoadingAndError />-->
     </Grid>
     
     <cc:PageBase.BottomAppBar>

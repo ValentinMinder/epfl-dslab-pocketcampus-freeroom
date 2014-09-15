@@ -43,14 +43,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\CacheStatusDisplay.cs" />
     <Compile Include="Controls\Icon.cs" />
     <Compile Include="Controls\Switch.cs" />
-    <Compile Include="Controls\StatusDisplay.cs" />
+    <Compile Include="Controls\DataStatusDisplay.cs" />
     <Compile Include="Controls\PageBase.cs" />
-    <Compile Include="Controls\GroupedItemsControl.cs" />
-    <Compile Include="Controls\LoadingAndError.xaml.cs">
-      <DependentUpon>LoadingAndError.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\GroupedListView.cs" />
     <Compile Include="Controls\NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>
@@ -62,7 +60,6 @@
     <Compile Include="Html2Xaml\Html2XamlConverter.cs" />
     <Compile Include="Html2Xaml\Properties.cs" />
     <Compile Include="Html2Xaml\TagDefinition.cs" />
-    <Compile Include="ListViewEx.cs" />
     <Compile Include="LocalizationHelper.cs" />
     <Compile Include="Converters.cs" />
     <Compile Include="TextBoxEx.cs" />
@@ -71,14 +68,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\fr\LoadingAndError.resw" />
-    <PRIResource Include="Strings\en\LoadingAndError.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Controls\LoadingAndError.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\NumericUpDown.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -112,8 +101,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <PRIResource Include="Strings\fr\StatusDisplay.resw" />
-    <PRIResource Include="Strings\en\StatusDisplay.resw" />
+    <PRIResource Include="Strings\fr\CacheStatusDisplay.resw" />
+    <PRIResource Include="Strings\en\CacheStatusDisplay.resw" />
+    <PRIResource Include="Strings\fr\DataStatusDisplay.resw" />
+    <PRIResource Include="Strings\en\DataStatusDisplay.resw" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
 </Project>

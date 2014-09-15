@@ -14,9 +14,6 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
-            <c:BoolToVisibilityConverter x:Key="BoolToOppositeVisibility"
-                                         IsReversed="True" />
-            <c:EnumToStringConverter x:Key="EnumToString" />
             <my:MealTypeToImageConverter x:Key="MealTypeToImage" />
 
             <!-- Price target template for the ComboBox -->

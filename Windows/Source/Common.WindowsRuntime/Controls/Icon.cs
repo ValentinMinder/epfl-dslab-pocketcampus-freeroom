@@ -9,6 +9,9 @@ namespace PocketCampus.Common.Controls
 {
     public sealed class Icon : ContentControl
     {
+        // Icons are always square
+        public const int Size = 100;
+
         public string Data
         {
             get { return (string) GetValue( DataProperty ); }
@@ -39,8 +42,8 @@ namespace PocketCampus.Common.Controls
 
             var container = new Border
             {
-                Width = 100,
-                Height = 100,
+                Width = Size,
+                Height = Size,
                 Child = path
             };
             container.SetBinding( Border.BackgroundProperty, new Binding { Source = icon, Path = new PropertyPath( "Background" ) } );

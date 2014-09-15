@@ -16,10 +16,6 @@
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Converters -->
-            <c:NonNullToVisibilityConverter x:Key="NonNullToVisibility" />
-            <c:MoneyFormatConverter x:Key="MoneyFormat" />
-            <c:StringToVisibilityConverter x:Key="StringToVisibility" />
-            <c:BoolToVisibilityConverter x:Key="BoolToVisibility" />
             <my:MealPriceConverter x:Key="MealToPrice"
                                    Settings="{Binding Settings}" />
             <my:MealToImageConverter x:Key="MealToImage" />
@@ -144,18 +140,18 @@
                            Margin="19,8" />
         </Border>
         
-        <cc:GroupedItemsControl Grid.Row="2"
+        <cc:GroupedListView Grid.Row="2"
                                 ItemTemplate="{StaticResource MealTemplate}"
                                 GroupKeyPath="Name"
                                 Margin="19,0">
-            <cc:GroupedItemsControl.ItemsViewSource>
+            <cc:GroupedListView.ItemsViewSource>
                 <CollectionViewSource Source="{Binding Menu}"
                                       IsSourceGrouped="True"
                                       ItemsPath="Meals" />
-            </cc:GroupedItemsControl.ItemsViewSource>
-        </cc:GroupedItemsControl>
+            </cc:GroupedListView.ItemsViewSource>
+        </cc:GroupedListView>
         
-        <cc:LoadingAndError Grid.Row="2" />
+        <!--<cc:LoadingAndError Grid.Row="2" />-->
     </Grid>
     
     <cc:PageBase.BottomAppBar>

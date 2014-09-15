@@ -20,7 +20,6 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <c:EnumToStringConverter x:Key="EnumToString" />
             <my:DownloadStatusToBooleanConverter x:Key="DownloadStatusToBool" />
             <my:FileToIconElementConverter x:Key="FileToIcon" />
 
@@ -127,17 +126,17 @@
 
         <!-- TODO selected section binding
              TODO details -->
-        <cc:GroupedItemsControl Grid.Row="1"
+        <cc:GroupedListView Grid.Row="1"
                                 ItemTemplate="{StaticResource ResourceTemplate}"
                                 GroupKeyPath="DisplayTitle"
                                 Margin="19,0,0,0">
-            <cc:GroupedItemsControl.ItemsViewSource>
+            <cc:GroupedListView.ItemsViewSource>
                 <CollectionViewSource Source="{Binding Sections}"
                                       IsSourceGrouped="True"
                                       ItemsPath="Resources" />
-            </cc:GroupedItemsControl.ItemsViewSource>
-        </cc:GroupedItemsControl>
+            </cc:GroupedListView.ItemsViewSource>
+        </cc:GroupedListView>
         
-        <cc:LoadingAndError Grid.Row="1" />
+        <!--<cc:LoadingAndError Grid.Row="1" />-->
     </Grid>
 </cc:PageBase>

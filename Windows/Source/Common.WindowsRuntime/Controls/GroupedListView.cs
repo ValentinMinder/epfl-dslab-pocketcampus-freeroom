@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Media;
 namespace PocketCampus.Common.Controls
 {
     // Simpler way to deal with SemanticZoom
-    public sealed class GroupedItemsControl : ContentControl
+    public sealed class GroupedListView : ContentControl
     {
         private static readonly Brush ZoomedOutBackgroundBrush = new SolidColorBrush( new Color { A = 192, R = 0, G = 0, B = 0 } );
         private static readonly Brush ZoomedOutForegroundBrush = new SolidColorBrush( Colors.White );
@@ -25,7 +25,7 @@ namespace PocketCampus.Common.Controls
         }
 
         public static readonly DependencyProperty ItemsViewSourceProperty =
-            DependencyProperty.Register( "ItemsViewSource", typeof( CollectionViewSource ), typeof( GroupedItemsControl ), new PropertyMetadata( null ) );
+            DependencyProperty.Register( "ItemsViewSource", typeof( CollectionViewSource ), typeof( GroupedListView ), new PropertyMetadata( null ) );
         #endregion
 
         #region ItemTemplate
@@ -36,7 +36,7 @@ namespace PocketCampus.Common.Controls
         }
 
         public static readonly DependencyProperty ItemTemplateProperty =
-            DependencyProperty.Register( "ItemTemplate", typeof( DataTemplate ), typeof( GroupedItemsControl ), new PropertyMetadata( null ) );
+            DependencyProperty.Register( "ItemTemplate", typeof( DataTemplate ), typeof( GroupedListView ), new PropertyMetadata( null ) );
         #endregion
 
         #region GroupKeyPath
@@ -47,10 +47,10 @@ namespace PocketCampus.Common.Controls
         }
 
         public static readonly DependencyProperty GroupKeyPathProperty =
-            DependencyProperty.Register( "GroupKeyPath", typeof( string ), typeof( GroupedItemsControl ), new PropertyMetadata( null ) );
+            DependencyProperty.Register( "GroupKeyPath", typeof( string ), typeof( GroupedListView ), new PropertyMetadata( null ) );
         #endregion
 
-        public GroupedItemsControl()
+        public GroupedListView()
         {
             Loaded += ( _, __ ) =>
             {

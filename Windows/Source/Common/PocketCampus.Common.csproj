@@ -35,7 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AssemblyReader.cs" />
     <Compile Include="EmailSendingStatus.cs" />
     <Compile Include="EnumEx.cs" />
     <Compile Include="GeoLocationStatus.cs" />
@@ -71,7 +70,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionStatus.cs" />
     <Compile Include="SettingsUtils.cs" />
-    <Compile Include="TequilaAuthenticationException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThinMvvm">

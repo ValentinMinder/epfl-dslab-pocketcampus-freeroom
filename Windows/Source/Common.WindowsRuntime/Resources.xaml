@@ -22,23 +22,15 @@
     <SolidColorBrush x:Key="AppAccentBrush"
                      Color="#C9060C" />
     
-    <!-- All converters declared in Common
-         TODO: Evaluate the utility of each of them. -->
-    <my:BoolToVisibilityConverter x:Key="BoolToVisibility" />
-    <my:BoolToVisibilityConverter x:Key="BoolToOppositeVisibility"
-                                  IsReversed="True" />
+    <!-- All converters declared in Common -->
     <my:DictionaryFixer x:Key="DictionaryFixer" />
-    <my:EnumToStringConverter x:Key="EnumToString" />
-    <!-- TODO not needed any more thanks to Switch -->
-    <my:EnumToVisibilityConverter x:Key="EnumToVisibility" />
-    <my:MoneyFormatConverter x:Key="MoneyFormat" />
-    <my:NoItemsToVisibilityConverter x:Key="NoItemsToVisibility" />
-    <my:NonNullToVisibilityConverter x:Key="NonNullToVisibility" />
-    <my:NonZeroToVisibilityConverter x:Key="NonZeroToVisibility" />
     <my:StringFormatConverter x:Key="StringFormat" />
-    <my:StringToVisibilityConverter x:Key="StringToVisibility" />
-    <my:StringToVisibilityConverter x:Key="EmptyStringToVisibility"
-                                    IsReversed="True" />
+    <my:MoneyFormatConverter x:Key="MoneyFormat" />
+    <my:EnumToStringConverter x:Key="EnumToString" />
+    <my:NoItemsToVisibilityConverter x:Key="NoItemsToVisibility" />
+    <my:DefaultToVisibilityConverter x:Key="DefaultToVisibility" />
+    <my:DefaultToVisibilityConverter x:Key="NonDefaultToVisibility"
+                                     IsReversed="True" />
 
 
     <!-- Normal text (can't set it as default for whatever reason) -->
@@ -390,13 +382,13 @@
         </Setter>
     </Style>
 
-    <!-- Default style for StatusDisplay -->
-    <Style TargetType="myControls:StatusDisplay">
+    <!-- Default style for DataStatusDisplay -->
+    <Style TargetType="myControls:DataStatusDisplay">
         <Setter Property="TextStyle" Value="{StaticResource AppCenterTextBlockStyle}" />
         <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="myControls:StatusDisplay">
+                <ControlTemplate TargetType="myControls:DataStatusDisplay">
                     <myControls:Switch Value="{TemplateBinding Data}"
                                        Background="{TemplateBinding Background}">
                         <myControls:SwitchCase Values="Loading">
@@ -423,6 +415,24 @@
                                        Style="{TemplateBinding TextStyle}" />
                         </myControls:SwitchCase>
                     </myControls:Switch>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Default style for CacheStatusDisplay -->
+    <SolidColorBrush x:Key="AppCacheStatusDisplayBackgroundBrush" Color="#C9060C" />
+    <SolidColorBrush x:Key="AppCacheStatusDisplayForegroundBrush" Color="White" />
+    <Style TargetType="myControls:CacheStatusDisplay">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="myControls:CacheStatusDisplay">
+                    <Border Background="{StaticResource AppCacheStatusDisplayBackgroundBrush}">
+                        <TextBlock Text="{CustomResource Common.CacheStatusDisplay.Text}"
+                                   Style="{StaticResource AppNormalTextBlockStyle}"
+                                   Foreground="{StaticResource AppCacheStatusDisplayForegroundBrush}"
+                                   Margin="19,4" />
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

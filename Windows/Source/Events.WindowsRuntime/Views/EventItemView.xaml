@@ -15,13 +15,6 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <c:BoolToVisibilityConverter x:Key="BoolToVisibility" />
-            <c:BoolToVisibilityConverter x:Key="BoolToOppositeVisibility"
-                                         IsReversed="True" />
-            <c:StringToVisibilityConverter x:Key="StringToVisibility" />
-            <c:StringToVisibilityConverter x:Key="EmptyStringToVisibility"
-                                           IsReversed="True" />
-            <c:NonNullToVisibilityConverter x:Key="NonNullToVisibility" />
             <my:EventItemToHumanDateConverter x:Key="EventToDate" />
 
             <!-- Template for child pools -->
@@ -224,7 +217,7 @@
         </ScrollViewer>
 
         <!-- Loading & error -->
-        <cc:LoadingAndError Grid.Row="1"
-                            Grid.RowSpan="4" />
+        <!--<cc:LoadingAndError Grid.Row="1"
+                            Grid.RowSpan="4" />-->
     </Grid>
 </cc:PageBase>

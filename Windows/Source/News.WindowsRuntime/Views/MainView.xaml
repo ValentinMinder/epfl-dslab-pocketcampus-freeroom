@@ -66,18 +66,18 @@
                        Style="{StaticResource AppHeaderTextBlockStyle}" />
         </Border>
         
-        <cc:GroupedItemsControl Grid.Row="1"
+        <cc:GroupedListView Grid.Row="1"
                                          ItemTemplate="{StaticResource FeedItemTemplate}"
                                          GroupKeyPath="Name"
                                          Margin="19,0">
-            <cc:GroupedItemsControl.ItemsViewSource>
+            <cc:GroupedListView.ItemsViewSource>
                 <CollectionViewSource Source="{Binding Feeds}"
                                       IsSourceGrouped="True"
                                       ItemsPath="Items" />
-            </cc:GroupedItemsControl.ItemsViewSource>
-        </cc:GroupedItemsControl>
+            </cc:GroupedListView.ItemsViewSource>
+        </cc:GroupedListView>
         
-        <cc:LoadingAndError Grid.Row="1" />
+        <!--<cc:LoadingAndError Grid.Row="1" />-->
     </Grid>
     
     <cc:PageBase.BottomAppBar>

@@ -14,9 +14,6 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <c:StringToVisibilityConverter x:Key="StringToVisibility" />
-            <c:StringToVisibilityConverter x:Key="EmptyStringToVisibility"
-                                           IsReversed="True" />
             <my:EventItemToHumanDateConverter x:Key="EventItemToShortDate"
                                               IsCompact="True" />
 
@@ -103,13 +100,13 @@
                        Style="{StaticResource AppHeaderTextBlockStyle}" />
         </Border>
         
-        <cc:GroupedItemsControl Grid.Row="1"
+        <cc:GroupedListView Grid.Row="1"
                                 ItemTemplate="{StaticResource EventItemTemplate}"
                                 GroupKeyPath="CategoryName">
-            <cc:GroupedItemsControl.ItemsViewSource>
+            <cc:GroupedListView.ItemsViewSource>
                 <CollectionViewSource Source="{Binding ItemGroups}"
                                       IsSourceGrouped="True" />
-            </cc:GroupedItemsControl.ItemsViewSource>
-        </cc:GroupedItemsControl>
+            </cc:GroupedListView.ItemsViewSource>
+        </cc:GroupedListView>
     </Grid>
 </cc:PageBase>

@@ -18,8 +18,6 @@
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Converters -->
-            <c:EnumToStringConverter x:Key="EnumToString" />
-            <c:StringFormatConverter x:Key="StringFormat" />
             <my:PeriodTypeToBrushConverter x:Key="PeriodTypeToBrush" />
 
             <!-- Empty slot brushes -->
@@ -262,7 +260,7 @@
                         Visibility="Collapsed" />
 
         <!-- Loading & error -->
-        <cc:LoadingAndError Grid.Row="2" />
+        <!--<cc:LoadingAndError Grid.Row="2" />-->
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="OrientationStates">

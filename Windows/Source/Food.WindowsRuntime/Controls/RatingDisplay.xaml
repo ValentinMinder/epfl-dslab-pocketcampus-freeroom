@@ -9,8 +9,6 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
-            <c:StringFormatConverter x:Key="StringFormat" />
-            <c:NonZeroToVisibilityConverter x:Key="NonZeroToVisibility" />
             <my:VoteCountToStringConverter x:Key="VoteCountToString" />
         </ResourceDictionary>
     </UserControl.Resources>

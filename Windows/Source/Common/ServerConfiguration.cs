@@ -12,9 +12,6 @@ namespace PocketCampus.Common
     /// <summary>
     /// Server configuration information.
     /// </summary>
-    /// <remarks>
-    /// Properties in this class have public setters for the settings serializer.
-    /// </remarks>
     [DataContract]
     public sealed class ServerConfiguration
     {

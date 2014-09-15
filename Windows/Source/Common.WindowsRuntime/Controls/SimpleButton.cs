@@ -61,6 +61,7 @@ namespace PocketCampus.Common.Controls
             DependencyProperty.Register( "Flyout", typeof( FlyoutBase ), typeof( SimpleButton ), new PropertyMetadata( null ) );
         #endregion
 
+
         public SimpleButton()
         {
             DefaultStyleKey = typeof( SimpleButton );
@@ -99,6 +100,7 @@ namespace PocketCampus.Common.Controls
                 }
             };
         }
+
 
         private void Command_CanExecuteChanged( object sender, EventArgs e )
         {

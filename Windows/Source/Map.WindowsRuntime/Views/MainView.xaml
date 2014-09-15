@@ -63,11 +63,11 @@
                           Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}"
                           Margin="19,0" />
             
-            <cc:LoadingAndError DataContext="{Binding SearchProvider}"
+            <!--<cc:LoadingAndError DataContext="{Binding SearchProvider}"
                                 FontSize="{StaticResource TextStyleLargeFontSize}"
                                 Background="Transparent"
                                 HorizontalContentAlignment="Left"
-                                Margin="19,4" />
+                                Margin="19,4" />-->
         </StackPanel>
 
         <map:MapControl x:Name="Map"

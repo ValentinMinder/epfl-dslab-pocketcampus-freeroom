@@ -62,13 +62,13 @@
             </DataTemplate>
 
             <DataTemplate x:Key="MenuPartTemplate">
-                <cc:GroupedItemsControl ItemTemplate="{StaticResource BeerTemplate}"
+                <cc:GroupedListView ItemTemplate="{StaticResource BeerTemplate}"
                                         GroupKeyPath="Key">
-                    <cc:GroupedItemsControl.ItemsViewSource>
+                    <cc:GroupedListView.ItemsViewSource>
                         <CollectionViewSource Source="{Binding Value, Converter={StaticResource MenuPartToGroup}}"
                                               IsSourceGrouped="True" />
-                    </cc:GroupedItemsControl.ItemsViewSource>
-                </cc:GroupedItemsControl>
+                    </cc:GroupedListView.ItemsViewSource>
+                </cc:GroupedListView>
             </DataTemplate>
 
             <DataTemplate x:Key="MenuPartHeaderTemplate">
@@ -94,7 +94,7 @@
                ItemTemplate="{StaticResource MenuPartTemplate}"
                HeaderTemplate="{StaticResource MenuPartHeaderTemplate}" />
 
-        <cc:LoadingAndError Grid.Row="1" />
+        <!--<cc:LoadingAndError Grid.Row="1" />-->
     </Grid>
 
     <cc:PageBase.BottomAppBar>

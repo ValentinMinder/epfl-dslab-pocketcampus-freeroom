@@ -13,9 +13,6 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
-            <c:DictionaryFixer x:Key="DictionaryFix" />
-            <c:StringToVisibilityConverter x:Key="StringToVisibility" />
-
             <!-- Role template -->
             <DataTemplate x:Key="RoleTemplate">
                 <StackPanel Margin="0,0,0,16">

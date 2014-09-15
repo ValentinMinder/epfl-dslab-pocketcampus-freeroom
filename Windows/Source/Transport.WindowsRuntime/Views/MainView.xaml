@@ -15,9 +15,6 @@
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Converters -->
-            <c:NonNullToVisibilityConverter x:Key="NonNullToVisibility" />
-            <c:EnumToVisibilityConverter x:Key="EnumToVisibility" />
-            <c:StringFormatConverter x:Key="StringFormat" />
             <my:TakeNConverter x:Key="Take3Converter"
                                Count="3" />
             <my:DateToStringConverter x:Key="DateToString"
@@ -179,8 +176,8 @@
                             </cc:SimpleButton>
 
                             <!-- Small loading and error indicator -->
-                            <cc:LoadingAndError HorizontalAlignment="Left"
-                                                FontSize="{StaticResource TextStyleMediumFontSize}" />
+                            <!--<cc:LoadingAndError HorizontalAlignment="Left"
+                                                FontSize="{StaticResource TextStyleMediumFontSize}" />-->
                         </StackPanel>
                     </ToggleSwitch.Header>
 
@@ -241,8 +238,8 @@
                   Margin="19,0,2,0" />
 
         <!-- Loading & error -->
-        <cc:LoadingAndError Grid.RowSpan="3"
-                            Grid.Row="1" />
+        <!--<cc:LoadingAndError Grid.RowSpan="3"
+                            Grid.Row="1" />-->
     </Grid>
 
     <!-- App bar -->

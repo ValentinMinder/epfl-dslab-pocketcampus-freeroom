@@ -41,6 +41,6 @@
                   ItemsSource="{Binding Courses}"
                   ItemTemplate="{StaticResource CourseTemplate}" />
         
-        <cc:LoadingAndError Grid.Row="1" />
+        <!--<cc:LoadingAndError Grid.Row="1" />-->
     </Grid>
 </cc:PageBase>

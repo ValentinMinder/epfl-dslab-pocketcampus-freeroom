@@ -64,7 +64,7 @@
                    Margin="19,0" />
 
         <!-- Loading and error -->
-        <cc:LoadingAndError Grid.Row="4" />
+        <!--<cc:LoadingAndError Grid.Row="4" />-->
 
         <!-- "Rate" button -->
         <Button Grid.Row="5"

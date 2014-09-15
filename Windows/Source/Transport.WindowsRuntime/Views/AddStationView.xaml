@@ -60,6 +60,6 @@
                       Margin="19,0" />
 
         <!-- Loading and error -->
-        <cc:LoadingAndError Grid.Row="2" />
+        <!--<cc:LoadingAndError Grid.Row="2" />-->
     </Grid>
 </cc:PageBase>

@@ -31,7 +31,6 @@ namespace PocketCampus.Common
         }
     }
 
-    // TODO sort this mess of converters, make some more generic ones
     public sealed class StringFormatConverter : ValueConverter<object, string, string>
     {
         public override string Convert( object value, string parameter )
@@ -73,31 +72,6 @@ namespace PocketCampus.Common
         }
     }
 
-    public sealed class BoolToVisibilityConverter : ValueConverter<bool, Visibility>
-    {
-        public bool IsReversed { get; set; }
-
-        public override Visibility Convert( bool value )
-        {
-            if ( IsReversed )
-            {
-                return value ? Visibility.Collapsed : Visibility.Visible;
-            }
-
-            return value ? Visibility.Visible : Visibility.Collapsed;
-        }
-    }
-
-    public sealed class EnumToVisibilityConverter : ValueConverter<Enum, string, Visibility>
-    {
-        public override Visibility Convert( Enum value, string parameter )
-        {
-            // for some reason, == returns false on equal enums...
-            // TODO: Investigate.
-            return object.Equals( value, Enum.Parse( value.GetType(), parameter ) ) ? Visibility.Visible : Visibility.Collapsed;
-        }
-    }
-
     public sealed class NoItemsToVisibilityConverter : ValueConverter<IEnumerable, Visibility>
     {
         public override Visibility Convert( IEnumerable value )
@@ -112,34 +86,14 @@ namespace PocketCampus.Common
         }
     }
 
-    public sealed class StringToVisibilityConverter : ValueConverter<string, Visibility>
+    public sealed class DefaultToVisibilityConverter : ValueConverter<object, Visibility>
     {
         public bool IsReversed { get; set; }
 
-        public override Visibility Convert( string value )
-        {
-            if ( IsReversed )
-            {
-                return string.IsNullOrWhiteSpace( value ) ? Visibility.Visible : Visibility.Collapsed;
-            }
-
-            return string.IsNullOrWhiteSpace( value ) ? Visibility.Collapsed : Visibility.Visible;
-        }
-    }
-
-    public sealed class NonNullToVisibilityConverter : ValueConverter<object, Visibility>
-    {
         public override Visibility Convert( object value )
         {
-            return value == null ? Visibility.Collapsed : Visibility.Visible;
-        }
-    }
-
-    public sealed class NonZeroToVisibilityConverter : ValueConverter<int, Visibility>
-    {
-        public override Visibility Convert( int value )
-        {
-            return value == 0 ? Visibility.Collapsed : Visibility.Visible;
+            // kind of hack-y... but it works; Collapsed if non-reversed and default or reversed and non-default, Visible otherwise.
+            return ( value == Activator.CreateInstance( value.GetType() ) ^ IsReversed ) ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 }
