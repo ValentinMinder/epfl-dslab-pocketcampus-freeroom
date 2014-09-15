@@ -445,7 +445,6 @@
 		32FDA99D1854A06F00C6393A /* NSOperationWithDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA99C1854A06F00C6393A /* NSOperationWithDelegate.m */; };
 		32FDA9A11854B5E600C6393A /* PCServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA9A01854B5E600C6393A /* PCServiceRequest.m */; settings = {COMPILER_FLAGS = "-fobjc-arc-exceptions"; }; };
 		32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF46541636FB2500932FF5 /* PluginNavigationController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32FF91E119C62F7A00559E1E /* CloudPrintAction.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 32FF91D619C62F7A00559E1E /* CloudPrintAction.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		32FF91EC19C62FC300559E1E /* CloudPrintActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF91E919C62FC300559E1E /* CloudPrintActionViewController.m */; };
 		32FF91ED19C62FC300559E1E /* CloudPrintActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF91E919C62FC300559E1E /* CloudPrintActionViewController.m */; };
 		32FF91EE19C62FC300559E1E /* CloudPrintAction-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32FF91EA19C62FC300559E1E /* CloudPrintAction-Info.plist */; };
@@ -486,13 +485,6 @@
 			remoteGlobalIDString = 32136F32193FBCFF002905A9;
 			remoteInfo = CamiproWidget;
 		};
-		32FF91DF19C62F7A00559E1E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3219EF4314FCDE4800A271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 32FF91D519C62F7A00559E1E;
-			remoteInfo = CloudPrintAction;
-		};
 		32FF91E219C62F7A00559E1E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3219EF4314FCDE4800A271CD /* Project object */;
@@ -510,7 +502,6 @@
 			dstSubfolderSpec = 13;
 			files = (
 				325FABC819C6FF600075370F /* CamiproWidget.appex in Embed App Extensions */,
-				32FF91E119C62F7A00559E1E /* CloudPrintAction.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2688,7 +2679,6 @@
 			);
 			dependencies = (
 				32136F41193FBCFF002905A9 /* PBXTargetDependency */,
-				32FF91E019C62F7A00559E1E /* PBXTargetDependency */,
 				32FF91E319C62F7A00559E1E /* PBXTargetDependency */,
 				325FABCA19C6FF610075370F /* PBXTargetDependency */,
 			);
@@ -3370,11 +3360,6 @@
 			target = 32136F32193FBCFF002905A9 /* CamiproWidget */;
 			targetProxy = 325FABC919C6FF610075370F /* PBXContainerItemProxy */;
 		};
-		32FF91E019C62F7A00559E1E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 32FF91D519C62F7A00559E1E /* CloudPrintAction */;
-			targetProxy = 32FF91DF19C62F7A00559E1E /* PBXContainerItemProxy */;
-		};
 		32FF91E319C62F7A00559E1E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 32FF91D519C62F7A00559E1E /* CloudPrintAction */;
@@ -3832,6 +3817,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -3868,6 +3854,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;

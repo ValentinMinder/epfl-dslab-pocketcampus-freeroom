@@ -115,6 +115,7 @@ NSNumber* kEventItemCategoryFeatured;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         formatter = [NSDateFormatter new];
+        formatter.doesRelativeDateFormatting = YES;
     });
     
     NSDate* startDate = [NSDate dateWithTimeIntervalSince1970:self.startDate/1000];
@@ -128,7 +129,7 @@ NSNumber* kEventItemCategoryFeatured;
     NSString* startDateString = [formatter stringFromDate:startDate];
     
     formatter.dateStyle = oneDayEvent ? NSDateFormatterNoStyle : NSDateFormatterShortStyle;
-    formatter.timeStyle = self.fullDay || (!oneDayEvent && shortBool) ? NSDateFormatterNoStyle : formatter.dateStyle;
+    formatter.timeStyle = self.fullDay || shortBool || self.startDate == self.realEndDate ? NSDateFormatterNoStyle : NSDateFormatterShortStyle;
     
     NSString* endDateString = [formatter stringFromDate:endDate];
     
