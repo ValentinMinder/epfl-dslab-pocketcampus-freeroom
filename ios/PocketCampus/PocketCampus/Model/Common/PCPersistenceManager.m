@@ -209,11 +209,7 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
 
 #pragma mark - Complex objects persistence
 
-#ifdef DEBUG
-static NSString* const kBundleIdentifier = @"org.pocketcampus.dev";
-#else
 static NSString* const kBundleIdentifier = @"org.pocketcampus";
-#endif
 
 + (NSString*)appGroupBundleIdentifierPersistencePath {
     static NSString* appSupportBundlePath = nil;
