@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="cloudprint_plugin_title">CloudPrint</string>
+    <string name="cloudprint_plugin_title">EPFL CloudPrint</string>
     
     <string name="cloudprint_dialog_button_upload">Uploader</string>
     <string name="cloudprint_dialog_button_print">Imprimer</string>
