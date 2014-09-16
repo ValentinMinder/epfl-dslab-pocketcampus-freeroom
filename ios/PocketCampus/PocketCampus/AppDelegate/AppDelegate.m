@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
 //  Created by Loïc Gardiol on 28.02.12.
 
 #import "AppDelegate.h"
@@ -39,6 +38,7 @@
 NSString* const kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification = @"AppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification";
 NSString* const kAppDelegatePushDeviceTokenStringUserInfoKey = @"AppDelegatePushDeviceTokenStringUserInfoKey";
 NSString* const kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification = @"AppDelegateAppFailedToRegisterForRemoteNotificationsNotification";
+NSString* const kAppDelegateAppDidRegisterUserNotificationSettingsNotification = @"AppDelegateAppDidRegisterUserNotificationSettingsNotification";
 
 static id test __strong __unused = nil;
 
@@ -60,6 +60,15 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
+#if TARGET_IPHONE_SIMULATOR
+    NSLog(@"Application Support: %@", [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject]);
+#endif
+    [PCPersistenceManager migrateDataOnceToSharedAppGroupPersistence];
+    
+    // So that [[UIDevice currentDevice] orientation] returns a correct value (see doc)
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    
     // Need to start monitoring, otherwise sharedManager.networkReachabilityStatus is wrong
     // Bug in AFNetworkReachabilityManager ?
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
@@ -134,6 +143,10 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
     return [window.rootViewController supportedInterfaceOrientations];
 }
 
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAppDelegateAppDidRegisterUserNotificationSettingsNotification object:self];
+}
+
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSString* deviceTokenString = [[[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]] stringByReplacingOccurrencesOfString:@" " withString:@""];
     NSNotification* notif = [NSNotification notificationWithName:kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification object:self userInfo:@{kAppDelegatePushDeviceTokenStringUserInfoKey:deviceTokenString}];
@@ -147,7 +160,7 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSString* pluginName = userInfo[@"pluginName"];
     NSString* message = userInfo[@"aps"][@"alert"];
-    CLSNSLog(@"-> Notification received for plugin %@: %@  (userInfo:%@)", pluginName, message, userInfo);
+    CLSNSLog(@"-> Notification received for plugin '%@': %@  (userInfo:%@)", pluginName, message, userInfo);
     [[NSNotificationCenter defaultCenter] postNotificationName:[self.class nsNotificationNameForPluginLowerIdentifier:[pluginName lowercaseString]] object:self userInfo:userInfo];
 }
 

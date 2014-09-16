@@ -34,41 +34,36 @@
 
 #import "AppDelegate.h"
 
+@interface PushNotifDeviceRegistrationObserver: NSObject
+
+@property (nonatomic, copy) PushNotifDeviceRegistrationSuccessBlock successBlock;
+@property (nonatomic, copy) PushNotifDeviceRegistrationFailureBlock failureBlock;
+
+@end
+
+@implementation PushNotifDeviceRegistrationObserver
+
+@end
+
 static NSMutableDictionary* observerInstanceForNSNotificationCenterObserver __strong = nil;
 
 @interface PushNotifController ()<UIAlertViewDelegate>
 
 @end
 
-@implementation PushNotifDeviceRegistrationObserver
-
-- (void)deleteMappingForDummy:(NSString*)dummy didReturn:(int32_t)status {
-    //we consider that if it did return, it's ok
-    self.successBlock();
-}
-
-- (void)deleteMappingFailedForDummy:(NSString*)dummy {
-    self.failureBlock(0);
-}
-
-- (void)serviceConnectionToServerFailed {
-    self.failureBlock(0);
-}
-
-@end
-
 static NSString* const kNotificationsDeviceTokenKey = @"NotificationsDeviceToken";
 static NSString* notificationsDeviceTokenCache __strong = nil;
 
-static PushNotifController* instance __weak = nil;
-
-static PushNotifService* pushNotifService __strong = nil; //used to retain service during unregistration
-static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = nil;
+static PushNotifController* instance __strong = nil;
 
 @interface PushNotifController ()
 
 @property (nonatomic, strong) UIAlertView* pushNotifsReasonAlert;
 @property (nonatomic, strong) NSMutableArray* regObservers; //array of PushNotifDeviceRegistrationObserver
+
+@property (nonatomic, strong) id remoteSuccessObserver;
+@property (nonatomic, strong) id remoteFailureObserver;
+@property (nonatomic, strong) id notifSettingsObserver;
 
 @end
 
@@ -94,36 +89,19 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
     }
 }
 
++ (instancetype)sharedInstance {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[self alloc] init];
+    });
+    return instance;
+}
+
 #pragma mark - PluginController
 
 + (id)sharedInstanceToRetain {
-    @synchronized (self) {
-        if (instance) {
-            return instance;
-        }
-#if __has_feature(objc_arc)
-        return [[[self class] alloc] init];
-#else
-        return [[[[self class] alloc] init] autorelease];
-#endif
-    }
+    return [self sharedInstance];
 }
-
-//new push-notif system makes that plugins are responsible for user-to-device mapping, so no
-//obvious relation with authentication logout. Might need to keep token even after logout.
-/*+ (void)initObservers {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-            if ([self notificationsDeviceToken] == nil) {
-                CLSNSLog(@"-> PushNotif received %@ notification. No saved device token to unregister, returning.", kAuthenticationLogoutNotification);
-                return;
-            }
-            CLSNSLog(@"-> PushNotif received %@ notification. Now unregistrating from push notifs...", kAuthenticationLogoutNotification);
-            [self unregisterAfterLogout];
-        }];
-    });
-}*/
 
 + (NSString*)localizedName {
     return NSLocalizedStringFromTable(@"PluginName", @"PushNotifPlugin", @"");
@@ -142,23 +120,20 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
     return notificationsDeviceTokenCache;
 }
 
-- (void)registerDeviceForPushNotificationsWithPluginLowerIdentifier:(NSString*)pluginLowerIdentifier reason:(NSString*)reason success:(VoidBlock)success failure:(PushNotifDeviceRegistrationFailureBlock)failure {
-    
+- (void)registerDeviceForPushNotificationsWithPluginLowerIdentifier:(NSString*)pluginLowerIdentifier reason:(NSString*)reason success:(PushNotifDeviceRegistrationSuccessBlock)success failure:(PushNotifDeviceRegistrationFailureBlock)failure {
     @synchronized(self) {
-        
         NSString* token = [PushNotifController notificationsDeviceToken];
-#warning test if pop-up already presented
         if (!token && reason && !self.pushNotifsReasonAlert) {
             //first plugin to ask will be the one that will get his reason poped-up
             NSString* localizedIdentifier = [[MainController publicController] localizedPluginIdentifierForAnycaseIdentifier:pluginLowerIdentifier];
-            self.pushNotifsReasonAlert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"PushNotifsAlertTitleWithFormat", @"PushNotifPlugin", nil), localizedIdentifier] message:reason delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            self.pushNotifsReasonAlert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"PushNotifsAlertTitleWithFormat", @"PushNotifPlugin", nil), localizedIdentifier] message:reason delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"PushNotifsAlertRejectButtonTitle", @"PushNotifPlugin", nil) otherButtonTitles:NSLocalizedStringFromTable(@"PushNotifsAlertAcceptButtonTitle", @"PushNotifPlugin", nil), nil];
         }
         
-		PushNotifDeviceRegistrationObserver* regObserver = [[PushNotifDeviceRegistrationObserver alloc] init];
+		PushNotifDeviceRegistrationObserver* regObserver = [PushNotifDeviceRegistrationObserver new];
 		regObserver.successBlock = success;
 		regObserver.failureBlock = failure;
         [self.regObservers addObject:regObserver];
-		if ([self.regObservers count] == 1) { //first observer, need to start device registration procedure
+		if (self.regObservers.count == 1) { //first observer, need to start device registration procedure
             if (self.pushNotifsReasonAlert && !self.pushNotifsReasonAlert.visible) {
                 //registration to OS will be started when ok pressed (see delegate method)
                 [self.pushNotifsReasonAlert show];
@@ -173,7 +148,8 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 }
 
 
-- (void)addPushNotificationObserver:(id)observer forPluginLowerIdentifier:(NSString*)pluginLowerIdentifier newNotificationBlock:(NewNotificationBlock)newNotificationBlock; {
+- (void)addPushNotificationObserver:(id)observer forPluginLowerIdentifier:(NSString*)pluginLowerIdentifier newNotificationBlock:(void (^)(NSString* notifMessage, NSDictionary* notifFullDictionary))newNotificationBlock {
+#ifndef TARGET_IS_EXTENSION
     if (!observer) {
         [NSException raise:@"Illegal argument" format:@"observer parameter cannot be nil"];
     }
@@ -181,16 +157,15 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
     if (![[MainController publicController] isPluginAnycaseIdentifierValid:pluginLowerIdentifier]) {
         [NSException raise:@"Illegal argument" format:@"%@ is not a valid plugin identifier", pluginLowerIdentifier];
     }
-    
     id nsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:[AppDelegate nsNotificationNameForPluginLowerIdentifier:pluginLowerIdentifier] object:nil queue:nil usingBlock:^(NSNotification *notif) {
         newNotificationBlock(notif.userInfo[@"aps"][@"alert"], notif.userInfo);
     }];
-    
     observerInstanceForNSNotificationCenterObserver[[NSString stringWithFormat:@"%p", observer]] = nsObserver;
-    
+#endif
 }
 
 - (void)removeObserver:(id)observer forPluginLowerIdentifier:(NSString*)pluginLowerIdentifier {
+#ifndef TARGET_IS_EXTENSION
     if (!observer) {
         [NSException raise:@"Illegal argument" format:@"observer parameter cannot be nil"];
     }
@@ -203,95 +178,158 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 
     [[NSNotificationCenter defaultCenter] removeObserver:nsObserver name:[AppDelegate nsNotificationNameForPluginLowerIdentifier:pluginLowerIdentifier] object:nil];
     
-    [observerInstanceForNSNotificationCenterObserver removeObjectForKey:key];
+    [observerInstanceForNSNotificationCenterObserver removeObjectForKey:key];    
+#endif
 }
 
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (alertView == self.pushNotifsReasonAlert) {
-        [self observeAndStartDeviceRegistrationProcessOnOS];
+        if (buttonIndex == alertView.cancelButtonIndex) {
+            for (PushNotifDeviceRegistrationObserver* observer in self.regObservers) {
+                if (observer.failureBlock) {
+                    observer.failureBlock(PushNotifRegistrationErrorUserDeniedBufferAlert);
+                }
+            }
+            [self cleanupAfterRegistration];
+        } else {
+#ifndef TARGET_IS_EXTENSION
+            [self observeAndStartDeviceRegistrationProcessOnOS];
+#endif
+        }
         //now starting registration to iOS
         self.pushNotifsReasonAlert = nil;
     }
 }
 
-#pragma mark - AppDelegate registration notifications
-
-- (void)registrationSuccessNotification:(NSNotification*)notification {
-    NSString* token = notification.userInfo[kAppDelegatePushDeviceTokenStringUserInfoKey];
-    [self saveNotificationsDeviceToken:token];
-    CLSNSLog(@"-> Registration to push notifications succeeded. Device token has been saved.");
-    for (PushNotifDeviceRegistrationObserver* observer in self.regObservers) {
-        if (observer.successBlock) {
-            observer.successBlock();
-        }
-    }
-    [self cleanUpAfterRegistrationProcess];
-}
-
-- (void)registrationFailureNotification:(NSNotification*)notification {
-    CLSNSLog(@"!! ERROR: registration to push notifications failed.");
-    [PushNotifController deleteNotificationsDeviceToken];
-    for (PushNotifDeviceRegistrationObserver* observer in self.regObservers) {
-        if (observer.failureBlock) {
-            observer.failureBlock(PushNotifRegistrationErrorInternal);
-        }
-    }
-    [self cleanUpAfterRegistrationProcess];
-}
-
 #pragma mark - Private utils
 
-/*+ (void)unregisterAfterLogout {
-    [[UIApplication sharedApplication] unregisterForRemoteNotifications]; //even though doc says it should be used in rare occasions only, we really want to prevent newly logged in user from receiving old notifications. This is a good way (if unregistraton to server fails).
-    NSString* tokenToUnregister = [self notificationsDeviceToken];
-    if (tokenToUnregister) {
-        [pushNotifService cancelOperationsForDelegate:unregistrationDelegate];
-        if (!pushNotifService) {
-            pushNotifService = [PushNotifService sharedInstanceToRetain];
-        }
-        if (!unregistrationDelegate) {
-            unregistrationDelegate = [PushNotifDeviceRegistrationObserver new];
-            unregistrationDelegate.successBlock = ^{
-                //token has been successfully demapped server-side, we can delete the token
-                //and release service
-                [self deleteNotificationsDeviceToken];
-                pushNotifService = nil;
-                unregistrationDelegate = nil;
-                CLSNSLog(@"-> PushNotif device token was successfully unregistered on server and locally after logout");
-            };
-            unregistrationDelegate.failureBlock = ^(PushNotifDeviceRegistrationError error){
-                //we absolutely need to keep going, add just a time to not be too fast
-                CLSNSLog(@"!! ERROR: PushNotif device token unregistration request to server failed, retrying in 2 seconds...");
-                [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(unregisterAfterLogout) userInfo:nil repeats:NO];
-            };
-        }
-        CLSNSLog(@"-> PushNotif: starting unregistration request to server (token: %@).....", tokenToUnregister);
-        [pushNotifService deleteMappingWithDummy:@"dummy" delegate:unregistrationDelegate];
-    }
-}*/
-
 - (void)observeAndStartDeviceRegistrationProcessOnOS {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registrationSuccessNotification:) name:kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registrationFailureNotification:) name:kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification object:nil];
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
+    UIApplication* sharedApplication = nil;
+    NSString* remoteSuccessNotifName = nil;
+    NSString* remoteFailureNotifName = nil;
+    NSString* didRegisterSettingsNotifName = nil;
+    NSString* tokenKey = nil;
+#ifndef TARGET_IS_EXTENSION
+    sharedApplication = [UIApplication sharedApplication];
+    remoteSuccessNotifName = kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification;
+    remoteFailureNotifName = kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification;
+    didRegisterSettingsNotifName = kAppDelegateAppDidRegisterUserNotificationSettingsNotification;
+    tokenKey = kAppDelegatePushDeviceTokenStringUserInfoKey;
+#endif
+    if (!sharedApplication) {
+        return;
+    }
+    
+    __weak __typeof(self) welf = self;
+    
+    if ([UIUserNotificationSettings class]) { // >= iOS 8
+        // Need to both register for notifs settings (permission required) and remote notifs (not permission required from user)
+        self.notifSettingsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:didRegisterSettingsNotifName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif1) {
+            
+            [[NSNotificationCenter defaultCenter] removeObserver:welf.notifSettingsObserver];
+            
+            CLSNSLog(@"-> (iOS 8) UIUserNotificationSettings registration done. Now registering to get device token...");
+            
+            welf.remoteSuccessObserver = [[NSNotificationCenter defaultCenter] addObserverForName:remoteSuccessNotifName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif2) {
+
+                NSString* token = notif2.userInfo[tokenKey];
+                [welf.class saveNotificationsDeviceToken:token];
+                
+                CLSNSLog(@"-> (iOS 8) Push notif token obtained (%@). Calling success on observers.", token);
+                
+                UIUserNotificationSettings* currentSettings = [sharedApplication currentUserNotificationSettings];
+                for (PushNotifDeviceRegistrationObserver* observer in welf.regObservers) {
+                    if (observer.successBlock) {
+                        observer.successBlock(currentSettings.types & UIUserNotificationTypeAlert, currentSettings.types & UIUserNotificationTypeBadge, currentSettings.types & UIUserNotificationTypeSound);
+                    }
+                }
+                [welf cleanupAfterRegistration];
+            
+            }];
+            welf.remoteFailureObserver = [[NSNotificationCenter defaultCenter] addObserverForName:remoteFailureNotifName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+                
+                [welf.class deleteNotificationsDeviceToken];
+                
+                CLSNSLog(@"-> (iOS 8) ERROR: PushNotif device token registration failure. Calling failure on observers.");
+                
+                for (PushNotifDeviceRegistrationObserver* observer in welf.regObservers) {
+                    if (observer.failureBlock) {
+                        observer.failureBlock(PushNotifRegistrationErrorInternal);
+                    }
+                }
+                [welf cleanupAfterRegistration];
+            }];
+            [sharedApplication registerForRemoteNotifications];
+        }];
+        [sharedApplication registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+        
+    } else {
+        // Prior to iOS 8, register for remote notifs and notifs UI is done in one shot
+        self.remoteSuccessObserver = [[NSNotificationCenter defaultCenter] addObserverForName:remoteSuccessNotifName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            
+            NSString* token = notif.userInfo[tokenKey];
+            [welf.class saveNotificationsDeviceToken:token];
+            
+            CLSNSLog(@"-> (iOS 7) PushNotif device token registration success. Calling success on observers.");
+            
+            for (PushNotifDeviceRegistrationObserver* observer in welf.regObservers) {
+                if (observer.successBlock) {
+                    observer.successBlock(YES, YES, YES); // before iOS 8, success in registring remote notifs ensured all registered types to be accepted.
+                }
+            }
+            [welf cleanupAfterRegistration];
+            
+        }];
+        self.remoteFailureObserver = [[NSNotificationCenter defaultCenter] addObserverForName:remoteFailureNotifName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            
+            [welf.class deleteNotificationsDeviceToken];
+            
+            CLSNSLog(@"-> (iOS 7) ERROR: PushNotif device token registration failure. Calling failure on observers.");
+            
+            for (PushNotifDeviceRegistrationObserver* observer in welf.regObservers) {
+                if (observer.failureBlock) {
+                    observer.failureBlock(PushNotifRegistrationErrorInternal);
+                }
+            }
+            [welf cleanupAfterRegistration];
+            
+        }];
+#ifndef TARGET_IS_EXTENSION
+        [sharedApplication registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
+#endif
+    }
 }
 
-- (void)cleanUpAfterRegistrationProcess {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification object:nil];
+- (void)cleanupAfterRegistration {
+    if (self.remoteSuccessObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.remoteSuccessObserver];
+    }
+    if (self.remoteFailureObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.remoteFailureObserver];
+    }
+    if (self.notifSettingsObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.notifSettingsObserver];
+    }
+    self.remoteSuccessObserver = nil;
+    self.remoteFailureObserver = nil;
+    self.notifSettingsObserver = nil;
     [self.regObservers removeAllObjects];
     self.pushNotifsReasonAlert = nil; //should be done already
 }
 
 - (BOOL)notificationsEnabled {
+#ifdef TARGET_IS_EXTENSION
+    return NO;
+#else
     UIRemoteNotificationType enabledTypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
     BOOL enabled = ((enabledTypes & UIRemoteNotificationTypeAlert));
     return enabled;
+#endif
 }
 
-- (void)saveNotificationsDeviceToken:(NSString*)token {
++ (void)saveNotificationsDeviceToken:(NSString*)token {
     [PCUtils throwExceptionIfObject:token notKindOfClass:[NSString class]];
     [[PCPersistenceManager userDefaultsForPluginName:@"pushnotif"] setObject:token forKey:kNotificationsDeviceTokenKey];
     [[PCPersistenceManager userDefaultsForPluginName:@"pushnotif"] synchronize];
@@ -309,7 +347,6 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [pushNotifService cancelOperationsForDelegate:unregistrationDelegate];
     @synchronized(self) {
         instance = nil;
     }

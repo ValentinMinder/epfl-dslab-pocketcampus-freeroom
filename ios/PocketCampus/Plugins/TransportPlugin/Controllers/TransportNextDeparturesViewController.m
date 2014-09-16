@@ -94,7 +94,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 @property (nonatomic, strong) IBOutlet UIBarButtonItem* stationsListButton;
 
 @property (nonatomic, strong) UITableViewController* tableViewController;
-@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+@property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 
 @property (nonatomic, strong) TransportService* transportService;
 @property (nonatomic, strong) NSOrderedSet* usersStations;
@@ -131,7 +131,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     [super viewDidLoad];
     self.tableViewController = [[UITableViewController alloc] initWithStyle:self.tableView.style];
     [self addChildViewController:self.tableViewController];
-    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self.tableViewController refreshedDataIdentifier:nil];
+    self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self.tableViewController refreshedDataIdentifier:nil];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     self.tableViewController.tableView = self.tableView;
     self.tableView.hidden = YES;
@@ -472,8 +472,14 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 
 - (void)nearestUserTransportStationFailed:(LocationFailureReason)reason {
     switch (reason) {
-        case LocationFailureReasonUserDenied:
-            [self trackAction:@"UserDeniedAccessToLocation"];
+        case LocationFailureReasonUserDeniedBufferAlert:
+            [self trackAction:@"UserDeniedAccessToLocationBufferAlert"];
+            self.locationState = LocationStateManualSelection;
+            self.transportService.userManualDepartureStation = [self.transportService.userTransportStations firstObject];
+            [self refresh];
+            break;
+        case LocationFailureReasonUserDeniedSystem:
+            [self trackAction:@"UserDeniedAccessToLocationSystem"];
             self.locationState = LocationStateErrorUserDenied;
             break;
         case LocationFailureReasonTimeout:

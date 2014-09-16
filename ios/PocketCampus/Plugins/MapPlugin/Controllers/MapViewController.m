@@ -56,6 +56,8 @@
 
 #import "MapRecentSearchesListViewController.h"
 
+#import "LGAUserTrackingBarButtonItem.h"
+
 typedef enum  {
     SearchStateReady = 0, //no search yet, bar empty and ready for a new search
     SearchStateLoading,
@@ -188,14 +190,14 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     self.leftBarButtonItemsAtLoad = self.navigationItem.leftBarButtonItems;
     self.mapView.pitchEnabled = NO; //epflLayersOverlay are fucked up otherwise
-    self.mapView.rotateEnabled = NO; //for some reason, allows higher zoom, thus allowing to see room names! Amazing!
+    self.mapView.rotateEnabled = NO; //for some reason, allows higher zoom on iOS 7, thus allowing to see room names! Amazing!
     [self.mapView setRegion:self.epflRegion animated:NO];
     
     self.searchState = SearchStateReady; //will set nav bar elements, see implementation
     [self manageRecentSearchesControllerVisibilityAnimated:NO];
-    MapViewController* weakSelf __weak = self;
+    MapViewController* welf __weak = self;
     [[NSNotificationCenter defaultCenter] addObserverForName:kMapRecentSearchesModifiedNotification object:self.mapService queue:Nil usingBlock:^(NSNotification *note) {
-        [weakSelf manageRecentSearchesControllerVisibilityAnimated:YES];
+        [welf manageRecentSearchesControllerVisibilityAnimated:YES];
     }];
     self.mapControlsState = MapControlsStateAllAvailable;
     
@@ -417,7 +419,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     _mapControlsState = mapControlsState;
 
     if (!self.myLocationButton) {
-        self.myLocationButton = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
+        self.myLocationButton = [[LGAUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
     }
     
     if (!self.floorDownButton) {

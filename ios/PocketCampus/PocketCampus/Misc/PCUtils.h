@@ -28,7 +28,7 @@
 //  Created by Loïc Gardiol on 04.07.12.
 
 /**
- * You can use this constants for +iconForFileExtension
+ * You can use these constants for +iconForFileExtension
  */
 extern NSString* const kPCUtilsExtensionLink;
 extern NSString* const kPCUtilsExtensionFolder;
@@ -39,6 +39,7 @@ extern NSString* const kPCUtilsExtensionFolder;
 + (BOOL)is4inchDevice;
 + (BOOL)isIdiomPad;
 + (BOOL)isOSVersionSmallerThan:(float)version;
++ (BOOL)isOSVersionGreaterThanOrEqualTo:(float)version;
 + (float)OSVersion;
 + (NSString*)uniqueDeviceIdentifier;
 + (NSString*)appVersion;

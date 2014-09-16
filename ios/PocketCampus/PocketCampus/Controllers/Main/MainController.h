@@ -25,13 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 07.10.12.
 
-
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 #import "ZUUIRevealController.h"
 
@@ -120,7 +116,7 @@ typedef enum {
  * Plugins can get instance of MainController with this class method to have access
  * to public methods of MainControllerPublic protocol (above)
  */
-+ (id<MainControllerPublic>)publicController;
++ (id<MainControllerPublic>)publicController NS_EXTENSION_UNAVAILABLE_IOS("MainController is not available from extensions.");
 
 
 /* 

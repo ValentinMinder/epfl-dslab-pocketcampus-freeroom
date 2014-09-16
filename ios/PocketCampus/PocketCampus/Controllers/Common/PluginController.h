@@ -25,14 +25,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 01.03.12.
 
-
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+@import Foundation;
+@import UIKit;
 
 #import "MainController.h"
 
@@ -104,7 +100,9 @@
  * Should return nil if the action/the parameters are not supported.
  *
  * handleURLQueryAction:parameters:
- * Implement this method to support being (the plugin) opened from a call external to the app.
+ * Implement this method to support getting actions and parameters being passed to the plugin
+ * controller when the app is opened with a URL.
+ * You can assume that your plugin is already getting foreground (no need to request it).
  * Should return YES if action was successfully handled, NO otherwise.
  */
 - (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters;

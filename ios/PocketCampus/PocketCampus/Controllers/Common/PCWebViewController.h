@@ -41,7 +41,7 @@
  * @return web view controller showing the HTML.
  * @param url url to load
  * @param title optional title to us as view controller's title
- * @discussion: This is a simple version of PCWebViewController that does not provide any navigationc controls
+ * @discussion: important: PCWebViewController should be used with a navigation controller
  */
 - (instancetype)initWithHTMLString:(NSString*)htmlString title:(NSString*)title;
 

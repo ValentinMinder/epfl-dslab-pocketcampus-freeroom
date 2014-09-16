@@ -136,8 +136,9 @@ static AuthenticationController* instance __strong = nil;
     self.tequilaToken = nil;
     NSString* savedUsername = [AuthenticationService savedUsername];
     NSString* savedPassword = [AuthenticationService savedPasswordForUsername:savedUsername];
+#ifndef TARGET_IS_EXTENSION
     self.authenticationViewController = [[AuthenticationViewController alloc] init];
-    
+#endif
     if (savedUsername && savedPassword) {
         self.authenticationViewController.state = AuthenticationViewControllerStateLoggedIn;
     } else if (self.pocketCampusAuthSessionId) {
@@ -502,6 +503,7 @@ static AuthenticationController* instance __strong = nil;
     if (savedUsername && savedPassword) {
         [self.authService loginToTequilaWithUser:savedUsername password:savedPassword delegate:self];
     } else {
+#ifndef TARGET_IS_EXTENSION
         self.authenticationViewController = [[AuthenticationViewController alloc] init];
         self.authenticationViewController.state = AuthenticationViewControllerStateAskCredentials;
         self.authenticationViewController.showCancelButton = YES;
@@ -517,10 +519,21 @@ static AuthenticationController* instance __strong = nil;
         }];
         [self.authenticationViewController setUserTappedCancelBlock:^{
             [AuthenticationService deleteSavedPasswordForUsername:[AuthenticationService savedUsername]];
-            [welf dismissAuthenticationViewControllerCompletion:^{
-                [welf cleanAndNotifyUserCancelledToObservers];
-                [AuthenticationService enqueueLogoutNotification];
-            }];
+            if (welf.delegate) { //old-style authentication
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    id<AuthenticationControllerDelegate> delegate = welf.delegate;
+                    [welf cleanAndDismissAuthenticationViewControllerCompletion:^{
+                        if ([(NSObject*)delegate respondsToSelector:@selector(authenticationFailedWithReason:)]) {
+                            [delegate authenticationFailedWithReason:AuthenticationFailureReasonUserCancelled];
+                        }
+                    }];
+                });
+            } else { //new-style (PocketCampus session) authentication
+                [welf dismissAuthenticationViewControllerCompletion:^{
+                    [welf cleanAndNotifyUserCancelledToObservers];
+                    //[AuthenticationService enqueueLogoutNotification];
+                }];
+            }
         }];
         [self.authenticationViewController setUserClearedUsernameBlock:^{
             [AuthenticationService saveUsername:nil];
@@ -536,10 +549,34 @@ static AuthenticationController* instance __strong = nil;
         }];
         self.authenticationNavigationController = [[PCNavigationController alloc] initWithRootViewController:self.authenticationViewController];
         self.authenticationNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-        UIViewController* rootViewController = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
-        [rootViewController presentViewController:self.authenticationNavigationController animated:YES completion:^{
+        
+
+        UIViewController* topViewController = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
+        while (topViewController.presentedViewController) {
+            topViewController = topViewController.presentedViewController;
+        }
+        [topViewController presentViewController:self.authenticationNavigationController animated:YES completion:^{
             [self.authenticationViewController focusOnInput];
         }];
+#else
+        // Cannot present AuthenticationViewController is exentsion
+        // => auth fails is no or wrong credentials. User should open main app.
+        
+        if (self.delegate) { //old-style authentication
+            dispatch_async(dispatch_get_main_queue(), ^{
+                id<AuthenticationControllerDelegate> delegate = self.delegate;
+                [self cleanAndDismissAuthenticationViewControllerCompletion:^{
+                    if ([(NSObject*)delegate respondsToSelector:@selector(authenticationFailedWithReason:)]) {
+                        [delegate authenticationFailedWithReason:AuthenticationFailureReasonCannotAskForCredentials];
+                    }
+                }];
+            });
+        } else { //new-style (PocketCampus session) authentication
+            [self dismissAuthenticationViewControllerCompletion:^{
+                [self cleanAndNotifyFailureToObservers];
+            }];
+        }
+#endif
     }
 }
 

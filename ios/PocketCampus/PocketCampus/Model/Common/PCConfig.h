@@ -25,17 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 22.01.13.
 
-
-
-#import <Foundation/Foundation.h>
-
+@import Foundation;
 
 /*
  * PocketCampus configuration
@@ -81,6 +73,8 @@ extern NSString* const PC_CONFIG_CRASHLYTICS_APIKEY_KEY;
 
 extern NSString* const PC_CONFIG_FOOD_RATINGS_ENABLED;
 
+extern NSString* const PC_CONFIG_CLOUDPRINT_ENABLED;
+
 
 /*
  * Keys of [PCConfig defaults] that can be modified by user ("settings")
@@ -117,9 +111,10 @@ extern NSString* const kPCConfigDidFinishLoadingNotification;
 
 @interface PCConfig : NSObject
 
-/*
+/**
  * Starts the config loading in background.
  * Posts kPCConfigDidFinishLoadingNotificationName when finished
+ * This method is thread-safe and will run once only.
  */
 + (void)loadConfigAsynchronously;
 

@@ -9,6 +9,15 @@
 "Need2StationsClickPlusToAdd" = "Au minimum deux stations sont nécessaires pour afficher les horaires.\n\nTouchez le + pour ajouter une station.";
 
 //////////////////////////////////////////
+// TransportService
+//////////////////////////////////////////
+
+"LocationBufferAlertTitle" = "Sélectionner automatiquement votre station la plus proche comme point de départ ?";
+"LocationBufferAlertMessage" = "PocketCampus peut utiliser votre position pour automatiquement choisir votre station la plus proche comme point de départ.\nVous pourrez changer d'avis à tout moment.\n\n L'essayer c'est l'adopter 😉.\n\nVotre position n'est jamais envoyée à un serveur.";
+"LocationBufferAlertAcceptButtonTitle" = "Oui";
+"LocationBufferAlertRejectButtonTitle" = "Non";
+
+//////////////////////////////////////////
 // TransportNextDeparturesViewController
 //////////////////////////////////////////
 

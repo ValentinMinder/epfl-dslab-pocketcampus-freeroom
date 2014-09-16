@@ -25,13 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
-#import "Service.h"
+#import "PCService.h"
 
 #import "pushnotif.h"
 
-@interface PushNotifService : Service <ServiceProtocol>
+@interface PushNotifService : PCService <PCServiceProtocol>
 
 /*
 - (int32_t) deleteMapping: (NSString *) dummy;  // throws TException
@@ -41,7 +41,7 @@
 
 @end
 
-@protocol PushNotifServiceDelegate <ServiceDelegate>
+@protocol PushNotifServiceDelegate <PCServiceDelegate>
 
 @optional
 - (void)deleteMappingForDummy:(NSString*)dummy didReturn:(int32_t)status;

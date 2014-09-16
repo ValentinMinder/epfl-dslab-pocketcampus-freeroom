@@ -31,7 +31,7 @@
 //  Created by Loïc Gardiol on 12.04.12.
 
 
-#import "Service.h"
+#import "PCService.h"
 
 #import "map.h"
 
@@ -39,7 +39,7 @@
 
 extern NSString* const kMapRecentSearchesModifiedNotification; //posted by self on default notification center
 
-@interface MapService : Service<ServiceProtocol>
+@interface MapService : PCService<PCServiceProtocol>
 
 /*
  
@@ -78,7 +78,7 @@ extern NSString* const kMapRecentSearchesModifiedNotification; //posted by self 
 
 @end
 
-@protocol MapServiceDelegate <ServiceDelegate>
+@protocol MapServiceDelegate <PCServiceDelegate>
 
 @optional
 - (void)getLayerListDidReturn:(NSArray*)layerList; //array of MapLayer

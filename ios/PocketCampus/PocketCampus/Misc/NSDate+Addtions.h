@@ -25,21 +25,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 09.06.13.
 
-
-
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @interface NSDate (Addtions)
 
 /*
- * Shortcupt to [NSDate dateWithTimeIntervalSince1970:timestamp/1000];
+ * Shortcut to [NSDate dateWithTimeIntervalSince1970:timestamp/1000];
  */
 + (NSDate*)dateWithTimestampInt64_t:(int64_t)timestamp;
 

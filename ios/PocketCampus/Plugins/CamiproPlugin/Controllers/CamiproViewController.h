@@ -25,13 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 17.05.12.
 
-
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 @interface CamiproViewController : UIViewController
 

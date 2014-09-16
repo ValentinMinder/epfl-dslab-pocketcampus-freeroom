@@ -65,7 +65,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 @property (nonatomic, strong) FoodService* foodService;
 @property (nonatomic, strong) FoodResponse* foodResponse;
 @property (nonatomic, strong) NSArray* restaurantsSorted; //sorted first by favorite on top, then by name
-@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+@property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 @property (nonatomic, strong) EpflRestaurant* selectedRestaurant;
 
 @property (nonatomic, weak) FoodRestaurantViewController* restaurantViewController;
@@ -96,7 +96,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fillCollectionsAndReloadTableView) name:kFoodFavoritesRestaurantsUpdatedNotification object:self.foodService];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kFoodMealCellUserSuccessfullyRatedMealNotification object:nil];
-    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"food" dataName:@"restaurantsAndMeals"]];
+    self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGARefreshControl dataIdentifierForPluginName:@"food" dataName:@"restaurantsAndMeals"]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
 }
 

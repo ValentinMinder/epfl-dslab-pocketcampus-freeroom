@@ -37,6 +37,11 @@ extern NSString* const kAppDelegateAppDidSucceedToRegisterForRemoteNotifications
 extern NSString* const kAppDelegatePushDeviceTokenStringUserInfoKey;
 extern NSString* const kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification;
 
+/**
+ * iOS 8 only. Use UIApplication currentUserNotificationSettings to get the settings.
+ */
+extern NSString* const kAppDelegateAppDidRegisterUserNotificationSettingsNotification;
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

@@ -43,8 +43,7 @@
 
 - (BOOL)isSameDayAsDate:(NSDate*)date countMidnightAsSameDay:(BOOL)countMidnightAsSameDay {
     NSCalendar* calendar = [NSCalendar currentCalendar];
-    
-    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit;
+    unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute;
     NSDateComponents* comp1 = [calendar components:unitFlags fromDate:self];
     if (countMidnightAsSameDay) {
         NSDateComponents* minus1Min = [NSDateComponents new];

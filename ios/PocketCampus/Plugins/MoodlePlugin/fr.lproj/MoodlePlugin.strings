@@ -32,6 +32,10 @@
 "AllDocsWillBeDeletedExplanation" = "Les documents de tous les cours seront supprimés.\nVous devrez les télécharger à nouveau pour pouvoir les lire.";
 "DeleteAll" = "Tout supprimer";
 
+//MoodleFileViewController
+"Preparing" = "Préparation";
+"TapToCancel" = "Touchez pour annuler";
+
 //MoodleFolderViewController
 "MoodleEmptyFolder" = "Dossier vide";
 
@@ -48,3 +52,4 @@
 "AddLinkToFavorites" = "Ajouter ce lien aux favoris";
 "RemoveLinkFromFavorites" = "Enlever ce lien des favoris";
 "DeleteDocumentFromLocalStorage" = "Supprimer ce fichier du stockage local";
+"PrintThisDocumentAtEPFL" = "Imprimer ce document à l'EPFL";

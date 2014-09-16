@@ -48,7 +48,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 
 @property (nonatomic, strong) NewsService* newsService;
 @property (nonatomic, strong) NSArray* sections; //array of arrays of NewsFeedItem
-@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+@property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 @property (nonatomic, strong) NewsFeedItem* selectedItem;
 
 @end
@@ -89,7 +89,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
         return floorf([PCTableViewCellAdditions preferredHeightForStyle:UITableViewCellStyleDefault textLabelTextStyle:kCellTextLabelTextStyle detailTextLabelTextStyle:nil]*1.35);
     };
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
-    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"news" dataName:@"newsList"]];
+    self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGARefreshControl dataIdentifierForPluginName:@"news" dataName:@"newsList"]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
 }
 

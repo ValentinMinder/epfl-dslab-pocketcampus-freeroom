@@ -223,7 +223,7 @@ static AuthenticationService* instance __weak = nil;
 #pragma mark - Service methods
 
 - (void)getAuthTequilaTokenWithDelegate:(id<AuthenticationServiceDelegate>)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getAuthTequilaToken);
     operation.delegateDidReturnSelector = @selector(getAuthTequilaTokenDidReturn:);
     operation.delegateDidFailSelector = @selector(getAuthTequilaTokenFailed);
@@ -232,7 +232,7 @@ static AuthenticationService* instance __weak = nil;
 }
 
 - (void)getAuthSessionWithRequest:(AuthSessionRequest*)request delegate:(id<AuthenticationServiceDelegate>)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getAuthSession:);
     operation.delegateDidReturnSelector = @selector(getAuthSessionForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getAuthSessionFailedForRequest:);
@@ -243,7 +243,7 @@ static AuthenticationService* instance __weak = nil;
 
 #pragma mark - Service overrides
 
-- (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
+- (void)cancelOperationsForDelegate:(id<PCServiceDelegate>)delegate {
     for (NSOperation* operation in self.operationQueue.operations) {
         if ([operation isKindOfClass:[AFHTTPRequestOperation class]]) {
             [(AFHTTPRequestOperation*)operation setCompletionBlockWithSuccess:NULL failure:NULL];

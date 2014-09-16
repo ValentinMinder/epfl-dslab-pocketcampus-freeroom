@@ -165,10 +165,12 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     [self.searchBar resignFirstResponder];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
     [PCPersistenceManager saveObject:self.recentSearches forKey:kRecentSearchesKey pluginName:@"directory" isCache:YES]; //persist recent searches to disk
 }
 

@@ -38,7 +38,13 @@
 "BackToUpcomingEvents" = "Back to upcoming events";
 "PastEvents" = "Past events";
 "PastEventsShort" = "Past events";
+"ResetFilter" = "Reset filter";
 "ShowPastEventsFor..." = "Show past events back to";
+"EventsRightNow" = "Right Now at EPFL";
+"PeriodWithFormat(Past,FilteredByTag)" = "%@ (past, filtered)";
+"PeriodWithFormat(Past)" = "%@ (past)";
+"PeriodWithFormat(FilteredByTag)" = "%@ (filt. by tag)";
+"RightNow" = "Right Now";
 
 //Accessibility
 "PresentationOptions" = "Presentation options";

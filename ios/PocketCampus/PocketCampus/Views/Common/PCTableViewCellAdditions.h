@@ -32,7 +32,7 @@ extern NSString* PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle;
 
 @interface PCTableViewCellAdditions : UITableViewCell
 
-/*
+/**
  * If both are YES, only favorite indication is visible
  */
 @property (nonatomic, getter = isDownloadedIndicationVisible) BOOL downloadedIndicationVisible;
@@ -40,29 +40,38 @@ extern NSString* PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle;
 
 @property (nonatomic, getter = isDurablySelected) BOOL durablySelected;
 
-/*
+/**
  * If not nil, the text that does not match in textLabel si set to color textLabelDimmedColor
  * Default: nil
  */
 @property (nonatomic, strong) NSRegularExpression* textLabelHighlightedRegex;
 
-/*
+/**
  * Color for dimmed text in textLabel (used in combination with textLabelHighlightedRegex)
  * Default: [UIColor grayColor] (uses that value if nil);
  */
 @property (nonatomic, strong) UIColor* textLabelDimmedColor;
 
-/*
+/**
  * If not nil, the text that does not match in textLabel si set to color detailTextLabelDimmedColor
  * Default: nil
  */
 @property (nonatomic, strong) NSRegularExpression* detailTextLabelHighlightedRegex;
 
-/*
+/**
  * Color for dimmed text in textLabel (used in combination with detailTextLabelHighlightedRegex)
  * Default: [UIColor grayColor] (uses that value if nil);
  */
 @property (nonatomic, strong) UIColor* detailTextLabelDimmedColor;
+
+/**
+ * Due to a bug in iOS 8 GM, setting an accessoryView will generate an infinite loop.
+ * Use this property to achieve the same behavior while avoid the bug.
+ * This method uses AutoLayout to set the origin. The view must have size constraints
+ * defined (or intrensic content size).
+ * On iOS 7, this method simply calls UITableViewCell accessoryView
+ */
+@property (nonatomic, strong) UIView* accessoryViewViaContentView;
 
 /*
  * Returns an ideal cell height that fits content yet not too small, based on a cell style, textLabel and detailTextLabel font 'Text Styles' (See [UIFont preferredFontForTextStyle:])
@@ -71,13 +80,13 @@ extern NSString* PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle;
  * The result of this method is not cached.
  * The implementation assumes that the cell has no image and labels have nubmerOfLines set to 1.
  */
-+ (CGFloat)preferredHeightForStyle:(UITableViewCellStyle)style textLabelTextStyle:(NSString*)textLabelTextStyle detailTextLabelTextStyle:(NSString*)detailTextLabelTextStyle;
++ (CGFloat)preferredHeightForStyle:(UITableViewCellStyle)style textLabelTextStyle:(NSString*)textLabelTextStyle detailTextLabelTextStyle:(NSString*)detailTextLabelTextStyle NS_EXTENSION_UNAVAILABLE_IOS("");
 
 /*
  * Same as previous, with textLabelTextStyle = PCTableViewCellAdditionsDefaultTextLabelTextStyle
  * and detailTextLabelTextStyle = PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle
  */
-+ (CGFloat)preferredHeightForDefaultTextStylesForCellStyle:(UITableViewCellStyle)style;
++ (CGFloat)preferredHeightForDefaultTextStylesForCellStyle:(UITableViewCellStyle)style NS_EXTENSION_UNAVAILABLE_IOS("");
 
 
 /*

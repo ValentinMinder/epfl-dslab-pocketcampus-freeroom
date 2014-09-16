@@ -37,6 +37,7 @@
 typedef enum {
     AuthenticationFailureReasonInvalidToken,
     AuthenticationFailureReasonUserCancelled,
+    AuthenticationFailureReasonCannotAskForCredentials, //typically when authentication would require (non-saved) credentials but those cannot be asked to the user because target is running in an extension that does not support user input.
     AuthenticationFailureReasonInternalError
 } AuthenticationFailureReason;
 

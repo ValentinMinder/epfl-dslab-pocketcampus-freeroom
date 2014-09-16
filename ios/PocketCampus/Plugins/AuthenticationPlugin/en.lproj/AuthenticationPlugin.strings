@@ -12,7 +12,7 @@
 "Logout" = "Logout";
 "LoggedInAsWithFormat" = "Logged in as \"%@\"";
 
-"GasparAccountRequiredFor" = "Your Gaspar account is required for some services like Camipro, Moodle,\nor IS-Academia.";
+"GasparAccountRequiredFor" = "Your Gaspar account is required for some services like Camipro, Moodle, or IS-Academia.";
 "PasswordSavedAndPolicy" = "Your password in stored securely\nin the iOS keychain.\n\nThe password is directly sent to EPFL's authentication server (Tequila) via a secure connexion.";
 "PasswordNotSavedAndPolicy" = "Your password was not saved. You will have to enter it again after 1 hour of inactivity.";
 "WillSavePasswordAndPolicy" = "Your password will be stored securely in the iOS keychain and sent directly to EPFL's authentication server (Tequila) via a secure connexion.";

@@ -58,7 +58,7 @@
 #define COCOAPODS_POD_AVAILABLE_GoogleAnalytics_iOS_SDK
 #define COCOAPODS_VERSION_MAJOR_GoogleAnalytics_iOS_SDK 3
 #define COCOAPODS_VERSION_MINOR_GoogleAnalytics_iOS_SDK 0
-#define COCOAPODS_VERSION_PATCH_GoogleAnalytics_iOS_SDK 7
+#define COCOAPODS_VERSION_PATCH_GoogleAnalytics_iOS_SDK 9
 
 // JTTargetActionBlock
 #define COCOAPODS_POD_AVAILABLE_JTTargetActionBlock
@@ -69,13 +69,13 @@
 // LGALibrary
 #define COCOAPODS_POD_AVAILABLE_LGALibrary
 #define COCOAPODS_VERSION_MAJOR_LGALibrary 1
-#define COCOAPODS_VERSION_MINOR_LGALibrary 0
+#define COCOAPODS_VERSION_MINOR_LGALibrary 2
 #define COCOAPODS_VERSION_PATCH_LGALibrary 0
 
 // MBProgressHUD
 #define COCOAPODS_POD_AVAILABLE_MBProgressHUD
 #define COCOAPODS_VERSION_MAJOR_MBProgressHUD 0
-#define COCOAPODS_VERSION_MINOR_MBProgressHUD 8
+#define COCOAPODS_VERSION_MINOR_MBProgressHUD 9
 #define COCOAPODS_VERSION_PATCH_MBProgressHUD 0
 
 // NSTimer-Blocks
@@ -107,4 +107,10 @@
 #define COCOAPODS_VERSION_MAJOR_TapkuLibrary 0
 #define COCOAPODS_VERSION_MINOR_TapkuLibrary 3
 #define COCOAPODS_VERSION_PATCH_TapkuLibrary 5
+
+// thrift
+#define COCOAPODS_POD_AVAILABLE_thrift
+#define COCOAPODS_VERSION_MAJOR_thrift 0
+#define COCOAPODS_VERSION_MINOR_thrift 9
+#define COCOAPODS_VERSION_PATCH_thrift 1
 

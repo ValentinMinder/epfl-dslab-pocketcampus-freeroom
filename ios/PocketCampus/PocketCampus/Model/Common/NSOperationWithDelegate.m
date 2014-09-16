@@ -43,19 +43,11 @@
     return self;
 }
 
-- (BOOL)delegateRespondsToSelector:(SEL)selector {
-    if ([self isCancelled]) {
-        return NO;
-    }
-    if (![self.delegate respondsToSelector:selector]) {
-        return NO;
-    }
-    return YES;
-}
-
 - (BOOL)isExecuting {
     return self.executing;
 }
+
+@synthesize executing = _executing;
 
 - (void)setExecuting:(BOOL)executing {
     [self willChangeValueForKey:@"isExecuting"];
@@ -67,6 +59,8 @@
     return self.finished;
 }
 
+@synthesize finished = _finished;
+
 - (void)setFinished:(BOOL)finished {
     [self willChangeValueForKey:@"isFinished"];
     _finished = finished;
@@ -76,6 +70,8 @@
 - (BOOL)isCancelled {
     return self.cancelled;
 }
+
+@synthesize cancelled = _cancelled;
 
 - (void)setCancelled:(BOOL)cancelled {
     [self willChangeValueForKey:@"isCancelled"];

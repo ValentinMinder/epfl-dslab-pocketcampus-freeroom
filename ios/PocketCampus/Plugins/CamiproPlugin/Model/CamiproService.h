@@ -31,11 +31,11 @@
 //  Created by Loïc Gardiol on 17.05.12.
 
 
-#import "Service.h"
+#import "PCService.h"
 
 #import "camipro.h"
 
-@interface CamiproService : Service<ServiceProtocol>
+@interface CamiproService : PCService<PCServiceProtocol>
 
 /* Thrift client methods
  
@@ -59,7 +59,7 @@
 
 @end
 
-@protocol CamiproServiceDelegate <ServiceDelegate>
+@protocol CamiproServiceDelegate <PCServiceDelegate>
 
 @optional
 - (void)getTequilaTokenForCamiproDidReturn:(TequilaToken*)tequilaKey;

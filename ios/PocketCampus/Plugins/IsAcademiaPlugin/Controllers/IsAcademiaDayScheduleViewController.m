@@ -215,7 +215,7 @@
     NSDateComponents* comps = [gregorianCalendar components:NSYearCalendarUnit | NSWeekCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:date];
     [comps setYear:comps.year];
     [comps setWeekday:2]; //Monday
-    [comps setWeek:comps.week];
+    [comps setWeekOfYear:comps.weekOfYear];
     [comps setHour:0]; //8a.m.
     [comps setMinute:0];
     [comps setSecond:0];
@@ -224,7 +224,7 @@
         //means monday8am is after date, meaning coming Monday was computed,
         //instead of previous one. => need to decrement 1 week
         NSDateComponents* minusOneWeekComps = [NSDateComponents new];
-        [minusOneWeekComps setWeek:-1];
+        [minusOneWeekComps setWeekOfYear:-1];
         monday8am = [gregorianCalendar dateByAddingComponents:minusOneWeekComps toDate:monday8am options:0];
     }
     return monday8am;
@@ -249,7 +249,9 @@
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
                 [welf refreshForDisplayedDaySkipCache:YES];
             } userCancelled:^{
-                //nothing to do
+                welf.messageHUD.labelText = NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil);
+                welf.messageHUD.detailsLabelText = NSLocalizedStringFromTable(@"LoginRequired", @"PocketCampus", nil);
+                [welf.messageHUD show:NO];
             } failure:^{
                 [welf getScheduleFailedForRequest:request];
             }];
