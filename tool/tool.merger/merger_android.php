@@ -29,8 +29,8 @@ $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
 $path_to_lib_dir = "../../platform/platform.android/libs";
 
-$versionCode = "27";
-$versionName = "2.2";
+$versionCode = "28";
+$versionName = "2.2.1";
 
 function import_nodes($file, $tag, $doc, $parent_node, $nodes_to_remove) {
 	$doc2 = new DOMDocument();
