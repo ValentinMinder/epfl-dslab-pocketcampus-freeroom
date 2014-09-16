@@ -73,6 +73,8 @@ extern NSString* const PC_CONFIG_CRASHLYTICS_APIKEY_KEY;
 
 extern NSString* const PC_CONFIG_FOOD_RATINGS_ENABLED;
 
+extern NSString* const PC_CONFIG_CLOUDPRINT_ENABLED;
+
 
 /*
  * Keys of [PCConfig defaults] that can be modified by user ("settings")

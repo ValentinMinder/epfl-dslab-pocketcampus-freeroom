@@ -309,7 +309,15 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 }
 
 - (BOOL)isPrintAvailable {
-    return [CloudPrintController isSupportedFileWithLocalURL:[NSURL fileURLWithPath:[self.moodleService localPathForMoodleFile:self.moodleFile]]];
+    static BOOL printEnabledInConfig = YES;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSNumber* nsEnabled = [[PCConfig defaults] objectForKey:PC_CONFIG_CLOUDPRINT_ENABLED];
+        if (nsEnabled) {
+            printEnabledInConfig = [nsEnabled boolValue];
+        }
+    });
+    return printEnabledInConfig && [CloudPrintController isSupportedFileWithLocalURL:[NSURL fileURLWithPath:[self.moodleService localPathForMoodleFile:self.moodleFile]]];
 }
 
 - (UIBarButtonItem*)favoriteButton {
