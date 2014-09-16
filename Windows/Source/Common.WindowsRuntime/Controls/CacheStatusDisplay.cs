@@ -1,11 +1,14 @@
-﻿using ThinMvvm;
+﻿using System.Windows.Input;
+using ThinMvvm;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.Common.Controls
 {
+    // TODO retry button
     public sealed class CacheStatusDisplay : Control
     {
+        #region Status
         public CacheStatus Status
         {
             get { return (CacheStatus) GetValue( StatusProperty ); }
@@ -19,6 +22,20 @@ namespace PocketCampus.Common.Controls
         {
             ( (CacheStatusDisplay) obj ).Visibility = (CacheStatus) args.NewValue == CacheStatus.Used ? Visibility.Visible : Visibility.Collapsed;
         }
+        #endregion
+
+
+        #region RetryCommand
+        public ICommand RetryCommand
+        {
+            get { return (ICommand) GetValue( RetryCommandProperty ); }
+            set { SetValue( RetryCommandProperty, value ); }
+        }
+
+        public static readonly DependencyProperty RetryCommandProperty =
+            DependencyProperty.Register( "RetryCommand", typeof( ICommand ), typeof( DataStatusDisplay ), new PropertyMetadata( null ) );
+        #endregion
+
 
 
         public CacheStatusDisplay()

@@ -193,6 +193,7 @@
         </Pivot>
         
         <cc:DataStatusDisplay Grid.Row="1"
-                              Data="{Binding DataStatus}" />
+                              Data="{Binding DataStatus}"
+                              RetryCommand="{Binding RefreshCommand}" />
     </Grid>
 </cc:PageBase>

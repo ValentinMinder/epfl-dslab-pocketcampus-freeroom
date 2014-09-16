@@ -397,8 +397,8 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                
-                                <TextBlock Text="{CustomResource Common.StatusDisplay.Loading}"
+
+                                <TextBlock Text="{CustomResource Common.DataStatusDisplay.Loading}"
                                            Style="{TemplateBinding TextStyle}"
                                            VerticalAlignment="Bottom" />
                                 
@@ -407,11 +407,11 @@
                             </Grid>
                         </myControls:SwitchCase>
                         <myControls:SwitchCase Values="Error">
-                            <TextBlock Text="{CustomResource Common.StatusDisplay.Error}"
+                            <TextBlock Text="{CustomResource Common.DataStatusDisplay.Error}"
                                        Style="{TemplateBinding TextStyle}" />
                         </myControls:SwitchCase>
                         <myControls:SwitchCase Values="NetworkError">
-                            <TextBlock Text="{CustomResource Common.StatusDisplay.NetworkError}"
+                            <TextBlock Text="{CustomResource Common.DataStatusDisplay.NetworkError}"
                                        Style="{TemplateBinding TextStyle}" />
                         </myControls:SwitchCase>
                     </myControls:Switch>

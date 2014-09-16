@@ -68,7 +68,6 @@ namespace PocketCampus.Common.Controls
 
             _scroller.ViewChanged += ( _, __ ) =>
             {
-                System.Diagnostics.Debug.WriteLine( _scroller.ScrollableHeight - _scroller.VerticalOffset );
                 if ( _scroller.ScrollableHeight - _scroller.VerticalOffset < PreloadingMargin )
                 {
                     if ( ItemRequestCommand != null && ItemRequestCommand.CanExecute( null ) )

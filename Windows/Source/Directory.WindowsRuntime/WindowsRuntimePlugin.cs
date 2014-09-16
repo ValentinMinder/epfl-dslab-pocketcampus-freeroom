@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using System;
 using PocketCampus.Common;
 using PocketCampus.Directory.Services;
 using PocketCampus.Directory.ViewModels;
@@ -17,15 +21,14 @@ namespace PocketCampus.Directory
             get { return ResourceLoader.GetForViewIndependentUse( "PocketCampus.Directory.WindowsRuntime/Resources" ).GetString( "PluginName" ); }
         }
 
-        public string Icon { get { return null; } }
-        public object OLD_Icon
+        public string Icon
         {
             get
             {
-                return new ResourceDictionary
+                return (string) new ResourceDictionary
                 {
                     Source = new Uri( "ms-appx:///PocketCampus.Directory.WindowsRuntime/Icons.xaml", UriKind.Absolute )
-                }["DirectoryIcon"];
+                }["PluginIcon"];
             }
         }
 

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="LoadingMoreResults" xml:space="preserve">
-    <value>chargement...</value>
+    <value>Chargement...</value>
     <comment>Status bar text</comment>
   </data>
   <data name="NoResults" xml:space="preserve">

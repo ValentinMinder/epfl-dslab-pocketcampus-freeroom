@@ -4,27 +4,16 @@
 
 namespace PocketCampus.Directory
 {
-    /// <summary>
-    /// Search request for either a query or a person (or nothing).
-    /// </summary>
     public sealed class ViewPersonRequest
     {
-        /// <summary>
-        /// Gets the query, if any.
-        /// </summary>
-        public string Name { get; private set; }
+        public string Query { get; private set; }
 
-        /// <summary>
-        /// Creates an empty ViewPersonRequest.
-        /// </summary>
+
         public ViewPersonRequest() { }
 
-        /// <summary>
-        /// Creates a ViewPersonRequest with the specified query.
-        /// </summary>
-        public ViewPersonRequest( string name )
+        public ViewPersonRequest( string query )
         {
-            Name = name;
+            Query = query;
         }
     }
 }

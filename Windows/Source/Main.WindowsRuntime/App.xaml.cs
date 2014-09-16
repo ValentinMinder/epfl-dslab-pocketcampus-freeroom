@@ -22,6 +22,8 @@ namespace PocketCampus.Main
         {
             RequestedTheme = ApplicationTheme.Light;
 
+            CustomXamlResourceLoader.Current = new LocalizingResourceLoader();
+
             Container.Bind<ISettingsStorage, WindowsRuntimeSettingsStorage>();
             Container.Bind<IDataCache, WindowsRuntimeDataCache>();
             Container.Bind<IHttpClient, HttpClient>();
@@ -46,8 +48,6 @@ namespace PocketCampus.Main
                 e.Handled = true;
                 _navigationService.NavigateBack();
             };
-
-            CustomXamlResourceLoader.Current = new LocalizingResourceLoader();
         }
 
         protected override async void Launch( LaunchActivatedEventArgs e )

@@ -2,11 +2,13 @@
 using System.Collections;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using Windows.UI.Xaml;
 
 namespace PocketCampus.Common
 {
-    // HACK. TODO this should be deleted once the bug with Dictionary<K,V> binding is fixed
+    // FRAMEWORK BUG: Bindings to Dictionary<K,V> don't work.
+    //    Workaround: This converts them to a custom class with which bindings work.
     public sealed class DictionaryFixer : ValueConverter<IDictionary, IEnumerable>
     {
         public override IEnumerable Convert( IDictionary value )
@@ -92,8 +94,10 @@ namespace PocketCampus.Common
 
         public override Visibility Convert( object value )
         {
-            // kind of hack-y... but it works; Collapsed if non-reversed and default or reversed and non-default, Visible otherwise.
-            return ( value == Activator.CreateInstance( value.GetType() ) ^ IsReversed ) ? Visibility.Collapsed : Visibility.Visible;
+            var type = value.GetType();
+            var defaultValue = type.GetTypeInfo().IsValueType ? Activator.CreateInstance( type ) : null;
+            // kind of hack-y... but it works; Visible if non-reversed and default or reversed and non-default, Collapsed otherwise.
+            return ( value == defaultValue ^ IsReversed ) ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

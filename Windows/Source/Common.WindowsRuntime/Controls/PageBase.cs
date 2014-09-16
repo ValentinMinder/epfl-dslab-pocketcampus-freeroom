@@ -49,7 +49,18 @@ namespace PocketCampus.Common.Controls
         }
 
         public static readonly DependencyProperty StatusBarTextProperty =
-            DependencyProperty.Register( "StatusBarText", typeof( string ), typeof( PageBase ), new PropertyMetadata( null, OnStatusBarPropertyChanged ) );
+            DependencyProperty.Register( "StatusBarText", typeof( string ), typeof( PageBase ), new PropertyMetadata( "", OnStatusBarPropertyChanged ) );
+        #endregion
+
+        #region StatusBarShowsText
+        public bool StatusBarShowsText
+        {
+            get { return (bool) GetValue( StatusBarShowsTextProperty ); }
+            set { SetValue( StatusBarShowsTextProperty, value ); }
+        }
+
+        public static readonly DependencyProperty StatusBarShowsTextProperty =
+            DependencyProperty.Register( "StatusBarShowsText", typeof( bool ), typeof( PageBase ), new PropertyMetadata( false, OnStatusBarPropertyChanged ) );
         #endregion
 
         #region StatusBarShowsProgress
@@ -114,7 +125,7 @@ namespace PocketCampus.Common.Controls
             await bar.ShowAsync();
         }
 
-        private async void HandleStatusBar()
+        private async void UpdateStatusBar()
         {
             var bar = StatusBar.GetForCurrentView();
 
@@ -127,11 +138,11 @@ namespace PocketCampus.Common.Controls
                 await bar.HideAsync();
             }
 
-            if ( StatusBarShowsProgress || StatusBarText != null )
+            if ( StatusBarShowsProgress || StatusBarShowsText )
             {
                 await bar.ProgressIndicator.ShowAsync();
                 bar.ProgressIndicator.ProgressValue = StatusBarShowsProgress ? (double?) null : 0.0;
-                bar.ProgressIndicator.Text = StatusBarText;
+                bar.ProgressIndicator.Text = StatusBarShowsText ? StatusBarText : "";
             }
             else
             {
@@ -166,7 +177,12 @@ namespace PocketCampus.Common.Controls
 
         private static void OnStatusBarPropertyChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
         {
-            ( (PageBase) obj ).HandleStatusBar();
+            if ( DesignMode.DesignModeEnabled )
+            {
+                return; // weird errors happen otherwise
+            }
+
+            ( (PageBase) obj ).UpdateStatusBar();
         }
     }
 }

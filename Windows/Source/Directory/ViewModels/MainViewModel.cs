@@ -13,9 +13,6 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.Directory.ViewModels
 {
-    /// <summary>
-    /// The main ViewModel.
-    /// </summary>
     [LogId( "/directory" )]
     public sealed class MainViewModel : DataViewModel<ViewPersonRequest>
     {
@@ -31,36 +28,25 @@ namespace PocketCampus.Directory.ViewModels
         private string _lastQuery;
 
 
-        /// <summary>
-        /// Gets or sets the current query.
-        /// </summary>
         public string Query
         {
             get { return _query; }
             set { SetProperty( ref _query, value ); }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether more results are being loaded.
-        /// </summary>
         public bool IsLoadingMoreResults
         {
             get { return _isLoadingMoreResults; }
             private set { SetProperty( ref _isLoadingMoreResults, value ); }
         }
 
-        /// <summary>
-        /// Gets the search results.
-        /// </summary>
         public ObservableCollection<Person> SearchResults
         {
             get { return _searchResults; }
             private set { SetProperty( ref _searchResults, value ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to search for people.
-        /// </summary>
+
         [LogId( "Search" )]
         public AsyncCommand SearchCommand
         {
@@ -73,9 +59,6 @@ namespace PocketCampus.Directory.ViewModels
             get { return this.GetAsyncCommand( SearchForMoreAsync, () => !IsLoadingMoreResults && _currentPaginationToken != null ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to view a person's details.
-        /// </summary>
         [LogId( "ViewPersion" )]
         [LogParameter( "$Param.FullName" )]
         public Command<Person> ViewPersonCommand
@@ -84,9 +67,6 @@ namespace PocketCampus.Directory.ViewModels
         }
 
 
-        /// <summary>
-        /// Creates a new MainViewModel.
-        /// </summary>
         public MainViewModel( IDirectoryService directoryService, INavigationService navigationService,
                               ViewPersonRequest request )
         {
@@ -100,9 +80,9 @@ namespace PocketCampus.Directory.ViewModels
 
         public override async Task OnNavigatedToAsync()
         {
-            if ( _request.Name != null )
+            if ( _request.Query != null )
             {
-                await SearchAsync( _request.Name, true );
+                await SearchAsync( _request.Query, true );
                 if ( _searchResults.Count == 1 )
                 {
                     _navigationService.RemoveCurrentFromBackStack();
@@ -112,9 +92,6 @@ namespace PocketCampus.Directory.ViewModels
             await base.OnNavigatedToAsync();
         }
 
-        /// <summary>
-        /// Asynchronously searches for people with the specified query.
-        /// </summary>
         private async Task SearchAsync( string query, bool navigateToSingleResult )
         {
             if ( string.IsNullOrWhiteSpace( query ) )
@@ -125,7 +102,7 @@ namespace PocketCampus.Directory.ViewModels
 
             if ( query == _lastQuery )
             {
-                if ( navigateToSingleResult && SearchResults.Count == 1 )
+                if ( navigateToSingleResult && SearchResults != null && SearchResults.Count == 1 )
                 {
                     _navigationService.NavigateTo<PersonViewModel, Person>( SearchResults[0] );
                 }
@@ -162,9 +139,6 @@ namespace PocketCampus.Directory.ViewModels
             } );
         }
 
-        /// <summary>
-        /// Asynchronously adds more results.
-        /// </summary>
         private async Task SearchForMoreAsync()
         {
             if ( _currentPaginationToken == null )
