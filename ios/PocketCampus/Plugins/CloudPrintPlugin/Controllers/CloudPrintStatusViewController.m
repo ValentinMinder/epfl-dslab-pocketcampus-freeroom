@@ -45,6 +45,7 @@
     self = [self initWithNibName:@"CloudPrintStatusView" bundle:nil];
     if (self) {
         self.title = @"EPFLCloudPrint";
+        self.gaiScreenName = @"/cloudprint/status";
         self.documentName = nil;
         self.statusMessage = CloudPrintStatusMessageLoading;
         self.progressView.progress = 0.0;
@@ -63,10 +64,16 @@
     [self updateProgress];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
+}
+
 #pragma mark - Actions
 
 - (void)cancelTapped {
     if (self.userCancelledBlock) {
+        [self trackAction:@"Cancel"];
         self.userCancelledBlock();
     }
 }

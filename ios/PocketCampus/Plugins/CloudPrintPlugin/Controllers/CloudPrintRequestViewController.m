@@ -88,6 +88,7 @@ static NSInteger const kPageToTheEndValue = 10000;
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = @"EPFLCloudPrint";
+        self.gaiScreenName = @"/cloudprint";
         self.documentName = docName;
         self.printRequest = printRequest ?: [PrintDocumentRequest createDefaultRequest];
     }
@@ -107,16 +108,23 @@ static NSInteger const kPageToTheEndValue = 10000;
     };
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
+}
+
 #pragma mark - Actions
 
 - (void)cancelTapped {
     if (self.userCancelledBlock) {
+        [self trackAction:@"Cancel"];
         self.userCancelledBlock();
     }
 }
 
 - (void)printTapped {
     if (self.userValidatedRequestBlock) {
+        [self trackAction:@"Print"];
         self.userValidatedRequestBlock(self.printRequest);
     }
 }
