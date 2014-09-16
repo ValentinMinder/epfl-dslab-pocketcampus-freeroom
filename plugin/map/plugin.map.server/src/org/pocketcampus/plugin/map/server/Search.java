@@ -84,7 +84,7 @@ public class Search {
 		List<MapItem> list = new LinkedList<MapItem>();
 		URL searchUrl = null;
 		try {
-			searchUrl = new URL("http://plan.epfl.ch/search?keyword=" + URLEncoder.encode(text + "*", "UTF-8"));
+			searchUrl = new URL("http://plan.epfl.ch/search?keyword=" + URLEncoder.encode(text, "UTF-8"));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			return list;

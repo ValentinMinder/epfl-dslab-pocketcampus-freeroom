@@ -36,6 +36,8 @@ import org.pocketcampus.plugin.map.common.Position;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
 
+import com.markupartist.android.widget.ActionBar.Action;
+
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -139,6 +141,41 @@ public class MapMainView extends PluginView implements IMapView {
 		
 //		handleSearchIntent(getIntent().getExtras());
 		setActionBarTitle(getString(R.string.map_plugin_title));
+		
+		updateActionBar();
+	}
+	
+	private void updateActionBar() {
+		removeAllActionsFromActionBar();
+		addActionToActionBar(new Action() {
+			@Override
+			public void performAction(View view) {
+				if(!myLocationOverlay_.isMyLocationEnabled()) {
+					Toast.makeText(MapMainView.this, getString(R.string.map_compute_position), Toast.LENGTH_LONG).show();
+				}
+				toggleCenterOnUserPosition();
+				updateActionBar();
+			}
+			@Override
+			public int getDrawable() {
+				if(!myLocationOverlay_.isMyLocationEnabled()) {
+					return R.drawable.map_mylocation_action;
+				} else {
+					return R.drawable.map_mylocation_on_action;
+				}
+			}
+		});
+		addActionToActionBar(new Action() {
+			@Override
+			public void performAction(View view) {
+				onSearchRequested();
+				trackEvent("Search", null);
+			}
+			@Override
+			public int getDrawable() {
+				return R.drawable.map_search_action;
+			}
+		});
 	}
 
 	private void initVariables() {
@@ -367,91 +404,6 @@ public class MapMainView extends PluginView implements IMapView {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-	}
-
-	/**
-	 * Handle the menu
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.map_menu, menu);
-
-		return true;
-	}
-
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		// Do we display a path?
-//		menu.findItem(R.id.map_clear_path).setVisible(mapPathOverlay_.isShowingPath());
-
-		// Do we already have the available layers?
-//		menu.findItem(R.id.map_menu_layers_button).setEnabled(allLayers_ != null && allLayers_.size() > 0);
-		
-		// Change the text if we follow the user or not
-		MenuItem follow = menu.findItem(R.id.map_my_position);
-		if(myLocationOverlay_.isFollowLocationEnabled()) {
-			follow.setTitle(R.string.map_menu_my_position_off);
-		} else {
-			follow.setTitle(R.string.map_menu_my_position_on);
-		}
-
-		return true;
-	}
-
-	/**
-	 * Handle the menu
-	 */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection
-		switch (item.getItemId()) {
-
-		// Show a layer selection
-//		case R.id.map_menu_layers_button:
-//			selectLayers();
-//
-//			Tracker.getInstance().trackPageView("map/menu/getLayers");
-//			return true;
-
-			// Enable the user following
-		case R.id.map_my_position:
-			if(!myLocationOverlay_.isMyLocationEnabled()) {
-				Toast.makeText(this, getResources().getString(R.string.map_compute_position), Toast.LENGTH_LONG).show();
-			}
-			toggleCenterOnUserPosition();
-			return true;
-
-
-			// Enable the user following
-//		case R.id.map_campus_position:
-//			centerOnCampus();
-
-//			Tracker.getInstance().trackPageView("map/menu/centerOnCampus");
-//			return true;
-
-			// Shows the search dialog
-		case R.id.map_search:
-			onSearchRequested();
-			trackEvent("Search", null);
-			return true;
-			
-//		case R.id.map_clear_path:
-//			clearPath();
-
-//			Tracker.getInstance().trackPageView("map/menu/clearPath");
-//			return true;
-			
-//		case R.id.map_menu_clear_layers_button:
-//			temporaryOverlays_.clear();
-//			setSelectedLayers(new ArrayList<MapElementsList>());
-//			
-//			Tracker.getInstance().trackPageView("map/menu/clearLayers");
-//			return true;
-
-		default:
-			return super.onOptionsItemSelected(item);
-		}
 	}
 
 	/**

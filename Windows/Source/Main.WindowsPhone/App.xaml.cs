@@ -103,7 +103,7 @@ namespace PocketCampus.Main
             DebugSettings.UserIdleDetectionMode = IdleDetectionMode.Disabled;
 
             // Theme initialization
-            ThemeManager.OverrideOptions = ThemeManagerOverrideOptions.None;
+            ThemeManager.OverrideOptions = ThemeManagerOverrideOptions.ApplicationBarColors;
             ThemeManager.ToLightTheme();
             ThemeManager.SetAccentColor( (Color) Resources["AppAccentColor"] );
         }

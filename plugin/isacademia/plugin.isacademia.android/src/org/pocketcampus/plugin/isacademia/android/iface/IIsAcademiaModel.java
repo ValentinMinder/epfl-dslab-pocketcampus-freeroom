@@ -1,9 +1,9 @@
 package org.pocketcampus.plugin.isacademia.android.iface;
 
 /**
- * IIsacademiaModel
+ * IIsAcademiaModel
  * 
- * Interface for the Model of the Isacademia plugin.
+ * Interface for the Model of the IsAcademia plugin.
  * It is empty as we have only one Model in this plugin.
  * 
  * @author Amer <amer.chamseddine@epfl.ch>

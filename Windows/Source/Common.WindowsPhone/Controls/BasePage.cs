@@ -37,7 +37,6 @@ namespace PocketCampus.Common.Controls
             {
                 if ( ApplicationBar != null )
                 {
-                    ThemeManager.MatchOverriddenTheme( ApplicationBar );
                     // HACK to avoid strange problems with 1080p WP 8.1 devices
                     // see http://social.msdn.microsoft.com/Forums/wpapps/en-US/4a82edc5-273b-4655-95d6-aee6e953aaaa/1920x1080-black-border-at-the-bottom?forum=wpdevelop
                     ApplicationBar.Opacity = 0.99;

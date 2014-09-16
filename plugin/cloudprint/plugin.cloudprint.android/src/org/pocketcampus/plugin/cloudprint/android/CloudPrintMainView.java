@@ -11,8 +11,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -121,9 +121,13 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 		
 		if(mModel.getPrintJobId() != null) {
 			setContentView(R.layout.cloudprint_print);
+
+//			Spinner sel = (Spinner) findViewById(R.id.cloudprint_select_pageselection);
+//			ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, android.R.id.text1);
+
 			
 			TextView tv = (TextView) findViewById(R.id.cloudprint_preview_print);
-			tv.setText("You are about to print job #" + mModel.getPrintJobId());
+			tv.setText(getString(R.string.cloudprint_dialog_text_print, mModel.getPrintJobId()));
 			
 			Button b = (Button) findViewById(R.id.cloudprint_print_button);
 			b.setOnClickListener(new OnClickListener() {
@@ -137,7 +141,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 			setContentView(R.layout.cloudprint_upload);
 			
 			TextView tv = (TextView) findViewById(R.id.cloudprint_preview_upload);
-			tv.setText("You are about to upload " + mModel.getFileToPrint().getLastPathSegment());
+			tv.setText(getString(R.string.cloudprint_dialog_text_upload, mModel.getFileToPrint().getLastPathSegment()));
 			
 			Button b = (Button) findViewById(R.id.cloudprint_upload_button);
 			b.setOnClickListener(new OnClickListener() {
@@ -151,37 +155,6 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 			finish();
 		}
 		
-//		TextView usernameField = (TextView) findViewById(R.id.authentication_username);
-//		usernameField.setText(mModel.getGasparUsername());
-//		TextView passwordField = (TextView) findViewById(R.id.authentication_password);
-//		passwordField.setText("");
-//		CheckBox storePasswordField = (CheckBox) findViewById(R.id.authentication_staylogged_cb);
-//		storePasswordField.setChecked(mModel.getStorePassword());
-//		
-//		Button loginButton = (Button) findViewById(R.id.authentication_loginbutton);
-//		loginButton.setOnClickListener(new OnClickListener() {
-//			public void onClick(View v) {
-//				TextView usernameField = (TextView) findViewById(R.id.authentication_username);
-//				mModel.setGasparUsername(usernameField.getText().toString());
-//				TextView passwordField = (TextView) findViewById(R.id.authentication_password);
-//				mModel.setTempGasparPassword(passwordField.getText().toString());
-//				CheckBox storePasswordField = (CheckBox) findViewById(R.id.authentication_staylogged_cb);
-//				mModel.setStorePassword(storePasswordField.isChecked());
-//				mModel.setNotFromEpfl(false);
-//				mController.startPreLogin();
-//				trackEvent("LogIn", (storePasswordField.isChecked() ? "SavePasswordYes" : "SavePasswordNo"));
-//				done();
-//			}
-//		});
-//		
-//		TextView notEPFL = (TextView) findViewById(R.id.authentication_notfromepfl);
-//		notEPFL.setOnClickListener(new OnClickListener() {
-//			public void onClick(View v) {
-//				mModel.setNotFromEpfl(true);
-//				mController.startPreLogin();
-//				done();
-//			}
-//		});
 	}
 
 	
@@ -194,7 +167,8 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 
 	@Override
 	public void printServerError() {
-		Toast.makeText(getApplicationContext(), "print server error", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), getString(
+				R.string.cloudprint_string_print_server_error), Toast.LENGTH_SHORT).show();
 		updateDisplay();
 		
 	}
@@ -210,14 +184,15 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 	public void printedSuccessfully() {
 		mModel.setPrintJobId(null);
 		mModel.setFileToPrint(null);
-		Toast.makeText(getApplicationContext(), "the document was sent to the printer", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), getString(
+				R.string.cloudprint_string_document_sent_to_printer), Toast.LENGTH_SHORT).show();
 		finish();
 		
 	}
 
 	@Override
 	public void authenticationFailed() {
-		Toast.makeText(getApplicationContext(), getResources().getString(
+		Toast.makeText(getApplicationContext(), getString(
 				R.string.sdk_authentication_failed), Toast.LENGTH_SHORT).show();
 		finish();
 	}
