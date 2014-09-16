@@ -1044,7 +1044,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         }
     }
     
-    return [PCTableViewSectionHeader preferredHeight];
+    return [PCTableViewSectionHeader preferredHeightWithInfoButton:YES]; //even without info button, want to make it higher
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
