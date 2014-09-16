@@ -39,6 +39,7 @@ extern NSString* const kPCUtilsExtensionFolder;
 + (BOOL)is4inchDevice;
 + (BOOL)isIdiomPad;
 + (BOOL)isOSVersionSmallerThan:(float)version;
++ (BOOL)isOSVersionGreaterThanOrEqualTo:(float)version;
 + (float)OSVersion;
 + (NSString*)uniqueDeviceIdentifier;
 + (NSString*)appVersion;

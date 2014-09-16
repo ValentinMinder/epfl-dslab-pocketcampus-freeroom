@@ -61,6 +61,10 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
     return [[UIDevice currentDevice].systemVersion floatValue] < version;
 }
 
++ (BOOL)isOSVersionGreaterThanOrEqualTo:(float)version {
+    return [[UIDevice currentDevice].systemVersion floatValue] >= version;
+}
+
 + (float)OSVersion {
    return [[UIDevice currentDevice].systemVersion floatValue];
 }

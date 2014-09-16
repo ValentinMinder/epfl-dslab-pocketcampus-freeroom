@@ -50,7 +50,7 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         if ([PCUtils isOSVersionSmallerThan:8.0]) {
-            defaults = [[NSUserDefaults alloc] init];
+            defaults = [NSUserDefaults standardUserDefaults];
             [defaults addSuiteNamed:kPCUserDefaultsSharedAppGroupName];
         } else {
             defaults = [[NSUserDefaults alloc] initWithSuiteName:kPCUserDefaultsSharedAppGroupName];
@@ -96,8 +96,7 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
 }
 
 - (void)removeAllObjects {
-    NSUserDefaults* standardDefaults = [NSUserDefaults standardUserDefaults];
-    [standardDefaults removeObjectForKey:[self pluginDicKey]];
+    [[self.class sharedDefaults] removeObjectForKey:[self pluginDicKey]];
 }
 
 - (NSString*)pluginDicKey {
@@ -121,27 +120,31 @@ static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcam
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
+        NSUserDefaults* defaults = [PCUserDefaults sharedDefaults];
         
         // Step 1: migrating standardUserDefaults to app group user defaults
         
-        NSUserDefaults* defaults = [PCUserDefaults sharedDefaults];
         CLSNSLog(@"-> Migration to app group persistence...");
-        if (![defaults boolForKey:kDefaultsMigrationDoneBoolKey]) {
-            // copying data from standardUserDefaults to shared user defaults
-            @try {
-                NSUserDefaults* oldStandardDefaults = [NSUserDefaults standardUserDefaults];
-                [defaults replaceKeyValuesWithOnesFromDictionary:oldStandardDefaults.dictionaryRepresentation];
-                [defaults setBool:YES forKey:kDefaultsMigrationDoneBoolKey];
-                [defaults synchronize];
-                CLSNSLog(@"   1. Standard defaults successfully migrated to app group defaults.");
-            }
-            @catch (NSException *exception) {
-                [defaults setBool:NO forKey:kDefaultsMigrationDoneBoolKey];
-                [defaults synchronize];
-                CLSNSLog(@"   1. EXCEPTION while migrating defaults from standard defaults to app group defaults: %@", exception);
+        if ([PCUtils isOSVersionGreaterThanOrEqualTo:8.0]) {
+            if (![defaults boolForKey:kDefaultsMigrationDoneBoolKey]) {
+                // copying data from standardUserDefaults to shared user defaults
+                @try {
+                    NSUserDefaults* oldStandardDefaults = [NSUserDefaults standardUserDefaults];
+                    [defaults replaceKeyValuesWithOnesFromDictionary:oldStandardDefaults.dictionaryRepresentation];
+                    [defaults setBool:YES forKey:kDefaultsMigrationDoneBoolKey];
+                    [defaults synchronize];
+                    CLSNSLog(@"   1. Standard defaults successfully migrated to app group defaults.");
+                }
+                @catch (NSException *exception) {
+                    [defaults setBool:NO forKey:kDefaultsMigrationDoneBoolKey];
+                    [defaults synchronize];
+                    CLSNSLog(@"   1. EXCEPTION while migrating defaults from standard defaults to app group defaults: %@", exception);
+                }
+            } else {
+                CLSNSLog(@"   1. (ALREADY DONE) Standard defaults migration to app group defaults.");
             }
         } else {
-            CLSNSLog(@"   1. (ALREADY DONE) Standard defaults migration to app group defaults.");
+            CLSNSLog(@"   1. Will NOT migrate standard defaults to app group defaults because still iOS 7 (only required for iOS 8).");
         }
         
         
@@ -216,7 +219,7 @@ static NSString* const kBundleIdentifier = @"org.pocketcampus";
     static NSString* appSupportBundlePath = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSString* path = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.org.pocketcampus"].path;
+        NSString* path = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kPCUserDefaultsSharedAppGroupName].path;
         path = [path stringByAppendingPathComponent:@"Library"];
         path = [path stringByAppendingPathComponent:@"Application Support"];
         path = [path stringByAppendingPathComponent:kBundleIdentifier];
