@@ -17,15 +17,14 @@ namespace PocketCampus.Events
             get { return ResourceLoader.GetForViewIndependentUse( "PocketCampus.Events.WindowsRuntime/Resources" ).GetString( "PluginName" ); }
         }
 
-        public string Icon { get { return null; } }
-        public object OLD_Icon
+        public string Icon
         {
             get
             {
-                return new ResourceDictionary
+                return (string) new ResourceDictionary
                 {
                     Source = new Uri( "ms-appx:///PocketCampus.Events.WindowsRuntime/Icons.xaml", UriKind.Absolute )
-                }["EventsIcon"];
+                }["PluginIcon"];
             }
         }
 

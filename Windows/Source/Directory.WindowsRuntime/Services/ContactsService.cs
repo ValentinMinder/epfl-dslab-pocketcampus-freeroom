@@ -11,7 +11,7 @@ namespace PocketCampus.Directory.Services
     {
         public void AddAsContact( Person person )
         {
-            // TODO: Windows Phone doesn't implement ContactPickerUI yet :-/
+            // FRAMEWORK MISSING FEATURE: Windows Phone doesn't implement ContactPickerUI yet.
             throw new NotSupportedException();
         }
     }

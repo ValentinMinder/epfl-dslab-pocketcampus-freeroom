@@ -94,10 +94,32 @@ namespace PocketCampus.Common
 
         public override Visibility Convert( object value )
         {
+            // A bit hack-y, but it works.
+            return IsDefaultValue( value ) ^ IsReversed ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private static bool IsDefaultValue( object value )
+        {
+            if ( value == null )
+            {
+                return true;
+            }
+
+            var str = value as string;
+            if ( str != null && str.Trim() == "" )
+            {
+                return true;
+            }
+
             var type = value.GetType();
-            var defaultValue = type.GetTypeInfo().IsValueType ? Activator.CreateInstance( type ) : null;
-            // kind of hack-y... but it works; Visible if non-reversed and default or reversed and non-default, Collapsed otherwise.
-            return ( value == defaultValue ^ IsReversed ) ? Visibility.Visible : Visibility.Collapsed;
+
+            if ( type.GetTypeInfo().IsValueType )
+            {
+                return value == Activator.CreateInstance( type );
+            }
+
+            // not null, not a value type
+            return false;
         }
     }
 }

@@ -135,9 +135,7 @@
     </Compile>
     <Compile Include="WindowsRuntimePlugin.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Strings\fr\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Common\PocketCampus.Common.csproj">
       <Project>{f780f0dd-8a14-4e72-9525-a11d792cbfab}</Project>
@@ -172,6 +170,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <PRIResource Include="Strings\en\EventItem.resw" />
+    <PRIResource Include="Strings\en\Settings.resw" />
+    <PRIResource Include="Strings\en\TagFilter.resw" />
+    <PRIResource Include="Strings\en\CategoryFilter.resw" />
+    <PRIResource Include="Strings\fr\Resources.resw" />
+    <PRIResource Include="Strings\fr\EventDate.resw" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

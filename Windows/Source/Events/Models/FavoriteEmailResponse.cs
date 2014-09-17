@@ -6,15 +6,9 @@ using ThriftSharp;
 
 namespace PocketCampus.Events.Models
 {
-    /// <summary>
-    /// Response to a request for an e-mail with favorite items.
-    /// </summary>
     [ThriftStruct( "SendEmailReply" )]
     public sealed class FavoriteEmailResponse
     {
-        /// <summary>
-        /// The request's status.
-        /// </summary>
         [ThriftField( 1, true, "status" )]
         public EventsStatus Status { get; set; }
     }

@@ -14,13 +14,11 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.Events.ViewModels
 {
-    /// <summary>
-    /// ViewModel for item details.
-    /// </summary>
     [LogId( "/events/item" )]
     public sealed class EventItemViewModel : CachedDataViewModel<ViewEventItemRequest, EventItemResponse>
     {
         private static readonly TimeSpan CacheDuration = TimeSpan.FromDays( 7 );
+
 
         private readonly INavigationService _navigationService;
         private readonly IBrowserService _browserService;
@@ -28,37 +26,26 @@ namespace PocketCampus.Events.ViewModels
         private readonly IPluginSettings _settings;
         private readonly long _itemId;
 
+
         private EventItem _item;
         private EventPool[] _pools;
         private bool _isFavorite;
 
 
-        /// <summary>
-        /// Gets the item.
-        /// </summary>
         public EventItem Item
         {
             get { return _item; }
             private set { SetProperty( ref _item, value ); }
         }
 
-        /// <summary>
-        /// Gets the item's child pools, if any.
-        /// </summary>
         public EventPool[] Pools
         {
             get { return _pools; }
             private set { SetProperty( ref _pools, value ); }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the item can be set as a favorite.
-        /// </summary>
         public bool CanBeFavorite { get; private set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the item is a favorite of the user.
-        /// </summary>
         public bool IsFavorite
         {
             get { return _isFavorite; }
@@ -71,9 +58,7 @@ namespace PocketCampus.Events.ViewModels
             }
         }
 
-        /// <summary>
-        /// Gets the command executed to view a child pool.
-        /// </summary>
+
         [LogId( "ShowPool" )]
         [LogParameter( "$Param.LogId" )]
         public Command<EventPool> ViewPoolCommand
@@ -94,9 +79,6 @@ namespace PocketCampus.Events.ViewModels
             }
         }
 
-        /// <summary>
-        /// Gets the command executed to open the "more details" link.
-        /// </summary>
         [LogId( "ViewMoreDetails" )]
         [LogParameter( "Item.LogId" )]
         public Command ViewMoreDetailsCommand
@@ -104,9 +86,6 @@ namespace PocketCampus.Events.ViewModels
             get { return this.GetCommand( () => _browserService.NavigateTo( Item.DetailsUrl ) ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to open the location on the map.
-        /// </summary>
         [LogId( "ViewOnMap" )]
         [LogParameter( "Item.Location" )]
         public Command ViewOnMapCommand
@@ -115,9 +94,6 @@ namespace PocketCampus.Events.ViewModels
         }
 
 
-        /// <summary>
-        /// Creates a new EventItemViewModel.
-        /// </summary>
         public EventItemViewModel( IDataCache cache, INavigationService navigationService, IBrowserService browserService,
                                    IEventsService eventsService, IPluginSettings settings,
                                    ViewEventItemRequest request )
@@ -169,9 +145,6 @@ namespace PocketCampus.Events.ViewModels
         }
 
 
-        /// <summary>
-        /// Called when the user navigates away from the ViewModel.
-        /// </summary>
         public override void OnNavigatedFrom()
         {
             if ( Item == null )

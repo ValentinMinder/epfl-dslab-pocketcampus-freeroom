@@ -7,20 +7,11 @@ using PocketCampus.Events.Models;
 
 namespace PocketCampus.Events
 {
-    /// <summary>
-    /// A group of EventItems, with their category.
-    /// </summary>
     public sealed class EventItemGroup : List<EventItem>
     {
-        /// <summary>
-        /// Gets the category name.
-        /// </summary>
         public string CategoryName { get; private set; }
 
 
-        /// <summary>
-        /// Creates a new EventItemGroup.
-        /// </summary>
         public EventItemGroup( string categoryName, IEnumerable<EventItem> items )
             : base( items )
         {
