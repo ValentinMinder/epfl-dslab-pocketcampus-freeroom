@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.cloudprint.android;
 
 import java.io.File;
+import java.util.Locale;
 
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.pocketcampus.platform.android.core.AuthenticationListener;
@@ -11,6 +12,13 @@ import org.pocketcampus.plugin.cloudprint.android.iface.ICloudPrintController;
 import org.pocketcampus.plugin.cloudprint.android.iface.ICloudPrintView;
 import org.pocketcampus.plugin.cloudprint.android.req.PrintFileRequest;
 import org.pocketcampus.plugin.cloudprint.android.req.UploadFileRequest;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintColorConfig;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintDoubleSidedConfig;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintMultiPageConfig;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintMultiPageLayout;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintMultipleCopies;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintOrientation;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintPageRange;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintService.Client;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintService.Iface;
 import org.pocketcampus.plugin.cloudprint.shared.PrintDocumentRequest;
@@ -126,12 +134,12 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 
 	public void printFileJob(ICloudPrintView caller, long documentId) {
 		PrintDocumentRequest req = new PrintDocumentRequest(documentId);
-//		req.setPageSelection(new CloudPrintPageRange(1, 4));
-		//req.setMultiPageConfig(new CloudPrintMultiPageConfig(CloudPrintNbPagesPerSheet.FOUR, CloudPrintMultiPageLayout.LEFT_TO_RIGHT_TOP_TO_BOTTOM));
-//		req.setDoubleSided(CloudPrintDoubleSidedConfig.SHORT_EDGE);
-//		req.setOrientation(CloudPrintOrientation.LANDSCAPE);
-		//req.setMultipleCopies(new CloudPrintMultipleCopies(1, false));
-		//req.setColorConfig(CloudPrintColorConfig.COLOR);
+		req.setPageSelection(mModel.getPageRangeList().get(mModel.getSelPageRangeList()));
+		req.setMultiPageConfig(mModel.getMultiPageList().get(mModel.getSelMultiPageList()));
+		req.setDoubleSided(mModel.getDoubleSidedList().get(mModel.getSelDoubleSidedList()));
+		req.setOrientation(mModel.getOrientationList().get(mModel.getSelOrientationList()));
+		req.setMultipleCopies(mModel.getMultipleCopiesList().get(mModel.getSelMultipleCopiesList()));
+		req.setColorConfig(mModel.getColorConfigList().get(mModel.getSelColorConfigList()));
 		new PrintFileRequest(caller).start(this, mClient, req);
 	}
 	
@@ -157,6 +165,84 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 	public static boolean sessionExists(Context context) {
 		return ((GlobalContext) context.getApplicationContext()).hasPcSessionId();
 	}
+	
+	
+	
+	
+	
+	private static String decodeLayout(CloudPrintMultiPageLayout layout) {
+		return layout.name().toLowerCase(Locale.US).replace("to_", "").replaceAll("([a-z])[a-z]+_([a-z])[a-z]+_([a-z])[a-z]+_([a-z])[a-z]+", "$1$2$3$4");
+	}
+
+	
+	
+	
+
+
+	public String colorConfigToDisplayString(CloudPrintColorConfig s) {
+		if(s == null) 
+			return "Color";
+		switch (s) {
+		case BLACK_WHITE:
+			return "Black/White";
+		case COLOR:
+			return "Color";
+		}
+		return null;
+	}
+	
+
+	public String multipleCopiesToDisplayString(CloudPrintMultipleCopies s) {
+		if(s == null) 
+			return "1 copy";
+		return s.getNumberOfCopies() + " copies" + (s.isCollate() ? ", collate" : "");
+	}
+	
+
+	public String orientationToDisplayString(CloudPrintOrientation s) {
+		if(s == null) 
+			return "Portrait";
+		switch (s) {
+		case PORTRAIT:
+			return "Portrait";
+		case LANDSCAPE:
+			return "Landscape";
+		case REVERSE_PORTRAIT:
+			return "Reverse portrait";
+		case REVERSE_LANDSCAPE:
+			return "Reverse landscape";
+		}
+		return null;
+	}
+	
+
+	public String doubleSidedToDisplayString(CloudPrintDoubleSidedConfig s) {
+		if(s == null) 
+			return "1-sided";
+		switch (s) {
+		case LONG_EDGE:
+			return "2-sided, long edge";
+		case SHORT_EDGE:
+			return "2-sided, short edge";
+		}
+		return null;
+	}
+	
+
+	public String multiPageToDisplayString(CloudPrintMultiPageConfig s) {
+		if(s == null) 
+			return "1 page per sheet";
+		return s.getNbPagesPerSheet().getValue() + " pages per sheet, " + decodeLayout(s.getLayout());
+	}
+	
+	
+	public String pageRangeToDisplayString(CloudPrintPageRange s) {
+		if(s == null) 
+			return "Entire document";
+		return "Pages " + s.getPageFrom() + " to " + s.getPageTo();
+	}
+
+	
 	
 	
 }

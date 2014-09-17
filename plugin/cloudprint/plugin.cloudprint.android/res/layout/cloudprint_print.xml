@@ -139,41 +139,41 @@
 <!--                     <requestFocus /> -->
 <!--                 </EditText> -->
 
-<!--                 <Spinner -->
-<!--                     android:id="@+id/cloudprint_select_copies" -->
-<!--                     android:layout_width="match_parent" -->
-<!--                     android:layout_height="wrap_content"  -->
-<!--                     android:entries="@array/cloudprint_config_copies"/> -->
+                <Spinner
+                    android:id="@+id/cloudprint_select_copies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:entries="@array/cloudprint_config_copies"/>
 
-<!--                 <Spinner -->
-<!--                     android:id="@+id/cloudprint_select_pageselection" -->
-<!--                     android:layout_width="match_parent" -->
-<!--                     android:layout_height="wrap_content"  -->
-<!--                     android:entries="@array/cloudprint_config_pageselection"/> -->
+                <Spinner
+                    android:id="@+id/cloudprint_select_pageselection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:entries="@array/cloudprint_config_pageselection"/>
 
-<!-- 				<Spinner -->
-<!--                     android:id="@+id/cloudprint_select_color" -->
-<!--                     android:layout_width="match_parent" -->
-<!--                     android:layout_height="wrap_content"  -->
-<!--                     android:entries="@array/cloudprint_config_color"/> -->
+				<Spinner
+                    android:id="@+id/cloudprint_select_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:entries="@array/cloudprint_config_color"/>
 
-<!--                 <Spinner -->
-<!--                     android:id="@+id/cloudprint_select_doublesided" -->
-<!--                     android:layout_width="match_parent" -->
-<!--                     android:layout_height="wrap_content"  -->
-<!--                     android:entries="@array/cloudprint_config_doublesided"/> -->
+                <Spinner
+                    android:id="@+id/cloudprint_select_doublesided"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:entries="@array/cloudprint_config_doublesided"/>
 
-<!--                 <Spinner -->
-<!--                     android:id="@+id/cloudprint_select_orientation" -->
-<!--                     android:layout_width="match_parent" -->
-<!--                     android:layout_height="wrap_content"  -->
-<!--                     android:entries="@array/cloudprint_config_orientation"/> -->
+                <Spinner
+                    android:id="@+id/cloudprint_select_orientation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:entries="@array/cloudprint_config_orientation"/>
 
-<!--                 <Spinner -->
-<!--                     android:id="@+id/cloudprint_select_multipage" -->
-<!--                     android:layout_width="match_parent" -->
-<!--                     android:layout_height="wrap_content"  -->
-<!--                     android:entries="@array/cloudprint_config_multipage"/> -->
+                <Spinner
+                    android:id="@+id/cloudprint_select_multipage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:entries="@array/cloudprint_config_multipage"/>
                 
 <!--                 <LinearLayout -->
 <!--                     android:layout_width="fill_parent" -->
