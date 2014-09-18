@@ -200,7 +200,7 @@ namespace PocketCampus.Events.ViewModels
         {
             EmailStatus = EmailSendingStatus.NotRequested;
 
-            string emailAddress = _emailPrompt.GetEmail();
+            string emailAddress = await _emailPrompt.GetEmailAsync();
 
             if ( emailAddress == null )
             {

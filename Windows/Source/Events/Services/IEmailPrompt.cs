@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading.Tasks;
 namespace PocketCampus.Events.Services
 {
     /// <summary>
@@ -12,6 +13,6 @@ namespace PocketCampus.Events.Services
         /// <summary>
         /// Gets the user's e-mail address.
         /// </summary>
-        string GetEmail();
+        Task<string> GetEmailAsync();
     }
 }

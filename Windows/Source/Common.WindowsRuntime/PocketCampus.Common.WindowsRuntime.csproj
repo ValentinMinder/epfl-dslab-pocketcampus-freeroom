@@ -60,6 +60,7 @@
     <Compile Include="Html2Xaml\Html2XamlConverter.cs" />
     <Compile Include="Html2Xaml\Properties.cs" />
     <Compile Include="Html2Xaml\TagDefinition.cs" />
+    <Compile Include="LauncherEx.cs" />
     <Compile Include="LocalizationHelper.cs" />
     <Compile Include="Converters.cs" />
     <Compile Include="TextBoxEx.cs" />
