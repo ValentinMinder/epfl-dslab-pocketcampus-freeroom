@@ -218,11 +218,12 @@ public class MoodleController extends PluginController implements IMoodleControl
 		}
 	}
 	
-	public static void openPrintDialog(Context c, long printJobId) {
+	public static void openPrintDialog(Context c, long printJobId, String fileName) {
 		Uri.Builder builder = new Uri.Builder();
 		builder.scheme("pocketcampus").authority("cloudprint.plugin.pocketcampus.org").appendPath("print");
 		Intent i = new Intent(Intent.ACTION_VIEW, builder.build());
 		i.putExtra("JOB_ID", printJobId);
+		i.putExtra("FILE_NAME", fileName);
 		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		c.startActivity(i);
 	}
