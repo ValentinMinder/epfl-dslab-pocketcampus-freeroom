@@ -6,8 +6,8 @@
     <string name="cloudprint_dialog_button_upload">Uploader</string>
     <string name="cloudprint_dialog_button_print">Imprimer</string>
     
-    <string name="cloudprint_dialog_text_upload">Vous êtes sur le point d\'uploader\n%s</string>
-    <string name="cloudprint_dialog_text_print">Vous êtes sur le point d\'imprimer\njob n&#176; %d</string>
+    <string name="cloudprint_dialog_text_upload">Vous êtes sur le point d\'uploader &lt;br&gt; &lt;b&gt; %s &lt;/b&gt;</string>
+    <string name="cloudprint_dialog_text_print">Vous êtes sur le point d\'imprimer &lt;br&gt; &lt;b&gt; %s &lt;/b&gt;</string>
     
     <string name="cloudprint_string_print_server_error">Erreur d\'impression</string>
     <string name="cloudprint_string_document_sent_to_printer">Le document a été envoyé à l\'imprimante</string>

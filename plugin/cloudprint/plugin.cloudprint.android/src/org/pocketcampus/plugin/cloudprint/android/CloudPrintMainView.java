@@ -22,6 +22,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -50,6 +51,7 @@ import android.widget.Toast;
 public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 
 	public static final String EXTRA_JOB_ID = "JOB_ID";
+	public static final String EXTRA_FILE_NAME = "FILE_NAME";
 	
 	
 	private CloudPrintController mController;
@@ -99,7 +101,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
             }
 	    } else if (intent.hasExtra(EXTRA_JOB_ID)) {
 	    	mModel.setPrintJobId(intent.getLongExtra(EXTRA_JOB_ID, 0));
-	    	
+	    	mModel.setFileToPrint(Uri.parse("dummy://dummy/" + ( intent.hasExtra(EXTRA_FILE_NAME) ? intent.getStringExtra(EXTRA_FILE_NAME) : ("job " + intent.getLongExtra(EXTRA_JOB_ID, 0)) )));
 	    	
 	    } else {
 	    	finish();
@@ -151,7 +153,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 			updateSpinnerPageSelection();
 			
 			TextView tv = (TextView) findViewById(R.id.cloudprint_preview_print);
-			tv.setText(getString(R.string.cloudprint_dialog_text_print, mModel.getPrintJobId()));
+			tv.setText(Html.fromHtml(getString(R.string.cloudprint_dialog_text_print, mModel.getFileToPrint().getLastPathSegment())));
 			
 			Button b = (Button) findViewById(R.id.cloudprint_print_button);
 			b.setOnClickListener(new OnClickListener() {
@@ -165,7 +167,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 			setContentView(R.layout.cloudprint_upload);
 			
 			TextView tv = (TextView) findViewById(R.id.cloudprint_preview_upload);
-			tv.setText(getString(R.string.cloudprint_dialog_text_upload, mModel.getFileToPrint().getLastPathSegment()));
+			tv.setText(Html.fromHtml(getString(R.string.cloudprint_dialog_text_upload, mModel.getFileToPrint().getLastPathSegment())));
 			
 			Button b = (Button) findViewById(R.id.cloudprint_upload_button);
 			b.setOnClickListener(new OnClickListener() {

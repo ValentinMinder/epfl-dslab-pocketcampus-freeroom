@@ -60,7 +60,6 @@
 	        android:layout_marginBottom="20dip"
 	        android:layout_marginLeft="5dp"
 	        android:layout_marginRight="5dp"
-	        android:textStyle="bold"
 			android:textColor="@android:color/primary_text_light" 
 	        android:text="@string/cloudprint_plugin_title"
 	        />

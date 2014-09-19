@@ -6,8 +6,8 @@
     <string name="cloudprint_dialog_button_upload">Upload</string>
     <string name="cloudprint_dialog_button_print">Print</string>
     
-    <string name="cloudprint_dialog_text_upload">You are about to upload\n%s</string>
-    <string name="cloudprint_dialog_text_print">You are about to print\njob #%d</string>
+    <string name="cloudprint_dialog_text_upload">You are about to upload &lt;br&gt; &lt;b&gt; %s &lt;/b&gt;</string>
+    <string name="cloudprint_dialog_text_print">You are about to print &lt;br&gt; &lt;b&gt; %s &lt;/b&gt;</string>
     
     <string name="cloudprint_string_print_server_error">Print server error</string>
     <string name="cloudprint_string_document_sent_to_printer">The document was sent to the printer</string>
