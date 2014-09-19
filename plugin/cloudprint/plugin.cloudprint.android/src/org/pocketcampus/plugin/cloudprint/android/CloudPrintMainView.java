@@ -184,6 +184,8 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 	}
 
 	
+	
+	
 	private void updateSpinnerPageSelection() {
 
 		final Spinner s = (Spinner) findViewById(R.id.cloudprint_select_pageselection);
@@ -194,7 +196,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 		for(CloudPrintPageRange r : mModel.getPageRangeList()) {
 			adapter.add(mController.pageRangeToDisplayString(r));
 		}
-		adapter.add("page selection ...");
+		adapter.add(getString(R.string.cloudprint_string_page_selection_lps));
 		adapter.notifyDataSetChanged();
 		
 		s.setSelection(mModel.getSelPageRangeList());
@@ -206,13 +208,14 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 				if(arg2 < mModel.getPageRangeList().size()) {
 					mModel.setSelPageRangeList(arg2);
 				} else {
-					final String [] arr = new String[]{"1","2","3","4","5","6","7","8","9"};
-					showSelector("choose", arr, new DialogInterface.OnClickListener() {
+					final String [] arr = CloudPrintController.generateArray(1, 101, 1);
+					showSelector(getString(R.string.cloudprint_string_from_page), arr, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface arg0, int arg1) {
 							final int from = Integer.parseInt(arr[arg1]);
-							showSelector("choose", arr, new DialogInterface.OnClickListener() {
+							final String [] arr2 = CloudPrintController.generateArray(from, from + 100, 1);
+							showSelector(getString(R.string.cloudprint_string_to_page), arr2, new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface arg0, int arg1) {
-									final int to = Integer.parseInt(arr[arg1]);
+									final int to = Integer.parseInt(arr2[arg1]);
 									mModel.addPageRangeList(new CloudPrintPageRange(from, to));
 									mModel.setSelPageRangeList(arg2);
 									updateDisplay();
@@ -241,7 +244,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 		for(CloudPrintMultipleCopies r : mModel.getMultipleCopiesList()) {
 			adapter.add(mController.multipleCopiesToDisplayString(r));
 		}
-		adapter.add("more copies ...");
+		adapter.add(getString(R.string.cloudprint_string_more_copies_lps));
 		adapter.notifyDataSetChanged();
 		
 		s.setSelection(mModel.getSelMultipleCopiesList());
@@ -253,11 +256,11 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 				if(arg2 < mModel.getMultipleCopiesList().size()) {
 					mModel.setSelMultipleCopiesList(arg2);
 				} else {
-					final String [] arr = new String[]{"2","4","8","16","32","64"};
-					showSelector("choose", arr, new DialogInterface.OnClickListener() {
+					final String [] arr = CloudPrintController.generateArray(2, 102, 1);
+					showSelector(getString(R.string.cloudprint_string_copies), arr, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface arg0, int arg1) {
 							final int copies = Integer.parseInt(arr[arg1]);
-							showSelector("choose", new String[]{"collate","no collate"}, new DialogInterface.OnClickListener() {
+							showSelector(getString(R.string.cloudprint_string_collate), new String[]{getString(R.string.cloudprint_string_collate), getString(R.string.cloudprint_string_do_not_collate)}, new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface arg0, int arg1) {
 									final boolean collate = (arg1 == 0);
 									mModel.addMultipleCopiesList(new CloudPrintMultipleCopies(copies, collate));
@@ -289,7 +292,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 			
 			adapter.add(mController.multiPageToDisplayString(r));
 		}
-		adapter.add("multiple pages per sheet...");
+		adapter.add(getString(R.string.cloudprint_string_multiple_pages_per_sheet_lps));
 		adapter.notifyDataSetChanged();
 		
 		s.setSelection(mModel.getSelMultiPageList());
@@ -302,10 +305,10 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 					mModel.setSelMultiPageList(arg2);
 				} else {
 					
-					showSelector("choose", nbPagesPerSheetToArray(), new DialogInterface.OnClickListener() {
+					showSelector(getString(R.string.cloudprint_string_pages_per_sheet), nbPagesPerSheetToArray(), new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface arg0, int arg1) {
 							final CloudPrintNbPagesPerSheet nbPagesPerSheet = CloudPrintNbPagesPerSheet.values()[arg1];
-							showSelector("choose", multiPageLayoutToArray(), new DialogInterface.OnClickListener() {
+							showSelector(getString(R.string.cloudprint_string_page_layout), multiPageLayoutToArray(), new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface arg0, int arg1) {
 									final CloudPrintMultiPageLayout layout = CloudPrintMultiPageLayout.values()[arg1];
 									mModel.addMultiPageList(new CloudPrintMultiPageConfig(nbPagesPerSheet, layout));
@@ -325,6 +328,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 		
 	}
 
+	
 	private void updateSpinnerOrientation() {
 
 		final Spinner s = (Spinner) findViewById(R.id.cloudprint_select_orientation);
@@ -336,7 +340,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 			
 			adapter.add(mController.orientationToDisplayString(r));
 		}
-		adapter.add("other orientation ...");
+		adapter.add(getString(R.string.cloudprint_string_other_orientation_lps));
 		adapter.notifyDataSetChanged();
 		
 		s.setSelection(mModel.getSelOrientationList());
@@ -349,7 +353,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 					mModel.setSelOrientationList(arg2);
 				} else {
 					
-					showSelector("choose", orientationToArray(), new DialogInterface.OnClickListener() {
+					showSelector(getString(R.string.cloudprint_string_orientation), orientationToArray(), new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface arg0, int arg1) {
 							final CloudPrintOrientation ori = CloudPrintOrientation.values()[arg1];
 							mModel.addOrientationList(ori);
@@ -379,7 +383,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 			
 			adapter.add(mController.colorConfigToDisplayString(r));
 		}
-		adapter.add("other color configuration ...");
+		adapter.add(getString(R.string.cloudprint_string_other_color_configuration_lps));
 		adapter.notifyDataSetChanged();
 		
 		s.setSelection(mModel.getSelColorConfigList());
@@ -392,7 +396,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 					mModel.setSelColorConfigList(arg2);
 				} else {
 					
-					showSelector("choose", colorConfigToArray(), new DialogInterface.OnClickListener() {
+					showSelector(getString(R.string.cloudprint_string_color_configuration), colorConfigToArray(), new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface arg0, int arg1) {
 							final CloudPrintColorConfig color = CloudPrintColorConfig.values()[arg1];
 							mModel.addColorConfigList(color);
@@ -422,7 +426,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 			
 			adapter.add(mController.doubleSidedToDisplayString(r));
 		}
-		adapter.add("double sided ...");
+		adapter.add(getString(R.string.cloudprint_string_double_sided_lps));
 		adapter.notifyDataSetChanged();
 		
 		s.setSelection(mModel.getSelDoubleSidedList());
@@ -435,7 +439,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 					mModel.setSelDoubleSidedList(arg2);
 				} else {
 					
-					showSelector("choose", doubleSidedToArray(), new DialogInterface.OnClickListener() {
+					showSelector(getString(R.string.cloudprint_string_double_sided), doubleSidedToArray(), new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface arg0, int arg1) {
 							final CloudPrintDoubleSidedConfig ds = CloudPrintDoubleSidedConfig.values()[arg1];
 							mModel.addDoubleSidedList(ds);
@@ -454,52 +458,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 	}
 	
 
-	private static String[] orientationToArray() {
-		CloudPrintOrientation [] vals = CloudPrintOrientation.values();
-		String strings [] = new String [vals.length];
-		for(int i = 0; i < vals.length; i++) {
-			strings[i] = vals[i].name();
-		}
-		return strings;
-	}
 	
-
-	private static String[] colorConfigToArray() {
-		CloudPrintColorConfig [] vals = CloudPrintColorConfig.values();
-		String strings [] = new String [vals.length];
-		for(int i = 0; i < vals.length; i++) {
-			strings[i] = vals[i].name();
-		}
-		return strings;
-	}
-
-	private static String[] doubleSidedToArray() {
-		CloudPrintDoubleSidedConfig [] vals = CloudPrintDoubleSidedConfig.values();
-		String strings [] = new String [vals.length];
-		for(int i = 0; i < vals.length; i++) {
-			strings[i] = vals[i].name();
-		}
-		return strings;
-	}
-	
-	
-	private static String[] nbPagesPerSheetToArray() {
-		CloudPrintNbPagesPerSheet [] vals = CloudPrintNbPagesPerSheet.values();
-		String strings [] = new String [vals.length];
-		for(int i = 0; i < vals.length; i++) {
-			strings[i] = vals[i].getValue() + "";
-		}
-		return strings;
-	}
-	
-	private static String[] multiPageLayoutToArray() {
-		CloudPrintMultiPageLayout [] vals = CloudPrintMultiPageLayout.values();
-		String strings [] = new String [vals.length];
-		for(int i = 0; i < vals.length; i++) {
-			strings[i] = vals[i].name();
-		}
-		return strings;
-	}
 	
 	private OnCancelListener getCancelListener() {
 		return new OnCancelListener() {
@@ -588,5 +547,58 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 		
 	}
 
+
+	
+	
+
+	
+	
+	private String[] orientationToArray() {
+		CloudPrintOrientation [] vals = CloudPrintOrientation.values();
+		String strings [] = new String [vals.length];
+		for(int i = 0; i < vals.length; i++) {
+			strings[i] = mController.getLocalizedStringByName("cloudprint_enum_orientation_", vals[i].name());
+		}
+		return strings;
+	}
+	
+
+	private String[] colorConfigToArray() {
+		CloudPrintColorConfig [] vals = CloudPrintColorConfig.values();
+		String strings [] = new String [vals.length];
+		for(int i = 0; i < vals.length; i++) {
+			strings[i] = mController.getLocalizedStringByName("cloudprint_enum_color_", vals[i].name());
+		}
+		return strings;
+	}
+
+	private String[] doubleSidedToArray() {
+		CloudPrintDoubleSidedConfig [] vals = CloudPrintDoubleSidedConfig.values();
+		String strings [] = new String [vals.length];
+		for(int i = 0; i < vals.length; i++) {
+			strings[i] = mController.getLocalizedStringByName("cloudprint_enum_double_sided_", vals[i].name());
+		}
+		return strings;
+	}
+	
+	private String[] multiPageLayoutToArray() {
+		CloudPrintMultiPageLayout [] vals = CloudPrintMultiPageLayout.values();
+		String strings [] = new String [vals.length];
+		for(int i = 0; i < vals.length; i++) {
+			strings[i] = String.format("%s (%s)", 
+					mController.getLocalizedStringByName("cloudprint_enum_layout_", vals[i].name()), 
+					mController.getLocalizedStringByName("cloudprint_enum_layout_short_", vals[i].name()));
+		}
+		return strings;
+	}
+	
+	private String[] nbPagesPerSheetToArray() {
+		CloudPrintNbPagesPerSheet [] vals = CloudPrintNbPagesPerSheet.values();
+		String strings [] = new String [vals.length];
+		for(int i = 0; i < vals.length; i++) {
+			strings[i] = "" + vals[i].getValue();
+		}
+		return strings;
+	}
 	
 }

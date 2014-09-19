@@ -1,13 +1,15 @@
 package org.pocketcampus.plugin.cloudprint.android;
 
 import java.io.File;
-import java.util.Locale;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.pocketcampus.platform.android.core.AuthenticationListener;
 import org.pocketcampus.platform.android.core.GlobalContext;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
+import org.pocketcampus.plugin.cloudprint.R;
 import org.pocketcampus.plugin.cloudprint.android.iface.ICloudPrintController;
 import org.pocketcampus.plugin.cloudprint.android.iface.ICloudPrintView;
 import org.pocketcampus.plugin.cloudprint.android.req.PrintFileRequest;
@@ -15,7 +17,6 @@ import org.pocketcampus.plugin.cloudprint.android.req.UploadFileRequest;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintColorConfig;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintDoubleSidedConfig;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintMultiPageConfig;
-import org.pocketcampus.plugin.cloudprint.shared.CloudPrintMultiPageLayout;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintMultipleCopies;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintOrientation;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintPageRange;
@@ -170,8 +171,12 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 	
 	
 	
-	private static String decodeLayout(CloudPrintMultiPageLayout layout) {
-		return layout.name().toLowerCase(Locale.US).replace("to_", "").replaceAll("([a-z])[a-z]+_([a-z])[a-z]+_([a-z])[a-z]+_([a-z])[a-z]+", "$1$2$3$4");
+	public String getLocalizedStringByName(String prefix, String aString) {
+		String packageName = getPackageName();
+		int resId = getResources().getIdentifier(prefix + aString, "string", packageName);
+		if(resId == 0)
+			return aString;
+		return getString(resId);
 	}
 
 	
@@ -181,12 +186,12 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 
 	public String colorConfigToDisplayString(CloudPrintColorConfig s) {
 		if(s == null) 
-			return "Color";
+			return getString(R.string.cloudprint_string_color);
 		switch (s) {
 		case BLACK_WHITE:
-			return "Black/White";
+			return getString(R.string.cloudprint_string_grayscale);
 		case COLOR:
-			return "Color";
+			return getString(R.string.cloudprint_string_color);
 		}
 		return null;
 	}
@@ -194,23 +199,23 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 
 	public String multipleCopiesToDisplayString(CloudPrintMultipleCopies s) {
 		if(s == null) 
-			return "1 copy";
-		return s.getNumberOfCopies() + " copies" + (s.isCollate() ? ", collate" : "");
+			return getString(R.string.cloudprint_string_one_copy);
+		return getString(R.string.cloudprint_string_n_copies, s.getNumberOfCopies()) + getString(s.isCollate() ? R.string.cloudprint_string_comma_collate : R.string.cloudprint_string_comma_do_not_collate);
 	}
 	
 
 	public String orientationToDisplayString(CloudPrintOrientation s) {
 		if(s == null) 
-			return "Portrait";
+			return getString(R.string.cloudprint_string_portrait);
 		switch (s) {
 		case PORTRAIT:
-			return "Portrait";
+			return getString(R.string.cloudprint_string_portrait);
 		case LANDSCAPE:
-			return "Landscape";
+			return getString(R.string.cloudprint_string_landscape);
 		case REVERSE_PORTRAIT:
-			return "Reverse portrait";
+			return getString(R.string.cloudprint_string_reverse_portrait);
 		case REVERSE_LANDSCAPE:
-			return "Reverse landscape";
+			return getString(R.string.cloudprint_string_reverse_landscape);
 		}
 		return null;
 	}
@@ -218,12 +223,12 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 
 	public String doubleSidedToDisplayString(CloudPrintDoubleSidedConfig s) {
 		if(s == null) 
-			return "1-sided";
+			return getString(R.string.cloudprint_string_one_sided);
 		switch (s) {
 		case LONG_EDGE:
-			return "2-sided, long edge";
+			return getString(R.string.cloudprint_string_two_sided_long_edge);
 		case SHORT_EDGE:
-			return "2-sided, short edge";
+			return getString(R.string.cloudprint_string_two_sided_short_edge);
 		}
 		return null;
 	}
@@ -231,18 +236,25 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 
 	public String multiPageToDisplayString(CloudPrintMultiPageConfig s) {
 		if(s == null) 
-			return "1 page per sheet";
-		return s.getNbPagesPerSheet().getValue() + " pages per sheet, " + decodeLayout(s.getLayout());
+			return getString(R.string.cloudprint_string_one_page_per_sheet);
+		return getString(R.string.cloudprint_string_n_pages_per_sheet, s.getNbPagesPerSheet().getValue()) + ", " + getLocalizedStringByName("cloudprint_enum_layout_short_", s.getLayout().name());
 	}
 	
 	
 	public String pageRangeToDisplayString(CloudPrintPageRange s) {
 		if(s == null) 
-			return "Entire document";
-		return "Pages " + s.getPageFrom() + " to " + s.getPageTo();
+			return getString(R.string.cloudprint_string_entire_document);
+		return getString(R.string.cloudprint_string_pages_x_to_y, s.getPageFrom(), s.getPageTo());
 	}
 
 	
 	
+	public static String[] generateArray(int start, int end, int step) {
+		List<String> list = new LinkedList<String>();
+		for(int i = start; i < end; i += step) {
+			list.add("" + i);
+		}
+		return list.toArray(new String[list.size()]);
+	}
 	
 }
