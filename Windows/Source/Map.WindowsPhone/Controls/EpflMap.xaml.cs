@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
 using System.Device.Location;
 using System.Linq;
 using System.Reflection;
@@ -124,7 +125,7 @@ namespace PocketCampus.Map.Controls
             }
             else
             {
-                string[] tokens = text.Split();
+                string[] tokens = text.Split( new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries );
                 MapsSettings.ApplicationContext.ApplicationId = tokens[0];
                 MapsSettings.ApplicationContext.AuthenticationToken = tokens[1];
             }
