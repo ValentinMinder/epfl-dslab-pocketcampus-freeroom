@@ -61,7 +61,7 @@ namespace PocketCampus.Moodle.Services
                 folder = await folder.CreateFolderAsync( FixName( name, Path.GetInvalidPathChars() ), CreationCollisionOption.OpenIfExists );
             }
             string extension = string.IsNullOrWhiteSpace( file.Extension ) ? DefaultExtension : file.Extension;
-            string fileName = FixName( file.Name, Path.GetInvalidFileNameChars() ) + NameExtensionSeparator + extension;
+            string fileName = FixName( file.Name + NameExtensionSeparator + extension, Path.GetInvalidFileNameChars() );
 
             // GetFileAsync throws an exception if the file doesn't exist
             // and there's no API to check for a file's existence
@@ -80,8 +80,19 @@ namespace PocketCampus.Moodle.Services
         /// </summary>
         private static string FixName( string name, char[] invalidChars )
         {
-            name = invalidChars.Aggregate( name, ( s, c ) => s.Replace( c.ToString(), "" ) );
-            return string.IsNullOrWhiteSpace( name ) ? name.GetHashCode().ToString() : name; // awful, but better than a crash
+            string fixedName = name;
+            foreach ( char c in invalidChars )
+            {
+                fixedName = fixedName.Replace( c.ToString(), "" );
+            }
+
+            if ( string.IsNullOrWhiteSpace( fixedName ) )
+            {
+                // awful, but better than a crash
+                return name.GetHashCode().ToString();
+            }
+
+            return fixedName;
         }
     }
 }
