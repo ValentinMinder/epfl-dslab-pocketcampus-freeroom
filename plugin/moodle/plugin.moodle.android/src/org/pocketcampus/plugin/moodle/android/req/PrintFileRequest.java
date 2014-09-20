@@ -8,6 +8,8 @@ import org.pocketcampus.plugin.moodle.shared.MoodlePrintFileResponse2;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Iface;
 import org.pocketcampus.plugin.moodle.shared.MoodleStatusCode2;
 
+import android.net.Uri;
+
 /**
  * PrintFileRequest
  * 
@@ -20,6 +22,7 @@ import org.pocketcampus.plugin.moodle.shared.MoodleStatusCode2;
 public class PrintFileRequest extends Request<MoodleController, Iface, MoodlePrintFileRequest2, MoodlePrintFileResponse2> {
 
 	private IMoodleView caller;
+	private String fileName;
 	
 	public PrintFileRequest(IMoodleView caller) {
 		this.caller = caller;
@@ -27,13 +30,14 @@ public class PrintFileRequest extends Request<MoodleController, Iface, MoodlePri
 	
 	@Override
 	protected MoodlePrintFileResponse2 runInBackground(Iface client, MoodlePrintFileRequest2 param) throws Exception {
+		fileName = Uri.parse(param.getFileUrl()).getLastPathSegment();
 		return client.printFile(param);
 	}
 
 	@Override
 	protected void onResult(MoodleController controller, MoodlePrintFileResponse2 result) {
 		if(result.getStatusCode() == MoodleStatusCode2.OK) {
-			MoodleController.openPrintDialog(controller, result.getPrintJobId());
+			MoodleController.openPrintDialog(controller, result.getPrintJobId(), fileName);
 			
 		} else if(result.getStatusCode() == MoodleStatusCode2.AUTHENTICATION_ERROR) {
 			caller.notLoggedIn();
