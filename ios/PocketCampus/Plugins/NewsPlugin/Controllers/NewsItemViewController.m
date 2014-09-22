@@ -194,6 +194,7 @@
             dispatch_once(&onceToken, ^{
                 formatter = [NSDateFormatter new];
                 formatter.dateStyle = NSDateFormatterLongStyle;
+                formatter.doesRelativeDateFormatting = YES;
             });
             
             NSString* dateString = [formatter stringFromDate:date];

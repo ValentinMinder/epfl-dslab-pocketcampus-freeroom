@@ -81,12 +81,14 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     [super viewDidLoad];
     PCTableViewAdditions* tableViewAdditions = [PCTableViewAdditions new];
     self.tableView = tableViewAdditions;
-    tableViewAdditions.imageProcessingBlock = ^UIImage*(PCTableViewAdditions* tableView, NSIndexPath* indexPath, UIImage* image) {
-        return [image imageByScalingAndCroppingForSize:CGSizeMake(106.0, tableView.rowHeight) applyDeviceScreenMultiplyingFactor:YES];
-    };
-    tableViewAdditions.reprocessesImagesWhenContentSizeCategoryChanges = YES;
     tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
         return floorf([PCTableViewCellAdditions preferredHeightForStyle:UITableViewCellStyleDefault textLabelTextStyle:kCellTextLabelTextStyle detailTextLabelTextStyle:nil]*1.35);
+    };
+    tableViewAdditions.reprocessesImagesWhenContentSizeCategoryChanges = YES;
+    tableViewAdditions.imageProcessingBlock = ^UIImage*(PCTableViewAdditions* tableView, NSIndexPath* indexPath, UIImage* image) {
+        CGFloat rowHeight = tableView.rowHeightBlock(tableView);
+        CGFloat imageWidth = rowHeight * (16.0/9.0);
+        return [image imageByScalingAndCroppingForSize:CGSizeMake(imageWidth, rowHeight) applyDeviceScreenMultiplyingFactor:YES];
     };
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGARefreshControl dataIdentifierForPluginName:@"news" dataName:@"newsList"]];
