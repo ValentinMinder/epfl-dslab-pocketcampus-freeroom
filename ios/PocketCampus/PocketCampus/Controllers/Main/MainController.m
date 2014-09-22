@@ -296,7 +296,7 @@ static MainController<MainControllerPublic>* instance = nil;
  */
 - (void)preConfigInit {
     self.window.tintColor = [PCValues pocketCampusRed];
-    self.revealWidth = [PCUtils isIdiomPad] ? 320.0 : 280;
+    self.revealWidth = [PCUtils isIdiomPad] ? 320.0 : (0.84 * self.window.bounds.size.width);
     [self initAndShowSplashViewViewController];
 }
 

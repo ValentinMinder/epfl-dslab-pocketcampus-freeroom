@@ -375,6 +375,8 @@
 		32E0E31A194B206D003251CC /* FilterBarButtonSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E0E318194B206D003251CC /* FilterBarButtonSelected@2x.png */; };
 		32E3E5CB1897D1F200D263C5 /* TransportPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32E3E5CD1897D1F200D263C5 /* TransportPlugin.strings */; };
 		32E3E5D11899370600D263C5 /* MapModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E3E5D01899370600D263C5 /* MapModelAdditions.m */; };
+		32E637E119D0CCB000378788 /* SplashImage4_7inch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E637DF19D0CCB000378788 /* SplashImage4_7inch@2x.png */; };
+		32E637E419D0D25400378788 /* SplashImage5_5inch@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E637E319D0D25400378788 /* SplashImage5_5inch@3x.png */; };
 		32E67DBC16847A0900E5CFF6 /* ClockCell.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBA16847A0900E5CFF6 /* ClockCell.png */; };
 		32E67DBD16847A0900E5CFF6 /* ClockCell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */; };
 		32E67DC01684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */; };
@@ -1004,6 +1006,8 @@
 		32E3E5CE1897D1F500D263C5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/TransportPlugin.strings; sourceTree = "<group>"; };
 		32E3E5CF1899370600D263C5 /* MapModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapModelAdditions.h; sourceTree = "<group>"; };
 		32E3E5D01899370600D263C5 /* MapModelAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapModelAdditions.m; sourceTree = "<group>"; };
+		32E637DF19D0CCB000378788 /* SplashImage4_7inch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SplashImage4_7inch@2x.png"; sourceTree = "<group>"; };
+		32E637E319D0D25400378788 /* SplashImage5_5inch@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SplashImage5_5inch@3x.png"; sourceTree = "<group>"; };
 		32E67DBA16847A0900E5CFF6 /* ClockCell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClockCell.png; sourceTree = "<group>"; };
 		32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ClockCell@2x.png"; sourceTree = "<group>"; };
 		32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryEmptyDetailView.xib; sourceTree = "<group>"; };
@@ -1451,6 +1455,8 @@
 				32E0E314194B1FDD003251CC /* FilterBarButton@2x.png */,
 				32E0E317194B206D003251CC /* FilterBarButtonSelected.png */,
 				32E0E318194B206D003251CC /* FilterBarButtonSelected@2x.png */,
+				32E637E319D0D25400378788 /* SplashImage5_5inch@3x.png */,
+				32E637DF19D0CCB000378788 /* SplashImage4_7inch@2x.png */,
 				328A72DD184A4EE0002C5A6B /* SplashImage4inch@2x.png */,
 				328A72DE184A4EE0002C5A6B /* SplashImage@2x.png */,
 				321F37E115B02FBE00E7BA6D /* HelpBarButton.png */,
@@ -2854,6 +2860,7 @@
 				32710E951565129600DE6984 /* CamiproLarge.png in Resources */,
 				32AF214415B193A200BB445D /* TransportHelpView.xib in Resources */,
 				321F37E615B02FBE00E7BA6D /* HelpBarButton.png in Resources */,
+				32E637E419D0D25400378788 /* SplashImage5_5inch@3x.png in Resources */,
 				321F37E715B02FBE00E7BA6D /* HelpBarButton@2x.png in Resources */,
 				32506D06181DC7AF003F08D7 /* MasterHidden@2x.png in Resources */,
 				27B74CE719A205E6006B2F17 /* RecommendedApps@2x.png in Resources */,
@@ -2967,6 +2974,7 @@
 				32DD525519B4DEAE00B5B241 /* CloudPrint@2x.png in Resources */,
 				32AEEC831747C11C006DBA2F /* CamiproView~iphone.xib in Resources */,
 				32C450B01824137B000C99A3 /* FoodMealCell.xib in Resources */,
+				32E637E119D0CCB000378788 /* SplashImage4_7inch@2x.png in Resources */,
 				327B0C24175199590011D81E /* ArrowUpRightCircleAccessory.png in Resources */,
 				32290AD318200C68005869E7 /* FoodLarge@2x.png in Resources */,
 				327B0C25175199590011D81E /* ArrowUpRightCircleAccessory@2x.png in Resources */,

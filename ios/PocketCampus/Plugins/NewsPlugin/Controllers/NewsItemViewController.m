@@ -82,8 +82,7 @@
 
 #pragma mark - UIViewController overrides
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     if (self.splitViewController) {
@@ -97,11 +96,13 @@
     
     [self loadNewsItem];
     
-    __weak __typeof(self) welf = self;
-    [self.webView.scrollView setLga_toggleElementsVisiblityOnScrollBlock:^(BOOL hidden) {
-        [welf.navigationController setNavigationBarHidden:hidden animated:YES];
-        [welf setNeedsStatusBarAppearanceUpdate];
-    }];
+    if (![PCUtils isIdiomPad]) {
+        __weak __typeof(self) welf = self;
+        [self.webView.scrollView setLga_toggleElementsVisiblityOnScrollBlock:^(BOOL hidden) {
+            [welf.navigationController setNavigationBarHidden:hidden animated:YES];
+            [welf setNeedsStatusBarAppearanceUpdate];
+        }];
+    }
 }
 
 - (BOOL)prefersStatusBarHidden {
