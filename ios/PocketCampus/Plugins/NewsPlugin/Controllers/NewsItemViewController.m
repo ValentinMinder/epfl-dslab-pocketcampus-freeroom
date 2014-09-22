@@ -45,6 +45,8 @@
 
 #import "PCWebViewController.h"
 
+#import "UIScrollView+LGAAdditions.h"
+
 @interface NewsItemViewController ()<NewsServiceDelegate, UIWebViewDelegate>
 
 @property (nonatomic, strong) UIPopoverController* actionsPopover;
@@ -94,11 +96,26 @@
     self.webView.scalesPageToFit = NO;
     
     [self loadNewsItem];
+    
+    __weak __typeof(self) welf = self;
+    [self.webView.scrollView setLga_toggleElementsVisiblityOnScrollBlock:^(BOOL hidden) {
+        [welf.navigationController setNavigationBarHidden:hidden animated:YES];
+        [welf setNeedsStatusBarAppearanceUpdate];
+    }];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return self.navigationController.navigationBarHidden;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
