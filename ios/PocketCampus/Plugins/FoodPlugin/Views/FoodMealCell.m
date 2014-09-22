@@ -56,7 +56,8 @@ static const CGFloat kMinHeight = 110.0;
 static const CGFloat kmealTypeImageViewLeftConstraintPhone = 10.0;
 static const CGFloat kmealTypeImageViewLeftConstraintPad = 25.0;
 static const CGFloat kmealTypeImageViewDefaultHeightConstraint = 50.0;
-static const CGFloat kTextViewWidth = 252.0;
+static const CGFloat kTextViewLeftConstraintPhone = 68.0;
+static const CGFloat kTextViewLeftConstraintPad = 83.0;
 static const CGFloat kRatingsEnabledHorizontalLineHeight = 0.5;
 static const CGFloat kRatingsDisabledHorizontalLineHeight = 0.0;
 static const CGFloat kRatingsEnabledBottomZoneHeight = 30.0;
@@ -123,7 +124,6 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         self.pricesLabel.isAccessibilityElement = NO;
         self.satRateButton.isAccessibilityElement = NO;
         self.mealTypeImageViewLeftConstraint.constant = [PCUtils isIdiomPad] ? kmealTypeImageViewLeftConstraintPad : kmealTypeImageViewLeftConstraintPhone;
-        self.textViewWidthConstraint.constant = kTextViewWidth;
         self.textViewBottomConstraint.constant = [self.class bottomZoneHeight];
         self.horizontalLineHeightConstraint.constant = ratingsEnabled ? kRatingsEnabledHorizontalLineHeight : kRatingsDisabledHorizontalLineHeight;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -267,11 +267,11 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     [self.satRateButton setAttributedTitle:satRateAttrString forState:UIControlStateNormal];
 }
 
-+ (CGFloat)preferredHeightForMeal:(EpflMeal*)meal {
++ (CGFloat)preferredHeightForMeal:(EpflMeal*)meal inTableView:(UITableView*)tableView {
     [PCUtils throwExceptionIfObject:meal notKindOfClass:[EpflMeal class]];
     NSAttributedString* attrString = [self attributedStringForMeal:meal];
     CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attrString);
-    CGSize targetSize = CGSizeMake(kTextViewWidth-10.0, CGFLOAT_MAX); //account for text left and right insets of the text view
+    CGSize targetSize = CGSizeMake(tableView.bounds.size.width - ([PCUtils isIdiomPad] ? kTextViewLeftConstraintPad : kTextViewLeftConstraintPhone), CGFLOAT_MAX); //account for text left and right insets of the text view
     CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, [attrString length]), NULL, targetSize, NULL);
     CFRelease(framesetter);
     CGFloat finalHeight = size.height + [self bottomZoneHeight] + (ratingsEnabled ? 22.0 : 0.0); //give some margin so that text is not too tight between top and bottom lines
@@ -349,18 +349,11 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     self.satRateButton.enabled = !rateModeEnabled;
     self.satRateButton.alpha = rateModeEnabled ? 0.5 : 1.0;
     
-    if ([PCUtils isIdiomPad] &&  !UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
-        self.rateControlsViewLeftConstraint.constant = rateModeEnabled ? kRateControlsViewWidth : 0.0;
-        //self.separatorInset = rateModeEnabled ? UIEdgeInsetsZero : self.originalSeparatorInsets;
-        self.infoContentViewLeftConstraint.constant = 0.0;
-        self.infoContentViewRightConstraint.constant = 0.0;
-    } else {
-        CGFloat offset = rateModeEnabled ? kRateControlsViewWidth : 0.0;
-        self.rateControlsViewLeftConstraint.constant = 0.0;
-        //self.separatorInset = rateModeEnabled ? UIEdgeInsetsZero : self.originalSeparatorInsets;
-        self.infoContentViewLeftConstraint.constant = -offset;
-        self.infoContentViewRightConstraint.constant = offset;
-    }
+    CGFloat offset = rateModeEnabled ? kRateControlsViewWidth : 0.0;
+    self.rateControlsViewLeftConstraint.constant = 0.0;
+    //self.separatorInset = rateModeEnabled ? UIEdgeInsetsZero : self.originalSeparatorInsets;
+    self.infoContentViewLeftConstraint.constant = -offset;
+    self.infoContentViewRightConstraint.constant = offset;
     
     [UIView animateWithDuration:animated ? 0.3 : 0.0 animations:^{
         [self layoutIfNeeded];

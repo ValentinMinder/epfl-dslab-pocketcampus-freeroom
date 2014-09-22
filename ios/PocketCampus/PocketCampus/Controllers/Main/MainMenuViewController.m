@@ -90,10 +90,12 @@ static const int kPluginsSection = 0;
     //self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:self.settingsButton, self.pocketCampusTitle, nil];
     self.navigationItem.leftBarButtonItem = self.settingsButton;
     self.navigationItem.titleView = self.pocketCampusLabel;
-    CGRect frame = self.navigationController.view.frame;
-    frame.size.width = 320.0;
-    self.navigationController.view.frame = frame;
-    self.navigationController.view.autoresizingMask = self.navigationController.view.autoresizingMask & ~UIViewAutoresizingFlexibleWidth; //remove flexible width from mask (we want constant 320.0 width)
+    if ([PCUtils isIdiomPad]) {
+        CGRect frame = self.navigationController.view.frame;
+        frame.size.width = 320.0;
+        self.navigationController.view.frame = frame;
+        self.navigationController.view.autoresizingMask = self.navigationController.view.autoresizingMask & ~UIViewAutoresizingFlexibleWidth; //remove flexible width from mask (we want constant 320.0 width)
+    }
 }
 
 - (NSUInteger)supportedInterfaceOrientations

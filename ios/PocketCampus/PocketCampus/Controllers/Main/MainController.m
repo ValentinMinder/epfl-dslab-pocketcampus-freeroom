@@ -25,16 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 07.10.12.
-
-//  ARC enabled
 
 #import "MainController.h"
 
 #import "PluginController.h"
+
+#import "ZUUIRevealController.h"
 
 #import "PluginNavigationController.h"
 

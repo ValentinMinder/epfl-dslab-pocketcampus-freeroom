@@ -23,12 +23,12 @@ PODS:
   - CDZQRScanningViewController (1.0.7)
   - GoogleAnalytics-iOS-SDK (3.0.9)
   - JTTargetActionBlock (1.0.0)
-  - LGALibrary (1.2.0):
+  - LGALibrary (1.2.3):
     - AFNetworking (~> 2.3)
   - MBProgressHUD (0.9)
   - NSTimer-Blocks (0.0.1)
   - SSKeychain (1.2.2)
-  - TapkuLibrary (0.3.5)
+  - TapkuLibrary (0.3.7)
   - thrift (0.9.1)
   - TTTAttributedLabel (1.10.1)
   - TUSafariActivity (1.0.0)
@@ -56,11 +56,11 @@ SPEC CHECKSUMS:
   CDZQRScanningViewController: 69cb48a4d02c483a8ee43da15b8fd23fc4e853f3
   GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   JTTargetActionBlock: bef69054d368a91b33b98a520fa9e78e218a5a25
-  LGALibrary: 8a170bebdb9cd4fe93fb69c6bc024299dc356218
+  LGALibrary: c7a8aadaa124a545ea8a3812e12ed58a602a9845
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   NSTimer-Blocks: 0a653b84ab33068a085f5c03c82c18be1f61eba9
   SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9
-  TapkuLibrary: 187d3cd6b9b68064105954afe534f962611b6d48
+  TapkuLibrary: 57999a6f61960402986ed98db14706613d9d5bf2
   thrift: b69f9820045ffa76eabe35674cdcc8daa5b1f75c
   TTTAttributedLabel: 94bb04f1e005616002dd2cee0262a0082e533627
   TUSafariActivity: afff9b1d2eacf7cbace752c5f2bf56db852714de

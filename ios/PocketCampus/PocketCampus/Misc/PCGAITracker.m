@@ -75,6 +75,7 @@ static id instance __strong = nil;
     }
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+#ifndef DEBUG
         instance = [[PCGAITracker alloc] init];
         if ([[PCConfig defaults] boolForKey:PC_CONFIG_GAN_ENABLED_KEY]) {
             [instance initGAIConfig];
@@ -82,6 +83,7 @@ static id instance __strong = nil;
         } else {
             CLSNSLog(@"-> Google Analytics disabled (config)");
         }
+#endif
     });
     return instance;
 }

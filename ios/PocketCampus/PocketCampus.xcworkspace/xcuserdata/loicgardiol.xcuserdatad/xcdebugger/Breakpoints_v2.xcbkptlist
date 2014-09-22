@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "432490977.742714"
+            timestampString = "433071684.837449"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1027"
-            endingLineNumber = "1027"
+            startingLineNumber = "1024"
+            endingLineNumber = "1024"
             landmarkName = "-gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"
             landmarkType = "5">
          </BreakpointContent>
@@ -104,11 +104,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainMenuViewController.m"
-            timestampString = "422999327.648771"
+            timestampString = "433088042.216876"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "269"
-            endingLineNumber = "269"
+            startingLineNumber = "271"
+            endingLineNumber = "271"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -120,11 +120,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainMenuViewController.m"
-            timestampString = "416510514.039696"
+            timestampString = "433088042.216876"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
             landmarkName = "-callMainController"
             landmarkType = "5">
          </BreakpointContent>
@@ -136,11 +136,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainMenuViewController.m"
-            timestampString = "416510514.039696"
+            timestampString = "433088042.216876"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
             landmarkName = "-setEditing:"
             landmarkType = "5">
          </BreakpointContent>
@@ -992,7 +992,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413546837.189763"
+            timestampString = "433088447.259616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "177"
@@ -1008,7 +1008,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413546837.189763"
+            timestampString = "433088447.259616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "154"
@@ -1040,7 +1040,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413546837.189763"
+            timestampString = "433088447.259616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "302"
@@ -1065,7 +1065,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413546837.189763"
+            timestampString = "433088447.259616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "316"
@@ -1081,7 +1081,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413546837.189763"
+            timestampString = "433088447.259616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "298"
@@ -1152,7 +1152,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413546837.189763"
+            timestampString = "433088447.259616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "340"
@@ -1184,11 +1184,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413546837.189763"
+            timestampString = "433088447.259616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "367"
-            endingLineNumber = "367"
+            startingLineNumber = "360"
+            endingLineNumber = "360"
             landmarkName = "-setRateModeEnabled:animated:postNotif:force:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1200,11 +1200,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodRestaurantInfoCell.m"
-            timestampString = "414597740.905382"
+            timestampString = "433082814.738461"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
             landmarkName = "-setRestaurant:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1239,7 +1239,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413546837.189763"
+            timestampString = "433088447.259616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "138"
@@ -1691,7 +1691,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413546837.189763"
+            timestampString = "433088447.259616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "313"
@@ -1849,11 +1849,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "432490977.742714"
+            timestampString = "433071684.837449"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "708"
-            endingLineNumber = "708"
+            startingLineNumber = "705"
+            endingLineNumber = "705"
             landmarkName = "-setActivePluginWithIdentifier:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2007,7 +2007,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413546837.189763"
+            timestampString = "433088447.259616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "188"
@@ -2175,7 +2175,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413546837.189763"
+            timestampString = "433088447.259616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "239"
@@ -2839,11 +2839,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "432490977.742714"
+            timestampString = "433071684.837449"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1056"
-            endingLineNumber = "1056"
+            startingLineNumber = "1053"
+            endingLineNumber = "1053"
             landmarkName = "-revealController:didRevealRearViewController:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2855,11 +2855,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "432490977.742714"
+            timestampString = "433071684.837449"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1036"
-            endingLineNumber = "1036"
+            startingLineNumber = "1033"
+            endingLineNumber = "1033"
             landmarkName = "-gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3079,7 +3079,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413546837.189763"
+            timestampString = "433088447.259616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "146"
@@ -3095,7 +3095,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413546837.189763"
+            timestampString = "433088447.259616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "160"
@@ -3203,11 +3203,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodRestaurantInfoCell.m"
-            timestampString = "413582791.950068"
+            timestampString = "433082663.857417"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
             landmarkName = "-setRestaurant:"
             landmarkType = "5">
             <Locations>
@@ -3610,11 +3610,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCGAITracker.m"
-            timestampString = "417031476.901601"
+            timestampString = "433083670.868194"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "131"
-            endingLineNumber = "131"
+            startingLineNumber = "133"
+            endingLineNumber = "133"
             landmarkName = "-trackAction:inScreenWithName:category:contentInfo:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5010,43 +5010,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CamiproPlugin/Extensions/CamiproWidget/CamiproWidgetViewController.m"
-            timestampString = "432420039.653516"
+            timestampString = "433075855.479958"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
             landmarkName = "-startBalanceAndTransactionsRequest"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[CamiproWidgetViewController startBalanceAndTransactionsRequest]"
-                  moduleName = "org.pocketcampus.dev.CamiproWidget"
-                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CamiproPlugin/Extensions/CamiproWidget/CamiproWidgetViewController.m"
-                  timestampString = "430239886.587009"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "60"
-                  endingLineNumber = "60"
-                  offsetFromSymbolStart = "62">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__65-[CamiproWidgetViewController startBalanceAndTransactionsRequest]_block_invoke"
-                  moduleName = "org.pocketcampus.dev.CamiproWidget"
-                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CamiproPlugin/Extensions/CamiproWidget/CamiproWidgetViewController.m"
-                  timestampString = "430239886.587213"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "60"
-                  endingLineNumber = "60"
-                  offsetFromSymbolStart = "52">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -5232,11 +5202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CamiproPlugin/Extensions/CamiproWidget/CamiproWidgetViewController.m"
-            timestampString = "432420039.653516"
+            timestampString = "433075855.479958"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "61"
-            endingLineNumber = "61"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
             landmarkName = "-widgetMarginInsetsForProposedMarginInsets:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5454,11 +5424,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "430746980.895258"
+            timestampString = "433071684.837449"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "195"
-            endingLineNumber = "195"
+            startingLineNumber = "192"
+            endingLineNumber = "192"
             landmarkName = "-handlePocketCampusURL:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5772,11 +5742,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "432490977.742714"
+            timestampString = "433071684.837449"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "918"
-            endingLineNumber = "918"
+            startingLineNumber = "915"
+            endingLineNumber = "915"
             landmarkName = "-rotateDeviceToPortraitIfNecessary"
             landmarkType = "5">
          </BreakpointContent>
@@ -6123,7 +6093,7 @@
                   symbolName = "__112-[CloudPrintController viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil:completion:]_block_invoke159"
                   moduleName = "PocketCampus"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-                  timestampString = "432637157.070928"
+                  timestampString = "433090757.702927"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "184"
@@ -6137,7 +6107,7 @@
                   symbolName = "__112-[CloudPrintController viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil:completion:]_block_invoke_2161"
                   moduleName = "PocketCampus"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-                  timestampString = "432637157.071124"
+                  timestampString = "433090757.703877"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "184"
@@ -6250,11 +6220,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "432490977.742714"
+            timestampString = "433071684.837449"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1085"
-            endingLineNumber = "1085"
+            startingLineNumber = "1082"
+            endingLineNumber = "1082"
             landmarkName = "-revealController:didSwapToFrontViewController:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6358,7 +6328,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCConfig.m"
@@ -6368,6 +6338,38 @@
             startingLineNumber = "185"
             endingLineNumber = "185"
             landmarkName = "+registerAndPersistDefaultsFromServerWithCompletionHandler:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CamiproPlugin/Extensions/CamiproWidget/CamiproWidgetViewController.m"
+            timestampString = "433075855.479958"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "121"
+            endingLineNumber = "121"
+            landmarkName = "-crash"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CamiproPlugin/Extensions/CamiproWidget/CamiproWidgetViewController.m"
+            timestampString = "433075306.228772"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

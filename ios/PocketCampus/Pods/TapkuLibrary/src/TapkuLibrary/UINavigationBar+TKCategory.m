@@ -31,6 +31,8 @@
 
 #import "UINavigationBar+TKCategory.h"
 
+#import "UIScreen+TKCategory.h"
+
 @implementation UINavigationBar (TKCategory)
 
 - (UIView*) hairlineDividerView{
@@ -38,7 +40,7 @@
 }
 
 - (UIView*) _hairlineViewUnder:(UIView *)view {
-    if (([view isKindOfClass:UIImageView.class] && CGRectGetHeight(view.bounds) == 0.5) || (CGRectGetHeight(view.frame) == 1)) {
+    if ([view isKindOfClass:UIImageView.class] && CGRectGetHeight(view.bounds) == [[UIScreen mainScreen] onePixelSize]) {
 		return view;
     }
     for (UIView *subview in view.subviews) {

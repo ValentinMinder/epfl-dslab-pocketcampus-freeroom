@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5350C1D628514DB68053757E"
+               BlueprintIdentifier = "CAB5FFC6D391426C88A0A69C"
                BuildableName = "libPods-TapkuLibrary.a"
                BlueprintName = "Pods-TapkuLibrary"
                ReferencedContainer = "container:Pods.xcodeproj">

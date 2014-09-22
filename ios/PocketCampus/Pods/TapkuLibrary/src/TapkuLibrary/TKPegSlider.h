@@ -1,6 +1,6 @@
 //
-//  NSMutableArray+TKCategory.m
-//  Created by Devin Ross on 4/12/13.
+//  TKPegSlider.h
+//  Created by Devin Ross on 6/30/14.
 //
 /*
  
@@ -28,22 +28,29 @@
  OTHER DEALINGS IN THE SOFTWARE.
  
  */
-#import "NSMutableArray+TKCategory.h"
 
-@implementation NSMutableArray (TKCategory)
+@import UIKit;
 
-- (void) shuffle{
-    NSUInteger count = [self count];
-    for (NSUInteger i = 0; i < count; ++i) {
-        NSInteger nElements = count - i;
-        NSInteger n = (arc4random() % nElements) + i;
-        [self exchangeObjectAtIndex:i withObjectAtIndex:n];
-    }
-}
+/** `TKPegSlider` a slider control with set points. */
+@interface TKPegSlider : UIControl
 
+/** The index of the selected item. */
+@property (nonatomic,assign) NSInteger selectedPegIndex;
 
-- (void) removeFirstObject{
-	[self removeObjectAtIndex:0];
-}
+/** The index of the selected item. */
+@property (nonatomic,assign) NSUInteger numberOfPegs;
+
+/** The left side image. */
+@property (nonatomic,strong) UIImage *leftEndImage;
+
+/** The right side image. */
+@property (nonatomic,strong) UIImage *rightEndImage;
+
+/**
+ Select an item manually.
+ @param index The index of the item.
+ @param animated Animate the selection of the item.
+ */
+- (void) selectPegAtIndex:(NSInteger)index animated:(BOOL)animated;
 
 @end
