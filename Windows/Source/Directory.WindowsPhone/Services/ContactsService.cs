@@ -25,7 +25,7 @@ namespace PocketCampus.Directory.Services
                 HomePhone = person.PrivatePhoneNumber,
                 WorkPhone = person.OfficePhoneNumber,
                 WorkEmail = person.EmailAddress,
-                Website = person.Homepages.Any() ? person.Homepages.First().Value : null
+                Website = ( person.Homepages != null && person.Homepages.Any() ) ? person.Homepages.First().Value : null
             }.Show();
         }
     }

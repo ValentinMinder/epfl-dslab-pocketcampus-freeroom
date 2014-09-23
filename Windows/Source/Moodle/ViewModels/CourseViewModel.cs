@@ -160,21 +160,24 @@ namespace PocketCampus.Moodle.ViewModels
                 return;
             }
 
-            if ( !( await _storage.IsStoredAsync( file ) ) )
+            // some very odd errors can happen here
+            try
             {
-                DownloadState = DownloadState.Downloading;
-
-                try
+                if ( !( await _storage.IsStoredAsync( file ) ) )
                 {
+                    DownloadState = DownloadState.Downloading;
+
                     var bytes = await _downloader.DownloadAsync( file );
                     await _storage.StoreFileAsync( file, bytes );
+
                     DownloadState = DownloadState.None;
                 }
-                catch
-                {
-                    DownloadState = DownloadState.Error;
-                }
             }
+            catch
+            {
+                DownloadState = DownloadState.Error;
+            }
+
             if ( DownloadState == DownloadState.None )
             {
                 await _storage.OpenFileAsync( file );
