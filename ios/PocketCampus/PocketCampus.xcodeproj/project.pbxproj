@@ -869,7 +869,6 @@
 		329E1B3D16E696F80054C3A8 /* FavoriteGlowNavBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteGlowNavBarButton.png; sourceTree = "<group>"; };
 		329E1B3E16E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteGlowNavBarButton@2x.png"; sourceTree = "<group>"; };
 		32A63A4C1535FFF400237841 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TransportTripsHeaderCell.xib; sourceTree = "<group>"; };
-		32A63A4F1536000100237841 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/TransportTripsHeaderCell.xib; sourceTree = "<group>"; };
 		32A77DC116A564460018976F /* UIPopoverController+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPopoverController+Additions.h"; sourceTree = "<group>"; };
 		32A77DC216A564460018976F /* UIPopoverController+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPopoverController+Additions.m"; sourceTree = "<group>"; };
 		32A77DC416A565600018976F /* UIActionSheet+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Additions.h"; sourceTree = "<group>"; };
@@ -1057,6 +1056,7 @@
 		32FB2E0615179014007AE82B /* TransportService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TransportService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32FB441E17650268008C8282 /* NSDate+Addtions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Addtions.h"; sourceTree = "<group>"; };
 		32FB441F17650268008C8282 /* NSDate+Addtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Addtions.m"; sourceTree = "<group>"; };
+		32FD4D6719D3569F00716592 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/TransportTripsHeaderCell.xib; sourceTree = "<group>"; };
 		32FDA99B1854A06F00C6393A /* NSOperationWithDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOperationWithDelegate.h; sourceTree = "<group>"; };
 		32FDA99C1854A06F00C6393A /* NSOperationWithDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationWithDelegate.m; sourceTree = "<group>"; };
 		32FDA99E1854A30900C6393A /* NSOperationWithDelegate_Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSOperationWithDelegate_Protected.h; sourceTree = "<group>"; };
@@ -3469,7 +3469,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				32A63A4C1535FFF400237841 /* en */,
-				32A63A4F1536000100237841 /* fr */,
+				32FD4D6719D3569F00716592 /* fr */,
 			);
 			name = TransportTripsHeaderCell.xib;
 			sourceTree = "<group>";
