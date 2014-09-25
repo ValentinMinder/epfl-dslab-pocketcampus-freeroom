@@ -32,7 +32,6 @@ namespace PocketCampus.Common
         {
             return pairs.Where( pair => pair.Item2 )
                         .Select( pair => pair.Item1 )
-                        .Cast<T>()
                         .ToArray();
         }
     }

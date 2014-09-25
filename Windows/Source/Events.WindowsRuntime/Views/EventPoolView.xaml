@@ -10,14 +10,12 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <my:EventItemToHumanDateConverter x:Key="EventItemToShortDate"
-                                              IsCompact="True" />
-
             <!-- Template for child events -->
             <DataTemplate x:Key="EventItemTemplate">
                 <cc:SimpleButton Command="{Binding DataContext.ViewItemCommand, 
                                                    ElementName=Root}"
-                                 CommandParameter="{Binding}">
+                                 CommandParameter="{Binding}"
+                                 Margin="0,0,0,24">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -70,7 +68,7 @@
                         <!-- Time -->
                         <TextBlock Grid.Column="1"
                                    Grid.Row="2"
-                                   Text="{Binding Converter={StaticResource EventItemToShortDate}}"
+                                   Text="{Binding Converter={StaticResource EventToShortDate}}"
                                    TextTrimming="WordEllipsis"
                                    Style="{StaticResource AppSubtleTextBlockStyle}"
                                    Visibility="{Binding TimeOverride, 

@@ -19,8 +19,8 @@ namespace PocketCampus.Authentication.ViewModels.Design
 
         public Design()
         {
-            Main = new MainViewModel( new DesignAuthenticationService(), new DesignAuthenticator(), new DesignServerAccess(),
-                                      new DesignNavigationService(), new DesignServerSettings(), new DesignCredentialsStorage(),
+            Main = new MainViewModel( new DesignAuthenticationService(), new DesignAuthenticator(), new DesignNavigationService(),
+                                      new DesignServerSettings(), new DesignCredentialsStorage(),
                                       new AuthenticationRequest() );
 
             Main.OnNavigatedTo();

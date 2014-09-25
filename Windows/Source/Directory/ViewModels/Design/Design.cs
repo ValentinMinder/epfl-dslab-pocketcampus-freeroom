@@ -27,7 +27,7 @@ namespace PocketCampus.Directory.ViewModels.Design
             Main = new MainViewModel( directoryService, new DesignNavigationService(), new ViewPersonRequest( "DSLAB" ) );
             Person = new PersonViewModel( new DesignBrowserService(), new DesignEmailService(), new DesignPhoneService(), new DesignContactsService(), person );
 
-            Main.OnNavigatedToAsync();
+            Main.OnNavigatedTo();
             Person.OnNavigatedTo();
         }
 #endif

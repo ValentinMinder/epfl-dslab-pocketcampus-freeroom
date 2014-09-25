@@ -11,8 +11,6 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <my:EventItemToHumanDateConverter x:Key="EventToDate" />
-
             <!-- Template for child pools -->
             <DataTemplate x:Key="ItemPoolTemplate">
                 <cc:SimpleButton Command="{Binding DataContext.ViewPoolCommand, 
@@ -78,10 +76,10 @@
 
             <!-- Thumbnail -->
             <Image Grid.Column="1"
-                   Source="{Binding Item.PictureThumbnailUrl}"
+                   Source="{Binding Item.ThumbnailUrl}"
                    VerticalAlignment="Top"
                    Width="100"
-                   Visibility="{Binding Item.HidePictureThumbnail, 
+                   Visibility="{Binding Item.HideThumbnail, 
                                         Converter={StaticResource NonDefaultToVisibility}}"/>
         </Grid>
 
@@ -92,7 +90,7 @@
         <!-- Everything needs to scroll, sometimes some values are extremely long -->
         <ScrollViewer Grid.Row="3"
                       Margin="19,0">
-            <StackPanel Margin="0,0,0,95">
+            <StackPanel>
                 <!-- Information -->
                 <Grid Visibility="{Binding Item.HideInformation, 
                                            Converter={StaticResource NonDefaultToVisibility}}">
@@ -112,7 +110,7 @@
                         <TextBlock Text="{CustomResource EventItem.Time}"
                                    Style="{StaticResource AppSubtleTextBlockStyle}" />
                         
-                        <TextBlock Text="{Binding Item, 
+                        <TextBlock Text="{Binding Item,
                                                   Converter={StaticResource EventToDate}}"
                                    Style="{StaticResource AppLargeTextBlockStyle}" />
                     </StackPanel>
@@ -148,7 +146,7 @@
                                    Style="{StaticResource AppSubtleTextBlockStyle}" />
                         
                         <RichTextBlock h2x:Properties.Html="{Binding Item.SpeakerName}"
-                                       Style="{StaticResource AppLargeTextBlockStyle}" />
+                                       Style="{StaticResource AppLargeRichTextBlockStyle}" />
                     </StackPanel>
 
                     <!-- "Mark as favorite" button -->
@@ -189,8 +187,10 @@
 
                 <!-- Details, in HTML -->
                 <RichTextBlock h2x:Properties.Html="{Binding Item.Details}"
+                               Style="{StaticResource AppNormalRichTextBlockStyle}"
                                Visibility="{Binding Item.Details, 
-                                                    Converter={StaticResource NonDefaultToVisibility}}" />
+                                                    Converter={StaticResource NonDefaultToVisibility}}"
+                               Margin="0,16" />
 
                 <!-- "More details" button -->
                 <HyperlinkButton Command="{Binding ViewMoreDetailsCommand}"
@@ -211,7 +211,7 @@
 
         <!-- Data status -->
         <cc:DataStatusDisplay Grid.Row="1"
-                              Grid.RowSpan="4"
+                              Grid.RowSpan="3"
                               Data="{Binding DataStatus}"
                               Cache="{Binding CacheStatus}" />
     </Grid>

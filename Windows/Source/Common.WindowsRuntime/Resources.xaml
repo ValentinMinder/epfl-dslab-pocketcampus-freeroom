@@ -33,7 +33,7 @@
                                      IsReversed="True" />
 
 
-    <!-- Normal text (can't set it as default for whatever reason) -->
+    <!-- Normal text -->
     <Style x:Key="AppNormalTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}" />
         <Setter Property="FontSize" Value="{StaticResource TextStyleMediumFontSize}" />
@@ -69,7 +69,6 @@
     <Style x:Key="AppCenterTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource AppLargeTextBlockStyle}">
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="TextWrapping" Value="WrapWholeWords" />
     </Style>
 
     <!-- Group header text -->
@@ -101,6 +100,23 @@
     </Style>
 
 
+    <!-- Normal rich text -->
+    <Style x:Key="AppNormalRichTextBlockStyle" TargetType="RichTextBlock">
+        <Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleMediumFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
+        <Setter Property="TextWrapping" Value="WrapWholeWords" />
+    </Style>
+
+    <!-- Large rich text -->
+    <Style x:Key="AppLargeRichTextBlockStyle" TargetType="RichTextBlock">
+        <Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleLargeFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
+        <Setter Property="TextWrapping" Value="WrapWholeWords" />
+    </Style>
+
+    
     <!-- ItemsControl style that stretches its contents -->
     <Style TargetType="ItemsControl">
         <Setter Property="HorizontalAlignment" Value="Stretch" />

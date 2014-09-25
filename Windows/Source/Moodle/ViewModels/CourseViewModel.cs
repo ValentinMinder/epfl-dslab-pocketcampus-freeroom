@@ -154,24 +154,25 @@ namespace PocketCampus.Moodle.ViewModels
                 return;
             }
 
-            if ( !( await _storage.IsStoredAsync( file ) ) )
+            try
             {
-                DownloadStatus = DownloadStatus.Downloading;
-
-                try
+                if ( !( await _storage.IsStoredAsync( file ) ) )
                 {
+                    DownloadStatus = DownloadStatus.Downloading;
+
                     var bytes = await _downloader.DownloadAsync( file );
                     await _storage.StoreFileAsync( file, bytes );
                     DownloadStatus = DownloadStatus.None;
+
                 }
-                catch
+                if ( DownloadStatus == DownloadStatus.None )
                 {
-                    DownloadStatus = DownloadStatus.Error;
+                    await _storage.OpenFileAsync( file );
                 }
             }
-            if ( DownloadStatus == DownloadStatus.None )
+            catch
             {
-                await _storage.OpenFileAsync( file );
+                DownloadStatus = DownloadStatus.Error;
             }
         }
     }

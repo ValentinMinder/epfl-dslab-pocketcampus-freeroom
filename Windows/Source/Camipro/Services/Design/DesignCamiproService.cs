@@ -93,7 +93,7 @@ namespace PocketCampus.Camipro.Services.Design
                             Amount = -3.70,
                             Place = "Le Négoce",
                             Date = new DateTime(2013, 5, 8, 12, 22, 48)
-                        },
+                        }
                     }
                 }
             );

@@ -68,7 +68,7 @@ namespace PocketCampus.Common.Controls
         {
             var view = new ListView
             {
-                ItemTemplate = this.ItemTemplate,
+                ItemTemplate = ItemTemplate,
                 GroupStyle = { new GroupStyle { HidesIfEmpty = true, HeaderTemplate = GetGroupHeaderTemplate( GroupKeyPath ) } },
                 // HACK: The group header template contains a top margin, so we cancel the first one here
                 Padding = new Thickness( 0, ZoomedInViewTopMargin - ZoomedInGroupFooterSize, ZoomedInViewRightMargin, 0 )
@@ -77,7 +77,7 @@ namespace PocketCampus.Common.Controls
             view.SetBinding
             (
                 ListView.ItemsSourceProperty,
-                new Binding { Source = this.ItemsViewSource }
+                new Binding { Source = ItemsViewSource }
             );
             return view;
         }
@@ -95,7 +95,7 @@ namespace PocketCampus.Common.Controls
             view.SetBinding
             (
                 ListView.ItemsSourceProperty,
-                new Binding { Source = this.ItemsViewSource, Path = new PropertyPath( "CollectionGroups" ) }
+                new Binding { Source = ItemsViewSource, Path = new PropertyPath( "CollectionGroups" ) }
             );
             return view;
         }

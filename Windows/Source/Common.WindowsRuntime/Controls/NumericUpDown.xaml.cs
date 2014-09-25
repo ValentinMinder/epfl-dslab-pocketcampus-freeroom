@@ -1,10 +1,9 @@
 ﻿using ThinMvvm;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.Common.Controls
 {
-    public sealed partial class NumericUpDown : UserControl, ICommandOwner
+    public sealed partial class NumericUpDown : ICommandOwner
     {
         #region Minimum
         public int Minimum
@@ -54,7 +53,7 @@ namespace PocketCampus.Common.Controls
             InitializeComponent();
             Root.DataContext = this;
             // HACK: For some reason a binding on this doesn't work; why?
-            Loaded += ( _, __ ) => Root.Background = this.Background;
+            Loaded += ( _, __ ) => Root.Background = Background;
         }
 
         private static void OnPropertyChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )

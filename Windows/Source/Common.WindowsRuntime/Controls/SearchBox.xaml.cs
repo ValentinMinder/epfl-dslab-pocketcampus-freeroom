@@ -1,10 +1,9 @@
 ﻿using System.Windows.Input;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.Common.Controls
 {
-    public sealed partial class SearchBox : UserControl
+    public sealed partial class SearchBox
     {
         #region Query
         public string Query

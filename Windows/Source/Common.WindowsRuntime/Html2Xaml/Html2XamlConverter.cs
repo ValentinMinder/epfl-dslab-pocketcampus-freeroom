@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HtmlAgilityPack;
-using Windows.UI.Xaml.Controls;
 
 namespace Html2Xaml
 {
@@ -89,22 +88,6 @@ namespace Html2Xaml
                         processTopNode( xamlString, nextNode );
                 }
             }
-        }
-
-        private static HtmlNode getNextTopNode( HtmlNode node )
-        {
-            if ( node.NextSibling != null )
-                if ( testTop( node.NextSibling ) )
-                    return node.NextSibling;
-            //else
-            //	return getNextTopNode(node.NextSibling);
-
-            if ( node.ParentNode != node.OwnerDocument.DocumentNode && node.ParentNode.NextSibling != null )
-                if ( testTop( node.ParentNode.NextSibling ) )
-                    return node.ParentNode.NextSibling;
-            //else
-            //	return getNextTopNode(node.ParentNode.NextSibling);
-            return null;
         }
 
         private static bool testTop( HtmlNode node )
@@ -209,31 +192,6 @@ namespace Html2Xaml
                 processNode( xamlString, li.FirstChild );
                 xamlString.Append( "</Span></Paragraph>" );
             }
-        }
-
-        private static int setCellAttributes( int currentRow, int currentColumn, HtmlNode cellNode, TextBlock cell )
-        {
-            int rowSpan = cellNode.GetAttributeValue( "rowspan", 0 );
-            int colSpan = cellNode.GetAttributeValue( "colspan", 0 );
-            if ( rowSpan > 0 )
-            {
-                Grid.SetRowSpan( cell, rowSpan );
-            }
-            if ( colSpan > 0 )
-            {
-                Grid.SetColumnSpan( cell, colSpan );
-            }
-            if ( currentRow > 0 )
-            {
-                Grid.SetRow( cell, currentRow );
-            }
-            if ( currentColumn > 0 )
-            {
-                Grid.SetColumn( cell, currentColumn );
-            }
-            cell.Text = cellNode.InnerText;
-
-            return colSpan + currentColumn;
         }
     }
 }

@@ -37,7 +37,7 @@ namespace PocketCampus.Common
     {
         public override string Convert( object value, string parameter )
         {
-            return string.Format( "{0:" + parameter.ToString() + "}", value );
+            return string.Format( "{0:" + parameter + "}", value );
         }
     }
 

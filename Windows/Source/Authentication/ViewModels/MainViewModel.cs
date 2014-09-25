@@ -18,7 +18,6 @@ namespace PocketCampus.Authentication.ViewModels
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly IAuthenticator _authenticator;
-        private readonly IServerAccess _serverAccess;
         private readonly INavigationService _navigationService;
         private readonly IServerSettings _settings;
         private readonly ICredentialsStorage _credentials;
@@ -67,13 +66,11 @@ namespace PocketCampus.Authentication.ViewModels
 
 
         public MainViewModel( IAuthenticationService authenticationService, IAuthenticator authenticator,
-                              IServerAccess serverAccess, INavigationService navigationService,
-                              IServerSettings settings, ICredentialsStorage credentials,
+                              INavigationService navigationService, IServerSettings settings, ICredentialsStorage credentials,
                               AuthenticationRequest request )
         {
             _authenticationService = authenticationService;
             _authenticator = authenticator;
-            _serverAccess = serverAccess;
             _navigationService = navigationService;
             _settings = settings;
             _credentials = credentials;

@@ -153,7 +153,7 @@ namespace PocketCampus.Directory.ViewModels
             {
                 var request = new SearchRequest
                 {
-                    Query = this.Query,
+                    Query = Query,
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
                     PaginationToken = _currentPaginationToken
                 };

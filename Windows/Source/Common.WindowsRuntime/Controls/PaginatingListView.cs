@@ -44,7 +44,7 @@ namespace PocketCampus.Common.Controls
 
         private const double PreloadingMargin = 400.0;
 
-        private ListView _view;
+        private readonly ListView _view;
         private ScrollViewer _scroller;
 
         public PaginatingListView()

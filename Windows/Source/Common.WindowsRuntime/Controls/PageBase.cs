@@ -94,7 +94,7 @@ namespace PocketCampus.Common.Controls
         #endregion
 
 
-        public PageBase()
+        protected PageBase()
         {
             if ( DesignMode.DesignModeEnabled )
             {

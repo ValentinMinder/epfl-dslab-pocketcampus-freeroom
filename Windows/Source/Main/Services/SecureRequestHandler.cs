@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
@@ -113,6 +114,10 @@ namespace PocketCampus.Main.Services
         public void Authenticate<TViewModel>()
             where TViewModel : ViewModel<NoParameter>
         {
+            // Destroy all sessions, since this is called when credentials have been declared invalid
+            _mainSettings.Session = null;
+            _mainSettings.Sessions = new Dictionary<string, string>();
+
             var authRequest = new AuthenticationRequest( () => _navigationService.NavigateTo<TViewModel>() );
             _navigationService.RemoveCurrentFromBackStack();
             _navigationService.NavigateTo<MainViewModel, AuthenticationRequest>( authRequest );

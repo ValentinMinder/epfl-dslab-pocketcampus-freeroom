@@ -81,8 +81,8 @@ namespace PocketCampus.Moodle.Services
         /// </summary>
         private static string FixName( string name, char[] invalidChars )
         {
-            name = invalidChars.Aggregate( name, ( s, c ) => s.Replace( c.ToString(), "" ) );
-            return string.IsNullOrWhiteSpace( name ) ? name.GetHashCode().ToString() : name; // awful, but better than a crash
+            string fixedName = invalidChars.Aggregate( name, ( s, c ) => s.Replace( c.ToString(), "" ) );
+            return string.IsNullOrWhiteSpace( fixedName ) ? name.GetHashCode().ToString() : fixedName; // awful, but better than a crash
         }
     }
 }

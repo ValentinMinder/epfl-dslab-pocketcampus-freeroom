@@ -106,14 +106,7 @@ namespace PocketCampus.Common.Controls
         {
             IsEnabled = Command.CanExecute( CommandParameter );
 
-            if ( IsEnabled )
-            {
-                VisualStateManager.GoToState( this, "Normal", true );
-            }
-            else
-            {
-                VisualStateManager.GoToState( this, "Disabled", true );
-            }
+            VisualStateManager.GoToState( this, IsEnabled ? "Normal" : "Disabled", true );
         }
     }
 }

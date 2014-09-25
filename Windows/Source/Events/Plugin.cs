@@ -55,13 +55,13 @@ namespace PocketCampus.Events
             switch ( destination )
             {
                 case ViewPoolQuery:
-                    string ticket = null;
+                    string ticket;
                     if ( parameters.TryGetValue( UserTicketParameter, out ticket ) && !_settings.UserTickets.Contains( ticket ) )
                     {
                         _settings.UserTickets.Add( ticket );
                     }
 
-                    string favoriteIdString = null;
+                    string favoriteIdString;
                     if ( parameters.TryGetValue( MarkAsFavoriteParameter, out favoriteIdString ) )
                     {
                         long favoriteId = long.Parse( favoriteIdString );

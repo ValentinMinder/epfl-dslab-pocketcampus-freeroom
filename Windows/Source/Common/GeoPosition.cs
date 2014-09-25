@@ -47,9 +47,9 @@ namespace PocketCampus.Common
         /// </summary>
         public double DistanceTo( GeoPosition other )
         {
-            double lat1 = this.Latitude * RadianCoeff,
+            double lat1 = Latitude * RadianCoeff,
                    lat2 = other.Latitude * RadianCoeff,
-                   lon1 = this.Longitude * RadianCoeff,
+                   lon1 = Longitude * RadianCoeff,
                    lon2 = other.Longitude * RadianCoeff;
 
             return EarthRadiusInKilometers * 2 * Math.Asin( Math.Min( 1, Math.Sqrt( ( Math.Pow( Math.Sin( ( lat2 - lat1 ) / 2.0 ), 2.0 ) + Math.Cos( lat1 ) * Math.Cos( lat2 ) * Math.Pow( Math.Sin( ( lon2 - lon1 ) / 2.0 ), 2.0 ) ) ) ) );

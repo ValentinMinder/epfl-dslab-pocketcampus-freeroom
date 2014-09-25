@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System;
+using PocketCampus.Common.Services;
 
 namespace PocketCampus.Common
 {

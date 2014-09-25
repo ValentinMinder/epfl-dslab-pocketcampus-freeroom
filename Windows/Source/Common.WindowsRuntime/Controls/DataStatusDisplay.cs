@@ -107,7 +107,7 @@ namespace PocketCampus.Common.Controls
             var progressIndicator = StatusBar.GetForCurrentView().ProgressIndicator;
 
             // HACK: There's no IsVisible on ProgressIndicator, but we're always displaying text, so...
-            _progressIndicatorWasVisible = progressIndicator.Text != null;
+            _progressIndicatorWasVisible = !string.IsNullOrWhiteSpace( progressIndicator.Text );
             _oldProgressIndicatorValue = progressIndicator.ProgressValue;
             _oldProgressIndicatorText = progressIndicator.Text;
 
@@ -129,10 +129,12 @@ namespace PocketCampus.Common.Controls
         {
             var progressIndicator = StatusBar.GetForCurrentView().ProgressIndicator;
 
-            progressIndicator.ProgressValue = _oldProgressIndicatorValue;
-            progressIndicator.Text = _oldProgressIndicatorText;
-
-            if ( !_progressIndicatorWasVisible )
+            if ( _progressIndicatorWasVisible )
+            {
+                progressIndicator.ProgressValue = _oldProgressIndicatorValue;
+                progressIndicator.Text = _oldProgressIndicatorText;
+            }
+            else
             {
                 await progressIndicator.HideAsync();
             }
