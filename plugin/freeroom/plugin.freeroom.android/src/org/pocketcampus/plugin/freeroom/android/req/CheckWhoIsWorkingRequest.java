@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.freeroom.android.req;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
@@ -40,8 +41,8 @@ public class CheckWhoIsWorkingRequest
 	@Override
 	protected void onResult(FreeRoomController controller,
 			WhoIsWorkingReply result) {
-		int status = result.getStatus();
-		if (status == 200) {
+		FRStatusCode status = result.getStatus();
+		if (status == FRStatusCode.HTTP_OK) {
 			Log.v(this.getClass().toString(), "server replied successfully");
 			controller.setWhoIsWorkingReply(result);
 		} else {

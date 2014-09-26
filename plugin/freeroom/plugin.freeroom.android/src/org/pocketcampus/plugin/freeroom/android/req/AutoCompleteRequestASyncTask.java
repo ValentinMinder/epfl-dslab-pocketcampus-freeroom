@@ -5,6 +5,7 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 
 import android.util.Log;
@@ -44,8 +45,8 @@ public class AutoCompleteRequestASyncTask
 	@Override
 	protected void onResult(FreeRoomController mController,
 			AutoCompleteReply reply) {
-		int status = reply.getStatus();
-		if (status == 200) {
+		FRStatusCode status = reply.getStatus();
+		if (status == FRStatusCode.HTTP_OK) {
 			Log.v(this.getClass().toString(), "server replied successfully");
 			mController.setAutoCompleteResults(reply);
 		} else {

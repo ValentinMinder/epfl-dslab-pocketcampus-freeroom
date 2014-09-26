@@ -48,19 +48,19 @@ public class ImWorkingRequestASyncTask extends
 
 	@Override
 	protected void onResult(FreeRoomController mController, ImWorkingReply reply) {
-		int status = reply.getStatus();
+		FRStatusCode status = reply.getStatus();
 		callerView.refreshOccupancies();
-		if (status == 200) {
+		if (status == FRStatusCode.HTTP_OK) {
 			Log.v(this.getClass().toString(), "server replied successfully: ok");
 			// in case of first submit
 			mController.validateImWorking(reply);
-		} else if (status == FRStatusCode.HTTP_UPDATED.getValue()) {
+		} else if (status == FRStatusCode.HTTP_UPDATED) {
 			Log.v(this.getClass().toString(), "server replied successfully: updated");
 			// in case of update
 			mController.updateImWorking(reply);
-		} else if (status == HttpURLConnection.HTTP_PRECON_FAILED){
+		} else if (status == FRStatusCode.HTTP_PRECON_FAILED){
 			mController.badWordsImWorking(reply);
-		} else if (status == 409) {
+		} else if (status == FRStatusCode.HTTP_CONFLICT) {
 			// in case of conflict with the same user.
 			mController.conflictImWorking(reply);
 		} else {

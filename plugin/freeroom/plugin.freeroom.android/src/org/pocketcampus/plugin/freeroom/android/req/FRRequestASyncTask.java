@@ -5,6 +5,7 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.shared.FRReply;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 
 /**
@@ -39,8 +40,8 @@ public class FRRequestASyncTask extends
 
 	@Override
 	protected void onResult(FreeRoomController mController, FRReply reply) {
-		int status = reply.getStatus();
-		if (status == 200) {
+		FRStatusCode status = reply.getStatus();
+		if (status == FRStatusCode.HTTP_OK) {
 			mController.handleReplySuccess(callerView, status, reply
 					.getStatusComment(), this.getClass().getName(), reply
 					.getClass().getSimpleName());

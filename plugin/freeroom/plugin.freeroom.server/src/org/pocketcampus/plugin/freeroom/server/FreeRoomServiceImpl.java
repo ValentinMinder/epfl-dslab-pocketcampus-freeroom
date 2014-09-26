@@ -35,6 +35,7 @@ import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRReply;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
@@ -263,7 +264,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public boolean insertOccupancy(FRPeriod period, OCCUPANCY_TYPE type,
 			String uid, String hash, String userMessage) {
 		return insertOccupancyDetailedReply(period, type, uid, hash,
-				userMessage) == HttpURLConnection.HTTP_OK;
+				userMessage) == FRStatusCode.HTTP_OK;
 	}
 
 	/**
@@ -287,7 +288,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *         of the user contains forbidden words, INTERNAL_ERROR if the
 	 *         server failed at some point.
 	 */
-	public int insertOccupancyDetailedReply(FRPeriod period,
+	public FRStatusCode insertOccupancyDetailedReply(FRPeriod period,
 			OCCUPANCY_TYPE type, String uid, String hash, String userMessage) {
 		if (period == null || type == null || uid == null) {
 			log(LOG_SIDE.SERVER,
@@ -297,7 +298,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							+ " type = "
 							+ (type == null)
 							+ " room = " + (uid == null));
-			return HttpURLConnection.HTTP_BAD_REQUEST;
+			return FRStatusCode.HTTP_BAD_REQUEST;
 		}
 		// putting seconds and milliseconds to zero
 		period.setTimeStampStart(FRTimes.roundSAndMSToZero(period
@@ -310,7 +311,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (type == OCCUPANCY_TYPE.USER && hash == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Hash is null when inserting user occupancy");
-			return HttpURLConnection.HTTP_BAD_REQUEST;
+			return FRStatusCode.HTTP_BAD_REQUEST;
 		}
 
 		if (type == OCCUPANCY_TYPE.USER) {
@@ -322,12 +323,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			if (!Utils.checkUserMessage(userMessage)) {
 				log(Level.WARNING, "Getting wrong user message : "
 						+ userMessage);
-				return HttpURLConnection.HTTP_PRECON_FAILED;
+				return FRStatusCode.HTTP_PRECON_FAILED;
 			} else if (userMessage != null
 					&& userMessage.length() > Constants.LENGTH_USERMESSAGE) {
 				log(Level.INFO, "User message is too long, length = "
 						+ userMessage.length());
-				return HttpURLConnection.HTTP_BAD_REQUEST;
+				return FRStatusCode.HTTP_BAD_REQUEST;
 			}
 		}
 
@@ -341,8 +342,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 								+ period.getTimeStampStart() + ",end="
 								+ period.getTimeStampEnd() + ",userMessage="
 								+ userMessage, inserted + ""));
-		return inserted ? HttpURLConnection.HTTP_OK
-				: HttpURLConnection.HTTP_INTERNAL_ERROR;
+		return inserted ? FRStatusCode.HTTP_OK
+				: FRStatusCode.HTTP_INTERNAL_ERROR;
 
 	}
 
@@ -813,12 +814,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public FRReply getOccupancy(FRRequest request) throws TException {
 		if (request == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING, "Receiving null FRRequest");
-			return new FRReply(HttpURLConnection.HTTP_BAD_REQUEST,
+			return new FRReply(FRStatusCode.HTTP_BAD_REQUEST,
 					"FRRequest is null");
 		}
 
 		FRReply reply = CheckRequests.checkFRRequest(request);
-		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
+		if (reply.getStatus() != FRStatusCode.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
 			return reply;
 		} else {
@@ -839,7 +840,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (FRTimes.validCalendarsString(period, System.currentTimeMillis(),
 				allowWeekends, allowEvenings).length() != 0) {
 			// if something is wrong in the request
-			return new FRReply(HttpURLConnection.HTTP_BAD_REQUEST,
+			return new FRReply(FRStatusCode.HTTP_BAD_REQUEST,
 					"Bad timestamps! Your client sent a bad request, sorry");
 		}
 
@@ -854,7 +855,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				occupancies = getOccupancyOfAnyFreeRoom(onlyFreeRoom, tsStart,
 						tsEnd, group);
 			} else {
-				return new FRReply(HttpURLConnection.HTTP_BAD_REQUEST,
+				return new FRReply(FRStatusCode.HTTP_BAD_REQUEST,
 						"The search for any free room must contains onlyFreeRoom = true");
 			}
 		} else {
@@ -864,8 +865,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 		if (occupancies == null) {
-			return new FRReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
-					HttpURLConnection.HTTP_INTERNAL_ERROR + "");
+			return new FRReply(FRStatusCode.HTTP_INTERNAL_ERROR,
+					FRStatusCode.HTTP_INTERNAL_ERROR + "");
 		}
 
 		occupancies = Utils.sortRooms(occupancies);
@@ -1235,13 +1236,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (request == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Receiving null AutoCompleteRequest");
-			return new AutoCompleteReply(HttpURLConnection.HTTP_BAD_REQUEST,
+			return new AutoCompleteReply(FRStatusCode.HTTP_BAD_REQUEST,
 					"AutocompleteRequest is null");
 		}
 
 		AutoCompleteReply reply = CheckRequests
 				.checkAutoCompleteRequest(request);
-		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
+		if (reply.getStatus() != FRStatusCode.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
 			return reply;
 		} else {
@@ -1251,7 +1252,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		String constraint = request.getConstraint();
 
 		if (constraint.length() < Constants.MIN_AUTOCOMPL_LENGTH) {
-			return new AutoCompleteReply(HttpURLConnection.HTTP_BAD_REQUEST,
+			return new AutoCompleteReply(FRStatusCode.HTTP_BAD_REQUEST,
 					"Constraints should be at least "
 							+ Constants.MIN_AUTOCOMPL_LENGTH
 							+ " characters long.");
@@ -1345,7 +1346,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				rooms.add(frRoom);
 			}
 
-			reply = new AutoCompleteReply(HttpURLConnection.HTTP_OK, ""
+			reply = new AutoCompleteReply(FRStatusCode.HTTP_OK, ""
 					+ HttpURLConnection.HTTP_OK);
 			reply.setListRoom(Utils.sortRoomsByBuilding(rooms));
 
@@ -1354,7 +1355,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			log(Level.INFO, formatServerLogInfo("autoCompleteRoom", logMessage));
 		} catch (SQLException e) {
 			reply = new AutoCompleteReply(
-					HttpURLConnection.HTTP_INTERNAL_ERROR, ""
+					FRStatusCode.HTTP_INTERNAL_ERROR, ""
 							+ HttpURLConnection.HTTP_INTERNAL_ERROR);
 			e.printStackTrace();
 			log(LOG_SIDE.SERVER, Level.SEVERE,
@@ -1371,13 +1372,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Receiving null AutoCompleteUserMessageRequest");
 			return new AutoCompleteUserMessageReply(
-					HttpURLConnection.HTTP_BAD_REQUEST,
+					FRStatusCode.HTTP_BAD_REQUEST,
 					"AutocompleteUserMessageRequest is null");
 		}
 
 		AutoCompleteUserMessageReply reply = CheckRequests
 				.checkAutoCompleteUserMessageRequest(request);
-		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
+		if (reply.getStatus() != FRStatusCode.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
 			return reply;
 		} else {
@@ -1390,7 +1391,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		if (period.getTimeStampEnd() < period.getTimeStampStart()) {
 			return new AutoCompleteUserMessageReply(
-					HttpURLConnection.HTTP_BAD_REQUEST,
+					FRStatusCode.HTTP_BAD_REQUEST,
 					"The end of the period should be after the start");
 		}
 
@@ -1428,7 +1429,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							+ uid + " period = " + period + " constraint = "
 							+ constraint);
 			return new AutoCompleteUserMessageReply(
-					HttpURLConnection.HTTP_INTERNAL_ERROR,
+					FRStatusCode.HTTP_INTERNAL_ERROR,
 					"Error when autocompleting");
 		}
 
@@ -1446,12 +1447,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (request == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Receiving null ImWorkingRequest");
-			return new ImWorkingReply(HttpURLConnection.HTTP_BAD_REQUEST,
+			return new ImWorkingReply(FRStatusCode.HTTP_BAD_REQUEST,
 					"ImWorkingReply is null");
 		}
 
 		ImWorkingReply reply = CheckRequests.checkImWorkingRequest(request);
-		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
+		if (reply.getStatus() != FRStatusCode.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
 			return reply;
 		} else {
@@ -1463,10 +1464,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		String userMessage = (work.isSetMessage() && work.getMessage() != null && work.getMessage().trim().length() > 0) ? work
 				.getMessage().trim() : null;
 		FRRoom room = work.getRoom();
-		int code = insertOccupancyDetailedReply(period, OCCUPANCY_TYPE.USER,
+		FRStatusCode code = insertOccupancyDetailedReply(period, OCCUPANCY_TYPE.USER,
 				room.getUid(), request.getHash(), userMessage);
 
-		if (code == HttpURLConnection.HTTP_OK) {
+		if (code == FRStatusCode.HTTP_OK) {
 			String logMessage = "start=" + period.getTimeStampStart() + ",end="
 					+ period.getTimeStampEnd() + ",uid= " + room.getUid()
 					+ ",hash=" + request.getHash() + ",userMessage="
@@ -1484,13 +1485,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (request == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Receiving null WhoIsWorkingRequest");
-			return new WhoIsWorkingReply(HttpURLConnection.HTTP_BAD_REQUEST,
+			return new WhoIsWorkingReply(FRStatusCode.HTTP_BAD_REQUEST,
 					"WhoIsWorkingRequest is null");
 		}
 
 		WhoIsWorkingReply reply = CheckRequests
 				.checkWhoIsWorkingRequest(request);
-		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
+		if (reply.getStatus() != FRStatusCode.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
 			return reply;
 		} else {
@@ -1502,7 +1503,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		List<String> listMessages = getUserMessages(period,
 				request.getRoomUID());
 		if (listMessages == null) {
-			return new WhoIsWorkingReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
+			return new WhoIsWorkingReply(FRStatusCode.HTTP_INTERNAL_ERROR,
 					HttpURLConnection.HTTP_INTERNAL_ERROR + "");
 		} else {
 			reply.setMessages(Utils.removeGroupMessages(listMessages));

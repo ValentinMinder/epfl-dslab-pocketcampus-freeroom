@@ -15,7 +15,8 @@ public enum FRStatusCode implements org.apache.thrift.TEnum {
   HTTP_OK(200),
   HTTP_BAD_REQUEST(400),
   HTTP_INTERNAL_ERROR(500),
-  HTTP_CONFLICT(409);
+  HTTP_CONFLICT(409),
+  HTTP_PRECON_FAILED(412);
 
   private final int value;
 
@@ -46,6 +47,8 @@ public enum FRStatusCode implements org.apache.thrift.TEnum {
         return HTTP_INTERNAL_ERROR;
       case 409:
         return HTTP_CONFLICT;
+      case 412:
+        return HTTP_PRECON_FAILED;
       default:
         return null;
     }

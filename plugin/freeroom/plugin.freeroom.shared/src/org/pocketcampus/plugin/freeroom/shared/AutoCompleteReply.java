@@ -28,12 +28,16 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
   private static final org.apache.thrift.protocol.TField STATUS_COMMENT_FIELD_DESC = new org.apache.thrift.protocol.TField("statusComment", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField LIST_ROOM_FIELD_DESC = new org.apache.thrift.protocol.TField("listRoom", org.apache.thrift.protocol.TType.MAP, (short)4);
 
-  private int status; // required
+  private FRStatusCode status; // required
   private String statusComment; // required
   private Map<String,List<FRRoom>> listRoom; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+    /**
+     * 
+     * @see FRStatusCode
+     */
     STATUS((short)1, "status"),
     STATUS_COMMENT((short)2, "statusComment"),
     LIST_ROOM((short)4, "listRoom");
@@ -97,14 +101,12 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
   }
 
   // isset id assignments
-  private static final int __STATUS_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.STATUS, new org.apache.thrift.meta_data.FieldMetaData("status", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, FRStatusCode.class)));
     tmpMap.put(_Fields.STATUS_COMMENT, new org.apache.thrift.meta_data.FieldMetaData("statusComment", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.LIST_ROOM, new org.apache.thrift.meta_data.FieldMetaData("listRoom", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
@@ -120,12 +122,11 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
   }
 
   public AutoCompleteReply(
-    int status,
+    FRStatusCode status,
     String statusComment)
   {
     this();
     this.status = status;
-    setStatusIsSet(true);
     this.statusComment = statusComment;
   }
 
@@ -133,9 +134,9 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
    * Performs a deep copy on <i>other</i>.
    */
   public AutoCompleteReply(AutoCompleteReply other) {
-    __isset_bit_vector.clear();
-    __isset_bit_vector.or(other.__isset_bit_vector);
-    this.status = other.status;
+    if (other.isSetStatus()) {
+      this.status = other.status;
+    }
     if (other.isSetStatusComment()) {
       this.statusComment = other.statusComment;
     }
@@ -165,33 +166,41 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
 
   @Override
   public void clear() {
-    setStatusIsSet(false);
-    this.status = 0;
+    this.status = null;
     this.statusComment = null;
     this.listRoom = null;
   }
 
-  public int getStatus() {
+  /**
+   * 
+   * @see FRStatusCode
+   */
+  public FRStatusCode getStatus() {
     return this.status;
   }
 
-  public AutoCompleteReply setStatus(int status) {
+  /**
+   * 
+   * @see FRStatusCode
+   */
+  public AutoCompleteReply setStatus(FRStatusCode status) {
     this.status = status;
-    setStatusIsSet(true);
     return this;
   }
 
   public void unsetStatus() {
-    __isset_bit_vector.clear(__STATUS_ISSET_ID);
+    this.status = null;
   }
 
   /** Returns true if field status is set (has been assigned a value) and false otherwise */
   public boolean isSetStatus() {
-    return __isset_bit_vector.get(__STATUS_ISSET_ID);
+    return this.status != null;
   }
 
   public void setStatusIsSet(boolean value) {
-    __isset_bit_vector.set(__STATUS_ISSET_ID, value);
+    if (!value) {
+      this.status = null;
+    }
   }
 
   public String getStatusComment() {
@@ -259,7 +268,7 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
       if (value == null) {
         unsetStatus();
       } else {
-        setStatus((Integer)value);
+        setStatus((FRStatusCode)value);
       }
       break;
 
@@ -285,7 +294,7 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
   public Object getFieldValue(_Fields field) {
     switch (field) {
     case STATUS:
-      return Integer.valueOf(getStatus());
+      return getStatus();
 
     case STATUS_COMMENT:
       return getStatusComment();
@@ -327,12 +336,12 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
     if (that == null)
       return false;
 
-    boolean this_present_status = true;
-    boolean that_present_status = true;
+    boolean this_present_status = true && this.isSetStatus();
+    boolean that_present_status = true && that.isSetStatus();
     if (this_present_status || that_present_status) {
       if (!(this_present_status && that_present_status))
         return false;
-      if (this.status != that.status)
+      if (!this.status.equals(that.status))
         return false;
     }
 
@@ -361,10 +370,10 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_status = true;
+    boolean present_status = true && (isSetStatus());
     builder.append(present_status);
     if (present_status)
-      builder.append(status);
+      builder.append(status.getValue());
 
     boolean present_statusComment = true && (isSetStatusComment());
     builder.append(present_statusComment);
@@ -436,8 +445,7 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
       switch (field.id) {
         case 1: // STATUS
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.status = iprot.readI32();
-            setStatusIsSet(true);
+            this.status = FRStatusCode.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -487,9 +495,6 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetStatus()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'status' was not found in serialized data! Struct: " + toString());
-    }
     validate();
   }
 
@@ -497,9 +502,11 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    oprot.writeFieldBegin(STATUS_FIELD_DESC);
-    oprot.writeI32(this.status);
-    oprot.writeFieldEnd();
+    if (this.status != null) {
+      oprot.writeFieldBegin(STATUS_FIELD_DESC);
+      oprot.writeI32(this.status.getValue());
+      oprot.writeFieldEnd();
+    }
     if (this.statusComment != null) {
       oprot.writeFieldBegin(STATUS_COMMENT_FIELD_DESC);
       oprot.writeString(this.statusComment);
@@ -537,7 +544,11 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
     boolean first = true;
 
     sb.append("status:");
-    sb.append(this.status);
+    if (this.status == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.status);
+    }
     first = false;
     if (!first) sb.append(", ");
     sb.append("statusComment:");
@@ -563,7 +574,9 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'status' because it's a primitive and you chose the non-beans generator.
+    if (status == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'status' was not present! Struct: " + toString());
+    }
     if (statusComment == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'statusComment' was not present! Struct: " + toString());
     }
@@ -579,8 +592,6 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
-      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);

@@ -30,6 +30,7 @@ enum FRStatusCode {
 	HTTP_BAD_REQUEST = 400;
 	HTTP_INTERNAL_ERROR = 500;
 	HTTP_CONFLICT = 409;
+	HTTP_PRECON_FAILED = 412;
 }
 
 struct FRRoom{
@@ -116,7 +117,7 @@ struct FRRequest {
 }
 
 struct FRReply {
-	1: required i32 status;
+	1: required FRStatusCode status;
 	//useful for debugging
 	2: required string statusComment;
 	//map from building to list of occupancies in the building
@@ -141,7 +142,7 @@ struct AutoCompleteRequest {
 }
 
 struct AutoCompleteReply {
-	1: required i32 status;
+	1: required FRStatusCode status;
 	2: required string statusComment;
 	// map from building name to list of rooms in this building (available in freeroom)
 	4: optional map<string, list<FRRoom>> listRoom;
@@ -155,7 +156,7 @@ struct AutoCompleteUserMessageRequest {
 }
 
 struct AutoCompleteUserMessageReply {
-	1: required i32 status;
+	1: required FRStatusCode status;
 	2: required string statusComment; 
 	3: optional list<string> messages;
 }
@@ -181,7 +182,7 @@ struct ImWorkingRequest {
 }
 
 struct ImWorkingReply {
-	1: required i32 status;
+	1: required FRStatusCode status;
 	2: required string statusComment;
 }
 
@@ -191,7 +192,7 @@ struct WhoIsWorkingRequest {
 }
 
 struct WhoIsWorkingReply {
-	1: required i32 status;
+	1: required FRStatusCode status;
 	2: required string statusComment;
 	//map a message to the number of time it appears
 	// could be transformed to a map from subject to count.

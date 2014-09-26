@@ -13,6 +13,7 @@ import org.pocketcampus.plugin.freeroom.android.req.RegisterASyncTask;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRReply;
+import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
@@ -86,21 +87,21 @@ public class FreeRoomController extends PluginController implements
 
 	// HANDLING GENERAL RESPONSES.
 
-	public void handleReplySuccess(IFreeRoomView caller, int status,
+	public void handleReplySuccess(IFreeRoomView caller, FRStatusCode status,
 			String statusComment, String callingClass, String requestClass) {
 		Log.v(callingClass, "Server replied successfully to a " + requestClass
 				+ "!");
 	}
 
-	public void handleReplyError(IFreeRoomView caller, int status,
+	public void handleReplyError(IFreeRoomView caller, FRStatusCode status,
 			String statusComment, String callingClass) {
 		Log.e(callingClass, "the server response was not successful. Message: "
 				+ statusComment);
-		if (status == 400) {
+		if (status == FRStatusCode.HTTP_BAD_REQUEST) {
 			Log.e(callingClass,
 					"server complains about a bad request from the client");
 			caller.freeRoomServerBadRequest();
-		} else if (status == 500) {
+		} else if (status == FRStatusCode.HTTP_INTERNAL_ERROR) {
 			Log.e(callingClass, "server had an internal error");
 			caller.freeRoomServersInternalError();
 		} else {
