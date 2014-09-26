@@ -275,7 +275,7 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 
 			}
 		});
-		adapter.addSection(formatStringWithDate(R.string.isacademia_schedule_for), new LazyAdapter(this, p.getMap(), 
+		adapter.addSection(formatStringWithDate(R.string.isacademia_schedule_for), new LazyAdapter(this, p.getMap(),
 				R.layout.isacademia_main_period_entry, p.getKeys(), p.getResources()));
 		
 		if(courses.size() == 0) {
@@ -317,11 +317,7 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 			
 		}
 //		attachGestureDetector(findViewById(android.R.id.content));
-		
-				
-		
-		
-		
+
 	}
 
 	@Override
@@ -336,7 +332,7 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 				DatePickerDialog dpd = new DatePickerDialog(IsAcademiaMainView.this, new OnDateSetListener() {
 					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 						if(!view.isShown())
-							return; // bug in Jely Bean: http://stackoverflow.com/questions/11444238/jelly-bean-datepickerdialog-is-there-a-way-to-cancel
+							return; // bug in Jelly Bean: http://stackoverflow.com/questions/11444238/jelly-bean-datepickerdialog-is-there-a-way-to-cancel
 						currentTime = computeCurrentTime(year, monthOfYear + 1, dayOfMonth);
 						trackEvent("GoToDateSelected", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date(currentTime)));
 						updateDisplay();
@@ -398,12 +394,24 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 		dialog.show();
 		
 	}
-	
 
 	@Override
 	public void networkErrorHappened() {
+		showDateBarOnly();
+
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.sdk_connection_error_happened), Toast.LENGTH_SHORT).show();
+	}
+
+	private void showDateBarOnly() {
+		updateActionBar();
+
+		ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.sdk_separated_list_header2);
+		adapter.add(formatStringWithDate(R.string.isacademia_schedule_for));
+
+		setContentView(R.layout.isacademia_main_container);
+		mList = (ListView) findViewById(R.id.isacademia_main_list);
+		mList.setAdapter(adapter);
 	}
 	
 	@Override
