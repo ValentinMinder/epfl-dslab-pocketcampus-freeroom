@@ -852,7 +852,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (uidList == null || uidList.isEmpty()) {
 			if (onlyFreeRoom) {
 				// we want to look into all the rooms
-				occupancies = getOccupancyOfAnyFreeRoom(onlyFreeRoom, tsStart,
+				occupancies = getOccupancyOfAnyFreeRoom(tsStart,
 						tsEnd, group);
 			} else {
 				return new FRReply(FRStatusCode.HTTP_BAD_REQUEST,
@@ -892,10 +892,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *         the building), null if an error occured
 	 */
 	private HashMap<String, List<Occupancy>> getOccupancyOfAnyFreeRoom(
-			boolean onlyFreeRooms, long tsStart, long tsEnd, int userGroup) {
+			long tsStart, long tsEnd, int userGroup) {
 
 		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
-		if (onlyFreeRooms) {
 			Connection connectBDD;
 			try {
 				connectBDD = connMgr.getConnection();
@@ -937,13 +936,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					return new HashMap<String, List<Occupancy>>();
 				}
 
-				String logMessage = "onlyFreeRooms=" + onlyFreeRooms
-						+ ",tsStart=" + tsStart + ",tsEnd=" + tsEnd
+				String logMessage = "tsStart=" + tsStart + ",tsEnd=" + tsEnd
 						+ ",userGroup=" + userGroup;
 				log(Level.INFO,
 						formatServerLogInfo("getOccupancyOfAnyFreeRoom",
 								logMessage));
-				return getOccupancyOfSpecificRoom(uidsList, onlyFreeRooms,
+				return getOccupancyOfSpecificRoom(uidsList, true,
 						tsStart, tsEnd, userGroup);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -952,12 +950,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 								+ tsStart + " end = " + tsEnd);
 				return null;
 			}
-		} else {
-			log(LOG_SIDE.SERVER, Level.WARNING,
-					"Getting request for any free rooms, with onlyFreeRoom attributes false");
-		}
 
-		return result;
 	}
 
 	/**
