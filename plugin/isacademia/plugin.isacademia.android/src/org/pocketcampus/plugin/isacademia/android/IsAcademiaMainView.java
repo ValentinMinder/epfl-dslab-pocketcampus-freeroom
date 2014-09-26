@@ -412,6 +412,7 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 		setContentView(R.layout.isacademia_main_container);
 		mList = (ListView) findViewById(R.id.isacademia_main_list);
 		mList.setAdapter(adapter);
+		attachGestureDetector(mList);
 	}
 	
 	@Override
