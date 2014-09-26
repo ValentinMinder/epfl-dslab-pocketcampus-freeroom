@@ -36,7 +36,7 @@
     <string name="cloudprint_string_entire_document">Tout le document</string>
     <string name="cloudprint_string_pages_x_to_y">Pages %1$d à %2$d</string>
     
-    <string name="cloudprint_string_page_selection_lps">Selection de page &#8230;</string>
+    <string name="cloudprint_string_page_selection_lps">Sélection de page &#8230;</string>
     <string name="cloudprint_string_from_page">De la page</string>
     <string name="cloudprint_string_to_page">À la page</string>
     <string name="cloudprint_string_more_copies_lps">Plusieurs copies &#8230;</string>

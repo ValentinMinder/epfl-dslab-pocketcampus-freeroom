@@ -21,6 +21,7 @@ import org.apache.thrift.TException;
 import org.pocketcampus.platform.server.RawPlugin;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
+import org.pocketcampus.plugin.cloudprint.shared.CloudPrintColorConfig;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintMultiPageLayout;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintService;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintStatusCode;
@@ -76,6 +77,7 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 				command.add("lpr");
 				command.add("-P");command.add("Cups-PDF");
 				command.add("-r"); // delete file afterward
+				command.add("-o");command.add("media=A4");
 				command.add("-T");command.add(filename);
 				command.add(filePath + "/" + filename);
 				System.out.println("$ " + StringUtils.join(command, " "));
@@ -130,7 +132,8 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 		command.add("-P");command.add("mainPrinter");
 		command.add("-U");command.add(gaspar);
 		command.add("-r"); // delete file afterward
-		command.add("-o");command.add("fit-to-page");			
+		command.add("-o");command.add("fit-to-page");
+		command.add("-o");command.add("media=A4");
 		if(request.isSetPageSelection()) {
 			command.add("-o");command.add("page-ranges=" + request.getPageSelection().getPageFrom() + "-" + request.getPageSelection().getPageTo());
 		}
@@ -161,11 +164,12 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 				command.add("-o");command.add("Collate=True");
 			}
 		}
-//		if(request.isSetColorConfig()) {
-//			if(request.getColorConfig() == CloudPrintColorConfig.BLACK_WHITE) {
-//				command.add("-o");command.add("saturation=0");
-//			}
-//		}
+		if(request.isSetColorConfig()) {
+			if(request.getColorConfig() == CloudPrintColorConfig.BLACK_WHITE) {
+				//command.add("-o");command.add("saturation=0");
+				command.add("-o");command.add("JCLColorCorrection=BlackWhite");
+			}
+		}
 		command.add("-T");command.add(files[0]);
 		command.add(filePath + "/" + files[0]);
 		try {
