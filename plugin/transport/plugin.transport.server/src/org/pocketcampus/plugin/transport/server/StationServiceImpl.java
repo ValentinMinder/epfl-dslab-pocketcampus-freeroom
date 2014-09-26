@@ -52,7 +52,10 @@ public final class StationServiceImpl implements StationService {
 
 	/** Gets the station with the specified name, or null if no such station exists. */
 	public TransportStation getStation(final String name) throws IOException {
-		final List<TransportStation> result = findStations(name, 1, null);
+		// TODO: Remove this and the method itself once we remove the deprecated stuff
+		final String query = HafasUtil.getFullStationName(name);
+
+		final List<TransportStation> result = findStations(query, 1, null);
 
 		if (result.size() == 0) {
 			return null;
@@ -75,7 +78,7 @@ public final class StationServiceImpl implements StationService {
 		final XElement request = buildRequest(token, query, maxResultsCount);
 		final String responseXml = client.post(API_URL, request.toBytes(API_CHARSET), API_CHARSET);
 		final List<TransportStation> stations = parseResponse(responseXml);
-		
+
 		if (location != null) {
 			Collections.sort(stations, new Comparator<TransportStation>() {
 				@Override

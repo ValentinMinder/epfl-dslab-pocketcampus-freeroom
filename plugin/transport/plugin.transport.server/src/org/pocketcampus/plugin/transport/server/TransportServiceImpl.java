@@ -200,7 +200,7 @@ public class TransportServiceImpl implements TransportService.Iface {
 		if (USE_HAFAS) {
 			final TransportStation departure = getStationFromName(from);
 			final TransportStation arrival = getStationFromName(to);
-			final DateTime now = DateTime.now(); // TODO: Do we need to show old trips?
+			final DateTime now = DateTime.now();
 
 			List<TransportTrip> trips;
 			try {
