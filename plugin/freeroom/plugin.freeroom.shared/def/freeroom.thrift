@@ -1,7 +1,6 @@
 namespace java org.pocketcampus.plugin.freeroom.shared
 //namespace csharp org.pocketcampus.plugin.freeroom.shared
 
-const i32 HTTP_UPDATED = 299;
 const i32 LENGTH_USERMESSAGE = 50;
 const i32 MIN_AUTOCOMPL_LENGTH = 2;
 
@@ -15,6 +14,23 @@ const i32 FIRST_HOUR_CHECK = 8;
 const i32 LAST_HOUR_CHECK = 19;
 // TODO: evaluate usefulness
 const i32 MIN_MINUTE_INTERVAL = 5;
+
+
+// NOTE ABOUT REPLY STATUS
+// it's compliant with standard HTTP status code
+// currently used in all request - reply scheme:
+// 200 - OK - when the result is correctly given
+// 400 - BAD REQUEST - when the server couldn't answer due to malformed query from the client
+// 500 - INTERNAL ERROR - when the server couldn't answer due to internal implementation error
+// currently used in particular request-reply scheme:
+// 409 - CONFLICT - when the same user want to indicate the same period for a ImWorkingRequest.
+enum FRStatusCode {
+	HTTP_UPDATED = 299;
+	HTTP_OK = 200;
+	HTTP_BAD_REQUEST = 400;
+	HTTP_INTERNAL_ERROR = 500;
+	HTTP_CONFLICT = 409;
+}
 
 struct FRRoom{
 
@@ -64,15 +80,6 @@ struct FRPeriod {
 	//TODO todelete
 	10: required bool recurrent;
 }
-
-// NOTE ABOUT REPLY STATUS
-// it's compliant with standard HTTP status code
-// currently used in all request - reply scheme:
-// 200 - OK - when the result is correctly given
-// 400 - BAD REQUEST - when the server couldn't answer due to malformed query from the client
-// 500 - INTERNAL ERROR - when the server couldn't answer due to internal implementation error
-// currently used in particular request-reply scheme:
-// 409 - CONFLICT - when the same user want to indicate the same period for a ImWorkingRequest.
 
 // defines if the room is reserved or not
 struct ActualOccupation {

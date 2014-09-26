@@ -28,8 +28,8 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
   private static final org.apache.thrift.protocol.TField OCCUPANCY_FIELD_DESC = new org.apache.thrift.protocol.TField("occupancy", org.apache.thrift.protocol.TType.LIST, (short)2);
   private static final org.apache.thrift.protocol.TField IS_AT_LEAST_OCCUPIED_ONCE_FIELD_DESC = new org.apache.thrift.protocol.TField("isAtLeastOccupiedOnce", org.apache.thrift.protocol.TType.BOOL, (short)3);
   private static final org.apache.thrift.protocol.TField IS_AT_LEAST_FREE_ONCE_FIELD_DESC = new org.apache.thrift.protocol.TField("isAtLeastFreeOnce", org.apache.thrift.protocol.TType.BOOL, (short)4);
-  private static final org.apache.thrift.protocol.TField TREATED_PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("treatedPeriod", org.apache.thrift.protocol.TType.STRUCT, (short)41);
-  private static final org.apache.thrift.protocol.TField RATIO_WORST_CASE_PROBABLE_OCCUPANCY_FIELD_DESC = new org.apache.thrift.protocol.TField("ratioWorstCaseProbableOccupancy", org.apache.thrift.protocol.TType.DOUBLE, (short)5);
+  private static final org.apache.thrift.protocol.TField TREATED_PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("treatedPeriod", org.apache.thrift.protocol.TType.STRUCT, (short)5);
+  private static final org.apache.thrift.protocol.TField RATIO_WORST_CASE_PROBABLE_OCCUPANCY_FIELD_DESC = new org.apache.thrift.protocol.TField("ratioWorstCaseProbableOccupancy", org.apache.thrift.protocol.TType.DOUBLE, (short)6);
 
   private FRRoom room; // required
   private List<ActualOccupation> occupancy; // required
@@ -44,8 +44,8 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     OCCUPANCY((short)2, "occupancy"),
     IS_AT_LEAST_OCCUPIED_ONCE((short)3, "isAtLeastOccupiedOnce"),
     IS_AT_LEAST_FREE_ONCE((short)4, "isAtLeastFreeOnce"),
-    TREATED_PERIOD((short)41, "treatedPeriod"),
-    RATIO_WORST_CASE_PROBABLE_OCCUPANCY((short)5, "ratioWorstCaseProbableOccupancy");
+    TREATED_PERIOD((short)5, "treatedPeriod"),
+    RATIO_WORST_CASE_PROBABLE_OCCUPANCY((short)6, "ratioWorstCaseProbableOccupancy");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -68,9 +68,9 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
           return IS_AT_LEAST_OCCUPIED_ONCE;
         case 4: // IS_AT_LEAST_FREE_ONCE
           return IS_AT_LEAST_FREE_ONCE;
-        case 41: // TREATED_PERIOD
+        case 5: // TREATED_PERIOD
           return TREATED_PERIOD;
-        case 5: // RATIO_WORST_CASE_PROBABLE_OCCUPANCY
+        case 6: // RATIO_WORST_CASE_PROBABLE_OCCUPANCY
           return RATIO_WORST_CASE_PROBABLE_OCCUPANCY;
         default:
           return null;
@@ -688,7 +688,7 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 41: // TREATED_PERIOD
+        case 5: // TREATED_PERIOD
           if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
             this.treatedPeriod = new FRPeriod();
             this.treatedPeriod.read(iprot);
@@ -696,7 +696,7 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 5: // RATIO_WORST_CASE_PROBABLE_OCCUPANCY
+        case 6: // RATIO_WORST_CASE_PROBABLE_OCCUPANCY
           if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
             this.ratioWorstCaseProbableOccupancy = iprot.readDouble();
             setRatioWorstCaseProbableOccupancyIsSet(true);
@@ -748,14 +748,14 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     oprot.writeFieldBegin(IS_AT_LEAST_FREE_ONCE_FIELD_DESC);
     oprot.writeBool(this.isAtLeastFreeOnce);
     oprot.writeFieldEnd();
-    if (isSetRatioWorstCaseProbableOccupancy()) {
-      oprot.writeFieldBegin(RATIO_WORST_CASE_PROBABLE_OCCUPANCY_FIELD_DESC);
-      oprot.writeDouble(this.ratioWorstCaseProbableOccupancy);
-      oprot.writeFieldEnd();
-    }
     if (this.treatedPeriod != null) {
       oprot.writeFieldBegin(TREATED_PERIOD_FIELD_DESC);
       this.treatedPeriod.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (isSetRatioWorstCaseProbableOccupancy()) {
+      oprot.writeFieldBegin(RATIO_WORST_CASE_PROBABLE_OCCUPANCY_FIELD_DESC);
+      oprot.writeDouble(this.ratioWorstCaseProbableOccupancy);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
