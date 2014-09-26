@@ -333,6 +333,8 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 
 		final Spinner s = (Spinner) findViewById(R.id.cloudprint_select_orientation);
 		
+		s.setVisibility(View.GONE);
+		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(CloudPrintMainView.this, android.R.layout.simple_spinner_item, android.R.id.text1);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		s.setAdapter(adapter);
