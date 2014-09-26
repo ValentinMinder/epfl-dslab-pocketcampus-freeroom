@@ -21,7 +21,6 @@ import org.apache.thrift.TException;
 import org.pocketcampus.platform.server.RawPlugin;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
-import org.pocketcampus.plugin.cloudprint.shared.CloudPrintColorConfig;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintMultiPageLayout;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintService;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintStatusCode;
@@ -70,6 +69,38 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 			    InputStream filecontent = filePart.getInputStream();
 			    FileOutputStream fos = new FileOutputStream(filePath + "/" + filename);
 			    IOUtils.copy(filecontent, fos);
+			    fos.close();
+			    
+			    // Print on Cups-PDF printer in order to fix the orientation (should always be portrait)
+				List<String> command = new LinkedList<String>();
+				command.add("lpr");
+				command.add("-P");command.add("Cups-PDF");
+				command.add("-r"); // delete file afterward
+				command.add("-T");command.add(filename);
+				command.add(filePath + "/" + filename);
+				System.out.println("$ " + StringUtils.join(command, " "));
+				Runtime.getRuntime().exec(command.toArray(new String[command.size()]));
+				
+				String cupsPdfOutDir = PocketCampusServer.CONFIG.getString("CLOUDPRINT_CUPSPDF_OUTDIR");
+				int watchDog = 30; // wait 30 seconds for Cups-PDF printer to generate the PDF
+				do {
+					if(watchDog == 0) {
+						response.setStatus(HttpURLConnection.HTTP_GATEWAY_TIMEOUT);
+						return;
+					}
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					watchDog--;
+				} while(!new File(cupsPdfOutDir + "/" + filename).exists());
+			    
+				if(!new File(cupsPdfOutDir + "/" + filename).renameTo(new File(filePath + "/" + filename))) {
+					response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
+					return;
+				}
+			    
 			    response.setContentType("application/json");
 			    response.getOutputStream().write(new Gson().toJson(new CloudPrintUploadResponse(id)).getBytes());
 			}
@@ -99,6 +130,7 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 		command.add("-P");command.add("mainPrinter");
 		command.add("-U");command.add(gaspar);
 		command.add("-r"); // delete file afterward
+		command.add("-o");command.add("fit-to-page");			
 		if(request.isSetPageSelection()) {
 			command.add("-o");command.add("page-ranges=" + request.getPageSelection().getPageFrom() + "-" + request.getPageSelection().getPageTo());
 		}
@@ -119,21 +151,21 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 			command.add("-o");command.add("number-up=" + nup);
 			command.add("-o");command.add("number-up-layout=" + layout);
 		}
-		if(request.isSetOrientation()) {
-			int ori = request.getOrientation().getValue();
-			command.add("-o");command.add("orientation-requested=" + ori);
-		}
+//		if(request.isSetOrientation()) {
+//			int ori = request.getOrientation().getValue();
+//			command.add("-o");command.add("orientation-requested=" + ori);
+//		}
 		if(request.isSetMultipleCopies()) {
 			command.add("-#" + request.getMultipleCopies().getNumberOfCopies());
 			if(request.getMultipleCopies().isCollate()) {
 				command.add("-o");command.add("Collate=True");
 			}
 		}
-		if(request.isSetColorConfig()) {
-			if(request.getColorConfig() == CloudPrintColorConfig.BLACK_WHITE) {
-				command.add("-o");command.add("saturation=0");
-			}
-		}
+//		if(request.isSetColorConfig()) {
+//			if(request.getColorConfig() == CloudPrintColorConfig.BLACK_WHITE) {
+//				command.add("-o");command.add("saturation=0");
+//			}
+//		}
 		command.add("-T");command.add(files[0]);
 		command.add(filePath + "/" + files[0]);
 		try {
