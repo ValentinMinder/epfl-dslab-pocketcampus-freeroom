@@ -58,6 +58,7 @@ Follows the same logic! :)
 
 *** Commun methods/utils ***
 *** TIME INVARIANTS ***
+Both clients and server must check and enforces these invariants (o/w server sends a bad request)
 To be valid, a period of time must be:
 - the end after the start
 - same year

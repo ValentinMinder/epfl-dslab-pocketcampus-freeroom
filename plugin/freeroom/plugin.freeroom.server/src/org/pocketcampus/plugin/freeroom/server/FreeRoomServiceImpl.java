@@ -280,6 +280,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            Type of the occupancy (for instance user or room occupancy)
 	 * @param room
 	 *            The room, the object has to contains the UID
+	 *            @param hash null if ISA, id of user o/w
 	 * @return int error code defined by HttpURLConnection, OK insertion is
 	 *         successful, BAD_REQUEST, argument required is (are) null, or
 	 *         length of the message is too long, PRECON_FAILED if the message
@@ -824,7 +825,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
 		}
 
-		// round the given period to half hours to have a nice display on UI.
+		// round the given period to full hours to have a nice display on UI.
 		FRPeriod period = request.getPeriod();
 		period = FRTimes.roundFRRequestTimestamp(period);
 		long tsStart = period.getTimeStampStart();
@@ -832,8 +833,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		int group = request.getUserGroup();
 
-		boolean allowWeekends = true;
-		boolean allowEvenings = true;
+		// FIXME should be set to false for students, true for staff
+		boolean allowWeekends = false;
+		boolean allowEvenings = false;
 		if (FRTimes.validCalendarsString(period, System.currentTimeMillis(),
 				allowWeekends, allowEvenings).length() != 0) {
 			// if something is wrong in the request
@@ -897,10 +899,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			try {
 				connectBDD = connMgr.getConnection();
 				// first select rooms totally free
+				
 				String request = "SELECT rl.uid, rl.doorCode, rl.capacity "
 						+ "FROM `fr-roomslist` rl "
 						+ "WHERE rl.uid NOT IN("
 						+ "SELECT ro.uid FROM `fr-occupancy` ro "
+						/* maybe simpler: (ro.timestampEnd >= tsStart AND ro.timestampStart <= tsEnd )*/
 						+ "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd >= ?) "
 						+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)"
 						+ "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)) "
@@ -975,10 +979,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			List<String> uidList, boolean onlyFreeRooms, long tsStart,
 			long tsEnd, int userGroup) {
 
-		if (uidList.isEmpty()) {
-			return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd,
-					userGroup);
-		}
+		// useless
+//		if (uidList.isEmpty()) {
+//			return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd,
+//					userGroup);
+//		}
 
 		uidList = Utils.removeDuplicate(uidList);
 
@@ -1278,7 +1283,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		try {
 			Connection connectBDD = connMgr.getConnection();
 			String requestSQL = "";
-			if (forbiddenRooms == null) {
+			if (forbiddenRooms == null || forbiddenRooms.isEmpty()) {
 				requestSQL = "SELECT * "
 						+ "FROM `fr-roomslist` rl "
 						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?) OR rl.alias LIKE (?) OR rl.building_name LIKE (?)) "
@@ -1455,7 +1460,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		WorkingOccupancy work = request.getWork();
 		FRPeriod period = work.getPeriod();
-		String userMessage = (work.isSetMessage() && work.getMessage() != null) ? work
+		String userMessage = (work.isSetMessage() && work.getMessage() != null && work.getMessage().trim().length() > 0) ? work
 				.getMessage().trim() : null;
 		FRRoom room = work.getRoom();
 		int code = insertOccupancyDetailedReply(period, OCCUPANCY_TYPE.USER,

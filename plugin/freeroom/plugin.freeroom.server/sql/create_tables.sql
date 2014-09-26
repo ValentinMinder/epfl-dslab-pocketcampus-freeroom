@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `fr-roomslist` (
 	`enabled` boolean DEFAULT TRUE,
 	`groupAccess` int(11) DEFAULT 1,
 	PRIMARY KEY (`uid`)
-) CHARSET=latin1;
+) CHARSET=utf8;
 
 -- This table holds all types of occupancy, either a room or user occupancy. 
 -- For practical reasons we assume timestampStart of a user occupancy to be a full hour (e.g 10h00), 
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `fr-occupancy` (
 	`count` int(11) DEFAULT 0,
 	PRIMARY KEY (`uid`, `timestampStart`, `type`),
 	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist`(`uid`) ON DELETE CASCADE	
-) CHARSET=latin1;
+) CHARSET=utf8;
 
 -- This table is used to avoid multiple submission by a single client of user occupancies 
 -- and to store messages from users
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `fr-checkOccupancy` (
 	`message` varchar(255) DEFAULT NULL,
 	PRIMARY KEY (`timestampStart`, `hash`),
 	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist` (`uid`) ON DELETE CASCADE
-) CHARSET=latin1;
+) CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `fr-betaconfig` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

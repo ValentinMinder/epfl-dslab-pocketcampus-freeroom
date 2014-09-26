@@ -180,7 +180,7 @@ public class Utils {
 	/**
 	 * The HashMap is organized by the following relation(building -> list of
 	 * rooms) and each list of rooms is sorted independently. Sort the rooms
-	 * according to some criterias. See the comparator roomsFreeComparator.
+	 * according to some criteria. See the comparator roomsFreeComparator.
 	 * 
 	 * @param occ
 	 *            The HashMap to be sorted
@@ -201,12 +201,13 @@ public class Utils {
 	}
 
 	/**
-	 * Comparator used to sort rooms according to some criterias. First put the
+	 * Comparator used to sort rooms according to some criteria. First put the
 	 * rooms entirely free , then the partially occupied and then the rooms
 	 * unavailable. Entirely free rooms are sorted by probable occupancy
 	 * (users), partially occupied are sorted first by percentage of room
 	 * occupation (i.e how many hours compared to the total period the room is
-	 * occupied) then by probable occupancy (users).
+	 * occupied) then by probable occupancy (users). Totally occupied rooms
+	 * are not sorted.
 	 */
 	private static Comparator<Occupancy> roomsFreeComparator = new Comparator<Occupancy>() {
 
@@ -280,6 +281,11 @@ public class Utils {
 			return Math.abs(endHour - startHour);
 		}
 
+		/**
+		 * Rate occupied is the ratio between occupied hours to total hours in the period.
+		 * @param occupations
+		 * @return
+		 */
 		private double rateOccupied(List<ActualOccupation> occupations) {
 			int count = 0;
 			int total = 0;
