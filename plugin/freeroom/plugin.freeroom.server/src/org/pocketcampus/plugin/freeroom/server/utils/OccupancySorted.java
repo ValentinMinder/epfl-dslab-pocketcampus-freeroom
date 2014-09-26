@@ -61,7 +61,7 @@ public class OccupancySorted {
 			mActualOccupations.addAll(cutInStepsPeriod(start, end));
 		} else {
 			mActualOccupations.add(occ
-					.setPeriod(new FRPeriod(start, end, false)));
+					.setPeriod(new FRPeriod(start, end)));
 		}
 	}
 
@@ -87,7 +87,7 @@ public class OccupancySorted {
 				long end = mActualOccupations
 						.get(mActualOccupations.size() - 1).getPeriod()
 						.getTimeStampEnd();
-				FRPeriod periodTreated = new FRPeriod(start, end, false);
+				FRPeriod periodTreated = new FRPeriod(start, end);
 				Occupancy mOccupancy = new Occupancy(room, mActualOccupations,
 						isAtLeastOccupiedOnce, isAtLeastFreeOnce, periodTreated);
 				mOccupancy.setRatioWorstCaseProbableOccupancy(worstRatio);
@@ -190,7 +190,7 @@ public class OccupancySorted {
 				FRPeriod previousPeriod = lastOccupation.getPeriod();
 				if (tsStart - previousPeriod.getTimeStampStart() > FRTimes.MIN_PERIOD) {
 					FRPeriod newPeriod = new FRPeriod(
-							previousPeriod.getTimeStampStart(), tsStart, false);
+							previousPeriod.getTimeStampStart(), tsStart);
 					lastOccupation.setPeriod(newPeriod);
 					resultList.add(lastOccupation);
 					countFree++;
@@ -204,7 +204,7 @@ public class OccupancySorted {
 			// : we need to resize.
 			if (previousIsRoom && tsStart < lastEnd) {
 				tsStart = lastEnd;
-				FRPeriod newPeriod = new FRPeriod(tsStart, tsEnd, false);
+				FRPeriod newPeriod = new FRPeriod(tsStart, tsEnd);
 				actual.setPeriod(newPeriod);
 			}
 
@@ -279,7 +279,7 @@ public class OccupancySorted {
 			long maxEnd = Math.min(hourSharpBefore + (i + 1)
 					* FRTimes.ONE_HOUR_IN_MS, end);
 			if (maxEnd - minStart > FRTimes.MIN_PERIOD) {
-				FRPeriod period = new FRPeriod(minStart, maxEnd, false);
+				FRPeriod period = new FRPeriod(minStart, maxEnd);
 				ActualOccupation mAccOcc = new ActualOccupation(period, true);
 				mAccOcc.setProbableOccupation(0);
 				mAccOcc.setRatioOccupation(0.0);

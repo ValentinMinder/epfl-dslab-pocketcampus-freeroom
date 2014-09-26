@@ -78,8 +78,6 @@ struct FRRoom{
 struct FRPeriod {
 	1: required i64 timeStampStart;
 	2: required i64 timeStampEnd;
-	//TODO todelete
-	10: required bool recurrent;
 }
 
 // defines if the room is reserved or not

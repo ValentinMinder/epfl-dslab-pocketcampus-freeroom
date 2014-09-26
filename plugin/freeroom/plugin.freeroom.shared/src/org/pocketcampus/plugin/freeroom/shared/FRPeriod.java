@@ -26,17 +26,14 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
 
   private static final org.apache.thrift.protocol.TField TIME_STAMP_START_FIELD_DESC = new org.apache.thrift.protocol.TField("timeStampStart", org.apache.thrift.protocol.TType.I64, (short)1);
   private static final org.apache.thrift.protocol.TField TIME_STAMP_END_FIELD_DESC = new org.apache.thrift.protocol.TField("timeStampEnd", org.apache.thrift.protocol.TType.I64, (short)2);
-  private static final org.apache.thrift.protocol.TField RECURRENT_FIELD_DESC = new org.apache.thrift.protocol.TField("recurrent", org.apache.thrift.protocol.TType.BOOL, (short)10);
 
   private long timeStampStart; // required
   private long timeStampEnd; // required
-  private boolean recurrent; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     TIME_STAMP_START((short)1, "timeStampStart"),
-    TIME_STAMP_END((short)2, "timeStampEnd"),
-    RECURRENT((short)10, "recurrent");
+    TIME_STAMP_END((short)2, "timeStampEnd");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -55,8 +52,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
           return TIME_STAMP_START;
         case 2: // TIME_STAMP_END
           return TIME_STAMP_END;
-        case 10: // RECURRENT
-          return RECURRENT;
         default:
           return null;
       }
@@ -99,8 +94,7 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
   // isset id assignments
   private static final int __TIMESTAMPSTART_ISSET_ID = 0;
   private static final int __TIMESTAMPEND_ISSET_ID = 1;
-  private static final int __RECURRENT_ISSET_ID = 2;
-  private BitSet __isset_bit_vector = new BitSet(3);
+  private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -109,8 +103,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.TIME_STAMP_END, new org.apache.thrift.meta_data.FieldMetaData("timeStampEnd", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
-    tmpMap.put(_Fields.RECURRENT, new org.apache.thrift.meta_data.FieldMetaData("recurrent", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRPeriod.class, metaDataMap);
   }
@@ -120,16 +112,13 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
 
   public FRPeriod(
     long timeStampStart,
-    long timeStampEnd,
-    boolean recurrent)
+    long timeStampEnd)
   {
     this();
     this.timeStampStart = timeStampStart;
     setTimeStampStartIsSet(true);
     this.timeStampEnd = timeStampEnd;
     setTimeStampEndIsSet(true);
-    this.recurrent = recurrent;
-    setRecurrentIsSet(true);
   }
 
   /**
@@ -140,7 +129,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.timeStampStart = other.timeStampStart;
     this.timeStampEnd = other.timeStampEnd;
-    this.recurrent = other.recurrent;
   }
 
   public FRPeriod deepCopy() {
@@ -153,8 +141,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     this.timeStampStart = 0;
     setTimeStampEndIsSet(false);
     this.timeStampEnd = 0;
-    setRecurrentIsSet(false);
-    this.recurrent = false;
   }
 
   public long getTimeStampStart() {
@@ -203,29 +189,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     __isset_bit_vector.set(__TIMESTAMPEND_ISSET_ID, value);
   }
 
-  public boolean isRecurrent() {
-    return this.recurrent;
-  }
-
-  public FRPeriod setRecurrent(boolean recurrent) {
-    this.recurrent = recurrent;
-    setRecurrentIsSet(true);
-    return this;
-  }
-
-  public void unsetRecurrent() {
-    __isset_bit_vector.clear(__RECURRENT_ISSET_ID);
-  }
-
-  /** Returns true if field recurrent is set (has been assigned a value) and false otherwise */
-  public boolean isSetRecurrent() {
-    return __isset_bit_vector.get(__RECURRENT_ISSET_ID);
-  }
-
-  public void setRecurrentIsSet(boolean value) {
-    __isset_bit_vector.set(__RECURRENT_ISSET_ID, value);
-  }
-
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case TIME_STAMP_START:
@@ -244,14 +207,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
       }
       break;
 
-    case RECURRENT:
-      if (value == null) {
-        unsetRecurrent();
-      } else {
-        setRecurrent((Boolean)value);
-      }
-      break;
-
     }
   }
 
@@ -262,9 +217,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
 
     case TIME_STAMP_END:
       return Long.valueOf(getTimeStampEnd());
-
-    case RECURRENT:
-      return Boolean.valueOf(isRecurrent());
 
     }
     throw new IllegalStateException();
@@ -281,8 +233,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
       return isSetTimeStampStart();
     case TIME_STAMP_END:
       return isSetTimeStampEnd();
-    case RECURRENT:
-      return isSetRecurrent();
     }
     throw new IllegalStateException();
   }
@@ -318,15 +268,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
         return false;
     }
 
-    boolean this_present_recurrent = true;
-    boolean that_present_recurrent = true;
-    if (this_present_recurrent || that_present_recurrent) {
-      if (!(this_present_recurrent && that_present_recurrent))
-        return false;
-      if (this.recurrent != that.recurrent)
-        return false;
-    }
-
     return true;
   }
 
@@ -343,11 +284,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     builder.append(present_timeStampEnd);
     if (present_timeStampEnd)
       builder.append(timeStampEnd);
-
-    boolean present_recurrent = true;
-    builder.append(present_recurrent);
-    if (present_recurrent)
-      builder.append(recurrent);
 
     return builder.toHashCode();
   }
@@ -376,16 +312,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     }
     if (isSetTimeStampEnd()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.timeStampEnd, typedOther.timeStampEnd);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetRecurrent()).compareTo(typedOther.isSetRecurrent());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetRecurrent()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.recurrent, typedOther.recurrent);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -423,14 +349,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 10: // RECURRENT
-          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
-            this.recurrent = iprot.readBool();
-            setRecurrentIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -445,9 +363,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     if (!isSetTimeStampEnd()) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'timeStampEnd' was not found in serialized data! Struct: " + toString());
     }
-    if (!isSetRecurrent()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'recurrent' was not found in serialized data! Struct: " + toString());
-    }
     validate();
   }
 
@@ -460,9 +375,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     oprot.writeFieldEnd();
     oprot.writeFieldBegin(TIME_STAMP_END_FIELD_DESC);
     oprot.writeI64(this.timeStampEnd);
-    oprot.writeFieldEnd();
-    oprot.writeFieldBegin(RECURRENT_FIELD_DESC);
-    oprot.writeBool(this.recurrent);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -480,10 +392,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     sb.append("timeStampEnd:");
     sb.append(this.timeStampEnd);
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("recurrent:");
-    sb.append(this.recurrent);
-    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -492,7 +400,6 @@ public class FRPeriod implements org.apache.thrift.TBase<FRPeriod, FRPeriod._Fie
     // check for required fields
     // alas, we cannot check 'timeStampStart' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'timeStampEnd' because it's a primitive and you chose the non-beans generator.
-    // alas, we cannot check 'recurrent' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

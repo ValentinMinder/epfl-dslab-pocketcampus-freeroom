@@ -179,7 +179,7 @@ public class ExchangeEntry {
 								* FRTimes.ONE_MIN_IN_MS, calendarEvent
 								.getEndTime().getTime()
 								+ offset
-								* FRTimes.ONE_MIN_IN_MS, false);
+								* FRTimes.ONE_MIN_IN_MS);
 						list.add(mFrPeriod2);
 					}
 				}

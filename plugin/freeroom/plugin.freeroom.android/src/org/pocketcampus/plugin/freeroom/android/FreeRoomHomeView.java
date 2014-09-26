@@ -3928,8 +3928,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		end.set(Calendar.MILLISECOND, 0);
 
 		// constructs the request
-		return new FRPeriod(start.getTimeInMillis(), end.getTimeInMillis(),
-				false);
+		return new FRPeriod(start.getTimeInMillis(), end.getTimeInMillis());
 	}
 
 	/**
@@ -4399,7 +4398,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		onColorBlindModeChangedUpdateBasicClick();
 
 		FRPeriod period = new FRPeriod(System.currentTimeMillis(),
-				System.currentTimeMillis() + FRTimes.ONE_HOUR_IN_MS, false);
+				System.currentTimeMillis() + FRTimes.ONE_HOUR_IN_MS);
 		FRRoom room = new FRRoom("mock", "1234");
 		List<ActualOccupation> occupancy = new ArrayList<ActualOccupation>(1);
 		List<Occupancy> occupancies = new ArrayList<Occupancy>(4);
@@ -5325,7 +5324,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			nowAsLong += FRTimes.ONE_WEEK_IN_MS;
 			Calendar selected = Calendar.getInstance();
 			FRPeriod period = new FRPeriod(nowAsLong, nowAsLong + 2
-					* FRTimes.ONE_HOUR_IN_MS, false);
+					* FRTimes.ONE_HOUR_IN_MS);
 			selected.setTimeInMillis(nowAsLong);
 			config.append("times.formatFullDate(): "
 					+ times.formatFullDate(selected) + s);

@@ -1057,7 +1057,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				int calculCapacity = capacity > 0 ? capacity : defaultCapacity;
 				double ratio = (double) count / calculCapacity;
 
-				FRPeriod period = new FRPeriod(start, end, false);
+				FRPeriod period = new FRPeriod(start, end);
 				FRRoom mRoom = new FRRoom(doorCode, uid);
 				mRoom.setBuilding_name(Utils.extractBuilding(doorCode));
 
@@ -1163,7 +1163,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 					currentOccupancy = new OccupancySorted(mRoom, tsStart,
 							tsEnd, onlyFreeRooms);
-					FRPeriod period = new FRPeriod(tsStart, tsEnd, false);
+					FRPeriod period = new FRPeriod(tsStart, tsEnd);
 					ActualOccupation accOcc = new ActualOccupation(period, true);
 					accOcc.setProbableOccupation(0);
 					currentOccupancy.addActualOccupation(accOcc);

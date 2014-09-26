@@ -174,7 +174,7 @@ public class ExchangeServiceImpl {
 		long timeStampStart = System.currentTimeMillis()
 				- FRTimes.ONE_WEEK_IN_MS;
 		long timeStampEnd = System.currentTimeMillis() + FRTimes.ONE_WEEK_IN_MS;
-		FRPeriod mFrPeriod = new FRPeriod(timeStampStart, timeStampEnd, false);
+		FRPeriod mFrPeriod = new FRPeriod(timeStampStart, timeStampEnd);
 		return updateEWAOccupancy(mFrPeriod);
 	}
 
@@ -193,7 +193,7 @@ public class ExchangeServiceImpl {
 		if (to < from) {
 			return false;
 		}
-		return updateEWAOccupancy(new FRPeriod(from, to, false));
+		return updateEWAOccupancy(new FRPeriod(from, to));
 	}
 
 	/**

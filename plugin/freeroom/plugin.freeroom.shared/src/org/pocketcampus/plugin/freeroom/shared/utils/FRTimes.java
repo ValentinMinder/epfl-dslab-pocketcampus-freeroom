@@ -73,7 +73,7 @@ public class FRTimes {
 		long t_start = calendar.getTimeInMillis();
 		long t_end = t_start + (endHour - startHour) * ONE_HOUR_IN_MS;
 
-		return new FRPeriod(t_start, t_end, false);
+		return new FRPeriod(t_start, t_end);
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class FRTimes {
 	 */
 	public static boolean validCalendars(Calendar start, Calendar end) {
 		FRPeriod mFRPeriod = new FRPeriod(start.getTimeInMillis(),
-				end.getTimeInMillis(), false);
+				end.getTimeInMillis());
 		return validCalendars(mFRPeriod);
 	}
 
@@ -156,7 +156,7 @@ public class FRTimes {
 	 */
 	public static boolean validCalendars(Calendar start, Calendar end, long now) {
 		FRPeriod mFRPeriod = new FRPeriod(start.getTimeInMillis(),
-				end.getTimeInMillis(), false);
+				end.getTimeInMillis());
 		return validCalendars(mFRPeriod, now);
 	}
 
@@ -170,7 +170,7 @@ public class FRTimes {
 	 */
 	public static String validCalendarsString(Calendar start, Calendar end) {
 		FRPeriod mFRPeriod = new FRPeriod(start.getTimeInMillis(),
-				end.getTimeInMillis(), false);
+				end.getTimeInMillis());
 		return validCalendarsString(mFRPeriod);
 	}
 
@@ -185,7 +185,7 @@ public class FRTimes {
 	public static String validCalendarsString(Calendar start, Calendar end,
 			long now) {
 		FRPeriod mFRPeriod = new FRPeriod(start.getTimeInMillis(),
-				end.getTimeInMillis(), false);
+				end.getTimeInMillis());
 		return validCalendarsString(mFRPeriod, now);
 	}
 
@@ -413,7 +413,7 @@ public class FRTimes {
 		mCalendar.setTimeInMillis(roundSAndMSToZero(nowTimeStampNeeded));
 		long tsStart = mCalendar.getTimeInMillis();
 
-		FRPeriod period = new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
+		FRPeriod period = new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS);
 
 		int day = mCalendar.get(Calendar.DAY_OF_WEEK);
 		int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
@@ -425,18 +425,18 @@ public class FRTimes {
 		} else if (hour == Constants.LAST_HOUR_CHECK - 1) {
 			mCalendar.set(Calendar.MINUTE, 0);
 			return new FRPeriod(mCalendar.getTimeInMillis(),
-					mCalendar.getTimeInMillis() + ONE_HOUR_IN_MS, false);
+					mCalendar.getTimeInMillis() + ONE_HOUR_IN_MS);
 		} else if (hour >= 0 && hour < Constants.FIRST_HOUR_CHECK) {
 			int hourShift = Constants.FIRST_HOUR_CHECK - hour;
 			mCalendar.set(Calendar.MINUTE, 0);
 			tsStart = mCalendar.getTimeInMillis() + ONE_HOUR_IN_MS * hourShift;
-			return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
+			return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS);
 		} else if (day != Calendar.FRIDAY && hour >= Constants.LAST_HOUR_CHECK
 				&& hour <= 23) {
 			int hourShift = Constants.FIRST_HOUR_CHECK + (24 - hour);
 			mCalendar.set(Calendar.MINUTE, 0);
 			tsStart = mCalendar.getTimeInMillis() + ONE_HOUR_IN_MS * hourShift;
-			return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
+			return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS);
 		} else {
 			return getNextValidPeriodDuringDay(period);
 		}
@@ -472,7 +472,7 @@ public class FRTimes {
 		tsStart = roundSAndMSToZero(tsStart);
 		tsEnd = roundSAndMSToZero(tsEnd);
 
-		return new FRPeriod(tsStart, tsEnd, false);
+		return new FRPeriod(tsStart, tsEnd);
 	}
 
 	private static FRPeriod shiftWeekEndToMondayFirstHour(long timestamp) {
@@ -494,7 +494,7 @@ public class FRTimes {
 		hourToCompleteDay += Constants.FIRST_HOUR_CHECK;
 		long tsStart = mCalendar.getTimeInMillis() + hourToCompleteDay
 				* ONE_HOUR_IN_MS;
-		return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS, false);
+		return new FRPeriod(tsStart, tsStart + ONE_HOUR_IN_MS);
 	}
 
 	/**
@@ -710,7 +710,7 @@ public class FRTimes {
 			tsEnd = mCalendar.getTimeInMillis();
 		}
 
-		return new FRPeriod(tsStart, tsEnd, false);
+		return new FRPeriod(tsStart, tsEnd);
 	}
 
 	public static String convertTimeStampInString(long timestamp) {
