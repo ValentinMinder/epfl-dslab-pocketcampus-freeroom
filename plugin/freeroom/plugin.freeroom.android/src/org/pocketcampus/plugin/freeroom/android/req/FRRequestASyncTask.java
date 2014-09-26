@@ -3,8 +3,8 @@ package org.pocketcampus.plugin.freeroom.android.req;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
-import org.pocketcampus.plugin.freeroom.shared.FRReply;
-import org.pocketcampus.plugin.freeroom.shared.FRRequest;
+import org.pocketcampus.plugin.freeroom.shared.FROccupancyReply;
+import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 
@@ -24,7 +24,7 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
  */
 
 public class FRRequestASyncTask extends
-		Request<FreeRoomController, Iface, FRRequest, FRReply> {
+		Request<FreeRoomController, Iface, FROccupancyRequest, FROccupancyReply> {
 
 	private IFreeRoomView callerView;
 
@@ -33,13 +33,13 @@ public class FRRequestASyncTask extends
 	}
 
 	@Override
-	protected FRReply runInBackground(Iface clientInterface, FRRequest request)
+	protected FROccupancyReply runInBackground(Iface clientInterface, FROccupancyRequest request)
 			throws Exception {
 		return clientInterface.getOccupancy(request);
 	}
 
 	@Override
-	protected void onResult(FreeRoomController mController, FRReply reply) {
+	protected void onResult(FreeRoomController mController, FROccupancyReply reply) {
 		FRStatusCode status = reply.getStatus();
 		if (status == FRStatusCode.HTTP_OK) {
 			mController.handleReplySuccess(callerView, status, reply

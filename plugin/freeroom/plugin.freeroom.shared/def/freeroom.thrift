@@ -104,7 +104,7 @@ struct Occupancy {
 	6: optional double ratioWorstCaseProbableOccupancy;
 }
 
-struct FRRequest {
+struct FROccupancyRequest {
 	1: required FRPeriod period;
 	2: required bool onlyFreeRooms;
 	// if empty, it means every rooms
@@ -114,7 +114,7 @@ struct FRRequest {
 	4: required i32 userGroup;
 }
 
-struct FRReply {
+struct FROccupancyReply {
 	1: required FRStatusCode status;
 	//useful for debugging
 	2: required string statusComment;
@@ -213,7 +213,7 @@ struct RegisterUser {
 
 service FreeRoomService {
 	// main service to get the room occupancies
-	FRReply getOccupancy(1: FRRequest request);
+	FROccupancyReply getOccupancy(1: FROccupancyRequest request);
 	
 	// autocomplete for searching for a room
 	AutoCompleteReply autoCompleteRoom(1: AutoCompleteRequest request);

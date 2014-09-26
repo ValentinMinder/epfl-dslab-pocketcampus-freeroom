@@ -21,8 +21,8 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRReply");
+public class FROccupancyReply implements org.apache.thrift.TBase<FROccupancyReply, FROccupancyReply._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FROccupancyReply");
 
   private static final org.apache.thrift.protocol.TField STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("status", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField STATUS_COMMENT_FIELD_DESC = new org.apache.thrift.protocol.TField("statusComment", org.apache.thrift.protocol.TType.STRING, (short)2);
@@ -122,13 +122,13 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
     tmpMap.put(_Fields.OVERALL_TREATED_PERIOD, new org.apache.thrift.meta_data.FieldMetaData("overallTreatedPeriod", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRPeriod.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRReply.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FROccupancyReply.class, metaDataMap);
   }
 
-  public FRReply() {
+  public FROccupancyReply() {
   }
 
-  public FRReply(
+  public FROccupancyReply(
     FRStatusCode status,
     String statusComment)
   {
@@ -140,7 +140,7 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public FRReply(FRReply other) {
+  public FROccupancyReply(FROccupancyReply other) {
     if (other.isSetStatus()) {
       this.status = other.status;
     }
@@ -170,8 +170,8 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
     }
   }
 
-  public FRReply deepCopy() {
-    return new FRReply(this);
+  public FROccupancyReply deepCopy() {
+    return new FROccupancyReply(this);
   }
 
   @Override
@@ -194,7 +194,7 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
    * 
    * @see FRStatusCode
    */
-  public FRReply setStatus(FRStatusCode status) {
+  public FROccupancyReply setStatus(FRStatusCode status) {
     this.status = status;
     return this;
   }
@@ -218,7 +218,7 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
     return this.statusComment;
   }
 
-  public FRReply setStatusComment(String statusComment) {
+  public FROccupancyReply setStatusComment(String statusComment) {
     this.statusComment = statusComment;
     return this;
   }
@@ -253,7 +253,7 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
     return this.occupancyOfRooms;
   }
 
-  public FRReply setOccupancyOfRooms(Map<String,List<Occupancy>> occupancyOfRooms) {
+  public FROccupancyReply setOccupancyOfRooms(Map<String,List<Occupancy>> occupancyOfRooms) {
     this.occupancyOfRooms = occupancyOfRooms;
     return this;
   }
@@ -277,7 +277,7 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
     return this.overallTreatedPeriod;
   }
 
-  public FRReply setOverallTreatedPeriod(FRPeriod overallTreatedPeriod) {
+  public FROccupancyReply setOverallTreatedPeriod(FRPeriod overallTreatedPeriod) {
     this.overallTreatedPeriod = overallTreatedPeriod;
     return this;
   }
@@ -375,12 +375,12 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof FRReply)
-      return this.equals((FRReply)that);
+    if (that instanceof FROccupancyReply)
+      return this.equals((FROccupancyReply)that);
     return false;
   }
 
-  public boolean equals(FRReply that) {
+  public boolean equals(FROccupancyReply that) {
     if (that == null)
       return false;
 
@@ -450,13 +450,13 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
     return builder.toHashCode();
   }
 
-  public int compareTo(FRReply other) {
+  public int compareTo(FROccupancyReply other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    FRReply typedOther = (FRReply)other;
+    FROccupancyReply typedOther = (FROccupancyReply)other;
 
     lastComparison = Boolean.valueOf(isSetStatus()).compareTo(typedOther.isSetStatus());
     if (lastComparison != 0) {
@@ -627,7 +627,7 @@ public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("FRReply(");
+    StringBuilder sb = new StringBuilder("FROccupancyReply(");
     boolean first = true;
 
     sb.append("status:");

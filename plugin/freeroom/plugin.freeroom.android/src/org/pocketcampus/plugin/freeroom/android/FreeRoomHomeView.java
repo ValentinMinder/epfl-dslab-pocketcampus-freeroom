@@ -39,8 +39,8 @@ import org.pocketcampus.plugin.freeroom.android.utils.SetArrayList;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.Constants;
+import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
-import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
@@ -1191,7 +1191,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			errorDialogShowMessage(subtitle);
 			homeSetTitleNoResults();
 		} else {
-			FRRequest request = mModel.getFRRequestDetails();
+			FROccupancyRequest request = mModel.getFRRequestDetails();
 
 			String title = "";
 			if (request.isOnlyFreeRooms()) {

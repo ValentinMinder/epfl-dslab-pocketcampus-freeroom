@@ -4,8 +4,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
+import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
-import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 /**
@@ -19,7 +19,7 @@ import org.pocketcampus.plugin.freeroom.shared.FRRoom;
  * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
-public class FRRequestDetails extends FRRequest {
+public class FRRequestDetails extends FROccupancyRequest {
 	/**
 	 * Auto-generated serial version ID.
 	 */

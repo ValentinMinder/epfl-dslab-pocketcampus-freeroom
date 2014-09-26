@@ -25,7 +25,7 @@ public class FreeRoomService {
 
   public interface Iface {
 
-    public FRReply getOccupancy(FRRequest request) throws org.apache.thrift.TException;
+    public FROccupancyReply getOccupancy(FROccupancyRequest request) throws org.apache.thrift.TException;
 
     public AutoCompleteReply autoCompleteRoom(AutoCompleteRequest request) throws org.apache.thrift.TException;
 
@@ -45,7 +45,7 @@ public class FreeRoomService {
 
   public interface AsyncIface {
 
-    public void getOccupancy(FRRequest request, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getOccupancy_call> resultHandler) throws org.apache.thrift.TException;
+    public void getOccupancy(FROccupancyRequest request, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getOccupancy_call> resultHandler) throws org.apache.thrift.TException;
 
     public void autoCompleteRoom(AutoCompleteRequest request, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.autoCompleteRoom_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -83,20 +83,20 @@ public class FreeRoomService {
       super(iprot, oprot);
     }
 
-    public FRReply getOccupancy(FRRequest request) throws org.apache.thrift.TException
+    public FROccupancyReply getOccupancy(FROccupancyRequest request) throws org.apache.thrift.TException
     {
       send_getOccupancy(request);
       return recv_getOccupancy();
     }
 
-    public void send_getOccupancy(FRRequest request) throws org.apache.thrift.TException
+    public void send_getOccupancy(FROccupancyRequest request) throws org.apache.thrift.TException
     {
       getOccupancy_args args = new getOccupancy_args();
       args.setRequest(request);
       sendBase("getOccupancy", args);
     }
 
-    public FRReply recv_getOccupancy() throws org.apache.thrift.TException
+    public FROccupancyReply recv_getOccupancy() throws org.apache.thrift.TException
     {
       getOccupancy_result result = new getOccupancy_result();
       receiveBase(result, "getOccupancy");
@@ -279,7 +279,7 @@ public class FreeRoomService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getOccupancy(FRRequest request, org.apache.thrift.async.AsyncMethodCallback<getOccupancy_call> resultHandler) throws org.apache.thrift.TException {
+    public void getOccupancy(FROccupancyRequest request, org.apache.thrift.async.AsyncMethodCallback<getOccupancy_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       getOccupancy_call method_call = new getOccupancy_call(request, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
@@ -287,8 +287,8 @@ public class FreeRoomService {
     }
 
     public static class getOccupancy_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private FRRequest request;
-      public getOccupancy_call(FRRequest request, org.apache.thrift.async.AsyncMethodCallback<getOccupancy_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private FROccupancyRequest request;
+      public getOccupancy_call(FROccupancyRequest request, org.apache.thrift.async.AsyncMethodCallback<getOccupancy_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.request = request;
       }
@@ -301,7 +301,7 @@ public class FreeRoomService {
         prot.writeMessageEnd();
       }
 
-      public FRReply getResult() throws org.apache.thrift.TException {
+      public FROccupancyReply getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -695,7 +695,7 @@ public class FreeRoomService {
 
     private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    private FRRequest request; // required
+    private FROccupancyRequest request; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -761,7 +761,7 @@ public class FreeRoomService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRRequest.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FROccupancyRequest.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getOccupancy_args.class, metaDataMap);
     }
@@ -770,7 +770,7 @@ public class FreeRoomService {
     }
 
     public getOccupancy_args(
-      FRRequest request)
+      FROccupancyRequest request)
     {
       this();
       this.request = request;
@@ -781,7 +781,7 @@ public class FreeRoomService {
      */
     public getOccupancy_args(getOccupancy_args other) {
       if (other.isSetRequest()) {
-        this.request = new FRRequest(other.request);
+        this.request = new FROccupancyRequest(other.request);
       }
     }
 
@@ -794,11 +794,11 @@ public class FreeRoomService {
       this.request = null;
     }
 
-    public FRRequest getRequest() {
+    public FROccupancyRequest getRequest() {
       return this.request;
     }
 
-    public getOccupancy_args setRequest(FRRequest request) {
+    public getOccupancy_args setRequest(FROccupancyRequest request) {
       this.request = request;
       return this;
     }
@@ -824,7 +824,7 @@ public class FreeRoomService {
         if (value == null) {
           unsetRequest();
         } else {
-          setRequest((FRRequest)value);
+          setRequest((FROccupancyRequest)value);
         }
         break;
 
@@ -927,7 +927,7 @@ public class FreeRoomService {
         switch (field.id) {
           case 1: // REQUEST
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.request = new FRRequest();
+              this.request = new FROccupancyRequest();
               this.request.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -1000,7 +1000,7 @@ public class FreeRoomService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    private FRReply success; // required
+    private FROccupancyReply success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1066,7 +1066,7 @@ public class FreeRoomService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRReply.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FROccupancyReply.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getOccupancy_result.class, metaDataMap);
     }
@@ -1075,7 +1075,7 @@ public class FreeRoomService {
     }
 
     public getOccupancy_result(
-      FRReply success)
+      FROccupancyReply success)
     {
       this();
       this.success = success;
@@ -1086,7 +1086,7 @@ public class FreeRoomService {
      */
     public getOccupancy_result(getOccupancy_result other) {
       if (other.isSetSuccess()) {
-        this.success = new FRReply(other.success);
+        this.success = new FROccupancyReply(other.success);
       }
     }
 
@@ -1099,11 +1099,11 @@ public class FreeRoomService {
       this.success = null;
     }
 
-    public FRReply getSuccess() {
+    public FROccupancyReply getSuccess() {
       return this.success;
     }
 
-    public getOccupancy_result setSuccess(FRReply success) {
+    public getOccupancy_result setSuccess(FROccupancyReply success) {
       this.success = success;
       return this;
     }
@@ -1129,7 +1129,7 @@ public class FreeRoomService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((FRReply)value);
+          setSuccess((FROccupancyReply)value);
         }
         break;
 
@@ -1232,7 +1232,7 @@ public class FreeRoomService {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new FRReply();
+              this.success = new FROccupancyReply();
               this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);

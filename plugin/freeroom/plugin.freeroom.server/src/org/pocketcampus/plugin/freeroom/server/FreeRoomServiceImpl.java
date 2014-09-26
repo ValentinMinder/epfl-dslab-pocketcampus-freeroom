@@ -31,9 +31,9 @@ import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteUserMessageReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteUserMessageRequest;
 import org.pocketcampus.plugin.freeroom.shared.Constants;
+import org.pocketcampus.plugin.freeroom.shared.FROccupancyReply;
+import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
-import org.pocketcampus.plugin.freeroom.shared.FRReply;
-import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService;
@@ -811,14 +811,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * requested.
 	 */
 	@Override
-	public FRReply getOccupancy(FRRequest request) throws TException {
+	public FROccupancyReply getOccupancy(FROccupancyRequest request) throws TException {
 		if (request == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING, "Receiving null FRRequest");
-			return new FRReply(FRStatusCode.HTTP_BAD_REQUEST,
+			return new FROccupancyReply(FRStatusCode.HTTP_BAD_REQUEST,
 					"FRRequest is null");
 		}
 
-		FRReply reply = CheckRequests.checkFRRequest(request);
+		FROccupancyReply reply = CheckRequests.checkFRRequest(request);
 		if (reply.getStatus() != FRStatusCode.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
 			return reply;
@@ -840,7 +840,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (FRTimes.validCalendarsString(period, System.currentTimeMillis(),
 				allowWeekends, allowEvenings).length() != 0) {
 			// if something is wrong in the request
-			return new FRReply(FRStatusCode.HTTP_BAD_REQUEST,
+			return new FROccupancyReply(FRStatusCode.HTTP_BAD_REQUEST,
 					"Bad timestamps! Your client sent a bad request, sorry");
 		}
 
@@ -855,7 +855,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				occupancies = getOccupancyOfAnyFreeRoom(tsStart,
 						tsEnd, group);
 			} else {
-				return new FRReply(FRStatusCode.HTTP_BAD_REQUEST,
+				return new FROccupancyReply(FRStatusCode.HTTP_BAD_REQUEST,
 						"The search for any free room must contains onlyFreeRoom = true");
 			}
 		} else {
@@ -865,7 +865,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 		if (occupancies == null) {
-			return new FRReply(FRStatusCode.HTTP_INTERNAL_ERROR,
+			return new FROccupancyReply(FRStatusCode.HTTP_INTERNAL_ERROR,
 					FRStatusCode.HTTP_INTERNAL_ERROR + "");
 		}
 

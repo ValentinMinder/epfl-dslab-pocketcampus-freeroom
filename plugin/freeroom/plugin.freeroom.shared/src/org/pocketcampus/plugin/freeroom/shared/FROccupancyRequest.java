@@ -21,8 +21,8 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FRRequest implements org.apache.thrift.TBase<FRRequest, FRRequest._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRRequest");
+public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRequest, FROccupancyRequest._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FROccupancyRequest");
 
   private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.STRUCT, (short)1);
   private static final org.apache.thrift.protocol.TField ONLY_FREE_ROOMS_FIELD_DESC = new org.apache.thrift.protocol.TField("onlyFreeRooms", org.apache.thrift.protocol.TType.BOOL, (short)2);
@@ -119,13 +119,13 @@ public class FRRequest implements org.apache.thrift.TBase<FRRequest, FRRequest._
     tmpMap.put(_Fields.USER_GROUP, new org.apache.thrift.meta_data.FieldMetaData("userGroup", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRRequest.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FROccupancyRequest.class, metaDataMap);
   }
 
-  public FRRequest() {
+  public FROccupancyRequest() {
   }
 
-  public FRRequest(
+  public FROccupancyRequest(
     FRPeriod period,
     boolean onlyFreeRooms,
     List<String> uidList,
@@ -143,7 +143,7 @@ public class FRRequest implements org.apache.thrift.TBase<FRRequest, FRRequest._
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public FRRequest(FRRequest other) {
+  public FROccupancyRequest(FROccupancyRequest other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetPeriod()) {
@@ -160,8 +160,8 @@ public class FRRequest implements org.apache.thrift.TBase<FRRequest, FRRequest._
     this.userGroup = other.userGroup;
   }
 
-  public FRRequest deepCopy() {
-    return new FRRequest(this);
+  public FROccupancyRequest deepCopy() {
+    return new FROccupancyRequest(this);
   }
 
   @Override
@@ -178,7 +178,7 @@ public class FRRequest implements org.apache.thrift.TBase<FRRequest, FRRequest._
     return this.period;
   }
 
-  public FRRequest setPeriod(FRPeriod period) {
+  public FROccupancyRequest setPeriod(FRPeriod period) {
     this.period = period;
     return this;
   }
@@ -202,7 +202,7 @@ public class FRRequest implements org.apache.thrift.TBase<FRRequest, FRRequest._
     return this.onlyFreeRooms;
   }
 
-  public FRRequest setOnlyFreeRooms(boolean onlyFreeRooms) {
+  public FROccupancyRequest setOnlyFreeRooms(boolean onlyFreeRooms) {
     this.onlyFreeRooms = onlyFreeRooms;
     setOnlyFreeRoomsIsSet(true);
     return this;
@@ -240,7 +240,7 @@ public class FRRequest implements org.apache.thrift.TBase<FRRequest, FRRequest._
     return this.uidList;
   }
 
-  public FRRequest setUidList(List<String> uidList) {
+  public FROccupancyRequest setUidList(List<String> uidList) {
     this.uidList = uidList;
     return this;
   }
@@ -264,7 +264,7 @@ public class FRRequest implements org.apache.thrift.TBase<FRRequest, FRRequest._
     return this.userGroup;
   }
 
-  public FRRequest setUserGroup(int userGroup) {
+  public FROccupancyRequest setUserGroup(int userGroup) {
     this.userGroup = userGroup;
     setUserGroupIsSet(true);
     return this;
@@ -361,12 +361,12 @@ public class FRRequest implements org.apache.thrift.TBase<FRRequest, FRRequest._
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof FRRequest)
-      return this.equals((FRRequest)that);
+    if (that instanceof FROccupancyRequest)
+      return this.equals((FROccupancyRequest)that);
     return false;
   }
 
-  public boolean equals(FRRequest that) {
+  public boolean equals(FROccupancyRequest that) {
     if (that == null)
       return false;
 
@@ -436,13 +436,13 @@ public class FRRequest implements org.apache.thrift.TBase<FRRequest, FRRequest._
     return builder.toHashCode();
   }
 
-  public int compareTo(FRRequest other) {
+  public int compareTo(FROccupancyRequest other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    FRRequest typedOther = (FRRequest)other;
+    FROccupancyRequest typedOther = (FROccupancyRequest)other;
 
     lastComparison = Boolean.valueOf(isSetPeriod()).compareTo(typedOther.isSetPeriod());
     if (lastComparison != 0) {
@@ -592,7 +592,7 @@ public class FRRequest implements org.apache.thrift.TBase<FRRequest, FRRequest._
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("FRRequest(");
+    StringBuilder sb = new StringBuilder("FROccupancyRequest(");
     boolean first = true;
 
     sb.append("period:");

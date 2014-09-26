@@ -4,8 +4,8 @@ import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteUserMessageReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteUserMessageRequest;
-import org.pocketcampus.plugin.freeroom.shared.FRReply;
-import org.pocketcampus.plugin.freeroom.shared.FRRequest;
+import org.pocketcampus.plugin.freeroom.shared.FROccupancyReply;
+import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
@@ -25,8 +25,8 @@ import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
  * 
  */
 public class CheckRequests {
-	public static FRReply checkFRRequest(FRRequest request) {
-		FRReply reply = new FRReply();
+	public static FROccupancyReply checkFRRequest(FROccupancyRequest request) {
+		FROccupancyReply reply = new FROccupancyReply();
 		FRStatusCode status = FRStatusCode.HTTP_OK;
 		String statusComment = "FRRequest : ";
 

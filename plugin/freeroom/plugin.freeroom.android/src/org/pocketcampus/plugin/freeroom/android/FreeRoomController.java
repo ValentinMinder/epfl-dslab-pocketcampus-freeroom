@@ -12,7 +12,7 @@ import org.pocketcampus.plugin.freeroom.android.req.ImWorkingRequestASyncTask;
 import org.pocketcampus.plugin.freeroom.android.req.RegisterASyncTask;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
-import org.pocketcampus.plugin.freeroom.shared.FRReply;
+import org.pocketcampus.plugin.freeroom.shared.FROccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
@@ -129,7 +129,7 @@ public class FreeRoomController extends PluginController implements
 	 * @param result
 	 *            FRReply results received from the server
 	 */
-	public void setOccupancyResults(FRReply result) {
+	public void setOccupancyResults(FROccupancyReply result) {
 		mModel.setOverAllTreatedPeriod(result.getOverallTreatedPeriod());
 		mModel.setOccupancyResults(result.getOccupancyOfRooms());
 	}
