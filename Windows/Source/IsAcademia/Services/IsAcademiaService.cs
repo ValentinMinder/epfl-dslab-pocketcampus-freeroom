@@ -14,11 +14,7 @@ namespace PocketCampus.IsAcademia.Services
 {
     public sealed class IsAcademiaService : ThriftServiceImplementation<IIsAcademiaService>, IIsAcademiaService
     {
-        public IsAcademiaService( IServerAccess access )
-            : base( access.CreateCommunication( "isacademia" ) )
-        {
-
-        }
+        public IsAcademiaService( IServerAccess access ) : base( access.CreateCommunication( "isacademia" ) ) { }
 
         public Task<ScheduleResponse> GetScheduleAsync( ScheduleRequest request, CancellationToken cancellationToken )
         {

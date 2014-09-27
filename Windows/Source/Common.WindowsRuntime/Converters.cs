@@ -20,7 +20,7 @@ namespace PocketCampus.Common
             return value.Cast<dynamic>().Select( d => new KeyValuePair( d.Key, d.Value ) ).ToArray();
         }
 
-        private sealed class KeyValuePair
+        public sealed class KeyValuePair
         {
             public object Key { get; private set; }
             public object Value { get; private set; }

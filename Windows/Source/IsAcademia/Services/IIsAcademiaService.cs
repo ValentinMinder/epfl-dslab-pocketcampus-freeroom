@@ -9,15 +9,9 @@ using ThriftSharp;
 
 namespace PocketCampus.IsAcademia.Services
 {
-    /// <summary>
-    /// The IS-Academia server service.
-    /// </summary>
     [ThriftService( "IsAcademiaService" )]
     public interface IIsAcademiaService
     {
-        /// <summary>
-        /// Asynchronously gets the schedule for the specified request.
-        /// </summary>
         [ThriftMethod( "getSchedule" )]
         Task<ScheduleResponse> GetScheduleAsync( [ThriftParameter( 1, "req" )] ScheduleRequest request, CancellationToken cancellationToken );
     }

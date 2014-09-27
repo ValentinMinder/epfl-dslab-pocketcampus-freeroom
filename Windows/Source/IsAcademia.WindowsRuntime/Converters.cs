@@ -29,7 +29,7 @@ namespace PocketCampus.IsAcademia
 
     public sealed class PeriodTypeToBrushConverter : ValueConverter<PeriodType, Brush>
     {
-        private static Dictionary<PeriodType, Brush> Values = new Dictionary<PeriodType, Brush>
+        private static readonly Dictionary<PeriodType, Brush> Values = new Dictionary<PeriodType, Brush>
         {
             { PeriodType.Lecture, new SolidColorBrush( Color.FromArgb( 0xFF, 0x64, 0xC9, 0xDB ) ) },
             { PeriodType.Exercises, new SolidColorBrush( Color.FromArgb( 0xFF, 0x8D, 0xE5, 0x4E ) ) },

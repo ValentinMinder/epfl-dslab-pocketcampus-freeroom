@@ -12,9 +12,6 @@ using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.IsAcademia.Controls
 {
-    /// <summary>
-    /// Displays one or multiple days.
-    /// </summary>
     // TODO clean this up, we don't need non-EPFL-timezone support
     public sealed class DayDisplay : Panel
     {
@@ -112,13 +109,11 @@ namespace PocketCampus.IsAcademia.Controls
             DependencyProperty.Register( "EmptyContainerStyle", typeof( Style ), typeof( DayDisplay ), new PropertyMetadata( null ) );
         #endregion
 
+        private readonly Dictionary<UIElement, Rect> _arrangeSizes;
         private int _minHour;
         private int _maxHour;
-        private Dictionary<UIElement, Rect> _arrangeSizes;
 
-        /// <summary>
-        /// Creates a new DayDisplay.
-        /// </summary>
+
         public DayDisplay()
         {
             _arrangeSizes = new Dictionary<UIElement, Rect>();
@@ -128,9 +123,6 @@ namespace PocketCampus.IsAcademia.Controls
         }
 
 
-        /// <summary>
-        /// Creates all required elements and measures them.
-        /// </summary>
         protected override Size MeasureOverride( Size availableSize )
         {
             if ( Days == null )
@@ -167,9 +159,7 @@ namespace PocketCampus.IsAcademia.Controls
             return availableSize;
         }
 
-        /// <summary>
-        /// Arranges the elements inside the control.
-        /// </summary>
+
         protected override Size ArrangeOverride( Size finalSize )
         {
             foreach ( var pair in _arrangeSizes )
@@ -179,9 +169,7 @@ namespace PocketCampus.IsAcademia.Controls
             return finalSize;
         }
 
-        /// <summary>
-        /// Creates a vertical grid with hours.
-        /// </summary>
+
         private Grid CreateHoursGrid()
         {
             var grid = new Grid();
@@ -209,9 +197,7 @@ namespace PocketCampus.IsAcademia.Controls
             return grid;
         }
 
-        /// <summary>
-        /// Adds placeholders to the specified canvas with the specified size.
-        /// </summary>
+
         private void AddPlaceholdersToCanvas( Canvas canvas, Size size )
         {
             int length = _maxHour - _minHour;
@@ -230,9 +216,7 @@ namespace PocketCampus.IsAcademia.Controls
             }
         }
 
-        /// <summary>
-        /// Adds the periods of the specified day to the specified canvas with the specified size.
-        /// </summary>
+
         private void AddPeriodsToCanvas( Canvas canvas, Size size, StudyDay day )
         {
             var matrix = new PeriodMatrix( day );
@@ -259,9 +243,7 @@ namespace PocketCampus.IsAcademia.Controls
             }
         }
 
-        /// <summary>
-        /// Gets the hour boundaries for the specified days' periods.
-        /// </summary>
+
         private static Tuple<int, int> GetHourBoundaries( StudyDay[] days )
         {
             int min = days.Min( d => d.Periods.Any() ? d.Periods.Min( p => p.Start.Hour ) : EmptyScheduleStart );
@@ -277,10 +259,6 @@ namespace PocketCampus.IsAcademia.Controls
             return Tuple.Create( min, max );
         }
 
-        /// <summary>
-        /// Gets the hour ceiling for the specified time.
-        /// The result is between 0 and 24 inclusive, and the method assumes the date is not 0:00.
-        /// </summary>
         private static int HourCeiling( TimeSpan time )
         {
             int ceiling = (int) Math.Round( (double) time.Hours + (double) time.Minutes / (double) MinutesInHour );
@@ -288,13 +266,8 @@ namespace PocketCampus.IsAcademia.Controls
         }
 
 
-        /// <summary>
-        /// Represents a matrix of periods possibly overlapping vertically.
-        /// </summary>
         private sealed class PeriodMatrix
         {
-            private const int HoursInDay = 24;
-            private const int MinutesInHour = 60;
             private const int CollisionCheckingInterval = 15; // in minutes
 
             private readonly Dictionary<Period, int> _positions;
@@ -302,9 +275,7 @@ namespace PocketCampus.IsAcademia.Controls
 
             public int ColumnCount { get; private set; }
 
-            /// <summary>
-            /// Creates a new PeriodMatrix for the specified day's periods.
-            /// </summary>
+
             public PeriodMatrix( StudyDay day )
             {
                 _positions = new Dictionary<Period, int>();
@@ -314,7 +285,7 @@ namespace PocketCampus.IsAcademia.Controls
 
                 foreach ( var period in day.Periods )
                 {
-                    IterateOverIntervals( period, periodsPerInterval, n => periodsPerInterval[n]++ );
+                    IterateOverIntervals( period, n => periodsPerInterval[n]++ );
                 }
 
                 ColumnCount = periodsPerInterval.Max();
@@ -325,8 +296,8 @@ namespace PocketCampus.IsAcademia.Controls
                     int collisions = 1;
                     int column = 0;
 
-                    IterateOverIntervals( period, periodsPerInterval, n => collisions = Math.Max( collisions, periodsPerInterval[n] ) );
-                    IterateOverIntervals( period, remainingPeriods, n => { remainingPeriods[n]--; column = Math.Max( column, remainingPeriods[n] ); } );
+                    IterateOverIntervals( period, n => collisions = Math.Max( collisions, periodsPerInterval[n] ) );
+                    IterateOverIntervals( period, n => { remainingPeriods[n]--; column = Math.Max( column, remainingPeriods[n] ); } );
 
                     _positions.Add( period, column );
                     _widthMultipliers.Add( period, 1.0 / collisions );
@@ -351,9 +322,9 @@ namespace PocketCampus.IsAcademia.Controls
             }
 
             /// <summary>
-            /// Iterates over the specified intervals for the specified period, executing the specified action that takes an index.
+            /// Iterates over the specified period, executing the specified action that takes an index.
             /// </summary>
-            private static void IterateOverIntervals( Period period, int[] intervals, Action<int> action )
+            private static void IterateOverIntervals( Period period, Action<int> action )
             {
                 for ( var date = period.Start; date < period.End; date = date.AddMinutes( CollisionCheckingInterval ) )
                 {
