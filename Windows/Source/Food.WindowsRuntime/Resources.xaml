@@ -10,4 +10,5 @@
 
     <my:MealToImageConverter x:Key="MealToImage" />
     <my:MealTypeToImageConverter x:Key="MealTypeToImage" />
+    <my:VoteCountToStringConverter x:Key="VoteCountToString" />
 </ResourceDictionary>

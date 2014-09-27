@@ -31,7 +31,7 @@ namespace PocketCampus.Food.ViewModels
         private Restaurant[] _fullMenu;
 
         private Restaurant[] _menu;
-        private bool _allResultsFilteredOut;
+        private bool _areAllMealsFilteredOut;
         private MealTime _mealTime;
         private DateTime _mealDate;
 
@@ -42,22 +42,22 @@ namespace PocketCampus.Food.ViewModels
             private set { SetProperty( ref _menu, value ); }
         }
 
-        public bool AllResultsFilteredOut
+        public bool AreAllMealsFilteredOut
         {
-            get { return _allResultsFilteredOut; }
-            private set { SetProperty( ref _allResultsFilteredOut, value ); }
+            get { return _areAllMealsFilteredOut; }
+            private set { SetProperty( ref _areAllMealsFilteredOut, value ); }
         }
 
         public MealTime MealTime
         {
             get { return _mealTime; }
-            set { SetProperty( ref _mealTime, value ); UpdateMenu(); }
+            set { SetProperty( ref _mealTime, value ); }
         }
 
         public DateTime MealDate
         {
             get { return _mealDate; }
-            set { SetProperty( ref _mealDate, value ); UpdateMenu(); }
+            set { SetProperty( ref _mealDate, value ); }
         }
 
         public IPluginSettings Settings { get; private set; }
@@ -96,18 +96,14 @@ namespace PocketCampus.Food.ViewModels
             _mealTime = GetMealTime( _mealDate.Hour );
 
             Settings = settings;
-            Settings.PropertyChanged += ( _, __ ) =>
-            {
-                if ( _fullMenu != null )
-                {
-                    Menu = GetFilteredMenu();
-                    AllResultsFilteredOut = Menu.Length == 0 && _fullMenu.Length > 0;
-                }
-            };
+            Settings.PropertyChanged += ( _, __ ) => UpdateMenu();
+
+            this.ListenToProperty( x => x.MealDate, RefreshMenu );
+            this.ListenToProperty( x => x.MealTime, RefreshMenu );
         }
 
 
-        private async void UpdateMenu()
+        private async void RefreshMenu()
         {
             await TryRefreshAsync( true );
         }
@@ -159,31 +155,41 @@ namespace PocketCampus.Food.ViewModels
             if ( !token.IsCancellationRequested )
             {
                 _fullMenu = data.Menu;
-                Menu = GetFilteredMenu();
-                AllResultsFilteredOut = Menu.Length == 0 && _fullMenu.Length > 0;
+                UpdateMenu();
             }
 
             return true;
         }
 
 
-        private Restaurant[] GetFilteredMenu()
+        private void UpdateMenu()
         {
+            if ( _fullMenu == null )
+            {
+                return;
+            }
+
             // Using Any() on Settings.DisplayedMealTypes displays meals with more than one type
             // even if the user doesn't want the second type to appear
             var forbiddenTypes = EnumEx.GetValues<MealType>().Where( type => !Settings.DisplayedMealTypes.Contains( type ) ).ToArray();
 
-            return ( from restaurant in _fullMenu
+            foreach ( var meal in _fullMenu.SelectMany( r => r.Meals ) )
+            {
+                meal.SetCurrentPrice( Settings.PriceTarget );
+            }
+
+            Menu = ( from restaurant in _fullMenu
                      let meals = from meal in restaurant.Meals
                                  where !forbiddenTypes.Any( type => meal.MealTypes.Contains( type ) )
-                                 let mealPrice = meal.GetPrice( Settings.PriceTarget )
-                                 where mealPrice == null || mealPrice <= Settings.MaximumBudget
+                                 where meal.CurrentPrice == null || meal.CurrentPrice <= Settings.MaximumBudget
                                     || ( meal.HalfPortionPrice.HasValue && meal.HalfPortionPrice.Value <= Settings.MaximumBudget )
                                  select meal
                      where meals.Any()
                      orderby restaurant.Name ascending
                      select restaurant.CopyWithMeals( meals ) )
                     .ToArray();
+
+            AreAllMealsFilteredOut = Menu.Length == 0 && _fullMenu.Length > 0;
         }
 
         private static MealTime GetMealTime( int hour )

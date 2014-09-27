@@ -5,13 +5,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using ThinMvvm;
 using ThriftSharp;
 
 namespace PocketCampus.Food.Models
 {
     [ThriftStruct( "EpflMeal" )]
-    public sealed class Meal
+    public sealed class Meal : ObservableObject
     {
+        private double? _currentPrice;
+
+
         [ThriftField( 1, true, "mId" )]
         public long Id { get; set; }
 
@@ -35,6 +39,13 @@ namespace PocketCampus.Food.Models
 
 
         [IgnoreDataMember]
+        public double? CurrentPrice
+        {
+            get { return _currentPrice; }
+            private set { SetProperty( ref _currentPrice, value ); }
+        }
+
+        [IgnoreDataMember]
         public Restaurant Restaurant { get; set; }
 
         [IgnoreDataMember]
@@ -44,21 +55,24 @@ namespace PocketCampus.Food.Models
         }
 
 
-        public double? GetPrice( PriceTarget target )
+        public void SetCurrentPrice( PriceTarget target )
         {
             if ( Prices.ContainsKey( target ) )
             {
-                return Prices[target];
+                CurrentPrice = Prices[target];
             }
-            if ( Prices.Any( pair => pair.Key > target ) )
+            else if ( Prices.Any( pair => pair.Key > target ) )
             {
-                return Prices.First( pair => pair.Key > target ).Value;
+                CurrentPrice = Prices.First( pair => pair.Key > target ).Value;
             }
-            if ( Prices.Any() )
+            else if ( Prices.Any() )
             {
-                return Prices.First().Value;
+                CurrentPrice = Prices.First().Value;
             }
-            return null;
+            else
+            {
+                CurrentPrice = null;
+            }
         }
     }
 }

@@ -3,16 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:cc="using:PocketCampus.Common.Controls"
              xmlns:myc="using:PocketCampus.Food.Controls"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             d:DataContext="{Binding Rating, Source={StaticResource Design}}">
+             DesignDataContext="{Binding Rating, Source={StaticResource Design}}">
     <cc:PageBase.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <ResourceDictionary Source="../Resources.xaml" />
     </cc:PageBase.Resources>
 
     <Grid>

@@ -117,17 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AllMealsAreFilteredOut" xml:space="preserve">
+    <value>Tous les plats sont cachés par des filtres.</value>
+    <comment>Sentence</comment>
+  </data>
+  <data name="EmptyMenu" xml:space="preserve">
+    <value>Il n'y a pas de plats pour la date sélectionnée.</value>
+    <comment>Sentence</comment>
+  </data>
   <data name="HalfPortionPrice" xml:space="preserve">
     <value>1/2 portion</value>
     <comment>Sentence (small)</comment>
   </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>actualiser</value>
-    <comment>Button label</comment>
-  </data>
   <data name="Settings" xml:space="preserve">
     <value>paramètres</value>
     <comment>Button label</comment>
+  </data>
+  <data name="UnknownPrice" xml:space="preserve">
+    <value>prix inconnu</value>
   </data>
   <data name="Vote" xml:space="preserve">
     <value>voter</value>

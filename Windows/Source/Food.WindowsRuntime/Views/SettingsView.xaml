@@ -2,10 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:cc="using:PocketCampus.Common.Controls"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             d:DataContext="{Binding Settings, Source={StaticResource Design}}">
+             DesignDataContext="{Binding Settings, Source={StaticResource Design}}">
     <cc:PageBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,16 +14,17 @@
                 <TextBlock Text="{Binding Converter={StaticResource EnumToString}}" />
             </DataTemplate>
 
-            <!-- Simple ToggleButton template that changes the content opacity when not enabled -->
+            <!-- Simple ToggleButton template that fades when unchecked
+                 TODO: Use visual states and change the opacity -->
             <ControlTemplate x:Key="SimpleToggleButtonTemplate" TargetType="ToggleButton">
                 <Grid>
                     <ContentControl Content="{TemplateBinding Content}" />
 
-                    <Border Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
-                            Opacity="0.7"
-                            Visibility="{Binding IsChecked, 
-                                                 RelativeSource={RelativeSource TemplatedParent}, 
-                                                 Converter={StaticResource BoolToOppositeVisibility}}" />
+                    <Rectangle Fill="{StaticResource ApplicationPageBackgroundThemeBrush}"
+                               Opacity="0.7"
+                               Visibility="{Binding IsChecked,
+                                                    RelativeSource={RelativeSource TemplatedParent}, 
+                                                    Converter={StaticResource DefaultToVisibility}}" />
                 </Grid>
             </ControlTemplate>
 

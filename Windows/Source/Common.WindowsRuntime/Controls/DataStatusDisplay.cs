@@ -64,11 +64,6 @@ namespace PocketCampus.Common.Controls
         private static readonly ResourceLoader _resources = ResourceLoader.GetForViewIndependentUse( "PocketCampus.Common.WindowsRuntime/DataStatusDisplay" );
 
 
-        private bool _progressIndicatorWasVisible;
-        private double? _oldProgressIndicatorValue;
-        private string _oldProgressIndicatorText;
-
-
         public DataStatusDisplay()
         {
             DefaultStyleKey = typeof( DataStatusDisplay );
@@ -106,11 +101,6 @@ namespace PocketCampus.Common.Controls
         {
             var progressIndicator = StatusBar.GetForCurrentView().ProgressIndicator;
 
-            // HACK: There's no IsVisible on ProgressIndicator, but we're always displaying text, so...
-            _progressIndicatorWasVisible = !string.IsNullOrWhiteSpace( progressIndicator.Text );
-            _oldProgressIndicatorValue = progressIndicator.ProgressValue;
-            _oldProgressIndicatorText = progressIndicator.Text;
-
             if ( Data == DataStatus.Loading )
             {
                 progressIndicator.ProgressValue = null;
@@ -127,17 +117,7 @@ namespace PocketCampus.Common.Controls
 
         private async void HideProgressIndicator()
         {
-            var progressIndicator = StatusBar.GetForCurrentView().ProgressIndicator;
-
-            if ( _progressIndicatorWasVisible )
-            {
-                progressIndicator.ProgressValue = _oldProgressIndicatorValue;
-                progressIndicator.Text = _oldProgressIndicatorText;
-            }
-            else
-            {
-                await progressIndicator.HideAsync();
-            }
+            await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
         }
     }
 }

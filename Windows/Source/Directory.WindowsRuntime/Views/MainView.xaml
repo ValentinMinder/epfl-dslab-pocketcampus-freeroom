@@ -115,12 +115,13 @@
                                ItemRequestCommand="{Binding SearchForMoreCommand}"
                                ItemTemplate="{StaticResource PersonTemplate}" />
 
-        <!-- "No search results" message -->
-        <Border Grid.Row="2"
-                Visibility="{Binding SearchResults, Converter={StaticResource NoItemsToVisibility}}">
+        <!-- "No search results" message, displayed only if the query is empty -->
+        <cc:Placeholder For="{Binding SearchResults}">
             <TextBlock Text="{CustomResource Main.NoSearchResults}"
-                       Style="{StaticResource AppCenterTextBlockStyle}" />
-        </Border>
+                       Style="{StaticResource AppCenterTextBlockStyle}"
+                       Visibility="{Binding Query, Converter={StaticResource NonDefaultToVisibility}}" />
+        </cc:Placeholder>
+        
 
         <!-- Data status -->
         <cc:DataStatusDisplay Grid.Row="2"

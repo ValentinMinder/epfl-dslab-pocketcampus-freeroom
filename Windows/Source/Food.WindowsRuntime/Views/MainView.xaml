@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:cc="using:PocketCampus.Common.Controls"
-             xmlns:my="using:PocketCampus.Food"
              xmlns:myc="using:PocketCampus.Food.Controls"
              DesignDataContext="{Binding Main, Source={StaticResource Design}}">
     <cc:PageBase.Resources>
@@ -11,12 +10,9 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <my:MealPriceConverter x:Key="MealToPrice"
-                                   Settings="{Binding Settings}" />
-
             <!-- Meal template -->
             <DataTemplate x:Key="MealTemplate">
-                <Grid Margin="0,8,0,16">
+                <Grid Margin="0,8,19,16">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition />
@@ -29,9 +25,16 @@
                                Height="100" />
 
                         <!-- Price -->
-                        <TextBlock Text="{Binding Converter={StaticResource MealToPrice}}"
+                        <TextBlock Text="{Binding CurrentPrice, Converter={StaticResource MoneyFormat}}"
                                    TextAlignment="Center"
                                    Style="{StaticResource AppNormalTextBlockStyle}" />
+                        
+                        <!-- Price placeholder -->
+                        <cc:Placeholder For="{Binding CurrentPrice}">
+                            <TextBlock Text="{CustomResource Main.UnknownPrice}"
+                                       TextAlignment="Center"
+                                       Style="{StaticResource AppNormalTextBlockStyle}"  />
+                        </cc:Placeholder>
 
                         <!-- Half-portion price -->
                         <StackPanel Visibility="{Binding HalfPortionPrice, 
@@ -64,7 +67,8 @@
                             <myc:RatingDisplay Rating="{Binding Rating}"
                                                TextStyle="{StaticResource AppSubtleTextBlockStyle}" />
 
-                            <TextBlock Text=" - "
+                            <!-- HACK: Non-breaking spaces, otherwise WinRT magically removes them. -->
+                            <TextBlock Text="&#160;-&#160;"
                                        Style="{StaticResource AppSubtleTextBlockStyle}" />
 
                             <cc:SimpleButton Command="{Binding DataContext.RateMealCommand, 
@@ -117,15 +121,29 @@
                                Status="{Binding CacheStatus}" />
         
         <cc:GroupedListView Grid.Row="3"
-                                ItemTemplate="{StaticResource MealTemplate}"
-                                GroupKeyPath="Name"
-                                Margin="19,0">
+                            ItemTemplate="{StaticResource MealTemplate}"
+                            GroupKeyPath="Name"
+                            Margin="19,0,0,0">
             <cc:GroupedListView.ItemsViewSource>
                 <CollectionViewSource Source="{Binding Menu}"
                                       IsSourceGrouped="True"
                                       ItemsPath="Meals" />
             </cc:GroupedListView.ItemsViewSource>
         </cc:GroupedListView>
+        
+        <cc:Placeholder Grid.Row="3"
+                        For="{Binding Menu}">
+            <cc:Condition Value="{Binding AreAllMealsFilteredOut}">
+                <cc:Condition.True>
+                    <TextBlock Text="{CustomResource Main.AllMealsAreFilteredOut}"
+                               Style="{StaticResource AppCenterTextBlockStyle}" />
+                </cc:Condition.True>
+                <cc:Condition.False>
+                    <TextBlock Text="{CustomResource Main.EmptyMenu}"
+                               Style="{StaticResource AppCenterTextBlockStyle}" />
+                </cc:Condition.False>
+            </cc:Condition>
+        </cc:Placeholder>
         
         <cc:DataStatusDisplay Grid.Row="3"
                               Data="{Binding DataStatus}"
@@ -136,9 +154,6 @@
     <cc:PageBase.BottomAppBar>
         <CommandBar ClosedDisplayMode="Minimal">
             <CommandBar.PrimaryCommands>
-                <AppBarButton Command="{Binding RefreshCommand}"
-                              Label="{CustomResource Main.Refresh}"
-                              Icon="Refresh" />
                 <AppBarButton Command="{Binding ViewSettingsCommand}"
                               Label="{CustomResource Main.Settings}"
                               Icon="Setting" />

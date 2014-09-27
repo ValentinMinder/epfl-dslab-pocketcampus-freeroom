@@ -74,27 +74,12 @@ namespace PocketCampus.Common
         }
     }
 
-    public sealed class NoItemsToVisibilityConverter : ValueConverter<IEnumerable, Visibility>
-    {
-        public override Visibility Convert( IEnumerable value )
-        {
-            if ( value == null )
-            {
-                // this will be used to show "no items" messages, if items is null then it hasn't been populated yet
-                return Visibility.Collapsed;
-            }
-
-            return value.GetEnumerator().MoveNext() ? Visibility.Collapsed : Visibility.Visible;
-        }
-    }
-
     public sealed class DefaultToVisibilityConverter : ValueConverter<object, Visibility>
     {
         public bool IsReversed { get; set; }
 
         public override Visibility Convert( object value )
         {
-            // A bit hack-y, but it works.
             return IsDefaultValue( value ) ^ IsReversed ? Visibility.Visible : Visibility.Collapsed;
         }
 
@@ -106,16 +91,15 @@ namespace PocketCampus.Common
             }
 
             var str = value as string;
-            if ( str != null && str.Trim() == "" )
+            if ( str != null && str.Trim().Length == 0 )
             {
                 return true;
             }
 
             var type = value.GetType();
-
             if ( type.GetTypeInfo().IsValueType )
             {
-                return value == Activator.CreateInstance( type );
+                return object.Equals( value, Activator.CreateInstance( type ) );
             }
 
             // not null, not a value type
