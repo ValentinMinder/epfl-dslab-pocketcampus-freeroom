@@ -1,12 +1,11 @@
 ﻿using PocketCampus.Food.Models;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.Food.Controls
 {
-    public sealed partial class RatingDisplay : UserControl
+    public sealed partial class RatingDisplay
     {
-        #region Value DependencyProperty
+        #region Value
         public Rating Rating
         {
             get { return (Rating) GetValue( RatingProperty ); }
@@ -27,6 +26,7 @@ namespace PocketCampus.Food.Controls
         public static readonly DependencyProperty TextStyleProperty =
             DependencyProperty.Register( "TextStyle", typeof( Style ), typeof( RatingDisplay ), new PropertyMetadata( null ) );
         #endregion
+
 
         public RatingDisplay()
         {

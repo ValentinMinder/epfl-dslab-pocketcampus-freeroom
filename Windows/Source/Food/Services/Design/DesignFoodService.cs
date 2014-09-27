@@ -63,7 +63,7 @@ Pomme purée",
                                     Description = @"Épinards en branches
 Salade mêlée",
                                     MealTypes = new[] { MealType.Vegetarian, MealType.Pasta },
-                                    Prices = new Dictionary<PriceTarget, double>{},
+                                    Prices = new Dictionary<PriceTarget, double>(),
                                     Rating = new Rating { Value = 0.66, VoteCount = 3 }
                                 },
                                 new Meal
@@ -435,7 +435,7 @@ Entrée : Potage",
                                                                                  { PriceTarget.PhDStudent, 8.00 },
                                                                                  { PriceTarget.Staff, 9.50 }},
                                     Rating = new Rating { Value = 1.0, VoteCount = 1 }
-                                },
+                                }
                             }
                         },
                         new Restaurant

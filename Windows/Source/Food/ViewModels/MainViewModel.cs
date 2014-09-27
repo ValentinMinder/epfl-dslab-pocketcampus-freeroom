@@ -17,9 +17,6 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.Food.ViewModels
 {
-    /// <summary>
-    /// The main ViewModel.
-    /// </summary>
     [LogId( "/food" )]
     public sealed class MainViewModel : CachedDataViewModel<NoParameter, FoodResponse>
     {
@@ -38,55 +35,34 @@ namespace PocketCampus.Food.ViewModels
         private MealTime _mealTime;
         private DateTime _mealDate;
 
-        /// <summary>
-        /// Gets the filtered list of menus.
-        /// </summary>
+
         public Restaurant[] Menu
         {
             get { return _menu; }
             private set { SetProperty( ref _menu, value ); }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether all meals are hidden by filters.
-        /// </summary>
         public bool AllResultsFilteredOut
         {
             get { return _allResultsFilteredOut; }
             private set { SetProperty( ref _allResultsFilteredOut, value ); }
         }
 
-        /// <summary>
-        /// Gets or sets the menu's meal time.
-        /// </summary>
         public MealTime MealTime
         {
             get { return _mealTime; }
             set { SetProperty( ref _mealTime, value ); UpdateMenu(); }
         }
 
-        /// <summary>
-        /// Gets or sets the menu's date.
-        /// </summary>
         public DateTime MealDate
         {
             get { return _mealDate; }
             set { SetProperty( ref _mealDate, value ); UpdateMenu(); }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the ratings are enabled.
-        /// </summary>
-        public bool AreRatingsEnabled { get; private set; }
-
-        /// <summary>
-        /// Gets the settings.
-        /// </summary>
         public IPluginSettings Settings { get; private set; }
 
-        /// <summary>
-        /// Gets the command executed to view a restaurant on the map.
-        /// </summary>
+
         [LogId( "ViewRestaurantOnMap" )]
         [LogParameter( "$Param.Name" )]
         public Command<Restaurant> ViewMapItemCommand
@@ -94,32 +70,22 @@ namespace PocketCampus.Food.ViewModels
             get { return this.GetCommand<Restaurant>( r => Messenger.Send( new MapSearchRequest( r.MapItem ) ) ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to show the settings.
-        /// </summary>
         [LogId( "OpenSettings" )]
         public Command ViewSettingsCommand
         {
             get { return this.GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
         }
 
-
-        /// <summary>
-        /// Gets the command executed to vote on a meal.
-        /// </summary>
         [LogId( "RateMeal" )]
         [LogParameter( "$Param.LogId" )]
         public Command<Meal> RateMealCommand
         {
-            get { return this.GetCommand<Meal>( _navigationService.NavigateTo<RatingViewModel, Meal>, _ => AreRatingsEnabled ); }
+            get { return this.GetCommand<Meal>( _navigationService.NavigateTo<RatingViewModel, Meal> ); }
         }
 
 
-        /// <summary>
-        /// Creates a new MainViewModel.
-        /// </summary>
         public MainViewModel( IDataCache cache, INavigationService navigationService, IFoodService menuService,
-                              ICredentialsStorage credentials, IPluginSettings settings, IServerSettings serverSettings )
+                              ICredentialsStorage credentials, IPluginSettings settings )
             : base( cache )
         {
             _navigationService = navigationService;
@@ -129,23 +95,18 @@ namespace PocketCampus.Food.ViewModels
             _mealDate = DateTime.Now;
             _mealTime = GetMealTime( _mealDate.Hour );
 
-            AreRatingsEnabled = serverSettings.Configuration.AreFoodRatingsEnabled != 0;
             Settings = settings;
-
             Settings.PropertyChanged += ( _, __ ) =>
             {
                 if ( _fullMenu != null )
                 {
-                    Menu = FilterMenu( _fullMenu );
+                    Menu = GetFilteredMenu();
                     AllResultsFilteredOut = Menu.Length == 0 && _fullMenu.Length > 0;
                 }
             };
         }
 
 
-        /// <summary>
-        /// Executed when the user selects another meal time or date.
-        /// </summary>
         private async void UpdateMenu()
         {
             await TryRefreshAsync( true );
@@ -198,7 +159,7 @@ namespace PocketCampus.Food.ViewModels
             if ( !token.IsCancellationRequested )
             {
                 _fullMenu = data.Menu;
-                Menu = FilterMenu( _fullMenu );
+                Menu = GetFilteredMenu();
                 AllResultsFilteredOut = Menu.Length == 0 && _fullMenu.Length > 0;
             }
 
@@ -206,9 +167,9 @@ namespace PocketCampus.Food.ViewModels
         }
 
 
-        private Restaurant[] FilterMenu( Restaurant[] menu )
+        private Restaurant[] GetFilteredMenu()
         {
-            // The simple solution, using Any() on Settings.DisplayedMealTypes, displays meals with more than one type
+            // Using Any() on Settings.DisplayedMealTypes displays meals with more than one type
             // even if the user doesn't want the second type to appear
             var forbiddenTypes = EnumEx.GetValues<MealType>().Where( type => !Settings.DisplayedMealTypes.Contains( type ) ).ToArray();
 
@@ -221,13 +182,10 @@ namespace PocketCampus.Food.ViewModels
                                  select meal
                      where meals.Any()
                      orderby restaurant.Name ascending
-                     select restaurant.WithMeals( meals ) )
+                     select restaurant.CopyWithMeals( meals ) )
                     .ToArray();
         }
 
-        /// <summary>
-        /// Gets the meal time associated with the specified hour.
-        /// </summary>
         private static MealTime GetMealTime( int hour )
         {
             return hour <= LunchLimit ? MealTime.Lunch : MealTime.Dinner;

@@ -1,7 +1,6 @@
 ﻿<UserControl x:Class="PocketCampus.Food.Controls.RatingDisplay"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:c="using:PocketCampus.Common"
              xmlns:my="using:PocketCampus.Food">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -21,7 +20,7 @@
             <!-- Satisfaction percentage -->
             <Run Text="{Binding Rating.Value, 
                                       Converter={StaticResource StringFormat}, 
-                                      ConverterParameter='{}{0:0%}'}"
+                                      ConverterParameter='0%'}"
                  FontFamily="{StaticResource PhoneFontFamilySemiBold}" />
 
             <!-- Satisfaction text -->

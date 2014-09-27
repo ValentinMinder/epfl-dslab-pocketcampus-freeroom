@@ -120,7 +120,7 @@ namespace PocketCampus.Common.Controls
                 progressIndicator.ProgressValue = 0;
             }
 
-            progressIndicator.Text = _resources.GetString( "StatusBar" + Data.ToString() );
+            progressIndicator.Text = _resources.GetString( "StatusBar" + Data );
 
             await progressIndicator.ShowAsync();
         }

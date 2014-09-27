@@ -27,7 +27,7 @@
         <TextBlock Grid.Column="1"
                    Text="{Binding Value, 
                                   Converter={StaticResource StringFormat}, 
-                                  ConverterParameter='{}{0:M}'}"
+                                  ConverterParameter='M'}"
                    Style="{Binding TextStyle}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center" />

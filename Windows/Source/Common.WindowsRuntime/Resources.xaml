@@ -419,7 +419,8 @@
                                            VerticalAlignment="Bottom" />
                                 
                                 <ProgressBar Grid.Row="1"
-                                             IsIndeterminate="True" />
+                                             IsIndeterminate="True"
+                                             VerticalAlignment="Top" />
                             </Grid>
                         </myControls:SwitchCase>
                         <myControls:SwitchCase Values="Error">

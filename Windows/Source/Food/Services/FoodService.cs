@@ -14,11 +14,7 @@ namespace PocketCampus.Food.Services
 {
     public sealed class FoodService : ThriftServiceImplementation<IFoodService>, IFoodService
     {
-        public FoodService( IServerAccess access )
-            : base( access.CreateCommunication( "food" ) )
-        {
-
-        }
+        public FoodService( IServerAccess access ) : base( access.CreateCommunication( "food" ) ) { }
 
         public Task<FoodResponse> GetMenusAsync( FoodRequest request, CancellationToken cancellationToken )
         {

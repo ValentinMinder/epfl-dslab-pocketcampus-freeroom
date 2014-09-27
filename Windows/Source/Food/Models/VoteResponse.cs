@@ -6,15 +6,9 @@ using ThriftSharp;
 
 namespace PocketCampus.Food.Models
 {
-    /// <summary>
-    /// Response for vote requests.
-    /// </summary>
     [ThriftStruct( "VoteResponse" )]
     public sealed class VoteResponse
     {
-        /// <summary>
-        /// The status of the request.
-        /// </summary>
         [ThriftField( 1, true, "submitStatus" )]
         public VoteStatus Status { get; set; }
     }

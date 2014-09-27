@@ -2,13 +2,12 @@
 using ThinMvvm;
 using ThinMvvm.Logging;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.Food.Controls
 {
-    public sealed partial class DayPicker : UserControl, ICommandOwner
+    public sealed partial class DayPicker : ICommandOwner
     {
-        #region Value DependencyProperty
+        #region Value
         public DateTime Value
         {
             get { return (DateTime) GetValue( ValueProperty ); }
@@ -19,7 +18,7 @@ namespace PocketCampus.Food.Controls
             DependencyProperty.Register( "Value", typeof( DateTime ), typeof( DayPicker ), new PropertyMetadata( DateTime.Now ) );
         #endregion
 
-        #region TextStyle DependencyProperty
+        #region TextStyle
         public Style TextStyle
         {
             get { return (Style) GetValue( TextStyleProperty ); }
@@ -30,18 +29,13 @@ namespace PocketCampus.Food.Controls
             DependencyProperty.Register( "TextStyle", typeof( Style ), typeof( DayPicker ), new PropertyMetadata( null ) );
         #endregion
 
-        /// <summary>
-        /// Gets the command executed to select the previous day.
-        /// </summary>
+
         [LogId( "PreviousDay" )]
         public Command PreviousCommand
         {
             get { return this.GetCommand( () => Value = Value.AddDays( -1 ) ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to select the next day.
-        /// </summary>
         [LogId( "NextDay" )]
         public Command NextCommand
         {
@@ -49,9 +43,6 @@ namespace PocketCampus.Food.Controls
         }
 
 
-        /// <summary>
-        /// Creates a new DayPicker.
-        /// </summary>
         public DayPicker()
         {
             InitializeComponent();

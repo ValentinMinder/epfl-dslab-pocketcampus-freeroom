@@ -1,8 +1,6 @@
-﻿using PocketCampus.Common.Controls;
-
-namespace PocketCampus.Food.Views
+﻿namespace PocketCampus.Food.Views
 {
-    public sealed partial class RatingView : PageBase
+    public sealed partial class RatingView
     {
         public RatingView()
         {

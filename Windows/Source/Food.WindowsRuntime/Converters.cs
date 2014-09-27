@@ -69,7 +69,7 @@ namespace PocketCampus.Food
     {
         public override ImageSource Convert( MealType value )
         {
-            return new BitmapImage( new Uri( "ms-appx:///PocketCampus.Food.WindowsRuntime/Images/MealType_" + value.ToString() + ".png", UriKind.Absolute ) );
+            return new BitmapImage( new Uri( "ms-appx:///PocketCampus.Food.WindowsRuntime/Images/MealType_" + value + ".png", UriKind.Absolute ) );
         }
     }
 

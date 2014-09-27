@@ -2,13 +2,12 @@
 using ThinMvvm;
 using ThinMvvm.Logging;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.Food.Controls
 {
-    public sealed partial class MealTimePicker : UserControl, ICommandOwner
+    public sealed partial class MealTimePicker : ICommandOwner
     {
-        #region Value DependencyProperty
+        #region Value
         public MealTime Value
         {
             get { return (MealTime) GetValue( ValueProperty ); }
@@ -25,7 +24,7 @@ namespace PocketCampus.Food.Controls
         }
         #endregion
 
-        // HACK when defined in XAML they're ints :(
+        // HACK: Declaring these in XAML makes them ints :-/
         public MealTime[] AvailableTimes
         {
             get { return new[] { MealTime.Lunch, MealTime.Dinner }; }

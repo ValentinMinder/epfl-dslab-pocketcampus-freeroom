@@ -17,7 +17,6 @@ namespace PocketCampus.Common.Services.Design
             {
                 return new ServerConfiguration
                 {
-                    AreFoodRatingsEnabled = 1,
                     EnabledPlugins = new[] { "Authentication", "Camipro", "Directory", "Events", "Food", "IsAcademia", "Map", "Moodle", "News", "Satellite", "Transport" }
                 };
             }

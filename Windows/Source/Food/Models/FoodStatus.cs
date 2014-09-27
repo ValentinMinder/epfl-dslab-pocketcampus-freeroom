@@ -6,20 +6,10 @@ using ThriftSharp;
 
 namespace PocketCampus.Food.Models
 {
-    /// <summary>
-    /// The possible response statuses of the food request.
-    /// </summary>
     [ThriftEnum]
     public enum FoodStatus
     {
-        /// <summary>
-        /// The request completed successfully.
-        /// </summary>
         Success = 200,
-
-        /// <summary>
-        /// A network error occurred on the server while executing the request.
-        /// </summary>
         NetworkError = 404
     }
 }

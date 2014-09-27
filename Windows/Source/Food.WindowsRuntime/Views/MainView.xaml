@@ -1,24 +1,18 @@
 ﻿<cc:PageBase x:Class="PocketCampus.Food.Views.MainView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:c="using:PocketCampus.Common"
              xmlns:cc="using:PocketCampus.Common.Controls"
              xmlns:my="using:PocketCampus.Food"
              xmlns:myc="using:PocketCampus.Food.Controls"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             d:DataContext="{Binding Main, Source={StaticResource Design}}">
+             DesignDataContext="{Binding Main, Source={StaticResource Design}}">
     <cc:PageBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- Converters -->
             <my:MealPriceConverter x:Key="MealToPrice"
                                    Settings="{Binding Settings}" />
-            <my:MealToImageConverter x:Key="MealToImage" />
 
             <!-- Meal template -->
             <DataTemplate x:Key="MealTemplate">
@@ -28,29 +22,20 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-
+                    <StackPanel>
                         <!-- Image -->
                         <Image Source="{Binding Converter={StaticResource MealToImage}}"
                                Width="100"
                                Height="100" />
 
                         <!-- Price -->
-                        <TextBlock Grid.Row="1"
-                                   Text="{Binding Converter={StaticResource MealToPrice}}"
+                        <TextBlock Text="{Binding Converter={StaticResource MealToPrice}}"
                                    TextAlignment="Center"
                                    Style="{StaticResource AppNormalTextBlockStyle}" />
 
                         <!-- Half-portion price -->
-                        <StackPanel Grid.Row="2"
-                                    Visibility="{Binding HalfPortionPrice, 
-                                                         Converter={StaticResource NonNullToVisibility}}">
+                        <StackPanel Visibility="{Binding HalfPortionPrice, 
+                                                         Converter={StaticResource NonDefaultToVisibility}}">
                             <TextBlock Text="{CustomResource Main.HalfPortionPrice}"
                                        Style="{StaticResource AppSubtleTextBlockStyle}"
                                        TextAlignment="Center" />
@@ -60,35 +45,22 @@
                                        Style="{StaticResource AppSubtleTextBlockStyle}"
                                        TextAlignment="Center" />
                         </StackPanel>
-                    </Grid>
+                    </StackPanel>
 
-                    <Grid Grid.Column="1"
-                          Margin="8,0,0,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-
+                    <StackPanel Grid.Column="1"
+                                Margin="8,0,0,0">
                         <!-- Name -->
                         <TextBlock Text="{Binding Name}"
                                    Style="{StaticResource AppLargeTextBlockStyle}"
                                    Margin="0,0,0,8" />
 
                         <!-- Description -->
-                        <TextBlock Grid.Row="1"
-                                   Text="{Binding Description}"
+                        <TextBlock Text="{Binding Description}"
                                    Style="{StaticResource AppSubtleTextBlockStyle}"
-                                   Visibility="{Binding Description, 
-                                                        Converter={StaticResource StringToVisibility}}"
                                    Margin="0,0,0,8" />
 
                         <!-- Rating & vote button -->
-                        <StackPanel Grid.Row="2"
-                                    Orientation="Horizontal"
-                                    Visibility="{Binding DataContext.AreRatingsEnabled, 
-                                                         ElementName=Root, 
-                                                         Converter={StaticResource BoolToVisibility}}">
+                        <StackPanel Orientation="Horizontal">
                             <myc:RatingDisplay Rating="{Binding Rating}"
                                                TextStyle="{StaticResource AppSubtleTextBlockStyle}" />
 
@@ -103,7 +75,7 @@
                                            Foreground="{StaticResource AppAccentBrush}" />
                             </cc:SimpleButton>
                         </StackPanel>
-                    </Grid>
+                    </StackPanel>
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>
@@ -111,6 +83,7 @@
     
     <Grid x:Name="Root">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -140,7 +113,10 @@
                            Margin="19,8" />
         </Border>
         
-        <cc:GroupedListView Grid.Row="2"
+        <cc:CacheStatusDisplay Grid.Row="2"
+                               Status="{Binding CacheStatus}" />
+        
+        <cc:GroupedListView Grid.Row="3"
                                 ItemTemplate="{StaticResource MealTemplate}"
                                 GroupKeyPath="Name"
                                 Margin="19,0">
@@ -151,7 +127,10 @@
             </cc:GroupedListView.ItemsViewSource>
         </cc:GroupedListView>
         
-        <!--<cc:LoadingAndError Grid.Row="2" />-->
+        <cc:DataStatusDisplay Grid.Row="3"
+                              Data="{Binding DataStatus}"
+                              Cache="{Binding CacheStatus}"
+                              RetryCommand="{Binding RefreshCommand}" />
     </Grid>
     
     <cc:PageBase.BottomAppBar>

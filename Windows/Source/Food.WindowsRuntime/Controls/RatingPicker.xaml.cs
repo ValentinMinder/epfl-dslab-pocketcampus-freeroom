@@ -1,9 +1,8 @@
 ﻿using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.Food.Controls
 {
-    public sealed partial class RatingPicker : UserControl
+    public sealed partial class RatingPicker
     {
         #region Value DependencyProperty
         public UserRating Value
