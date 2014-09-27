@@ -190,6 +190,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <PRIResource Include="Strings\fr\EmailPrompt.resw" />
+    <PRIResource Include="Strings\fr\CodeScanner.resw" />
     <PRIResource Include="Strings\en\CodeScanner.resw" />
     <PRIResource Include="Strings\en\EmailPrompt.resw" />
     <PRIResource Include="Strings\fr\TagFilter.resw" />

@@ -117,16 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DifferentDateTimesFormat" xml:space="preserve">
-    <value>{0}, {1} - {2}, {3}</value>
-    <comment>String format. 0 = date1, 1 =time1, 2 = date2, 3 = time2.</comment>
-  </data>
-  <data name="SingleDateDifferentTimesFormat" xml:space="preserve">
-    <value>{0}, {1} - {2}</value>
-    <comment>String format. 0 = date, 1 = time1, 2 = time2</comment>
-  </data>
-  <data name="SingleDateTimeFormat" xml:space="preserve">
-    <value>{0}, {1}</value>
-    <comment>String format. 0 = date, 1 = time.</comment>
+  <data name="NoCaptureDevices" xml:space="preserve">
+    <value>Votre appareil n'a pas d'appareil photo.
+Vous ne pouvez pas scanner de codes QR. Désolé.</value>
+    <comment>Dialog content</comment>
   </data>
 </root>

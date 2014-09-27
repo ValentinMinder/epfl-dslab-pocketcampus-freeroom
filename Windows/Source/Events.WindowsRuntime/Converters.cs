@@ -52,7 +52,7 @@ namespace PocketCampus.Events
             {
                 return string.Format( _resources.GetString( "SingleDateDifferentTimesFormat" ),
                                       startDate.ToString( dateFormat ),
-                                      startDate.ToString(), endDate.ToString() );
+                                      startDate.ToString( TimeFormat ), endDate.ToString( TimeFormat ) );
             }
 
             return string.Format( _resources.GetString( "DifferentDateTimesFormat" ),

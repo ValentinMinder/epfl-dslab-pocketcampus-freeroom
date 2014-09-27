@@ -121,12 +121,12 @@
     <value>{0}, {1} - {2}, {3}</value>
     <comment>String format. 0 = date1, 1 =time1, 2 = date2, 3 = time2.</comment>
   </data>
+  <data name="SingleDateDifferentTimesFormat" xml:space="preserve">
+    <value>{0}, {1} - {2}</value>
+    <comment>String format. 0 = date, 1 = time1, 2 = time2</comment>
+  </data>
   <data name="SingleDateTimeFormat" xml:space="preserve">
     <value>{0}, {1}</value>
     <comment>String format. 0 = date, 1 = time.</comment>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value>{0}, {1} - {2}</value>
-    <comment>String format. 0 = date, 1 = time1, 2 = time2</comment>
   </data>
 </root>
