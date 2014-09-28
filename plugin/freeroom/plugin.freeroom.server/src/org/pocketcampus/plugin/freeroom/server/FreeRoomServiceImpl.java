@@ -1547,48 +1547,4 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return null;
 		}
 	}
-
-	/**
-	 * For BETA, to link a bug report to the configuration of the device
-	 */
-	@Override
-	public boolean registerUserSettings(RegisterUser user) throws TException {
-		if (user == null) {
-			return false;
-		}
-
-		if (user.getEmail() == null) {
-			return false;
-		}
-
-		if (user.getConfig() == null) {
-			return false;
-		}
-
-		try {
-			Connection connectBDD = connMgr.getConnection();
-			// for now we only take into account one hour period
-			String insertReq = "INSERT INTO `fr-betaconfig`(email, config) VALUES(?,?)";
-			PreparedStatement query = connectBDD.prepareStatement(insertReq);
-
-			query.setString(1, user.getEmail());
-			query.setString(2, user.getConfig());
-
-			query.executeUpdate();
-			log(Level.INFO,
-					formatServerLogInfo("registerUserSettings",
-							"email=" + user.getEmail() + "config==null?"
-									+ (user.getConfig() == null)));
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			log(LOG_SIDE.SERVER,
-					Level.SEVERE,
-					"SQL error when inserting user config email="
-							+ user.getEmail() + "config == null ? "
-							+ (user.getConfig() == null));
-			// special case, we let the user test the app anyway
-			return true;
-		}
-	}
 }

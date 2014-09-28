@@ -9,7 +9,6 @@ import org.pocketcampus.plugin.freeroom.android.req.AutoCompleteRequestASyncTask
 import org.pocketcampus.plugin.freeroom.android.req.CheckWhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.android.req.FRRequestASyncTask;
 import org.pocketcampus.plugin.freeroom.android.req.ImWorkingRequestASyncTask;
-import org.pocketcampus.plugin.freeroom.android.req.RegisterASyncTask;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyReply;
@@ -304,34 +303,4 @@ public class FreeRoomController extends PluginController implements
 		mModel.setListMessageFrequency(result.getMessages());
 	}
 
-	// USER-REGISTRATION - BETA-ONLY
-
-	/**
-	 * Register a user to the server.
-	 * <p>
-	 * TODO: beta-only
-	 * 
-	 * @param request
-	 * @param view
-	 */
-	public void sendRegisterUser(RegisterUser request, IFreeRoomView view) {
-		(new RegisterASyncTask(view)).start(this, mClient, request);
-	}
-
-	/**
-	 * When a user is registered into the server.
-	 * <p>
-	 * If the server accept the registration, set it the model, so that the user
-	 * is not required to register afterwards.
-	 * <p>
-	 * TODO: beta-only
-	 * 
-	 * @param reply
-	 *            true if accepted
-	 */
-	public void registeredUser(Boolean reply) {
-		if (reply.booleanValue()) {
-			mModel.setRegisteredUser(true);
-		}
-	}
 }

@@ -27,10 +27,4 @@ public interface IFreeRoomView extends IAbstractFreeRoomView {
 
 	void workingMessageUpdated();
 
-	// TODO: beta-test only
-	void welcomeErrorRegister(boolean transmissionError);
-
-	// TODO: beta-test only
-	void welcomeValidateRegister();
-
 }

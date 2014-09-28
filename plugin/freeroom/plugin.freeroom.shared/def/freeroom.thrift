@@ -205,11 +205,6 @@ struct LogMessage {
 	3: required string message;
 }
 
-struct RegisterUser {
-	// epfl account
-	1: required string email;
-	3: required string config;
-}
 
 service FreeRoomService {
 	// main service to get the room occupancies
@@ -233,6 +228,4 @@ service FreeRoomService {
 	void logSevere(1: LogMessage log);
 	
 	void logWarning(1: LogMessage log);
-	
-	bool registerUserSettings(1: RegisterUser user);
 }

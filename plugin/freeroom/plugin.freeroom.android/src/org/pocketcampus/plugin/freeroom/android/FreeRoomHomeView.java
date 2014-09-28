@@ -45,7 +45,6 @@ import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
-import org.pocketcampus.plugin.freeroom.shared.RegisterUser;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRStruct;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
@@ -507,16 +506,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initSettingsDialog();
 		initWhoIsWorkingDialog();
 
-		initWelcomeDialog();
-		if (mModel.getRegisteredUserNeedUpdate()) {
-			mModel.setRegisteredUserAuto();
-			// welcomeValidateRegistration();
-			// uncomment this if you want to show the welcome dialog at first
-			// start only, and you may want to change its content as well! :)
-			welcome.show();
-		} else {
-			// welcomeValidateRegistration();
-		}
 	}
 
 	/* ACTIONS FOR THE ACTION BAR */
@@ -536,24 +525,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		public int getDrawable() {
 			return R.drawable.ic_action_overflow;
-		}
-	};
-
-	/**
-	 * ACTION/MENU: Action to open the beta registration.
-	 * <p>
-	 * TODO: beta only (may change to about menu?)
-	 */
-	private Action actionWelcomBetaRegister = new Action() {
-		public void performAction(View view) {
-			if (mModel.getRegisteredUser()) {
-				welcomeValidateRegistration();
-			}
-			welcome.show();
-		}
-
-		public int getDrawable() {
-			return R.drawable.ic_action_about;
 		}
 	};
 
@@ -4666,20 +4637,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		settingsRefreshTimeFormatExample();
 	}
 
-	// WELCOME DIALOG FOR BETA
-	/**
-	 * {@link #welcome}: Dialog that holds the {@link #welcome} Dialog.
-	 * <p>
-	 * TODO: beta-only
-	 */
-	private AlertDialog welcome;
-	/**
-	 * {@link #welcome}: View that holds the {@link #welcome} dialog content,
-	 * defined in xml in layout folder.
-	 * <p>
-	 * TODO: beta-only
-	 */
-	private View welcomeView;
 
 	/**
 	 * {@link #welcome}: Stores (non-permanent!) if it's the first time the user
@@ -4687,168 +4644,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private boolean welcomeFirstTimeWithOutRegistered = true;
 
-	/**
-	 * {@link #welcome}: Inits the {@link #welcome} dialog.
-	 * <p>
-	 * TODO: beta-only
-	 */
-	private void initWelcomeDialog() {
-		// Instantiate an AlertDialog.Builder with its constructor
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(getString(R.string.freeroom_welcome_title));
-		builder.setIcon(R.drawable.ic_action_about);
-		builder.setNeutralButton(getString(R.string.freeroom_welcome_dismiss),
-				null);
-
-		// Get the AlertDialog from create()
-		welcome = builder.create();
-
-		// redefine paramaters to dim screen when displayed
-		WindowManager.LayoutParams lp = welcome.getWindow().getAttributes();
-		lp.dimAmount = 0.60f;
-		// these doesn't work
-		lp.width = LayoutParams.FILL_PARENT;
-		lp.height = LayoutParams.WRAP_CONTENT;
-		welcome.getWindow().addFlags(
-				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
-		welcome.getWindow()
-				.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-		welcome.getWindow().setAttributes(lp);
-
-		welcomeView = commonLayoutInflater.inflate(
-				R.layout.freeroom_layout_dialog_welcome, null);
-
-		// these work perfectly
-		welcomeView.setMinimumWidth((int) (activityWidth * 0.9f));
-		welcomeView.setMinimumHeight((int) (homeActivityHeight * 0.8f));
-
-		welcome.setView(welcomeView);
-		welcome.setOnDismissListener(new OnDismissListener() {
-
-			@Override
-			public void onDismiss(DialogInterface arg0) {
-				if (!mModel.getRegisteredUser()) {
-					if (welcomeFirstTimeWithOutRegistered) {
-						welcomeFirstTimeWithOutRegistered = false;
-						welcome.show();
-						errorDialogShowMessage(getString(R.string.freeroom_welcome_error));
-					} else {
-						finish();
-					}
-				}
-			}
-		});
-
-		welcome.setOnShowListener(new OnShowListener() {
-			@Override
-			public void onShow(DialogInterface dialog) {
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/welcome");
-			}
-		});
-
-		TextView configText = (TextView) welcomeView
-				.findViewById(R.id.freeroom_layout_dialog_welcome_config);
-		configText.setText(devTestGetConfig(true));
-
-		final EditText emailText = (EditText) welcomeView
-				.findViewById(R.id.freeroom_layout_dialog_welcome_email);
-		final Button registerUserBeta = (Button) welcomeView
-				.findViewById(R.id.freeroom_layout_dialog_welcome_register);
-
-		final IFreeRoomView view = this;
-		registerUserBeta.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				String email = emailText.getText().toString();
-				if (email.equalsIgnoreCase("go")
-						|| email.equalsIgnoreCase("noregister")
-						|| email.equals(devTestPrefix + "noregister")) {
-					registerUserBeta
-							.setText(getString(R.string.freeroom_welcome_submitting));
-					registerUserBeta.setEnabled(false);
-					commonDismissSoftKeyBoard(arg0);
-					mModel.setRegisteredUser(true);
-					welcomeValidateRegistration();
-				} else if (welcomeCheckValidEmail(email)) {
-					RegisterUser req = new RegisterUser(email,
-							devTestGetConfig(false));
-					mController.sendRegisterUser(req, view);
-					registerUserBeta
-							.setText(getString(R.string.freeroom_welcome_submitting));
-					registerUserBeta.setEnabled(false);
-					commonDismissSoftKeyBoard(arg0);
-				}
-			}
-		});
-	}
-
-	/**
-	 * {@link #welcome}: Tries to validate an email. If error, display an error
-	 * message in a dialog.
-	 * <p>
-	 * TODO: beta-only
-	 * 
-	 * @param email
-	 *            the email to test
-	 * @return true if email is well-formed.
-	 */
-	private boolean welcomeCheckValidEmail(String email) {
-		if (u.validEmail(email)) {
-			return true;
-		} else {
-			errorDialogShowMessage(getString(R.string.freeroom_welcome_invalid_mail));
-			return false;
-		}
-	}
-
-	/**
-	 * {@link #welcome}: To be called when the server validates the
-	 * registration, to change the display of the welcome popup.
-	 * <p>
-	 * TODO: beta-only
-	 */
-	private void welcomeValidateRegistration() {
-		LinearLayout before = (LinearLayout) welcomeView
-				.findViewById(R.id.freeroom_layout_dialog_welcome_before);
-		LinearLayout after = (LinearLayout) welcomeView
-				.findViewById(R.id.freeroom_layout_dialog_welcome_after);
-		after.setVisibility(LinearLayout.VISIBLE);
-		before.setVisibility(LinearLayout.GONE);
-	}
-
-	/**
-	 * {@link #welcome}: MVC METHOD: Override
-	 * {@link IFreeRoomView#welcomeErrorRegister(boolean)} and notify a user
-	 * couldn't been registered, eventually due to transmission error.
-	 * <p>
-	 * TODO beta-test only.
-	 */
-	@Override
-	public void welcomeErrorRegister(boolean transmissionError) {
-		Button registerUserBeta = (Button) welcomeView
-				.findViewById(R.id.freeroom_layout_dialog_welcome_register);
-		registerUserBeta.setEnabled(true);
-		registerUserBeta.setText(getString(R.string.freeroom_welcome_register));
-		String string = getString(R.string.freeroom_welcome_validate_network_error);
-		if (!transmissionError) {
-			string = getString(R.string.freeroom_welcome_validate_reject);
-			errorDialogShowMessage(string);
-		}
-	}
-
-	/**
-	 * {@link #welcome}: MVC METHOD: Override
-	 * {@link IFreeRoomView#welcomeValidateRegister()} and notify a user is
-	 * successfully registered.
-	 * <p>
-	 * TODO beta-test only.
-	 */
-	@Override
-	public void welcomeValidateRegister() {
-		welcomeValidateRegistration();
-	}
 
 	// KONAMI CODE
 

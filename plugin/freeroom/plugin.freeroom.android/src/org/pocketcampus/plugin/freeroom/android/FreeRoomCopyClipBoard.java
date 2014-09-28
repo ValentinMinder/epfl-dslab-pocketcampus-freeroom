@@ -140,18 +140,6 @@ public class FreeRoomCopyClipBoard extends FreeRoomAbstractView implements
 	}
 
 	@Override
-	public void welcomeErrorRegister(boolean bool) {
-		// TODO beta test only
-		// WE DO NOTHING!
-	}
-
-	@Override
-	public void welcomeValidateRegister() {
-		// TODO beta test only
-		// WE DO NOTHING!
-	}
-
-	@Override
 	public void workingMessageUpdated() {
 		// WE DO NOTHING!
 	}
