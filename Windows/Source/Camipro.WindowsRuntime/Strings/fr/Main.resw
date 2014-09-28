@@ -144,8 +144,11 @@ Le délai de traitement est de 3 jours ouvrables.</value>
     <comment>Sentence</comment>
   </data>
   <data name="EbankingPaymentType" xml:space="preserve">
-    <value>Type de paiement : BVR orange</value>
+    <value>BVR orange</value>
     <comment>Field</comment>
+  </data>
+  <data name="EbankingPaymentTypeHeader" xml:space="preserve">
+    <value>type de paiement</value>
   </data>
   <data name="EbankingReferenceNumber" xml:space="preserve">
     <value>référence</value>

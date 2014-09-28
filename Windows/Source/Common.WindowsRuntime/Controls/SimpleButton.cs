@@ -42,7 +42,7 @@ namespace PocketCampus.Common.Controls
         #region CommandParameter
         public object CommandParameter
         {
-            get { return (object) GetValue( CommandParameterProperty ); }
+            get { return GetValue( CommandParameterProperty ); }
             set { SetValue( CommandParameterProperty, value ); }
         }
 
@@ -50,17 +50,27 @@ namespace PocketCampus.Common.Controls
             DependencyProperty.Register( "CommandParameter", typeof( object ), typeof( SimpleButton ), new PropertyMetadata( null ) );
         #endregion
 
-        #region Flyout
-        public FlyoutBase Flyout
+        #region TappedFlyout
+        public FlyoutBase TappedFlyout
         {
-            get { return (FlyoutBase) GetValue( FlyoutProperty ); }
-            set { SetValue( FlyoutProperty, value ); }
+            get { return (FlyoutBase) GetValue( TappedFlyoutProperty ); }
+            set { SetValue( TappedFlyoutProperty, value ); }
         }
 
-        public static readonly DependencyProperty FlyoutProperty =
-            DependencyProperty.Register( "Flyout", typeof( FlyoutBase ), typeof( SimpleButton ), new PropertyMetadata( null ) );
+        public static readonly DependencyProperty TappedFlyoutProperty =
+            DependencyProperty.Register( "TappedFlyout", typeof( FlyoutBase ), typeof( SimpleButton ), new PropertyMetadata( null ) );
         #endregion
 
+        #region HoldingFlyout
+        public FlyoutBase HoldingFlyout
+        {
+            get { return (FlyoutBase) GetValue( HoldingFlyoutProperty ); }
+            set { SetValue( HoldingFlyoutProperty, value ); }
+        }
+
+        public static readonly DependencyProperty HoldingFlyoutProperty =
+            DependencyProperty.Register( "HoldingFlyout", typeof( FlyoutBase ), typeof( SimpleButton ), new PropertyMetadata( null ) );
+        #endregion
 
         public SimpleButton()
         {
@@ -77,9 +87,9 @@ namespace PocketCampus.Common.Controls
                         Command.Execute( CommandParameter );
                     }
 
-                    if ( Flyout != null )
+                    if ( TappedFlyout != null )
                     {
-                        Flyout.ShowAt( this );
+                        TappedFlyout.ShowAt( this );
                     }
                 }
             };
@@ -97,6 +107,14 @@ namespace PocketCampus.Common.Controls
                 if ( IsEnabled )
                 {
                     VisualStateManager.GoToState( this, "Normal", true );
+                }
+            };
+
+            Holding += ( _, __ ) =>
+            {
+                if ( IsEnabled && HoldingFlyout != null )
+                {
+                    HoldingFlyout.ShowAt( this );
                 }
             };
         }

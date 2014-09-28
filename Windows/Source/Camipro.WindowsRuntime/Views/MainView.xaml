@@ -15,7 +15,7 @@
             
             <!-- Transaction item template -->
             <DataTemplate x:Key="TransactionTemplate">
-                <Grid Margin="0,0,0,16">
+                <Grid Margin="0,0,19,16">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
@@ -76,7 +76,7 @@
 
                     <!-- Current balance -->
                     <TextBlock Style="{StaticResource AppLargeTextBlockStyle}"
-                               Margin="0,16,0,0">
+                               Margin="0,16,19,0">
                         <Run Text="{CustomResource Main.CurrentBalance}" />
                         <Run Text="{Binding AccountInfo.Balance,
                                             Converter={StaticResource MoneyFormat}}"
@@ -87,7 +87,7 @@
                     <!-- Last month -->
                     <TextBlock Grid.Row="1"
                                Style="{StaticResource AppSubtleTextBlockStyle}"
-                               Margin="0,8,0,0">
+                               Margin="0,8,19,0">
                         <Run Text="{CustomResource Main.MonthTotal}" />
                         <Run Text="{Binding EbankingInfo.CardStatistics.MonthTotal,
                                             Converter={StaticResource MoneyFormat}}" />
@@ -96,7 +96,7 @@
                     <!-- Three months total -->
                     <TextBlock Grid.Row="2"
                                Style="{StaticResource AppSubtleTextBlockStyle}"
-                               Margin="0,8,0,0">
+                               Margin="0,8,19,0">
                         <Run Text="{CustomResource Main.ThreeMonthsTotal}"/>
                         <Run Text="{Binding EbankingInfo.CardStatistics.ThreeMonthsTotal,
                                             Converter={StaticResource MoneyFormat}}" />
@@ -105,7 +105,7 @@
                     <!-- Three months average -->
                     <TextBlock Grid.Row="3"
                                Style="{StaticResource AppSubtleTextBlockStyle}"
-                               Margin="0,8,0,0">
+                               Margin="0,8,19,0">
                         <Run Text="{CustomResource Main.ThreeMonthsAverage}" />
                         <Run Text="{Binding EbankingInfo.CardStatistics.ThreeMonthsAverage,
                                             Converter={StaticResource MoneyFormat}}" />
@@ -121,7 +121,7 @@
 
             <!-- E-banking -->
             <PivotItem Header="{CustomResource Main.Ebanking}">
-                <Grid>
+                <Grid Margin="0,0,19,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -136,36 +136,39 @@
                     </Grid.RowDefinitions>
 
                     <!-- Payment type -->
-                    <TextBlock Text="{CustomResource Main.EbankingPaymentType}"
-                               Style="{StaticResource AppNormalTextBlockStyle}"
-                               Margin="0,16" />
+                    <TextBlock Text="{CustomResource Main.EbankingPaymentTypeHeader}"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               Margin="0,16,0,0" />
+                    <TextBlock Grid.Row="1"
+                               Text="{CustomResource Main.EbankingPaymentType}"
+                               Style="{StaticResource AppLargeTextBlockStyle}"
+                               Margin="0,0,0,16" />
 
                     <!-- Account name -->
                     <TextBlock Grid.Row="2"
                                Text="{CustomResource Main.EbankingAccountName}"
-                               Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
+                               Style="{StaticResource AppSubtleTextBlockStyle}" />
                     <TextBlock Grid.Row="3"
                                Text="{Binding EbankingInfo.PaymentInfo.AccountName}"
-                               Style="{StaticResource AppNormalTextBlockStyle}"
+                               Style="{StaticResource AppLargeTextBlockStyle}"
                                Margin="0,0,0,16" />
 
                     <!-- Account number -->
                     <TextBlock Grid.Row="4"
                                Text="{CustomResource Main.EbankingAccountNumber}"
-                               Style="{StaticResource AppGroupHeaderTextBlockStyle}"
-                               VerticalAlignment="Bottom" />
+                               Style="{StaticResource AppSubtleTextBlockStyle}" />
                     <TextBlock Grid.Row="5"
                                Text="{Binding EbankingInfo.PaymentInfo.AccountNumber}"
-                               Style="{StaticResource AppNormalTextBlockStyle}"
+                               Style="{StaticResource AppLargeTextBlockStyle}"
                                Margin="0,0,0,16" />
 
                     <!-- Reference number -->
                     <TextBlock Grid.Row="6"
                                Text="{CustomResource Main.EbankingReferenceNumber}"
-                               Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
+                               Style="{StaticResource AppSubtleTextBlockStyle}" />
                     <TextBlock Grid.Row="7"
                                Text="{Binding EbankingInfo.PaymentInfo.ReferenceNumber}"
-                               Style="{StaticResource AppNormalTextBlockStyle}"
+                               Style="{StaticResource AppLargeTextBlockStyle}"
                                Margin="0,0,0,32" />
 
                     <!-- Various info -->
@@ -176,14 +179,16 @@
 
                     <cc:Switch Grid.Row="9"
                                Value="{Binding EmailStatus}">
+                        
+                        <!-- 'Request e-mail with info' button -->
                         <cc:SwitchCase Values="NotRequested">
-                            <!-- 'Request e-mail with info' button -->
                             <Button Command="{Binding RequestEbankingEmailCommand}"
                                     Content="{CustomResource Main.RequestEbankingEmail}"
                                     HorizontalAlignment="Stretch" />
                         </cc:SwitchCase>
+                        
+                        <!-- E-mail status text -->
                         <cc:SwitchCase Values="Success, Error">
-                            <!-- E-mail status text -->
                             <TextBlock Text="{Binding EmailStatus, Converter={StaticResource EnumToString}}"
                                        Style="{StaticResource AppNormalTextBlockStyle}" />
                         </cc:SwitchCase>

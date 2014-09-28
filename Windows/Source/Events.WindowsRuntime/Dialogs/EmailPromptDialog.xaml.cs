@@ -2,7 +2,7 @@
 
 namespace PocketCampus.Events.Dialogs
 {
-    public sealed partial class EmailPromptDialog : ContentDialog
+    public sealed partial class EmailPromptDialog
     {
         public string Email { get; private set; }
 

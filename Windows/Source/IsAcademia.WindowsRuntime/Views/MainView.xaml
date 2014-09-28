@@ -137,7 +137,7 @@
                     </Grid>
 
                     <!-- More info on tap -->
-                    <cc:SimpleButton.Flyout>
+                    <cc:SimpleButton.TappedFlyout>
                         <Flyout>
                             <ContentControl Content="{Binding}"
                                             ContentTemplate="{StaticResource FullPeriodTemplate}"
@@ -146,7 +146,7 @@
                                             VerticalAlignment="Stretch"
                                             VerticalContentAlignment="Stretch" />
                         </Flyout>
-                    </cc:SimpleButton.Flyout>
+                    </cc:SimpleButton.TappedFlyout>
                 </cc:SimpleButton>
 
             </DataTemplate>

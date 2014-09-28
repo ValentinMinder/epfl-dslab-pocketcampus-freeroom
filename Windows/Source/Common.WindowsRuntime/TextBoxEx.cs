@@ -10,7 +10,7 @@ namespace PocketCampus.Common
         #region EnterCommandParameter
         public static object GetEnterCommandParameter( DependencyObject obj )
         {
-            return (object) obj.GetValue( EnterCommandParameterProperty );
+            return obj.GetValue( EnterCommandParameterProperty );
         }
 
         public static void SetEnterCommandParameter( DependencyObject obj, object value )

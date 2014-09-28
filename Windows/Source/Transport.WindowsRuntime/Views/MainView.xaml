@@ -154,13 +154,14 @@
                                            Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
 
                                 <!-- TODO: Context menu -->
-                                <!--<FlyoutBase.AttachedFlyout>
+                                <cc:SimpleButton.HoldingFlyout>
                                     <MenuFlyout>
                                         <MenuFlyoutItem Text="{CustomResource Main.RemoveStation}"
-                                                        Command="{Binding DataContext.RemoveStationCommand, ElementName=Root}"
-                                                        CommandParameter="{Binding Station}" />
+                                                        Command="{Binding DataContext.RemoveStationCommand, 
+                                                                          ElementName=Root}"
+                                                        CommandParameter="{Binding Destination}" />
                                     </MenuFlyout>
-                                </FlyoutBase.AttachedFlyout>-->
+                                </cc:SimpleButton.HoldingFlyout>
                             </cc:SimpleButton>
 
                             <!-- Small data status indicator -->

@@ -77,7 +77,7 @@ namespace PocketCampus.Common.Controls
         #region DesignDataContext
         public object DesignDataContext
         {
-            get { return (object) GetValue( DesignDataContextProperty ); }
+            get { return GetValue( DesignDataContextProperty ); }
             set { SetValue( DesignDataContextProperty, value ); }
         }
 

@@ -1,8 +1,6 @@
-﻿using PocketCampus.Common.Controls;
-
-namespace PocketCampus.Events.Views
+﻿namespace PocketCampus.Events.Views
 {
-    public sealed partial class SettingsView : PageBase
+    public sealed partial class SettingsView
     {
         public SettingsView()
         {

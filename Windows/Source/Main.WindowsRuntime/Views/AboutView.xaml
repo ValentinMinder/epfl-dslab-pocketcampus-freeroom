@@ -15,16 +15,19 @@
             </StackPanel>
         </Border>
 
-        <TextBlock Style="{StaticResource AppSubtleTextBlockStyle}"
-                   Margin="19,5">
-            <Run Text="{CustomResource About.AppVersion}" />
-            <Run Text="{Binding AppVersion}" />
-        </TextBlock>
+        <!-- App version -->
+        <StackPanel Margin="19,10">
+            <TextBlock Text="{CustomResource About.AppVersion}"
+                       Style="{StaticResource AppSubtleTextBlockStyle}" />
+
+            <TextBlock Text="{Binding AppVersion}"
+                       Style="{StaticResource AppLargeTextBlockStyle}" />
+        </StackPanel>
 
         <!-- Developers -->
         <StackPanel Margin="19,10">
             <TextBlock Text="{CustomResource About.DevelopersHeader}"
-                       Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
+                       Style="{StaticResource AppSubtleTextBlockStyle}" />
             
             <TextBlock Text="{CustomResource About.Developers}"
                        Style="{StaticResource AppLargeTextBlockStyle}" />
@@ -33,7 +36,7 @@
         <!-- Website -->
         <StackPanel Margin="19,10">
             <TextBlock Text="{CustomResource About.WebsiteHeader}"
-                       Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
+                       Style="{StaticResource AppSubtleTextBlockStyle}" />
 
             <HyperlinkButton Command="{Binding BrowseUrlCommand}"
                              CommandParameter="{CustomResource About.Website}">
@@ -48,7 +51,7 @@
         <!-- Contact email -->
         <StackPanel Margin="19,10">
             <TextBlock Text="{CustomResource About.ContactHeader}"
-                       Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
+                       Style="{StaticResource AppSubtleTextBlockStyle}" />
 
             <HyperlinkButton Command="{Binding SendEmailCommand}"
                              CommandParameter="{CustomResource About.Contact}">
@@ -63,7 +66,7 @@
         <!-- Support email -->
         <StackPanel Margin="19,10">
             <TextBlock Text="{CustomResource About.SupportHeader}"
-                       Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
+                       Style="{StaticResource AppSubtleTextBlockStyle}" />
 
             <HyperlinkButton Command="{Binding SendEmailCommand}"
                              CommandParameter="{CustomResource About.Support}">
@@ -78,16 +81,30 @@
 
     <!-- App bar -->
     <cc:PageBase.BottomAppBar>
-        <CommandBar IsOpen="False"
-                    ClosedDisplayMode="Minimal">
+        <CommandBar ClosedDisplayMode="Minimal">
             <CommandBar.SecondaryCommands>
                 <!-- "Rate the app" menu item -->
                 <AppBarButton Command="{Binding RateAppCommand}"
                               Label="{CustomResource About.RateApp}" />
 
                 <!-- "Privacy policy" menu item -->
-                <AppBarButton Click="AppBarButton_Click"
-                              Label="{CustomResource About.PrivacyPolicy}" />
+                <AppBarButton Label="{CustomResource About.PrivacyPolicy}">
+                    <AppBarButton.Flyout>
+                        <Flyout>
+                            <!-- FRAMEWORK BUG: The height of the flyout is miscalculated, 
+                                                it needs to be set explicitly -->
+                            <StackPanel Height="100">
+                                <TextBlock Text="{CustomResource About.PrivacyPolicyTitle}"
+                                           Style="{StaticResource AppLargeTextBlockStyle}"
+                                           Margin="19,0" />
+                                
+                                <TextBlock Text="{CustomResource About.PrivacyPolicyContent}"
+                                           Style="{StaticResource AppNormalTextBlockStyle}"
+                                           Margin="19,8" />
+                            </StackPanel>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </cc:PageBase.BottomAppBar>

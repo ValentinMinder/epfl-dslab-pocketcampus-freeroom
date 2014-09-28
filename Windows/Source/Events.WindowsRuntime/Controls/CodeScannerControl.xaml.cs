@@ -9,20 +9,19 @@ using Windows.Media.Capture;
 using Windows.Media.MediaProperties;
 using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 using ZXing;
 
 namespace PocketCampus.Events.Controls
 {
-    public sealed partial class CodeScannerControl : UserControl
+    public sealed partial class CodeScannerControl
     {
         private static readonly TimeSpan ScanInterval = TimeSpan.FromMilliseconds( 200 );
         private const string CustomUrlPrefix = "pocketcampus://";
         private const string CustomUrlLogPrefix = "pocketcampus://events.plugin.pocketcampus.org/";
 
+        private readonly DispatcherTimer _timer;
         private MediaCapture _camera;
-        private DispatcherTimer _timer;
 
 
         public CodeScannerControl()
@@ -91,7 +90,7 @@ namespace PocketCampus.Events.Controls
                 var image = new BitmapImage();
                 await image.SetSourceAsync( stream.AsRandomAccessStream() );
                 var reader = new BarcodeReader();
-                WriteableBitmap wrb = new WriteableBitmap( image.PixelWidth, image.PixelHeight );
+                var wrb = new WriteableBitmap( image.PixelWidth, image.PixelHeight );
                 wrb.SetSource( stream.AsRandomAccessStream() );
                 var result = reader.Decode( wrb );
                 ProcessResult( result );

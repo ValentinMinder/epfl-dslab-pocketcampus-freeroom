@@ -122,11 +122,11 @@
     <comment>Sentence part</comment>
   </data>
   <data name="Contact" xml:space="preserve">
-    <value>Contact</value>
+    <value>team@pocketcampus.org</value>
     <comment>Section header</comment>
   </data>
   <data name="ContactHeader" xml:space="preserve">
-    <value>team@pocketcampus.org</value>
+    <value>contact</value>
     <comment>E-mail</comment>
   </data>
   <data name="Developers" xml:space="preserve">
@@ -137,7 +137,7 @@ Loïc Gardiol</value>
     <comment>Names list</comment>
   </data>
   <data name="DevelopersHeader" xml:space="preserve">
-    <value>Developers (PocketCampus.Org)</value>
+    <value>developers (PocketCampus.Org)</value>
     <comment>Section header</comment>
   </data>
   <data name="PrivacyPolicy" xml:space="preserve">
@@ -161,7 +161,7 @@ Loïc Gardiol</value>
     <comment>E-mail</comment>
   </data>
   <data name="SupportHeader" xml:space="preserve">
-    <value>Support</value>
+    <value>support</value>
     <comment>Section header</comment>
   </data>
   <data name="ViewTitle" xml:space="preserve">
@@ -173,7 +173,7 @@ Loïc Gardiol</value>
     <comment>URL</comment>
   </data>
   <data name="WebsiteHeader" xml:space="preserve">
-    <value>Website</value>
+    <value>website</value>
     <comment>Section header</comment>
   </data>
 </root>

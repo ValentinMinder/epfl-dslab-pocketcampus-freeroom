@@ -31,6 +31,7 @@ namespace PocketCampus.Satellite
             private readonly string _key;
             private readonly Beer[] _beers;
 
+
             public string Key { get { return _key; } }
 
 
@@ -39,6 +40,7 @@ namespace PocketCampus.Satellite
                 _key = key;
                 _beers = beers;
             }
+
 
             public IEnumerator<Beer> GetEnumerator()
             {

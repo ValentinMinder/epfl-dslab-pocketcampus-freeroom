@@ -144,8 +144,11 @@ Processing delay is 3 business days.</value>
     <comment>Sentence</comment>
   </data>
   <data name="EbankingPaymentType" xml:space="preserve">
-    <value>Payment type: orange slip</value>
+    <value>orange payment slip</value>
     <comment>Field</comment>
+  </data>
+  <data name="EbankingPaymentTypeHeader" xml:space="preserve">
+    <value>payment type</value>
   </data>
   <data name="EbankingReferenceNumber" xml:space="preserve">
     <value>reference number</value>

@@ -13,17 +13,12 @@ namespace PocketCampus.Common.Controls
         #region Value
         public object Value
         {
-            get { return (object) GetValue( ValueProperty ); }
+            get { return GetValue( ValueProperty ); }
             set { SetValue( ValueProperty, value ); }
         }
 
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register( "Value", typeof( object ), typeof( Switch ), new PropertyMetadata( null, OnValueChanged ) );
-
-        private static void OnValueChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
-        {
-            ( (Switch) obj ).Update();
-        }
+            DependencyProperty.Register( "Value", typeof( object ), typeof( Switch ), new PropertyMetadata( null, ( o, _ ) => ( (Switch) o ).Update() ) );
         #endregion
 
         #region Cases
@@ -43,11 +38,18 @@ namespace PocketCampus.Common.Controls
             // If Cases is set in PropertyMetadata, it'll be the same list for all instances
             Cases = new List<SwitchCase>();
             DefaultStyleKey = typeof( Switch );
+
+            Loaded += ( _, __ ) => Update();
         }
 
 
         private void Update()
         {
+            if ( Value == null || Cases.Count == 0 )
+            {
+                return;
+            }
+
             string value = Value.ToString();
             var matchingCase = Cases.FirstOrDefault( c => c.ValuesSet.Contains( value ) );
             Content = matchingCase == null ? null : matchingCase.Content;
@@ -79,7 +81,7 @@ namespace PocketCampus.Common.Controls
         #region Content
         public object Content
         {
-            get { return (object) GetValue( ContentProperty ); }
+            get { return GetValue( ContentProperty ); }
             set { SetValue( ContentProperty, value ); }
         }
 
