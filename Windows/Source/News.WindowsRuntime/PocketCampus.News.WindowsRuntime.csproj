@@ -108,9 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\fr\FeedItem.resw" />
-    <PRIResource Include="Strings\fr\Main.resw" />
     <PRIResource Include="Strings\en\FeedItem.resw" />
-    <PRIResource Include="Strings\en\Main.resw" />
     <PRIResource Include="Strings\fr\Resources.resw" />
     <PRIResource Include="Strings\en\Resources.resw" />
   </ItemGroup>
