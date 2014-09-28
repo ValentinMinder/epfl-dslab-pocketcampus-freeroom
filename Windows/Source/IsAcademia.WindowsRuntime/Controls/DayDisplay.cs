@@ -12,7 +12,6 @@ using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.IsAcademia.Controls
 {
-    // TODO clean this up, we don't need non-EPFL-timezone support
     public sealed class DayDisplay : Panel
     {
         private const int HoursInDay = 24;

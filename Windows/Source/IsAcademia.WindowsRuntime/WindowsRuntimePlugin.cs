@@ -15,15 +15,14 @@ namespace PocketCampus.IsAcademia
             get { return ResourceLoader.GetForViewIndependentUse( "PocketCampus.IsAcademia.WindowsRuntime/Resources" ).GetString( "PluginName" ); }
         }
 
-        public string Icon { get { return null; } }
-        public object OLD_Icon
+        public string Icon
         {
             get
             {
-                return new ResourceDictionary
+                return (string) new ResourceDictionary
                 {
                     Source = new Uri( "ms-appx:///PocketCampus.IsAcademia.WindowsRuntime/Icons.xaml", UriKind.Absolute )
-                }["IsAcademiaIcon"];
+                }["PluginIcon"];
             }
         }
 

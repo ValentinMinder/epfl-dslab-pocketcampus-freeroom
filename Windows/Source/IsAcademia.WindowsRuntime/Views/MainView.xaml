@@ -167,7 +167,7 @@
                     <TextBlock Grid.ColumnSpan="2" 
                                Text="{Binding Day, 
                                               Converter={StaticResource StringFormat},
-                                              ConverterParameter='{}{0:dddd}'}"
+                                              ConverterParameter='dddd'}"
                                Style="{StaticResource AppGroupHeaderTextBlockStyle}"
                                Margin="4,8,8,4" />
 
@@ -178,7 +178,7 @@
                                     Height="800"
                                     HorizontalAlignment="Stretch"
                                     Day="{Binding}"
-                                    Days="{Binding DataContext.Days, 
+                                    Days="{Binding DataContext.Days,
                                                    ElementName=Root}"
                                     PeriodTemplate="{StaticResource FullPeriodTemplate}"
                                     ContainerStyle="{StaticResource PeriodContainerStyle}"

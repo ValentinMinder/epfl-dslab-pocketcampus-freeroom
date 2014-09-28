@@ -24,7 +24,6 @@ namespace PocketCampus.Common.Controls
         }
         #endregion
 
-
         #region RetryCommand
         public ICommand RetryCommand
         {
@@ -33,7 +32,7 @@ namespace PocketCampus.Common.Controls
         }
 
         public static readonly DependencyProperty RetryCommandProperty =
-            DependencyProperty.Register( "RetryCommand", typeof( ICommand ), typeof( DataStatusDisplay ), new PropertyMetadata( null ) );
+            DependencyProperty.Register( "RetryCommand", typeof( ICommand ), typeof( CacheStatusDisplay ), new PropertyMetadata( null ) );
         #endregion
 
 

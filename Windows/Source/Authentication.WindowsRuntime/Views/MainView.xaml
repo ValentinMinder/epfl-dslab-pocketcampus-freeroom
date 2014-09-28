@@ -1,7 +1,7 @@
 ﻿<!-- Copyright (c) PocketCampus.Org 2014
      See LICENSE file for more details
      File author: Solal Pirelli -->
-    
+
 <cc:PageBase x:Class="PocketCampus.Authentication.Views.MainView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -11,7 +11,7 @@
     <cc:PageBase.Resources>
         <ResourceDictionary Source="../Resources.xaml" />
     </cc:PageBase.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -74,13 +74,14 @@
                                       Converter={StaticResource EnumToString}}"
                        Style="{StaticResource AppCenterTextBlockStyle}"
                        VerticalAlignment="Bottom" />
-            
-            <ProgressBar Grid.Row="1"
-                         Visibility="{Binding AuthenticationStatus, 
-                                              Converter={StaticResource EnumToVisibility}, 
-                                              ConverterParameter=Authenticating}"
-                         IsIndeterminate="True"
-                         VerticalAlignment="Top" />
+
+            <cc:Switch Grid.Row="1"
+                       Value="{Binding AuthenticationStatus}">
+                <cc:SwitchCase Values="Authenticating">
+                    <ProgressBar IsIndeterminate="True"
+                                 VerticalAlignment="Top" />
+                </cc:SwitchCase>
+            </cc:Switch>
         </Grid>
 
         <!-- "Log in" button -->
