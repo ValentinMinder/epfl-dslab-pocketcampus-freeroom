@@ -8,24 +8,14 @@ using ThinMvvm;
 
 namespace PocketCampus.Transport.Services
 {
-    /// <summary>
-    /// Plugin-specific settings.
-    /// </summary>
     public sealed class PluginSettings : SettingsBase<PluginSettings>, IPluginSettings
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether to sort the stations
-        /// according to their distance from the user.
-        /// </summary>
         public bool SortByPosition
         {
             get { return Get<bool>(); }
             set { Set( value ); }
         }
 
-        /// <summary>
-        /// Gets or sets the stations.
-        /// </summary>
         public ObservableCollection<Station> Stations
         {
             get { return Get<ObservableCollection<Station>>(); }
@@ -33,15 +23,9 @@ namespace PocketCampus.Transport.Services
         }
 
 
-        /// <summary>
-        /// Creates new PluginSettings.
-        /// </summary>
         public PluginSettings( ISettingsStorage settings ) : base( settings ) { }
 
 
-        /// <summary>
-        /// Gets the settings default values.
-        /// </summary>
         protected override SettingsDefaultValues GetDefaultValues()
         {
             return new SettingsDefaultValues
@@ -50,4 +34,5 @@ namespace PocketCampus.Transport.Services
                 { x => x.Stations, () => new ObservableCollection<Station>() }
             };
         }
-    }}
+    }
+}

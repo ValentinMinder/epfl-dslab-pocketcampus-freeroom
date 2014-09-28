@@ -25,8 +25,8 @@ namespace PocketCampus.Transport.ViewModels.Design
             Main = new MainViewModel( new DesignTransportService(), new DesignPluginSettings(), new DesignNavigationService(), new DesignLocationService() );
             Settings = new SettingsViewModel( new DesignPluginSettings() );
 
-            AddStation.OnNavigatedToAsync();
-            Main.OnNavigatedToAsync();
+            AddStation.OnNavigatedTo();
+            Main.OnNavigatedTo();
             Settings.OnNavigatedTo();
         }
 #endif

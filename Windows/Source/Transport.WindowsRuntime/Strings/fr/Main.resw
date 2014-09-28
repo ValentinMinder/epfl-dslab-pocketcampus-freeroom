@@ -133,10 +133,6 @@
     <value>touchez un arrêt pour afficher plus d'infos</value>
     <comment>Sentence</comment>
   </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>actualiser</value>
-    <comment>Button label</comment>
-  </data>
   <data name="RemoveStation" xml:space="preserve">
     <value>supprimer</value>
     <comment>Menu item text</comment>

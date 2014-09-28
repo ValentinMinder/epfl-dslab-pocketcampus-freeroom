@@ -14,11 +14,7 @@ namespace PocketCampus.Transport.Services
 {
     public sealed class TransportService : ThriftServiceImplementation<ITransportService>, ITransportService
     {
-        public TransportService( IServerAccess access )
-            : base( access.CreateCommunication( "transport" ) )
-        {
-
-        }
+        public TransportService( IServerAccess access ) : base( access.CreateCommunication( "transport" ) ) { }
 
         public Task<StationSearchResponse> SearchStationsAsync( StationSearchRequest request, CancellationToken cancellationToken )
         {

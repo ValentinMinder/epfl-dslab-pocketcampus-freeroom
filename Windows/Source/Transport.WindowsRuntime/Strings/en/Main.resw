@@ -133,10 +133,6 @@
     <value>tap stations to see detailed information</value>
     <comment>Sentence</comment>
   </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>refresh</value>
-    <comment>Button label</comment>
-  </data>
   <data name="RemoveStation" xml:space="preserve">
     <value>delete</value>
     <comment>Menu item text</comment>

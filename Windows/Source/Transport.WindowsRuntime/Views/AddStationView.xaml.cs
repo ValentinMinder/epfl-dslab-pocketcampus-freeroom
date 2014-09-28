@@ -1,8 +1,6 @@
-﻿using PocketCampus.Common.Controls;
-
-namespace PocketCampus.Transport.Views
+﻿namespace PocketCampus.Transport.Views
 {
-    public sealed partial class AddStationView : PageBase
+    public sealed partial class AddStationView
     {
         public AddStationView()
         {

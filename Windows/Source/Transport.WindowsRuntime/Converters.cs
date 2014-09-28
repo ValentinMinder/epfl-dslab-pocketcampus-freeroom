@@ -24,7 +24,7 @@ namespace PocketCampus.Transport
     }
 
     // TODO use DateTimeOffset everywhere (Thrift# included)
-    public sealed class DateToStringConverter : ValueConverter<DateTime, string>
+    public sealed class DateFormatConverter : ValueConverter<DateTime, string>
     {
         private const int NegativeThreshold = -5;
         private const int Threshold = 20;

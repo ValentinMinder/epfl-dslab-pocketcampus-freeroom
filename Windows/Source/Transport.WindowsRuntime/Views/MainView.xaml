@@ -1,13 +1,9 @@
 ﻿<cc:PageBase x:Class="PocketCampus.Transport.Views.MainView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:c="using:PocketCampus.Common"
              xmlns:cc="using:PocketCampus.Common.Controls"
              xmlns:my="using:PocketCampus.Transport"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             d:DataContext="{Binding Main, Source={StaticResource Design}}">
+             DesignDataContext="{Binding Main, Source={StaticResource Design}}">
     <cc:PageBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,16 +13,13 @@
             <!-- Converters -->
             <my:TakeNConverter x:Key="Take3Converter"
                                Count="3" />
-            <my:DateToStringConverter x:Key="DateToString"
-                                      Format="HH:mm" />
-            <my:ConnectionToLineSymbolConverter x:Key="ConnectionToLine" />
+            <my:DateFormatConverter x:Key="DateFormat"
+                                    Format="HH:mm" />
             
             <!-- Departure position template -->
             <DataTemplate x:Key="ConnectionDeparturePositionTemplate">
-                <TextBlock Grid.Column="1"
-                           Grid.Row="1"
-                           Style="{StaticResource AppSubtleTextBlockStyle}"
-                           Visibility="{Binding DeparturePosition, Converter={StaticResource NonNullToVisibility}}">
+                <TextBlock Style="{StaticResource AppSubtleTextBlockStyle}"
+                           Visibility="{Binding DeparturePosition, Converter={StaticResource NonDefaultToVisibility}}">
                         <Run Text="{CustomResource Main.DeparturePosition}" />
                         <Run Text="{Binding DeparturePosition}" />
                 </TextBlock>
@@ -58,14 +51,12 @@
                     <TextBlock Grid.Row="1"
                                Style="{StaticResource AppSubtleTextBlockStyle}">
                         <Run Text="{Binding DepartureTime,
-                                            Converter={StaticResource StringFormat}, 
-                                            ConverterParameter='{}{0:HH:mm}'}" />
+                                            Converter={StaticResource DateFormat}}" />
 
                         <Run Text="→" />
 
                         <Run Text="{Binding ArrivalTime,
-                                            Converter={StaticResource StringFormat}, 
-                                            ConverterParameter='{}{0:HH:mm}'}" />
+                                            Converter={StaticResource DateFormat}}" />
                     </TextBlock>
 
                     <!-- Departure position (if any) -->
@@ -91,7 +82,7 @@
 
                     <!-- Departure time -->
                     <TextBlock Text="{Binding DepartureTime, 
-                                              Converter={StaticResource DateToString}}"
+                                              Converter={StaticResource DateFormat}}"
                                Style="{StaticResource AppLargeTextBlockStyle}"
                                Margin="0,0,16,4" />
 
@@ -125,19 +116,16 @@
                         <!-- Departure time -->
                         <TextBlock Text="{CustomResource Main.TripDeparture}"
                                    Style="{StaticResource AppSubtleTextBlockStyle}" />
-                        <TextBlock Grid.Row="1"
-                                   Text="{Binding DepartureTime, 
-                                                  Converter={StaticResource DateToString}}"
+                        <TextBlock Text="{Binding DepartureTime, 
+                                                  Converter={StaticResource DateFormat}}"
                                    Style="{StaticResource AppLargeTextBlockStyle}"
                                    Margin="0,0,0,16" />
 
                         <!-- Arrival time -->
-                        <TextBlock Grid.Row="2"
-                                   Text="{CustomResource Main.TripArrival}"
+                        <TextBlock Text="{CustomResource Main.TripArrival}"
                                    Style="{StaticResource AppSubtleTextBlockStyle}" />
-                        <TextBlock Grid.Row="3"
-                                   Text="{Binding ArrivalTime, 
-                                                  Converter={StaticResource DateToString}}"
+                        <TextBlock Text="{Binding ArrivalTime, 
+                                                  Converter={StaticResource DateFormat}}"
                                    Style="{StaticResource AppLargeTextBlockStyle}" />
                     </StackPanel>
 
@@ -175,9 +163,10 @@
                                 </FlyoutBase.AttachedFlyout>-->
                             </cc:SimpleButton>
 
-                            <!-- Small loading and error indicator -->
-                            <!--<cc:LoadingAndError HorizontalAlignment="Left"
-                                                FontSize="{StaticResource TextStyleMediumFontSize}" />-->
+                            <!-- Small data status indicator -->
+                            <cc:DataStatusDisplay Data="{Binding DataStatus}"
+                                                  RetryCommand="{Binding RefreshCommand}"
+                                                  TextStyle="{StaticResource AppNormalTextBlockStyle}" />
                         </StackPanel>
                     </ToggleSwitch.Header>
 
@@ -215,8 +204,7 @@
         <!-- Station picker -->
         <Border Grid.Row="1"
                 Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
-            <ComboBox Grid.Column="1" 
-                      ItemsSource="{Binding Settings.Stations}"
+            <ComboBox ItemsSource="{Binding Settings.Stations}"
                       SelectedItem="{Binding SelectedStation, Mode=TwoWay}"
                       DisplayMemberPath="Name"
                       Header="{CustomResource Main.Departure}"
@@ -237,15 +225,16 @@
                   ItemTemplate="{StaticResource StationTripsTemplate}"
                   Margin="19,0,2,0" />
 
-        <!-- Loading & error -->
-        <!--<cc:LoadingAndError Grid.RowSpan="3"
-                            Grid.Row="1" />-->
+        <!-- Data status -->
+        <cc:DataStatusDisplay Grid.Row="1"
+                              Grid.RowSpan="3"
+                              Data="{Binding DataStatus}"
+                              RetryCommand="{Binding RefreshCommand}" />
     </Grid>
 
     <!-- App bar -->
     <cc:PageBase.BottomAppBar>
-        <CommandBar IsOpen="False"
-                    ClosedDisplayMode="Compact">
+        <CommandBar ClosedDisplayMode="Compact">
             <!-- "Add station" button -->
             <AppBarButton Command="{Binding AddStationCommand}"
                           Label="{CustomResource Main.AddStation}"
@@ -255,11 +244,6 @@
             <AppBarButton Command="{Binding ViewSettingsCommand}"
                           Label="{CustomResource Main.Settings}"
                           Icon="Setting" />
-
-            <!-- "Refresh" button -->
-            <AppBarButton Command="{Binding RefreshCommand}"
-                          Label="{CustomResource Main.Refresh}"
-                          Icon="Refresh" />
         </CommandBar>
     </cc:PageBase.BottomAppBar>
 </cc:PageBase>

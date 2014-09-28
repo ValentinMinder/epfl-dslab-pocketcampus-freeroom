@@ -9,9 +9,6 @@ using ThriftSharp;
 
 namespace PocketCampus.Transport.Services
 {
-    /// <summary>
-    /// The transport server service.
-    /// </summary>
     [ThriftService( "TransportService" )]
     public interface ITransportService
     {

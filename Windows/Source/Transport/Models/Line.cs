@@ -6,15 +6,9 @@ using ThriftSharp;
 
 namespace PocketCampus.Transport.Models
 {
-    /// <summary>
-    /// Transport line.
-    /// </summary>
     [ThriftStruct( "TransportLine" )]
     public sealed class Line
     {
-        /// <summary>
-        /// The line's name.
-        /// </summary>
         [ThriftField( 1, true, "name" )]
         public string Name { get; set; }
     }

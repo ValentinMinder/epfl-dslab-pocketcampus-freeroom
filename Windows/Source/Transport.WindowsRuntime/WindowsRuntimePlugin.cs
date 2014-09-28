@@ -15,15 +15,14 @@ namespace PocketCampus.Transport
             get { return ResourceLoader.GetForViewIndependentUse( "PocketCampus.Transport.WindowsRuntime/Resources" ).GetString( "PluginName" ); }
         }
 
-        public string Icon { get { return null; } }
-        public object OLD_Icon
+        public string Icon
         {
             get
             {
-                return new ResourceDictionary
+                return (string) new ResourceDictionary
                 {
                     Source = new Uri( "ms-appx:///PocketCampus.Transport.WindowsRuntime/Icons.xaml", UriKind.Absolute )
-                }["TransportIcon"];
+                }["PluginIcon"];
             }
         }
 
