@@ -6,14 +6,8 @@ using ThinMvvm;
 
 namespace PocketCampus.Map.Services
 {
-    /// <summary>
-    /// Settings for the map plugin.
-    /// </summary>
     public sealed class PluginSettings : SettingsBase<PluginSettings>, IPluginSettings
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether the map should display and use the user's position.
-        /// </summary>
         public bool UseGeolocation
         {
             get { return Get<bool>(); }
@@ -21,15 +15,9 @@ namespace PocketCampus.Map.Services
         }
 
 
-        /// <summary>
-        /// Creates a new PluginSettings.
-        /// </summary>
         public PluginSettings( ISettingsStorage settings ) : base( settings ) { }
 
 
-        /// <summary>
-        /// Gets the default values of the settings.
-        /// </summary>
         protected override SettingsDefaultValues GetDefaultValues()
         {
             return new SettingsDefaultValues

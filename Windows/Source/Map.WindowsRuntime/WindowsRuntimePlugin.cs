@@ -15,15 +15,14 @@ namespace PocketCampus.Map
             get { return ResourceLoader.GetForViewIndependentUse( "PocketCampus.Map.WindowsRuntime/Resources" ).GetString( "PluginName" ); }
         }
 
-        public string Icon { get { return null; } }
-        public object OLD_Icon
+        public string Icon
         {
             get
             {
-                return new ResourceDictionary
+                return (string) new ResourceDictionary
                 {
                     Source = new Uri( "ms-appx:///PocketCampus.Map.WindowsRuntime/Icons.xaml", UriKind.Absolute )
-                }["MapIcon"];
+                }["PluginIcon"];
             }
         }
 

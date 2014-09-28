@@ -1,8 +1,6 @@
-﻿using PocketCampus.Common.Controls;
-
-namespace PocketCampus.Map.Views
+﻿namespace PocketCampus.Map.Views
 {
-    public sealed partial class SettingsView : PageBase
+    public sealed partial class SettingsView
     {
         public SettingsView()
         {

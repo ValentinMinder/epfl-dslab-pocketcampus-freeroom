@@ -12,9 +12,6 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.Map.ViewModels
 {
-    /// <summary>
-    /// Provides search functionality for the EPFL map.
-    /// </summary>
     public sealed class SearchProvider : DataViewModel<NoParameter>
     {
         private const string IgnoredNamePrefix = "Auditoire ";
@@ -23,18 +20,14 @@ namespace PocketCampus.Map.ViewModels
 
         private MapItem[] _searchResults;
 
-        /// <summary>
-        /// Gets the search results.
-        /// </summary>
+
         public MapItem[] SearchResults
         {
             get { return _searchResults; }
             private set { SetProperty( ref _searchResults, value ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to search.
-        /// </summary>
+
         [LogId( "Search" )]
         [LogParameter( "$Param" )]
         public AsyncCommand<string> SearchCommand
@@ -43,9 +36,6 @@ namespace PocketCampus.Map.ViewModels
         }
 
 
-        /// <summary>
-        /// Creates a new SearchProvider.
-        /// </summary>
         public SearchProvider( IMapService mapService )
         {
             _mapService = mapService;
@@ -53,9 +43,6 @@ namespace PocketCampus.Map.ViewModels
         }
 
 
-        /// <summary>
-        /// Executes the specified search request.
-        /// </summary>
         public async void ExecuteRequest( MapSearchRequest request )
         {
             if ( request.Query != null )
@@ -68,9 +55,7 @@ namespace PocketCampus.Map.ViewModels
             }
         }
 
-        /// <summary>
-        /// Searches for rooms, buildings and stuff.
-        /// </summary>
+
         private Task Search( string query )
         {
             return TryExecuteAsync( async token =>
@@ -85,17 +70,11 @@ namespace PocketCampus.Map.ViewModels
             } );
         }
 
-        /// <summary>
-        /// Indicates whether the two specified names are considered to be equal.
-        /// </summary>
         private static bool AreNamesEqual( string name1, string name2 )
         {
-            return Enumerable.SequenceEqual( NormalizeName( name1 ), NormalizeName( name2 ) );
+            return NormalizeName( name1 ).SequenceEqual( NormalizeName( name2 ) );
         }
 
-        /// <summary>
-        /// Normalizes the specified name.
-        /// </summary>
         private static IEnumerable<char> NormalizeName( string name )
         {
             return name.Replace( IgnoredNamePrefix, "" )

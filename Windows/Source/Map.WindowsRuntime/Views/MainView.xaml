@@ -3,21 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="using:Microsoft.Xaml.Interactivity"
              xmlns:map="using:Windows.UI.Xaml.Controls.Maps"
-             xmlns:c="using:PocketCampus.Common"
              xmlns:cc="using:PocketCampus.Common.Controls"
              xmlns:my="using:PocketCampus.Map"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             d:DataContext="{Binding Main, Source={StaticResource Design}}">
+             DesignDataContext="{Binding Main, Source={StaticResource Design}}">
     <!-- TODO geolocationstatus in statusbar -->
     <cc:PageBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
-            <my:GeoPositionToGeopointConverter x:Key="PositionToWinRT" />
             
             <DataTemplate x:Key="MapItemTemplate">
                 <Grid>
@@ -63,11 +57,9 @@
                           Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}"
                           Margin="19,0" />
             
-            <!--<cc:LoadingAndError DataContext="{Binding SearchProvider}"
-                                FontSize="{StaticResource TextStyleLargeFontSize}"
-                                Background="Transparent"
-                                HorizontalContentAlignment="Left"
-                                Margin="19,4" />-->
+            <cc:DataStatusDisplay Data="{Binding SearchProvider.DataStatus}"
+                                  TextStyle="{StaticResource AppLargeTextBlockStyle}"
+                                  Margin="19,4"/>
         </StackPanel>
 
         <map:MapControl x:Name="Map"
@@ -117,17 +109,18 @@
     </Grid>
     
     <cc:PageBase.BottomAppBar>
-        <CommandBar IsOpen="False"
-                    ClosedDisplayMode="Minimal">
+        <CommandBar ClosedDisplayMode="Minimal">
             <CommandBar.PrimaryCommands>
                 <AppBarButton Command="{Binding CenterOnCampusCommand}"
                               Icon="Home"
                               Label="{CustomResource Main.CenterOnCampus}" />
+                
                 <AppBarToggleButton Command="{Binding ToggleCenterOnUserCommand}"
                                     IsChecked="{Binding IsCenteredOnUser,
                                                         Mode=OneWay}"
                                     Icon="MapPin"
                                     Label="{CustomResource Main.CenterOnUser}" />
+                
                 <AppBarButton Command="{Binding ViewSettingsCommand}"
                               Icon="Setting"
                               Label="{CustomResource Main.Settings}" />

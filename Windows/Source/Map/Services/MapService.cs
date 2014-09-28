@@ -14,11 +14,7 @@ namespace PocketCampus.Map.Services
 {
     public sealed class MapService : ThriftServiceImplementation<IMapService>, IMapService
     {
-        public MapService( IServerAccess access )
-            : base( access.CreateCommunication( "map" ) )
-        {
-
-        }
+        public MapService( IServerAccess access ) : base( access.CreateCommunication( "map" ) ) { }
 
         public Task<MapItem[]> SearchAsync( string query, CancellationToken cancellationToken )
         {
