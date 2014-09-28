@@ -15,15 +15,14 @@ namespace PocketCampus.Satellite
             get { return ResourceLoader.GetForViewIndependentUse( "PocketCampus.Satellite.WindowsRuntime/Resources" ).GetString( "PluginName" ); }
         }
 
-        public string Icon { get { return null; } }
-        public object OLD_Icon
+        public string Icon
         {
             get
             {
-                return new ResourceDictionary
+                return (string) new ResourceDictionary
                 {
                     Source = new Uri( "ms-appx:///PocketCampus.Satellite.WindowsRuntime/Icons.xaml", UriKind.Absolute )
-                }["SatelliteIcon"];
+                }["PluginIcon"];
             }
         }
 

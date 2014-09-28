@@ -1,26 +1,13 @@
 ﻿<cc:PageBase x:Class="PocketCampus.Satellite.Views.MainView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:c="using:PocketCampus.Common"
              xmlns:cc="using:PocketCampus.Common.Controls"
-             xmlns:my="using:PocketCampus.Satellite"
-             xmlns:myDesign="using:PocketCampus.Satellite.ViewModels.Design"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             d:DataContext="{Binding Main, Source={StaticResource Design}}">
+             DesignDataContext="{Binding Main, Source={StaticResource Design}}">
     <cc:PageBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ms-appx:///PocketCampus.Common.WindowsRuntime/Resources.xaml" />
+                <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <myDesign:Design x:Key="Design" />
-
-            <c:StringFormatConverter x:Key="StringFormat" />
-            <c:MoneyFormatConverter x:Key="MoneyFormat" />
-            <c:EnumToStringConverter x:Key="EnumToString" />
-            <my:BeerMenuPartToGroupConverter x:Key="MenuPartToGroup" />
 
             <DataTemplate x:Key="BeerTemplate">
                 <Grid Margin="0,0,0,24">
@@ -46,18 +33,19 @@
                     <TextBlock Grid.Row="1"
                                Style="{StaticResource AppSubtleTextBlockStyle}">
                         <Run Text="{Binding BreweryName}" />
-                        <Run Text="{Binding CountryName, 
-                                            Converter={StaticResource StringFormat}, 
-                                            ConverterParameter='({0})'}" />
+                        <!-- HACK: No line breaks, otherwise spaces are inserted in the textblock. -->
+                        <Run Text="(" /><Run Text="{Binding CountryName}" /><Run Text=")" />
                     </TextBlock>
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
-                               Text="{Binding AlcoholRate, 
-                                              Converter={StaticResource StringFormat}, 
-                                              ConverterParameter='{}{0:0.0}°'}"
                                Style="{StaticResource AppSubtleTextBlockStyle}"
-                               HorizontalAlignment="Right" />
+                               HorizontalAlignment="Right">
+                        <!-- HACK: Same as above; no line breaks to avoid spaces. -->
+                        <Run Text="{Binding AlcoholRate, 
+                                            Converter={StaticResource StringFormat}, 
+                                            ConverterParameter='0.0'}"/><Run Text="°" />
+                    </TextBlock>
                 </Grid>
             </DataTemplate>
 
@@ -65,14 +53,16 @@
                 <cc:GroupedListView ItemTemplate="{StaticResource BeerTemplate}"
                                         GroupKeyPath="Key">
                     <cc:GroupedListView.ItemsViewSource>
-                        <CollectionViewSource Source="{Binding Value, Converter={StaticResource MenuPartToGroup}}"
+                        <CollectionViewSource Source="{Binding Value, 
+                                                               Converter={StaticResource MenuPartToGroup}}"
                                               IsSourceGrouped="True" />
                     </cc:GroupedListView.ItemsViewSource>
                 </cc:GroupedListView>
             </DataTemplate>
 
             <DataTemplate x:Key="MenuPartHeaderTemplate">
-                <TextBlock Text="{Binding Key, Converter={StaticResource EnumToString}}"
+                <TextBlock Text="{Binding Key, 
+                                          Converter={StaticResource EnumToString}}"
                            OpticalMarginAlignment="TrimSideBearings" />
             </DataTemplate>
         </ResourceDictionary>
@@ -81,6 +71,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -88,23 +79,19 @@
             <TextBlock Text="{CustomResource Main.ViewTitle}"
                        Style="{StaticResource AppHeaderTextBlockStyle}" />
         </Border>
+        
+        <cc:CacheStatusDisplay Grid.Row="1"
+                               Status="{Binding CacheStatus}"
+                               RetryCommand="{Binding RefreshCommand}" />
 
-        <Pivot Grid.Row="1"
+        <Pivot Grid.Row="2"
                ItemsSource="{Binding BeerMenu}"
                ItemTemplate="{StaticResource MenuPartTemplate}"
                HeaderTemplate="{StaticResource MenuPartHeaderTemplate}" />
 
-        <!--<cc:LoadingAndError Grid.Row="1" />-->
+        <cc:DataStatusDisplay Grid.Row="2"
+                              Data="{Binding DataStatus}"
+                              Cache="{Binding CacheStatus}"
+                              RetryCommand="{Binding RefreshCommand}" />
     </Grid>
-
-    <cc:PageBase.BottomAppBar>
-        <CommandBar IsOpen="False"
-                    ClosedDisplayMode="Minimal">
-            <CommandBar.PrimaryCommands>
-                <AppBarButton Label="{CustomResource Main.Refresh}"
-                              Command="{Binding RefreshCommand}"
-                              Icon="Refresh" />
-            </CommandBar.PrimaryCommands>
-        </CommandBar>
-    </cc:PageBase.BottomAppBar>
 </cc:PageBase>

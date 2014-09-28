@@ -7,21 +7,12 @@ using ThriftSharp;
 
 namespace PocketCampus.Satellite.Models
 {
-    /// <summary>
-    /// Part of a beer menu.
-    /// </summary>
     [ThriftStruct( "SatelliteMenuPart" )]
     public sealed class BeerMenuPart
     {
-        /// <summary>
-        /// The beers of the month (if there are any).
-        /// </summary>
         [ThriftField( 1, true, "beersOfTheMonth" )]
         public Beer[] BeersOfTheMonth { get; set; }
 
-        /// <summary>
-        /// The beers, grouped by their type.
-        /// </summary>
         [ThriftField( 2, true, "beers" )]
         public Dictionary<string, Beer[]> Beers { get; set; }
     }

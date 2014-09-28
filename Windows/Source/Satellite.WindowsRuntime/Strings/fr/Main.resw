@@ -121,10 +121,6 @@
     <value>Du mois</value>
     <comment>Group header</comment>
   </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>actualiser</value>
-    <comment>Button label</comment>
-  </data>
   <data name="ViewTitle" xml:space="preserve">
     <value>SATELLITE</value>
     <comment>Title</comment>

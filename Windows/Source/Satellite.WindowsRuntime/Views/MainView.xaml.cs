@@ -1,8 +1,6 @@
-﻿using PocketCampus.Common.Controls;
-
-namespace PocketCampus.Satellite.Views
+﻿namespace PocketCampus.Satellite.Views
 {
-    public sealed partial class MainView : PageBase
+    public sealed partial class MainView
     {
         public MainView()
         {
