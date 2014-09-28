@@ -22,14 +22,13 @@ namespace PocketCampus.Main.ViewModels.Design
 
         public Design()
         {
-            About = new AboutViewModel( new DesignBrowserService(), new DesignEmailService(), new DesignRatingService() );
-            Main = new MainViewModel( new DesignNavigationService(), new DesignServerAccess(), new DesignPluginLoader(),
-                                      new DesignMainSettings(), new DesignTileService() );
+            About = new AboutViewModel( new DesignBrowserService(), new DesignEmailService(), new DesignAppRatingService() );
+            Main = new MainViewModel( new DesignNavigationService(), new DesignPluginLoader(), new DesignMainSettings(), new DesignTileService() );
             Settings = new SettingsViewModel( new DesignMainSettings(), new DesignAuthenticator(), new DesignNavigationService(),
                                               new DesignAuthenticationService(), new DesignCredentialsStorage(), new DesignTileService() );
 
             About.OnNavigatedTo();
-            Main.OnNavigatedToAsync();
+            Main.OnNavigatedTo();
             Settings.OnNavigatedTo();
         }
 #endif

@@ -7,19 +7,10 @@ using PocketCampus.Common.Services;
 
 namespace PocketCampus.Main.Services
 {
-    /// <summary>
-    /// Contains application-level settings.
-    /// </summary>
     public interface IMainSettings : IServerSettings
     {
-        /// <summary>
-        /// Gets or sets the saved sessions.
-        /// </summary>
         Dictionary<string, string> Sessions { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the app should use a colored tile, as opposed to a white one.
-        /// </summary>
         bool UseColoredTile { get; set; }
     }
 }

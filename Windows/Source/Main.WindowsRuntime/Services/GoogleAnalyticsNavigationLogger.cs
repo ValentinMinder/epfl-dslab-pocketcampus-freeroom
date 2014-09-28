@@ -5,14 +5,12 @@
 #if !DEBUG
 using GoogleAnalytics;
 #endif
+using System.Diagnostics;
 using ThinMvvm;
 using ThinMvvm.Logging;
 
 namespace PocketCampus.Main.Services
 {
-    /// <summary>
-    /// Logs navigations with Google Analytics.
-    /// </summary>
     public sealed class GoogleAnalyticsLogger : Logger
     {
         private const string EventCategory = "UserAction";
@@ -23,7 +21,9 @@ namespace PocketCampus.Main.Services
 
         protected override void LogAction( string viewModelId, LoggedSpecialAction action )
         {
-#if !DEBUG
+#if DEBUG
+            Debug.WriteLine( "Action on '{0}': {1}", viewModelId, action );
+#else
             switch ( action )
             {
                 case LoggedSpecialAction.ForwardsNavigation:
@@ -40,7 +40,9 @@ namespace PocketCampus.Main.Services
 
         protected override void LogCommand( string viewModelId, string eventId, string label )
         {
-#if !DEBUG
+#if DEBUG
+            Debug.WriteLine( "Command on '{0}': '{1}' with label '{2}'", viewModelId, eventId, label );
+#else
             EasyTracker.GetTracker().SendEvent( EventCategory, viewModelId + "-" + eventId, label, 0 );
 #endif
         }

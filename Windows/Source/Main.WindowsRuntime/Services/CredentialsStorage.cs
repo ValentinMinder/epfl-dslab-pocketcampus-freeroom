@@ -10,14 +10,9 @@ namespace PocketCampus.Main.Services
 
         private readonly PasswordVault _vault = new PasswordVault();
 
-        /// <summary>
-        /// Gets the user name.
-        /// </summary>
+
         public string UserName { get; private set; }
 
-        /// <summary>
-        /// Gets the password.
-        /// </summary>
         public string Password { get; private set; }
 
 

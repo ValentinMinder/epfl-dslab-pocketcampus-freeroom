@@ -6,7 +6,6 @@
 
 #if DEBUG
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using PocketCampus.Common;
 using ThinMvvm;
 
@@ -14,9 +13,9 @@ namespace PocketCampus.Main.Services.Design
 {
     public sealed class DesignPluginLoader : IPluginLoader
     {
-        public Task<IPlugin[]> GetPluginsAsync()
+        public IPlugin[] GetPlugins()
         {
-            return Task.FromResult( new IPlugin[]
+            return new IPlugin[]
             {
                 new DesignPlugin( "Camipro" ),
                 new DesignPlugin( "Directory" ),
@@ -28,7 +27,7 @@ namespace PocketCampus.Main.Services.Design
                 new DesignPlugin( "News" ),
                 new DesignPlugin( "Satellite" ),
                 new DesignPlugin( "Transport" )
-            } );
+            };
         }
 
         private sealed class DesignPlugin : IPlugin

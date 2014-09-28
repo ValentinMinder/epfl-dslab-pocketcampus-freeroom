@@ -5,11 +5,8 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using PocketCampus.Authentication;
 using PocketCampus.Common;
-using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
 using ThinMvvm;
 using ThinMvvm.Logging;
@@ -17,14 +14,10 @@ using AuthenticationViewModel = PocketCampus.Authentication.ViewModels.MainViewM
 
 namespace PocketCampus.Main.ViewModels
 {
-    /// <summary>
-    /// The main ViewModel.
-    /// </summary>
     [LogId( "/dashboard" )]
-    public sealed class MainViewModel : DataViewModel<NoParameter>
+    public sealed class MainViewModel : ViewModel<NoParameter>
     {
         private readonly INavigationService _navigationService;
-        private readonly IServerAccess _serverAccess;
         private readonly IPluginLoader _pluginLoader;
         private readonly IMainSettings _settings;
         private readonly ITileService _tileCreator;
@@ -32,36 +25,25 @@ namespace PocketCampus.Main.ViewModels
         private IPlugin[] _plugins;
 
 
-        /// <summary>
-        /// Gets the loaded plugins.
-        /// </summary>
         public IPlugin[] Plugins
         {
             get { return _plugins; }
             private set { SetProperty( ref _plugins, value ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to view the about page.
-        /// </summary>
+
         [LogId( "OpenAbout" )]
         public Command OpenAboutPageCommand
         {
             get { return this.GetCommand( _navigationService.NavigateTo<AboutViewModel> ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to view the settings page.
-        /// </summary>
         [LogId( "OpenSettings" )]
         public Command OpenSettingsPageCommand
         {
             get { return this.GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to create a plugin "tile" on the user's home screen.
-        /// </summary>
         [LogId( "CreatePluginTile" )]
         [LogParameter( "$Param.Id" )]
         public Command<IPlugin> CreatePluginTileCommand
@@ -69,9 +51,6 @@ namespace PocketCampus.Main.ViewModels
             get { return this.GetCommand<IPlugin>( p => _tileCreator.CreateTile( p ) ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to open a plugin.
-        /// </summary>
         [LogId( "OpenPlugin" )]
         [LogParameter( "$Param.Id" )]
         public Command<IPlugin> OpenPluginCommand
@@ -80,44 +59,32 @@ namespace PocketCampus.Main.ViewModels
         }
 
 
-        /// <summary>
-        /// Creates a new MainViewModel.
-        /// </summary>
-        public MainViewModel( INavigationService navigationService, IServerAccess serverAccess,
-                              IPluginLoader pluginLoader, IMainSettings settings, ITileService tileCreator )
+        public MainViewModel( INavigationService navigationService, IPluginLoader pluginLoader, IMainSettings settings, ITileService tileCreator )
         {
             _navigationService = navigationService;
             _pluginLoader = pluginLoader;
-            _serverAccess = serverAccess;
             _settings = settings;
             _tileCreator = tileCreator;
         }
 
 
-        /// <summary>
-        /// Loads plugins.
-        /// </summary>
-        protected override async Task RefreshAsync( bool force, CancellationToken token )
+        public override void OnNavigatedTo()
         {
             if ( Plugins == null )
             {
-                Plugins = ( await _pluginLoader.GetPluginsAsync() ).Where( p => p.IsVisible ).ToArray();
+                Plugins = _pluginLoader.GetPlugins().Where( p => p.IsVisible ).ToArray();
                 FilterPlugins();
             }
         }
 
-        /// <summary>
-        /// Filters plugins to only display the ones that are enabled.
-        /// </summary>
+
         [Conditional( "RELEASE" )]
         private void FilterPlugins()
         {
             Plugins = Plugins.Where( p => _settings.Configuration.EnabledPlugins.Any( id => id.Equals( p.Id, StringComparison.OrdinalIgnoreCase ) ) ).ToArray();
         }
 
-        /// <summary>
-        /// Opens a plugin.
-        /// </summary>
+
         private void OpenPlugin( IPlugin plugin )
         {
             if ( !plugin.RequiresAuthentication || _settings.SessionStatus != SessionStatus.NotLoggedIn )

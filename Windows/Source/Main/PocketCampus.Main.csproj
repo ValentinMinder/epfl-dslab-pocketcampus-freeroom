@@ -50,9 +50,9 @@
     <Compile Include="Services\IMainSettings.cs" />
     <Compile Include="Services\MainSettings.cs" />
     <Compile Include="Services\Design\DesignPluginLoader.cs" />
-    <Compile Include="Services\Design\DesignRatingService.cs" />
+    <Compile Include="Services\Design\DesignAppRatingService.cs" />
     <Compile Include="Services\Design\DesignTileService.cs" />
-    <Compile Include="Services\IRatingService.cs" />
+    <Compile Include="Services\IAppRatingService.cs" />
     <Compile Include="Services\IPluginLoader.cs" />
     <Compile Include="Services\ITileService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -2,54 +2,32 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using PocketCampus.Common;
-using Windows.ApplicationModel;
 
 namespace PocketCampus.Main.Services
 {
     public sealed class PluginLoader : IPluginLoader
     {
-        private const string WindowsRuntimePluginAssembliesSuffix = ".WindowsRuntime.dll";
-        private static readonly TypeInfo WindowsRuntimePluginTypeInfo = typeof( IWindowsRuntimePlugin ).GetTypeInfo();
-
-
-        private IPlugin[] _plugins;
-
-
-        public async Task<IPlugin[]> GetPluginsAsync()
+        // PERFORMANCE: Referencing all plugin assemblies from Main is required by WinRT anyway, and reflecting over loaded assemblies is too slow
+        private readonly IPlugin[] _plugins =
         {
-            if ( _plugins == null )
-            {
-                var plugins = new List<IPlugin>();
-                foreach ( var file in await Package.Current.InstalledLocation.GetFilesAsync() )
-                {
-                    if ( file.Name.EndsWith( WindowsRuntimePluginAssembliesSuffix ) )
-                    {
-                        var assemblyName = new AssemblyName( file.DisplayName );
-                        var assembly = Assembly.Load( assemblyName );
-                        var pluginType = assembly.ExportedTypes.FirstOrDefault( IsWindowsRuntimePlugin );
-                        if ( pluginType != null )
-                        {
-                            var plugin = (IWindowsRuntimePlugin) Activator.CreateInstance( pluginType );
-                            plugins.Add( plugin );
-                        }
-                    }
-                }
+            new Authentication.WindowsRuntimePlugin(),
+            new Camipro.WindowsRuntimePlugin(),
+            new Directory.WindowsRuntimePlugin(),
+            new Events.WindowsRuntimePlugin(),
+            new Food.WindowsRuntimePlugin(),
+            new IsAcademia.WindowsRuntimePlugin(),
+            new Map.WindowsRuntimePlugin(),
+            new Moodle.WindowsRuntimePlugin(),
+            new News.WindowsRuntimePlugin(),
+            new Satellite.WindowsRuntimePlugin(),
+            new Transport.WindowsRuntimePlugin()
+        };
 
-                _plugins = plugins.ToArray();
-            }
+
+        public IPlugin[] GetPlugins()
+        {
             return _plugins;
-        }
-
-        private static bool IsWindowsRuntimePlugin( Type type )
-        {
-            var typeInfo = type.GetTypeInfo();
-            return WindowsRuntimePluginTypeInfo.IsAssignableFrom( typeInfo ) && !typeInfo.IsInterface;
         }
     }
 }

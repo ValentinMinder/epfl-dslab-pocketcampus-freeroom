@@ -16,9 +16,6 @@ using AuthenticationViewModel = PocketCampus.Authentication.ViewModels.MainViewM
 
 namespace PocketCampus.Main.ViewModels
 {
-    /// <summary>
-    /// The settings ViewModel.
-    /// </summary>
     [LogId( "/dashboard/settings" )]
     public sealed class SettingsViewModel : ViewModel<NoParameter>
     {
@@ -26,28 +23,18 @@ namespace PocketCampus.Main.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IAuthenticationService _authenticationService;
 
-        /// <summary>
-        /// Gets the settings.
-        /// </summary>
+
         public IMainSettings Settings { get; private set; }
 
-        /// <summary>
-        /// Gets the credentials.
-        /// </summary>
         public ICredentialsStorage Credentials { get; private set; }
 
-        /// <summary>
-        /// Gets the command executed to log on.
-        /// </summary>
+
         [LogId( "LogIn" )]
         public Command LogInCommand
         {
             get { return this.GetCommand( () => _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( new AuthenticationRequest() ) ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to log off.
-        /// </summary>
         [LogId( "LogOff" )]
         public AsyncCommand LogOutCommand
         {
@@ -60,9 +47,7 @@ namespace PocketCampus.Main.ViewModels
             get { return this.GetAsyncCommand( DestroySessionsAsync ); }
         }
 
-        /// <summary>
-        /// Creates a new SettingsViewModel.
-        /// </summary>
+
         public SettingsViewModel( IMainSettings settings, IAuthenticator authenticator, INavigationService navigationService,
                                   IAuthenticationService authenticationService, ICredentialsStorage credentials, ITileService tileService )
         {
@@ -72,16 +57,10 @@ namespace PocketCampus.Main.ViewModels
             _navigationService = navigationService;
             _authenticationService = authenticationService;
 
-            Settings.ListenToProperty( x => x.UseColoredTile, () =>
-            {
-                tileService.SetTileColoring( Settings.UseColoredTile );
-            } );
+            Settings.ListenToProperty( x => x.UseColoredTile, () => tileService.SetTileColoring( Settings.UseColoredTile ) );
         }
 
 
-        /// <summary>
-        /// Logs out.
-        /// </summary>
         private async Task LogOutAsync()
         {
             Settings.SessionStatus = SessionStatus.NotLoggedIn;
@@ -91,9 +70,6 @@ namespace PocketCampus.Main.ViewModels
             await _authenticator.LogOffAsync();
         }
 
-        /// <summary>
-        /// Destroys all user sessions from the server and logs out.
-        /// </summary>
         private async Task DestroySessionsAsync()
         {
             var request = new LogoutRequest { Session = Settings.Session };

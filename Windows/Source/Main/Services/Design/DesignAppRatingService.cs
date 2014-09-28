@@ -7,7 +7,7 @@
 #if DEBUG
 namespace PocketCampus.Main.Services.Design
 {
-    public sealed class DesignRatingService : IRatingService
+    public sealed class DesignAppRatingService : IAppRatingService
     {
         public void RequestRating() { }
     }

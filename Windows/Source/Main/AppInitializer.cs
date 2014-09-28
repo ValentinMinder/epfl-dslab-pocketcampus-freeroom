@@ -5,7 +5,6 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using PocketCampus.Authentication.Services;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
 using ThinMvvm;
@@ -22,7 +21,7 @@ namespace PocketCampus.Main
             var settings = Container.Bind<IMainSettings, MainSettings>();
             var serverAccess = Container.Bind<IServerAccess, ServerAccess>();
 
-            foreach ( var plugin in await pluginLoader.GetPluginsAsync() )
+            foreach ( var plugin in pluginLoader.GetPlugins() )
             {
                 plugin.Initialize( navigationService );
             }

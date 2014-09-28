@@ -18,9 +18,6 @@ using ThinMvvm;
 
 namespace PocketCampus.Main.Services
 {
-    /// <summary>
-    /// Handles requests that require two-step authentication.
-    /// </summary>
     public sealed class SecureRequestHandler : ISecureRequestHandler
     {
         private readonly IMainSettings _mainSettings;
@@ -30,9 +27,6 @@ namespace PocketCampus.Main.Services
         private readonly IAuthenticationService _authenticationService;
 
 
-        /// <summary>
-        /// Creates a new SecureRequestHandler.
-        /// </summary>
         public SecureRequestHandler( IMainSettings mainSettings, ICredentialsStorage credentials, INavigationService navigationService,
                                      IAuthenticator authenticator, IAuthenticationService authenticationService )
         {
@@ -44,9 +38,7 @@ namespace PocketCampus.Main.Services
         }
 
 
-        /// <summary>
-        /// Asynchronously executes the specified request.
-        /// </summary>
+        // New HTTP header-based auth.
         public async Task<T> ExecuteAsync<T>( Func<Task<T>> attempt )
             where T : class
         {
@@ -79,9 +71,7 @@ namespace PocketCampus.Main.Services
             return await attempt();
         }
 
-        /// <summary>
-        /// Asynchronously executes the specified request, with the specified authenticator, for the specified ViewModel type.
-        /// </summary>
+        // Deprecated two-step auth.
         public async Task ExecuteAsync<TViewModel, TToken, TSession>( ITwoStepAuthenticator<TToken, TSession> authenticator, Func<TSession, Task> attempt )
             where TViewModel : ViewModel<NoParameter>
             where TToken : IAuthenticationToken
@@ -107,10 +97,7 @@ namespace PocketCampus.Main.Services
             await attempt( session );
         }
 
-        /// <summary>
-        /// Requests new credentials from the user.
-        /// If authentication is successful, comes back to a new instance of the ViewModel.
-        /// </summary>
+
         public void Authenticate<TViewModel>()
             where TViewModel : ViewModel<NoParameter>
         {
@@ -124,9 +111,6 @@ namespace PocketCampus.Main.Services
         }
 
 
-        /// <summary>
-        /// Loads a session of the specified type for the specified ViewModel type.
-        /// </summary>
         private TSession LoadSession<TSession>( Type typeKey )
             where TSession : class
         {
@@ -139,9 +123,6 @@ namespace PocketCampus.Main.Services
             return null;
         }
 
-        /// <summary>
-        /// Saves the specified session for the specified ViewModel type.
-        /// </summary>
         private void SaveSession( Type typeKey, object session )
         {
             string key = typeKey.FullName;
@@ -161,6 +142,7 @@ namespace PocketCampus.Main.Services
 
         // HACK: Since objects can't be (de)serialized into "object"s (because of the known types magic),
         //       convert them to strings and then save them.
+        // TODO: Check if that's still the case.
 
         /// <summary>
         /// Deserializes an object of the specified type from the specified string.

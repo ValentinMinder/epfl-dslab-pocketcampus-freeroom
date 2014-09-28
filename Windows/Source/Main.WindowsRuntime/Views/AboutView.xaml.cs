@@ -1,12 +1,11 @@
 ﻿using System;
 using PocketCampus.Common;
-using PocketCampus.Common.Controls;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 
 namespace PocketCampus.Main.Views
 {
-    public sealed partial class AboutView : PageBase
+    public sealed partial class AboutView
     {
         public AboutView()
         {

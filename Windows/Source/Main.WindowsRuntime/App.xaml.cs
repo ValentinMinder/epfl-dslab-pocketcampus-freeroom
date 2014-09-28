@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Resources;
 
 namespace PocketCampus.Main
 {
-    public sealed partial class App : AppBase
+    public sealed partial class App
     {
         private readonly IWindowsRuntimeNavigationService _navigationService;
         private readonly IPluginLoader _pluginLoader;
@@ -33,7 +33,7 @@ namespace PocketCampus.Main
             Container.Bind<ILocationService, LocationService>();
             Container.Bind<ITileService, TileService>();
             Container.Bind<IDeviceIdentifier, DeviceIdentifier>();
-            Container.Bind<IRatingService, RatingService>();
+            Container.Bind<IAppRatingService, RatingService>();
             Container.Bind<ICredentialsStorage, CredentialsStorage>();
 
             _navigationService = Container.Bind<IWindowsRuntimeNavigationService, WindowsRuntimeNavigationService>();
@@ -60,7 +60,7 @@ namespace PocketCampus.Main
 
             await AppInitializer.InitializeAsync( _pluginLoader, _navigationService );
 
-            foreach ( var plugin in ( await _pluginLoader.GetPluginsAsync() ).Cast<IWindowsRuntimePlugin>() )
+            foreach ( var plugin in _pluginLoader.GetPlugins().Cast<IWindowsRuntimePlugin>() )
             {
                 plugin.Initialize( _navigationService );
             }

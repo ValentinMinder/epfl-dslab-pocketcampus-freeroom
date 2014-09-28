@@ -8,7 +8,7 @@ using Windows.System;
 
 namespace PocketCampus.Main.Services
 {
-    public sealed class RatingService : IRatingService
+    public sealed class RatingService : IAppRatingService
     {
         public async void RequestRating()
         {

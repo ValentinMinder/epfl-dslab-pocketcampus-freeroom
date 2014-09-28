@@ -19,10 +19,7 @@ namespace PocketCampus.Main.Services
         private Geolocator _locator;
         private GeoPosition _lastKnownLocation;
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the service is enabled.
-        /// If true, the user's location is collected; make sure the user granted permission first.
-        /// </summary>
+
         public bool IsEnabled
         {
             get { return _isEnabled; }
@@ -41,9 +38,6 @@ namespace PocketCampus.Main.Services
             get { return _lastKnownLocation; }
         }
 
-        /// <summary>
-        /// Asynchronously gets the user's location.
-        /// </summary>
         public async Task<Tuple<GeoPosition, GeoLocationStatus>> GetLocationAsync()
         {
             try
@@ -58,9 +52,6 @@ namespace PocketCampus.Main.Services
             }
         }
 
-        /// <summary>
-        /// Occurs when the user's location changes.
-        /// </summary>
         public event EventHandler<LocationChangedEventArgs> LocationChanged;
         private void OnLocationChanged( GeoPosition location )
         {
@@ -71,9 +62,6 @@ namespace PocketCampus.Main.Services
             }
         }
 
-        /// <summary>
-        /// Occurs when the location service is ready.
-        /// </summary>
         public event EventHandler<EventArgs> Ready;
         private void OnReady()
         {
@@ -84,9 +72,6 @@ namespace PocketCampus.Main.Services
             }
         }
 
-        /// <summary>
-        /// Occurs when an error happens while locating the user.
-        /// </summary>
         public event EventHandler<EventArgs> Error;
         private void OnError()
         {
@@ -97,9 +82,7 @@ namespace PocketCampus.Main.Services
             }
         }
 
-        /// <summary>
-        /// Occurs when the status of the GeoLocator changes.
-        /// </summary>
+
         private void Locator_StatusChanged( Geolocator sender, StatusChangedEventArgs args )
         {
             switch ( args.Status )
@@ -115,24 +98,20 @@ namespace PocketCampus.Main.Services
             }
         }
 
-        /// <summary>
-        /// Occurs when the user's position changes.
-        /// </summary>
         private void Locator_PositionChanged( Geolocator sender, PositionChangedEventArgs args )
         {
             _lastKnownLocation = PositionFromCoordinate( args.Position.Coordinate );
             OnLocationChanged( _lastKnownLocation );
         }
 
-        /// <summary>
-        /// Occurs when the LocationService is enabled or disabled.
-        /// </summary>
         private void OnIsEnabledChanged()
         {
             if ( IsEnabled )
             {
-                _locator = new Geolocator();
-                _locator.MovementThreshold = MovementThreshold;
+                _locator = new Geolocator
+                {
+                    MovementThreshold = MovementThreshold
+                };
                 _locator.PositionChanged += Locator_PositionChanged;
                 _locator.StatusChanged += Locator_StatusChanged;
             }
@@ -148,8 +127,6 @@ namespace PocketCampus.Main.Services
         /// <summary>
         /// Converts a Geocoordinate (Windows Phone) into a GeoPosition (PocketCampus).
         /// </summary>
-        /// <param name="coord"></param>
-        /// <returns></returns>
         private static GeoPosition PositionFromCoordinate( Geocoordinate coord )
         {
             return new GeoPosition( coord.Point.Position.Latitude, coord.Point.Position.Longitude, coord.Heading );

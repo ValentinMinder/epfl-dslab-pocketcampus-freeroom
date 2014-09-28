@@ -18,11 +18,11 @@ namespace PocketCampus.Main
             {
                 return GetResourceFromImplicitPath( parts );
             }
-            else if ( parts.Length == 2 )
+            if ( parts.Length == 2 )
             {
                 return GetResourceFromRelativePath( parts );
             }
-            else if ( parts.Length == 3 )
+            if ( parts.Length == 3 )
             {
                 return GetResourceFromFullPath( parts );
             }
