@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -22,6 +23,8 @@ import java.util.logging.SimpleFormatter;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+import org.pocketcampus.plugin.freeroom.data.RebuildDB;
+import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeLoading;
 import org.pocketcampus.plugin.freeroom.server.utils.CheckRequests;
 import org.pocketcampus.plugin.freeroom.server.utils.OccupancySorted;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
@@ -129,8 +132,22 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"Server cannot connect to the database");
 			e.printStackTrace();
 		}
+		// USEME: Periodically update
 		// new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
 		// this)).start();
+
+		// USEME: Rebuild rooms list in DB, need to tune parameter for tsStart
+		// and tsEnd, (Start/End of semester)
+//		Calendar mCalendar = Calendar.getInstance();
+//		mCalendar.set(Calendar.MONTH, 8);
+//		mCalendar.set(Calendar.DAY_OF_MONTH, 1);
+//		long tsStart = mCalendar.getTimeInMillis();
+//		mCalendar.set(Calendar.MONTH, 11);
+//		mCalendar.set(Calendar.DAY_OF_MONTH, 31);
+//		long tsEnd = mCalendar.getTimeInMillis();
+//		new Thread(new RebuildDB(DB_URL, DB_USER, DB_PASSWORD, this,
+//				tsStart, tsEnd)).start();
+
 	}
 
 	// for test purposes ONLY
@@ -281,7 +298,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            Type of the occupancy (for instance user or room occupancy)
 	 * @param room
 	 *            The room, the object has to contains the UID
-	 *            @param hash null if ISA, id of user o/w
+	 * @param hash
+	 *            null if ISA, id of user o/w
 	 * @return int error code defined by HttpURLConnection, OK insertion is
 	 *         successful, BAD_REQUEST, argument required is (are) null, or
 	 *         length of the message is too long, PRECON_FAILED if the message
@@ -811,7 +829,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * requested.
 	 */
 	@Override
-	public FROccupancyReply getOccupancy(FROccupancyRequest request) throws TException {
+	public FROccupancyReply getOccupancy(FROccupancyRequest request)
+			throws TException {
 		if (request == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING, "Receiving null FRRequest");
 			return new FROccupancyReply(FRStatusCode.HTTP_BAD_REQUEST,
@@ -852,8 +871,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (uidList == null || uidList.isEmpty()) {
 			if (onlyFreeRoom) {
 				// we want to look into all the rooms
-				occupancies = getOccupancyOfAnyFreeRoom(tsStart,
-						tsEnd, group);
+				occupancies = getOccupancyOfAnyFreeRoom(tsStart, tsEnd, group);
 			} else {
 				return new FROccupancyReply(FRStatusCode.HTTP_BAD_REQUEST,
 						"The search for any free room must contains onlyFreeRoom = true");
@@ -895,61 +913,63 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			long tsStart, long tsEnd, int userGroup) {
 
 		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
-			Connection connectBDD;
-			try {
-				connectBDD = connMgr.getConnection();
-				// first select rooms totally free
-				
-				String request = "SELECT rl.uid, rl.doorCode, rl.capacity "
-						+ "FROM `fr-roomslist` rl "
-						+ "WHERE rl.uid NOT IN("
-						+ "SELECT ro.uid FROM `fr-occupancy` ro "
-						/* maybe simpler: (ro.timestampEnd >= tsStart AND ro.timestampStart <= tsEnd )*/
-						+ "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd >= ?) "
-						+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)"
-						+ "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)) "
-						+ "AND ro.type LIKE ?) AND rl.groupAccess <= ? AND rl.enabled = 1";
+		Connection connectBDD;
+		try {
+			connectBDD = connMgr.getConnection();
+			// first select rooms totally free
 
-				PreparedStatement query = connectBDD.prepareStatement(request);
-				query.setLong(1, tsEnd);
-				query.setLong(2, tsStart);
-				query.setLong(3, tsEnd);
-				query.setLong(4, tsStart);
-				query.setLong(5, tsStart);
-				query.setLong(6, tsEnd);
-				query.setString(7, OCCUPANCY_TYPE.ROOM.toString());
-				query.setInt(8, userGroup);
+			String request = "SELECT rl.uid, rl.doorCode, rl.capacity "
+					+ "FROM `fr-roomslist` rl "
+					+ "WHERE rl.uid NOT IN("
+					+ "SELECT ro.uid FROM `fr-occupancy` ro "
+					/*
+					 * maybe simpler: (ro.timestampEnd >= tsStart AND
+					 * ro.timestampStart <= tsEnd )
+					 */
+					+ "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd >= ?) "
+					+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)"
+					+ "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)) "
+					+ "AND ro.type LIKE ?) AND rl.groupAccess <= ? AND rl.enabled = 1";
 
-				ResultSet resultQuery = query.executeQuery();
+			PreparedStatement query = connectBDD.prepareStatement(request);
+			query.setLong(1, tsEnd);
+			query.setLong(2, tsStart);
+			query.setLong(3, tsEnd);
+			query.setLong(4, tsStart);
+			query.setLong(5, tsStart);
+			query.setLong(6, tsEnd);
+			query.setString(7, OCCUPANCY_TYPE.ROOM.toString());
+			query.setInt(8, userGroup);
 
-				ArrayList<String> uidsList = new ArrayList<String>();
-				while (resultQuery.next()) {
+			ResultSet resultQuery = query.executeQuery();
 
-					String uid = resultQuery.getString("uid");
-					uidsList.add(uid);
-				}
+			ArrayList<String> uidsList = new ArrayList<String>();
+			while (resultQuery.next()) {
 
-				if (uidsList.isEmpty()) {
-					log(LOG_SIDE.SERVER, Level.WARNING,
-							"No rooms are free during period start = "
-									+ tsStart + " end = " + tsEnd);
-					return new HashMap<String, List<Occupancy>>();
-				}
-
-				String logMessage = "tsStart=" + tsStart + ",tsEnd=" + tsEnd
-						+ ",userGroup=" + userGroup;
-				log(Level.INFO,
-						formatServerLogInfo("getOccupancyOfAnyFreeRoom",
-								logMessage));
-				return getOccupancyOfSpecificRoom(uidsList, true,
-						tsStart, tsEnd, userGroup);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				log(LOG_SIDE.SERVER, Level.SEVERE,
-						"SQL error for occupancy of any free room, start = "
-								+ tsStart + " end = " + tsEnd);
-				return null;
+				String uid = resultQuery.getString("uid");
+				uidsList.add(uid);
 			}
+
+			if (uidsList.isEmpty()) {
+				log(LOG_SIDE.SERVER, Level.WARNING,
+						"No rooms are free during period start = " + tsStart
+								+ " end = " + tsEnd);
+				return new HashMap<String, List<Occupancy>>();
+			}
+
+			String logMessage = "tsStart=" + tsStart + ",tsEnd=" + tsEnd
+					+ ",userGroup=" + userGroup;
+			log(Level.INFO,
+					formatServerLogInfo("getOccupancyOfAnyFreeRoom", logMessage));
+			return getOccupancyOfSpecificRoom(uidsList, true, tsStart, tsEnd,
+					userGroup);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log(LOG_SIDE.SERVER, Level.SEVERE,
+					"SQL error for occupancy of any free room, start = "
+							+ tsStart + " end = " + tsEnd);
+			return null;
+		}
 
 	}
 
@@ -974,10 +994,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			long tsEnd, int userGroup) {
 
 		// useless
-//		if (uidList.isEmpty()) {
-//			return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd,
-//					userGroup);
-//		}
+		// if (uidList.isEmpty()) {
+		// return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd,
+		// userGroup);
+		// }
 
 		uidList = Utils.removeDuplicate(uidList);
 
@@ -1347,9 +1367,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					+ forbiddenRooms;
 			log(Level.INFO, formatServerLogInfo("autoCompleteRoom", logMessage));
 		} catch (SQLException e) {
-			reply = new AutoCompleteReply(
-					FRStatusCode.HTTP_INTERNAL_ERROR, ""
-							+ HttpURLConnection.HTTP_INTERNAL_ERROR);
+			reply = new AutoCompleteReply(FRStatusCode.HTTP_INTERNAL_ERROR, ""
+					+ HttpURLConnection.HTTP_INTERNAL_ERROR);
 			e.printStackTrace();
 			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"SQL error for autocomplete request with constraint "
@@ -1454,11 +1473,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		WorkingOccupancy work = request.getWork();
 		FRPeriod period = work.getPeriod();
-		String userMessage = (work.isSetMessage() && work.getMessage() != null && work.getMessage().trim().length() > 0) ? work
-				.getMessage().trim() : null;
+		String userMessage = (work.isSetMessage() && work.getMessage() != null && work
+				.getMessage().trim().length() > 0) ? work.getMessage().trim()
+				: null;
 		FRRoom room = work.getRoom();
-		FRStatusCode code = insertOccupancyDetailedReply(period, OCCUPANCY_TYPE.USER,
-				room.getUid(), request.getHash(), userMessage);
+		FRStatusCode code = insertOccupancyDetailedReply(period,
+				OCCUPANCY_TYPE.USER, room.getUid(), request.getHash(),
+				userMessage);
 
 		if (code == FRStatusCode.HTTP_OK) {
 			String logMessage = "start=" + period.getTimeStampStart() + ",end="

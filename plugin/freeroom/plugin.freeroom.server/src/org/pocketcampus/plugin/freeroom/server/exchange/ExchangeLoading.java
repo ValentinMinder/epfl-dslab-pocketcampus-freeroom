@@ -16,46 +16,28 @@ import org.apache.commons.io.IOUtils;
  */
 public class ExchangeLoading {
 
-	final static String DB_USERNAME = "root";
-	final static String DB_PASSWORD = "root";
-	final static String DBMS_URL = "jdbc:mysql://localhost/?allowMultiQueries=true";
-	final static String DB_URL = "jdbc:mysql://localhost/pocketcampus?allowMultiQueries=true";
+	private String DB_USERNAME;
+	private String DB_PASSWORD;
+	private String DB_URL;
 
 	private static String sep = File.separator;
 	private static String path = "src" + sep + "org" + sep + "pocketcampus"
 			+ sep + "plugin" + sep + "freeroom" + sep + "server" + sep
 			+ "exchange" + sep + "EWSRoomsData";
 
-	/**
-	 * This method should be run periodically to update the EWAid in the room
-	 * list.
-	 * 
-	 * It should be run to add new EWAid from the text file in EWSRoomData (see
-	 * path), or if the database has been deleted.
-	 * 
-	 * You can also add manually the entry in the DB, but this is to avoid,
-	 * because if something bad append to the DB, this loader wont be able to
-	 * recrete deleted EWAid.
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		boolean status = loadExchangeData();
-		System.out.println("Updating exchange ID in rooms DB");
-		if (status) {
-			System.out.println("Database successfully update with EWA data!");
-		} else {
-			System.err.println("At least one entry was not sucessful!");
-		}
-
+	public ExchangeLoading(String DB_URL, String DB_USER, String DB_PWD) {
+		this.DB_URL = DB_URL ;
+		this.DB_USERNAME = DB_USER;
+		this.DB_PASSWORD = DB_PWD;
 	}
+
 
 	/**
 	 * Load all the data in all files in the path.
 	 * 
 	 * @return
 	 */
-	public static boolean loadExchangeData() {
+	public boolean loadExchangeData() {
 
 		File exchangeDirectory = new File(path);
 		if (!exchangeDirectory.exists()) {
@@ -83,7 +65,7 @@ public class ExchangeLoading {
 	 * @param file
 	 * @return true if successful, false in case of errors.
 	 */
-	private static boolean loadExchangeData(File file) {
+	private boolean loadExchangeData(File file) {
 		if (!file.exists() || !file.canRead() || file.getName().startsWith(".")) {
 			return false;
 		}
@@ -113,7 +95,7 @@ public class ExchangeLoading {
 	 *            contact of the room (usually: "Name <name@intranet.epfl.ch>").
 	 * @return true if successful, false in case of errors.
 	 */
-	private static boolean loadExchangeData(String nameEmail) {
+	private boolean loadExchangeData(String nameEmail) {
 		nameEmail = nameEmail.trim();
 		String[] details = nameEmail.split("[<>]");
 		if (details.length < 2) {
@@ -135,7 +117,7 @@ public class ExchangeLoading {
 	 *            the EWAid (usually "bc01@intranet.epfl.ch")
 	 * @return true if successful, false in case of errors.
 	 */
-	private static boolean loadExchangeData(String name, String email) {
+	private boolean loadExchangeData(String name, String email) {
 		String concatName = name.replaceAll("\\s", "").toUpperCase();
 		if (concatName.length() == 0) {
 			System.err
