@@ -6,6 +6,7 @@ using ThriftSharp;
 
 namespace PocketCampus.Moodle.Models
 {
+    // Union type: exactly 1 property is set.
     [ThriftStruct( "MoodleResource2" )]
     public sealed class MoodleResource
     {

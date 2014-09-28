@@ -11,9 +11,11 @@ using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Models;
 using PocketCampus.Moodle.Services;
 using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Moodle.ViewModels
 {
+    [LogId( "/moodle/course" )]
     public sealed class CourseViewModel : CachedDataViewModel<Course, CourseSectionsResponse>
     {
         private readonly ISecureRequestHandler _requestHandler;
@@ -41,9 +43,6 @@ namespace PocketCampus.Moodle.ViewModels
             private set { SetProperty( ref _selectedSection, value ); }
         }
 
-        /// <summary>
-        /// Gets the state of the current download (or lack thereof).
-        /// </summary>
         public DownloadStatus DownloadStatus
         {
             get { return _downloadStatus; }
@@ -51,17 +50,15 @@ namespace PocketCampus.Moodle.ViewModels
         }
 
 
-        /// <summary>
-        /// Gets the command executed to open a file, downloading if needed.
-        /// </summary>
+        [LogId( "DownloadAndOpenFile" )]
+        [LogParameter( "$Param.Name" )]
         public AsyncCommand<MoodleFile> OpenFileCommand
         {
             get { return this.GetAsyncCommand<MoodleFile>( OpenFileAsync ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to open a link.
-        /// </summary>
+        [LogId( "OpenLink" )]
+        [LogParameter( "$Param.Name" )]
         public Command<MoodleLink> OpenLinkCommand
         {
             get { return this.GetCommand<MoodleLink>( l => _browserService.NavigateTo( l.Url ) ); }
@@ -80,6 +77,7 @@ namespace PocketCampus.Moodle.ViewModels
             _browserService = browserService;
             Course = course;
         }
+
 
         protected override CachedTask<CourseSectionsResponse> GetData( bool force, CancellationToken token )
         {
@@ -144,9 +142,6 @@ namespace PocketCampus.Moodle.ViewModels
         }
 
 
-        /// <summary>
-        /// Downloads (if it hasn't already been downloaded) and opens the specified file.
-        /// </summary>
         private async Task OpenFileAsync( MoodleFile file )
         {
             if ( DownloadStatus == DownloadStatus.Downloading )

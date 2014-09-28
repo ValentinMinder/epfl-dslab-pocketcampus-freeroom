@@ -9,12 +9,11 @@ using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Models;
 using PocketCampus.Moodle.Services;
 using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Moodle.ViewModels
 {
-    /// <summary>
-    /// The main ViewModel.
-    /// </summary>
+    [LogId( "/moodle" )]
     public sealed class MainViewModel : CachedDataViewModel<NoParameter, CoursesResponse>
     {
         private readonly ISecureRequestHandler _requestHandler;
@@ -23,9 +22,7 @@ namespace PocketCampus.Moodle.ViewModels
 
         private Course[] _courses;
 
-        /// <summary>
-        /// Gets the courses the user is enrolled in.
-        /// </summary>
+
         public Course[] Courses
         {
             get { return _courses; }
@@ -33,18 +30,12 @@ namespace PocketCampus.Moodle.ViewModels
         }
 
 
-        /// <summary>
-        /// Gets the command executed to view a course.
-        /// </summary>
         public Command<Course> ViewCourseCommand
         {
             get { return this.GetCommand<Course>( _navigationService.NavigateTo<CourseViewModel, Course> ); }
         }
 
 
-        /// <summary>
-        /// Creates a new MainViewModel.
-        /// </summary>
         public MainViewModel( IDataCache cache, ISecureRequestHandler requestHandler, INavigationService navigationService,
                               IMoodleService moodleService )
             : base( cache )

@@ -13,17 +13,12 @@ using Windows.System;
 
 namespace PocketCampus.Moodle.Services
 {
-    /// <summary>
-    /// Stores Moodle files in the Windows Phone application data.
-    /// </summary>
     public sealed class FileStorage : IFileStorage
     {
         private const string NameExtensionSeparator = ".";
         private const string DefaultExtension = "txt"; // for files without one
 
-        /// <summary>
-        /// Asynchronously stores the specified Moodle file with the specified content.
-        /// </summary>
+
         public async Task StoreFileAsync( MoodleFile moodleFile, byte[] content )
         {
             var file = await GetFileAsync( moodleFile, true );
@@ -33,26 +28,18 @@ namespace PocketCampus.Moodle.Services
             }
         }
 
-        /// <summary>
-        /// Asynchronously indicates whether the specified Moodle file is stored on the device.
-        /// </summary>
         public async Task<bool> IsStoredAsync( MoodleFile moodleFile )
         {
             return await GetFileAsync( moodleFile, false ) != null;
         }
 
-        /// <summary>
-        /// Asynchronously opens the specified Moodle file.
-        /// </summary>
         public async Task OpenFileAsync( MoodleFile moodleFile )
         {
             var file = await GetFileAsync( moodleFile, false );
             await Launcher.LaunchFileAsync( file );
         }
 
-        /// <summary>
-        /// Gets a file. Optionally creates it if it doesn't exist.
-        /// </summary>
+
         private static async Task<StorageFile> GetFileAsync( MoodleFile file, bool create )
         {
             // TODO: Find a way to export docs to the Documents library or something
@@ -62,7 +49,7 @@ namespace PocketCampus.Moodle.Services
                 folder = await folder.CreateFolderAsync( FixName( name, Path.GetInvalidPathChars() ), CreationCollisionOption.OpenIfExists );
             }
             string extension = string.IsNullOrWhiteSpace( file.Extension ) ? DefaultExtension : file.Extension;
-            string fileName = FixName( file.Name, Path.GetInvalidFileNameChars() ) + NameExtensionSeparator + extension;
+            string fileName = FixName( file.Name + NameExtensionSeparator + extension, Path.GetInvalidFileNameChars() );
 
             // GetFileAsync throws an exception if the file doesn't exist
             // and there's no API to check for a file's existence
@@ -76,9 +63,6 @@ namespace PocketCampus.Moodle.Services
             return storageFile;
         }
 
-        /// <summary>
-        /// Fixes a name by removing invalid characters.
-        /// </summary>
         private static string FixName( string name, char[] invalidChars )
         {
             string fixedName = invalidChars.Aggregate( name, ( s, c ) => s.Replace( c.ToString(), "" ) );

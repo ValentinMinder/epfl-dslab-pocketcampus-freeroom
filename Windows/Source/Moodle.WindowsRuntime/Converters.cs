@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using PocketCampus.Common;
+using PocketCampus.Common.Controls;
 using PocketCampus.Moodle.Models;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -13,21 +14,14 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace PocketCampus.Moodle
 {
-    /// <summary>
-    /// Convers a download status to a boolean indicating whether to display a progress indicator.
-    /// </summary>
-    public sealed class DownloadStatusToBooleanConverter : ValueConverter<DownloadStatus, bool>
+    public sealed class DownloadStatusToProgressBarVisibilityConverter : ValueConverter<DownloadStatus, bool>
     {
         public override bool Convert( DownloadStatus value )
         {
-            return value != DownloadStatus.None;
+            return value == DownloadStatus.Downloading;
         }
     }
 
-    /// <summary>
-    /// Converts a file to an UIElement representing its icon.
-    /// </summary>
-    // TODO find a better way (also, for icons in general... maybe store them as strings and make a control)
     public sealed class FileToIconElementConverter : ValueConverter<MoodleFile, UIElement>
     {
         private static readonly Dictionary<string, string> Aliases = new Dictionary<string, string>
@@ -36,12 +30,16 @@ namespace PocketCampus.Moodle
             { "doc", "docx" },
             { "xls", "xlsx" }
         };
-        private const int DefaultSize = 48;
+
+        private const int DefaultSquareSize = 48;
+        private const int IconWidth = 38;
+        private const int IconHeight = 46;
 
         private readonly ResourceDictionary _resources = new ResourceDictionary
         {
             Source = new Uri( "ms-appx:///PocketCampus.Moodle.WindowsRuntime/Icons.xaml", UriKind.Absolute )
         };
+
 
         public override UIElement Convert( MoodleFile value )
         {
@@ -54,9 +52,11 @@ namespace PocketCampus.Moodle
             string resourceKey = "FileIcon_" + ext;
             if ( _resources.ContainsKey( resourceKey ) )
             {
-                return new ContentControl
+                return new Icon
                 {
-                    Template = (ControlTemplate) _resources[resourceKey]
+                    Data = (string) _resources[resourceKey],
+                    IconHeight = IconHeight,
+                    IconWidth = IconWidth
                 };
             }
 
@@ -67,14 +67,16 @@ namespace PocketCampus.Moodle
                     Stretch = Stretch.Uniform,
                     Child = new Image
                     {
-                        Source = new BitmapImage( new Uri( value.IconUrl.Replace( "{size}", DefaultSize.ToString() ), UriKind.Absolute ) )
+                        Source = new BitmapImage( new Uri( value.IconUrl.Replace( "{size}", DefaultSquareSize.ToString() ), UriKind.Absolute ) )
                     }
                 };
             }
 
-            return new ContentControl
+            return new Icon
             {
-                Template = (ControlTemplate) _resources["DefaultFileIcon"]
+                Data = (string) _resources["DefaultFileIcon"],
+                IconHeight = IconHeight,
+                IconWidth = IconWidth
             };
         }
     }

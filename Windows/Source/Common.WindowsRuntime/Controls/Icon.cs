@@ -9,9 +9,29 @@ namespace PocketCampus.Common.Controls
 {
     public sealed class Icon : ContentControl
     {
-        // Icons are always square
-        public const int Size = 100;
+        #region IconWidth
+        public double IconWidth
+        {
+            get { return (double) GetValue( IconWidthProperty ); }
+            set { SetValue( IconWidthProperty, value ); }
+        }
 
+        public static readonly DependencyProperty IconWidthProperty =
+            DependencyProperty.Register( "IconWidth", typeof( double ), typeof( Icon ), new PropertyMetadata( 100.0 ) );
+        #endregion
+
+        #region IconHeight
+        public double IconHeight
+        {
+            get { return (double) GetValue( IconHeightProperty ); }
+            set { SetValue( IconHeightProperty, value ); }
+        }
+
+        public static readonly DependencyProperty IconHeightProperty =
+            DependencyProperty.Register( "IconHeight", typeof( double ), typeof( Icon ), new PropertyMetadata( 100.0 ) );
+        #endregion
+
+        #region Data
         public string Data
         {
             get { return (string) GetValue( DataProperty ); }
@@ -42,10 +62,10 @@ namespace PocketCampus.Common.Controls
 
             var container = new Border
             {
-                Width = Size,
-                Height = Size,
                 Child = path
             };
+            container.SetBinding( Border.WidthProperty, new Binding { Source = icon, Path = new PropertyPath( "IconWidth" ) } );
+            container.SetBinding( Border.HeightProperty, new Binding { Source = icon, Path = new PropertyPath( "IconHeight" ) } );
             container.SetBinding( Border.BackgroundProperty, new Binding { Source = icon, Path = new PropertyPath( "Background" ) } );
 
             icon.HorizontalAlignment = HorizontalAlignment.Center;
@@ -55,5 +75,6 @@ namespace PocketCampus.Common.Controls
                 Child = container
             };
         }
+        #endregion
     }
 }

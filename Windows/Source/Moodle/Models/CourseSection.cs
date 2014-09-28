@@ -12,7 +12,6 @@ namespace PocketCampus.Moodle.Models
     public sealed class CourseSection
     {
         private const string DatesFormat = "{0:M} - {1:M}";
-        private const string DatesSeparator = " - ";
 
 
         [ThriftField( 1, true, "resources" )]
@@ -33,12 +32,6 @@ namespace PocketCampus.Moodle.Models
         public string Details { get; set; }
 
 
-        /// <summary>
-        /// Display title of the section.
-        /// </summary>
-        /// <remarks>
-        /// Not in the Thrift interface.
-        /// </remarks>
         [IgnoreDataMember]
         public string DisplayTitle
         {

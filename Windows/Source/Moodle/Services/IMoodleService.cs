@@ -9,9 +9,6 @@ using ThriftSharp;
 
 namespace PocketCampus.Moodle.Services
 {
-    /// <summary>
-    /// The Moodle server service.
-    /// </summary>
     [ThriftService( "MoodleService" )]
     public interface IMoodleService
     {

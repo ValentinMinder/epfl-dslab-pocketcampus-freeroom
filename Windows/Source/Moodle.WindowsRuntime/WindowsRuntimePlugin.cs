@@ -17,15 +17,14 @@ namespace PocketCampus.Moodle
             get { return ResourceLoader.GetForViewIndependentUse( "PocketCampus.Moodle.WindowsRuntime/Resources" ).GetString( "PluginName" ); }
         }
 
-        public string Icon { get { return null; } }
-        public object OLD_Icon
+        public string Icon
         {
             get
             {
-                return new ResourceDictionary
+                return (string) new ResourceDictionary
                 {
                     Source = new Uri( "ms-appx:///PocketCampus.Moodle.WindowsRuntime/Icons.xaml", UriKind.Absolute )
-                }["MoodleIcon"];
+                }["PluginIcon"];
             }
         }
 

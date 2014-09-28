@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.Moodle.Controls
 {
-    public sealed class MoodleResourceControl : ContentControl
+    public sealed class MoodleResourceContainer : ContentControl
     {
         #region FileTemplate
         public DataTemplate FileTemplate
@@ -18,7 +18,7 @@ namespace PocketCampus.Moodle.Controls
         }
 
         public static readonly DependencyProperty FileTemplateProperty =
-            DependencyProperty.Register( "FileTemplate", typeof( DataTemplate ), typeof( MoodleResourceControl ), new PropertyMetadata( null ) );
+            DependencyProperty.Register( "FileTemplate", typeof( DataTemplate ), typeof( MoodleResourceContainer ), new PropertyMetadata( null ) );
         #endregion
 
         #region FolderTemplate
@@ -29,7 +29,7 @@ namespace PocketCampus.Moodle.Controls
         }
 
         public static readonly DependencyProperty FolderTemplateProperty =
-            DependencyProperty.Register( "FolderTemplate", typeof( DataTemplate ), typeof( MoodleResourceControl ), new PropertyMetadata( null ) );
+            DependencyProperty.Register( "FolderTemplate", typeof( DataTemplate ), typeof( MoodleResourceContainer ), new PropertyMetadata( null ) );
         #endregion
 
         #region LinkTemplate
@@ -40,7 +40,7 @@ namespace PocketCampus.Moodle.Controls
         }
 
         public static readonly DependencyProperty LinkTemplateProperty =
-            DependencyProperty.Register( "LinkTemplate", typeof( DataTemplate ), typeof( MoodleResourceControl ), new PropertyMetadata( null ) );
+            DependencyProperty.Register( "LinkTemplate", typeof( DataTemplate ), typeof( MoodleResourceContainer ), new PropertyMetadata( null ) );
         #endregion
 
         #region Resource
@@ -50,13 +50,12 @@ namespace PocketCampus.Moodle.Controls
             set { SetValue( ResourceProperty, value ); }
         }
 
-        // Using a DependencyProperty as the backing store for Resource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ResourceProperty =
-            DependencyProperty.Register( "Resource", typeof( MoodleResource ), typeof( MoodleResourceControl ), new PropertyMetadata( null, OnResourceChanged ) );
+            DependencyProperty.Register( "Resource", typeof( MoodleResource ), typeof( MoodleResourceContainer ), new PropertyMetadata( null, OnResourceChanged ) );
 
         private static void OnResourceChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
         {
-            var control = (MoodleResourceControl) obj;
+            var control = (MoodleResourceContainer) obj;
             var resource = (MoodleResource) args.NewValue;
 
             if ( resource.File != null )
@@ -76,5 +75,14 @@ namespace PocketCampus.Moodle.Controls
             }
         }
         #endregion
+
+
+        public MoodleResourceContainer()
+        {
+            HorizontalAlignment = HorizontalAlignment.Stretch;
+            VerticalAlignment = VerticalAlignment.Stretch;
+            HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            VerticalContentAlignment = VerticalAlignment.Stretch;
+        }
     }
 }

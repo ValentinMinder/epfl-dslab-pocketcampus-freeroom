@@ -12,9 +12,6 @@ using Windows.Web.Http;
 
 namespace PocketCampus.Moodle.Services
 {
-    /// <summary>
-    /// Downloads Moodle files.
-    /// </summary>
     public sealed class MoodleDownloader : IMoodleDownloader
     {
         private const string SessionHeaderName = "X-PC-AUTH-PCSESSID";
@@ -27,17 +24,12 @@ namespace PocketCampus.Moodle.Services
         private readonly IServerSettings _serverSettings;
 
 
-        /// <summary>
-        /// Creates a new MoodleDownloader.
-        /// </summary>
         public MoodleDownloader( IServerSettings serverSettings )
         {
             _serverSettings = serverSettings;
         }
 
-        /// <summary>
-        /// Asynchronously downloads the specified Moodle file.
-        /// </summary>
+
         public async Task<byte[]> DownloadAsync( MoodleFile file )
         {
             var client = new HttpClient(); // not the PocketCampus HTTP client, the .NET one

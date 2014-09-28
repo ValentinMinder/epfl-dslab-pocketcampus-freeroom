@@ -7,14 +7,8 @@ using PocketCampus.Moodle.Models;
 
 namespace PocketCampus.Moodle.Services
 {
-    /// <summary>
-    /// Downloads Moodle files.
-    /// </summary>
     public interface IMoodleDownloader
     {
-        /// <summary>
-        /// Asynchronously downloads the specified file.
-        /// </summary>
         Task<byte[]> DownloadAsync( MoodleFile file );
     }
 }
