@@ -5,6 +5,7 @@
 
     <string name="isacademia_schedule_for">Schedule for %s</string>
     <string name="isacademia_no_classes_on">No classes on %s</string>
+    <string name="isacademia_network_error">Retrieving the schedule for\n%s\nfailed due to a network error.</string>
     
     <string name="isacademia_go_to_date">Go to date</string>
 
