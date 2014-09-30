@@ -86,7 +86,6 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
-		
 		// Get and cast the controller and model
 		mController = (IsAcademiaController) controller;
 		mModel = (IsAcademiaModel) controller.getModel();
@@ -105,12 +104,7 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 //		} catch (ParseException e) {
 //			e.printStackTrace();
 //		}
-
-		
-
 		gestureDetector = buildGestureDetector();
-
-	
 	}
 	
 	/**
@@ -122,16 +116,11 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 	 */
 	@Override
 	protected void handleIntent(Intent aIntent) {
-
-		
-		if(IsAcademiaController.sessionExists(this)) // I think this is no longer necessary, since the auth plugin doesnt blindly redo auth (well, this saves the one call that the auth plugin does to check if the session is valid)
+		if(IsAcademiaController.sessionExists(this)) // I think this is no longer necessary, since the auth plugin doesnt blindly
+		// redo auth (well, this saves the one call that the auth plugin does to check if the session is valid)
 			updateDisplay(); // triggerRefresh(false);
 		else
 			IsAcademiaController.pingAuthPlugin(this);
-
-		
-
-		
 	}
 
 
@@ -170,7 +159,6 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 		
 	}
 	
-
 	private void updateActionBar() {
 		removeAllActionsFromActionBar();
 		addActionToActionBar(new Action() {
@@ -193,15 +181,9 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 				return R.drawable.isacademia_right_arrow;
 			}
 		});
-		
 	}
 	
 	private static String getRoomsString(StudyPeriod p) {
-//		List<String> rooms = new LinkedList<String>();
-//		for(String r : p.getRooms()) {
-//			rooms.add("<a href=\"" + buildLink(r) + "\">" + r + "</a>");
-//		}
-//		return TextUtils.join(", ", rooms);
 		if(p.getRoomsSize() > 2) {
 			return TextUtils.join(", ", p.getRooms().subList(0, 2)) + ", &hellip;"; 
 		} else {
@@ -224,7 +206,6 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 	}
 
 	public void updateDisplay() {
-		
 		updateActionBar();
 
 		List<StudyPeriod> courses = mModel.getDay(keyFormatter.format(new Date(currentTime)));
@@ -236,7 +217,6 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 
 		if(displayingList)
 			scrollState = new ScrollStateSaver(mList);
-		
 
 		
 		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.sdk_separated_list_header2);
@@ -269,24 +249,15 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 				}
 			}
 			public void finalize(Map<String, Object> map, StudyPeriod item) {
-//				map.put(MAP_KEY_ISACADEMIASTUDYPERIOD, item);
 				map.put(LazyAdapter.NOT_SELECTABLE, "1");
-				//map.put(LazyAdapter.LINK_CLICKABLE, "1");
-
 			}
 		});
-		adapter.addSection(formatStringWithDate(R.string.isacademia_schedule_for), new LazyAdapter(this, p.getMap(), 
+		adapter.addSection(formatStringWithDate(R.string.isacademia_schedule_for), new LazyAdapter(this, p.getMap(),
 				R.layout.isacademia_main_period_entry, p.getKeys(), p.getResources()));
 		
 		if(courses.size() == 0) {
-			displayingList = false;
-			StandardLayout sl = new StandardLayout(this);
-			sl.setText(formatStringWithDate(R.string.isacademia_no_classes_on));
-			setContentView(sl);
-			attachGestureDetector(sl);
+			showOnlySingleMessage(formatStringWithDate(R.string.isacademia_no_classes_on));
 		} else {
-			
-			
 			if(!displayingList) {
 				setContentView(R.layout.isacademia_main_container);
 				mList = (ListView) findViewById(R.id.isacademia_main_list);
@@ -296,32 +267,10 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 			
 			attachGestureDetector(mList);
 			
-//			mList.setOnItemClickListener(new OnItemClickListener() {
-//				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//					Object o = arg0.getItemAtPosition(arg2);
-//					if(o instanceof Map<?, ?>) {
-//						StudyPeriod item = (StudyPeriod) ((Map<?, ?>) o).get(MAP_KEY_ISACADEMIASTUDYPERIOD);
-//						Intent i = new Intent(IsAcademiaMainView.this, IsAcademiaCourseView.class);
-//						i.putExtra(IsAcademiaCourseView.EXTRAS_KEY_ISACADEMIACOURSEID, (int) eId);
-//						i.putExtra(IsAcademiaCourseView.EXTRAS_KEY_ISACADEMIACOURSETITLE, eTitle);
-//						IsAcademiaMainView.this.startActivity(i);
-////						trackEvent("ViewCourse", eId + "-" + eTitle);
-//					} else {
-//						Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
-//					}
-//				}
-//			});
-			
 			if(scrollState != null)
 				scrollState.restore(mList);
-			
 		}
-//		attachGestureDetector(findViewById(android.R.id.content));
-		
-				
-		
-		
-		
+
 	}
 
 	@Override
@@ -336,7 +285,7 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 				DatePickerDialog dpd = new DatePickerDialog(IsAcademiaMainView.this, new OnDateSetListener() {
 					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 						if(!view.isShown())
-							return; // bug in Jely Bean: http://stackoverflow.com/questions/11444238/jelly-bean-datepickerdialog-is-there-a-way-to-cancel
+							return; // bug in Jelly Bean: http://stackoverflow.com/questions/11444238/jelly-bean-datepickerdialog-is-there-a-way-to-cancel
 						currentTime = computeCurrentTime(year, monthOfYear + 1, dayOfMonth);
 						trackEvent("GoToDateSelected", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date(currentTime)));
 						updateDisplay();
@@ -370,7 +319,6 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 		} catch (ActivityNotFoundException e) {
 			// should never happen
 			Toast.makeText(getApplicationContext(), "Map plugin not found", Toast.LENGTH_SHORT).show();
-			
 		}
 	}
 
@@ -396,14 +344,20 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 				.create();
 		dialog.setCanceledOnTouchOutside(true);
 		dialog.show();
-		
 	}
-	
 
 	@Override
 	public void networkErrorHappened() {
-		Toast.makeText(getApplicationContext(), getResources().getString(
-				R.string.sdk_connection_error_happened), Toast.LENGTH_SHORT).show();
+		updateActionBar();
+		showOnlySingleMessage(formatStringWithDate(R.string.isacademia_network_error));
+	}
+
+	private void showOnlySingleMessage(String message) {
+		displayingList = false;
+		StandardLayout sl = new StandardLayout(this);
+		sl.setText(message);
+		setContentView(sl);
+		attachGestureDetector(sl);
 	}
 	
 	@Override
@@ -434,13 +388,11 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 	@Override
 	public void notLoggedIn() {
 		IsAcademiaController.pingAuthPlugin(this);
-		
 	}
 
 	@Override
 	public void authenticationFinished() {
 		triggerRefresh(false);
-		
 	}
 
 	
@@ -482,17 +434,13 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 						return true;
 					}
 				});
-
 	}
 
 	private void attachGestureDetector(View v) {
-
 		v.setOnTouchListener(new OnTouchListener() {
 			public boolean onTouch(View arg0, MotionEvent arg1) {
 				return gestureDetector.onTouchEvent(arg1);
 			}
 		});
 	}
-	
-	
 }
