@@ -1053,7 +1053,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 				return getColoredDotGreen();
 			}
 		} else {
-			if (mOccupancy.isIsFreeAtLeastOnce()) {
+			if (mOccupancy.isIsOccupiedAtLeastOnce()) {
 				return getColoredDotRed();
 			} else {
 				// default: should not appear!
