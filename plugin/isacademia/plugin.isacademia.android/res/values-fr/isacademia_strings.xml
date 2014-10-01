@@ -5,7 +5,7 @@
     
     <string name="isacademia_schedule_for">Horaires du %s</string>
     <string name="isacademia_no_classes_on">Pas de cours le %s</string>
-    <string name="isacademia_network_error">Nous n\'avons pas pu récupérer les horaires du\n%s\nà cause d\'une erreur de connexion.</string>
+    <string name="isacademia_network_error">Une erreur de connexion s\'est produite\nlors du chargement des horaires du\n%s</string>
     
     <string name="isacademia_go_to_date">Aller à</string>
     
