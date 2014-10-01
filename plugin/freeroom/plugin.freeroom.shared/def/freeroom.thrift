@@ -94,8 +94,8 @@ struct FRPeriodOccupation {
 struct FRRoomOccupancy {
 	1: required FRRoom room;
 	2: required list<FRPeriodOccupation> occupancy;
-	3: required bool isAtLeastOccupiedOnce;
-	4: required bool isAtLeastFreeOnce;
+	3: required bool isOccupiedAtLeastOnce;
+	4: required bool isFreeAtLeastOnce;
 	5: required FRPeriod treatedPeriod;
 	// not set: we don't know (capacity not set)
 	// set: ratio between expected # of people to the capacity

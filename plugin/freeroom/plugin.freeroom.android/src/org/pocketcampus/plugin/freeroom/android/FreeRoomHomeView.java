@@ -374,8 +374,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		if (keyCode == KeyEvent.KEYCODE_ENVELOPE) {
 			if (infoDetailsRoom.isShowing()) {
 				FRRoomOccupancy mOccupancy = mModel.getDisplayedOccupancy();
-				if (mOccupancy != null && mOccupancy.isIsAtLeastFreeOnce()
-						&& !mOccupancy.isIsAtLeastOccupiedOnce()) {
+				if (mOccupancy != null && mOccupancy.isIsFreeAtLeastOnce()
+						&& !mOccupancy.isIsOccupiedAtLeastOnce()) {
 					Button shareButton = infoDetailsRoom
 							.getButton(AlertDialog.BUTTON_POSITIVE);
 					if (shareButton != null && shareButton.isEnabled()) {
@@ -1526,8 +1526,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			Button shareButton = infoDetailsRoom
 					.getButton(AlertDialog.BUTTON_POSITIVE);
-			shareButton.setEnabled(mOccupancy.isIsAtLeastFreeOnce()
-					&& !mOccupancy.isIsAtLeastOccupiedOnce());
+			shareButton.setEnabled(mOccupancy.isIsFreeAtLeastOnce()
+					&& !mOccupancy.isIsOccupiedAtLeastOnce());
 			shareSetClickListener(shareButton, this, mOccupancy);
 
 			ListView roomOccupancyListView = (ListView) infoDetailsRoomView
@@ -1938,8 +1938,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	public void shareSetClickListener(View shareView,
 			final FreeRoomHomeView homeView, final FRRoomOccupancy mOccupancy) {
 
-		if (!mOccupancy.isIsAtLeastOccupiedOnce()
-				&& mOccupancy.isIsAtLeastFreeOnce()) {
+		if (!mOccupancy.isIsOccupiedAtLeastOnce()
+				&& mOccupancy.isIsFreeAtLeastOnce()) {
 			shareView.setClickable(true);
 			shareView.setEnabled(true);
 			if (shareView instanceof ImageView) {

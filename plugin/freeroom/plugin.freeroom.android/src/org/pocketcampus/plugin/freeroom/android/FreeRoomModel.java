@@ -995,14 +995,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 			return COLOR_TRANSPARENT;
 		}
 
-		if (mOccupancy.isIsAtLeastFreeOnce()) {
-			if (mOccupancy.isIsAtLeastOccupiedOnce()) {
+		if (mOccupancy.isIsFreeAtLeastOnce()) {
+			if (mOccupancy.isIsOccupiedAtLeastOnce()) {
 				return getColorOrange();
 			} else {
 				return getColorGreen();
 			}
 		} else {
-			if (mOccupancy.isIsAtLeastOccupiedOnce()) {
+			if (mOccupancy.isIsOccupiedAtLeastOnce()) {
 				return getColorRed();
 			} else {
 				// default
@@ -1046,14 +1046,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 			return R.drawable.ic_dot_empty;
 		}
 
-		if (mOccupancy.isIsAtLeastFreeOnce()) {
-			if (mOccupancy.isIsAtLeastOccupiedOnce()) {
+		if (mOccupancy.isIsFreeAtLeastOnce()) {
+			if (mOccupancy.isIsOccupiedAtLeastOnce()) {
 				return getColoredDotOrange();
 			} else {
 				return getColoredDotGreen();
 			}
 		} else {
-			if (mOccupancy.isIsAtLeastOccupiedOnce()) {
+			if (mOccupancy.isIsFreeAtLeastOnce()) {
 				return getColoredDotRed();
 			} else {
 				// default: should not appear!

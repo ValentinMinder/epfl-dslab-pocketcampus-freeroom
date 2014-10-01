@@ -26,15 +26,15 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
 
   private static final org.apache.thrift.protocol.TField ROOM_FIELD_DESC = new org.apache.thrift.protocol.TField("room", org.apache.thrift.protocol.TType.STRUCT, (short)1);
   private static final org.apache.thrift.protocol.TField OCCUPANCY_FIELD_DESC = new org.apache.thrift.protocol.TField("occupancy", org.apache.thrift.protocol.TType.LIST, (short)2);
-  private static final org.apache.thrift.protocol.TField IS_AT_LEAST_OCCUPIED_ONCE_FIELD_DESC = new org.apache.thrift.protocol.TField("isAtLeastOccupiedOnce", org.apache.thrift.protocol.TType.BOOL, (short)3);
-  private static final org.apache.thrift.protocol.TField IS_AT_LEAST_FREE_ONCE_FIELD_DESC = new org.apache.thrift.protocol.TField("isAtLeastFreeOnce", org.apache.thrift.protocol.TType.BOOL, (short)4);
+  private static final org.apache.thrift.protocol.TField IS_OCCUPIED_AT_LEAST_ONCE_FIELD_DESC = new org.apache.thrift.protocol.TField("isOccupiedAtLeastOnce", org.apache.thrift.protocol.TType.BOOL, (short)3);
+  private static final org.apache.thrift.protocol.TField IS_FREE_AT_LEAST_ONCE_FIELD_DESC = new org.apache.thrift.protocol.TField("isFreeAtLeastOnce", org.apache.thrift.protocol.TType.BOOL, (short)4);
   private static final org.apache.thrift.protocol.TField TREATED_PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("treatedPeriod", org.apache.thrift.protocol.TType.STRUCT, (short)5);
   private static final org.apache.thrift.protocol.TField RATIO_WORST_CASE_PROBABLE_OCCUPANCY_FIELD_DESC = new org.apache.thrift.protocol.TField("ratioWorstCaseProbableOccupancy", org.apache.thrift.protocol.TType.DOUBLE, (short)6);
 
   private FRRoom room; // required
   private List<FRPeriodOccupation> occupancy; // required
-  private boolean isAtLeastOccupiedOnce; // required
-  private boolean isAtLeastFreeOnce; // required
+  private boolean isOccupiedAtLeastOnce; // required
+  private boolean isFreeAtLeastOnce; // required
   private FRPeriod treatedPeriod; // required
   private double ratioWorstCaseProbableOccupancy; // required
 
@@ -42,8 +42,8 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     ROOM((short)1, "room"),
     OCCUPANCY((short)2, "occupancy"),
-    IS_AT_LEAST_OCCUPIED_ONCE((short)3, "isAtLeastOccupiedOnce"),
-    IS_AT_LEAST_FREE_ONCE((short)4, "isAtLeastFreeOnce"),
+    IS_OCCUPIED_AT_LEAST_ONCE((short)3, "isOccupiedAtLeastOnce"),
+    IS_FREE_AT_LEAST_ONCE((short)4, "isFreeAtLeastOnce"),
     TREATED_PERIOD((short)5, "treatedPeriod"),
     RATIO_WORST_CASE_PROBABLE_OCCUPANCY((short)6, "ratioWorstCaseProbableOccupancy");
 
@@ -64,10 +64,10 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
           return ROOM;
         case 2: // OCCUPANCY
           return OCCUPANCY;
-        case 3: // IS_AT_LEAST_OCCUPIED_ONCE
-          return IS_AT_LEAST_OCCUPIED_ONCE;
-        case 4: // IS_AT_LEAST_FREE_ONCE
-          return IS_AT_LEAST_FREE_ONCE;
+        case 3: // IS_OCCUPIED_AT_LEAST_ONCE
+          return IS_OCCUPIED_AT_LEAST_ONCE;
+        case 4: // IS_FREE_AT_LEAST_ONCE
+          return IS_FREE_AT_LEAST_ONCE;
         case 5: // TREATED_PERIOD
           return TREATED_PERIOD;
         case 6: // RATIO_WORST_CASE_PROBABLE_OCCUPANCY
@@ -112,8 +112,8 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
   }
 
   // isset id assignments
-  private static final int __ISATLEASTOCCUPIEDONCE_ISSET_ID = 0;
-  private static final int __ISATLEASTFREEONCE_ISSET_ID = 1;
+  private static final int __ISOCCUPIEDATLEASTONCE_ISSET_ID = 0;
+  private static final int __ISFREEATLEASTONCE_ISSET_ID = 1;
   private static final int __RATIOWORSTCASEPROBABLEOCCUPANCY_ISSET_ID = 2;
   private BitSet __isset_bit_vector = new BitSet(3);
 
@@ -125,9 +125,9 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
     tmpMap.put(_Fields.OCCUPANCY, new org.apache.thrift.meta_data.FieldMetaData("occupancy", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRPeriodOccupation.class))));
-    tmpMap.put(_Fields.IS_AT_LEAST_OCCUPIED_ONCE, new org.apache.thrift.meta_data.FieldMetaData("isAtLeastOccupiedOnce", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.IS_OCCUPIED_AT_LEAST_ONCE, new org.apache.thrift.meta_data.FieldMetaData("isOccupiedAtLeastOnce", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
-    tmpMap.put(_Fields.IS_AT_LEAST_FREE_ONCE, new org.apache.thrift.meta_data.FieldMetaData("isAtLeastFreeOnce", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.IS_FREE_AT_LEAST_ONCE, new org.apache.thrift.meta_data.FieldMetaData("isFreeAtLeastOnce", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.TREATED_PERIOD, new org.apache.thrift.meta_data.FieldMetaData("treatedPeriod", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRPeriod.class)));
@@ -143,17 +143,17 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
   public FRRoomOccupancy(
     FRRoom room,
     List<FRPeriodOccupation> occupancy,
-    boolean isAtLeastOccupiedOnce,
-    boolean isAtLeastFreeOnce,
+    boolean isOccupiedAtLeastOnce,
+    boolean isFreeAtLeastOnce,
     FRPeriod treatedPeriod)
   {
     this();
     this.room = room;
     this.occupancy = occupancy;
-    this.isAtLeastOccupiedOnce = isAtLeastOccupiedOnce;
-    setIsAtLeastOccupiedOnceIsSet(true);
-    this.isAtLeastFreeOnce = isAtLeastFreeOnce;
-    setIsAtLeastFreeOnceIsSet(true);
+    this.isOccupiedAtLeastOnce = isOccupiedAtLeastOnce;
+    setIsOccupiedAtLeastOnceIsSet(true);
+    this.isFreeAtLeastOnce = isFreeAtLeastOnce;
+    setIsFreeAtLeastOnceIsSet(true);
     this.treatedPeriod = treatedPeriod;
   }
 
@@ -173,8 +173,8 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
       }
       this.occupancy = __this__occupancy;
     }
-    this.isAtLeastOccupiedOnce = other.isAtLeastOccupiedOnce;
-    this.isAtLeastFreeOnce = other.isAtLeastFreeOnce;
+    this.isOccupiedAtLeastOnce = other.isOccupiedAtLeastOnce;
+    this.isFreeAtLeastOnce = other.isFreeAtLeastOnce;
     if (other.isSetTreatedPeriod()) {
       this.treatedPeriod = new FRPeriod(other.treatedPeriod);
     }
@@ -189,10 +189,10 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
   public void clear() {
     this.room = null;
     this.occupancy = null;
-    setIsAtLeastOccupiedOnceIsSet(false);
-    this.isAtLeastOccupiedOnce = false;
-    setIsAtLeastFreeOnceIsSet(false);
-    this.isAtLeastFreeOnce = false;
+    setIsOccupiedAtLeastOnceIsSet(false);
+    this.isOccupiedAtLeastOnce = false;
+    setIsFreeAtLeastOnceIsSet(false);
+    this.isFreeAtLeastOnce = false;
     this.treatedPeriod = null;
     setRatioWorstCaseProbableOccupancyIsSet(false);
     this.ratioWorstCaseProbableOccupancy = 0.0;
@@ -261,50 +261,50 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
     }
   }
 
-  public boolean isIsAtLeastOccupiedOnce() {
-    return this.isAtLeastOccupiedOnce;
+  public boolean isIsOccupiedAtLeastOnce() {
+    return this.isOccupiedAtLeastOnce;
   }
 
-  public FRRoomOccupancy setIsAtLeastOccupiedOnce(boolean isAtLeastOccupiedOnce) {
-    this.isAtLeastOccupiedOnce = isAtLeastOccupiedOnce;
-    setIsAtLeastOccupiedOnceIsSet(true);
+  public FRRoomOccupancy setIsOccupiedAtLeastOnce(boolean isOccupiedAtLeastOnce) {
+    this.isOccupiedAtLeastOnce = isOccupiedAtLeastOnce;
+    setIsOccupiedAtLeastOnceIsSet(true);
     return this;
   }
 
-  public void unsetIsAtLeastOccupiedOnce() {
-    __isset_bit_vector.clear(__ISATLEASTOCCUPIEDONCE_ISSET_ID);
+  public void unsetIsOccupiedAtLeastOnce() {
+    __isset_bit_vector.clear(__ISOCCUPIEDATLEASTONCE_ISSET_ID);
   }
 
-  /** Returns true if field isAtLeastOccupiedOnce is set (has been assigned a value) and false otherwise */
-  public boolean isSetIsAtLeastOccupiedOnce() {
-    return __isset_bit_vector.get(__ISATLEASTOCCUPIEDONCE_ISSET_ID);
+  /** Returns true if field isOccupiedAtLeastOnce is set (has been assigned a value) and false otherwise */
+  public boolean isSetIsOccupiedAtLeastOnce() {
+    return __isset_bit_vector.get(__ISOCCUPIEDATLEASTONCE_ISSET_ID);
   }
 
-  public void setIsAtLeastOccupiedOnceIsSet(boolean value) {
-    __isset_bit_vector.set(__ISATLEASTOCCUPIEDONCE_ISSET_ID, value);
+  public void setIsOccupiedAtLeastOnceIsSet(boolean value) {
+    __isset_bit_vector.set(__ISOCCUPIEDATLEASTONCE_ISSET_ID, value);
   }
 
-  public boolean isIsAtLeastFreeOnce() {
-    return this.isAtLeastFreeOnce;
+  public boolean isIsFreeAtLeastOnce() {
+    return this.isFreeAtLeastOnce;
   }
 
-  public FRRoomOccupancy setIsAtLeastFreeOnce(boolean isAtLeastFreeOnce) {
-    this.isAtLeastFreeOnce = isAtLeastFreeOnce;
-    setIsAtLeastFreeOnceIsSet(true);
+  public FRRoomOccupancy setIsFreeAtLeastOnce(boolean isFreeAtLeastOnce) {
+    this.isFreeAtLeastOnce = isFreeAtLeastOnce;
+    setIsFreeAtLeastOnceIsSet(true);
     return this;
   }
 
-  public void unsetIsAtLeastFreeOnce() {
-    __isset_bit_vector.clear(__ISATLEASTFREEONCE_ISSET_ID);
+  public void unsetIsFreeAtLeastOnce() {
+    __isset_bit_vector.clear(__ISFREEATLEASTONCE_ISSET_ID);
   }
 
-  /** Returns true if field isAtLeastFreeOnce is set (has been assigned a value) and false otherwise */
-  public boolean isSetIsAtLeastFreeOnce() {
-    return __isset_bit_vector.get(__ISATLEASTFREEONCE_ISSET_ID);
+  /** Returns true if field isFreeAtLeastOnce is set (has been assigned a value) and false otherwise */
+  public boolean isSetIsFreeAtLeastOnce() {
+    return __isset_bit_vector.get(__ISFREEATLEASTONCE_ISSET_ID);
   }
 
-  public void setIsAtLeastFreeOnceIsSet(boolean value) {
-    __isset_bit_vector.set(__ISATLEASTFREEONCE_ISSET_ID, value);
+  public void setIsFreeAtLeastOnceIsSet(boolean value) {
+    __isset_bit_vector.set(__ISFREEATLEASTONCE_ISSET_ID, value);
   }
 
   public FRPeriod getTreatedPeriod() {
@@ -372,19 +372,19 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
       }
       break;
 
-    case IS_AT_LEAST_OCCUPIED_ONCE:
+    case IS_OCCUPIED_AT_LEAST_ONCE:
       if (value == null) {
-        unsetIsAtLeastOccupiedOnce();
+        unsetIsOccupiedAtLeastOnce();
       } else {
-        setIsAtLeastOccupiedOnce((Boolean)value);
+        setIsOccupiedAtLeastOnce((Boolean)value);
       }
       break;
 
-    case IS_AT_LEAST_FREE_ONCE:
+    case IS_FREE_AT_LEAST_ONCE:
       if (value == null) {
-        unsetIsAtLeastFreeOnce();
+        unsetIsFreeAtLeastOnce();
       } else {
-        setIsAtLeastFreeOnce((Boolean)value);
+        setIsFreeAtLeastOnce((Boolean)value);
       }
       break;
 
@@ -415,11 +415,11 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
     case OCCUPANCY:
       return getOccupancy();
 
-    case IS_AT_LEAST_OCCUPIED_ONCE:
-      return Boolean.valueOf(isIsAtLeastOccupiedOnce());
+    case IS_OCCUPIED_AT_LEAST_ONCE:
+      return Boolean.valueOf(isIsOccupiedAtLeastOnce());
 
-    case IS_AT_LEAST_FREE_ONCE:
-      return Boolean.valueOf(isIsAtLeastFreeOnce());
+    case IS_FREE_AT_LEAST_ONCE:
+      return Boolean.valueOf(isIsFreeAtLeastOnce());
 
     case TREATED_PERIOD:
       return getTreatedPeriod();
@@ -442,10 +442,10 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
       return isSetRoom();
     case OCCUPANCY:
       return isSetOccupancy();
-    case IS_AT_LEAST_OCCUPIED_ONCE:
-      return isSetIsAtLeastOccupiedOnce();
-    case IS_AT_LEAST_FREE_ONCE:
-      return isSetIsAtLeastFreeOnce();
+    case IS_OCCUPIED_AT_LEAST_ONCE:
+      return isSetIsOccupiedAtLeastOnce();
+    case IS_FREE_AT_LEAST_ONCE:
+      return isSetIsFreeAtLeastOnce();
     case TREATED_PERIOD:
       return isSetTreatedPeriod();
     case RATIO_WORST_CASE_PROBABLE_OCCUPANCY:
@@ -485,21 +485,21 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
         return false;
     }
 
-    boolean this_present_isAtLeastOccupiedOnce = true;
-    boolean that_present_isAtLeastOccupiedOnce = true;
-    if (this_present_isAtLeastOccupiedOnce || that_present_isAtLeastOccupiedOnce) {
-      if (!(this_present_isAtLeastOccupiedOnce && that_present_isAtLeastOccupiedOnce))
+    boolean this_present_isOccupiedAtLeastOnce = true;
+    boolean that_present_isOccupiedAtLeastOnce = true;
+    if (this_present_isOccupiedAtLeastOnce || that_present_isOccupiedAtLeastOnce) {
+      if (!(this_present_isOccupiedAtLeastOnce && that_present_isOccupiedAtLeastOnce))
         return false;
-      if (this.isAtLeastOccupiedOnce != that.isAtLeastOccupiedOnce)
+      if (this.isOccupiedAtLeastOnce != that.isOccupiedAtLeastOnce)
         return false;
     }
 
-    boolean this_present_isAtLeastFreeOnce = true;
-    boolean that_present_isAtLeastFreeOnce = true;
-    if (this_present_isAtLeastFreeOnce || that_present_isAtLeastFreeOnce) {
-      if (!(this_present_isAtLeastFreeOnce && that_present_isAtLeastFreeOnce))
+    boolean this_present_isFreeAtLeastOnce = true;
+    boolean that_present_isFreeAtLeastOnce = true;
+    if (this_present_isFreeAtLeastOnce || that_present_isFreeAtLeastOnce) {
+      if (!(this_present_isFreeAtLeastOnce && that_present_isFreeAtLeastOnce))
         return false;
-      if (this.isAtLeastFreeOnce != that.isAtLeastFreeOnce)
+      if (this.isFreeAtLeastOnce != that.isFreeAtLeastOnce)
         return false;
     }
 
@@ -538,15 +538,15 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
     if (present_occupancy)
       builder.append(occupancy);
 
-    boolean present_isAtLeastOccupiedOnce = true;
-    builder.append(present_isAtLeastOccupiedOnce);
-    if (present_isAtLeastOccupiedOnce)
-      builder.append(isAtLeastOccupiedOnce);
+    boolean present_isOccupiedAtLeastOnce = true;
+    builder.append(present_isOccupiedAtLeastOnce);
+    if (present_isOccupiedAtLeastOnce)
+      builder.append(isOccupiedAtLeastOnce);
 
-    boolean present_isAtLeastFreeOnce = true;
-    builder.append(present_isAtLeastFreeOnce);
-    if (present_isAtLeastFreeOnce)
-      builder.append(isAtLeastFreeOnce);
+    boolean present_isFreeAtLeastOnce = true;
+    builder.append(present_isFreeAtLeastOnce);
+    if (present_isFreeAtLeastOnce)
+      builder.append(isFreeAtLeastOnce);
 
     boolean present_treatedPeriod = true && (isSetTreatedPeriod());
     builder.append(present_treatedPeriod);
@@ -589,22 +589,22 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetIsAtLeastOccupiedOnce()).compareTo(typedOther.isSetIsAtLeastOccupiedOnce());
+    lastComparison = Boolean.valueOf(isSetIsOccupiedAtLeastOnce()).compareTo(typedOther.isSetIsOccupiedAtLeastOnce());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIsAtLeastOccupiedOnce()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.isAtLeastOccupiedOnce, typedOther.isAtLeastOccupiedOnce);
+    if (isSetIsOccupiedAtLeastOnce()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.isOccupiedAtLeastOnce, typedOther.isOccupiedAtLeastOnce);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetIsAtLeastFreeOnce()).compareTo(typedOther.isSetIsAtLeastFreeOnce());
+    lastComparison = Boolean.valueOf(isSetIsFreeAtLeastOnce()).compareTo(typedOther.isSetIsFreeAtLeastOnce());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIsAtLeastFreeOnce()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.isAtLeastFreeOnce, typedOther.isAtLeastFreeOnce);
+    if (isSetIsFreeAtLeastOnce()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.isFreeAtLeastOnce, typedOther.isFreeAtLeastOnce);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -672,18 +672,18 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // IS_AT_LEAST_OCCUPIED_ONCE
+        case 3: // IS_OCCUPIED_AT_LEAST_ONCE
           if (field.type == org.apache.thrift.protocol.TType.BOOL) {
-            this.isAtLeastOccupiedOnce = iprot.readBool();
-            setIsAtLeastOccupiedOnceIsSet(true);
+            this.isOccupiedAtLeastOnce = iprot.readBool();
+            setIsOccupiedAtLeastOnceIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // IS_AT_LEAST_FREE_ONCE
+        case 4: // IS_FREE_AT_LEAST_ONCE
           if (field.type == org.apache.thrift.protocol.TType.BOOL) {
-            this.isAtLeastFreeOnce = iprot.readBool();
-            setIsAtLeastFreeOnceIsSet(true);
+            this.isFreeAtLeastOnce = iprot.readBool();
+            setIsFreeAtLeastOnceIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -712,11 +712,11 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetIsAtLeastOccupiedOnce()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'isAtLeastOccupiedOnce' was not found in serialized data! Struct: " + toString());
+    if (!isSetIsOccupiedAtLeastOnce()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'isOccupiedAtLeastOnce' was not found in serialized data! Struct: " + toString());
     }
-    if (!isSetIsAtLeastFreeOnce()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'isAtLeastFreeOnce' was not found in serialized data! Struct: " + toString());
+    if (!isSetIsFreeAtLeastOnce()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'isFreeAtLeastOnce' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -742,11 +742,11 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
       }
       oprot.writeFieldEnd();
     }
-    oprot.writeFieldBegin(IS_AT_LEAST_OCCUPIED_ONCE_FIELD_DESC);
-    oprot.writeBool(this.isAtLeastOccupiedOnce);
+    oprot.writeFieldBegin(IS_OCCUPIED_AT_LEAST_ONCE_FIELD_DESC);
+    oprot.writeBool(this.isOccupiedAtLeastOnce);
     oprot.writeFieldEnd();
-    oprot.writeFieldBegin(IS_AT_LEAST_FREE_ONCE_FIELD_DESC);
-    oprot.writeBool(this.isAtLeastFreeOnce);
+    oprot.writeFieldBegin(IS_FREE_AT_LEAST_ONCE_FIELD_DESC);
+    oprot.writeBool(this.isFreeAtLeastOnce);
     oprot.writeFieldEnd();
     if (this.treatedPeriod != null) {
       oprot.writeFieldBegin(TREATED_PERIOD_FIELD_DESC);
@@ -783,12 +783,12 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("isAtLeastOccupiedOnce:");
-    sb.append(this.isAtLeastOccupiedOnce);
+    sb.append("isOccupiedAtLeastOnce:");
+    sb.append(this.isOccupiedAtLeastOnce);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("isAtLeastFreeOnce:");
-    sb.append(this.isAtLeastFreeOnce);
+    sb.append("isFreeAtLeastOnce:");
+    sb.append(this.isFreeAtLeastOnce);
     first = false;
     if (!first) sb.append(", ");
     sb.append("treatedPeriod:");
@@ -816,8 +816,8 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
     if (occupancy == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'occupancy' was not present! Struct: " + toString());
     }
-    // alas, we cannot check 'isAtLeastOccupiedOnce' because it's a primitive and you chose the non-beans generator.
-    // alas, we cannot check 'isAtLeastFreeOnce' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'isOccupiedAtLeastOnce' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'isFreeAtLeastOnce' because it's a primitive and you chose the non-beans generator.
     if (treatedPeriod == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'treatedPeriod' was not present! Struct: " + toString());
     }

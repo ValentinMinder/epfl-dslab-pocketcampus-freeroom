@@ -179,12 +179,12 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 			}
 		};
 
-		if (occupancy.isIsAtLeastFreeOnce()) {
+		if (occupancy.isIsFreeAtLeastOnce()) {
 			people.setImageResource(mModel
 					.getImageFromRatioOccupation(occupancy
 							.getRatioWorstCaseProbableOccupancy()));
 			people.setOnClickListener(onClickDirectServerShare);
-		} else if (occupancy.isIsAtLeastOccupiedOnce()) {
+		} else if (occupancy.isIsOccupiedAtLeastOnce()) {
 			people.setImageResource(R.drawable.ic_occupation_occupied);
 			people.setOnClickListener(null);
 		} else {

@@ -214,10 +214,10 @@ public class Utils {
 		@Override
 		public int compare(FRRoomOccupancy o0, FRRoomOccupancy o1) {
 
-			boolean onlyFree1 = !o0.isIsAtLeastOccupiedOnce();
-			boolean onlyFree2 = !o1.isIsAtLeastOccupiedOnce();
-			boolean occupied1 = o0.isIsAtLeastOccupiedOnce();
-			boolean occupied2 = o1.isIsAtLeastOccupiedOnce();
+			boolean onlyFree1 = !o0.isIsOccupiedAtLeastOnce();
+			boolean onlyFree2 = !o1.isIsOccupiedAtLeastOnce();
+			boolean occupied1 = o0.isIsOccupiedAtLeastOnce();
+			boolean occupied2 = o1.isIsOccupiedAtLeastOnce();
 
 			if (onlyFree1 && onlyFree2) {
 				return compareOnlyFree(o0.getRatioWorstCaseProbableOccupancy(),
