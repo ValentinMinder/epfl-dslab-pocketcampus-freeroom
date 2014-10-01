@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
 
 /**
@@ -33,13 +34,8 @@ import org.pocketcampus.plugin.freeroom.server.utils.Utils;
  */
 public class FetchRoomsDetails {
 
-	private final String URL_ROOMS_LIST = "https://pocketcampus.epfl.ch/proxy/"
-			+ "archibus.php/rwsrooms/searchRooms"
-			+ "?961264a174e15211109e1deb779b17d0=1&app=freeroom&"
-			+ "caller=public&unitname=DAF%";
-	private final String URL_INDIVIDUAL_ROOM = "http://pocketcampus.epfl.ch/proxy/"
-			+ "archibus.php/rwsrooms/getRoom"
-			+ "?961264a174e15211109e1deb779b17d0=1&app=freeroom&caller=sciper&id=";
+	private String URL_ROOMS_LIST;
+	private String URL_INDIVIDUAL_ROOM;
 	private final String FILE_DINCAT = "src/org/pocketcampus/plugin/freeroom/server/data/locaux_din2.txt";
 
 	private final String[] deleteNotNeededRooms = {
@@ -51,9 +47,11 @@ public class FetchRoomsDetails {
 
 	private ConnectionManager connMgr = null;
 
-	public FetchRoomsDetails(String db_url, String username, String passwd) {
+	public FetchRoomsDetails(String db_url, String username, String passwd, String url_list, String url_indiv) {
 		try {
 			connMgr = new ConnectionManager(db_url, username, passwd);
+			URL_ROOMS_LIST = url_list;
+			URL_INDIVIDUAL_ROOM = url_indiv;
 		} catch (ServerException e) {
 			e.printStackTrace();
 		}

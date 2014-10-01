@@ -34,7 +34,7 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
  */
 public class FetchOccupancyDataJSON {
 	// TODO: when turning production to real ISA server, change the URL.
-	private final String URL_DATA = "https://isatest.epfl.ch/services/timetable/reservations/";
+	private String URL_DATA;
 
 	private final String KEY_ALIAS = "name";
 	private final String KEY_ALIAS_WITHOUT_SPACE = "code";
@@ -63,6 +63,7 @@ public class FetchOccupancyDataJSON {
 			DB_URL = db_url;
 			DB_USER = username;
 			DB_PASSWORD = passwd;
+			URL_DATA = server.getOCCUPANCIES_URL();
 			this.server = server;
 		} catch (ServerException e) {
 			e.printStackTrace();
@@ -177,7 +178,7 @@ public class FetchOccupancyDataJSON {
 
 			// first fetch and insert the room from the other webservice
 			FetchRoomsDetails frd = new FetchRoomsDetails(DB_URL, DB_USER,
-					DB_PASSWORD);
+					DB_PASSWORD, server.getROOMS_LIST_URL(), server.getROOM_DETAILS_URL());
 			if (!frd.fetchRoomDetailInDB(uid)) {
 				return null;
 			}

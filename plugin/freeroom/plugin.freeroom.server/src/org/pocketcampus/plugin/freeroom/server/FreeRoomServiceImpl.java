@@ -86,6 +86,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private String DB_URL;
 	private String DB_USER;
 	private String DB_PASSWORD;
+	private String OCCUPANCIES_URL;
+	private String ROOMS_LIST_URL;
+	private String ROOM_DETAILS_URL;
 
 	// be careful when changing this, it might lead to invalid data already
 	// stored !
@@ -124,6 +127,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		DB_URL = PC_SRV_CONFIG.getString("DB_URL") + "?allowMultiQueries=true";
 		DB_USER = PC_SRV_CONFIG.getString("DB_USERNAME");
 		DB_PASSWORD = PC_SRV_CONFIG.getString("DB_PASSWORD");
+		OCCUPANCIES_URL = PC_SRV_CONFIG.getString("FR_OCCUPANCIES");
+		ROOMS_LIST_URL = PC_SRV_CONFIG.getString("FR_ROOMS_LIST");
+		ROOM_DETAILS_URL = PC_SRV_CONFIG.getString("FR_ROOM_DETAILS");
 
 		try {
 			connMgr = new ConnectionManager(DB_URL, DB_USER, DB_PASSWORD);
@@ -135,19 +141,31 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		// USEME: Periodically update
 		// new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
 		// this)).start();
+//
+//		 USEME: Rebuild rooms list in DB, need to tune parameter for tsStart
+//		 and tsEnd, (Start/End of semester)
+		Calendar mCalendar = Calendar.getInstance();
+		mCalendar.set(Calendar.MONTH, 8);
+		mCalendar.set(Calendar.DAY_OF_MONTH, 1);
+		long tsStart = mCalendar.getTimeInMillis();
+		mCalendar.set(Calendar.MONTH, 11);
+		mCalendar.set(Calendar.DAY_OF_MONTH, 31);
+		long tsEnd = mCalendar.getTimeInMillis();
+		new Thread(new RebuildDB(DB_URL, DB_USER, DB_PASSWORD, this,
+				tsStart, tsEnd)).start();
 
-		// USEME: Rebuild rooms list in DB, need to tune parameter for tsStart
-		// and tsEnd, (Start/End of semester)
-//		Calendar mCalendar = Calendar.getInstance();
-//		mCalendar.set(Calendar.MONTH, 8);
-//		mCalendar.set(Calendar.DAY_OF_MONTH, 1);
-//		long tsStart = mCalendar.getTimeInMillis();
-//		mCalendar.set(Calendar.MONTH, 11);
-//		mCalendar.set(Calendar.DAY_OF_MONTH, 31);
-//		long tsEnd = mCalendar.getTimeInMillis();
-//		new Thread(new RebuildDB(DB_URL, DB_USER, DB_PASSWORD, this,
-//				tsStart, tsEnd)).start();
+	}
 
+	public String getOCCUPANCIES_URL() {
+		return OCCUPANCIES_URL;
+	}
+
+	public String getROOMS_LIST_URL() {
+		return ROOMS_LIST_URL;
+	}
+
+	public String getROOM_DETAILS_URL() {
+		return ROOM_DETAILS_URL;
 	}
 
 	// for test purposes ONLY
