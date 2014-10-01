@@ -168,26 +168,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	}
 
 	/**
-	 * Log Severe messages coming from external clients such as android.
-	 */
-	@Override
-	public void logSevere(LogMessage arg0) throws TException {
-		log(LOG_SIDE.ANDROID, Level.SEVERE,
-				formatPathMessageLogAndroid(arg0.getMessage(), arg0.getPath()),
-				arg0.getTimestamp());
-	}
-
-	/**
-	 * Log Warning messages coming from external clients such as android.
-	 */
-	@Override
-	public void logWarning(LogMessage arg0) throws TException {
-		log(LOG_SIDE.ANDROID, Level.WARNING,
-				formatPathMessageLogAndroid(arg0.getMessage(), arg0.getPath()),
-				arg0.getTimestamp());
-	}
-
-	/**
 	 * Pre-format the message for logging
 	 * 
 	 * @param message

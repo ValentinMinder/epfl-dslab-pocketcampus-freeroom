@@ -197,15 +197,6 @@ struct WhoIsWorkingReply {
 	3: optional list<MessageFrequency> messages;
 }
 
-
-struct LogMessage {
-	1: required i64 timestamp;
-	//path beeing the path to the class where it failed
-	2: required string path;
-	3: required string message;
-}
-
-
 service FreeRoomService {
 	// main service to get the room occupancies
 	FROccupancyReply getOccupancy(1: FROccupancyRequest request);
@@ -223,9 +214,4 @@ service FreeRoomService {
 	ImWorkingReply indicateImWorking(1: ImWorkingRequest request);
 	
 	WhoIsWorkingReply getUserMessages(1: WhoIsWorkingRequest request);
-	
-	//used to log critical bug that alter user experience
-	void logSevere(1: LogMessage log);
-	
-	void logWarning(1: LogMessage log);
 }
