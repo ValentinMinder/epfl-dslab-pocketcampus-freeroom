@@ -21,8 +21,8 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<AutoCompleteUserMessageReply, AutoCompleteUserMessageReply._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("AutoCompleteUserMessageReply");
+public class FRWhoIsWorkingReply implements org.apache.thrift.TBase<FRWhoIsWorkingReply, FRWhoIsWorkingReply._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRWhoIsWorkingReply");
 
   private static final org.apache.thrift.protocol.TField STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("status", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField STATUS_COMMENT_FIELD_DESC = new org.apache.thrift.protocol.TField("statusComment", org.apache.thrift.protocol.TType.STRING, (short)2);
@@ -30,7 +30,7 @@ public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<Aut
 
   private FRStatusCode status; // required
   private String statusComment; // required
-  private List<String> messages; // required
+  private List<FRMessageFrequency> messages; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -111,15 +111,15 @@ public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<Aut
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.MESSAGES, new org.apache.thrift.meta_data.FieldMetaData("messages", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
+            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRMessageFrequency.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(AutoCompleteUserMessageReply.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRWhoIsWorkingReply.class, metaDataMap);
   }
 
-  public AutoCompleteUserMessageReply() {
+  public FRWhoIsWorkingReply() {
   }
 
-  public AutoCompleteUserMessageReply(
+  public FRWhoIsWorkingReply(
     FRStatusCode status,
     String statusComment)
   {
@@ -131,7 +131,7 @@ public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<Aut
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public AutoCompleteUserMessageReply(AutoCompleteUserMessageReply other) {
+  public FRWhoIsWorkingReply(FRWhoIsWorkingReply other) {
     if (other.isSetStatus()) {
       this.status = other.status;
     }
@@ -139,16 +139,16 @@ public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<Aut
       this.statusComment = other.statusComment;
     }
     if (other.isSetMessages()) {
-      List<String> __this__messages = new ArrayList<String>();
-      for (String other_element : other.messages) {
-        __this__messages.add(other_element);
+      List<FRMessageFrequency> __this__messages = new ArrayList<FRMessageFrequency>();
+      for (FRMessageFrequency other_element : other.messages) {
+        __this__messages.add(new FRMessageFrequency(other_element));
       }
       this.messages = __this__messages;
     }
   }
 
-  public AutoCompleteUserMessageReply deepCopy() {
-    return new AutoCompleteUserMessageReply(this);
+  public FRWhoIsWorkingReply deepCopy() {
+    return new FRWhoIsWorkingReply(this);
   }
 
   @Override
@@ -170,7 +170,7 @@ public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<Aut
    * 
    * @see FRStatusCode
    */
-  public AutoCompleteUserMessageReply setStatus(FRStatusCode status) {
+  public FRWhoIsWorkingReply setStatus(FRStatusCode status) {
     this.status = status;
     return this;
   }
@@ -194,7 +194,7 @@ public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<Aut
     return this.statusComment;
   }
 
-  public AutoCompleteUserMessageReply setStatusComment(String statusComment) {
+  public FRWhoIsWorkingReply setStatusComment(String statusComment) {
     this.statusComment = statusComment;
     return this;
   }
@@ -218,22 +218,22 @@ public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<Aut
     return (this.messages == null) ? 0 : this.messages.size();
   }
 
-  public java.util.Iterator<String> getMessagesIterator() {
+  public java.util.Iterator<FRMessageFrequency> getMessagesIterator() {
     return (this.messages == null) ? null : this.messages.iterator();
   }
 
-  public void addToMessages(String elem) {
+  public void addToMessages(FRMessageFrequency elem) {
     if (this.messages == null) {
-      this.messages = new ArrayList<String>();
+      this.messages = new ArrayList<FRMessageFrequency>();
     }
     this.messages.add(elem);
   }
 
-  public List<String> getMessages() {
+  public List<FRMessageFrequency> getMessages() {
     return this.messages;
   }
 
-  public AutoCompleteUserMessageReply setMessages(List<String> messages) {
+  public FRWhoIsWorkingReply setMessages(List<FRMessageFrequency> messages) {
     this.messages = messages;
     return this;
   }
@@ -275,7 +275,7 @@ public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<Aut
       if (value == null) {
         unsetMessages();
       } else {
-        setMessages((List<String>)value);
+        setMessages((List<FRMessageFrequency>)value);
       }
       break;
 
@@ -318,12 +318,12 @@ public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<Aut
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof AutoCompleteUserMessageReply)
-      return this.equals((AutoCompleteUserMessageReply)that);
+    if (that instanceof FRWhoIsWorkingReply)
+      return this.equals((FRWhoIsWorkingReply)that);
     return false;
   }
 
-  public boolean equals(AutoCompleteUserMessageReply that) {
+  public boolean equals(FRWhoIsWorkingReply that) {
     if (that == null)
       return false;
 
@@ -379,13 +379,13 @@ public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<Aut
     return builder.toHashCode();
   }
 
-  public int compareTo(AutoCompleteUserMessageReply other) {
+  public int compareTo(FRWhoIsWorkingReply other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    AutoCompleteUserMessageReply typedOther = (AutoCompleteUserMessageReply)other;
+    FRWhoIsWorkingReply typedOther = (FRWhoIsWorkingReply)other;
 
     lastComparison = Boolean.valueOf(isSetStatus()).compareTo(typedOther.isSetStatus());
     if (lastComparison != 0) {
@@ -451,13 +451,14 @@ public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<Aut
         case 3: // MESSAGES
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list30 = iprot.readListBegin();
-              this.messages = new ArrayList<String>(_list30.size);
-              for (int _i31 = 0; _i31 < _list30.size; ++_i31)
+              org.apache.thrift.protocol.TList _list34 = iprot.readListBegin();
+              this.messages = new ArrayList<FRMessageFrequency>(_list34.size);
+              for (int _i35 = 0; _i35 < _list34.size; ++_i35)
               {
-                String _elem32; // required
-                _elem32 = iprot.readString();
-                this.messages.add(_elem32);
+                FRMessageFrequency _elem36; // required
+                _elem36 = new FRMessageFrequency();
+                _elem36.read(iprot);
+                this.messages.add(_elem36);
               }
               iprot.readListEnd();
             }
@@ -494,10 +495,10 @@ public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<Aut
       if (isSetMessages()) {
         oprot.writeFieldBegin(MESSAGES_FIELD_DESC);
         {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.messages.size()));
-          for (String _iter33 : this.messages)
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.messages.size()));
+          for (FRMessageFrequency _iter37 : this.messages)
           {
-            oprot.writeString(_iter33);
+            _iter37.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -510,7 +511,7 @@ public class AutoCompleteUserMessageReply implements org.apache.thrift.TBase<Aut
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("AutoCompleteUserMessageReply(");
+    StringBuilder sb = new StringBuilder("FRWhoIsWorkingReply(");
     boolean first = true;
 
     sb.append("status:");

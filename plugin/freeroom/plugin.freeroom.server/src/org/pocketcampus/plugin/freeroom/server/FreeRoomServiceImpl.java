@@ -27,11 +27,11 @@ import org.pocketcampus.plugin.freeroom.data.RebuildDB;
 import org.pocketcampus.plugin.freeroom.server.utils.CheckRequests;
 import org.pocketcampus.plugin.freeroom.server.utils.OccupancySorted;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
-import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
-import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
-import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
-import org.pocketcampus.plugin.freeroom.shared.AutoCompleteUserMessageReply;
-import org.pocketcampus.plugin.freeroom.shared.AutoCompleteUserMessageRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteReply;
+import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteUserMessageReply;
+import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteUserMessageRequest;
 import org.pocketcampus.plugin.freeroom.shared.Constants;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
@@ -40,11 +40,11 @@ import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService;
-import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
-import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
-import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
-import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
-import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
+import org.pocketcampus.plugin.freeroom.shared.FRImWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.FRImWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRWorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
@@ -1109,7 +1109,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					currentUID = uid;
 				}
 
-				ActualOccupation accOcc = new ActualOccupation(period,
+				FRActualOccupation accOcc = new FRActualOccupation(period,
 						available);
 				accOcc.setRatioOccupation(ratio);
 				currentOccupancy.addActualOccupation(accOcc);
@@ -1171,7 +1171,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					currentOccupancy = new OccupancySorted(mRoom, tsStart,
 							tsEnd, onlyFreeRooms);
 					FRPeriod period = new FRPeriod(tsStart, tsEnd);
-					ActualOccupation accOcc = new ActualOccupation(period, true);
+					FRActualOccupation accOcc = new FRActualOccupation(period, true);
 					currentOccupancy.addActualOccupation(accOcc);
 
 					FRRoomOccupancy mOccupancy = currentOccupancy.getOccupancy();
@@ -1237,16 +1237,16 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * 
 	 */
 	@Override
-	public AutoCompleteReply autoCompleteRoom(AutoCompleteRequest request)
+	public FRAutoCompleteReply autoCompleteRoom(FRAutoCompleteRequest request)
 			throws TException {
 		if (request == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Receiving null AutoCompleteRequest");
-			return new AutoCompleteReply(FRStatusCode.HTTP_BAD_REQUEST,
+			return new FRAutoCompleteReply(FRStatusCode.HTTP_BAD_REQUEST,
 					"AutocompleteRequest is null");
 		}
 
-		AutoCompleteReply reply = CheckRequests
+		FRAutoCompleteReply reply = CheckRequests
 				.checkAutoCompleteRequest(request);
 		if (reply.getStatus() != FRStatusCode.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
@@ -1258,7 +1258,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		String constraint = request.getConstraint();
 
 		if (constraint.length() < Constants.MIN_AUTOCOMPL_LENGTH) {
-			return new AutoCompleteReply(FRStatusCode.HTTP_BAD_REQUEST,
+			return new FRAutoCompleteReply(FRStatusCode.HTTP_BAD_REQUEST,
 					"Constraints should be at least "
 							+ Constants.MIN_AUTOCOMPL_LENGTH
 							+ " characters long.");
@@ -1352,7 +1352,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				rooms.add(frRoom);
 			}
 
-			reply = new AutoCompleteReply(FRStatusCode.HTTP_OK, ""
+			reply = new FRAutoCompleteReply(FRStatusCode.HTTP_OK, ""
 					+ HttpURLConnection.HTTP_OK);
 			reply.setListRoom(Utils.sortRoomsByBuilding(rooms));
 
@@ -1360,7 +1360,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					+ forbiddenRooms;
 			log(Level.INFO, formatServerLogInfo("autoCompleteRoom", logMessage));
 		} catch (SQLException e) {
-			reply = new AutoCompleteReply(FRStatusCode.HTTP_INTERNAL_ERROR, ""
+			reply = new FRAutoCompleteReply(FRStatusCode.HTTP_INTERNAL_ERROR, ""
 					+ HttpURLConnection.HTTP_INTERNAL_ERROR);
 			e.printStackTrace();
 			log(LOG_SIDE.SERVER, Level.SEVERE,
@@ -1371,17 +1371,17 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	}
 
 	@Override
-	public AutoCompleteUserMessageReply autoCompleteUserMessage(
-			AutoCompleteUserMessageRequest request) throws TException {
+	public FRAutoCompleteUserMessageReply autoCompleteUserMessage(
+			FRAutoCompleteUserMessageRequest request) throws TException {
 		if (request == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Receiving null AutoCompleteUserMessageRequest");
-			return new AutoCompleteUserMessageReply(
+			return new FRAutoCompleteUserMessageReply(
 					FRStatusCode.HTTP_BAD_REQUEST,
 					"AutocompleteUserMessageRequest is null");
 		}
 
-		AutoCompleteUserMessageReply reply = CheckRequests
+		FRAutoCompleteUserMessageReply reply = CheckRequests
 				.checkAutoCompleteUserMessageRequest(request);
 		if (reply.getStatus() != FRStatusCode.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
@@ -1395,7 +1395,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		FRPeriod period = request.getPeriod();
 
 		if (period.getTimeStampEnd() < period.getTimeStampStart()) {
-			return new AutoCompleteUserMessageReply(
+			return new FRAutoCompleteUserMessageReply(
 					FRStatusCode.HTTP_BAD_REQUEST,
 					"The end of the period should be after the start");
 		}
@@ -1433,7 +1433,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"SQL error when autocompleting user message for uid = "
 							+ uid + " period = " + period + " constraint = "
 							+ constraint);
-			return new AutoCompleteUserMessageReply(
+			return new FRAutoCompleteUserMessageReply(
 					FRStatusCode.HTTP_INTERNAL_ERROR,
 					"Error when autocompleting");
 		}
@@ -1447,16 +1447,16 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * HTTP_CONFLICT in that case.
 	 */
 	@Override
-	public ImWorkingReply indicateImWorking(ImWorkingRequest request)
+	public FRImWorkingReply indicateImWorking(FRImWorkingRequest request)
 			throws TException {
 		if (request == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Receiving null ImWorkingRequest");
-			return new ImWorkingReply(FRStatusCode.HTTP_BAD_REQUEST,
+			return new FRImWorkingReply(FRStatusCode.HTTP_BAD_REQUEST,
 					"ImWorkingReply is null");
 		}
 
-		ImWorkingReply reply = CheckRequests.checkImWorkingRequest(request);
+		FRImWorkingReply reply = CheckRequests.checkImWorkingRequest(request);
 		if (reply.getStatus() != FRStatusCode.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
 			return reply;
@@ -1464,7 +1464,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
 		}
 
-		WorkingOccupancy work = request.getWork();
+		FRWorkingOccupancy work = request.getWork();
 		FRPeriod period = work.getPeriod();
 		String userMessage = (work.isSetMessage() && work.getMessage() != null && work
 				.getMessage().trim().length() > 0) ? work.getMessage().trim()
@@ -1482,21 +1482,21 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			log(Level.INFO,
 					formatServerLogInfo("indicateImWorking", logMessage));
 		}
-		return new ImWorkingReply(code, " ");
+		return new FRImWorkingReply(code, " ");
 
 	}
 
 	@Override
-	public WhoIsWorkingReply getUserMessages(WhoIsWorkingRequest request)
+	public FRWhoIsWorkingReply getUserMessages(FRWhoIsWorkingRequest request)
 			throws TException {
 		if (request == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Receiving null WhoIsWorkingRequest");
-			return new WhoIsWorkingReply(FRStatusCode.HTTP_BAD_REQUEST,
+			return new FRWhoIsWorkingReply(FRStatusCode.HTTP_BAD_REQUEST,
 					"WhoIsWorkingRequest is null");
 		}
 
-		WhoIsWorkingReply reply = CheckRequests
+		FRWhoIsWorkingReply reply = CheckRequests
 				.checkWhoIsWorkingRequest(request);
 		if (reply.getStatus() != FRStatusCode.HTTP_OK) {
 			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
@@ -1510,7 +1510,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		List<String> listMessages = getUserMessages(period,
 				request.getRoomUID());
 		if (listMessages == null) {
-			return new WhoIsWorkingReply(FRStatusCode.HTTP_INTERNAL_ERROR,
+			return new FRWhoIsWorkingReply(FRStatusCode.HTTP_INTERNAL_ERROR,
 					HttpURLConnection.HTTP_INTERNAL_ERROR + "");
 		} else {
 			reply.setMessages(Utils.removeGroupMessages(listMessages));

@@ -3,8 +3,8 @@ package org.pocketcampus.plugin.freeroom.android.req;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
-import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
-import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteReply;
+import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 
@@ -28,7 +28,7 @@ import android.util.Log;
 
 public class AutoCompleteRequestASyncTask
 		extends
-		Request<FreeRoomController, Iface, AutoCompleteRequest, AutoCompleteReply> {
+		Request<FreeRoomController, Iface, FRAutoCompleteRequest, FRAutoCompleteReply> {
 
 	private IFreeRoomView callerView;
 
@@ -37,14 +37,14 @@ public class AutoCompleteRequestASyncTask
 	}
 
 	@Override
-	protected AutoCompleteReply runInBackground(Iface client,
-			AutoCompleteRequest request) throws Exception {
+	protected FRAutoCompleteReply runInBackground(Iface client,
+			FRAutoCompleteRequest request) throws Exception {
 		return client.autoCompleteRoom(request);
 	}
 
 	@Override
 	protected void onResult(FreeRoomController mController,
-			AutoCompleteReply reply) {
+			FRAutoCompleteReply reply) {
 		FRStatusCode status = reply.getStatus();
 		if (status == FRStatusCode.HTTP_OK) {
 			Log.v(this.getClass().toString(), "server replied successfully");

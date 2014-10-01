@@ -7,11 +7,11 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.utils.FRTimesClient;
-import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
-import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingRequest;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -37,10 +37,10 @@ import android.widget.TextView;
  */
 
 public class ActualOccupationArrayAdapter<T> extends
-		ArrayAdapter<ActualOccupation> {
+		ArrayAdapter<FRActualOccupation> {
 	private Context context;
 	private FRRoomOccupancy occupancy;
-	private List<ActualOccupation> data;
+	private List<FRActualOccupation> data;
 	// hold the caller view for colors updates.
 	private FreeRoomModel mModel;
 	private FreeRoomController mController;
@@ -76,7 +76,7 @@ public class ActualOccupationArrayAdapter<T> extends
 			vholder = (ViewHolder) convertView.getTag();
 		}
 
-		final ActualOccupation mActualOccupation = data.get(index);
+		final FRActualOccupation mActualOccupation = data.get(index);
 		TextView tv = vholder.getTextView();
 		FRPeriod mFrPeriod = mActualOccupation.getPeriod();
 		tv.setText(FRTimesClient.getInstance().formatTimePeriod(mFrPeriod,
@@ -129,7 +129,7 @@ public class ActualOccupationArrayAdapter<T> extends
 
 				@Override
 				public void onClick(View arg0) {
-					WhoIsWorkingRequest req = new WhoIsWorkingRequest(roomUID,
+					FRWhoIsWorkingRequest req = new FRWhoIsWorkingRequest(roomUID,
 							mActualOccupation.getPeriod());
 					mController.prepareCheckWhoIsWorking(req);
 					mController.checkWhoIsWorking(homeView);

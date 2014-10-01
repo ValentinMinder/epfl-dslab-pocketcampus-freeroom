@@ -21,8 +21,8 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoCompleteRequest, AutoCompleteRequest._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("AutoCompleteRequest");
+public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoCompleteRequest, FRAutoCompleteRequest._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRAutoCompleteRequest");
 
   private static final org.apache.thrift.protocol.TField CONSTRAINT_FIELD_DESC = new org.apache.thrift.protocol.TField("constraint", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField FORBIDDEN_ROOMS_UID_FIELD_DESC = new org.apache.thrift.protocol.TField("forbiddenRoomsUID", org.apache.thrift.protocol.TType.SET, (short)2);
@@ -119,13 +119,13 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     tmpMap.put(_Fields.EXACT_STRING, new org.apache.thrift.meta_data.FieldMetaData("exactString", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(AutoCompleteRequest.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRAutoCompleteRequest.class, metaDataMap);
   }
 
-  public AutoCompleteRequest() {
+  public FRAutoCompleteRequest() {
   }
 
-  public AutoCompleteRequest(
+  public FRAutoCompleteRequest(
     String constraint,
     int userGroup)
   {
@@ -138,7 +138,7 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public AutoCompleteRequest(AutoCompleteRequest other) {
+  public FRAutoCompleteRequest(FRAutoCompleteRequest other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetConstraint()) {
@@ -155,8 +155,8 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     this.exactString = other.exactString;
   }
 
-  public AutoCompleteRequest deepCopy() {
-    return new AutoCompleteRequest(this);
+  public FRAutoCompleteRequest deepCopy() {
+    return new FRAutoCompleteRequest(this);
   }
 
   @Override
@@ -173,7 +173,7 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     return this.constraint;
   }
 
-  public AutoCompleteRequest setConstraint(String constraint) {
+  public FRAutoCompleteRequest setConstraint(String constraint) {
     this.constraint = constraint;
     return this;
   }
@@ -212,7 +212,7 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     return this.forbiddenRoomsUID;
   }
 
-  public AutoCompleteRequest setForbiddenRoomsUID(Set<String> forbiddenRoomsUID) {
+  public FRAutoCompleteRequest setForbiddenRoomsUID(Set<String> forbiddenRoomsUID) {
     this.forbiddenRoomsUID = forbiddenRoomsUID;
     return this;
   }
@@ -236,7 +236,7 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     return this.userGroup;
   }
 
-  public AutoCompleteRequest setUserGroup(int userGroup) {
+  public FRAutoCompleteRequest setUserGroup(int userGroup) {
     this.userGroup = userGroup;
     setUserGroupIsSet(true);
     return this;
@@ -259,7 +259,7 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     return this.exactString;
   }
 
-  public AutoCompleteRequest setExactString(boolean exactString) {
+  public FRAutoCompleteRequest setExactString(boolean exactString) {
     this.exactString = exactString;
     setExactStringIsSet(true);
     return this;
@@ -356,12 +356,12 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof AutoCompleteRequest)
-      return this.equals((AutoCompleteRequest)that);
+    if (that instanceof FRAutoCompleteRequest)
+      return this.equals((FRAutoCompleteRequest)that);
     return false;
   }
 
-  public boolean equals(AutoCompleteRequest that) {
+  public boolean equals(FRAutoCompleteRequest that) {
     if (that == null)
       return false;
 
@@ -431,13 +431,13 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     return builder.toHashCode();
   }
 
-  public int compareTo(AutoCompleteRequest other) {
+  public int compareTo(FRAutoCompleteRequest other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    AutoCompleteRequest typedOther = (AutoCompleteRequest)other;
+    FRAutoCompleteRequest typedOther = (FRAutoCompleteRequest)other;
 
     lastComparison = Boolean.valueOf(isSetConstraint()).compareTo(typedOther.isSetConstraint());
     if (lastComparison != 0) {
@@ -587,7 +587,7 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("AutoCompleteRequest(");
+    StringBuilder sb = new StringBuilder("FRAutoCompleteRequest(");
     boolean first = true;
 
     sb.append("constraint:");

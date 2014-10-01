@@ -1,17 +1,17 @@
 package org.pocketcampus.plugin.freeroom.server.utils;
 
-import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
-import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
-import org.pocketcampus.plugin.freeroom.shared.AutoCompleteUserMessageReply;
-import org.pocketcampus.plugin.freeroom.shared.AutoCompleteUserMessageRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteReply;
+import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteUserMessageReply;
+import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteUserMessageRequest;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
-import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
-import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
-import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
-import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
-import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
+import org.pocketcampus.plugin.freeroom.shared.FRImWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.FRImWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRWorkingOccupancy;
 
 /**
  * Checks that the request receive all well-formed and not corrupted (never
@@ -59,9 +59,9 @@ public class CheckRequests {
 		return reply;
 	}
 
-	public static AutoCompleteReply checkAutoCompleteRequest(
-			AutoCompleteRequest request) {
-		AutoCompleteReply reply = new AutoCompleteReply();
+	public static FRAutoCompleteReply checkAutoCompleteRequest(
+			FRAutoCompleteRequest request) {
+		FRAutoCompleteReply reply = new FRAutoCompleteReply();
 		FRStatusCode status = FRStatusCode.HTTP_OK;
 		String statusComment = "AutoCompleteRequest : ";
 
@@ -89,8 +89,8 @@ public class CheckRequests {
 		return reply;
 	}
 
-	public static ImWorkingReply checkImWorkingRequest(ImWorkingRequest request) {
-		ImWorkingReply reply = new ImWorkingReply();
+	public static FRImWorkingReply checkImWorkingRequest(FRImWorkingRequest request) {
+		FRImWorkingReply reply = new FRImWorkingReply();
 		FRStatusCode status = FRStatusCode.HTTP_OK;
 		String statusComment = "ImWorkingRequest : ";
 
@@ -124,7 +124,7 @@ public class CheckRequests {
 		return reply;
 	}
 
-	public static String checkWorkingOccupancy(WorkingOccupancy work) {
+	public static String checkWorkingOccupancy(FRWorkingOccupancy work) {
 		boolean error = false;
 		String comment = "WorkingOccupancy ";
 		if (work == null) {
@@ -146,9 +146,9 @@ public class CheckRequests {
 		return null;
 	}
 
-	public static WhoIsWorkingReply checkWhoIsWorkingRequest(
-			WhoIsWorkingRequest request) {
-		WhoIsWorkingReply reply = new WhoIsWorkingReply();
+	public static FRWhoIsWorkingReply checkWhoIsWorkingRequest(
+			FRWhoIsWorkingRequest request) {
+		FRWhoIsWorkingReply reply = new FRWhoIsWorkingReply();
 		FRStatusCode status = FRStatusCode.HTTP_OK;
 		String statusComment = "WhoIsWorkingRequest : ";
 
@@ -176,9 +176,9 @@ public class CheckRequests {
 		return reply;
 	}
 
-	public static AutoCompleteUserMessageReply checkAutoCompleteUserMessageRequest(
-			AutoCompleteUserMessageRequest request) {
-		AutoCompleteUserMessageReply reply = new AutoCompleteUserMessageReply();
+	public static FRAutoCompleteUserMessageReply checkAutoCompleteUserMessageRequest(
+			FRAutoCompleteUserMessageRequest request) {
+		FRAutoCompleteUserMessageReply reply = new FRAutoCompleteUserMessageReply();
 		FRStatusCode status = FRStatusCode.HTTP_OK;
 		String statusComment = "AutoCompleteUserMessageRequest : ";
 

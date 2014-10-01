@@ -21,22 +21,22 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<AutoCompleteUserMessageRequest, AutoCompleteUserMessageRequest._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("AutoCompleteUserMessageRequest");
+public class FRActualOccupation implements org.apache.thrift.TBase<FRActualOccupation, FRActualOccupation._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRActualOccupation");
 
   private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-  private static final org.apache.thrift.protocol.TField ROOM_FIELD_DESC = new org.apache.thrift.protocol.TField("room", org.apache.thrift.protocol.TType.STRUCT, (short)2);
-  private static final org.apache.thrift.protocol.TField CONSTRAINT_FIELD_DESC = new org.apache.thrift.protocol.TField("constraint", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField AVAILABLE_FIELD_DESC = new org.apache.thrift.protocol.TField("available", org.apache.thrift.protocol.TType.BOOL, (short)2);
+  private static final org.apache.thrift.protocol.TField RATIO_OCCUPATION_FIELD_DESC = new org.apache.thrift.protocol.TField("ratioOccupation", org.apache.thrift.protocol.TType.DOUBLE, (short)4);
 
   private FRPeriod period; // required
-  private FRRoom room; // required
-  private String constraint; // required
+  private boolean available; // required
+  private double ratioOccupation; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     PERIOD((short)1, "period"),
-    ROOM((short)2, "room"),
-    CONSTRAINT((short)3, "constraint");
+    AVAILABLE((short)2, "available"),
+    RATIO_OCCUPATION((short)4, "ratioOccupation");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -53,10 +53,10 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
       switch(fieldId) {
         case 1: // PERIOD
           return PERIOD;
-        case 2: // ROOM
-          return ROOM;
-        case 3: // CONSTRAINT
-          return CONSTRAINT;
+        case 2: // AVAILABLE
+          return AVAILABLE;
+        case 4: // RATIO_OCCUPATION
+          return RATIO_OCCUPATION;
         default:
           return null;
       }
@@ -97,65 +97,67 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
   }
 
   // isset id assignments
+  private static final int __AVAILABLE_ISSET_ID = 0;
+  private static final int __RATIOOCCUPATION_ISSET_ID = 1;
+  private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.PERIOD, new org.apache.thrift.meta_data.FieldMetaData("period", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRPeriod.class)));
-    tmpMap.put(_Fields.ROOM, new org.apache.thrift.meta_data.FieldMetaData("room", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRRoom.class)));
-    tmpMap.put(_Fields.CONSTRAINT, new org.apache.thrift.meta_data.FieldMetaData("constraint", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.AVAILABLE, new org.apache.thrift.meta_data.FieldMetaData("available", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.RATIO_OCCUPATION, new org.apache.thrift.meta_data.FieldMetaData("ratioOccupation", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(AutoCompleteUserMessageRequest.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRActualOccupation.class, metaDataMap);
   }
 
-  public AutoCompleteUserMessageRequest() {
+  public FRActualOccupation() {
   }
 
-  public AutoCompleteUserMessageRequest(
+  public FRActualOccupation(
     FRPeriod period,
-    FRRoom room,
-    String constraint)
+    boolean available)
   {
     this();
     this.period = period;
-    this.room = room;
-    this.constraint = constraint;
+    this.available = available;
+    setAvailableIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public AutoCompleteUserMessageRequest(AutoCompleteUserMessageRequest other) {
+  public FRActualOccupation(FRActualOccupation other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetPeriod()) {
       this.period = new FRPeriod(other.period);
     }
-    if (other.isSetRoom()) {
-      this.room = new FRRoom(other.room);
-    }
-    if (other.isSetConstraint()) {
-      this.constraint = other.constraint;
-    }
+    this.available = other.available;
+    this.ratioOccupation = other.ratioOccupation;
   }
 
-  public AutoCompleteUserMessageRequest deepCopy() {
-    return new AutoCompleteUserMessageRequest(this);
+  public FRActualOccupation deepCopy() {
+    return new FRActualOccupation(this);
   }
 
   @Override
   public void clear() {
     this.period = null;
-    this.room = null;
-    this.constraint = null;
+    setAvailableIsSet(false);
+    this.available = false;
+    setRatioOccupationIsSet(false);
+    this.ratioOccupation = 0.0;
   }
 
   public FRPeriod getPeriod() {
     return this.period;
   }
 
-  public AutoCompleteUserMessageRequest setPeriod(FRPeriod period) {
+  public FRActualOccupation setPeriod(FRPeriod period) {
     this.period = period;
     return this;
   }
@@ -175,52 +177,50 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
     }
   }
 
-  public FRRoom getRoom() {
-    return this.room;
+  public boolean isAvailable() {
+    return this.available;
   }
 
-  public AutoCompleteUserMessageRequest setRoom(FRRoom room) {
-    this.room = room;
+  public FRActualOccupation setAvailable(boolean available) {
+    this.available = available;
+    setAvailableIsSet(true);
     return this;
   }
 
-  public void unsetRoom() {
-    this.room = null;
+  public void unsetAvailable() {
+    __isset_bit_vector.clear(__AVAILABLE_ISSET_ID);
   }
 
-  /** Returns true if field room is set (has been assigned a value) and false otherwise */
-  public boolean isSetRoom() {
-    return this.room != null;
+  /** Returns true if field available is set (has been assigned a value) and false otherwise */
+  public boolean isSetAvailable() {
+    return __isset_bit_vector.get(__AVAILABLE_ISSET_ID);
   }
 
-  public void setRoomIsSet(boolean value) {
-    if (!value) {
-      this.room = null;
-    }
+  public void setAvailableIsSet(boolean value) {
+    __isset_bit_vector.set(__AVAILABLE_ISSET_ID, value);
   }
 
-  public String getConstraint() {
-    return this.constraint;
+  public double getRatioOccupation() {
+    return this.ratioOccupation;
   }
 
-  public AutoCompleteUserMessageRequest setConstraint(String constraint) {
-    this.constraint = constraint;
+  public FRActualOccupation setRatioOccupation(double ratioOccupation) {
+    this.ratioOccupation = ratioOccupation;
+    setRatioOccupationIsSet(true);
     return this;
   }
 
-  public void unsetConstraint() {
-    this.constraint = null;
+  public void unsetRatioOccupation() {
+    __isset_bit_vector.clear(__RATIOOCCUPATION_ISSET_ID);
   }
 
-  /** Returns true if field constraint is set (has been assigned a value) and false otherwise */
-  public boolean isSetConstraint() {
-    return this.constraint != null;
+  /** Returns true if field ratioOccupation is set (has been assigned a value) and false otherwise */
+  public boolean isSetRatioOccupation() {
+    return __isset_bit_vector.get(__RATIOOCCUPATION_ISSET_ID);
   }
 
-  public void setConstraintIsSet(boolean value) {
-    if (!value) {
-      this.constraint = null;
-    }
+  public void setRatioOccupationIsSet(boolean value) {
+    __isset_bit_vector.set(__RATIOOCCUPATION_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
@@ -233,19 +233,19 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
       }
       break;
 
-    case ROOM:
+    case AVAILABLE:
       if (value == null) {
-        unsetRoom();
+        unsetAvailable();
       } else {
-        setRoom((FRRoom)value);
+        setAvailable((Boolean)value);
       }
       break;
 
-    case CONSTRAINT:
+    case RATIO_OCCUPATION:
       if (value == null) {
-        unsetConstraint();
+        unsetRatioOccupation();
       } else {
-        setConstraint((String)value);
+        setRatioOccupation((Double)value);
       }
       break;
 
@@ -257,11 +257,11 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
     case PERIOD:
       return getPeriod();
 
-    case ROOM:
-      return getRoom();
+    case AVAILABLE:
+      return Boolean.valueOf(isAvailable());
 
-    case CONSTRAINT:
-      return getConstraint();
+    case RATIO_OCCUPATION:
+      return Double.valueOf(getRatioOccupation());
 
     }
     throw new IllegalStateException();
@@ -276,10 +276,10 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
     switch (field) {
     case PERIOD:
       return isSetPeriod();
-    case ROOM:
-      return isSetRoom();
-    case CONSTRAINT:
-      return isSetConstraint();
+    case AVAILABLE:
+      return isSetAvailable();
+    case RATIO_OCCUPATION:
+      return isSetRatioOccupation();
     }
     throw new IllegalStateException();
   }
@@ -288,12 +288,12 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof AutoCompleteUserMessageRequest)
-      return this.equals((AutoCompleteUserMessageRequest)that);
+    if (that instanceof FRActualOccupation)
+      return this.equals((FRActualOccupation)that);
     return false;
   }
 
-  public boolean equals(AutoCompleteUserMessageRequest that) {
+  public boolean equals(FRActualOccupation that) {
     if (that == null)
       return false;
 
@@ -306,21 +306,21 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
         return false;
     }
 
-    boolean this_present_room = true && this.isSetRoom();
-    boolean that_present_room = true && that.isSetRoom();
-    if (this_present_room || that_present_room) {
-      if (!(this_present_room && that_present_room))
+    boolean this_present_available = true;
+    boolean that_present_available = true;
+    if (this_present_available || that_present_available) {
+      if (!(this_present_available && that_present_available))
         return false;
-      if (!this.room.equals(that.room))
+      if (this.available != that.available)
         return false;
     }
 
-    boolean this_present_constraint = true && this.isSetConstraint();
-    boolean that_present_constraint = true && that.isSetConstraint();
-    if (this_present_constraint || that_present_constraint) {
-      if (!(this_present_constraint && that_present_constraint))
+    boolean this_present_ratioOccupation = true && this.isSetRatioOccupation();
+    boolean that_present_ratioOccupation = true && that.isSetRatioOccupation();
+    if (this_present_ratioOccupation || that_present_ratioOccupation) {
+      if (!(this_present_ratioOccupation && that_present_ratioOccupation))
         return false;
-      if (!this.constraint.equals(that.constraint))
+      if (this.ratioOccupation != that.ratioOccupation)
         return false;
     }
 
@@ -336,26 +336,26 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
     if (present_period)
       builder.append(period);
 
-    boolean present_room = true && (isSetRoom());
-    builder.append(present_room);
-    if (present_room)
-      builder.append(room);
+    boolean present_available = true;
+    builder.append(present_available);
+    if (present_available)
+      builder.append(available);
 
-    boolean present_constraint = true && (isSetConstraint());
-    builder.append(present_constraint);
-    if (present_constraint)
-      builder.append(constraint);
+    boolean present_ratioOccupation = true && (isSetRatioOccupation());
+    builder.append(present_ratioOccupation);
+    if (present_ratioOccupation)
+      builder.append(ratioOccupation);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(AutoCompleteUserMessageRequest other) {
+  public int compareTo(FRActualOccupation other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    AutoCompleteUserMessageRequest typedOther = (AutoCompleteUserMessageRequest)other;
+    FRActualOccupation typedOther = (FRActualOccupation)other;
 
     lastComparison = Boolean.valueOf(isSetPeriod()).compareTo(typedOther.isSetPeriod());
     if (lastComparison != 0) {
@@ -367,22 +367,22 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetRoom()).compareTo(typedOther.isSetRoom());
+    lastComparison = Boolean.valueOf(isSetAvailable()).compareTo(typedOther.isSetAvailable());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetRoom()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.room, typedOther.room);
+    if (isSetAvailable()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.available, typedOther.available);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetConstraint()).compareTo(typedOther.isSetConstraint());
+    lastComparison = Boolean.valueOf(isSetRatioOccupation()).compareTo(typedOther.isSetRatioOccupation());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetConstraint()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.constraint, typedOther.constraint);
+    if (isSetRatioOccupation()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.ratioOccupation, typedOther.ratioOccupation);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -412,17 +412,18 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // ROOM
-          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.room = new FRRoom();
-            this.room.read(iprot);
+        case 2: // AVAILABLE
+          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
+            this.available = iprot.readBool();
+            setAvailableIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // CONSTRAINT
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.constraint = iprot.readString();
+        case 4: // RATIO_OCCUPATION
+          if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
+            this.ratioOccupation = iprot.readDouble();
+            setRatioOccupationIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -435,6 +436,9 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
+    if (!isSetAvailable()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'available' was not found in serialized data! Struct: " + toString());
+    }
     validate();
   }
 
@@ -447,14 +451,12 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
       this.period.write(oprot);
       oprot.writeFieldEnd();
     }
-    if (this.room != null) {
-      oprot.writeFieldBegin(ROOM_FIELD_DESC);
-      this.room.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.constraint != null) {
-      oprot.writeFieldBegin(CONSTRAINT_FIELD_DESC);
-      oprot.writeString(this.constraint);
+    oprot.writeFieldBegin(AVAILABLE_FIELD_DESC);
+    oprot.writeBool(this.available);
+    oprot.writeFieldEnd();
+    if (isSetRatioOccupation()) {
+      oprot.writeFieldBegin(RATIO_OCCUPATION_FIELD_DESC);
+      oprot.writeDouble(this.ratioOccupation);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -463,7 +465,7 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("AutoCompleteUserMessageRequest(");
+    StringBuilder sb = new StringBuilder("FRActualOccupation(");
     boolean first = true;
 
     sb.append("period:");
@@ -474,21 +476,15 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("room:");
-    if (this.room == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.room);
-    }
+    sb.append("available:");
+    sb.append(this.available);
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("constraint:");
-    if (this.constraint == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.constraint);
+    if (isSetRatioOccupation()) {
+      if (!first) sb.append(", ");
+      sb.append("ratioOccupation:");
+      sb.append(this.ratioOccupation);
+      first = false;
     }
-    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -498,12 +494,7 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
     if (period == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'period' was not present! Struct: " + toString());
     }
-    if (room == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'room' was not present! Struct: " + toString());
-    }
-    if (constraint == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'constraint' was not present! Struct: " + toString());
-    }
+    // alas, we cannot check 'available' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -516,6 +507,8 @@ public class AutoCompleteUserMessageRequest implements org.apache.thrift.TBase<A
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);

@@ -27,13 +27,13 @@ public class FreeRoomService {
 
     public FROccupancyReply getOccupancy(FROccupancyRequest request) throws org.apache.thrift.TException;
 
-    public AutoCompleteReply autoCompleteRoom(AutoCompleteRequest request) throws org.apache.thrift.TException;
+    public FRAutoCompleteReply autoCompleteRoom(FRAutoCompleteRequest request) throws org.apache.thrift.TException;
 
-    public AutoCompleteUserMessageReply autoCompleteUserMessage(AutoCompleteUserMessageRequest request) throws org.apache.thrift.TException;
+    public FRAutoCompleteUserMessageReply autoCompleteUserMessage(FRAutoCompleteUserMessageRequest request) throws org.apache.thrift.TException;
 
-    public ImWorkingReply indicateImWorking(ImWorkingRequest request) throws org.apache.thrift.TException;
+    public FRImWorkingReply indicateImWorking(FRImWorkingRequest request) throws org.apache.thrift.TException;
 
-    public WhoIsWorkingReply getUserMessages(WhoIsWorkingRequest request) throws org.apache.thrift.TException;
+    public FRWhoIsWorkingReply getUserMessages(FRWhoIsWorkingRequest request) throws org.apache.thrift.TException;
 
   }
 
@@ -41,13 +41,13 @@ public class FreeRoomService {
 
     public void getOccupancy(FROccupancyRequest request, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getOccupancy_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void autoCompleteRoom(AutoCompleteRequest request, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.autoCompleteRoom_call> resultHandler) throws org.apache.thrift.TException;
+    public void autoCompleteRoom(FRAutoCompleteRequest request, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.autoCompleteRoom_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void autoCompleteUserMessage(AutoCompleteUserMessageRequest request, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.autoCompleteUserMessage_call> resultHandler) throws org.apache.thrift.TException;
+    public void autoCompleteUserMessage(FRAutoCompleteUserMessageRequest request, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.autoCompleteUserMessage_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void indicateImWorking(ImWorkingRequest request, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.indicateImWorking_call> resultHandler) throws org.apache.thrift.TException;
+    public void indicateImWorking(FRImWorkingRequest request, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.indicateImWorking_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getUserMessages(WhoIsWorkingRequest request, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getUserMessages_call> resultHandler) throws org.apache.thrift.TException;
+    public void getUserMessages(FRWhoIsWorkingRequest request, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getUserMessages_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -94,20 +94,20 @@ public class FreeRoomService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getOccupancy failed: unknown result");
     }
 
-    public AutoCompleteReply autoCompleteRoom(AutoCompleteRequest request) throws org.apache.thrift.TException
+    public FRAutoCompleteReply autoCompleteRoom(FRAutoCompleteRequest request) throws org.apache.thrift.TException
     {
       send_autoCompleteRoom(request);
       return recv_autoCompleteRoom();
     }
 
-    public void send_autoCompleteRoom(AutoCompleteRequest request) throws org.apache.thrift.TException
+    public void send_autoCompleteRoom(FRAutoCompleteRequest request) throws org.apache.thrift.TException
     {
       autoCompleteRoom_args args = new autoCompleteRoom_args();
       args.setRequest(request);
       sendBase("autoCompleteRoom", args);
     }
 
-    public AutoCompleteReply recv_autoCompleteRoom() throws org.apache.thrift.TException
+    public FRAutoCompleteReply recv_autoCompleteRoom() throws org.apache.thrift.TException
     {
       autoCompleteRoom_result result = new autoCompleteRoom_result();
       receiveBase(result, "autoCompleteRoom");
@@ -117,20 +117,20 @@ public class FreeRoomService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "autoCompleteRoom failed: unknown result");
     }
 
-    public AutoCompleteUserMessageReply autoCompleteUserMessage(AutoCompleteUserMessageRequest request) throws org.apache.thrift.TException
+    public FRAutoCompleteUserMessageReply autoCompleteUserMessage(FRAutoCompleteUserMessageRequest request) throws org.apache.thrift.TException
     {
       send_autoCompleteUserMessage(request);
       return recv_autoCompleteUserMessage();
     }
 
-    public void send_autoCompleteUserMessage(AutoCompleteUserMessageRequest request) throws org.apache.thrift.TException
+    public void send_autoCompleteUserMessage(FRAutoCompleteUserMessageRequest request) throws org.apache.thrift.TException
     {
       autoCompleteUserMessage_args args = new autoCompleteUserMessage_args();
       args.setRequest(request);
       sendBase("autoCompleteUserMessage", args);
     }
 
-    public AutoCompleteUserMessageReply recv_autoCompleteUserMessage() throws org.apache.thrift.TException
+    public FRAutoCompleteUserMessageReply recv_autoCompleteUserMessage() throws org.apache.thrift.TException
     {
       autoCompleteUserMessage_result result = new autoCompleteUserMessage_result();
       receiveBase(result, "autoCompleteUserMessage");
@@ -140,20 +140,20 @@ public class FreeRoomService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "autoCompleteUserMessage failed: unknown result");
     }
 
-    public ImWorkingReply indicateImWorking(ImWorkingRequest request) throws org.apache.thrift.TException
+    public FRImWorkingReply indicateImWorking(FRImWorkingRequest request) throws org.apache.thrift.TException
     {
       send_indicateImWorking(request);
       return recv_indicateImWorking();
     }
 
-    public void send_indicateImWorking(ImWorkingRequest request) throws org.apache.thrift.TException
+    public void send_indicateImWorking(FRImWorkingRequest request) throws org.apache.thrift.TException
     {
       indicateImWorking_args args = new indicateImWorking_args();
       args.setRequest(request);
       sendBase("indicateImWorking", args);
     }
 
-    public ImWorkingReply recv_indicateImWorking() throws org.apache.thrift.TException
+    public FRImWorkingReply recv_indicateImWorking() throws org.apache.thrift.TException
     {
       indicateImWorking_result result = new indicateImWorking_result();
       receiveBase(result, "indicateImWorking");
@@ -163,20 +163,20 @@ public class FreeRoomService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "indicateImWorking failed: unknown result");
     }
 
-    public WhoIsWorkingReply getUserMessages(WhoIsWorkingRequest request) throws org.apache.thrift.TException
+    public FRWhoIsWorkingReply getUserMessages(FRWhoIsWorkingRequest request) throws org.apache.thrift.TException
     {
       send_getUserMessages(request);
       return recv_getUserMessages();
     }
 
-    public void send_getUserMessages(WhoIsWorkingRequest request) throws org.apache.thrift.TException
+    public void send_getUserMessages(FRWhoIsWorkingRequest request) throws org.apache.thrift.TException
     {
       getUserMessages_args args = new getUserMessages_args();
       args.setRequest(request);
       sendBase("getUserMessages", args);
     }
 
-    public WhoIsWorkingReply recv_getUserMessages() throws org.apache.thrift.TException
+    public FRWhoIsWorkingReply recv_getUserMessages() throws org.apache.thrift.TException
     {
       getUserMessages_result result = new getUserMessages_result();
       receiveBase(result, "getUserMessages");
@@ -236,7 +236,7 @@ public class FreeRoomService {
       }
     }
 
-    public void autoCompleteRoom(AutoCompleteRequest request, org.apache.thrift.async.AsyncMethodCallback<autoCompleteRoom_call> resultHandler) throws org.apache.thrift.TException {
+    public void autoCompleteRoom(FRAutoCompleteRequest request, org.apache.thrift.async.AsyncMethodCallback<autoCompleteRoom_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       autoCompleteRoom_call method_call = new autoCompleteRoom_call(request, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
@@ -244,8 +244,8 @@ public class FreeRoomService {
     }
 
     public static class autoCompleteRoom_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private AutoCompleteRequest request;
-      public autoCompleteRoom_call(AutoCompleteRequest request, org.apache.thrift.async.AsyncMethodCallback<autoCompleteRoom_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private FRAutoCompleteRequest request;
+      public autoCompleteRoom_call(FRAutoCompleteRequest request, org.apache.thrift.async.AsyncMethodCallback<autoCompleteRoom_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.request = request;
       }
@@ -258,7 +258,7 @@ public class FreeRoomService {
         prot.writeMessageEnd();
       }
 
-      public AutoCompleteReply getResult() throws org.apache.thrift.TException {
+      public FRAutoCompleteReply getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -268,7 +268,7 @@ public class FreeRoomService {
       }
     }
 
-    public void autoCompleteUserMessage(AutoCompleteUserMessageRequest request, org.apache.thrift.async.AsyncMethodCallback<autoCompleteUserMessage_call> resultHandler) throws org.apache.thrift.TException {
+    public void autoCompleteUserMessage(FRAutoCompleteUserMessageRequest request, org.apache.thrift.async.AsyncMethodCallback<autoCompleteUserMessage_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       autoCompleteUserMessage_call method_call = new autoCompleteUserMessage_call(request, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
@@ -276,8 +276,8 @@ public class FreeRoomService {
     }
 
     public static class autoCompleteUserMessage_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private AutoCompleteUserMessageRequest request;
-      public autoCompleteUserMessage_call(AutoCompleteUserMessageRequest request, org.apache.thrift.async.AsyncMethodCallback<autoCompleteUserMessage_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private FRAutoCompleteUserMessageRequest request;
+      public autoCompleteUserMessage_call(FRAutoCompleteUserMessageRequest request, org.apache.thrift.async.AsyncMethodCallback<autoCompleteUserMessage_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.request = request;
       }
@@ -290,7 +290,7 @@ public class FreeRoomService {
         prot.writeMessageEnd();
       }
 
-      public AutoCompleteUserMessageReply getResult() throws org.apache.thrift.TException {
+      public FRAutoCompleteUserMessageReply getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -300,7 +300,7 @@ public class FreeRoomService {
       }
     }
 
-    public void indicateImWorking(ImWorkingRequest request, org.apache.thrift.async.AsyncMethodCallback<indicateImWorking_call> resultHandler) throws org.apache.thrift.TException {
+    public void indicateImWorking(FRImWorkingRequest request, org.apache.thrift.async.AsyncMethodCallback<indicateImWorking_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       indicateImWorking_call method_call = new indicateImWorking_call(request, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
@@ -308,8 +308,8 @@ public class FreeRoomService {
     }
 
     public static class indicateImWorking_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private ImWorkingRequest request;
-      public indicateImWorking_call(ImWorkingRequest request, org.apache.thrift.async.AsyncMethodCallback<indicateImWorking_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private FRImWorkingRequest request;
+      public indicateImWorking_call(FRImWorkingRequest request, org.apache.thrift.async.AsyncMethodCallback<indicateImWorking_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.request = request;
       }
@@ -322,7 +322,7 @@ public class FreeRoomService {
         prot.writeMessageEnd();
       }
 
-      public ImWorkingReply getResult() throws org.apache.thrift.TException {
+      public FRImWorkingReply getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -332,7 +332,7 @@ public class FreeRoomService {
       }
     }
 
-    public void getUserMessages(WhoIsWorkingRequest request, org.apache.thrift.async.AsyncMethodCallback<getUserMessages_call> resultHandler) throws org.apache.thrift.TException {
+    public void getUserMessages(FRWhoIsWorkingRequest request, org.apache.thrift.async.AsyncMethodCallback<getUserMessages_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       getUserMessages_call method_call = new getUserMessages_call(request, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
@@ -340,8 +340,8 @@ public class FreeRoomService {
     }
 
     public static class getUserMessages_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private WhoIsWorkingRequest request;
-      public getUserMessages_call(WhoIsWorkingRequest request, org.apache.thrift.async.AsyncMethodCallback<getUserMessages_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private FRWhoIsWorkingRequest request;
+      public getUserMessages_call(FRWhoIsWorkingRequest request, org.apache.thrift.async.AsyncMethodCallback<getUserMessages_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.request = request;
       }
@@ -354,7 +354,7 @@ public class FreeRoomService {
         prot.writeMessageEnd();
       }
 
-      public WhoIsWorkingReply getResult() throws org.apache.thrift.TException {
+      public FRWhoIsWorkingReply getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -1081,7 +1081,7 @@ public class FreeRoomService {
 
     private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    private AutoCompleteRequest request; // required
+    private FRAutoCompleteRequest request; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1147,7 +1147,7 @@ public class FreeRoomService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, AutoCompleteRequest.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRAutoCompleteRequest.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(autoCompleteRoom_args.class, metaDataMap);
     }
@@ -1156,7 +1156,7 @@ public class FreeRoomService {
     }
 
     public autoCompleteRoom_args(
-      AutoCompleteRequest request)
+      FRAutoCompleteRequest request)
     {
       this();
       this.request = request;
@@ -1167,7 +1167,7 @@ public class FreeRoomService {
      */
     public autoCompleteRoom_args(autoCompleteRoom_args other) {
       if (other.isSetRequest()) {
-        this.request = new AutoCompleteRequest(other.request);
+        this.request = new FRAutoCompleteRequest(other.request);
       }
     }
 
@@ -1180,11 +1180,11 @@ public class FreeRoomService {
       this.request = null;
     }
 
-    public AutoCompleteRequest getRequest() {
+    public FRAutoCompleteRequest getRequest() {
       return this.request;
     }
 
-    public autoCompleteRoom_args setRequest(AutoCompleteRequest request) {
+    public autoCompleteRoom_args setRequest(FRAutoCompleteRequest request) {
       this.request = request;
       return this;
     }
@@ -1210,7 +1210,7 @@ public class FreeRoomService {
         if (value == null) {
           unsetRequest();
         } else {
-          setRequest((AutoCompleteRequest)value);
+          setRequest((FRAutoCompleteRequest)value);
         }
         break;
 
@@ -1313,7 +1313,7 @@ public class FreeRoomService {
         switch (field.id) {
           case 1: // REQUEST
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.request = new AutoCompleteRequest();
+              this.request = new FRAutoCompleteRequest();
               this.request.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -1386,7 +1386,7 @@ public class FreeRoomService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    private AutoCompleteReply success; // required
+    private FRAutoCompleteReply success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1452,7 +1452,7 @@ public class FreeRoomService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, AutoCompleteReply.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRAutoCompleteReply.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(autoCompleteRoom_result.class, metaDataMap);
     }
@@ -1461,7 +1461,7 @@ public class FreeRoomService {
     }
 
     public autoCompleteRoom_result(
-      AutoCompleteReply success)
+      FRAutoCompleteReply success)
     {
       this();
       this.success = success;
@@ -1472,7 +1472,7 @@ public class FreeRoomService {
      */
     public autoCompleteRoom_result(autoCompleteRoom_result other) {
       if (other.isSetSuccess()) {
-        this.success = new AutoCompleteReply(other.success);
+        this.success = new FRAutoCompleteReply(other.success);
       }
     }
 
@@ -1485,11 +1485,11 @@ public class FreeRoomService {
       this.success = null;
     }
 
-    public AutoCompleteReply getSuccess() {
+    public FRAutoCompleteReply getSuccess() {
       return this.success;
     }
 
-    public autoCompleteRoom_result setSuccess(AutoCompleteReply success) {
+    public autoCompleteRoom_result setSuccess(FRAutoCompleteReply success) {
       this.success = success;
       return this;
     }
@@ -1515,7 +1515,7 @@ public class FreeRoomService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((AutoCompleteReply)value);
+          setSuccess((FRAutoCompleteReply)value);
         }
         break;
 
@@ -1618,7 +1618,7 @@ public class FreeRoomService {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new AutoCompleteReply();
+              this.success = new FRAutoCompleteReply();
               this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -1690,7 +1690,7 @@ public class FreeRoomService {
 
     private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    private AutoCompleteUserMessageRequest request; // required
+    private FRAutoCompleteUserMessageRequest request; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1756,7 +1756,7 @@ public class FreeRoomService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, AutoCompleteUserMessageRequest.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRAutoCompleteUserMessageRequest.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(autoCompleteUserMessage_args.class, metaDataMap);
     }
@@ -1765,7 +1765,7 @@ public class FreeRoomService {
     }
 
     public autoCompleteUserMessage_args(
-      AutoCompleteUserMessageRequest request)
+      FRAutoCompleteUserMessageRequest request)
     {
       this();
       this.request = request;
@@ -1776,7 +1776,7 @@ public class FreeRoomService {
      */
     public autoCompleteUserMessage_args(autoCompleteUserMessage_args other) {
       if (other.isSetRequest()) {
-        this.request = new AutoCompleteUserMessageRequest(other.request);
+        this.request = new FRAutoCompleteUserMessageRequest(other.request);
       }
     }
 
@@ -1789,11 +1789,11 @@ public class FreeRoomService {
       this.request = null;
     }
 
-    public AutoCompleteUserMessageRequest getRequest() {
+    public FRAutoCompleteUserMessageRequest getRequest() {
       return this.request;
     }
 
-    public autoCompleteUserMessage_args setRequest(AutoCompleteUserMessageRequest request) {
+    public autoCompleteUserMessage_args setRequest(FRAutoCompleteUserMessageRequest request) {
       this.request = request;
       return this;
     }
@@ -1819,7 +1819,7 @@ public class FreeRoomService {
         if (value == null) {
           unsetRequest();
         } else {
-          setRequest((AutoCompleteUserMessageRequest)value);
+          setRequest((FRAutoCompleteUserMessageRequest)value);
         }
         break;
 
@@ -1922,7 +1922,7 @@ public class FreeRoomService {
         switch (field.id) {
           case 1: // REQUEST
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.request = new AutoCompleteUserMessageRequest();
+              this.request = new FRAutoCompleteUserMessageRequest();
               this.request.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -1995,7 +1995,7 @@ public class FreeRoomService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    private AutoCompleteUserMessageReply success; // required
+    private FRAutoCompleteUserMessageReply success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -2061,7 +2061,7 @@ public class FreeRoomService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, AutoCompleteUserMessageReply.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRAutoCompleteUserMessageReply.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(autoCompleteUserMessage_result.class, metaDataMap);
     }
@@ -2070,7 +2070,7 @@ public class FreeRoomService {
     }
 
     public autoCompleteUserMessage_result(
-      AutoCompleteUserMessageReply success)
+      FRAutoCompleteUserMessageReply success)
     {
       this();
       this.success = success;
@@ -2081,7 +2081,7 @@ public class FreeRoomService {
      */
     public autoCompleteUserMessage_result(autoCompleteUserMessage_result other) {
       if (other.isSetSuccess()) {
-        this.success = new AutoCompleteUserMessageReply(other.success);
+        this.success = new FRAutoCompleteUserMessageReply(other.success);
       }
     }
 
@@ -2094,11 +2094,11 @@ public class FreeRoomService {
       this.success = null;
     }
 
-    public AutoCompleteUserMessageReply getSuccess() {
+    public FRAutoCompleteUserMessageReply getSuccess() {
       return this.success;
     }
 
-    public autoCompleteUserMessage_result setSuccess(AutoCompleteUserMessageReply success) {
+    public autoCompleteUserMessage_result setSuccess(FRAutoCompleteUserMessageReply success) {
       this.success = success;
       return this;
     }
@@ -2124,7 +2124,7 @@ public class FreeRoomService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((AutoCompleteUserMessageReply)value);
+          setSuccess((FRAutoCompleteUserMessageReply)value);
         }
         break;
 
@@ -2227,7 +2227,7 @@ public class FreeRoomService {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new AutoCompleteUserMessageReply();
+              this.success = new FRAutoCompleteUserMessageReply();
               this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -2299,7 +2299,7 @@ public class FreeRoomService {
 
     private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    private ImWorkingRequest request; // required
+    private FRImWorkingRequest request; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -2365,7 +2365,7 @@ public class FreeRoomService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, ImWorkingRequest.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRImWorkingRequest.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(indicateImWorking_args.class, metaDataMap);
     }
@@ -2374,7 +2374,7 @@ public class FreeRoomService {
     }
 
     public indicateImWorking_args(
-      ImWorkingRequest request)
+      FRImWorkingRequest request)
     {
       this();
       this.request = request;
@@ -2385,7 +2385,7 @@ public class FreeRoomService {
      */
     public indicateImWorking_args(indicateImWorking_args other) {
       if (other.isSetRequest()) {
-        this.request = new ImWorkingRequest(other.request);
+        this.request = new FRImWorkingRequest(other.request);
       }
     }
 
@@ -2398,11 +2398,11 @@ public class FreeRoomService {
       this.request = null;
     }
 
-    public ImWorkingRequest getRequest() {
+    public FRImWorkingRequest getRequest() {
       return this.request;
     }
 
-    public indicateImWorking_args setRequest(ImWorkingRequest request) {
+    public indicateImWorking_args setRequest(FRImWorkingRequest request) {
       this.request = request;
       return this;
     }
@@ -2428,7 +2428,7 @@ public class FreeRoomService {
         if (value == null) {
           unsetRequest();
         } else {
-          setRequest((ImWorkingRequest)value);
+          setRequest((FRImWorkingRequest)value);
         }
         break;
 
@@ -2531,7 +2531,7 @@ public class FreeRoomService {
         switch (field.id) {
           case 1: // REQUEST
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.request = new ImWorkingRequest();
+              this.request = new FRImWorkingRequest();
               this.request.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -2604,7 +2604,7 @@ public class FreeRoomService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    private ImWorkingReply success; // required
+    private FRImWorkingReply success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -2670,7 +2670,7 @@ public class FreeRoomService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, ImWorkingReply.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRImWorkingReply.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(indicateImWorking_result.class, metaDataMap);
     }
@@ -2679,7 +2679,7 @@ public class FreeRoomService {
     }
 
     public indicateImWorking_result(
-      ImWorkingReply success)
+      FRImWorkingReply success)
     {
       this();
       this.success = success;
@@ -2690,7 +2690,7 @@ public class FreeRoomService {
      */
     public indicateImWorking_result(indicateImWorking_result other) {
       if (other.isSetSuccess()) {
-        this.success = new ImWorkingReply(other.success);
+        this.success = new FRImWorkingReply(other.success);
       }
     }
 
@@ -2703,11 +2703,11 @@ public class FreeRoomService {
       this.success = null;
     }
 
-    public ImWorkingReply getSuccess() {
+    public FRImWorkingReply getSuccess() {
       return this.success;
     }
 
-    public indicateImWorking_result setSuccess(ImWorkingReply success) {
+    public indicateImWorking_result setSuccess(FRImWorkingReply success) {
       this.success = success;
       return this;
     }
@@ -2733,7 +2733,7 @@ public class FreeRoomService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((ImWorkingReply)value);
+          setSuccess((FRImWorkingReply)value);
         }
         break;
 
@@ -2836,7 +2836,7 @@ public class FreeRoomService {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new ImWorkingReply();
+              this.success = new FRImWorkingReply();
               this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -2908,7 +2908,7 @@ public class FreeRoomService {
 
     private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    private WhoIsWorkingRequest request; // required
+    private FRWhoIsWorkingRequest request; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -2974,7 +2974,7 @@ public class FreeRoomService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, WhoIsWorkingRequest.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRWhoIsWorkingRequest.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getUserMessages_args.class, metaDataMap);
     }
@@ -2983,7 +2983,7 @@ public class FreeRoomService {
     }
 
     public getUserMessages_args(
-      WhoIsWorkingRequest request)
+      FRWhoIsWorkingRequest request)
     {
       this();
       this.request = request;
@@ -2994,7 +2994,7 @@ public class FreeRoomService {
      */
     public getUserMessages_args(getUserMessages_args other) {
       if (other.isSetRequest()) {
-        this.request = new WhoIsWorkingRequest(other.request);
+        this.request = new FRWhoIsWorkingRequest(other.request);
       }
     }
 
@@ -3007,11 +3007,11 @@ public class FreeRoomService {
       this.request = null;
     }
 
-    public WhoIsWorkingRequest getRequest() {
+    public FRWhoIsWorkingRequest getRequest() {
       return this.request;
     }
 
-    public getUserMessages_args setRequest(WhoIsWorkingRequest request) {
+    public getUserMessages_args setRequest(FRWhoIsWorkingRequest request) {
       this.request = request;
       return this;
     }
@@ -3037,7 +3037,7 @@ public class FreeRoomService {
         if (value == null) {
           unsetRequest();
         } else {
-          setRequest((WhoIsWorkingRequest)value);
+          setRequest((FRWhoIsWorkingRequest)value);
         }
         break;
 
@@ -3140,7 +3140,7 @@ public class FreeRoomService {
         switch (field.id) {
           case 1: // REQUEST
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.request = new WhoIsWorkingRequest();
+              this.request = new FRWhoIsWorkingRequest();
               this.request.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -3213,7 +3213,7 @@ public class FreeRoomService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    private WhoIsWorkingReply success; // required
+    private FRWhoIsWorkingReply success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -3279,7 +3279,7 @@ public class FreeRoomService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, WhoIsWorkingReply.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRWhoIsWorkingReply.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getUserMessages_result.class, metaDataMap);
     }
@@ -3288,7 +3288,7 @@ public class FreeRoomService {
     }
 
     public getUserMessages_result(
-      WhoIsWorkingReply success)
+      FRWhoIsWorkingReply success)
     {
       this();
       this.success = success;
@@ -3299,7 +3299,7 @@ public class FreeRoomService {
      */
     public getUserMessages_result(getUserMessages_result other) {
       if (other.isSetSuccess()) {
-        this.success = new WhoIsWorkingReply(other.success);
+        this.success = new FRWhoIsWorkingReply(other.success);
       }
     }
 
@@ -3312,11 +3312,11 @@ public class FreeRoomService {
       this.success = null;
     }
 
-    public WhoIsWorkingReply getSuccess() {
+    public FRWhoIsWorkingReply getSuccess() {
       return this.success;
     }
 
-    public getUserMessages_result setSuccess(WhoIsWorkingReply success) {
+    public getUserMessages_result setSuccess(FRWhoIsWorkingReply success) {
       this.success = success;
       return this;
     }
@@ -3342,7 +3342,7 @@ public class FreeRoomService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((WhoIsWorkingReply)value);
+          setSuccess((FRWhoIsWorkingReply)value);
         }
         break;
 
@@ -3445,7 +3445,7 @@ public class FreeRoomService {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new WhoIsWorkingReply();
+              this.success = new FRWhoIsWorkingReply();
               this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);

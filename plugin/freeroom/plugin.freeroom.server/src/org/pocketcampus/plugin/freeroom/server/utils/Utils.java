@@ -15,9 +15,9 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
-import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
+import org.pocketcampus.plugin.freeroom.shared.FRMessageFrequency;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
 
 /**
@@ -268,7 +268,7 @@ public class Utils {
 		 *            The ActualOccupation to be counted.
 		 * @return The number of hours in the ActualOccupation
 		 */
-		private int countNumberHour(ActualOccupation acc) {
+		private int countNumberHour(FRActualOccupation acc) {
 			long tsStart = acc.getPeriod().getTimeStampStart();
 			long tsEnd = acc.getPeriod().getTimeStampEnd();
 			Calendar mCalendar = Calendar.getInstance();
@@ -284,10 +284,10 @@ public class Utils {
 		 * @param occupations
 		 * @return
 		 */
-		private double rateOccupied(List<ActualOccupation> occupations) {
+		private double rateOccupied(List<FRActualOccupation> occupations) {
 			int count = 0;
 			int total = 0;
-			for (ActualOccupation acc : occupations) {
+			for (FRActualOccupation acc : occupations) {
 				int nbHours = countNumberHour(acc);
 				if (!acc.isAvailable()) {
 					count += nbHours;
@@ -308,7 +308,7 @@ public class Utils {
 		}
 	};
 
-	public static ArrayList<MessageFrequency> removeGroupMessages(
+	public static ArrayList<FRMessageFrequency> removeGroupMessages(
 			List<String> listMessages) {
 		if (listMessages == null) {
 			return null;
@@ -329,12 +329,12 @@ public class Utils {
 		return convertMapToListMessageFrequency(answer);
 	}
 
-	public static ArrayList<MessageFrequency> convertMapToListMessageFrequency(
+	public static ArrayList<FRMessageFrequency> convertMapToListMessageFrequency(
 			HashMap<String, Integer> map) {
-		ArrayList<MessageFrequency> answer = new ArrayList<MessageFrequency>();
+		ArrayList<FRMessageFrequency> answer = new ArrayList<FRMessageFrequency>();
 
 		for (Entry<String, Integer> e : map.entrySet()) {
-			answer.add(new MessageFrequency(e.getKey(), e.getValue()));
+			answer.add(new FRMessageFrequency(e.getKey(), e.getValue()));
 		}
 
 		Collections.sort(answer);

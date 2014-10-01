@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomHomeView;
-import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
+import org.pocketcampus.plugin.freeroom.shared.FRMessageFrequency;
 
 import android.R.color;
 import android.content.Context;
@@ -26,11 +26,11 @@ import android.widget.TextView;
  *            used by FRRequestDetails.
  */
 public class MessageFrequencyArrayAdapter<T> extends
-		ArrayAdapter<MessageFrequency> {
+		ArrayAdapter<FRMessageFrequency> {
 	private FreeRoomHomeView caller;
 
 	public MessageFrequencyArrayAdapter(FreeRoomHomeView caller,
-			Context context, int row, int label, List<MessageFrequency> items) {
+			Context context, int row, int label, List<FRMessageFrequency> items) {
 		super(context, row, label, items);
 		this.caller = caller;
 	}
@@ -43,7 +43,7 @@ public class MessageFrequencyArrayAdapter<T> extends
 				.findViewById(R.id.freeroom_layout_message_text);
 		TextView frequencyTextView = (TextView) row
 				.findViewById(R.id.freeroom_layout_message_number);
-		MessageFrequency req = super.getItem(position);
+		FRMessageFrequency req = super.getItem(position);
 		String message = req.getMessage();
 		// no message: sharing without message -> display grey "undefined"
 		if (message != null && message.equals("")) {

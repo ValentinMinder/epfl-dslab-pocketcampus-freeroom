@@ -5,8 +5,8 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
-import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
-import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingRequest;
 
 import android.util.Log;
 
@@ -24,7 +24,7 @@ import android.util.Log;
 
 public class CheckWhoIsWorkingRequest
 		extends
-		Request<FreeRoomController, Iface, WhoIsWorkingRequest, WhoIsWorkingReply> {
+		Request<FreeRoomController, Iface, FRWhoIsWorkingRequest, FRWhoIsWorkingReply> {
 
 	private IFreeRoomView caller;
 
@@ -33,14 +33,14 @@ public class CheckWhoIsWorkingRequest
 	}
 
 	@Override
-	protected WhoIsWorkingReply runInBackground(Iface client,
-			WhoIsWorkingRequest param) throws Exception {
+	protected FRWhoIsWorkingReply runInBackground(Iface client,
+			FRWhoIsWorkingRequest param) throws Exception {
 		return client.getUserMessages(param);
 	}
 
 	@Override
 	protected void onResult(FreeRoomController controller,
-			WhoIsWorkingReply result) {
+			FRWhoIsWorkingReply result) {
 		FRStatusCode status = result.getStatus();
 		if (status == FRStatusCode.HTTP_OK) {
 			Log.v(this.getClass().toString(), "server replied successfully");

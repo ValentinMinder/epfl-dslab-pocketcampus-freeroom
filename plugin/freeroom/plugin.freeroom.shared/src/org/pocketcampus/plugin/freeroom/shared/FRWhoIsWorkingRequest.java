@@ -21,22 +21,19 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupancy, WorkingOccupancy._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("WorkingOccupancy");
+public class FRWhoIsWorkingRequest implements org.apache.thrift.TBase<FRWhoIsWorkingRequest, FRWhoIsWorkingRequest._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRWhoIsWorkingRequest");
 
-  private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-  private static final org.apache.thrift.protocol.TField ROOM_FIELD_DESC = new org.apache.thrift.protocol.TField("room", org.apache.thrift.protocol.TType.STRUCT, (short)2);
-  private static final org.apache.thrift.protocol.TField MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("message", org.apache.thrift.protocol.TType.STRING, (short)40);
+  private static final org.apache.thrift.protocol.TField ROOM_UID_FIELD_DESC = new org.apache.thrift.protocol.TField("roomUID", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.STRUCT, (short)2);
 
+  private String roomUID; // required
   private FRPeriod period; // required
-  private FRRoom room; // required
-  private String message; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    PERIOD((short)1, "period"),
-    ROOM((short)2, "room"),
-    MESSAGE((short)40, "message");
+    ROOM_UID((short)1, "roomUID"),
+    PERIOD((short)2, "period");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -51,12 +48,10 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // PERIOD
+        case 1: // ROOM_UID
+          return ROOM_UID;
+        case 2: // PERIOD
           return PERIOD;
-        case 2: // ROOM
-          return ROOM;
-        case 40: // MESSAGE
-          return MESSAGE;
         default:
           return null;
       }
@@ -101,59 +96,77 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+    tmpMap.put(_Fields.ROOM_UID, new org.apache.thrift.meta_data.FieldMetaData("roomUID", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.PERIOD, new org.apache.thrift.meta_data.FieldMetaData("period", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRPeriod.class)));
-    tmpMap.put(_Fields.ROOM, new org.apache.thrift.meta_data.FieldMetaData("room", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRRoom.class)));
-    tmpMap.put(_Fields.MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("message", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(WorkingOccupancy.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRWhoIsWorkingRequest.class, metaDataMap);
   }
 
-  public WorkingOccupancy() {
+  public FRWhoIsWorkingRequest() {
   }
 
-  public WorkingOccupancy(
-    FRPeriod period,
-    FRRoom room)
+  public FRWhoIsWorkingRequest(
+    String roomUID,
+    FRPeriod period)
   {
     this();
+    this.roomUID = roomUID;
     this.period = period;
-    this.room = room;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public WorkingOccupancy(WorkingOccupancy other) {
+  public FRWhoIsWorkingRequest(FRWhoIsWorkingRequest other) {
+    if (other.isSetRoomUID()) {
+      this.roomUID = other.roomUID;
+    }
     if (other.isSetPeriod()) {
       this.period = new FRPeriod(other.period);
     }
-    if (other.isSetRoom()) {
-      this.room = new FRRoom(other.room);
-    }
-    if (other.isSetMessage()) {
-      this.message = other.message;
-    }
   }
 
-  public WorkingOccupancy deepCopy() {
-    return new WorkingOccupancy(this);
+  public FRWhoIsWorkingRequest deepCopy() {
+    return new FRWhoIsWorkingRequest(this);
   }
 
   @Override
   public void clear() {
+    this.roomUID = null;
     this.period = null;
-    this.room = null;
-    this.message = null;
+  }
+
+  public String getRoomUID() {
+    return this.roomUID;
+  }
+
+  public FRWhoIsWorkingRequest setRoomUID(String roomUID) {
+    this.roomUID = roomUID;
+    return this;
+  }
+
+  public void unsetRoomUID() {
+    this.roomUID = null;
+  }
+
+  /** Returns true if field roomUID is set (has been assigned a value) and false otherwise */
+  public boolean isSetRoomUID() {
+    return this.roomUID != null;
+  }
+
+  public void setRoomUIDIsSet(boolean value) {
+    if (!value) {
+      this.roomUID = null;
+    }
   }
 
   public FRPeriod getPeriod() {
     return this.period;
   }
 
-  public WorkingOccupancy setPeriod(FRPeriod period) {
+  public FRWhoIsWorkingRequest setPeriod(FRPeriod period) {
     this.period = period;
     return this;
   }
@@ -173,56 +186,16 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
     }
   }
 
-  public FRRoom getRoom() {
-    return this.room;
-  }
-
-  public WorkingOccupancy setRoom(FRRoom room) {
-    this.room = room;
-    return this;
-  }
-
-  public void unsetRoom() {
-    this.room = null;
-  }
-
-  /** Returns true if field room is set (has been assigned a value) and false otherwise */
-  public boolean isSetRoom() {
-    return this.room != null;
-  }
-
-  public void setRoomIsSet(boolean value) {
-    if (!value) {
-      this.room = null;
-    }
-  }
-
-  public String getMessage() {
-    return this.message;
-  }
-
-  public WorkingOccupancy setMessage(String message) {
-    this.message = message;
-    return this;
-  }
-
-  public void unsetMessage() {
-    this.message = null;
-  }
-
-  /** Returns true if field message is set (has been assigned a value) and false otherwise */
-  public boolean isSetMessage() {
-    return this.message != null;
-  }
-
-  public void setMessageIsSet(boolean value) {
-    if (!value) {
-      this.message = null;
-    }
-  }
-
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
+    case ROOM_UID:
+      if (value == null) {
+        unsetRoomUID();
+      } else {
+        setRoomUID((String)value);
+      }
+      break;
+
     case PERIOD:
       if (value == null) {
         unsetPeriod();
@@ -231,35 +204,16 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
       }
       break;
 
-    case ROOM:
-      if (value == null) {
-        unsetRoom();
-      } else {
-        setRoom((FRRoom)value);
-      }
-      break;
-
-    case MESSAGE:
-      if (value == null) {
-        unsetMessage();
-      } else {
-        setMessage((String)value);
-      }
-      break;
-
     }
   }
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
+    case ROOM_UID:
+      return getRoomUID();
+
     case PERIOD:
       return getPeriod();
-
-    case ROOM:
-      return getRoom();
-
-    case MESSAGE:
-      return getMessage();
 
     }
     throw new IllegalStateException();
@@ -272,12 +226,10 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
     }
 
     switch (field) {
+    case ROOM_UID:
+      return isSetRoomUID();
     case PERIOD:
       return isSetPeriod();
-    case ROOM:
-      return isSetRoom();
-    case MESSAGE:
-      return isSetMessage();
     }
     throw new IllegalStateException();
   }
@@ -286,14 +238,23 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof WorkingOccupancy)
-      return this.equals((WorkingOccupancy)that);
+    if (that instanceof FRWhoIsWorkingRequest)
+      return this.equals((FRWhoIsWorkingRequest)that);
     return false;
   }
 
-  public boolean equals(WorkingOccupancy that) {
+  public boolean equals(FRWhoIsWorkingRequest that) {
     if (that == null)
       return false;
+
+    boolean this_present_roomUID = true && this.isSetRoomUID();
+    boolean that_present_roomUID = true && that.isSetRoomUID();
+    if (this_present_roomUID || that_present_roomUID) {
+      if (!(this_present_roomUID && that_present_roomUID))
+        return false;
+      if (!this.roomUID.equals(that.roomUID))
+        return false;
+    }
 
     boolean this_present_period = true && this.isSetPeriod();
     boolean that_present_period = true && that.isSetPeriod();
@@ -304,24 +265,6 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
         return false;
     }
 
-    boolean this_present_room = true && this.isSetRoom();
-    boolean that_present_room = true && that.isSetRoom();
-    if (this_present_room || that_present_room) {
-      if (!(this_present_room && that_present_room))
-        return false;
-      if (!this.room.equals(that.room))
-        return false;
-    }
-
-    boolean this_present_message = true && this.isSetMessage();
-    boolean that_present_message = true && that.isSetMessage();
-    if (this_present_message || that_present_message) {
-      if (!(this_present_message && that_present_message))
-        return false;
-      if (!this.message.equals(that.message))
-        return false;
-    }
-
     return true;
   }
 
@@ -329,58 +272,43 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
+    boolean present_roomUID = true && (isSetRoomUID());
+    builder.append(present_roomUID);
+    if (present_roomUID)
+      builder.append(roomUID);
+
     boolean present_period = true && (isSetPeriod());
     builder.append(present_period);
     if (present_period)
       builder.append(period);
 
-    boolean present_room = true && (isSetRoom());
-    builder.append(present_room);
-    if (present_room)
-      builder.append(room);
-
-    boolean present_message = true && (isSetMessage());
-    builder.append(present_message);
-    if (present_message)
-      builder.append(message);
-
     return builder.toHashCode();
   }
 
-  public int compareTo(WorkingOccupancy other) {
+  public int compareTo(FRWhoIsWorkingRequest other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    WorkingOccupancy typedOther = (WorkingOccupancy)other;
+    FRWhoIsWorkingRequest typedOther = (FRWhoIsWorkingRequest)other;
 
+    lastComparison = Boolean.valueOf(isSetRoomUID()).compareTo(typedOther.isSetRoomUID());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetRoomUID()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.roomUID, typedOther.roomUID);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetPeriod()).compareTo(typedOther.isSetPeriod());
     if (lastComparison != 0) {
       return lastComparison;
     }
     if (isSetPeriod()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.period, typedOther.period);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetRoom()).compareTo(typedOther.isSetRoom());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetRoom()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.room, typedOther.room);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetMessage()).compareTo(typedOther.isSetMessage());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetMessage()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.message, typedOther.message);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -402,25 +330,17 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
         break;
       }
       switch (field.id) {
-        case 1: // PERIOD
+        case 1: // ROOM_UID
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.roomUID = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 2: // PERIOD
           if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
             this.period = new FRPeriod();
             this.period.read(iprot);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 2: // ROOM
-          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.room = new FRRoom();
-            this.room.read(iprot);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 40: // MESSAGE
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.message = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -440,22 +360,15 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    if (this.roomUID != null) {
+      oprot.writeFieldBegin(ROOM_UID_FIELD_DESC);
+      oprot.writeString(this.roomUID);
+      oprot.writeFieldEnd();
+    }
     if (this.period != null) {
       oprot.writeFieldBegin(PERIOD_FIELD_DESC);
       this.period.write(oprot);
       oprot.writeFieldEnd();
-    }
-    if (this.room != null) {
-      oprot.writeFieldBegin(ROOM_FIELD_DESC);
-      this.room.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.message != null) {
-      if (isSetMessage()) {
-        oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
-        oprot.writeString(this.message);
-        oprot.writeFieldEnd();
-      }
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -463,9 +376,17 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("WorkingOccupancy(");
+    StringBuilder sb = new StringBuilder("FRWhoIsWorkingRequest(");
     boolean first = true;
 
+    sb.append("roomUID:");
+    if (this.roomUID == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.roomUID);
+    }
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("period:");
     if (this.period == null) {
       sb.append("null");
@@ -473,35 +394,17 @@ public class WorkingOccupancy implements org.apache.thrift.TBase<WorkingOccupanc
       sb.append(this.period);
     }
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("room:");
-    if (this.room == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.room);
-    }
-    first = false;
-    if (isSetMessage()) {
-      if (!first) sb.append(", ");
-      sb.append("message:");
-      if (this.message == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.message);
-      }
-      first = false;
-    }
     sb.append(")");
     return sb.toString();
   }
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    if (roomUID == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'roomUID' was not present! Struct: " + toString());
+    }
     if (period == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'period' was not present! Struct: " + toString());
-    }
-    if (room == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'room' was not present! Struct: " + toString());
     }
   }
 

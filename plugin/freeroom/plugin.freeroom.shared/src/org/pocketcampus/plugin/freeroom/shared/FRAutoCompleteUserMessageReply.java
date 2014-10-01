@@ -21,8 +21,8 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingReply, WhoIsWorkingReply._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("WhoIsWorkingReply");
+public class FRAutoCompleteUserMessageReply implements org.apache.thrift.TBase<FRAutoCompleteUserMessageReply, FRAutoCompleteUserMessageReply._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRAutoCompleteUserMessageReply");
 
   private static final org.apache.thrift.protocol.TField STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("status", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField STATUS_COMMENT_FIELD_DESC = new org.apache.thrift.protocol.TField("statusComment", org.apache.thrift.protocol.TType.STRING, (short)2);
@@ -30,7 +30,7 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
 
   private FRStatusCode status; // required
   private String statusComment; // required
-  private List<MessageFrequency> messages; // required
+  private List<String> messages; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -111,15 +111,15 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.MESSAGES, new org.apache.thrift.meta_data.FieldMetaData("messages", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MessageFrequency.class))));
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(WhoIsWorkingReply.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRAutoCompleteUserMessageReply.class, metaDataMap);
   }
 
-  public WhoIsWorkingReply() {
+  public FRAutoCompleteUserMessageReply() {
   }
 
-  public WhoIsWorkingReply(
+  public FRAutoCompleteUserMessageReply(
     FRStatusCode status,
     String statusComment)
   {
@@ -131,7 +131,7 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public WhoIsWorkingReply(WhoIsWorkingReply other) {
+  public FRAutoCompleteUserMessageReply(FRAutoCompleteUserMessageReply other) {
     if (other.isSetStatus()) {
       this.status = other.status;
     }
@@ -139,16 +139,16 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
       this.statusComment = other.statusComment;
     }
     if (other.isSetMessages()) {
-      List<MessageFrequency> __this__messages = new ArrayList<MessageFrequency>();
-      for (MessageFrequency other_element : other.messages) {
-        __this__messages.add(new MessageFrequency(other_element));
+      List<String> __this__messages = new ArrayList<String>();
+      for (String other_element : other.messages) {
+        __this__messages.add(other_element);
       }
       this.messages = __this__messages;
     }
   }
 
-  public WhoIsWorkingReply deepCopy() {
-    return new WhoIsWorkingReply(this);
+  public FRAutoCompleteUserMessageReply deepCopy() {
+    return new FRAutoCompleteUserMessageReply(this);
   }
 
   @Override
@@ -170,7 +170,7 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
    * 
    * @see FRStatusCode
    */
-  public WhoIsWorkingReply setStatus(FRStatusCode status) {
+  public FRAutoCompleteUserMessageReply setStatus(FRStatusCode status) {
     this.status = status;
     return this;
   }
@@ -194,7 +194,7 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
     return this.statusComment;
   }
 
-  public WhoIsWorkingReply setStatusComment(String statusComment) {
+  public FRAutoCompleteUserMessageReply setStatusComment(String statusComment) {
     this.statusComment = statusComment;
     return this;
   }
@@ -218,22 +218,22 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
     return (this.messages == null) ? 0 : this.messages.size();
   }
 
-  public java.util.Iterator<MessageFrequency> getMessagesIterator() {
+  public java.util.Iterator<String> getMessagesIterator() {
     return (this.messages == null) ? null : this.messages.iterator();
   }
 
-  public void addToMessages(MessageFrequency elem) {
+  public void addToMessages(String elem) {
     if (this.messages == null) {
-      this.messages = new ArrayList<MessageFrequency>();
+      this.messages = new ArrayList<String>();
     }
     this.messages.add(elem);
   }
 
-  public List<MessageFrequency> getMessages() {
+  public List<String> getMessages() {
     return this.messages;
   }
 
-  public WhoIsWorkingReply setMessages(List<MessageFrequency> messages) {
+  public FRAutoCompleteUserMessageReply setMessages(List<String> messages) {
     this.messages = messages;
     return this;
   }
@@ -275,7 +275,7 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
       if (value == null) {
         unsetMessages();
       } else {
-        setMessages((List<MessageFrequency>)value);
+        setMessages((List<String>)value);
       }
       break;
 
@@ -318,12 +318,12 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof WhoIsWorkingReply)
-      return this.equals((WhoIsWorkingReply)that);
+    if (that instanceof FRAutoCompleteUserMessageReply)
+      return this.equals((FRAutoCompleteUserMessageReply)that);
     return false;
   }
 
-  public boolean equals(WhoIsWorkingReply that) {
+  public boolean equals(FRAutoCompleteUserMessageReply that) {
     if (that == null)
       return false;
 
@@ -379,13 +379,13 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
     return builder.toHashCode();
   }
 
-  public int compareTo(WhoIsWorkingReply other) {
+  public int compareTo(FRAutoCompleteUserMessageReply other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    WhoIsWorkingReply typedOther = (WhoIsWorkingReply)other;
+    FRAutoCompleteUserMessageReply typedOther = (FRAutoCompleteUserMessageReply)other;
 
     lastComparison = Boolean.valueOf(isSetStatus()).compareTo(typedOther.isSetStatus());
     if (lastComparison != 0) {
@@ -451,14 +451,13 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
         case 3: // MESSAGES
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list34 = iprot.readListBegin();
-              this.messages = new ArrayList<MessageFrequency>(_list34.size);
-              for (int _i35 = 0; _i35 < _list34.size; ++_i35)
+              org.apache.thrift.protocol.TList _list30 = iprot.readListBegin();
+              this.messages = new ArrayList<String>(_list30.size);
+              for (int _i31 = 0; _i31 < _list30.size; ++_i31)
               {
-                MessageFrequency _elem36; // required
-                _elem36 = new MessageFrequency();
-                _elem36.read(iprot);
-                this.messages.add(_elem36);
+                String _elem32; // required
+                _elem32 = iprot.readString();
+                this.messages.add(_elem32);
               }
               iprot.readListEnd();
             }
@@ -495,10 +494,10 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
       if (isSetMessages()) {
         oprot.writeFieldBegin(MESSAGES_FIELD_DESC);
         {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.messages.size()));
-          for (MessageFrequency _iter37 : this.messages)
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.messages.size()));
+          for (String _iter33 : this.messages)
           {
-            _iter37.write(oprot);
+            oprot.writeString(_iter33);
           }
           oprot.writeListEnd();
         }
@@ -511,7 +510,7 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("WhoIsWorkingReply(");
+    StringBuilder sb = new StringBuilder("FRAutoCompleteUserMessageReply(");
     boolean first = true;
 
     sb.append("status:");

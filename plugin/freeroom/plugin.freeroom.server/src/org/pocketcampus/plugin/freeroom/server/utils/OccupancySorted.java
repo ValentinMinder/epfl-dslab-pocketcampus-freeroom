@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
@@ -24,7 +24,7 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 public class OccupancySorted {
 
 	private boolean onlyFreeRooms;
-	private ArrayList<ActualOccupation> mActualOccupations;
+	private ArrayList<FRActualOccupation> mActualOccupations;
 	private FRRoom room;
 	private long timestampStart;
 	private long timestampEnd;
@@ -34,7 +34,7 @@ public class OccupancySorted {
 
 	public OccupancySorted(FRRoom room, long tsStart, long tsEnd,
 			boolean onlyFree) {
-		this.mActualOccupations = new ArrayList<ActualOccupation>();
+		this.mActualOccupations = new ArrayList<FRActualOccupation>();
 		this.room = room;
 		isAtLeastFreeOnce = false;
 		isAtLeastOccupiedOnce = false;
@@ -44,7 +44,7 @@ public class OccupancySorted {
 		onlyFreeRooms = onlyFree;
 	}
 
-	public void addActualOccupation(ActualOccupation occ) {
+	public void addActualOccupation(FRActualOccupation occ) {
 		FRPeriod period = occ.getPeriod();
 		long start = FRTimes.roundSAndMSToZero(period.getTimeStampStart());
 		long end = FRTimes.roundSAndMSToZero(period.getTimeStampEnd());
@@ -110,10 +110,10 @@ public class OccupancySorted {
 	 */
 	private void sortByTimestampStart() {
 		Collections.sort(mActualOccupations,
-				new Comparator<ActualOccupation>() {
+				new Comparator<FRActualOccupation>() {
 
 					@Override
-					public int compare(ActualOccupation o1, ActualOccupation o2) {
+					public int compare(FRActualOccupation o1, FRActualOccupation o2) {
 						long thisStart = o1.getPeriod().getTimeStampStart();
 						long toCompareStart = o2.getPeriod()
 								.getTimeStampStart();
@@ -170,13 +170,13 @@ public class OccupancySorted {
 	 * have a contiguous list of period (with an error of MARGIN_FOR_ERROR)
 	 */
 	private void fillGaps() {
-		ArrayList<ActualOccupation> resultList = new ArrayList<ActualOccupation>();
+		ArrayList<FRActualOccupation> resultList = new ArrayList<FRActualOccupation>();
 		boolean previousIsRoom = false;
 		long lastEnd = timestampStart;
 		int countFree = 0;
 		int countOccupied = 0;
 
-		for (ActualOccupation actual : mActualOccupations) {
+		for (FRActualOccupation actual : mActualOccupations) {
 			long tsStart = Math.max(timestampStart, actual.getPeriod()
 					.getTimeStampStart());
 
@@ -184,7 +184,7 @@ public class OccupancySorted {
 			// occupancy and this one end after the room occupancy starts ! it
 			// has to be resized
 			if (!actual.isAvailable() && !previousIsRoom && lastEnd > tsStart) {
-				ActualOccupation lastOccupation = resultList.remove(resultList
+				FRActualOccupation lastOccupation = resultList.remove(resultList
 						.size() - 1);
 				countFree = Math.max(0, countFree - 1);
 				FRPeriod previousPeriod = lastOccupation.getPeriod();
@@ -210,7 +210,7 @@ public class OccupancySorted {
 
 			if (tsStart - lastEnd > FRTimes.MIN_PERIOD) {
 				// We got a free period of time !
-				ArrayList<ActualOccupation> subDivised = cutInStepsPeriod(
+				ArrayList<FRActualOccupation> subDivised = cutInStepsPeriod(
 						lastEnd, tsStart);
 				resultList.addAll(subDivised);
 				countFree += subDivised.size();
@@ -244,7 +244,7 @@ public class OccupancySorted {
 		}
 
 		if (timestampEnd - lastEnd > FRTimes.MIN_PERIOD) {
-			ArrayList<ActualOccupation> subDivised = cutInStepsPeriod(lastEnd,
+			ArrayList<FRActualOccupation> subDivised = cutInStepsPeriod(lastEnd,
 					timestampEnd);
 			resultList.addAll(subDivised);
 			countFree++;
@@ -268,8 +268,8 @@ public class OccupancySorted {
 	 * @return A List of actualoccupations, each of them has a period of at most
 	 *         ONE_HOUR_MS
 	 */
-	private ArrayList<ActualOccupation> cutInStepsPeriod(long start, long end) {
-		ArrayList<ActualOccupation> result = new ArrayList<ActualOccupation>();
+	private ArrayList<FRActualOccupation> cutInStepsPeriod(long start, long end) {
+		ArrayList<FRActualOccupation> result = new ArrayList<FRActualOccupation>();
 		long hourSharpBefore = FRTimes.roundHourBefore(start);
 		long numberHours = FRTimes.determineNumberHour(start, end);
 
@@ -280,7 +280,7 @@ public class OccupancySorted {
 					* FRTimes.ONE_HOUR_IN_MS, end);
 			if (maxEnd - minStart > FRTimes.MIN_PERIOD) {
 				FRPeriod period = new FRPeriod(minStart, maxEnd);
-				ActualOccupation mAccOcc = new ActualOccupation(period, true);
+				FRActualOccupation mAccOcc = new FRActualOccupation(period, true);
 				mAccOcc.setRatioOccupation(0.0);
 				result.add(mAccOcc);
 			}

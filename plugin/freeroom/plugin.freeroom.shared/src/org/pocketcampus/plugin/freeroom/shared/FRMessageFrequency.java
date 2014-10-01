@@ -21,23 +21,19 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ImWorkingReply implements org.apache.thrift.TBase<ImWorkingReply, ImWorkingReply._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ImWorkingReply");
+public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFrequency, FRMessageFrequency._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRMessageFrequency");
 
-  private static final org.apache.thrift.protocol.TField STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("status", org.apache.thrift.protocol.TType.I32, (short)1);
-  private static final org.apache.thrift.protocol.TField STATUS_COMMENT_FIELD_DESC = new org.apache.thrift.protocol.TField("statusComment", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("message", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField FREQUENCY_FIELD_DESC = new org.apache.thrift.protocol.TField("frequency", org.apache.thrift.protocol.TType.I32, (short)2);
 
-  private FRStatusCode status; // required
-  private String statusComment; // required
+  private String message; // required
+  private int frequency; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    /**
-     * 
-     * @see FRStatusCode
-     */
-    STATUS((short)1, "status"),
-    STATUS_COMMENT((short)2, "statusComment");
+    MESSAGE((short)1, "message"),
+    FREQUENCY((short)2, "frequency");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -52,10 +48,10 @@ public class ImWorkingReply implements org.apache.thrift.TBase<ImWorkingReply, I
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // STATUS
-          return STATUS;
-        case 2: // STATUS_COMMENT
-          return STATUS_COMMENT;
+        case 1: // MESSAGE
+          return MESSAGE;
+        case 2: // FREQUENCY
+          return FREQUENCY;
         default:
           return null;
       }
@@ -96,123 +92,118 @@ public class ImWorkingReply implements org.apache.thrift.TBase<ImWorkingReply, I
   }
 
   // isset id assignments
+  private static final int __FREQUENCY_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.STATUS, new org.apache.thrift.meta_data.FieldMetaData("status", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, FRStatusCode.class)));
-    tmpMap.put(_Fields.STATUS_COMMENT, new org.apache.thrift.meta_data.FieldMetaData("statusComment", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("message", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.FREQUENCY, new org.apache.thrift.meta_data.FieldMetaData("frequency", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ImWorkingReply.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRMessageFrequency.class, metaDataMap);
   }
 
-  public ImWorkingReply() {
+  public FRMessageFrequency() {
   }
 
-  public ImWorkingReply(
-    FRStatusCode status,
-    String statusComment)
+  public FRMessageFrequency(
+    String message,
+    int frequency)
   {
     this();
-    this.status = status;
-    this.statusComment = statusComment;
+    this.message = message;
+    this.frequency = frequency;
+    setFrequencyIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public ImWorkingReply(ImWorkingReply other) {
-    if (other.isSetStatus()) {
-      this.status = other.status;
+  public FRMessageFrequency(FRMessageFrequency other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
+    if (other.isSetMessage()) {
+      this.message = other.message;
     }
-    if (other.isSetStatusComment()) {
-      this.statusComment = other.statusComment;
-    }
+    this.frequency = other.frequency;
   }
 
-  public ImWorkingReply deepCopy() {
-    return new ImWorkingReply(this);
+  public FRMessageFrequency deepCopy() {
+    return new FRMessageFrequency(this);
   }
 
   @Override
   public void clear() {
-    this.status = null;
-    this.statusComment = null;
+    this.message = null;
+    setFrequencyIsSet(false);
+    this.frequency = 0;
   }
 
-  /**
-   * 
-   * @see FRStatusCode
-   */
-  public FRStatusCode getStatus() {
-    return this.status;
+  public String getMessage() {
+    return this.message;
   }
 
-  /**
-   * 
-   * @see FRStatusCode
-   */
-  public ImWorkingReply setStatus(FRStatusCode status) {
-    this.status = status;
+  public FRMessageFrequency setMessage(String message) {
+    this.message = message;
     return this;
   }
 
-  public void unsetStatus() {
-    this.status = null;
+  public void unsetMessage() {
+    this.message = null;
   }
 
-  /** Returns true if field status is set (has been assigned a value) and false otherwise */
-  public boolean isSetStatus() {
-    return this.status != null;
+  /** Returns true if field message is set (has been assigned a value) and false otherwise */
+  public boolean isSetMessage() {
+    return this.message != null;
   }
 
-  public void setStatusIsSet(boolean value) {
+  public void setMessageIsSet(boolean value) {
     if (!value) {
-      this.status = null;
+      this.message = null;
     }
   }
 
-  public String getStatusComment() {
-    return this.statusComment;
+  public int getFrequency() {
+    return this.frequency;
   }
 
-  public ImWorkingReply setStatusComment(String statusComment) {
-    this.statusComment = statusComment;
+  public FRMessageFrequency setFrequency(int frequency) {
+    this.frequency = frequency;
+    setFrequencyIsSet(true);
     return this;
   }
 
-  public void unsetStatusComment() {
-    this.statusComment = null;
+  public void unsetFrequency() {
+    __isset_bit_vector.clear(__FREQUENCY_ISSET_ID);
   }
 
-  /** Returns true if field statusComment is set (has been assigned a value) and false otherwise */
-  public boolean isSetStatusComment() {
-    return this.statusComment != null;
+  /** Returns true if field frequency is set (has been assigned a value) and false otherwise */
+  public boolean isSetFrequency() {
+    return __isset_bit_vector.get(__FREQUENCY_ISSET_ID);
   }
 
-  public void setStatusCommentIsSet(boolean value) {
-    if (!value) {
-      this.statusComment = null;
-    }
+  public void setFrequencyIsSet(boolean value) {
+    __isset_bit_vector.set(__FREQUENCY_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case STATUS:
+    case MESSAGE:
       if (value == null) {
-        unsetStatus();
+        unsetMessage();
       } else {
-        setStatus((FRStatusCode)value);
+        setMessage((String)value);
       }
       break;
 
-    case STATUS_COMMENT:
+    case FREQUENCY:
       if (value == null) {
-        unsetStatusComment();
+        unsetFrequency();
       } else {
-        setStatusComment((String)value);
+        setFrequency((Integer)value);
       }
       break;
 
@@ -221,11 +212,11 @@ public class ImWorkingReply implements org.apache.thrift.TBase<ImWorkingReply, I
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case STATUS:
-      return getStatus();
+    case MESSAGE:
+      return getMessage();
 
-    case STATUS_COMMENT:
-      return getStatusComment();
+    case FREQUENCY:
+      return Integer.valueOf(getFrequency());
 
     }
     throw new IllegalStateException();
@@ -238,10 +229,10 @@ public class ImWorkingReply implements org.apache.thrift.TBase<ImWorkingReply, I
     }
 
     switch (field) {
-    case STATUS:
-      return isSetStatus();
-    case STATUS_COMMENT:
-      return isSetStatusComment();
+    case MESSAGE:
+      return isSetMessage();
+    case FREQUENCY:
+      return isSetFrequency();
     }
     throw new IllegalStateException();
   }
@@ -250,30 +241,30 @@ public class ImWorkingReply implements org.apache.thrift.TBase<ImWorkingReply, I
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof ImWorkingReply)
-      return this.equals((ImWorkingReply)that);
+    if (that instanceof FRMessageFrequency)
+      return this.equals((FRMessageFrequency)that);
     return false;
   }
 
-  public boolean equals(ImWorkingReply that) {
+  public boolean equals(FRMessageFrequency that) {
     if (that == null)
       return false;
 
-    boolean this_present_status = true && this.isSetStatus();
-    boolean that_present_status = true && that.isSetStatus();
-    if (this_present_status || that_present_status) {
-      if (!(this_present_status && that_present_status))
+    boolean this_present_message = true && this.isSetMessage();
+    boolean that_present_message = true && that.isSetMessage();
+    if (this_present_message || that_present_message) {
+      if (!(this_present_message && that_present_message))
         return false;
-      if (!this.status.equals(that.status))
+      if (!this.message.equals(that.message))
         return false;
     }
 
-    boolean this_present_statusComment = true && this.isSetStatusComment();
-    boolean that_present_statusComment = true && that.isSetStatusComment();
-    if (this_present_statusComment || that_present_statusComment) {
-      if (!(this_present_statusComment && that_present_statusComment))
+    boolean this_present_frequency = true;
+    boolean that_present_frequency = true;
+    if (this_present_frequency || that_present_frequency) {
+      if (!(this_present_frequency && that_present_frequency))
         return false;
-      if (!this.statusComment.equals(that.statusComment))
+      if (this.frequency != that.frequency)
         return false;
     }
 
@@ -284,43 +275,43 @@ public class ImWorkingReply implements org.apache.thrift.TBase<ImWorkingReply, I
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_status = true && (isSetStatus());
-    builder.append(present_status);
-    if (present_status)
-      builder.append(status.getValue());
+    boolean present_message = true && (isSetMessage());
+    builder.append(present_message);
+    if (present_message)
+      builder.append(message);
 
-    boolean present_statusComment = true && (isSetStatusComment());
-    builder.append(present_statusComment);
-    if (present_statusComment)
-      builder.append(statusComment);
+    boolean present_frequency = true;
+    builder.append(present_frequency);
+    if (present_frequency)
+      builder.append(frequency);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(ImWorkingReply other) {
+  public int compareTo(FRMessageFrequency other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    ImWorkingReply typedOther = (ImWorkingReply)other;
+    FRMessageFrequency typedOther = (FRMessageFrequency)other;
 
-    lastComparison = Boolean.valueOf(isSetStatus()).compareTo(typedOther.isSetStatus());
+    lastComparison = Boolean.valueOf(isSetMessage()).compareTo(typedOther.isSetMessage());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetStatus()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.status, typedOther.status);
+    if (isSetMessage()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.message, typedOther.message);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetStatusComment()).compareTo(typedOther.isSetStatusComment());
+    lastComparison = Boolean.valueOf(isSetFrequency()).compareTo(typedOther.isSetFrequency());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetStatusComment()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.statusComment, typedOther.statusComment);
+    if (isSetFrequency()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.frequency, typedOther.frequency);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -342,16 +333,17 @@ public class ImWorkingReply implements org.apache.thrift.TBase<ImWorkingReply, I
         break;
       }
       switch (field.id) {
-        case 1: // STATUS
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.status = FRStatusCode.findByValue(iprot.readI32());
+        case 1: // MESSAGE
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.message = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // STATUS_COMMENT
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.statusComment = iprot.readString();
+        case 2: // FREQUENCY
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.frequency = iprot.readI32();
+            setFrequencyIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -364,6 +356,9 @@ public class ImWorkingReply implements org.apache.thrift.TBase<ImWorkingReply, I
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
+    if (!isSetFrequency()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'frequency' was not found in serialized data! Struct: " + toString());
+    }
     validate();
   }
 
@@ -371,39 +366,33 @@ public class ImWorkingReply implements org.apache.thrift.TBase<ImWorkingReply, I
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.status != null) {
-      oprot.writeFieldBegin(STATUS_FIELD_DESC);
-      oprot.writeI32(this.status.getValue());
+    if (this.message != null) {
+      oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
+      oprot.writeString(this.message);
       oprot.writeFieldEnd();
     }
-    if (this.statusComment != null) {
-      oprot.writeFieldBegin(STATUS_COMMENT_FIELD_DESC);
-      oprot.writeString(this.statusComment);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(FREQUENCY_FIELD_DESC);
+    oprot.writeI32(this.frequency);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("ImWorkingReply(");
+    StringBuilder sb = new StringBuilder("FRMessageFrequency(");
     boolean first = true;
 
-    sb.append("status:");
-    if (this.status == null) {
+    sb.append("message:");
+    if (this.message == null) {
       sb.append("null");
     } else {
-      sb.append(this.status);
+      sb.append(this.message);
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("statusComment:");
-    if (this.statusComment == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.statusComment);
-    }
+    sb.append("frequency:");
+    sb.append(this.frequency);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -411,12 +400,10 @@ public class ImWorkingReply implements org.apache.thrift.TBase<ImWorkingReply, I
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (status == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'status' was not present! Struct: " + toString());
+    if (message == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'message' was not present! Struct: " + toString());
     }
-    if (statusComment == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'statusComment' was not present! Struct: " + toString());
-    }
+    // alas, we cannot check 'frequency' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -429,6 +416,8 @@ public class ImWorkingReply implements org.apache.thrift.TBase<ImWorkingReply, I
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);

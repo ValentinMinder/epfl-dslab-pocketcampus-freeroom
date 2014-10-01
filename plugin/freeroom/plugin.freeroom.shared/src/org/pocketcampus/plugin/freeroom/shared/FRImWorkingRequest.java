@@ -21,19 +21,19 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MessageFrequency implements org.apache.thrift.TBase<MessageFrequency, MessageFrequency._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MessageFrequency");
+public class FRImWorkingRequest implements org.apache.thrift.TBase<FRImWorkingRequest, FRImWorkingRequest._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRImWorkingRequest");
 
-  private static final org.apache.thrift.protocol.TField MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("message", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField FREQUENCY_FIELD_DESC = new org.apache.thrift.protocol.TField("frequency", org.apache.thrift.protocol.TType.I32, (short)2);
+  private static final org.apache.thrift.protocol.TField WORK_FIELD_DESC = new org.apache.thrift.protocol.TField("work", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+  private static final org.apache.thrift.protocol.TField HASH_FIELD_DESC = new org.apache.thrift.protocol.TField("hash", org.apache.thrift.protocol.TType.STRING, (short)2);
 
-  private String message; // required
-  private int frequency; // required
+  private FRWorkingOccupancy work; // required
+  private String hash; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    MESSAGE((short)1, "message"),
-    FREQUENCY((short)2, "frequency");
+    WORK((short)1, "work"),
+    HASH((short)2, "hash");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -48,10 +48,10 @@ public class MessageFrequency implements org.apache.thrift.TBase<MessageFrequenc
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // MESSAGE
-          return MESSAGE;
-        case 2: // FREQUENCY
-          return FREQUENCY;
+        case 1: // WORK
+          return WORK;
+        case 2: // HASH
+          return HASH;
         default:
           return null;
       }
@@ -92,118 +92,115 @@ public class MessageFrequency implements org.apache.thrift.TBase<MessageFrequenc
   }
 
   // isset id assignments
-  private static final int __FREQUENCY_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("message", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.WORK, new org.apache.thrift.meta_data.FieldMetaData("work", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRWorkingOccupancy.class)));
+    tmpMap.put(_Fields.HASH, new org.apache.thrift.meta_data.FieldMetaData("hash", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.FREQUENCY, new org.apache.thrift.meta_data.FieldMetaData("frequency", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MessageFrequency.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRImWorkingRequest.class, metaDataMap);
   }
 
-  public MessageFrequency() {
+  public FRImWorkingRequest() {
   }
 
-  public MessageFrequency(
-    String message,
-    int frequency)
+  public FRImWorkingRequest(
+    FRWorkingOccupancy work,
+    String hash)
   {
     this();
-    this.message = message;
-    this.frequency = frequency;
-    setFrequencyIsSet(true);
+    this.work = work;
+    this.hash = hash;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public MessageFrequency(MessageFrequency other) {
-    __isset_bit_vector.clear();
-    __isset_bit_vector.or(other.__isset_bit_vector);
-    if (other.isSetMessage()) {
-      this.message = other.message;
+  public FRImWorkingRequest(FRImWorkingRequest other) {
+    if (other.isSetWork()) {
+      this.work = new FRWorkingOccupancy(other.work);
     }
-    this.frequency = other.frequency;
+    if (other.isSetHash()) {
+      this.hash = other.hash;
+    }
   }
 
-  public MessageFrequency deepCopy() {
-    return new MessageFrequency(this);
+  public FRImWorkingRequest deepCopy() {
+    return new FRImWorkingRequest(this);
   }
 
   @Override
   public void clear() {
-    this.message = null;
-    setFrequencyIsSet(false);
-    this.frequency = 0;
+    this.work = null;
+    this.hash = null;
   }
 
-  public String getMessage() {
-    return this.message;
+  public FRWorkingOccupancy getWork() {
+    return this.work;
   }
 
-  public MessageFrequency setMessage(String message) {
-    this.message = message;
+  public FRImWorkingRequest setWork(FRWorkingOccupancy work) {
+    this.work = work;
     return this;
   }
 
-  public void unsetMessage() {
-    this.message = null;
+  public void unsetWork() {
+    this.work = null;
   }
 
-  /** Returns true if field message is set (has been assigned a value) and false otherwise */
-  public boolean isSetMessage() {
-    return this.message != null;
+  /** Returns true if field work is set (has been assigned a value) and false otherwise */
+  public boolean isSetWork() {
+    return this.work != null;
   }
 
-  public void setMessageIsSet(boolean value) {
+  public void setWorkIsSet(boolean value) {
     if (!value) {
-      this.message = null;
+      this.work = null;
     }
   }
 
-  public int getFrequency() {
-    return this.frequency;
+  public String getHash() {
+    return this.hash;
   }
 
-  public MessageFrequency setFrequency(int frequency) {
-    this.frequency = frequency;
-    setFrequencyIsSet(true);
+  public FRImWorkingRequest setHash(String hash) {
+    this.hash = hash;
     return this;
   }
 
-  public void unsetFrequency() {
-    __isset_bit_vector.clear(__FREQUENCY_ISSET_ID);
+  public void unsetHash() {
+    this.hash = null;
   }
 
-  /** Returns true if field frequency is set (has been assigned a value) and false otherwise */
-  public boolean isSetFrequency() {
-    return __isset_bit_vector.get(__FREQUENCY_ISSET_ID);
+  /** Returns true if field hash is set (has been assigned a value) and false otherwise */
+  public boolean isSetHash() {
+    return this.hash != null;
   }
 
-  public void setFrequencyIsSet(boolean value) {
-    __isset_bit_vector.set(__FREQUENCY_ISSET_ID, value);
+  public void setHashIsSet(boolean value) {
+    if (!value) {
+      this.hash = null;
+    }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case MESSAGE:
+    case WORK:
       if (value == null) {
-        unsetMessage();
+        unsetWork();
       } else {
-        setMessage((String)value);
+        setWork((FRWorkingOccupancy)value);
       }
       break;
 
-    case FREQUENCY:
+    case HASH:
       if (value == null) {
-        unsetFrequency();
+        unsetHash();
       } else {
-        setFrequency((Integer)value);
+        setHash((String)value);
       }
       break;
 
@@ -212,11 +209,11 @@ public class MessageFrequency implements org.apache.thrift.TBase<MessageFrequenc
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case MESSAGE:
-      return getMessage();
+    case WORK:
+      return getWork();
 
-    case FREQUENCY:
-      return Integer.valueOf(getFrequency());
+    case HASH:
+      return getHash();
 
     }
     throw new IllegalStateException();
@@ -229,10 +226,10 @@ public class MessageFrequency implements org.apache.thrift.TBase<MessageFrequenc
     }
 
     switch (field) {
-    case MESSAGE:
-      return isSetMessage();
-    case FREQUENCY:
-      return isSetFrequency();
+    case WORK:
+      return isSetWork();
+    case HASH:
+      return isSetHash();
     }
     throw new IllegalStateException();
   }
@@ -241,30 +238,30 @@ public class MessageFrequency implements org.apache.thrift.TBase<MessageFrequenc
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof MessageFrequency)
-      return this.equals((MessageFrequency)that);
+    if (that instanceof FRImWorkingRequest)
+      return this.equals((FRImWorkingRequest)that);
     return false;
   }
 
-  public boolean equals(MessageFrequency that) {
+  public boolean equals(FRImWorkingRequest that) {
     if (that == null)
       return false;
 
-    boolean this_present_message = true && this.isSetMessage();
-    boolean that_present_message = true && that.isSetMessage();
-    if (this_present_message || that_present_message) {
-      if (!(this_present_message && that_present_message))
+    boolean this_present_work = true && this.isSetWork();
+    boolean that_present_work = true && that.isSetWork();
+    if (this_present_work || that_present_work) {
+      if (!(this_present_work && that_present_work))
         return false;
-      if (!this.message.equals(that.message))
+      if (!this.work.equals(that.work))
         return false;
     }
 
-    boolean this_present_frequency = true;
-    boolean that_present_frequency = true;
-    if (this_present_frequency || that_present_frequency) {
-      if (!(this_present_frequency && that_present_frequency))
+    boolean this_present_hash = true && this.isSetHash();
+    boolean that_present_hash = true && that.isSetHash();
+    if (this_present_hash || that_present_hash) {
+      if (!(this_present_hash && that_present_hash))
         return false;
-      if (this.frequency != that.frequency)
+      if (!this.hash.equals(that.hash))
         return false;
     }
 
@@ -275,43 +272,43 @@ public class MessageFrequency implements org.apache.thrift.TBase<MessageFrequenc
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_message = true && (isSetMessage());
-    builder.append(present_message);
-    if (present_message)
-      builder.append(message);
+    boolean present_work = true && (isSetWork());
+    builder.append(present_work);
+    if (present_work)
+      builder.append(work);
 
-    boolean present_frequency = true;
-    builder.append(present_frequency);
-    if (present_frequency)
-      builder.append(frequency);
+    boolean present_hash = true && (isSetHash());
+    builder.append(present_hash);
+    if (present_hash)
+      builder.append(hash);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(MessageFrequency other) {
+  public int compareTo(FRImWorkingRequest other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    MessageFrequency typedOther = (MessageFrequency)other;
+    FRImWorkingRequest typedOther = (FRImWorkingRequest)other;
 
-    lastComparison = Boolean.valueOf(isSetMessage()).compareTo(typedOther.isSetMessage());
+    lastComparison = Boolean.valueOf(isSetWork()).compareTo(typedOther.isSetWork());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetMessage()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.message, typedOther.message);
+    if (isSetWork()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.work, typedOther.work);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetFrequency()).compareTo(typedOther.isSetFrequency());
+    lastComparison = Boolean.valueOf(isSetHash()).compareTo(typedOther.isSetHash());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetFrequency()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.frequency, typedOther.frequency);
+    if (isSetHash()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.hash, typedOther.hash);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -333,17 +330,17 @@ public class MessageFrequency implements org.apache.thrift.TBase<MessageFrequenc
         break;
       }
       switch (field.id) {
-        case 1: // MESSAGE
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.message = iprot.readString();
+        case 1: // WORK
+          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+            this.work = new FRWorkingOccupancy();
+            this.work.read(iprot);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // FREQUENCY
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.frequency = iprot.readI32();
-            setFrequencyIsSet(true);
+        case 2: // HASH
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.hash = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -356,9 +353,6 @@ public class MessageFrequency implements org.apache.thrift.TBase<MessageFrequenc
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetFrequency()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'frequency' was not found in serialized data! Struct: " + toString());
-    }
     validate();
   }
 
@@ -366,33 +360,39 @@ public class MessageFrequency implements org.apache.thrift.TBase<MessageFrequenc
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.message != null) {
-      oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
-      oprot.writeString(this.message);
+    if (this.work != null) {
+      oprot.writeFieldBegin(WORK_FIELD_DESC);
+      this.work.write(oprot);
       oprot.writeFieldEnd();
     }
-    oprot.writeFieldBegin(FREQUENCY_FIELD_DESC);
-    oprot.writeI32(this.frequency);
-    oprot.writeFieldEnd();
+    if (this.hash != null) {
+      oprot.writeFieldBegin(HASH_FIELD_DESC);
+      oprot.writeString(this.hash);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("MessageFrequency(");
+    StringBuilder sb = new StringBuilder("FRImWorkingRequest(");
     boolean first = true;
 
-    sb.append("message:");
-    if (this.message == null) {
+    sb.append("work:");
+    if (this.work == null) {
       sb.append("null");
     } else {
-      sb.append(this.message);
+      sb.append(this.work);
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("frequency:");
-    sb.append(this.frequency);
+    sb.append("hash:");
+    if (this.hash == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.hash);
+    }
     first = false;
     sb.append(")");
     return sb.toString();
@@ -400,10 +400,12 @@ public class MessageFrequency implements org.apache.thrift.TBase<MessageFrequenc
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (message == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'message' was not present! Struct: " + toString());
+    if (work == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'work' was not present! Struct: " + toString());
     }
-    // alas, we cannot check 'frequency' because it's a primitive and you chose the non-beans generator.
+    if (hash == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'hash' was not present! Struct: " + toString());
+    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -416,8 +418,6 @@ public class MessageFrequency implements org.apache.thrift.TBase<MessageFrequenc
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
-      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);

@@ -27,10 +27,10 @@ import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
 import org.pocketcampus.plugin.freeroom.android.utils.FRTimesClient;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.utils.SetArrayList;
-import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
-import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
+import org.pocketcampus.plugin.freeroom.shared.FRMessageFrequency;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
@@ -133,7 +133,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Storing the <code>WorkingOccupancy</code> of people who indicate their
 	 * are going to work there.
 	 */
-	private List<MessageFrequency> listMessageFrequency = new ArrayList<MessageFrequency>();
+	private List<FRMessageFrequency> listMessageFrequency = new ArrayList<FRMessageFrequency>();
 
 	/**
 	 * Reference to application context.
@@ -266,7 +266,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * @param listMessageFrequency
 	 */
 	public void setListMessageFrequency(
-			List<MessageFrequency> listMessageFrequency) {
+			List<FRMessageFrequency> listMessageFrequency) {
 		this.listMessageFrequency.clear();
 		this.listMessageFrequency.addAll(listMessageFrequency);
 		mListeners.workingMessageUpdated();
@@ -277,7 +277,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * 
 	 * @return
 	 */
-	public List<MessageFrequency> getListMessageFrequency() {
+	public List<FRMessageFrequency> getListMessageFrequency() {
 		return listMessageFrequency;
 	}
 
@@ -1012,7 +1012,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * Return the appropriate color according to the {@link ActualOccupation}
+	 * Return the appropriate color according to the {@link FRActualOccupation}
 	 * given, and the {@link FreeRoomModel} color settings (
 	 * {@link ColorBlindMode}).
 	 * 
@@ -1020,7 +1020,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 *            actual occupation for a given period
 	 * @return the appropriate color
 	 */
-	public int getColorLine(ActualOccupation mActualOccupation) {
+	public int getColorLine(FRActualOccupation mActualOccupation) {
 		if (!isColorLineFull()) {
 			return COLOR_TRANSPARENT;
 		}
@@ -1064,14 +1064,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * Return the correct color dot {@link Drawable} according to the
-	 * {@link ActualOccupation} given, and the {@link FreeRoomModel} color
+	 * {@link FRActualOccupation} given, and the {@link FreeRoomModel} color
 	 * settings ({@link ColorBlindMode}).
 	 * 
 	 * @param mActualOccupation
 	 *            actual occupation for a given period
 	 * @return a color dot {@link Drawable}
 	 */
-	public int getColoredDotDrawable(ActualOccupation mActualOccupation) {
+	public int getColoredDotDrawable(FRActualOccupation mActualOccupation) {
 		if (!isColorColoredDots()) {
 			return R.drawable.ic_dot_empty;
 		}
@@ -1152,8 +1152,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
 	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
-	 * the color depending of the {@link ActualOccupation}, call
-	 * {@link #getColoredDotDrawable(ActualOccupation)}
+	 * the color depending of the {@link FRActualOccupation}, call
+	 * {@link #getColoredDotDrawable(FRActualOccupation)}
 	 * 
 	 * @return the dot indicating "UNKNOWN".
 	 */
@@ -1176,8 +1176,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
 	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
-	 * the color depending of the {@link ActualOccupation}, call
-	 * {@link #getColoredDotDrawable(ActualOccupation)}
+	 * the color depending of the {@link FRActualOccupation}, call
+	 * {@link #getColoredDotDrawable(FRActualOccupation)}
 	 * 
 	 * @return the dot indicating "OCCUPIED".
 	 */
@@ -1201,8 +1201,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
 	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
-	 * the color depending of the {@link ActualOccupation}, call
-	 * {@link #getColoredDotDrawable(ActualOccupation)}
+	 * the color depending of the {@link FRActualOccupation}, call
+	 * {@link #getColoredDotDrawable(FRActualOccupation)}
 	 * 
 	 * @return the dot indicating "FREE".
 	 */
@@ -1226,8 +1226,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
 	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
-	 * the color depending of the {@link ActualOccupation}, call
-	 * {@link #getColoredDotDrawable(ActualOccupation)}
+	 * the color depending of the {@link FRActualOccupation}, call
+	 * {@link #getColoredDotDrawable(FRActualOccupation)}
 	 * 
 	 * @return the dot indicating "PARTIALLY OCCUPIED".
 	 */

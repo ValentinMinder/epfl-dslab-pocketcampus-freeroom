@@ -81,7 +81,7 @@ struct FRPeriod {
 }
 
 // defines if the room is reserved or not
-struct ActualOccupation {
+struct FRActualOccupation {
 	1: required FRPeriod period;
 	2: required bool available;
 	4: optional double ratioOccupation;
@@ -93,7 +93,7 @@ struct ActualOccupation {
 // and provide period that are contiguous!
 struct FRRoomOccupancy {
 	1: required FRRoom room;
-	2: required list<ActualOccupation> occupancy;
+	2: required list<FRActualOccupation> occupancy;
 	3: required bool isAtLeastOccupiedOnce;
 	4: required bool isAtLeastFreeOnce;
 	5: required FRPeriod treatedPeriod;
@@ -125,7 +125,7 @@ struct FROccupancyReply {
 }
 
 //forbiddenRooms represents the rooms that shouldn't be replied 
-struct AutoCompleteRequest {
+struct FRAutoCompleteRequest {
 	// the string must be at least two chars to be accepted by the server
 	1: required string constraint;
 	// uid of rooms that wont be returned because already selected.
@@ -137,7 +137,7 @@ struct AutoCompleteRequest {
 	4: optional bool exactString;
 }
 
-struct AutoCompleteReply {
+struct FRAutoCompleteReply {
 	1: required FRStatusCode status;
 	2: required string statusComment;
 	// map from building name to list of rooms in this building (available in freeroom)
@@ -145,54 +145,54 @@ struct AutoCompleteReply {
 }
 
 // TODO: implement on android client side
-struct AutoCompleteUserMessageRequest {
+struct FRAutoCompleteUserMessageRequest {
 	1: required FRPeriod period;
 	2: required FRRoom room;
 	3: required string constraint;
 }
 
-struct AutoCompleteUserMessageReply {
+struct FRAutoCompleteUserMessageReply {
 	1: required FRStatusCode status;
 	2: required string statusComment; 
 	3: optional list<string> messages;
 }
 
-struct WorkingOccupancy {
+struct FRWorkingOccupancy {
 	1: required FRPeriod period;
 	2: required FRRoom room;
 	40: optional string message;
 }
 
-struct MessageFrequency {
+struct FRMessageFrequency {
 	1: required string message;
 	// how many times the same message appears
 	// rename: count
 	2: required i32 frequency;
 }
 
-struct ImWorkingRequest {
-	1: required WorkingOccupancy work;
+struct FRImWorkingRequest {
+	1: required FRWorkingOccupancy work;
 	// this identifies the user (anonymously)
 	// This hash must be unique across all sessions and time
 	2: required string hash;
 }
 
-struct ImWorkingReply {
+struct FRImWorkingReply {
 	1: required FRStatusCode status;
 	2: required string statusComment;
 }
 
-struct WhoIsWorkingRequest {
+struct FRWhoIsWorkingRequest {
 	1: required string roomUID;
 	2: required FRPeriod period;
 }
 
-struct WhoIsWorkingReply {
+struct FRWhoIsWorkingReply {
 	1: required FRStatusCode status;
 	2: required string statusComment;
 	//map a message to the number of time it appears
 	// could be transformed to a map from subject to count.
-	3: optional list<MessageFrequency> messages;
+	3: optional list<FRMessageFrequency> messages;
 }
 
 service FreeRoomService {
@@ -200,16 +200,16 @@ service FreeRoomService {
 	FROccupancyReply getOccupancy(1: FROccupancyRequest request);
 	
 	// autocomplete for searching for a room
-	AutoCompleteReply autoCompleteRoom(1: AutoCompleteRequest request);
+	FRAutoCompleteReply autoCompleteRoom(1: FRAutoCompleteRequest request);
 	
 	//autocomplete of user messages
 	// it's used after you already selected a room and a time period
 	// retrieves user messages from the exact same room and period
 	// (useful if you're a group working on the same thing)
-	AutoCompleteUserMessageReply autoCompleteUserMessage(1: AutoCompleteUserMessageRequest request);
+	FRAutoCompleteUserMessageReply autoCompleteUserMessage(1: FRAutoCompleteUserMessageRequest request);
 	
 	// indicate that i'm going to work there
-	ImWorkingReply indicateImWorking(1: ImWorkingRequest request);
+	FRImWorkingReply indicateImWorking(1: FRImWorkingRequest request);
 	
-	WhoIsWorkingReply getUserMessages(1: WhoIsWorkingRequest request);
+	FRWhoIsWorkingReply getUserMessages(1: FRWhoIsWorkingRequest request);
 }

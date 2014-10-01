@@ -36,16 +36,16 @@ import org.pocketcampus.plugin.freeroom.android.utils.FRTimesClient;
 import org.pocketcampus.plugin.freeroom.android.utils.FRUtilsClient;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.utils.SetArrayList;
-import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
-import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.Constants;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
-import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
-import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
+import org.pocketcampus.plugin.freeroom.shared.FRImWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRMessageFrequency;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
-import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
+import org.pocketcampus.plugin.freeroom.shared.FRWorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRStruct;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
@@ -859,7 +859,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			searchByIntentUriTriggered = true;
 			// if the URI is triggered, we want to give access to the room,
 			// event if the user might no have right to see the room.
-			AutoCompleteRequest req = new AutoCompleteRequest(constraint,
+			FRAutoCompleteRequest req = new FRAutoCompleteRequest(constraint,
 					Math.max(mModel.getGroupAccess(), Integer.MAX_VALUE));
 			// set to exact match (if you want autocompletion, please add a "%"
 			// to your constraint)
@@ -1320,7 +1320,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void autoCompleteValidateQuery(String query, View view) {
 		if (u.validQuery(query)) {
 			commonDismissSoftKeyBoard(view);
-			AutoCompleteRequest request = new AutoCompleteRequest(query,
+			FRAutoCompleteRequest request = new FRAutoCompleteRequest(query,
 					mModel.getGroupAccess());
 			mController.autoCompleteBuilding(this, request);
 		} else {
@@ -1394,7 +1394,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * {@link #infoDetailsRoom}: Adapter for the ActualOccupation displayed in a
 	 * ListView.
 	 */
-	private ActualOccupationArrayAdapter<ActualOccupation> infoDetailsActualOccupationAdapter;
+	private ActualOccupationArrayAdapter<FRActualOccupation> infoDetailsActualOccupationAdapter;
 
 	/**
 	 * {@link #infoDetailsRoom}: Inits the {@link #infoDetailsRoom} the
@@ -1532,7 +1532,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			ListView roomOccupancyListView = (ListView) infoDetailsRoomView
 					.findViewById(R.id.freeroom_layout_dialog_info_roomOccupancy);
-			infoDetailsActualOccupationAdapter = new ActualOccupationArrayAdapter<ActualOccupation>(
+			infoDetailsActualOccupationAdapter = new ActualOccupationArrayAdapter<FRActualOccupation>(
 					getApplicationContext(), mOccupancy, mController, this);
 			roomOccupancyListView
 					.setAdapter(infoDetailsActualOccupationAdapter);
@@ -1572,11 +1572,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	/**
 	 * {@link #whoIsWorking}: List of displayed working message.
 	 */
-	private List<MessageFrequency> whoIsWorkingMessageList;
+	private List<FRMessageFrequency> whoIsWorkingMessageList;
 	/**
 	 * {@link #whoIsWorking}: Adpater for message and their frequency.
 	 */
-	private ArrayAdapter<MessageFrequency> whoIsWorkingMessageAdapter;
+	private ArrayAdapter<FRMessageFrequency> whoIsWorkingMessageAdapter;
 
 	/**
 	 * {@link #whoIsWorking}: Inits the {@link #whoIsWorking} to show what
@@ -1640,7 +1640,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				.findViewById(R.id.freeroom_layout_dialog_working_disclaimer);
 
 		whoIsWorkingMessageList = mModel.getListMessageFrequency();
-		whoIsWorkingMessageAdapter = new MessageFrequencyArrayAdapter<MessageFrequency>(
+		whoIsWorkingMessageAdapter = new MessageFrequencyArrayAdapter<FRMessageFrequency>(
 				this, getApplicationContext(),
 				R.layout.freeroom_layout_message,
 				R.id.freeroom_layout_message_text, whoIsWorkingMessageList);
@@ -1994,7 +1994,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private void shareDefinetely(FRPeriod mPeriod, FRRoom mRoom,
 			boolean withFriends, String toShare) {
-		WorkingOccupancy work = new WorkingOccupancy(mPeriod, mRoom);
+		FRWorkingOccupancy work = new FRWorkingOccupancy(mPeriod, mRoom);
 		CheckBox mShareDialogCheckBoxShareMessageServer = (CheckBox) share
 				.findViewById(R.id.freeroom_layout_dialog_share_checkbox_server);
 		if (mShareDialogCheckBoxShareMessageServer != null
@@ -2002,7 +2002,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				&& toShare != null && toShare != "") {
 			work.setMessage(toShare);
 		}
-		ImWorkingRequest request = new ImWorkingRequest(work,
+		FRImWorkingRequest request = new FRImWorkingRequest(work,
 				mModel.getAnonymID());
 		mController.prepareImWorking(request);
 		mModel.setOnlyServer(!withFriends);
@@ -2426,7 +2426,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							// remove this if you don't want
 							// automatic autocomplete
 							// without pressing the button
-							AutoCompleteRequest request = new AutoCompleteRequest(
+							FRAutoCompleteRequest request = new FRAutoCompleteRequest(
 									text, mModel.getGroupAccess());
 							mController.autoCompleteBuilding(view, request);
 						}
@@ -2667,7 +2667,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							// remove this if you don't want
 							// automatic autocomplete
 							// without pressing the button
-							AutoCompleteRequest request = new AutoCompleteRequest(
+							FRAutoCompleteRequest request = new FRAutoCompleteRequest(
 									text, mModel.getGroupAccess());
 							mController.autoCompleteBuilding(view, request);
 						}
@@ -4371,7 +4371,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		FRPeriod period = new FRPeriod(System.currentTimeMillis(),
 				System.currentTimeMillis() + FRTimes.ONE_HOUR_IN_MS);
 		FRRoom room = new FRRoom("mock", "1234");
-		List<ActualOccupation> occupancy = new ArrayList<ActualOccupation>(1);
+		List<FRActualOccupation> occupancy = new ArrayList<FRActualOccupation>(1);
 		List<FRRoomOccupancy> occupancies = new ArrayList<FRRoomOccupancy>(4);
 		FRRoomOccupancy free = new FRRoomOccupancy(room, occupancy, false, true, period);
 		FRRoomOccupancy part = new FRRoomOccupancy(room, occupancy, true, true, period);

@@ -8,8 +8,8 @@ import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.shared.Constants;
 import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
-import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
-import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRImWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.FRImWorkingRequest;
 
 import android.util.Log;
 
@@ -32,7 +32,7 @@ import android.util.Log;
  */
 
 public class ImWorkingRequestASyncTask extends
-		Request<FreeRoomController, Iface, ImWorkingRequest, ImWorkingReply> {
+		Request<FreeRoomController, Iface, FRImWorkingRequest, FRImWorkingReply> {
 
 	private IFreeRoomView callerView;
 
@@ -41,13 +41,13 @@ public class ImWorkingRequestASyncTask extends
 	}
 
 	@Override
-	protected ImWorkingReply runInBackground(Iface clientInterface,
-			ImWorkingRequest request) throws Exception {
+	protected FRImWorkingReply runInBackground(Iface clientInterface,
+			FRImWorkingRequest request) throws Exception {
 		return clientInterface.indicateImWorking(request);
 	}
 
 	@Override
-	protected void onResult(FreeRoomController mController, ImWorkingReply reply) {
+	protected void onResult(FreeRoomController mController, FRImWorkingReply reply) {
 		FRStatusCode status = reply.getStatus();
 		callerView.refreshOccupancies();
 		if (status == FRStatusCode.HTTP_OK) {

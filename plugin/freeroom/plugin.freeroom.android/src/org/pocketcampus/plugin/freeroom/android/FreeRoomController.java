@@ -9,17 +9,17 @@ import org.pocketcampus.plugin.freeroom.android.req.AutoCompleteRequestASyncTask
 import org.pocketcampus.plugin.freeroom.android.req.CheckWhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.android.req.FRRequestASyncTask;
 import org.pocketcampus.plugin.freeroom.android.req.ImWorkingRequestASyncTask;
-import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
-import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteReply;
+import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
-import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
-import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRImWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.FRImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.RegisterUser;
-import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
-import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingRequest;
 
 import android.util.Log;
 import android.widget.Toast;
@@ -37,11 +37,11 @@ import android.widget.Toast;
  * {@link #handleReplySuccess(IFreeRoomView, int, String, String, String)} <br>
  * - occupancy requests, start at {@link #sendFRRequest(IFreeRoomView)} <br>
  * - autocomplete request, start at
- * {@link #autoCompleteBuilding(IFreeRoomView, AutoCompleteRequest)}<br>
+ * {@link #autoCompleteBuilding(IFreeRoomView, FRAutoCompleteRequest)}<br>
  * - imworking request (share with server), start at
- * {@link #prepareImWorking(ImWorkingRequest)}<br>
+ * {@link #prepareImWorking(FRImWorkingRequest)}<br>
  * - check who is working there, start at
- * {@link #prepareCheckWhoIsWorking(WhoIsWorkingRequest)}<br>
+ * {@link #prepareCheckWhoIsWorking(FRWhoIsWorkingRequest)}<br>
  * - register the user to the beta-release, start at
  * {@link #sendRegisterUser(RegisterUser, IFreeRoomView)}<br>
  * 
@@ -136,20 +136,20 @@ public class FreeRoomController extends PluginController implements
 	// AUTOCOMPLETE
 
 	public void autoCompleteBuilding(IFreeRoomView view,
-			AutoCompleteRequest request) {
+			FRAutoCompleteRequest request) {
 		mModel.autoCompleteLaunch();
 		new AutoCompleteRequestASyncTask(view).start(this, mClient, request);
 	}
 
-	public void setAutoCompleteResults(AutoCompleteReply result) {
+	public void setAutoCompleteResults(FRAutoCompleteReply result) {
 		mModel.setAutoComplete(result.getListRoom());
 	}
 
 	// IMWORKING - SHARE WITH SERVER
 
-	private ImWorkingRequest imWorkingRequest;
+	private FRImWorkingRequest imWorkingRequest;
 
-	public void prepareImWorking(ImWorkingRequest request) {
+	public void prepareImWorking(FRImWorkingRequest request) {
 		imWorkingRequest = request;
 	}
 
@@ -178,7 +178,7 @@ public class FreeRoomController extends PluginController implements
 	 * @param reply
 	 *            the reply from the server
 	 */
-	public void validateImWorking(ImWorkingReply reply) {
+	public void validateImWorking(FRImWorkingReply reply) {
 		Log.v("controller-imWorking-ok200",
 				"Your working indication was succcessfully submitted");
 		if (mModel.isOnlyServer()) {
@@ -205,7 +205,7 @@ public class FreeRoomController extends PluginController implements
 	 * @param reply
 	 *            the reply from the server
 	 */
-	public void updateImWorking(ImWorkingReply reply) {
+	public void updateImWorking(FRImWorkingReply reply) {
 		Log.v("controller-imWorking-updated299",
 				"Your working indication was succcessfully updated");
 		if (mModel.isOnlyServer()) {
@@ -226,7 +226,7 @@ public class FreeRoomController extends PluginController implements
 	 * @param reply
 	 *            the reply from the server
 	 */
-	public void conflictImWorking(ImWorkingReply reply) {
+	public void conflictImWorking(FRImWorkingReply reply) {
 		Log.v("controller-imWorking-conflict409",
 				"You already submitted something for this period of time, "
 						+ "you request was denied by the server "
@@ -244,7 +244,7 @@ public class FreeRoomController extends PluginController implements
 	 * @param reply
 	 *            the reply from the server
 	 */
-	public void badWordsImWorking(ImWorkingReply reply) {
+	public void badWordsImWorking(FRImWorkingReply reply) {
 		Log.v("controller-imWorking-predCondFailed",
 				"User submitted a bad word!");
 		if (mModel.isOnlyServer()) {
@@ -259,7 +259,7 @@ public class FreeRoomController extends PluginController implements
 	/**
 	 * Stores the prepared request for future sending to the server.
 	 */
-	private WhoIsWorkingRequest whoIsWorkingRequest = null;
+	private FRWhoIsWorkingRequest whoIsWorkingRequest = null;
 
 	/**
 	 * Stores a <code>WhoIsWorkingRequest</code> for future use.
@@ -270,7 +270,7 @@ public class FreeRoomController extends PluginController implements
 	 * @param request
 	 *            the <code>WhoIsWorkingRequest</code> to store.
 	 */
-	public void prepareCheckWhoIsWorking(WhoIsWorkingRequest request) {
+	public void prepareCheckWhoIsWorking(FRWhoIsWorkingRequest request) {
 		this.whoIsWorkingRequest = request;
 	}
 
@@ -299,7 +299,7 @@ public class FreeRoomController extends PluginController implements
 	 * @param result
 	 *            the <code>WhoIsWorkingReply</code> from the server.
 	 */
-	public void setWhoIsWorkingReply(WhoIsWorkingReply result) {
+	public void setWhoIsWorkingReply(FRWhoIsWorkingReply result) {
 		mModel.setListMessageFrequency(result.getMessages());
 	}
 

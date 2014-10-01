@@ -21,16 +21,14 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteReply, AutoCompleteReply._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("AutoCompleteReply");
+public class FRImWorkingReply implements org.apache.thrift.TBase<FRImWorkingReply, FRImWorkingReply._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRImWorkingReply");
 
   private static final org.apache.thrift.protocol.TField STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("status", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField STATUS_COMMENT_FIELD_DESC = new org.apache.thrift.protocol.TField("statusComment", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField LIST_ROOM_FIELD_DESC = new org.apache.thrift.protocol.TField("listRoom", org.apache.thrift.protocol.TType.MAP, (short)4);
 
   private FRStatusCode status; // required
   private String statusComment; // required
-  private Map<String,List<FRRoom>> listRoom; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -39,8 +37,7 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
      * @see FRStatusCode
      */
     STATUS((short)1, "status"),
-    STATUS_COMMENT((short)2, "statusComment"),
-    LIST_ROOM((short)4, "listRoom");
+    STATUS_COMMENT((short)2, "statusComment");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -59,8 +56,6 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
           return STATUS;
         case 2: // STATUS_COMMENT
           return STATUS_COMMENT;
-        case 4: // LIST_ROOM
-          return LIST_ROOM;
         default:
           return null;
       }
@@ -109,19 +104,14 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, FRStatusCode.class)));
     tmpMap.put(_Fields.STATUS_COMMENT, new org.apache.thrift.meta_data.FieldMetaData("statusComment", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.LIST_ROOM, new org.apache.thrift.meta_data.FieldMetaData("listRoom", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
-            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING), 
-            new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-                new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRRoom.class)))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(AutoCompleteReply.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRImWorkingReply.class, metaDataMap);
   }
 
-  public AutoCompleteReply() {
+  public FRImWorkingReply() {
   }
 
-  public AutoCompleteReply(
+  public FRImWorkingReply(
     FRStatusCode status,
     String statusComment)
   {
@@ -133,42 +123,23 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public AutoCompleteReply(AutoCompleteReply other) {
+  public FRImWorkingReply(FRImWorkingReply other) {
     if (other.isSetStatus()) {
       this.status = other.status;
     }
     if (other.isSetStatusComment()) {
       this.statusComment = other.statusComment;
     }
-    if (other.isSetListRoom()) {
-      Map<String,List<FRRoom>> __this__listRoom = new HashMap<String,List<FRRoom>>();
-      for (Map.Entry<String, List<FRRoom>> other_element : other.listRoom.entrySet()) {
-
-        String other_element_key = other_element.getKey();
-        List<FRRoom> other_element_value = other_element.getValue();
-
-        String __this__listRoom_copy_key = other_element_key;
-
-        List<FRRoom> __this__listRoom_copy_value = new ArrayList<FRRoom>();
-        for (FRRoom other_element_value_element : other_element_value) {
-          __this__listRoom_copy_value.add(new FRRoom(other_element_value_element));
-        }
-
-        __this__listRoom.put(__this__listRoom_copy_key, __this__listRoom_copy_value);
-      }
-      this.listRoom = __this__listRoom;
-    }
   }
 
-  public AutoCompleteReply deepCopy() {
-    return new AutoCompleteReply(this);
+  public FRImWorkingReply deepCopy() {
+    return new FRImWorkingReply(this);
   }
 
   @Override
   public void clear() {
     this.status = null;
     this.statusComment = null;
-    this.listRoom = null;
   }
 
   /**
@@ -183,7 +154,7 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
    * 
    * @see FRStatusCode
    */
-  public AutoCompleteReply setStatus(FRStatusCode status) {
+  public FRImWorkingReply setStatus(FRStatusCode status) {
     this.status = status;
     return this;
   }
@@ -207,7 +178,7 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
     return this.statusComment;
   }
 
-  public AutoCompleteReply setStatusComment(String statusComment) {
+  public FRImWorkingReply setStatusComment(String statusComment) {
     this.statusComment = statusComment;
     return this;
   }
@@ -224,41 +195,6 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
   public void setStatusCommentIsSet(boolean value) {
     if (!value) {
       this.statusComment = null;
-    }
-  }
-
-  public int getListRoomSize() {
-    return (this.listRoom == null) ? 0 : this.listRoom.size();
-  }
-
-  public void putToListRoom(String key, List<FRRoom> val) {
-    if (this.listRoom == null) {
-      this.listRoom = new HashMap<String,List<FRRoom>>();
-    }
-    this.listRoom.put(key, val);
-  }
-
-  public Map<String,List<FRRoom>> getListRoom() {
-    return this.listRoom;
-  }
-
-  public AutoCompleteReply setListRoom(Map<String,List<FRRoom>> listRoom) {
-    this.listRoom = listRoom;
-    return this;
-  }
-
-  public void unsetListRoom() {
-    this.listRoom = null;
-  }
-
-  /** Returns true if field listRoom is set (has been assigned a value) and false otherwise */
-  public boolean isSetListRoom() {
-    return this.listRoom != null;
-  }
-
-  public void setListRoomIsSet(boolean value) {
-    if (!value) {
-      this.listRoom = null;
     }
   }
 
@@ -280,14 +216,6 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
       }
       break;
 
-    case LIST_ROOM:
-      if (value == null) {
-        unsetListRoom();
-      } else {
-        setListRoom((Map<String,List<FRRoom>>)value);
-      }
-      break;
-
     }
   }
 
@@ -298,9 +226,6 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
 
     case STATUS_COMMENT:
       return getStatusComment();
-
-    case LIST_ROOM:
-      return getListRoom();
 
     }
     throw new IllegalStateException();
@@ -317,8 +242,6 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
       return isSetStatus();
     case STATUS_COMMENT:
       return isSetStatusComment();
-    case LIST_ROOM:
-      return isSetListRoom();
     }
     throw new IllegalStateException();
   }
@@ -327,12 +250,12 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof AutoCompleteReply)
-      return this.equals((AutoCompleteReply)that);
+    if (that instanceof FRImWorkingReply)
+      return this.equals((FRImWorkingReply)that);
     return false;
   }
 
-  public boolean equals(AutoCompleteReply that) {
+  public boolean equals(FRImWorkingReply that) {
     if (that == null)
       return false;
 
@@ -354,15 +277,6 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
         return false;
     }
 
-    boolean this_present_listRoom = true && this.isSetListRoom();
-    boolean that_present_listRoom = true && that.isSetListRoom();
-    if (this_present_listRoom || that_present_listRoom) {
-      if (!(this_present_listRoom && that_present_listRoom))
-        return false;
-      if (!this.listRoom.equals(that.listRoom))
-        return false;
-    }
-
     return true;
   }
 
@@ -380,21 +294,16 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
     if (present_statusComment)
       builder.append(statusComment);
 
-    boolean present_listRoom = true && (isSetListRoom());
-    builder.append(present_listRoom);
-    if (present_listRoom)
-      builder.append(listRoom);
-
     return builder.toHashCode();
   }
 
-  public int compareTo(AutoCompleteReply other) {
+  public int compareTo(FRImWorkingReply other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    AutoCompleteReply typedOther = (AutoCompleteReply)other;
+    FRImWorkingReply typedOther = (FRImWorkingReply)other;
 
     lastComparison = Boolean.valueOf(isSetStatus()).compareTo(typedOther.isSetStatus());
     if (lastComparison != 0) {
@@ -412,16 +321,6 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
     }
     if (isSetStatusComment()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.statusComment, typedOther.statusComment);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetListRoom()).compareTo(typedOther.isSetListRoom());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetListRoom()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.listRoom, typedOther.listRoom);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -457,36 +356,6 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // LIST_ROOM
-          if (field.type == org.apache.thrift.protocol.TType.MAP) {
-            {
-              org.apache.thrift.protocol.TMap _map21 = iprot.readMapBegin();
-              this.listRoom = new HashMap<String,List<FRRoom>>(2*_map21.size);
-              for (int _i22 = 0; _i22 < _map21.size; ++_i22)
-              {
-                String _key23; // required
-                List<FRRoom> _val24; // required
-                _key23 = iprot.readString();
-                {
-                  org.apache.thrift.protocol.TList _list25 = iprot.readListBegin();
-                  _val24 = new ArrayList<FRRoom>(_list25.size);
-                  for (int _i26 = 0; _i26 < _list25.size; ++_i26)
-                  {
-                    FRRoom _elem27; // required
-                    _elem27 = new FRRoom();
-                    _elem27.read(iprot);
-                    _val24.add(_elem27);
-                  }
-                  iprot.readListEnd();
-                }
-                this.listRoom.put(_key23, _val24);
-              }
-              iprot.readMapEnd();
-            }
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -512,35 +381,13 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
       oprot.writeString(this.statusComment);
       oprot.writeFieldEnd();
     }
-    if (this.listRoom != null) {
-      if (isSetListRoom()) {
-        oprot.writeFieldBegin(LIST_ROOM_FIELD_DESC);
-        {
-          oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.LIST, this.listRoom.size()));
-          for (Map.Entry<String, List<FRRoom>> _iter28 : this.listRoom.entrySet())
-          {
-            oprot.writeString(_iter28.getKey());
-            {
-              oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, _iter28.getValue().size()));
-              for (FRRoom _iter29 : _iter28.getValue())
-              {
-                _iter29.write(oprot);
-              }
-              oprot.writeListEnd();
-            }
-          }
-          oprot.writeMapEnd();
-        }
-        oprot.writeFieldEnd();
-      }
-    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("AutoCompleteReply(");
+    StringBuilder sb = new StringBuilder("FRImWorkingReply(");
     boolean first = true;
 
     sb.append("status:");
@@ -558,16 +405,6 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
       sb.append(this.statusComment);
     }
     first = false;
-    if (isSetListRoom()) {
-      if (!first) sb.append(", ");
-      sb.append("listRoom:");
-      if (this.listRoom == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.listRoom);
-      }
-      first = false;
-    }
     sb.append(")");
     return sb.toString();
   }

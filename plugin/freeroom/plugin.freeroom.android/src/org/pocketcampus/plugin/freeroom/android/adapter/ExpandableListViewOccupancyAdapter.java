@@ -9,7 +9,7 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
-import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingRequest;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -206,7 +206,7 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 
 			@Override
 			public void onClick(View arg0) {
-				WhoIsWorkingRequest req = new WhoIsWorkingRequest(uid,
+				FRWhoIsWorkingRequest req = new FRWhoIsWorkingRequest(uid,
 						occupancy.getTreatedPeriod());
 				mController.prepareCheckWhoIsWorking(req);
 				mController.checkWhoIsWorking(homeView);
