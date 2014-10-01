@@ -44,7 +44,7 @@ import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
-import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRStruct;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
@@ -246,7 +246,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * HOME: Adapter for the results (to display the occupancies). See also
 	 * {@link #homeResultExpListView}.
 	 */
-	private ExpandableListViewOccupancyAdapter<Occupancy> homeResultExpListAdapter;
+	private ExpandableListViewOccupancyAdapter<FRRoomOccupancy> homeResultExpListAdapter;
 
 	/* MAIN ACTIVITY - OVERRIDEN METHODS */
 
@@ -373,7 +373,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// is displayed and available for the whole period.
 		if (keyCode == KeyEvent.KEYCODE_ENVELOPE) {
 			if (infoDetailsRoom.isShowing()) {
-				Occupancy mOccupancy = mModel.getDisplayedOccupancy();
+				FRRoomOccupancy mOccupancy = mModel.getDisplayedOccupancy();
 				if (mOccupancy != null && mOccupancy.isIsAtLeastFreeOnce()
 						&& !mOccupancy.isIsAtLeastOccupiedOnce()) {
 					Button shareButton = infoDetailsRoom
@@ -446,7 +446,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		activityWidth = displayRectangle.width();
 		homeActivityHeight = displayRectangle.height();
 
-		homeResultExpListAdapter = new ExpandableListViewOccupancyAdapter<Occupancy>(
+		homeResultExpListAdapter = new ExpandableListViewOccupancyAdapter<FRRoomOccupancy>(
 				getApplicationContext(), mModel.getOccupancyResults(),
 				mController, this);
 		homeResultExpListView.setAdapter(homeResultExpListAdapter);
@@ -1183,10 +1183,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				Iterator<?> iter = list.iterator();
 				label: while (iter.hasNext()) {
 					Object o = iter.next();
-					if (o instanceof Occupancy) {
-						if (((Occupancy) o).getRoom().getUid()
+					if (o instanceof FRRoomOccupancy) {
+						if (((FRRoomOccupancy) o).getRoom().getUid()
 								.equals(room.getUid())) {
-							mModel.setDisplayedOccupancy((Occupancy) o);
+							mModel.setDisplayedOccupancy((FRRoomOccupancy) o);
 							// doesn't work
 							infoDetailsActualOccupationAdapter
 									.notifyDataSetChanged();
@@ -1205,8 +1205,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				List<?> list = mModel.getOccupancyResults().get(0);
 				if (list != null && list.size() == 1) {
 					Object elem = list.get(0);
-					if (elem != null && elem instanceof Occupancy) {
-						mModel.setDisplayedOccupancy((Occupancy) elem);
+					if (elem != null && elem instanceof FRRoomOccupancy) {
+						mModel.setDisplayedOccupancy((FRRoomOccupancy) elem);
 						infoDetailsDisplayDialog();
 					}
 				}
@@ -1231,7 +1231,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 *            expandable list view adapter
 	 */
 	private void homeUpdateCollapse(ExpandableListView ev,
-			ExpandableListViewOccupancyAdapter<Occupancy> ad) {
+			ExpandableListViewOccupancyAdapter<FRRoomOccupancy> ad) {
 		int maxChildrenToExpand = 7;
 		int maxGroupToExpand = 3;
 		if (ad.getGroupCount() <= maxGroupToExpand
@@ -1459,7 +1459,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * a line.
 	 */
 	public void infoDetailsDisplayDialog() {
-		final Occupancy mOccupancy = mModel.getDisplayedOccupancy();
+		final FRRoomOccupancy mOccupancy = mModel.getDisplayedOccupancy();
 		if (mOccupancy != null) {
 			infoDetailsRoom.hide();
 			infoDetailsRoom.show();
@@ -1936,7 +1936,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 *            the holder of data for location and time
 	 */
 	public void shareSetClickListener(View shareView,
-			final FreeRoomHomeView homeView, final Occupancy mOccupancy) {
+			final FreeRoomHomeView homeView, final FRRoomOccupancy mOccupancy) {
 
 		if (!mOccupancy.isIsAtLeastOccupiedOnce()
 				&& mOccupancy.isIsAtLeastFreeOnce()) {
@@ -4372,11 +4372,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				System.currentTimeMillis() + FRTimes.ONE_HOUR_IN_MS);
 		FRRoom room = new FRRoom("mock", "1234");
 		List<ActualOccupation> occupancy = new ArrayList<ActualOccupation>(1);
-		List<Occupancy> occupancies = new ArrayList<Occupancy>(4);
-		Occupancy free = new Occupancy(room, occupancy, false, true, period);
-		Occupancy part = new Occupancy(room, occupancy, true, true, period);
-		Occupancy occupied = new Occupancy(room, occupancy, true, false, period);
-		Occupancy error = new Occupancy(room, occupancy, false, false, period);
+		List<FRRoomOccupancy> occupancies = new ArrayList<FRRoomOccupancy>(4);
+		FRRoomOccupancy free = new FRRoomOccupancy(room, occupancy, false, true, period);
+		FRRoomOccupancy part = new FRRoomOccupancy(room, occupancy, true, true, period);
+		FRRoomOccupancy occupied = new FRRoomOccupancy(room, occupancy, true, false, period);
+		FRRoomOccupancy error = new FRRoomOccupancy(room, occupancy, false, false, period);
 		occupancies.add(free);
 		occupancies.add(part);
 		occupancies.add(occupied);
@@ -4397,7 +4397,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		textViews.add(error_text);
 		for (int i = 0; i < 4; i++) {
 			TextView tv = textViews.get(i);
-			Occupancy occ = occupancies.get(i);
+			FRRoomOccupancy occ = occupancies.get(i);
 			tv.setBackgroundColor(mModel.getColorLine(occ));
 			tv.setCompoundDrawablesWithIntrinsicBounds(
 					mModel.getColoredDotDrawable(occ), 0, 0, 0);

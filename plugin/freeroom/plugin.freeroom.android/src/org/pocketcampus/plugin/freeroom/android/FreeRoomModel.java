@@ -31,7 +31,7 @@ import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
-import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 import android.content.Context;
@@ -127,7 +127,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	/**
 	 * Storing the occupancies, mapped by building.
 	 */
-	private OrderMapListFew<String, List<?>, Occupancy> occupancyByBuilding;
+	private OrderMapListFew<String, List<?>, FRRoomOccupancy> occupancyByBuilding;
 
 	/**
 	 * Storing the <code>WorkingOccupancy</code> of people who indicate their
@@ -158,7 +158,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		preferences = context.getSharedPreferences(PREF_USER_DETAILS_KEY,
 				Context.MODE_PRIVATE);
 		initSharedPreferences();
-		occupancyByBuilding = new OrderMapListFew<String, List<?>, Occupancy>(
+		occupancyByBuilding = new OrderMapListFew<String, List<?>, FRRoomOccupancy>(
 				30);
 		this.context = context;
 	}
@@ -204,14 +204,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * @param occupancyOfRooms
 	 */
 	public void setOccupancyResults(
-			Map<String, List<Occupancy>> occupancyOfRooms) {
+			Map<String, List<FRRoomOccupancy>> occupancyOfRooms) {
 		occupancyByBuilding.clear();
 		// keys are ordered!
 		TreeSet<String> keySetOrder = new TreeSet<String>(
 				occupancyOfRooms.keySet());
 		List<String> buildings = getOrderedBuildings();
 		for (String building : buildings) {
-			List<Occupancy> list = occupancyOfRooms.get(building);
+			List<FRRoomOccupancy> list = occupancyOfRooms.get(building);
 			if (list != null) {
 				keySetOrder.remove(building);
 				occupancyByBuilding.put(building, list);
@@ -230,7 +230,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * 
 	 * @return
 	 */
-	public OrderMapListFew<String, List<?>, Occupancy> getOccupancyResults() {
+	public OrderMapListFew<String, List<?>, FRRoomOccupancy> getOccupancyResults() {
 		return this.occupancyByBuilding;
 	}
 
@@ -316,13 +316,13 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		this.mFRRequest = request;
 	}
 
-	private Occupancy occupancy;
+	private FRRoomOccupancy occupancy;
 
-	public void setDisplayedOccupancy(Occupancy occupancy) {
+	public void setDisplayedOccupancy(FRRoomOccupancy occupancy) {
 		this.occupancy = occupancy;
 	}
 
-	public Occupancy getDisplayedOccupancy() {
+	public FRRoomOccupancy getDisplayedOccupancy() {
 		return occupancy;
 	}
 
@@ -990,7 +990,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 *            occupation for a given room (for multiple periods)
 	 * @return the appropriate color
 	 */
-	public int getColorLine(Occupancy mOccupancy) {
+	public int getColorLine(FRRoomOccupancy mOccupancy) {
 		if (!isColorLineFull()) {
 			return COLOR_TRANSPARENT;
 		}
@@ -1034,14 +1034,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * Return the appropriate color dot {@link Drawable} according to the
-	 * {@link Occupancy} given, and the {@link FreeRoomModel} color settings (
+	 * {@link FRRoomOccupancy} given, and the {@link FreeRoomModel} color settings (
 	 * {@link ColorBlindMode}).
 	 * 
 	 * @param mOccupancy
 	 *            occupancy for a given room (for multiple periods)
 	 * @return a color dot {@link Drawable}
 	 */
-	public int getColoredDotDrawable(Occupancy mOccupancy) {
+	public int getColoredDotDrawable(FRRoomOccupancy mOccupancy) {
 		if (!isColorColoredDots()) {
 			return R.drawable.ic_dot_empty;
 		}
@@ -1151,7 +1151,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * <p>
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
-	 * of the {@link Occupancy}, call {@link getColorDrawable(Occupancy)} . For
+	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
 	 * the color depending of the {@link ActualOccupation}, call
 	 * {@link #getColoredDotDrawable(ActualOccupation)}
 	 * 
@@ -1175,7 +1175,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * <p>
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
-	 * of the {@link Occupancy}, call {@link getColorDrawable(Occupancy)} . For
+	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
 	 * the color depending of the {@link ActualOccupation}, call
 	 * {@link #getColoredDotDrawable(ActualOccupation)}
 	 * 
@@ -1200,7 +1200,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * <p>
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
-	 * of the {@link Occupancy}, call {@link getColorDrawable(Occupancy)} . For
+	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
 	 * the color depending of the {@link ActualOccupation}, call
 	 * {@link #getColoredDotDrawable(ActualOccupation)}
 	 * 
@@ -1225,7 +1225,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * <p>
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
-	 * of the {@link Occupancy}, call {@link getColorDrawable(Occupancy)} . For
+	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
 	 * the color depending of the {@link ActualOccupation}, call
 	 * {@link #getColoredDotDrawable(ActualOccupation)}
 	 * 

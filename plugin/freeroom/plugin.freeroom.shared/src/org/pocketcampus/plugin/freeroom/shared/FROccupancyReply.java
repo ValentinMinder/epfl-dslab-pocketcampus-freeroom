@@ -31,7 +31,7 @@ public class FROccupancyReply implements org.apache.thrift.TBase<FROccupancyRepl
 
   private FRStatusCode status; // required
   private String statusComment; // required
-  private Map<String,List<Occupancy>> occupancyOfRooms; // required
+  private Map<String,List<FRRoomOccupancy>> occupancyOfRooms; // required
   private FRPeriod overallTreatedPeriod; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
@@ -118,7 +118,7 @@ public class FROccupancyReply implements org.apache.thrift.TBase<FROccupancyRepl
         new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING), 
             new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-                new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Occupancy.class)))));
+                new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRRoomOccupancy.class)))));
     tmpMap.put(_Fields.OVERALL_TREATED_PERIOD, new org.apache.thrift.meta_data.FieldMetaData("overallTreatedPeriod", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRPeriod.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -148,17 +148,17 @@ public class FROccupancyReply implements org.apache.thrift.TBase<FROccupancyRepl
       this.statusComment = other.statusComment;
     }
     if (other.isSetOccupancyOfRooms()) {
-      Map<String,List<Occupancy>> __this__occupancyOfRooms = new HashMap<String,List<Occupancy>>();
-      for (Map.Entry<String, List<Occupancy>> other_element : other.occupancyOfRooms.entrySet()) {
+      Map<String,List<FRRoomOccupancy>> __this__occupancyOfRooms = new HashMap<String,List<FRRoomOccupancy>>();
+      for (Map.Entry<String, List<FRRoomOccupancy>> other_element : other.occupancyOfRooms.entrySet()) {
 
         String other_element_key = other_element.getKey();
-        List<Occupancy> other_element_value = other_element.getValue();
+        List<FRRoomOccupancy> other_element_value = other_element.getValue();
 
         String __this__occupancyOfRooms_copy_key = other_element_key;
 
-        List<Occupancy> __this__occupancyOfRooms_copy_value = new ArrayList<Occupancy>();
-        for (Occupancy other_element_value_element : other_element_value) {
-          __this__occupancyOfRooms_copy_value.add(new Occupancy(other_element_value_element));
+        List<FRRoomOccupancy> __this__occupancyOfRooms_copy_value = new ArrayList<FRRoomOccupancy>();
+        for (FRRoomOccupancy other_element_value_element : other_element_value) {
+          __this__occupancyOfRooms_copy_value.add(new FRRoomOccupancy(other_element_value_element));
         }
 
         __this__occupancyOfRooms.put(__this__occupancyOfRooms_copy_key, __this__occupancyOfRooms_copy_value);
@@ -242,18 +242,18 @@ public class FROccupancyReply implements org.apache.thrift.TBase<FROccupancyRepl
     return (this.occupancyOfRooms == null) ? 0 : this.occupancyOfRooms.size();
   }
 
-  public void putToOccupancyOfRooms(String key, List<Occupancy> val) {
+  public void putToOccupancyOfRooms(String key, List<FRRoomOccupancy> val) {
     if (this.occupancyOfRooms == null) {
-      this.occupancyOfRooms = new HashMap<String,List<Occupancy>>();
+      this.occupancyOfRooms = new HashMap<String,List<FRRoomOccupancy>>();
     }
     this.occupancyOfRooms.put(key, val);
   }
 
-  public Map<String,List<Occupancy>> getOccupancyOfRooms() {
+  public Map<String,List<FRRoomOccupancy>> getOccupancyOfRooms() {
     return this.occupancyOfRooms;
   }
 
-  public FROccupancyReply setOccupancyOfRooms(Map<String,List<Occupancy>> occupancyOfRooms) {
+  public FROccupancyReply setOccupancyOfRooms(Map<String,List<FRRoomOccupancy>> occupancyOfRooms) {
     this.occupancyOfRooms = occupancyOfRooms;
     return this;
   }
@@ -319,7 +319,7 @@ public class FROccupancyReply implements org.apache.thrift.TBase<FROccupancyRepl
       if (value == null) {
         unsetOccupancyOfRooms();
       } else {
-        setOccupancyOfRooms((Map<String,List<Occupancy>>)value);
+        setOccupancyOfRooms((Map<String,List<FRRoomOccupancy>>)value);
       }
       break;
 
@@ -533,19 +533,19 @@ public class FROccupancyReply implements org.apache.thrift.TBase<FROccupancyRepl
           if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
               org.apache.thrift.protocol.TMap _map8 = iprot.readMapBegin();
-              this.occupancyOfRooms = new HashMap<String,List<Occupancy>>(2*_map8.size);
+              this.occupancyOfRooms = new HashMap<String,List<FRRoomOccupancy>>(2*_map8.size);
               for (int _i9 = 0; _i9 < _map8.size; ++_i9)
               {
                 String _key10; // required
-                List<Occupancy> _val11; // required
+                List<FRRoomOccupancy> _val11; // required
                 _key10 = iprot.readString();
                 {
                   org.apache.thrift.protocol.TList _list12 = iprot.readListBegin();
-                  _val11 = new ArrayList<Occupancy>(_list12.size);
+                  _val11 = new ArrayList<FRRoomOccupancy>(_list12.size);
                   for (int _i13 = 0; _i13 < _list12.size; ++_i13)
                   {
-                    Occupancy _elem14; // required
-                    _elem14 = new Occupancy();
+                    FRRoomOccupancy _elem14; // required
+                    _elem14 = new FRRoomOccupancy();
                     _elem14.read(iprot);
                     _val11.add(_elem14);
                   }
@@ -597,12 +597,12 @@ public class FROccupancyReply implements org.apache.thrift.TBase<FROccupancyRepl
         oprot.writeFieldBegin(OCCUPANCY_OF_ROOMS_FIELD_DESC);
         {
           oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.LIST, this.occupancyOfRooms.size()));
-          for (Map.Entry<String, List<Occupancy>> _iter15 : this.occupancyOfRooms.entrySet())
+          for (Map.Entry<String, List<FRRoomOccupancy>> _iter15 : this.occupancyOfRooms.entrySet())
           {
             oprot.writeString(_iter15.getKey());
             {
               oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, _iter15.getValue().size()));
-              for (Occupancy _iter16 : _iter15.getValue())
+              for (FRRoomOccupancy _iter16 : _iter15.getValue())
               {
                 _iter16.write(oprot);
               }

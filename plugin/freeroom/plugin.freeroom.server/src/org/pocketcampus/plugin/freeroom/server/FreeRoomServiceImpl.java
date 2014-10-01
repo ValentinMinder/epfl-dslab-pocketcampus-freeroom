@@ -24,7 +24,6 @@ import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.freeroom.data.RebuildDB;
-import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeLoading;
 import org.pocketcampus.plugin.freeroom.server.utils.CheckRequests;
 import org.pocketcampus.plugin.freeroom.server.utils.OccupancySorted;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
@@ -38,13 +37,11 @@ import org.pocketcampus.plugin.freeroom.shared.FROccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
-import org.pocketcampus.plugin.freeroom.shared.LogMessage;
-import org.pocketcampus.plugin.freeroom.shared.Occupancy;
-import org.pocketcampus.plugin.freeroom.shared.RegisterUser;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
@@ -144,7 +141,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 //
 //		 USEME: Rebuild rooms list in DB, need to tune parameter for tsStart
 //		 and tsEnd, (Start/End of semester)
-		Calendar mCalendar = Calendar.getInstance();
+		Calendar 																																																																																																																																												mCalendar = Calendar.getInstance();
 		mCalendar.set(Calendar.MONTH, 8);
 		mCalendar.set(Calendar.DAY_OF_MONTH, 1);
 		long tsStart = mCalendar.getTimeInMillis();
@@ -864,7 +861,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		boolean onlyFreeRoom = request.isOnlyFreeRooms();
 		List<String> uidList = request.getUidList();
 
-		HashMap<String, List<Occupancy>> occupancies = null;
+		HashMap<String, List<FRRoomOccupancy>> occupancies = null;
 
 		if (uidList == null || uidList.isEmpty()) {
 			if (onlyFreeRoom) {
@@ -907,10 +904,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * @return A HashMap organized as follows (building -> list of free rooms in
 	 *         the building), null if an error occured
 	 */
-	private HashMap<String, List<Occupancy>> getOccupancyOfAnyFreeRoom(
+	private HashMap<String, List<FRRoomOccupancy>> getOccupancyOfAnyFreeRoom(
 			long tsStart, long tsEnd, int userGroup) {
 
-		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
+		HashMap<String, List<FRRoomOccupancy>> result = new HashMap<String, List<FRRoomOccupancy>>();
 		Connection connectBDD;
 		try {
 			connectBDD = connMgr.getConnection();
@@ -952,7 +949,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				log(LOG_SIDE.SERVER, Level.WARNING,
 						"No rooms are free during period start = " + tsStart
 								+ " end = " + tsEnd);
-				return new HashMap<String, List<Occupancy>>();
+				return new HashMap<String, List<FRRoomOccupancy>>();
 			}
 
 			String logMessage = "tsStart=" + tsStart + ",tsEnd=" + tsEnd
@@ -987,7 +984,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * @return A HashMap organized as follows (building -> list of rooms in the
 	 *         building), null if an error occured
 	 */
-	private HashMap<String, List<Occupancy>> getOccupancyOfSpecificRoom(
+	private HashMap<String, List<FRRoomOccupancy>> getOccupancyOfSpecificRoom(
 			List<String> uidList, boolean onlyFreeRooms, long tsStart,
 			long tsEnd, int userGroup) {
 
@@ -1003,7 +1000,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				+ onlyFreeRooms + ",tsStart=" + tsStart + ",tsEnd=" + tsEnd
 				+ ",userGroup=" + userGroup;
 
-		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
+		HashMap<String, List<FRRoomOccupancy>> result = new HashMap<String, List<FRRoomOccupancy>>();
 		int numberOfRooms = uidList.size();
 		// formatting for the query
 		String roomsListQueryFormat = "";
@@ -1095,7 +1092,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// for the loop, as well as storing the previous room in the
 				// resulting HashMap
 				if (!uid.equals(currentUID)) {
-					Occupancy mOccupancy = currentOccupancy.getOccupancy();
+					FRRoomOccupancy mOccupancy = currentOccupancy.getOccupancy();
 
 					addToHashMapOccupancy(currentDoorCode, mOccupancy, result);
 
@@ -1120,7 +1117,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 			// the last room has not been added yet
 			if (currentOccupancy != null && currentOccupancy.size() != 0) {
-				Occupancy mOccupancy = currentOccupancy.getOccupancy();
+				FRRoomOccupancy mOccupancy = currentOccupancy.getOccupancy();
 
 				addToHashMapOccupancy(currentDoorCode, mOccupancy, result);
 
@@ -1177,7 +1174,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					ActualOccupation accOcc = new ActualOccupation(period, true);
 					currentOccupancy.addActualOccupation(accOcc);
 
-					Occupancy mOccupancy = currentOccupancy.getOccupancy();
+					FRRoomOccupancy mOccupancy = currentOccupancy.getOccupancy();
 					addToHashMapOccupancy(mRoom.getDoorCode(), mOccupancy,
 							result);
 				}
@@ -1208,16 +1205,16 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * @param result
 	 *            The HashMap in which we add the room
 	 */
-	private void addToHashMapOccupancy(String doorCode, Occupancy mOcc,
-			HashMap<String, List<Occupancy>> result) {
+	private void addToHashMapOccupancy(String doorCode, FRRoomOccupancy mOcc,
+			HashMap<String, List<FRRoomOccupancy>> result) {
 		if (mOcc == null || doorCode == null) {
 			return;
 		}
 		String building = Utils.extractBuilding(doorCode);
-		List<Occupancy> occ = result.get(building);
+		List<FRRoomOccupancy> occ = result.get(building);
 
 		if (occ == null) {
-			occ = new ArrayList<Occupancy>();
+			occ = new ArrayList<FRRoomOccupancy>();
 			result.put(building, occ);
 		}
 		occ.add(mOcc);

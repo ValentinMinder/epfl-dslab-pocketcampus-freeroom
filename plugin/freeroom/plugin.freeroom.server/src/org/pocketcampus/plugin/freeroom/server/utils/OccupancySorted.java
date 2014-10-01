@@ -7,7 +7,7 @@ import java.util.Comparator;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
-import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
@@ -75,7 +75,7 @@ public class OccupancySorted {
 	 *         onlyFreeRooms is false, it returns the occupancy adapted and
 	 *         filled during the period given.
 	 * **/
-	public Occupancy getOccupancy() {
+	public FRRoomOccupancy getOccupancy() {
 		sortByTimestampStart();
 		fillGaps();
 		if (isAtLeastOccupiedOnce && onlyFreeRooms) {
@@ -88,7 +88,7 @@ public class OccupancySorted {
 						.get(mActualOccupations.size() - 1).getPeriod()
 						.getTimeStampEnd();
 				FRPeriod periodTreated = new FRPeriod(start, end);
-				Occupancy mOccupancy = new Occupancy(room, mActualOccupations,
+				FRRoomOccupancy mOccupancy = new FRRoomOccupancy(room, mActualOccupations,
 						isAtLeastOccupiedOnce, isAtLeastFreeOnce, periodTreated);
 				mOccupancy.setRatioWorstCaseProbableOccupancy(worstRatio);
 

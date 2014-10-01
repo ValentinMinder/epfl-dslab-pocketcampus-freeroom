@@ -21,8 +21,8 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Occupancy");
+public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy, FRRoomOccupancy._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRRoomOccupancy");
 
   private static final org.apache.thrift.protocol.TField ROOM_FIELD_DESC = new org.apache.thrift.protocol.TField("room", org.apache.thrift.protocol.TType.STRUCT, (short)1);
   private static final org.apache.thrift.protocol.TField OCCUPANCY_FIELD_DESC = new org.apache.thrift.protocol.TField("occupancy", org.apache.thrift.protocol.TType.LIST, (short)2);
@@ -134,13 +134,13 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     tmpMap.put(_Fields.RATIO_WORST_CASE_PROBABLE_OCCUPANCY, new org.apache.thrift.meta_data.FieldMetaData("ratioWorstCaseProbableOccupancy", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Occupancy.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRRoomOccupancy.class, metaDataMap);
   }
 
-  public Occupancy() {
+  public FRRoomOccupancy() {
   }
 
-  public Occupancy(
+  public FRRoomOccupancy(
     FRRoom room,
     List<ActualOccupation> occupancy,
     boolean isAtLeastOccupiedOnce,
@@ -160,7 +160,7 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Occupancy(Occupancy other) {
+  public FRRoomOccupancy(FRRoomOccupancy other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetRoom()) {
@@ -181,8 +181,8 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     this.ratioWorstCaseProbableOccupancy = other.ratioWorstCaseProbableOccupancy;
   }
 
-  public Occupancy deepCopy() {
-    return new Occupancy(this);
+  public FRRoomOccupancy deepCopy() {
+    return new FRRoomOccupancy(this);
   }
 
   @Override
@@ -202,7 +202,7 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     return this.room;
   }
 
-  public Occupancy setRoom(FRRoom room) {
+  public FRRoomOccupancy setRoom(FRRoom room) {
     this.room = room;
     return this;
   }
@@ -241,7 +241,7 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     return this.occupancy;
   }
 
-  public Occupancy setOccupancy(List<ActualOccupation> occupancy) {
+  public FRRoomOccupancy setOccupancy(List<ActualOccupation> occupancy) {
     this.occupancy = occupancy;
     return this;
   }
@@ -265,7 +265,7 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     return this.isAtLeastOccupiedOnce;
   }
 
-  public Occupancy setIsAtLeastOccupiedOnce(boolean isAtLeastOccupiedOnce) {
+  public FRRoomOccupancy setIsAtLeastOccupiedOnce(boolean isAtLeastOccupiedOnce) {
     this.isAtLeastOccupiedOnce = isAtLeastOccupiedOnce;
     setIsAtLeastOccupiedOnceIsSet(true);
     return this;
@@ -288,7 +288,7 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     return this.isAtLeastFreeOnce;
   }
 
-  public Occupancy setIsAtLeastFreeOnce(boolean isAtLeastFreeOnce) {
+  public FRRoomOccupancy setIsAtLeastFreeOnce(boolean isAtLeastFreeOnce) {
     this.isAtLeastFreeOnce = isAtLeastFreeOnce;
     setIsAtLeastFreeOnceIsSet(true);
     return this;
@@ -311,7 +311,7 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     return this.treatedPeriod;
   }
 
-  public Occupancy setTreatedPeriod(FRPeriod treatedPeriod) {
+  public FRRoomOccupancy setTreatedPeriod(FRPeriod treatedPeriod) {
     this.treatedPeriod = treatedPeriod;
     return this;
   }
@@ -335,7 +335,7 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     return this.ratioWorstCaseProbableOccupancy;
   }
 
-  public Occupancy setRatioWorstCaseProbableOccupancy(double ratioWorstCaseProbableOccupancy) {
+  public FRRoomOccupancy setRatioWorstCaseProbableOccupancy(double ratioWorstCaseProbableOccupancy) {
     this.ratioWorstCaseProbableOccupancy = ratioWorstCaseProbableOccupancy;
     setRatioWorstCaseProbableOccupancyIsSet(true);
     return this;
@@ -458,12 +458,12 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Occupancy)
-      return this.equals((Occupancy)that);
+    if (that instanceof FRRoomOccupancy)
+      return this.equals((FRRoomOccupancy)that);
     return false;
   }
 
-  public boolean equals(Occupancy that) {
+  public boolean equals(FRRoomOccupancy that) {
     if (that == null)
       return false;
 
@@ -561,13 +561,13 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     return builder.toHashCode();
   }
 
-  public int compareTo(Occupancy other) {
+  public int compareTo(FRRoomOccupancy other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Occupancy typedOther = (Occupancy)other;
+    FRRoomOccupancy typedOther = (FRRoomOccupancy)other;
 
     lastComparison = Boolean.valueOf(isSetRoom()).compareTo(typedOther.isSetRoom());
     if (lastComparison != 0) {
@@ -764,7 +764,7 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Occupancy(");
+    StringBuilder sb = new StringBuilder("FRRoomOccupancy(");
     boolean first = true;
 
     sb.append("room:");

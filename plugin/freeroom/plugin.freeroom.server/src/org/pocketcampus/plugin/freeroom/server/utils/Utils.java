@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.MessageFrequency;
-import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
 
 /**
  * This is an utility class doing useful conversions, and defining a few
@@ -186,14 +186,14 @@ public class Utils {
 	 *            The HashMap to be sorted
 	 * @return The HashMap sorted
 	 */
-	public static HashMap<String, List<Occupancy>> sortRooms(
-			HashMap<String, List<Occupancy>> occ) {
+	public static HashMap<String, List<FRRoomOccupancy>> sortRooms(
+			HashMap<String, List<FRRoomOccupancy>> occ) {
 		if (occ == null) {
 			return null;
 		}
 
 		for (String key : occ.keySet()) {
-			List<Occupancy> value = occ.get(key);
+			List<FRRoomOccupancy> value = occ.get(key);
 			Collections.sort(value, roomsFreeComparator);
 		}
 
@@ -209,10 +209,10 @@ public class Utils {
 	 * occupied) then by probable occupancy (users). Totally occupied rooms
 	 * are not sorted.
 	 */
-	private static Comparator<Occupancy> roomsFreeComparator = new Comparator<Occupancy>() {
+	private static Comparator<FRRoomOccupancy> roomsFreeComparator = new Comparator<FRRoomOccupancy>() {
 
 		@Override
-		public int compare(Occupancy o0, Occupancy o1) {
+		public int compare(FRRoomOccupancy o0, FRRoomOccupancy o1) {
 
 			boolean onlyFree1 = !o0.isIsAtLeastOccupiedOnce();
 			boolean onlyFree2 = !o1.isIsAtLeastOccupiedOnce();

@@ -8,7 +8,7 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
-import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 
 import android.content.Context;
@@ -47,7 +47,7 @@ import android.widget.TextView;
 
 public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAdapter {
 	private Context context;
-	private OrderMapListFew<String, List<?>, Occupancy> data;
+	private OrderMapListFew<String, List<?>, FRRoomOccupancy> data;
 	// hold the caller view for colors updates.
 	private FreeRoomModel mModel;
 	private FreeRoomController mController;
@@ -58,7 +58,7 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 	private int focusedGroup = -1;
 
 	public ExpandableListViewOccupancyAdapter(Context c,
-			OrderMapListFew<String, List<?>, Occupancy> data,
+			OrderMapListFew<String, List<?>, FRRoomOccupancy> data,
 			FreeRoomController controller, FreeRoomHomeView homeView) {
 		this.context = c;
 		this.data = data;
@@ -74,7 +74,7 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 	 */
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		Occupancy occ = data.getChild(groupPosition, childPosition);
+		FRRoomOccupancy occ = data.getChild(groupPosition, childPosition);
 		return occ.getRoom().getDoorCode();
 	}
 
@@ -88,7 +88,7 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 	 *            The child id
 	 * @return The child object FRRoom associated.
 	 */
-	public Occupancy getChildObject(int groupPosition, int childPosition) {
+	public FRRoomOccupancy getChildObject(int groupPosition, int childPosition) {
 		return data.getChild(groupPosition, childPosition);
 	}
 
@@ -128,7 +128,7 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 			vholder = (ViewHolderChild) convertView.getTag();
 		}
 
-		final Occupancy occupancy = data.getChild(groupPosition, childPosition);
+		final FRRoomOccupancy occupancy = data.getChild(groupPosition, childPosition);
 
 		final FRRoom mRoom = occupancy.getRoom();
 		final String doorCode = mRoom.getDoorCode();

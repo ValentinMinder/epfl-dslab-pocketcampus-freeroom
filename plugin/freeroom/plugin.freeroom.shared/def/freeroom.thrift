@@ -91,7 +91,7 @@ struct ActualOccupation {
 // but could be less or more depending of the actual occupancy
 // please order the list server-side in natural clock order
 // and provide period that are contiguous!
-struct Occupancy {
+struct FRRoomOccupancy {
 	1: required FRRoom room;
 	2: required list<ActualOccupation> occupancy;
 	3: required bool isAtLeastOccupiedOnce;
@@ -120,7 +120,7 @@ struct FROccupancyReply {
 	// nothing to do with room uid
 	// example: "CO", "BC"
 	// it's empty if there are no results
-	3: optional map<string, list<Occupancy>> occupancyOfRooms;
+	3: optional map<string, list<FRRoomOccupancy>> occupancyOfRooms;
 	4: optional FRPeriod overallTreatedPeriod;
 }
 

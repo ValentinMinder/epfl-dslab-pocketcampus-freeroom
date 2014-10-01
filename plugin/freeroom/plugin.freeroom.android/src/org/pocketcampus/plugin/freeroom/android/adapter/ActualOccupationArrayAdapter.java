@@ -10,7 +10,7 @@ import org.pocketcampus.plugin.freeroom.android.utils.FRTimesClient;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
-import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 
 import android.content.Context;
@@ -39,14 +39,14 @@ import android.widget.TextView;
 public class ActualOccupationArrayAdapter<T> extends
 		ArrayAdapter<ActualOccupation> {
 	private Context context;
-	private Occupancy occupancy;
+	private FRRoomOccupancy occupancy;
 	private List<ActualOccupation> data;
 	// hold the caller view for colors updates.
 	private FreeRoomModel mModel;
 	private FreeRoomController mController;
 	private FreeRoomHomeView homeView;
 
-	public ActualOccupationArrayAdapter(Context c, Occupancy occupancy,
+	public ActualOccupationArrayAdapter(Context c, FRRoomOccupancy occupancy,
 			FreeRoomController mController, FreeRoomHomeView homeView) {
 		super(c, R.layout.sdk_list_entry, R.id.sdk_list_entry_text, occupancy
 				.getOccupancy());
