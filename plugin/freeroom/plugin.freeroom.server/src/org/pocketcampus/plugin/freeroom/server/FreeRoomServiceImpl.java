@@ -1096,7 +1096,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 				ActualOccupation accOcc = new ActualOccupation(period,
 						available);
-				accOcc.setProbableOccupation(count);
 				accOcc.setRatioOccupation(ratio);
 				currentOccupancy.addActualOccupation(accOcc);
 			}
@@ -1158,7 +1157,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							tsEnd, onlyFreeRooms);
 					FRPeriod period = new FRPeriod(tsStart, tsEnd);
 					ActualOccupation accOcc = new ActualOccupation(period, true);
-					accOcc.setProbableOccupation(0);
 					currentOccupancy.addActualOccupation(accOcc);
 
 					Occupancy mOccupancy = currentOccupancy.getOccupancy();

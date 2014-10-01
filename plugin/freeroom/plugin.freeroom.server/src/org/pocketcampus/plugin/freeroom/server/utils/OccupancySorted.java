@@ -281,7 +281,6 @@ public class OccupancySorted {
 			if (maxEnd - minStart > FRTimes.MIN_PERIOD) {
 				FRPeriod period = new FRPeriod(minStart, maxEnd);
 				ActualOccupation mAccOcc = new ActualOccupation(period, true);
-				mAccOcc.setProbableOccupation(0);
 				mAccOcc.setRatioOccupation(0.0);
 				result.add(mAccOcc);
 			}

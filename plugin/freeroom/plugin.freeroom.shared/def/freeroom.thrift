@@ -84,8 +84,6 @@ struct FRPeriod {
 struct ActualOccupation {
 	1: required FRPeriod period;
 	2: required bool available;
-	//TO DELETE
-	3: optional i32 probableOccupation; // if we want to do CFF-style
 	4: optional double ratioOccupation;
 }
 

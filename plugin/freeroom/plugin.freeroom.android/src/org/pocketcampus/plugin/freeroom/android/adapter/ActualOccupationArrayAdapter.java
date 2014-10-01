@@ -138,8 +138,7 @@ public class ActualOccupationArrayAdapter<T> extends
 				}
 			};
 
-			if (mActualOccupation.isSetProbableOccupation()
-					&& mActualOccupation.getProbableOccupation() > 0) {
+			if (mActualOccupation.isAvailable() && mActualOccupation.getRatioOccupation() > 0) {
 				convertView.setOnClickListener(ocl_line);
 				// green, and someone registered
 				tv.setCompoundDrawablesWithIntrinsicBounds(
