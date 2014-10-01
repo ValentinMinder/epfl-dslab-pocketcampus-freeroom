@@ -218,8 +218,6 @@ public class Utils {
 			boolean onlyFree2 = !o1.isIsAtLeastOccupiedOnce();
 			boolean occupied1 = o0.isIsAtLeastOccupiedOnce();
 			boolean occupied2 = o1.isIsAtLeastOccupiedOnce();
-			boolean notFree1 = !onlyFree1 && occupied1;
-			boolean notFree2 = !onlyFree2 && occupied2;
 
 			if (onlyFree1 && onlyFree2) {
 				return compareOnlyFree(o0.getRatioWorstCaseProbableOccupancy(),
@@ -234,9 +232,9 @@ public class Utils {
 				return comparePartiallyOccupied(rate1, rate2,
 						o0.getRatioWorstCaseProbableOccupancy(),
 						o1.getRatioWorstCaseProbableOccupancy());
-			} else if (occupied1 && notFree2) {
+			} else if (occupied1) {
 				return -1;
-			} else if (notFree1 && occupied2) {
+			} else if (occupied2) {
 				return 1;
 			} else {
 				return 0;
