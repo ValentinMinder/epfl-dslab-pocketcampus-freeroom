@@ -71,37 +71,9 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 			    FileOutputStream fos = new FileOutputStream(filePath + "/" + filename);
 			    IOUtils.copy(filecontent, fos);
 			    fos.close();
-			    
-			    // Print on Cups-PDF printer in order to fix the orientation (should always be portrait)
-				List<String> command = new LinkedList<String>();
-				command.add("lpr");
-				command.add("-P");command.add("Cups-PDF");
-				command.add("-r"); // delete file afterward
-				command.add("-o");command.add("media=A4");
-				command.add("-T");command.add(filename);
-				command.add(filePath + "/" + filename);
-				System.out.println("$ " + StringUtils.join(command, " "));
-				Runtime.getRuntime().exec(command.toArray(new String[command.size()]));
-				
-				String cupsPdfOutDir = PocketCampusServer.CONFIG.getString("CLOUDPRINT_CUPSPDF_OUTDIR");
-				int watchDog = 30; // wait 30 seconds for Cups-PDF printer to generate the PDF
-				do {
-					if(watchDog == 0) {
-						response.setStatus(HttpURLConnection.HTTP_GATEWAY_TIMEOUT);
-						return;
-					}
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					watchDog--;
-				} while(!new File(cupsPdfOutDir + "/" + filename).exists());
-			    
-				if(!new File(cupsPdfOutDir + "/" + filename).renameTo(new File(filePath + "/" + filename))) {
-					response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
-					return;
-				}
+
+			    // Will be used for print-preview functionality 
+				//String cupsPdfOutDir = PocketCampusServer.CONFIG.getString("CLOUDPRINT_CUPSPDF_OUTDIR");
 			    
 			    response.setContentType("application/json");
 			    response.getOutputStream().write(new Gson().toJson(new CloudPrintUploadResponse(id)).getBytes());
@@ -127,13 +99,29 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 		if(files == null || files.length == 0) {
 			return new PrintDocumentResponse(CloudPrintStatusCode.PRINT_ERROR);	    	
 	    }
+		try {
+			String[] command = buildLprCommand("mainPrinter", gaspar, files[0], filePath + "/" + files[0], request);
+			System.out.println("$ " + StringUtils.join(command, " "));
+			Runtime.getRuntime().exec(command);
+			command = buildLprCommand("Cups-PDF", null, gaspar + "_" + request.getDocumentId(), filePath + "/" + files[0], request);
+			System.out.println("$ " + StringUtils.join(command, " "));
+			Runtime.getRuntime().exec(command);
+			return new PrintDocumentResponse(CloudPrintStatusCode.OK);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return new PrintDocumentResponse(CloudPrintStatusCode.PRINT_ERROR);
+		}
+	}
+	
+	private static String[] buildLprCommand(String printer, String gaspar, String jobTitle, String filePath, PrintDocumentRequest request) {
 		List<String> command = new LinkedList<String>();
 		command.add("lpr");
-		command.add("-P");command.add("mainPrinter");
-		command.add("-U");command.add(gaspar);
-		command.add("-r"); // delete file afterward
-		command.add("-o");command.add("fit-to-page");
-		command.add("-o");command.add("media=A4");
+		command.add("-P");command.add(printer);
+		if(gaspar != null) {
+			command.add("-U");command.add(gaspar);
+		}
+		//command.add("-r"); // delete file afterward
+		command.add("-o");command.add("fitplot");
 		if(request.isSetPageSelection()) {
 			command.add("-o");command.add("page-ranges=" + request.getPageSelection().getPageFrom() + "-" + request.getPageSelection().getPageTo());
 		}
@@ -154,10 +142,18 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 			command.add("-o");command.add("number-up=" + nup);
 			command.add("-o");command.add("number-up-layout=" + layout);
 		}
-//		if(request.isSetOrientation()) {
-//			int ori = request.getOrientation().getValue();
-//			command.add("-o");command.add("orientation-requested=" + ori);
-//		}
+		if(request.isSetOrientation()) {
+			switch (request.getOrientation()) {
+			case PORTRAIT:
+			case REVERSE_PORTRAIT:
+				command.add("-o");command.add("media=Custom.8.27x11.69in");
+				break;
+			case LANDSCAPE:
+			case REVERSE_LANDSCAPE:
+				command.add("-o");command.add("media=Custom.11.69x8.27in");
+				break;
+			}
+		}
 		if(request.isSetMultipleCopies()) {
 			command.add("-#" + request.getMultipleCopies().getNumberOfCopies());
 			if(request.getMultipleCopies().isCollate()) {
@@ -166,20 +162,12 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 		}
 		if(request.isSetColorConfig()) {
 			if(request.getColorConfig() == CloudPrintColorConfig.BLACK_WHITE) {
-				//command.add("-o");command.add("saturation=0");
 				command.add("-o");command.add("JCLColorCorrection=BlackWhite");
 			}
 		}
-		command.add("-T");command.add(files[0]);
-		command.add(filePath + "/" + files[0]);
-		try {
-			System.out.println("$ " + StringUtils.join(command, " "));
-			Runtime.getRuntime().exec(command.toArray(new String[command.size()]));
-			return new PrintDocumentResponse(CloudPrintStatusCode.OK);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return new PrintDocumentResponse(CloudPrintStatusCode.PRINT_ERROR);
+		command.add("-T");command.add(jobTitle);
+		command.add(filePath);
+		return command.toArray(new String[command.size()]);
 	}
 	
 	/** 
