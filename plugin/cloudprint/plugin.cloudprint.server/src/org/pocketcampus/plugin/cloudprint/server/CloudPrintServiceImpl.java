@@ -1,9 +1,11 @@
 package org.pocketcampus.plugin.cloudprint.server;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,19 +53,61 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 		return new HttpServlet() {
 			private static final long serialVersionUID = -6760157045775850293L;
 			@Override
-			protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-				String gaspar = AuthenticationServiceImpl.authGetUserGasparFromReq(request);
+			protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+				long id = Long.parseLong(req.getParameter("file_id"));
+				int page = Integer.parseInt(req.getParameter("page"));
+				String gaspar = AuthenticationServiceImpl.authGetUserGasparFromReq(req);
 				if (gaspar == null) {
-					response.setStatus(HttpURLConnection.HTTP_PROXY_AUTH);
+					resp.setStatus(HttpURLConnection.HTTP_PROXY_AUTH);
+					return;
+				}
+				String filename = PocketCampusServer.CONFIG.getString("CLOUDPRINT_CUPSPDF_OUTDIR") + "/" + gaspar + "_" + id;
+				String pdf = filename + ".pdf";
+				String png = filename + ".png";
+				if(!new File(pdf).exists()) {
+					resp.setStatus(HttpURLConnection.HTTP_NOT_FOUND);
+					return;
+				}
+				String [] command = new String[]{"convert", String.format("%s[%d]", pdf, page), png};
+				System.out.println("$ " + StringUtils.join(command, " "));
+				try {
+					int exitVal = Runtime.getRuntime().exec(command).waitFor();
+					if(exitVal != 0) {
+						resp.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
+						return;
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					resp.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
+					return;
+				}
+				if(!new File(png).exists()) {
+					resp.setStatus(HttpURLConnection.HTTP_NOT_FOUND);
+					return;
+				}
+				
+				resp.setContentType("image/png");
+				InputStream in = new FileInputStream(new File(png));
+				OutputStream out = resp.getOutputStream();
+				IOUtils.copy(in, out);
+				out.close();
+				
+				new File(png).delete();
+			}
+			@Override
+			protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+				String gaspar = AuthenticationServiceImpl.authGetUserGasparFromReq(req);
+				if (gaspar == null) {
+					resp.setStatus(HttpURLConnection.HTTP_PROXY_AUTH);
 					return;
 				}
 				long id = System.currentTimeMillis();
 				String filePath = PocketCampusServer.CONFIG.getString("CLOUDPRINT_DUMP_DIRECTORY") + "/" + gaspar + "_" + id;
 			    new File(filePath).mkdirs();
 				//String description = request.getParameter("description"); // Retrieves <input type="text" name="description">
-			    Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
+			    Part filePart = req.getPart("file"); // Retrieves <input type="file" name="file">
 				if (filePart == null) {
-					response.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
+					resp.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
 					return;
 				}
 			    String filename = getFilenameFromContentDisposition(filePart.getHeader("content-disposition"));
@@ -72,11 +116,8 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 			    IOUtils.copy(filecontent, fos);
 			    fos.close();
 
-			    // Will be used for print-preview functionality 
-				//String cupsPdfOutDir = PocketCampusServer.CONFIG.getString("CLOUDPRINT_CUPSPDF_OUTDIR");
-			    
-			    response.setContentType("application/json");
-			    response.getOutputStream().write(new Gson().toJson(new CloudPrintUploadResponse(id)).getBytes());
+				resp.setContentType("application/json");
+				resp.getOutputStream().write(new Gson().toJson(new CloudPrintUploadResponse(id)).getBytes());
 			}
 		};
 	}
@@ -100,27 +141,57 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 			return new PrintDocumentResponse(CloudPrintStatusCode.PRINT_ERROR);	    	
 	    }
 		try {
-			String[] command = buildLprCommand("mainPrinter", gaspar, files[0], filePath + "/" + files[0], request);
+			String[] command = buildLprCommand("mainPrinter", gaspar, true, files[0], filePath + "/" + files[0], request);
 			System.out.println("$ " + StringUtils.join(command, " "));
-			Runtime.getRuntime().exec(command);
-			command = buildLprCommand("Cups-PDF", null, gaspar + "_" + request.getDocumentId(), filePath + "/" + files[0], request);
-			System.out.println("$ " + StringUtils.join(command, " "));
-			Runtime.getRuntime().exec(command);
-			return new PrintDocumentResponse(CloudPrintStatusCode.OK);
+			int exitVal = Runtime.getRuntime().exec(command).waitFor();
+			return new PrintDocumentResponse(exitVal == 0 ? CloudPrintStatusCode.OK : CloudPrintStatusCode.PRINT_ERROR);
 		} catch (IOException e) {
+			e.printStackTrace();
+			return new PrintDocumentResponse(CloudPrintStatusCode.PRINT_ERROR);
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 			return new PrintDocumentResponse(CloudPrintStatusCode.PRINT_ERROR);
 		}
 	}
 	
-	private static String[] buildLprCommand(String printer, String gaspar, String jobTitle, String filePath, PrintDocumentRequest request) {
+	@Override
+	public PrintDocumentResponse printPreview(PrintDocumentRequest request) throws TException {
+		String gaspar = AuthenticationServiceImpl.authGetUserGaspar();
+		if (gaspar == null) {
+			return new PrintDocumentResponse(CloudPrintStatusCode.AUTHENTICATION_ERROR);
+		}
+		String filePath = PocketCampusServer.CONFIG.getString("CLOUDPRINT_DUMP_DIRECTORY") + "/" + gaspar + "_" + request.getDocumentId();
+		String [] files = new File(filePath).list();
+		if(files == null || files.length == 0) {
+			return new PrintDocumentResponse(CloudPrintStatusCode.PRINT_ERROR);	    	
+	    }
+		try {
+			String[] command = buildLprCommand("Cups-PDF", null, false, gaspar + "_" + request.getDocumentId(), filePath + "/" + files[0], request);
+			System.out.println("$ " + StringUtils.join(command, " "));
+			int exitVal = Runtime.getRuntime().exec(command).waitFor();
+			
+			// we can call $ pdfinfo on the generated pdf in order to get the number of pages
+			
+			return new PrintDocumentResponse(exitVal == 0 ? CloudPrintStatusCode.OK : CloudPrintStatusCode.PRINT_ERROR);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return new PrintDocumentResponse(CloudPrintStatusCode.PRINT_ERROR);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			return new PrintDocumentResponse(CloudPrintStatusCode.PRINT_ERROR);
+		}
+	}
+	
+	private static String[] buildLprCommand(String printer, String gaspar, boolean deleteAfterward, String jobTitle, String filePath, PrintDocumentRequest request) {
 		List<String> command = new LinkedList<String>();
 		command.add("lpr");
 		command.add("-P");command.add(printer);
 		if(gaspar != null) {
 			command.add("-U");command.add(gaspar);
 		}
-		//command.add("-r"); // delete file afterward
+		if(deleteAfterward) {
+			command.add("-r");
+		}
 		command.add("-o");command.add("fitplot");
 		if(request.isSetPageSelection()) {
 			command.add("-o");command.add("page-ranges=" + request.getPageSelection().getPageFrom() + "-" + request.getPageSelection().getPageTo());
@@ -203,4 +274,6 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 	    }
 	    return null;
 	}
+
+
 }
