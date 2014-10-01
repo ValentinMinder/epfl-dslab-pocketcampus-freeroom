@@ -27,7 +27,7 @@ import org.pocketcampus.plugin.freeroom.data.RebuildDB;
 import org.pocketcampus.plugin.freeroom.server.utils.CheckRequests;
 import org.pocketcampus.plugin.freeroom.server.utils.OccupancySorted;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
-import org.pocketcampus.plugin.freeroom.shared.FRActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriodOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteUserMessageReply;
@@ -1109,7 +1109,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					currentUID = uid;
 				}
 
-				FRActualOccupation accOcc = new FRActualOccupation(period,
+				FRPeriodOccupation accOcc = new FRPeriodOccupation(period,
 						available);
 				accOcc.setRatioOccupation(ratio);
 				currentOccupancy.addActualOccupation(accOcc);
@@ -1171,7 +1171,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					currentOccupancy = new OccupancySorted(mRoom, tsStart,
 							tsEnd, onlyFreeRooms);
 					FRPeriod period = new FRPeriod(tsStart, tsEnd);
-					FRActualOccupation accOcc = new FRActualOccupation(period, true);
+					FRPeriodOccupation accOcc = new FRPeriodOccupation(period, true);
 					currentOccupancy.addActualOccupation(accOcc);
 
 					FRRoomOccupancy mOccupancy = currentOccupancy.getOccupancy();

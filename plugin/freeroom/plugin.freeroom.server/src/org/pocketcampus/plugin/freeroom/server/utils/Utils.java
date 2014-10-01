@@ -15,7 +15,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.pocketcampus.plugin.freeroom.shared.FRActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriodOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRMessageFrequency;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
@@ -268,7 +268,7 @@ public class Utils {
 		 *            The ActualOccupation to be counted.
 		 * @return The number of hours in the ActualOccupation
 		 */
-		private int countNumberHour(FRActualOccupation acc) {
+		private int countNumberHour(FRPeriodOccupation acc) {
 			long tsStart = acc.getPeriod().getTimeStampStart();
 			long tsEnd = acc.getPeriod().getTimeStampEnd();
 			Calendar mCalendar = Calendar.getInstance();
@@ -284,10 +284,10 @@ public class Utils {
 		 * @param occupations
 		 * @return
 		 */
-		private double rateOccupied(List<FRActualOccupation> occupations) {
+		private double rateOccupied(List<FRPeriodOccupation> occupations) {
 			int count = 0;
 			int total = 0;
-			for (FRActualOccupation acc : occupations) {
+			for (FRPeriodOccupation acc : occupations) {
 				int nbHours = countNumberHour(acc);
 				if (!acc.isAvailable()) {
 					count += nbHours;

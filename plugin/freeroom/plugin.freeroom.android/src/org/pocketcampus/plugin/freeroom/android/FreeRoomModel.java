@@ -27,7 +27,7 @@ import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
 import org.pocketcampus.plugin.freeroom.android.utils.FRTimesClient;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.utils.SetArrayList;
-import org.pocketcampus.plugin.freeroom.shared.FRActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriodOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRMessageFrequency;
@@ -1012,7 +1012,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
-	 * Return the appropriate color according to the {@link FRActualOccupation}
+	 * Return the appropriate color according to the {@link FRPeriodOccupation}
 	 * given, and the {@link FreeRoomModel} color settings (
 	 * {@link ColorBlindMode}).
 	 * 
@@ -1020,7 +1020,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 *            actual occupation for a given period
 	 * @return the appropriate color
 	 */
-	public int getColorLine(FRActualOccupation mActualOccupation) {
+	public int getColorLine(FRPeriodOccupation mActualOccupation) {
 		if (!isColorLineFull()) {
 			return COLOR_TRANSPARENT;
 		}
@@ -1064,14 +1064,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * Return the correct color dot {@link Drawable} according to the
-	 * {@link FRActualOccupation} given, and the {@link FreeRoomModel} color
+	 * {@link FRPeriodOccupation} given, and the {@link FreeRoomModel} color
 	 * settings ({@link ColorBlindMode}).
 	 * 
 	 * @param mActualOccupation
 	 *            actual occupation for a given period
 	 * @return a color dot {@link Drawable}
 	 */
-	public int getColoredDotDrawable(FRActualOccupation mActualOccupation) {
+	public int getColoredDotDrawable(FRPeriodOccupation mActualOccupation) {
 		if (!isColorColoredDots()) {
 			return R.drawable.ic_dot_empty;
 		}
@@ -1152,8 +1152,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
 	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
-	 * the color depending of the {@link FRActualOccupation}, call
-	 * {@link #getColoredDotDrawable(FRActualOccupation)}
+	 * the color depending of the {@link FRPeriodOccupation}, call
+	 * {@link #getColoredDotDrawable(FRPeriodOccupation)}
 	 * 
 	 * @return the dot indicating "UNKNOWN".
 	 */
@@ -1176,8 +1176,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
 	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
-	 * the color depending of the {@link FRActualOccupation}, call
-	 * {@link #getColoredDotDrawable(FRActualOccupation)}
+	 * the color depending of the {@link FRPeriodOccupation}, call
+	 * {@link #getColoredDotDrawable(FRPeriodOccupation)}
 	 * 
 	 * @return the dot indicating "OCCUPIED".
 	 */
@@ -1201,8 +1201,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
 	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
-	 * the color depending of the {@link FRActualOccupation}, call
-	 * {@link #getColoredDotDrawable(FRActualOccupation)}
+	 * the color depending of the {@link FRPeriodOccupation}, call
+	 * {@link #getColoredDotDrawable(FRPeriodOccupation)}
 	 * 
 	 * @return the dot indicating "FREE".
 	 */
@@ -1226,8 +1226,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
 	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
-	 * the color depending of the {@link FRActualOccupation}, call
-	 * {@link #getColoredDotDrawable(FRActualOccupation)}
+	 * the color depending of the {@link FRPeriodOccupation}, call
+	 * {@link #getColoredDotDrawable(FRPeriodOccupation)}
 	 * 
 	 * @return the dot indicating "PARTIALLY OCCUPIED".
 	 */

@@ -36,7 +36,7 @@ import org.pocketcampus.plugin.freeroom.android.utils.FRTimesClient;
 import org.pocketcampus.plugin.freeroom.android.utils.FRUtilsClient;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.utils.SetArrayList;
-import org.pocketcampus.plugin.freeroom.shared.FRActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriodOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.Constants;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
@@ -1394,7 +1394,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * {@link #infoDetailsRoom}: Adapter for the ActualOccupation displayed in a
 	 * ListView.
 	 */
-	private ActualOccupationArrayAdapter<FRActualOccupation> infoDetailsActualOccupationAdapter;
+	private ActualOccupationArrayAdapter<FRPeriodOccupation> infoDetailsActualOccupationAdapter;
 
 	/**
 	 * {@link #infoDetailsRoom}: Inits the {@link #infoDetailsRoom} the
@@ -1532,7 +1532,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			ListView roomOccupancyListView = (ListView) infoDetailsRoomView
 					.findViewById(R.id.freeroom_layout_dialog_info_roomOccupancy);
-			infoDetailsActualOccupationAdapter = new ActualOccupationArrayAdapter<FRActualOccupation>(
+			infoDetailsActualOccupationAdapter = new ActualOccupationArrayAdapter<FRPeriodOccupation>(
 					getApplicationContext(), mOccupancy, mController, this);
 			roomOccupancyListView
 					.setAdapter(infoDetailsActualOccupationAdapter);
@@ -4371,7 +4371,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		FRPeriod period = new FRPeriod(System.currentTimeMillis(),
 				System.currentTimeMillis() + FRTimes.ONE_HOUR_IN_MS);
 		FRRoom room = new FRRoom("mock", "1234");
-		List<FRActualOccupation> occupancy = new ArrayList<FRActualOccupation>(1);
+		List<FRPeriodOccupation> occupancy = new ArrayList<FRPeriodOccupation>(1);
 		List<FRRoomOccupancy> occupancies = new ArrayList<FRRoomOccupancy>(4);
 		FRRoomOccupancy free = new FRRoomOccupancy(room, occupancy, false, true, period);
 		FRRoomOccupancy part = new FRRoomOccupancy(room, occupancy, true, true, period);

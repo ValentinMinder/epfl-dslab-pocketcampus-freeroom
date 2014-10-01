@@ -21,8 +21,8 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FRActualOccupation implements org.apache.thrift.TBase<FRActualOccupation, FRActualOccupation._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRActualOccupation");
+public class FRPeriodOccupation implements org.apache.thrift.TBase<FRPeriodOccupation, FRPeriodOccupation._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRPeriodOccupation");
 
   private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.STRUCT, (short)1);
   private static final org.apache.thrift.protocol.TField AVAILABLE_FIELD_DESC = new org.apache.thrift.protocol.TField("available", org.apache.thrift.protocol.TType.BOOL, (short)2);
@@ -111,13 +111,13 @@ public class FRActualOccupation implements org.apache.thrift.TBase<FRActualOccup
     tmpMap.put(_Fields.RATIO_OCCUPATION, new org.apache.thrift.meta_data.FieldMetaData("ratioOccupation", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRActualOccupation.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRPeriodOccupation.class, metaDataMap);
   }
 
-  public FRActualOccupation() {
+  public FRPeriodOccupation() {
   }
 
-  public FRActualOccupation(
+  public FRPeriodOccupation(
     FRPeriod period,
     boolean available)
   {
@@ -130,7 +130,7 @@ public class FRActualOccupation implements org.apache.thrift.TBase<FRActualOccup
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public FRActualOccupation(FRActualOccupation other) {
+  public FRPeriodOccupation(FRPeriodOccupation other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetPeriod()) {
@@ -140,8 +140,8 @@ public class FRActualOccupation implements org.apache.thrift.TBase<FRActualOccup
     this.ratioOccupation = other.ratioOccupation;
   }
 
-  public FRActualOccupation deepCopy() {
-    return new FRActualOccupation(this);
+  public FRPeriodOccupation deepCopy() {
+    return new FRPeriodOccupation(this);
   }
 
   @Override
@@ -157,7 +157,7 @@ public class FRActualOccupation implements org.apache.thrift.TBase<FRActualOccup
     return this.period;
   }
 
-  public FRActualOccupation setPeriod(FRPeriod period) {
+  public FRPeriodOccupation setPeriod(FRPeriod period) {
     this.period = period;
     return this;
   }
@@ -181,7 +181,7 @@ public class FRActualOccupation implements org.apache.thrift.TBase<FRActualOccup
     return this.available;
   }
 
-  public FRActualOccupation setAvailable(boolean available) {
+  public FRPeriodOccupation setAvailable(boolean available) {
     this.available = available;
     setAvailableIsSet(true);
     return this;
@@ -204,7 +204,7 @@ public class FRActualOccupation implements org.apache.thrift.TBase<FRActualOccup
     return this.ratioOccupation;
   }
 
-  public FRActualOccupation setRatioOccupation(double ratioOccupation) {
+  public FRPeriodOccupation setRatioOccupation(double ratioOccupation) {
     this.ratioOccupation = ratioOccupation;
     setRatioOccupationIsSet(true);
     return this;
@@ -288,12 +288,12 @@ public class FRActualOccupation implements org.apache.thrift.TBase<FRActualOccup
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof FRActualOccupation)
-      return this.equals((FRActualOccupation)that);
+    if (that instanceof FRPeriodOccupation)
+      return this.equals((FRPeriodOccupation)that);
     return false;
   }
 
-  public boolean equals(FRActualOccupation that) {
+  public boolean equals(FRPeriodOccupation that) {
     if (that == null)
       return false;
 
@@ -349,13 +349,13 @@ public class FRActualOccupation implements org.apache.thrift.TBase<FRActualOccup
     return builder.toHashCode();
   }
 
-  public int compareTo(FRActualOccupation other) {
+  public int compareTo(FRPeriodOccupation other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    FRActualOccupation typedOther = (FRActualOccupation)other;
+    FRPeriodOccupation typedOther = (FRPeriodOccupation)other;
 
     lastComparison = Boolean.valueOf(isSetPeriod()).compareTo(typedOther.isSetPeriod());
     if (lastComparison != 0) {
@@ -465,7 +465,7 @@ public class FRActualOccupation implements org.apache.thrift.TBase<FRActualOccup
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("FRActualOccupation(");
+    StringBuilder sb = new StringBuilder("FRPeriodOccupation(");
     boolean first = true;
 
     sb.append("period:");

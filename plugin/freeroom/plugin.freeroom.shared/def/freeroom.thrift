@@ -81,7 +81,7 @@ struct FRPeriod {
 }
 
 // defines if the room is reserved or not
-struct FRActualOccupation {
+struct FRPeriodOccupation {
 	1: required FRPeriod period;
 	2: required bool available;
 	4: optional double ratioOccupation;
@@ -93,7 +93,7 @@ struct FRActualOccupation {
 // and provide period that are contiguous!
 struct FRRoomOccupancy {
 	1: required FRRoom room;
-	2: required list<FRActualOccupation> occupancy;
+	2: required list<FRPeriodOccupation> occupancy;
 	3: required bool isAtLeastOccupiedOnce;
 	4: required bool isAtLeastFreeOnce;
 	5: required FRPeriod treatedPeriod;

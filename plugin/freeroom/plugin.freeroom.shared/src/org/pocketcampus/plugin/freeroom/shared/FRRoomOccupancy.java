@@ -32,7 +32,7 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
   private static final org.apache.thrift.protocol.TField RATIO_WORST_CASE_PROBABLE_OCCUPANCY_FIELD_DESC = new org.apache.thrift.protocol.TField("ratioWorstCaseProbableOccupancy", org.apache.thrift.protocol.TType.DOUBLE, (short)6);
 
   private FRRoom room; // required
-  private List<FRActualOccupation> occupancy; // required
+  private List<FRPeriodOccupation> occupancy; // required
   private boolean isAtLeastOccupiedOnce; // required
   private boolean isAtLeastFreeOnce; // required
   private FRPeriod treatedPeriod; // required
@@ -124,7 +124,7 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRRoom.class)));
     tmpMap.put(_Fields.OCCUPANCY, new org.apache.thrift.meta_data.FieldMetaData("occupancy", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRActualOccupation.class))));
+            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRPeriodOccupation.class))));
     tmpMap.put(_Fields.IS_AT_LEAST_OCCUPIED_ONCE, new org.apache.thrift.meta_data.FieldMetaData("isAtLeastOccupiedOnce", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.IS_AT_LEAST_FREE_ONCE, new org.apache.thrift.meta_data.FieldMetaData("isAtLeastFreeOnce", org.apache.thrift.TFieldRequirementType.REQUIRED, 
@@ -142,7 +142,7 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
 
   public FRRoomOccupancy(
     FRRoom room,
-    List<FRActualOccupation> occupancy,
+    List<FRPeriodOccupation> occupancy,
     boolean isAtLeastOccupiedOnce,
     boolean isAtLeastFreeOnce,
     FRPeriod treatedPeriod)
@@ -167,9 +167,9 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
       this.room = new FRRoom(other.room);
     }
     if (other.isSetOccupancy()) {
-      List<FRActualOccupation> __this__occupancy = new ArrayList<FRActualOccupation>();
-      for (FRActualOccupation other_element : other.occupancy) {
-        __this__occupancy.add(new FRActualOccupation(other_element));
+      List<FRPeriodOccupation> __this__occupancy = new ArrayList<FRPeriodOccupation>();
+      for (FRPeriodOccupation other_element : other.occupancy) {
+        __this__occupancy.add(new FRPeriodOccupation(other_element));
       }
       this.occupancy = __this__occupancy;
     }
@@ -226,22 +226,22 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
     return (this.occupancy == null) ? 0 : this.occupancy.size();
   }
 
-  public java.util.Iterator<FRActualOccupation> getOccupancyIterator() {
+  public java.util.Iterator<FRPeriodOccupation> getOccupancyIterator() {
     return (this.occupancy == null) ? null : this.occupancy.iterator();
   }
 
-  public void addToOccupancy(FRActualOccupation elem) {
+  public void addToOccupancy(FRPeriodOccupation elem) {
     if (this.occupancy == null) {
-      this.occupancy = new ArrayList<FRActualOccupation>();
+      this.occupancy = new ArrayList<FRPeriodOccupation>();
     }
     this.occupancy.add(elem);
   }
 
-  public List<FRActualOccupation> getOccupancy() {
+  public List<FRPeriodOccupation> getOccupancy() {
     return this.occupancy;
   }
 
-  public FRRoomOccupancy setOccupancy(List<FRActualOccupation> occupancy) {
+  public FRRoomOccupancy setOccupancy(List<FRPeriodOccupation> occupancy) {
     this.occupancy = occupancy;
     return this;
   }
@@ -368,7 +368,7 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
       if (value == null) {
         unsetOccupancy();
       } else {
-        setOccupancy((List<FRActualOccupation>)value);
+        setOccupancy((List<FRPeriodOccupation>)value);
       }
       break;
 
@@ -658,11 +658,11 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
               org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-              this.occupancy = new ArrayList<FRActualOccupation>(_list0.size);
+              this.occupancy = new ArrayList<FRPeriodOccupation>(_list0.size);
               for (int _i1 = 0; _i1 < _list0.size; ++_i1)
               {
-                FRActualOccupation _elem2; // required
-                _elem2 = new FRActualOccupation();
+                FRPeriodOccupation _elem2; // required
+                _elem2 = new FRPeriodOccupation();
                 _elem2.read(iprot);
                 this.occupancy.add(_elem2);
               }
@@ -734,7 +734,7 @@ public class FRRoomOccupancy implements org.apache.thrift.TBase<FRRoomOccupancy,
       oprot.writeFieldBegin(OCCUPANCY_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.occupancy.size()));
-        for (FRActualOccupation _iter3 : this.occupancy)
+        for (FRPeriodOccupation _iter3 : this.occupancy)
         {
           _iter3.write(oprot);
         }
