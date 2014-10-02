@@ -75,7 +75,7 @@ static id instance __strong = nil;
 #pragma mark - Public
 
 + (instancetype)sharedTracker {
-//#ifndef DEBUG
+#ifndef DEBUG
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [[PCGAITracker alloc] init];
@@ -86,7 +86,7 @@ static id instance __strong = nil;
             CLSNSLog(@"-> Google Analytics disabled (config)");
         }
     });
-//#endif
+#endif
 #ifndef TARGET_IS_EXTENSION
     [instance popAndTrackOfflineScreensAndActions];
 #endif

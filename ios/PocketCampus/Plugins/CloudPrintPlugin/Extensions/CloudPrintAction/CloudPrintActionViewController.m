@@ -31,8 +31,6 @@
 
 #import "CloudPrintController.h"
 
-#import "MBPRogressHUD.h"
-
 @import MobileCoreServices;
 
 @interface CloudPrintActionViewController ()
