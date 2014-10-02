@@ -251,12 +251,12 @@ static int i = 0;
             return;
         }
         CGFloat width = self.segmentedControl.superview.frame.size.width-18.0;
-        if (width > 350.0) {
-            width = 350.0;
+        if (width > 370.0) {
+            width = 370.0;
         }
         CGFloat height = self.segmentedControl.superview.frame.size.height-16.0;
-        if (height < 20.0) {
-            height = 20.0;
+        if (height < 22.0) {
+            height = 22.0;
         }
         self.segmentedControl.bounds = CGRectMake(0, 0, width, height);
     }
