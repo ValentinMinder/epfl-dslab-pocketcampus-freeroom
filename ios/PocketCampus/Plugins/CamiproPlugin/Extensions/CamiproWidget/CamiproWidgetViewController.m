@@ -77,8 +77,11 @@
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(widgetTapped)];
     [self.view addGestureRecognizer:tapGesture];
     self.preferredContentSize = CGSizeMake(320.0, 50.0);
-    
+}
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [PCGAITracker trackOfflineScreenWithName:@"/camipro/widget"];
 }
 
 - (UIEdgeInsets)widgetMarginInsetsForProposedMarginInsets:(UIEdgeInsets)defaultMarginInsets {
@@ -114,6 +117,7 @@
 #pragma mark - Actions
 
 - (void)widgetTapped {
+    [PCGAITracker trackOfflineAction:@"OpenApp" inScreenWithName:@"/camipro/widget"];
     [self.extensionContext openURL:[NSURL URLWithString:@"pocketcampus://camipro.plugin.pocketcampus.org"] completionHandler:NULL];
 }
 
@@ -184,7 +188,6 @@
     [self.loadingIndicator stopAnimating];
     switch (balanceAndTransactions.iStatus) {
         case 407:
-            CLSNSLog(@"-> User session has expired. Trying to login...");
             [self.loadingIndicator startAnimating];
             [self.camiproService deleteCamiproSession];
             [self startBalanceAndTransactionsRequest];
@@ -196,6 +199,7 @@
             if (self.completionHandler) {
                 self.completionHandler(NCUpdateResultNewData);
             }
+            self.completionHandler = nil;
             break;
         default:
             [self getBalanceAndTransactionsFailedForCamiproRequest:camiproRequest];
@@ -210,6 +214,7 @@
     if (self.completionHandler) {
         self.completionHandler(NCUpdateResultFailed);
     }
+    self.completionHandler = nil;
 }
 
 - (void)serviceConnectionToServerFailed {
@@ -221,6 +226,7 @@
     if (self.completionHandler) {
         self.completionHandler(NCUpdateResultFailed);
     }
+    self.completionHandler = nil;
 }
 
 #pragma mark - Dealloc

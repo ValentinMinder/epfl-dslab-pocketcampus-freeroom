@@ -56,6 +56,12 @@ static NSString* const kAppCrashedDuringPreviousExecution = @"AppCrashedDuringPr
 static NSString* const kEventCategoryUserAction = @"UserAction";
 static NSString* const kEventCategoryOther = @"Other";
 
+static NSString* const kOfflineScreensUserDefaultsArrayKey = @"PCGAITrackOfflineScreens";
+static NSString* const kOfflineActionsUserDefaultsArrayKey = @"PCGAITrackOfflineActions";
+static NSString* const kActionUserDefaultsStringKey = @"Action";
+static NSString* const kScreenNameUserDefaultsStringKey = @"Screen";
+static NSString* const kContentInfoUserDefaultsStringKey = @"ContentInto";
+
 static id instance __strong = nil;
 
 @interface PCGAITracker ()
@@ -73,9 +79,9 @@ static id instance __strong = nil;
         CLSNSLog(@"-> Cannot create PCGAITracker sharedTracker instance because PCConfig is not loading yet. Returning nil.");
         return nil;
     }
+#ifndef DEBUG
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-#ifndef DEBUG
         instance = [[PCGAITracker alloc] init];
         if ([[PCConfig defaults] boolForKey:PC_CONFIG_GAN_ENABLED_KEY]) {
             [instance initGAIConfig];
@@ -83,8 +89,9 @@ static id instance __strong = nil;
         } else {
             CLSNSLog(@"-> Google Analytics disabled (config)");
         }
-#endif
     });
+#endif
+    [instance popAndTrackOfflineScreensAndActions];
     return instance;
 }
 
@@ -96,6 +103,7 @@ static id instance __strong = nil;
     CLSLog(@"Track screen: '%@'", screenName);
     [self.gaiTracker set:kGAIScreenName value:screenName];
     [self.gaiTracker send:[[GAIDictionaryBuilder createAppView] build]];
+    
 }
 
 - (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName {
@@ -104,6 +112,50 @@ static id instance __strong = nil;
 
 - (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName contentInfo:(NSString*)contentInfo {
     [self trackAction:action inScreenWithName:screenName category:kEventCategoryUserAction contentInfo:contentInfo];
+}
+
++ (void)trackOfflineScreenWithName:(NSString*)screenName {
+    if (screenName.length == 0) {
+        CLSNSLog(@"!! ERROR: cannot track nil screeName or of length 0.");
+        return;
+    }
+    CLSLog(@"Track offline screen: '%@'", screenName);
+    NSMutableArray* offlineScreens = [[[PCPersistenceManager sharedDefaults] objectForKey:kOfflineScreensUserDefaultsArrayKey] mutableCopy];
+    if (!offlineScreens) {
+        offlineScreens = [NSMutableArray array];
+    }
+    [offlineScreens addObject:screenName];
+    [[PCPersistenceManager sharedDefaults] setObject:offlineScreens forKey:kOfflineScreensUserDefaultsArrayKey];
+    [[PCPersistenceManager sharedDefaults] synchronize];
+}
+
++ (void)trackOfflineAction:(NSString*)action inScreenWithName:(NSString*)screenName {
+    [self trackOfflineAction:action inScreenWithName:screenName contentInfo:nil];
+}
+
++ (void)trackOfflineAction:(NSString*)action inScreenWithName:(NSString*)screenName contentInfo:(NSString*)contentInfo {
+    if (action.length == 0) {
+        CLSNSLog(@"!! ERROR: cannot track nil action or of length 0.");
+        return;
+    }
+    CLSLog(@"Track offline action '%@', content info: '%@'", action, contentInfo);
+    NSMutableArray* offlineActions = [[[PCPersistenceManager sharedDefaults] objectForKey:kOfflineActionsUserDefaultsArrayKey] mutableCopy];
+    if (!offlineActions) {
+        offlineActions = [NSMutableArray array];
+    }
+    NSDictionary* offlineActionDic = nil;
+    if (screenName && contentInfo) {
+        offlineActionDic = @{kActionUserDefaultsStringKey:action, kScreenNameUserDefaultsStringKey: screenName, kContentInfoUserDefaultsStringKey: contentInfo};
+    } else if (screenName) {
+        offlineActionDic = @{kActionUserDefaultsStringKey:action, kScreenNameUserDefaultsStringKey: screenName};
+    } else if (contentInfo) {
+        offlineActionDic = @{kActionUserDefaultsStringKey:action, kContentInfoUserDefaultsStringKey: contentInfo};
+    } else {
+        offlineActionDic = @{kActionUserDefaultsStringKey:action};
+    }
+    [offlineActions addObject:offlineActionDic];
+    [[PCPersistenceManager sharedDefaults] setObject:offlineActions forKey:kOfflineActionsUserDefaultsArrayKey];
+    [[PCPersistenceManager sharedDefaults] synchronize];
 }
 
 - (void)trackAppOnce {
@@ -132,6 +184,38 @@ static id instance __strong = nil;
     CLSLog(@"Track action '%@', content info: '%@'", action, contentInfo);
     [self.gaiTracker set:kGAIScreenName value:screenName];
     [self.gaiTracker send:[[GAIDictionaryBuilder createEventWithCategory:category action:action label:contentInfo value:nil] build]];
+}
+
+- (void)popAndTrackOfflineScreensAndActions {
+    BOOL found = NO;
+    
+    NSArray* offlineScreens = [[PCPersistenceManager sharedDefaults] objectForKey:kOfflineScreensUserDefaultsArrayKey];
+    if (offlineScreens.count > 0) {
+        CLSNSLog(@"-> Now tracking %u offline screens(s): %@", offlineScreens.count, offlineScreens);
+        found = YES;
+        for (NSString* offlineScreen in offlineScreens) {
+            [self trackScreenWithName:offlineScreen];
+        }
+        [[PCPersistenceManager sharedDefaults] removeObjectForKey:kOfflineScreensUserDefaultsArrayKey];
+    }
+
+    
+    NSArray* offlineActions = [[PCPersistenceManager sharedDefaults] objectForKey:kOfflineActionsUserDefaultsArrayKey];
+    if (offlineActions.count > 0) {
+        CLSNSLog(@"Now tracking %u offline action(s): %@", offlineActions.count, offlineActions);
+        found = YES;
+        for (NSDictionary* offlineActionDic in offlineActions) {
+            NSString* action = offlineActionDic[kActionUserDefaultsStringKey];
+            NSString* screenName = offlineActionDic[kScreenNameUserDefaultsStringKey];
+            NSString* contentInfo = offlineActionDic[kContentInfoUserDefaultsStringKey];
+            [self trackAction:action inScreenWithName:screenName category:kEventCategoryUserAction contentInfo:contentInfo];
+        }
+        [[PCPersistenceManager sharedDefaults] removeObjectForKey:kOfflineActionsUserDefaultsArrayKey];
+    }
+    
+    if (found) {
+        [[PCPersistenceManager sharedDefaults] synchronize];
+    }
 }
 
 - (void)initGAIConfig {

@@ -243,8 +243,9 @@ static MainController<MainControllerPublic>* instance = nil;
         }
     }
     
+#ifndef TARGET_IS_EXTENSION
     [[PCGAITracker sharedTracker] trackAction:@"OpenPocketCampusURL" inScreenWithName:@"/" contentInfo:[url absoluteString]];
-    
+#endif
     return YES;
 }
 
