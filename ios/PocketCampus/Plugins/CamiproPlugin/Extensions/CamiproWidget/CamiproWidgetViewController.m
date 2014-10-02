@@ -42,6 +42,7 @@
 @property (nonatomic, copy) void (^completionHandler)(NCUpdateResult);
 @property (nonatomic, strong) CamiproController* camiproController;
 @property (nonatomic, strong) CamiproService* camiproService;
+@property (nonatomic, strong) NSTimer* refreshTimer;
 
 @end
 
@@ -77,6 +78,9 @@
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(widgetTapped)];
     [self.view addGestureRecognizer:tapGesture];
     self.preferredContentSize = CGSizeMake(320.0, 50.0);
+    
+    //iOS 8 weirdly sometimes does not call widgetPerformUpdateWithCompletionHandler: after viewDidLoad. So we want to make sure refresh is triggered.
+    self.refreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(refresh) userInfo:nil repeats:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -98,20 +102,8 @@
     // If an error is encoutered, use NCUpdateResultFailed
     // If there's no update required, use NCUpdateResultNoData
     // If there's an update, use NCUpdateResultNewData
-    
-    self.preferredContentSize = CGSizeMake(320.0, 50.0);
     self.completionHandler = completionHandler;
-    
-    [self.camiproService cancelOperationsForDelegate:self];
-    if (!self.camiproService) {
-        self.camiproService = [CamiproService sharedInstanceToRetain];
-    }
-
-    [self startBalanceAndTransactionsRequest];
-
-    self.balanceLabel.text = nil;
-    [self.loadingIndicator startAnimating];
-    
+    [self refresh];
 }
 
 #pragma mark - Actions
@@ -126,6 +118,23 @@
 }*/
 
 #pragma mark - Private
+
+- (void)refresh {
+    [self.refreshTimer invalidate];
+    self.refreshTimer = nil;
+    
+    self.preferredContentSize = CGSizeMake(320.0, 50.0);
+    
+    [self.camiproService cancelOperationsForDelegate:self];
+    if (!self.camiproService) {
+        self.camiproService = [CamiproService sharedInstanceToRetain];
+    }
+    
+    [self startBalanceAndTransactionsRequest];
+    
+    self.balanceLabel.text = nil;
+    [self.loadingIndicator startAnimating];
+}
 
 - (SessionId*)buildSessionIdFromCamiproSession:(CamiproSession*)camiproSession {
     return [[SessionId alloc] initWithTos:0 camiproCookie:camiproSession.camiproCookie];
@@ -232,6 +241,7 @@
 #pragma mark - Dealloc
 
 - (void)dealloc {
+    [self.refreshTimer invalidate];
     [self.camiproService cancelOperationsForDelegate:self];
 }
 
