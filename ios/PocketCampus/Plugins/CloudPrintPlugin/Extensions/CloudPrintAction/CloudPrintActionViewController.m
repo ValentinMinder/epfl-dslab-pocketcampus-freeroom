@@ -31,53 +31,69 @@
 
 #import "CloudPrintController.h"
 
+#import "MBPRogressHUD.h"
+
 @import MobileCoreServices;
 
 @interface CloudPrintActionViewController ()
+
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* loadingIndicator;
+@property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
+@property (nonatomic, weak) IBOutlet UIButton* cancelButton;
 
 @end
 
 @implementation CloudPrintActionViewController
 
+#pragma mark - UIViewController overrides
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Get the item[s] we're handling from the extension context.
+    self.view.tintColor = [PCValues pocketCampusRed];
+    [self.cancelButton setTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) forState:UIControlStateNormal];
+
+    [self.loadingIndicator startAnimating];
+    self.centerMessageLabel.text = nil;
     
-    // For example, look for an image and place it into an image view.
-    // Replace this with something appropriate for the type[s] your extension supports.
-    /*BOOL imageFound = NO;
+    __weak __typeof(self) welf = self;
+    BOOL pdfFound = NO;
     for (NSExtensionItem *item in self.extensionContext.inputItems) {
         for (NSItemProvider *itemProvider in item.attachments) {
-            if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeScalableVectorGraphics]) {
-                
-                __weak UIImageView *imageView = nil;
-                [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeScalableVectorGraphics options:nil completionHandler:^(UIImage *image, NSError *error) {
-                    if(image) {
-                        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                            [imageView setImage:image];
+            if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypePDF]) {
+                [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypePDF options:nil completionHandler:^(NSURL* pdfURL, NSError *error) {
+                    if (welf && pdfURL && !error) {
+                        [welf.loadingIndicator stopAnimating];
+                        welf.centerMessageLabel.text = nil;
+                        NSString* filename = [pdfURL lastPathComponent];
+                        UIViewController* viewController = [[CloudPrintController sharedInstance] viewControllerForPrintDocumentWithLocalURL:pdfURL docName:filename printDocumentRequestOrNil:nil completion:^(CloudPrintCompletionStatusCode printStatusCode) {
+                            [welf.extensionContext completeRequestReturningItems:@[] completionHandler:NULL];
                         }];
+                        viewController.view.tintColor = [PCValues pocketCampusRed];
+                        [welf presentViewController:viewController animated:NO completion:NULL];
                     }
                 }];
-                
-                imageFound = YES;
+                pdfFound = YES;
                 break;
             }
         }
         
-        if (imageFound) {
-            // We only handle one image, so stop looking for more.
+        if (pdfFound) {
+            // We only handle one PDF, so stop looking for more.
             break;
         }
     }
     
-    PrintDocumentRequest* request = [PrintDocumentRequest createDefaultRequest];
-    request.documentId = -1;
-    self.view.tintColor = [PCValues pocketCampusRed];
-    UIViewController* viewController = [[CloudPrintController sharedInstance] viewControllerForPrintWithDocumentName:@"test" printDocumentRequest:request completion:^(CloudPrintCompletionStatusCode printStatusCode) {
-        
-    }];
-    [self presentViewController:viewController animated:NO completion:NULL];*/
+    if (!pdfFound) {
+        [self.loadingIndicator stopAnimating];
+        self.centerMessageLabel.text = NSLocalizedStringFromTable(@"SorryUnsupportedFileFormat", @"CloudPrintPlugin", nil);
+    }
+}
+
+#pragma mark - Actions
+
+- (IBAction)cancelTapped:(id)sender {
+    [self.extensionContext cancelRequestWithError:[NSError errorWithDomain:@"User cancelled" code:0 userInfo:nil]];
 }
 
 @end

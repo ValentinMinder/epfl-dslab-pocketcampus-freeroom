@@ -87,7 +87,7 @@ static NSInteger const kPageToTheEndValue = 10000;
 - (instancetype)initWithDocumentName:(NSString*)docName printRequest:(PrintDocumentRequest*)printRequest {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = @"EPFLCloudPrint";
+        self.title = @"EPFL CloudPrint";
         self.gaiScreenName = @"/cloudprint";
         self.documentName = docName;
         self.printRequest = printRequest ?: [PrintDocumentRequest createDefaultRequest];
@@ -101,11 +101,15 @@ static NSInteger const kPageToTheEndValue = 10000;
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Print", @"CloudPrintPlugin", nil) style:UIBarButtonItemStyleDone target:self action:@selector(printTapped)];
-    PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] initWithFrame:self.tableView.frame style:self.tableView.style];
+    /*PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] initWithFrame:self.tableView.frame style:self.tableView.style];
     self.tableView = tableViewAdditions;
     tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+#ifndef TARGET_IS_EXTENSION
         return floorf([PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleValue1]);
-    };
+#else
+        return 44.0;
+#endif
+    };*/
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -236,21 +240,46 @@ static NSInteger const kPageToTheEndValue = 10000;
     if (indexPath.section == kMultiPageSectionIndex && indexPath.row == kMultiPageLayoutRowIndex) {
         return [CloudPrintMultiPageLayoutCell preferredHeight];
     }
+/*#ifndef TARGET_IS_EXTENSION
     return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleValue1];
+#else
+    return 44.0;
+#endif*/
+    return 44.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UIActionSheet* actionSheet = nil;
+    UIAlertController* alertController = nil;
+    __weak __typeof(self) welf = self;
     switch (indexPath.section) {
         case kOrientationSectionIndex:
             switch (indexPath.row) {
                 case kOrientationRowIndex:
-                    actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"Orientation", @"CloudPrintPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
-                       [CloudPrintModelAdditions localizedTitleForOrientation:CloudPrintOrientation_PORTRAIT],
-                       [CloudPrintModelAdditions localizedTitleForOrientation:CloudPrintOrientation_LANDSCAPE],
-                       nil];
-                    self.orientationActionSheet = actionSheet;
+                    if ([UIAlertController class]) {
+                        alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"Orientation", @"CloudPrintPlugin", nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+                        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) style:UIAlertActionStyleCancel handler:NULL];
+                        [alertController addAction:cancelAction];
+                        UIAlertAction* portraitAction = [UIAlertAction actionWithTitle:[CloudPrintModelAdditions localizedTitleForOrientation:CloudPrintOrientation_PORTRAIT] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                            welf.printRequest.orientation = CloudPrintOrientation_PORTRAIT;
+                            [welf.tableView reloadSections:[NSIndexSet indexSetWithIndex:kOrientationSectionIndex] withRowAnimation:UITableViewRowAnimationNone];
+                        }];
+                        [alertController addAction:portraitAction];
+                        UIAlertAction* landscapeAction = [UIAlertAction actionWithTitle:[CloudPrintModelAdditions localizedTitleForOrientation:CloudPrintOrientation_LANDSCAPE] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                            welf.printRequest.orientation = CloudPrintOrientation_LANDSCAPE;
+                            [welf.tableView reloadSections:[NSIndexSet indexSetWithIndex:kOrientationSectionIndex] withRowAnimation:UITableViewRowAnimationNone];
+                        }];
+                        [alertController addAction:landscapeAction];
+                    } else {
+#ifndef TARGET_IS_EXTENSION
+                        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"Orientation", @"CloudPrintPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
+                                       [CloudPrintModelAdditions localizedTitleForOrientation:CloudPrintOrientation_PORTRAIT],
+                                       [CloudPrintModelAdditions localizedTitleForOrientation:CloudPrintOrientation_LANDSCAPE],
+                                       nil];
+                        self.orientationActionSheet = actionSheet;
+#endif
+                    }
                     break;
                 default:
                     break;
@@ -259,11 +288,29 @@ static NSInteger const kPageToTheEndValue = 10000;
         case kDoubleSidedSectionIndex:
             switch (indexPath.row) {
                 case kDoubleSidedConfigRowIndex:
-                    actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"FlipOn", @"CloudPrintPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
-                        [CloudPrintModelAdditions localizedTitleForDoubleSidedConfig:CloudPrintDoubleSidedConfig_LONG_EDGE],
-                        [CloudPrintModelAdditions localizedTitleForDoubleSidedConfig:CloudPrintDoubleSidedConfig_SHORT_EDGE],
-                        nil];
-                    self.doubleSidedConfigActionSheet = actionSheet;
+                    if ([UIAlertController class]) {
+                        alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"FlipOn", @"CloudPrintPlugin", nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+                        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) style:UIAlertActionStyleCancel handler:NULL];
+                        [alertController addAction:cancelAction];
+                        UIAlertAction* longEdgeAction = [UIAlertAction actionWithTitle:[CloudPrintModelAdditions localizedTitleForDoubleSidedConfig:CloudPrintDoubleSidedConfig_LONG_EDGE] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                            welf.printRequest.doubleSided = CloudPrintDoubleSidedConfig_LONG_EDGE;
+                            [welf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kDoubleSidedConfigRowIndex inSection:kDoubleSidedSectionIndex]] withRowAnimation:UITableViewRowAnimationNone];
+                        }];
+                        [alertController addAction:longEdgeAction];
+                        UIAlertAction* shortEdgeAction = [UIAlertAction actionWithTitle:[CloudPrintModelAdditions localizedTitleForDoubleSidedConfig:CloudPrintDoubleSidedConfig_SHORT_EDGE] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                            welf.printRequest.doubleSided = CloudPrintDoubleSidedConfig_SHORT_EDGE;
+                            [welf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kDoubleSidedConfigRowIndex inSection:kDoubleSidedSectionIndex]] withRowAnimation:UITableViewRowAnimationNone];
+                        }];
+                        [alertController addAction:shortEdgeAction];
+                    } else {
+#ifndef TARGET_IS_EXTENSION
+                        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"FlipOn", @"CloudPrintPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
+                            [CloudPrintModelAdditions localizedTitleForDoubleSidedConfig:CloudPrintDoubleSidedConfig_LONG_EDGE],
+                            [CloudPrintModelAdditions localizedTitleForDoubleSidedConfig:CloudPrintDoubleSidedConfig_SHORT_EDGE],
+                            nil];
+                        self.doubleSidedConfigActionSheet = actionSheet;
+#endif
+                    }
                     break;
                 default:
                     break;
@@ -272,15 +319,63 @@ static NSInteger const kPageToTheEndValue = 10000;
         case kMultiPageSectionIndex:
             switch (indexPath.row) {
                 case kNbPagesPerSheetRowIndex:
-                    actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"PagesPerSheet", @"CloudPrintPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
-                        [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:1],
-                        [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_TWO],
-                        [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_FOUR],
-                        [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_SIX],
-                        [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_NINE],
-                        [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_SIXTEEN],
-                        nil];
-                    self.pagesPerSheetActionSheet = actionSheet;
+                    if ([UIAlertController class]) {
+                        alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"PagesPerSheet", @"CloudPrintPlugin", nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+                        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) style:UIAlertActionStyleCancel handler:NULL];
+                        [alertController addAction:cancelAction];
+                        
+                        void (^handleNbPagesPerSheet)(int) = ^void(int nbPagesPerSheet) {
+                            if (nbPagesPerSheet == 1) {
+                                welf.printRequest.multiPageConfig = nil;
+                            } else {
+                                if (!welf.printRequest.multiPageConfig) {
+                                    welf.printRequest.multiPageConfig = [CloudPrintMultiPageConfig new];
+                                    welf.printRequest.multiPageConfig.layout = CloudPrintMultiPageLayout_LEFT_TO_RIGHT_TOP_TO_BOTTOM; // default
+                                }
+                                welf.printRequest.multiPageConfig.nbPagesPerSheet = nbPagesPerSheet; // default
+                            }
+                            [welf.tableView reloadSections:[NSIndexSet indexSetWithIndex:kMultiPageSectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
+                        };
+                        
+                        UIAlertAction* oneAction = [UIAlertAction actionWithTitle:[CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:1] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                            handleNbPagesPerSheet(1);
+                        }];
+                        [alertController addAction:oneAction];
+                        
+                        UIAlertAction* twoAction = [UIAlertAction actionWithTitle:[CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_TWO] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                            handleNbPagesPerSheet(CloudPrintNbPagesPerSheet_TWO);
+                        }];
+                        [alertController addAction:twoAction];
+                        UIAlertAction* fourAction = [UIAlertAction actionWithTitle:[CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_FOUR] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                            handleNbPagesPerSheet(CloudPrintNbPagesPerSheet_FOUR);
+                        }];
+                        [alertController addAction:fourAction];
+                        UIAlertAction* sixAction = [UIAlertAction actionWithTitle:[CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_SIX] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                            handleNbPagesPerSheet(CloudPrintNbPagesPerSheet_SIX);
+                        }];
+                        [alertController addAction:sixAction];
+                        UIAlertAction* nineAction = [UIAlertAction actionWithTitle:[CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_NINE] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                            handleNbPagesPerSheet(CloudPrintNbPagesPerSheet_NINE);
+                        }];
+                        [alertController addAction:nineAction];
+                        UIAlertAction* sixteenAction = [UIAlertAction actionWithTitle:[CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_SIXTEEN] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                            handleNbPagesPerSheet(CloudPrintNbPagesPerSheet_SIXTEEN);
+                        }];
+                        [alertController addAction:sixteenAction];
+                        
+                    } else {
+#ifndef TARGET_IS_EXTENSION
+                        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"PagesPerSheet", @"CloudPrintPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
+                            [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:1],
+                            [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_TWO],
+                            [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_FOUR],
+                            [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_SIX],
+                            [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_NINE],
+                            [CloudPrintModelAdditions localizedTitleForNbPagesPerSheet:CloudPrintNbPagesPerSheet_SIXTEEN],
+                            nil];
+                        self.pagesPerSheetActionSheet = actionSheet;
+#endif
+                    }
                     break;
                 default:
                     break;
@@ -289,8 +384,12 @@ static NSInteger const kPageToTheEndValue = 10000;
         default:
             break;
     }
-    actionSheet.delegate = self;
-    [actionSheet showInView:self.view];
+    if (alertController) {
+        [self presentViewController:alertController animated:YES completion:NULL];
+    } else {
+        actionSheet.delegate = self;
+        [actionSheet showInView:self.view];
+    }
 }
 
 #pragma mark - UITableViewDataSource

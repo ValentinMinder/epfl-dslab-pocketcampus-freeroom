@@ -55,34 +55,19 @@ extern NSString* const PCGAITrackerActionRefresh;
  * Action can be either one of the PCGAITrackerAction above, or custom (string should be CamelCased)
  * Same as next with nil contentInfo.
  */
-- (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName NS_EXTENSION_UNAVAILABLE_IOS("Use trackOfflineAction:... instead");
+- (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName;
 
 /**
  * Same as previous one, with possiblity to pass custom key-values to be added to the GAN event.
  */
-- (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName contentInfo:(NSString*)contentInfo NS_EXTENSION_UNAVAILABLE_IOS("Use trackOfflineAction:... instead");
-
-/**
- * Same as instance method but all tracking is stacked until next time [PCGAITracker sharedTracker] is called
- */
-+ (void)trackOfflineScreenWithName:(NSString*)screenName;
-
-/**
- * Same as instance method but all tracking is stacked until next time [PCGAITracker sharedTracker]
- */
-+ (void)trackOfflineAction:(NSString*)action inScreenWithName:(NSString*)screenName;
-
-/**
- * Same as instance method but all tracking is stacked until next next time [PCGAITracker sharedTracker]
- */
-+ (void)trackOfflineAction:(NSString*)action inScreenWithName:(NSString*)screenName contentInfo:(NSString*)contentInfo;
+- (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName contentInfo:(NSString*)contentInfo;
 
 /**
  * The first time ever this method is called (even between app launched)
  * a first launch action is sent to GAN. Does nothing the other times.
  */
-- (void)trackAppOnce;
+- (void)trackAppOnce NS_EXTENSION_UNAVAILABLE_IOS("");
 
-- (void)trackAppCrashedDuringPreviousExecution;
+- (void)trackAppCrashedDuringPreviousExecution NS_EXTENSION_UNAVAILABLE_IOS("");
 
 @end

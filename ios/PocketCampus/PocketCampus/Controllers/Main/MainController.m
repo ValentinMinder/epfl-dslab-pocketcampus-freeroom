@@ -351,7 +351,9 @@ static MainController<MainControllerPublic>* instance = nil;
     }
     
     //Google Analytics
+#ifndef TARGET_IS_EXTENSION
     [[PCGAITracker sharedTracker] trackAppOnce];
+#endif
 }
 
 - (void)initPluginsList {
@@ -994,7 +996,9 @@ static MainController<MainControllerPublic>* instance = nil;
 #pragma mark - CrashlyticsDelegate
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash {
+#ifndef TARGET_IS_EXTENSION
     [[PCGAITracker sharedTracker] trackAppCrashedDuringPreviousExecution];
+#endif
 }
 
 #pragma mark - UIGestureRecognizerDelegate

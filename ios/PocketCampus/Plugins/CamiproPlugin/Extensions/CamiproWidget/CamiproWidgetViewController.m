@@ -52,7 +52,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.gaiScreenName = @"/camipro/widget";
 /*#warning TEST
     //Crashlytics
     BOOL clEnabledConfig = [[PCConfig defaults] boolForKey:PC_CONFIG_CRASHLYTICS_ENABLED_KEY];
@@ -85,7 +85,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [PCGAITracker trackOfflineScreenWithName:@"/camipro/widget"];
+    [self trackScreen];
 }
 
 - (UIEdgeInsets)widgetMarginInsetsForProposedMarginInsets:(UIEdgeInsets)defaultMarginInsets {
@@ -109,7 +109,7 @@
 #pragma mark - Actions
 
 - (void)widgetTapped {
-    [PCGAITracker trackOfflineAction:@"OpenApp" inScreenWithName:@"/camipro/widget"];
+    [self trackAction:@"OpenApp"];
     [self.extensionContext openURL:[NSURL URLWithString:@"pocketcampus://camipro.plugin.pocketcampus.org"] completionHandler:NULL];
 }
 

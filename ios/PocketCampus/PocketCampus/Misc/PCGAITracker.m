@@ -75,11 +75,7 @@ static id instance __strong = nil;
 #pragma mark - Public
 
 + (instancetype)sharedTracker {
-    if (![PCConfig isLoaded]) {
-        CLSNSLog(@"-> Cannot create PCGAITracker sharedTracker instance because PCConfig is not loading yet. Returning nil.");
-        return nil;
-    }
-#ifndef DEBUG
+//#ifndef DEBUG
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [[PCGAITracker alloc] init];
@@ -90,8 +86,10 @@ static id instance __strong = nil;
             CLSNSLog(@"-> Google Analytics disabled (config)");
         }
     });
-#endif
+//#endif
+#ifndef TARGET_IS_EXTENSION
     [instance popAndTrackOfflineScreensAndActions];
+#endif
     return instance;
 }
 
@@ -100,10 +98,14 @@ static id instance __strong = nil;
         CLSNSLog(@"!! ERROR: cannot track nil screeName or of length 0.");
         return;
     }
+    
+#ifdef TARGET_IS_EXTENSION
+    [self.class trackOfflineScreenWithName:screenName];
+#else
     CLSLog(@"Track screen: '%@'", screenName);
     [self.gaiTracker set:kGAIScreenName value:screenName];
     [self.gaiTracker send:[[GAIDictionaryBuilder createAppView] build]];
-    
+#endif
 }
 
 - (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName {
@@ -111,7 +113,40 @@ static id instance __strong = nil;
 }
 
 - (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName contentInfo:(NSString*)contentInfo {
+#ifdef TARGET_IS_EXTENSION
+    [self.class trackOfflineAction:action inScreenWithName:screenName contentInfo:contentInfo];
+#else
     [self trackAction:action inScreenWithName:screenName category:kEventCategoryUserAction contentInfo:contentInfo];
+#endif
+    
+}
+
+- (void)trackAppOnce {
+    if ([[PCConfig defaults] boolForKey:kFirstLaunchAfterInstallAction]) {
+        return;
+    }
+    CLSNSLog(@"-> First app launch, sending '%@' event to Google Analytics", kFirstLaunchAfterInstallAction);
+    [[PCConfig defaults] setBool:YES forKey:kFirstLaunchAfterInstallAction];
+    [[PCConfig defaults] synchronize];
+    [self trackAction:kFirstLaunchAfterInstallAction inScreenWithName:@"/" category:kEventCategoryOther contentInfo:nil];
+    
+}
+
+- (void)trackAppCrashedDuringPreviousExecution {
+    [self trackAction:kAppCrashedDuringPreviousExecution inScreenWithName:@"/" category:kEventCategoryOther contentInfo:nil];
+}
+
+#pragma mark - Private
+
+- (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName category:(NSString*)category contentInfo:(NSString*)contentInfo {
+    if (action.length == 0) {
+        CLSNSLog(@"!! ERROR: cannot track nil action or of length 0.");
+        return;
+    }
+    action = screenName.length > 0 ? [screenName stringByAppendingFormat:@"-%@", action] : action;
+    CLSLog(@"Track action '%@', content info: '%@'", action, contentInfo);
+    [self.gaiTracker set:kGAIScreenName value:screenName];
+    [self.gaiTracker send:[[GAIDictionaryBuilder createEventWithCategory:category action:action label:contentInfo value:nil] build]];
 }
 
 + (void)trackOfflineScreenWithName:(NSString*)screenName {
@@ -158,35 +193,7 @@ static id instance __strong = nil;
     [[PCPersistenceManager sharedDefaults] synchronize];
 }
 
-- (void)trackAppOnce {
-    if ([[PCConfig defaults] boolForKey:kFirstLaunchAfterInstallAction]) {
-        return;
-    }
-    CLSNSLog(@"-> First app launch, sending '%@' event to Google Analytics", kFirstLaunchAfterInstallAction);
-    [[PCConfig defaults] setBool:YES forKey:kFirstLaunchAfterInstallAction];
-    [[PCConfig defaults] synchronize];
-    [self trackAction:kFirstLaunchAfterInstallAction inScreenWithName:@"/" category:kEventCategoryOther contentInfo:nil];
-    
-}
-
-- (void)trackAppCrashedDuringPreviousExecution {
-    [self trackAction:kAppCrashedDuringPreviousExecution inScreenWithName:@"/" category:kEventCategoryOther contentInfo:nil];
-}
-
-#pragma mark - Private
-
-- (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName category:(NSString*)category contentInfo:(NSString*)contentInfo {
-    if (action.length == 0) {
-        CLSNSLog(@"!! ERROR: cannot track nil action or of length 0.");
-        return;
-    }
-    action = screenName.length > 0 ? [screenName stringByAppendingFormat:@"-%@", action] : action;
-    CLSLog(@"Track action '%@', content info: '%@'", action, contentInfo);
-    [self.gaiTracker set:kGAIScreenName value:screenName];
-    [self.gaiTracker send:[[GAIDictionaryBuilder createEventWithCategory:category action:action label:contentInfo value:nil] build]];
-}
-
-- (void)popAndTrackOfflineScreensAndActions {
+- (void)popAndTrackOfflineScreensAndActions NS_EXTENSION_UNAVAILABLE_IOS("") {
     BOOL found = NO;
     
     NSArray* offlineScreens = [[PCPersistenceManager sharedDefaults] objectForKey:kOfflineScreensUserDefaultsArrayKey];
@@ -219,6 +226,11 @@ static id instance __strong = nil;
 }
 
 - (void)initGAIConfig {
+#ifndef TARGET_IS_EXTENSION
+    if (![PCConfig isLoaded]) {
+        CLSNSLog(@"-> Cannot create PCGAITracker sharedTracker instance because PCConfig is not loading yet. Returning nil.");
+        return;
+    }
     NSString* ganId = (NSString*)[[PCConfig defaults] objectForKey:PC_CONFIG_GAN_TRACKING_CODE_KEY];
     if (ganId.length == 0) {
         CLSNSLog(@"!! ERROR: cannot start Google Analytics tracker because tracking code is empty or absent from config.");
@@ -230,6 +242,7 @@ static id instance __strong = nil;
     // Optional: set Logger to VERBOSE for debug information.
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
     self.gaiTracker = [[GAI sharedInstance] trackerWithTrackingId:ganId];
+#endif
 }
 
 @end
