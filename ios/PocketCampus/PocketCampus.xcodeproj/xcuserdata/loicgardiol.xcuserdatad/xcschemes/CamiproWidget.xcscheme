@@ -55,9 +55,10 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <PathRunnable
-         FilePath = "/Today-View">
-      </PathRunnable>
+      <IDERemoteRunnable
+         RemotePath = "/Today-View"
+         BundleIdentifier = "/Today-View">
+      </IDERemoteRunnable>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"

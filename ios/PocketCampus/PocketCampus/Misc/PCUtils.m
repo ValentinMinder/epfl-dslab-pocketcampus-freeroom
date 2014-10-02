@@ -49,6 +49,20 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
     return NO;
 }
 
++ (BOOL)is4_7inchDevice {
+    if ([UIScreen mainScreen].bounds.size.height == 667) {
+        return YES;
+    }
+    return NO;
+}
+
++ (BOOL)is5_5inchDevice {
+    if ([UIScreen mainScreen].bounds.size.height == 736) {
+        return YES;
+    }
+    return NO;
+}
+
 + (BOOL)isIdiomPad {
     BOOL pad = NO;
 #ifdef UI_USER_INTERFACE_IDIOM

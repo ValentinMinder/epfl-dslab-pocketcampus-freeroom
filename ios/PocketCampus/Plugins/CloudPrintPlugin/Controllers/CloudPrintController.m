@@ -190,7 +190,7 @@ static float const kProgressMax = 100;
                             } failure:^{
                                 wjob.statusViewController.progress.completedUnitCount = 0;
                                 wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
-                                [PCUtils showServerErrorAlert];
+                                [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:job.requestViewController];
                                 [wjob.navController popToViewController:wjob.requestViewController animated:YES];
                             }];
                             break;
@@ -198,13 +198,13 @@ static float const kProgressMax = 100;
                         case CloudPrintUploadFailureReasonNetworkError:
                             wjob.statusViewController.progress.completedUnitCount = 0;
                             wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
-                            [PCUtils showConnectionToServerTimedOutAlert];
+                            [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) onViewController:job.requestViewController];
                             [wjob.navController popToViewController:wjob.requestViewController animated:YES];
                             break;
                         default:
                             wjob.statusViewController.progress.completedUnitCount = 0;
                             wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
-                            [PCUtils showServerErrorAlert];
+                            [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:job.requestViewController];
                             [job.navController popToViewController:wjob.requestViewController animated:YES];
                             break;
                     }
@@ -303,15 +303,15 @@ static float const kProgressMax = 100;
             } failure:^{
                 job.statusViewController.progress.completedUnitCount = 0;
                 job.statusViewController.statusMessage = CloudPrintStatusMessageError;
-                [PCUtils showServerErrorAlert];
                 [job.navController popToViewController:job.requestViewController animated:YES];
+                [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:job.requestViewController];
             }];
             break;
         }
         case CloudPrintStatusCode_PRINT_ERROR:
             job.statusViewController.progress.completedUnitCount = 0;
             job.statusViewController.statusMessage = CloudPrintStatusMessageError;
-            [PCUtils showServerErrorAlert];
+            [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:job.requestViewController];
             [job.navController popToViewController:job.requestViewController animated:YES];
             break;
         default:
@@ -327,16 +327,16 @@ static float const kProgressMax = 100;
     }
     job.statusViewController.progress.completedUnitCount = 0;
     job.statusViewController.statusMessage = CloudPrintStatusMessageError;
-    [PCUtils showServerErrorAlert];
+    [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:job.requestViewController];
     [job.navController popToViewController:job.requestViewController animated:YES];
 }
 
 - (void)serviceConnectionToServerFailed {
-    [PCUtils showConnectionToServerTimedOutAlert];
     for (CloudPrintJob* job in self.jobForJobUniqueId.allValues) {
         job.statusViewController.progress.completedUnitCount = 0;
         job.statusViewController.statusMessage = CloudPrintStatusMessageError;
         [job.navController popToViewController:job.requestViewController animated:YES];
+        [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) onViewController:job.requestViewController];
     }
 }
 
@@ -366,6 +366,21 @@ static float const kProgressMax = 100;
         if (job.request.jobUniqueId) {
             [self.jobForJobUniqueId removeObjectForKey:job.request.jobUniqueId];
         }
+    }
+}
+
+- (void)showErrorAlertWithMessage:(NSString*)message onViewController:(UIViewController*)viewController {
+    if ([UIAlertController class]) {
+        UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:message preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:NULL];
+        [controller addAction:okAction];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [viewController presentViewController:controller animated:YES completion:NULL];
+        });
+    } else {
+#ifndef TARGET_IS_EXTENSION
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
     }
 }
 
