@@ -174,7 +174,6 @@
 		326F5A8A19BDD815000693A2 /* PrintBarButtonLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A8819BDD815000693A2 /* PrintBarButtonLandscape@2x.png */; };
 		326FE23A19A5E8FF001A5056 /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */; };
 		326FE23B19A5E9E2001A5056 /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */; };
-		326FE23C19A63D17001A5056 /* CamiproWidget.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 326FE23E19A63D17001A5056 /* CamiproWidget.storyboard */; };
 		326FE24019A64DDE001A5056 /* PocketCampus.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3296570914FF9DDB00C44C12 /* PocketCampus.strings */; };
 		32704C7C15002F67002BCB75 /* Plugins.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32704C7B15002F67002BCB75 /* Plugins.plist */; };
 		3270B7F118056E6F007EE85B /* ListBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3270B7EF18056E6F007EE85B /* ListBarButton.png */; };
@@ -334,6 +333,9 @@
 		32CE951F19DDA82A0071F987 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 329CF4BD187ABC2C00062C98 /* UIViewController+Additions.m */; };
 		32CE952019DDA8380071F987 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 329CF4BD187ABC2C00062C98 /* UIViewController+Additions.m */; };
 		32CE952119DDBB270071F987 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32B3325717E5C708004F5E75 /* Images.xcassets */; };
+		32CE952319DDDE180071F987 /* CamiproWidget-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32136F46193FBD20002905A9 /* CamiproWidget-Info.plist */; };
+		32CE952519DDDF950071F987 /* CamiproWidget.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32CE952419DDDF950071F987 /* CamiproWidget.storyboard */; };
+		32CE952619DDDF950071F987 /* CamiproWidget.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32CE952419DDDF950071F987 /* CamiproWidget.storyboard */; };
 		32CFECE5151C789A00D8CBA6 /* TransportController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECE4151C789A00D8CBA6 /* TransportController.m */; };
 		32CFECEC151CA90800D8CBA6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */; };
 		32CFECEF151CCB6800D8CBA6 /* PCPersistenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* PCPersistenceManager.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -775,7 +777,6 @@
 		326F5A8819BDD815000693A2 /* PrintBarButtonLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PrintBarButtonLandscape@2x.png"; sourceTree = "<group>"; };
 		326FE23819A5E8FF001A5056 /* NSUserDefaults+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+Additions.h"; sourceTree = "<group>"; };
 		326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Additions.m"; sourceTree = "<group>"; };
-		326FE23D19A63D17001A5056 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/CamiproWidget.storyboard; sourceTree = "<group>"; };
 		32704C65150016B3002BCB75 /* PluginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PluginController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32704C66150016B3002BCB75 /* PluginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PluginController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32704C7B15002F67002BCB75 /* Plugins.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Plugins.plist; sourceTree = "<group>"; };
@@ -980,6 +981,7 @@
 		32CCB50A15555D9200220282 /* NewsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NewsListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32CCB50E155567CB00220282 /* News.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = News.png; sourceTree = "<group>"; };
 		32CCB50F155567CB00220282 /* News@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "News@2x.png"; sourceTree = "<group>"; };
+		32CE952419DDDF950071F987 /* CamiproWidget.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CamiproWidget.storyboard; sourceTree = "<group>"; };
 		32CFECE3151C789A00D8CBA6 /* TransportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TransportController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32CFECE4151C789A00D8CBA6 /* TransportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TransportController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -1298,7 +1300,7 @@
 			isa = PBXGroup;
 			children = (
 				32136F46193FBD20002905A9 /* CamiproWidget-Info.plist */,
-				326FE23E19A63D17001A5056 /* CamiproWidget.storyboard */,
+				32CE952419DDDF950071F987 /* CamiproWidget.storyboard */,
 				32136F48193FBD20002905A9 /* CamiproWidgetViewController.h */,
 				32136F49193FBD20002905A9 /* CamiproWidgetViewController.m */,
 			);
@@ -2798,9 +2800,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				326FE23C19A63D17001A5056 /* CamiproWidget.storyboard in Resources */,
 				32AF954B19B39F91008CB161 /* Cross@2x.png in Resources */,
 				32D834C219A4DE5100844901 /* CamiproPlugin.strings in Resources */,
+				32CE952619DDDF950071F987 /* CamiproWidget.storyboard in Resources */,
 				32AF954919B39F91008CB161 /* Cross.png in Resources */,
 				32975CF119A34EB600146390 /* InfoPlist.strings in Resources */,
 				326FE24019A64DDE001A5056 /* PocketCampus.strings in Resources */,
@@ -2933,6 +2935,7 @@
 				32D0B263166ABEA200F68304 /* FloorUp@2x.png in Resources */,
 				329CA503166D452E00F7B1AE /* SettingsBarButton.png in Resources */,
 				329CA504166D452E00F7B1AE /* SettingsBarButton@2x.png in Resources */,
+				32CE952519DDDF950071F987 /* CamiproWidget.storyboard in Resources */,
 				32035BB5166E988600E134DD /* MoodleFileView.xib in Resources */,
 				324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */,
 				327412DA167E776A001E8C62 /* DownloadedCorner.png in Resources */,
@@ -2996,6 +2999,7 @@
 				327585A41844C5B1004215FC /* ArrowSimpleRight.png in Resources */,
 				328A132218296E2D00F4C622 /* FoodSmileyMeh@2x.png in Resources */,
 				328A72E0184A4EE0002C5A6B /* SplashImage@2x.png in Resources */,
+				32CE952319DDDE180071F987 /* CamiproWidget-Info.plist in Resources */,
 				32074B7D17FB09CA009804CE /* NewsLarge@2x.png in Resources */,
 				32CACD98183E366B00BD36F9 /* LocationArrow@2x.png in Resources */,
 				3200375618118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png in Resources */,
@@ -3444,14 +3448,6 @@
 				326F5A7D19BCF136000693A2 /* fr */,
 			);
 			name = CloudPrintMultiPageLayoutCell.xib;
-			sourceTree = "<group>";
-		};
-		326FE23E19A63D17001A5056 /* CamiproWidget.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				326FE23D19A63D17001A5056 /* en */,
-			);
-			name = CamiproWidget.storyboard;
 			sourceTree = "<group>";
 		};
 		32777B4215D1BFB400A29F56 /* PCAbout.html */ = {
