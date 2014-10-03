@@ -54,7 +54,7 @@
 static NSString* const kLastRefreshDateKey = @"lastRefreshDate";
 
 /*
- * Will refresh if last refresh date is not same date as current OR older than kRefreshValiditySeconds ago
+ * Will refresh if last refresh date is not same day as current OR older than kRefreshValiditySeconds ago
  * Important to refresh often, otherwise ratings are not updated. Background update of ratings should be
  * considered in a future update.
  */

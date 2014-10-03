@@ -43,7 +43,7 @@
 
 @property (nonatomic, strong) RecommendedAppsService* recommendedAppService;
 @property (nonatomic, strong) RecommendedAppsResponse* recommendedAppsResponse;
-@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+@property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 
 @end
 
@@ -73,19 +73,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 1.0;//300.0; //5 min.
     
     PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] init];
     self.tableView = tableViewAdditions;
-    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
-        return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
-    };
+
+    self.tableView.rowHeight = 140.0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     
-    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"recommendedapps" dataName:@"recommendedapps"]];
+    self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGARefreshControl dataIdentifierForPluginName:@"recommendedapps" dataName:@"recommendedapps"]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)viewWillAppear:(BOOL)animated  {
@@ -105,13 +99,9 @@ static const NSTimeInterval kRefreshValiditySeconds = 1.0;//300.0; //5 min.
 }
 
 - (void)refreshIfNeeded {
-    if (!self.recommendedAppService || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
-        if (!self.splitViewController && self.navigationController.topViewController != self) {
-            [self.navigationController popToViewController:self animated:NO];
-        }
+    if (!self.recommendedAppsResponse || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
-    [self.tableView reloadData];
 }
 
 - (NSArray*)recommendedAppsInCategory:(RecommendedAppCategory*)category{
@@ -125,15 +115,20 @@ static const NSTimeInterval kRefreshValiditySeconds = 1.0;//300.0; //5 min.
 
 #pragma mark - RecommendedAppsServiceDelegate
 
-- (void)getRecommendedAppsForRequest:(RecommendedAppsRequest *)request didReturn:(RecommendedAppsResponse *)response{
-    if(response.status){
-        self.recommendedAppsResponse = response;
-        [self.tableView reloadData];
-        NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"RecommendedAppsDisclaimerView" owner:nil options:nil];
-        self.tableView.tableHeaderView = elements[0];
-        [self.lgRefreshControl endRefreshingAndMarkSuccessful];
-    }else{
-        [self getRecommendedAppsFailedForRequest:request];
+- (void)getRecommendedAppsForRequest:(RecommendedAppsRequest *)request didReturn:(RecommendedAppsResponse *)response {
+    switch (response.status) {
+        case RecommendedAppsResponseStatus_OK:
+        {
+            self.recommendedAppsResponse = response;
+            [self.tableView reloadData];
+            NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"RecommendedAppsDisclaimerView" owner:nil options:nil];
+            self.tableView.tableHeaderView = elements[0];
+            [self.lgRefreshControl endRefreshingAndMarkSuccessful];
+            break;
+        }
+        default:
+            [self getRecommendedAppsFailedForRequest:request];
+            break;
     }
 }
 
@@ -143,15 +138,22 @@ static const NSTimeInterval kRefreshValiditySeconds = 1.0;//300.0; //5 min.
 
 }
 
-- (void)serviceConnectionToServerFailed{
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
     [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil)];
 }
 
 #pragma mark - UITableViewDelegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 140.0;
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    RecommendedAppCategory* category = self.recommendedAppsResponse.categories[section];
+    NSString* title = [category.categoryName uppercaseString];
+    PCTableViewSectionHeader* header = [[PCTableViewSectionHeader alloc] initWithSectionTitle:title tableView:tableView showInfoButton:NO];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return [PCTableViewSectionHeader preferredHeightWithInfoButton:NO]; //we want all section headers to be same height
 }
 
 #pragma mark - UITableViewDataSource
@@ -180,11 +182,9 @@ static const NSTimeInterval kRefreshValiditySeconds = 1.0;//300.0; //5 min.
             [productViewController loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier:appStoreAppId} completionBlock:NULL];
             [self presentViewController:productViewController animated:YES completion:NULL];
         }];
-//        cell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
     }
     cell.textLabel.text = category.categoryName;
-    //    cell.accessibilityHint = NSLocalizedStringFromTable(@"ShowsMenuForThisRestaurant", @"FoodPlugin", nil);
     return cell;
 }
 
@@ -196,18 +196,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 1.0;//300.0; //5 min.
     return self.recommendedAppsResponse.categories.count;
 }
 
-- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    RecommendedAppCategory* category = self.recommendedAppsResponse.categories[section];
-    NSString* title = [category.categoryName uppercaseString];
-    PCTableViewSectionHeader* header = [[PCTableViewSectionHeader alloc] initWithSectionTitle:title tableView:tableView showInfoButton:NO];
-    return header;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return [PCTableViewSectionHeader preferredHeightWithInfoButton:NO]; //we want all section headers to be same height
-}
-
 #pragma mark - SKStoreProductViewControllerDelegate
+
 - (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController{
     [self dismissViewControllerAnimated:YES completion:NULL];
 }

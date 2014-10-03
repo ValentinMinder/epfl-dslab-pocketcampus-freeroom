@@ -1237,8 +1237,8 @@
 				27B74CFD19A21146006B2F17 /* RecommendedAppTableViewCell.h */,
 				27B74CFE19A21146006B2F17 /* RecommendedAppTableViewCell.m */,
 				27B74CF819A21059006B2F17 /* RecommendedAppTableViewCell.xib */,
-				27B74CDE19A205E6006B2F17 /* Images */,
 				2708FE8419A491A70019D694 /* RecommendedAppsDisclaimerView.xib */,
+				27B74CDE19A205E6006B2F17 /* Images */,
 			);
 			path = Views;
 			sourceTree = "<group>";
