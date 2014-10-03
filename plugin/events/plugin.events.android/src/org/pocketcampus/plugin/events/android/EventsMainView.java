@@ -82,6 +82,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	private boolean displayingList;
 	
 	private long eventPoolId;
+	private boolean happeningNow = false;
 	private boolean fetchPast = false;
 	private List<Long> eventsInRS = new LinkedList<Long>();
 	private Set<Integer> categsInRS = new HashSet<Integer>();
@@ -131,7 +132,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 			if(aExtras != null && aExtras.containsKey(EXTRAS_KEY_EVENTPOOLID)) {
 				eventPoolId = Long.parseLong(aExtras.getString(EXTRAS_KEY_EVENTPOOLID));
 				System.out.println("Started with intent to display pool " + eventPoolId);
-				mController.refreshEventPool(this, eventPoolId, fetchPast, false);
+				mController.refreshEventPool(this, eventPoolId, happeningNow, fetchPast, false);
 				processedIntent = true;
 			} else if(aData != null && aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID) != null) {
 				eventPoolId = Long.parseLong(aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID));
@@ -141,7 +142,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 			}
 		}
 		if(!processedIntent)
-			mController.refreshEventPool(this, eventPoolId, fetchPast, false);
+			mController.refreshEventPool(this, eventPoolId, happeningNow, fetchPast, false);
 		
 	}
 
@@ -156,7 +157,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 		if(displayingList && scrollState != null)
 			scrollState.restore(mList);
 		if(thisEventPool != null && thisEventPool.isRefreshOnBack())
-			mController.refreshEventPool(this, eventPoolId, fetchPast, false);
+			mController.refreshEventPool(this, eventPoolId, happeningNow, fetchPast, false);
 	}
 	
 	@Override
@@ -185,7 +186,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 			String ticket = aData.getQueryParameter(QUERYSTRING_KEY_TICKET);
 			trackEvent("UserTicketInURL", ticket);
 			mModel.addTicket(ticket);
-			mController.refreshEventPool(this, eventPoolId, fetchPast, false);
+			mController.refreshEventPool(this, eventPoolId, happeningNow, fetchPast, false);
 			return;
 		}
 		if(aData.getQueryParameter(QUERYSTRING_KEY_MARKFAVORITE) != null) {
@@ -206,7 +207,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 			System.out.println("Got request to send reg emails");
 			mController.adminSendRegEmails(this, aData.getQueryParameter(QUERYSTRING_KEY_TEMPLATEID));
 		}
-		mController.refreshEventPool(this, eventPoolId, fetchPast, false);
+		mController.refreshEventPool(this, eventPoolId, happeningNow, fetchPast, false);
 	}
 	
 	@Override
@@ -251,9 +252,26 @@ public class EventsMainView extends PluginView implements IEventsView {
 		filteredTags.addAll(difference(newTagsInRS, tagsInRS)); // if new tags appeared, then add them to filtered because otherwise they might go unnoticed
 		categsInRS = newCategsInRS;
 		tagsInRS = newTagsInRS;
+
+		updateActionBar();
 		
-		// Action bar update
+		updateDisplay(false);
+	}
+	
+	private void updateActionBar() {
 		removeAllActionsFromActionBar();
+//		if(eventPoolId == Constants.CONTAINER_EVENT_ID) {
+//			addActionToActionBar(new Action() {
+//				public void performAction(View view) {
+//					happeningNow = !happeningNow;
+//					trackEvent((happeningNow ? "SwitchToHapenningNowEvents" : "SwitchBackToAllEvents"), null);
+//					mController.refreshEventPool(EventsMainView.this, eventPoolId, happeningNow, fetchPast, false);
+//				}
+//				public int getDrawable() {
+//					return (happeningNow ? R.drawable.events_happening_now_sel1 : R.drawable.events_happening_now1);
+//				}
+//			});
+//		}
 		if(!thisEventPool.isDisableFilterByCateg()) {
 			final Map<Integer, String> subMap = subMap(Constants.EVENTS_CATEGS, categsInRS);
 			if(subMap.size() > 0) {
@@ -325,8 +343,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 				}
 			});
 		}
-		
-		updateDisplay(false);
+
 	}
 	
 	private void updateDisplay(boolean saveScroll) {
@@ -465,70 +482,17 @@ public class EventsMainView extends PluginView implements IEventsView {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
-		/*boolean showScanBarcode = false;
-		boolean showFilterCateg = true;
-		boolean showFilterTags = true;
-		EventPool pool = mModel.getEventPool(eventPoolId);
-		if(pool != null) {
-			showScanBarcode = pool.isEnableScan();
-			showFilterCateg = !pool.isDisableFilterByCateg();
-			showFilterTags = !pool.isDisableFilterByTags();
-		}
-		if(showScanBarcode) {
-			MenuItem scanMenu = menu.add("Scan barcode");
-			scanMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-				public boolean onMenuItemClick(MenuItem item) {
-					IntentIntegrator integrator = new IntentIntegrator(EventsMainView.this);
-					integrator.initiateScan();
-					return true;
-				}
-			});
-		}
-		if(showFilterCateg) {
-			Map<Integer, String> subMap = subMap(Constants.EVENTS_CATEGS, categsInRS);
-			if(subMap.size() > 0) {
-				MenuItem categMenu = menu.add("Filter by category");
-				categMenu.setOnMenuItemClickListener(buildMenuListenerMultiChoiceDialog(this, 
-						subMap, "Filter by category", filteredCategs,
-						new MultiChoiceHandler<Integer>() {
-							public void saveSelection(Integer t, boolean isChecked) {
-								if(isChecked)
-									filteredCategs.add(t);
-								else
-									filteredCategs.remove(t);
-								updateDisplay(true);
-							}
-						}
-				));
-			}
-		}
-		if(showFilterTags) {
-			Map<String, String> subMap = subMap(Constants.EVENTS_TAGS, tagsInRS);
-			if(subMap.size() > 0) {
-				MenuItem feedMenu = menu.add("Filter by areas");
-				feedMenu.setOnMenuItemClickListener(buildMenuListenerMultiChoiceDialog(this,
-						subMap, "Filter by areas", filteredTags,
-						new MultiChoiceHandler<String>() {
-							public void saveSelection(String t, boolean isChecked) {
-								if(isChecked)
-									filteredTags.add(t);
-								else
-									filteredTags.remove(t);
-								updateDisplay(true);
-							}
-						}
-				));
-			}
-		}*/
+		if(happeningNow)
+			return true;
 		if(eventPoolId == Constants.CONTAINER_EVENT_ID) { // settings thingy
 			MenuItem periodMenu = menu.add("Choose period");
 			periodMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
-					showSingleChoiceDialog(EventsMainView.this, Constants.EVENTS_PERIODS, "Choose period", mModel.getPeriod(), new SingleChoiceHandler<Integer>() {
+					showSingleChoiceDialog(EventsMainView.this, Constants.EVENTS_PERIODS, "Choose period", mModel.getPeriodInHours(), new SingleChoiceHandler<Integer>() {
 						public void saveSelection(Integer t) {
-							mModel.setPeriod(t);
+							mModel.setPeriodInHours(t);
 							trackEvent("ChangePeriod", "" + t);
-							mController.refreshEventPool(EventsMainView.this, eventPoolId, fetchPast, false);
+							mController.refreshEventPool(EventsMainView.this, eventPoolId, happeningNow, fetchPast, false);
 						}
 					});
 					return true;
@@ -539,22 +503,11 @@ public class EventsMainView extends PluginView implements IEventsView {
 				public boolean onMenuItemClick(MenuItem item) {
 					fetchPast = !fetchPast;
 					trackEvent((fetchPast ? "SwitchToPastEvents" : "SwitchBackToUpcomingEvents"), null);
-					mController.refreshEventPool(EventsMainView.this, eventPoolId, fetchPast, false);
+					mController.refreshEventPool(EventsMainView.this, eventPoolId, happeningNow, fetchPast, false);
 					return true;
 				}
 			});
 		}
-		/*if(thisEventPool != null && thisEventPool.isSendStarredItems()) {
-			MenuItem emailMenu = menu.add("Send by email");
-			emailMenu.setOnMenuItemClickListener(buildMenuListenerTextInputDialog(this, 
-					"Send by email", "Email address to send starred items", "OK", 
-					new TextInputHandler() {
-						public void gotText(String s) {
-							mController.sendFavoritesByEmail(EventsMainView.this, eventPoolId, s);
-						}
-					}
-			));
-		}*/
 		return true;
 	}
 	
@@ -562,7 +515,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	public void networkErrorCacheExists() {
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.sdk_connection_no_cache_yes), Toast.LENGTH_SHORT).show();
-		mController.refreshEventPool(this, eventPoolId, fetchPast, true);
+		mController.refreshEventPool(this, eventPoolId, happeningNow, fetchPast, true);
 	}
 	
 	@Override
@@ -580,7 +533,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	@Override
 	public void exchangeContactsFinished(boolean success) {
 		if(success) {
-			mController.refreshEventPool(this, eventPoolId, fetchPast, false);
+			mController.refreshEventPool(this, eventPoolId, happeningNow, fetchPast, false);
 			Toast.makeText(getApplicationContext(), 
 					"Successfully exchanged contacts information", 
 					Toast.LENGTH_SHORT).show();

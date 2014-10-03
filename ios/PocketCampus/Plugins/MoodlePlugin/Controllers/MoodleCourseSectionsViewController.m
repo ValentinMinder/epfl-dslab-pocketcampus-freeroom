@@ -66,7 +66,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
 
 @interface MoodleCourseSectionsViewController ()<UISearchDisplayDelegate, MoodleServiceDelegate>
 
-@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+@property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 @property (nonatomic, strong) UISearchBar* searchBar;
 @property (nonatomic, strong) UISearchDisplayController* searchController;
 @property (nonatomic, strong) NSOperationQueue* searchQueue;
@@ -168,7 +168,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
     self.searchController.searchResultsTableView.rowHeight = rowHeightBlock(tableViewAdditions);
     self.searchController.searchResultsTableView.allowsMultipleSelection = NO;
     
-    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.courseId]]];
+    self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGARefreshControl dataIdentifierForPluginName:@"moodle" dataName:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.courseId]]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoriteMoodleResourcesUpdated:) name:kMoodleFavoritesMoodleItemsUpdatedNotification object:self.moodleService];
@@ -251,12 +251,12 @@ static int i = 0;
             return;
         }
         CGFloat width = self.segmentedControl.superview.frame.size.width-18.0;
-        if (width > 350.0) {
-            width = 350.0;
+        if (width > 370.0) {
+            width = 370.0;
         }
         CGFloat height = self.segmentedControl.superview.frame.size.height-16.0;
-        if (height < 20.0) {
-            height = 20.0;
+        if (height < 22.0) {
+            height = 22.0;
         }
         self.segmentedControl.bounds = CGRectMake(0, 0, width, height);
     }
@@ -506,22 +506,22 @@ static int i = 0;
         return YES;
     } else {
         //perform search in background
-        typeof(self) weakSelf __weak = self;
+        typeof(self) welf __weak = self;
         self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:self.searchFilteredSections.count ? 0.2 : 0.0 block:^{ //interval: so that first search is not delayed (would display "No results" otherwise)
-            [weakSelf.searchQueue addOperationWithBlock:^{
-                if (!weakSelf) {
+            [welf.searchQueue addOperationWithBlock:^{
+                if (!welf) {
                     return;
                 }
-                __strong __typeof(weakSelf) strongSelf = weakSelf;
+                __strong __typeof(welf) strongSelf = welf;
                 NSArray* filteredSections = [strongSelf filteredSectionsFromPattern:searchString]; //heavy-computation line
-                if (!weakSelf) {
+                if (!welf) {
                     return;
                 }
                 NSRegularExpression* currentSearchRegex = [NSRegularExpression regularExpressionWithPattern:searchString options:NSRegularExpressionCaseInsensitive error:NULL];
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    weakSelf.searchFilteredSections = filteredSections;
-                    weakSelf.currentSearchRegex = currentSearchRegex;
-                    [weakSelf.searchController.searchResultsTableView reloadData];
+                    welf.searchFilteredSections = filteredSections;
+                    welf.currentSearchRegex = currentSearchRegex;
+                    [welf.searchController.searchResultsTableView reloadData];
                 }];
             }];
         } repeats:NO];
@@ -574,7 +574,7 @@ static int i = 0;
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
                 [welf startGetSectionsRequest];
             } userCancelled:^{
-                [welf.lgRefreshControl endRefreshing];
+                [welf.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"LoginRequired", @"PocketCampus", nil)];
             } failure:^{
                 [welf error];
             }];

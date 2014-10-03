@@ -183,6 +183,7 @@
                                      IsReversed="True" />
     <com:NonNullToVisibilityConverter x:Key="NonNullToVisibility" />
     <com:IntegerToVisibilityConverter x:Key="NonZeroToVisibility" />
+    <com:EnumToVisibilityConverter x:Key="EnumToVisibility" />
     <com:DoubleToStringConverter x:Key="DoubleToString" />
     <com:EnumToImageSourceConverter x:Key="EnumToImage" />
 </ResourceDictionary>

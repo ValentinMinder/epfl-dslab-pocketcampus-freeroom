@@ -340,8 +340,14 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 	 */
 	
 	private static Object resourceGetIcon(Context c, MoodleResource2 item) {
-		if(item.getFile() != null)
+		if(item.getFile() != null) {
 			return MoodleFolderView.fileGetIcon(c, item.getFile());
+		} else if(item.getFolder() != null) {
+			//return "http://moodle.epfl.ch/theme/image.php/epfl/core/1407927792/f/folder-128";
+			return R.drawable.moodle_folder;
+		} else if(item.getUrl() != null) {
+			return R.drawable.moodle_webpage;
+		}
 		return null;
 	}
 	
@@ -368,8 +374,9 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 	}
 	
 	private static Object resourceGetStatus(Context c, MoodleResource2 item) {
-		if(item.getFile() != null)
+		if(item.getFile() != null) {
 			return MoodleFolderView.fileGetStatus(c, item.getFile());
+		}
 		return null;
 	}
 	

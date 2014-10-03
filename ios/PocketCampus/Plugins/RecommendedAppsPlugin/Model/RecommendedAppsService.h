@@ -27,17 +27,17 @@
 
 //  Created by Silviu Andrica on 18.08.2014.
 
-#import "Service.h"
+#import "PCService.h"
 
 #import "recommendedapps.h"
 
-@interface RecommendedAppsService : Service <ServiceProtocol>
+@interface RecommendedAppsService : PCService <PCServiceProtocol>
 
 - (void)getRecommendedApps:(RecommendedAppsRequest*)request delegate:(id)delegate;
 
 @end
 
-@protocol RecommendedAppsServiceDelegate <ServiceDelegate>
+@protocol RecommendedAppsServiceDelegate <PCServiceDelegate>
 
 @optional
 

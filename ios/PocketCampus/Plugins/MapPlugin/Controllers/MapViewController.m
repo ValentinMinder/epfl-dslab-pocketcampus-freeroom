@@ -56,6 +56,8 @@
 
 #import "MapRecentSearchesListViewController.h"
 
+#import "LGAUserTrackingBarButtonItem.h"
+
 typedef enum  {
     SearchStateReady = 0, //no search yet, bar empty and ready for a new search
     SearchStateLoading,
@@ -188,14 +190,14 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     self.leftBarButtonItemsAtLoad = self.navigationItem.leftBarButtonItems;
     self.mapView.pitchEnabled = NO; //epflLayersOverlay are fucked up otherwise
-    self.mapView.rotateEnabled = NO; //for some reason, allows higher zoom, thus allowing to see room names! Amazing!
+    self.mapView.rotateEnabled = NO; //for some reason, allows higher zoom on iOS 7, thus allowing to see room names! Amazing!
     [self.mapView setRegion:self.epflRegion animated:NO];
     
     self.searchState = SearchStateReady; //will set nav bar elements, see implementation
     [self manageRecentSearchesControllerVisibilityAnimated:NO];
-    MapViewController* weakSelf __weak = self;
+    MapViewController* welf __weak = self;
     [[NSNotificationCenter defaultCenter] addObserverForName:kMapRecentSearchesModifiedNotification object:self.mapService queue:Nil usingBlock:^(NSNotification *note) {
-        [weakSelf manageRecentSearchesControllerVisibilityAnimated:YES];
+        [welf manageRecentSearchesControllerVisibilityAnimated:YES];
     }];
     self.mapControlsState = MapControlsStateAllAvailable;
     
@@ -342,6 +344,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     } else {
         CGRect searchBarTargetFrame;
         CGRect searchBarContainerViewTargetFrame;
+        
         if ([PCUtils isIdiomPad]) {
             searchBarTargetFrame = CGRectMake(10.0, 0, 270.0, kSearchBarHeightPortrait);
             searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width, searchBarTargetFrame.size.height);
@@ -365,11 +368,12 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
                     break;
             }
         } else {
+            CGFloat windowWidth = [[UIApplication sharedApplication] keyWindow].bounds.size.width;
             switch (searchState) {
                 case SearchStateReady:
                     items = @[self.searchBarItem];
                     self.searchBar.showsCancelButton = YES;
-                    searchBarTargetFrame = CGRectMake(-2.0, 0, 264.0, kSearchBarHeightPortrait);
+                    searchBarTargetFrame = CGRectMake(-2.0, 0, 0.825 * windowWidth, kSearchBarHeightPortrait);
                     searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width-11.0, searchBarTargetFrame.size.height);
                     break;
                 case SearchStateLoading:
@@ -379,13 +383,13 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
                     UIBarButtonItem* space2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:NULL];
                     space2.width = 22.0;
                     items = @[space1, self.loadingBarItem, space2, self.searchBarItem];
-                    searchBarTargetFrame = CGRectMake(-10.0, 0, 220.0, kSearchBarHeightPortrait);
+                    searchBarTargetFrame = CGRectMake(-10.0, 0, 0.6875 * windowWidth, kSearchBarHeightPortrait);
                     searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width+(2*searchBarTargetFrame.origin.x), searchBarTargetFrame.size.height);
                     break;
                 }
                 case SearchStateResults:
                     items = @[self.resultsListButton, self.searchBarItem];
-                    searchBarTargetFrame = CGRectMake(-10.0, 0, 220.0, kSearchBarHeightPortrait);
+                    searchBarTargetFrame = CGRectMake(-10.0, 0, 0.6875 * windowWidth, kSearchBarHeightPortrait);
                     searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width+(2*searchBarTargetFrame.origin.x), searchBarTargetFrame.size.height);
                     break;
                 default:
@@ -417,7 +421,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     _mapControlsState = mapControlsState;
 
     if (!self.myLocationButton) {
-        self.myLocationButton = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
+        self.myLocationButton = [[LGAUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
     }
     
     if (!self.floorDownButton) {

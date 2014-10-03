@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.BitSet;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("EventPool");
@@ -38,21 +40,21 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
   private static final org.apache.thrift.protocol.TField CHILDREN_EVENTS_FIELD_DESC = new org.apache.thrift.protocol.TField("childrenEvents", org.apache.thrift.protocol.TType.LIST, (short)15);
   private static final org.apache.thrift.protocol.TField PARENT_EVENT_FIELD_DESC = new org.apache.thrift.protocol.TField("parentEvent", org.apache.thrift.protocol.TType.I64, (short)17);
 
-  public long poolId; // required
-  public String poolPicture; // required
-  public String poolTitle; // required
-  public String poolPlace; // required
-  public String poolDetails; // required
-  public boolean disableStar; // required
-  public boolean disableFilterByCateg; // required
-  public boolean disableFilterByTags; // required
-  public boolean enableScan; // required
-  public String noResultText; // required
-  public boolean refreshOnBack; // required
-  public boolean sendStarredItems; // required
-  public String overrideLink; // required
-  public List<Long> childrenEvents; // required
-  public long parentEvent; // required
+  private long poolId; // required
+  private String poolPicture; // required
+  private String poolTitle; // required
+  private String poolPlace; // required
+  private String poolDetails; // required
+  private boolean disableStar; // required
+  private boolean disableFilterByCateg; // required
+  private boolean disableFilterByTags; // required
+  private boolean enableScan; // required
+  private String noResultText; // required
+  private boolean refreshOnBack; // required
+  private boolean sendStarredItems; // required
+  private String overrideLink; // required
+  private List<Long> childrenEvents; // required
+  private long parentEvent; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

@@ -43,16 +43,6 @@
     return self;
 }
 
-- (BOOL)delegateRespondsToSelector:(SEL)selector {
-    if ([self isCancelled]) {
-        return NO;
-    }
-    if (![self.delegate respondsToSelector:selector]) {
-        return NO;
-    }
-    return YES;
-}
-
 - (BOOL)isExecuting {
     return self.executing;
 }

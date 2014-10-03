@@ -158,11 +158,15 @@ public class EventDetailView extends PluginView implements IEventsView {
 				return eventTime;
 			}
 			private String getFormattedDateInterval(EventItem e) {
-				String eventDate = dateFormat.format(new Date(e.getStartDate()));
-				String eventDate1 = dateFormat.format(new Date(e.getEndDate()));
-				if(e.getEndDate() > e.getStartDate() && eventDate1.compareTo(eventDate) > 0)
-					return eventDate + " - " + eventDate1;
-				return eventDate;
+				long startDate = e.getStartDate();
+				long endDate = e.getEndDate();
+				if(e.isFullDay())
+					endDate = endDate - 24 * 3600 * 1000;
+				String startStr = dateFormat.format(new Date(startDate));
+				String endStr = dateFormat.format(new Date(endDate));
+				if(endDate > startDate)
+					return startStr + " - " + endStr;
+				return startStr;
 			}
 			public Object content(int res, EventItem e) {
 				switch (res) {

@@ -55,6 +55,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.util.LongSparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -321,11 +322,12 @@ public class FoodMainView extends PluginView implements IFoodView {
 			dislikedMeals.addAll(typeMeals);
 		}
 		
-		Map<Long, List<AMeal>> mealsByResto = new HashMap<Long, List<AMeal>>();
+		
+		LongSparseArray<List<AMeal>> mealsByResto = new LongSparseArray<List<AMeal>>();
 		
 		
 		for(AMeal m : difference(mModel.getMeals().values(), dislikedMeals)) {
-			if(!mealsByResto.containsKey(m.resto))
+			if(mealsByResto.get(m.resto) == null)
 				mealsByResto.put(m.resto, new LinkedList<AMeal>());
 			mealsByResto.get(m.resto).add(m);
 		}
@@ -509,10 +511,10 @@ public class FoodMainView extends PluginView implements IFoodView {
 		trackEvent("RateMeal", "" + e.id);
 		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		View titleV = inflater.inflate(R.layout.sdk_actionbar_dialog, null);
+		View titleV = inflater.inflate(R.layout.sdk_actionbar_dialog, new LinearLayout(this));
 		((TextView) titleV.findViewById(R.id.actionbar_title)).setText(getString(R.string.food_dialog_vote));
 		//v.setOnClickListener()
-		final View bodyV = inflater.inflate(R.layout.food_vote_view, null);
+		final View bodyV = inflater.inflate(R.layout.food_vote_view, new LinearLayout(this));
 		((TextView) bodyV.findViewById(R.id.food_dialog_h1)).setText(mController.getRestos().get(e.resto).name);
 		((TextView) bodyV.findViewById(R.id.food_dialog_h2)).setText(e.name);
 		final LinearLayout im1 = (LinearLayout) bodyV.findViewById(R.id.food_smiley_sad);
@@ -577,7 +579,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 	private void mealMenu(final AMeal m) {
 		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		View titleV = inflater.inflate(R.layout.sdk_actionbar_dialog, null);
+		View titleV = inflater.inflate(R.layout.sdk_actionbar_dialog, new LinearLayout(this));
 		((TextView) titleV.findViewById(R.id.actionbar_title)).setText(m.name);
 		
 		AlertDialog dialog = new AlertDialog.Builder(this)

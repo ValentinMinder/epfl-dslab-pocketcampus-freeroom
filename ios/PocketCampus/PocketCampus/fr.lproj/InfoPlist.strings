@@ -1,3 +1,3 @@
 // French localized keys of PocketCampus-Info.plist
 
-"NSLocationWhenInUseUsageDescription" = "PocketCampus utilisera votre position pour déterminer votre station la plus proche. Votre position ne sera jamais envoyée à un serveur.";
+"NSLocationWhenInUseUsageDescription" = "PocketCampus utilisera votre position pour les fonctionnalités Transport et Plan.";

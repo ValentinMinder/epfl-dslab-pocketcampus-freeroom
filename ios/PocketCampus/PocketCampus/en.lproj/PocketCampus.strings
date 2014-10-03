@@ -53,6 +53,8 @@
 "OpenInSafari" = "Open in Safari";
 "SelectDate" = "Select a date";
 "Info" = "Info";
+"LoginRequired" = "Login required";
+"LoginInAppRequired" = "Login required.\nPlease open PocketCampus and login.";
 
 //Accessbility
 

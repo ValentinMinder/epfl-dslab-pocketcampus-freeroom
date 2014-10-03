@@ -1,5 +1,3 @@
-
-php_value upload_max_filesize 16M
-php_value post_max_size 32M
-
+RewriteEngine On
+RewriteRule ^/?12500/(.*)$ http://localhost:12500/v3r1/$1 [L,P]
 

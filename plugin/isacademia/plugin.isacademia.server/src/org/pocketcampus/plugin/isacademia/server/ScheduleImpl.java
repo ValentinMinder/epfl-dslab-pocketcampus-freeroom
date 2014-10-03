@@ -112,7 +112,10 @@ public final class ScheduleImpl implements Schedule {
 
 			List<String> rooms = new ArrayList<String>();
 			for (XElement roomElem : periodElem.children(ROOM_ELEMENT)) {
-				rooms.add(removeExtraSpaces(getLocalizedText(roomElem, ROOM_NAME_LANGUAGE)));
+				String roomNames = getLocalizedText(roomElem, ROOM_NAME_LANGUAGE);
+				for (String actualName : RoomUtil.parseRoomNames(roomNames)) {
+					rooms.add(actualName);
+				}
 			}
 			period.setRooms(rooms);
 
@@ -160,24 +163,5 @@ public final class ScheduleImpl implements Schedule {
 		}
 
 		return result == null ? defaultResult : result;
-	}
-
-	/** Removes consecutive spaces in the specified string. */
-	private static String removeExtraSpaces(String text) {
-		StringBuilder builder = new StringBuilder();
-		boolean wasSpace = false;
-		for (char c : text.toCharArray()) {
-			if (Character.isSpaceChar(c)) {
-				wasSpace = true;
-			} else {
-				if (wasSpace) {
-					builder.append(' ');
-					wasSpace = false;
-				}
-				builder.append(c);
-			}
-		}
-
-		return builder.toString();
 	}
 }

@@ -214,18 +214,18 @@ static const int kUsageRow = 0;
 
 #pragma mark - UIActionSheetDelegate
 
-- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == actionSheet.cancelButtonIndex) {
-        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-        return;
-    }
-    [self trackAction:@"RestoreDefaultDashboard"];
-    [self.mainController restoreDefaultMainMenu];
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
-}
-
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    self.restoreDefaultMainMenuActionSheet = nil;
+#warning ugly, see if updates of iOS 8 solve this problem
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (buttonIndex == actionSheet.cancelButtonIndex) {
+            [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+            return;
+        }
+        [self trackAction:@"RestoreDefaultDashboard"];
+        [self.mainController restoreDefaultMainMenu];
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+        self.restoreDefaultMainMenuActionSheet = nil;
+    });
 }
 
 #pragma mark - SKStoreProductViewControllerDelegate

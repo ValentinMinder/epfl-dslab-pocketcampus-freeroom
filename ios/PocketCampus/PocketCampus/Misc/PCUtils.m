@@ -49,6 +49,20 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
     return NO;
 }
 
++ (BOOL)is4_7inchDevice {
+    if ([UIScreen mainScreen].bounds.size.height == 667) {
+        return YES;
+    }
+    return NO;
+}
+
++ (BOOL)is5_5inchDevice {
+    if ([UIScreen mainScreen].bounds.size.height == 736) {
+        return YES;
+    }
+    return NO;
+}
+
 + (BOOL)isIdiomPad {
     BOOL pad = NO;
 #ifdef UI_USER_INTERFACE_IDIOM
@@ -59,6 +73,10 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 
 + (BOOL)isOSVersionSmallerThan:(float)version {
     return [[UIDevice currentDevice].systemVersion floatValue] < version;
+}
+
++ (BOOL)isOSVersionGreaterThanOrEqualTo:(float)version {
+    return [[UIDevice currentDevice].systemVersion floatValue] >= version;
 }
 
 + (float)OSVersion {
@@ -147,15 +165,21 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 }
 
 + (void)showUnknownErrorAlertTryRefresh:(BOOL)tryRefresh {
+#ifndef TARGET_IS_EXTENSION
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:tryRefresh ? NSLocalizedStringFromTable(@"UnknownErrorTryRefresh", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"UnknownError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
 }
 
 + (void)showServerErrorAlert {
+#ifndef TARGET_IS_EXTENSION
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
 }
 
 + (void)showConnectionToServerTimedOutAlert {
+#ifndef TARGET_IS_EXTENSION
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
 }
 
 + (NSDictionary*)urlStringParameters:(NSString*)urlString {
@@ -179,7 +203,7 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
         }
     }
     @catch (NSException *exception) {
-        CLSNSLog(@"!! ERROR: wrong URL format");
+        return nil;
     }
     return  [queryStringDictionary copy]; //non-mutable copy
 }
@@ -276,7 +300,11 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 + (BOOL)hasAppAccessToLocation {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if ([PCUtils isOSVersionSmallerThan:8.0]) {
+#ifndef TARGET_IS_EXTENSION
         return (status == kCLAuthorizationStatusAuthorized || status == kCLAuthorizationStatusNotDetermined);
+#else
+        return NO;
+#endif
     } else {
         return (status == kCLAuthorizationStatusAuthorizedAlways || status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusNotDetermined);
     }

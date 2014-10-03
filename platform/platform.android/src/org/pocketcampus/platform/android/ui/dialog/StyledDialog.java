@@ -5,9 +5,9 @@ import org.pocketcampus.R;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -28,10 +28,10 @@ public class StyledDialog extends Dialog {
 
 	public static class Builder {
 		private Context mContext;
-		private String mTitle;
-		private String mMessage;
-		private Spanned mSpannedMessage;
+		private CharSequence mTitle;
+		private CharSequence mMessage;
 		private View mContentView;
+		private Integer mContentResId;
 		private boolean mCanceledOnTouchOutside;
 
 		private String mPositiveButtonText;
@@ -50,7 +50,7 @@ public class StyledDialog extends Dialog {
 		 * @param message
 		 * @return
 		 */
-		public Builder setMessage(String message) {
+		public Builder setMessage(CharSequence message) {
 			mMessage = message;
 			return this;
 		}
@@ -61,12 +61,7 @@ public class StyledDialog extends Dialog {
 		 * @return
 		 */
 		public Builder setMessage(int message) {
-			mMessage = (String) mContext.getText(message);
-			return this;
-		}
-
-		public Builder setMessage(Spanned spanned) {
-			mSpannedMessage = spanned;
+			mMessage = mContext.getText(message);
 			return this;
 		}
 
@@ -75,7 +70,7 @@ public class StyledDialog extends Dialog {
 		 * @param title
 		 * @return
 		 */
-		public Builder setTitle(String title) {
+		public Builder setTitle(CharSequence title) {
 			mTitle = title;
 			return this;
 		}
@@ -98,6 +93,18 @@ public class StyledDialog extends Dialog {
 		 */
 		public Builder setContentView(View view) {
 			mContentView = view;
+			mContentResId = null;
+			return this;
+		}
+		
+		/**
+		 * Sets a custom content view for the Dialog, inflated from the specified layout resource.
+		 * @param ressource ID for an XML resource to load.
+		 * @return an instance of this builder, for methods chaining.
+		 */
+		public Builder setContentView(int ressource) {
+			mContentView = null;
+			mContentResId = ressource;
 			return this;
 		}
 
@@ -173,8 +180,9 @@ public class StyledDialog extends Dialog {
 			return this;
 		}
 
-		public void setCanceledOnTouchOutside(boolean cancel) {
+		public Builder setCanceledOnTouchOutside(boolean cancel) {
 			mCanceledOnTouchOutside = cancel;
+			return this;
 		}
 
 		/**
@@ -255,12 +263,12 @@ public class StyledDialog extends Dialog {
 				// if no confirm button just set the visibility to GONE
 				layout.findViewById(R.id.neutralButton).setVisibility(View.GONE);
 			}
-
-			// message
+			
+			// Content
 			if (mMessage != null) {
 				((TextView) layout.findViewById(R.id.message)).setText(mMessage);
-
-			} else if (mContentView != null) {
+			}
+			else if (mContentView != null) {
 				((LinearLayout) layout.findViewById(R.id.content))
 				.removeAllViews();
 				((LinearLayout) layout.findViewById(R.id.content))
@@ -269,19 +277,10 @@ public class StyledDialog extends Dialog {
 								LayoutParams.FILL_PARENT, 
 								LayoutParams.WRAP_CONTENT));
 			}
-
-			// message from spanned
-			if (mSpannedMessage != null) {
-				((TextView) layout.findViewById(R.id.message)).setText(mSpannedMessage);
-
-			} else if (mContentView != null) {
-				((LinearLayout) layout.findViewById(R.id.content))
-				.removeAllViews();
-				((LinearLayout) layout.findViewById(R.id.content))
-				.addView(mContentView, 
-						new LayoutParams(
-								LayoutParams.FILL_PARENT, 
-								LayoutParams.WRAP_CONTENT));
+			else if (mContentResId != null) {
+				((LinearLayout) layout.findViewById(R.id.content)).removeAllViews();
+				LayoutInflater.from(mContext).inflate(mContentResId,
+						(ViewGroup) layout.findViewById(R.id.content));
 			}
 
 			dialog.setContentView(layout);

@@ -19,6 +19,8 @@
     <string name="moodle_filemenu_share">Share</string>
     <string name="moodle_filemenu_redownload">Download again</string>
     <string name="moodle_filemenu_delete">Delete</string>
+    <string name="moodle_filemenu_download">Download</string>
+    <string name="moodle_filemenu_print">Print</string>
     
     <string name="moodle_error_moodle_down">PocketCampus tried to connect to Moodle servers, but they seem down.</string>
     <string name="moodle_connection_error_happened">We cannot fetch Moodle data right now, because you are not connected to the Internet.</string>

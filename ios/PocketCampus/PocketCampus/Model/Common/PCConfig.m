@@ -31,6 +31,8 @@
 
 #import "AFNetworking.h"
 
+#import "NSUserDefaults+Additions.h"
+
 NSString* const PC_CONFIG_SERVER_PROTOCOL_KEY = @"SERVER_PROTOCOL";
 
 NSString* const PC_CONFIG_SERVER_ADDRESS_KEY = @"SERVER_ADDRESS";
@@ -55,6 +57,8 @@ NSString* const PC_CONFIG_CRASHLYTICS_APIKEY_KEY = @"CRASHLYTICS_APIKEY";
 NSString* const PC_USER_CONFIG_CRASHLYTICS_ENABLED_KEY = @"USER_CRASHLYTICS_ENABLED";
 
 NSString* const PC_CONFIG_FOOD_RATINGS_ENABLED = @"FOOD_RATINGS_ENABLED";
+
+NSString* const PC_CONFIG_CLOUDPRINT_ENABLED = @"CLOUDPRINT_ENABLED";
 
 
 NSString* const PC_CONFIG_LOADED_FROM_BUNDLE_KEY = @"CONFIG_LOADED_FROM_BUNDLE";
@@ -81,6 +85,7 @@ static NSString* const kGetConfigAppVersionParameterName = @"app_version";
 
 static NSTimeInterval const kConfigRequestTimeoutIntervalSeconds = 3.0; //should not be too large, otherwsie slows app startup in case of bad connection
 
+static NSString* const kConfigFilename = @"Config.plist";
 static NSString* const kPersistedServerConfigFilename = @"ConfigFromServer.plist";
 
 static BOOL loaded = NO;
@@ -116,9 +121,7 @@ static BOOL loaded = NO;
 
 + (NSUserDefaults*)defaults {
     if (!loaded) {
-        CLSNSLog(@"WARNING: tried to access [PCConfig defaults] before config was loaded. Returning nil.");
-        [NSException raise:@"Illegal access" format:nil];
-        return nil;
+        CLSNSLog(@"WARNING: tried to access [PCConfig defaults] when config was not loaded. Config might be empty or stale.");
     }
     return [self _defaults];
 }
@@ -126,7 +129,7 @@ static BOOL loaded = NO;
 #pragma mark - Private methods
 
 + (NSUserDefaults*)_defaults {
-    return [NSUserDefaults standardUserDefaults];
+    return [PCPersistenceManager sharedDefaults];
 }
 
 + (void)registerDefaultsFromBundle {
@@ -135,7 +138,7 @@ static BOOL loaded = NO;
     if (!bundleConfig) {
         @throw [NSException exceptionWithName:@"File error" reason:@"Bundle Config.plist could not be loaded" userInfo:nil];
     }
-    [[self _defaults] registerDefaults:bundleConfig];
+    [[self _defaults] replaceKeyValuesWithOnesFromDictionary:bundleConfig];
     [[self _defaults] setBool:YES forKey:PC_CONFIG_LOADED_FROM_BUNDLE_KEY];
     CLSNSLog(@"   1. Config loaded from bundle");
 }
@@ -143,7 +146,7 @@ static BOOL loaded = NO;
 + (void)registerDefaultsFromPersistedServerConfigIfExists {
     NSDictionary* persistedServerConfig = [self persistedServerConfig];
     if (persistedServerConfig) {
-        [[self _defaults] registerDefaults:persistedServerConfig];
+        [[self _defaults] replaceKeyValuesWithOnesFromDictionary:persistedServerConfig];
         CLSNSLog(@"   2. Config loaded from persisted server config");
     } else {
         CLSNSLog(@"   2. No persisted server config");
@@ -170,7 +173,7 @@ static BOOL loaded = NO;
     NSURLSessionTask* task = [manager GET:kGetConfigURLString
       parameters:@{kGetConfigPlatformParameterName:@"ios", kGetConfigAppVersionParameterName:[PCUtils appVersion]}
          success:^(NSURLSessionDataTask *task, NSDictionary* jsonServerConfig) {
-             [[self _defaults] registerDefaults:jsonServerConfig];
+             [[self _defaults] replaceKeyValuesWithOnesFromDictionary:jsonServerConfig];
              [[self _defaults] setBool:YES forKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];
              if ([self persistServerConfig:jsonServerConfig]) {
                  CLSNSLog(@"   3. Config loaded from server and persisted");
@@ -193,23 +196,47 @@ static BOOL loaded = NO;
 }
 
 + (void)registerDevDefaultsFromAppSupportIfExists {
-    NSString* pathAppSupportConfig = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-	pathAppSupportConfig = [pathAppSupportConfig stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-    pathAppSupportConfig = [pathAppSupportConfig stringByAppendingPathComponent:@"Config.plist"];
+    
+    NSString* appGroupConfigPath = [PCPersistenceManager appGroupBundleIdentifierPersistencePath];
+    appGroupConfigPath = [appGroupConfigPath stringByAppendingPathComponent:kConfigFilename];
+    
+    NSString* classicConfigPath = [PCPersistenceManager classicBundleIdentifierPersistencePath];
+    classicConfigPath = [classicConfigPath stringByAppendingPathComponent:kConfigFilename];
     
     @try {
         NSFileManager* fileManager = [NSFileManager defaultManager];
-        if ([fileManager fileExistsAtPath:pathAppSupportConfig]) {
-            [[self _defaults] registerDefaults:[NSDictionary dictionaryWithContentsOfFile:pathAppSupportConfig]];
+        
+        // Step 1: if main app, delete potentially previously copied dev config, so that
+        // if there is no new in app classic bundle identifier folder, we don't
+        // load an old one.
+#ifdef TARGET_IS_MAIN_APP
+        [fileManager removeItemAtPath:appGroupConfigPath error:nil];
+#endif
+        
+        // Step 2: if exists a dev config in classic bundle identifier folder,
+        // copy it to app group folder, so that other apps/exentsions from group can
+        // access it.
+        if ([fileManager fileExistsAtPath:classicConfigPath]) {
+            NSError* error = nil;
+            [fileManager copyItemAtPath:classicConfigPath toPath:appGroupConfigPath error:&error];
+            if (error) {
+                CLSNSLog(@"   !! ERROR: detected DEV config in classic bundle identifier folder, but could NOT copy to app group folder.");
+            }
+        }
+        
+        // Step 3: finally, if exists app group config, load this config
+        if ([fileManager fileExistsAtPath:appGroupConfigPath]) {
+            [[self _defaults] replaceKeyValuesWithOnesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:appGroupConfigPath]];
             [[self _defaults] setBool:YES forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
-            CLSNSLog(@"   4. Detected and loaded overriding DEV config (%@)", pathAppSupportConfig);
+            CLSNSLog(@"   4. Detected and loaded overriding DEV config");
         } else {
             [[self _defaults] setBool:NO forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
         }
+        
     }
     @catch (NSException *exception) {
         [[self _defaults] setBool:NO forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
-        CLSNSLog(@"   !! ERROR: Detected but unable to parse overriding DEV config (%@)", pathAppSupportConfig);
+        CLSNSLog(@"   !! ERROR: Detected but unable to parse overriding DEV config (%@)", classicConfigPath);
     }
 }
 
@@ -223,8 +250,7 @@ static BOOL loaded = NO;
 #pragma mark Utilities
 
 + (NSString*)pathForPersistedServerConfig {
-    NSString* appSupport = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-	NSString* pcAppSupport = [appSupport stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    NSString* pcAppSupport = [PCPersistenceManager appGroupBundleIdentifierPersistencePath];
     NSString* configFilePath = [pcAppSupport stringByAppendingPathComponent:kPersistedServerConfigFilename];
     [PCPersistenceManager createComponentsForPath:configFilePath];
     return configFilePath;

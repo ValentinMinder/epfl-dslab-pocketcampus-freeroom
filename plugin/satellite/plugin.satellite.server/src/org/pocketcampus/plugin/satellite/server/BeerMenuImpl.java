@@ -22,7 +22,7 @@ import org.pocketcampus.plugin.satellite.shared.*;
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public final class BeerMenuImpl implements BeerMenu {
-	private static final String BEER_LIST_URL = "http://sat.epfl.ch/pocket/flux.xml";
+	private static final String BEER_LIST_URL = "http://satellite.bar/pocket/flux.xml";
 
 	private static final String BEER_ELEMENT = "biere";
 	private static final String BEER_CONTAINER_ATTRIBUTE = "contenant";

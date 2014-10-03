@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.BitSet;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailRequest, SendEmailRequest._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("SendEmailRequest");
@@ -28,11 +30,11 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
   private static final org.apache.thrift.protocol.TField EMAIL_ADDRESS_FIELD_DESC = new org.apache.thrift.protocol.TField("emailAddress", org.apache.thrift.protocol.TType.STRING, (short)3);
   private static final org.apache.thrift.protocol.TField LANG_FIELD_DESC = new org.apache.thrift.protocol.TField("lang", org.apache.thrift.protocol.TType.STRING, (short)5);
 
-  public long eventPoolId; // required
-  public List<Long> starredEventItems; // required
-  public List<String> userTickets; // required
-  public String emailAddress; // required
-  public String lang; // required
+  private long eventPoolId; // required
+  private List<Long> starredEventItems; // required
+  private List<String> userTickets; // required
+  private String emailAddress; // required
+  private String lang; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

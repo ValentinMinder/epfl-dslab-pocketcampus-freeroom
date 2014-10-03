@@ -36,7 +36,7 @@ public class EventsModel extends PluginModel implements IEventsModel {
 	 */
 	private static final String EVENTS_STORAGE_NAME = "EVENTS_STORAGE_NAME";
 	
-	private static final String EVENTS_PERIOD_KEY = "EVENTS_PERIOD_KEY";
+	private static final String EVENTS_PERIOD_IN_HOURS_KEY = "EVENTS_PERIOD_IN_HOURS_KEY";
 	private static final String EVENTS_FAVOTITES_LIST_KEY = "EVENTS_FAVOTITES_LIST_KEY";
 	private static final String EVENTS_TICKETS_LIST_KEY = "EVENTS_TOKEN_KEY"; // backward compatibility 
 	
@@ -63,7 +63,7 @@ public class EventsModel extends PluginModel implements IEventsModel {
 	/**
 	 * Member variables that need to be persistent
 	 */
-	private int iPeriod; // we send
+	private int iPeriodInHours; // we send
 	private List<Long> iFavorites; // for eventItems only
 	private List<String> iTickets; // used to give access to a private event
 	
@@ -80,7 +80,7 @@ public class EventsModel extends PluginModel implements IEventsModel {
 		iStorage = context.getSharedPreferences(EVENTS_STORAGE_NAME, 0);
 		//cntxt = context;
 		
-		iPeriod = iStorage.getInt(EVENTS_PERIOD_KEY, 14);
+		iPeriodInHours = iStorage.getInt(EVENTS_PERIOD_IN_HOURS_KEY, 7 * 24);
 		iFavorites = decodeFavoritesList(iStorage.getString(EVENTS_FAVOTITES_LIST_KEY, ""));
 		iTickets = decodeTicketsList(iStorage.getString(EVENTS_TICKETS_LIST_KEY, ""));
 		
@@ -157,17 +157,17 @@ public class EventsModel extends PluginModel implements IEventsModel {
 	/**
 	 * Setter and getter for iPeriod iFeed and iCateg
 	 */
-	public int getPeriod() {
-		return iPeriod;
+	public int getPeriodInHours() {
+		return iPeriodInHours;
 	}
-	public void setPeriod(int x) {
-		iPeriod = x;
+	public void setPeriodInHours(int x) {
+		iPeriodInHours = x;
 		savePrefs();
 	}
 	
 	private void savePrefs() {
 		iStorage.edit()
-				.putInt(EVENTS_PERIOD_KEY, iPeriod)
+				.putInt(EVENTS_PERIOD_IN_HOURS_KEY, iPeriodInHours)
 				.putString(EVENTS_FAVOTITES_LIST_KEY, encodeFavoritesList(iFavorites))
 				.putString(EVENTS_TICKETS_LIST_KEY, encodeTicketsList(iTickets))
 				.commit();

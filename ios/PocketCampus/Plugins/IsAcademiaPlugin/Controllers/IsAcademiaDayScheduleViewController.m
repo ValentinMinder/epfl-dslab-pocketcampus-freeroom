@@ -249,7 +249,9 @@
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
                 [welf refreshForDisplayedDaySkipCache:YES];
             } userCancelled:^{
-                //nothing to do
+                welf.messageHUD.labelText = NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil);
+                welf.messageHUD.detailsLabelText = NSLocalizedStringFromTable(@"LoginRequired", @"PocketCampus", nil);
+                [welf.messageHUD show:NO];
             } failure:^{
                 [welf getScheduleFailedForRequest:request];
             }];

@@ -142,12 +142,6 @@
   <data name="PersonPrivatePhone" xml:space="preserve">
     <value>Téléphone privé</value>
   </data>
-  <data name="PersonUnits" xml:space="preserve">
-    <value>Unités</value>
-  </data>
-  <data name="PersonWebsite" xml:space="preserve">
-    <value>Site Web</value>
-  </data>
   <data name="PluginName" xml:space="preserve">
     <value>Annuaire</value>
   </data>

@@ -25,16 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 07.10.12.
-
-//  ARC enabled
 
 #import "MainController.h"
 
 #import "PluginController.h"
+
+#import "ZUUIRevealController.h"
 
 #import "PluginNavigationController.h"
 
@@ -195,7 +192,7 @@ static MainController<MainControllerPublic>* instance = nil;
     if (![urlTmp isKindOfClass:[NSURL class]]) {
         //do that instead of exception to prevent crashes
         [self showActionNotSupportedAlert];
-        CLSNSLog(@"!! ERROR: tried to handlePocketCampusURL: with URL not kind of class NSURL. Ignoring.");
+        CLSNSLog(@"!! ERROR: tried to handlePocketCampusURL: with URL not kind of class NSURL. Returning NO.");
         return NO;
     }
     
@@ -205,19 +202,21 @@ static MainController<MainControllerPublic>* instance = nil;
         return NO;
     }
     
+    CLSNSLog(@"-> Handling URL: %@", urlTmp.absoluteString);
+    
     NSURL* url = [urlTmp copy];
     self.pcURLToHandle = nil; //prevent handling same URL twice
     
     NSString* pluginIdentifier = [self.urlSchemeHander pluginIdentifierForPocketCampusURL:url];
     if (!pluginIdentifier) {
         [self showActionNotSupportedAlert];
-        CLSNSLog(@"!! ERROR: unkown pluginIdentifier in handlePocketCampusURL:");
+        CLSNSLog(@"    !! ERROR: cannot parse plugin identifer. Returning NO.");
         return NO;
     }
     PluginController<PluginControllerProtocol>* pluginController = [self pluginControllerForPluginIdentifier:[self validPluginIdentifierForAnycasePluginIdentifier:pluginIdentifier]];
     if (!pluginController) {
         [self showActionNotSupportedAlert];
-        CLSNSLog(@"!! ERROR: nil pluginController in handlePocketCampusURL:");
+        CLSNSLog(@"    !! ERROR: could not find plugin controller for identifier '%@'. Returning NO.", pluginIdentifier);
         return NO;
     }
     
@@ -227,32 +226,26 @@ static MainController<MainControllerPublic>* instance = nil;
         [self.revealController revealToggle:self];
     }
     
+    CLSNSLog(@"    1. Opening plugin '%@'", pluginIdentifier);
+    
     [self setActivePluginWithIdentifier:[[pluginController class] identifierName]];
     
     NSString* action = [self.urlSchemeHander actionForPocketCampusURL:url];
     NSDictionary* params = [self.urlSchemeHander parametersForPocketCampusURL:url];
     
-    if (!action || !params) {
-        [self showActionNotSupportedAlert];
-        CLSNSLog(@"!! ERROR: nil action/parameters in handlePocketCampusURL:");
-        return NO;
+    if ((action || params) && [pluginController respondsToSelector:@selector(handleURLQueryAction:parameters:)]) {
+        if ([pluginController handleURLQueryAction:action parameters:params]) {
+            CLSNSLog(@"    2. Plugin successfully handled action '%@' with parameters %@", action, params);
+        } else {
+            CLSNSLog(@"    !! ERROR: plugin failed to handle action '%@' with parameters %@", action, params);
+            [self showActionNotSupportedAlert];
+            return NO;
+        }
     }
     
-    CLSNSLog(@"-> Handling PocketCampus URL with action: %@, parameters: %@", action, params);
-    
-    if (![pluginController respondsToSelector:@selector(handleURLQueryAction:parameters:)]) {
-        [self showActionNotSupportedAlert];
-        CLSNSLog(@"!! ERROR: pluginController does not respond to handleURLQueryAction:parameters:. Ignoring.");
-        return NO;
-    }
-    
-    if (![pluginController handleURLQueryAction:action parameters:params]) {
-        [self showActionNotSupportedAlert];
-        return NO;
-    }
-    
+#ifndef TARGET_IS_EXTENSION
     [[PCGAITracker sharedTracker] trackAction:@"OpenPocketCampusURL" inScreenWithName:@"/" contentInfo:[url absoluteString]];
-    
+#endif
     return YES;
 }
 
@@ -275,6 +268,7 @@ static MainController<MainControllerPublic>* instance = nil;
 
 - (BOOL)isPluginAnycaseIdentifierValid:(NSString*)anycaseIdentifier {
     return [self existsPluginWithIdentifier:[self validPluginIdentifierForAnycasePluginIdentifier:anycaseIdentifier]];
+
 }
 
 - (NSString*)localizedPluginIdentifierForAnycaseIdentifier:(NSString*)anycaseIdentifier {
@@ -303,7 +297,7 @@ static MainController<MainControllerPublic>* instance = nil;
  */
 - (void)preConfigInit {
     self.window.tintColor = [PCValues pocketCampusRed];
-    self.revealWidth = [PCUtils isIdiomPad] ? 320.0 : 280;
+    self.revealWidth = [PCUtils isIdiomPad] ? 320.0 : (0.84 * self.window.bounds.size.width);
     [self initAndShowSplashViewViewController];
 }
 
@@ -318,18 +312,20 @@ static MainController<MainControllerPublic>* instance = nil;
     [self initRevealController];
     [self initPluginObservers];
     [self revealMenuAndFinalize];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidReceiveMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:[UIApplication sharedApplication]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidReceiveMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pcConfigUserDefaultsDidChange) name:NSUserDefaultsDidChangeNotification object:[PCConfig defaults]];
 }
 
 #pragma mark Pre-config phases
 
 - (void)initAndShowSplashViewViewController {
+#ifdef TARGET_IS_MAIN_APP
     self.splashViewController = [[PCSplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
     if (![PCUtils isIdiomPad]) {
         self.splashView = [[PCSplashView alloc] initWithSuperview:self.splashViewController.view];
     }
     self.window.rootViewController = self.splashViewController;
+#endif
 }
 
 #pragma mark Post-config phases
@@ -355,7 +351,9 @@ static MainController<MainControllerPublic>* instance = nil;
     }
     
     //Google Analytics
+#ifndef TARGET_IS_EXTENSION
     [[PCGAITracker sharedTracker] trackAppOnce];
+#endif
 }
 
 - (void)initPluginsList {
@@ -440,6 +438,7 @@ static MainController<MainControllerPublic>* instance = nil;
         return nil;
     }
     NSMutableArray* menuItems = [NSMutableArray array];
+#ifdef TARGET_IS_MAIN_APP
     for (NSString* pluginIdentifier in self.pluginsList) {
         Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:pluginIdentifier]);
         NSString* localizedName = [pluginClass localizedName];
@@ -454,6 +453,7 @@ static MainController<MainControllerPublic>* instance = nil;
         }
         [menuItems addObject:item];
     }
+#endif
     return menuItems;
 }
 
@@ -499,11 +499,13 @@ static MainController<MainControllerPublic>* instance = nil;
     @catch (NSException *exception) {
         menuItems = menuItemsCopy; //if anything bad happens during recovery, go back to standard order.
     }
-    
+#ifdef TARGET_IS_MAIN_APP
     self.mainMenuViewController = [[MainMenuViewController alloc] initWithMenuItems:menuItems mainController:self];
+#endif
 }
 
 - (void)initRevealController {
+#ifdef TARGET_IS_MAIN_APP
     self.splashViewController = [[PCSplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
     PCNavigationController* mainMenuNavController = [[PCNavigationController alloc] initWithRootViewController:self.mainMenuViewController];
     self.revealController = [[ZUUIRevealController alloc] initWithFrontViewController:self.splashViewController rearViewController:mainMenuNavController];
@@ -514,6 +516,7 @@ static MainController<MainControllerPublic>* instance = nil;
     self.revealController.toggleAnimationDuration = 0.65;
     [self.splashView moveToSuperview:self.revealController.view];
     self.window.rootViewController = self.revealController;
+#endif
 }
 
 - (void)initPluginObservers {
@@ -625,16 +628,20 @@ static MainController<MainControllerPublic>* instance = nil;
     }
     
     if (![PCPersistenceManager saveObject:menuItemsInfo forKey:kPluginsMainMenuItemsInfoKey pluginName:@"pocketcampus"]) {
+#ifdef TARGET_IS_MAIN_APP
         UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, an error occured while saving the main menu state." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [errorAlert show];
+#endif
     }
 }
 
 - (void)restoreDefaultMainMenu {
     if (![PCPersistenceManager saveObject:nil forKey:kPluginsMainMenuItemsInfoKey pluginName:@"pocketcampus"]) {
+#ifdef TARGET_IS_MAIN_APP
         UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, an error occured while restoring default main menu." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [errorAlert show];
         return;
+#endif
     }
     NSMutableArray* menuItems = [self defaultMainMenuItemsWithoutTopSection];
     
@@ -648,11 +655,13 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (void)showGlobalSettings {
+#ifdef TARGET_IS_MAIN_APP
     [[PCGAITracker sharedTracker] trackAction:@"OpenSettings" inScreenWithName:@"/dashboard"];
     PCGlobalSettingsViewController* settingsViewController = [[PCGlobalSettingsViewController alloc] initWithMainController:self];
     UINavigationController* settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     settingsNavController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.revealController presentViewController:settingsNavController animated:YES completion:NULL];
+#endif
 }
 
 #pragma mark setActivePluginWithIdentifier:
@@ -906,7 +915,7 @@ static MainController<MainControllerPublic>* instance = nil;
     if (([topViewController supportedInterfaceOrientations] | UIInterfaceOrientationMaskPortrait) == UIInterfaceOrientationMaskPortrait || ([viewController supportedInterfaceOrientations] | UIInterfaceOrientationMaskPortrait) == UIInterfaceOrientationMaskPortrait) {
         /* means only potrait mask is supported */
         UIDevice* device = [UIDevice currentDevice];
-        if ([device orientation] != UIInterfaceOrientationPortrait) {
+        if ([device orientation] == UIDeviceOrientationUnknown || ([device orientation] != UIDeviceOrientationPortrait && [device orientation] != UIDeviceOrientationFaceUp)) {
             /*
              * Best but forbidden method (private API)
              */
@@ -921,10 +930,8 @@ static MainController<MainControllerPublic>* instance = nil;
              * Little hack found on http://ev3r.tumblr.com/post/3854315796/uinavigationcontroller-pushviewcontroller-from 
              * Will actually make view controller retest for supported operations and rotate if necessary.
              */
-            
-#warning DISABLED, results in black screen in iOS 8. Still need to find a solution to force potrait orientation
-            //[viewController presentViewController:[[UIViewController alloc] init] animated:NO completion:NULL];
-            //[viewController dismissViewControllerAnimated:NO completion:NULL];
+            [viewController presentViewController:[UIViewController new] animated:NO completion:NULL];
+            [viewController dismissViewControllerAnimated:NO completion:NULL];
         }
     }
 }
@@ -940,7 +947,9 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (void)showActionNotSupportedAlert {
+#ifdef TARGET_IS_MAIN_APP
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Sorry", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ActionNotSupportedYet", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
 }
 
 - (NSString*)notificiationNameForPluginStateNotification:(PluginStateNotification)notification pluginIdentifierName:(NSString*)pluginIdentifierName {
@@ -987,7 +996,9 @@ static MainController<MainControllerPublic>* instance = nil;
 #pragma mark - CrashlyticsDelegate
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash {
+#ifndef TARGET_IS_EXTENSION
     [[PCGAITracker sharedTracker] trackAppCrashedDuringPreviousExecution];
+#endif
 }
 
 #pragma mark - UIGestureRecognizerDelegate

@@ -66,7 +66,7 @@ static RecommendedAppsService* instance __weak = nil;
 #pragma mark - Service methods
 
 - (void)getRecommendedApps:(RecommendedAppsRequest*)request delegate:(id)delegate{
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
     operation.keepInCacheBlock = ^BOOL(void* result) {
         RecommendedAppsResponse* response = (__bridge id)result;

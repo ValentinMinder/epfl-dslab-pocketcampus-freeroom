@@ -6,16 +6,6 @@
 	<array>
 		<dict>
 			<key>identifierName</key>
-			<string>RecommendedApps</string>
-			<key>enabled</key>
-			<true/>
-			<key>hiddenByDefault</key>
-			<false/>
-			<key>supportedIdioms</key>
-			<string>phone</string>
-		</dict>
-		<dict>
-			<key>identifierName</key>
 			<string>Authentication</string>
 			<key>enabled</key>
 			<true/>
@@ -127,30 +117,6 @@
 			<false/>
 			<key>supportedIdioms</key>
 			<string>phone+pad</string>
-		</dict>
-		<dict>
-			<key>identifierName</key>
-			<string>MyEdu</string>
-			<key>enabled</key>
-			<true/>
-			<key>hiddenByDefault</key>
-			<true/>
-			<key>supportedIdioms</key>
-			<string></string>
-		</dict>
-		<dict>
-			<key>identifierName</key>
-			<string>QAForum</string>
-			<key>enabled</key>
-			<true/>
-			<key>hiddenByDefault</key>
-			<false/>
-			<key>supportedIdioms</key>
-			<string></string>
-			<key>devTeam</key>
-			<string>Artificial Intelligence Lab (LIA)</string>
-			<key>minOSVersion</key>
-			<string>6.0</string>
 		</dict>
 	</array>
 </dict>

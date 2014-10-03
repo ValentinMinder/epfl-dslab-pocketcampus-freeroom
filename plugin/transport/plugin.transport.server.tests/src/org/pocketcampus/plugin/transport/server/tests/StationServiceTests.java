@@ -26,7 +26,7 @@ public final class StationServiceTests {
 		TestHttpClient client = new TestHttpClient("StationsReplyLausanne.xml");
 		StationService service = new StationServiceImpl(client, "token");
 
-		service.findStations("Lausanne,");
+		service.findStations("Lausanne,", null);
 
 		Source schemaSource = new StreamSource(new StationServiceTests().getClass().getResourceAsStream("hafasXMLInterface.xsd"));
 		Source requestSource = new StreamSource(new ByteArrayInputStream(client.lastSentBody));
@@ -39,7 +39,7 @@ public final class StationServiceTests {
 		TestHttpClient client = new TestHttpClient("StationsReplyLausanne.xml");
 		StationService service = new StationServiceImpl(client, "token");
 
-		List<TransportStation> stations = service.findStations("Lausanne,");
+		List<TransportStation> stations = service.findStations("Lausanne,", null);
 
 		assertEquals("There should be 5 stations.",
 				5, stations.size());
@@ -52,19 +52,37 @@ public final class StationServiceTests {
 		assertEquals("The first station's longitude should be parsed correctly.",
 				6629095, stations.get(0).getLongitude());
 	}
+	
+	@Test
+	public void stationsAreOrderedWhenLocationIsPresent() throws IOException{
+		TestHttpClient client = new TestHttpClient("StationsReplyLausanne.xml");
+		StationService service = new StationServiceImpl(client, "token");
+
+		List<TransportStation> stations = service.findStations("Lausanne,", new TransportGeoPoint(46.521244, 6.640673));
+		
+		assertEquals("The stations should be properly ordered. (#1)",
+				"Lausanne, Ours", stations.get(0).getName());
+		assertEquals("The stations should be properly ordered. (#2)",
+				"Lausanne, CHUV", stations.get(1).getName());
+		assertEquals("The stations should be properly ordered. (#3)",
+				"Lausanne, gare", stations.get(2).getName());
+		assertEquals("The stations should be properly ordered. (#4)",
+				"Lausanne", stations.get(3).getName());
+		assertEquals("The stations should be properly ordered. (#5)",
+				"Lausanne, Sallaz", stations.get(4).getName());
+	}
 
 	@Test
 	public void errorMeansNoStations() throws IOException {
 		TestHttpClient client = new TestHttpClient("StationsReplyError.xml");
 		StationService service = new StationServiceImpl(client, "token");
 
-		List<TransportStation> stations = service.findStations("");
+		List<TransportStation> stations = service.findStations("", null);
 
 		assertEquals("There should be no stations.",
 				0, stations.size());
 	}
 
-	
 	private static final class TestHttpClient implements HttpClient {
 		private final String returnValue;
 

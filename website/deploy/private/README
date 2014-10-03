@@ -1,0 +1,4 @@
+Should start background task:
+
+$ php launcher.php
+

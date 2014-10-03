@@ -25,13 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 07.10.12.
 
-
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @interface MainMenuItem : NSObject
 
@@ -46,8 +42,6 @@
 @property (nonatomic, strong) UIImage* highlightedLeftImage;
 
 @property (nonatomic) BOOL hidden;
-
-+ (MainMenuItem*)menuItemButtonWithTitle:(NSString*)title leftImage:(UIImage*)image identifier:(NSString*)identifier __attribute__ ((deprecated));
 
 + (MainMenuItem*)menuItemButtonWithTitle:(NSString*)title leftImage:(UIImage*)image highlightedLeftImage:(UIImage*)highlightedImage identifier:(NSString*)identifier;
 

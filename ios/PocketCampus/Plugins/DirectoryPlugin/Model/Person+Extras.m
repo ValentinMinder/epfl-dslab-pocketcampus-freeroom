@@ -62,7 +62,17 @@
         } else {
             string = @"";
         }
-        string = [string stringByAppendingFormat:@"%@ - %@", role.localizedTitle, role.extendedLocalizedUnit];
+        NSString* titleAndRole = nil;
+        if (role.localizedTitle.length > 0 && role.extendedLocalizedUnit.length > 0) {
+            titleAndRole = [NSString stringWithFormat:@"%@ - %@", role.localizedTitle, role.extendedLocalizedUnit];
+        } else if (role.localizedTitle.length > 0) {
+            titleAndRole = role.localizedTitle;
+        } else if (role.extendedLocalizedUnit.length > 0) {
+            titleAndRole = role.extendedLocalizedUnit;
+        } else {
+            titleAndRole = @"";
+        }
+        string = [string stringByAppendingString:titleAndRole];
     }];
     return string;
 }

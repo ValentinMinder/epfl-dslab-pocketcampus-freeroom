@@ -10,16 +10,16 @@
                       xmlns:my="clr-namespace:PocketCampus.Camipro"
                       xmlns:com="clr-namespace:PocketCampus.Common;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
+                      xmlns:myDesign="clr-namespace:PocketCampus.Camipro.ViewModels.Design;assembly=PocketCampus.Camipro"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      mc:Ignorable="d">
-    <!-- Design-time DataContext -->
-    <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Camipro.ViewModels.Design;assembly=PocketCampus.Camipro.Common" />
-    </d:DesignProperties.DataContext>
-
+                      mc:Ignorable="d"
+                      d:DataContext="{Binding Main, Source={StaticResource Design}}">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
+        <!-- Design-time DataContext -->
+        <myDesign:Design x:Key="Design" />
+
         <!-- Localized strings -->
         <my:LocalizedStrings x:Key="Strings" />
 
@@ -31,52 +31,34 @@
 
         <!-- Transaction item template -->
         <DataTemplate x:Key="TransactionTemplate">
-            <!-- Double-grid system to ensure the transaction description takes as much space as possible
-                 instead of being cut off by the dates -->
-            <Grid Margin="0,12"
+            <Grid Margin="0,0,0,24"
                   Height="60">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                <!-- Description -->
+                <TextBlock Text="{Binding Place}"
+                           TextTrimming="WordEllipsis"
+                           Style="{StaticResource PhoneTextNormalStyle}" />
 
-                    <!-- Description -->
-                    <TextBlock Text="{Binding Place}"
-                               TextTrimming="WordEllipsis"
-                               Style="{StaticResource PhoneTextNormalStyle}" />
+                <!-- Amount -->
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Amount, StringFormat='{}{0:0.00} CHF'}"
+                           Style="{StaticResource PhoneTextNormalStyle}"
+                           Foreground="{Binding Amount, Converter={StaticResource MoneyToBrush}}"  />
 
-                    <!-- Amount -->
-                    <TextBlock Grid.Column="1"
-                               Text="{Binding Amount, StringFormat='{}{0:0.00} CHF'}"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               Foreground="{Binding Amount, Converter={StaticResource MoneyToBrush}}"  />
-                </Grid>
-
-                <Grid Grid.Row="1"
-                      VerticalAlignment="Top">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <!-- Operation -->
-                    <TextBlock Text="{Binding Operation}"
-                               TextTrimming="WordEllipsis"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               Foreground="{StaticResource PhoneSubtleBrush}" />
-
-                    <!-- Date -->
-                    <TextBlock Grid.Column="1"
-                               Text="{Binding Date, StringFormat='{}{0:m}, {0:t}'}"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               Foreground="{StaticResource PhoneSubtleBrush}" />
-                </Grid>
+                <!-- Date -->
+                <TextBlock Grid.Row="1"
+                           Grid.ColumnSpan="2"
+                           Text="{Binding Date, StringFormat='{}{0:m}, {0:t}'}"
+                           Style="{StaticResource PhoneTextNormalStyle}"
+                           Foreground="{StaticResource PhoneSubtleBrush}" />
             </Grid>
         </DataTemplate>
     </comControls:BasePage.Resources>
@@ -96,15 +78,17 @@
                              Padding="0,-4,0,0">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="45" />
-                        <RowDefinition Height="34" />
-                        <RowDefinition Height="37" />
-                        <RowDefinition Height="37" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="46" />
+                        <RowDefinition Height="36" />
+                        <RowDefinition Height="36" />
+                        <RowDefinition Height="36" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
                     <!-- Current balance -->
-                    <StackPanel Orientation="Horizontal"
+                    <StackPanel Grid.Row="1"
+                                Orientation="Horizontal"
                                 VerticalAlignment="Bottom">
                         <TextBlock Text="{Binding Resources.CurrentBalance, Source={StaticResource Strings}}"
                                    Style="{StaticResource PhoneTextLargeStyle}"
@@ -116,7 +100,7 @@
                     </StackPanel>
 
                     <!-- Last month -->
-                    <StackPanel Grid.Row="1"
+                    <StackPanel Grid.Row="2"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Bottom">
                         <TextBlock Text="{Binding Resources.MonthSpending, Source={StaticResource Strings}}"
@@ -128,7 +112,7 @@
                     </StackPanel>
 
                     <!-- Three months total -->
-                    <StackPanel Grid.Row="2"
+                    <StackPanel Grid.Row="3"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Bottom">
                         <TextBlock Text="{Binding Resources.ThreeMonthsSpendingTotal, Source={StaticResource Strings}}"
@@ -140,7 +124,7 @@
                     </StackPanel>
 
                     <!-- Three months average -->
-                    <StackPanel Grid.Row="3"
+                    <StackPanel Grid.Row="4"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Bottom">
                         <TextBlock Text="{Binding Resources.ThreeMonthsSpendingAverage, Source={StaticResource Strings}}"
@@ -152,7 +136,7 @@
                     </StackPanel>
 
                     <!-- Transactions -->
-                    <ItemsControl Grid.Row="4"
+                    <ItemsControl Grid.Row="5"
                                   ItemsSource="{Binding AccountInfo.Transactions}"
                                   ItemTemplate="{StaticResource TransactionTemplate}"
                                   Style="{StaticResource ScrollingItemsControlStyle}"
@@ -166,6 +150,7 @@
                              Padding="0,7,0,0">
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="31" />
                         <RowDefinition Height="37" />
                         <RowDefinition Height="Auto" />
@@ -176,17 +161,18 @@
                         <RowDefinition />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    
+
                     <!-- Payment type -->
-                    <TextBlock Text="{Binding Resources.EbankingPaymentType, Source={StaticResource Strings}}"
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding Resources.EbankingPaymentType, Source={StaticResource Strings}}"
                                Style="{StaticResource PhoneTextNormalStyle}" />
 
                     <!-- Account name -->
-                    <TextBlock Grid.Row="1"
+                    <TextBlock Grid.Row="2"
                                Text="{Binding Resources.EbankingAccountName, Source={StaticResource Strings}}"
                                Style="{StaticResource PhoneTextSubtleStyle}"
                                VerticalAlignment="Bottom" />
-                    <TextBlock Grid.Row="2"
+                    <TextBlock Grid.Row="3"
                                Text="{Binding EbankingInfo.PaymentInfo.AccountName}"
                                Style="{StaticResource PhoneTextNormalStyle}"
                                FontSize="{StaticResource PhoneFontSizeMedium}"
@@ -194,27 +180,27 @@
                                Margin="12,0" />
 
                     <!-- Account number -->
-                    <TextBlock Grid.Row="3"
+                    <TextBlock Grid.Row="4"
                                Text="{Binding Resources.EbankingAccountNumber, Source={StaticResource Strings}}"
                                Style="{StaticResource PhoneTextSubtleStyle}"
                                VerticalAlignment="Bottom" />
-                    <TextBlock Grid.Row="4"
+                    <TextBlock Grid.Row="5"
                                Text="{Binding EbankingInfo.PaymentInfo.AccountNumber}"
                                Style="{StaticResource PhoneTextNormalStyle}"
                                FontSize="{StaticResource PhoneFontSizeMedium}" />
 
                     <!-- Reference number -->
-                    <TextBlock Grid.Row="5"
+                    <TextBlock Grid.Row="6"
                                Text="{Binding Resources.EbankingReferenceNumber, Source={StaticResource Strings}}"
                                Style="{StaticResource PhoneTextSubtleStyle}"
                                VerticalAlignment="Bottom" />
-                    <TextBlock Grid.Row="6"
+                    <TextBlock Grid.Row="7"
                                Text="{Binding EbankingInfo.PaymentInfo.ReferenceNumber}"
                                Style="{StaticResource PhoneTextNormalStyle}"
                                FontSize="{StaticResource PhoneFontSizeMedium}" />
 
                     <!-- Various warnings -->
-                    <TextBlock Grid.Row="7"
+                    <TextBlock Grid.Row="8"
                                Text="{Binding Resources.EbankingWarning, Source={StaticResource Strings}}"
                                TextWrapping="Wrap"
                                Style="{StaticResource PhoneTextSubtleStyle}"
@@ -222,13 +208,14 @@
                                Margin="12,20" />
 
                     <!-- 'Request e-mail with info' button -->
-                    <Button Grid.Row="8"
+                    <Button Grid.Row="9"
                             Command="{Binding RequestEbankingEmailCommand}"
                             Content="{Binding Resources.RequestEbankingEmail, Source={StaticResource Strings}}"
-                            Visibility="{Binding EmailStatus, Converter={StaticResource NoEmailRequestToVisibility}}" />
+                            Visibility="{Binding EmailStatus, Converter={StaticResource NoEmailRequestToVisibility}}"
+                            Margin="12,20" />
 
                     <!-- E-mail status text -->
-                    <TextBlock Grid.Row="8"
+                    <TextBlock Grid.Row="9"
                                Text="{Binding EmailStatus, Converter={StaticResource EnumToString}}"
                                TextWrapping="Wrap"
                                Style="{StaticResource PhoneTextNormalStyle}"

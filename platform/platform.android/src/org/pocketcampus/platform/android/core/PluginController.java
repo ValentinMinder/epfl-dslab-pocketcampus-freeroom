@@ -7,7 +7,6 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.thrift.TException;
 import org.apache.thrift.TServiceClient;
@@ -72,7 +71,8 @@ public abstract class PluginController extends Service {
 	
 	private String getBackendUrl(String pluginName, boolean raw) {
 		return PC_ANDR_CFG.getString("SERVER_PROTOCOL") + "://" + PC_ANDR_CFG.getString("SERVER_ADDRESS") + ":"
-				+ PC_ANDR_CFG.getInteger("SERVER_PORT") + "/v3r1/" + (raw ? "raw-" : "") + pluginName;
+				+ PC_ANDR_CFG.getInteger("SERVER_PORT") + "/" + PC_ANDR_CFG.getString("SERVER_URI") + "/" 
+				+ (raw ? "raw-" : "") + pluginName;
 	}
 	
 	protected HttpGet getHttpGet(String pluginName) { // raw
@@ -129,7 +129,6 @@ public abstract class PluginController extends Service {
 		client = new DefaultHttpClient(new ThreadSafeClientConnManager(params,
 				mgr.getSchemeRegistry()), params);
 
-		client.getParams().setParameter(CoreProtocolPNames.USER_AGENT, GlobalContext.USER_AGENT);
 		return client;
 	}
 

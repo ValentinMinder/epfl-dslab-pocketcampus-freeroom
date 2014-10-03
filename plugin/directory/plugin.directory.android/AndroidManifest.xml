@@ -6,13 +6,14 @@
 
     <uses-sdk android:minSdkVersion="8" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-  <!--   <uses-permission android:name="android.permission.CALL_PHONE" /> -->
 
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
     <application
         android:label="@string/app_name"
-        android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext"
+        android:name="org.pocketcampus.platform.android.core.GlobalContext"
         android:icon="@drawable/directory_icon"
         android:theme="@style/PocketCampusTheme" >
 
@@ -23,36 +24,36 @@
              android:icon="@drawable/directory_icon"
             android:name="org.pocketcampus.plugin.directory.android.DirectoryMainView"
             android:windowSoftInputMode="stateVisible"
-            android:launchMode="singleTask" 
+            android:launchMode="singleTask"
             >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
             </intent-filter>
-            
-            
-            
+
+
+
 
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="pocketcampus" 
-				    android:host="directory.plugin.pocketcampus.org" 
+				<data android:scheme="pocketcampus"
+				    android:host="directory.plugin.pocketcampus.org"
 				    android:path="/query"  />
 			</intent-filter>
-                        
-                        
-            
-            
-            
-            
+
+
+
+
+
+
         </activity>
 
-        
-        
-        
+
+
+
 		<activity
 		     android:name="org.pocketcampus.plugin.directory.android.DirectoryPersonView"
              android:icon="@drawable/directory_icon"
@@ -60,26 +61,26 @@
 			android:screenOrientation="nosensor"
 			 android:theme="@android:style/Theme.Dialog"
             android:windowSoftInputMode="stateHidden"
-            android:launchMode="singleTask" 			 
+            android:launchMode="singleTask"
             >
-			
+
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="pocketcampus" 
-				    android:host="directory.plugin.pocketcampus.org" 
+				<data android:scheme="pocketcampus"
+				    android:host="directory.plugin.pocketcampus.org"
 				    android:path="/view"  />
-				<data android:scheme="pocketcampus" 
-				    android:host="directory.plugin.pocketcampus.org" 
+				<data android:scheme="pocketcampus"
+				    android:host="directory.plugin.pocketcampus.org"
 				    android:path="/search"  />
-								
-			</intent-filter>			
-			    
+
+			</intent-filter>
+
 		</activity>
-        
-        
-        
+
+
+
         <service
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.directory.android.DirectoryController" >

@@ -21,6 +21,11 @@ namespace PocketCampus.Common
         string Id { get; }
 
         /// <summary>
+        /// Gets a value indicating whether this plugin is visible in the application's main menu.
+        /// </summary>
+        bool IsVisible { get; }
+
+        /// <summary>
         /// Gets a value indicating whether the plugin requires that the user be authenticated.
         /// </summary>
         bool RequiresAuthentication { get; }

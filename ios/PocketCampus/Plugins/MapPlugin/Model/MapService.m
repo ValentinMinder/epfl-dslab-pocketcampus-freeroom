@@ -75,7 +75,7 @@ static MapService* instance __weak = nil;
 }
 
 - (void)getLayerListWithDelegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getLayerList);
     operation.delegateDidReturnSelector = @selector(getLayerListDidReturn:);
     operation.delegateDidFailSelector = @selector(getLayerListFailed);
@@ -84,7 +84,7 @@ static MapService* instance __weak = nil;
 }
 
 - (void)getLayerItemsForLayerId:(int64_t)layerId delegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getLayerItems:);
     operation.delegateDidReturnSelector = @selector(getLayerItemsForLayerId:didReturn:);
     operation.delegateDidFailSelector = @selector(getLayerItemsFailedForLayerId:);
@@ -97,7 +97,7 @@ static MapService* instance __weak = nil;
     if (![query isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad query" reason:@"query is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
     operation.cacheValidityInterval = 86400; //1 day
     operation.returnEvenStaleCacheIfNoInternetConnection = YES;

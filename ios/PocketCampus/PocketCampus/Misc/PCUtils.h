@@ -37,8 +37,11 @@ extern NSString* const kPCUtilsExtensionFolder;
 
 + (BOOL)isRetinaDevice;
 + (BOOL)is4inchDevice;
++ (BOOL)is4_7inchDevice;
++ (BOOL)is5_5inchDevice;
 + (BOOL)isIdiomPad;
 + (BOOL)isOSVersionSmallerThan:(float)version;
++ (BOOL)isOSVersionGreaterThanOrEqualTo:(float)version;
 + (float)OSVersion;
 + (NSString*)uniqueDeviceIdentifier;
 + (NSString*)appVersion;

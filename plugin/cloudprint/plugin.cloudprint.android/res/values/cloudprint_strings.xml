@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="cloudprint_plugin_title">EPFL CloudPrint</string>
+    
+    <string name="cloudprint_dialog_button_upload">Upload</string>
+    <string name="cloudprint_dialog_button_print">Print</string>
+    
+    <string name="cloudprint_dialog_text_upload">You are about to upload\n%s</string>
+    <string name="cloudprint_dialog_text_print">You are about to print\njob #%d</string>
+    
+    <string name="cloudprint_string_print_server_error">Print server error</string>
+    <string name="cloudprint_string_document_sent_to_printer">The document was sent to the printer</string>
+    
+    <string-array name="cloudprint_config_doublesided">
+		<item>1-sided</item>
+		<item>2-sided, long edge</item>
+		<item>2-sided, short edge</item>
+	</string-array>
+	
+    <string-array name="cloudprint_config_color">
+		<item>Color</item>
+		<item>Black/White</item>
+	</string-array>
+    
+    <string-array name="cloudprint_config_orientation">
+		<item>Portrait</item>
+		<item>Landscape</item>
+	</string-array>
+    
+    <string-array name="cloudprint_config_pageselection">
+		<item>Entire document</item>
+		<item>Selected pages &#8230;</item>
+	</string-array>
+    
+    <string-array name="cloudprint_config_copies">
+		<item>1 copy</item>
+		<item>more copies &#8230;</item>
+	</string-array>
+    
+    <string-array name="cloudprint_config_multipage">
+		<item>1 page per sheet</item>
+		<item>other configuration &#8230;</item>
+	</string-array>
+	
+</resources>

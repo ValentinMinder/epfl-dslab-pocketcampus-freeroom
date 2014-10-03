@@ -28,10 +28,10 @@ public final class FileServiceImpl implements FileService {
 	private static final String DOWNLOAD_URL_PREFIX = "http://moodle.epfl.ch/webservice/pluginfile.php";
 
 	// The key of the token parameter to download files
-	private static final String TOKEN_KEY = "token";
+	public static final String TOKEN_KEY = "token";
 
 	// Missing from Apache's HttpHeaders constant for some reason
-	private static final String HTTP_CONTENT_DISPOSITION = "Content-Disposition";
+	public static final String HTTP_CONTENT_DISPOSITION = "Content-Disposition";
 
 	private final String token;
 
@@ -55,19 +55,12 @@ public final class FileServiceImpl implements FileService {
 			return;
 		}
 
-		filePath = StringUtils.getSubstringBetween(filePath, FILE_NAME_LEFT_GUARD, FILE_NAME_RIGHT_GUARD);
-		filePath = DOWNLOAD_URL_PREFIX + filePath;
-
 		HttpURLConnection conn = null;
 		try {
-			conn = (HttpURLConnection) new URL(filePath).openConnection();
+			conn = (HttpURLConnection) new URL(convertFilePath(filePath)).openConnection();
 			conn.setDoOutput(true);
 
-			final byte[] bytes = new PostDataBuilder()
-					.addParam(TOKEN_KEY, token)
-					.toString()
-					.getBytes();
-			conn.getOutputStream().write(bytes);
+			conn.getOutputStream().write(preparePostData(token));
 
 			conn.connect();
 
@@ -83,4 +76,13 @@ public final class FileServiceImpl implements FileService {
 			}
 		}
 	}
+	
+	public static String convertFilePath(String filePath) {
+		return DOWNLOAD_URL_PREFIX + StringUtils.getSubstringBetween(filePath, FILE_NAME_LEFT_GUARD, FILE_NAME_RIGHT_GUARD);
+	}
+	
+	public static byte[] preparePostData(String token) {
+		return new PostDataBuilder().addParam(TOKEN_KEY, token).toString().getBytes();
+	}
+	
 }

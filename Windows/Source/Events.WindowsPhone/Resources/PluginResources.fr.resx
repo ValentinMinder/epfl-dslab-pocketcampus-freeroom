@@ -123,6 +123,9 @@
   <data name="CategoryFilterViewTitle" xml:space="preserve">
     <value>catégories</value>
   </data>
+  <data name="CurrentEventsButton" xml:space="preserve">
+    <value>En ce moment</value>
+  </data>
   <data name="DifferentDateFormat" xml:space="preserve">
     <value>{0}, {1} - {2}, {3}</value>
     <comment>0: date1, 1: time1, 2: date2, 3: time2</comment>
@@ -194,6 +197,9 @@
   </data>
   <data name="SearchPeriod" xml:space="preserve">
     <value>période de recherche</value>
+  </data>
+  <data name="SearchPeriod_Now" xml:space="preserve">
+    <value>4 heures</value>
   </data>
   <data name="SearchPeriod_OneDay" xml:space="preserve">
     <value>un jour</value>

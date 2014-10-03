@@ -25,6 +25,12 @@ namespace PocketCampus.Common
         public string Protocol { get; set; }
 
         /// <summary>
+        /// Gets the address used to access the server.
+        /// </summary>
+        [DataMember( Name = "SERVER_ADDRESS" )]
+        public string Address { get; set; }
+
+        /// <summary>
         /// Gets the port used to access the server.
         /// </summary>
         [DataMember( Name = "SERVER_PORT" )]
@@ -58,9 +64,10 @@ namespace PocketCampus.Common
         /// <summary>
         /// Creates a new ServerConfiguration.
         /// </summary>
-        public ServerConfiguration( string protocol, int port, params string[] enabledPlugins )
+        public ServerConfiguration( string protocol, string address, int port, params string[] enabledPlugins )
         {
             Protocol = protocol;
+            Address = address;
             Port = port;
             EnabledPlugins = enabledPlugins;
         }
