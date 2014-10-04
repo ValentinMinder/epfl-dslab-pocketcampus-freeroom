@@ -1337,13 +1337,13 @@
 		3219EF4F14FCDE4900A271CD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				32FF91CC19C62BC000559E1E /* Social.framework */,
-				32FF91C819C62B3300559E1E /* CoreFoundation.framework */,
-				27E43950185F63E100D03974 /* XCTest.framework */,
 				32930A7617F898910025F864 /* External frameworks */,
+				27E43950185F63E100D03974 /* XCTest.framework */,
 				32B8928115458BD70058E472 /* libz.dylib */,
 				32B7322515C206F30091757D /* libsqlite3.dylib */,
 				321CCF9A16E37F7C002CBEA2 /* libiconv.dylib */,
+				32FF91CC19C62BC000559E1E /* Social.framework */,
+				32FF91C819C62B3300559E1E /* CoreFoundation.framework */,
 				32C879AA183D6C8E00750A11 /* Crashlytics.framework */,
 				321CCF9816E37F6A002CBEA2 /* CoreVideo.framework */,
 				321CCF9616E37F5E002CBEA2 /* CoreMedia.framework */,
@@ -1362,8 +1362,8 @@
 				3219EF5214FCDE4900A271CD /* Foundation.framework */,
 				3219EF5414FCDE4900A271CD /* CoreGraphics.framework */,
 				32E280AA156E613100B74825 /* SenTestingKit.framework */,
-				96AF5068222245668954256E /* libPods.a */,
 				32136E89193F6934002905A9 /* NotificationCenter.framework */,
+				96AF5068222245668954256E /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -3864,6 +3864,7 @@
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -3903,6 +3904,7 @@
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

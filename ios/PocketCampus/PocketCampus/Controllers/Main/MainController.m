@@ -1022,7 +1022,12 @@ static MainController<MainControllerPublic>* instance = nil;
      * Accept gesture only if started from the left edge of the screen
      */
     CGPoint point = [touch locationInView:gestureRecognizer.view];
-    return point.x < 10.0;
+    static CGFloat threshold;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        threshold = 0.05 * [UIScreen mainScreen].bounds.size.width;
+    });
+    return point.x < threshold;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
