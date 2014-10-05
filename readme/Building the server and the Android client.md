@@ -22,3 +22,8 @@ Run these commands from the repository root.
 adb uninstall org.pocketcampus
 adb install android/PocketCampus/bin/PocketCampus-debug.apk 
 ```
+or
+```
+adb install -r android/PocketCampus/bin/PocketCampus-debug.apk
+```
+what keeps local data
