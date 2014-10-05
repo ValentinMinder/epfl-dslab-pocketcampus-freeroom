@@ -344,6 +344,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     } else {
         CGRect searchBarTargetFrame;
         CGRect searchBarContainerViewTargetFrame;
+        
         if ([PCUtils isIdiomPad]) {
             searchBarTargetFrame = CGRectMake(10.0, 0, 270.0, kSearchBarHeightPortrait);
             searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width, searchBarTargetFrame.size.height);
@@ -367,11 +368,12 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
                     break;
             }
         } else {
+            CGFloat windowWidth = [[UIApplication sharedApplication] keyWindow].bounds.size.width;
             switch (searchState) {
                 case SearchStateReady:
                     items = @[self.searchBarItem];
                     self.searchBar.showsCancelButton = YES;
-                    searchBarTargetFrame = CGRectMake(-2.0, 0, 264.0, kSearchBarHeightPortrait);
+                    searchBarTargetFrame = CGRectMake(-2.0, 0, 0.825 * windowWidth, kSearchBarHeightPortrait);
                     searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width-11.0, searchBarTargetFrame.size.height);
                     break;
                 case SearchStateLoading:
@@ -381,13 +383,13 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
                     UIBarButtonItem* space2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:NULL];
                     space2.width = 22.0;
                     items = @[space1, self.loadingBarItem, space2, self.searchBarItem];
-                    searchBarTargetFrame = CGRectMake(-10.0, 0, 220.0, kSearchBarHeightPortrait);
+                    searchBarTargetFrame = CGRectMake(-10.0, 0, 0.6875 * windowWidth, kSearchBarHeightPortrait);
                     searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width+(2*searchBarTargetFrame.origin.x), searchBarTargetFrame.size.height);
                     break;
                 }
                 case SearchStateResults:
                     items = @[self.resultsListButton, self.searchBarItem];
-                    searchBarTargetFrame = CGRectMake(-10.0, 0, 220.0, kSearchBarHeightPortrait);
+                    searchBarTargetFrame = CGRectMake(-10.0, 0, 0.6875 * windowWidth, kSearchBarHeightPortrait);
                     searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width+(2*searchBarTargetFrame.origin.x), searchBarTargetFrame.size.height);
                     break;
                 default:

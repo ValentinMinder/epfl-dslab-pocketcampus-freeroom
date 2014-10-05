@@ -174,7 +174,6 @@
 		326F5A8A19BDD815000693A2 /* PrintBarButtonLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A8819BDD815000693A2 /* PrintBarButtonLandscape@2x.png */; };
 		326FE23A19A5E8FF001A5056 /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */; };
 		326FE23B19A5E9E2001A5056 /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */; };
-		326FE23C19A63D17001A5056 /* CamiproWidget.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 326FE23E19A63D17001A5056 /* CamiproWidget.storyboard */; };
 		326FE24019A64DDE001A5056 /* PocketCampus.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3296570914FF9DDB00C44C12 /* PocketCampus.strings */; };
 		32704C7C15002F67002BCB75 /* Plugins.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32704C7B15002F67002BCB75 /* Plugins.plist */; };
 		3270B7F118056E6F007EE85B /* ListBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3270B7EF18056E6F007EE85B /* ListBarButton.png */; };
@@ -328,6 +327,15 @@
 		32CCB50B15555D9200220282 /* NewsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB50A15555D9200220282 /* NewsListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32CCB510155567CB00220282 /* News.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB50E155567CB00220282 /* News.png */; };
 		32CCB511155567CB00220282 /* News@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB50F155567CB00220282 /* News@2x.png */; };
+		32CE951A19DD90E10071F987 /* CloudPrintRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32870F9D19B674AE00A3BC68 /* CloudPrintRequestViewController.m */; };
+		32CE951B19DD92C50071F987 /* CloudPrintAction.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 32FF91D619C62F7A00559E1E /* CloudPrintAction.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		32CE951E19DD9BD50071F987 /* CloudPrintController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DD524519B4DEAE00B5B241 /* CloudPrintController.m */; };
+		32CE951F19DDA82A0071F987 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 329CF4BD187ABC2C00062C98 /* UIViewController+Additions.m */; };
+		32CE952019DDA8380071F987 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 329CF4BD187ABC2C00062C98 /* UIViewController+Additions.m */; };
+		32CE952119DDBB270071F987 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32B3325717E5C708004F5E75 /* Images.xcassets */; };
+		32CE952319DDDE180071F987 /* CamiproWidget-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32136F46193FBD20002905A9 /* CamiproWidget-Info.plist */; };
+		32CE952519DDDF950071F987 /* CamiproWidget.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32CE952419DDDF950071F987 /* CamiproWidget.storyboard */; };
+		32CE952619DDDF950071F987 /* CamiproWidget.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32CE952419DDDF950071F987 /* CamiproWidget.storyboard */; };
 		32CFECE5151C789A00D8CBA6 /* TransportController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECE4151C789A00D8CBA6 /* TransportController.m */; };
 		32CFECEC151CA90800D8CBA6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */; };
 		32CFECEF151CCB6800D8CBA6 /* PCPersistenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* PCPersistenceManager.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -375,6 +383,8 @@
 		32E0E31A194B206D003251CC /* FilterBarButtonSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E0E318194B206D003251CC /* FilterBarButtonSelected@2x.png */; };
 		32E3E5CB1897D1F200D263C5 /* TransportPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32E3E5CD1897D1F200D263C5 /* TransportPlugin.strings */; };
 		32E3E5D11899370600D263C5 /* MapModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E3E5D01899370600D263C5 /* MapModelAdditions.m */; };
+		32E637E119D0CCB000378788 /* SplashImage4_7inch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E637DF19D0CCB000378788 /* SplashImage4_7inch@2x.png */; };
+		32E637E419D0D25400378788 /* SplashImage5_5inch@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E637E319D0D25400378788 /* SplashImage5_5inch@3x.png */; };
 		32E67DBC16847A0900E5CFF6 /* ClockCell.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBA16847A0900E5CFF6 /* ClockCell.png */; };
 		32E67DBD16847A0900E5CFF6 /* ClockCell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */; };
 		32E67DC01684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */; };
@@ -485,6 +495,13 @@
 			remoteGlobalIDString = 32136F32193FBCFF002905A9;
 			remoteInfo = CamiproWidget;
 		};
+		32CE951C19DD92C50071F987 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3219EF4314FCDE4800A271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 32FF91D519C62F7A00559E1E;
+			remoteInfo = CloudPrintAction;
+		};
 		32FF91E219C62F7A00559E1E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3219EF4314FCDE4800A271CD /* Project object */;
@@ -501,6 +518,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				32CE951B19DD92C50071F987 /* CloudPrintAction.appex in Embed App Extensions */,
 				325FABC819C6FF600075370F /* CamiproWidget.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -759,7 +777,6 @@
 		326F5A8819BDD815000693A2 /* PrintBarButtonLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PrintBarButtonLandscape@2x.png"; sourceTree = "<group>"; };
 		326FE23819A5E8FF001A5056 /* NSUserDefaults+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+Additions.h"; sourceTree = "<group>"; };
 		326FE23919A5E8FF001A5056 /* NSUserDefaults+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Additions.m"; sourceTree = "<group>"; };
-		326FE23D19A63D17001A5056 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/CamiproWidget.storyboard; sourceTree = "<group>"; };
 		32704C65150016B3002BCB75 /* PluginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PluginController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32704C66150016B3002BCB75 /* PluginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PluginController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32704C7B15002F67002BCB75 /* Plugins.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Plugins.plist; sourceTree = "<group>"; };
@@ -867,7 +884,6 @@
 		329E1B3D16E696F80054C3A8 /* FavoriteGlowNavBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteGlowNavBarButton.png; sourceTree = "<group>"; };
 		329E1B3E16E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteGlowNavBarButton@2x.png"; sourceTree = "<group>"; };
 		32A63A4C1535FFF400237841 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TransportTripsHeaderCell.xib; sourceTree = "<group>"; };
-		32A63A4F1536000100237841 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/TransportTripsHeaderCell.xib; sourceTree = "<group>"; };
 		32A77DC116A564460018976F /* UIPopoverController+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPopoverController+Additions.h"; sourceTree = "<group>"; };
 		32A77DC216A564460018976F /* UIPopoverController+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPopoverController+Additions.m"; sourceTree = "<group>"; };
 		32A77DC416A565600018976F /* UIActionSheet+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Additions.h"; sourceTree = "<group>"; };
@@ -965,6 +981,7 @@
 		32CCB50A15555D9200220282 /* NewsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NewsListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32CCB50E155567CB00220282 /* News.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = News.png; sourceTree = "<group>"; };
 		32CCB50F155567CB00220282 /* News@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "News@2x.png"; sourceTree = "<group>"; };
+		32CE952419DDDF950071F987 /* CamiproWidget.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CamiproWidget.storyboard; sourceTree = "<group>"; };
 		32CFECE3151C789A00D8CBA6 /* TransportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TransportController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32CFECE4151C789A00D8CBA6 /* TransportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TransportController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -1004,6 +1021,8 @@
 		32E3E5CE1897D1F500D263C5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/TransportPlugin.strings; sourceTree = "<group>"; };
 		32E3E5CF1899370600D263C5 /* MapModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapModelAdditions.h; sourceTree = "<group>"; };
 		32E3E5D01899370600D263C5 /* MapModelAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapModelAdditions.m; sourceTree = "<group>"; };
+		32E637DF19D0CCB000378788 /* SplashImage4_7inch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SplashImage4_7inch@2x.png"; sourceTree = "<group>"; };
+		32E637E319D0D25400378788 /* SplashImage5_5inch@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SplashImage5_5inch@3x.png"; sourceTree = "<group>"; };
 		32E67DBA16847A0900E5CFF6 /* ClockCell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClockCell.png; sourceTree = "<group>"; };
 		32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ClockCell@2x.png"; sourceTree = "<group>"; };
 		32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryEmptyDetailView.xib; sourceTree = "<group>"; };
@@ -1053,6 +1072,7 @@
 		32FB2E0615179014007AE82B /* TransportService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TransportService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32FB441E17650268008C8282 /* NSDate+Addtions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Addtions.h"; sourceTree = "<group>"; };
 		32FB441F17650268008C8282 /* NSDate+Addtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Addtions.m"; sourceTree = "<group>"; };
+		32FD4D6719D3569F00716592 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/TransportTripsHeaderCell.xib; sourceTree = "<group>"; };
 		32FDA99B1854A06F00C6393A /* NSOperationWithDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOperationWithDelegate.h; sourceTree = "<group>"; };
 		32FDA99C1854A06F00C6393A /* NSOperationWithDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationWithDelegate.m; sourceTree = "<group>"; };
 		32FDA99E1854A30900C6393A /* NSOperationWithDelegate_Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSOperationWithDelegate_Protected.h; sourceTree = "<group>"; };
@@ -1280,7 +1300,7 @@
 			isa = PBXGroup;
 			children = (
 				32136F46193FBD20002905A9 /* CamiproWidget-Info.plist */,
-				326FE23E19A63D17001A5056 /* CamiproWidget.storyboard */,
+				32CE952419DDDF950071F987 /* CamiproWidget.storyboard */,
 				32136F48193FBD20002905A9 /* CamiproWidgetViewController.h */,
 				32136F49193FBD20002905A9 /* CamiproWidgetViewController.m */,
 			);
@@ -1451,6 +1471,8 @@
 				32E0E314194B1FDD003251CC /* FilterBarButton@2x.png */,
 				32E0E317194B206D003251CC /* FilterBarButtonSelected.png */,
 				32E0E318194B206D003251CC /* FilterBarButtonSelected@2x.png */,
+				32E637E319D0D25400378788 /* SplashImage5_5inch@3x.png */,
+				32E637DF19D0CCB000378788 /* SplashImage4_7inch@2x.png */,
 				328A72DD184A4EE0002C5A6B /* SplashImage4inch@2x.png */,
 				328A72DE184A4EE0002C5A6B /* SplashImage@2x.png */,
 				321F37E115B02FBE00E7BA6D /* HelpBarButton.png */,
@@ -2681,6 +2703,7 @@
 				32136F41193FBCFF002905A9 /* PBXTargetDependency */,
 				32FF91E319C62F7A00559E1E /* PBXTargetDependency */,
 				325FABCA19C6FF610075370F /* PBXTargetDependency */,
+				32CE951D19DD92C50071F987 /* PBXTargetDependency */,
 			);
 			name = PocketCampus;
 			productName = PocketCampus;
@@ -2743,10 +2766,10 @@
 						DevelopmentTeam = 7KPBSVCYLZ;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
-								enabled = 0;
+								enabled = 1;
 							};
 							com.apple.Keychain = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -2777,9 +2800,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				326FE23C19A63D17001A5056 /* CamiproWidget.storyboard in Resources */,
 				32AF954B19B39F91008CB161 /* Cross@2x.png in Resources */,
 				32D834C219A4DE5100844901 /* CamiproPlugin.strings in Resources */,
+				32CE952619DDDF950071F987 /* CamiproWidget.storyboard in Resources */,
 				32AF954919B39F91008CB161 /* Cross.png in Resources */,
 				32975CF119A34EB600146390 /* InfoPlist.strings in Resources */,
 				326FE24019A64DDE001A5056 /* PocketCampus.strings in Resources */,
@@ -2854,6 +2877,7 @@
 				32710E951565129600DE6984 /* CamiproLarge.png in Resources */,
 				32AF214415B193A200BB445D /* TransportHelpView.xib in Resources */,
 				321F37E615B02FBE00E7BA6D /* HelpBarButton.png in Resources */,
+				32E637E419D0D25400378788 /* SplashImage5_5inch@3x.png in Resources */,
 				321F37E715B02FBE00E7BA6D /* HelpBarButton@2x.png in Resources */,
 				32506D06181DC7AF003F08D7 /* MasterHidden@2x.png in Resources */,
 				27B74CE719A205E6006B2F17 /* RecommendedApps@2x.png in Resources */,
@@ -2911,6 +2935,7 @@
 				32D0B263166ABEA200F68304 /* FloorUp@2x.png in Resources */,
 				329CA503166D452E00F7B1AE /* SettingsBarButton.png in Resources */,
 				329CA504166D452E00F7B1AE /* SettingsBarButton@2x.png in Resources */,
+				32CE952519DDDF950071F987 /* CamiproWidget.storyboard in Resources */,
 				32035BB5166E988600E134DD /* MoodleFileView.xib in Resources */,
 				324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */,
 				327412DA167E776A001E8C62 /* DownloadedCorner.png in Resources */,
@@ -2967,12 +2992,14 @@
 				32DD525519B4DEAE00B5B241 /* CloudPrint@2x.png in Resources */,
 				32AEEC831747C11C006DBA2F /* CamiproView~iphone.xib in Resources */,
 				32C450B01824137B000C99A3 /* FoodMealCell.xib in Resources */,
+				32E637E119D0CCB000378788 /* SplashImage4_7inch@2x.png in Resources */,
 				327B0C24175199590011D81E /* ArrowUpRightCircleAccessory.png in Resources */,
 				32290AD318200C68005869E7 /* FoodLarge@2x.png in Resources */,
 				327B0C25175199590011D81E /* ArrowUpRightCircleAccessory@2x.png in Resources */,
 				327585A41844C5B1004215FC /* ArrowSimpleRight.png in Resources */,
 				328A132218296E2D00F4C622 /* FoodSmileyMeh@2x.png in Resources */,
 				328A72E0184A4EE0002C5A6B /* SplashImage@2x.png in Resources */,
+				32CE952319DDDE180071F987 /* CamiproWidget-Info.plist in Resources */,
 				32074B7D17FB09CA009804CE /* NewsLarge@2x.png in Resources */,
 				32CACD98183E366B00BD36F9 /* LocationArrow@2x.png in Resources */,
 				3200375618118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png in Resources */,
@@ -2997,6 +3024,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32CE952119DDBB270071F987 /* Images.xcassets in Resources */,
 				32F9619D19C63227006A4C46 /* InfoPlist.strings in Resources */,
 				32F9619C19C631ED006A4C46 /* CloudPrintPlugin.strings in Resources */,
 				32F9619B19C631E1006A4C46 /* PocketCampus.strings in Resources */,
@@ -3120,6 +3148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32CE951F19DDA82A0071F987 /* UIViewController+Additions.m in Sources */,
 				32B5613A19A4CD740006BEC8 /* PCValues.m in Sources */,
 				32B5613719A4CD640006BEC8 /* NSOperationWithDelegate.m in Sources */,
 				32B5613419A4CD5D0006BEC8 /* PCPersistenceManager.m in Sources */,
@@ -3316,6 +3345,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32CE952019DDA8380071F987 /* UIViewController+Additions.m in Sources */,
 				32F9619A19C631BC006A4C46 /* PCTableViewCellAdditions.m in Sources */,
 				32F9619919C631B2006A4C46 /* PushNotifController.m in Sources */,
 				32F9619619C6315F006A4C46 /* AuthenticationController.m in Sources */,
@@ -3344,6 +3374,8 @@
 				32F9618F19C630DF006A4C46 /* CloudPrintModelAdditions.m in Sources */,
 				32F9619019C630DF006A4C46 /* CloudPrintMultiPageLayoutCell.m in Sources */,
 				32F9619119C630DF006A4C46 /* CloudPrintMultiPageLayoutButton.m in Sources */,
+				32CE951A19DD90E10071F987 /* CloudPrintRequestViewController.m in Sources */,
+				32CE951E19DD9BD50071F987 /* CloudPrintController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3359,6 +3391,11 @@
 			isa = PBXTargetDependency;
 			target = 32136F32193FBCFF002905A9 /* CamiproWidget */;
 			targetProxy = 325FABC919C6FF610075370F /* PBXContainerItemProxy */;
+		};
+		32CE951D19DD92C50071F987 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 32FF91D519C62F7A00559E1E /* CloudPrintAction */;
+			targetProxy = 32CE951C19DD92C50071F987 /* PBXContainerItemProxy */;
 		};
 		32FF91E319C62F7A00559E1E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3413,14 +3450,6 @@
 			name = CloudPrintMultiPageLayoutCell.xib;
 			sourceTree = "<group>";
 		};
-		326FE23E19A63D17001A5056 /* CamiproWidget.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				326FE23D19A63D17001A5056 /* en */,
-			);
-			name = CamiproWidget.storyboard;
-			sourceTree = "<group>";
-		};
 		32777B4215D1BFB400A29F56 /* PCAbout.html */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -3461,7 +3490,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				32A63A4C1535FFF400237841 /* en */,
-				32A63A4F1536000100237841 /* fr */,
+				32FD4D6719D3569F00716592 /* fr */,
 			);
 			name = TransportTripsHeaderCell.xib;
 			sourceTree = "<group>";
@@ -3677,8 +3706,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "793228F1-8B65-4CDC-B727-E1B51B7949C3";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "793228F1-8B65-4CDC-B727-E1B51B7949C3";
+				PROVISIONING_PROFILE = "0961a69a-4644-4e62-b540-dcea71376372";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0961a69a-4644-4e62-b540-dcea71376372";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "Plugins/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
@@ -3791,12 +3820,14 @@
 			baseConfigurationReference = 43F74C41A62B4C69936087B0 /* Pods.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = CloudPrintAppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_ENTITLEMENTS = CloudPrintAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3827,12 +3858,14 @@
 			baseConfigurationReference = 43F74C41A62B4C69936087B0 /* Pods.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = CloudPrintAppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_ENTITLEMENTS = CloudPrintAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;

@@ -137,7 +137,7 @@ static const NSInteger kMealsSection = 1;
         case kMealsSection:
         {
             EpflMeal* meal = self.restaurant.rUniqueMeals[indexPath.row];
-            return [FoodMealCell preferredHeightForMeal:meal];
+            return [FoodMealCell preferredHeightForMeal:meal inTableView:tableView];
         }
     }
     return 0.0;

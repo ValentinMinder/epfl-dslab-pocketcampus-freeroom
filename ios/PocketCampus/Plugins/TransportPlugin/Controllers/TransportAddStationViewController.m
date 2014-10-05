@@ -119,6 +119,7 @@
 #pragma mark - Actions
 
 - (void)dismiss {
+    [self.view endEditing:YES];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 

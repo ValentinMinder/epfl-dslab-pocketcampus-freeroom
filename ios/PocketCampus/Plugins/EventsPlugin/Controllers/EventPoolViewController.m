@@ -1137,8 +1137,10 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         return UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
     }];
     
-    cell.imageView.image = nil;
-    [(PCTableViewAdditions*)(self.tableView) setImageURL:[NSURL URLWithString:eventItem.eventThumbnail] forCell:cell atIndexPath:indexPath];
+    cell.imageView.image = nil; // as said in PCTableViewAdditions doc for setImageURL:forCell:atIndexPath:
+    if (tableView == self.tableView) {
+        [(PCTableViewAdditions*)(self.tableView) setImageURL:[NSURL URLWithString:eventItem.eventThumbnail] forCell:cell atIndexPath:indexPath];
+    }
     
     return cell;
 }
