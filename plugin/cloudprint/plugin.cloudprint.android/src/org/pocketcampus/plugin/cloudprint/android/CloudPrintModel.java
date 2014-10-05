@@ -104,12 +104,16 @@ public class CloudPrintModel extends PluginModel implements ICloudPrintModel {
 			addMultipleCopiesList(null);
 		if(pageRangeList.size() == 0)
 			addPageRangeList(null);
-		if(colorConfigList.size() == 0)
-			addColorConfigList(null);
+		if(colorConfigList.size() == 0) {
+			addColorConfigList(CloudPrintColorConfig.COLOR);
+			addColorConfigList(CloudPrintColorConfig.BLACK_WHITE);
+		}
 		if(doubleSidedList.size() == 0)
 			addDoubleSidedList(null);
-		if(orientationList.size() == 0)
-			addOrientationList(null);
+		if(orientationList.size() == 0) {
+			addOrientationList(CloudPrintOrientation.PORTRAIT);
+			addOrientationList(CloudPrintOrientation.LANDSCAPE);
+		}
 		if(multiPageList.size() == 0)
 			addMultiPageList(null);
 		

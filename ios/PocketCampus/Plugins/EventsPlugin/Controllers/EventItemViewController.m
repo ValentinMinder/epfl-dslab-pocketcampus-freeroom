@@ -233,7 +233,11 @@
     
     if (self.eventItem.eventThumbnail && !self.eventItem.hideThumbnail) {
         replacements[@"$EVENT_ITEM_THUMBNAIL$"] = [NSString stringWithFormat:@"<img src='%@'>", self.eventItem.eventThumbnail];
-        replacements[@"$PADDING_LEFT_TITLE_PX$"] = @"6";
+        replacements[@"$PADDING_LEFT_TITLE$"] = @"6px";
+        replacements[@"$WIDTH_TITLE$"] = @"63%";
+    } else {
+        replacements[@"$PADDING_LEFT_TITLE$"] = @"0px";
+        replacements[@"$WIDTH_TITLE$"] = @"100%";
     }
     
     if (self.eventItem.eventTitle && !self.eventItem.hideTitle) {

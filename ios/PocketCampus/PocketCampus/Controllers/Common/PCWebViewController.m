@@ -88,19 +88,19 @@
     self.goForwardBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ArrowRightBarButton"] style:UIBarButtonItemStylePlain target:self.webView action:@selector(goForward)];
     UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem* loadingItem = [[UIBarButtonItem alloc] initWithCustomView:self.loadingIndicator];
-    self.toolbarItems= @[self.goBackBarButton, fixedSpace, self.goForwardBarButton, flexibleSpace, loadingItem];
+    self.toolbarItems = @[self.goBackBarButton, fixedSpace, self.goForwardBarButton, flexibleSpace, loadingItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.toolbar.translucent = NO;
-    [self.navigationController setToolbarHidden:NO animated:NO];
+    self.navigationController.toolbarHidden = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     self.navigationController.toolbar.translucent = YES;
-    [self.navigationController setToolbarHidden:YES animated:NO];
+    self.navigationController.toolbarHidden = YES;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

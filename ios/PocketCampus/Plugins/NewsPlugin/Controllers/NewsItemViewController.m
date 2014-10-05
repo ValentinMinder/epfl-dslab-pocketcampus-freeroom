@@ -45,6 +45,8 @@
 
 #import "PCWebViewController.h"
 
+#import "UIScrollView+LGAAdditions.h"
+
 @interface NewsItemViewController ()<NewsServiceDelegate, UIWebViewDelegate>
 
 @property (nonatomic, strong) UIPopoverController* actionsPopover;
@@ -80,8 +82,7 @@
 
 #pragma mark - UIViewController overrides
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     if (self.splitViewController) {
@@ -94,11 +95,28 @@
     self.webView.scalesPageToFit = NO;
     
     [self loadNewsItem];
+    
+    if (![PCUtils isIdiomPad]) {
+        __weak __typeof(self) welf = self;
+        [self.webView.scrollView setLga_toggleElementsVisiblityOnScrollBlock:^(BOOL hidden) {
+            [welf.navigationController setNavigationBarHidden:hidden animated:YES];
+            [welf setNeedsStatusBarAppearanceUpdate];
+        }];
+    }
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return self.navigationController.navigationBarHidden;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -194,6 +212,7 @@
             dispatch_once(&onceToken, ^{
                 formatter = [NSDateFormatter new];
                 formatter.dateStyle = NSDateFormatterLongStyle;
+                formatter.doesRelativeDateFormatting = YES;
             });
             
             NSString* dateString = [formatter stringFromDate:date];

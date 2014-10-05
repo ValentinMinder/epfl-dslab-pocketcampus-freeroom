@@ -348,7 +348,11 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         NSURL* resourceLocalURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleFile:self.moodleFile]];
         self.docController = [UIDocumentInteractionController interactionControllerWithURL:resourceLocalURL];
         self.docController.delegate = self;
-        [self.docController presentOptionsMenuFromBarButtonItem:[self actionButton] animated:YES];
+        if ([PCUtils isOSVersionGreaterThanOrEqualTo:8.0]) {
+            [self.docController presentOpenInMenuFromBarButtonItem:[self actionButton] animated:YES];
+        } else {
+            [self.docController presentOptionsMenuFromBarButtonItem:[self actionButton] animated:YES];
+        }
     }
 }
 

@@ -42,6 +42,7 @@
 @property (nonatomic, copy) void (^completionHandler)(NCUpdateResult);
 @property (nonatomic, strong) CamiproController* camiproController;
 @property (nonatomic, strong) CamiproService* camiproService;
+@property (nonatomic, strong) NSTimer* refreshTimer;
 
 @end
 
@@ -51,10 +52,40 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.balanceTitleLabel.text = NSLocalizedStringFromTable(@"Balance", @"CamiproPlugin", nil);
+    self.gaiScreenName = @"/camipro/widget";
+/*#warning TEST
+    //Crashlytics
+    BOOL clEnabledConfig = [[PCConfig defaults] boolForKey:PC_CONFIG_CRASHLYTICS_ENABLED_KEY];
+    BOOL clEnabledUserConfig = [[PCConfig defaults] boolForKey:PC_USER_CONFIG_CRASHLYTICS_ENABLED_KEY];
+    if (clEnabledConfig && clEnabledUserConfig) {
+        NSString* crashlyticsAPIKey = [[PCConfig defaults] stringForKey:PC_CONFIG_CRASHLYTICS_APIKEY_KEY];
+        if (crashlyticsAPIKey) {
+            static dispatch_once_t onceToken;
+            dispatch_once(&onceToken, ^{
+                CLSNSLog(@"-> Starting Crashlytics");
+                [Crashlytics startWithAPIKey:crashlyticsAPIKey delegate:nil];
+            });
+        } else {
+            CLSNSLog(@"!! WARNING: could not start Crashlytics, did not find APIKey in config.");
+        }
+    } else {
+        CLSNSLog(@"-> Crashlytics disabled (config: %d, user: %d)", clEnabledConfig, clEnabledUserConfig);
+    }
+    
+#warning END OF TEST*/
+    
+    self.balanceTitleLabel.text = NSLocalizedStringFromTable(@"Balance", @"CamiproPlugin", nil);    
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(widgetTapped)];
     [self.view addGestureRecognizer:tapGesture];
     self.preferredContentSize = CGSizeMake(320.0, 50.0);
+    
+    //iOS 8 weirdly sometimes does not call widgetPerformUpdateWithCompletionHandler: after viewDidLoad. So we want to make sure refresh is triggered.
+    self.refreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(refresh) userInfo:nil repeats:NO];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
 }
 
 - (UIEdgeInsets)widgetMarginInsetsForProposedMarginInsets:(UIEdgeInsets)defaultMarginInsets {
@@ -71,29 +102,39 @@
     // If an error is encoutered, use NCUpdateResultFailed
     // If there's no update required, use NCUpdateResultNoData
     // If there's an update, use NCUpdateResultNewData
-    
-    self.preferredContentSize = CGSizeMake(320.0, 50.0);
     self.completionHandler = completionHandler;
-    
-    [self.camiproService cancelOperationsForDelegate:self];
-    if (!self.camiproService) {
-        self.camiproService = [CamiproService sharedInstanceToRetain];
-    }
-
-    [self startBalanceAndTransactionsRequest];
-
-    self.balanceLabel.text = nil;
-    [self.loadingIndicator startAnimating];
-    
+    [self refresh];
 }
 
 #pragma mark - Actions
 
 - (void)widgetTapped {
+    [self trackAction:@"OpenApp"];
     [self.extensionContext openURL:[NSURL URLWithString:@"pocketcampus://camipro.plugin.pocketcampus.org"] completionHandler:NULL];
 }
 
+/*- (void)crash {
+    [[Crashlytics sharedInstance] crash];
+}*/
+
 #pragma mark - Private
+
+- (void)refresh {
+    [self.refreshTimer invalidate];
+    self.refreshTimer = nil;
+    
+    self.preferredContentSize = CGSizeMake(320.0, 50.0);
+    
+    [self.camiproService cancelOperationsForDelegate:self];
+    if (!self.camiproService) {
+        self.camiproService = [CamiproService sharedInstanceToRetain];
+    }
+    
+    [self startBalanceAndTransactionsRequest];
+    
+    self.balanceLabel.text = nil;
+    [self.loadingIndicator startAnimating];
+}
 
 - (SessionId*)buildSessionIdFromCamiproSession:(CamiproSession*)camiproSession {
     return [[SessionId alloc] initWithTos:0 camiproCookie:camiproSession.camiproCookie];
@@ -156,7 +197,6 @@
     [self.loadingIndicator stopAnimating];
     switch (balanceAndTransactions.iStatus) {
         case 407:
-            CLSNSLog(@"-> User session has expired. Trying to login...");
             [self.loadingIndicator startAnimating];
             [self.camiproService deleteCamiproSession];
             [self startBalanceAndTransactionsRequest];
@@ -168,6 +208,7 @@
             if (self.completionHandler) {
                 self.completionHandler(NCUpdateResultNewData);
             }
+            self.completionHandler = nil;
             break;
         default:
             [self getBalanceAndTransactionsFailedForCamiproRequest:camiproRequest];
@@ -182,6 +223,7 @@
     if (self.completionHandler) {
         self.completionHandler(NCUpdateResultFailed);
     }
+    self.completionHandler = nil;
 }
 
 - (void)serviceConnectionToServerFailed {
@@ -193,11 +235,13 @@
     if (self.completionHandler) {
         self.completionHandler(NCUpdateResultFailed);
     }
+    self.completionHandler = nil;
 }
 
 #pragma mark - Dealloc
 
 - (void)dealloc {
+    [self.refreshTimer invalidate];
     [self.camiproService cancelOperationsForDelegate:self];
 }
 

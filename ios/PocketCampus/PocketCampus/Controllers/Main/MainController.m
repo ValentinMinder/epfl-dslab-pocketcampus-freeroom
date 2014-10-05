@@ -25,16 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 07.10.12.
-
-//  ARC enabled
 
 #import "MainController.h"
 
 #import "PluginController.h"
+
+#import "ZUUIRevealController.h"
 
 #import "PluginNavigationController.h"
 
@@ -246,8 +243,9 @@ static MainController<MainControllerPublic>* instance = nil;
         }
     }
     
+#ifndef TARGET_IS_EXTENSION
     [[PCGAITracker sharedTracker] trackAction:@"OpenPocketCampusURL" inScreenWithName:@"/" contentInfo:[url absoluteString]];
-    
+#endif
     return YES;
 }
 
@@ -299,7 +297,7 @@ static MainController<MainControllerPublic>* instance = nil;
  */
 - (void)preConfigInit {
     self.window.tintColor = [PCValues pocketCampusRed];
-    self.revealWidth = [PCUtils isIdiomPad] ? 320.0 : 280;
+    self.revealWidth = [PCUtils isIdiomPad] ? 320.0 : (0.84 * self.window.bounds.size.width);
     [self initAndShowSplashViewViewController];
 }
 
@@ -353,7 +351,9 @@ static MainController<MainControllerPublic>* instance = nil;
     }
     
     //Google Analytics
+#ifndef TARGET_IS_EXTENSION
     [[PCGAITracker sharedTracker] trackAppOnce];
+#endif
 }
 
 - (void)initPluginsList {
@@ -996,7 +996,9 @@ static MainController<MainControllerPublic>* instance = nil;
 #pragma mark - CrashlyticsDelegate
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash {
+#ifndef TARGET_IS_EXTENSION
     [[PCGAITracker sharedTracker] trackAppCrashedDuringPreviousExecution];
+#endif
 }
 
 #pragma mark - UIGestureRecognizerDelegate

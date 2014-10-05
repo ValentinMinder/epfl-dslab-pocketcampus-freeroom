@@ -333,7 +333,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 
 		final Spinner s = (Spinner) findViewById(R.id.cloudprint_select_orientation);
 		
-		s.setVisibility(View.GONE);
+		//s.setVisibility(View.GONE);
 		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(CloudPrintMainView.this, android.R.layout.simple_spinner_item, android.R.id.text1);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -342,7 +342,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 			
 			adapter.add(mController.orientationToDisplayString(r));
 		}
-		adapter.add(getString(R.string.cloudprint_string_other_orientation_lps));
+		//adapter.add(getString(R.string.cloudprint_string_other_orientation_lps));
 		adapter.notifyDataSetChanged();
 		
 		s.setSelection(mModel.getSelOrientationList());
@@ -385,7 +385,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 			
 			adapter.add(mController.colorConfigToDisplayString(r));
 		}
-		adapter.add(getString(R.string.cloudprint_string_other_color_configuration_lps));
+		//adapter.add(getString(R.string.cloudprint_string_other_color_configuration_lps));
 		adapter.notifyDataSetChanged();
 		
 		s.setSelection(mModel.getSelColorConfigList());

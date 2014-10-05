@@ -81,4 +81,5 @@ struct PrintDocumentResponse {
 
 service CloudPrintService {
 	PrintDocumentResponse printDocument( 1: PrintDocumentRequest request );
+	PrintDocumentResponse printPreview( 1: PrintDocumentRequest request );
 }
