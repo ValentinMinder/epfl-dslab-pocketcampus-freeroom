@@ -119,8 +119,14 @@ static float const kProgressMax = 100;
     }
 
     CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[path pathExtension], NULL);
+    if (!UTI) {
+        return NO;
+    }
     CFStringRef mimeType = UTTypeCopyPreferredTagWithClass (UTI, kUTTagClassMIMEType);
     CFRelease(UTI);
+    if (!mimeType) {
+        return NO;
+    }
     BOOL isSupported = NO;
     if ([(__bridge NSString*)mimeType isEqualToString:@"application/pdf"]) {
         isSupported = YES;
