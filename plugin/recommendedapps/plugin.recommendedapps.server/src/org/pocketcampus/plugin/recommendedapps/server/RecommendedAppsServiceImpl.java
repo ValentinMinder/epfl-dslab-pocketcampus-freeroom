@@ -152,7 +152,7 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 		return categories;
 	}
 
-	private static final List<String> knownLanguages = Arrays.asList("EN");
+	private static final List<String> knownLanguages = Arrays.asList("EN", "FR");
 
 	@Override
 	public RecommendedAppsResponse getRecommendedApps(
