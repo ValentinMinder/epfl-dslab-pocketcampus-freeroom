@@ -44,7 +44,7 @@
 - (instancetype)init {
     self = [self initWithNibName:@"CloudPrintStatusView" bundle:nil];
     if (self) {
-        self.title = @"EPFL CloudPrint";
+        self.title = @"EPFL Print";
         self.gaiScreenName = @"/cloudprint/status";
         self.documentName = nil;
         self.statusMessage = CloudPrintStatusMessageLoading;
