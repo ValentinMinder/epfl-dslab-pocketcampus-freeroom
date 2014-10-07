@@ -27,7 +27,7 @@
 
 //  Created by Loïc Gardiol on 01.09.2014.
 
-"PluginName" = "CloudPrint";
+"PluginName" = "Impression";
 "Print" = "Imprimer";
 "1Copy" = "1 copie";
 "NbCopiesWithFormat" = "%d copies";

@@ -87,7 +87,7 @@ static NSInteger const kPageToTheEndValue = 10000;
 - (instancetype)initWithDocumentName:(NSString*)docName printRequest:(PrintDocumentRequest*)printRequest {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = @"EPFL CloudPrint";
+        self.title = @"EPFL Print";
         self.gaiScreenName = @"/cloudprint";
         self.documentName = docName;
         self.printRequest = printRequest ?: [PrintDocumentRequest createDefaultRequest];
