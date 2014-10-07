@@ -10,18 +10,12 @@
 		18BE4633A56CF967183FC968 /* IsAcademiaController.m in Sources */ = {isa = PBXBuildFile; fileRef = 104F4598B47B32142EF41F88 /* IsAcademiaController.m */; };
 		1997124D15EFC9CA00E2A679 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B7322515C206F30091757D /* libsqlite3.dylib */; };
 		1E8A476B975E7A7BDF71ABF5 /* isacademia.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A324ABBA411E9EDDA54A1AB /* isacademia.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		2708FE8219A491A70019D694 /* RecommendedAppsDisclaimerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2708FE8419A491A70019D694 /* RecommendedAppsDisclaimerView.xib */; };
 		27B74CE219A205E6006B2F17 /* RecommendedAppsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B74CD519A205E6006B2F17 /* RecommendedAppsController.m */; };
 		27B74CE319A205E6006B2F17 /* RecommendedAppsService.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B74CD819A205E6006B2F17 /* RecommendedAppsService.m */; };
 		27B74CE619A205E6006B2F17 /* RecommendedApps.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B74CDF19A205E6006B2F17 /* RecommendedApps.png */; };
 		27B74CE719A205E6006B2F17 /* RecommendedApps@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B74CE019A205E6006B2F17 /* RecommendedApps@2x.png */; };
 		27B74CE819A206C8006B2F17 /* RecommendedAppsPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27B74CEA19A206C8006B2F17 /* RecommendedAppsPlugin.strings */; };
-		27B74CF919A21059006B2F17 /* RecommendedAppTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27B74CF819A21059006B2F17 /* RecommendedAppTableViewCell.xib */; };
 		27B74CFC19A210D6006B2F17 /* RecommendedAppsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B74CFB19A210D6006B2F17 /* RecommendedAppsListViewController.m */; };
-		27B74CFF19A21146006B2F17 /* RecommendedAppTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B74CFE19A21146006B2F17 /* RecommendedAppTableViewCell.m */; };
-		27B74D0219A212AB006B2F17 /* RecommendedAppScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B74D0119A212AB006B2F17 /* RecommendedAppScrollView.m */; };
-		27B74D0519A2134D006B2F17 /* RecommendedAppThumbView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B74D0419A2134D006B2F17 /* RecommendedAppThumbView.m */; };
-		27B74D1119A24323006B2F17 /* RecommendedAppThumbView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27B74D1019A24322006B2F17 /* RecommendedAppThumbView.xib */; };
 		27C1161019A2588E00FEF411 /* recommendedapps.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C1160F19A2588E00FEF411 /* recommendedapps.m */; };
 		320037511811843500901F6A /* CheckmarkRoundedSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200374F1811843500901F6A /* CheckmarkRoundedSquare.png */; };
 		320037521811843500901F6A /* CheckmarkRoundedSquare@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320037501811843500901F6A /* CheckmarkRoundedSquare@2x.png */; };
@@ -157,6 +151,10 @@
 		32617BCE16E7DA5F004F9CF9 /* PCTableViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32617BCD16E7DA5F004F9CF9 /* PCTableViewAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32649B23160DD7DA002E6498 /* DirectoryPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32649B22160DD7DA002E6498 /* DirectoryPersonViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32675C2415F50F4A00880387 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32675C2315F50F4A00880387 /* Config.plist */; };
+		3267676319E2C96800365F6D /* RecommendedAppsForCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3267676119E2C96800365F6D /* RecommendedAppsForCategoryCell.m */; };
+		3267676419E2C96800365F6D /* RecommendedAppsForCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3267676219E2C96800365F6D /* RecommendedAppsForCategoryCell.xib */; };
+		3267676819E2CE4800365F6D /* RecommendedAppCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3267676619E2CE4800365F6D /* RecommendedAppCollectionViewCell.m */; };
+		3267676919E2CE4800365F6D /* RecommendedAppCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3267676719E2CE4800365F6D /* RecommendedAppCollectionViewCell.xib */; };
 		3268063219AF44B800E8CD22 /* THTTPClient+MutableRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268063119AF44B800E8CD22 /* THTTPClient+MutableRequest.m */; };
 		3268063319AF44B800E8CD22 /* THTTPClient+MutableRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268063119AF44B800E8CD22 /* THTTPClient+MutableRequest.m */; };
 		326B9250150279E900DB4AEE /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B924F150279E900DB4AEE /* AddressBookUI.framework */; };
@@ -532,8 +530,6 @@
 		104F4598B47B32142EF41F88 /* IsAcademiaController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = IsAcademiaController.m; path = Plugins/IsAcademiaPlugin/Controllers/IsAcademiaController.m; sourceTree = SOURCE_ROOT; };
 		14D146FF839137578105D4C3 /* EventsService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EventsService.h; path = Plugins/EventsPlugin/Model/EventsService.h; sourceTree = SOURCE_ROOT; };
 		152945DD901E004926831E89 /* IsAcademiaService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = IsAcademiaService.m; path = Plugins/IsAcademiaPlugin/Model/IsAcademiaService.m; sourceTree = SOURCE_ROOT; };
-		2708FE8319A491A70019D694 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RecommendedAppsDisclaimerView.xib; sourceTree = "<group>"; };
-		2708FE8519A491AD0019D694 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/RecommendedAppsDisclaimerView.xib; sourceTree = "<group>"; };
 		27B74CD419A205E6006B2F17 /* RecommendedAppsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppsController.h; sourceTree = "<group>"; };
 		27B74CD519A205E6006B2F17 /* RecommendedAppsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedAppsController.m; sourceTree = "<group>"; };
 		27B74CD719A205E6006B2F17 /* RecommendedAppsService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppsService.h; sourceTree = "<group>"; };
@@ -542,16 +538,8 @@
 		27B74CE019A205E6006B2F17 /* RecommendedApps@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RecommendedApps@2x.png"; sourceTree = "<group>"; };
 		27B74CE919A206C8006B2F17 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/RecommendedAppsPlugin.strings; sourceTree = "<group>"; };
 		27B74CEB19A206D3006B2F17 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RecommendedAppsPlugin.strings; sourceTree = "<group>"; };
-		27B74CF819A21059006B2F17 /* RecommendedAppTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecommendedAppTableViewCell.xib; sourceTree = "<group>"; };
 		27B74CFA19A210D6006B2F17 /* RecommendedAppsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppsListViewController.h; sourceTree = "<group>"; };
 		27B74CFB19A210D6006B2F17 /* RecommendedAppsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedAppsListViewController.m; sourceTree = "<group>"; };
-		27B74CFD19A21146006B2F17 /* RecommendedAppTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppTableViewCell.h; sourceTree = "<group>"; };
-		27B74CFE19A21146006B2F17 /* RecommendedAppTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedAppTableViewCell.m; sourceTree = "<group>"; };
-		27B74D0019A212AB006B2F17 /* RecommendedAppScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppScrollView.h; sourceTree = "<group>"; };
-		27B74D0119A212AB006B2F17 /* RecommendedAppScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedAppScrollView.m; sourceTree = "<group>"; };
-		27B74D0319A2134D006B2F17 /* RecommendedAppThumbView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppThumbView.h; sourceTree = "<group>"; };
-		27B74D0419A2134D006B2F17 /* RecommendedAppThumbView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedAppThumbView.m; sourceTree = "<group>"; };
-		27B74D1019A24322006B2F17 /* RecommendedAppThumbView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecommendedAppThumbView.xib; sourceTree = "<group>"; };
 		27C1160E19A2588E00FEF411 /* recommendedapps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = recommendedapps.h; sourceTree = "<group>"; };
 		27C1160F19A2588E00FEF411 /* recommendedapps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = recommendedapps.m; sourceTree = "<group>"; };
 		27E43950185F63E100D03974 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -758,6 +746,12 @@
 		32649B21160DD7DA002E6498 /* DirectoryPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DirectoryPersonViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32649B22160DD7DA002E6498 /* DirectoryPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DirectoryPersonViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32675C2315F50F4A00880387 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
+		3267676019E2C96800365F6D /* RecommendedAppsForCategoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppsForCategoryCell.h; sourceTree = "<group>"; };
+		3267676119E2C96800365F6D /* RecommendedAppsForCategoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedAppsForCategoryCell.m; sourceTree = "<group>"; };
+		3267676219E2C96800365F6D /* RecommendedAppsForCategoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecommendedAppsForCategoryCell.xib; sourceTree = "<group>"; };
+		3267676519E2CE4800365F6D /* RecommendedAppCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppCollectionViewCell.h; sourceTree = "<group>"; };
+		3267676619E2CE4800365F6D /* RecommendedAppCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedAppCollectionViewCell.m; sourceTree = "<group>"; };
+		3267676719E2CE4800365F6D /* RecommendedAppCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecommendedAppCollectionViewCell.xib; sourceTree = "<group>"; };
 		3268063019AF44B800E8CD22 /* THTTPClient+MutableRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "THTTPClient+MutableRequest.h"; sourceTree = "<group>"; };
 		3268063119AF44B800E8CD22 /* THTTPClient+MutableRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "THTTPClient+MutableRequest.m"; sourceTree = "<group>"; };
 		326B924F150279E900DB4AEE /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
@@ -1229,15 +1223,12 @@
 		27B74CDD19A205E6006B2F17 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				27B74D0319A2134D006B2F17 /* RecommendedAppThumbView.h */,
-				27B74D0419A2134D006B2F17 /* RecommendedAppThumbView.m */,
-				27B74D1019A24322006B2F17 /* RecommendedAppThumbView.xib */,
-				27B74D0019A212AB006B2F17 /* RecommendedAppScrollView.h */,
-				27B74D0119A212AB006B2F17 /* RecommendedAppScrollView.m */,
-				27B74CFD19A21146006B2F17 /* RecommendedAppTableViewCell.h */,
-				27B74CFE19A21146006B2F17 /* RecommendedAppTableViewCell.m */,
-				27B74CF819A21059006B2F17 /* RecommendedAppTableViewCell.xib */,
-				2708FE8419A491A70019D694 /* RecommendedAppsDisclaimerView.xib */,
+				3267676019E2C96800365F6D /* RecommendedAppsForCategoryCell.h */,
+				3267676119E2C96800365F6D /* RecommendedAppsForCategoryCell.m */,
+				3267676219E2C96800365F6D /* RecommendedAppsForCategoryCell.xib */,
+				3267676519E2CE4800365F6D /* RecommendedAppCollectionViewCell.h */,
+				3267676619E2CE4800365F6D /* RecommendedAppCollectionViewCell.m */,
+				3267676719E2CE4800365F6D /* RecommendedAppCollectionViewCell.xib */,
 				27B74CDE19A205E6006B2F17 /* Images */,
 			);
 			path = Views;
@@ -2862,6 +2853,7 @@
 				326E3E3E1963FF7F00017F0C /* CellEmptyPicture@2x.png in Resources */,
 				32CCB4EA1555237500220282 /* MoodlePlugin.strings in Resources */,
 				32DD525619B4DEB600B5B241 /* CloudPrintPlugin.strings in Resources */,
+				3267676919E2CE4800365F6D /* RecommendedAppCollectionViewCell.xib in Resources */,
 				327585A118449347004215FC /* TransportLarge@2x.png in Resources */,
 				328A132618296E2D00F4C622 /* FoodSmileySad@2x.png in Resources */,
 				32CCB4EF1555237500220282 /* Moodle.png in Resources */,
@@ -2891,7 +2883,6 @@
 				3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */,
 				3218CD2415B8359F00CEB238 /* MoodleLarge.png in Resources */,
 				328A132118296E2D00F4C622 /* FoodSmileyMeh.png in Resources */,
-				2708FE8219A491A70019D694 /* RecommendedAppsDisclaimerView.xib in Resources */,
 				3293AD2315D1BC930097D414 /* PCAboutView.xib in Resources */,
 				32777B4615D1BFBC00A29F56 /* PCAbout.html in Resources */,
 				32675C2415F50F4A00880387 /* Config.plist in Resources */,
@@ -2930,6 +2921,7 @@
 				32ADC71A1659AAEB0039F6A6 /* Download@2x.png in Resources */,
 				32763231166511B700C33DF9 /* MapView-pad.xib in Resources */,
 				327BF2371666043100C67937 /* PushNotifPlugin.strings in Resources */,
+				3267676419E2C96800365F6D /* RecommendedAppsForCategoryCell.xib in Resources */,
 				327585A018449347004215FC /* TransportLarge.png in Resources */,
 				32AF954A19B39F91008CB161 /* Cross@2x.png in Resources */,
 				32D0B260166ABEA200F68304 /* FloorDown.png in Resources */,
@@ -2955,7 +2947,6 @@
 				328A72DF184A4EE0002C5A6B /* SplashImage4inch@2x.png in Resources */,
 				322207F11688F101003F6622 /* NewsItemView.xib in Resources */,
 				32D1DE18184663C700D0C866 /* TransportTripCell.xib in Resources */,
-				27B74D1119A24323006B2F17 /* RecommendedAppThumbView.xib in Resources */,
 				32E0E31A194B206D003251CC /* FilterBarButtonSelected@2x.png in Resources */,
 				322207F31688FFFA003F6622 /* NewsItem.html in Resources */,
 				32E0E315194B1FDD003251CC /* FilterBarButton.png in Resources */,
@@ -3013,7 +3004,6 @@
 				32449D5D17C3F248003269E5 /* DirectoryLarge@2x.png in Resources */,
 				3289F2B7183FAB8C00D833C2 /* LocationArrow2.png in Resources */,
 				320F8599194EED8C00BF3228 /* ArrowLeftBarButton.png in Resources */,
-				27B74CF919A21059006B2F17 /* RecommendedAppTableViewCell.xib in Resources */,
 				320480C618479D4E00116380 /* TransportSmallBusGreen@2x.png in Resources */,
 				324FD733176574DD0003EE30 /* CamiproTransactionCell.xib in Resources */,
 				3219821F18D36A8B00118921 /* FoodRestaurantInfoView.xib in Resources */,
@@ -3192,6 +3182,7 @@
 				32DD525119B4DEAE00B5B241 /* CloudPrintController.m in Sources */,
 				3210FD1D197C5BD700EEDCBF /* MoodleFolderViewController.m in Sources */,
 				32FAC0F51500F40700925180 /* DirectoryController.m in Sources */,
+				3267676819E2CE4800365F6D /* RecommendedAppCollectionViewCell.m in Sources */,
 				32FAC0F61500F40700925180 /* DirectorySearchViewController.m in Sources */,
 				32503AA3195EE49C007B709E /* PCDatePickerView.m in Sources */,
 				32FAC0F91500F40700925180 /* DirectoryService.m in Sources */,
@@ -3259,7 +3250,6 @@
 				3241F1DE15B4AB9C00C7DF3A /* PCEditableTableViewCell.m in Sources */,
 				3293AD2015D1BC7C0097D414 /* PCAboutViewController.m in Sources */,
 				32649B23160DD7DA002E6498 /* DirectoryPersonViewController.m in Sources */,
-				27B74D0519A2134D006B2F17 /* RecommendedAppThumbView.m in Sources */,
 				32B3F39016219403007A75C7 /* MainMenuViewController.m in Sources */,
 				27B74CFC19A210D6006B2F17 /* RecommendedAppsListViewController.m in Sources */,
 				32B3F3971621B6D3007A75C7 /* MainMenuItem.m in Sources */,
@@ -3289,11 +3279,11 @@
 				32FDA99D1854A06F00C6393A /* NSOperationWithDelegate.m in Sources */,
 				32E67DC61684D40C00E5CFF6 /* PCRecentResultTableViewCell.m in Sources */,
 				322207E81688E62E003F6622 /* NewsSplashViewController.m in Sources */,
-				27B74CFF19A21146006B2F17 /* RecommendedAppTableViewCell.m in Sources */,
 				322207EF1688F097003F6622 /* NewsItemViewController.m in Sources */,
 				32930AB817F898910025F864 /* ZUUIRevealController.m in Sources */,
 				326F5A8019BDA2AA000693A2 /* CloudPrintStatusViewController.m in Sources */,
 				32EB617F180D5A3C001AE852 /* MapResultsListViewController.m in Sources */,
+				3267676319E2C96800365F6D /* RecommendedAppsForCategoryCell.m in Sources */,
 				32D1DE161846614500D0C866 /* TransportTripCell.m in Sources */,
 				322207F91689E3A3003F6622 /* PCUtils.m in Sources */,
 				3289F2BD183FB80600D833C2 /* TransportStationsManagerViewController.m in Sources */,
@@ -3313,7 +3303,6 @@
 				F1AE44D191F279D3C0533B81 /* EventsController.m in Sources */,
 				D4224276930AC66CEAA3E5A9 /* EventsService.m in Sources */,
 				4C3C4FEEB609B30BEFA34726 /* events.m in Sources */,
-				27B74D0219A212AB006B2F17 /* RecommendedAppScrollView.m in Sources */,
 				32035FE616E13A020016F03C /* EventPoolViewController.m in Sources */,
 				32035FEB16E153860016F03C /* EventItemCell.m in Sources */,
 				32BBA918187454A600B2A7D3 /* UILabel+Additions.m in Sources */,
@@ -3410,15 +3399,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		2708FE8419A491A70019D694 /* RecommendedAppsDisclaimerView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2708FE8319A491A70019D694 /* en */,
-				2708FE8519A491AD0019D694 /* fr */,
-			);
-			name = RecommendedAppsDisclaimerView.xib;
-			sourceTree = "<group>";
-		};
 		27B74CEA19A206C8006B2F17 /* RecommendedAppsPlugin.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
