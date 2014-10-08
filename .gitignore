@@ -5,6 +5,10 @@ bin/
 gen/
 target/
 
+# IntelliJ/Android studio
+*.iml
+.idea/
+
 # Merged projects
 /android/PocketCampus
 /server/PocketCampusServer

@@ -241,7 +241,7 @@
                                     <!-- "Remove station" menu item -->
                                     <tool:MenuItem Header="{Binding Resources.RemoveStationButton, Source={StaticResource Strings}}"
                                                    Command="{Binding DataContext.RemoveStationCommand, ElementName=LayoutRoot}"
-                                                   CommandParameter="{Binding Station}" />
+                                                   CommandParameter="{Binding Destination}" />
                                 </tool:ContextMenu>
                             </tool:ContextMenuService.ContextMenu>
                         </Grid>

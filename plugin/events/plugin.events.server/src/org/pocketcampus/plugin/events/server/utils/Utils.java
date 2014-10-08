@@ -99,7 +99,7 @@ public class Utils {
 			}
 		} catch (MalformedURLException e) {
 		}
-		return null;
+		return mapUrl;
 	}
 
 	public static String removeFirstStrong(Element t) {

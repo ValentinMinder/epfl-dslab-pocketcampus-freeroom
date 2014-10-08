@@ -48,170 +48,54 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="0dip"
                     android:gravity="center"
-                    android:padding="30dip"
+                    android:padding="15dip"
                     android:textColor="@android:color/primary_text_light" 
                     android:text="@string/cloudprint_plugin_title"
-                    android:textStyle="bold" />
+                     />
 
                 
-<!--                 <LinearLayout -->
-<!--                     android:layout_width="fill_parent" -->
-<!--                     android:layout_height="wrap_content" -->
-<!--                     android:orientation="horizontal" > -->
-                     
-<!-- 	                <TextView -->
-<!-- 	                    android:layout_weight="1" -->
-<!-- 	                    android:layout_width="0px" -->
-<!-- 	                    android:layout_height="wrap_content" -->
-<!-- 	                    android:textColor="@android:color/primary_text_light"  -->
-<!-- 	                    android:text="print"/> -->
-		                
-<!-- 	                <RadioButton -->
-<!-- 	                    android:id="@+id/radioButton1" -->
-<!-- 	                    android:layout_weight="1" -->
-<!-- 	                    android:layout_width="0px" -->
-<!-- 	                    android:layout_height="wrap_content" -->
-<!-- 	                    android:textColor="@android:color/primary_text_light"  -->
-<!-- 	                    android:text="All" /> -->
-	                
-<!-- 	                <RadioButton -->
-<!-- 	                    android:id="@+id/radioButton2" -->
-<!-- 	                    android:layout_weight="1" -->
-<!-- 	                    android:layout_width="0px" -->
-<!-- 	                    android:layout_height="wrap_content" -->
-<!-- 	                    android:textColor="@android:color/primary_text_light"  -->
-<!-- 	                    android:text="Selection" /> -->
-	                
-<!-- 	            </LinearLayout> -->
+                <Spinner
+                    android:id="@+id/cloudprint_select_copies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    />
 
-<!--                 <LinearLayout -->
-<!--                     android:layout_width="fill_parent" -->
-<!--                     android:layout_height="wrap_content" -->
-<!--                     android:orientation="horizontal" > -->
-		                   
-<!-- 	                <TextView -->
-<!-- 	                    android:layout_weight="1" -->
-<!-- 	                    android:layout_width="0px" -->
-<!-- 	                    android:layout_height="wrap_content" -->
-<!-- 	                    android:textColor="@android:color/primary_text_light"  -->
-<!-- 	                    android:text="from"/> -->
-		                
-                    
-	                    
-<!-- 	                <EditText -->
-<!-- 	                    android:id="@+id/editText11" -->
-<!-- 	                    android:layout_weight="1" -->
-<!-- 	                    android:layout_width="0px" -->
-<!-- 	                    android:layout_height="wrap_content" -->
-<!-- 	                    android:ems="10" -->
-<!-- 	                    android:textColor="@android:color/primary_text_light"  -->
-<!-- 	                    android:inputType="number" > -->
-<!-- 	                </EditText> -->
-		                   
-<!-- 	                <TextView -->
-<!-- 	                    android:layout_weight="1" -->
-<!-- 	                    android:layout_width="0px" -->
-<!-- 	                    android:layout_height="wrap_content" -->
-<!-- 	                    android:textColor="@android:color/primary_text_light"  -->
-<!-- 	                    android:text="to"/> -->
-		                
-		                    
-<!-- 	                <EditText -->
-<!-- 	                    android:id="@+id/editText22" -->
-<!-- 	                    android:layout_weight="1" -->
-<!-- 	                    android:layout_width="0px" -->
-<!-- 	                    android:layout_height="wrap_content" -->
-<!-- 	                    android:ems="10" -->
-<!-- 	                    android:textColor="@android:color/primary_text_light"  -->
-<!-- 	                    android:inputType="number" > -->
-<!-- 	                </EditText> -->
-	                    
-	                
-<!-- 	            </LinearLayout> -->
+                <Spinner
+                    android:id="@+id/cloudprint_select_pageselection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    />
+
+				<Spinner
+                    android:id="@+id/cloudprint_select_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    />
+
+                <Spinner
+                    android:id="@+id/cloudprint_select_doublesided"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    />
+
+                <Spinner
+                    android:id="@+id/cloudprint_select_orientation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    />
+
+                <Spinner
+                    android:id="@+id/cloudprint_select_multipage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    />
                 
-<!--                 <EditText -->
-<!--                     android:id="@+id/editText1" -->
-<!--                     android:layout_width="match_parent" -->
-<!--                     android:layout_height="wrap_content" -->
-<!--                     android:ems="10" -->
-<!--                     android:inputType="number" > -->
-
-<!--                     <requestFocus /> -->
-<!--                 </EditText> -->
-
-<!--                 <Spinner -->
-<!--                     android:id="@+id/cloudprint_select_copies" -->
-<!--                     android:layout_width="match_parent" -->
-<!--                     android:layout_height="wrap_content"  -->
-<!--                     android:entries="@array/cloudprint_config_copies"/> -->
-
-<!--                 <Spinner -->
-<!--                     android:id="@+id/cloudprint_select_pageselection" -->
-<!--                     android:layout_width="match_parent" -->
-<!--                     android:layout_height="wrap_content"  -->
-<!--                     android:entries="@array/cloudprint_config_pageselection"/> -->
-
-<!-- 				<Spinner -->
-<!--                     android:id="@+id/cloudprint_select_color" -->
-<!--                     android:layout_width="match_parent" -->
-<!--                     android:layout_height="wrap_content"  -->
-<!--                     android:entries="@array/cloudprint_config_color"/> -->
-
-<!--                 <Spinner -->
-<!--                     android:id="@+id/cloudprint_select_doublesided" -->
-<!--                     android:layout_width="match_parent" -->
-<!--                     android:layout_height="wrap_content"  -->
-<!--                     android:entries="@array/cloudprint_config_doublesided"/> -->
-
-<!--                 <Spinner -->
-<!--                     android:id="@+id/cloudprint_select_orientation" -->
-<!--                     android:layout_width="match_parent" -->
-<!--                     android:layout_height="wrap_content"  -->
-<!--                     android:entries="@array/cloudprint_config_orientation"/> -->
-
-<!--                 <Spinner -->
-<!--                     android:id="@+id/cloudprint_select_multipage" -->
-<!--                     android:layout_width="match_parent" -->
-<!--                     android:layout_height="wrap_content"  -->
-<!--                     android:entries="@array/cloudprint_config_multipage"/> -->
-                
-<!--                 <LinearLayout -->
-<!--                     android:layout_width="fill_parent" -->
-<!--                     android:layout_height="wrap_content" -->
-<!--                     android:orientation="horizontal" > -->
-                    
-<!-- 	                <RadioButton -->
-<!-- 	                    android:id="@+id/radioButton11" -->
-<!-- 	                    android:layout_weight="1" -->
-<!-- 	                    android:layout_width="0px" -->
-<!-- 	                    android:layout_height="wrap_content" -->
-<!-- 	                    android:textColor="@android:color/primary_text_light"  -->
-<!-- 	                    android:text="All" /> -->
-	                
-<!-- 	                <RadioButton -->
-<!-- 	                    android:id="@+id/radioButton22" -->
-<!-- 	                    android:layout_weight="1" -->
-<!-- 	                    android:layout_width="0px" -->
-<!-- 	                    android:layout_height="wrap_content" -->
-<!-- 	                    android:textColor="@android:color/primary_text_light"  -->
-<!-- 	                    android:text="Selection" /> -->
-	                
-<!-- 	            </LinearLayout> -->
-                
-<!--                 <CheckBox -->
-<!--                     android:layout_width="fill_parent" -->
-<!--                     android:layout_height="wrap_content" -->
-<!--                     android:layout_marginLeft="5dp" -->
-<!--                     android:layout_marginRight="5dp" -->
-<!--                     android:layout_marginTop="5dp" -->
-<!--                     android:checked="true" -->
-<!--                     android:text="save pass" -->
-<!--                     android:textColor="@android:color/primary_text_light" /> -->
 
                 <LinearLayout
                     style="@style/Dialog.Bottom"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="15dip"
                     android:orientation="horizontal" >
 
                     <Button

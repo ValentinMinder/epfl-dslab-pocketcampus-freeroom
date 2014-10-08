@@ -113,8 +113,13 @@ namespace PocketCampus.Common.Controls
                     return new LineBreak();
 
                 case "a":
-                    string text = node.InnerText;
                     string url = node.GetAttributeValue( "href", "" );
+                    if ( string.IsNullOrWhiteSpace( url ) ) // happens sometimes... broken HTML...
+                    {
+                        break;
+                    }
+
+                    string text = node.InnerText;
                     if ( string.IsNullOrWhiteSpace( text ) )
                     {
                         text = url;

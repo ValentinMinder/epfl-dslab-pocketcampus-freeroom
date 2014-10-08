@@ -34,8 +34,6 @@
 
 #import "MapService.h"
 
-#import "DirectoryService.h"
-
 #import "EPFLTileOverlay.h"
 
 #import "EPFLLayersOverlay.h"
@@ -90,6 +88,11 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 
 @property (nonatomic, strong) NSArray* mapItemsAllResults; //raw result from map service for a search. Nil if searchState is != SearchStateResults
 
+@property (nonatomic, strong) NSArray* allMapLayers;
+
+@property (nonatomic, strong) NSTimer* getMapLayersTimer;
+@property (nonatomic) BOOL getMapLayersRequestInProgress;
+
 @property (nonatomic, strong) MapItem* initialMapItem;
 @property (nonatomic, strong) NSString* initialQuery;
 @property (nonatomic, strong) NSString* initialQueryManualPinLabelText;
@@ -102,6 +105,8 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 @property (nonatomic, strong) UIBarButtonItem* searchBarItem;
 @property (nonatomic, strong) UIBarButtonItem* resultsListButton;
 @property (nonatomic, strong) UIBarButtonItem* loadingBarItem;
+@property (nonatomic, strong) UIActivityIndicatorView* loadingIndicator;
+@property (nonatomic, strong) UIBarButtonItem* layersListButton;
 @property (nonatomic) SearchState searchState;
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* overlaysLoadingIndicator;
@@ -218,6 +223,8 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     [[MainController publicController] addPluginStateObserver:self selector:@selector(willLoseForeground) notification:PluginWillLoseForegroundNotification pluginIdentifierName:@"Map"];
     [[MainController publicController] addPluginStateObserver:self selector:@selector(didEnterForeground) notification:PluginDidEnterForegroundNotification pluginIdentifierName:@"Map"];
     
+    [self startGetMapLayersRequestIfNecessary];
+    
     if (self.initialQueryWithFullControls && !self.initialQuery && !self.initialMapItem) {
         [self startSearchForQuery:self.initialQueryWithFullControls];
     }
@@ -265,7 +272,23 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     }
 }
 
-#pragma mark - startSearchForQuery
+#pragma mark - Data fetch
+
+- (void)startGetMapLayersRequestIfNecessary {
+    if (self.allMapLayers) {
+        [self.getMapLayersTimer invalidate];
+        self.getMapLayersTimer = nil;
+        return;
+    }
+    if (!self.getMapLayersTimer) {
+        self.getMapLayersTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(startGetMapLayersRequestIfNecessary) userInfo:nil repeats:YES];
+    }
+    if (self.getMapLayersRequestInProgress) {
+        return;
+    }
+    self.getMapLayersRequestInProgress = YES;
+    [self.mapService getLayerWithDelegate:self];
+}
 
 - (void)startSearchForQuery:(NSString*)query {
     if (!self.mapService) {
@@ -321,10 +344,19 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         self.searchBarItem = [[UIBarButtonItem alloc] initWithCustomView:searchBarContainerView];
     }
     
+    if (!self.loadingIndicator) {
+        self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        self.loadingIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.loadingIndicator addConstraints:[NSLayoutConstraint width:30.0 height:30.0 constraintsForView:self.loadingIndicator]];
+        [self.searchBar addSubview:self.loadingIndicator];
+        [self.searchBar addConstraints:[NSLayoutConstraint constraintsToSuperview:self.searchBar forView:self.loadingIndicator edgeInsets:UIEdgeInsetsMake(kNoInsetConstraint, kNoInsetConstraint, kNoInsetConstraint, 42.0)]];
+        [self.searchBar addConstraint:[NSLayoutConstraint constraintForCenterYtoSuperview:self.searchBar forView:self.loadingIndicator constant:0.0]];
+    }
+    
     if (!self.loadingBarItem) {
-        UIActivityIndicatorView* loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        [loadingIndicator startAnimating];
-        self.loadingBarItem = [[UIBarButtonItem alloc] initWithCustomView:loadingIndicator];
+        UIActivityIndicatorView* loadingIndicatorForBarItem = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [loadingIndicatorForBarItem startAnimating];
+        self.loadingBarItem = [[UIBarButtonItem alloc] initWithCustomView:loadingIndicatorForBarItem];
     }
     
     if (!self.resultsListButton) {
@@ -332,6 +364,11 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         self.resultsListButton.accessibilityLabel = NSLocalizedStringFromTable(@"AllSearchResults", @"MapPlugin", nil);
     }
     self.resultsListButton.accessibilityHint = [NSString stringWithFormat:NSLocalizedStringFromTable(@"ShowsAllSearchResultsForSearchWithFormat", @"MapPlugin", nil), self.searchBar.text];
+    
+    if (!self.layersListButton) {
+        self.layersListButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MapLayersBarButton"] style:UIBarButtonItemStylePlain target:self action:@selector(layersListPressed)];
+        self.layersListButton.accessibilityLabel = NSLocalizedStringFromTable(@"MapLayersAccessibility", @"MapPlugin", nil);
+    }
     
     NSArray* items = nil;
     
@@ -342,6 +379,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
             items = @[];
         }
     } else {
+        
         CGRect searchBarTargetFrame;
         CGRect searchBarContainerViewTargetFrame;
         
@@ -368,28 +406,26 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
                     break;
             }
         } else {
+            [self.loadingIndicator stopAnimating];
             CGFloat windowWidth = [[UIApplication sharedApplication] keyWindow].bounds.size.width;
             switch (searchState) {
                 case SearchStateReady:
-                    items = @[self.searchBarItem];
+                    items = @[self.layersListButton, self.searchBarItem];
                     self.searchBar.showsCancelButton = YES;
-                    searchBarTargetFrame = CGRectMake(-2.0, 0, 0.825 * windowWidth, kSearchBarHeightPortrait);
+                    searchBarTargetFrame = CGRectMake(-2.0, 0, 0.68 * windowWidth, kSearchBarHeightPortrait);
                     searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width-11.0, searchBarTargetFrame.size.height);
                     break;
                 case SearchStateLoading:
                 {
-                    UIBarButtonItem* space1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:NULL];
-                    space1.width = 3.0;
-                    UIBarButtonItem* space2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:NULL];
-                    space2.width = 22.0;
-                    items = @[space1, self.loadingBarItem, space2, self.searchBarItem];
-                    searchBarTargetFrame = CGRectMake(-10.0, 0, 0.6875 * windowWidth, kSearchBarHeightPortrait);
+                    [self.loadingIndicator startAnimating];
+                    items = @[self.layersListButton, self.searchBarItem];
+                    searchBarTargetFrame = CGRectMake(-10.0, 0, 0.68 * windowWidth, kSearchBarHeightPortrait);
                     searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width+(2*searchBarTargetFrame.origin.x), searchBarTargetFrame.size.height);
                     break;
                 }
                 case SearchStateResults:
-                    items = @[self.resultsListButton, self.searchBarItem];
-                    searchBarTargetFrame = CGRectMake(-10.0, 0, 0.6875 * windowWidth, kSearchBarHeightPortrait);
+                    items = @[self.layersListButton, self.searchBarItem];
+                    searchBarTargetFrame = CGRectMake(-10.0, 0, 0.68 * windowWidth, kSearchBarHeightPortrait);
                     searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width+(2*searchBarTargetFrame.origin.x), searchBarTargetFrame.size.height);
                     break;
                 default:
@@ -621,6 +657,10 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     }
 }
 
+- (void)layersListPressed {
+#warning TODO
+}
+
 - (void)floorDownPressed {
     [self trackAction:@"DecreaseFloor"];
     for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) { //copy in case they are modified in the meantime (highly unlikely though)
@@ -849,6 +889,9 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     */
     /* END OF TEST */
     
+#warning REMOVE
+    return;
+    
     if (results.count == 0) { //no result
         self.noResultAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"NoResult", @"MapPlugin", nil) message:@"" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [self.noResultAlert show];
@@ -882,12 +925,32 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     [PCUtils showServerErrorAlert];
 }
 
+- (void)getLayersDidReturn:(MapLayersResponse *)response {
+    switch (response.statusCode) {
+        case MapStatusCode_OK:
+            self.getMapLayersRequestInProgress = NO;
+            self.allMapLayers = response.layers;
+            break;
+        default:
+            [self getLayersFailed];
+            break;
+    }
+}
+
+- (void)getLayersFailed {
+    self.getMapLayersRequestInProgress = NO;
+    self.allMapLayers = nil;
+}
+
 - (void)serviceConnectionToServerFailed {
     if (self.searchState == SearchStateLoading) {
         [self setSearchState:SearchStateReady animated:YES];
+        self.internetConnectionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [self.internetConnectionAlert show];
+    } else {
+        //layers, this is the only request we do to map server
+        self.getMapLayersRequestInProgress = NO;
     }
-    self.internetConnectionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [self.internetConnectionAlert show];
 }
 
 #pragma mark - Directory related

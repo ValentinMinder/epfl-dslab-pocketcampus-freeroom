@@ -1,0 +1,10 @@
+#Privacy Policy for the PocketCampus EPFL app
+
+- Your EPFL Gaspar account credentials are required for the following features in PocketCampus: IS-Academia, Camipro, Moodle, and Print.
+- You can choose to save your password when logging in to PocketCampus, so that you don't have to enter it again later. If you choose to do so, your password will be saved securely on your device. Your password is never sent to any server (including the PocketCampus server), except for Tequila, EPFL's official authentication service, in which case it is done so via a secure (HTTPS) connection.
+- When logging in to PocketCampus, you accept that some of your private EPFL data transit through the PocketCampus server. This data is never stored on the PocketCampus server and is directly sent to your device. 
+This data can be:
+
+    - Your IS-Academia (courses) schedule
+    - Your Camipro balance and history of transactions
+    - The list of Moodle courses you are registered for and their related files

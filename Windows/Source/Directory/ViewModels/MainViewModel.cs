@@ -204,7 +204,10 @@ namespace PocketCampus.Directory.ViewModels
         {
             if ( string.IsNullOrWhiteSpace( Query ) )
             {
-                SearchResults.Clear();
+                if ( SearchResults != null )
+                {
+                    SearchResults.Clear();
+                }
                 AnySearchResults = true;
                 return;
             }

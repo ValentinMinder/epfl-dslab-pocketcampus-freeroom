@@ -14,6 +14,8 @@ enum CloudPrintNbPagesPerSheet {
     SIXTEEN = 16
 }
 
+// WARNING do not change the names of the enums in this file. They are used "by name" in the Android app
+
 enum CloudPrintMultiPageLayout { // DO NOT change the names of these, otherwise server code breaks
     // These two make sense
     LEFT_TO_RIGHT_TOP_TO_BOTTOM = 0, //default
@@ -79,4 +81,5 @@ struct PrintDocumentResponse {
 
 service CloudPrintService {
 	PrintDocumentResponse printDocument( 1: PrintDocumentRequest request );
+	PrintDocumentResponse printPreview( 1: PrintDocumentRequest request );
 }

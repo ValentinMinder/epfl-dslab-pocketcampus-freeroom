@@ -206,6 +206,8 @@
 		3281AB8216E221F700D8FAD1 /* EventItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3281AB8116E221F700D8FAD1 /* EventItemViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3281AB8316E2254600D8FAD1 /* EventItemView.xib */; };
 		3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3282C283181179E2002A4FAE /* EventsLarge@2x.png */; };
+		328501B419E5768F0049356E /* MapLayersBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 328501B219E5768F0049356E /* MapLayersBarButton.png */; };
+		328501B519E5768F0049356E /* MapLayersBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328501B319E5768F0049356E /* MapLayersBarButton@2x.png */; };
 		32870F9E19B674AE00A3BC68 /* CloudPrintRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32870F9D19B674AE00A3BC68 /* CloudPrintRequestViewController.m */; };
 		32875E5F194CF2EF0071CDF8 /* PCWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32875E5E194CF2EF0071CDF8 /* PCWebViewController.m */; };
 		32875E61194CF3100071CDF8 /* PCWebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32875E60194CF3100071CDF8 /* PCWebView.xib */; };
@@ -817,6 +819,8 @@
 		3281AB8116E221F700D8FAD1 /* EventItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EventItemViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		3281AB8316E2254600D8FAD1 /* EventItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventItemView.xib; sourceTree = "<group>"; };
 		3282C283181179E2002A4FAE /* EventsLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EventsLarge@2x.png"; sourceTree = "<group>"; };
+		328501B219E5768F0049356E /* MapLayersBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MapLayersBarButton.png; sourceTree = "<group>"; };
+		328501B319E5768F0049356E /* MapLayersBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapLayersBarButton@2x.png"; sourceTree = "<group>"; };
 		32870F9C19B674AE00A3BC68 /* CloudPrintRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintRequestViewController.h; sourceTree = "<group>"; };
 		32870F9D19B674AE00A3BC68 /* CloudPrintRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintRequestViewController.m; sourceTree = "<group>"; };
 		32875E5D194CF2EF0071CDF8 /* PCWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCWebViewController.h; sourceTree = "<group>"; };
@@ -1576,6 +1580,8 @@
 				32D0B25F166ABEA200F68304 /* FloorUp@2x.png */,
 				324151E315375BDD00CCFB22 /* Map.png */,
 				324151E415375BDD00CCFB22 /* Map@2x.png */,
+				328501B219E5768F0049356E /* MapLayersBarButton.png */,
+				328501B319E5768F0049356E /* MapLayersBarButton@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -2965,6 +2971,7 @@
 				3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */,
 				329E1B3B16E693130054C3A8 /* FavoriteNavBarButton.png in Resources */,
 				329E1B3C16E693130054C3A8 /* FavoriteNavBarButton@2x.png in Resources */,
+				328501B519E5768F0049356E /* MapLayersBarButton@2x.png in Resources */,
 				329E1B3F16E696F80054C3A8 /* FavoriteGlowNavBarButton.png in Resources */,
 				326F5A7A19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib in Resources */,
 				329E1B4016E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png in Resources */,
@@ -3012,6 +3019,7 @@
 				C5894949AFC59FDB4346CF53 /* IsAcademia@2x.png in Resources */,
 				8193447294E5D065581CBAAD /* IsAcademia.png in Resources */,
 				32D29719185B64FE006530B7 /* IsAcademiaPlugin.strings in Resources */,
+				328501B419E5768F0049356E /* MapLayersBarButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,53 +1,30 @@
 package org.pocketcampus.plugin.map.server;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
+import org.pocketcampus.plugin.map.shared.MapLayersResponse;
 import org.pocketcampus.plugin.map.shared.MapService;
+import org.pocketcampus.plugin.map.shared.MapStatusCode;
 
 public class MapServiceImpl implements MapService.Iface {
-	private List<MapLayer> mLayersList = new ArrayList<MapLayer>();
-	private List<MapItem> mItemsList = new ArrayList<MapItem>();
-	private MapDatabase mMapDb;
+	
+	private final MapDatabase mapDb;
 	
 	public MapServiceImpl() {
-		System.out.println("Starting Map plugin server...");
-		mMapDb = new MapDatabase();
+		mapDb = new MapDatabase();
 	}
 	
 	@Override
-	public List<MapLayer> getLayerList() throws TException {
-		System.out.println("getLayerList");
-		
-		synchronized (mLayersList) {
-			mLayersList = mMapDb.getMapLayers();
-			
-			if(mLayersList.size() == 0) {
-				// Sort the layers by alphabetic order
-				Collections.sort(mLayersList, new Comparator<MapLayer>() {
-					@Override
-					public int compare(MapLayer o1, MapLayer o2) {
-						return o1.getName().compareToIgnoreCase(o2.getName());
-					}
-				});
-			}
-		}
-		
-		return mLayersList;
+	public MapLayersResponse getLayers() throws TException {
+		String lang = "en"; //TODO get lang code dynamically from client request
+		List<MapLayer> layers = mapDb.getMapLayers(lang);
+		MapLayersResponse response = new MapLayersResponse(MapStatusCode.OK, layers);
+		return response;
 	}
-
-	@Override
-	public List<MapItem> getLayerItems(long layerId) throws TException {
-		System.out.println("getLayerItems(id: "+layerId+")");
-		mItemsList = mMapDb.getMapElements((int) layerId);
-		return mItemsList;
-	}
-
+	
 	@Override
 	public List<MapItem> search(String query) throws TException {
 		System.out.println("search(query: "+query+")");

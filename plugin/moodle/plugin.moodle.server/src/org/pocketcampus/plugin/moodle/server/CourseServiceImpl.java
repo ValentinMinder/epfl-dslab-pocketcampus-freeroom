@@ -108,7 +108,7 @@ public final class CourseServiceImpl implements CourseService {
 			final JsonUsersResponse usersResponse = new Gson().fromJson(usersResponseString, JsonUsersResponse.class);
 
 			if (usersResponse.users.length == 0) {
-				throw new Exception("User not found.");
+				return new MoodleCoursesResponse2(MoodleStatusCode2.OK, new ArrayList<MoodleCourse2>());
 			}
 
 			userId = usersResponse.users[0].id;

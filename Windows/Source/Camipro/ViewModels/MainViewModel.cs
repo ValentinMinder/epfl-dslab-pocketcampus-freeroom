@@ -102,45 +102,45 @@ namespace PocketCampus.Camipro.ViewModels
         /// <summary>
         /// Asynchronously refreshes the data.
         /// </summary>
-        protected override Task RefreshAsync( bool force, CancellationToken token )
+        protected override async Task RefreshAsync( bool force, CancellationToken token )
         {
-            return _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession>( _camiproService, async session =>
+            if ( !force )
             {
-                if ( !force )
-                {
-                    return;
-                }
+                return;
+            }
 
-                var request = new CamiproRequest
-                {
-                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
-                    // HACK to make design data work :(
-                    Session = new SessionId { CamiproCookie = session == null ? null : session.Cookie }
-                };
+            await _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession>( _camiproService, async session =>
+             {
+                 var request = new CamiproRequest
+                 {
+                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+                     // HACK to make design data work :(
+                     Session = new SessionId { CamiproCookie = session == null ? null : session.Cookie }
+                 };
 
-                var accountTask = _camiproService.GetAccountInfoAsync( request, token );
-                var ebankingTask = _camiproService.GetEBankingInfoAsync( request, token );
+                 var accountTask = _camiproService.GetAccountInfoAsync( request, token );
+                 var ebankingTask = _camiproService.GetEBankingInfoAsync( request, token );
 
-                // parallel requests
-                var accountInfo = await accountTask;
-                var ebankingInfo = await ebankingTask;
+                 // parallel requests
+                 var accountInfo = await accountTask;
+                 var ebankingInfo = await ebankingTask;
 
-                if ( accountInfo.Status == ResponseStatus.NetworkError || ebankingInfo.Status == ResponseStatus.NetworkError )
-                {
-                    throw new Exception( "Server error while getting the account or e-banking info." );
-                }
-                if ( accountInfo.Status == ResponseStatus.AuthenticationError || ebankingInfo.Status == ResponseStatus.AuthenticationError )
-                {
-                    _requestHandler.Authenticate<MainViewModel>();
-                    return;
-                }
+                 if ( accountInfo.Status == ResponseStatus.NetworkError || ebankingInfo.Status == ResponseStatus.NetworkError )
+                 {
+                     throw new Exception( "Server error while getting the account or e-banking info." );
+                 }
+                 if ( accountInfo.Status == ResponseStatus.AuthenticationError || ebankingInfo.Status == ResponseStatus.AuthenticationError )
+                 {
+                     _requestHandler.Authenticate<MainViewModel>();
+                     return;
+                 }
 
-                if ( !token.IsCancellationRequested )
-                {
-                    AccountInfo = accountInfo;
-                    EbankingInfo = ebankingInfo;
-                }
-            } );
+                 if ( !token.IsCancellationRequested )
+                 {
+                     AccountInfo = accountInfo;
+                     EbankingInfo = ebankingInfo;
+                 }
+             } );
         }
     }
 }

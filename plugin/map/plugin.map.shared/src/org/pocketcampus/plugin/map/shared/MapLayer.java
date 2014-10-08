@@ -18,29 +18,25 @@ import java.util.Collections;
 import java.util.BitSet;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MapLayer");
 
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField DRAWABLE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("drawableUrl", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField LAYER_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("layerId", org.apache.thrift.protocol.TType.I64, (short)3);
-  private static final org.apache.thrift.protocol.TField CACHE_IN_SECONDS_FIELD_DESC = new org.apache.thrift.protocol.TField("cacheInSeconds", org.apache.thrift.protocol.TType.I32, (short)5);
-  private static final org.apache.thrift.protocol.TField DISPLAYABLE_FIELD_DESC = new org.apache.thrift.protocol.TField("displayable", org.apache.thrift.protocol.TType.BOOL, (short)6);
+  private static final org.apache.thrift.protocol.TField NAME_FOR_QUERY_FIELD_DESC = new org.apache.thrift.protocol.TField("nameForQuery", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField NAME_FOR_QUERY_ALL_FLOORS_FIELD_DESC = new org.apache.thrift.protocol.TField("nameForQueryAllFloors", org.apache.thrift.protocol.TType.STRING, (short)3);
 
-  public String name; // required
-  public String drawableUrl; // required
-  public long layerId; // required
-  public int cacheInSeconds; // required
-  public boolean displayable; // required
+  private String name; // required
+  private String nameForQuery; // required
+  private String nameForQueryAllFloors; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     NAME((short)1, "name"),
-    DRAWABLE_URL((short)2, "drawableUrl"),
-    LAYER_ID((short)3, "layerId"),
-    CACHE_IN_SECONDS((short)5, "cacheInSeconds"),
-    DISPLAYABLE((short)6, "displayable");
+    NAME_FOR_QUERY((short)2, "nameForQuery"),
+    NAME_FOR_QUERY_ALL_FLOORS((short)3, "nameForQueryAllFloors");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -57,14 +53,10 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
       switch(fieldId) {
         case 1: // NAME
           return NAME;
-        case 2: // DRAWABLE_URL
-          return DRAWABLE_URL;
-        case 3: // LAYER_ID
-          return LAYER_ID;
-        case 5: // CACHE_IN_SECONDS
-          return CACHE_IN_SECONDS;
-        case 6: // DISPLAYABLE
-          return DISPLAYABLE;
+        case 2: // NAME_FOR_QUERY
+          return NAME_FOR_QUERY;
+        case 3: // NAME_FOR_QUERY_ALL_FLOORS
+          return NAME_FOR_QUERY_ALL_FLOORS;
         default:
           return null;
       }
@@ -105,24 +97,16 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
   }
 
   // isset id assignments
-  private static final int __LAYERID_ISSET_ID = 0;
-  private static final int __CACHEINSECONDS_ISSET_ID = 1;
-  private static final int __DISPLAYABLE_ISSET_ID = 2;
-  private BitSet __isset_bit_vector = new BitSet(3);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.DRAWABLE_URL, new org.apache.thrift.meta_data.FieldMetaData("drawableUrl", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.NAME_FOR_QUERY, new org.apache.thrift.meta_data.FieldMetaData("nameForQuery", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.LAYER_ID, new org.apache.thrift.meta_data.FieldMetaData("layerId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
-    tmpMap.put(_Fields.CACHE_IN_SECONDS, new org.apache.thrift.meta_data.FieldMetaData("cacheInSeconds", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.DISPLAYABLE, new org.apache.thrift.meta_data.FieldMetaData("displayable", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.NAME_FOR_QUERY_ALL_FLOORS, new org.apache.thrift.meta_data.FieldMetaData("nameForQueryAllFloors", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MapLayer.class, metaDataMap);
   }
@@ -131,38 +115,25 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
   }
 
   public MapLayer(
-    String name,
-    String drawableUrl,
-    long layerId,
-    int cacheInSeconds,
-    boolean displayable)
+    String name)
   {
     this();
     this.name = name;
-    this.drawableUrl = drawableUrl;
-    this.layerId = layerId;
-    setLayerIdIsSet(true);
-    this.cacheInSeconds = cacheInSeconds;
-    setCacheInSecondsIsSet(true);
-    this.displayable = displayable;
-    setDisplayableIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public MapLayer(MapLayer other) {
-    __isset_bit_vector.clear();
-    __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetName()) {
       this.name = other.name;
     }
-    if (other.isSetDrawableUrl()) {
-      this.drawableUrl = other.drawableUrl;
+    if (other.isSetNameForQuery()) {
+      this.nameForQuery = other.nameForQuery;
     }
-    this.layerId = other.layerId;
-    this.cacheInSeconds = other.cacheInSeconds;
-    this.displayable = other.displayable;
+    if (other.isSetNameForQueryAllFloors()) {
+      this.nameForQueryAllFloors = other.nameForQueryAllFloors;
+    }
   }
 
   public MapLayer deepCopy() {
@@ -172,13 +143,8 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
   @Override
   public void clear() {
     this.name = null;
-    this.drawableUrl = null;
-    setLayerIdIsSet(false);
-    this.layerId = 0;
-    setCacheInSecondsIsSet(false);
-    this.cacheInSeconds = 0;
-    setDisplayableIsSet(false);
-    this.displayable = false;
+    this.nameForQuery = null;
+    this.nameForQueryAllFloors = null;
   }
 
   public String getName() {
@@ -205,97 +171,52 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     }
   }
 
-  public String getDrawableUrl() {
-    return this.drawableUrl;
+  public String getNameForQuery() {
+    return this.nameForQuery;
   }
 
-  public MapLayer setDrawableUrl(String drawableUrl) {
-    this.drawableUrl = drawableUrl;
+  public MapLayer setNameForQuery(String nameForQuery) {
+    this.nameForQuery = nameForQuery;
     return this;
   }
 
-  public void unsetDrawableUrl() {
-    this.drawableUrl = null;
+  public void unsetNameForQuery() {
+    this.nameForQuery = null;
   }
 
-  /** Returns true if field drawableUrl is set (has been assigned a value) and false otherwise */
-  public boolean isSetDrawableUrl() {
-    return this.drawableUrl != null;
+  /** Returns true if field nameForQuery is set (has been assigned a value) and false otherwise */
+  public boolean isSetNameForQuery() {
+    return this.nameForQuery != null;
   }
 
-  public void setDrawableUrlIsSet(boolean value) {
+  public void setNameForQueryIsSet(boolean value) {
     if (!value) {
-      this.drawableUrl = null;
+      this.nameForQuery = null;
     }
   }
 
-  public long getLayerId() {
-    return this.layerId;
+  public String getNameForQueryAllFloors() {
+    return this.nameForQueryAllFloors;
   }
 
-  public MapLayer setLayerId(long layerId) {
-    this.layerId = layerId;
-    setLayerIdIsSet(true);
+  public MapLayer setNameForQueryAllFloors(String nameForQueryAllFloors) {
+    this.nameForQueryAllFloors = nameForQueryAllFloors;
     return this;
   }
 
-  public void unsetLayerId() {
-    __isset_bit_vector.clear(__LAYERID_ISSET_ID);
+  public void unsetNameForQueryAllFloors() {
+    this.nameForQueryAllFloors = null;
   }
 
-  /** Returns true if field layerId is set (has been assigned a value) and false otherwise */
-  public boolean isSetLayerId() {
-    return __isset_bit_vector.get(__LAYERID_ISSET_ID);
+  /** Returns true if field nameForQueryAllFloors is set (has been assigned a value) and false otherwise */
+  public boolean isSetNameForQueryAllFloors() {
+    return this.nameForQueryAllFloors != null;
   }
 
-  public void setLayerIdIsSet(boolean value) {
-    __isset_bit_vector.set(__LAYERID_ISSET_ID, value);
-  }
-
-  public int getCacheInSeconds() {
-    return this.cacheInSeconds;
-  }
-
-  public MapLayer setCacheInSeconds(int cacheInSeconds) {
-    this.cacheInSeconds = cacheInSeconds;
-    setCacheInSecondsIsSet(true);
-    return this;
-  }
-
-  public void unsetCacheInSeconds() {
-    __isset_bit_vector.clear(__CACHEINSECONDS_ISSET_ID);
-  }
-
-  /** Returns true if field cacheInSeconds is set (has been assigned a value) and false otherwise */
-  public boolean isSetCacheInSeconds() {
-    return __isset_bit_vector.get(__CACHEINSECONDS_ISSET_ID);
-  }
-
-  public void setCacheInSecondsIsSet(boolean value) {
-    __isset_bit_vector.set(__CACHEINSECONDS_ISSET_ID, value);
-  }
-
-  public boolean isDisplayable() {
-    return this.displayable;
-  }
-
-  public MapLayer setDisplayable(boolean displayable) {
-    this.displayable = displayable;
-    setDisplayableIsSet(true);
-    return this;
-  }
-
-  public void unsetDisplayable() {
-    __isset_bit_vector.clear(__DISPLAYABLE_ISSET_ID);
-  }
-
-  /** Returns true if field displayable is set (has been assigned a value) and false otherwise */
-  public boolean isSetDisplayable() {
-    return __isset_bit_vector.get(__DISPLAYABLE_ISSET_ID);
-  }
-
-  public void setDisplayableIsSet(boolean value) {
-    __isset_bit_vector.set(__DISPLAYABLE_ISSET_ID, value);
+  public void setNameForQueryAllFloorsIsSet(boolean value) {
+    if (!value) {
+      this.nameForQueryAllFloors = null;
+    }
   }
 
   public void setFieldValue(_Fields field, Object value) {
@@ -308,35 +229,19 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
       }
       break;
 
-    case DRAWABLE_URL:
+    case NAME_FOR_QUERY:
       if (value == null) {
-        unsetDrawableUrl();
+        unsetNameForQuery();
       } else {
-        setDrawableUrl((String)value);
+        setNameForQuery((String)value);
       }
       break;
 
-    case LAYER_ID:
+    case NAME_FOR_QUERY_ALL_FLOORS:
       if (value == null) {
-        unsetLayerId();
+        unsetNameForQueryAllFloors();
       } else {
-        setLayerId((Long)value);
-      }
-      break;
-
-    case CACHE_IN_SECONDS:
-      if (value == null) {
-        unsetCacheInSeconds();
-      } else {
-        setCacheInSeconds((Integer)value);
-      }
-      break;
-
-    case DISPLAYABLE:
-      if (value == null) {
-        unsetDisplayable();
-      } else {
-        setDisplayable((Boolean)value);
+        setNameForQueryAllFloors((String)value);
       }
       break;
 
@@ -348,17 +253,11 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     case NAME:
       return getName();
 
-    case DRAWABLE_URL:
-      return getDrawableUrl();
+    case NAME_FOR_QUERY:
+      return getNameForQuery();
 
-    case LAYER_ID:
-      return Long.valueOf(getLayerId());
-
-    case CACHE_IN_SECONDS:
-      return Integer.valueOf(getCacheInSeconds());
-
-    case DISPLAYABLE:
-      return Boolean.valueOf(isDisplayable());
+    case NAME_FOR_QUERY_ALL_FLOORS:
+      return getNameForQueryAllFloors();
 
     }
     throw new IllegalStateException();
@@ -373,14 +272,10 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     switch (field) {
     case NAME:
       return isSetName();
-    case DRAWABLE_URL:
-      return isSetDrawableUrl();
-    case LAYER_ID:
-      return isSetLayerId();
-    case CACHE_IN_SECONDS:
-      return isSetCacheInSeconds();
-    case DISPLAYABLE:
-      return isSetDisplayable();
+    case NAME_FOR_QUERY:
+      return isSetNameForQuery();
+    case NAME_FOR_QUERY_ALL_FLOORS:
+      return isSetNameForQueryAllFloors();
     }
     throw new IllegalStateException();
   }
@@ -407,39 +302,21 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
         return false;
     }
 
-    boolean this_present_drawableUrl = true && this.isSetDrawableUrl();
-    boolean that_present_drawableUrl = true && that.isSetDrawableUrl();
-    if (this_present_drawableUrl || that_present_drawableUrl) {
-      if (!(this_present_drawableUrl && that_present_drawableUrl))
+    boolean this_present_nameForQuery = true && this.isSetNameForQuery();
+    boolean that_present_nameForQuery = true && that.isSetNameForQuery();
+    if (this_present_nameForQuery || that_present_nameForQuery) {
+      if (!(this_present_nameForQuery && that_present_nameForQuery))
         return false;
-      if (!this.drawableUrl.equals(that.drawableUrl))
-        return false;
-    }
-
-    boolean this_present_layerId = true;
-    boolean that_present_layerId = true;
-    if (this_present_layerId || that_present_layerId) {
-      if (!(this_present_layerId && that_present_layerId))
-        return false;
-      if (this.layerId != that.layerId)
+      if (!this.nameForQuery.equals(that.nameForQuery))
         return false;
     }
 
-    boolean this_present_cacheInSeconds = true;
-    boolean that_present_cacheInSeconds = true;
-    if (this_present_cacheInSeconds || that_present_cacheInSeconds) {
-      if (!(this_present_cacheInSeconds && that_present_cacheInSeconds))
+    boolean this_present_nameForQueryAllFloors = true && this.isSetNameForQueryAllFloors();
+    boolean that_present_nameForQueryAllFloors = true && that.isSetNameForQueryAllFloors();
+    if (this_present_nameForQueryAllFloors || that_present_nameForQueryAllFloors) {
+      if (!(this_present_nameForQueryAllFloors && that_present_nameForQueryAllFloors))
         return false;
-      if (this.cacheInSeconds != that.cacheInSeconds)
-        return false;
-    }
-
-    boolean this_present_displayable = true;
-    boolean that_present_displayable = true;
-    if (this_present_displayable || that_present_displayable) {
-      if (!(this_present_displayable && that_present_displayable))
-        return false;
-      if (this.displayable != that.displayable)
+      if (!this.nameForQueryAllFloors.equals(that.nameForQueryAllFloors))
         return false;
     }
 
@@ -455,25 +332,15 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     if (present_name)
       builder.append(name);
 
-    boolean present_drawableUrl = true && (isSetDrawableUrl());
-    builder.append(present_drawableUrl);
-    if (present_drawableUrl)
-      builder.append(drawableUrl);
+    boolean present_nameForQuery = true && (isSetNameForQuery());
+    builder.append(present_nameForQuery);
+    if (present_nameForQuery)
+      builder.append(nameForQuery);
 
-    boolean present_layerId = true;
-    builder.append(present_layerId);
-    if (present_layerId)
-      builder.append(layerId);
-
-    boolean present_cacheInSeconds = true;
-    builder.append(present_cacheInSeconds);
-    if (present_cacheInSeconds)
-      builder.append(cacheInSeconds);
-
-    boolean present_displayable = true;
-    builder.append(present_displayable);
-    if (present_displayable)
-      builder.append(displayable);
+    boolean present_nameForQueryAllFloors = true && (isSetNameForQueryAllFloors());
+    builder.append(present_nameForQueryAllFloors);
+    if (present_nameForQueryAllFloors)
+      builder.append(nameForQueryAllFloors);
 
     return builder.toHashCode();
   }
@@ -496,42 +363,22 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetDrawableUrl()).compareTo(typedOther.isSetDrawableUrl());
+    lastComparison = Boolean.valueOf(isSetNameForQuery()).compareTo(typedOther.isSetNameForQuery());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetDrawableUrl()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.drawableUrl, typedOther.drawableUrl);
+    if (isSetNameForQuery()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.nameForQuery, typedOther.nameForQuery);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetLayerId()).compareTo(typedOther.isSetLayerId());
+    lastComparison = Boolean.valueOf(isSetNameForQueryAllFloors()).compareTo(typedOther.isSetNameForQueryAllFloors());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetLayerId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.layerId, typedOther.layerId);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetCacheInSeconds()).compareTo(typedOther.isSetCacheInSeconds());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetCacheInSeconds()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.cacheInSeconds, typedOther.cacheInSeconds);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetDisplayable()).compareTo(typedOther.isSetDisplayable());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetDisplayable()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.displayable, typedOther.displayable);
+    if (isSetNameForQueryAllFloors()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.nameForQueryAllFloors, typedOther.nameForQueryAllFloors);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -560,33 +407,16 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // DRAWABLE_URL
+        case 2: // NAME_FOR_QUERY
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.drawableUrl = iprot.readString();
+            this.nameForQuery = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // LAYER_ID
-          if (field.type == org.apache.thrift.protocol.TType.I64) {
-            this.layerId = iprot.readI64();
-            setLayerIdIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 5: // CACHE_IN_SECONDS
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.cacheInSeconds = iprot.readI32();
-            setCacheInSecondsIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 6: // DISPLAYABLE
-          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
-            this.displayable = iprot.readBool();
-            setDisplayableIsSet(true);
+        case 3: // NAME_FOR_QUERY_ALL_FLOORS
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.nameForQueryAllFloors = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -599,15 +429,6 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetLayerId()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'layerId' was not found in serialized data! Struct: " + toString());
-    }
-    if (!isSetCacheInSeconds()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'cacheInSeconds' was not found in serialized data! Struct: " + toString());
-    }
-    if (!isSetDisplayable()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'displayable' was not found in serialized data! Struct: " + toString());
-    }
     validate();
   }
 
@@ -620,20 +441,20 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
       oprot.writeString(this.name);
       oprot.writeFieldEnd();
     }
-    if (this.drawableUrl != null) {
-      oprot.writeFieldBegin(DRAWABLE_URL_FIELD_DESC);
-      oprot.writeString(this.drawableUrl);
-      oprot.writeFieldEnd();
+    if (this.nameForQuery != null) {
+      if (isSetNameForQuery()) {
+        oprot.writeFieldBegin(NAME_FOR_QUERY_FIELD_DESC);
+        oprot.writeString(this.nameForQuery);
+        oprot.writeFieldEnd();
+      }
     }
-    oprot.writeFieldBegin(LAYER_ID_FIELD_DESC);
-    oprot.writeI64(this.layerId);
-    oprot.writeFieldEnd();
-    oprot.writeFieldBegin(CACHE_IN_SECONDS_FIELD_DESC);
-    oprot.writeI32(this.cacheInSeconds);
-    oprot.writeFieldEnd();
-    oprot.writeFieldBegin(DISPLAYABLE_FIELD_DESC);
-    oprot.writeBool(this.displayable);
-    oprot.writeFieldEnd();
+    if (this.nameForQueryAllFloors != null) {
+      if (isSetNameForQueryAllFloors()) {
+        oprot.writeFieldBegin(NAME_FOR_QUERY_ALL_FLOORS_FIELD_DESC);
+        oprot.writeString(this.nameForQueryAllFloors);
+        oprot.writeFieldEnd();
+      }
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -650,26 +471,26 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
       sb.append(this.name);
     }
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("drawableUrl:");
-    if (this.drawableUrl == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.drawableUrl);
+    if (isSetNameForQuery()) {
+      if (!first) sb.append(", ");
+      sb.append("nameForQuery:");
+      if (this.nameForQuery == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.nameForQuery);
+      }
+      first = false;
     }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("layerId:");
-    sb.append(this.layerId);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("cacheInSeconds:");
-    sb.append(this.cacheInSeconds);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("displayable:");
-    sb.append(this.displayable);
-    first = false;
+    if (isSetNameForQueryAllFloors()) {
+      if (!first) sb.append(", ");
+      sb.append("nameForQueryAllFloors:");
+      if (this.nameForQueryAllFloors == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.nameForQueryAllFloors);
+      }
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }
@@ -679,9 +500,6 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     if (name == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'name' was not present! Struct: " + toString());
     }
-    // alas, we cannot check 'layerId' because it's a primitive and you chose the non-beans generator.
-    // alas, we cannot check 'cacheInSeconds' because it's a primitive and you chose the non-beans generator.
-    // alas, we cannot check 'displayable' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -694,8 +512,6 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
-      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);

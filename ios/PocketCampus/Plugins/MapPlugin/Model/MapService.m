@@ -26,10 +26,7 @@
  */
 
 
-
-
 //  Created by Loïc Gardiol on 12.04.12.
-
 
 #import "MapService.h"
 
@@ -38,8 +35,11 @@ NSString* const kMapRecentSearchesModifiedNotification = @"kMapRecentSearchesMod
 static NSString* const kRecentSearchesKey = @"recentSearches";
 static NSUInteger const kMaxRecentSearches = 15;
 
+static NSString* const kSelectedLayerIdsKey = @"selectedLayerIds";
+
 @interface MapService ()
 
+@property (nonatomic, strong) NSSet* selectedLayerIdsInternal;
 @property (nonatomic, strong) NSMutableOrderedSet* recentSearchesInternal;
 
 @end
@@ -74,21 +74,21 @@ static MapService* instance __weak = nil;
     }
 }
 
-- (void)getLayerListWithDelegate:(id)delegate {
+- (void)getLayerWithDelegate:(id)delegate {
     PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getLayerList);
-    operation.delegateDidReturnSelector = @selector(getLayerListDidReturn:);
-    operation.delegateDidFailSelector = @selector(getLayerListFailed);
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
-- (void)getLayerItemsForLayerId:(int64_t)layerId delegate:(id)delegate {
-    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getLayerItems:);
-    operation.delegateDidReturnSelector = @selector(getLayerItemsForLayerId:didReturn:);
-    operation.delegateDidFailSelector = @selector(getLayerItemsFailedForLayerId:);
-    [operation addLongArgument:(long)layerId];
+#warning REMOVE SKIP CACHE
+    operation.skipCache = YES;
+    
+    operation.keepInCache = YES;
+    operation.keepInCacheBlock = ^BOOL(void* result) {
+        MapLayersResponse* response = (__bridge id)result;
+        return (response.statusCode == MapStatusCode_OK);
+    };
+    operation.cacheValidityInterval = 86400; //1 day
+    operation.returnEvenStaleCacheIfNoInternetConnection = YES;
+    operation.serviceClientSelector = @selector(getLayers);
+    operation.delegateDidReturnSelector = @selector(getLayersDidReturn:);
+    operation.delegateDidFailSelector = @selector(getLayersFailed);
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
 }
@@ -109,6 +109,29 @@ static MapService* instance __weak = nil;
     [self.operationQueue addOperation:operation];
 }
 
+#pragma mark - MapLayers
+
+- (NSSet*)selectedLayerIdsInternal {
+    if (!_selectedLayerIdsInternal) {
+        _selectedLayerIdsInternal = (NSSet*)[PCPersistenceManager objectForKey:kSelectedLayerIdsKey pluginName:@"map"];
+    }
+    if (!_selectedLayerIdsInternal) {
+        _selectedLayerIdsInternal = [NSSet set];
+    }
+    return _selectedLayerIdsInternal;
+}
+
+- (NSSet*)selectedMapLayerIds {
+    return self.selectedLayerIdsInternal;
+}
+
+- (void)setSelectedMapLayerIds:(NSSet *)selectedMapLayerIds {
+    if (selectedMapLayerIds) { // selectedMapLayerIds is allower to be nil
+        [PCUtils throwExceptionIfObject:selectedMapLayerIds notKindOfClass:[NSSet class]];
+    }
+    self.selectedLayerIdsInternal = [selectedMapLayerIds copy];
+    [PCPersistenceManager saveObject:self.selectedMapLayerIds forKey:kSelectedLayerIdsKey pluginName:@"map"];
+}
 
 #pragma mark - Recent searches
 

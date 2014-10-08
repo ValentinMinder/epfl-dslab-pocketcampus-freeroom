@@ -103,12 +103,15 @@ public class Search {
 					GeometryR geometry = response.features[i].geometry;
 					SearchProperties properties = response.features[i].properties;
 					if(geometry != null && properties != null) {
-						String description = "";
+						String description = null;
 						if(properties.room != null && properties.room.length() > 0) {
 							description = properties.room;
 						}
 						Position p = CoordinateConverter.convertEPSG4326ToLatLong(geometry.coordinates[0], geometry.coordinates[1], 0);
-						MapItem mapItem = new MapItem(properties.text, description, p.getLatitude(), p.getLongitude(), -1, -1);
+						MapItem mapItem = new MapItem(properties.text, p.getLatitude(), p.getLongitude(), -1, -1);
+						if (description != null) {
+							mapItem.setDescription(description);
+						}
 						
 						try {
 							int floor = Integer.parseInt(properties.floor);
