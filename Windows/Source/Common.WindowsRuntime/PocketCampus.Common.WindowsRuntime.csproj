@@ -59,6 +59,7 @@
       <DependentUpon>SearchBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SimpleButton.cs" />
+    <Compile Include="FocusBehavior.cs" />
     <Compile Include="Html2Xaml\Html2XamlConverter.cs" />
     <Compile Include="Html2Xaml\Properties.cs" />
     <Compile Include="Html2Xaml\TagDefinition.cs" />
@@ -112,6 +113,11 @@
     <PRIResource Include="Strings\en\CacheStatusDisplay.resw" />
     <PRIResource Include="Strings\fr\DataStatusDisplay.resw" />
     <PRIResource Include="Strings\en\DataStatusDisplay.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
+      <Name>Behaviors SDK %28XAML%29</Name>
+    </SDKReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
 </Project>
