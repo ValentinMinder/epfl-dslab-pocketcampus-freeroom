@@ -347,10 +347,10 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     if (!self.loadingIndicator) {
         self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         self.loadingIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.loadingIndicator addConstraints:[NSLayoutConstraint width:30.0 height:30.0 constraintsForView:self.loadingIndicator]];
-        [self.searchBar addSubview:self.loadingIndicator];
-        [self.searchBar addConstraints:[NSLayoutConstraint constraintsToSuperview:self.searchBar forView:self.loadingIndicator edgeInsets:UIEdgeInsetsMake(kNoInsetConstraint, kNoInsetConstraint, kNoInsetConstraint, 42.0)]];
-        [self.searchBar addConstraint:[NSLayoutConstraint constraintForCenterYtoSuperview:self.searchBar forView:self.loadingIndicator constant:0.0]];
+        [self.loadingIndicator addConstraints:[NSLayoutConstraint width:20.0 height:20.0 constraintsForView:self.loadingIndicator]];
+        [self.searchBarItem.customView addSubview:self.loadingIndicator];
+        [self.searchBarItem.customView addConstraints:[NSLayoutConstraint constraintsToSuperview:self.searchBarItem.customView forView:self.loadingIndicator edgeInsets:UIEdgeInsetsMake(kNoInsetConstraint, kNoInsetConstraint, kNoInsetConstraint, -30.0)]];
+        [self.searchBarItem.customView addConstraint:[NSLayoutConstraint constraintForCenterYtoSuperview:self.searchBarItem.customView forView:self.loadingIndicator constant:0.0]];
     }
     
     if (!self.loadingBarItem) {
@@ -383,59 +383,34 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         CGRect searchBarTargetFrame;
         CGRect searchBarContainerViewTargetFrame;
         
-        if ([PCUtils isIdiomPad]) {
-            searchBarTargetFrame = CGRectMake(10.0, 0, 270.0, kSearchBarHeightPortrait);
-            searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width, searchBarTargetFrame.size.height);
-            switch (searchState) {
-                case SearchStateReady:
-                    items = @[self.searchBarItem];
-                    break;
-                case SearchStateLoading:
-                {
-                    UIBarButtonItem* space1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:NULL];
-                    space1.width = 3.0;
-                    UIBarButtonItem* space2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:NULL];
-                    space2.width = 22.0;
-                    items = @[space1, self.loadingBarItem, space2, self.searchBarItem];
-                    break;
-                }
-                case SearchStateResults:
-                    items = @[self.resultsListButton, self.searchBarItem];
-                    break;
-                default:
-                    break;
+        [self.loadingIndicator stopAnimating];
+        CGFloat windowWidth = [[UIApplication sharedApplication] keyWindow].bounds.size.width;
+        items = @[self.layersListButton, self.searchBarItem];
+        searchBarTargetFrame = CGRectMake(0, 0, [PCUtils isIdiomPad] ? 272.0 : (0.66 * windowWidth), kSearchBarHeightPortrait);
+        searchBarContainerViewTargetFrame = searchBarTargetFrame;
+        switch (searchState) {
+            case SearchStateReady:
+                [self.loadingIndicator stopAnimating];
+                self.searchBar.showsSearchResultsButton = NO;
+                break;
+            case SearchStateLoading:
+            {
+                [self.loadingIndicator startAnimating];
+                self.searchBar.showsSearchResultsButton = NO;
+                break;
             }
-        } else {
-            [self.loadingIndicator stopAnimating];
-            CGFloat windowWidth = [[UIApplication sharedApplication] keyWindow].bounds.size.width;
-            switch (searchState) {
-                case SearchStateReady:
-                    items = @[self.layersListButton, self.searchBarItem];
-                    self.searchBar.showsCancelButton = YES;
-                    searchBarTargetFrame = CGRectMake(-2.0, 0, 0.68 * windowWidth, kSearchBarHeightPortrait);
-                    searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width-11.0, searchBarTargetFrame.size.height);
-                    break;
-                case SearchStateLoading:
-                {
-                    [self.loadingIndicator startAnimating];
-                    items = @[self.layersListButton, self.searchBarItem];
-                    searchBarTargetFrame = CGRectMake(-10.0, 0, 0.68 * windowWidth, kSearchBarHeightPortrait);
-                    searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width+(2*searchBarTargetFrame.origin.x), searchBarTargetFrame.size.height);
-                    break;
-                }
-                case SearchStateResults:
-                    items = @[self.layersListButton, self.searchBarItem];
-                    searchBarTargetFrame = CGRectMake(-10.0, 0, 0.68 * windowWidth, kSearchBarHeightPortrait);
-                    searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width+(2*searchBarTargetFrame.origin.x), searchBarTargetFrame.size.height);
-                    break;
-                default:
-                    break;
-            }
+            case SearchStateResults:
+                [self.loadingIndicator stopAnimating];
+                self.searchBar.showsSearchResultsButton = YES;
+                break;
+            default:
+                break;
         }
+        
         if (!items) {
             return;
         }
-        [UIView animateWithDuration:animated ? 0.25 : 0.0 animations:^{
+        [UIView animateWithDuration:animated ? 0.0 : 0.0 animations:^{
             self.searchBar.frame = searchBarTargetFrame;
             self.searchBar.superview.frame = searchBarContainerViewTargetFrame;
         }];
@@ -618,25 +593,25 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 #pragma mark - Actions
 
 - (void)resultsListPressed {
-    __weak __typeof(self) weakSelf = self;
+    __weak __typeof(self) welf = self;
     MapResultsListViewController* resultsViewController = [[MapResultsListViewController alloc] initWithMapItems:self.mapItemsAllResults selectedInitially:nil userValidatedSelectionBlock:^(NSArray *newlySelected) {
-        [weakSelf.mapView removeAnnotations:[MapUtils mapItemAnnotations:weakSelf.mapView.annotations]];
+        [welf.mapView removeAnnotations:[MapUtils mapItemAnnotations:welf.mapView.annotations]];
         
         void (^block)() = ^ {
-            NSArray* mapItemsAnnotations = [weakSelf mapItemAnnotationsForMapItems:newlySelected];
+            NSArray* mapItemsAnnotations = [welf mapItemAnnotationsForMapItems:newlySelected];
             if (mapItemsAnnotations.count > 0) {
-                [weakSelf.mapView showAnnotations:mapItemsAnnotations animated:YES];
+                [welf.mapView showAnnotations:mapItemsAnnotations animated:YES];
                 if (mapItemsAnnotations.count == 1) {
-                    [weakSelf.mapView selectAnnotation:mapItemsAnnotations[0] animated:YES];
+                    [welf.mapView selectAnnotation:mapItemsAnnotations[0] animated:YES];
                 }
             }
         };
         
         if ([PCUtils isIdiomPad]) {
-            [weakSelf.resultsListPopOverController togglePopoverFromBarButtonItem:weakSelf.resultsListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            [welf.resultsListPopOverController togglePopoverFromBarButtonItem:welf.resultsListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             block();
         } else {
-            [weakSelf dismissViewControllerAnimated:YES completion:block];
+            [welf dismissViewControllerAnimated:YES completion:block];
         }
     }];
     PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:resultsViewController];
@@ -650,7 +625,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         if (!self.resultsListPopOverController.isPopoverVisible) {
             [self trackAction:@"ShowResultsList"];
         }
-        [self.resultsListPopOverController togglePopoverFromBarButtonItem:self.resultsListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [self.resultsListPopOverController togglePopoverFromBarButtonItem:self.searchBarItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
         [self trackAction:@"ShowResultsList"];
         [self presentViewController:navController animated:YES completion:NULL];
@@ -722,6 +697,10 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [self.searchBar resignFirstResponder];
     [self manageRecentSearchesControllerVisibilityAnimated:YES];
+}
+
+- (void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar {
+    [self resultsListPressed];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
@@ -833,10 +812,12 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         return;
     }
     MapItem* mapItem = [((MapItemAnnotation*)(view.annotation)) mapItem];
-    self.epflTileOverlay.floorLevel = mapItem.floor;
-    self.epflLayersOverlay.floorLevel = mapItem.floor;
-    [self updateControls];
-
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // if update layers immediately, sometimes prevents annotation from being displayed
+        self.epflTileOverlay.floorLevel = mapItem.floor;
+        self.epflLayersOverlay.floorLevel = mapItem.floor;
+        [self updateControls];
+    });
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
@@ -890,7 +871,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     /* END OF TEST */
     
 #warning REMOVE
-    return;
+    //return;
     
     if (results.count == 0) { //no result
         self.noResultAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"NoResult", @"MapPlugin", nil) message:@"" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,25 +22,15 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 15.10.13.
+//  Created by Loïc Gardiol on 09.10.14.
 
 @import UIKit;
 
-@interface MapRecentSearchesListViewController : UITableViewController
+@interface MapLayersListSelectionViewController : UITableViewController
 
-- (id)initWithUserSelectedRecentSearchBlock:(void (^)(NSString* searchPattern))userSelectedRecentSearchBlock;
-
-@property (nonatomic, copy) void (^userSelectedRecentSearchBlock)(NSString*);
-
-/*
- * If yes, clear button is not in navigationItem but in the tableview directly
- * Important: must be set before controller's view is loaded
- * Default: NO
- */
-
-@property (nonatomic) BOOL showClearButtonWithinTableView;
+- (instancetype)initWithAllSelectableMapLayers:(NSArray*)allMapLayers doneButtonTappedBlock:(void (^)())doneButtonTappedBlock;
 
 @end

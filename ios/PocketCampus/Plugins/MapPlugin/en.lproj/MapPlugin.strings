@@ -1,7 +1,7 @@
 // Created by Loïc Gardiol on 01.03.12.
 
 "PluginName" = "Map";
-"SearchPlaceholder" = "Building, room, person, ...";
+"SearchPlaceholder" = "Building, room, person...";
 "RemoveElements" = "Clean results";
 "ShowBuildingsInterior" = "Show buildings interior";
 "HideBuildingsInterior" = "Hide buildings interior";

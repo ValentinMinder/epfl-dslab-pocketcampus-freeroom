@@ -1,7 +1,7 @@
 // Created by Loïc Gardiol on 01.03.12.
 
 "PluginName" = "Plan";
-"SearchPlaceholder" = "Bâtiment, salle, personne, ...";
+"SearchPlaceholder" = "Bâtim., salle, personne...";
 "RemoveElements" = "Effacer les résultats";
 "ShowBuildingsInterior" = "Aff. l'int. des bâtiments";
 "HideBuildingsInterior" = "Masquer l'int. des bâtiments";

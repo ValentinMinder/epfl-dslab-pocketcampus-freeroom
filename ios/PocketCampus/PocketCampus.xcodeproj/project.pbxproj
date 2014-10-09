@@ -52,6 +52,8 @@
 		32150DE0197E710E00CCF2AB /* MoodleUrlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32150DDF197E710E00CCF2AB /* MoodleUrlViewController.m */; };
 		32151EEA18FC3212001F6DA9 /* MoodleSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32151EE918FC3212001F6DA9 /* MoodleSettingsViewController.m */; };
 		3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3215425415B5B75F0003C8B2 /* AuthenticationPlugin.strings */; };
+		3215446419E6B24E00D6FB33 /* MapLayersListSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3215446319E6B24E00D6FB33 /* MapLayersListSelectionViewController.m */; };
+		3215446619E6B59D00D6FB33 /* MapLayersListSelectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3215446519E6B59D00D6FB33 /* MapLayersListSelectionView.xib */; };
 		3216C95816A6098C0050D17D /* DirectoryProfilePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216C95716A6098C0050D17D /* DirectoryProfilePictureViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3216C95916A609CA0050D17D /* DirectoryProfilePictureView.xib */; };
 		3217CE0A1508E31200BF94F7 /* FoodController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE091508E31200BF94F7 /* FoodController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -599,6 +601,9 @@
 		32151EE918FC3212001F6DA9 /* MoodleSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleSettingsViewController.m; sourceTree = "<group>"; };
 		3215425515B5B75F0003C8B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
 		3215425715B5B7670003C8B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
+		3215446219E6B24E00D6FB33 /* MapLayersListSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapLayersListSelectionViewController.h; sourceTree = "<group>"; };
+		3215446319E6B24E00D6FB33 /* MapLayersListSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapLayersListSelectionViewController.m; sourceTree = "<group>"; };
+		3215446519E6B59D00D6FB33 /* MapLayersListSelectionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapLayersListSelectionView.xib; sourceTree = "<group>"; };
 		3216C95616A6098C0050D17D /* DirectoryProfilePictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DirectoryProfilePictureViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		3216C95716A6098C0050D17D /* DirectoryProfilePictureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DirectoryProfilePictureViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		3216C95916A609CA0050D17D /* DirectoryProfilePictureView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryProfilePictureView.xib; sourceTree = "<group>"; };
@@ -1532,6 +1537,8 @@
 				32EB617E180D5A3C001AE852 /* MapResultsListViewController.m */,
 				32EB6180180D7CC4001AE852 /* MapRecentSearchesListViewController.h */,
 				32EB6181180D7CC4001AE852 /* MapRecentSearchesListViewController.m */,
+				3215446219E6B24E00D6FB33 /* MapLayersListSelectionViewController.h */,
+				3215446319E6B24E00D6FB33 /* MapLayersListSelectionViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1567,6 +1574,7 @@
 				324ADAC1191A44B1000737E7 /* EPFLLayersOverlay.m */,
 				324ADABA191A39F6000737E7 /* PCTileOverlayRenderer.h */,
 				324ADABB191A39F6000737E7 /* PCTileOverlayRenderer.m */,
+				3215446519E6B59D00D6FB33 /* MapLayersListSelectionView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2874,6 +2882,7 @@
 				32B5871C156458FA0051C57E /* CamiproPlugin.strings in Resources */,
 				3270B7F118056E6F007EE85B /* ListBarButton.png in Resources */,
 				3270B7F218056E6F007EE85B /* ListBarButton@2x.png in Resources */,
+				3215446619E6B59D00D6FB33 /* MapLayersListSelectionView.xib in Resources */,
 				32B5871E156458FA0051C57E /* Camipro.png in Resources */,
 				32B5871F156458FA0051C57E /* Camipro@2x.png in Resources */,
 				32710E951565129600DE6984 /* CamiproLarge.png in Resources */,
@@ -3321,6 +3330,7 @@
 				328860B9183B63590098C857 /* FoodModelAdditions.m in Sources */,
 				32DD525219B4DEAE00B5B241 /* CloudPrintService.m in Sources */,
 				321CCF9E16E3B537002CBEA2 /* PCURLSchemeHandler.m in Sources */,
+				3215446419E6B24E00D6FB33 /* MapLayersListSelectionViewController.m in Sources */,
 				32617BCE16E7DA5F004F9CF9 /* PCTableViewAdditions.m in Sources */,
 				32B1D9E317F08E1D000CC209 /* PCNavigationController.m in Sources */,
 				32F5308916EA974B00F66484 /* EventsCategorySelectorViewController.m in Sources */,
