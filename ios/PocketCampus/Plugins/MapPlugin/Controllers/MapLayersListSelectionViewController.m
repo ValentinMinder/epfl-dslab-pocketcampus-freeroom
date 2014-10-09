@@ -51,6 +51,7 @@
     [PCUtils throwExceptionIfObject:allMapLayers notKindOfClass:[NSArray class]];
     self = [super initWithNibName:@"MapLayersListSelectionView" bundle:nil];
     if (self) {
+        self.title = NSLocalizedStringFromTable(@"MapLayersToDisplay", @"MapPlugin", nil);
         self.mapService = [MapService sharedInstanceToRetain];
         self.allMapLayers = allMapLayers;
         self.doneButtonTappedBlock = doneButtonTappedBlock;
@@ -83,24 +84,55 @@
 }
 
 - (IBAction)selectAllTapeed:(id)sender {
-    NSArray* allLayerIds = [self.allMapLayers valueForKey:NSStringFromSelector(@selector(layerId))];
-    self.mapService.selectedMapLayerIds = [NSSet setWithArray:allLayerIds];
+    NSMutableSet* set = [NSMutableSet set];
+    for (MapLayer* layer in self.allMapLayers) {
+        [set addObject:[NSNumber numberWithLong:layer.layerId]];
+    }
+    self.mapService.selectedMapLayerIds = set;
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (IBAction)deselectAllTapped:(id)sender {
     self.mapService.selectedMapLayerIds = [NSSet set];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    MapLayer* layer = self.allMapLayers[indexPath.row];
+    NSNumber* nsLayerId = @(layer.layerId);
+    NSMutableSet* updatedSet = [self.mapService.selectedMapLayerIds mutableCopy];
+    if ([self.mapService.selectedMapLayerIds containsObject:nsLayerId]) {
+        [updatedSet removeObject:nsLayerId];
+    } else {
+        [updatedSet addObject:nsLayerId];
+    }
+    self.mapService.selectedMapLayerIds = updatedSet;
+    [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
 }
 
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    static NSString* const identifier = @"LayerCell";
+    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
+    [self configureCell:cell atIndexPath:indexPath];
+    return cell;
+}
+
+- (void)configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
+    MapLayer* layer = self.allMapLayers[indexPath.row];
+    cell.textLabel.text = layer.name;
+    if ([self.mapService.selectedMapLayerIds containsObject:@(layer.layerId)]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -109,13 +141,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
-}
-
-#pragma mark - Dealloc
-
-- (void)dealloc
-{
-    //
 }
 
 @end

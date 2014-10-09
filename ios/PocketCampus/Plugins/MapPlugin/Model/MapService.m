@@ -32,6 +32,8 @@
 
 NSString* const kMapRecentSearchesModifiedNotification = @"kMapRecentSearchesModifiedNotification";
 
+NSString* const kMapSelectedMapLayerIdsModifiedNotificaiton = @"MapSelectedMapLayerIdsModifiedNotificaiton";
+
 static NSString* const kRecentSearchesKey = @"recentSearches";
 static NSUInteger const kMaxRecentSearches = 15;
 
@@ -129,8 +131,12 @@ static MapService* instance __weak = nil;
     if (selectedMapLayerIds) { // selectedMapLayerIds is allower to be nil
         [PCUtils throwExceptionIfObject:selectedMapLayerIds notKindOfClass:[NSSet class]];
     }
+    if ([self.selectedMapLayerIds isEqualToSet:selectedMapLayerIds]) {
+        return;
+    }
     self.selectedLayerIdsInternal = [selectedMapLayerIds copy];
     [PCPersistenceManager saveObject:self.selectedMapLayerIds forKey:kSelectedLayerIdsKey pluginName:@"map"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMapSelectedMapLayerIdsModifiedNotificaiton object:self];
 }
 
 #pragma mark - Recent searches

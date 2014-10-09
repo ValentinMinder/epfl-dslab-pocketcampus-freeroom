@@ -54,6 +54,8 @@
 
 #import "MapRecentSearchesListViewController.h"
 
+#import "MapLayersListSelectionViewController.h"
+
 #import "LGAUserTrackingBarButtonItem.h"
 
 typedef enum  {
@@ -89,6 +91,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 @property (nonatomic, strong) NSArray* mapItemsAllResults; //raw result from map service for a search. Nil if searchState is != SearchStateResults
 
 @property (nonatomic, strong) NSArray* allMapLayers;
+@property (nonatomic, strong) NSDictionary* mapLayerForLayerId; //key: @(MapLayer.layerId), value: MapLayer object
 
 @property (nonatomic, strong) NSTimer* getMapLayersTimer;
 @property (nonatomic) BOOL getMapLayersRequestInProgress;
@@ -121,6 +124,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 @property (nonatomic, strong) UIPopoverController* recentSearchesListPopoverController;
 @property (nonatomic, strong) UIPopoverController* personPopOverController;
 @property (nonatomic, strong) UIPopoverController* resultsListPopOverController;
+@property (nonatomic, strong) UIPopoverController* mapLayersPopover;
 @property (nonatomic, strong) UIAlertView* noResultAlert;
 @property (nonatomic, strong) UIAlertView* internetConnectionAlert;
 @property (nonatomic, strong) UIAlertView* tooManyResultsAlert;
@@ -184,7 +188,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     return self;
 }
 
-#pragma mark - View events
+#pragma mark - UIViewController overrides
 
 - (void)viewDidLoad
 {
@@ -200,10 +204,9 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     self.searchState = SearchStateReady; //will set nav bar elements, see implementation
     [self manageRecentSearchesControllerVisibilityAnimated:NO];
-    MapViewController* welf __weak = self;
-    [[NSNotificationCenter defaultCenter] addObserverForName:kMapRecentSearchesModifiedNotification object:self.mapService queue:Nil usingBlock:^(NSNotification *note) {
-        [welf manageRecentSearchesControllerVisibilityAnimated:YES];
-    }];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recentSearchesChanged) name:kMapRecentSearchesModifiedNotification object:self.mapService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedLayersChanged) name:kMapSelectedMapLayerIdsModifiedNotificaiton object:self.mapService];
+    
     self.mapControlsState = MapControlsStateAllAvailable;
     
     UITapGestureRecognizer* mapTap = [[UITapGestureRecognizer alloc] initWithTarget:self.searchBar action:@selector(resignFirstResponder)];
@@ -230,17 +233,6 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     }
 }
 
-- (void)willLoseForeground {
-    self.searchBarWasFirstResponder = [self.searchBar isFirstResponder];
-    [self.searchBar resignFirstResponder];
-}
-
-- (void)didEnterForeground {
-    if (self.searchBarWasFirstResponder) {
-        [self.searchBar becomeFirstResponder];
-    }
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
@@ -256,6 +248,30 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 - (NSUInteger)supportedInterfaceOrientations
 {
     return [PCUtils isIdiomPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
+}
+
+#pragma mark - Notifications listening
+
+- (void)willLoseForeground {
+    self.searchBarWasFirstResponder = [self.searchBar isFirstResponder];
+    [self.searchBar resignFirstResponder];
+}
+
+- (void)didEnterForeground {
+    if (self.searchBarWasFirstResponder) {
+        [self.searchBar becomeFirstResponder];
+    }
+}
+
+- (void)recentSearchesChanged {
+    [self manageRecentSearchesControllerVisibilityAnimated:YES];
+}
+
+- (void)selectedLayersChanged {
+    if ([PCUtils isIdiomPad]) {
+        //done on viewWillAppear on iPhone
+        [self mapView:self.mapView regionDidChangeAnimated:NO]; //force update layers
+    }
 }
 
 #pragma mark - Properties override
@@ -401,7 +417,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
             }
             case SearchStateResults:
                 [self.loadingIndicator stopAnimating];
-                self.searchBar.showsSearchResultsButton = YES;
+                self.searchBar.showsSearchResultsButton = self.mapItemsAllResults.count > 1;
                 break;
             default:
                 break;
@@ -633,7 +649,36 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 }
 
 - (void)layersListPressed {
-#warning TODO
+    if (!self.allMapLayers) {
+        return;
+    }
+    __weak __typeof(self) welf = self;
+    MapLayersListSelectionViewController* layersViewController = [[MapLayersListSelectionViewController alloc] initWithAllSelectableMapLayers:self.allMapLayers doneButtonTappedBlock:^{
+        if ([PCUtils isIdiomPad]) {
+            [welf.mapLayersPopover togglePopoverFromBarButtonItem:welf.layersListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        } else {
+            [welf dismissViewControllerAnimated:YES completion:NULL];
+        }
+    }];
+    
+    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:layersViewController];
+    if ([PCUtils isIdiomPad]) {
+        if (self.mapLayersPopover) {
+            self.mapLayersPopover.contentViewController = navController;
+        } else {
+            self.mapLayersPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
+            self.mapLayersPopover.delegate = self;
+        }
+        if (!self.mapLayersPopover.isPopoverVisible) {
+#warning CHANGE
+            [self trackAction:@"ShowResultsList"];
+        }
+        [self.mapLayersPopover togglePopoverFromBarButtonItem:self.layersListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+#warning CHANGE
+        [self trackAction:@"ShowResultsList"];
+        [self presentViewController:navController animated:YES completion:NULL];
+    }
 }
 
 - (void)floorDownPressed {
@@ -830,12 +875,36 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     BOOL shouldAllowFloorLevelChange = altitude <= self.epflTileOverlay.floorLevelsMaxAltitude;
     
     if (shouldShowOverlay) {
+        
+        if (self.allMapLayers) {
+            NSMutableSet* namesForQueryToDisplay = [NSMutableSet set];
+            for (NSNumber* nsLayerId in self.mapService.selectedMapLayerIds) {
+                MapLayer* layer = self.mapLayerForLayerId[nsLayerId];
+                if (!layer) {
+                    continue;
+                }
+                if (shouldAllowFloorLevelChange && layer.nameForQuery) {
+                    [namesForQueryToDisplay addObject:layer.nameForQuery];
+                } else if (layer.nameForQueryAllFloors) {
+                    [namesForQueryToDisplay addObject:layer.nameForQueryAllFloors];
+                } else if (layer.nameForQuery) {
+                    [namesForQueryToDisplay addObject:layer.nameForQuery];
+                } else {
+                    //should not happen based on comments in Thrift def
+                }
+            }
+            self.epflLayersOverlay.mapLayersNamesForQueryToDisplay = namesForQueryToDisplay;
+        } else {
+            self.epflLayersOverlay.mapLayersNamesForQueryToDisplay = nil;
+        }
+        
         if (self.mapView.overlays.count == 0) {
             [self.mapView addOverlay:self.epflTileOverlay level:self.epflTileOverlay.desiredLevelForMapView];
             [self.mapView addOverlay:self.epflLayersOverlay level:self.epflLayersOverlay.desiredLevelForMapView];
         } else {
-             [self.epflLayersOverlayRenderer reloadData];
+            [self.epflLayersOverlayRenderer reloadData];
         }
+        
         if (shouldAllowFloorLevelChange) {
             self.mapControlsState = MapControlsStateAllAvailable;
         } else {
@@ -909,9 +978,16 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 - (void)getLayersDidReturn:(MapLayersResponse *)response {
     switch (response.statusCode) {
         case MapStatusCode_OK:
+        {
             self.getMapLayersRequestInProgress = NO;
             self.allMapLayers = response.layers;
+            NSMutableDictionary* mapLayerForLayerId = [NSMutableDictionary dictionary];
+            for (MapLayer* layer in response.layers) {
+                mapLayerForLayerId[@(layer.layerId)] = layer;
+            }
+            self.mapLayerForLayerId = mapLayerForLayerId;
             break;
+        }
         default:
             [self getLayersFailed];
             break;

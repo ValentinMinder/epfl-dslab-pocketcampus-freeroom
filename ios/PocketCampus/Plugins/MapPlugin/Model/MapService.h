@@ -35,6 +35,8 @@
 
 extern NSString* const kMapRecentSearchesModifiedNotification; //posted by self on default notification center
 
+extern NSString* const kMapSelectedMapLayerIdsModifiedNotificaiton; //posted by self default notification center
+
 @interface MapService : PCService<PCServiceProtocol>
 
 /*
@@ -64,7 +66,7 @@ extern NSString* const kMapRecentSearchesModifiedNotification; //posted by self 
  * recentSearches are persisted.
  * Returns empty array if not recent search.
  */
-- (NSOrderedSet*)recentSearches;
+@property (nonatomic, readonly) NSOrderedSet* recentSearches;
 
 /**
  * @discussion Adds pattern to top of recent searches. If pattern
