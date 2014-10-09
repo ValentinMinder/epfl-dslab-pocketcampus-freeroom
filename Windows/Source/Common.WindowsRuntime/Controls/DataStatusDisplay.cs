@@ -8,7 +8,6 @@ using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.Common.Controls
 {
-    // TODO retry button
     public sealed class DataStatusDisplay : Control
     {
         #region DataStatus

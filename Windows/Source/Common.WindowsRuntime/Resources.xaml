@@ -67,6 +67,7 @@
     <Style x:Key="AppCenterTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource AppLargeTextBlockStyle}">
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextAlignment" Value="Center" />
     </Style>
 
     <!-- Group header text -->
@@ -416,7 +417,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="myc:DataStatusDisplay">
                     <myc:Switch Value="{TemplateBinding Data}"
-                                       Background="{TemplateBinding Background}">
+                                Background="{TemplateBinding Background}">
                         <myc:SwitchCase Values="Loading">
                             <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
                                 <Grid.RowDefinitions>
@@ -435,14 +436,38 @@
                         </myc:SwitchCase>
                         <myc:SwitchCase Values="Error">
                             <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                
                                 <TextBlock Text="{CustomResource Common.DataStatusDisplay.Error}"
-                                           Style="{TemplateBinding TextStyle}" />
+                                           Style="{TemplateBinding TextStyle}"
+                                           VerticalAlignment="Bottom" />
+                                
+                                <AppBarButton Grid.Row="1"
+                                              Icon="Refresh"
+                                              Command="{TemplateBinding RetryCommand}"
+                                              Style="{StaticResource AppNoLabelAppBarButtonStyle}"
+                                              VerticalAlignment="Top" />
                             </Grid>
                         </myc:SwitchCase>
                         <myc:SwitchCase Values="NetworkError">
                             <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
                                 <TextBlock Text="{CustomResource Common.DataStatusDisplay.NetworkError}"
-                                           Style="{TemplateBinding TextStyle}" />
+                                           Style="{TemplateBinding TextStyle}"
+                                           VerticalAlignment="Bottom" />
+
+                                <AppBarButton Grid.Row="1"
+                                              Icon="Refresh"
+                                              Command="{TemplateBinding RetryCommand}"
+                                              Style="{StaticResource AppNoLabelAppBarButtonStyle}"
+                                              VerticalAlignment="Top" />
                             </Grid>
                         </myc:SwitchCase>
                     </myc:Switch>
@@ -486,7 +511,7 @@
         <Setter Property="Foreground" Value="{StaticResource ApplicationForegroundThemeBrush}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="{StaticResource ApplicationForegroundThemeBrush}" />
-        <Setter Property="BorderThickness" Value="4" />
+        <Setter Property="BorderThickness" Value="2" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="Margin" Value="8" />
