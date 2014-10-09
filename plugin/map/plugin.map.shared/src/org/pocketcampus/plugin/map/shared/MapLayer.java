@@ -24,19 +24,22 @@ import org.slf4j.LoggerFactory;
 public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MapLayer");
 
-  private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField NAME_FOR_QUERY_FIELD_DESC = new org.apache.thrift.protocol.TField("nameForQuery", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField NAME_FOR_QUERY_ALL_FLOORS_FIELD_DESC = new org.apache.thrift.protocol.TField("nameForQueryAllFloors", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField LAYER_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("layerId", org.apache.thrift.protocol.TType.I64, (short)1);
+  private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField NAME_FOR_QUERY_FIELD_DESC = new org.apache.thrift.protocol.TField("nameForQuery", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField NAME_FOR_QUERY_ALL_FLOORS_FIELD_DESC = new org.apache.thrift.protocol.TField("nameForQueryAllFloors", org.apache.thrift.protocol.TType.STRING, (short)4);
 
+  private long layerId; // required
   private String name; // required
   private String nameForQuery; // required
   private String nameForQueryAllFloors; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    NAME((short)1, "name"),
-    NAME_FOR_QUERY((short)2, "nameForQuery"),
-    NAME_FOR_QUERY_ALL_FLOORS((short)3, "nameForQueryAllFloors");
+    LAYER_ID((short)1, "layerId"),
+    NAME((short)2, "name"),
+    NAME_FOR_QUERY((short)3, "nameForQuery"),
+    NAME_FOR_QUERY_ALL_FLOORS((short)4, "nameForQueryAllFloors");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -51,11 +54,13 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // NAME
+        case 1: // LAYER_ID
+          return LAYER_ID;
+        case 2: // NAME
           return NAME;
-        case 2: // NAME_FOR_QUERY
+        case 3: // NAME_FOR_QUERY
           return NAME_FOR_QUERY;
-        case 3: // NAME_FOR_QUERY_ALL_FLOORS
+        case 4: // NAME_FOR_QUERY_ALL_FLOORS
           return NAME_FOR_QUERY_ALL_FLOORS;
         default:
           return null;
@@ -97,10 +102,14 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
   }
 
   // isset id assignments
+  private static final int __LAYERID_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+    tmpMap.put(_Fields.LAYER_ID, new org.apache.thrift.meta_data.FieldMetaData("layerId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.NAME_FOR_QUERY, new org.apache.thrift.meta_data.FieldMetaData("nameForQuery", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
@@ -115,9 +124,12 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
   }
 
   public MapLayer(
+    long layerId,
     String name)
   {
     this();
+    this.layerId = layerId;
+    setLayerIdIsSet(true);
     this.name = name;
   }
 
@@ -125,6 +137,9 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
    * Performs a deep copy on <i>other</i>.
    */
   public MapLayer(MapLayer other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
+    this.layerId = other.layerId;
     if (other.isSetName()) {
       this.name = other.name;
     }
@@ -142,9 +157,34 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
 
   @Override
   public void clear() {
+    setLayerIdIsSet(false);
+    this.layerId = 0;
     this.name = null;
     this.nameForQuery = null;
     this.nameForQueryAllFloors = null;
+  }
+
+  public long getLayerId() {
+    return this.layerId;
+  }
+
+  public MapLayer setLayerId(long layerId) {
+    this.layerId = layerId;
+    setLayerIdIsSet(true);
+    return this;
+  }
+
+  public void unsetLayerId() {
+    __isset_bit_vector.clear(__LAYERID_ISSET_ID);
+  }
+
+  /** Returns true if field layerId is set (has been assigned a value) and false otherwise */
+  public boolean isSetLayerId() {
+    return __isset_bit_vector.get(__LAYERID_ISSET_ID);
+  }
+
+  public void setLayerIdIsSet(boolean value) {
+    __isset_bit_vector.set(__LAYERID_ISSET_ID, value);
   }
 
   public String getName() {
@@ -221,6 +261,14 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
+    case LAYER_ID:
+      if (value == null) {
+        unsetLayerId();
+      } else {
+        setLayerId((Long)value);
+      }
+      break;
+
     case NAME:
       if (value == null) {
         unsetName();
@@ -250,6 +298,9 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
+    case LAYER_ID:
+      return Long.valueOf(getLayerId());
+
     case NAME:
       return getName();
 
@@ -270,6 +321,8 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     }
 
     switch (field) {
+    case LAYER_ID:
+      return isSetLayerId();
     case NAME:
       return isSetName();
     case NAME_FOR_QUERY:
@@ -292,6 +345,15 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
   public boolean equals(MapLayer that) {
     if (that == null)
       return false;
+
+    boolean this_present_layerId = true;
+    boolean that_present_layerId = true;
+    if (this_present_layerId || that_present_layerId) {
+      if (!(this_present_layerId && that_present_layerId))
+        return false;
+      if (this.layerId != that.layerId)
+        return false;
+    }
 
     boolean this_present_name = true && this.isSetName();
     boolean that_present_name = true && that.isSetName();
@@ -327,6 +389,11 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
+    boolean present_layerId = true;
+    builder.append(present_layerId);
+    if (present_layerId)
+      builder.append(layerId);
+
     boolean present_name = true && (isSetName());
     builder.append(present_name);
     if (present_name)
@@ -353,6 +420,16 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     int lastComparison = 0;
     MapLayer typedOther = (MapLayer)other;
 
+    lastComparison = Boolean.valueOf(isSetLayerId()).compareTo(typedOther.isSetLayerId());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetLayerId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.layerId, typedOther.layerId);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetName()).compareTo(typedOther.isSetName());
     if (lastComparison != 0) {
       return lastComparison;
@@ -400,21 +477,29 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
         break;
       }
       switch (field.id) {
-        case 1: // NAME
+        case 1: // LAYER_ID
+          if (field.type == org.apache.thrift.protocol.TType.I64) {
+            this.layerId = iprot.readI64();
+            setLayerIdIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 2: // NAME
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.name = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // NAME_FOR_QUERY
+        case 3: // NAME_FOR_QUERY
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.nameForQuery = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // NAME_FOR_QUERY_ALL_FLOORS
+        case 4: // NAME_FOR_QUERY_ALL_FLOORS
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.nameForQueryAllFloors = iprot.readString();
           } else { 
@@ -429,6 +514,9 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
+    if (!isSetLayerId()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'layerId' was not found in serialized data! Struct: " + toString());
+    }
     validate();
   }
 
@@ -436,6 +524,9 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    oprot.writeFieldBegin(LAYER_ID_FIELD_DESC);
+    oprot.writeI64(this.layerId);
+    oprot.writeFieldEnd();
     if (this.name != null) {
       oprot.writeFieldBegin(NAME_FIELD_DESC);
       oprot.writeString(this.name);
@@ -464,6 +555,10 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     StringBuilder sb = new StringBuilder("MapLayer(");
     boolean first = true;
 
+    sb.append("layerId:");
+    sb.append(this.layerId);
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("name:");
     if (this.name == null) {
       sb.append("null");
@@ -497,6 +592,7 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    // alas, we cannot check 'layerId' because it's a primitive and you chose the non-beans generator.
     if (name == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'name' was not present! Struct: " + toString());
     }
@@ -512,6 +608,8 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);
