@@ -14,13 +14,13 @@
                      Color="#E0E0E0" />
     <SolidColorBrush x:Key="AppSecondaryHeaderForegroundBrush" 
                      Color="Black" />
-    
+
     <SolidColorBrush x:Key="AppSubtleBrush"
                      Color="{StaticResource PhoneBaseMidColor}" />
     <!-- TODO override accent color -->
     <SolidColorBrush x:Key="AppAccentBrush"
                      Color="#C9060C" />
-    
+
     <!-- All converters declared in Common -->
     <my:DictionaryFixer x:Key="DictionaryFixer" />
     <my:StringFormatConverter x:Key="StringFormat" />
@@ -89,7 +89,7 @@
         <Setter Property="FontSize" Value="{StaticResource TextStyleExtraLargePlusFontSize}" />
         <Setter Property="Margin" Value="19,0,0,5" />
     </Style>
-    
+
     <!-- Secondary title text -->
     <Style x:Key="AppSecondaryTitleTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource AppSecondaryHeaderForegroundBrush}" />
@@ -114,7 +114,7 @@
         <Setter Property="TextWrapping" Value="WrapWholeWords" />
     </Style>
 
-    
+
     <!-- ItemsControl style that stretches its contents -->
     <Style TargetType="ItemsControl">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -128,7 +128,7 @@
             </Setter.Value>
         </Setter>-->
     </Style>
-    
+
     <!-- ListView style that stretches its contents-->
     <Style TargetType="ListView">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -219,7 +219,7 @@
                                 <VisualState x:Name="PointerFocused" />
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        
+
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
@@ -317,13 +317,13 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
     </Style>
-    
+
     <!-- Default style for Condition -->
     <Style TargetType="myc:Condition">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
     </Style>
-    
+
     <!-- Default style for Placeholder -->
     <Style TargetType="myc:Placeholder">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -427,7 +427,7 @@
                                 <TextBlock Text="{CustomResource Common.DataStatusDisplay.Loading}"
                                            Style="{TemplateBinding TextStyle}"
                                            VerticalAlignment="Bottom" />
-                                
+
                                 <ProgressBar Grid.Row="1"
                                              IsIndeterminate="True"
                                              VerticalAlignment="Top" />
@@ -458,12 +458,96 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="myc:CacheStatusDisplay">
-                    <Border Background="{StaticResource AppCacheStatusDisplayBackgroundBrush}">
+                    <Grid Background="{StaticResource AppCacheStatusDisplayBackgroundBrush}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
                         <TextBlock Text="{CustomResource Common.CacheStatusDisplay.Text}"
                                    Style="{StaticResource AppNormalTextBlockStyle}"
                                    Foreground="{StaticResource AppCacheStatusDisplayForegroundBrush}"
                                    Margin="19,4" />
-                    </Border>
+
+                        <AppBarButton Grid.Column="1"
+                                      Icon="Refresh"
+                                      Command="{TemplateBinding RetryCommand}"
+                                      Style="{StaticResource AppNoLabelAppBarButtonStyle}"
+                                      Foreground="{StaticResource AppCacheStatusDisplayForegroundBrush}"
+                                      BorderBrush="{StaticResource AppCacheStatusDisplayForegroundBrush}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- No-label AppBarButton style -->
+    <Style x:Key="AppNoLabelAppBarButtonStyle" TargetType="AppBarButton">
+        <Setter Property="Foreground" Value="{StaticResource ApplicationForegroundThemeBrush}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{StaticResource ApplicationForegroundThemeBrush}" />
+        <Setter Property="BorderThickness" Value="4" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="8" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="AppBarButton">
+                    <Grid x:Name="RootGrid"
+                          Background="Transparent">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Ellipse"
+                                                                       Storyboard.TargetProperty="Fill">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemPointerOverBackgroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" 
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemPointerOverForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Ellipse"
+                                                                       Storyboard.TargetProperty="Fill">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" 
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemPressedForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="RootGrid"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0.5" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <Grid Width="40" 
+                              Height="40">
+                            <Ellipse x:Name="Ellipse"
+                                     UseLayoutRounding="False"
+                                     Width="40"
+                                     Height="40"
+                                     Fill="{TemplateBinding Background}"
+                                     Stroke="{TemplateBinding BorderBrush}"
+                                     StrokeThickness="{TemplateBinding BorderThickness}" />
+                            <ContentPresenter x:Name="Content"
+                                              Content="{TemplateBinding Icon}"
+                                              Foreground="{TemplateBinding Foreground}"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch" />
+                        </Grid>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

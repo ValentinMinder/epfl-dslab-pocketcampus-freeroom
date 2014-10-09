@@ -5,7 +5,6 @@ using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.Common.Controls
 {
-    // TODO retry button
     public sealed class CacheStatusDisplay : Control
     {
         #region Status
@@ -34,7 +33,6 @@ namespace PocketCampus.Common.Controls
         public static readonly DependencyProperty RetryCommandProperty =
             DependencyProperty.Register( "RetryCommand", typeof( ICommand ), typeof( CacheStatusDisplay ), new PropertyMetadata( null ) );
         #endregion
-
 
 
         public CacheStatusDisplay()
