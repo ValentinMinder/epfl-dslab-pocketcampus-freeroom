@@ -6,7 +6,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 INSERT INTO `maplayers` (`nameForQuery`, `nameForQueryAllFloors`, `name_EN`, `name_FR`) VALUES
-('myprint-{floor}', 'myprintall', 'MyPrint printers', 'Imprimantes MyPrint'),
-('chargeurs-{floor}', 'chargeursall', 'Camipro chargers', 'Chargeurs Camipro'),
-('camipro-{floor}', 'camiproall', 'Camipro terminals', 'Bornes Camipro');
+(1000, 'myprint-{floor}', 'myprintall', 'MyPrint printers', 'Imprimantes MyPrint'),
+(2000, 'chargeurs-{floor}', 'chargeursall', 'Camipro chargers', 'Chargeurs Camipro'),
+(3000, 'camipro-{floor}', 'camiproall', 'Camipro terminals', 'Bornes Camipro');
 

@@ -17,6 +17,7 @@ public class MapDatabase {
 
 	private static final String TABLE_LAYERS = "maplayers";
 
+	private static final String LAYER_ID = "layerId";
 	private static final String LAYER_NAME_FOR_QUERY = "nameForQuery";
 	private static final String LAYER_NAME_FOR_QUERY_ALL_FLOORS = "nameForQueryAllFloors";
 	private static final String LAYER_NAME_PREFIX_FOR_LANGUAGE = "name_";
@@ -49,6 +50,7 @@ public class MapDatabase {
 					System.err.println("Could not find required value for column "+layerNameColumn+". Ignoring layer.");
 					continue;
 				}
+				long layerId = results.getLong(LAYER_ID);
 				String nameForQuery = results.getString(LAYER_NAME_FOR_QUERY);
 				String nameForQueryAllFloors = results.getString(LAYER_NAME_FOR_QUERY_ALL_FLOORS);
 				if (nameForQuery == null && nameForQueryAllFloors == null) {
@@ -56,7 +58,7 @@ public class MapDatabase {
 					continue;
 				}
 				
-				MapLayer layer = new MapLayer(layerName);
+				MapLayer layer = new MapLayer(layerId, layerName);
 				layer.setNameForQuery(nameForQuery);
 				layer.setNameForQueryAllFloors(nameForQueryAllFloors);
 				

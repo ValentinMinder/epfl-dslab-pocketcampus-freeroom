@@ -6,9 +6,10 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 CREATE TABLE IF NOT EXISTS `maplayers` (
-  `nameForQuery` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `nameForQueryAllFloors` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `name_EN` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `name_FR` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`nameForQuery`, `nameForQueryAllFloors`)
+	`eventId` bigint(20) NOT NULL,
+ 	`nameForQuery` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+ 	`nameForQueryAllFloors` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+ 	`name_EN` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+ 	`name_FR` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+ 	PRIMARY KEY (`layerId`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
