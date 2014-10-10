@@ -57,6 +57,7 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.util.LongSparseArray;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -495,12 +496,12 @@ public class FoodMainView extends PluginView implements IFoodView {
 	@SuppressLint("UseSparseArrays")
 	private void promptUserStatus() {
 		trackEvent("PromptUserStatus", null);
-		Map<Integer, String> priceTargets = new HashMap<Integer, String>();
-		priceTargets.put(0, getString(R.string.food_pricetag_auto));
+		Map<Integer, CharSequence> priceTargets = new HashMap<Integer, CharSequence>();
+		priceTargets.put(0, Html.fromHtml(getString(R.string.food_pricetag_auto)));
 		for(PriceTarget t : PriceTarget.values()) {
 			if(t == PriceTarget.ALL)
 				continue;
-			priceTargets.put(t.getValue(), mController.translateEnum(t.name()));
+			priceTargets.put(t.getValue(), Html.fromHtml(mController.translateEnum(t.name())));
 		}
 		int selected = 0;
 		if(mModel.getUserStatus() != null) selected = mModel.getUserStatus().getValue();
