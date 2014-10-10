@@ -22,15 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.pocketcampus.plugin.food.android.FoodSuggestionsView"
-            android:screenOrientation="nosensor" >
-        </activity>
-        <activity android:name="org.pocketcampus.plugin.food.android.FoodPreferencesView"
-            android:screenOrientation="nosensor">
-        </activity>
-        <activity android:name="org.pocketcampus.plugin.food.android.FoodSettings"
-            android:screenOrientation="nosensor" >
-        </activity>
 
         <service
             xmlns:android="http://schemas.android.com/apk/res/android"
