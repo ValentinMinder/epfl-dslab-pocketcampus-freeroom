@@ -15,7 +15,7 @@
     
     
     <string name="cloudprint_string_color">Color</string>
-    <string name="cloudprint_string_grayscale">Grayscale</string>
+    <string name="cloudprint_string_grayscale">Black and white</string>
     <string name="cloudprint_string_one_copy">1 copy</string>
     <string name="cloudprint_string_n_copies">%1$d copies</string>
     <string name="cloudprint_string_comma_collate">, collate</string>
@@ -70,7 +70,7 @@
     <string name="cloudprint_enum_double_sided_LONG_EDGE">Long edge</string>
     <string name="cloudprint_enum_double_sided_SHORT_EDGE">Short edge</string>
     
-    <string name="cloudprint_enum_color_BLACK_WHITE">Grayscale</string>
+    <string name="cloudprint_enum_color_BLACK_WHITE">Black and white</string>
     <string name="cloudprint_enum_color_COLOR">Color</string>
   
     <string name="cloudprint_enum_orientation_PORTRAIT">Portrait</string>
