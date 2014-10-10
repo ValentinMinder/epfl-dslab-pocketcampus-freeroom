@@ -15,12 +15,7 @@
 		27B74CE619A205E6006B2F17 /* RecommendedApps.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B74CDF19A205E6006B2F17 /* RecommendedApps.png */; };
 		27B74CE719A205E6006B2F17 /* RecommendedApps@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B74CE019A205E6006B2F17 /* RecommendedApps@2x.png */; };
 		27B74CE819A206C8006B2F17 /* RecommendedAppsPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27B74CEA19A206C8006B2F17 /* RecommendedAppsPlugin.strings */; };
-		27B74CF919A21059006B2F17 /* RecommendedAppTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27B74CF819A21059006B2F17 /* RecommendedAppTableViewCell.xib */; };
 		27B74CFC19A210D6006B2F17 /* RecommendedAppsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B74CFB19A210D6006B2F17 /* RecommendedAppsListViewController.m */; };
-		27B74CFF19A21146006B2F17 /* RecommendedAppTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B74CFE19A21146006B2F17 /* RecommendedAppTableViewCell.m */; };
-		27B74D0219A212AB006B2F17 /* RecommendedAppScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B74D0119A212AB006B2F17 /* RecommendedAppScrollView.m */; };
-		27B74D0519A2134D006B2F17 /* RecommendedAppThumbView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B74D0419A2134D006B2F17 /* RecommendedAppThumbView.m */; };
-		27B74D1119A24323006B2F17 /* RecommendedAppThumbView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27B74D1019A24322006B2F17 /* RecommendedAppThumbView.xib */; };
 		27C1161019A2588E00FEF411 /* recommendedapps.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C1160F19A2588E00FEF411 /* recommendedapps.m */; };
 		320037511811843500901F6A /* CheckmarkRoundedSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200374F1811843500901F6A /* CheckmarkRoundedSquare.png */; };
 		320037521811843500901F6A /* CheckmarkRoundedSquare@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320037501811843500901F6A /* CheckmarkRoundedSquare@2x.png */; };
@@ -57,6 +52,8 @@
 		32150DE0197E710E00CCF2AB /* MoodleUrlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32150DDF197E710E00CCF2AB /* MoodleUrlViewController.m */; };
 		32151EEA18FC3212001F6DA9 /* MoodleSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32151EE918FC3212001F6DA9 /* MoodleSettingsViewController.m */; };
 		3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3215425415B5B75F0003C8B2 /* AuthenticationPlugin.strings */; };
+		3215446419E6B24E00D6FB33 /* MapLayersListSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3215446319E6B24E00D6FB33 /* MapLayersListSelectionViewController.m */; };
+		3215446619E6B59D00D6FB33 /* MapLayersListSelectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3215446519E6B59D00D6FB33 /* MapLayersListSelectionView.xib */; };
 		3216C95816A6098C0050D17D /* DirectoryProfilePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216C95716A6098C0050D17D /* DirectoryProfilePictureViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3216C95916A609CA0050D17D /* DirectoryProfilePictureView.xib */; };
 		3217CE0A1508E31200BF94F7 /* FoodController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE091508E31200BF94F7 /* FoodController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -156,6 +153,10 @@
 		32617BCE16E7DA5F004F9CF9 /* PCTableViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32617BCD16E7DA5F004F9CF9 /* PCTableViewAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32649B23160DD7DA002E6498 /* DirectoryPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32649B22160DD7DA002E6498 /* DirectoryPersonViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32675C2415F50F4A00880387 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32675C2315F50F4A00880387 /* Config.plist */; };
+		3267676319E2C96800365F6D /* RecommendedAppsForCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3267676119E2C96800365F6D /* RecommendedAppsForCategoryCell.m */; };
+		3267676419E2C96800365F6D /* RecommendedAppsForCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3267676219E2C96800365F6D /* RecommendedAppsForCategoryCell.xib */; };
+		3267676819E2CE4800365F6D /* RecommendedAppCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3267676619E2CE4800365F6D /* RecommendedAppCollectionViewCell.m */; };
+		3267676919E2CE4800365F6D /* RecommendedAppCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3267676719E2CE4800365F6D /* RecommendedAppCollectionViewCell.xib */; };
 		3268063219AF44B800E8CD22 /* THTTPClient+MutableRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268063119AF44B800E8CD22 /* THTTPClient+MutableRequest.m */; };
 		3268063319AF44B800E8CD22 /* THTTPClient+MutableRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268063119AF44B800E8CD22 /* THTTPClient+MutableRequest.m */; };
 		326B9250150279E900DB4AEE /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B924F150279E900DB4AEE /* AddressBookUI.framework */; };
@@ -207,6 +208,8 @@
 		3281AB8216E221F700D8FAD1 /* EventItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3281AB8116E221F700D8FAD1 /* EventItemViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3281AB8316E2254600D8FAD1 /* EventItemView.xib */; };
 		3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3282C283181179E2002A4FAE /* EventsLarge@2x.png */; };
+		328501B419E5768F0049356E /* MapLayersBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 328501B219E5768F0049356E /* MapLayersBarButton.png */; };
+		328501B519E5768F0049356E /* MapLayersBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328501B319E5768F0049356E /* MapLayersBarButton@2x.png */; };
 		32870F9E19B674AE00A3BC68 /* CloudPrintRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32870F9D19B674AE00A3BC68 /* CloudPrintRequestViewController.m */; };
 		32875E5F194CF2EF0071CDF8 /* PCWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32875E5E194CF2EF0071CDF8 /* PCWebViewController.m */; };
 		32875E61194CF3100071CDF8 /* PCWebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32875E60194CF3100071CDF8 /* PCWebView.xib */; };
@@ -539,16 +542,8 @@
 		27B74CE019A205E6006B2F17 /* RecommendedApps@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RecommendedApps@2x.png"; sourceTree = "<group>"; };
 		27B74CE919A206C8006B2F17 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/RecommendedAppsPlugin.strings; sourceTree = "<group>"; };
 		27B74CEB19A206D3006B2F17 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RecommendedAppsPlugin.strings; sourceTree = "<group>"; };
-		27B74CF819A21059006B2F17 /* RecommendedAppTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecommendedAppTableViewCell.xib; sourceTree = "<group>"; };
 		27B74CFA19A210D6006B2F17 /* RecommendedAppsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppsListViewController.h; sourceTree = "<group>"; };
 		27B74CFB19A210D6006B2F17 /* RecommendedAppsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedAppsListViewController.m; sourceTree = "<group>"; };
-		27B74CFD19A21146006B2F17 /* RecommendedAppTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppTableViewCell.h; sourceTree = "<group>"; };
-		27B74CFE19A21146006B2F17 /* RecommendedAppTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedAppTableViewCell.m; sourceTree = "<group>"; };
-		27B74D0019A212AB006B2F17 /* RecommendedAppScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppScrollView.h; sourceTree = "<group>"; };
-		27B74D0119A212AB006B2F17 /* RecommendedAppScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedAppScrollView.m; sourceTree = "<group>"; };
-		27B74D0319A2134D006B2F17 /* RecommendedAppThumbView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppThumbView.h; sourceTree = "<group>"; };
-		27B74D0419A2134D006B2F17 /* RecommendedAppThumbView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedAppThumbView.m; sourceTree = "<group>"; };
-		27B74D1019A24322006B2F17 /* RecommendedAppThumbView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecommendedAppThumbView.xib; sourceTree = "<group>"; };
 		27C1160E19A2588E00FEF411 /* recommendedapps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = recommendedapps.h; sourceTree = "<group>"; };
 		27C1160F19A2588E00FEF411 /* recommendedapps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = recommendedapps.m; sourceTree = "<group>"; };
 		27E43950185F63E100D03974 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -606,6 +601,9 @@
 		32151EE918FC3212001F6DA9 /* MoodleSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleSettingsViewController.m; sourceTree = "<group>"; };
 		3215425515B5B75F0003C8B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
 		3215425715B5B7670003C8B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
+		3215446219E6B24E00D6FB33 /* MapLayersListSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapLayersListSelectionViewController.h; sourceTree = "<group>"; };
+		3215446319E6B24E00D6FB33 /* MapLayersListSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapLayersListSelectionViewController.m; sourceTree = "<group>"; };
+		3215446519E6B59D00D6FB33 /* MapLayersListSelectionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapLayersListSelectionView.xib; sourceTree = "<group>"; };
 		3216C95616A6098C0050D17D /* DirectoryProfilePictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DirectoryProfilePictureViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		3216C95716A6098C0050D17D /* DirectoryProfilePictureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DirectoryProfilePictureViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		3216C95916A609CA0050D17D /* DirectoryProfilePictureView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryProfilePictureView.xib; sourceTree = "<group>"; };
@@ -755,6 +753,12 @@
 		32649B21160DD7DA002E6498 /* DirectoryPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DirectoryPersonViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32649B22160DD7DA002E6498 /* DirectoryPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DirectoryPersonViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32675C2315F50F4A00880387 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
+		3267676019E2C96800365F6D /* RecommendedAppsForCategoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppsForCategoryCell.h; sourceTree = "<group>"; };
+		3267676119E2C96800365F6D /* RecommendedAppsForCategoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedAppsForCategoryCell.m; sourceTree = "<group>"; };
+		3267676219E2C96800365F6D /* RecommendedAppsForCategoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecommendedAppsForCategoryCell.xib; sourceTree = "<group>"; };
+		3267676519E2CE4800365F6D /* RecommendedAppCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppCollectionViewCell.h; sourceTree = "<group>"; };
+		3267676619E2CE4800365F6D /* RecommendedAppCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedAppCollectionViewCell.m; sourceTree = "<group>"; };
+		3267676719E2CE4800365F6D /* RecommendedAppCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecommendedAppCollectionViewCell.xib; sourceTree = "<group>"; };
 		3268063019AF44B800E8CD22 /* THTTPClient+MutableRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "THTTPClient+MutableRequest.h"; sourceTree = "<group>"; };
 		3268063119AF44B800E8CD22 /* THTTPClient+MutableRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "THTTPClient+MutableRequest.m"; sourceTree = "<group>"; };
 		326B924F150279E900DB4AEE /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
@@ -820,6 +824,8 @@
 		3281AB8116E221F700D8FAD1 /* EventItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EventItemViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		3281AB8316E2254600D8FAD1 /* EventItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventItemView.xib; sourceTree = "<group>"; };
 		3282C283181179E2002A4FAE /* EventsLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EventsLarge@2x.png"; sourceTree = "<group>"; };
+		328501B219E5768F0049356E /* MapLayersBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MapLayersBarButton.png; sourceTree = "<group>"; };
+		328501B319E5768F0049356E /* MapLayersBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapLayersBarButton@2x.png"; sourceTree = "<group>"; };
 		32870F9C19B674AE00A3BC68 /* CloudPrintRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintRequestViewController.h; sourceTree = "<group>"; };
 		32870F9D19B674AE00A3BC68 /* CloudPrintRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintRequestViewController.m; sourceTree = "<group>"; };
 		32875E5D194CF2EF0071CDF8 /* PCWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCWebViewController.h; sourceTree = "<group>"; };
@@ -1226,14 +1232,12 @@
 		27B74CDD19A205E6006B2F17 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				27B74D0319A2134D006B2F17 /* RecommendedAppThumbView.h */,
-				27B74D0419A2134D006B2F17 /* RecommendedAppThumbView.m */,
-				27B74D1019A24322006B2F17 /* RecommendedAppThumbView.xib */,
-				27B74D0019A212AB006B2F17 /* RecommendedAppScrollView.h */,
-				27B74D0119A212AB006B2F17 /* RecommendedAppScrollView.m */,
-				27B74CFD19A21146006B2F17 /* RecommendedAppTableViewCell.h */,
-				27B74CFE19A21146006B2F17 /* RecommendedAppTableViewCell.m */,
-				27B74CF819A21059006B2F17 /* RecommendedAppTableViewCell.xib */,
+				3267676019E2C96800365F6D /* RecommendedAppsForCategoryCell.h */,
+				3267676119E2C96800365F6D /* RecommendedAppsForCategoryCell.m */,
+				3267676219E2C96800365F6D /* RecommendedAppsForCategoryCell.xib */,
+				3267676519E2CE4800365F6D /* RecommendedAppCollectionViewCell.h */,
+				3267676619E2CE4800365F6D /* RecommendedAppCollectionViewCell.m */,
+				3267676719E2CE4800365F6D /* RecommendedAppCollectionViewCell.xib */,
 				27B74CDE19A205E6006B2F17 /* Images */,
 			);
 			path = Views;
@@ -1333,13 +1337,13 @@
 		3219EF4F14FCDE4900A271CD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				32FF91CC19C62BC000559E1E /* Social.framework */,
-				32FF91C819C62B3300559E1E /* CoreFoundation.framework */,
-				27E43950185F63E100D03974 /* XCTest.framework */,
 				32930A7617F898910025F864 /* External frameworks */,
+				27E43950185F63E100D03974 /* XCTest.framework */,
 				32B8928115458BD70058E472 /* libz.dylib */,
 				32B7322515C206F30091757D /* libsqlite3.dylib */,
 				321CCF9A16E37F7C002CBEA2 /* libiconv.dylib */,
+				32FF91CC19C62BC000559E1E /* Social.framework */,
+				32FF91C819C62B3300559E1E /* CoreFoundation.framework */,
 				32C879AA183D6C8E00750A11 /* Crashlytics.framework */,
 				321CCF9816E37F6A002CBEA2 /* CoreVideo.framework */,
 				321CCF9616E37F5E002CBEA2 /* CoreMedia.framework */,
@@ -1358,8 +1362,8 @@
 				3219EF5214FCDE4900A271CD /* Foundation.framework */,
 				3219EF5414FCDE4900A271CD /* CoreGraphics.framework */,
 				32E280AA156E613100B74825 /* SenTestingKit.framework */,
-				96AF5068222245668954256E /* libPods.a */,
 				32136E89193F6934002905A9 /* NotificationCenter.framework */,
+				96AF5068222245668954256E /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1533,6 +1537,8 @@
 				32EB617E180D5A3C001AE852 /* MapResultsListViewController.m */,
 				32EB6180180D7CC4001AE852 /* MapRecentSearchesListViewController.h */,
 				32EB6181180D7CC4001AE852 /* MapRecentSearchesListViewController.m */,
+				3215446219E6B24E00D6FB33 /* MapLayersListSelectionViewController.h */,
+				3215446319E6B24E00D6FB33 /* MapLayersListSelectionViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1568,6 +1574,7 @@
 				324ADAC1191A44B1000737E7 /* EPFLLayersOverlay.m */,
 				324ADABA191A39F6000737E7 /* PCTileOverlayRenderer.h */,
 				324ADABB191A39F6000737E7 /* PCTileOverlayRenderer.m */,
+				3215446519E6B59D00D6FB33 /* MapLayersListSelectionView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1581,6 +1588,8 @@
 				32D0B25F166ABEA200F68304 /* FloorUp@2x.png */,
 				324151E315375BDD00CCFB22 /* Map.png */,
 				324151E415375BDD00CCFB22 /* Map@2x.png */,
+				328501B219E5768F0049356E /* MapLayersBarButton.png */,
+				328501B319E5768F0049356E /* MapLayersBarButton@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -2858,6 +2867,7 @@
 				326E3E3E1963FF7F00017F0C /* CellEmptyPicture@2x.png in Resources */,
 				32CCB4EA1555237500220282 /* MoodlePlugin.strings in Resources */,
 				32DD525619B4DEB600B5B241 /* CloudPrintPlugin.strings in Resources */,
+				3267676919E2CE4800365F6D /* RecommendedAppCollectionViewCell.xib in Resources */,
 				327585A118449347004215FC /* TransportLarge@2x.png in Resources */,
 				328A132618296E2D00F4C622 /* FoodSmileySad@2x.png in Resources */,
 				32CCB4EF1555237500220282 /* Moodle.png in Resources */,
@@ -2872,6 +2882,7 @@
 				32B5871C156458FA0051C57E /* CamiproPlugin.strings in Resources */,
 				3270B7F118056E6F007EE85B /* ListBarButton.png in Resources */,
 				3270B7F218056E6F007EE85B /* ListBarButton@2x.png in Resources */,
+				3215446619E6B59D00D6FB33 /* MapLayersListSelectionView.xib in Resources */,
 				32B5871E156458FA0051C57E /* Camipro.png in Resources */,
 				32B5871F156458FA0051C57E /* Camipro@2x.png in Resources */,
 				32710E951565129600DE6984 /* CamiproLarge.png in Resources */,
@@ -2925,6 +2936,7 @@
 				32ADC71A1659AAEB0039F6A6 /* Download@2x.png in Resources */,
 				32763231166511B700C33DF9 /* MapView-pad.xib in Resources */,
 				327BF2371666043100C67937 /* PushNotifPlugin.strings in Resources */,
+				3267676419E2C96800365F6D /* RecommendedAppsForCategoryCell.xib in Resources */,
 				327585A018449347004215FC /* TransportLarge.png in Resources */,
 				32AF954A19B39F91008CB161 /* Cross@2x.png in Resources */,
 				32D0B260166ABEA200F68304 /* FloorDown.png in Resources */,
@@ -2950,7 +2962,6 @@
 				328A72DF184A4EE0002C5A6B /* SplashImage4inch@2x.png in Resources */,
 				322207F11688F101003F6622 /* NewsItemView.xib in Resources */,
 				32D1DE18184663C700D0C866 /* TransportTripCell.xib in Resources */,
-				27B74D1119A24323006B2F17 /* RecommendedAppThumbView.xib in Resources */,
 				32E0E31A194B206D003251CC /* FilterBarButtonSelected@2x.png in Resources */,
 				322207F31688FFFA003F6622 /* NewsItem.html in Resources */,
 				32E0E315194B1FDD003251CC /* FilterBarButton.png in Resources */,
@@ -2969,6 +2980,7 @@
 				3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */,
 				329E1B3B16E693130054C3A8 /* FavoriteNavBarButton.png in Resources */,
 				329E1B3C16E693130054C3A8 /* FavoriteNavBarButton@2x.png in Resources */,
+				328501B519E5768F0049356E /* MapLayersBarButton@2x.png in Resources */,
 				329E1B3F16E696F80054C3A8 /* FavoriteGlowNavBarButton.png in Resources */,
 				326F5A7A19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib in Resources */,
 				329E1B4016E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png in Resources */,
@@ -3008,7 +3020,6 @@
 				32449D5D17C3F248003269E5 /* DirectoryLarge@2x.png in Resources */,
 				3289F2B7183FAB8C00D833C2 /* LocationArrow2.png in Resources */,
 				320F8599194EED8C00BF3228 /* ArrowLeftBarButton.png in Resources */,
-				27B74CF919A21059006B2F17 /* RecommendedAppTableViewCell.xib in Resources */,
 				320480C618479D4E00116380 /* TransportSmallBusGreen@2x.png in Resources */,
 				324FD733176574DD0003EE30 /* CamiproTransactionCell.xib in Resources */,
 				3219821F18D36A8B00118921 /* FoodRestaurantInfoView.xib in Resources */,
@@ -3017,6 +3028,7 @@
 				C5894949AFC59FDB4346CF53 /* IsAcademia@2x.png in Resources */,
 				8193447294E5D065581CBAAD /* IsAcademia.png in Resources */,
 				32D29719185B64FE006530B7 /* IsAcademiaPlugin.strings in Resources */,
+				328501B419E5768F0049356E /* MapLayersBarButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3187,6 +3199,7 @@
 				32DD525119B4DEAE00B5B241 /* CloudPrintController.m in Sources */,
 				3210FD1D197C5BD700EEDCBF /* MoodleFolderViewController.m in Sources */,
 				32FAC0F51500F40700925180 /* DirectoryController.m in Sources */,
+				3267676819E2CE4800365F6D /* RecommendedAppCollectionViewCell.m in Sources */,
 				32FAC0F61500F40700925180 /* DirectorySearchViewController.m in Sources */,
 				32503AA3195EE49C007B709E /* PCDatePickerView.m in Sources */,
 				32FAC0F91500F40700925180 /* DirectoryService.m in Sources */,
@@ -3254,7 +3267,6 @@
 				3241F1DE15B4AB9C00C7DF3A /* PCEditableTableViewCell.m in Sources */,
 				3293AD2015D1BC7C0097D414 /* PCAboutViewController.m in Sources */,
 				32649B23160DD7DA002E6498 /* DirectoryPersonViewController.m in Sources */,
-				27B74D0519A2134D006B2F17 /* RecommendedAppThumbView.m in Sources */,
 				32B3F39016219403007A75C7 /* MainMenuViewController.m in Sources */,
 				27B74CFC19A210D6006B2F17 /* RecommendedAppsListViewController.m in Sources */,
 				32B3F3971621B6D3007A75C7 /* MainMenuItem.m in Sources */,
@@ -3284,11 +3296,11 @@
 				32FDA99D1854A06F00C6393A /* NSOperationWithDelegate.m in Sources */,
 				32E67DC61684D40C00E5CFF6 /* PCRecentResultTableViewCell.m in Sources */,
 				322207E81688E62E003F6622 /* NewsSplashViewController.m in Sources */,
-				27B74CFF19A21146006B2F17 /* RecommendedAppTableViewCell.m in Sources */,
 				322207EF1688F097003F6622 /* NewsItemViewController.m in Sources */,
 				32930AB817F898910025F864 /* ZUUIRevealController.m in Sources */,
 				326F5A8019BDA2AA000693A2 /* CloudPrintStatusViewController.m in Sources */,
 				32EB617F180D5A3C001AE852 /* MapResultsListViewController.m in Sources */,
+				3267676319E2C96800365F6D /* RecommendedAppsForCategoryCell.m in Sources */,
 				32D1DE161846614500D0C866 /* TransportTripCell.m in Sources */,
 				322207F91689E3A3003F6622 /* PCUtils.m in Sources */,
 				3289F2BD183FB80600D833C2 /* TransportStationsManagerViewController.m in Sources */,
@@ -3308,7 +3320,6 @@
 				F1AE44D191F279D3C0533B81 /* EventsController.m in Sources */,
 				D4224276930AC66CEAA3E5A9 /* EventsService.m in Sources */,
 				4C3C4FEEB609B30BEFA34726 /* events.m in Sources */,
-				27B74D0219A212AB006B2F17 /* RecommendedAppScrollView.m in Sources */,
 				32035FE616E13A020016F03C /* EventPoolViewController.m in Sources */,
 				32035FEB16E153860016F03C /* EventItemCell.m in Sources */,
 				32BBA918187454A600B2A7D3 /* UILabel+Additions.m in Sources */,
@@ -3319,6 +3330,7 @@
 				328860B9183B63590098C857 /* FoodModelAdditions.m in Sources */,
 				32DD525219B4DEAE00B5B241 /* CloudPrintService.m in Sources */,
 				321CCF9E16E3B537002CBEA2 /* PCURLSchemeHandler.m in Sources */,
+				3215446419E6B24E00D6FB33 /* MapLayersListSelectionViewController.m in Sources */,
 				32617BCE16E7DA5F004F9CF9 /* PCTableViewAdditions.m in Sources */,
 				32B1D9E317F08E1D000CC209 /* PCNavigationController.m in Sources */,
 				32F5308916EA974B00F66484 /* EventsCategorySelectorViewController.m in Sources */,
@@ -3850,6 +3862,7 @@
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -3889,6 +3902,7 @@
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "$(inherited)";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

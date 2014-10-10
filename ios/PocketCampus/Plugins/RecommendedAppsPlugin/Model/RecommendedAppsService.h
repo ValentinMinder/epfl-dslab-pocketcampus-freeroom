@@ -35,6 +35,8 @@
 
 - (void)getRecommendedApps:(RecommendedAppsRequest*)request delegate:(id)delegate;
 
+- (RecommendedAppsResponse*)getFromCacheRecommendedAppsForRequest:(RecommendedAppsRequest*)request;
+
 @end
 
 @protocol RecommendedAppsServiceDelegate <PCServiceDelegate>

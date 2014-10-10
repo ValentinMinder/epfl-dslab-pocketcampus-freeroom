@@ -100,9 +100,9 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("language", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("language", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.APP_STORE, new org.apache.thrift.meta_data.FieldMetaData("appStore", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.APP_STORE, new org.apache.thrift.meta_data.FieldMetaData("appStore", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, AppStore.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(RecommendedAppsRequest.class, metaDataMap);
@@ -411,6 +411,12 @@ public class RecommendedAppsRequest implements org.apache.thrift.TBase<Recommend
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    if (language == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'language' was not present! Struct: " + toString());
+    }
+    if (appStore == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'appStore' was not present! Struct: " + toString());
+    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

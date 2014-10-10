@@ -18,6 +18,8 @@ CREATE TABLE `PocketCampus`.`RecommendedAppsCategories` (
   `CategoryLogoURL` TEXT NULL,
   `CategoryName_EN` VARCHAR(45) NULL,
   `CategoryDescription_EN` TEXT NULL,
+  `CategoryName_FR` VARCHAR(45) NULL,
+  `CategoryDescription_FR` TEXT NULL,  
   PRIMARY KEY (`CategoryId`),
   UNIQUE INDEX `CategoryId_UNIQUE` (`CategoryId` ASC));
 

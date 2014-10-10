@@ -105,12 +105,12 @@ public class RecommendedAppsResponse implements org.apache.thrift.TBase<Recommen
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.STATUS, new org.apache.thrift.meta_data.FieldMetaData("status", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.STATUS, new org.apache.thrift.meta_data.FieldMetaData("status", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, RecommendedAppsResponseStatus.class)));
-    tmpMap.put(_Fields.CATEGORIES, new org.apache.thrift.meta_data.FieldMetaData("categories", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.CATEGORIES, new org.apache.thrift.meta_data.FieldMetaData("categories", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, RecommendedAppCategory.class))));
-    tmpMap.put(_Fields.APPS, new org.apache.thrift.meta_data.FieldMetaData("apps", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.APPS, new org.apache.thrift.meta_data.FieldMetaData("apps", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32), 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, RecommendedApp.class))));
@@ -589,6 +589,15 @@ public class RecommendedAppsResponse implements org.apache.thrift.TBase<Recommen
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    if (status == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'status' was not present! Struct: " + toString());
+    }
+    if (categories == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'categories' was not present! Struct: " + toString());
+    }
+    if (apps == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'apps' was not present! Struct: " + toString());
+    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

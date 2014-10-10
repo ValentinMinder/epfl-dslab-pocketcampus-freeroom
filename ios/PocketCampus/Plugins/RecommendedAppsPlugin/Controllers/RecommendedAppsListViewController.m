@@ -31,9 +31,9 @@
 
 #import "RecommendedAppsService.h"
 
-#import "RecommendedAppTableViewCell.h"
+#import "RecommendedAppsForCategoryCell.h"
 
-#import "RecommendedAppThumbView.h"
+#import "PCTableViewSectionHeader.h"
 
 @import StoreKit;
 
@@ -41,8 +41,16 @@
 
 @property (nonatomic, strong) RecommendedAppsService* recommendedAppService;
 @property (nonatomic, strong) RecommendedAppsResponse* recommendedAppsResponse;
+@property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 
 @end
+
+/*
+ * Will refresh if last refresh date is older than kRefreshValiditySeconds ago.
+ */
+static NSTimeInterval const kRefreshValiditySeconds = 3600.0; //1 hour
+
+static NSInteger const kDisclaimerSection = 0;
 
 @implementation RecommendedAppsListViewController
 
@@ -50,10 +58,11 @@
 
 - (id)init
 {
-    self = [super initWithStyle:UITableViewStylePlain];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.gaiScreenName = @"/recommendedapps";
         self.recommendedAppService = [RecommendedAppsService sharedInstanceToRetain];
+        self.recommendedAppsResponse = [self.recommendedAppService getFromCacheRecommendedAppsForRequest:[self createRecommendedAppsRequest]];
     }
     return self;
 }
@@ -65,20 +74,37 @@
     
     PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] init];
     self.tableView = tableViewAdditions;
-    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
-        return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
-    };
     
-    RecommendedAppsRequest* request = [[RecommendedAppsRequest alloc] initWithLanguage:[PCUtils userLanguageCode] appStore:AppStore_iOS];
-    [self.recommendedAppService getRecommendedApps:request delegate:self];
+    self.tableView.separatorColor = [UIColor clearColor];
+    
+    self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGARefreshControl dataIdentifierForPluginName:@"recommendedapps" dataName:@"recommendedapps"]];
+    [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewWillAppear:(BOOL)animated  {
+    [super viewWillAppear:animated];
+    [self trackScreen];
+    [self refreshIfNeeded];
 }
 
 #pragma mark - Private
+
+- (RecommendedAppsRequest*)createRecommendedAppsRequest {
+    return [[RecommendedAppsRequest alloc] initWithLanguage:[PCUtils userLanguageCode] appStore:AppStore_iOS];
+}
+
+- (void)refresh {
+    [self.recommendedAppService cancelOperationsForDelegate:self];
+    [self.lgRefreshControl startRefreshing];
+    [self.recommendedAppService getRecommendedApps:[self createRecommendedAppsRequest] delegate:self];
+    
+}
+
+- (void)refreshIfNeeded {
+    if (!self.recommendedAppsResponse || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
+        [self refresh];
+    }
+}
 
 - (NSArray*)recommendedAppsInCategory:(RecommendedAppCategory*)category{
     NSMutableArray* appsInCategory = [NSMutableArray new];
@@ -91,62 +117,134 @@
 
 #pragma mark - RecommendedAppsServiceDelegate
 
-- (void)getRecommendedAppsForRequest:(RecommendedAppsRequest *)request didReturn:(RecommendedAppsResponse *)response{
-    self.recommendedAppsResponse = response;
-    [self.tableView reloadData];
+- (void)getRecommendedAppsForRequest:(RecommendedAppsRequest *)request didReturn:(RecommendedAppsResponse *)response {
+    switch (response.status) {
+        case RecommendedAppsResponseStatus_OK:
+        {
+            self.recommendedAppsResponse = response;
+            [self.tableView reloadData];
+            [self.lgRefreshControl endRefreshingAndMarkSuccessful];
+            break;
+        }
+        default:
+            [self getRecommendedAppsFailedForRequest:request];
+            break;
+    }
 }
 
-- (void)getRecommendedAppsFailed {
-#warning TODO show error message and stop loading
+- (void)getRecommendedAppsFailedForRequest:(RecommendedAppsRequest*)request {
+    [PCUtils showServerErrorAlert];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil)];
+
 }
 
-- (void)serviceConnectionToServerFailed{
-#warning TODO show error message and stop loading
-    CLS_LOG(@"serviceConnectionToServerFailed");
+- (void)serviceConnectionToServerFailed {
+    [PCUtils showConnectionToServerTimedOutAlert];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil)];
+}
+
+#pragma mark - SKStoreProductViewControllerDelegate
+
+- (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController{
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - UITableViewDelegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 140.0;
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    switch (section) {
+        case kDisclaimerSection:
+            return nil;
+        default:
+        {
+            RecommendedAppCategory* category = self.recommendedAppsResponse.categories[section - 1];
+            PCTableViewSectionHeader* header = [[PCTableViewSectionHeader alloc] initWithSectionTitle:category.categoryName tableView:tableView showInfoButton:NO];
+            return header;
+        }
+    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    switch (section) {
+        case kDisclaimerSection:
+            return 0.0;
+        default:
+        {
+            return [PCTableViewSectionHeader preferredHeightWithInfoButton:NO]; //we want all section headers to be same height;
+        }
+    }
+    return 0.0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        case kDisclaimerSection:
+            return 60.0;
+        default:
+            return [RecommendedAppsForCategoryCell preferredHeight];
+    }
+    return 0.0;
 }
 
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RecommendedAppCategory* category = self.recommendedAppsResponse.categories[indexPath.row];
-    RecommendedAppTableViewCell* cell = nil;
-    __weak __typeof(self) welf = self;
-    if (!cell) {
-        cell = [[RecommendedAppTableViewCell alloc] initWithRecommendedApps:[self recommendedAppsInCategory:category] forCategory:category andAppThumbTappedBlock:^(RecommendedAppThumbView *thumbView) {
-            RecommendedApp* app = thumbView.recommendedApp;
-            NSString* appStoreQuery = app.appStoreQuery;
-            NSNumber* appStoreAppId = @([appStoreQuery integerValue]);
-            SKStoreProductViewController* productViewController = [SKStoreProductViewController new];
-            productViewController.delegate = welf;
-            [productViewController loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier:appStoreAppId} completionBlock:NULL];
-            [self presentViewController:productViewController animated:YES completion:NULL];
-        }];
-        cell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
-        cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
+    UITableViewCell* cell = nil;
+    switch (indexPath.section) {
+        case kDisclaimerSection:
+        {
+            UITableViewCell* disclaimerCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            disclaimerCell.contentView.backgroundColor = [[UIColor greenColor] colorWithAlphaComponent:0.05];
+            disclaimerCell.textLabel.font = [UIFont systemFontOfSize:12.0];
+            disclaimerCell.textLabel.textAlignment = NSTextAlignmentCenter;
+            disclaimerCell.textLabel.numberOfLines = 0;
+            disclaimerCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            disclaimerCell.textLabel.text = NSLocalizedStringFromTable(@"Disclaimer", @"RecommendedAppsPlugin", nil);
+            cell = disclaimerCell;
+            break;
+        }
+        default:
+        {
+            RecommendedAppCategory* category = self.recommendedAppsResponse.categories[indexPath.section - 1];
+            __weak __typeof(self) welf = self;
+            RecommendedAppsForCategoryCell* categCell = [[RecommendedAppsForCategoryCell alloc] initWithRecommendedApps:[self recommendedAppsInCategory:category] forCategory:category appTappedBlock:^(RecommendedApp *app) {
+                NSString* appOpenURLPattern = app.appOpenURLPattern;
+                if(appOpenURLPattern){
+                    BOOL canOpen = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:appOpenURLPattern]];
+                    if(canOpen){
+                        [welf trackAction:@"OpenApp" contentInfo:app.appName];
+                        NSString* actualAppOpenURL = [NSString stringWithFormat:appOpenURLPattern, @"org.pocketcampus"];
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:actualAppOpenURL]];
+                        return;
+                    }
+                }
+                [welf trackAction:@"ViewAppStoreSheet" contentInfo:app.appName];
+                NSString* appStoreQuery = app.appStoreQuery;
+                NSNumber* appStoreAppId = @([appStoreQuery integerValue]);
+                SKStoreProductViewController* productViewController = [SKStoreProductViewController new];
+                productViewController.delegate = welf;
+                [productViewController loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier:appStoreAppId} completionBlock:NULL];
+                [welf presentViewController:productViewController animated:YES completion:NULL];
+            }];
+            cell = categCell;
+            break;
+        }
     }
-    cell.textLabel.text = category.categoryName;
-    //    cell.accessibilityHint = NSLocalizedStringFromTable(@"ShowsMenuForThisRestaurant", @"FoodPlugin", nil);
     return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.recommendedAppsResponse.categories.count;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
-#pragma mark - SKStoreProductViewControllerDelegate
-- (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController{
-    [self dismissViewControllerAnimated:YES completion:NULL];
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (self.recommendedAppsResponse.categories.count > 0) {
+        return self.recommendedAppsResponse.categories.count + 1; //disclaimer + categs
+    }
+    return 0;
 }
+
 #pragma mark - Dealloc
 
 - (void)dealloc {

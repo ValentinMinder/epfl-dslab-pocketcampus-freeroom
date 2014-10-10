@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="recommendedapps_plugin_title">RecommendedApps</string>
-    
-    <string name="recommendedapps_courses_view_title">List of enrolled RecommendedApps Courses</string>
-    <string name="recommendedapps_events_view_title">Current RecommendedApps Events</string>
-        
-    <string name="recommendedapps_string_logout">Logout</string>
-    <string name="recommendedapps_string_events">Events</string>
-        
-    <string name="recommendedapps_error_recommendedapps_down">PocketCampus tried to connect to RecommendedApps servers, but they seem down.</string>
-    <string name="recommendedapps_connection_error_happened">We cannot fetch RecommendedApps data right now, because you are not connected to the Internet.</string>
-    <string name="recommendedapps_file_downloaded">File successfully downloaded.</string>
-    <string name="recommendedapps_file_downloading">Downloading file... Please wait.</string>
+    <string name="recommendedapps_plugin_title">Recommended Apps</string>
+    <string name="recommendedapps_error_recommendedapps_down">PocketCampus tried to connect to its servers, but they seem down.</string>
+    <string name="recommendedapps_connection_error_happened">We cannot fetch the recommended apps data right now, because you are not connected to the Internet.</string>
+    <string name="recommendedapps_downloading">Downloading recommended apps... Please wait.</string>
+    <string name="recommendedapps_disclaimer">Below is a list of apps that may help you improve your campus life even more. PocketCampus did not develop them.</string>
 
-    <string name="recommendedapps_no_app_to_handle_filetype">Could not find any application to open this file.</string>
-        
 </resources>

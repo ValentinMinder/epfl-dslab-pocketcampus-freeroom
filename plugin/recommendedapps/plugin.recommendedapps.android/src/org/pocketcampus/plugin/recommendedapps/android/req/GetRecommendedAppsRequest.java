@@ -8,26 +8,28 @@ import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppsResponse;
 import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppsResponseStatus;
 import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppsService.Iface;
 
-public class GetRecommendedAppsRequest extends
+public class GetRecommendedAppsRequest
+		extends
 		Request<RecommendedAppsController, Iface, RecommendedAppsRequest, RecommendedAppsResponse> {
 
 	private IRecommendedAppsView caller;
-	
-	public GetRecommendedAppsRequest(IRecommendedAppsView caller){
+
+	public GetRecommendedAppsRequest(IRecommendedAppsView caller) {
 		this.caller = caller;
 	}
-	
+
 	@Override
-	public RecommendedAppsResponse runInBackground(Iface client, RecommendedAppsRequest request) throws Exception{
+	public RecommendedAppsResponse runInBackground(Iface client,
+			RecommendedAppsRequest request) throws Exception {
 		return client.getRecommendedApps(request);
 	}
 
 	@Override
 	protected void onResult(RecommendedAppsController controller,
 			RecommendedAppsResponse result) {
-		if(result.getStatus() == RecommendedAppsResponseStatus.OK) {
+		if (result.getStatus() == RecommendedAppsResponseStatus.OK) {
 			controller.updateModelWithRecommendedAppsResponse(result);
-//			keepInCache();
+			// keepInCache();
 		} else {
 			caller.serverDown();
 		}
@@ -35,11 +37,8 @@ public class GetRecommendedAppsRequest extends
 
 	@Override
 	protected void onError(RecommendedAppsController controller, Exception e) {
-		if(foundInCache())
-			caller.networkErrorCacheExists();
-		else
-			caller.networkErrorHappened();
+		caller.networkErrorHappened();
 		e.printStackTrace();
-		
+
 	}
 }

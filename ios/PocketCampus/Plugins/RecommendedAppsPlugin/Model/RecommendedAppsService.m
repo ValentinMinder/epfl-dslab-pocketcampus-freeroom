@@ -29,9 +29,9 @@
  
 #import "RecommendedAppsService.h"
 
-@implementation RecommendedAppsService
-
 static RecommendedAppsService* instance __weak = nil;
+
+@implementation RecommendedAppsService
 
 #pragma mark - Init
 
@@ -67,19 +67,30 @@ static RecommendedAppsService* instance __weak = nil;
 
 - (void)getRecommendedApps:(RecommendedAppsRequest*)request delegate:(id)delegate{
     PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.skipCache = YES;
     operation.keepInCache = YES;
     operation.keepInCacheBlock = ^BOOL(void* result) {
         RecommendedAppsResponse* response = (__bridge id)result;
         return (response.status == RecommendedAppsResponseStatus_OK);
     };
-    operation.cacheValidityInterval = 60; //1 min
-    operation.returnEvenStaleCacheIfNoInternetConnection = YES;
     operation.serviceClientSelector = @selector(getRecommendedApps:); //corresponds to Thrift method definition
     operation.delegateDidReturnSelector = @selector(getRecommendedAppsForRequest:didReturn:); //corresponding *didReturn* definition
     operation.delegateDidFailSelector = @selector(getRecommendedAppsFailedForRequest:); //corresponding *Failed* definition
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject; //result type. Can be object or any standard primitive types (ReturnTypeInt, ...)
     [self.operationQueue addOperation:operation]; //schedule operation in background
+}
+
+#pragma mark - Cache versions
+
+- (RecommendedAppsResponse*)getFromCacheRecommendedAppsForRequest:(RecommendedAppsRequest*)request {
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    operation.serviceClientSelector = @selector(getRecommendedApps:); //corresponds to Thrift method definition
+    operation.delegateDidReturnSelector = @selector(getRecommendedAppsForRequest:didReturn:); //corresponding *didReturn* definition
+    operation.delegateDidFailSelector = @selector(getRecommendedAppsFailedForRequest:); //corresponding *Failed* definition
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject; //result type. Can be object or any standard primitive types (ReturnTypeInt, ...)
+    return [operation cachedResponseObjectEvenIfStale:YES];
 }
 
 #pragma mark - Dealloc

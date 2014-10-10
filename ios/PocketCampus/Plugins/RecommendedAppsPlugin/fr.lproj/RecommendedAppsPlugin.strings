@@ -27,4 +27,5 @@
 
 //  Created by Silviu Andrica on 18.08.2014.
 
-"PluginName" = "Apps Recommandées";
+"PluginName" = "Apps recommandées";
+"Disclaimer" = "Voici d'autres apps qui pourraient\naussi vous être utiles sur le campus.\nElles ne sont pas développées par PocketCampus.Org";

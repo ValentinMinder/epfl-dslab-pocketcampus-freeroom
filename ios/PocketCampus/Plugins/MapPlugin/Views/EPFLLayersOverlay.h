@@ -33,4 +33,11 @@
 
 @interface EPFLLayersOverlay : PCTileOverlay<PCScreenTileOverlay>
 
+/**
+ * @discussion The MapLayer.nameForQuery string items that the overlay should show.
+ * The overlay goes through the names and processes them to add floor level when needed.
+ * You should reload data on the overlay rendereder to have the changes applied.
+ */
+@property (nonatomic, copy) NSSet* mapLayersNamesForQueryToDisplay;
+
 @end
