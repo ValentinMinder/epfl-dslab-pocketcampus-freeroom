@@ -1,29 +1,25 @@
-CREATE TABLE `PocketCampus`.`RecommendedApps` (
-  `AppId` INT NOT NULL,
-  `AppName` VARCHAR(45) NULL,
-  `AppDescription_EN` TEXT NULL,
-  PRIMARY KEY (`AppId`),
-  UNIQUE INDEX `AppId_UNIQUE` (`AppId` ASC));
 
-CREATE TABLE `PocketCampus`.`RecommendedAppsOSConfigurations` (
-  `AppId` INT NOT NULL,
-  `AppStore` INT NULL,
-  `AppStoreQuery` VARCHAR(45) NULL,
-  `AppOpenURLPattern` TEXT NULL,
-  `AppLogoURL` TEXT NULL);
+CREATE TABLE `RecommendedApps` (
+  `AppId` int(11) NOT NULL,
+  `AppStore` int(11) NOT NULL,
+  `AppStoreQuery` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `AppOpenURLPattern` text COLLATE utf8_unicode_ci,
+  `AppLogoURL` text COLLATE utf8_unicode_ci,
+  `AppName_EN` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `AppName_FR` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `AppDescription_EN` text COLLATE utf8_unicode_ci,
+  `AppDescription_FR` text COLLATE utf8_unicode_ci,
+  `AppCategory` int(11) NOT NULL,
+  PRIMARY KEY (`AppId`,`AppStore`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
-CREATE TABLE `PocketCampus`.`RecommendedAppsCategories` (
-  `CategoryId` INT NOT NULL,
-  `CategoryLogoURL` TEXT NULL,
-  `CategoryName_EN` VARCHAR(45) NULL,
-  `CategoryDescription_EN` TEXT NULL,
-  `CategoryName_FR` VARCHAR(45) NULL,
-  `CategoryDescription_FR` TEXT NULL,  
-  PRIMARY KEY (`CategoryId`),
-  UNIQUE INDEX `CategoryId_UNIQUE` (`CategoryId` ASC));
-
-CREATE TABLE `PocketCampus`.`RecommendedAppsCategoriesToApps` (
-  `CategoryId` INT NOT NULL,
-  `AppId` INT NOT NULL);
-
+CREATE TABLE `RecommendedAppsCategories` (
+  `CategoryId` int(11) NOT NULL,
+  `CategoryLogoURL` text COLLATE utf8_unicode_ci,
+  `CategoryName_EN` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `CategoryName_FR` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `CategoryDescription_EN` text COLLATE utf8_unicode_ci NOT NULL,
+  `CategoryDescription_FR` text COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`CategoryId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

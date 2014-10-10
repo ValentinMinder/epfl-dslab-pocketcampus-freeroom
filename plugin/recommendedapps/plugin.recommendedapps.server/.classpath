@@ -14,6 +14,5 @@
 	<classpathentry kind="lib" path="/platform.shared/lib/servlet-api-3.0.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/slf4j-api-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/slf4j-simple-1.6.2.jar"/>
-	<classpathentry kind="lib" path="/Users/slv/Downloads/mysql-connector-java-5.1.32/mysql-connector-java-5.1.32-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
