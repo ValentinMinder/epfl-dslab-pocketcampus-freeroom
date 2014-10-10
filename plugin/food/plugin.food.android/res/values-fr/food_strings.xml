@@ -38,7 +38,9 @@
 	<string name="food_toast_tooearly">Trop tôt</string>
 	<string name="food_toast_toolate">Trop tard</string>		
 	<string name="food_toast_thanksforvote">Merci pour votre vote</string>
-							
+
+	<string name="food_pricetag_auto">Automatique</string>							
+	
 	<string name="food_enum_STUDENT">Étudiant</string>
 	<string name="food_enum_PHD_STUDENT">Doctorant</string>
 	<string name="food_enum_STAFF">Personnel</string>

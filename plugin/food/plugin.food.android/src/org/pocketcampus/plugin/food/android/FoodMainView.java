@@ -45,6 +45,7 @@ import org.pocketcampus.plugin.food.shared.MealType;
 import org.pocketcampus.plugin.food.shared.PriceTarget;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -491,17 +492,23 @@ public class FoodMainView extends PluginView implements IFoodView {
 		}
 	}
 	
+	@SuppressLint("UseSparseArrays")
 	private void promptUserStatus() {
 		trackEvent("PromptUserStatus", null);
-		Map<PriceTarget, String> priceTargets = new HashMap<PriceTarget, String>();
+		Map<Integer, String> priceTargets = new HashMap<Integer, String>();
+		priceTargets.put(0, getString(R.string.food_pricetag_auto));
 		for(PriceTarget t : PriceTarget.values()) {
 			if(t == PriceTarget.ALL)
 				continue;
-			priceTargets.put(t, mController.translateEnum(t.name()));
+			priceTargets.put(t.getValue(), mController.translateEnum(t.name()));
 		}
-		showSingleChoiceDialog(this, priceTargets, getString(R.string.food_dialog_prices), mModel.getUserStatus(), new SingleChoiceHandler<PriceTarget>() {
-			public void saveSelection(PriceTarget t) {
-				mModel.setUserStatus(t);
+		showSingleChoiceDialog(this, priceTargets, getString(R.string.food_dialog_prices), mModel.getUserStatus().getValue(), new SingleChoiceHandler<Integer>() {
+			public void saveSelection(Integer t) {
+				if(t == 0) {
+					mModel.setUserStatus(null);
+				} else {
+					mModel.setUserStatus(PriceTarget.findByValue(t));
+				}
 				mController.refreshFood(FoodMainView.this, foodDay, foodTime, false);
 			}
 		});
