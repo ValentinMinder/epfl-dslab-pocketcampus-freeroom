@@ -167,15 +167,16 @@ public class RecommendedAppsMainView extends PluginView implements
 						final String appPackageName = app.getAppStoreQuery();
 
 						if (isAppInstalled(appPackageName)) {
-							Intent launchIntent = getPackageManager()
-									.getLaunchIntentForPackage(appPackageName);
-							String startingAppParameter = app.getAppOpenURLPattern().trim();
-							if(startingAppParameter != null && startingAppParameter.length() != 0){
-								String value = RecommendedAppsMainView.this.getApplicationContext().getPackageName();
-								System.out.println("Setting "+startingAppParameter+ " to "+value);
-								launchIntent.putExtra(startingAppParameter, value);
+							String startingAppParameter = app.getAppOpenURLPattern();
+							if(startingAppParameter != null){
+								
+								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(startingAppParameter)));
+							} else {
+								Intent launchIntent = getPackageManager()
+										.getLaunchIntentForPackage(appPackageName);
+								startActivity(launchIntent);
+								
 							}
-							startActivity(launchIntent);
 							return;
 						}
 						try {
@@ -199,7 +200,7 @@ public class RecommendedAppsMainView extends PluginView implements
 						HttpURLConnection connection = null;
 						try {
 							URL url = new URL(
-									"https://42matters.com/api/1/apps/lookup.json?access_token=ceb095f452d51ea5e7f8632b95e784521367ab30&p="
+									"https://42matters.com/api/1/apps/lookup.json?access_token=862cc1618ee8bd7aec6e90edb75c9848c4357c27&p="
 											+ params[0]);
 							connection = (HttpURLConnection) url
 									.openConnection();
