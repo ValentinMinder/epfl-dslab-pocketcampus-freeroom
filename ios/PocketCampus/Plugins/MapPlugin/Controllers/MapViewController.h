@@ -35,6 +35,7 @@
 
 @interface MapViewController : UIViewController
 
+
 - (instancetype)initWithInitialMapItem:(MapItem*)mapItem;
 - (instancetype)initWithInitialQuery:(NSString*)query;
 - (instancetype)initWithInitialQuery:(NSString*)query pinTextLabel:(NSString*)pinTextLabel;

@@ -1145,6 +1145,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 
 - (void)dealloc
 {
+    [self.getMapLayersTimer invalidate];
     [self.mapService cancelOperationsForDelegate:self];
     [[MainController publicController] removePluginStateObserver:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
