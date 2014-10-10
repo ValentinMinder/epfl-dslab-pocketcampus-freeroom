@@ -18,7 +18,7 @@
 "FilterByTagsWithFormat" = "Filtrer par tags (%d sel.)";
 "SelectAtLeastOneTag" = "Séléctionnez au moins un tag";
 "SelectAll" = "Tout sélect.";
-"DeselectAll" = "Tout désélect.";
+"DeselectAll" = "Ne rien sélect.";
 "SelectCategory" = "Aller à la catégorie";
 "Categories" = "Catégories";
 "NoCategory" = "Aucune catégorie";

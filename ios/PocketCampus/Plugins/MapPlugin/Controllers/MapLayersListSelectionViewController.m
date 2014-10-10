@@ -38,7 +38,7 @@
 @property (nonatomic, weak) IBOutlet UIButton* deselectAllButton;
 
 @property (nonatomic, strong) MapService* mapService;
-@property (nonatomic, strong) NSArray* allMapLayers;
+@property (nonatomic, strong) NSArray* sortedMapLayers;
 @property (nonatomic, copy) void (^doneButtonTappedBlock)();
 
 @end
@@ -53,7 +53,9 @@
     if (self) {
         self.title = NSLocalizedStringFromTable(@"MapLayersToDisplay", @"MapPlugin", nil);
         self.mapService = [MapService sharedInstanceToRetain];
-        self.allMapLayers = allMapLayers;
+        self.sortedMapLayers = [allMapLayers sortedArrayUsingComparator:^NSComparisonResult(MapLayer* layer1, MapLayer* layer2) {
+            return [layer1.name compare:layer2.name];
+        }];
         self.doneButtonTappedBlock = doneButtonTappedBlock;
     }
     return self;
@@ -63,15 +65,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [super viewDidLoad];
+    
+    /*self.tableView.backgroundColor = [UIColor clearColor];
+    UIView* backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];
+    backgroundView.backgroundColor = [PCValues backgroundColor1];
+    self.tableView.backgroundView = backgroundView;*/
+    
     PCTableViewAdditions* tableViewAdditions = (PCTableViewAdditions*)self.tableView;
     tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
         return floorf([PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault]);
     };
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped)];
-    [self.selectAllButton setTitle:NSLocalizedStringFromTable(@"SelectAll", @"EventsPlugin", nil) forState:UIControlStateNormal];
-    [self.deselectAllButton setTitle:NSLocalizedStringFromTable(@"DeselectAll", @"EventsPlugin", nil) forState:UIControlStateNormal];
+    if (![PCUtils isIdiomPad]) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped)];
+    }
+    [self.selectAllButton setTitle:NSLocalizedStringFromTable(@"SelectAll", @"MapPlugin", nil) forState:UIControlStateNormal];
+    [self.deselectAllButton setTitle:NSLocalizedStringFromTable(@"DeselectAll", @"MapPlugin", nil) forState:UIControlStateNormal];
     self.tableView.tableHeaderView = self.headerView;
 }
 
@@ -85,8 +94,8 @@
 
 - (IBAction)selectAllTapeed:(id)sender {
     NSMutableSet* set = [NSMutableSet set];
-    for (MapLayer* layer in self.allMapLayers) {
-        [set addObject:[NSNumber numberWithLong:layer.layerId]];
+    for (MapLayer* layer in self.sortedMapLayers) {
+        [set addObject:@(layer.layerId)];
     }
     self.mapService.selectedMapLayerIds = set;
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
@@ -101,7 +110,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    MapLayer* layer = self.allMapLayers[indexPath.row];
+    MapLayer* layer = self.sortedMapLayers[indexPath.row];
     NSNumber* nsLayerId = @(layer.layerId);
     NSMutableSet* updatedSet = [self.mapService.selectedMapLayerIds mutableCopy];
     if ([self.mapService.selectedMapLayerIds containsObject:nsLayerId]) {
@@ -126,7 +135,7 @@
 }
 
 - (void)configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
-    MapLayer* layer = self.allMapLayers[indexPath.row];
+    MapLayer* layer = self.sortedMapLayers[indexPath.row];
     cell.textLabel.text = layer.name;
     if ([self.mapService.selectedMapLayerIds containsObject:@(layer.layerId)]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -136,7 +145,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.allMapLayers.count;
+    return self.sortedMapLayers.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

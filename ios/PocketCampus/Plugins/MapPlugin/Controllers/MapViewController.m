@@ -203,6 +203,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     [self.mapView setRegion:self.epflRegion animated:NO];
     
     self.searchState = SearchStateReady; //will set nav bar elements, see implementation
+    
     [self manageRecentSearchesControllerVisibilityAnimated:NO];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recentSearchesChanged) name:kMapRecentSearchesModifiedNotification object:self.mapService];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedLayersChanged) name:kMapSelectedMapLayerIdsModifiedNotificaiton object:self.mapService];
@@ -226,6 +227,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     [[MainController publicController] addPluginStateObserver:self selector:@selector(willLoseForeground) notification:PluginWillLoseForegroundNotification pluginIdentifierName:@"Map"];
     [[MainController publicController] addPluginStateObserver:self selector:@selector(didEnterForeground) notification:PluginDidEnterForegroundNotification pluginIdentifierName:@"Map"];
     
+    self.layersListButton.enabled = NO;
     [self startGetMapLayersRequestIfNecessary];
     
     if (self.initialQueryWithFullControls && !self.initialQuery && !self.initialMapItem) {
@@ -880,17 +882,8 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
             NSMutableSet* namesForQueryToDisplay = [NSMutableSet set];
             for (NSNumber* nsLayerId in self.mapService.selectedMapLayerIds) {
                 MapLayer* layer = self.mapLayerForLayerId[nsLayerId];
-                if (!layer) {
-                    continue;
-                }
-                if (shouldAllowFloorLevelChange && layer.nameForQuery) {
-                    [namesForQueryToDisplay addObject:layer.nameForQuery];
-                } else if (layer.nameForQueryAllFloors) {
+                if (layer.nameForQueryAllFloors) {
                     [namesForQueryToDisplay addObject:layer.nameForQueryAllFloors];
-                } else if (layer.nameForQuery) {
-                    [namesForQueryToDisplay addObject:layer.nameForQuery];
-                } else {
-                    //should not happen based on comments in Thrift def
                 }
             }
             self.epflLayersOverlay.mapLayersNamesForQueryToDisplay = namesForQueryToDisplay;
@@ -939,7 +932,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     */
     /* END OF TEST */
     
-#warning REMOVE
+//#warning REMOVE
     //return;
     
     if (results.count == 0) { //no result
@@ -986,6 +979,8 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
                 mapLayerForLayerId[@(layer.layerId)] = layer;
             }
             self.mapLayerForLayerId = mapLayerForLayerId;
+            self.layersListButton.enabled = YES;
+            [self mapView:self.mapView regionDidChangeAnimated:NO];
             break;
         }
         default:
@@ -1064,6 +1059,8 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         self.resultsListPopOverController = nil;
     } else if (popoverController == self.recentSearchesListPopoverController) {
         [self.searchBar resignFirstResponder];
+    } else if (popoverController == self.mapLayersPopover) {
+        self.mapLayersPopover = nil;
     }
 }
 

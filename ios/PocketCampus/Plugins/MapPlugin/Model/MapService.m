@@ -78,7 +78,8 @@ static MapService* instance __weak = nil;
 
 - (void)getLayerWithDelegate:(id)delegate {
     PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-#warning REMOVE SKIP CACHE
+    
+#warning REMOVE
     operation.skipCache = YES;
     
     operation.keepInCache = YES;
