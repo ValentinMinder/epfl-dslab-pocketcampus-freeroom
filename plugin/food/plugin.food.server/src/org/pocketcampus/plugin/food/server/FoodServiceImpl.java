@@ -75,9 +75,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 		}
 
 		String gaspar = (foodReq.isSetUserGaspar() ? foodReq.getUserGaspar() : AuthenticationServiceImpl.authGetUserGaspar());
-		if (gaspar != null) {
-			response.setUserStatus(getPriceTarget(gaspar));
-		}
+		System.out.println("Getting PriceTarget for " + gaspar);
+		response.setUserStatus(getPriceTarget(gaspar));
 
 		return response.setMealTypePictureUrls(_pictureSource.getMealTypePictures());
 	}
@@ -105,6 +104,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 	// TODO extract this to a common LDAP service used everytime we need it, not just in food
 	private static PriceTarget getPriceTarget(String username) {
+		if(username == null)
+			return null;
 		List<PriceTarget> classes = new LinkedList<PriceTarget>();
 		try {
 			LDAPConnection ldap = new LDAPConnection();
