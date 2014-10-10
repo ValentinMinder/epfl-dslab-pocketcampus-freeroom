@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.pocketcampus.platform.server.CachingProxy;
 import org.pocketcampus.platform.server.HttpClientImpl;
+import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
 import org.pocketcampus.plugin.food.shared.*;
 
 import org.apache.thrift.TException;
@@ -71,8 +72,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 			restaurant.setRLocation(_locator.findByName(restaurant.getRName()));
 		}
 
-		if (foodReq.isSetUserGaspar()) {
-			response.setUserStatus(getPriceTarget(foodReq.getUserGaspar()));
+		String gaspar = (foodReq.isSetUserGaspar() ? foodReq.getUserGaspar() : AuthenticationServiceImpl.authGetUserGaspar());
+		if (gaspar != null) {
+			response.setUserStatus(getPriceTarget(gaspar));			
 		}
 
 		return response.setMealTypePictureUrls(_pictureSource.getMealTypePictures());
@@ -100,12 +102,12 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	// TODO extract this to a common LDAP service used everytime we need it, not just in food
-	private static PriceTarget getPriceTarget(String sciper) {
+	private static PriceTarget getPriceTarget(String username) {
 		List<PriceTarget> classes = new LinkedList<PriceTarget>();
 		try {
 			LDAPConnection ldap = new LDAPConnection();
 			ldap.connect("ldap.epfl.ch", 389);
-			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + sciper + ")(uniqueidentifier=" + sciper
+			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + username + ")(uniqueidentifier=" + username
 					+ "))", (String[]) null);
 			for (SearchResultEntry e : searchResult.getSearchEntries()) {
 				String os = e.getAttributeValue("organizationalStatus");
