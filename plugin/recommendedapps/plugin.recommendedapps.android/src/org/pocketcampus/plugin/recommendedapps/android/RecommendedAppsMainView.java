@@ -138,13 +138,13 @@ public class RecommendedAppsMainView extends PluginView implements
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		LinearLayout storeLayout = (LinearLayout) inflater.inflate(
-				R.layout.app_store, null);
+				R.layout.appstore_appitem, null);
 		LinearLayout linearLayout = (LinearLayout) storeLayout
 				.findViewById(R.id.recommendedAppCategoryList);
 
 		for (RecommendedAppCategory category : mModel.categories()) {
 			LinearLayout categoryLayout = (LinearLayout) inflater.inflate(
-					R.layout.app_store_category, null);
+					R.layout.appstore_appcategory, null);
 			((TextView) categoryLayout
 					.findViewById(R.id.recommendedAppCategoryName))
 					.setText(category.getCategoryName());
@@ -156,7 +156,7 @@ public class RecommendedAppsMainView extends PluginView implements
 			for (int appId : category.getAppIds()) {
 				final RecommendedApp app = apps.get(appId);
 				final LinearLayout appThumbLayout = (LinearLayout) inflater
-						.inflate(R.layout.app_thumb, null);
+						.inflate(R.layout.appstore_appthumbnail, null);
 
 				appLayout.addView(appThumbLayout);
 				appThumbLayout.setOnClickListener(new OnClickListener() {
