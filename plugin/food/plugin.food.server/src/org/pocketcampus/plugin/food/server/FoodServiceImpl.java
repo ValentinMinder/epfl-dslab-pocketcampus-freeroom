@@ -107,8 +107,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 		try {
 			LDAPConnection ldap = new LDAPConnection();
 			ldap.connect("ldap.epfl.ch", 389);
-			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + username + ")(uniqueidentifier=" + username
-					+ "))", (String[]) null);
+			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + username + "@*)(uniqueidentifier=" + username + "))", (String[]) null);
 			for (SearchResultEntry e : searchResult.getSearchEntries()) {
 				String os = e.getAttributeValue("organizationalStatus");
 				if ("Etudiant".equals(os)) {
@@ -120,8 +119,10 @@ public class FoodServiceImpl implements FoodService.Iface {
 					}
 				} else if ("Personnel".equals(os)) {
 					classes.add(PriceTarget.STAFF);
-				} else {
-					classes.add(PriceTarget.VISITOR);
+				} else { // Hôte, etc.
+					//classes.add(PriceTarget.VISITOR);
+					// It seems if the person has _any_ entry in LDAP, they are considered staff...
+					classes.add(PriceTarget.STAFF);
 				}
 			}
 		} catch (LDAPException e) {
