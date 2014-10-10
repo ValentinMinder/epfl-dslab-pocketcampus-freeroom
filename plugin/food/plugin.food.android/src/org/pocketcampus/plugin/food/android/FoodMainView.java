@@ -502,7 +502,9 @@ public class FoodMainView extends PluginView implements IFoodView {
 				continue;
 			priceTargets.put(t.getValue(), mController.translateEnum(t.name()));
 		}
-		showSingleChoiceDialog(this, priceTargets, getString(R.string.food_dialog_prices), mModel.getUserStatus().getValue(), new SingleChoiceHandler<Integer>() {
+		int selected = 0;
+		if(mModel.getUserStatus() != null) selected = mModel.getUserStatus().getValue();
+		showSingleChoiceDialog(this, priceTargets, getString(R.string.food_dialog_prices), selected, new SingleChoiceHandler<Integer>() {
 			public void saveSelection(Integer t) {
 				if(t == 0) {
 					mModel.setUserStatus(null);
