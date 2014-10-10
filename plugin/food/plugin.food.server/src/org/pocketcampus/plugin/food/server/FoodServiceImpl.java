@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.food.server;
 
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.pocketcampus.plugin.food.shared.*;
 import org.apache.thrift.TException;
 import org.joda.time.*;
 
+import com.google.gson.JsonParseException;
 import com.unboundid.ldap.sdk.*;
 
 /**
@@ -57,13 +59,13 @@ public class FoodServiceImpl implements FoodService.Iface {
 		FoodResponse response = null;
 		try {
 			response = _menu.get(time, date);
-		} catch (Exception e) {
+		} catch (JsonParseException e) {
 			throw new TException("An exception occurred while getting the menu", e);
 		}
 		try {
 			_ratingDatabase.insertMenu(response.getMenu(), date, time);
 			_ratingDatabase.setRatings(response.getMenu());
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new TException("An exception occurred while inserting and fetching the ratings", e);
 		}
 
@@ -74,7 +76,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 		String gaspar = (foodReq.isSetUserGaspar() ? foodReq.getUserGaspar() : AuthenticationServiceImpl.authGetUserGaspar());
 		if (gaspar != null) {
-			response.setUserStatus(getPriceTarget(gaspar));			
+			response.setUserStatus(getPriceTarget(gaspar));
 		}
 
 		return response.setMealTypePictureUrls(_pictureSource.getMealTypePictures());
@@ -84,11 +86,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 	public VoteResponse vote(VoteRequest voteReq) throws TException {
 		try {
 			if (voteReq.getRating() < 0 || voteReq.getRating() > 5) {
-				throw new Exception("Invalid rating.");
+				throw new TException("Invalid rating.");
 			}
 
 			return new VoteResponse( _ratingDatabase.vote(voteReq.getDeviceId(), voteReq.getMealId(), voteReq.getRating()));
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new TException("An error occurred during a vote", e);
 		}
 	}

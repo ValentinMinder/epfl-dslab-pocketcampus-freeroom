@@ -42,7 +42,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	}
 
 	@Override
-	public void insertMenu(List<EpflRestaurant> menu, LocalDate date, MealTime time) throws Exception {
+	public void insertMenu(List<EpflRestaurant> menu, LocalDate date, MealTime time) throws SQLException {
 		Connection connection = _connectionManager.getConnection();
 
 		PreparedStatement restaurantStatement = null;
@@ -88,7 +88,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	}
 
 	@Override
-	public SubmitStatus vote(String deviceId, long mealId, double rating) throws Exception {
+	public SubmitStatus vote(String deviceId, long mealId, double rating) throws SQLException {
 		Connection connection = _connectionManager.getConnection();
 
 		LocalDate date;
@@ -159,7 +159,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	}
 
 	@Override
-	public void setRatings(List<EpflRestaurant> menu) throws Exception {
+	public void setRatings(List<EpflRestaurant> menu) throws SQLException {
 		Connection connection = _connectionManager.getConnection();
 
 		for (EpflRestaurant restaurant : menu) {
@@ -223,7 +223,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 					}
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
