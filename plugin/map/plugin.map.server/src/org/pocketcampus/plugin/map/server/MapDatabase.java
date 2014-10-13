@@ -48,7 +48,7 @@ public class MapDatabase {
 					System.err.println("Could not find required value for column "+layerNameColumn+". Ignoring layer.");
 					continue;
 				}
-				Long layerId = new Long(results.getLong(results.getInt(LAYER_ID)));
+				Long layerId = results.getLong(LAYER_ID);
 				String nameForQuery = results.getString(LAYER_NAME_FOR_QUERY);
 				String nameForQueryAllFloors = results.getString(LAYER_NAME_FOR_QUERY_ALL_FLOORS);
 				if (nameForQuery == null && nameForQueryAllFloors == null) {
