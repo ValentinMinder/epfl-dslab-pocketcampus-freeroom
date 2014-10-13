@@ -1,5 +1,12 @@
 namespace java org.pocketcampus.plugin.map.shared
 
+const i64 MapLayerIdMyPrint = 1;
+const i64 MapLayerIdCamiproChargers = 2;
+const i64 MapLayerIdCamiproTerminals = 3;
+const i64 MapLayerIdPublicParkingLots = 4;
+const i64 MapLayerIdRestaurants = 5;
+const i64 MapLayerIdATMs = 6;
+
 enum MapStatusCode {
         // The request was successful
         OK = 200,
@@ -18,7 +25,7 @@ struct MapLayer {
 
 struct MapLayersResponse {
     1: required MapStatusCode statusCode;
-    2: required list<MapLayer> layers;
+    2: required map<i64, MapLayer> layers;
 }
 
 struct MapItem {
