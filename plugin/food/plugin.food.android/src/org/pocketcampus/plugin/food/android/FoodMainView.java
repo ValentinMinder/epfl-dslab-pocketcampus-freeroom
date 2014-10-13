@@ -45,6 +45,7 @@ import org.pocketcampus.plugin.food.shared.MealType;
 import org.pocketcampus.plugin.food.shared.PriceTarget;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -56,6 +57,7 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.util.LongSparseArray;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -491,17 +493,25 @@ public class FoodMainView extends PluginView implements IFoodView {
 		}
 	}
 	
+	@SuppressLint("UseSparseArrays")
 	private void promptUserStatus() {
 		trackEvent("PromptUserStatus", null);
-		Map<PriceTarget, String> priceTargets = new HashMap<PriceTarget, String>();
+		Map<Integer, CharSequence> priceTargets = new HashMap<Integer, CharSequence>();
+		priceTargets.put(0, Html.fromHtml(getString(R.string.food_pricetag_auto)));
 		for(PriceTarget t : PriceTarget.values()) {
 			if(t == PriceTarget.ALL)
 				continue;
-			priceTargets.put(t, mController.translateEnum(t.name()));
+			priceTargets.put(t.getValue(), Html.fromHtml(mController.translateEnum(t.name())));
 		}
-		showSingleChoiceDialog(this, priceTargets, getString(R.string.food_dialog_prices), mModel.getUserStatus(), new SingleChoiceHandler<PriceTarget>() {
-			public void saveSelection(PriceTarget t) {
-				mModel.setUserStatus(t);
+		int selected = 0;
+		if(mModel.getUserStatus() != null) selected = mModel.getUserStatus().getValue();
+		showSingleChoiceDialog(this, priceTargets, getString(R.string.food_dialog_prices), selected, new SingleChoiceHandler<Integer>() {
+			public void saveSelection(Integer t) {
+				if(t == 0) {
+					mModel.setUserStatus(null);
+				} else {
+					mModel.setUserStatus(PriceTarget.findByValue(t));
+				}
 				mController.refreshFood(FoodMainView.this, foodDay, foodTime, false);
 			}
 		});

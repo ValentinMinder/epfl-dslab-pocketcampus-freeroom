@@ -25,10 +25,10 @@ public class MapLayersResponse implements org.apache.thrift.TBase<MapLayersRespo
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MapLayersResponse");
 
   private static final org.apache.thrift.protocol.TField STATUS_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("statusCode", org.apache.thrift.protocol.TType.I32, (short)1);
-  private static final org.apache.thrift.protocol.TField LAYERS_FIELD_DESC = new org.apache.thrift.protocol.TField("layers", org.apache.thrift.protocol.TType.LIST, (short)2);
+  private static final org.apache.thrift.protocol.TField LAYERS_FIELD_DESC = new org.apache.thrift.protocol.TField("layers", org.apache.thrift.protocol.TType.MAP, (short)2);
 
   private MapStatusCode statusCode; // required
-  private List<MapLayer> layers; // required
+  private Map<Long,MapLayer> layers; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -103,7 +103,8 @@ public class MapLayersResponse implements org.apache.thrift.TBase<MapLayersRespo
     tmpMap.put(_Fields.STATUS_CODE, new org.apache.thrift.meta_data.FieldMetaData("statusCode", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, MapStatusCode.class)));
     tmpMap.put(_Fields.LAYERS, new org.apache.thrift.meta_data.FieldMetaData("layers", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+        new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64), 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MapLayer.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MapLayersResponse.class, metaDataMap);
@@ -114,7 +115,7 @@ public class MapLayersResponse implements org.apache.thrift.TBase<MapLayersRespo
 
   public MapLayersResponse(
     MapStatusCode statusCode,
-    List<MapLayer> layers)
+    Map<Long,MapLayer> layers)
   {
     this();
     this.statusCode = statusCode;
@@ -129,9 +130,17 @@ public class MapLayersResponse implements org.apache.thrift.TBase<MapLayersRespo
       this.statusCode = other.statusCode;
     }
     if (other.isSetLayers()) {
-      List<MapLayer> __this__layers = new ArrayList<MapLayer>();
-      for (MapLayer other_element : other.layers) {
-        __this__layers.add(new MapLayer(other_element));
+      Map<Long,MapLayer> __this__layers = new HashMap<Long,MapLayer>();
+      for (Map.Entry<Long, MapLayer> other_element : other.layers.entrySet()) {
+
+        Long other_element_key = other_element.getKey();
+        MapLayer other_element_value = other_element.getValue();
+
+        Long __this__layers_copy_key = other_element_key;
+
+        MapLayer __this__layers_copy_value = new MapLayer(other_element_value);
+
+        __this__layers.put(__this__layers_copy_key, __this__layers_copy_value);
       }
       this.layers = __this__layers;
     }
@@ -183,22 +192,18 @@ public class MapLayersResponse implements org.apache.thrift.TBase<MapLayersRespo
     return (this.layers == null) ? 0 : this.layers.size();
   }
 
-  public java.util.Iterator<MapLayer> getLayersIterator() {
-    return (this.layers == null) ? null : this.layers.iterator();
-  }
-
-  public void addToLayers(MapLayer elem) {
+  public void putToLayers(long key, MapLayer val) {
     if (this.layers == null) {
-      this.layers = new ArrayList<MapLayer>();
+      this.layers = new HashMap<Long,MapLayer>();
     }
-    this.layers.add(elem);
+    this.layers.put(key, val);
   }
 
-  public List<MapLayer> getLayers() {
+  public Map<Long,MapLayer> getLayers() {
     return this.layers;
   }
 
-  public MapLayersResponse setLayers(List<MapLayer> layers) {
+  public MapLayersResponse setLayers(Map<Long,MapLayer> layers) {
     this.layers = layers;
     return this;
   }
@@ -232,7 +237,7 @@ public class MapLayersResponse implements org.apache.thrift.TBase<MapLayersRespo
       if (value == null) {
         unsetLayers();
       } else {
-        setLayers((List<MapLayer>)value);
+        setLayers((Map<Long,MapLayer>)value);
       }
       break;
 
@@ -370,18 +375,20 @@ public class MapLayersResponse implements org.apache.thrift.TBase<MapLayersRespo
           }
           break;
         case 2: // LAYERS
-          if (field.type == org.apache.thrift.protocol.TType.LIST) {
+          if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
-              org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-              this.layers = new ArrayList<MapLayer>(_list0.size);
-              for (int _i1 = 0; _i1 < _list0.size; ++_i1)
+              org.apache.thrift.protocol.TMap _map0 = iprot.readMapBegin();
+              this.layers = new HashMap<Long,MapLayer>(2*_map0.size);
+              for (int _i1 = 0; _i1 < _map0.size; ++_i1)
               {
-                MapLayer _elem2; // required
-                _elem2 = new MapLayer();
-                _elem2.read(iprot);
-                this.layers.add(_elem2);
+                long _key2; // required
+                MapLayer _val3; // required
+                _key2 = iprot.readI64();
+                _val3 = new MapLayer();
+                _val3.read(iprot);
+                this.layers.put(_key2, _val3);
               }
-              iprot.readListEnd();
+              iprot.readMapEnd();
             }
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -410,12 +417,13 @@ public class MapLayersResponse implements org.apache.thrift.TBase<MapLayersRespo
     if (this.layers != null) {
       oprot.writeFieldBegin(LAYERS_FIELD_DESC);
       {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.layers.size()));
-        for (MapLayer _iter3 : this.layers)
+        oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I64, org.apache.thrift.protocol.TType.STRUCT, this.layers.size()));
+        for (Map.Entry<Long, MapLayer> _iter4 : this.layers.entrySet())
         {
-          _iter3.write(oprot);
+          oprot.writeI64(_iter4.getKey());
+          _iter4.getValue().write(oprot);
         }
-        oprot.writeListEnd();
+        oprot.writeMapEnd();
       }
       oprot.writeFieldEnd();
     }

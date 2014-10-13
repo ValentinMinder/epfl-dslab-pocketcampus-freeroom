@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -41,111 +41,57 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 				PocketCampusServer.CONFIG.getString("DB_URL"),
 				PocketCampusServer.CONFIG.getString("DB_USERNAME"),
 				PocketCampusServer.CONFIG.getString("DB_PASSWORD"));
-
-		System.out.println("[TEST] Recommended Apps: "
-				+ getRecommendedApps(new RecommendedAppsRequest("EN",
-						AppStore.iOS)));
+		
 	}
 
-	private Map<Integer, RecommendedApp> getApps(String languageSuffix,
-			AppStore appStore) throws Exception {
+	private Map<Integer, RecommendedApp> getApps(String languageSuffix, AppStore appStore, 
+			Map<Integer, List<Integer>> appCategs) throws SQLException {
+		
 		Connection connection = connectionManager.getConnection();
+		Map<Integer, RecommendedApp> apps = new HashMap<Integer, RecommendedApp>();
 
-		Map<Integer, RecommendedApp> apps = new HashMap<>();
-
-		PreparedStatement getAppOSConfigurationsStatement = connection
-				.prepareStatement("SELECT * FROM RecommendedAppsOSConfigurations WHERE AppStore = "
-						+ appStore.getValue());
-		getAppOSConfigurationsStatement.execute();
-
-		ResultSet results = getAppOSConfigurationsStatement.getResultSet();
-
+		PreparedStatement stm = connection.prepareStatement("SELECT * FROM RecommendedApps WHERE AppStore = ?");
+		stm.setInt(1, appStore.getValue());
+		stm.execute();
+		ResultSet results = stm.getResultSet();
 		while (results.next()) {
 			int appId = results.getInt("AppId");
-
-			String appStoreQuery = results.getString("AppStoreQuery");
-			String appOpenURLPattern = results.getString("AppOpenURLPattern");
-			String appLogoURL = results.getString("AppLogoURL");
+			
+			int categId = results.getInt("AppCategory");
+			if(!appCategs.containsKey(categId)) {
+				appCategs.put(categId, new LinkedList<Integer>());
+			}
+			appCategs.get(categId).add(appId);
 
 			RecommendedApp app = new RecommendedApp();
-			app.setAppStoreQuery(appStoreQuery);
-			if (appStore != AppStore.iOS && appStore != AppStore.Android) {
-				app.setAppLogoURL(appLogoURL);
-			}
-			app.setAppOpenURLPattern(appOpenURLPattern);
+			app.setAppStoreQuery(results.getString("AppStoreQuery"));
+			app.setAppLogoURL(results.getString("AppLogoURL"));
+			app.setAppOpenURLPattern(results.getString("AppOpenURLPattern"));
+			app.setAppName(results.getString("AppName" + languageSuffix));
+			app.setAppDescription(results.getString("AppDescription" + languageSuffix));
 
 			apps.put(appId, app);
-		}
-
-		PreparedStatement getAppsStatement = connection
-				.prepareStatement("SELECT * FROM RecommendedApps");
-
-		getAppsStatement.execute();
-
-		results = getAppsStatement.getResultSet();
-
-		while (results.next()) {
-			int appId = results.getInt("AppId");
-			if (!apps.containsKey(appId)) {
-				continue;
-			}
-			if (appStore != AppStore.iOS && appStore != AppStore.Android) {
-				RecommendedApp app = apps.get(appId);
-				String appName = results.getString("AppName");
-				app.setAppName(appName);
-				String appDescription = results.getString("AppDescription"
-						+ languageSuffix);
-				app.setAppDescription(appDescription);
-			}
-
 		}
 		return apps;
 	}
 
-	private List<RecommendedAppCategory> getCategories(String languageSuffix,
-			Collection<Integer> appsForPlatform) throws SQLException {
+	private List<RecommendedAppCategory> getCategories(String languageSuffix, 
+			Map<Integer, List<Integer>> appCategs) throws SQLException {
+		
 		Connection connection = connectionManager.getConnection();
+		List<RecommendedAppCategory> categories = new Vector<RecommendedAppCategory>();
 
-		List<RecommendedAppCategory> categories = new Vector<>();
-
-		PreparedStatement getCategoriesStatement = connection
-				.prepareStatement("SELECT * FROM RecommendedAppsCategories");
-
-		getCategoriesStatement.execute();
-
-		ResultSet results = getCategoriesStatement.getResultSet();
-
+		PreparedStatement stm = connection.prepareStatement("SELECT * FROM RecommendedAppsCategories");
+		stm.execute();
+		ResultSet results = stm.getResultSet();
 		while (results.next()) {
-			RecommendedAppCategory category = new RecommendedAppCategory();
-
 			int categoryId = results.getInt("CategoryId");
-
-			// String categoryLogoURL = results.getString("CategoryLogoURL");
-			// category.setCategoryLogoURL(categoryLogoURL);
-
-			String categoryName = results.getString("CategoryName"
-					+ languageSuffix);
-			category.setCategoryName(categoryName);
-
-			String categoryDescription = results
-					.getString("CategoryDescription" + languageSuffix);
-			category.setCategoryDescription(categoryDescription);
-
-			PreparedStatement getAppsForCategoryStatement = connection
-					.prepareStatement("SELECT AppId FROM RecommendedAppsCategoriesToApps WHERE categoryId = ?");
-			getAppsForCategoryStatement.setInt(1, categoryId);
-
-			getAppsForCategoryStatement.execute();
-
-			ResultSet appList = getAppsForCategoryStatement.getResultSet();
-			while (appList.next()) {
-				int appId = appList.getInt(1);
-				if (appsForPlatform.contains(appId)) {
-					category.addToAppIds(appId);
-				}
-			}
-
-			if (category.isSetAppIds() && (category.getAppIds().size() > 0)) {
+			if(appCategs.containsKey(categoryId)) {
+				RecommendedAppCategory category = new RecommendedAppCategory();
+				category.setCategoryLogoURL(results.getString("CategoryLogoURL"));
+				category.setCategoryName(results.getString("CategoryName" + languageSuffix));
+				category.setCategoryDescription(results.getString("CategoryDescription" + languageSuffix));
+				category.setAppIds(appCategs.get(categoryId));
 				categories.add(category);
 			}
 		}
@@ -155,8 +101,8 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 	private static final List<String> knownLanguages = Arrays.asList("EN", "FR");
 
 	@Override
-	public RecommendedAppsResponse getRecommendedApps(
-			RecommendedAppsRequest request) {
+	public RecommendedAppsResponse getRecommendedApps(RecommendedAppsRequest request) {
+		
 		System.out.println("Recommended apps for " + request);
 		RecommendedAppsResponse response = new RecommendedAppsResponse();
 		response.setStatus(RecommendedAppsResponseStatus.OK);
@@ -168,31 +114,24 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 		String languageSuffix = "_" + language;
 
 		try {
-			Map<Integer, RecommendedApp> apps = getApps(languageSuffix,
-					request.getAppStore());
+			Map<Integer, List<Integer>> appCategs = new HashMap<Integer, List<Integer>>();
+			
+			Map<Integer, RecommendedApp> apps = getApps(languageSuffix, request.getAppStore(), appCategs);
 			response.setApps(apps);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Returning ERROR status");
-			response.setStatus(RecommendedAppsResponseStatus.ERROR);
-			return response;
-		}
-
-		try {
-			List<RecommendedAppCategory> categories = getCategories(
-					languageSuffix, response.getApps().keySet());
+			
+			List<RecommendedAppCategory> categories = getCategories(languageSuffix, appCategs);
 			response.setCategories(categories);
-		} catch (Exception e) {
+			
+			System.out.println("Returning recommended apps for " + request + " " + response);
+			return response;
+			
+		} catch (SQLException e) {
 			e.printStackTrace();
 			System.err.println("Returning ERROR status");
 			response.setStatus(RecommendedAppsResponseStatus.ERROR);
-			response.unsetApps();
 			return response;
 		}
 
-		System.out.println("Returning recommended apps for " + request + " "
-				+ response);
-		return response;
 	}
 
 }

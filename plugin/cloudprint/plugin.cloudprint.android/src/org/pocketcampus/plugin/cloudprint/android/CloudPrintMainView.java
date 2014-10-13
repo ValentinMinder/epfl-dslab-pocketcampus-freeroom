@@ -158,6 +158,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 			Button b = (Button) findViewById(R.id.cloudprint_print_button);
 			b.setOnClickListener(new OnClickListener() {
 				public void onClick(View arg0) {
+					trackEvent("Print", null);
 					showLoading();
 					mController.printFileJob(CloudPrintMainView.this, mModel.getPrintJobId());
 				}
@@ -172,6 +173,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 			Button b = (Button) findViewById(R.id.cloudprint_upload_button);
 			b.setOnClickListener(new OnClickListener() {
 				public void onClick(View arg0) {
+					trackEvent("Upload", null);
 					showLoading();
 					mController.uploadFileToPrint(CloudPrintMainView.this, new File(mModel.getFileToPrint().getPath()));
 				}

@@ -1305,14 +1305,14 @@ public class MapService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
-                this.success = new ArrayList<MapItem>(_list4.size);
-                for (int _i5 = 0; _i5 < _list4.size; ++_i5)
+                org.apache.thrift.protocol.TList _list5 = iprot.readListBegin();
+                this.success = new ArrayList<MapItem>(_list5.size);
+                for (int _i6 = 0; _i6 < _list5.size; ++_i6)
                 {
-                  MapItem _elem6; // required
-                  _elem6 = new MapItem();
-                  _elem6.read(iprot);
-                  this.success.add(_elem6);
+                  MapItem _elem7; // required
+                  _elem7 = new MapItem();
+                  _elem7.read(iprot);
+                  this.success.add(_elem7);
                 }
                 iprot.readListEnd();
               }
@@ -1338,9 +1338,9 @@ public class MapService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (MapItem _iter7 : this.success)
+          for (MapItem _iter8 : this.success)
           {
-            _iter7.write(oprot);
+            _iter8.write(oprot);
           }
           oprot.writeListEnd();
         }

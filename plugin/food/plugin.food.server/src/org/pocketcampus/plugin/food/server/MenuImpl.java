@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.food.server;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +12,8 @@ import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.plugin.food.shared.*;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
+
 import org.joda.time.LocalDate;
 
 /**
@@ -71,7 +74,7 @@ public final class MenuImpl implements Menu {
 	}
 
 	/** Parses the menu from the official meal list's HTML. */
-	public FoodResponse get(MealTime time, LocalDate date) throws Exception {
+	public FoodResponse get(MealTime time, LocalDate date) throws JsonParseException {
 
 		String timeVal = time == MealTime.LUNCH ? URL_TIME_VALUE_LUNCH : URL_TIME_VALUE_DINNER;
 		String dateVal = date.toString(URL_DATE_VALUE_FORMAT);
@@ -80,7 +83,7 @@ public final class MenuImpl implements Menu {
 		String json = null;
 		try {
 			json = _client.get(url, MEAL_LIST_CHARSET);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			return new FoodResponse().setStatusCode(FoodStatusCode.NETWORK_ERROR);
 		}
 

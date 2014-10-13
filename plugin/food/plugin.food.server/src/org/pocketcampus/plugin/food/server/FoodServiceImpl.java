@@ -1,16 +1,19 @@
 package org.pocketcampus.plugin.food.server;
 
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.pocketcampus.platform.server.CachingProxy;
 import org.pocketcampus.platform.server.HttpClientImpl;
+import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
 import org.pocketcampus.plugin.food.shared.*;
 
 import org.apache.thrift.TException;
 import org.joda.time.*;
 
+import com.google.gson.JsonParseException;
 import com.unboundid.ldap.sdk.*;
 
 /**
@@ -56,13 +59,13 @@ public class FoodServiceImpl implements FoodService.Iface {
 		FoodResponse response = null;
 		try {
 			response = _menu.get(time, date);
-		} catch (Exception e) {
+		} catch (JsonParseException e) {
 			throw new TException("An exception occurred while getting the menu", e);
 		}
 		try {
 			_ratingDatabase.insertMenu(response.getMenu(), date, time);
 			_ratingDatabase.setRatings(response.getMenu());
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new TException("An exception occurred while inserting and fetching the ratings", e);
 		}
 
@@ -71,9 +74,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 			restaurant.setRLocation(_locator.findByName(restaurant.getRName()));
 		}
 
-		if (foodReq.isSetUserGaspar()) {
-			response.setUserStatus(getPriceTarget(foodReq.getUserGaspar()));
-		}
+		String gaspar = (foodReq.isSetUserGaspar() ? foodReq.getUserGaspar() : AuthenticationServiceImpl.authGetUserGaspar());
+		System.out.println("Getting PriceTarget for " + gaspar);
+		response.setUserStatus(getPriceTarget(gaspar));
 
 		return response.setMealTypePictureUrls(_pictureSource.getMealTypePictures());
 	}
@@ -82,11 +85,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 	public VoteResponse vote(VoteRequest voteReq) throws TException {
 		try {
 			if (voteReq.getRating() < 0 || voteReq.getRating() > 5) {
-				throw new Exception("Invalid rating.");
+				throw new TException("Invalid rating.");
 			}
 
 			return new VoteResponse( _ratingDatabase.vote(voteReq.getDeviceId(), voteReq.getMealId(), voteReq.getRating()));
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new TException("An error occurred during a vote", e);
 		}
 	}
@@ -100,13 +103,14 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	// TODO extract this to a common LDAP service used everytime we need it, not just in food
-	private static PriceTarget getPriceTarget(String sciper) {
+	private static PriceTarget getPriceTarget(String username) {
+		if(username == null)
+			return null;
 		List<PriceTarget> classes = new LinkedList<PriceTarget>();
 		try {
 			LDAPConnection ldap = new LDAPConnection();
 			ldap.connect("ldap.epfl.ch", 389);
-			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + sciper + ")(uniqueidentifier=" + sciper
-					+ "))", (String[]) null);
+			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + username + "@*)(uniqueidentifier=" + username + "))", (String[]) null);
 			for (SearchResultEntry e : searchResult.getSearchEntries()) {
 				String os = e.getAttributeValue("organizationalStatus");
 				if ("Etudiant".equals(os)) {
@@ -118,8 +122,10 @@ public class FoodServiceImpl implements FoodService.Iface {
 					}
 				} else if ("Personnel".equals(os)) {
 					classes.add(PriceTarget.STAFF);
-				} else {
-					classes.add(PriceTarget.VISITOR);
+				} else { // Hôte, etc.
+					//classes.add(PriceTarget.VISITOR);
+					// It seems if the person has _any_ entry in LDAP, they are considered staff...
+					classes.add(PriceTarget.STAFF);
 				}
 			}
 		} catch (LDAPException e) {

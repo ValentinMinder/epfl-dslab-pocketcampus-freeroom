@@ -4,13 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.pocketcampus.platform.server.database.ConnectionManager;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
 
 public class MapDatabase {
@@ -29,12 +27,12 @@ public class MapDatabase {
 				PocketCampusServer.CONFIG.getString("DB_USERNAME"), PocketCampusServer.CONFIG.getString("DB_PASSWORD"));
 	}
 
-	public List<MapLayer> getMapLayers(String lang) {
+	public Map<Long, MapLayer> getMapLayers(String lang) {
 		if (lang == null || lang.length() == 0) {
 			throw new IllegalArgumentException("lang must be of length > 0 and cannot be null");
 		}
 		
-		List<MapLayer> layers = new LinkedList<MapLayer>();
+		HashMap<Long, MapLayer> layers = new HashMap<Long, MapLayer>();
 		
 		try {
 			Connection connection = connectionManager.getConnection();
@@ -50,7 +48,7 @@ public class MapDatabase {
 					System.err.println("Could not find required value for column "+layerNameColumn+". Ignoring layer.");
 					continue;
 				}
-				long layerId = results.getLong(LAYER_ID);
+				Long layerId = new Long(results.getLong(results.getInt(LAYER_ID)));
 				String nameForQuery = results.getString(LAYER_NAME_FOR_QUERY);
 				String nameForQueryAllFloors = results.getString(LAYER_NAME_FOR_QUERY_ALL_FLOORS);
 				if (nameForQuery == null && nameForQueryAllFloors == null) {
@@ -62,7 +60,7 @@ public class MapDatabase {
 				layer.setNameForQuery(nameForQuery);
 				layer.setNameForQueryAllFloors(nameForQueryAllFloors);
 				
-				layers.add(layer);
+				layers.put(layerId, layer);
 			}
 
 			statement.close();
