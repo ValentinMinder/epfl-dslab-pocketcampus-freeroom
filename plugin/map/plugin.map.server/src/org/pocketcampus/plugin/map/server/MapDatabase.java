@@ -10,7 +10,6 @@ import java.util.Map;
 import org.pocketcampus.platform.server.database.ConnectionManager;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.map.shared.MapLayer;
-import org.pocketcampus.plugin.map.shared.MapLayerId;
 
 public class MapDatabase {
 
