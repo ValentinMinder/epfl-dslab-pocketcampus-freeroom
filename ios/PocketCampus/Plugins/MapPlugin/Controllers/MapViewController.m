@@ -654,7 +654,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         return;
     }
     __weak __typeof(self) welf = self;
-    MapLayersListSelectionViewController* layersViewController = [[MapLayersListSelectionViewController alloc] initWithAllSelectableMapLayers:self.mapLayerForLayerId.allKeys doneButtonTappedBlock:^{
+    MapLayersListSelectionViewController* layersViewController = [[MapLayersListSelectionViewController alloc] initWithAllSelectableMapLayers:self.mapLayerForLayerId.allValues doneButtonTappedBlock:^{
         if ([PCUtils isIdiomPad]) {
             [welf.mapLayersPopover togglePopoverFromBarButtonItem:welf.layersListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         } else {
