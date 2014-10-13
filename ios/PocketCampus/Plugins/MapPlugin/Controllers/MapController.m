@@ -25,11 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 12.04.12.
-
 
 #import "MapController.h"
 
@@ -133,6 +129,10 @@ static MapController* instance __weak = nil;
 }
 
 #pragma mark - Public
+
++ (UIViewController*)viewControllerWithMapLayerIdsToDisplay:(NSSet*)layerIds {
+    return [[MapViewController alloc] initWithMapLayerIdsToDisplay:layerIds];
+}
 
 + (UIViewController*)viewControllerWithInitialMapItem:(MapItem*)mapItem {
     return [[MapViewController alloc] initWithInitialMapItem:mapItem];

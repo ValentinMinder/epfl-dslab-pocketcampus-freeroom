@@ -58,6 +58,19 @@
 
 #import "LGAUserTrackingBarButtonItem.h"
 
+@interface MapViewControllerInitialState : NSObject
+
+@property (nonatomic, strong) NSSet* layerIdsToDisplay;
+@property (nonatomic, strong) MapItem* mapItem;
+@property (nonatomic, strong) NSString* query;
+@property (nonatomic, strong) NSString* queryManualPinLabelText;
+
+@end
+
+@implementation MapViewControllerInitialState
+
+@end
+
 typedef enum  {
     SearchStateReady = 0, //no search yet, bar empty and ready for a new search
     SearchStateLoading,
@@ -95,9 +108,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 @property (nonatomic, strong) NSTimer* getMapLayersTimer;
 @property (nonatomic) BOOL getMapLayersRequestInProgress;
 
-@property (nonatomic, strong) MapItem* initialMapItem;
-@property (nonatomic, strong) NSString* initialQuery;
-@property (nonatomic, strong) NSString* initialQueryManualPinLabelText;
+@property (nonatomic, strong) MapViewControllerInitialState* initialState;
 
 @property (nonatomic, readonly) MKCoordinateRegion epflRegion;
 
@@ -156,11 +167,21 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 
 }
 
+- (instancetype)initWithMapLayerIdsToDisplay:(NSSet*)layerIds {
+    [PCUtils throwExceptionIfObject:layerIds notKindOfClass:[NSSet class]];
+    if (self) {
+        
+    }
+    return self;
+}
+
 - (instancetype)initWithInitialMapItem:(MapItem*)mapItem {
     [PCUtils throwExceptionIfObject:mapItem notKindOfClass:[MapItem class]];
     self = [self init];
     if (self) {
-        self.initialMapItem = mapItem;
+        MapViewControllerInitialState* state = [MapViewControllerInitialState new];
+        state.mapItem = mapItem;
+        self.initialState = state;
     }
     return self;
 }
@@ -171,7 +192,9 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         if (![query isKindOfClass:[NSString class]] || query.length == 0) {
             @throw [NSException exceptionWithName:@"Illegal argument" reason:@"query must be of class NSString and of length > 0" userInfo:nil];
         }
-        self.initialQuery = query;
+        MapViewControllerInitialState* state = [MapViewControllerInitialState new];
+        state.query = query;
+        self.initialState = state;
     }
     return self;
 }
@@ -182,7 +205,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         if (![pinTextLabel isKindOfClass:[NSString class]] || pinTextLabel.length == 0) {
             @throw [NSException exceptionWithName:@"Illegal argument" reason:@"pinTextLabel must be of class NSString and of length > 0" userInfo:nil];
         }
-        self.initialQueryManualPinLabelText = pinTextLabel;
+        self.initialState.queryManualPinLabelText = pinTextLabel;
     }
     return self;
 }
@@ -214,22 +237,25 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     mapTap.delegate = self;
     [self.mapView addGestureRecognizer:mapTap];
     
-    if (self.initialMapItem) {
-        self.title = [PCUtils isIdiomPad] ? nil : self.initialMapItem.title;
-        self.navigationItem.leftItemsSupplementBackButton = YES;
-        [self searchMapFor:self.initialMapItem.title didReturn:@[self.initialMapItem]];
-    } else if (self.initialQuery) {
-        self.title = [PCUtils isIdiomPad] ? nil : self.initialQuery;
-        self.navigationItem.leftItemsSupplementBackButton = YES;
-        [self startSearchForQuery:self.initialQuery];
+    if (self.initialState) {
+        if (self.initialState.mapItem) {
+            self.title = [PCUtils isIdiomPad] ? nil : self.initialState.mapItem.title;
+            self.navigationItem.leftItemsSupplementBackButton = YES;
+            [self searchMapFor:self.initialState.mapItem.title didReturn:@[self.initialState.mapItem]];
+        } else if (self.initialState.query) {
+            self.title = [PCUtils isIdiomPad] ? nil : self.initialState.query;
+            self.navigationItem.leftItemsSupplementBackButton = YES;
+            [self startSearchForQuery:self.initialState.query];
+        }
     }
+    
     [[MainController publicController] addPluginStateObserver:self selector:@selector(willLoseForeground) notification:PluginWillLoseForegroundNotification pluginIdentifierName:@"Map"];
     [[MainController publicController] addPluginStateObserver:self selector:@selector(didEnterForeground) notification:PluginDidEnterForegroundNotification pluginIdentifierName:@"Map"];
     
     self.layersListButton.enabled = NO;
     [self startGetMapLayersRequestIfNecessary];
     
-    if (self.initialQueryWithFullControls && !self.initialQuery && !self.initialMapItem) {
+    if (self.initialQueryWithFullControls && !self.initialState) {
         [self startSearchForQuery:self.initialQueryWithFullControls];
     }
 }
@@ -389,7 +415,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     NSArray* items = nil;
     
-    if (self.initialQuery || self.initialMapItem) {
+    if (self.initialState) {
         if (searchState == SearchStateLoading) {
             items = @[self.loadingBarItem];
         } else {
@@ -833,7 +859,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     pin.accessibilityValue = annotation.subtitle.length > 0 ? [NSString stringWithFormat:@"%@\n%@", annotation.title, annotation.subtitle] : annotation.title;
     
-    if ([mapItem.category isEqualToString:kMapItemCategoryPerson] && !self.initialQuery && !self.initialMapItem) {
+    if ([mapItem.category isEqualToString:kMapItemCategoryPerson] && !self.initialState) {
         UIButton* disclosureButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         [disclosureButton addTarget:self action:@selector(annotationAccessoryTapped:) forControlEvents:UIControlEventTouchUpInside];
         pin.rightCalloutAccessoryView = disclosureButton;
@@ -877,14 +903,18 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     if (shouldShowOverlay) {
         
-        if (self.mapLayerForLayerId) {
+        if (self.mapLayerForLayerId && (self.mapService.selectedMapLayerIds.count > 0 || self.initialState.layerIdsToDisplay.count > 0)) {
             NSMutableSet* namesForQueryToDisplay = [NSMutableSet set];
-            for (NSNumber* nsLayerId in self.mapService.selectedMapLayerIds) {
-                MapLayer* layer = self.mapLayerForLayerId[nsLayerId];
-                if (layer.nameForQueryAllFloors) {
-                    [namesForQueryToDisplay addObject:layer.nameForQueryAllFloors];
+            
+            for (NSNumber* nsLayerId in self.mapLayerForLayerId) {
+                if ([self.mapService.selectedMapLayerIds containsObject:nsLayerId] || [self.initialState.layerIdsToDisplay containsObject:nsLayerId]) {
+                    MapLayer* layer = self.mapLayerForLayerId[nsLayerId];
+                    if (layer.nameForQueryAllFloors) {
+                        [namesForQueryToDisplay addObject:layer.nameForQueryAllFloors];
+                    }
                 }
             }
+            
             self.epflLayersOverlay.mapLayersNamesForQueryToDisplay = namesForQueryToDisplay;
         } else {
             self.epflLayersOverlay.mapLayersNamesForQueryToDisplay = nil;
@@ -941,7 +971,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         return;
     }
     
-    if (!self.initialQuery && !self.initialMapItem) {
+    if (!self.initialState) {
         [self.mapService addOrPromoteRecentSearch:query];
     }
     
@@ -1061,7 +1091,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (alertView == self.noResultAlert && !self.initialQuery) { //initial query case is treated in alertView:didDismissWithButtonIndex: (nect method)
+    if (alertView == self.noResultAlert && !self.initialState) { //initial query case is treated in alertView:didDismissWithButtonIndex: (nect method)
         //user likely wants to retype, so focus in search bar
         [self.searchBar becomeFirstResponder];
     }
@@ -1070,12 +1100,12 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (alertView == self.internetConnectionAlert) {
         self.internetConnectionAlert = nil;
-        if (self.initialQuery && self.navigationController.visibleViewController == self) { //leave map if initial search query was not successful
+        if (self.initialState && self.navigationController.visibleViewController == self) { //leave map if initial search query was not successful
             [self.navigationController popViewControllerAnimated:YES];
         }
     } else if (alertView == self.noResultAlert) {
         self.noResultAlert = nil;
-        if (self.initialQuery && self.navigationController.visibleViewController == self) { //leave map if initial search query was not successful
+        if (self.initialState && self.navigationController.visibleViewController == self) { //leave map if initial search query was not successful
             [self.navigationController popViewControllerAnimated:YES];
         }
     } else if (alertView == self.tooManyResultsAlert) {
@@ -1112,8 +1142,8 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     }
     NSMutableArray* annotations = [NSMutableArray arrayWithCapacity:mapItems.count];
     for (MapItem* item __strong in mapItems) {
-        if (self.initialQuery && self.initialQueryManualPinLabelText && ![self.initialQueryManualPinLabelText isEqualToString:item.title]) {
-            item = [[MapItem alloc] initWithTitle:self.initialQueryManualPinLabelText description:item.title latitude:item.latitude longitude:item.longitude layerId:item.layerId itemId:item.itemId floor:item.floor category:item.category];
+        if (self.initialState.query && self.initialState.queryManualPinLabelText && ![self.initialState.queryManualPinLabelText isEqualToString:item.title]) {
+            item = [[MapItem alloc] initWithTitle:self.initialState.queryManualPinLabelText description:item.title latitude:item.latitude longitude:item.longitude layerId:item.layerId itemId:item.itemId floor:item.floor category:item.category];
         }
         
         MapItemAnnotation* annotation = nil;
