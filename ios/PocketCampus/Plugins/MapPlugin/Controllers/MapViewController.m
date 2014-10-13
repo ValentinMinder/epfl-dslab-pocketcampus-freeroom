@@ -90,7 +90,6 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 
 @property (nonatomic, strong) NSArray* mapItemsAllResults; //raw result from map service for a search. Nil if searchState is != SearchStateResults
 
-@property (nonatomic, strong) NSArray* allMapLayers;
 @property (nonatomic, strong) NSDictionary* mapLayerForLayerId; //key: @(MapLayer.layerId), value: MapLayer object
 
 @property (nonatomic, strong) NSTimer* getMapLayersTimer;
@@ -293,7 +292,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 #pragma mark - Data fetch
 
 - (void)startGetMapLayersRequestIfNecessary {
-    if (self.allMapLayers) {
+    if (self.mapLayerForLayerId) {
         [self.getMapLayersTimer invalidate];
         self.getMapLayersTimer = nil;
         return;
@@ -651,11 +650,11 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 }
 
 - (void)layersListPressed {
-    if (!self.allMapLayers) {
+    if (!self.mapLayerForLayerId) {
         return;
     }
     __weak __typeof(self) welf = self;
-    MapLayersListSelectionViewController* layersViewController = [[MapLayersListSelectionViewController alloc] initWithAllSelectableMapLayers:self.allMapLayers doneButtonTappedBlock:^{
+    MapLayersListSelectionViewController* layersViewController = [[MapLayersListSelectionViewController alloc] initWithAllSelectableMapLayers:self.mapLayerForLayerId.allKeys doneButtonTappedBlock:^{
         if ([PCUtils isIdiomPad]) {
             [welf.mapLayersPopover togglePopoverFromBarButtonItem:welf.layersListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         } else {
@@ -878,7 +877,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     if (shouldShowOverlay) {
         
-        if (self.allMapLayers) {
+        if (self.mapLayerForLayerId) {
             NSMutableSet* namesForQueryToDisplay = [NSMutableSet set];
             for (NSNumber* nsLayerId in self.mapService.selectedMapLayerIds) {
                 MapLayer* layer = self.mapLayerForLayerId[nsLayerId];
@@ -973,13 +972,8 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         case MapStatusCode_OK:
         {
             self.getMapLayersRequestInProgress = NO;
-            self.allMapLayers = response.layers;
-            NSMutableDictionary* mapLayerForLayerId = [NSMutableDictionary dictionary];
-            for (MapLayer* layer in response.layers) {
-                mapLayerForLayerId[@(layer.layerId)] = layer;
-            }
-            self.mapLayerForLayerId = mapLayerForLayerId;
-            self.layersListButton.enabled = YES;
+            self.mapLayerForLayerId = response.layers;
+            self.layersListButton.enabled = (self.mapLayerForLayerId != nil);
             [self mapView:self.mapView regionDidChangeAnimated:NO];
             break;
         }
@@ -991,7 +985,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 
 - (void)getLayersFailed {
     self.getMapLayersRequestInProgress = NO;
-    self.allMapLayers = nil;
+    self.mapLayerForLayerId = nil;
 }
 
 - (void)serviceConnectionToServerFailed {

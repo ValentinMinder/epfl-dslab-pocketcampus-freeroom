@@ -61,7 +61,7 @@ enum MapStatusCode {
 
 @interface MapLayersResponse : NSObject <NSCoding> {
   int __statusCode;
-  NSArray * __layers;
+  NSDictionary * __layers;
 
   BOOL __statusCode_isset;
   BOOL __layers_isset;
@@ -69,10 +69,10 @@ enum MapStatusCode {
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 @property (nonatomic, getter=statusCode, setter=setStatusCode:) int statusCode;
-@property (nonatomic, retain, getter=layers, setter=setLayers:) NSArray * layers;
+@property (nonatomic, retain, getter=layers, setter=setLayers:) NSDictionary * layers;
 #endif
 
-- (id) initWithStatusCode: (int) statusCode layers: (NSArray *) layers;
+- (id) initWithStatusCode: (int) statusCode layers: (NSDictionary *) layers;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -81,8 +81,8 @@ enum MapStatusCode {
 - (void) setStatusCode: (int) statusCode;
 - (BOOL) statusCodeIsSet;
 
-- (NSArray *) layers;
-- (void) setLayers: (NSArray *) layers;
+- (NSDictionary *) layers;
+- (void) setLayers: (NSDictionary *) layers;
 - (BOOL) layersIsSet;
 
 @end
@@ -180,4 +180,10 @@ enum MapStatusCode {
 
 @interface mapConstants : NSObject {
 }
++ (int64_t) MapLayerIdMyPrint;
++ (int64_t) MapLayerIdCamiproChargers;
++ (int64_t) MapLayerIdCamiproTerminals;
++ (int64_t) MapLayerIdPublicParkingLots;
++ (int64_t) MapLayerIdRestaurants;
++ (int64_t) MapLayerIdATMs;
 @end

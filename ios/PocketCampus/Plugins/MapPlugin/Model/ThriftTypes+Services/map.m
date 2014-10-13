@@ -14,9 +14,33 @@
 
 #import "map.h"
 
+static int64_t MapLayerIdMyPrint = 1;
+static int64_t MapLayerIdCamiproChargers = 2;
+static int64_t MapLayerIdCamiproTerminals = 3;
+static int64_t MapLayerIdPublicParkingLots = 4;
+static int64_t MapLayerIdRestaurants = 5;
+static int64_t MapLayerIdATMs = 6;
 
 @implementation mapConstants
 + (void) initialize {
+}
++ (int64_t) MapLayerIdMyPrint{
+  return MapLayerIdMyPrint;
+}
++ (int64_t) MapLayerIdCamiproChargers{
+  return MapLayerIdCamiproChargers;
+}
++ (int64_t) MapLayerIdCamiproTerminals{
+  return MapLayerIdCamiproTerminals;
+}
++ (int64_t) MapLayerIdPublicParkingLots{
+  return MapLayerIdPublicParkingLots;
+}
++ (int64_t) MapLayerIdRestaurants{
+  return MapLayerIdRestaurants;
+}
++ (int64_t) MapLayerIdATMs{
+  return MapLayerIdATMs;
 }
 @end
 
@@ -276,7 +300,7 @@
 
 @implementation MapLayersResponse
 
-- (id) initWithStatusCode: (int) statusCode layers: (NSArray *) layers
+- (id) initWithStatusCode: (int) statusCode layers: (NSDictionary *) layers
 {
   self = [super init];
   __statusCode = statusCode;
@@ -337,11 +361,11 @@
   __statusCode_isset = NO;
 }
 
-- (NSArray *) layers {
+- (NSDictionary *) layers {
   return [[__layers retain] autorelease];
 }
 
-- (void) setLayers: (NSArray *) layers {
+- (void) setLayers: (NSDictionary *) layers {
   [layers retain];
   [__layers release];
   __layers = layers;
@@ -382,19 +406,20 @@
         }
         break;
       case 2:
-        if (fieldType == TType_LIST) {
+        if (fieldType == TType_MAP) {
           int _size0;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size0];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size0];
+          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size0];
+          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size0];
           int _i1;
           for (_i1 = 0; _i1 < _size0; ++_i1)
           {
-            MapLayer *_elem2 = [[MapLayer alloc] init];
-            [_elem2 read: inProtocol];
-            [fieldValue addObject: _elem2];
-            [_elem2 release];
+            int64_t _key2 = [inProtocol readI64];
+            MapLayer *_val3 = [[MapLayer alloc] init];
+            [_val3 read: inProtocol];
+            [fieldValue setObject: _val3 forKey: [NSNumber numberWithLongLong: _key2]];
+            [_val3 release];
           }
-          [inProtocol readListEnd];
+          [inProtocol readMapEnd];
           [self setLayers: fieldValue];
           [fieldValue release];
         } else { 
@@ -419,15 +444,17 @@
   }
   if (__layers_isset) {
     if (__layers != nil) {
-      [outProtocol writeFieldBeginWithName: @"layers" type: TType_LIST fieldID: 2];
+      [outProtocol writeFieldBeginWithName: @"layers" type: TType_MAP fieldID: 2];
       {
-        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__layers count]];
-        int i4;
-        for (i4 = 0; i4 < [__layers count]; i4++)
+        [outProtocol writeMapBeginWithKeyType: TType_I64 valueType: TType_STRUCT size: [__layers count]];
+        NSEnumerator * _iter4 = [__layers keyEnumerator];
+        id key5;
+        while ((key5 = [_iter4 nextObject]))
         {
-          [[__layers objectAtIndex: i4] write: outProtocol];
+          [outProtocol writeI64: [key5 longLongValue]];
+          [[__layers objectForKey: key5] write: outProtocol];
         }
-        [outProtocol writeListEnd];
+        [outProtocol writeMapEnd];
       }
       [outProtocol writeFieldEnd];
     }
@@ -1294,16 +1321,16 @@
     {
       case 0:
         if (fieldType == TType_LIST) {
-          int _size5;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size5];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size5];
-          int _i6;
-          for (_i6 = 0; _i6 < _size5; ++_i6)
+          int _size6;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size6];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size6];
+          int _i7;
+          for (_i7 = 0; _i7 < _size6; ++_i7)
           {
-            MapItem *_elem7 = [[MapItem alloc] init];
-            [_elem7 read: inProtocol];
-            [fieldValue addObject: _elem7];
-            [_elem7 release];
+            MapItem *_elem8 = [[MapItem alloc] init];
+            [_elem8 read: inProtocol];
+            [fieldValue addObject: _elem8];
+            [_elem8 release];
           }
           [inProtocol readListEnd];
           [self setSuccess: fieldValue];
@@ -1329,10 +1356,10 @@
       [outProtocol writeFieldBeginWithName: @"success" type: TType_LIST fieldID: 0];
       {
         [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__success count]];
-        int i9;
-        for (i9 = 0; i9 < [__success count]; i9++)
+        int i10;
+        for (i10 = 0; i10 < [__success count]; i10++)
         {
-          [[__success objectAtIndex: i9] write: outProtocol];
+          [[__success objectAtIndex: i10] write: outProtocol];
         }
         [outProtocol writeListEnd];
       }
