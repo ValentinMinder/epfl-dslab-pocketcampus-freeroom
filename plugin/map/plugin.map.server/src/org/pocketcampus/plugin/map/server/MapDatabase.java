@@ -27,50 +27,44 @@ public class MapDatabase {
 				PocketCampusServer.CONFIG.getString("DB_USERNAME"), PocketCampusServer.CONFIG.getString("DB_PASSWORD"));
 	}
 
-	public Map<Long, MapLayer> getMapLayers(String lang) {
+	public Map<Long, MapLayer> getMapLayers(String lang) throws SQLException {
 		if (lang == null || lang.length() == 0) {
 			throw new IllegalArgumentException("lang must be of length > 0 and cannot be null");
 		}
 		
 		HashMap<Long, MapLayer> layers = new HashMap<Long, MapLayer>();
+
+		Connection connection = connectionManager.getConnection();
+		PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + TABLE_LAYERS);
+		statement.execute();
+		ResultSet results = statement.getResultSet();
+
+		String layerNameColumn = layerNameColumnForLang(lang);
 		
-		try {
-			Connection connection = connectionManager.getConnection();
-			PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + TABLE_LAYERS);
-			statement.execute();
-			ResultSet results = statement.getResultSet();
-
-			String layerNameColumn = layerNameColumnForLang(lang);
-			
-			while (results.next()) {
-				String layerName = results.getString(layerNameColumn);
-				if (layerName == null) {
-					System.err.println("Could not find required value for column "+layerNameColumn+". Ignoring layer.");
-					continue;
-				}
-				Long layerId = results.getLong(LAYER_ID);
-				String nameForQuery = results.getString(LAYER_NAME_FOR_QUERY);
-				String nameForQueryAllFloors = results.getString(LAYER_NAME_FOR_QUERY_ALL_FLOORS);
-				if (nameForQuery == null && nameForQueryAllFloors == null) {
-					System.err.println("Both nameForQuery and nameForQueryAllFloors are null for layer "+layerName+". Ignoring layer.");
-					continue;
-				}
-				
-				MapLayer layer = new MapLayer(layerId, layerName);
-				layer.setNameForQuery(nameForQuery);
-				layer.setNameForQueryAllFloors(nameForQueryAllFloors);
-				
-				layers.put(layerId, layer);
+		while (results.next()) {
+			String layerName = results.getString(layerNameColumn);
+			if (layerName == null) {
+				System.err.println("Could not find required value for column "+layerNameColumn+". Ignoring layer.");
+				continue;
 			}
-
-			statement.close();
-			connectionManager.disconnect();
+			Long layerId = results.getLong(LAYER_ID);
+			String nameForQuery = results.getString(LAYER_NAME_FOR_QUERY);
+			String nameForQueryAllFloors = results.getString(LAYER_NAME_FOR_QUERY_ALL_FLOORS);
+			if (nameForQuery == null && nameForQueryAllFloors == null) {
+				System.err.println("Both nameForQuery and nameForQueryAllFloors are null for layer "+layerName+". Ignoring layer.");
+				continue;
+			}
 			
-		} catch (SQLException e) {
-			System.err.println("Error with SQL");
-			e.printStackTrace();
+			MapLayer layer = new MapLayer(layerId, layerName);
+			layer.setNameForQuery(nameForQuery);
+			layer.setNameForQueryAllFloors(nameForQueryAllFloors);
+			
+			layers.put(layerId, layer);
 		}
 
+		statement.close();
+		connectionManager.disconnect();
+			
 		return layers;
 	}
 	

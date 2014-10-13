@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.map.server;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,9 +22,14 @@ public class MapServiceImpl implements MapService.Iface {
 	@Override
 	public MapLayersResponse getLayers() throws TException {
 		String lang = "en"; //TODO get lang code dynamically from client request
-		Map<Long, MapLayer> layers = mapDb.getMapLayers(lang);
-		MapLayersResponse response = new MapLayersResponse(MapStatusCode.OK, layers);
-		return response;
+		try {
+			Map<Long, MapLayer> layers = mapDb.getMapLayers(lang);
+			MapLayersResponse response = new MapLayersResponse(MapStatusCode.OK, layers);
+			return response;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new TException("Failed to get layers from database");
+		}
 	}
 	
 	@Override
