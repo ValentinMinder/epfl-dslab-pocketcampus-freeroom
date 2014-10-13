@@ -9,7 +9,7 @@ INSERT INTO `maplayers` (`layerId`, `nameForQuery`, `nameForQueryAllFloors`, `na
 (1, 'myprint{floor}', 'myprintall', 'Printers (myPrint)', 'Imprimantes (myPrint)'),
 (2, 'chargeurs{floor}', 'chargeursall', 'Camipro chargers', 'Chargeurs Camipro'),
 (3, 'bornescamipro{floor}', 'bornescamiproall', 'Camipro terminals', 'Bornes Camipro'),
-(4, 'parkings_public{floor}', 'parkings_publicall', 'Public parking lots', 'Parkings publics'),
+(4, 'parkings_publics{floor}', 'parkings_publicsall', 'Public parking lots', 'Parkings publics'),
 (5, 'restauration{floor}', 'restaurationall', 'Restaurants', 'Restauration'),
 (6, 'bancomat{floor}', 'bancomatall', 'ATMs', 'Bancomats'),
 (7, 'information{floor}', 'informationall', 'Information', 'Information')
