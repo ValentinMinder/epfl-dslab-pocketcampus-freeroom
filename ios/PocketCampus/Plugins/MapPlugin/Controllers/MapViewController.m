@@ -169,8 +169,11 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 
 - (instancetype)initWithMapLayerIdsToDisplay:(NSSet*)layerIds {
     [PCUtils throwExceptionIfObject:layerIds notKindOfClass:[NSSet class]];
+    self = [self init];
     if (self) {
-        
+        MapViewControllerInitialState* state = [MapViewControllerInitialState new];
+        state.layerIdsToDisplay = layerIds;
+        self.initialState = state;
     }
     return self;
 }
@@ -295,7 +298,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 }
 
 - (void)selectedLayersChanged {
-    if ([PCUtils isIdiomPad]) {
+    if ([PCUtils isIdiomPad] || !self.presentedViewController) {
         //done on viewWillAppear on iPhone
         [self mapView:self.mapView regionDidChangeAnimated:NO]; //force update layers
     }

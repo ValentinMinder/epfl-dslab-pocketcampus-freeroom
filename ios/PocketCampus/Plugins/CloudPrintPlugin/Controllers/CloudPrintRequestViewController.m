@@ -33,13 +33,16 @@
 
 #import "CloudPrintController.h"
 
+#import "CloudPrintPOOL1InfoViewController.h"
+
 #import "CloudPrintMultiPageLayoutCell.h"
 
-static NSInteger const kCopiesAndRangeSectionIndex = 0;
-static NSInteger const kOrientationSectionIndex = 1;
-static NSInteger const kDoubleSidedSectionIndex = 2;
-static NSInteger const kMultiPageSectionIndex = 3;
-static NSInteger const kColorSectionIndex = 4;
+static NSInteger const kPrinterInfoSectionIndex = 0;
+static NSInteger const kCopiesAndRangeSectionIndex = 1;
+static NSInteger const kOrientationSectionIndex = 2;
+static NSInteger const kDoubleSidedSectionIndex = 3;
+static NSInteger const kMultiPageSectionIndex = 4;
+static NSInteger const kColorSectionIndex = 5;
 
 static NSInteger const kNbCopiesRowIndex = 0;
 static NSInteger const kPagesRangeRowIndex = 1;
@@ -248,6 +251,19 @@ static NSInteger const kPageToTheEndValue = 10000;
     return 44.0;
 }
 
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        case kPrinterInfoSectionIndex:
+        {
+            CloudPrintPOOL1InfoViewController* viewController = [CloudPrintPOOL1InfoViewController new];
+            [self.navigationController pushViewController:viewController animated:YES];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UIActionSheet* actionSheet = nil;
@@ -425,6 +441,13 @@ static NSInteger const kPageToTheEndValue = 10000;
     }
     cell.accessoryType = UITableViewCellAccessoryNone;
     switch (indexPath.section) {
+        case kPrinterInfoSectionIndex:
+        {
+            cell.textLabel.text = NSLocalizedStringFromTable(@"Printer", @"CloudPrintPlugin", nil);
+            cell.detailTextLabel.text = @"POOL1";
+            cell.accessoryType = UITableViewCellAccessoryDetailButton;
+            break;
+        }
         case kCopiesAndRangeSectionIndex:
             switch (indexPath.row) {
                 case kNbCopiesRowIndex:
@@ -596,6 +619,8 @@ static NSInteger const kPageToTheEndValue = 10000;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
+        case kPrinterInfoSectionIndex:
+            return 1;
         case kCopiesAndRangeSectionIndex:
             return self.printRequest.pageSelection ? 4 : 2;
         case kOrientationSectionIndex:
@@ -611,7 +636,7 @@ static NSInteger const kPageToTheEndValue = 10000;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 5;
+    return 6;
 }
 
 @end

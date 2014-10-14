@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,32 +22,15 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 30.10.13.
+//  Created by Loïc Gardiol on 14.10.14.
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
-@class EpflRestaurant;
-@class FoodRestaurantViewController;
+@interface CloudPrintPOOL1InfoViewController : UIViewController
 
-@interface FoodRestaurantInfoView : UIView
-
-- (instancetype)initWithEpflRestaurant:(EpflRestaurant*)restaurant;
-
-+ (CGFloat)preferredHeightForRestaurant:(EpflRestaurant*)restaurant;
-
-@property (nonatomic, strong) EpflRestaurant* restaurant;
-
-/*
- * By default, this button has no target/action, you can add one
- */
-@property (nonatomic, strong) IBOutlet UIButton* showOnMapButton;
-
-/*
- * Default: YES
- */
-@property (nonatomic) BOOL showRating;
+- (instancetype)init;
 
 @end

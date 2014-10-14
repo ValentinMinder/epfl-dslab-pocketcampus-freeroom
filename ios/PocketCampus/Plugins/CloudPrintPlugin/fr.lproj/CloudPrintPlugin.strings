@@ -29,6 +29,9 @@
 
 "PluginName" = "Impression";
 "Print" = "Imprimer";
+"Printer" = "Imprimante";
+"POOL1Printers" = "Imprimantes POOL1";
+"OpenPCandShowMyPrintLayerExplanations" = "Le plan ne peut pas être affiché depuis ici. Ouvrez PocketCampus > Plan, puis affichez le layer «Imprimantes».";
 "1Copy" = "1 copie";
 "NbCopiesWithFormat" = "%d copies";
 "Pages" = "Pages";
@@ -68,7 +71,7 @@
 "Loading" = "Chargement";
 "UploadingFile" = "Upload du fichier";
 "SendingToPrinter" = "Envoi à l'imprimante";
-"Success" = "Succès";
+"Success" = "Terminé";
 "Error" = "Erreur";
 
 //Extension

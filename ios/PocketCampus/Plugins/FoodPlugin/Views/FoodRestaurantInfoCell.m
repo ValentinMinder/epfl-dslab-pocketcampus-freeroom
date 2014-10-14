@@ -90,9 +90,22 @@ static const CGFloat kTopBarHeight = 30.0;
     self.backgroundImageView.hidden = (self.restaurant.rPictureUrl == nil);
     if (self.restaurant.rPictureUrl) {
         FoodRestaurantInfoCell* welf __weak = self;
+        
+        /*
+         #warning ROLLBACK
+         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:self.restaurant.rPictureUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
+         
+         id<AFImageCache> cache = [UIImageView sharedImageCache];
+         UIImage* cachedImage __block = [cache cachedImageForRequest:request];
+         
+         #warning REMOVE
+         cachedImage = nil;
+         */
+        
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:self.restaurant.rPictureUrl]];
         id<AFImageCache> cache = [UIImageView sharedImageCache];
         UIImage* cachedImage __block = [cache cachedImageForRequest:request];
+        
         if (cachedImage) {
             [NSTimer scheduledTimerWithTimeInterval:0.0 block:^{
                 if (!welf.backgroundImageView) {

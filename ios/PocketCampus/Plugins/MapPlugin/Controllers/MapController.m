@@ -31,7 +31,7 @@
 
 #import "MapViewController.h"
 
-#import "PCUtils.h"
+#import "MapService.h"
 
 static MapController* instance __weak = nil;
 
@@ -110,6 +110,14 @@ static MapController* instance __weak = nil;
             } else {
                 self.mapViewController.initialQueryWithFullControls = query;
             }
+            return YES;
+        }
+    } else if ([action isEqualToString:@"showLayer"]) {
+        NSString* layerIdString = parameters[@"layerId"];
+        long layerId = (long)[layerIdString longLongValue];
+        if (layerId != 0) {
+            MapService* mapService = [MapService sharedInstanceToRetain];
+            mapService.selectedMapLayerIds = [NSSet setWithObject:@(layerId)];
             return YES;
         }
     }

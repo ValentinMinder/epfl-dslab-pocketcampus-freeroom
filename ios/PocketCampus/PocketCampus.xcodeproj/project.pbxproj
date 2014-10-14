@@ -31,6 +31,11 @@
 		320480C518479D4E00116380 /* TransportSmallBusGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 320480C318479D4E00116380 /* TransportSmallBusGreen.png */; };
 		320480C618479D4E00116380 /* TransportSmallBusGreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320480C418479D4E00116380 /* TransportSmallBusGreen@2x.png */; };
 		32074B7D17FB09CA009804CE /* NewsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32074B7C17FB09CA009804CE /* NewsLarge@2x.png */; };
+		3207A37919ED4C920041DF0B /* CloudPrintPOOL1InfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3207A37719ED4C920041DF0B /* CloudPrintPOOL1InfoViewController.m */; };
+		3207A37B19ED55350041DF0B /* CloudPrintPOOL1InfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3207A37719ED4C920041DF0B /* CloudPrintPOOL1InfoViewController.m */; };
+		3207A38619ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3207A38919ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib */; };
+		3207A38719ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3207A38919ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib */; };
+		3207A38B19ED625E0041DF0B /* map.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151D415373B5900CCFB22 /* map.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		320A05B215B02C240057B15C /* PCGlobalSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320A05B115B02C240057B15C /* PCGlobalSettingsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		320F8599194EED8C00BF3228 /* ArrowLeftBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 320F8595194EED8C00BF3228 /* ArrowLeftBarButton.png */; };
 		320F859A194EED8C00BF3228 /* ArrowLeftBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320F8596194EED8C00BF3228 /* ArrowLeftBarButton@2x.png */; };
@@ -59,8 +64,6 @@
 		3217CE0A1508E31200BF94F7 /* FoodController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE091508E31200BF94F7 /* FoodController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3217CE0F1508F92700BF94F7 /* FoodRestaurantsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE0E1508F92700BF94F7 /* FoodRestaurantsListViewController.m */; };
 		3218CD2415B8359F00CEB238 /* MoodleLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 3218CD2315B8359F00CEB238 /* MoodleLarge.png */; };
-		3219821E18D36A8B00118921 /* FoodRestaurantInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3219821C18D36A8B00118921 /* FoodRestaurantInfoView.m */; };
-		3219821F18D36A8B00118921 /* FoodRestaurantInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3219821D18D36A8B00118921 /* FoodRestaurantInfoView.xib */; };
 		3219EF5114FCDE4900A271CD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5014FCDE4900A271CD /* UIKit.framework */; };
 		3219EF5314FCDE4900A271CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5214FCDE4900A271CD /* Foundation.framework */; };
 		3219EF5514FCDE4900A271CD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5414FCDE4900A271CD /* CoreGraphics.framework */; };
@@ -566,6 +569,10 @@
 		320480C318479D4E00116380 /* TransportSmallBusGreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TransportSmallBusGreen.png; sourceTree = "<group>"; };
 		320480C418479D4E00116380 /* TransportSmallBusGreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TransportSmallBusGreen@2x.png"; sourceTree = "<group>"; };
 		32074B7C17FB09CA009804CE /* NewsLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NewsLarge@2x.png"; sourceTree = "<group>"; };
+		3207A37619ED4C920041DF0B /* CloudPrintPOOL1InfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintPOOL1InfoViewController.h; sourceTree = "<group>"; };
+		3207A37719ED4C920041DF0B /* CloudPrintPOOL1InfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintPOOL1InfoViewController.m; sourceTree = "<group>"; };
+		3207A38819ED5B7C0041DF0B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CloudPrintPOOL1InfoViewController.xib; sourceTree = "<group>"; };
+		3207A38A19ED5BEB0041DF0B /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/CloudPrintPOOL1InfoViewController.xib; sourceTree = "<group>"; };
 		320A05B015B02C240057B15C /* PCGlobalSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCGlobalSettingsViewController.h; sourceTree = "<group>"; };
 		320A05B115B02C240057B15C /* PCGlobalSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCGlobalSettingsViewController.m; sourceTree = "<group>"; };
 		320DFC24164697AE00849907 /* PCMasterSplitDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCMasterSplitDelegate.h; sourceTree = "<group>"; };
@@ -612,9 +619,6 @@
 		3217CE0D1508F92700BF94F7 /* FoodRestaurantsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodRestaurantsListViewController.h; sourceTree = "<group>"; };
 		3217CE0E1508F92700BF94F7 /* FoodRestaurantsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FoodRestaurantsListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		3218CD2315B8359F00CEB238 /* MoodleLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MoodleLarge.png; sourceTree = "<group>"; };
-		3219821B18D36A8B00118921 /* FoodRestaurantInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodRestaurantInfoView.h; sourceTree = "<group>"; };
-		3219821C18D36A8B00118921 /* FoodRestaurantInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodRestaurantInfoView.m; sourceTree = "<group>"; };
-		3219821D18D36A8B00118921 /* FoodRestaurantInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FoodRestaurantInfoView.xib; sourceTree = "<group>"; };
 		3219EF4C14FCDE4900A271CD /* PocketCampus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketCampus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3219EF5014FCDE4900A271CD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3219EF5214FCDE4900A271CD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1683,9 +1687,6 @@
 				3243FB9E18216B95000F3CB5 /* FoodRestaurantInfoCell.h */,
 				3243FB9F18216B95000F3CB5 /* FoodRestaurantInfoCell.m */,
 				3243FBA118216BBC000F3CB5 /* FoodRestaurantInfoCell.xib */,
-				3219821B18D36A8B00118921 /* FoodRestaurantInfoView.h */,
-				3219821C18D36A8B00118921 /* FoodRestaurantInfoView.m */,
-				3219821D18D36A8B00118921 /* FoodRestaurantInfoView.xib */,
 				32C450AC18241364000C99A3 /* FoodMealCell.h */,
 				32C450AD18241364000C99A3 /* FoodMealCell.m */,
 				32C450AF1824137B000C99A3 /* FoodMealCell.xib */,
@@ -2209,6 +2210,9 @@
 				32870F9D19B674AE00A3BC68 /* CloudPrintRequestViewController.m */,
 				326F5A7E19BDA2AA000693A2 /* CloudPrintStatusViewController.h */,
 				326F5A7F19BDA2AA000693A2 /* CloudPrintStatusViewController.m */,
+				3207A37619ED4C920041DF0B /* CloudPrintPOOL1InfoViewController.h */,
+				3207A37719ED4C920041DF0B /* CloudPrintPOOL1InfoViewController.m */,
+				3207A38919ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2859,6 +2863,7 @@
 				32CAE432153628C100AB17CC /* TransportTripPartsView.xib in Resources */,
 				32125BBF1536F215009B8D37 /* TransportFeetConnection.png in Resources */,
 				32125BC01536F215009B8D37 /* TransportFeetConnection@2x.png in Resources */,
+				3207A38619ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib in Resources */,
 				324151CC15373A1700CCFB22 /* MapPlugin.strings in Resources */,
 				324151E015374FB100CCFB22 /* MapView-phone.xib in Resources */,
 				324151E515375BDD00CCFB22 /* Map.png in Resources */,
@@ -3022,7 +3027,6 @@
 				320F8599194EED8C00BF3228 /* ArrowLeftBarButton.png in Resources */,
 				320480C618479D4E00116380 /* TransportSmallBusGreen@2x.png in Resources */,
 				324FD733176574DD0003EE30 /* CamiproTransactionCell.xib in Resources */,
-				3219821F18D36A8B00118921 /* FoodRestaurantInfoView.xib in Resources */,
 				328A132518296E2D00F4C622 /* FoodSmileySad.png in Resources */,
 				32FFA796186DDD5500237957 /* FavoriteNavBarButtonLandscape.png in Resources */,
 				C5894949AFC59FDB4346CF53 /* IsAcademia@2x.png in Resources */,
@@ -3037,6 +3041,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				32CE952119DDBB270071F987 /* Images.xcassets in Resources */,
+				3207A38719ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib in Resources */,
 				32F9619D19C63227006A4C46 /* InfoPlist.strings in Resources */,
 				32F9619C19C631ED006A4C46 /* CloudPrintPlugin.strings in Resources */,
 				32F9619B19C631E1006A4C46 /* PocketCampus.strings in Resources */,
@@ -3257,6 +3262,7 @@
 				32B2B88A1841281F009DA368 /* TransportModelAdditions.m in Sources */,
 				32710E8D1564FC2400DE6984 /* CamiproService.m in Sources */,
 				329CF4BE187ABC2C00062C98 /* UIViewController+Additions.m in Sources */,
+				3207A37919ED4C920041DF0B /* CloudPrintPOOL1InfoViewController.m in Sources */,
 				27C1161019A2588E00FEF411 /* recommendedapps.m in Sources */,
 				32FDA9A11854B5E600C6393A /* PCServiceRequest.m in Sources */,
 				32710E91156507DA00DE6984 /* CamiproViewController.m in Sources */,
@@ -3348,7 +3354,6 @@
 				324FD736176574FE0003EE30 /* CamiproTransactionCell.m in Sources */,
 				18BE4633A56CF967183FC968 /* IsAcademiaController.m in Sources */,
 				718D4D56B3591F1306C1875F /* IsAcademiaService.m in Sources */,
-				3219821E18D36A8B00118921 /* FoodRestaurantInfoView.m in Sources */,
 				1E8A476B975E7A7BDF71ABF5 /* isacademia.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3357,6 +3362,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3207A38B19ED625E0041DF0B /* map.m in Sources */,
 				32CE952019DDA8380071F987 /* UIViewController+Additions.m in Sources */,
 				32F9619A19C631BC006A4C46 /* PCTableViewCellAdditions.m in Sources */,
 				32F9619919C631B2006A4C46 /* PushNotifController.m in Sources */,
@@ -3381,6 +3387,7 @@
 				32F9618919C630C4006A4C46 /* NSOperationWithDelegate.m in Sources */,
 				32F9618A19C630C4006A4C46 /* PCServiceRequest.m in Sources */,
 				32FF91ED19C62FC300559E1E /* CloudPrintActionViewController.m in Sources */,
+				3207A37B19ED55350041DF0B /* CloudPrintPOOL1InfoViewController.m in Sources */,
 				32F9618D19C630DF006A4C46 /* CloudPrintStatusViewController.m in Sources */,
 				32F9618E19C630DF006A4C46 /* CloudPrintService.m in Sources */,
 				32F9618F19C630DF006A4C46 /* CloudPrintModelAdditions.m in Sources */,
@@ -3424,6 +3431,15 @@
 				27B74CEB19A206D3006B2F17 /* en */,
 			);
 			name = RecommendedAppsPlugin.strings;
+			sourceTree = "<group>";
+		};
+		3207A38919ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3207A38819ED5B7C0041DF0B /* en */,
+				3207A38A19ED5BEB0041DF0B /* fr */,
+			);
+			name = CloudPrintPOOL1InfoViewController.xib;
 			sourceTree = "<group>";
 		};
 		3215425415B5B75F0003C8B2 /* AuthenticationPlugin.strings */ = {

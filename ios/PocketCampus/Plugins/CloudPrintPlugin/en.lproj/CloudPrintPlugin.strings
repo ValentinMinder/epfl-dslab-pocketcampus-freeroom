@@ -29,6 +29,9 @@
 
 "PluginName" = "Print";
 "Print" = "Print";
+"Printer" = "Printer";
+"POOL1Printers" = "POOL1 printers";
+"OpenPCandShowMyPrintLayerExplanations" = "Map cannot be displayed from here. Open PocketCampus > Map, then select the \"Printers\" layer.";
 "1Copy" = "1 copy";
 "NbCopiesWithFormat" = "%d copies";
 "Pages" = "Pages";
