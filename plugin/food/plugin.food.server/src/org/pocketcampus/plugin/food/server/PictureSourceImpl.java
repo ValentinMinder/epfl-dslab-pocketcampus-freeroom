@@ -37,7 +37,11 @@ public final class PictureSourceImpl implements PictureSource {
 			return null;
 		}
 		String prefix = PocketCampusServer.CONFIG.getString("APACHE_SERVER_BASE_URL") + "/" + RESTAURANTS_PHOTOS_FOLDER_URI;
-		return prefix + "/" + normalizedName + RESTAURANTS_PHOTOS_FILE_EXTENSION;
+		String filenamePostfix = PocketCampusServer.CONFIG.getString("FOOD_RESTAURANTS_PHOTOS_FILENAME_POSTFIX");
+		if (filenamePostfix == null) {
+			filenamePostfix = "";
+		}
+		return prefix + "/" + normalizedName + filenamePostfix + RESTAURANTS_PHOTOS_FILE_EXTENSION;
 	}
 
 	/**
