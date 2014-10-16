@@ -8,26 +8,24 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using PocketCampus.Authentication;
 using PocketCampus.Authentication.Models;
-using PocketCampus.Authentication.Services;
 using PocketCampus.Authentication.ViewModels;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using ThinMvvm;
 
-namespace PocketCampus.Main.Services
+namespace PocketCampus.Authentication.Services
 {
     public sealed class SecureRequestHandler : ISecureRequestHandler
     {
-        private readonly IMainSettings _mainSettings;
+        private readonly IServerSettings _mainSettings;
         private readonly ICredentialsStorage _credentials;
         private readonly INavigationService _navigationService;
         private readonly IAuthenticator _authenticator;
         private readonly IAuthenticationService _authenticationService;
 
 
-        public SecureRequestHandler( IMainSettings mainSettings, ICredentialsStorage credentials, INavigationService navigationService,
+        public SecureRequestHandler( IServerSettings mainSettings, ICredentialsStorage credentials, INavigationService navigationService,
                                      IAuthenticator authenticator, IAuthenticationService authenticationService )
         {
             _mainSettings = mainSettings;

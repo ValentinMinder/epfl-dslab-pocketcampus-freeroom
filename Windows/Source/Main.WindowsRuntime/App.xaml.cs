@@ -67,10 +67,6 @@ namespace PocketCampus.Main
             }
 
 
-            // SecureRequestHandler depends on the auth plugin, so it must be initialized after it
-            // TODO: Try moving this to the auth plugin
-            Container.Bind<ISecureRequestHandler, SecureRequestHandler>();
-
             HardwareButtons.BackPressed += ( _, e ) =>
             {
                 e.Handled = true;
@@ -85,7 +81,7 @@ namespace PocketCampus.Main
             bool alreadyInitialized = e.PreviousExecutionState == ApplicationExecutionState.Running ||
                                       e.PreviousExecutionState == ApplicationExecutionState.Suspended;
 
-            if ( alreadyInitialized )
+            if ( !alreadyInitialized )
             {
                 // This must be done here, after window.current.content is set
                 LocalizationHelper.Initialize();

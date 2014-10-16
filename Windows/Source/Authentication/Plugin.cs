@@ -31,6 +31,7 @@ namespace PocketCampus.Authentication
         {
             Container.Bind<IAuthenticationService, AuthenticationService>();
             Container.Bind<IAuthenticator, TequilaAuthenticator>();
+            Container.Bind<ISecureRequestHandler, SecureRequestHandler>();
         }
 
         // This plugin cannot be navigated to.

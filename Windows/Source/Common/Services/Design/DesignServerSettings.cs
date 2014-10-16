@@ -4,6 +4,7 @@
 
 // Design implementation for IServerSettings
 
+using System.Collections.Generic;
 #if DEBUG
 using System.ComponentModel;
 
@@ -24,6 +25,8 @@ namespace PocketCampus.Common.Services.Design
         }
 
         public string Session { get; set; }
+
+        public Dictionary<string, string> Sessions { get; set; }
 
         public SessionStatus SessionStatus
         {

@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace PocketCampus.Common.Services
@@ -20,6 +21,11 @@ namespace PocketCampus.Common.Services
         /// Gets or sets the session for the server.
         /// </summary>
         string Session { get; set; }
+
+        /// <summary>
+        /// Gets or sets the per-plugin sessions for the old authentication models.
+        /// </summary>
+        Dictionary<string, string> Sessions { get; set; }
 
         /// <summary>
         /// Gets or sets the user's authentication status.

@@ -56,6 +56,7 @@
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\Design\DesignAuthenticationService.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
+    <Compile Include="Services\SecureRequestHandler.cs" />
     <Compile Include="Services\TequilaAuthenticator.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Design\Design.cs" />
