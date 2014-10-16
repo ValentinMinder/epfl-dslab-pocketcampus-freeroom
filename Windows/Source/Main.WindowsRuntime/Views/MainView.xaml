@@ -27,6 +27,14 @@
                                Margin="7,0,0,4" />
 
                 </Grid>
+                
+                <cc:SimpleButton.HoldingFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="{CustomResource Main.CreatePluginTile}"
+                                        Command="{Binding DataContext.CreatePluginTileCommand, ElementName=Root}"
+                                        CommandParameter="{Binding}" />
+                    </MenuFlyout>
+                </cc:SimpleButton.HoldingFlyout>
             </cc:SimpleButton>
         </DataTemplate>
     </cc:PageBase.Resources>

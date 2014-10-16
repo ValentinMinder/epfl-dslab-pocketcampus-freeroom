@@ -121,6 +121,9 @@
     <value>à propos...</value>
     <comment>Button label</comment>
   </data>
+  <data name="CreatePluginTile" xml:space="preserve">
+    <value>ajouter à l'écran d'accueil</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>paramètres</value>
     <comment>Button label</comment>

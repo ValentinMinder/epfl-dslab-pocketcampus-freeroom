@@ -20,7 +20,7 @@ namespace PocketCampus.Main.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IPluginLoader _pluginLoader;
         private readonly IMainSettings _settings;
-        private readonly ITileService _tileCreator;
+        private readonly ITileService _tileService;
 
         private IPlugin[] _plugins;
 
@@ -48,7 +48,7 @@ namespace PocketCampus.Main.ViewModels
         [LogParameter( "$Param.Id" )]
         public Command<IPlugin> CreatePluginTileCommand
         {
-            get { return this.GetCommand<IPlugin>( p => _tileCreator.CreateTile( p ) ); }
+            get { return this.GetCommand<IPlugin>( _tileService.CreateTile ); }
         }
 
         [LogId( "OpenPlugin" )]
@@ -64,7 +64,7 @@ namespace PocketCampus.Main.ViewModels
             _navigationService = navigationService;
             _pluginLoader = pluginLoader;
             _settings = settings;
-            _tileCreator = tileCreator;
+            _tileService = tileCreator;
         }
 
 
@@ -87,14 +87,21 @@ namespace PocketCampus.Main.ViewModels
 
         private void OpenPlugin( IPlugin plugin )
         {
-            if ( !plugin.RequiresAuthentication || _settings.SessionStatus != SessionStatus.NotLoggedIn )
+            OpenPlugin( plugin, _settings, _navigationService );
+        }
+
+
+        // not an ideal place, but we need this both for the app's launch and when opening plugins
+        public static void OpenPlugin( IPlugin plugin, IMainSettings settings, INavigationService navigationService )
+        {
+            if ( !plugin.RequiresAuthentication || settings.SessionStatus != SessionStatus.NotLoggedIn )
             {
-                plugin.NavigateTo( _navigationService );
+                plugin.NavigateTo( navigationService );
             }
-            else if ( _settings.SessionStatus == SessionStatus.NotLoggedIn )
+            else if ( settings.SessionStatus == SessionStatus.NotLoggedIn )
             {
-                var authRequest = new AuthenticationRequest( () => plugin.NavigateTo( _navigationService ) );
-                _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
+                var authRequest = new AuthenticationRequest( () => plugin.NavigateTo( navigationService ) );
+                navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
             }
         }
     }
