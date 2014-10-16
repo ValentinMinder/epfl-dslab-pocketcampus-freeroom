@@ -21,6 +21,7 @@ namespace PocketCampus.Main
         private readonly IServerAccess _serverAccess;
         private readonly IMainSettings _settings;
         private readonly IPluginLoader _pluginLoader;
+        private readonly ProtocolHandler _protocolHandler;
 
         public App()
         {
@@ -51,22 +52,24 @@ namespace PocketCampus.Main
 
             // Types dependent on one of the above types
             _serverAccess = Container.Bind<IServerAccess, ServerAccess>();
+            _protocolHandler = new ProtocolHandler( _pluginLoader, _navigationService );
 
             // Views from Main
             _navigationService.Bind<AboutViewModel, AboutView>();
             _navigationService.Bind<MainViewModel, MainView>();
             _navigationService.Bind<SettingsViewModel, SettingsView>();
 
+            // Register pocketcampus:// URIs to avoid going to the system and back when they're used inside of the app
+            LauncherEx.RegisterProtocol( ProtocolHandler.PocketCampusProtocol, _protocolHandler.NavigateToCustomUri );
 
+            // Initialize plugins, both their common part and their WinRT part
             foreach ( var plugin in _pluginLoader.GetPlugins().Cast<IWindowsRuntimePlugin>() )
             {
-                // Common init
                 plugin.Initialize( (INavigationService) _navigationService );
-                // WinRT init
                 plugin.Initialize( _navigationService );
             }
 
-
+            // Handle the back button, since Windows Phone doesn't do it for us any more (unlike WP8 "Silverlight")
             HardwareButtons.BackPressed += ( _, e ) =>
             {
                 e.Handled = true;
@@ -76,8 +79,6 @@ namespace PocketCampus.Main
 
         protected override async void Launch( LaunchActivatedEventArgs e )
         {
-            // TODO launch from protocol
-
             bool alreadyInitialized = e.PreviousExecutionState == ApplicationExecutionState.Running ||
                                       e.PreviousExecutionState == ApplicationExecutionState.Suspended;
 
@@ -101,7 +102,18 @@ namespace PocketCampus.Main
             }
             else if ( !alreadyInitialized )
             {
+                // TODO delete this after tests
+                //Windows.System.Launcher.LaunchUriAsync( new Uri( "pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=-1&userTicket=123", UriKind.Absolute ) );
                 _navigationService.NavigateTo<MainViewModel>();
+            }
+        }
+
+        protected override void OnActivated( IActivatedEventArgs args )
+        {
+            if ( args.Kind == ActivationKind.Protocol )
+            {
+                var protArgs = (ProtocolActivatedEventArgs) args;
+                _protocolHandler.NavigateToCustomUri( protArgs.Uri );
             }
         }
     }

@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using PocketCampus.Authentication;
 using PocketCampus.Common;
+using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
 using ThinMvvm;
 using ThinMvvm.Logging;
@@ -19,7 +20,7 @@ namespace PocketCampus.Main.ViewModels
     {
         private readonly INavigationService _navigationService;
         private readonly IPluginLoader _pluginLoader;
-        private readonly IMainSettings _settings;
+        private readonly IServerSettings _settings;
         private readonly ITileService _tileService;
 
         private IPlugin[] _plugins;
@@ -59,7 +60,7 @@ namespace PocketCampus.Main.ViewModels
         }
 
 
-        public MainViewModel( INavigationService navigationService, IPluginLoader pluginLoader, IMainSettings settings, ITileService tileCreator )
+        public MainViewModel( INavigationService navigationService, IPluginLoader pluginLoader, IServerSettings settings, ITileService tileCreator )
         {
             _navigationService = navigationService;
             _pluginLoader = pluginLoader;
@@ -92,7 +93,7 @@ namespace PocketCampus.Main.ViewModels
 
 
         // not an ideal place, but we need this both for the app's launch and when opening plugins
-        public static void OpenPlugin( IPlugin plugin, IMainSettings settings, INavigationService navigationService )
+        public static void OpenPlugin( IPlugin plugin, IServerSettings settings, INavigationService navigationService )
         {
             if ( !plugin.RequiresAuthentication || settings.SessionStatus != SessionStatus.NotLoggedIn )
             {

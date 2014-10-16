@@ -103,7 +103,7 @@ namespace PocketCampus.Events.Controls
             if ( url.StartsWith( CustomUrlPrefix ) )
             {
                 Messenger.Send( new EventLogRequest( "QRCodeScanned", url.Replace( CustomUrlLogPrefix, "" ) ) );
-                LauncherEx.Launch( url );
+                LauncherEx.Launch( new Uri( url, UriKind.Absolute ) );
                 Close();
             }
             else
