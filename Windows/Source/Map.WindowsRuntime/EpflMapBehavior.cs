@@ -120,6 +120,9 @@ namespace PocketCampus.Map
                 // first time
                 var zoomedOutDataSource = GetZoomedOutEpflBuildingsDataSource();
                 _map.TileSources.Add( new MapTileSource( zoomedOutDataSource, new MapZoomLevelRange { Min = 0, Max = 16 } ) );
+
+                var labelsDataSource = EpflLabelsTileSource.GetEpflLabelsTileSource();
+                _map.TileSources.Add( new MapTileSource( labelsDataSource ) { ZIndex = 10 } );
             }
             else
             {

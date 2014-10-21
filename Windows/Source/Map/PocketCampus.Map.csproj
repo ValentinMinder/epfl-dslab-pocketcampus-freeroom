@@ -41,6 +41,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\EpflLabelsSource.cs" />
     <Compile Include="Services\Design\DesignMapService.cs" />
     <Compile Include="Services\Design\DesignPluginSettings.cs" />
     <Compile Include="Services\IPluginSettings.cs" />

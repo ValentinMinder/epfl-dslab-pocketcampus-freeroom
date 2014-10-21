@@ -102,8 +102,6 @@ namespace PocketCampus.Main
             }
             else if ( !alreadyInitialized )
             {
-                // TODO delete this after tests
-                //Windows.System.Launcher.LaunchUriAsync( new Uri( "pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=-1&userTicket=123", UriKind.Absolute ) );
                 _navigationService.NavigateTo<MainViewModel>();
             }
         }

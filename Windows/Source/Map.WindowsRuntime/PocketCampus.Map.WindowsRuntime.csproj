@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters.cs" />
+    <Compile Include="EpflLabelsTileSource.cs" />
     <Compile Include="EpflBuildingsTileSource.cs" />
     <Compile Include="EpflMapBehavior.cs" />
     <Compile Include="MapTokenLoader.cs" />
