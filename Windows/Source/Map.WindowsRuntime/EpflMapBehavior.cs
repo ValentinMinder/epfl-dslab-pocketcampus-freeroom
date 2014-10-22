@@ -8,15 +8,16 @@ using ThinMvvm;
 using Windows.ApplicationModel;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
-using Windows.Graphics.Display;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace PocketCampus.Map
 {
     // HACK: The way children are set/accessed is ugly, slow and brittle
     // HACK: The way the ViewModel is accessed is just as ugly and brittle
+    // TODO: Apply some basic SwEng :) split it into multiple parts, avoid hacks, etc.
     public sealed class EpflMapBehavior : DependencyObject, IBehavior
     {
         #region ItemTemplate
@@ -66,6 +67,8 @@ namespace PocketCampus.Map
 
         private MainViewModel _vm;
         private MapControl _map;
+        private MapProperties _properties;
+        private Image _labelsOverlay;
 
 
         public DependencyObject AssociatedObject { get; private set; }
@@ -79,6 +82,15 @@ namespace PocketCampus.Map
 
             AssociatedObject = associatedObject;
             _map = (MapControl) associatedObject;
+            _labelsOverlay = new Image();
+            _labelsOverlay.ImageOpened += ( _, __ ) =>
+            {
+                Geopoint topLeft;
+                _map.GetLocationFromOffset( new Point( 0, 0 ), out topLeft );
+                MapControl.SetLocation( _labelsOverlay, topLeft );
+                _labelsOverlay.Visibility = Visibility.Visible;
+            };
+            _map.Children.Add( _labelsOverlay );
 
             _map.Loaded += ( _, __ ) =>
             {
@@ -87,19 +99,41 @@ namespace PocketCampus.Map
                 OnFloorChanged( _vm.Properties.Floor );
                 OnItemsChanged( _vm.SearchProvider.SearchResults );
 
+                _properties = _vm.Properties;
+
+                _vm.Properties.ListenToProperty( x => x.Center, UpdateLabelsOverlay );
+                _vm.Properties.ListenToProperty( x => x.Floor, UpdateLabelsOverlay );
+                _vm.Properties.ListenToProperty( x => x.ZoomLevel, UpdateLabelsOverlay );
+                UpdateLabelsOverlay();
+
                 _vm.Properties.ListenToProperty( x => x.Floor, () => OnFloorChanged( _vm.Properties.Floor ) );
                 _vm.SearchProvider.ListenToProperty( x => x.SearchResults, () => OnItemsChanged( _vm.SearchProvider.SearchResults ) );
 
                 var buildingsDataSource = EpflTileSources.GetForBuildings( _vm.Properties );
                 _map.TileSources.Add( new MapTileSource( buildingsDataSource ) );
-
-                
             };
         }
 
         public void Detach()
         {
             throw new NotSupportedException();
+        }
+
+        private void UpdateLabelsOverlay()
+        {
+            _labelsOverlay.Visibility = Visibility.Collapsed;
+
+            // There is voluntarily no scale factor for the width/height, otherwise the elements are way too small.
+            Geopoint topLeft, bottomRight;
+            _map.GetLocationFromOffset( new Point( 0, 0 ), out topLeft );
+            _map.GetLocationFromOffset( new Point( _map.ActualWidth, _map.ActualHeight ), out bottomRight );
+            var uri = EpflLabelsSource.GetUri(
+                topLeft.Position.Longitude, topLeft.Position.Latitude,
+                bottomRight.Position.Longitude, bottomRight.Position.Latitude,
+                _properties.ZoomLevel, _properties.Floor,
+                (int) Math.Ceiling( _map.ActualWidth ), (int) Math.Ceiling( _map.ActualHeight ) );
+
+            _labelsOverlay.Source = new BitmapImage( uri );
         }
 
 
