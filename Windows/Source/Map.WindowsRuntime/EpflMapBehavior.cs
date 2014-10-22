@@ -90,14 +90,10 @@ namespace PocketCampus.Map
                 _vm.Properties.ListenToProperty( x => x.Floor, () => OnFloorChanged( _vm.Properties.Floor ) );
                 _vm.SearchProvider.ListenToProperty( x => x.SearchResults, () => OnItemsChanged( _vm.SearchProvider.SearchResults ) );
 
-
                 var buildingsDataSource = EpflTileSources.GetForBuildings( _vm.Properties );
                 _map.TileSources.Add( new MapTileSource( buildingsDataSource ) );
 
-                int tileSize = (int) Math.Ceiling( DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel * Math.Max( _map.ActualHeight, _map.ActualWidth ) );
-
-                var labelsDataSource = EpflTileSources.GetForLabels( _vm.Properties, tileSize );
-                _map.TileSources.Add( new MapTileSource( labelsDataSource ) { ZIndex = 10, TilePixelSize = tileSize } );
+                
             };
         }
 

@@ -11,7 +11,7 @@ namespace PocketCampus.Map
     public sealed class MapProperties : ObservableObject
     {
         private int _floor;
-        private double _zoomLevel;
+        private int _zoomLevel;
         private GeoPosition _userPosition;
         private GeoPosition _center;
 
@@ -34,7 +34,7 @@ namespace PocketCampus.Map
             }
         }
 
-        public double ZoomLevel
+        public int ZoomLevel
         {
             get { return _zoomLevel; }
             set { SetProperty( ref _zoomLevel, value ); }

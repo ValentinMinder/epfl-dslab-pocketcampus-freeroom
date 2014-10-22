@@ -7,92 +7,83 @@ namespace PocketCampus.Map.Models
     public static class EpflLabelsSource
     {
         // The label URL format
-        // Parameters are the bounding box, the width, the height, the two-letter language code, and the floor or 'all'
+        // Parameters are (in Swiss coords) minX,minY,maxX,maxY, the width, the height, the two-letter language code, and the floor or 'all'
         private const string Url =
-            "http://plan.epfl.ch/wms_themes?FORMAT=image/png&LOCALID=-1&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG:900913&BBOX={0}&WIDTH={1}&HEIGHT={2}&LAYERS=locaux_labels_{3}{4},batiments_routes_labels";
+            "http://plan.epfl.ch/wms_themes?FORMAT=image/png&LOCALID=-1&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG:21781&BBOX={0},{1},{2},{3}&WIDTH={4}&HEIGHT={5}&LAYERS=locaux_labels_{6}{7},batiments_routes_labels";
         // The available languages, and the default one if the user's isn't available
         private static readonly string[] AvailableLanguages = { "fr", "en" };
         private const string DefaultLanguage = "en";
         private const int FloorLevelAll = 9;
 
-        public static Uri GetUri( int x, int y, int zoom, int floor, int squareTileSize )
+        private static readonly string Language;
+
+        static EpflLabelsSource()
         {
-            var boundingBox = GlobalMercator.TileBounds( x, y, zoom, squareTileSize );
-            string language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-            if ( !AvailableLanguages.Contains( language ) )
+            Language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+            if ( !AvailableLanguages.Contains( Language ) )
             {
-                language = DefaultLanguage;
+                Language = DefaultLanguage;
             }
-            return new Uri( string.Format( Url, boundingBox, squareTileSize, squareTileSize, language, floor >= FloorLevelAll ? "all" : floor.ToString() ) );
         }
 
+        public static Uri GetUri( double left, double top, double right, double bottom, int zoom, int floor, int width, int height )
+        {
+            Wgs84ToLv03( ref top, ref left );
+            Wgs84ToLv03( ref bottom, ref right );
+            return new Uri( string.Format( CultureInfo.InvariantCulture, Url, left, bottom, right, top, width, height, Language, floor >= FloorLevelAll ? "all" : floor.ToString() ) );
+        }
 
         /// <summary>
-        /// From https://github.com/Sumbera/WMSonWin81-UniversalApp/blob/master/WMSOnWin81/WMSOnWin81.Shared/GlobalMercator.cs
-        /// A big thanks to this guy. Really.
+        /// Adapted from http://www.swisstopo.admin.ch/internet/swisstopo/fr/home/products/software/products/skripts.html
         /// </summary>
-        private static class GlobalMercator
+        private static void Wgs84ToLv03( ref double latitude, ref double longitude )
         {
-            private const int EarthRadius = 6378137;
-            private const double InitialResolution = 2 * Math.PI * EarthRadius;
-            private const double OriginShift = 2 * Math.PI * EarthRadius / 2;
+            // Converts degrees dec to sex
+            latitude = DecToSexAngle( latitude );
+            longitude = DecToSexAngle( longitude );
 
-            // Converts pixel coordinates in given zoom level of pyramid to EPSG:900913
-            private static Point PixelsToMeters( Point p, int zoom, int tileSize )
-            {
-                var res = Resolution( zoom, tileSize );
-                return new Point( p.X * res - OriginShift, p.Y * res - OriginShift );
-            }
+            // Converts degrees to seconds (sex)
+            latitude = SexAngleToSeconds( latitude );
+            longitude = SexAngleToSeconds( longitude );
 
-            // Returns bounds of the given tile in EPSG:900913 coordinates
-            public static Rect TileBounds( int x, int y, int zoom, int tileSize )
-            {
-                var min = PixelsToMeters( new Point( x * tileSize, y * tileSize ), zoom, tileSize );
-                var max = PixelsToMeters( new Point( ( x + 1 ) * tileSize, ( y + 1 ) * tileSize ), zoom, tileSize );
-                return new Rect( min, max );
-            }
+            // Axiliary values (% Bern)
+            double latAux = ( latitude - 169028.66 ) / 10000;
+            double lngAux = ( longitude - 26782.5 ) / 10000;
 
-            // Resolution (meters/pixel) for given zoom level (measured at Equator)
-            private static double Resolution( int zoom, int tileSize )
-            {
-                return InitialResolution / tileSize / Math.Pow( 2, zoom );
-            }
+            // Process X
+            latitude = 200147.07
+                + 308807.95 * latAux
+                + 3745.25 * Math.Pow( lngAux, 2 )
+                + 76.63 * Math.Pow( latAux, 2 )
+                - 194.56 * Math.Pow( lngAux, 2 ) * latAux
+                + 119.79 * Math.Pow( latAux, 3 );
+
+            // Process Y
+            longitude = 600072.37
+                + 211455.93 * lngAux
+                - 10938.51 * lngAux * latAux
+                - 0.36 * lngAux * Math.Pow( latAux, 2 )
+                - 44.54 * Math.Pow( lngAux, 3 );
         }
 
-        public struct Rect
+        // Convert decimal angle (degrees) to sexagesimal angle (degrees, minutes and seconds dd.mmss,ss)
+        private static double DecToSexAngle( double dec )
         {
-            public readonly double Top;
-            public readonly double Left;
-            public readonly double Bottom;
-            public readonly double Right;
+            double deg = Math.Floor( dec );
+            double min = Math.Floor( ( dec - deg ) * 60 );
+            double sec = ( ( ( dec - deg ) * 60 ) - min ) * 60;
 
-            public Rect( Point topLeft, Point bottomRight )
-            {
-                Left = topLeft.X;
-                Top = topLeft.Y;
-                Right = bottomRight.X;
-                Bottom = bottomRight.Y;
-            }
-
-            public override string ToString()
-            {
-                return Left.ToString( CultureInfo.InvariantCulture )
-                    + "," + Math.Abs( Bottom ).ToString( CultureInfo.InvariantCulture )
-                    + "," + Right.ToString( CultureInfo.InvariantCulture )
-                    + "," + Math.Abs( Top ).ToString( CultureInfo.InvariantCulture );
-            }
+            return deg + min / 100 + sec / 10000;
         }
 
-        public struct Point
+        // Convert sexagesimal angle (degrees, minutes and seconds dd.mmss,ss) to seconds
+        private static double SexAngleToSeconds( double dms )
         {
-            public readonly double X;
-            public readonly double Y;
+            double deg = Math.Floor( dms );
+            double min = Math.Floor( ( dms - deg ) * 100 );
+            double sec = ( ( ( dms - deg ) * 100 ) - min ) * 100;
 
-            public Point( double x, double y )
-            {
-                X = x;
-                Y = y;
-            }
+            return sec + min * 60 + deg * 3600;
         }
     }
 }

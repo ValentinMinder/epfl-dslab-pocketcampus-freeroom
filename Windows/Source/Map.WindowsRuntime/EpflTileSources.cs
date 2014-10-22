@@ -18,16 +18,5 @@ namespace PocketCampus.Map
             };
             return source;
         }
-
-        // Note that even though WMS supports non-square tiles, WP doesn't, so we have to use a square one. :/
-        public static MapTileDataSource GetForLabels( MapProperties props, int squareTileSize )
-        {
-            var source = new HttpMapTileDataSource();
-            source.UriRequested += ( _, e ) =>
-            {
-                e.Request.Uri = EpflLabelsSource.GetUri( e.X, e.Y, e.ZoomLevel, props.Floor, squareTileSize );
-            };
-            return source;
-        }
     }
 }

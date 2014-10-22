@@ -5,6 +5,7 @@
              xmlns:map="using:Windows.UI.Xaml.Controls.Maps"
              xmlns:cc="using:PocketCampus.Common.Controls"
              xmlns:my="using:PocketCampus.Map"
+             xmlns:myc="using:PocketCampus.Map.Controls"
              DesignDataContext="{Binding Main, Source={StaticResource Design}}">
     <!-- TODO geolocationstatus in statusbar -->
     <cc:PageBase.Resources>
@@ -94,6 +95,10 @@
                          Fill="Green" />
             </Canvas>
         </map:MapControl>
+        
+        <myc:EpflMapLabels Grid.Row="2"
+                           Map="{Binding ElementName=Map}"
+                           Properties="{Binding Properties}" />
         
         <cc:NumericUpDown Grid.Row="2"
                           HorizontalAlignment="Left"

@@ -96,6 +96,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\EpflMapLabels.cs" />
     <Compile Include="Converters.cs" />
     <Compile Include="EpflTileSources.cs" />
     <Compile Include="EpflMapBehavior.cs" />
