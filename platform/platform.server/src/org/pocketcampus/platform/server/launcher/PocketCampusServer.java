@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 
 import org.apache.thrift.TProcessor;
 import org.pocketcampus.platform.server.RawPlugin;
+import org.pocketcampus.platform.server.StateChecker;
 import org.pocketcampus.platform.shared.PCConfig;
 
 public class PocketCampusServer extends ServerBase {
@@ -54,8 +55,9 @@ public class PocketCampusServer extends ServerBase {
 			}
 
 			final HttpServlet rawProcessor = getRawProcessor(pluginService);
+			final StateChecker stateChecker = getStateChecker(pluginService);
 
-			processors.add(new ServiceInfo(pluginName.toLowerCase(), thriftProcessor, rawProcessor));
+			processors.add(new ServiceInfo(pluginName.toLowerCase(), thriftProcessor, rawProcessor, stateChecker));
 			plugins.put(pluginName.toLowerCase(), pluginService);
 			System.out.println(pluginName + " plugin started.");
 		}
@@ -111,5 +113,10 @@ public class PocketCampusServer extends ServerBase {
 	/** Gets a raw processor, if any, for the plugin with the specified service. */
 	private HttpServlet getRawProcessor(final Object pluginService) {
 		return pluginService instanceof RawPlugin ? ((RawPlugin) pluginService).getServlet() : null;
+	}
+
+	/** Gets a state checker, if any, for the plugin with the specified service. */
+	private StateChecker getStateChecker(final Object pluginService) {
+		return pluginService instanceof StateChecker ? ((StateChecker) pluginService) : null;
 	}
 }

@@ -21,6 +21,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.server.RawPlugin;
+import org.pocketcampus.platform.server.StateChecker;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintColorConfig;
@@ -41,12 +42,18 @@ import com.google.gson.Gson;
  * @author Amer <amer.chamseddine@epfl.ch>
  *
  */
-public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin {
+public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin, StateChecker {
 	
 	public CloudPrintServiceImpl() {
 		System.out.println("Starting CloudPrint plugin server ...");
 	}
 
+	@Override
+	public int checkState() throws IOException {
+		Process proc = Runtime.getRuntime().exec(new String[]{"lpstat", "-p", "mainPrinter"});
+		String status = IOUtils.toString(proc.getInputStream(), "UTF-8");
+		return (status.contains("enabled") ? 200 : 500 );
+	}
 
 	@Override
 	public HttpServlet getServlet() {
