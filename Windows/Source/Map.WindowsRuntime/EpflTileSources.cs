@@ -15,18 +15,17 @@ namespace PocketCampus.Map
             source.UriRequested += ( _, e ) =>
             {
                 e.Request.Uri = EpflBuildingsSource.GetUri( e.X, e.Y, e.ZoomLevel, props.Floor );
-                System.Diagnostics.Debug.WriteLine( e.Request.Uri );
             };
             return source;
         }
 
-        public static MapTileDataSource GetForLabels( MapProperties props )
+        // Note that even though WMS supports non-square tiles, WP doesn't, so we have to use a square one. :/
+        public static MapTileDataSource GetForLabels( MapProperties props, int squareTileSize )
         {
             var source = new HttpMapTileDataSource();
             source.UriRequested += ( _, e ) =>
             {
-                e.Request.Uri = EpflLabelsSource.GetUri( e.X, e.Y, e.ZoomLevel, props.Floor, 256, 256 );
-                System.Diagnostics.Debug.WriteLine( e.Request.Uri );
+                e.Request.Uri = EpflLabelsSource.GetUri( e.X, e.Y, e.ZoomLevel, props.Floor, squareTileSize );
             };
             return source;
         }

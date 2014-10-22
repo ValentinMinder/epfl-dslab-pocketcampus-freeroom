@@ -8,6 +8,7 @@ using ThinMvvm;
 using Windows.ApplicationModel;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
+using Windows.Graphics.Display;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
@@ -15,6 +16,7 @@ using Windows.UI.Xaml.Controls.Maps;
 namespace PocketCampus.Map
 {
     // HACK: The way children are set/accessed is ugly, slow and brittle
+    // HACK: The way the ViewModel is accessed is just as ugly and brittle
     public sealed class EpflMapBehavior : DependencyObject, IBehavior
     {
         #region ItemTemplate
@@ -92,8 +94,10 @@ namespace PocketCampus.Map
                 var buildingsDataSource = EpflTileSources.GetForBuildings( _vm.Properties );
                 _map.TileSources.Add( new MapTileSource( buildingsDataSource ) );
 
-                var labelsDataSource = EpflTileSources.GetForLabels( _vm.Properties );
-                _map.TileSources.Add( new MapTileSource( labelsDataSource ) { ZIndex = 10 } );
+                int tileSize = (int) Math.Ceiling( DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel * Math.Max( _map.ActualHeight, _map.ActualWidth ) );
+
+                var labelsDataSource = EpflTileSources.GetForLabels( _vm.Properties, tileSize );
+                _map.TileSources.Add( new MapTileSource( labelsDataSource ) { ZIndex = 10, TilePixelSize = tileSize } );
             };
         }
 
