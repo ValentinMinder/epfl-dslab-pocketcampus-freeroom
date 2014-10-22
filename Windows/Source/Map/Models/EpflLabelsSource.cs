@@ -6,15 +6,15 @@ namespace PocketCampus.Map.Models
     public static class EpflLabelsSource
     {
         // The label URL format
-        // Parameters are the bounding box, the width, the height, and the comma-separated layers list
+        // Parameters are the bounding box, the width, the height, and the floor or 'all'
         private const string Url =
-            "http://plan.epfl.ch/wms_themes?FORMAT=image/png&LOCALID=-1&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG:900913&BBOX={0}&WIDTH={1}&HEIGHT={2}&LAYERS={3}";
-        private const string Layers = "locaux_labels_frall,batiments_routes_labels";
+            "http://plan.epfl.ch/wms_themes?FORMAT=image/png&LOCALID=-1&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG:900913&BBOX={0}&WIDTH={1}&HEIGHT={2}&LAYERS=locaux_labels_fr{3},batiments_routes_labels";
+        private const int FloorLevelAll = 9;
 
-        public static Uri GetUri( int x, int y, int zoom, double width, double height )
+        public static Uri GetUri( int x, int y, int zoom, int floor, double width, double height )
         {
             var boundingBox = GlobalMercator.TileBounds( x, y, zoom );
-            return new Uri( string.Format( Url, boundingBox, width, height, Layers ) );
+            return new Uri( string.Format( Url, boundingBox, width, height, floor >= FloorLevelAll ? "all" : floor.ToString() ) );
         }
 
 

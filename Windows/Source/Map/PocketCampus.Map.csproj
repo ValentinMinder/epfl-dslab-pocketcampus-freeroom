@@ -55,7 +55,7 @@
     <Compile Include="Services\PluginSettings.cs" />
     <Compile Include="ViewModels\Design\Design.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\MapProperties.cs" />
+    <Compile Include="MapProperties.cs" />
     <Compile Include="ViewModels\SearchProvider.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
   </ItemGroup>

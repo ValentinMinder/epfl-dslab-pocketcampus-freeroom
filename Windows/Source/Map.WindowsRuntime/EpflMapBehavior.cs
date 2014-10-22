@@ -1,14 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xaml.Interactivity;
 using PocketCampus.Map.Models;
 using PocketCampus.Map.ViewModels;
 using ThinMvvm;
 using Windows.ApplicationModel;
-using Windows.ApplicationModel.Core;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
@@ -16,7 +15,6 @@ using Windows.UI.Xaml.Controls.Maps;
 namespace PocketCampus.Map
 {
     // HACK: The way children are set/accessed is ugly, slow and brittle
-    // TODO: Names layer (and disable road names on the map too... if we can...)
     public sealed class EpflMapBehavior : DependencyObject, IBehavior
     {
         #region ItemTemplate
@@ -66,7 +64,6 @@ namespace PocketCampus.Map
 
         private MainViewModel _vm;
         private MapControl _map;
-        private MapTileSource _previousSource;
 
 
         public DependencyObject AssociatedObject { get; private set; }
@@ -90,6 +87,13 @@ namespace PocketCampus.Map
 
                 _vm.Properties.ListenToProperty( x => x.Floor, () => OnFloorChanged( _vm.Properties.Floor ) );
                 _vm.SearchProvider.ListenToProperty( x => x.SearchResults, () => OnItemsChanged( _vm.SearchProvider.SearchResults ) );
+
+
+                var buildingsDataSource = EpflTileSources.GetForBuildings( _vm.Properties );
+                _map.TileSources.Add( new MapTileSource( buildingsDataSource ) );
+
+                var labelsDataSource = EpflTileSources.GetForLabels( _vm.Properties );
+                _map.TileSources.Add( new MapTileSource( labelsDataSource ) { ZIndex = 10 } );
             };
         }
 
@@ -101,8 +105,17 @@ namespace PocketCampus.Map
 
         private void OnFloorChanged( int floor )
         {
-            SetTileSource( floor );
             SetItemsVisibility( floor );
+            var tileSources = new List<MapTileSource>();
+            foreach ( var tileSource in _map.TileSources )
+            {
+                tileSources.Add( tileSource );
+            }
+            _map.TileSources.Clear();
+            foreach ( var tileSource in tileSources )
+            {
+                _map.TileSources.Add( tileSource );
+            }
         }
 
         private void OnItemsChanged( MapItem[] items )
@@ -112,27 +125,6 @@ namespace PocketCampus.Map
             SetMapFloor( items );
         }
 
-
-        private void SetTileSource( int floor )
-        {
-            if ( _previousSource == null )
-            {
-                // first time
-                var zoomedOutDataSource = GetZoomedOutEpflBuildingsDataSource();
-                _map.TileSources.Add( new MapTileSource( zoomedOutDataSource, new MapZoomLevelRange { Min = 0, Max = 16 } ) );
-
-                var labelsDataSource = EpflLabelsTileSource.GetEpflLabelsTileSource();
-                _map.TileSources.Add( new MapTileSource( labelsDataSource ) { ZIndex = 10 } );
-            }
-            else
-            {
-                _map.TileSources.Remove( _previousSource );
-            }
-
-            var dataSource = GetEpflBuildingsDataSource( floor );
-            _previousSource = new MapTileSource( dataSource, new MapZoomLevelRange { Min = 17, Max = 20 } );
-            _map.TileSources.Add( _previousSource );
-        }
 
         private void SetItemsVisibility( int floor )
         {
@@ -191,25 +183,6 @@ namespace PocketCampus.Map
 
             _vm.Properties.Floor = ( from i in items group i by i.Floor ?? 0 into g orderby g.Count() descending select g.Key ).First();
             SetItemsVisibility( _vm.Properties.Floor );
-        }
-
-
-        private static MapTileDataSource GetEpflBuildingsDataSource( int? floor )
-        {
-            var dataSource = new HttpMapTileDataSource();
-            dataSource.UriRequested += async ( _, e ) =>
-            {
-                var def = e.Request.GetDeferral();
-                var uri = EpflBuildingsSource.GetUri( e.X, e.Y, e.ZoomLevel, floor );
-                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync( CoreDispatcherPriority.Normal, () => e.Request.Uri = uri );
-                def.Complete();
-            };
-            return dataSource;
-        }
-
-        private static MapTileDataSource GetZoomedOutEpflBuildingsDataSource()
-        {
-            return GetEpflBuildingsDataSource( null );
         }
     }
 }

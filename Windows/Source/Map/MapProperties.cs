@@ -6,7 +6,7 @@ using PocketCampus.Common;
 using ThinMvvm;
 using ThinMvvm.Logging;
 
-namespace PocketCampus.Map.ViewModels
+namespace PocketCampus.Map
 {
     public sealed class MapProperties : ObservableObject
     {
