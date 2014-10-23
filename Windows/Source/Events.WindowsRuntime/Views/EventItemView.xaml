@@ -64,14 +64,12 @@
                            TextWrapping="Wrap"
                            Style="{StaticResource AppSecondaryTitleTextBlockStyle}"
                            Visibility="{Binding Item.HideName,
-                                                Converter={StaticResource NonDefaultToVisibility}}" />
+                                                Converter={StaticResource DefaultToVisibility}}" />
 
                 <!-- Short details -->
                 <TextBlock Text="{Binding Item.ShortDetails}"
                            Style="{StaticResource AppSecondaryTitleTextBlockStyle}"
-                           FontSize="{StaticResource TextStyleMediumFontSize}"
-                           Visibility="{Binding Item.ShortDetails, 
-                                                Converter={StaticResource DefaultToVisibility}}"/>
+                           FontSize="{StaticResource TextStyleMediumFontSize}" />
             </StackPanel>
 
             <!-- Thumbnail -->
@@ -80,7 +78,7 @@
                    VerticalAlignment="Top"
                    Width="100"
                    Visibility="{Binding Item.HideThumbnail, 
-                                        Converter={StaticResource NonDefaultToVisibility}}"/>
+                                        Converter={StaticResource DefaultToVisibility}}"/>
         </Grid>
 
         <!-- Cache status -->
@@ -93,7 +91,7 @@
             <StackPanel>
                 <!-- Information -->
                 <Grid Visibility="{Binding Item.HideInformation, 
-                                           Converter={StaticResource NonDefaultToVisibility}}">
+                                           Converter={StaticResource DefaultToVisibility}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />

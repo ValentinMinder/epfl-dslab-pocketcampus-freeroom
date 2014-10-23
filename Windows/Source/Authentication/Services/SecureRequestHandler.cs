@@ -140,7 +140,6 @@ namespace PocketCampus.Authentication.Services
 
         // HACK: Since objects can't be (de)serialized into "object"s (because of the known types magic),
         //       convert them to strings and then save them.
-        // TODO: Check if that's still the case.
 
         /// <summary>
         /// Deserializes an object of the specified type from the specified string.

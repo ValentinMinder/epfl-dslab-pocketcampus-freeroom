@@ -14,7 +14,7 @@
                 <cc:SimpleButton Command="{Binding DataContext.ViewItemCommand, 
                                                    ElementName=Root}"
                                  CommandParameter="{Binding}"
-                                 Margin="0,0,0,24">
+                                 Margin="0,12,8,12">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -36,7 +36,8 @@
                         <!-- Thumbnail picture -->
                         <Image Grid.RowSpan="3"
                                Source="{Binding ThumbnailUrl}"
-                               Width="100" />
+                               Width="100"
+                               VerticalAlignment="Top" />
 
                         <!-- Name -->
                         <TextBlock Grid.Column="2"
@@ -87,6 +88,7 @@
     <Grid x:Name="Root">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
         
@@ -95,13 +97,23 @@
                        Style="{StaticResource AppHeaderTextBlockStyle}" />
         </Border>
         
-        <cc:GroupedListView Grid.Row="1"
+        <cc:CacheStatusDisplay Grid.Row="1"
+                               Status="{Binding CacheStatus}"
+                               RetryCommand="{Binding RefreshCommand}" />
+        
+        <cc:GroupedListView Grid.Row="2"
                             ItemTemplate="{StaticResource EventItemTemplate}"
-                            GroupKeyPath="CategoryName">
+                            GroupKeyPath="CategoryName"
+                            Margin="19,0,0,0">
             <cc:GroupedListView.ItemsViewSource>
                 <CollectionViewSource Source="{Binding ItemGroups}"
                                       IsSourceGrouped="True" />
             </cc:GroupedListView.ItemsViewSource>
         </cc:GroupedListView>
+        
+        <cc:DataStatusDisplay Grid.Row="2"
+                              Data="{Binding DataStatus}"
+                              Cache="{Binding CacheStatus}"
+                              RetryCommand="{Binding RefreshCommand}" />
     </Grid>
 </cc:PageBase>

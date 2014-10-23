@@ -153,7 +153,6 @@
                                 <TextBlock Text="{Binding Destination.Name}"
                                            Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
 
-                                <!-- TODO: Context menu -->
                                 <cc:SimpleButton.HoldingFlyout>
                                     <MenuFlyout>
                                         <MenuFlyoutItem Text="{CustomResource Main.RemoveStation}"

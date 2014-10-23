@@ -120,6 +120,13 @@ namespace PocketCampus.Events.ViewModels
         }
 
 
+        public override async Task OnNavigatedToAsync()
+        {
+            await base.OnNavigatedToAsync();
+            // Always launch a filter, to make sure favorites are moved around correctly.
+            FilterGroups();
+        }
+
         protected override CachedTask<EventPoolResponse> GetData( bool force, CancellationToken token )
         {
             if ( force
@@ -164,8 +171,13 @@ namespace PocketCampus.Events.ViewModels
 
             Pool = data.Pool;
             Pool.Items = data.ChildrenItems == null ? new EventItem[0] : data.ChildrenItems.Values.ToArray();
+            FilterGroups();
 
+            return true;
+        }
 
+        private void FilterGroups()
+        {
             var groups = from item in Pool.Items
                          where item.CategoryId == null
                             || !_settings.ExcludedCategoriesByPool[_poolId].Contains( item.CategoryId.Value )
@@ -185,8 +197,6 @@ namespace PocketCampus.Events.ViewModels
                          select new EventItemGroup( categName, itemGroup );
 
             ItemGroups = groups.ToArray();
-
-            return true;
         }
 
         private void ShowCurrentEvents()

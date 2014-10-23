@@ -122,10 +122,10 @@
                                Status="{Binding CacheStatus}"
                                RetryCommand="{Binding RefreshCommand}" />
 
-        <!-- TODO selected section binding
-             TODO details -->
+        <!-- TODO details -->
         <cc:GroupedListView Grid.Row="2"
                             ItemTemplate="{StaticResource ResourceTemplate}"
+                            SelectedItem="{Binding SelectedSection}"
                             GroupKeyPath="DisplayTitle"
                             Margin="19,0,0,0">
             <cc:GroupedListView.ItemsViewSource>

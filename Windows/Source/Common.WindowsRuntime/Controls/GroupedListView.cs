@@ -16,6 +16,7 @@ namespace PocketCampus.Common.Controls
         private const double ZoomedInViewTopMargin = 16;
         private const double ZoomedInViewRightMargin = 19; // will be used to ensure the scrollbar isn't over the content
         private const double ZoomedInGroupFooterSize = 24;
+        private const double ItemBottomMargin = 24;
 
         #region ItemsViewSource
         public CollectionViewSource ItemsViewSource
@@ -37,6 +38,17 @@ namespace PocketCampus.Common.Controls
 
         public static readonly DependencyProperty ItemTemplateProperty =
             DependencyProperty.Register( "ItemTemplate", typeof( DataTemplate ), typeof( GroupedListView ), new PropertyMetadata( null ) );
+        #endregion
+
+        #region SelectedItem
+        public object SelectedItem
+        {
+            get { return (object) GetValue( SelectedItemProperty ); }
+            set { SetValue( SelectedItemProperty, value ); }
+        }
+
+        public static readonly DependencyProperty SelectedItemProperty =
+            DependencyProperty.Register( "SelectedItem", typeof( object ), typeof( GroupedListView ), new PropertyMetadata( null ) );
         #endregion
 
         #region GroupKeyPath
@@ -79,6 +91,11 @@ namespace PocketCampus.Common.Controls
                 ListView.ItemsSourceProperty,
                 new Binding { Source = ItemsViewSource }
             );
+            view.SetBinding
+            (
+                ListView.SelectedItemProperty,
+                new Binding { Source = this, Path = new PropertyPath( "SelectedItem" ) }
+            );
             return view;
         }
 
@@ -96,6 +113,11 @@ namespace PocketCampus.Common.Controls
             (
                 ListView.ItemsSourceProperty,
                 new Binding { Source = ItemsViewSource, Path = new PropertyPath( "CollectionGroups" ) }
+            );
+            view.SetBinding
+            (
+                ListView.SelectedItemProperty,
+                new Binding { Source = this, Path = new PropertyPath( "SelectedItem" ) }
             );
             return view;
         }
@@ -119,7 +141,7 @@ namespace PocketCampus.Common.Controls
            @"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
                 <TextBlock Text=""{Binding Group." + keyPath + @"}""
                            FontSize=""{StaticResource TextStyleExtraLargeFontSize}""
-                           Margin=""0,0,0,25"" />
+                           Margin=""0,0,0," + ItemBottomMargin + @""" />
             </DataTemplate>" );
         }
     }
