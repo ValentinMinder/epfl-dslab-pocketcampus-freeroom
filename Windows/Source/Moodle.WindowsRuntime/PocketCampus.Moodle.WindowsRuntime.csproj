@@ -129,10 +129,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <PRIResource Include="Strings\en\Main.resw" />
     <PRIResource Include="Strings\fr\Resources.resw" />
     <PRIResource Include="Strings\fr\Main.resw" />
     <PRIResource Include="Strings\fr\DownloadStatus.resw" />
-    <PRIResource Include="Strings\en\Main.resw" />
     <PRIResource Include="Strings\en\DownloadStatus.resw" />
     <PRIResource Include="Strings\en\Resources.resw" />
   </ItemGroup>

@@ -43,6 +43,12 @@
                   ItemsSource="{Binding Courses}"
                   ItemTemplate="{StaticResource CourseTemplate}" />
         
+        <cc:Placeholder Grid.Row="2"
+                        For="{Binding Courses}">
+            <TextBlock Text="{CustomResource Main.NoCourses}"
+                       Style="{StaticResource AppLargeTextBlockStyle}" />
+        </cc:Placeholder>
+        
         <cc:DataStatusDisplay Grid.Row="2"
                               Data="{Binding DataStatus}"
                               Cache="{Binding CacheStatus}"

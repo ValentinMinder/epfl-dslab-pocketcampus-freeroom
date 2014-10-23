@@ -81,7 +81,7 @@ namespace PocketCampus.Common.Controls
             var view = new ListView
             {
                 ItemTemplate = ItemTemplate,
-                GroupStyle = { new GroupStyle { HidesIfEmpty = true, HeaderTemplate = GetGroupHeaderTemplate( GroupKeyPath ) } },
+                GroupStyle = { new GroupStyle { HeaderTemplate = GetGroupHeaderTemplate( GroupKeyPath ) } },
                 // HACK: The group header template contains a top margin, so we cancel the first one here
                 Padding = new Thickness( 0, ZoomedInViewTopMargin - ZoomedInGroupFooterSize, ZoomedInViewRightMargin, 0 )
             };

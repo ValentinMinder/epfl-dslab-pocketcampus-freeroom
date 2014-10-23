@@ -96,6 +96,12 @@ namespace PocketCampus.Common
                 return true;
             }
 
+            var collection = value as IEnumerable;
+            if ( collection != null )
+            {
+                return !collection.GetEnumerator().MoveNext();
+            }
+
             var type = value.GetType();
             if ( type.GetTypeInfo().IsValueType )
             {
