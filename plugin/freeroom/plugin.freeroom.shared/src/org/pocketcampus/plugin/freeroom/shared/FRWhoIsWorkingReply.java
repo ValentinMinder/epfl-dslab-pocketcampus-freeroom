@@ -451,14 +451,14 @@ public class FRWhoIsWorkingReply implements org.apache.thrift.TBase<FRWhoIsWorki
         case 3: // MESSAGES
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list34 = iprot.readListBegin();
-              this.messages = new ArrayList<FRMessageFrequency>(_list34.size);
-              for (int _i35 = 0; _i35 < _list34.size; ++_i35)
+              org.apache.thrift.protocol.TList _list30 = iprot.readListBegin();
+              this.messages = new ArrayList<FRMessageFrequency>(_list30.size);
+              for (int _i31 = 0; _i31 < _list30.size; ++_i31)
               {
-                FRMessageFrequency _elem36; // required
-                _elem36 = new FRMessageFrequency();
-                _elem36.read(iprot);
-                this.messages.add(_elem36);
+                FRMessageFrequency _elem32; // required
+                _elem32 = new FRMessageFrequency();
+                _elem32.read(iprot);
+                this.messages.add(_elem32);
               }
               iprot.readListEnd();
             }
@@ -496,9 +496,9 @@ public class FRWhoIsWorkingReply implements org.apache.thrift.TBase<FRWhoIsWorki
         oprot.writeFieldBegin(MESSAGES_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.messages.size()));
-          for (FRMessageFrequency _iter37 : this.messages)
+          for (FRMessageFrequency _iter33 : this.messages)
           {
-            _iter37.write(oprot);
+            _iter33.write(oprot);
           }
           oprot.writeListEnd();
         }

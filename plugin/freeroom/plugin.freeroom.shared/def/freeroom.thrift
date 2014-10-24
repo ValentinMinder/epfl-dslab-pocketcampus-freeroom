@@ -144,19 +144,6 @@ struct FRAutoCompleteReply {
 	4: optional map<string, list<FRRoom>> listRoom;
 }
 
-// TODO: implement on android client side
-struct FRAutoCompleteUserMessageRequest {
-	1: required FRPeriod period;
-	2: required FRRoom room;
-	3: required string constraint;
-}
-
-struct FRAutoCompleteUserMessageReply {
-	1: required FRStatusCode status;
-	2: required string statusComment; 
-	3: optional list<string> messages;
-}
-
 struct FRWorkingOccupancy {
 	1: required FRPeriod period;
 	2: required FRRoom room;
@@ -201,12 +188,6 @@ service FreeRoomService {
 	
 	// autocomplete for searching for a room
 	FRAutoCompleteReply autoCompleteRoom(1: FRAutoCompleteRequest request);
-	
-	//autocomplete of user messages
-	// it's used after you already selected a room and a time period
-	// retrieves user messages from the exact same room and period
-	// (useful if you're a group working on the same thing)
-	FRAutoCompleteUserMessageReply autoCompleteUserMessage(1: FRAutoCompleteUserMessageRequest request);
 	
 	// indicate that i'm going to work there
 	FRImWorkingReply indicateImWorking(1: FRImWorkingRequest request);

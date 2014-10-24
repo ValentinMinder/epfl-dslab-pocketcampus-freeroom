@@ -27,24 +27,22 @@ import org.pocketcampus.plugin.freeroom.data.RebuildDB;
 import org.pocketcampus.plugin.freeroom.server.utils.CheckRequests;
 import org.pocketcampus.plugin.freeroom.server.utils.OccupancySorted;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
-import org.pocketcampus.plugin.freeroom.shared.FRPeriodOccupation;
+import org.pocketcampus.plugin.freeroom.shared.Constants;
 import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteRequest;
-import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteUserMessageReply;
-import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteUserMessageRequest;
-import org.pocketcampus.plugin.freeroom.shared.Constants;
+import org.pocketcampus.plugin.freeroom.shared.FRImWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.FRImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriodOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
-import org.pocketcampus.plugin.freeroom.shared.FreeRoomService;
-import org.pocketcampus.plugin.freeroom.shared.FRImWorkingReply;
-import org.pocketcampus.plugin.freeroom.shared.FRImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRWorkingOccupancy;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomService;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
@@ -1370,76 +1368,76 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return reply;
 	}
 
-	@Override
-	public FRAutoCompleteUserMessageReply autoCompleteUserMessage(
-			FRAutoCompleteUserMessageRequest request) throws TException {
-		if (request == null) {
-			log(LOG_SIDE.SERVER, Level.WARNING,
-					"Receiving null AutoCompleteUserMessageRequest");
-			return new FRAutoCompleteUserMessageReply(
-					FRStatusCode.HTTP_BAD_REQUEST,
-					"AutocompleteUserMessageRequest is null");
-		}
-
-		FRAutoCompleteUserMessageReply reply = CheckRequests
-				.checkAutoCompleteUserMessageRequest(request);
-		if (reply.getStatus() != FRStatusCode.HTTP_OK) {
-			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
-			return reply;
-		} else {
-			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
-		}
-
-		String constraint = request.getConstraint().replaceAll("\\s+", "");
-		String uid = request.getRoom().getUid();
-		FRPeriod period = request.getPeriod();
-
-		if (period.getTimeStampEnd() < period.getTimeStampStart()) {
-			return new FRAutoCompleteUserMessageReply(
-					FRStatusCode.HTTP_BAD_REQUEST,
-					"The end of the period should be after the start");
-		}
-
-		String requestSQL = "SELECT co.message "
-				+ "FROM `fr-checkOccupancy` co "
-				+ "WHERE co.uid = ? AND co.timestampStart >= ? AND co.timestampEnd <= ? "
-				+ "AND LOWER(co.message) LIKE (?) ORDER BY co.message ASC";
-
-		try {
-			ArrayList<String> messages = new ArrayList<String>();
-
-			Connection connectBDD = connMgr.getConnection();
-
-			PreparedStatement query = connectBDD.prepareStatement(requestSQL);
-			query.setString(1, uid);
-			query.setLong(2, period.getTimeStampStart());
-			query.setLong(3, period.getTimeStampEnd());
-			query.setString(4, "%" + constraint.toLowerCase() + "%");
-
-			ResultSet result = query.executeQuery();
-
-			while (result.next()) {
-				messages.add(result.getString("message"));
-			}
-
-			String logMessage = "constraint=" + constraint;
-			log(Level.INFO,
-					formatServerLogInfo("autoCompleteUserMessage", logMessage));
-			reply.setMessages(messages);
-		} catch (SQLException e) {
-			;
-			e.printStackTrace();
-			log(LOG_SIDE.SERVER, Level.SEVERE,
-					"SQL error when autocompleting user message for uid = "
-							+ uid + " period = " + period + " constraint = "
-							+ constraint);
-			return new FRAutoCompleteUserMessageReply(
-					FRStatusCode.HTTP_INTERNAL_ERROR,
-					"Error when autocompleting");
-		}
-
-		return reply;
-	}
+//	@Override
+//	public FRAutoCompleteUserMessageReply autoCompleteUserMessage(
+//			FRAutoCompleteUserMessageRequest request) throws TException {
+//		if (request == null) {
+//			log(LOG_SIDE.SERVER, Level.WARNING,
+//					"Receiving null AutoCompleteUserMessageRequest");
+//			return new FRAutoCompleteUserMessageReply(
+//					FRStatusCode.HTTP_BAD_REQUEST,
+//					"AutocompleteUserMessageRequest is null");
+//		}
+//
+//		FRAutoCompleteUserMessageReply reply = CheckRequests
+//				.checkAutoCompleteUserMessageRequest(request);
+//		if (reply.getStatus() != FRStatusCode.HTTP_OK) {
+//			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
+//			return reply;
+//		} else {
+//			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
+//		}
+//
+//		String constraint = request.getConstraint().replaceAll("\\s+", "");
+//		String uid = request.getRoom().getUid();
+//		FRPeriod period = request.getPeriod();
+//
+//		if (period.getTimeStampEnd() < period.getTimeStampStart()) {
+//			return new FRAutoCompleteUserMessageReply(
+//					FRStatusCode.HTTP_BAD_REQUEST,
+//					"The end of the period should be after the start");
+//		}
+//
+//		String requestSQL = "SELECT co.message "
+//				+ "FROM `fr-checkOccupancy` co "
+//				+ "WHERE co.uid = ? AND co.timestampStart >= ? AND co.timestampEnd <= ? "
+//				+ "AND LOWER(co.message) LIKE (?) ORDER BY co.message ASC";
+//
+//		try {
+//			ArrayList<String> messages = new ArrayList<String>();
+//
+//			Connection connectBDD = connMgr.getConnection();
+//
+//			PreparedStatement query = connectBDD.prepareStatement(requestSQL);
+//			query.setString(1, uid);
+//			query.setLong(2, period.getTimeStampStart());
+//			query.setLong(3, period.getTimeStampEnd());
+//			query.setString(4, "%" + constraint.toLowerCase() + "%");
+//
+//			ResultSet result = query.executeQuery();
+//
+//			while (result.next()) {
+//				messages.add(result.getString("message"));
+//			}
+//
+//			String logMessage = "constraint=" + constraint;
+//			log(Level.INFO,
+//					formatServerLogInfo("autoCompleteUserMessage", logMessage));
+//			reply.setMessages(messages);
+//		} catch (SQLException e) {
+//			;
+//			e.printStackTrace();
+//			log(LOG_SIDE.SERVER, Level.SEVERE,
+//					"SQL error when autocompleting user message for uid = "
+//							+ uid + " period = " + period + " constraint = "
+//							+ constraint);
+//			return new FRAutoCompleteUserMessageReply(
+//					FRStatusCode.HTTP_INTERNAL_ERROR,
+//					"Error when autocompleting");
+//		}
+//
+//		return reply;
+//	}
 
 	/**
 	 * The client can specify a user occupancy during a given period, multiple
