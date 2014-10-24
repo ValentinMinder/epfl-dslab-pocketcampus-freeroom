@@ -42,17 +42,37 @@
                 android:padding="0dip" >
 
 
-                <TextView
-                    android:id="@+id/cloudprint_preview_print"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="0dip"
-                    android:gravity="center"
-                    android:padding="15dip"
-                    android:textColor="@android:color/primary_text_light" 
-                    android:text="@string/cloudprint_plugin_title"
-                     />
 
+	            <RelativeLayout
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_margin="0dip"
+	                android:gravity="center"
+	                android:padding="0dip" >
+	                <TextView
+	                    android:id="@+id/cloudprint_preview_print"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_margin="0dip"
+	                    android:layout_alignParentLeft="true"
+	                    android:gravity="left"
+	                    android:paddingTop="15dip"
+	                    android:paddingBottom="15dip"
+	                    android:paddingLeft="15dip"
+	                    android:paddingRight="50dip"
+	                    android:textColor="@android:color/primary_text_light" 
+	                    android:text="@string/cloudprint_plugin_title"
+	                     />
+	                <ImageView
+	                    android:id="@+id/cloudprint_info_button"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_centerInParent="true"
+	                    android:layout_alignParentRight="true"
+	                    android:layout_marginRight="15dip"
+	                    android:src="@drawable/cloudprint_printerinfo" 
+	                    />
+                </RelativeLayout>
                 
                 <Spinner
                     android:id="@+id/cloudprint_select_copies"

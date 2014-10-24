@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.utils.DialogUtils;
 import org.pocketcampus.plugin.cloudprint.R;
 import org.pocketcampus.plugin.cloudprint.android.iface.ICloudPrintView;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintColorConfig;
@@ -31,6 +32,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -154,6 +156,13 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 			
 			TextView tv = (TextView) findViewById(R.id.cloudprint_preview_print);
 			tv.setText(Html.fromHtml(getString(R.string.cloudprint_dialog_text_print, mModel.getFileToPrint().getLastPathSegment())));
+			
+			ImageView iv = (ImageView) findViewById(R.id.cloudprint_info_button);
+			iv.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					DialogUtils.alert(CloudPrintMainView.this, getString(R.string.cloudprint_plugin_title), getString(R.string.cloudprint_dialog_help_string));
+				}
+			});
 			
 			Button b = (Button) findViewById(R.id.cloudprint_print_button);
 			b.setOnClickListener(new OnClickListener() {
