@@ -32,6 +32,7 @@ import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.FRImWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRLanguage;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
@@ -849,6 +850,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		// FIXME should be set to false for students, true for staff
 		boolean allowWeekends = false;
 		boolean allowEvenings = false;
+		
+		FRLanguage userLanguage = (request.getUserLanguage() == null) ? FRLanguage.EN : request.getUserLanguage();
+		
 		if (FRTimes.validCalendarsString(period, System.currentTimeMillis(),
 				allowWeekends, allowEvenings).length() != 0) {
 			// if something is wrong in the request
@@ -860,11 +864,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		List<String> uidList = request.getUidList();
 
 		HashMap<String, List<FRRoomOccupancy>> occupancies = null;
-
+		
 		if (uidList == null || uidList.isEmpty()) {
 			if (onlyFreeRoom) {
 				// we want to look into all the rooms
-				occupancies = getOccupancyOfAnyFreeRoom(tsStart, tsEnd, group);
+				occupancies = getOccupancyOfAnyFreeRoom(tsStart, tsEnd, group, userLanguage);
 			} else {
 				return new FROccupancyReply(FRStatusCode.HTTP_BAD_REQUEST,
 						"The search for any free room must contains onlyFreeRoom = true");
@@ -872,7 +876,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		} else {
 			// or the user specified a specific list of rooms he wants to check
 			occupancies = getOccupancyOfSpecificRoom(uidList, onlyFreeRoom,
-					tsStart, tsEnd, group);
+					tsStart, tsEnd, group, userLanguage);
 		}
 
 		if (occupancies == null) {
@@ -903,7 +907,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *         the building), null if an error occured
 	 */
 	private HashMap<String, List<FRRoomOccupancy>> getOccupancyOfAnyFreeRoom(
-			long tsStart, long tsEnd, int userGroup) {
+			long tsStart, long tsEnd, int userGroup, FRLanguage userLanguage) {
 
 		HashMap<String, List<FRRoomOccupancy>> result = new HashMap<String, List<FRRoomOccupancy>>();
 		Connection connectBDD;
@@ -955,7 +959,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			log(Level.INFO,
 					formatServerLogInfo("getOccupancyOfAnyFreeRoom", logMessage));
 			return getOccupancyOfSpecificRoom(uidsList, true, tsStart, tsEnd,
-					userGroup);
+					userGroup, userLanguage);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log(LOG_SIDE.SERVER, Level.SEVERE,
@@ -984,7 +988,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 */
 	private HashMap<String, List<FRRoomOccupancy>> getOccupancyOfSpecificRoom(
 			List<String> uidList, boolean onlyFreeRooms, long tsStart,
-			long tsEnd, int userGroup) {
+			long tsEnd, int userGroup, FRLanguage language) {
 
 		// useless
 		// if (uidList.isEmpty()) {
@@ -1010,7 +1014,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		Connection connectBDD;
 		try {
 			connectBDD = connMgr.getConnection();
-			String request = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.typeEN, rl.typeFR, "
+			String request = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.type" + language.name() + " AS type, "
 					+ "uo.count, uo.timestampStart, uo.timestampEnd, uo.type "
 					+ "FROM `fr-roomslist` rl, `fr-occupancy` uo "
 					+ "WHERE rl.uid = uo.uid AND rl.uid IN("
@@ -1050,8 +1054,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				int count = resultQuery.getInt("count");
 				String doorCode = resultQuery.getString("doorCode");
 				String alias = resultQuery.getString("alias");
-				String typeFR = resultQuery.getString("typeFR");
-				String typeEN = resultQuery.getString("typeEN");
+				String typeLanguage = resultQuery.getString("type");
 				double surface = resultQuery.getDouble("surface");
 
 				OCCUPANCY_TYPE type = OCCUPANCY_TYPE.valueOf(resultQuery
@@ -1071,12 +1074,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				mRoom.setSurface(surface);
 				Utils.addAliasIfNeeded(mRoom, alias);
 
-				if (typeEN != null) {
-					mRoom.setTypeEN(typeEN);
+				if (typeLanguage != null) {
+					mRoom.setType(typeLanguage);
 				}
-				if (typeFR != null) {
-					mRoom.setTypeFR(typeFR);
-				}
+
 
 				// if this is the first iteration
 				if (currentUID == null) {
@@ -1132,7 +1133,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				}
 
 				roomsListQueryFormat += "?";
-				String infoRequest = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.typeEN, rl.typeFR "
+				String infoRequest = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.type" + language.name() + " AS type "
 						+ "FROM `fr-roomslist` rl "
 						+ "WHERE rl.uid IN("
 						+ roomsListQueryFormat + ")";
@@ -1151,19 +1152,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					String doorCode = infoRoom.getString("doorCode");
 					int capacity = infoRoom.getInt("capacity");
 					String alias = infoRoom.getString("alias");
-					String typeFR = infoRoom.getString("typeFR");
-					String typeEN = infoRoom.getString("typeEN");
+					String typeLanguage = infoRoom.getString("type");
 					double surface = infoRoom.getDouble("surface");
 
 					FRRoom mRoom = new FRRoom(doorCode, uid);
 					mRoom.setCapacity(capacity);
 					mRoom.setSurface(surface);
 					Utils.addAliasIfNeeded(mRoom, alias);
-					if (typeEN != null) {
-						mRoom.setTypeEN(typeEN);
-					}
-					if (typeFR != null) {
-						mRoom.setTypeFR(typeFR);
+					if (typeLanguage != null) {
+						mRoom.setType(typeLanguage);
 					}
 
 					currentOccupancy = new OccupancySorted(mRoom, tsStart,
@@ -1254,7 +1251,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 		String constraint = request.getConstraint();
-
+		FRLanguage userLanguage = (request.getUserLanguage() == null) ? FRLanguage.EN : request.getUserLanguage();
+		
 		if (constraint.length() < Constants.MIN_AUTOCOMPL_LENGTH) {
 			return new FRAutoCompleteReply(FRStatusCode.HTTP_BAD_REQUEST,
 					"Constraints should be at least "
@@ -1339,13 +1337,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				Utils.addAliasIfNeeded(frRoom, alias);
 
 				String typeFR = resultQuery.getString("typeFR");
-				if (typeFR != null) {
-					frRoom.setTypeFR(typeFR);
+				if (typeFR != null && userLanguage == FRLanguage.FR) {
+					frRoom.setType(typeFR);
 				}
 
 				String typeEN = resultQuery.getString("typeEN");
-				if (typeEN != null) {
-					frRoom.setTypeEN(typeEN);
+				if (typeEN != null && userLanguage == FRLanguage.EN) {
+					frRoom.setType(typeEN);
 				}
 				rooms.add(frRoom);
 			}

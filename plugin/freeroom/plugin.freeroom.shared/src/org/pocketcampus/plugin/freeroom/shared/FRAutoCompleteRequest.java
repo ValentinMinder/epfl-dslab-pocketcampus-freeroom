@@ -28,18 +28,25 @@ public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoComp
   private static final org.apache.thrift.protocol.TField FORBIDDEN_ROOMS_UID_FIELD_DESC = new org.apache.thrift.protocol.TField("forbiddenRoomsUID", org.apache.thrift.protocol.TType.SET, (short)2);
   private static final org.apache.thrift.protocol.TField USER_GROUP_FIELD_DESC = new org.apache.thrift.protocol.TField("userGroup", org.apache.thrift.protocol.TType.I32, (short)3);
   private static final org.apache.thrift.protocol.TField EXACT_STRING_FIELD_DESC = new org.apache.thrift.protocol.TField("exactString", org.apache.thrift.protocol.TType.BOOL, (short)4);
+  private static final org.apache.thrift.protocol.TField USER_LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("userLanguage", org.apache.thrift.protocol.TType.I32, (short)5);
 
   private String constraint; // required
   private Set<String> forbiddenRoomsUID; // required
   private int userGroup; // required
   private boolean exactString; // required
+  private FRLanguage userLanguage; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     CONSTRAINT((short)1, "constraint"),
     FORBIDDEN_ROOMS_UID((short)2, "forbiddenRoomsUID"),
     USER_GROUP((short)3, "userGroup"),
-    EXACT_STRING((short)4, "exactString");
+    EXACT_STRING((short)4, "exactString"),
+    /**
+     * 
+     * @see FRLanguage
+     */
+    USER_LANGUAGE((short)5, "userLanguage");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -62,6 +69,8 @@ public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoComp
           return USER_GROUP;
         case 4: // EXACT_STRING
           return EXACT_STRING;
+        case 5: // USER_LANGUAGE
+          return USER_LANGUAGE;
         default:
           return null;
       }
@@ -118,6 +127,8 @@ public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoComp
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.EXACT_STRING, new org.apache.thrift.meta_data.FieldMetaData("exactString", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.USER_LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("userLanguage", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, FRLanguage.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRAutoCompleteRequest.class, metaDataMap);
   }
@@ -153,6 +164,9 @@ public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoComp
     }
     this.userGroup = other.userGroup;
     this.exactString = other.exactString;
+    if (other.isSetUserLanguage()) {
+      this.userLanguage = other.userLanguage;
+    }
   }
 
   public FRAutoCompleteRequest deepCopy() {
@@ -167,6 +181,7 @@ public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoComp
     this.userGroup = 0;
     setExactStringIsSet(false);
     this.exactString = false;
+    this.userLanguage = null;
   }
 
   public String getConstraint() {
@@ -278,6 +293,38 @@ public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoComp
     __isset_bit_vector.set(__EXACTSTRING_ISSET_ID, value);
   }
 
+  /**
+   * 
+   * @see FRLanguage
+   */
+  public FRLanguage getUserLanguage() {
+    return this.userLanguage;
+  }
+
+  /**
+   * 
+   * @see FRLanguage
+   */
+  public FRAutoCompleteRequest setUserLanguage(FRLanguage userLanguage) {
+    this.userLanguage = userLanguage;
+    return this;
+  }
+
+  public void unsetUserLanguage() {
+    this.userLanguage = null;
+  }
+
+  /** Returns true if field userLanguage is set (has been assigned a value) and false otherwise */
+  public boolean isSetUserLanguage() {
+    return this.userLanguage != null;
+  }
+
+  public void setUserLanguageIsSet(boolean value) {
+    if (!value) {
+      this.userLanguage = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case CONSTRAINT:
@@ -312,6 +359,14 @@ public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoComp
       }
       break;
 
+    case USER_LANGUAGE:
+      if (value == null) {
+        unsetUserLanguage();
+      } else {
+        setUserLanguage((FRLanguage)value);
+      }
+      break;
+
     }
   }
 
@@ -328,6 +383,9 @@ public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoComp
 
     case EXACT_STRING:
       return Boolean.valueOf(isExactString());
+
+    case USER_LANGUAGE:
+      return getUserLanguage();
 
     }
     throw new IllegalStateException();
@@ -348,6 +406,8 @@ public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoComp
       return isSetUserGroup();
     case EXACT_STRING:
       return isSetExactString();
+    case USER_LANGUAGE:
+      return isSetUserLanguage();
     }
     throw new IllegalStateException();
   }
@@ -401,6 +461,15 @@ public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoComp
         return false;
     }
 
+    boolean this_present_userLanguage = true && this.isSetUserLanguage();
+    boolean that_present_userLanguage = true && that.isSetUserLanguage();
+    if (this_present_userLanguage || that_present_userLanguage) {
+      if (!(this_present_userLanguage && that_present_userLanguage))
+        return false;
+      if (!this.userLanguage.equals(that.userLanguage))
+        return false;
+    }
+
     return true;
   }
 
@@ -427,6 +496,11 @@ public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoComp
     builder.append(present_exactString);
     if (present_exactString)
       builder.append(exactString);
+
+    boolean present_userLanguage = true && (isSetUserLanguage());
+    builder.append(present_userLanguage);
+    if (present_userLanguage)
+      builder.append(userLanguage.getValue());
 
     return builder.toHashCode();
   }
@@ -475,6 +549,16 @@ public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoComp
     }
     if (isSetExactString()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.exactString, typedOther.exactString);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetUserLanguage()).compareTo(typedOther.isSetUserLanguage());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetUserLanguage()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.userLanguage, typedOther.userLanguage);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -536,6 +620,13 @@ public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoComp
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 5: // USER_LANGUAGE
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.userLanguage = FRLanguage.findByValue(iprot.readI32());
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -581,6 +672,13 @@ public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoComp
       oprot.writeBool(this.exactString);
       oprot.writeFieldEnd();
     }
+    if (this.userLanguage != null) {
+      if (isSetUserLanguage()) {
+        oprot.writeFieldBegin(USER_LANGUAGE_FIELD_DESC);
+        oprot.writeI32(this.userLanguage.getValue());
+        oprot.writeFieldEnd();
+      }
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -615,6 +713,16 @@ public class FRAutoCompleteRequest implements org.apache.thrift.TBase<FRAutoComp
       if (!first) sb.append(", ");
       sb.append("exactString:");
       sb.append(this.exactString);
+      first = false;
+    }
+    if (isSetUserLanguage()) {
+      if (!first) sb.append(", ");
+      sb.append("userLanguage:");
+      if (this.userLanguage == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.userLanguage);
+      }
       first = false;
     }
     sb.append(")");

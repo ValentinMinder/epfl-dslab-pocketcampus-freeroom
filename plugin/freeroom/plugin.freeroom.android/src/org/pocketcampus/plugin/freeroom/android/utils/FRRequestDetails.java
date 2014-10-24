@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
+import org.pocketcampus.plugin.freeroom.shared.FRLanguage;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
@@ -33,6 +34,7 @@ public class FRRequestDetails extends FROccupancyRequest {
 	private boolean fav = true;
 	private boolean user = false;
 	private Set<FRRoom> uidNonFav = null;
+	private FRLanguage userLanguage = FRLanguage.EN;
 
 	public FRRequestDetails(FRPeriod period, boolean onlyFreeRooms,
 			List<String> uidList, boolean any, boolean fav, boolean user,
@@ -42,6 +44,12 @@ public class FRRequestDetails extends FROccupancyRequest {
 		this.fav = fav;
 		this.user = user;
 		this.uidNonFav = uidNonFav;
+	}
+
+	public void setULanguage(FRLanguage language) {
+		if (language != null) {
+			this.userLanguage = language;
+		}
 	}
 
 	public boolean isAny() {

@@ -28,18 +28,25 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
   private static final org.apache.thrift.protocol.TField ONLY_FREE_ROOMS_FIELD_DESC = new org.apache.thrift.protocol.TField("onlyFreeRooms", org.apache.thrift.protocol.TType.BOOL, (short)2);
   private static final org.apache.thrift.protocol.TField UID_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("uidList", org.apache.thrift.protocol.TType.LIST, (short)3);
   private static final org.apache.thrift.protocol.TField USER_GROUP_FIELD_DESC = new org.apache.thrift.protocol.TField("userGroup", org.apache.thrift.protocol.TType.I32, (short)4);
+  private static final org.apache.thrift.protocol.TField USER_LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("userLanguage", org.apache.thrift.protocol.TType.I32, (short)5);
 
   private FRPeriod period; // required
   private boolean onlyFreeRooms; // required
   private List<String> uidList; // required
   private int userGroup; // required
+  private FRLanguage userLanguage; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     PERIOD((short)1, "period"),
     ONLY_FREE_ROOMS((short)2, "onlyFreeRooms"),
     UID_LIST((short)3, "uidList"),
-    USER_GROUP((short)4, "userGroup");
+    USER_GROUP((short)4, "userGroup"),
+    /**
+     * 
+     * @see FRLanguage
+     */
+    USER_LANGUAGE((short)5, "userLanguage");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -62,6 +69,8 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
           return UID_LIST;
         case 4: // USER_GROUP
           return USER_GROUP;
+        case 5: // USER_LANGUAGE
+          return USER_LANGUAGE;
         default:
           return null;
       }
@@ -118,6 +127,8 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     tmpMap.put(_Fields.USER_GROUP, new org.apache.thrift.meta_data.FieldMetaData("userGroup", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.USER_LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("userLanguage", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, FRLanguage.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FROccupancyRequest.class, metaDataMap);
   }
@@ -158,6 +169,9 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
       this.uidList = __this__uidList;
     }
     this.userGroup = other.userGroup;
+    if (other.isSetUserLanguage()) {
+      this.userLanguage = other.userLanguage;
+    }
   }
 
   public FROccupancyRequest deepCopy() {
@@ -172,6 +186,7 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
     this.uidList = null;
     setUserGroupIsSet(false);
     this.userGroup = 0;
+    this.userLanguage = null;
   }
 
   public FRPeriod getPeriod() {
@@ -283,6 +298,38 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
     __isset_bit_vector.set(__USERGROUP_ISSET_ID, value);
   }
 
+  /**
+   * 
+   * @see FRLanguage
+   */
+  public FRLanguage getUserLanguage() {
+    return this.userLanguage;
+  }
+
+  /**
+   * 
+   * @see FRLanguage
+   */
+  public FROccupancyRequest setUserLanguage(FRLanguage userLanguage) {
+    this.userLanguage = userLanguage;
+    return this;
+  }
+
+  public void unsetUserLanguage() {
+    this.userLanguage = null;
+  }
+
+  /** Returns true if field userLanguage is set (has been assigned a value) and false otherwise */
+  public boolean isSetUserLanguage() {
+    return this.userLanguage != null;
+  }
+
+  public void setUserLanguageIsSet(boolean value) {
+    if (!value) {
+      this.userLanguage = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case PERIOD:
@@ -317,6 +364,14 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
       }
       break;
 
+    case USER_LANGUAGE:
+      if (value == null) {
+        unsetUserLanguage();
+      } else {
+        setUserLanguage((FRLanguage)value);
+      }
+      break;
+
     }
   }
 
@@ -333,6 +388,9 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
 
     case USER_GROUP:
       return Integer.valueOf(getUserGroup());
+
+    case USER_LANGUAGE:
+      return getUserLanguage();
 
     }
     throw new IllegalStateException();
@@ -353,6 +411,8 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
       return isSetUidList();
     case USER_GROUP:
       return isSetUserGroup();
+    case USER_LANGUAGE:
+      return isSetUserLanguage();
     }
     throw new IllegalStateException();
   }
@@ -406,6 +466,15 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
         return false;
     }
 
+    boolean this_present_userLanguage = true && this.isSetUserLanguage();
+    boolean that_present_userLanguage = true && that.isSetUserLanguage();
+    if (this_present_userLanguage || that_present_userLanguage) {
+      if (!(this_present_userLanguage && that_present_userLanguage))
+        return false;
+      if (!this.userLanguage.equals(that.userLanguage))
+        return false;
+    }
+
     return true;
   }
 
@@ -432,6 +501,11 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
     builder.append(present_userGroup);
     if (present_userGroup)
       builder.append(userGroup);
+
+    boolean present_userLanguage = true && (isSetUserLanguage());
+    builder.append(present_userLanguage);
+    if (present_userLanguage)
+      builder.append(userLanguage.getValue());
 
     return builder.toHashCode();
   }
@@ -480,6 +554,16 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
     }
     if (isSetUserGroup()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.userGroup, typedOther.userGroup);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetUserLanguage()).compareTo(typedOther.isSetUserLanguage());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetUserLanguage()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.userLanguage, typedOther.userLanguage);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -542,6 +626,13 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 5: // USER_LANGUAGE
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.userLanguage = FRLanguage.findByValue(iprot.readI32());
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -586,6 +677,13 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
     oprot.writeFieldBegin(USER_GROUP_FIELD_DESC);
     oprot.writeI32(this.userGroup);
     oprot.writeFieldEnd();
+    if (this.userLanguage != null) {
+      if (isSetUserLanguage()) {
+        oprot.writeFieldBegin(USER_LANGUAGE_FIELD_DESC);
+        oprot.writeI32(this.userLanguage.getValue());
+        oprot.writeFieldEnd();
+      }
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -618,6 +716,16 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
     sb.append("userGroup:");
     sb.append(this.userGroup);
     first = false;
+    if (isSetUserLanguage()) {
+      if (!first) sb.append(", ");
+      sb.append("userLanguage:");
+      if (this.userLanguage == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.userLanguage);
+      }
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }

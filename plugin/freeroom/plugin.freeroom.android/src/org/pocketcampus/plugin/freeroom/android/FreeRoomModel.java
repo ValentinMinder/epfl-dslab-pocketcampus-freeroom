@@ -27,6 +27,7 @@ import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
 import org.pocketcampus.plugin.freeroom.android.utils.FRTimesClient;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.utils.SetArrayList;
+import org.pocketcampus.plugin.freeroom.shared.FRLanguage;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriodOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
@@ -144,6 +145,20 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Storage for basic preferences, setting and so on.
 	 */
 	private SharedPreferences preferences;
+
+	/**
+	 * Get the language of the device, if not available on server, default is
+	 * english
+	 * **/
+	public FRLanguage getUserLanguage() {
+		String language = Locale.getDefault().getDisplayLanguage();
+		try {
+			FRLanguage lang = FRLanguage.valueOf(language.toUpperCase());
+			return lang;
+		} catch (IllegalArgumentException iae) {
+			return FRLanguage.EN;
+		}
+	}
 
 	/**
 	 * Constructor with reference to the context.
@@ -309,6 +324,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 *            if the request should be kept in history or not.
 	 */
 	public void setFRRequestDetails(FRRequestDetails request, boolean save) {
+		request.setULanguage(getUserLanguage());
 		if (save) {
 			// write in history each time a request is set.
 			addPreviousRequest(request);
@@ -1034,8 +1050,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * Return the appropriate color dot {@link Drawable} according to the
-	 * {@link FRRoomOccupancy} given, and the {@link FreeRoomModel} color settings (
-	 * {@link ColorBlindMode}).
+	 * {@link FRRoomOccupancy} given, and the {@link FreeRoomModel} color
+	 * settings ( {@link ColorBlindMode}).
 	 * 
 	 * @param mOccupancy
 	 *            occupancy for a given room (for multiple periods)
@@ -1151,8 +1167,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * <p>
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
-	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
-	 * the color depending of the {@link FRPeriodOccupation}, call
+	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)}
+	 * . For the color depending of the {@link FRPeriodOccupation}, call
 	 * {@link #getColoredDotDrawable(FRPeriodOccupation)}
 	 * 
 	 * @return the dot indicating "UNKNOWN".
@@ -1175,8 +1191,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * <p>
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
-	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
-	 * the color depending of the {@link FRPeriodOccupation}, call
+	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)}
+	 * . For the color depending of the {@link FRPeriodOccupation}, call
 	 * {@link #getColoredDotDrawable(FRPeriodOccupation)}
 	 * 
 	 * @return the dot indicating "OCCUPIED".
@@ -1200,8 +1216,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * <p>
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
-	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
-	 * the color depending of the {@link FRPeriodOccupation}, call
+	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)}
+	 * . For the color depending of the {@link FRPeriodOccupation}, call
 	 * {@link #getColoredDotDrawable(FRPeriodOccupation)}
 	 * 
 	 * @return the dot indicating "FREE".
@@ -1225,8 +1241,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * <p>
 	 * Note: this option is made private because it depends on model settings.
 	 * This should be called only if the color is sure. For the color depending
-	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)} . For
-	 * the color depending of the {@link FRPeriodOccupation}, call
+	 * of the {@link FRRoomOccupancy}, call {@link getColorDrawable(Occupancy)}
+	 * . For the color depending of the {@link FRPeriodOccupation}, call
 	 * {@link #getColoredDotDrawable(FRPeriodOccupation)}
 	 * 
 	 * @return the dot indicating "PARTIALLY OCCUPIED".

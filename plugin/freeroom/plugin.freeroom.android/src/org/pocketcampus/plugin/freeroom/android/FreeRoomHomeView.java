@@ -2428,6 +2428,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							// without pressing the button
 							FRAutoCompleteRequest request = new FRAutoCompleteRequest(
 									text, mModel.getGroupAccess());
+							request.setUserLanguage(mModel.getUserLanguage());
 							mController.autoCompleteBuilding(view, request);
 						}
 					}

@@ -33,6 +33,13 @@ enum FRStatusCode {
 	HTTP_PRECON_FAILED = 412;
 }
 
+// Contain all the languages supported by the server and only them
+// do not add any other as long as the database does not contain the proper field "type<<Language>>" in FRRoom as this is used in queries.
+enum FRLanguage {
+	EN;
+	FR;
+}
+
 struct FRRoom{
 
 	// Official EPFL Name, of the form “Building [Zone][Floor] RoomNumber”, where [] are optional.
@@ -66,8 +73,7 @@ struct FRRoom{
 	17: optional string adminuse;
 	
 	31: optional string EWAid; //bc420@intranet.epfl.ch
-	32: optional string typeFR; // eg "Conference room"
-	33: optional string typeEN; 
+	32: optional string type;
 	
 	// Please note that if the ALIAS is set, it should ALWAYS be used in place of the official name!
 	// IS-Academia and most other EPFL services always use alias, BUT a search must also return results based ont eh official name.
@@ -110,6 +116,7 @@ struct FROccupancyRequest {
 	3: required list<string> uidList;
 	//as defined in database, see create-tables.sql in server for more info
 	4: required i32 userGroup;
+	5: optional FRLanguage userLanguage;
 }
 
 struct FROccupancyReply {
@@ -135,6 +142,7 @@ struct FRAutoCompleteRequest {
 	// if not present or false, autocomplete automatically adds a "%" to your constraint
 	// useful ???
 	4: optional bool exactString;
+	5: optional FRLanguage userLanguage;
 }
 
 struct FRAutoCompleteReply {

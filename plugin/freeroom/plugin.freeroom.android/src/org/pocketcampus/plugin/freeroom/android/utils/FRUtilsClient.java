@@ -180,19 +180,11 @@ public class FRUtilsClient {
 				builder.append(mFrRoom.getDoorCode());
 			}
 		}
-		if (mFrRoom.isSetTypeFR() || mFrRoom.isSetTypeEN()) {
+		if (mFrRoom.isSetType()) {
 			builder.append(" / "
 					+ context.getString(R.string.freeroom_dialog_info_type)
 					+ ": ");
-			if (mFrRoom.isSetTypeFR()) {
-				builder.append(mFrRoom.getTypeFR());
-			}
-			if (mFrRoom.isSetTypeFR() && mFrRoom.isSetTypeEN()) {
-				builder.append(" / ");
-			}
-			if (mFrRoom.isSetTypeFR()) {
-				builder.append(mFrRoom.getTypeEN());
-			}
+			builder.append(mFrRoom.getType());
 		}
 		// if capacity is set to 0 => unkwown
 		// if capacity is not set => nothing is printed
