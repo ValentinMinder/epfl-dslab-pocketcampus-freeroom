@@ -35,5 +35,7 @@
 	<classpathentry kind="lib" path="/platform.shared/lib/commons-codec-1.4.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/mysql-connector-java-5.1.15-bin.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/mail.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/commons-io-2.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

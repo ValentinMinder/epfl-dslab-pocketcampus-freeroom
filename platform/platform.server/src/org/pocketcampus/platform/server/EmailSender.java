@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.events.server.utils;
+package org.pocketcampus.platform.server;
 
 import java.io.IOException;
 import java.util.List;

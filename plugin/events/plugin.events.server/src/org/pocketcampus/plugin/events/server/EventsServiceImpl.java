@@ -12,15 +12,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.thrift.TException;
+import org.pocketcampus.platform.server.EmailSender;
+import org.pocketcampus.platform.server.EmailSender.EmailTemplateInfo;
+import org.pocketcampus.platform.server.EmailSender.SendEmailInfo;
 import org.pocketcampus.platform.server.database.ConnectionManager;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.events.server.decoders.EventItemDecoder;
 import org.pocketcampus.plugin.events.server.decoders.EventPoolDecoder;
 import org.pocketcampus.plugin.events.server.importers.MementoImporter;
 import org.pocketcampus.plugin.events.server.utils.DBUtils;
-import org.pocketcampus.plugin.events.server.utils.EmailSender;
-import org.pocketcampus.plugin.events.server.utils.EmailSender.EmailTemplateInfo;
-import org.pocketcampus.plugin.events.server.utils.EmailSender.SendEmailInfo;
 import org.pocketcampus.plugin.events.server.utils.Utils;
 import org.pocketcampus.plugin.events.shared.AdminSendRegEmailReply;
 import org.pocketcampus.plugin.events.shared.AdminSendRegEmailRequest;

@@ -26,6 +26,7 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.pocketcampus.platform.server.BackgroundChecker;
 
 public abstract class ServerBase {
 	
@@ -37,6 +38,8 @@ public abstract class ServerBase {
 		initializeConfig(config);
 		initializePlugins();
 
+		new Thread(BackgroundChecker.getChecker(plugins)).start();
+		
 		HandlerCollection handlers = new HandlerCollection();
 		handlers.setHandlers(new Handler[] { getServicesHandler(), getLogHandler() });
 
