@@ -283,6 +283,7 @@ static NSInteger const kPageToTheEndValue = 10000;
         case kPrinterInfoSectionIndex:
         {
             if (indexPath.row == [self extensionInfoCellRowIndex]) {
+                [self trackAction:@"ViewExtensionInfo"];
                 CloudPrintExtensionInfoViewController* viewController = [CloudPrintExtensionInfoViewController new];
                 __weak __typeof(self) welf = self;
                 [viewController setDoneButtonTapped:^{
