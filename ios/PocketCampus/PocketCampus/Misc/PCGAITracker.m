@@ -62,6 +62,8 @@ static NSString* const kActionUserDefaultsStringKey = @"Action";
 static NSString* const kScreenNameUserDefaultsStringKey = @"Screen";
 static NSString* const kContentInfoUserDefaultsStringKey = @"ContentInto";
 
+static NSString* const kOfflineScreenPrefix = @"external-";
+
 static id instance __strong = nil;
 
 @interface PCGAITracker ()
@@ -200,7 +202,10 @@ static id instance __strong = nil;
     if (offlineScreens.count > 0) {
         CLSNSLog(@"-> Now tracking %u offline screens(s): %@", offlineScreens.count, offlineScreens);
         found = YES;
-        for (NSString* offlineScreen in offlineScreens) {
+        for (__strong NSString* offlineScreen in offlineScreens) {
+            if (offlineScreen) {
+                offlineScreen = [NSString stringWithFormat:@"%@%@", kOfflineScreenPrefix, offlineScreen];
+            }
             [self trackScreenWithName:offlineScreen];
         }
         [[PCPersistenceManager sharedDefaults] removeObjectForKey:kOfflineScreensUserDefaultsArrayKey];
@@ -215,6 +220,9 @@ static id instance __strong = nil;
             NSString* action = offlineActionDic[kActionUserDefaultsStringKey];
             NSString* screenName = offlineActionDic[kScreenNameUserDefaultsStringKey];
             NSString* contentInfo = offlineActionDic[kContentInfoUserDefaultsStringKey];
+            if (screenName) {
+                screenName = [NSString stringWithFormat:@"%@%@", kOfflineScreenPrefix, screenName];
+            }
             [self trackAction:action inScreenWithName:screenName category:kEventCategoryUserAction contentInfo:contentInfo];
         }
         [[PCPersistenceManager sharedDefaults] removeObjectForKey:kOfflineActionsUserDefaultsArrayKey];
