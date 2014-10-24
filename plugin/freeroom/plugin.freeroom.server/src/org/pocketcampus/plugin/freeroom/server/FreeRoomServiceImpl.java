@@ -59,7 +59,6 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private final int LIMIT_AUTOCOMPLETE = 50;
-	private final String defaultLanguage = "en";
 	/**
 	 * some rooms don't have a capacity, so we display the occupation based on
 	 * 40 places, which is probably under-evaluated, so wont create many
@@ -1076,7 +1075,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				mRoom.setSurface(surface);
 				Utils.addAliasIfNeeded(mRoom, alias);
 
-				if (typeLanguage != null) {
+				if (type
+ != null) {
 					mRoom.setType(typeLanguage);
 				}
 
@@ -1350,7 +1350,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				String typeEN = resultQuery.getString("typeEN");
 				if (typeEN != null
 						&& (userLanguage.equals("en") || userLanguage
-								.equals(defaultLanguage))) {
+								.equals(Utils.defaultLanguage))) {
 					frRoom.setType(typeEN);
 				}
 				rooms.add(frRoom);
