@@ -33,6 +33,10 @@
 
 #import "CloudPrintController.h"
 
+#import "CloudPrintExtensionInfoViewController.h"
+
+#import "CloudPrintExtensionInfoCell.h"
+
 #import "CloudPrintPOOL1InfoViewController.h"
 
 #import "CloudPrintMultiPageLayoutCell.h"
@@ -69,6 +73,7 @@ static NSInteger const kPageToTheEndValue = 10000;
 @property (nonatomic, strong) NSString* documentName;
 @property (nonatomic, strong) PrintDocumentRequest* printRequest;
 
+@property (nonatomic, strong) CloudPrintExtensionInfoCell* extensionInfoCell;
 @property (nonatomic, strong) UIStepper* nbCopiesStepper;
 @property (nonatomic, strong) UISegmentedControl* pageRangeSegmentedControl;
 @property (nonatomic, strong) UIStepper* pageFromStepper;
@@ -240,6 +245,11 @@ static NSInteger const kPageToTheEndValue = 10000;
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath.section == kPrinterInfoSectionIndex && indexPath.row == [self extensionInfoCellRowIndex]) {
+        return [self.extensionInfoCell preferredHeightInTableView:tableView];
+    }
+    
     if (indexPath.section == kMultiPageSectionIndex && indexPath.row == kMultiPageLayoutRowIndex) {
         return [CloudPrintMultiPageLayoutCell preferredHeight];
     }
@@ -270,6 +280,20 @@ static NSInteger const kPageToTheEndValue = 10000;
     UIAlertController* alertController = nil;
     __weak __typeof(self) welf = self;
     switch (indexPath.section) {
+        case kPrinterInfoSectionIndex:
+        {
+            if (indexPath.row == [self extensionInfoCellRowIndex]) {
+                CloudPrintExtensionInfoViewController* viewController = [CloudPrintExtensionInfoViewController new];
+                __weak __typeof(self) welf = self;
+                [viewController setDoneButtonTapped:^{
+                    [welf dismissViewControllerAnimated:YES completion:NULL];
+                }];
+                PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
+                navController.modalPresentationStyle = UIModalPresentationFormSheet;
+                [self presentViewController:navController animated:YES completion:NULL];
+            }
+            break;
+        }
         case kOrientationSectionIndex:
             switch (indexPath.row) {
                 case kOrientationRowIndex:
@@ -443,9 +467,19 @@ static NSInteger const kPageToTheEndValue = 10000;
     switch (indexPath.section) {
         case kPrinterInfoSectionIndex:
         {
-            cell.textLabel.text = NSLocalizedStringFromTable(@"Printer", @"CloudPrintPlugin", nil);
-            cell.detailTextLabel.text = @"POOL1";
-            cell.accessoryType = UITableViewCellAccessoryDetailButton;
+            if (indexPath.row == [self printerCellRowIndex]) {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"Printer", @"CloudPrintPlugin", nil);
+                cell.detailTextLabel.text = @"POOL1";
+                cell.accessoryType = UITableViewCellAccessoryDetailButton;
+            } else if (indexPath.row == [self extensionInfoCellRowIndex]) {
+                CloudPrintExtensionInfoCell* infoCell = [CloudPrintExtensionInfoCell new];
+                __weak __typeof(self) welf = self;
+                [infoCell setCloseButtonTapped:^{
+                    [welf saveExtensionInfoHidden:YES];
+                    [welf.tableView reloadSections:[NSIndexSet indexSetWithIndex:kPrinterInfoSectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
+                }];
+                cell = infoCell;
+            }
             break;
         }
         case kCopiesAndRangeSectionIndex:
@@ -620,6 +654,9 @@ static NSInteger const kPageToTheEndValue = 10000;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case kPrinterInfoSectionIndex:
+            if ([self extensionInfoCellRowIndex] >= 0) {
+                return 2;
+            }
             return 1;
         case kCopiesAndRangeSectionIndex:
             return self.printRequest.pageSelection ? 4 : 2;
@@ -637,6 +674,43 @@ static NSInteger const kPageToTheEndValue = 10000;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 6;
+}
+
+#pragma mark - Private
+
+- (CloudPrintExtensionInfoCell*)extensionInfoCell {
+    if (!_extensionInfoCell) {
+        _extensionInfoCell = [CloudPrintExtensionInfoCell new];
+    }
+    return _extensionInfoCell;
+}
+
+static NSString* const kHideExtensionInfoBoolKey = @"HideExtensionInfoBool";
+
+- (void)saveExtensionInfoHidden:(BOOL)hidden {
+    [[PCPersistenceManager userDefaultsForPluginName:@"cloudprint"] setBool:hidden forKey:kHideExtensionInfoBoolKey];
+}
+
+- (BOOL)shouldHideExtensionInfo {
+    if ([PCUtils isOSVersionSmallerThan:8.0] || [CloudPrintController sharedInstance].extensionContext) {
+        //Widgets only available on iOS 8
+        return YES;
+    }
+    return [[PCPersistenceManager userDefaultsForPluginName:@"cloudprint"] boolForKey:kHideExtensionInfoBoolKey];
+}
+
+- (NSInteger)extensionInfoCellRowIndex {
+    if ([self shouldHideExtensionInfo]) {
+        return -1;
+    }
+    return 0;
+}
+
+- (NSInteger)printerCellRowIndex {
+    if ([self extensionInfoCellRowIndex] >= 0) {
+        return 1;
+    }
+    return 0;
 }
 
 @end

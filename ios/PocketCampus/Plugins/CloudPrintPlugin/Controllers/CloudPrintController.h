@@ -71,7 +71,7 @@ typedef void (^CloudPrintCompletionBlock)(CloudPrintCompletionStatusCode printSt
 - (UIViewController*)viewControllerForPrintWithDocumentName:(NSString*)docName printDocumentRequest:(PrintDocumentRequest*)request completion:(CloudPrintCompletionBlock)completion;
 
 /**
- * When plugin has been as an extension, this property holds the etension context
+ * When plugin has been started as an extension, this property holds the etension context
  */
 @property (nonatomic, strong) NSExtensionContext* extensionContext;
 

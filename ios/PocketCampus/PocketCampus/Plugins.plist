@@ -30,6 +30,18 @@
 		</dict>
 		<dict>
 			<key>identifierName</key>
+			<string>CloudPrint</string>
+			<key>enabled</key>
+			<true/>
+			<key>hiddenByDefault</key>
+			<false/>
+			<key>logicOnly</key>
+			<true/>
+			<key>supportedIdioms</key>
+			<string>phone+pad</string>
+		</dict>
+		<dict>
+			<key>identifierName</key>
 			<string>Directory</string>
 			<key>enabled</key>
 			<true/>

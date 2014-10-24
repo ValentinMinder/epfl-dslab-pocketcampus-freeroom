@@ -152,6 +152,20 @@
 		325C47AB1621D8FC006752B4 /* MainMenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325C47AA1621D8FC006752B4 /* MainMenuItemCell.xib */; };
 		325C47AE1621E91A006752B4 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47AD1621E91A006752B4 /* MainController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		325C47B4162200E8006752B4 /* BlankPluginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325C47B3162200E8006752B4 /* BlankPluginView.xib */; };
+		325F1FB319FA8C060019CFCB /* CloudPrintExtensionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325F1FB119FA8C060019CFCB /* CloudPrintExtensionInfoViewController.m */; };
+		325F1FB519FA8C0D0019CFCB /* CloudPrintExtensionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325F1FB119FA8C060019CFCB /* CloudPrintExtensionInfoViewController.m */; };
+		325F1FB919FA95470019CFCB /* CloudPrintExtensionSafari.png in Resources */ = {isa = PBXBuildFile; fileRef = 325F1FB719FA95470019CFCB /* CloudPrintExtensionSafari.png */; };
+		325F1FBA19FA95470019CFCB /* CloudPrintExtensionSafari.png in Resources */ = {isa = PBXBuildFile; fileRef = 325F1FB719FA95470019CFCB /* CloudPrintExtensionSafari.png */; };
+		325F1FBB19FA95470019CFCB /* CloudPrintExtensionSafari@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 325F1FB819FA95470019CFCB /* CloudPrintExtensionSafari@2x.png */; };
+		325F1FBC19FA95470019CFCB /* CloudPrintExtensionSafari@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 325F1FB819FA95470019CFCB /* CloudPrintExtensionSafari@2x.png */; };
+		325F1FBE19FA99AB0019CFCB /* CamiproInfoWidgetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325F1FBD19FA99AB0019CFCB /* CamiproInfoWidgetCell.xib */; };
+		325F1FBF19FA99AB0019CFCB /* CamiproInfoWidgetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325F1FBD19FA99AB0019CFCB /* CamiproInfoWidgetCell.xib */; };
+		325F1FC319FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 325F1FC119FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.m */; };
+		325F1FC419FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 325F1FC119FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.m */; };
+		325F1FC519FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325F1FC219FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.xib */; };
+		325F1FC619FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325F1FC219FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.xib */; };
+		325F1FC719FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325F1FCA19FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib */; };
+		325F1FC819FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325F1FCA19FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib */; };
 		325FABC819C6FF600075370F /* CamiproWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 32136F33193FBCFF002905A9 /* CamiproWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		32617BCE16E7DA5F004F9CF9 /* PCTableViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32617BCD16E7DA5F004F9CF9 /* PCTableViewAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32649B23160DD7DA002E6498 /* DirectoryPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32649B22160DD7DA002E6498 /* DirectoryPersonViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -401,7 +415,6 @@
 		32EB6182180D7CC4001AE852 /* MapRecentSearchesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EB6181180D7CC4001AE852 /* MapRecentSearchesListViewController.m */; };
 		32EE9623166E19D5005B0F65 /* MoodleCoursesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9622166E19D5005B0F65 /* MoodleCoursesListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32EE9628166E25BD005B0F65 /* MoodleCourseSectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32EEBCCC19B3A38E0095801C /* CamiproInfoWidgetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32EEBCCE19B3A38E0095801C /* CamiproInfoWidgetCell.xib */; };
 		32F5308916EA974B00F66484 /* EventsCategorySelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32F5308D16EAB02400F66484 /* EventItemInfo.html in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308C16EAB02400F66484 /* EventItemInfo.html */; };
 		32F5308F16EAB89500F66484 /* EventsSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308E16EAB89500F66484 /* EventsSplashDetailView.xib */; };
@@ -752,6 +765,16 @@
 		325C47AC1621E91A006752B4 /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MainController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		325C47AD1621E91A006752B4 /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MainController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		325C47B3162200E8006752B4 /* BlankPluginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BlankPluginView.xib; sourceTree = "<group>"; };
+		325F1FB019FA8C060019CFCB /* CloudPrintExtensionInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintExtensionInfoViewController.h; sourceTree = "<group>"; };
+		325F1FB119FA8C060019CFCB /* CloudPrintExtensionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintExtensionInfoViewController.m; sourceTree = "<group>"; };
+		325F1FB719FA95470019CFCB /* CloudPrintExtensionSafari.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CloudPrintExtensionSafari.png; sourceTree = "<group>"; };
+		325F1FB819FA95470019CFCB /* CloudPrintExtensionSafari@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CloudPrintExtensionSafari@2x.png"; sourceTree = "<group>"; };
+		325F1FBD19FA99AB0019CFCB /* CamiproInfoWidgetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CamiproInfoWidgetCell.xib; sourceTree = "<group>"; };
+		325F1FC019FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintExtensionInfoCell.h; sourceTree = "<group>"; };
+		325F1FC119FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintExtensionInfoCell.m; sourceTree = "<group>"; };
+		325F1FC219FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CloudPrintExtensionInfoCell.xib; sourceTree = "<group>"; };
+		325F1FC919FAAE1B0019CFCB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CloudPrintExtensionInfoViewController.xib; sourceTree = "<group>"; };
+		325F1FCB19FAAE1E0019CFCB /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/CloudPrintExtensionInfoViewController.xib; sourceTree = "<group>"; };
 		32617BCC16E7DA5F004F9CF9 /* PCTableViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCTableViewAdditions.h; sourceTree = "<group>"; };
 		32617BCD16E7DA5F004F9CF9 /* PCTableViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCTableViewAdditions.m; sourceTree = "<group>"; };
 		32649B21160DD7DA002E6498 /* DirectoryPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DirectoryPersonViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -1050,7 +1073,6 @@
 		32EE9622166E19D5005B0F65 /* MoodleCoursesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MoodleCoursesListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32EE9626166E25BD005B0F65 /* MoodleCourseSectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleCourseSectionsViewController.h; sourceTree = "<group>"; };
 		32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MoodleCourseSectionsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		32EEBCCD19B3A38E0095801C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CamiproInfoWidgetCell.xib; sourceTree = "<group>"; };
 		32EF30391921007A00FB6421 /* PCScreenTileOverlay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCScreenTileOverlay.h; sourceTree = "<group>"; };
 		32F5308716EA973B00F66484 /* EventsCategorySelectorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventsCategorySelectorViewController.h; sourceTree = "<group>"; };
 		32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventsCategorySelectorViewController.m; sourceTree = "<group>"; };
@@ -1936,7 +1958,7 @@
 				324FD732176574DD0003EE30 /* CamiproTransactionCell.xib */,
 				32AF954319B39929008CB161 /* CamiproInfoWidgetCell.h */,
 				32AF954419B39929008CB161 /* CamiproInfoWidgetCell.m */,
-				32EEBCCE19B3A38E0095801C /* CamiproInfoWidgetCell.xib */,
+				325F1FBD19FA99AB0019CFCB /* CamiproInfoWidgetCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2213,6 +2235,9 @@
 				3207A37619ED4C920041DF0B /* CloudPrintPOOL1InfoViewController.h */,
 				3207A37719ED4C920041DF0B /* CloudPrintPOOL1InfoViewController.m */,
 				3207A38919ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib */,
+				325F1FB019FA8C060019CFCB /* CloudPrintExtensionInfoViewController.h */,
+				325F1FB119FA8C060019CFCB /* CloudPrintExtensionInfoViewController.m */,
+				325F1FCA19FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2242,6 +2267,9 @@
 			isa = PBXGroup;
 			children = (
 				32DD524D19B4DEAE00B5B241 /* Images */,
+				325F1FC019FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.h */,
+				325F1FC119FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.m */,
+				325F1FC219FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.xib */,
 				326F5A7019BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.h */,
 				326F5A7119BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.m */,
 				326F5A7C19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib */,
@@ -2258,6 +2286,8 @@
 			children = (
 				32DD524E19B4DEAE00B5B241 /* CloudPrint.png */,
 				32DD524F19B4DEAE00B5B241 /* CloudPrint@2x.png */,
+				325F1FB719FA95470019CFCB /* CloudPrintExtensionSafari.png */,
+				325F1FB819FA95470019CFCB /* CloudPrintExtensionSafari@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -2844,6 +2874,7 @@
 				32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */,
 				32506D02181DC41E003F08D7 /* MasterVisible@2x.png in Resources */,
 				32290AD118200A25005869E7 /* FoodSplashDetailView.xib in Resources */,
+				325F1FC519FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.xib in Resources */,
 				320037511811843500901F6A /* CheckmarkRoundedSquare.png in Resources */,
 				32148A3E18101D6C00AF2F8E /* CamiproLarge@2x.png in Resources */,
 				326F5A8A19BDD815000693A2 /* PrintBarButtonLandscape@2x.png in Resources */,
@@ -2895,6 +2926,7 @@
 				321F37E615B02FBE00E7BA6D /* HelpBarButton.png in Resources */,
 				32E637E419D0D25400378788 /* SplashImage5_5inch@3x.png in Resources */,
 				321F37E715B02FBE00E7BA6D /* HelpBarButton@2x.png in Resources */,
+				325F1FBE19FA99AB0019CFCB /* CamiproInfoWidgetCell.xib in Resources */,
 				32506D06181DC7AF003F08D7 /* MasterHidden@2x.png in Resources */,
 				27B74CE719A205E6006B2F17 /* RecommendedApps@2x.png in Resources */,
 				320F859C194EED8C00BF3228 /* ArrowRightBarButton@2x.png in Resources */,
@@ -2956,6 +2988,7 @@
 				32035BB5166E988600E134DD /* MoodleFileView.xib in Resources */,
 				324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */,
 				327412DA167E776A001E8C62 /* DownloadedCorner.png in Resources */,
+				325F1FB919FA95470019CFCB /* CloudPrintExtensionSafari.png in Resources */,
 				327412DB167E776A001E8C62 /* DownloadedCorner@2x.png in Resources */,
 				327412E1167E7E56001E8C62 /* DownloadedCornerSelected.png in Resources */,
 				327412E2167E7E56001E8C62 /* DownloadedCornerSelected@2x.png in Resources */,
@@ -2973,7 +3006,6 @@
 				32506D01181DC41E003F08D7 /* MasterVisible.png in Resources */,
 				3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */,
 				32AF954819B39F91008CB161 /* Cross.png in Resources */,
-				32EEBCCC19B3A38E0095801C /* CamiproInfoWidgetCell.xib in Resources */,
 				323676C316BDB42D0004D5AD /* AppLogoCellImage@2x.png in Resources */,
 				323676C516BDB5300004D5AD /* AppLogoCellImage.png in Resources */,
 				323676C816BDB6620004D5AD /* FacebookLikeCellImage.png in Resources */,
@@ -3005,9 +3037,11 @@
 				32150DD9197D6D0400CCF2AB /* FolderIcon@2x.png in Resources */,
 				328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */,
 				32C509EA17FC6D73005A5635 /* SortBarButton.png in Resources */,
+				325F1FBB19FA95470019CFCB /* CloudPrintExtensionSafari@2x.png in Resources */,
 				32DE5B2517F1FB6800E03423 /* DirectoryPersonView.xib in Resources */,
 				32DD525519B4DEAE00B5B241 /* CloudPrint@2x.png in Resources */,
 				32AEEC831747C11C006DBA2F /* CamiproView~iphone.xib in Resources */,
+				325F1FC719FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib in Resources */,
 				32C450B01824137B000C99A3 /* FoodMealCell.xib in Resources */,
 				32E637E119D0CCB000378788 /* SplashImage4_7inch@2x.png in Resources */,
 				327B0C24175199590011D81E /* ArrowUpRightCircleAccessory.png in Resources */,
@@ -3040,14 +3074,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				325F1FBC19FA95470019CFCB /* CloudPrintExtensionSafari@2x.png in Resources */,
 				32CE952119DDBB270071F987 /* Images.xcassets in Resources */,
 				3207A38719ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib in Resources */,
 				32F9619D19C63227006A4C46 /* InfoPlist.strings in Resources */,
 				32F9619C19C631ED006A4C46 /* CloudPrintPlugin.strings in Resources */,
+				325F1FC819FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib in Resources */,
 				32F9619B19C631E1006A4C46 /* PocketCampus.strings in Resources */,
+				325F1FC619FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.xib in Resources */,
+				325F1FBF19FA99AB0019CFCB /* CamiproInfoWidgetCell.xib in Resources */,
 				32F9619319C63104006A4C46 /* CloudPrintMultiPageLayoutCell.xib in Resources */,
 				32F9619419C63104006A4C46 /* CloudPrintMultiPageLayoutButton.xib in Resources */,
 				32F9619519C63104006A4C46 /* CloudPrintStatusView.xib in Resources */,
+				325F1FBA19FA95470019CFCB /* CloudPrintExtensionSafari.png in Resources */,
 				32FF91F119C62FC300559E1E /* CloudPrintAction.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3304,6 +3343,7 @@
 				322207E81688E62E003F6622 /* NewsSplashViewController.m in Sources */,
 				322207EF1688F097003F6622 /* NewsItemViewController.m in Sources */,
 				32930AB817F898910025F864 /* ZUUIRevealController.m in Sources */,
+				325F1FC319FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.m in Sources */,
 				326F5A8019BDA2AA000693A2 /* CloudPrintStatusViewController.m in Sources */,
 				32EB617F180D5A3C001AE852 /* MapResultsListViewController.m in Sources */,
 				3267676319E2C96800365F6D /* RecommendedAppsForCategoryCell.m in Sources */,
@@ -3338,6 +3378,7 @@
 				321CCF9E16E3B537002CBEA2 /* PCURLSchemeHandler.m in Sources */,
 				3215446419E6B24E00D6FB33 /* MapLayersListSelectionViewController.m in Sources */,
 				32617BCE16E7DA5F004F9CF9 /* PCTableViewAdditions.m in Sources */,
+				325F1FB319FA8C060019CFCB /* CloudPrintExtensionInfoViewController.m in Sources */,
 				32B1D9E317F08E1D000CC209 /* PCNavigationController.m in Sources */,
 				32F5308916EA974B00F66484 /* EventsCategorySelectorViewController.m in Sources */,
 				32F5309216EAB8F800F66484 /* EventsSplashDetailViewController.m in Sources */,
@@ -3365,6 +3406,7 @@
 				3207A38B19ED625E0041DF0B /* map.m in Sources */,
 				32CE952019DDA8380071F987 /* UIViewController+Additions.m in Sources */,
 				32F9619A19C631BC006A4C46 /* PCTableViewCellAdditions.m in Sources */,
+				325F1FC419FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.m in Sources */,
 				32F9619919C631B2006A4C46 /* PushNotifController.m in Sources */,
 				32F9619619C6315F006A4C46 /* AuthenticationController.m in Sources */,
 				32F9619719C6315F006A4C46 /* AuthenticationService.m in Sources */,
@@ -3392,6 +3434,7 @@
 				32F9618E19C630DF006A4C46 /* CloudPrintService.m in Sources */,
 				32F9618F19C630DF006A4C46 /* CloudPrintModelAdditions.m in Sources */,
 				32F9619019C630DF006A4C46 /* CloudPrintMultiPageLayoutCell.m in Sources */,
+				325F1FB519FA8C0D0019CFCB /* CloudPrintExtensionInfoViewController.m in Sources */,
 				32F9619119C630DF006A4C46 /* CloudPrintMultiPageLayoutButton.m in Sources */,
 				32CE951A19DD90E10071F987 /* CloudPrintRequestViewController.m in Sources */,
 				32CE951E19DD9BD50071F987 /* CloudPrintController.m in Sources */,
@@ -3467,6 +3510,15 @@
 				3247C3B21504F2E10079522A /* fr */,
 			);
 			name = FoodPlugin.strings;
+			sourceTree = "<group>";
+		};
+		325F1FCA19FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				325F1FC919FAAE1B0019CFCB /* en */,
+				325F1FCB19FAAE1E0019CFCB /* fr */,
+			);
+			name = CloudPrintExtensionInfoViewController.xib;
 			sourceTree = "<group>";
 		};
 		326F5A7C19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib */ = {
@@ -3595,14 +3647,6 @@
 				32E3E5CE1897D1F500D263C5 /* fr */,
 			);
 			name = TransportPlugin.strings;
-			sourceTree = "<group>";
-		};
-		32EEBCCE19B3A38E0095801C /* CamiproInfoWidgetCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				32EEBCCD19B3A38E0095801C /* en */,
-			);
-			name = CamiproInfoWidgetCell.xib;
 			sourceTree = "<group>";
 		};
 		32FAC0E81500F40700925180 /* DirectoryPlugin.strings */ = {

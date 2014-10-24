@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment version="2048" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="JUb-bw-bv2" customClass="CloudPrintExtensionInfoCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="85"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JUb-bw-bv2" id="ND5-nQ-edc">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Print from any app" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GXg-Cg-V2y">
+                        <rect key="frame" x="54" y="32" width="258" height="20"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7bN-vj-PB9">
+                        <rect key="frame" x="8" y="22" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="1aR-6M-Tac"/>
+                            <constraint firstAttribute="width" constant="40" id="fD7-bp-1BE"/>
+                        </constraints>
+                        <state key="normal" image="Cross.png"/>
+                        <connections>
+                            <action selector="closeTapped" destination="JUb-bw-bv2" eventType="touchUpInside" id="19J-7n-aNr"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <color key="backgroundColor" red="1" green="0.91764705882352937" blue="0.0" alpha="0.050000000000000003" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstItem="GXg-Cg-V2y" firstAttribute="top" secondItem="ND5-nQ-edc" secondAttribute="topMargin" constant="7" id="KXu-AK-xML"/>
+                    <constraint firstAttribute="centerY" secondItem="GXg-Cg-V2y" secondAttribute="centerY" id="VfA-FD-YXJ"/>
+                    <constraint firstItem="GXg-Cg-V2y" firstAttribute="leading" secondItem="7bN-vj-PB9" secondAttribute="trailing" constant="6" id="b0C-O9-7VM"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="GXg-Cg-V2y" secondAttribute="trailing" id="fc2-O9-kBl"/>
+                    <constraint firstItem="7bN-vj-PB9" firstAttribute="leading" secondItem="ND5-nQ-edc" secondAttribute="leadingMargin" id="ge0-8G-0um"/>
+                    <constraint firstItem="7bN-vj-PB9" firstAttribute="leading" secondItem="GXg-Cg-V2y" secondAttribute="trailing" constant="10" id="kc6-1o-aAg"/>
+                    <constraint firstAttribute="centerY" secondItem="7bN-vj-PB9" secondAttribute="centerY" id="sTq-am-dm9"/>
+                    <constraint firstItem="7bN-vj-PB9" firstAttribute="trailing" secondItem="ND5-nQ-edc" secondAttribute="trailingMargin" id="u6y-50-vHa"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="GXg-Cg-V2y" secondAttribute="bottom" id="yEy-jd-6Qa"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="kc6-1o-aAg"/>
+                        <exclude reference="u6y-50-vHa"/>
+                        <exclude reference="KXu-AK-xML"/>
+                        <exclude reference="yEy-jd-6Qa"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+            <connections>
+                <outlet property="label" destination="GXg-Cg-V2y" id="WGG-te-3Cd"/>
+            </connections>
+            <point key="canvasLocation" x="41" y="191.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Cross.png" width="40" height="40"/>
+    </resources>
+</document>

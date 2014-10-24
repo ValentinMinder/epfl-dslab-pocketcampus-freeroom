@@ -232,6 +232,8 @@ static float const kProgressMax = 100;
     CloudPrintRequestViewController* requestViewController = [[CloudPrintRequestViewController alloc] initWithDocumentName:docName printRequest:request];
     PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:requestViewController];
     
+    navController.preferredContentSize = CGSizeMake(340.0, 620.0);
+    
     CloudPrintJob* job = [CloudPrintJob new];
     job.request = request;
     job.docName = docName;

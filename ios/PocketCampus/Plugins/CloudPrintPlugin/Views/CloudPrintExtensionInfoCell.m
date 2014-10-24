@@ -25,25 +25,25 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 31.08.14.
+//  Created by Loïc Gardiol on 24.10.14.
 
-#import "CamiproInfoWidgetCell.h"
+#import "CloudPrintExtensionInfoCell.h"
 
 @import CoreText;
 
-@interface CamiproInfoWidgetCell ()
+@interface CloudPrintExtensionInfoCell ()
 
 @property (nonatomic, weak) IBOutlet UILabel* label;
 
 @end
 
-@implementation CamiproInfoWidgetCell
+@implementation CloudPrintExtensionInfoCell
 
 #pragma mark - Init
 
 - (instancetype)init {
     NSArray* elements = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self.class) owner:nil options:nil];
-    self = (CamiproInfoWidgetCell*)elements[0];
+    self = (CloudPrintExtensionInfoCell*)elements[0];
     if (self) {
         self.label.attributedText = [self.class infoAttributedString];
     }
@@ -73,8 +73,8 @@
     static NSAttributedString* attrString = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSString* title = NSLocalizedStringFromTable(@"CamiproWidgetTitle", @"CamiproPlugin", nil);
-        NSString* subtitle = NSLocalizedStringFromTable(@"CamiproWidgetSubtitle", @"CamiproPlugin", nil);
+        NSString* title = NSLocalizedStringFromTable(@"DidYouKnowExtensionTitle", @"CloudPrintPlugin", nil);
+        NSString* subtitle = NSLocalizedStringFromTable(@"DidYouKnowExtensionSubtitle", @"CloudPrintPlugin", nil);
         NSString* finalString = [NSString stringWithFormat:@"%@\n%@", title, subtitle];
         NSMutableAttributedString* mAttrString = [[NSMutableAttributedString alloc] initWithString:finalString];
         [mAttrString setAttributes:@{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]} range:[finalString rangeOfString:title]];

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CloudPrintPOOL1InfoViewController"/>
@@ -19,7 +19,7 @@
                         <rect key="frame" x="12" y="25" width="303" height="483"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <string key="text">Quand vous imprimez un document, il n'est pas directement envoyé à une imprimante en particulier.
-Vous devez aller vers une imprimante compatible POOL1 et lancer l'impression là-bas:
+Vous devez vous rendre vers une imprimante compatible POOL1 et y lancer l'impression:
 
 1. Trouvez une imprimante (voir ci-dessous)
 2. Passez votre carte Camipro sur le lecteur de carte

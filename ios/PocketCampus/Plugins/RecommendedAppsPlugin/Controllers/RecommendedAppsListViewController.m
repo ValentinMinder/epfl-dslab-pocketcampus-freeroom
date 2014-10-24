@@ -195,8 +195,9 @@ static NSInteger const kDisclaimerSection = 0;
         case kDisclaimerSection:
         {
             UITableViewCell* disclaimerCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-            disclaimerCell.contentView.backgroundColor = [[UIColor greenColor] colorWithAlphaComponent:0.05];
+            disclaimerCell.contentView.backgroundColor = [UIColor colorWithRed:0.9725 green:0.9725 blue:0.9725 alpha:1.0];
             disclaimerCell.textLabel.font = [UIFont systemFontOfSize:12.0];
+            disclaimerCell.textLabel.textColor = [UIColor darkGrayColor];
             disclaimerCell.textLabel.textAlignment = NSTextAlignmentCenter;
             disclaimerCell.textLabel.numberOfLines = 0;
             disclaimerCell.selectionStyle = UITableViewCellSelectionStyleNone;
