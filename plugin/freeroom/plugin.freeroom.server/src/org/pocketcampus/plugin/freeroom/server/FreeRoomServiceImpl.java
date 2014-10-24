@@ -32,7 +32,6 @@ import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.FRImWorkingRequest;
-import org.pocketcampus.plugin.freeroom.shared.FRLanguage;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
@@ -60,7 +59,7 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private final int LIMIT_AUTOCOMPLETE = 50;
-
+	private final String defaultLanguage = "en";
 	/**
 	 * some rooms don't have a capacity, so we display the occupation based on
 	 * 40 places, which is probably under-evaluated, so wont create many
@@ -137,18 +136,18 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		// USEME: Periodically update
 		// new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
 		// this)).start();
-//
-//		 USEME: Rebuild rooms list in DB, need to tune parameter for tsStart
-//		 and tsEnd, (Start/End of semester)
-		Calendar 																																																																																																																																												mCalendar = Calendar.getInstance();
+		//
+		// USEME: Rebuild rooms list in DB, need to tune parameter for tsStart
+		// and tsEnd, (Start/End of semester)
+		Calendar mCalendar = Calendar.getInstance();
 		mCalendar.set(Calendar.MONTH, 8);
 		mCalendar.set(Calendar.DAY_OF_MONTH, 1);
 		long tsStart = mCalendar.getTimeInMillis();
 		mCalendar.set(Calendar.MONTH, 11);
 		mCalendar.set(Calendar.DAY_OF_MONTH, 31);
 		long tsEnd = mCalendar.getTimeInMillis();
-		new Thread(new RebuildDB(DB_URL, DB_USER, DB_PASSWORD, this,
-				tsStart, tsEnd)).start();
+		new Thread(new RebuildDB(DB_URL, DB_USER, DB_PASSWORD, this, tsStart,
+				tsEnd)).start();
 
 	}
 
@@ -850,9 +849,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		// FIXME should be set to false for students, true for staff
 		boolean allowWeekends = false;
 		boolean allowEvenings = false;
-		
-		FRLanguage userLanguage = (request.getUserLanguage() == null) ? FRLanguage.EN : request.getUserLanguage();
-		
+
+		String userLanguage = Utils.getSupportedLanguage(request.getUserLanguage());
+
 		if (FRTimes.validCalendarsString(period, System.currentTimeMillis(),
 				allowWeekends, allowEvenings).length() != 0) {
 			// if something is wrong in the request
@@ -864,11 +863,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		List<String> uidList = request.getUidList();
 
 		HashMap<String, List<FRRoomOccupancy>> occupancies = null;
-		
+
 		if (uidList == null || uidList.isEmpty()) {
 			if (onlyFreeRoom) {
 				// we want to look into all the rooms
-				occupancies = getOccupancyOfAnyFreeRoom(tsStart, tsEnd, group, userLanguage);
+				occupancies = getOccupancyOfAnyFreeRoom(tsStart, tsEnd, group,
+						userLanguage);
 			} else {
 				return new FROccupancyReply(FRStatusCode.HTTP_BAD_REQUEST,
 						"The search for any free room must contains onlyFreeRoom = true");
@@ -907,7 +907,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *         the building), null if an error occured
 	 */
 	private HashMap<String, List<FRRoomOccupancy>> getOccupancyOfAnyFreeRoom(
-			long tsStart, long tsEnd, int userGroup, FRLanguage userLanguage) {
+			long tsStart, long tsEnd, int userGroup, String userLanguage) {
 
 		HashMap<String, List<FRRoomOccupancy>> result = new HashMap<String, List<FRRoomOccupancy>>();
 		Connection connectBDD;
@@ -988,7 +988,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 */
 	private HashMap<String, List<FRRoomOccupancy>> getOccupancyOfSpecificRoom(
 			List<String> uidList, boolean onlyFreeRooms, long tsStart,
-			long tsEnd, int userGroup, FRLanguage language) {
+			long tsEnd, int userGroup, String language) {
 
 		// useless
 		// if (uidList.isEmpty()) {
@@ -1014,7 +1014,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		Connection connectBDD;
 		try {
 			connectBDD = connMgr.getConnection();
-			String request = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.type" + language.name() + " AS type, "
+			String request = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.type"
+					+ language.toUpperCase()
+					+ " AS type, "
 					+ "uo.count, uo.timestampStart, uo.timestampEnd, uo.type "
 					+ "FROM `fr-roomslist` rl, `fr-occupancy` uo "
 					+ "WHERE rl.uid = uo.uid AND rl.uid IN("
@@ -1078,7 +1080,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					mRoom.setType(typeLanguage);
 				}
 
-
 				// if this is the first iteration
 				if (currentUID == null) {
 					currentUID = uid;
@@ -1091,7 +1092,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// for the loop, as well as storing the previous room in the
 				// resulting HashMap
 				if (!uid.equals(currentUID)) {
-					FRRoomOccupancy mOccupancy = currentOccupancy.getOccupancy();
+					FRRoomOccupancy mOccupancy = currentOccupancy
+							.getOccupancy();
 
 					addToHashMapOccupancy(currentDoorCode, mOccupancy, result);
 
@@ -1133,7 +1135,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				}
 
 				roomsListQueryFormat += "?";
-				String infoRequest = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.type" + language.name() + " AS type "
+				String infoRequest = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.type"
+						+ language.toUpperCase()
+						+ " AS type "
 						+ "FROM `fr-roomslist` rl "
 						+ "WHERE rl.uid IN("
 						+ roomsListQueryFormat + ")";
@@ -1166,10 +1170,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					currentOccupancy = new OccupancySorted(mRoom, tsStart,
 							tsEnd, onlyFreeRooms);
 					FRPeriod period = new FRPeriod(tsStart, tsEnd);
-					FRPeriodOccupation accOcc = new FRPeriodOccupation(period, true);
+					FRPeriodOccupation accOcc = new FRPeriodOccupation(period,
+							true);
 					currentOccupancy.addActualOccupation(accOcc);
 
-					FRRoomOccupancy mOccupancy = currentOccupancy.getOccupancy();
+					FRRoomOccupancy mOccupancy = currentOccupancy
+							.getOccupancy();
 					addToHashMapOccupancy(mRoom.getDoorCode(), mOccupancy,
 							result);
 				}
@@ -1251,8 +1257,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 		String constraint = request.getConstraint();
-		FRLanguage userLanguage = (request.getUserLanguage() == null) ? FRLanguage.EN : request.getUserLanguage();
-		
+		String userLanguage = Utils.getSupportedLanguage(request.getUserLanguage());
+
 		if (constraint.length() < Constants.MIN_AUTOCOMPL_LENGTH) {
 			return new FRAutoCompleteReply(FRStatusCode.HTTP_BAD_REQUEST,
 					"Constraints should be at least "
@@ -1337,12 +1343,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				Utils.addAliasIfNeeded(frRoom, alias);
 
 				String typeFR = resultQuery.getString("typeFR");
-				if (typeFR != null && userLanguage == FRLanguage.FR) {
+				if (typeFR != null && userLanguage.equals("fr")) {
 					frRoom.setType(typeFR);
 				}
 
 				String typeEN = resultQuery.getString("typeEN");
-				if (typeEN != null && userLanguage == FRLanguage.EN) {
+				if (typeEN != null
+						&& (userLanguage.equals("en") || userLanguage
+								.equals(defaultLanguage))) {
 					frRoom.setType(typeEN);
 				}
 				rooms.add(frRoom);
@@ -1356,8 +1364,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					+ forbiddenRooms;
 			log(Level.INFO, formatServerLogInfo("autoCompleteRoom", logMessage));
 		} catch (SQLException e) {
-			reply = new FRAutoCompleteReply(FRStatusCode.HTTP_INTERNAL_ERROR, ""
-					+ HttpURLConnection.HTTP_INTERNAL_ERROR);
+			reply = new FRAutoCompleteReply(FRStatusCode.HTTP_INTERNAL_ERROR,
+					"" + HttpURLConnection.HTTP_INTERNAL_ERROR);
 			e.printStackTrace();
 			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"SQL error for autocomplete request with constraint "
@@ -1366,76 +1374,76 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return reply;
 	}
 
-//	@Override
-//	public FRAutoCompleteUserMessageReply autoCompleteUserMessage(
-//			FRAutoCompleteUserMessageRequest request) throws TException {
-//		if (request == null) {
-//			log(LOG_SIDE.SERVER, Level.WARNING,
-//					"Receiving null AutoCompleteUserMessageRequest");
-//			return new FRAutoCompleteUserMessageReply(
-//					FRStatusCode.HTTP_BAD_REQUEST,
-//					"AutocompleteUserMessageRequest is null");
-//		}
-//
-//		FRAutoCompleteUserMessageReply reply = CheckRequests
-//				.checkAutoCompleteUserMessageRequest(request);
-//		if (reply.getStatus() != FRStatusCode.HTTP_OK) {
-//			log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
-//			return reply;
-//		} else {
-//			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
-//		}
-//
-//		String constraint = request.getConstraint().replaceAll("\\s+", "");
-//		String uid = request.getRoom().getUid();
-//		FRPeriod period = request.getPeriod();
-//
-//		if (period.getTimeStampEnd() < period.getTimeStampStart()) {
-//			return new FRAutoCompleteUserMessageReply(
-//					FRStatusCode.HTTP_BAD_REQUEST,
-//					"The end of the period should be after the start");
-//		}
-//
-//		String requestSQL = "SELECT co.message "
-//				+ "FROM `fr-checkOccupancy` co "
-//				+ "WHERE co.uid = ? AND co.timestampStart >= ? AND co.timestampEnd <= ? "
-//				+ "AND LOWER(co.message) LIKE (?) ORDER BY co.message ASC";
-//
-//		try {
-//			ArrayList<String> messages = new ArrayList<String>();
-//
-//			Connection connectBDD = connMgr.getConnection();
-//
-//			PreparedStatement query = connectBDD.prepareStatement(requestSQL);
-//			query.setString(1, uid);
-//			query.setLong(2, period.getTimeStampStart());
-//			query.setLong(3, period.getTimeStampEnd());
-//			query.setString(4, "%" + constraint.toLowerCase() + "%");
-//
-//			ResultSet result = query.executeQuery();
-//
-//			while (result.next()) {
-//				messages.add(result.getString("message"));
-//			}
-//
-//			String logMessage = "constraint=" + constraint;
-//			log(Level.INFO,
-//					formatServerLogInfo("autoCompleteUserMessage", logMessage));
-//			reply.setMessages(messages);
-//		} catch (SQLException e) {
-//			;
-//			e.printStackTrace();
-//			log(LOG_SIDE.SERVER, Level.SEVERE,
-//					"SQL error when autocompleting user message for uid = "
-//							+ uid + " period = " + period + " constraint = "
-//							+ constraint);
-//			return new FRAutoCompleteUserMessageReply(
-//					FRStatusCode.HTTP_INTERNAL_ERROR,
-//					"Error when autocompleting");
-//		}
-//
-//		return reply;
-//	}
+	// @Override
+	// public FRAutoCompleteUserMessageReply autoCompleteUserMessage(
+	// FRAutoCompleteUserMessageRequest request) throws TException {
+	// if (request == null) {
+	// log(LOG_SIDE.SERVER, Level.WARNING,
+	// "Receiving null AutoCompleteUserMessageRequest");
+	// return new FRAutoCompleteUserMessageReply(
+	// FRStatusCode.HTTP_BAD_REQUEST,
+	// "AutocompleteUserMessageRequest is null");
+	// }
+	//
+	// FRAutoCompleteUserMessageReply reply = CheckRequests
+	// .checkAutoCompleteUserMessageRequest(request);
+	// if (reply.getStatus() != FRStatusCode.HTTP_OK) {
+	// log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
+	// return reply;
+	// } else {
+	// reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
+	// }
+	//
+	// String constraint = request.getConstraint().replaceAll("\\s+", "");
+	// String uid = request.getRoom().getUid();
+	// FRPeriod period = request.getPeriod();
+	//
+	// if (period.getTimeStampEnd() < period.getTimeStampStart()) {
+	// return new FRAutoCompleteUserMessageReply(
+	// FRStatusCode.HTTP_BAD_REQUEST,
+	// "The end of the period should be after the start");
+	// }
+	//
+	// String requestSQL = "SELECT co.message "
+	// + "FROM `fr-checkOccupancy` co "
+	// + "WHERE co.uid = ? AND co.timestampStart >= ? AND co.timestampEnd <= ? "
+	// + "AND LOWER(co.message) LIKE (?) ORDER BY co.message ASC";
+	//
+	// try {
+	// ArrayList<String> messages = new ArrayList<String>();
+	//
+	// Connection connectBDD = connMgr.getConnection();
+	//
+	// PreparedStatement query = connectBDD.prepareStatement(requestSQL);
+	// query.setString(1, uid);
+	// query.setLong(2, period.getTimeStampStart());
+	// query.setLong(3, period.getTimeStampEnd());
+	// query.setString(4, "%" + constraint.toLowerCase() + "%");
+	//
+	// ResultSet result = query.executeQuery();
+	//
+	// while (result.next()) {
+	// messages.add(result.getString("message"));
+	// }
+	//
+	// String logMessage = "constraint=" + constraint;
+	// log(Level.INFO,
+	// formatServerLogInfo("autoCompleteUserMessage", logMessage));
+	// reply.setMessages(messages);
+	// } catch (SQLException e) {
+	// ;
+	// e.printStackTrace();
+	// log(LOG_SIDE.SERVER, Level.SEVERE,
+	// "SQL error when autocompleting user message for uid = "
+	// + uid + " period = " + period + " constraint = "
+	// + constraint);
+	// return new FRAutoCompleteUserMessageReply(
+	// FRStatusCode.HTTP_INTERNAL_ERROR,
+	// "Error when autocompleting");
+	// }
+	//
+	// return reply;
+	// }
 
 	/**
 	 * The client can specify a user occupancy during a given period, multiple

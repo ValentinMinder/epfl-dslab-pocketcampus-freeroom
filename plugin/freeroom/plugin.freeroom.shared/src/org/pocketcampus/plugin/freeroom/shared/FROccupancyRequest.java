@@ -28,13 +28,13 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
   private static final org.apache.thrift.protocol.TField ONLY_FREE_ROOMS_FIELD_DESC = new org.apache.thrift.protocol.TField("onlyFreeRooms", org.apache.thrift.protocol.TType.BOOL, (short)2);
   private static final org.apache.thrift.protocol.TField UID_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("uidList", org.apache.thrift.protocol.TType.LIST, (short)3);
   private static final org.apache.thrift.protocol.TField USER_GROUP_FIELD_DESC = new org.apache.thrift.protocol.TField("userGroup", org.apache.thrift.protocol.TType.I32, (short)4);
-  private static final org.apache.thrift.protocol.TField USER_LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("userLanguage", org.apache.thrift.protocol.TType.I32, (short)5);
+  private static final org.apache.thrift.protocol.TField USER_LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("userLanguage", org.apache.thrift.protocol.TType.STRING, (short)5);
 
   private FRPeriod period; // required
   private boolean onlyFreeRooms; // required
   private List<String> uidList; // required
   private int userGroup; // required
-  private FRLanguage userLanguage; // required
+  private String userLanguage; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -42,10 +42,6 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
     ONLY_FREE_ROOMS((short)2, "onlyFreeRooms"),
     UID_LIST((short)3, "uidList"),
     USER_GROUP((short)4, "userGroup"),
-    /**
-     * 
-     * @see FRLanguage
-     */
     USER_LANGUAGE((short)5, "userLanguage");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -128,7 +124,7 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
     tmpMap.put(_Fields.USER_GROUP, new org.apache.thrift.meta_data.FieldMetaData("userGroup", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.USER_LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("userLanguage", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, FRLanguage.class)));
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FROccupancyRequest.class, metaDataMap);
   }
@@ -298,19 +294,11 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
     __isset_bit_vector.set(__USERGROUP_ISSET_ID, value);
   }
 
-  /**
-   * 
-   * @see FRLanguage
-   */
-  public FRLanguage getUserLanguage() {
+  public String getUserLanguage() {
     return this.userLanguage;
   }
 
-  /**
-   * 
-   * @see FRLanguage
-   */
-  public FROccupancyRequest setUserLanguage(FRLanguage userLanguage) {
+  public FROccupancyRequest setUserLanguage(String userLanguage) {
     this.userLanguage = userLanguage;
     return this;
   }
@@ -368,7 +356,7 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
       if (value == null) {
         unsetUserLanguage();
       } else {
-        setUserLanguage((FRLanguage)value);
+        setUserLanguage((String)value);
       }
       break;
 
@@ -505,7 +493,7 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
     boolean present_userLanguage = true && (isSetUserLanguage());
     builder.append(present_userLanguage);
     if (present_userLanguage)
-      builder.append(userLanguage.getValue());
+      builder.append(userLanguage);
 
     return builder.toHashCode();
   }
@@ -627,8 +615,8 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
           }
           break;
         case 5: // USER_LANGUAGE
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.userLanguage = FRLanguage.findByValue(iprot.readI32());
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.userLanguage = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -680,7 +668,7 @@ public class FROccupancyRequest implements org.apache.thrift.TBase<FROccupancyRe
     if (this.userLanguage != null) {
       if (isSetUserLanguage()) {
         oprot.writeFieldBegin(USER_LANGUAGE_FIELD_DESC);
-        oprot.writeI32(this.userLanguage.getValue());
+        oprot.writeString(this.userLanguage);
         oprot.writeFieldEnd();
       }
     }

@@ -27,11 +27,10 @@ import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
 import org.pocketcampus.plugin.freeroom.android.utils.FRTimesClient;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.utils.SetArrayList;
-import org.pocketcampus.plugin.freeroom.shared.FRLanguage;
-import org.pocketcampus.plugin.freeroom.shared.FRPeriodOccupation;
-import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
-import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRMessageFrequency;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriodOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
@@ -150,14 +149,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Get the language of the device, if not available on server, default is
 	 * english
 	 * **/
-	public FRLanguage getUserLanguage() {
-		String language = Locale.getDefault().getDisplayLanguage();
-		try {
-			FRLanguage lang = FRLanguage.valueOf(language.toUpperCase());
-			return lang;
-		} catch (IllegalArgumentException iae) {
-			return FRLanguage.EN;
-		}
+	public String getUserLanguage() {
+		return Locale.getDefault().getDisplayLanguage().toLowerCase();
 	}
 
 	/**

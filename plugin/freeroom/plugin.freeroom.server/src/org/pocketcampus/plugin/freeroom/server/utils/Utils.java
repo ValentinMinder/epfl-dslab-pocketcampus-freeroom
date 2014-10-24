@@ -32,7 +32,9 @@ import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
 public class Utils {
 	public static final int GROUP_STUDENT = 1;
 	public static final int GROUP_STAFF = 20;
-
+	public static String[] supportedLanguages = {"en", "fr"};
+	public static String defaultLanguage = "en";
+	
 	public static final List<String> mediacomList = Arrays.asList("875", "876",
 			"9001", "877", "878", "880", "1884", "1886", "1887", "1888",
 			"1895", "1835", "1898", "1837", "1891", "1896", "2043", "2044",
@@ -357,5 +359,18 @@ public class Utils {
 				room.setDoorCodeAlias(alias);
 			}
 		}
+	}
+	
+	public static String getSupportedLanguage(String lang) {
+		if (lang == null) {
+			return defaultLanguage;
+		}
+		
+		for (String sl : supportedLanguages) {
+			if (lang.toLowerCase().equals(sl)) {
+				return lang.toLowerCase();
+			}
+		}
+		return defaultLanguage;
 	}
 }
