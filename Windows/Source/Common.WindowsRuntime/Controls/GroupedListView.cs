@@ -1,4 +1,5 @@
-﻿using Windows.UI;
+﻿using System;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
@@ -51,6 +52,17 @@ namespace PocketCampus.Common.Controls
             DependencyProperty.Register( "SelectedItem", typeof( object ), typeof( GroupedListView ), new PropertyMetadata( null ) );
         #endregion
 
+        #region GroupSubheaderTemplate
+        public DataTemplate GroupSubheaderTemplate
+        {
+            get { return (DataTemplate) GetValue( GroupSubheaderTemplateProperty ); }
+            set { SetValue( GroupSubheaderTemplateProperty, value ); }
+        }
+
+        public static readonly DependencyProperty GroupSubheaderTemplateProperty =
+            DependencyProperty.Register( "GroupSubheaderTemplate", typeof( DataTemplate ), typeof( GroupedListView ), new PropertyMetadata( null ) );
+        #endregion
+
         #region GroupKeyPath
         public string GroupKeyPath
         {
@@ -64,6 +76,7 @@ namespace PocketCampus.Common.Controls
 
         public GroupedListView()
         {
+            Name = Guid.NewGuid().ToString();
             Loaded += ( _, __ ) =>
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -124,15 +137,30 @@ namespace PocketCampus.Common.Controls
 
         // N.B. DataTemplates cannot be created in code directly...
 
-        private static DataTemplate GetGroupHeaderTemplate( string keyPath )
+        private DataTemplate GetGroupHeaderTemplate( string keyPath )
         {
+            if ( GroupSubheaderTemplate == null )
+            {
+                return (DataTemplate) XamlReader.Load(
+              @"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
+                    <TextBlock Text=""{Binding " + keyPath + @"}""
+                               Style=""{StaticResource AppGroupHeaderTextBlockStyle}""
+                               Foreground=""{ThemeResource ApplicationForegroundThemeBrush}""
+                               Margin=""0," + ZoomedInGroupFooterSize + @",0,0"" />
+                </DataTemplate>" );
+            }
+
             return (DataTemplate) XamlReader.Load(
-          @"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
-                <TextBlock Text=""{Binding " + keyPath + @"}""
-                           Style=""{StaticResource AppGroupHeaderTextBlockStyle}""
-                           Foreground=""{ThemeResource ApplicationForegroundThemeBrush}""
-                           Margin=""0," + ZoomedInGroupFooterSize + @",0,0"" />
-            </DataTemplate>" );
+            @"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
+                  <StackPanel>
+                      <TextBlock Text=""{Binding " + keyPath + @"}""
+                                 Style=""{StaticResource AppGroupHeaderTextBlockStyle}""
+                                 Foreground=""{ThemeResource ApplicationForegroundThemeBrush}""
+                                 Margin=""0," + ZoomedInGroupFooterSize + @",0,0"" />
+                      <ContentControl Content=""{Binding}""
+                                      ContentTemplate=""{Binding GroupSubheaderTemplate, ElementName=" + Name + @"}"" />
+                  </StackPanel>
+              </DataTemplate>" );
         }
 
         private static DataTemplate GetGroupItemTemplate( string keyPath )

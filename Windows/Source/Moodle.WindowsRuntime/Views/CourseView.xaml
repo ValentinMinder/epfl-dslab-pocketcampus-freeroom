@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:cc="using:PocketCampus.Common.Controls"
              xmlns:myc="using:PocketCampus.Moodle.Controls"
+             xmlns:h2x="using:Html2Xaml"
              DesignDataContext="{Binding Course, Source={StaticResource Design}}"
              StatusBarText="{Binding DownloadStatus, 
                                      Converter={StaticResource EnumToString}}">
@@ -100,6 +101,11 @@
                                              LinkTemplate="{StaticResource LinkTemplate}"
                                              FolderTemplate="{StaticResource FolderTemplate}" />
             </DataTemplate>
+            
+            <DataTemplate x:Key="SectionSubheaderTemplate">
+                <RichTextBlock h2x:Properties.Html="{Binding Details}"
+                               Style="{StaticResource AppNormalRichTextBlockStyle}" />
+            </DataTemplate>
         </ResourceDictionary>
     </cc:PageBase.Resources>
 
@@ -122,11 +128,11 @@
                                Status="{Binding CacheStatus}"
                                RetryCommand="{Binding RefreshCommand}" />
 
-        <!-- TODO details -->
         <cc:GroupedListView Grid.Row="2"
                             ItemTemplate="{StaticResource ResourceTemplate}"
                             SelectedItem="{Binding SelectedSection}"
                             GroupKeyPath="DisplayTitle"
+                            GroupSubheaderTemplate="{StaticResource SectionSubheaderTemplate}"
                             Margin="19,0,0,0">
             <cc:GroupedListView.ItemsViewSource>
                 <CollectionViewSource Source="{Binding Sections}"
