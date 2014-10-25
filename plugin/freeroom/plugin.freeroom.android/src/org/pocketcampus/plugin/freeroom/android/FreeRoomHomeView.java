@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
@@ -36,14 +38,14 @@ import org.pocketcampus.plugin.freeroom.android.utils.FRTimesClient;
 import org.pocketcampus.plugin.freeroom.android.utils.FRUtilsClient;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.utils.SetArrayList;
-import org.pocketcampus.plugin.freeroom.shared.FRPeriodOccupation;
-import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.Constants;
-import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
-import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
-import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRMessageFrequency;
+import org.pocketcampus.plugin.freeroom.shared.FROccupancyRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriodOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.FRWorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRStruct;
@@ -2658,6 +2660,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						addSearchRoomAutoCompleteListView
 								.setAdapter(addSearchRoomSuggestionAdapter);
 
+						cancelAutoCompleteBuildingTask();
 						if (!u.validQuery(text)) {
 							addSearchRoomAutoCompleteInputBarElement
 									.setButtonText(null);
@@ -2665,15 +2668,67 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						} else {
 							addSearchRoomAutoCompleteInputBarElement
 									.setButtonText("");
-							// remove this if you don't want
-							// automatic autocomplete
-							// without pressing the button
-							FRAutoCompleteRequest request = new FRAutoCompleteRequest(
-									text, mModel.getGroupAccess());
-							mController.autoCompleteBuilding(view, request);
+							// autocomplete is scheduled if nothing happen for a
+							// certain delay
+							scheduleAutoCompleteBuidlingTask(text);
 						}
 					}
 				});
+	}
+
+	/**
+	 * Timer that handles autocomplete task and scheduling.
+	 */
+	private Timer autocompleteTimer = new Timer("AutocompleteTimer");
+	/**
+	 * Reference to last used autocomplete task.
+	 */
+	private TimerTask autocompleteTimerTask;
+	/**
+	 * Auto-launch of auto-complete delay in ms.
+	 */
+	private final long timerDelay = 600;
+
+	/**
+	 * Cancel a scheduled autocomplete task.
+	 */
+	private void cancelAutoCompleteBuildingTask() {
+		if (autocompleteTimerTask != null) {
+			autocompleteTimerTask.cancel();
+		}
+	}
+
+	/**
+	 * Schedule a new autocomplete task (and cancel the previous instance if
+	 * exists)
+	 * 
+	 * @param text
+	 */
+	private void scheduleAutoCompleteBuidlingTask(String text) {
+		cancelAutoCompleteBuildingTask();
+		autocompleteTimerTask = getAutoCompleteTaskFromText(text);
+		autocompleteTimer.schedule(autocompleteTimerTask, timerDelay);
+	}
+
+	/**
+	 * Construct a timertask for autocomplete building purposes.
+	 * 
+	 * @param text
+	 * @return
+	 */
+	private TimerTask getAutoCompleteTaskFromText(final String text) {
+		final IFreeRoomView view = this;
+
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				FRAutoCompleteRequest request = new FRAutoCompleteRequest(text,
+						mModel.getGroupAccess());
+				mController.autoCompleteBuildingForScheduledCall(view, request);
+			}
+		};
+
+		return task;
 	}
 
 	/**
@@ -4372,12 +4427,17 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		FRPeriod period = new FRPeriod(System.currentTimeMillis(),
 				System.currentTimeMillis() + FRTimes.ONE_HOUR_IN_MS);
 		FRRoom room = new FRRoom("mock", "1234");
-		List<FRPeriodOccupation> occupancy = new ArrayList<FRPeriodOccupation>(1);
+		List<FRPeriodOccupation> occupancy = new ArrayList<FRPeriodOccupation>(
+				1);
 		List<FRRoomOccupancy> occupancies = new ArrayList<FRRoomOccupancy>(4);
-		FRRoomOccupancy free = new FRRoomOccupancy(room, occupancy, false, true, period);
-		FRRoomOccupancy part = new FRRoomOccupancy(room, occupancy, true, true, period);
-		FRRoomOccupancy occupied = new FRRoomOccupancy(room, occupancy, true, false, period);
-		FRRoomOccupancy error = new FRRoomOccupancy(room, occupancy, false, false, period);
+		FRRoomOccupancy free = new FRRoomOccupancy(room, occupancy, false,
+				true, period);
+		FRRoomOccupancy part = new FRRoomOccupancy(room, occupancy, true, true,
+				period);
+		FRRoomOccupancy occupied = new FRRoomOccupancy(room, occupancy, true,
+				false, period);
+		FRRoomOccupancy error = new FRRoomOccupancy(room, occupancy, false,
+				false, period);
 		occupancies.add(free);
 		occupancies.add(part);
 		occupancies.add(occupied);
@@ -4638,13 +4698,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		settingsRefreshTimeFormatExample();
 	}
 
-
 	/**
 	 * {@link #welcome}: Stores (non-permanent!) if it's the first time the user
 	 * want to dismiss the welcome dialog without being registered.
 	 */
 	private boolean welcomeFirstTimeWithOutRegistered = true;
-
 
 	// KONAMI CODE
 

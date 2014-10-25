@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.freeroom.android;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
@@ -11,15 +12,15 @@ import org.pocketcampus.plugin.freeroom.android.req.FRRequestASyncTask;
 import org.pocketcampus.plugin.freeroom.android.req.ImWorkingRequestASyncTask;
 import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.FRAutoCompleteRequest;
-import org.pocketcampus.plugin.freeroom.shared.FROccupancyReply;
-import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
-import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
-import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 import org.pocketcampus.plugin.freeroom.shared.FRImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.FRImWorkingRequest;
-import org.pocketcampus.plugin.freeroom.shared.RegisterUser;
+import org.pocketcampus.plugin.freeroom.shared.FROccupancyReply;
+import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
 import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
+import org.pocketcampus.plugin.freeroom.shared.RegisterUser;
 
 import android.util.Log;
 import android.widget.Toast;
@@ -135,9 +136,29 @@ public class FreeRoomController extends PluginController implements
 
 	// AUTOCOMPLETE
 
+	/**
+	 * For direct launch (when pressing on a button)
+	 * 
+	 * @param view
+	 * @param request
+	 */
 	public void autoCompleteBuilding(IFreeRoomView view,
 			FRAutoCompleteRequest request) {
 		mModel.autoCompleteLaunch();
+		new AutoCompleteRequestASyncTask(view).start(this, mClient, request);
+	}
+
+	/**
+	 * For scheduled call (auto-launch)
+	 * 
+	 * @param view
+	 * @param request
+	 */
+	public void autoCompleteBuildingForScheduledCall(IFreeRoomView view,
+			FRAutoCompleteRequest request) {
+		// this is called from a timer thread.
+		// Therefore, we cannot update the view and the textbox while updating.
+		// mModel.autoCompleteLaunch();
 		new AutoCompleteRequestASyncTask(view).start(this, mClient, request);
 	}
 
