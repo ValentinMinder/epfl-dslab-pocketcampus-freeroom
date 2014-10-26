@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -326,97 +325,6 @@ public class OldFoodDB {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	/**
-	 * Upload a picture to the database.
-	 * 
-	 * @param uploader
-	 *            the ID of the device that uploaded the picture
-	 * @param mealId
-	 *            the ID of the Meal for which this picture was submitted
-	 * @param picture
-	 *            the Meal picture
-	 * @return
-	 */
-	public boolean uploadPicture(String uploader, int mealId, byte[] picture) {
-		if (picture == null) {
-			return false;
-		}
-
-		Connection dbConnection = null;
-		PreparedStatement uploadPicture = null;
-
-		String insertString = "INSERT INTO Pictures (Picture, Uploader, MealId, stamp_created)"
-				+ " VALUES (?,?,?,?)";
-
-		Calendar cal = Calendar.getInstance();
-		String dateString = cal.get(Calendar.YEAR) + "."
-				+ (cal.get(Calendar.MONTH) + 1) + "."
-				+ cal.get(Calendar.DAY_OF_MONTH);
-
-		try {
-			dbConnection = mConnectionManager.getConnection();
-			dbConnection.setAutoCommit(false);
-			uploadPicture = dbConnection.prepareStatement(insertString);
-
-			uploadPicture.setBytes(1, picture);
-			uploadPicture.setString(2, uploader);
-			uploadPicture.setInt(3, mealId);
-			uploadPicture.setString(4, dateString);
-
-			uploadPicture.executeUpdate();
-
-			dbConnection.commit();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			if (dbConnection != null) {
-				try {
-					System.err.print("Transaction is being rolled back");
-					dbConnection.rollback();
-				} catch (SQLException excep) {
-					excep.printStackTrace();
-				}
-			}
-			return false;
-		} finally {
-			try {
-				if (uploadPicture != null) {
-					uploadPicture.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * Get strings that should not be capitalized.
-	 * 
-	 * @return the list of strings that should not be capitalized
-	 */
-	public List<String> getNotCapitalized() {
-		List<String> notCapitalized = new ArrayList<String>();
-
-		try {
-			Connection dbConnection = mConnectionManager.getConnection();
-			Statement statement = dbConnection.createStatement();
-			ResultSet rs = statement.executeQuery("select * from not_capitalized");
-
-			while (rs.next()) {
-				notCapitalized.add(rs.getString("not_capitalized"));
-			}
-
-			statement.close();
-			mConnectionManager.disconnect();
-
-		} catch (SQLException e) {
-			System.err.println("Error with SQL");
-			e.printStackTrace();
-		}
-
-		return notCapitalized;
 	}
 
 }
