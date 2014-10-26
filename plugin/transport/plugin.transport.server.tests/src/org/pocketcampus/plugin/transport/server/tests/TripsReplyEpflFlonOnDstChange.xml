@@ -1,0 +1,2978 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ResC xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://fahrplan.sbb.ch/xsd/hafasXMLInterface.xsd" ver="3.2.1" prod="5.40.SBB.4.12.5 [May 27 2014]" lang="EN">
+    <ConRes dir="O">
+        <ConResCtxt>nd.02365322.1414328164#1</ConResCtxt>
+        <ConnectionList type="OEV">
+            <Connection id="C1-0">
+                <Overview>
+                    <Date>20141026</Date>
+                    <Departure>
+                        <BasicStop type="NORMAL">
+                            <StAttrList>
+                                <StAttr code="KANTON" text="VD" priority="3"/>
+                                <StAttr code="ORTGR" text="1" priority="3"/>
+                                <StAttr code="PLZ" text="1024" priority="3"/>
+                                <StAttr code="TU" text="0" priority="3"/>
+                                <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                <StAttr code="WG" text="1" priority="3"/>
+                                <StAttr code="WR" text="1" priority="3"/>
+                            </StAttrList>
+                            <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                            <Dep getIn="YES">
+                                <Time>00d13:59:00</Time>
+                                <Platform>
+                                    <Text></Text>
+                                </Platform>
+                            </Dep>
+                            <StopPrognosis>
+                                <Arr handicappedAccess="0"></Arr>
+                                <Dep handicappedAccess="0"></Dep>
+                                <Status>SCHEDULED</Status>
+                            </StopPrognosis>
+                        </BasicStop>
+                    </Departure>
+                    <Arrival>
+                        <BasicStop type="NORMAL">
+                            <StAttrList>
+                                <StAttr code="KANTON" text="VD" priority="3"/>
+                                <StAttr code="ORTGR" text="1" priority="3"/>
+                                <StAttr code="PLZ" text="1000" priority="3"/>
+                                <StAttr code="TU" text="0" priority="3"/>
+                                <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                <StAttr code="WG" text="1" priority="3"/>
+                                <StAttr code="WR" text="1" priority="3"/>
+                                <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                            </StAttrList>
+                            <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                            <Arr getOut="YES">
+                                <Time>00d14:11:00</Time>
+                                <Platform>
+                                    <Text></Text>
+                                </Platform>
+                            </Arr>
+                            <StopPrognosis>
+                                <Arr handicappedAccess="0"></Arr>
+                                <Dep handicappedAccess="0"></Dep>
+                                <Status>SCHEDULED</Status>
+                            </StopPrognosis>
+                        </BasicStop>
+                    </Arrival>
+                    <Transfers>0</Transfers>
+                    <Duration>
+                        <Time>00d00:12:00</Time>
+                    </Duration>
+                    <ServiceDays>
+                        <IrregularServiceText>
+                            <Text>26. Oct until 7. Dec 2014 Su</Text>
+                        </IrregularServiceText>
+                    </ServiceDays>
+                    <Products>
+                        <Product cat="M       "/>
+                    </Products>
+                    <ContextURL url="http://fahrplan.sbb.ch/bin/query.exe/3ENGn?seqnr=1&amp;ident=nd.02365322.1414328164&amp;guiVCtrl_connection_detailsOut_select_C1-0&amp;jumpToDetails=yes&amp;guiVCtrl_connection_detailsOut_add_selection=yes"/>
+                    <XMLHandle url="http://fweb3p.sbb.ch/bin/query.exe/en?showExtXml=1&amp;xmlId=nd.02365322.1414328164:1:C1-0"/>
+                </Overview>
+                <ConSectionList>
+                    <ConSection>
+                        <Departure>
+                            <BasicStop type="NORMAL">
+                                <StAttrList>
+                                    <StAttr code="KANTON" text="VD" priority="3"/>
+                                    <StAttr code="ORTGR" text="1" priority="3"/>
+                                    <StAttr code="PLZ" text="1024" priority="3"/>
+                                    <StAttr code="TU" text="0" priority="3"/>
+                                    <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                    <StAttr code="WG" text="1" priority="3"/>
+                                    <StAttr code="WR" text="1" priority="3"/>
+                                </StAttrList>
+                                <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                                <Dep getIn="YES">
+                                    <Time>00d13:59:00</Time>
+                                    <Platform>
+                                        <Text></Text>
+                                    </Platform>
+                                </Dep>
+                                <StopPrognosis>
+                                    <Arr handicappedAccess="0"></Arr>
+                                    <Dep handicappedAccess="0"></Dep>
+                                    <Status>SCHEDULED</Status>
+                                </StopPrognosis>
+                            </BasicStop>
+                        </Departure>
+                        <Journey>
+                            <JHandle tNr="462083" cycle="14" puic="95"/>
+                            <JourneyAttributeList>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAME">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1 14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="LINE">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="CATEGORY" code="9">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>M</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M       </Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="LONG">
+                                            <Text>Underground</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="OPERATOR" ref="1414328164-1">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>TL</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>TL</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="LONG">
+                                            <Text>Transport publics de la Région Lausannoise</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NUMBER">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="EXT_ID">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="ADMINISTRATION">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>000151</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="DIRECTION">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>Lausanne-Flon</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="1">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_1</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="2">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_2</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>Underground 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="3">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_3</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1 14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="4">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_4</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="INFO" code="RT">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>151-14983-000</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                            </JourneyAttributeList>
+                            <PassList>
+                                <BasicStop index="5" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1024" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d13:59:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d13:59:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                    <StopPrognosis>
+                                        <Arr handicappedAccess="0"></Arr>
+                                        <Dep handicappedAccess="0"></Dep>
+                                        <Status>SCHEDULED</Status>
+                                    </StopPrognosis>
+                                </BasicStop>
+                                <BasicStop index="6" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1024" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Ecublens VD, UNIL-Sorge" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Ecublens VD, UNIL-Sorge" x="6573577" y="46522449" type="WGS84" externalId="008501213#95" externalStationNr="008501213"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:00:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:00:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="7" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1022" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Chavannes-p.-R., UNIL-Mouline" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Chavannes-p.-R., UNIL-Mouline" x="6578899" y="46524993" type="WGS84" externalId="008501212#95" externalStationNr="008501212"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:01:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:01:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="8" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1022" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Chavannes-p.-R., UNIL-Dorigny" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Chavannes-p.-R., UNIL-Dorigny" x="6584706" y="46524219" type="WGS84" externalId="008501211#95" externalStationNr="008501211"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:02:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:02:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="9" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Bourdonnette" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Bourdonnette" x="6589803" y="46523267" type="WGS84" externalId="008501210#95" externalStationNr="008501210"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:04:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:04:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="10" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Malley" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Malley" x="6603305" y="46524210" type="WGS84" externalId="008501209#95" externalStationNr="008501209"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:06:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:06:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="11" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Provence" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Provence" x="6608105" y="46523383" type="WGS84" externalId="008501208#95" externalStationNr="008501208"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:07:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:07:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="12" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Montelly" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Montelly" x="6613561" y="46521819" type="WGS84" externalId="008501207#95" externalStationNr="008501207"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:08:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:08:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="13" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Vigie" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Vigie" x="6623926" y="46521541" type="WGS84" externalId="008592133#95" externalStationNr="008592133"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:10:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:10:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="14" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                        <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:11:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <StopPrognosis>
+                                        <Arr handicappedAccess="0"></Arr>
+                                        <Dep handicappedAccess="0"></Dep>
+                                        <Status>SCHEDULED</Status>
+                                    </StopPrognosis>
+                                </BasicStop>
+                            </PassList>
+                            <JProg>
+                                <JStatus>SCHEDULED</JStatus>
+                            </JProg>
+                        </Journey>
+                        <Arrival>
+                            <BasicStop type="NORMAL">
+                                <StAttrList>
+                                    <StAttr code="KANTON" text="VD" priority="3"/>
+                                    <StAttr code="ORTGR" text="1" priority="3"/>
+                                    <StAttr code="PLZ" text="1000" priority="3"/>
+                                    <StAttr code="TU" text="0" priority="3"/>
+                                    <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                    <StAttr code="WG" text="1" priority="3"/>
+                                    <StAttr code="WR" text="1" priority="3"/>
+                                    <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                                </StAttrList>
+                                <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                                <Arr getOut="YES">
+                                    <Time>00d14:11:00</Time>
+                                    <Platform>
+                                        <Text></Text>
+                                    </Platform>
+                                </Arr>
+                                <StopPrognosis>
+                                    <Arr handicappedAccess="0"></Arr>
+                                    <Dep handicappedAccess="0"></Dep>
+                                    <Status>SCHEDULED</Status>
+                                </StopPrognosis>
+                            </BasicStop>
+                        </Arrival>
+                    </ConSection>
+                </ConSectionList>
+            </Connection>
+            <Connection id="C1-1">
+                <Overview>
+                    <Date>20141026</Date>
+                    <Departure>
+                        <BasicStop type="NORMAL">
+                            <StAttrList>
+                                <StAttr code="KANTON" text="VD" priority="3"/>
+                                <StAttr code="ORTGR" text="1" priority="3"/>
+                                <StAttr code="PLZ" text="1024" priority="3"/>
+                                <StAttr code="TU" text="0" priority="3"/>
+                                <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                <StAttr code="WG" text="1" priority="3"/>
+                                <StAttr code="WR" text="1" priority="3"/>
+                            </StAttrList>
+                            <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                            <Dep getIn="YES">
+                                <Time>00d14:14:00</Time>
+                                <Platform>
+                                    <Text></Text>
+                                </Platform>
+                            </Dep>
+                            <StopPrognosis>
+                                <Arr handicappedAccess="0"></Arr>
+                                <Dep handicappedAccess="0"></Dep>
+                                <Status>SCHEDULED</Status>
+                            </StopPrognosis>
+                        </BasicStop>
+                    </Departure>
+                    <Arrival>
+                        <BasicStop type="NORMAL">
+                            <StAttrList>
+                                <StAttr code="KANTON" text="VD" priority="3"/>
+                                <StAttr code="ORTGR" text="1" priority="3"/>
+                                <StAttr code="PLZ" text="1000" priority="3"/>
+                                <StAttr code="TU" text="0" priority="3"/>
+                                <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                <StAttr code="WG" text="1" priority="3"/>
+                                <StAttr code="WR" text="1" priority="3"/>
+                                <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                            </StAttrList>
+                            <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                            <Arr getOut="YES">
+                                <Time>00d14:26:00</Time>
+                                <Platform>
+                                    <Text></Text>
+                                </Platform>
+                            </Arr>
+                            <StopPrognosis>
+                                <Arr handicappedAccess="0"></Arr>
+                                <Dep handicappedAccess="0"></Dep>
+                                <Status>SCHEDULED</Status>
+                            </StopPrognosis>
+                        </BasicStop>
+                    </Arrival>
+                    <Transfers>0</Transfers>
+                    <Duration>
+                        <Time>00d00:12:00</Time>
+                    </Duration>
+                    <ServiceDays>
+                        <IrregularServiceText>
+                            <Text>26. Oct until 7. Dec 2014 Su</Text>
+                        </IrregularServiceText>
+                    </ServiceDays>
+                    <Products>
+                        <Product cat="M       "/>
+                    </Products>
+                    <ContextURL url="http://fahrplan.sbb.ch/bin/query.exe/3ENGn?seqnr=1&amp;ident=nd.02365322.1414328164&amp;guiVCtrl_connection_detailsOut_select_C1-1&amp;jumpToDetails=yes&amp;guiVCtrl_connection_detailsOut_add_selection=yes"/>
+                    <XMLHandle url="http://fweb3p.sbb.ch/bin/query.exe/en?showExtXml=1&amp;xmlId=nd.02365322.1414328164:1:C1-1"/>
+                </Overview>
+                <ConSectionList>
+                    <ConSection>
+                        <Departure>
+                            <BasicStop type="NORMAL">
+                                <StAttrList>
+                                    <StAttr code="KANTON" text="VD" priority="3"/>
+                                    <StAttr code="ORTGR" text="1" priority="3"/>
+                                    <StAttr code="PLZ" text="1024" priority="3"/>
+                                    <StAttr code="TU" text="0" priority="3"/>
+                                    <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                    <StAttr code="WG" text="1" priority="3"/>
+                                    <StAttr code="WR" text="1" priority="3"/>
+                                </StAttrList>
+                                <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                                <Dep getIn="YES">
+                                    <Time>00d14:14:00</Time>
+                                    <Platform>
+                                        <Text></Text>
+                                    </Platform>
+                                </Dep>
+                                <StopPrognosis>
+                                    <Arr handicappedAccess="0"></Arr>
+                                    <Dep handicappedAccess="0"></Dep>
+                                    <Status>SCHEDULED</Status>
+                                </StopPrognosis>
+                            </BasicStop>
+                        </Departure>
+                        <Journey>
+                            <JHandle tNr="462083" cycle="15" puic="95"/>
+                            <JourneyAttributeList>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAME">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1 14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="LINE">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="CATEGORY" code="9">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>M</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M       </Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="LONG">
+                                            <Text>Underground</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="OPERATOR" ref="1414328164-2">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>TL</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>TL</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="LONG">
+                                            <Text>Transport publics de la Région Lausannoise</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NUMBER">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="EXT_ID">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="ADMINISTRATION">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>000151</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="DIRECTION">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>Lausanne-Flon</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="1">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_1</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="2">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_2</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>Underground 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="3">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_3</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1 14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="4">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_4</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="INFO" code="RT">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>151-14983-000</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                            </JourneyAttributeList>
+                            <PassList>
+                                <BasicStop index="5" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1024" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:14:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:14:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                    <StopPrognosis>
+                                        <Arr handicappedAccess="0"></Arr>
+                                        <Dep handicappedAccess="0"></Dep>
+                                        <Status>SCHEDULED</Status>
+                                    </StopPrognosis>
+                                </BasicStop>
+                                <BasicStop index="6" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1024" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Ecublens VD, UNIL-Sorge" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Ecublens VD, UNIL-Sorge" x="6573577" y="46522449" type="WGS84" externalId="008501213#95" externalStationNr="008501213"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:15:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:15:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="7" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1022" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Chavannes-p.-R., UNIL-Mouline" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Chavannes-p.-R., UNIL-Mouline" x="6578899" y="46524993" type="WGS84" externalId="008501212#95" externalStationNr="008501212"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:16:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:16:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="8" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1022" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Chavannes-p.-R., UNIL-Dorigny" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Chavannes-p.-R., UNIL-Dorigny" x="6584706" y="46524219" type="WGS84" externalId="008501211#95" externalStationNr="008501211"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:17:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:17:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="9" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Bourdonnette" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Bourdonnette" x="6589803" y="46523267" type="WGS84" externalId="008501210#95" externalStationNr="008501210"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:19:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:19:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="10" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Malley" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Malley" x="6603305" y="46524210" type="WGS84" externalId="008501209#95" externalStationNr="008501209"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:21:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:21:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="11" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Provence" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Provence" x="6608105" y="46523383" type="WGS84" externalId="008501208#95" externalStationNr="008501208"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:22:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:22:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="12" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Montelly" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Montelly" x="6613561" y="46521819" type="WGS84" externalId="008501207#95" externalStationNr="008501207"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:23:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:23:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="13" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Vigie" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Vigie" x="6623926" y="46521541" type="WGS84" externalId="008592133#95" externalStationNr="008592133"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:25:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:25:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="14" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                        <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:26:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <StopPrognosis>
+                                        <Arr handicappedAccess="0"></Arr>
+                                        <Dep handicappedAccess="0"></Dep>
+                                        <Status>SCHEDULED</Status>
+                                    </StopPrognosis>
+                                </BasicStop>
+                            </PassList>
+                            <JProg>
+                                <JStatus>SCHEDULED</JStatus>
+                            </JProg>
+                        </Journey>
+                        <Arrival>
+                            <BasicStop type="NORMAL">
+                                <StAttrList>
+                                    <StAttr code="KANTON" text="VD" priority="3"/>
+                                    <StAttr code="ORTGR" text="1" priority="3"/>
+                                    <StAttr code="PLZ" text="1000" priority="3"/>
+                                    <StAttr code="TU" text="0" priority="3"/>
+                                    <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                    <StAttr code="WG" text="1" priority="3"/>
+                                    <StAttr code="WR" text="1" priority="3"/>
+                                    <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                                </StAttrList>
+                                <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                                <Arr getOut="YES">
+                                    <Time>00d14:26:00</Time>
+                                    <Platform>
+                                        <Text></Text>
+                                    </Platform>
+                                </Arr>
+                                <StopPrognosis>
+                                    <Arr handicappedAccess="0"></Arr>
+                                    <Dep handicappedAccess="0"></Dep>
+                                    <Status>SCHEDULED</Status>
+                                </StopPrognosis>
+                            </BasicStop>
+                        </Arrival>
+                    </ConSection>
+                </ConSectionList>
+            </Connection>
+            <Connection id="C1-2">
+                <Overview>
+                    <Date>20141026</Date>
+                    <Departure>
+                        <BasicStop type="NORMAL">
+                            <StAttrList>
+                                <StAttr code="KANTON" text="VD" priority="3"/>
+                                <StAttr code="ORTGR" text="1" priority="3"/>
+                                <StAttr code="PLZ" text="1024" priority="3"/>
+                                <StAttr code="TU" text="0" priority="3"/>
+                                <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                <StAttr code="WG" text="1" priority="3"/>
+                                <StAttr code="WR" text="1" priority="3"/>
+                            </StAttrList>
+                            <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                            <Dep getIn="YES">
+                                <Time>00d14:29:00</Time>
+                                <Platform>
+                                    <Text></Text>
+                                </Platform>
+                            </Dep>
+                            <StopPrognosis>
+                                <Arr handicappedAccess="0"></Arr>
+                                <Dep handicappedAccess="0"></Dep>
+                                <Status>SCHEDULED</Status>
+                            </StopPrognosis>
+                        </BasicStop>
+                    </Departure>
+                    <Arrival>
+                        <BasicStop type="NORMAL">
+                            <StAttrList>
+                                <StAttr code="KANTON" text="VD" priority="3"/>
+                                <StAttr code="ORTGR" text="1" priority="3"/>
+                                <StAttr code="PLZ" text="1000" priority="3"/>
+                                <StAttr code="TU" text="0" priority="3"/>
+                                <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                <StAttr code="WG" text="1" priority="3"/>
+                                <StAttr code="WR" text="1" priority="3"/>
+                                <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                            </StAttrList>
+                            <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                            <Arr getOut="YES">
+                                <Time>00d14:41:00</Time>
+                                <Platform>
+                                    <Text></Text>
+                                </Platform>
+                            </Arr>
+                            <StopPrognosis>
+                                <Arr handicappedAccess="0"></Arr>
+                                <Dep handicappedAccess="0"></Dep>
+                                <Status>SCHEDULED</Status>
+                            </StopPrognosis>
+                        </BasicStop>
+                    </Arrival>
+                    <Transfers>0</Transfers>
+                    <Duration>
+                        <Time>00d00:12:00</Time>
+                    </Duration>
+                    <ServiceDays>
+                        <IrregularServiceText>
+                            <Text>26. Oct until 7. Dec 2014 Su</Text>
+                        </IrregularServiceText>
+                    </ServiceDays>
+                    <Products>
+                        <Product cat="M       "/>
+                    </Products>
+                    <ContextURL url="http://fahrplan.sbb.ch/bin/query.exe/3ENGn?seqnr=1&amp;ident=nd.02365322.1414328164&amp;guiVCtrl_connection_detailsOut_select_C1-2&amp;jumpToDetails=yes&amp;guiVCtrl_connection_detailsOut_add_selection=yes"/>
+                    <XMLHandle url="http://fweb3p.sbb.ch/bin/query.exe/en?showExtXml=1&amp;xmlId=nd.02365322.1414328164:1:C1-2"/>
+                </Overview>
+                <ConSectionList>
+                    <ConSection>
+                        <Departure>
+                            <BasicStop type="NORMAL">
+                                <StAttrList>
+                                    <StAttr code="KANTON" text="VD" priority="3"/>
+                                    <StAttr code="ORTGR" text="1" priority="3"/>
+                                    <StAttr code="PLZ" text="1024" priority="3"/>
+                                    <StAttr code="TU" text="0" priority="3"/>
+                                    <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                    <StAttr code="WG" text="1" priority="3"/>
+                                    <StAttr code="WR" text="1" priority="3"/>
+                                </StAttrList>
+                                <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                                <Dep getIn="YES">
+                                    <Time>00d14:29:00</Time>
+                                    <Platform>
+                                        <Text></Text>
+                                    </Platform>
+                                </Dep>
+                                <StopPrognosis>
+                                    <Arr handicappedAccess="0"></Arr>
+                                    <Dep handicappedAccess="0"></Dep>
+                                    <Status>SCHEDULED</Status>
+                                </StopPrognosis>
+                            </BasicStop>
+                        </Departure>
+                        <Journey>
+                            <JHandle tNr="462083" cycle="16" puic="95"/>
+                            <JourneyAttributeList>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAME">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1 14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="LINE">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="CATEGORY" code="9">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>M</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M       </Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="LONG">
+                                            <Text>Underground</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="OPERATOR" ref="1414328164-3">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>TL</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>TL</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="LONG">
+                                            <Text>Transport publics de la Région Lausannoise</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NUMBER">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="EXT_ID">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="ADMINISTRATION">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>000151</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="DIRECTION">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>Lausanne-Flon</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="1">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_1</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="2">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_2</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>Underground 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="3">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_3</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1 14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="4">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_4</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="INFO" code="RT">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>151-14983-000</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                            </JourneyAttributeList>
+                            <PassList>
+                                <BasicStop index="5" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1024" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:29:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:29:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                    <StopPrognosis>
+                                        <Arr handicappedAccess="0"></Arr>
+                                        <Dep handicappedAccess="0"></Dep>
+                                        <Status>SCHEDULED</Status>
+                                    </StopPrognosis>
+                                </BasicStop>
+                                <BasicStop index="6" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1024" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Ecublens VD, UNIL-Sorge" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Ecublens VD, UNIL-Sorge" x="6573577" y="46522449" type="WGS84" externalId="008501213#95" externalStationNr="008501213"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:30:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:30:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="7" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1022" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Chavannes-p.-R., UNIL-Mouline" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Chavannes-p.-R., UNIL-Mouline" x="6578899" y="46524993" type="WGS84" externalId="008501212#95" externalStationNr="008501212"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:31:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:31:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="8" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1022" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Chavannes-p.-R., UNIL-Dorigny" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Chavannes-p.-R., UNIL-Dorigny" x="6584706" y="46524219" type="WGS84" externalId="008501211#95" externalStationNr="008501211"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:32:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:32:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="9" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Bourdonnette" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Bourdonnette" x="6589803" y="46523267" type="WGS84" externalId="008501210#95" externalStationNr="008501210"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:34:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:34:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="10" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Malley" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Malley" x="6603305" y="46524210" type="WGS84" externalId="008501209#95" externalStationNr="008501209"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:36:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:36:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="11" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Provence" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Provence" x="6608105" y="46523383" type="WGS84" externalId="008501208#95" externalStationNr="008501208"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:37:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:37:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="12" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Montelly" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Montelly" x="6613561" y="46521819" type="WGS84" externalId="008501207#95" externalStationNr="008501207"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:38:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:38:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="13" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Vigie" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Vigie" x="6623926" y="46521541" type="WGS84" externalId="008592133#95" externalStationNr="008592133"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:40:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:40:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="14" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                        <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:41:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <StopPrognosis>
+                                        <Arr handicappedAccess="0"></Arr>
+                                        <Dep handicappedAccess="0"></Dep>
+                                        <Status>SCHEDULED</Status>
+                                    </StopPrognosis>
+                                </BasicStop>
+                            </PassList>
+                            <JProg>
+                                <JStatus>SCHEDULED</JStatus>
+                            </JProg>
+                        </Journey>
+                        <Arrival>
+                            <BasicStop type="NORMAL">
+                                <StAttrList>
+                                    <StAttr code="KANTON" text="VD" priority="3"/>
+                                    <StAttr code="ORTGR" text="1" priority="3"/>
+                                    <StAttr code="PLZ" text="1000" priority="3"/>
+                                    <StAttr code="TU" text="0" priority="3"/>
+                                    <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                    <StAttr code="WG" text="1" priority="3"/>
+                                    <StAttr code="WR" text="1" priority="3"/>
+                                    <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                                </StAttrList>
+                                <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                                <Arr getOut="YES">
+                                    <Time>00d14:41:00</Time>
+                                    <Platform>
+                                        <Text></Text>
+                                    </Platform>
+                                </Arr>
+                                <StopPrognosis>
+                                    <Arr handicappedAccess="0"></Arr>
+                                    <Dep handicappedAccess="0"></Dep>
+                                    <Status>SCHEDULED</Status>
+                                </StopPrognosis>
+                            </BasicStop>
+                        </Arrival>
+                    </ConSection>
+                </ConSectionList>
+            </Connection>
+            <Connection id="C1-3">
+                <Overview>
+                    <Date>20141026</Date>
+                    <Departure>
+                        <BasicStop type="NORMAL">
+                            <StAttrList>
+                                <StAttr code="KANTON" text="VD" priority="3"/>
+                                <StAttr code="ORTGR" text="1" priority="3"/>
+                                <StAttr code="PLZ" text="1024" priority="3"/>
+                                <StAttr code="TU" text="0" priority="3"/>
+                                <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                <StAttr code="WG" text="1" priority="3"/>
+                                <StAttr code="WR" text="1" priority="3"/>
+                            </StAttrList>
+                            <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                            <Dep getIn="YES">
+                                <Time>00d14:44:00</Time>
+                                <Platform>
+                                    <Text></Text>
+                                </Platform>
+                            </Dep>
+                            <StopPrognosis>
+                                <Arr handicappedAccess="0"></Arr>
+                                <Dep handicappedAccess="0"></Dep>
+                                <Status>SCHEDULED</Status>
+                            </StopPrognosis>
+                        </BasicStop>
+                    </Departure>
+                    <Arrival>
+                        <BasicStop type="NORMAL">
+                            <StAttrList>
+                                <StAttr code="KANTON" text="VD" priority="3"/>
+                                <StAttr code="ORTGR" text="1" priority="3"/>
+                                <StAttr code="PLZ" text="1000" priority="3"/>
+                                <StAttr code="TU" text="0" priority="3"/>
+                                <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                <StAttr code="WG" text="1" priority="3"/>
+                                <StAttr code="WR" text="1" priority="3"/>
+                                <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                            </StAttrList>
+                            <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                            <Arr getOut="YES">
+                                <Time>00d14:56:00</Time>
+                                <Platform>
+                                    <Text></Text>
+                                </Platform>
+                            </Arr>
+                            <StopPrognosis>
+                                <Arr handicappedAccess="0"></Arr>
+                                <Dep handicappedAccess="0"></Dep>
+                                <Status>SCHEDULED</Status>
+                            </StopPrognosis>
+                        </BasicStop>
+                    </Arrival>
+                    <Transfers>0</Transfers>
+                    <Duration>
+                        <Time>00d00:12:00</Time>
+                    </Duration>
+                    <ServiceDays>
+                        <IrregularServiceText>
+                            <Text>26. Oct until 7. Dec 2014 Su</Text>
+                        </IrregularServiceText>
+                    </ServiceDays>
+                    <Products>
+                        <Product cat="M       "/>
+                    </Products>
+                    <ContextURL url="http://fahrplan.sbb.ch/bin/query.exe/3ENGn?seqnr=1&amp;ident=nd.02365322.1414328164&amp;guiVCtrl_connection_detailsOut_select_C1-3&amp;jumpToDetails=yes&amp;guiVCtrl_connection_detailsOut_add_selection=yes"/>
+                    <XMLHandle url="http://fweb3p.sbb.ch/bin/query.exe/en?showExtXml=1&amp;xmlId=nd.02365322.1414328164:1:C1-3"/>
+                </Overview>
+                <ConSectionList>
+                    <ConSection>
+                        <Departure>
+                            <BasicStop type="NORMAL">
+                                <StAttrList>
+                                    <StAttr code="KANTON" text="VD" priority="3"/>
+                                    <StAttr code="ORTGR" text="1" priority="3"/>
+                                    <StAttr code="PLZ" text="1024" priority="3"/>
+                                    <StAttr code="TU" text="0" priority="3"/>
+                                    <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                    <StAttr code="WG" text="1" priority="3"/>
+                                    <StAttr code="WR" text="1" priority="3"/>
+                                </StAttrList>
+                                <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                                <Dep getIn="YES">
+                                    <Time>00d14:44:00</Time>
+                                    <Platform>
+                                        <Text></Text>
+                                    </Platform>
+                                </Dep>
+                                <StopPrognosis>
+                                    <Arr handicappedAccess="0"></Arr>
+                                    <Dep handicappedAccess="0"></Dep>
+                                    <Status>SCHEDULED</Status>
+                                </StopPrognosis>
+                            </BasicStop>
+                        </Departure>
+                        <Journey>
+                            <JHandle tNr="462083" cycle="17" puic="95"/>
+                            <JourneyAttributeList>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAME">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1 14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="LINE">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="CATEGORY" code="9">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>M</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M       </Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="LONG">
+                                            <Text>Underground</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="OPERATOR" ref="1414328164-4">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>TL</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>TL</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="LONG">
+                                            <Text>Transport publics de la Région Lausannoise</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NUMBER">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="EXT_ID">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="ADMINISTRATION">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>000151</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="DIRECTION">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>Lausanne-Flon</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="1">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_1</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="2">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_2</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>Underground 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="3">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_3</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1 14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="4">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_4</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="INFO" code="RT">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>151-14983-000</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                            </JourneyAttributeList>
+                            <PassList>
+                                <BasicStop index="5" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1024" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:44:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:44:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                    <StopPrognosis>
+                                        <Arr handicappedAccess="0"></Arr>
+                                        <Dep handicappedAccess="0"></Dep>
+                                        <Status>SCHEDULED</Status>
+                                    </StopPrognosis>
+                                </BasicStop>
+                                <BasicStop index="6" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1024" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Ecublens VD, UNIL-Sorge" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Ecublens VD, UNIL-Sorge" x="6573577" y="46522449" type="WGS84" externalId="008501213#95" externalStationNr="008501213"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:45:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:45:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="7" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1022" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Chavannes-p.-R., UNIL-Mouline" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Chavannes-p.-R., UNIL-Mouline" x="6578899" y="46524993" type="WGS84" externalId="008501212#95" externalStationNr="008501212"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:46:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:46:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="8" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1022" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Chavannes-p.-R., UNIL-Dorigny" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Chavannes-p.-R., UNIL-Dorigny" x="6584706" y="46524219" type="WGS84" externalId="008501211#95" externalStationNr="008501211"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:47:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:47:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="9" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Bourdonnette" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Bourdonnette" x="6589803" y="46523267" type="WGS84" externalId="008501210#95" externalStationNr="008501210"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:49:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:49:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="10" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Malley" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Malley" x="6603305" y="46524210" type="WGS84" externalId="008501209#95" externalStationNr="008501209"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:51:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:51:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="11" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Provence" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Provence" x="6608105" y="46523383" type="WGS84" externalId="008501208#95" externalStationNr="008501208"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:52:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:52:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="12" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Montelly" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Montelly" x="6613561" y="46521819" type="WGS84" externalId="008501207#95" externalStationNr="008501207"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:53:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:53:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="13" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Vigie" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Vigie" x="6623926" y="46521541" type="WGS84" externalId="008592133#95" externalStationNr="008592133"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:55:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:55:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="14" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                        <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:56:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <StopPrognosis>
+                                        <Arr handicappedAccess="0"></Arr>
+                                        <Dep handicappedAccess="0"></Dep>
+                                        <Status>SCHEDULED</Status>
+                                    </StopPrognosis>
+                                </BasicStop>
+                            </PassList>
+                            <JProg>
+                                <JStatus>SCHEDULED</JStatus>
+                            </JProg>
+                        </Journey>
+                        <Arrival>
+                            <BasicStop type="NORMAL">
+                                <StAttrList>
+                                    <StAttr code="KANTON" text="VD" priority="3"/>
+                                    <StAttr code="ORTGR" text="1" priority="3"/>
+                                    <StAttr code="PLZ" text="1000" priority="3"/>
+                                    <StAttr code="TU" text="0" priority="3"/>
+                                    <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                    <StAttr code="WG" text="1" priority="3"/>
+                                    <StAttr code="WR" text="1" priority="3"/>
+                                    <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                                </StAttrList>
+                                <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                                <Arr getOut="YES">
+                                    <Time>00d14:56:00</Time>
+                                    <Platform>
+                                        <Text></Text>
+                                    </Platform>
+                                </Arr>
+                                <StopPrognosis>
+                                    <Arr handicappedAccess="0"></Arr>
+                                    <Dep handicappedAccess="0"></Dep>
+                                    <Status>SCHEDULED</Status>
+                                </StopPrognosis>
+                            </BasicStop>
+                        </Arrival>
+                    </ConSection>
+                </ConSectionList>
+            </Connection>
+            <Connection id="C1-4">
+                <Overview>
+                    <Date>20141026</Date>
+                    <Departure>
+                        <BasicStop type="NORMAL">
+                            <StAttrList>
+                                <StAttr code="KANTON" text="VD" priority="3"/>
+                                <StAttr code="ORTGR" text="1" priority="3"/>
+                                <StAttr code="PLZ" text="1024" priority="3"/>
+                                <StAttr code="TU" text="0" priority="3"/>
+                                <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                <StAttr code="WG" text="1" priority="3"/>
+                                <StAttr code="WR" text="1" priority="3"/>
+                            </StAttrList>
+                            <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                            <Dep getIn="YES">
+                                <Time>00d14:59:00</Time>
+                                <Platform>
+                                    <Text></Text>
+                                </Platform>
+                            </Dep>
+                            <StopPrognosis>
+                                <Arr handicappedAccess="0"></Arr>
+                                <Dep handicappedAccess="0"></Dep>
+                                <Status>SCHEDULED</Status>
+                            </StopPrognosis>
+                        </BasicStop>
+                    </Departure>
+                    <Arrival>
+                        <BasicStop type="NORMAL">
+                            <StAttrList>
+                                <StAttr code="KANTON" text="VD" priority="3"/>
+                                <StAttr code="ORTGR" text="1" priority="3"/>
+                                <StAttr code="PLZ" text="1000" priority="3"/>
+                                <StAttr code="TU" text="0" priority="3"/>
+                                <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                <StAttr code="WG" text="1" priority="3"/>
+                                <StAttr code="WR" text="1" priority="3"/>
+                                <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                            </StAttrList>
+                            <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                            <Arr getOut="YES">
+                                <Time>00d15:11:00</Time>
+                                <Platform>
+                                    <Text></Text>
+                                </Platform>
+                            </Arr>
+                            <StopPrognosis>
+                                <Arr handicappedAccess="0"></Arr>
+                                <Dep handicappedAccess="0"></Dep>
+                                <Status>SCHEDULED</Status>
+                            </StopPrognosis>
+                        </BasicStop>
+                    </Arrival>
+                    <Transfers>0</Transfers>
+                    <Duration>
+                        <Time>00d00:12:00</Time>
+                    </Duration>
+                    <ServiceDays>
+                        <IrregularServiceText>
+                            <Text>26. Oct until 7. Dec 2014 Su</Text>
+                        </IrregularServiceText>
+                    </ServiceDays>
+                    <Products>
+                        <Product cat="M       "/>
+                    </Products>
+                    <ContextURL url="http://fahrplan.sbb.ch/bin/query.exe/3ENGn?seqnr=1&amp;ident=nd.02365322.1414328164&amp;guiVCtrl_connection_detailsOut_select_C1-4&amp;jumpToDetails=yes&amp;guiVCtrl_connection_detailsOut_add_selection=yes"/>
+                    <XMLHandle url="http://fweb3p.sbb.ch/bin/query.exe/en?showExtXml=1&amp;xmlId=nd.02365322.1414328164:1:C1-4"/>
+                </Overview>
+                <ConSectionList>
+                    <ConSection>
+                        <Departure>
+                            <BasicStop type="NORMAL">
+                                <StAttrList>
+                                    <StAttr code="KANTON" text="VD" priority="3"/>
+                                    <StAttr code="ORTGR" text="1" priority="3"/>
+                                    <StAttr code="PLZ" text="1024" priority="3"/>
+                                    <StAttr code="TU" text="0" priority="3"/>
+                                    <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                    <StAttr code="WG" text="1" priority="3"/>
+                                    <StAttr code="WR" text="1" priority="3"/>
+                                </StAttrList>
+                                <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                                <Dep getIn="YES">
+                                    <Time>00d14:59:00</Time>
+                                    <Platform>
+                                        <Text></Text>
+                                    </Platform>
+                                </Dep>
+                                <StopPrognosis>
+                                    <Arr handicappedAccess="0"></Arr>
+                                    <Dep handicappedAccess="0"></Dep>
+                                    <Status>SCHEDULED</Status>
+                                </StopPrognosis>
+                            </BasicStop>
+                        </Departure>
+                        <Journey>
+                            <JHandle tNr="462083" cycle="18" puic="95"/>
+                            <JourneyAttributeList>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAME">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1 14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="LINE">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="CATEGORY" code="9">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>M</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M       </Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="LONG">
+                                            <Text>Underground</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="OPERATOR" ref="1414328164-5">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>TL</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>TL</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="LONG">
+                                            <Text>Transport publics de la Région Lausannoise</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NUMBER">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="EXT_ID">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="ADMINISTRATION">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>000151</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="DIRECTION">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>Lausanne-Flon</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="1">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_1</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="2">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_2</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>Underground 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="3">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_3</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1 14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="4">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_4</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="INFO" code="RT">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>151-14983-000</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                            </JourneyAttributeList>
+                            <PassList>
+                                <BasicStop index="5" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1024" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d14:59:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d14:59:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                    <StopPrognosis>
+                                        <Arr handicappedAccess="0"></Arr>
+                                        <Dep handicappedAccess="0"></Dep>
+                                        <Status>SCHEDULED</Status>
+                                    </StopPrognosis>
+                                </BasicStop>
+                                <BasicStop index="6" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1024" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Ecublens VD, UNIL-Sorge" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Ecublens VD, UNIL-Sorge" x="6573577" y="46522449" type="WGS84" externalId="008501213#95" externalStationNr="008501213"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:00:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:00:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="7" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1022" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Chavannes-p.-R., UNIL-Mouline" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Chavannes-p.-R., UNIL-Mouline" x="6578899" y="46524993" type="WGS84" externalId="008501212#95" externalStationNr="008501212"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:01:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:01:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="8" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1022" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Chavannes-p.-R., UNIL-Dorigny" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Chavannes-p.-R., UNIL-Dorigny" x="6584706" y="46524219" type="WGS84" externalId="008501211#95" externalStationNr="008501211"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:02:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:02:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="9" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Bourdonnette" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Bourdonnette" x="6589803" y="46523267" type="WGS84" externalId="008501210#95" externalStationNr="008501210"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:04:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:04:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="10" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Malley" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Malley" x="6603305" y="46524210" type="WGS84" externalId="008501209#95" externalStationNr="008501209"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:06:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:06:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="11" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Provence" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Provence" x="6608105" y="46523383" type="WGS84" externalId="008501208#95" externalStationNr="008501208"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:07:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:07:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="12" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Montelly" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Montelly" x="6613561" y="46521819" type="WGS84" externalId="008501207#95" externalStationNr="008501207"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:08:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:08:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="13" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Vigie" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Vigie" x="6623926" y="46521541" type="WGS84" externalId="008592133#95" externalStationNr="008592133"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:10:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:10:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="14" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                        <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:11:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <StopPrognosis>
+                                        <Arr handicappedAccess="0"></Arr>
+                                        <Dep handicappedAccess="0"></Dep>
+                                        <Status>SCHEDULED</Status>
+                                    </StopPrognosis>
+                                </BasicStop>
+                            </PassList>
+                            <JProg>
+                                <JStatus>SCHEDULED</JStatus>
+                            </JProg>
+                        </Journey>
+                        <Arrival>
+                            <BasicStop type="NORMAL">
+                                <StAttrList>
+                                    <StAttr code="KANTON" text="VD" priority="3"/>
+                                    <StAttr code="ORTGR" text="1" priority="3"/>
+                                    <StAttr code="PLZ" text="1000" priority="3"/>
+                                    <StAttr code="TU" text="0" priority="3"/>
+                                    <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                    <StAttr code="WG" text="1" priority="3"/>
+                                    <StAttr code="WR" text="1" priority="3"/>
+                                    <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                                </StAttrList>
+                                <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                                <Arr getOut="YES">
+                                    <Time>00d15:11:00</Time>
+                                    <Platform>
+                                        <Text></Text>
+                                    </Platform>
+                                </Arr>
+                                <StopPrognosis>
+                                    <Arr handicappedAccess="0"></Arr>
+                                    <Dep handicappedAccess="0"></Dep>
+                                    <Status>SCHEDULED</Status>
+                                </StopPrognosis>
+                            </BasicStop>
+                        </Arrival>
+                    </ConSection>
+                </ConSectionList>
+            </Connection>
+            <Connection id="C1-5">
+                <Overview>
+                    <Date>20141026</Date>
+                    <Departure>
+                        <BasicStop type="NORMAL">
+                            <StAttrList>
+                                <StAttr code="KANTON" text="VD" priority="3"/>
+                                <StAttr code="ORTGR" text="1" priority="3"/>
+                                <StAttr code="PLZ" text="1024" priority="3"/>
+                                <StAttr code="TU" text="0" priority="3"/>
+                                <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                <StAttr code="WG" text="1" priority="3"/>
+                                <StAttr code="WR" text="1" priority="3"/>
+                            </StAttrList>
+                            <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                            <Dep getIn="YES">
+                                <Time>00d15:14:00</Time>
+                                <Platform>
+                                    <Text></Text>
+                                </Platform>
+                            </Dep>
+                            <StopPrognosis>
+                                <Arr handicappedAccess="0"></Arr>
+                                <Dep handicappedAccess="0"></Dep>
+                                <Status>SCHEDULED</Status>
+                            </StopPrognosis>
+                        </BasicStop>
+                    </Departure>
+                    <Arrival>
+                        <BasicStop type="NORMAL">
+                            <StAttrList>
+                                <StAttr code="KANTON" text="VD" priority="3"/>
+                                <StAttr code="ORTGR" text="1" priority="3"/>
+                                <StAttr code="PLZ" text="1000" priority="3"/>
+                                <StAttr code="TU" text="0" priority="3"/>
+                                <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                <StAttr code="WG" text="1" priority="3"/>
+                                <StAttr code="WR" text="1" priority="3"/>
+                                <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                            </StAttrList>
+                            <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                            <Arr getOut="YES">
+                                <Time>00d15:26:00</Time>
+                                <Platform>
+                                    <Text></Text>
+                                </Platform>
+                            </Arr>
+                            <StopPrognosis>
+                                <Arr handicappedAccess="0"></Arr>
+                                <Dep handicappedAccess="0"></Dep>
+                                <Status>SCHEDULED</Status>
+                            </StopPrognosis>
+                        </BasicStop>
+                    </Arrival>
+                    <Transfers>0</Transfers>
+                    <Duration>
+                        <Time>00d00:12:00</Time>
+                    </Duration>
+                    <ServiceDays>
+                        <IrregularServiceText>
+                            <Text>26. Oct until 7. Dec 2014 Su</Text>
+                        </IrregularServiceText>
+                    </ServiceDays>
+                    <Products>
+                        <Product cat="M       "/>
+                    </Products>
+                    <ContextURL url="http://fahrplan.sbb.ch/bin/query.exe/3ENGn?seqnr=1&amp;ident=nd.02365322.1414328164&amp;guiVCtrl_connection_detailsOut_select_C1-5&amp;jumpToDetails=yes&amp;guiVCtrl_connection_detailsOut_add_selection=yes"/>
+                    <XMLHandle url="http://fweb3p.sbb.ch/bin/query.exe/en?showExtXml=1&amp;xmlId=nd.02365322.1414328164:1:C1-5"/>
+                </Overview>
+                <ConSectionList>
+                    <ConSection>
+                        <Departure>
+                            <BasicStop type="NORMAL">
+                                <StAttrList>
+                                    <StAttr code="KANTON" text="VD" priority="3"/>
+                                    <StAttr code="ORTGR" text="1" priority="3"/>
+                                    <StAttr code="PLZ" text="1024" priority="3"/>
+                                    <StAttr code="TU" text="0" priority="3"/>
+                                    <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                    <StAttr code="WG" text="1" priority="3"/>
+                                    <StAttr code="WR" text="1" priority="3"/>
+                                </StAttrList>
+                                <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                                <Dep getIn="YES">
+                                    <Time>00d15:14:00</Time>
+                                    <Platform>
+                                        <Text></Text>
+                                    </Platform>
+                                </Dep>
+                                <StopPrognosis>
+                                    <Arr handicappedAccess="0"></Arr>
+                                    <Dep handicappedAccess="0"></Dep>
+                                    <Status>SCHEDULED</Status>
+                                </StopPrognosis>
+                            </BasicStop>
+                        </Departure>
+                        <Journey>
+                            <JHandle tNr="462083" cycle="19" puic="95"/>
+                            <JourneyAttributeList>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAME">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1 14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="LINE">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="CATEGORY" code="9">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>M</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M       </Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="LONG">
+                                            <Text>Underground</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="OPERATOR" ref="1414328164-6">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>TL</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>TL</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="LONG">
+                                            <Text>Transport publics de la Région Lausannoise</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NUMBER">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="EXT_ID">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="ADMINISTRATION">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>000151</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="DIRECTION">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>Lausanne-Flon</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="1">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_1</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="2">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_2</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>Underground 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="3">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_3</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1 14983</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="NAMEFORMATTED" code="4">
+                                        <AttributeVariant type="SHORT">
+                                            <Text>Name_Format_4</Text>
+                                        </AttributeVariant>
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>M 1</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                                <JourneyAttribute from="0" to="9">
+                                    <Attribute type="INFO" code="RT">
+                                        <AttributeVariant type="NORMAL">
+                                            <Text>151-14983-000</Text>
+                                        </AttributeVariant>
+                                    </Attribute>
+                                </JourneyAttribute>
+                            </JourneyAttributeList>
+                            <PassList>
+                                <BasicStop index="5" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1024" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Ecublens VD, EPFL" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Ecublens VD, EPFL" x="6566143" y="46522197" type="WGS84" externalId="008501214#95" externalStationNr="008501214"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:14:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:14:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                    <StopPrognosis>
+                                        <Arr handicappedAccess="0"></Arr>
+                                        <Dep handicappedAccess="0"></Dep>
+                                        <Status>SCHEDULED</Status>
+                                    </StopPrognosis>
+                                </BasicStop>
+                                <BasicStop index="6" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1024" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Ecublens VD, UNIL-Sorge" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Ecublens VD, UNIL-Sorge" x="6573577" y="46522449" type="WGS84" externalId="008501213#95" externalStationNr="008501213"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:15:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:15:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="7" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1022" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Chavannes-p.-R., UNIL-Mouline" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Chavannes-p.-R., UNIL-Mouline" x="6578899" y="46524993" type="WGS84" externalId="008501212#95" externalStationNr="008501212"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:16:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:16:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="8" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1022" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Chavannes-p.-R., UNIL-Dorigny" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Chavannes-p.-R., UNIL-Dorigny" x="6584706" y="46524219" type="WGS84" externalId="008501211#95" externalStationNr="008501211"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:17:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:17:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="9" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Bourdonnette" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Bourdonnette" x="6589803" y="46523267" type="WGS84" externalId="008501210#95" externalStationNr="008501210"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:19:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:19:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="10" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Malley" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Malley" x="6603305" y="46524210" type="WGS84" externalId="008501209#95" externalStationNr="008501209"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:21:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:21:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="11" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Provence" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Provence" x="6608105" y="46523383" type="WGS84" externalId="008501208#95" externalStationNr="008501208"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:22:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:22:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="12" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Montelly" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Montelly" x="6613561" y="46521819" type="WGS84" externalId="008501207#95" externalStationNr="008501207"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:23:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:23:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="13" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne, Vigie" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne, Vigie" x="6623926" y="46521541" type="WGS84" externalId="008592133#95" externalStationNr="008592133"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:25:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <Dep getIn="YES">
+                                        <Time>00d15:25:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Dep>
+                                </BasicStop>
+                                <BasicStop index="14" type="NORMAL">
+                                    <StAttrList>
+                                        <StAttr code="KANTON" text="VD" priority="3"/>
+                                        <StAttr code="ORTGR" text="1" priority="3"/>
+                                        <StAttr code="PLZ" text="1000" priority="3"/>
+                                        <StAttr code="TU" text="0" priority="3"/>
+                                        <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                        <StAttr code="WG" text="1" priority="3"/>
+                                        <StAttr code="WR" text="1" priority="3"/>
+                                        <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                                    </StAttrList>
+                                    <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                                    <Arr getOut="YES">
+                                        <Time>00d15:26:00</Time>
+                                        <Platform>
+                                            <Text></Text>
+                                        </Platform>
+                                    </Arr>
+                                    <StopPrognosis>
+                                        <Arr handicappedAccess="0"></Arr>
+                                        <Dep handicappedAccess="0"></Dep>
+                                        <Status>SCHEDULED</Status>
+                                    </StopPrognosis>
+                                </BasicStop>
+                            </PassList>
+                            <JProg>
+                                <JStatus>SCHEDULED</JStatus>
+                            </JProg>
+                        </Journey>
+                        <Arrival>
+                            <BasicStop type="NORMAL">
+                                <StAttrList>
+                                    <StAttr code="KANTON" text="VD" priority="3"/>
+                                    <StAttr code="ORTGR" text="1" priority="3"/>
+                                    <StAttr code="PLZ" text="1000" priority="3"/>
+                                    <StAttr code="TU" text="0" priority="3"/>
+                                    <StAttr code="WEMF" text="Lausanne-Flon" priority="3"/>
+                                    <StAttr code="WG" text="1" priority="3"/>
+                                    <StAttr code="WR" text="1" priority="3"/>
+                                    <StAttr code="RA" text="RT_BHF" priority="999" type="attr"/>
+                                </StAttrList>
+                                <Station name="Lausanne-Flon" x="6630344" y="46520795" type="WGS84" externalId="008501181#95" externalStationNr="008501181"/>
+                                <Arr getOut="YES">
+                                    <Time>00d15:26:00</Time>
+                                    <Platform>
+                                        <Text></Text>
+                                    </Platform>
+                                </Arr>
+                                <StopPrognosis>
+                                    <Arr handicappedAccess="0"></Arr>
+                                    <Dep handicappedAccess="0"></Dep>
+                                    <Status>SCHEDULED</Status>
+                                </StopPrognosis>
+                            </BasicStop>
+                        </Arrival>
+                    </ConSection>
+                </ConSectionList>
+            </Connection>
+        </ConnectionList>
+    </ConRes>
+</ResC>

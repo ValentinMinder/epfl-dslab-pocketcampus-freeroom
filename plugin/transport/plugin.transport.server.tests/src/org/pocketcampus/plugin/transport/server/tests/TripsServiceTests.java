@@ -169,6 +169,22 @@ public final class TripsServiceTests {
 				0, trips.size());
 	}
 
+	// test time parsing on days where the DST changes
+	@Test
+	public void dstChange() throws IOException {
+		TestHttpClient client = new TestHttpClient("TripsReplyEpflFlonOnDstChange.xml");
+		TripsService service = new TripsServiceImpl(client, "token");
+
+		TransportStation from = new TransportStation(8501214, 46522197, 6566143, "EPFL");
+		TransportStation to = new TransportStation(8501181, 46520795, 6630344, "Lausanne-Flon");
+		DateTime now = new DateTime(2014, 10, 26, 13, 56, 00);
+
+		TransportTrip trip = service.getTrips(from, to, now).get(0);
+
+		assertEquals("The first trip's departure time should be correct.",
+				new DateTime(2014, 10, 26, 13, 59, 00).getMillis(), trip.getDepartureTime());
+	}
+
 	private static final class TestHttpClient implements HttpClient {
 		private final String returnValue;
 

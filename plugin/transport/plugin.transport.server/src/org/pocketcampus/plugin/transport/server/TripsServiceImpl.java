@@ -121,8 +121,8 @@ public final class TripsServiceImpl implements TripsService {
 
 	/** Gets trips from the specified station, to the specified station, at the specified date and time. */
 	public List<TransportTrip> getTrips(final TransportStation start, final TransportStation end, final DateTime datetime) throws IOException {
-		XElement request = buildRequest(token, start, end, datetime);
-		String responseXml = client.post(API_URL, request.toBytes(API_CHARSET), API_CHARSET);
+		final XElement request = buildRequest(token, start, end, datetime);
+		final String responseXml = client.post(API_URL, request.toBytes(API_CHARSET), API_CHARSET);
 		return parseResponse(responseXml, start, end);
 	}
 
@@ -202,7 +202,6 @@ public final class TripsServiceImpl implements TripsService {
 
 	/** Parses a TransportConnection from the specified XElement. */
 	private static TransportConnection parseConnection(final XElement connectionElem, final LocalDate connectionDate) {
-
 		final XElement departureElem = connectionElem.child(RESPONSE_TRIP_CONNECTION_DEPARTURE_ELEMENT);
 		final HafasTransportStop departureStop = parseStop(departureElem, true, connectionDate);
 
@@ -287,8 +286,14 @@ public final class TripsServiceImpl implements TripsService {
 		}
 
 		final Period fromDayStart = RESPONSE_PERIOD_FORMAT.parsePeriod(flagsElem.child(STOP_FLAGS_TIME_ELEMENT).text());
-		final DateTime datetime = connectionDate.toDateTimeAtStartOfDay().plus(fromDayStart);
-
+		
+		// Don't use toDateTimeAtStartOfDay().plus(fromDayStart), it will bug on DST changes
+		// since some periods of time either exist twice (00:00 + 13h00 == 12:00) or don't exist (00:00 + 13h00 == 14:00)
+		final DateTime datetime = new DateTime(
+				connectionDate.getYear(), connectionDate.getMonthOfYear(), connectionDate.getDayOfMonth(),
+				fromDayStart.getHours(), fromDayStart.getMinutes(), fromDayStart.getSeconds())
+				.plusDays(fromDayStart.getDays());
+		
 		return new HafasTransportStop(station, datetime, platform);
 	}
 
