@@ -164,7 +164,7 @@ public final class FoodServiceTests {
 
 		return new RatingDatabase() {
 			@Override
-			public void insertMenu(List<EpflRestaurant> menu, LocalDate date, MealTime time) throws Exception {
+			public void insertMenu(List<EpflRestaurant> menu, LocalDate date, MealTime time) {
 				// nothing
 			}
 
@@ -205,7 +205,7 @@ public final class FoodServiceTests {
 	private static Menu getTestMenu() {
 		return new Menu() {
 			@Override
-			public FoodResponse get(MealTime time, LocalDate date) throws Exception {
+			public FoodResponse get(MealTime time, LocalDate date) {
 				return new FoodResponse().setStatusCode(FoodStatusCode.OK).setMenu(Arrays.asList(new EpflRestaurant[] {
 						new EpflRestaurant(100, "R100", Arrays.asList(new EpflMeal[] {
 								makeMeal(1),
@@ -247,7 +247,7 @@ public final class FoodServiceTests {
 		return new RestaurantLocator() {
 			@Override
 			public MapItem findByName(String restaurantName) {
-				return new MapItem(restaurantName, "", 0, 0, 0, 0);
+				return new MapItem(restaurantName, 0, 0, 0, 0);
 			}
 		};
 	}
