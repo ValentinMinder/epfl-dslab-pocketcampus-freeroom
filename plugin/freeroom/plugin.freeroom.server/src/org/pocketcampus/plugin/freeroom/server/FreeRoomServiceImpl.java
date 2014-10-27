@@ -1015,7 +1015,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			connectBDD = connMgr.getConnection();
 			String request = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.type"
 					+ language.toUpperCase()
-					+ " AS type, "
+					+ " AS typeRoom, "
 					+ "uo.count, uo.timestampStart, uo.timestampEnd, uo.type "
 					+ "FROM `fr-roomslist` rl, `fr-occupancy` uo "
 					+ "WHERE rl.uid = uo.uid AND rl.uid IN("
@@ -1055,7 +1055,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				int count = resultQuery.getInt("count");
 				String doorCode = resultQuery.getString("doorCode");
 				String alias = resultQuery.getString("alias");
-				String typeLanguage = resultQuery.getString("type");
+				String typeLanguage = resultQuery.getString("typeRoom");
 				double surface = resultQuery.getDouble("surface");
 
 				OCCUPANCY_TYPE type = OCCUPANCY_TYPE.valueOf(resultQuery
