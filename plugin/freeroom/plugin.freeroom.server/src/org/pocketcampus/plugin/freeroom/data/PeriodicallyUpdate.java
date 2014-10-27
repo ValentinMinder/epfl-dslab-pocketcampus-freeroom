@@ -34,6 +34,9 @@ public class PeriodicallyUpdate implements Runnable {
 
 	@Override
 	public void run() {
+		server.log(Level.INFO, "Cleaning old data");
+		server.cleanOldData();
+		
 		server.log(Level.INFO, "Starting update of data from ISA");
 		FetchOccupancyDataJSON fodj = new FetchOccupancyDataJSON(DB_URL,
 				DB_USER, DB_PASSWORD, server);
@@ -53,6 +56,7 @@ public class PeriodicallyUpdate implements Runnable {
 		ExchangeServiceImpl exchange = new ExchangeServiceImpl(DB_URL, DB_USER,
 				DB_PASSWORD, server);
 		exchange.updateEWAOccupancyFromTo(start, end);
+		server.log(Level.INFO, "Finished updating data for FreeRoom");
 	}
 
 }

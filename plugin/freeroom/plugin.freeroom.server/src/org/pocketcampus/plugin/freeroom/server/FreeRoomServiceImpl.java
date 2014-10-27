@@ -1565,4 +1565,24 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return null;
 		}
 	}
+
+	/**
+	 * Clean old data, used when updating.
+	 */
+	public void cleanOldData() {
+		
+		try {
+			Connection connectBDD = connMgr.getConnection();
+			String cleanRequest = "DELETE FROM `fr-occupancy` WHERE 1";
+
+			PreparedStatement query = connectBDD
+					.prepareStatement(cleanRequest);
+
+			query.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log(LOG_SIDE.SERVER, Level.SEVERE,
+					"SQL error when cleaning old data in the database");
+		}
+	}
 }
