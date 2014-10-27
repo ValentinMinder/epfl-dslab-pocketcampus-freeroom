@@ -1585,4 +1585,23 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"SQL error when cleaning old data in the database");
 		}
 	}
+
+	/**
+	 * Clean the rooms list stored in the database, used when rebuilding the entire database.
+	 */
+	public void cleanRoomsList() {
+		try {
+			Connection connectBDD = connMgr.getConnection();
+			String cleanRequest = "DELETE FROM `fr-roomslist` WHERE 1";
+
+			PreparedStatement query = connectBDD
+					.prepareStatement(cleanRequest);
+
+			query.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log(LOG_SIDE.SERVER, Level.SEVERE,
+					"SQL error when cleaning rooms list in the database");
+		}
+	}
 }

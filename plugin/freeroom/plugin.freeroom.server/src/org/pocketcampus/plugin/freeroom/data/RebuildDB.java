@@ -33,6 +33,8 @@ public class RebuildDB implements Runnable {
 
 	@Override
 	public void run() {
+		server.cleanOldData();
+		server.cleanRoomsList();
 		FetchOccupancyDataJSON fodJSON = new FetchOccupancyDataJSON(DB_URL,
 				DB_USER, DB_PASSWORD, server);
 		fodJSON.fetchAndInsertRoomsList(tsStart, tsEnd);
