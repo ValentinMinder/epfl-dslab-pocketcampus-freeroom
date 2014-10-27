@@ -132,21 +132,21 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"Server cannot connect to the database");
 			e.printStackTrace();
 		}
-		// USEME: Periodically update
-		// new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
-		// this)).start();
+//		 USEME: Periodically update
+//		 new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
+//		 this)).start();
 		//
 		// USEME: Rebuild rooms list in DB, need to tune parameter for tsStart
 		// and tsEnd, (Start/End of semester)
-		Calendar mCalendar = Calendar.getInstance();
-		mCalendar.set(Calendar.MONTH, 8);
-		mCalendar.set(Calendar.DAY_OF_MONTH, 1);
-		long tsStart = mCalendar.getTimeInMillis();
-		mCalendar.set(Calendar.MONTH, 11);
-		mCalendar.set(Calendar.DAY_OF_MONTH, 31);
-		long tsEnd = mCalendar.getTimeInMillis();
-		new Thread(new RebuildDB(DB_URL, DB_USER, DB_PASSWORD, this, tsStart,
-				tsEnd)).start();
+//		Calendar mCalendar = Calendar.getInstance();
+//		mCalendar.set(Calendar.MONTH, 8);
+//		mCalendar.set(Calendar.DAY_OF_MONTH, 1);
+//		long tsStart = mCalendar.getTimeInMillis();
+//		mCalendar.set(Calendar.MONTH, 11);
+//		mCalendar.set(Calendar.DAY_OF_MONTH, 31);
+//		long tsEnd = mCalendar.getTimeInMillis();
+//		new Thread(new RebuildDB(DB_URL, DB_USER, DB_PASSWORD, this, tsStart,
+//				tsEnd)).start();
 
 	}
 
