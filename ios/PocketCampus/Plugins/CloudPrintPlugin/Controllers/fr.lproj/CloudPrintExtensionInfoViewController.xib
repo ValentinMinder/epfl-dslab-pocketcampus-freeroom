@@ -21,7 +21,7 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="145" id="kp5-8i-Ozo"/>
                         </constraints>
-                        <string key="text">Imprimez des PDFs depuis les autres apps en touchant le bouton Partager puis "EPFL Print". Toucher "Autre" si cela n'apparaît pas.
+                        <string key="text">Imprimez des PDFs depuis les autres apps en touchant le bouton Partager puis "EPFL Print". Touchez "Autre" si cela n'apparaît pas.
 
 Dans Safari, touchez "Ouvrir dans".</string>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>

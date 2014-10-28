@@ -18,11 +18,11 @@
                     <textView multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afk-sk-ftW">
                         <rect key="frame" x="12" y="25" width="303" height="483"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <string key="text">When you print a document, it is not directly sent to a specific printer.
+                        <string key="text">When you print a document, it is not sent to a specific printer directly.
 You have to go to a POOL1 compatible printer and release it there:
 
 1. Find a printer (see below)
-2. Pass your Camipro card on the card reader
+2. Swipe your Camipro card on the card reader
 3. Press "Custom services / Services personnalisés"
 4. Press "Release documents / Libérer documents"
 5. Select your document(s) and press Print</string>
