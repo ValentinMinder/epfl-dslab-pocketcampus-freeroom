@@ -154,7 +154,7 @@
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if (self.automaticallyHandlesInternallyRecognizedURLs) {
+    if (self.automaticallyHandlesInternallyRecognizedURLs && ![request.URL isEqual:self.originalURL]) {
         UIViewController* viewController = [[MainController publicController] viewControllerForWebURL:request.URL];
         if (viewController) {
             [self.navigationController pushViewController:viewController animated:YES];

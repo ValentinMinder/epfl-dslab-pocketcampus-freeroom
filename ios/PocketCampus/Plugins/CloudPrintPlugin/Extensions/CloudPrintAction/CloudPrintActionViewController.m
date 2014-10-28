@@ -39,6 +39,8 @@
 @property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
 @property (nonatomic, weak) IBOutlet UIButton* cancelButton;
 
+@property (nonatomic, strong) CloudPrintController* cloudPrintController;
+
 @end
 
 @implementation CloudPrintActionViewController
@@ -47,6 +49,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.cloudPrintController = [CloudPrintController sharedInstance];
+    self.cloudPrintController.extensionContext = self.extensionContext;
     
     self.view.tintColor = [PCValues pocketCampusRed];
     [self.cancelButton setTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) forState:UIControlStateNormal];
@@ -64,7 +68,7 @@
                         [welf.loadingIndicator stopAnimating];
                         welf.centerMessageLabel.text = nil;
                         NSString* filename = [pdfURL lastPathComponent];
-                        UIViewController* viewController = [[CloudPrintController sharedInstance] viewControllerForPrintDocumentWithLocalURL:pdfURL docName:filename printDocumentRequestOrNil:nil completion:^(CloudPrintCompletionStatusCode printStatusCode) {
+                        UIViewController* viewController = [welf.cloudPrintController viewControllerForPrintDocumentWithLocalURL:pdfURL docName:filename printDocumentRequestOrNil:nil completion:^(CloudPrintCompletionStatusCode printStatusCode) {
                             [welf.extensionContext completeRequestReturningItems:@[] completionHandler:NULL];
                         }];
                         viewController.view.tintColor = [PCValues pocketCampusRed];

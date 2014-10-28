@@ -29,9 +29,17 @@
 
 #import "PluginController.h"
 
-@class MapItem;
+#import "map.h"
 
 @interface MapController : PluginController<PluginControllerProtocol>
+
+/**
+ * @return a map view controller that will display the layer with ids in layerIds.
+ * @param layerIds the ids of the layers to display. They correspond the constants in map.h.
+ * @discussion the view controller must be used with a navigation controller.
+ * You can set the title of the returned view controller to reflect what you display.
+ */
++ (UIViewController*)viewControllerWithMapLayerIdsToDisplay:(NSSet*)layerIds;
 
 + (UIViewController*)viewControllerWithInitialMapItem:(MapItem*)mapItem;
 + (UIViewController*)viewControllerWithInitialSearchQuery:(NSString*)query;

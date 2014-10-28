@@ -65,16 +65,7 @@ NSNumber* kEventItemCategoryFeatured;
     if (![object isKindOfClass:[self class]]) {
         @throw [NSException exceptionWithName:@"Illegal argument" reason:[NSString stringWithFormat:@"cannot compare EventItem with %@", [object class]] userInfo:nil];
     }
-    
-    if (self.realEndDate) {
-        if (self.realEndDate < object.realEndDate) {
-            return NSOrderedAscending;
-        } else if (self.realEndDate > object.realEndDate) {
-            return NSOrderedDescending;
-        } else {
-            return NSOrderedSame;
-        }
-    } else if (self.startDate) {
+    if (self.startDate) {
         if (self.startDate < object.startDate) {
             return NSOrderedAscending;
         } else if (self.startDate > object.startDate) {

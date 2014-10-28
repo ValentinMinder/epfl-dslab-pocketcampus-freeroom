@@ -45,7 +45,6 @@
     NSArray* elements = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self.class) owner:nil options:nil];
     self = (CamiproInfoWidgetCell*)elements[0];
     if (self) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.label.attributedText = [self.class infoAttributedString];
     }
     return self;

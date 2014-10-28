@@ -77,11 +77,7 @@ static MapService* instance __weak = nil;
 }
 
 - (void)getLayerWithDelegate:(id)delegate {
-    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    
-#warning REMOVE
-    operation.skipCache = YES;
-    
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];    
     operation.keepInCache = YES;
     operation.keepInCacheBlock = ^BOOL(void* result) {
         MapLayersResponse* response = (__bridge id)result;

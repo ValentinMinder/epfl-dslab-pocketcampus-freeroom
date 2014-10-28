@@ -53,28 +53,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.gaiScreenName = @"/camipro/widget";
-/*#warning TEST
-    //Crashlytics
-    BOOL clEnabledConfig = [[PCConfig defaults] boolForKey:PC_CONFIG_CRASHLYTICS_ENABLED_KEY];
-    BOOL clEnabledUserConfig = [[PCConfig defaults] boolForKey:PC_USER_CONFIG_CRASHLYTICS_ENABLED_KEY];
-    if (clEnabledConfig && clEnabledUserConfig) {
-        NSString* crashlyticsAPIKey = [[PCConfig defaults] stringForKey:PC_CONFIG_CRASHLYTICS_APIKEY_KEY];
-        if (crashlyticsAPIKey) {
-            static dispatch_once_t onceToken;
-            dispatch_once(&onceToken, ^{
-                CLSNSLog(@"-> Starting Crashlytics");
-                [Crashlytics startWithAPIKey:crashlyticsAPIKey delegate:nil];
-            });
-        } else {
-            CLSNSLog(@"!! WARNING: could not start Crashlytics, did not find APIKey in config.");
-        }
-    } else {
-        CLSNSLog(@"-> Crashlytics disabled (config: %d, user: %d)", clEnabledConfig, clEnabledUserConfig);
-    }
-    
-#warning END OF TEST*/
-    
-    self.balanceTitleLabel.text = NSLocalizedStringFromTable(@"Balance", @"CamiproPlugin", nil);    
+
+    self.balanceTitleLabel.text = NSLocalizedStringFromTable(@"Balance", @"CamiproPlugin", nil);
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(widgetTapped)];
     [self.view addGestureRecognizer:tapGesture];
     self.preferredContentSize = CGSizeMake(320.0, 50.0);
@@ -113,10 +93,6 @@
     [self.extensionContext openURL:[NSURL URLWithString:@"pocketcampus://camipro.plugin.pocketcampus.org"] completionHandler:NULL];
 }
 
-/*- (void)crash {
-    [[Crashlytics sharedInstance] crash];
-}*/
-
 #pragma mark - Private
 
 - (void)refresh {
@@ -128,7 +104,7 @@
     [self.camiproService cancelOperationsForDelegate:self];
     if (!self.camiproService) {
         self.camiproService = [CamiproService sharedInstanceToRetain];
-    }
+    } 
     
     [self startBalanceAndTransactionsRequest];
     

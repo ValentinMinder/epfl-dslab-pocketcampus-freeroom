@@ -104,6 +104,15 @@ static AuthenticationService* instance __weak = nil;
 }
 
 + (BOOL)savePassword:(NSString*)password forUsername:(NSString*)username {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        // Fixes an iOS 7 and 8 bug that makes keychain elements sometimes not accessible
+        // in background/from extensions even after the device has been unlocked once.
+        // With this accessibility value, the elements are always accessible after the user has
+        // unlocked his phone once after restart. This is recommended value for background apps / extensions.
+        // see http://stackoverflow.com/questions/10536859/ios-keychain-not-retrieving-values-from-background?answertab=votes#tab-top
+        [SSKeychain setAccessibilityType:kSecAttrAccessibleAfterFirstUnlock];
+    });
     return [SSKeychain setPassword:password forService:kKeychainServiceKey account:username];
 }
 
