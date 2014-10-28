@@ -700,13 +700,11 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
             self.mapLayersPopover.delegate = self;
         }
         if (!self.mapLayersPopover.isPopoverVisible) {
-#warning CHANGE
-            [self trackAction:@"ShowResultsList"];
+            [self trackAction:@"ShowLayersList"];
         }
         [self.mapLayersPopover togglePopoverFromBarButtonItem:self.layersListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
-#warning CHANGE
-        [self trackAction:@"ShowResultsList"];
+        [self trackAction:@"ShowLayersList"];
         [self presentViewController:navController animated:YES completion:NULL];
     }
 }

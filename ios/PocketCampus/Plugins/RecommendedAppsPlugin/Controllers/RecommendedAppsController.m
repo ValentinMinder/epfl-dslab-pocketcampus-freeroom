@@ -51,18 +51,18 @@ static RecommendedAppsController* instance __weak = nil;
         if (self) {
             RecommendedAppsListViewController* categoriesListViewController = [[RecommendedAppsListViewController alloc] init];
             categoriesListViewController.title = [[self class] localizedName];
-            if ([PCUtils isIdiomPad]) {
+            ///if ([PCUtils isIdiomPad]) {
 //                PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:restaurantsListViewController];
 //                FoodSplashDetailViewController* splashDetailViewController = [FoodSplashDetailViewController new];
 //                PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:[[PCNavigationController alloc] initWithRootViewController:splashDetailViewController]];
 //                splitViewController.pluginIdentifier = [[self class] identifierName];
 //                splitViewController.delegate = self;
 //                self.mainSplitViewController = splitViewController;
-            } else {
+            //} else {
                 PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:categoriesListViewController];
                 navController.pluginIdentifier = [[self class] identifierName];
                 self.mainNavigationController = navController;
-            }
+            //}
             instance = self;
         }
         return self;

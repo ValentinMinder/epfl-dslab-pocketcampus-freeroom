@@ -134,11 +134,11 @@
 			<key>identifierName</key>
 			<string>RecommendedApps</string>
 			<key>enabled</key>
-			<true/>
+			<false/>
 			<key>hiddenByDefault</key>
 			<false/>
 			<key>supportedIdioms</key>
-			<string>phone</string>
+			<string>phone+pad</string>
 		</dict>
 	</array>
 </dict>
