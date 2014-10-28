@@ -31,7 +31,7 @@ PODS:
   - TapkuLibrary (0.3.7)
   - thrift (0.9.1)
   - TTTAttributedLabel (1.10.1)
-  - TUSafariActivity (1.0.0)
+  - TUSafariActivity (1.0.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
@@ -63,6 +63,6 @@ SPEC CHECKSUMS:
   TapkuLibrary: 57999a6f61960402986ed98db14706613d9d5bf2
   thrift: b69f9820045ffa76eabe35674cdcc8daa5b1f75c
   TTTAttributedLabel: 94bb04f1e005616002dd2cee0262a0082e533627
-  TUSafariActivity: afff9b1d2eacf7cbace752c5f2bf56db852714de
+  TUSafariActivity: 63c6b0584d1f0a731e955c0e4d9c89cde63bedc2
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.34.4
