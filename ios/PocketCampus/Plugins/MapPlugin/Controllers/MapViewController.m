@@ -219,6 +219,8 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 {
     [super viewDidLoad];
     
+    self.navigationItem.leftItemsSupplementBackButton = YES;
+    
     self.epflTileOverlay = [[EPFLTileOverlay alloc] init];
     self.epflLayersOverlay = [[EPFLLayersOverlay alloc] initWithMapView:self.mapView];
     
@@ -273,6 +275,11 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.epflLayersOverlayRenderer cancelScreenTileDownload];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    self.searchState = self.searchState;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -342,7 +349,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     }
     [MapUtils removeMapItemAnnotationsOnMapView:self.mapView];
     [self.mapService searchFor:query delegate:self];
-    [self setSearchState:SearchStateLoading animated:YES];
+    self.searchState = SearchStateLoading;
     [self.searchBar resignFirstResponder];
 }
 
@@ -355,13 +362,6 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 #pragma mark - Buttons bars and recent searches UI management
 
 - (void)setSearchState:(SearchState)searchState {
-    [self setSearchState:searchState animated:NO];
-}
-
-- (void)setSearchState:(SearchState)searchState animated:(BOOL)animated {
-    if (_searchState == searchState) {
-        return;
-    }
     _searchState = searchState;
     
     if (self.searchState != SearchStateResults) {
@@ -430,9 +430,12 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         CGRect searchBarContainerViewTargetFrame;
         
         [self.loadingIndicator stopAnimating];
-        CGFloat windowWidth = [[UIApplication sharedApplication] keyWindow].bounds.size.width;
         items = @[self.layersListButton, self.searchBarItem];
-        searchBarTargetFrame = CGRectMake(0, 0, [PCUtils isIdiomPad] ? 272.0 : (0.66 * windowWidth), kSearchBarHeightPortrait);
+        CGFloat searchBarTargetWidth = 0.66 * self.view.frame.size.width;
+        if ([PCUtils isIdiomPad] && searchBarTargetWidth > 272.0) {
+            searchBarTargetWidth = 272.0;
+        }
+        searchBarTargetFrame = CGRectMake(0, 0, searchBarTargetWidth, kSearchBarHeightPortrait);
         searchBarContainerViewTargetFrame = searchBarTargetFrame;
         switch (searchState) {
             case SearchStateReady:
@@ -456,19 +459,16 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         if (!items) {
             return;
         }
-        [UIView animateWithDuration:animated ? 0.0 : 0.0 animations:^{
-            self.searchBar.frame = searchBarTargetFrame;
-            self.searchBar.superview.frame = searchBarContainerViewTargetFrame;
-        }];
+        self.searchBar.frame = searchBarTargetFrame;
+        self.searchBar.superview.frame = searchBarContainerViewTargetFrame;
     }
     BOOL searchBarWasFirstResponder = self.searchBar.isFirstResponder;
-    [self.navigationItem setRightBarButtonItems:items animated:NO];
+    self.navigationItem.rightBarButtonItems = items;
     if (searchBarWasFirstResponder) {
         [self.searchBar becomeFirstResponder];
     } else {
         [self.searchBar resignFirstResponder];
     }
-    
 }
 
 - (void)setMapControlsState:(MapControlsState)mapControlsState {
@@ -556,7 +556,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
                 break;
         }
         if (items) {
-            //solves an API bug (apparently) that is occuring when chaning toolBar items multiple times in the same run loop
+            //solves an API bug (apparently) that is occuring when changing toolBar items multiple times in the same run loop
             //timer schedules change for next run loop and solves the problem
             [NSTimer scheduledTimerWithTimeInterval:0.0 block:^{
                 self.toolBar.items = items;
@@ -786,10 +786,10 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
             break;
         case SearchStateLoading:
             [self.mapService cancelOperationsForDelegate:self];
-            [self setSearchState:SearchStateReady animated:YES];
+            self.searchState = SearchStateReady;
             break;
         case SearchStateResults:
-            [self setSearchState:SearchStateReady animated:YES];
+            self.searchState = SearchStateReady;
             [MapUtils removeMapItemAnnotationsOnMapView:self.mapView];
             break;
         default:
@@ -968,7 +968,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     if (results.count == 0) { //no result
         self.noResultAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"NoResult", @"MapPlugin", nil) message:@"" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [self.noResultAlert show];
-        [self setSearchState:SearchStateReady animated:YES];
+        self.searchState = SearchStateReady;
         return;
     }
     
@@ -982,7 +982,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     NSArray* mapItemAnnotations = [self mapItemAnnotationsForMapItems:mapItemsToDisplay];
     
-    [self setSearchState:SearchStateResults animated:YES];
+    self.searchState = SearchStateResults;
     
     if (mapItemAnnotations.count > kMaxDisplayedAnnotations) {
         CLSNSLog(@"-> Search for %@ returned too many results (%u), ask user to see list", query, (unsigned int)mapItemAnnotations.count);
@@ -994,7 +994,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 }
 
 - (void)searchMapFailedFor:(NSString *)query {
-    [self setSearchState:SearchStateReady animated:YES];
+    self.searchState = SearchStateReady;
     [PCUtils showServerErrorAlert];
 }
 
@@ -1021,7 +1021,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 
 - (void)serviceConnectionToServerFailed {
     if (self.searchState == SearchStateLoading) {
-        [self setSearchState:SearchStateReady animated:YES];
+        self.searchState = SearchStateReady;
         self.internetConnectionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [self.internetConnectionAlert show];
     } else {
