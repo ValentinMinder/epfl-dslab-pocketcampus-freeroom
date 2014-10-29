@@ -23,7 +23,9 @@ import com.unboundid.asn1.ASN1OctetString;
 import com.unboundid.ldap.sdk.Control;
 import com.unboundid.ldap.sdk.DereferencePolicy;
 import com.unboundid.ldap.sdk.LDAPConnection;
+import com.unboundid.ldap.sdk.LDAPConnectionPool;
 import com.unboundid.ldap.sdk.LDAPException;
+import com.unboundid.ldap.sdk.LDAPInterface;
 import com.unboundid.ldap.sdk.SearchRequest;
 import com.unboundid.ldap.sdk.SearchResult;
 import com.unboundid.ldap.sdk.SearchResultEntry;
@@ -39,7 +41,7 @@ import com.unboundid.ldap.sdk.controls.SimplePagedResultsControl;
 public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecker {
 
 	/** The connection to the EPFL ldap server */
-	private LDAPConnection ldap = new LDAPConnection();
+	private LDAPInterface ldap;
 
 	// LDAP search params
 	/** Limit of max result */
@@ -55,13 +57,19 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 	 */
 	public DirectoryServiceImpl() {
 		System.out.println("Starting Directory plugin server...");
+		
+		try {
+			ldap =  new LDAPConnectionPool(new LDAPConnection("ldap.epfl.ch", 389), 1, 1);
+		} catch (LDAPException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public int checkState() throws IOException {
 		Process proc = Runtime.getRuntime().exec(new String[]{ "/bin/sh", "-c", "lsof | grep ldap.epfl.ch | wc -l" });
 		String status = IOUtils.toString(proc.getInputStream(), "UTF-8").trim();
-		return (Integer.parseInt(status) < 5 ? 200 : 500 );
+		return (Integer.parseInt(status) > 5 ? 500 : 200 );
 	}
 
 	@Override
@@ -144,12 +152,6 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 			lang = "en";
 
 		String attributeKeyAppendix = (lang.equals("en") ? ";lang-en" : "");
-
-		if (!ldap.isConnected()) {
-			ldap.close();
-			ldap = new LDAPConnection();
-			ldap.connect("ldap.epfl.ch", 389);
-		}
 
 	
 		do {
