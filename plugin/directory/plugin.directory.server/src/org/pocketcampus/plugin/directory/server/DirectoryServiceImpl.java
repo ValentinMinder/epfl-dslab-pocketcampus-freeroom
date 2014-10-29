@@ -1,12 +1,15 @@
 package org.pocketcampus.plugin.directory.server;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.thrift.TException;
+import org.pocketcampus.platform.server.StateChecker;
 import org.pocketcampus.platform.shared.utils.NetworkUtils;
 import org.pocketcampus.platform.shared.utils.StringUtils;
 import org.pocketcampus.plugin.directory.shared.DirectoryPersonRole;
@@ -21,7 +24,6 @@ import com.unboundid.ldap.sdk.Control;
 import com.unboundid.ldap.sdk.DereferencePolicy;
 import com.unboundid.ldap.sdk.LDAPConnection;
 import com.unboundid.ldap.sdk.LDAPException;
-import com.unboundid.ldap.sdk.LDAPSearchException;
 import com.unboundid.ldap.sdk.SearchRequest;
 import com.unboundid.ldap.sdk.SearchResult;
 import com.unboundid.ldap.sdk.SearchResultEntry;
@@ -34,10 +36,10 @@ import com.unboundid.ldap.sdk.controls.SimplePagedResultsControl;
  * @author amer
  * 
  */
-public class DirectoryServiceImpl implements DirectoryService.Iface {
+public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecker {
 
 	/** The connection to the EPFL ldap server */
-	private LDAPConnection ldap;
+	private LDAPConnection ldap = new LDAPConnection();
 
 	// LDAP search params
 	/** Limit of max result */
@@ -52,15 +54,14 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	 * Constructor, no arguments needed
 	 */
 	public DirectoryServiceImpl() {
-		ldap = new LDAPConnection();
+		System.out.println("Starting Directory plugin server...");
+	}
 
-		try {
-			ldap.connect("ldap.epfl.ch", 389);
-		} catch (LDAPException e) {
-			System.err.println("Ldap exception");
-		}
-		System.out.println("Directory plugin server started");
-
+	@Override
+	public int checkState() throws IOException {
+		Process proc = Runtime.getRuntime().exec(new String[]{ "/bin/sh", "-c", "lsof | grep ldap.epfl.ch | wc -l" });
+		String status = IOUtils.toString(proc.getInputStream(), "UTF-8").trim();
+		return (Integer.parseInt(status) < 5 ? 200 : 500 );
 	}
 
 	@Override
@@ -129,13 +130,13 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			if (pag.cookie != null)
 				resp.setResultSetCookie(pag.cookie.getValue());
 			return resp;
-		} catch (org.pocketcampus.plugin.directory.shared.LDAPException e) {
+		} catch (LDAPException e) {
 			e.printStackTrace();
 			return new DirectoryResponse(500);
 		}
 	}
 
-	private LinkedList<Person> searchOnLDAP(String searchQuery, Pagination pag, String lang) throws org.pocketcampus.plugin.directory.shared.LDAPException {
+	private LinkedList<Person> searchOnLDAP(String searchQuery, Pagination pag, String lang) throws LDAPException {
 		// LinkedList<Person> results = new LinkedList<Person>();
 		HashMap<String, Person> results = new HashMap<String, Person>();
 
@@ -144,103 +145,97 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 
 		String attributeKeyAppendix = (lang.equals("en") ? ";lang-en" : "");
 
-		SearchResult searchResult;
+		if (!ldap.isConnected()) {
+			ldap.close();
+			ldap = new LDAPConnection();
+			ldap.connect("ldap.epfl.ch", 389);
+		}
+
+	
 		do {
-			try {
-				if (!ldap.isConnected())
-					ldap.reconnect();
+			SearchResult searchResult;
 
-				if (pag != null) {
+			if (pag != null) {
 
-					// search with pagination
-					// http://snipplr.com/view/52024/
-					SearchRequest searchRequest = new SearchRequest("o=epfl,c=ch", SearchScope.SUB, searchQuery, attWanted);
-					searchRequest.setControls(new Control[] { new SimplePagedResultsControl(PAGE_SIZE, pag.cookie) });
-					searchResult = ldap.search(searchRequest);
-					pag.cookie = null;
-					for (Control c : searchResult.getResponseControls()) {
-						if (c instanceof SimplePagedResultsControl) {
-							pag.cookie = ((SimplePagedResultsControl) c).getCookie();
-							if ((pag.cookie != null) && (pag.cookie.getValueLength() == 0))
-								pag.cookie = null;
-						}
+				// search with pagination
+				// http://snipplr.com/view/52024/
+				SearchRequest searchRequest = new SearchRequest("o=epfl,c=ch", SearchScope.SUB, searchQuery, attWanted);
+				searchRequest.setControls(new Control[] { new SimplePagedResultsControl(PAGE_SIZE, pag.cookie) });
+				searchResult = ldap.search(searchRequest);
+				pag.cookie = null;
+				for (Control c : searchResult.getResponseControls()) {
+					if (c instanceof SimplePagedResultsControl) {
+						pag.cookie = ((SimplePagedResultsControl) c).getCookie();
+						if ((pag.cookie != null) && (pag.cookie.getValueLength() == 0))
+							pag.cookie = null;
 					}
-
-				} else {
-
-					// search the ldap
-					searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, NB_RESULT_LIMIT, 0, false, searchQuery, attWanted);
-					// if attWanted is null, this will print out all the info the ldap can give
-					// System.out.println(searchResult.getSearchEntries().get(0).toLDIFString());
-
 				}
 
-				// adding persons from the search to our result list
-				for (SearchResultEntry e : searchResult.getSearchEntries())
-				{
-					if (!e.hasAttribute("employeeType") || "Ignore".equals(e.getAttributeValue("employeeType")))
-						continue;
+			} else {
 
-					// getting the interessant part of the url
-					String t[] = new String[2];
-					String web = e.getAttributeValue("labeledURI");
-					if (web != null) {
-						t = web.split(" ");
-						web = t[0];
-					}
+				// search the ldap
+				searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, NB_RESULT_LIMIT, 0, false, searchQuery, attWanted);
+				// if attWanted is null, this will print out all the info the ldap can give
+				// System.out.println(searchResult.getSearchEntries().get(0).toLDIFString());
 
-					// creating the new person
-					Person p = new Person(
-							e.getAttributeValue("givenName"),
-							e.getAttributeValue("sn"),
-							e.getAttributeValue("uniqueIdentifier"));
-					if (p.getFirstName() == null || p.getLastName() == null || p.getSciper() == null)
-						continue;
-					p.setEmail(e.getAttributeValue("mail"));
-					p.setWeb(web);
-					p.setOfficePhoneNumber(e.getAttributeValue("telephoneNumber"));
-					p.setOffice(e.getAttributeValue("roomNumber"));
-					p.setGaspar(e.getAttributeValue("uid"));
-					ArrayList<String> ouList = new ArrayList<String>();
-					ouList.add(e.getAttributeValue("ou"));
-					p.setOrganisationalUnits(ouList);
-					p.setPictureUrl("http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + p.getSciper());
-
-					String unitAcro = e.getAttributeValue("ou");
-					String [] units = e.getAttributeValues("ou" + attributeKeyAppendix);
-					String [] titles = e.getAttributeValues("description" + attributeKeyAppendix);
-					DirectoryPersonRole role = new DirectoryPersonRole(last(units), titles != null ? last(titles) : "");
-					Map<String, DirectoryPersonRole> roles = new HashMap<String, DirectoryPersonRole>();
-					roles.put(unitAcro, role);
-					p.setRoles(roles);
-					p.setHomepages(cleanHomepages(e.getAttributeValues("labeledURI")));
-
-					// no duplicates!
-					if (!results.containsKey(p.getSciper()))
-						results.put(p.getSciper(), p);
-					else {
-						Person op = results.get(p.getSciper());
-						op.getOrganisationalUnits().addAll(p.getOrganisationalUnits());
-						op.getRoles().putAll(p.getRoles());
-						// TODO should make all these Lists
-						if(!op.isSetOffice())
-							op.setOffice(p.getOffice());
-						if(!op.isSetOfficePhoneNumber())
-							op.setOfficePhoneNumber(p.getOfficePhoneNumber());
-					}
-
-				}
-
-			} catch (LDAPSearchException e1) {
-				if (e1.getMessage().equals("size limit exceeded")) {
-					System.err.println("ldap search problem: " + e1.getMessage());
-					throw new org.pocketcampus.plugin.directory.shared.LDAPException("too many results");
-				}
-
-			} catch (LDAPException e) {
-				System.err.println("ldap reconnection problem");
-				throw new org.pocketcampus.plugin.directory.shared.LDAPException("EPFL LDAP Problem, try again later");
 			}
+
+			// adding persons from the search to our result list
+			for (SearchResultEntry e : searchResult.getSearchEntries())
+			{
+				if (!e.hasAttribute("employeeType") || "Ignore".equals(e.getAttributeValue("employeeType")))
+					continue;
+
+				// getting the interessant part of the url
+				String t[] = new String[2];
+				String web = e.getAttributeValue("labeledURI");
+				if (web != null) {
+					t = web.split(" ");
+					web = t[0];
+				}
+
+				// creating the new person
+				Person p = new Person(
+						e.getAttributeValue("givenName"),
+						e.getAttributeValue("sn"),
+						e.getAttributeValue("uniqueIdentifier"));
+				if (p.getFirstName() == null || p.getLastName() == null || p.getSciper() == null)
+					continue;
+				p.setEmail(e.getAttributeValue("mail"));
+				p.setWeb(web);
+				p.setOfficePhoneNumber(e.getAttributeValue("telephoneNumber"));
+				p.setOffice(e.getAttributeValue("roomNumber"));
+				p.setGaspar(e.getAttributeValue("uid"));
+				ArrayList<String> ouList = new ArrayList<String>();
+				ouList.add(e.getAttributeValue("ou"));
+				p.setOrganisationalUnits(ouList);
+				p.setPictureUrl("http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + p.getSciper());
+
+				String unitAcro = e.getAttributeValue("ou");
+				String [] units = e.getAttributeValues("ou" + attributeKeyAppendix);
+				String [] titles = e.getAttributeValues("description" + attributeKeyAppendix);
+				DirectoryPersonRole role = new DirectoryPersonRole(last(units), titles != null ? last(titles) : "");
+				Map<String, DirectoryPersonRole> roles = new HashMap<String, DirectoryPersonRole>();
+				roles.put(unitAcro, role);
+				p.setRoles(roles);
+				p.setHomepages(cleanHomepages(e.getAttributeValues("labeledURI")));
+
+				// no duplicates!
+				if (!results.containsKey(p.getSciper()))
+					results.put(p.getSciper(), p);
+				else {
+					Person op = results.get(p.getSciper());
+					op.getOrganisationalUnits().addAll(p.getOrganisationalUnits());
+					op.getRoles().putAll(p.getRoles());
+					// TODO should make all these Lists
+					if(!op.isSetOffice())
+						op.setOffice(p.getOffice());
+					if(!op.isSetOfficePhoneNumber())
+						op.setOfficePhoneNumber(p.getOfficePhoneNumber());
+				}
+
+			}
+
 
 		} while (results.size() < PAGE_SIZE && pag != null && pag.cookie != null);
 
