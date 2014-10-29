@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.food.server;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -140,35 +141,30 @@ public class FoodServiceImpl implements FoodService.Iface {
 		return PriceTarget.VISITOR;
 	}
 
-	// OLD STUFF - DO NOT TOUCH
-
-	private org.pocketcampus.plugin.food.server.old.OldFoodService _oldService;
-
-	/**
-	 * OBSOLETE.
-	 * Gets the old version of this service, using lazy initialization
-	 * to avoid initializing it during unit tests since it does stuff with databases.
-	 */
-	private org.pocketcampus.plugin.food.server.old.OldFoodService getOldService() {
-		if (_oldService == null) {
-			_oldService = new org.pocketcampus.plugin.food.server.old.OldFoodService();
-		}
-		return _oldService;
-	}
+	// OLD STUFF
 
 	/**
 	 * OBSOLETE. Gets all menus for today.
 	 */
 	@Override
 	public List<Meal> getMeals() throws TException {
-		return getOldService().getMeals();
-	}
-
-	/**
-	 * OBSOLETE. Checks whether the user has already voted today
-	 */
-	public boolean hasVoted(String deviceId) throws TException {
-		return getOldService().hasVoted(deviceId);
+		FoodResponse resp = getFood(new FoodRequest());
+		if (resp.getStatusCode() == FoodStatusCode.OK) {
+			List<Meal> mealList = new LinkedList<Meal>();
+			for (EpflRestaurant resto : resp.getMenu()) {
+				for (EpflMeal meal : resto.getRMeals()) {
+					mealList.add(new Meal(meal.getMId(), meal.getMName(), meal
+							.getMDescription(), new Restaurant(resto.getRId(),
+							resto.getRName()), new Rating(meal.getMRating()
+							.getRatingValue() * 5, meal.getMRating()
+							.getVoteCount(), meal.getMRating().getRatingValue()
+							* 5 * meal.getMRating().getVoteCount())));
+				}
+			}
+			return mealList;
+		}
+		throw new TException("getFood returned status "
+				+ resp.getStatusCode().getValue());
 	}
 
 	/**
@@ -176,7 +172,21 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 */
 	@Override
 	public Map<Long, Rating> getRatings() throws TException {
-		return getOldService().getRatings();
+		FoodResponse resp = getFood(new FoodRequest());
+		if (resp.getStatusCode() == FoodStatusCode.OK) {
+			Map<Long, Rating> ratings = new HashMap<Long, Rating>();
+			for (EpflRestaurant resto : resp.getMenu()) {
+				for (EpflMeal meal : resto.getRMeals()) {
+					ratings.put(meal.getMId(), new Rating(meal.getMRating()
+							.getRatingValue() * 5, meal.getMRating()
+							.getVoteCount(), meal.getMRating().getRatingValue()
+							* 5 * meal.getMRating().getVoteCount()));
+				}
+			}
+			return ratings;
+		}
+		throw new TException("getFood returned status "
+				+ resp.getStatusCode().getValue());
 	}
 
 	/**
@@ -184,6 +194,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 */
 	@Override
 	public SubmitStatus setRating(long mealId, double rating, String deviceId) throws TException {
-		return getOldService().setRating(mealId, rating, deviceId);
+		return vote(new VoteRequest(mealId, rating / 5.0, deviceId)).getSubmitStatus();
 	}
 }
