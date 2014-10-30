@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.moodle.server;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -86,6 +87,24 @@ public final class CourseServiceImpl implements CourseService {
 		this.client = client;
 		this.token = token;
 	}
+	
+	@Override
+	public boolean checkPocketCampusUser() {
+		final String usersQueryParams = new PostDataBuilder()
+				.addParam(FORMAT_KEY, FORMAT_VALUE)
+				.addParam(TOKEN_KEY, token)
+				.addParam(METHOD_KEY, METHOD_VALUE_GET_USER)
+				.addParam(GET_USER_CRITERION_KEY, "username")
+				.addParam(GET_USER_SCIPER_KEY, "pocketcampus").toString();
+		try {
+			final String usersResponseString = client.get(SERVICE_URL + usersQueryParams, CHARSET);
+			final JsonUsersResponse usersResponse = new Gson().fromJson(usersResponseString, JsonUsersResponse.class);
+			return (usersResponse.users.length > 0);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	@Override
 	public MoodleCoursesResponse2 getCourses(final MoodleCoursesRequest2 request) {
@@ -112,7 +131,8 @@ public final class CourseServiceImpl implements CourseService {
 			}
 
 			userId = usersResponse.users[0].id;
-		} catch (Exception _) {
+		} catch (IOException e) {
+			e.printStackTrace();
 			return new MoodleCoursesResponse2(MoodleStatusCode2.NETWORK_ERROR, new ArrayList<MoodleCourse2>());
 		}
 
@@ -127,7 +147,8 @@ public final class CourseServiceImpl implements CourseService {
 		try {
 			final String coursesResponseString = client.get(SERVICE_URL + coursesQueryParams, CHARSET);
 			courses = new Gson().fromJson(coursesResponseString, JsonCourse[].class);
-		} catch (Exception _) {
+		} catch (IOException e) {
+			e.printStackTrace();
 			return new MoodleCoursesResponse2(MoodleStatusCode2.NETWORK_ERROR, new ArrayList<MoodleCourse2>());
 		}
 
@@ -160,7 +181,8 @@ public final class CourseServiceImpl implements CourseService {
 		try {
 			final String responseString = client.get(SERVICE_URL + queryParams, CHARSET);
 			sections = new Gson().fromJson(responseString, JsonSection[].class);
-		} catch (Exception _) {
+		} catch (IOException e) {
+			e.printStackTrace();
 			return new MoodleCourseSectionsResponse2(MoodleStatusCode2.NETWORK_ERROR, new ArrayList<MoodleCourseSection2>());
 		}
 

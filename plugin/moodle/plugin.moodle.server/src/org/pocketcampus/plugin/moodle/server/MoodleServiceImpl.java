@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.server.HttpClientImpl;
 import org.pocketcampus.platform.server.RawPlugin;
+import org.pocketcampus.platform.server.StateChecker;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.authentication.server.AuthenticatorImpl;
 import org.pocketcampus.plugin.moodle.shared.CoursesListReply;
@@ -29,7 +30,7 @@ import org.pocketcampus.plugin.moodle.shared.TequilaToken;
  * 
  * @author Solal Pirelli <solal@pocketcampus.org>
  */
-public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
+public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin, StateChecker {
 	private static final String MOODLE_ACCESS_TOKEN = PocketCampusServer.CONFIG.getString("MOODLE_ACCESS_TOKEN");
 	
 	private final CourseService courseService;
@@ -74,6 +75,11 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 		};
 	}
 	
+	@Override
+	public int checkState() throws IOException {
+		return (courseService.checkPocketCampusUser() ? 200 : 500 );
+	}
+
 	// OLD STUFF - DO NOT TOUCH
 
 	private final org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl oldService =
