@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.events.server;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.server.EmailSender;
+import org.pocketcampus.platform.server.StateChecker;
 import org.pocketcampus.platform.server.EmailSender.EmailTemplateInfo;
 import org.pocketcampus.platform.server.EmailSender.SendEmailInfo;
 import org.pocketcampus.platform.server.database.ConnectionManager;
@@ -45,7 +47,7 @@ import org.pocketcampus.plugin.events.shared.SendEmailRequest;
  * @author Amer C <amer.chamseddine@epfl.ch>
  * 
  */
-public class EventsServiceImpl implements EventsService.Iface {
+public class EventsServiceImpl implements EventsService.Iface, StateChecker {
 
 	private ConnectionManager connMgr;
 	
@@ -55,6 +57,16 @@ public class EventsServiceImpl implements EventsService.Iface {
 				PocketCampusServer.CONFIG.getString("DB_USERNAME"), PocketCampusServer.CONFIG.getString("DB_PASSWORD"));
 	}
 
+	@Override
+	public int checkState() throws IOException {
+		try {
+			return getEventPool(new EventPoolRequest(Constants.CONTAINER_EVENT_ID).setPeriodInHours(1)).getStatus();
+		} catch (TException e) {
+			e.printStackTrace();
+			return 500;
+		}
+	}
+	
 	@Override
 	public EventItemReply getEventItem(EventItemRequest req) throws TException {
 		System.out.println("getEventItem id=" + req.getEventItemId());
