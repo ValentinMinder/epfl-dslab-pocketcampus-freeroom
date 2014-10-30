@@ -209,14 +209,18 @@ public final class CourseServiceImpl implements CourseService {
 					String moduleName = StringEscapeUtils.unescapeHtml4(module.name);
 
 					// > 0 rather than == 1 for file and URL because Moodle allows multiple files inside a file...
-					if (module.modname.equals(MODULE_FILE) && module.contents.length > 0) {
+					if (module.modname.equals(MODULE_FILE) && module.contents != null && module.contents.length > 0) {
 						final String name = FilenameUtils.removeExtension(moduleName);
 						final String extension = FilenameUtils.getExtension(module.contents[0].filename);
 						final String iconUrl = module.modicon.replace(FILE_ICON_SIZE, FILE_ICON_SIZE_TOKEN);
 
 						final MoodleFile2 file = new MoodleFile2(name, extension, module.contents[0].fileurl).setIcon(iconUrl);
 						moodleSection.addToResources(new MoodleResource2().setFile(file));
-					} else if (module.modname.equals(MODULE_URL) && module.contents.length > 0) {
+					} else if (module.modname.equals(MODULE_URL) && module.contents != null && module.contents.length > 0) {
+						// TODO some legit URL modules don't have the contents field and encode the url in a "url" field
+						// e.g. http://moodle.epfl.ch/mod/url/view.php?id=870185
+						// we should get the actual url from pinging this moodle url
+						// for now, we ignore such urls
 						final MoodleUrl2 url = new MoodleUrl2(moduleName, module.contents[0].fileurl);
 						moodleSection.addToResources(new MoodleResource2().setUrl(url));
 					} else if (module.modname.equals(MODULE_FOLDER) && module.contents != null) {
