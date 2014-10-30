@@ -59,7 +59,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 		System.out.println("Starting Directory plugin server...");
 		
 		try {
-			ldap =  new LDAPConnectionPool(new LDAPConnection("ldap.epfl.ch", 389), 1, 1);
+			ldap =  new LDAPConnectionPool(new LDAPConnection("ldap.epfl.ch", 389), 1, 1); // need to have only 1 connection, because of ldap cookie crap
 		} catch (LDAPException e) {
 			e.printStackTrace();
 		}
@@ -69,7 +69,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 	public int checkState() throws IOException {
 		Process proc = Runtime.getRuntime().exec(new String[]{ "/bin/sh", "-c", "lsof | grep ldap.epfl.ch | wc -l" });
 		String status = IOUtils.toString(proc.getInputStream(), "UTF-8").trim();
-		return (Integer.parseInt(status) > 5 ? 500 : 200 );
+		return (Integer.parseInt(status) > 10 ? 500 : 200 );
 	}
 
 	@Override
