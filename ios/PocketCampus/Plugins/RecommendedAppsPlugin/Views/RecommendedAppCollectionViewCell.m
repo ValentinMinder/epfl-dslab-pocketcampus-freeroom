@@ -56,6 +56,7 @@ static NSString* kAppImageURLKey = @"AppImageURL";
 #pragma mark - UIView overrides
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     self.appThumbImageView.layer.cornerRadius = 16.0;
     self.appThumbImageView.clipsToBounds = YES;
     self.appThumbImageView.layer.masksToBounds = YES;
