@@ -30,20 +30,24 @@ public class FoodServiceImpl implements FoodService.Iface {
 	private final Menu _menu;
 	private final PictureSource _pictureSource;
 	private final RestaurantLocator _locator;
+	private final LDAPInterface _ldap;
 
 	public FoodServiceImpl(RatingDatabase ratingDatabase, Menu menu,
-			PictureSource pictureSource, RestaurantLocator locator) {
+			PictureSource pictureSource, RestaurantLocator locator,
+			LDAPInterface ldap) {
 		_ratingDatabase = ratingDatabase;
 		_menu = menu;
 		_pictureSource = pictureSource;
 		_locator = locator;
+		_ldap = ldap;
 	}
 
 	public FoodServiceImpl() {
-		this(new RatingDatabaseImpl(PAST_VOTE_MAX_DAYS),
+		this(new RatingDatabaseImpl(PAST_VOTE_MAX_DAYS), 
 				CachingProxy.create(new MenuImpl(new HttpClientImpl()), MENU_CACHE_DURATION, true),
-				CachingProxy.create(new PictureSourceImpl(), PICTURES_CACHE_DURATION, false),
-				CachingProxy.create(new RestaurantLocatorImpl(), LOCATIONS_CACHE_DURATION, false));
+				CachingProxy.create(new PictureSourceImpl(), PICTURES_CACHE_DURATION, false), 
+				CachingProxy.create(new RestaurantLocatorImpl(), LOCATIONS_CACHE_DURATION, false),
+				getLdapObject());
 	}
 
 	@Override
@@ -104,14 +108,22 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	// TODO extract this to a common LDAP service used everytime we need it, not just in food
-	private static PriceTarget getPriceTarget(String username) {
+	private static LDAPInterface getLdapObject() {
+		try {
+			return new LDAPConnectionPool(new LDAPConnection("ldap.epfl.ch", 389), 1, 5);
+		} catch (LDAPException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	private PriceTarget getPriceTarget(String username) {
 		if(username == null)
 			return null;
+		if(_ldap == null)
+			throw new RuntimeException("What the heck, dude, _ldap is null");
 		List<PriceTarget> classes = new LinkedList<PriceTarget>();
 		try {
-			LDAPConnection ldap = new LDAPConnection();
-			ldap.connect("ldap.epfl.ch", 389);
-			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + username + "@*)(uniqueidentifier=" + username + "))", (String[]) null);
+			SearchResult searchResult = _ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + username + "@*)(uniqueidentifier=" + username + "))", (String[]) null);
 			for (SearchResultEntry e : searchResult.getSearchEntries()) {
 				String os = e.getAttributeValue("organizationalStatus");
 				if ("Etudiant".equals(os)) {
