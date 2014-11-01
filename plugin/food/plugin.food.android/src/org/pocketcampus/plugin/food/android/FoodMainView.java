@@ -236,7 +236,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		mealsByTypes = new HashMap<MealType, List<AMeal>>();
 		Set<Long> newRestosInRS = new HashSet<Long>();
 		Set<MealType> newTypesInRS = new HashSet<MealType>();
-		for(AMeal m : mModel.getMeals().values()) {
+		for(AMeal m : mController.getMeals().values()) {
 			newRestosInRS.add(m.resto);
 			newTypesInRS.addAll(m.types);
 			for(MealType t : m.types) {
@@ -328,7 +328,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		LongSparseArray<List<AMeal>> mealsByResto = new LongSparseArray<List<AMeal>>();
 		
 		
-		for(AMeal m : difference(mModel.getMeals().values(), dislikedMeals)) {
+		for(AMeal m : difference(mController.getMeals().values(), dislikedMeals)) {
 			if(mealsByResto.get(m.resto) == null)
 				mealsByResto.put(m.resto, new LinkedList<AMeal>());
 			mealsByResto.get(m.resto).add(m);
@@ -387,9 +387,10 @@ public class FoodMainView extends PluginView implements IFoodView {
 					case R.id.food_thumbnail:
 						return mController.getMealTypePicUrls().get(e.types.get(0));
 					case R.id.food_price:
-						return new Actuated(e.price, new Actuator() {
+						Object price = getMealPrice(e.price, null, "%s<br>CHF", null);
+						return new Actuated(price, new Actuator() {
 							public void triggered() {
-								promptUserStatus();
+								promptUserStatus(e.price);
 							}
 						});
 					case R.id.food_meal_satisfaction:
@@ -414,7 +415,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 			
 		}
 		
-		if(mModel.getMeals().size() == 0) {
+		if(mController.getMeals().size() == 0) {
 			displayingList = false;
 			StandardLayout sl = new StandardLayout(this);
 			DateFormat dateFormat = new SimpleDateFormat("EEE dd", getResources().getConfiguration().locale);
@@ -494,14 +495,19 @@ public class FoodMainView extends PluginView implements IFoodView {
 	}
 	
 	@SuppressLint("UseSparseArrays")
-	private void promptUserStatus() {
+	private void promptUserStatus(Map<PriceTarget, Double> prices) {
 		trackEvent("PromptUserStatus", null);
+		String priceTagFormat = "<br><i>(%s CHF)</i>";
 		Map<Integer, CharSequence> priceTargets = new HashMap<Integer, CharSequence>();
-		priceTargets.put(0, Html.fromHtml(getString(R.string.food_pricetag_auto)));
+		if(mController.getServerDetectedPriceTarget() != null) {
+			String priceTag = getMealPrice(prices, mController.getServerDetectedPriceTarget(), priceTagFormat, "");
+			priceTargets.put(0, Html.fromHtml(getString(R.string.food_pricetag_auto) + priceTag));
+		}
 		for(PriceTarget t : PriceTarget.values()) {
 			if(t == PriceTarget.ALL)
 				continue;
-			priceTargets.put(t.getValue(), Html.fromHtml(mController.translateEnum(t.name())));
+			String priceTag = getMealPrice(prices, t, priceTagFormat, "");
+			priceTargets.put(t.getValue(), Html.fromHtml(mController.translateEnum(t.name()) + priceTag));
 		}
 		int selected = 0;
 		if(mModel.getUserStatus() != null) selected = mModel.getUserStatus().getValue();
@@ -515,6 +521,22 @@ public class FoodMainView extends PluginView implements IFoodView {
 				mController.refreshFood(FoodMainView.this, foodDay, foodTime, false);
 			}
 		});
+	}
+	
+	private String getMealPrice(Map<PriceTarget, Double> prices, PriceTarget priceTarget, String format, String retValIfNoPrice) {
+		if(priceTarget == null) {
+			// first use server detection
+			priceTarget = mController.getServerDetectedPriceTarget();
+			// then override with user selection
+			if (mModel.getUserStatus() != null)
+				priceTarget = mModel.getUserStatus();
+		}
+		Double price = prices.get(priceTarget != null ? priceTarget : PriceTarget.VISITOR);
+		if(price == null) price = prices.get(PriceTarget.ALL);
+		if(price == null)
+			return retValIfNoPrice;
+		String priceTag = String.format(Locale.US, "%1$.2f", price);
+		return String.format(format, priceTag);
 	}
 
 	private void voteFor(final AMeal e) {
@@ -628,84 +650,8 @@ public class FoodMainView extends PluginView implements IFoodView {
 		
 	}
 	
-	/*
-	private void updateDisplay(boolean saveScroll) {
 
-		List<EpflRestaurant> meals;
-
-		if(saveScroll && displayingList)
-			scrollState = new ScrollStateSaver(mList);
-		
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.food_list_header);
-		
-		Preparated<EpflRestaurant> p = new Preparated<EpflRestaurant>(meals, new Preparator<EpflRestaurant>() {
-			public int[] resources() {
-				return new int[] { R.id.food_title, R.id.food_speaker, R.id.food_thumbnail, R.id.food_time, R.id.food_fav_star };
-			}
-			public Object content(int res, final EpflRestaurant e) {
-				switch (res) {
-				case R.id.food_title:
-					return e.getCourseTitle();
-				case R.id.food_speaker:
-					return e.getCourseId();
-				case R.id.food_thumbnail:
-					return null;
-				case R.id.food_time:
-					return null;
-				case R.id.food_fav_star:
-					return R.drawable.sdk_transparent;
-				default:
-					return null;
-				}
-			}
-			public void finalize(Map<String, Object> map, EpflRestaurant item) {
-				map.put(MAP_KEY_COURSEID, item.getCourseId());
-			}
-		});
-		adapter.addSection("Courses", new LazyAdapter(this, p.getMap(), 
-				R.layout.food_list_row, p.getKeys(), p.getResources()));
-		
-		
-		if(userCourses.size() == 0) {
-			displayingList = false;
-			StandardLayout sl = new StandardLayout(this);
-			sl.setText(getResources().getString(R.string.food_no_menus));
-			setContentView(sl);
-		} else {
-			if(!displayingList) {
-				setContentView(R.layout.food_main);
-				mList = (ListView) findViewById(R.id.food_main_list);
-				displayingList = true;
-			}
-			mList.setAdapter(adapter);
-			//mList.setCacheColorHint(Color.TRANSPARENT);
-			//mList.setFastScrollEnabled(true);
-			//mList.setScrollingCacheEnabled(false);
-			//mList.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
-			//mList.setDivider(null);
-			//mList.setDividerHeight(0);
-			
-			mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
-			
-			mList.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-					Object o = arg0.getItemAtPosition(arg2);
-					if(o instanceof Map<?, ?>) {
-						Intent i = new Intent(FoodMainView.this, FoodCourseView.class);
-						i.putExtra(FoodCourseView.EXTRAS_KEY_COURSEID, ((Map<?, ?>) o).get(MAP_KEY_COURSEID).toString());
-						FoodMainView.this.startActivity(i);
-					} else {
-						Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
-					}
-				}
-			});
-			
-			if(scrollState != null)
-				scrollState.restore(mList);
-			
-		}
-	}
-	*/
+	
 	
 	public static Comparator<AMeal> getMealComp4sort() {
 		return new Comparator<AMeal>() {
