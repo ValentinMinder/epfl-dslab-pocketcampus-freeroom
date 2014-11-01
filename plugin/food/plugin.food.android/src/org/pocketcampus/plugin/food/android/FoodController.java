@@ -220,7 +220,7 @@ public class FoodController extends PluginController implements IFoodController 
 			this.id = id;
 			this.name = name;
 			this.desc = desc;
-			this.price = price;
+			this.prices = price;
 			this.satisfaction = satisfaction;
 			this.types = types;
 			this.resto = resto;
@@ -228,10 +228,13 @@ public class FoodController extends PluginController implements IFoodController 
 		long id;
 		String name;
 		String desc;
-		Map<PriceTarget, Double> price;
+		Map<PriceTarget, Double> prices;
 		String satisfaction;
 		List<MealType> types;
 		long resto;
+		String getSummary() {
+			return name + " " + (desc == null ? "" : desc.replaceAll("<br>", " "));
+		}
 	}
 	
 	private String getSatisfaction(EpflRating rating) {

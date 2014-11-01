@@ -387,10 +387,10 @@ public class FoodMainView extends PluginView implements IFoodView {
 					case R.id.food_thumbnail:
 						return mController.getMealTypePicUrls().get(e.types.get(0));
 					case R.id.food_price:
-						Object price = getMealPrice(e.price, null, "%s<br>CHF", null);
+						Object price = getMealPrice(e.prices, null, "%s<br>CHF", null);
 						return new Actuated(price, new Actuator() {
 							public void triggered() {
-								promptUserStatus(e.price);
+								promptUserStatus(e.prices);
 							}
 						});
 					case R.id.food_meal_satisfaction:
@@ -472,7 +472,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		try{
 			Intent i = new Intent();
 			i.setAction(Intent.ACTION_SEND);
-			i.putExtra(Intent.EXTRA_TEXT, m.name + " " + m.desc);
+			i.putExtra(Intent.EXTRA_TEXT, m.getSummary());
 			i.setComponent(new ComponentName("com.google.android.apps.translate", "com.google.android.apps.translate.TranslateActivity"));
 			startActivity(i);
 		} catch(Exception e) {
@@ -617,7 +617,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		AlertDialog dialog = new AlertDialog.Builder(this)
 				.setCustomTitle(titleV)
 				.setAdapter(new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, 
-						new String[] {getString(R.string.food_button_vote), getString(R.string.food_button_googletranslate), getString(R.string.food_button_copytext)}), 
+						new String[] {getString(R.string.food_button_vote), getString(R.string.food_button_googletranslate), getString(R.string.food_button_copytext), getString(R.string.food_button_showprices)}), 
 						new DialogInterface.OnClickListener() {
 
 					@Override
@@ -631,9 +631,12 @@ public class FoodMainView extends PluginView implements IFoodView {
 							break;
 						case 2:
 							android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-						    clipboard.setText(m.name + " " + m.desc);
+						    clipboard.setText(m.getSummary());
 							Toast.makeText(getApplicationContext(), getString(R.string.food_toast_copied), Toast.LENGTH_SHORT).show();
 							trackEvent("CopyToClipboard", "" + m.id);
+							break;
+						case 3:
+							promptUserStatus(m.prices);
 							break;
 						default:
 							Toast.makeText(getApplicationContext(), arg1, Toast.LENGTH_SHORT).show();
