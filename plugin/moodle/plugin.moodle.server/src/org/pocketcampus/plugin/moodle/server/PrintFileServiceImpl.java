@@ -60,7 +60,7 @@ public class PrintFileServiceImpl implements PrintFileService {
 			InputStream fileInputStream = conn.getInputStream();
 
 			
-			String fileName = CloudPrintServiceImpl.getFilenameFromContentDisposition(conn.getHeaderField(FileServiceImpl.HTTP_CONTENT_DISPOSITION));
+			String fileName = CloudPrintServiceImpl.getFilenameFromContentDispositionWithoutAccents(conn.getHeaderField(FileServiceImpl.HTTP_CONTENT_DISPOSITION));
 			String contentType = conn.getContentType();
 			int contentLength = conn.getContentLength();
 			

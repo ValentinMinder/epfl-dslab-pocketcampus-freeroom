@@ -69,7 +69,7 @@ public abstract class PluginController extends Service {
 		return client;
 	}
 	
-	private String getBackendUrl(String pluginName, boolean raw) {
+	protected String getBackendUrl(String pluginName, boolean raw) {
 		return PC_ANDR_CFG.getString("SERVER_PROTOCOL") + "://" + PC_ANDR_CFG.getString("SERVER_ADDRESS") + ":"
 				+ PC_ANDR_CFG.getInteger("SERVER_PORT") + "/" + PC_ANDR_CFG.getString("SERVER_URI") + "/" 
 				+ (raw ? "raw-" : "") + pluginName;
