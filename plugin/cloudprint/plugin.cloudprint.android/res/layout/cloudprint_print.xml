@@ -119,12 +119,28 @@
                     android:orientation="horizontal" >
 
                     <Button
-                        android:id="@+id/cloudprint_print_button"
-                        android:layout_width="fill_parent"
+                        android:id="@+id/cloudprint_preview_button"
+				        android:layout_weight=".5"
+				        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="100dp"
-                        android:layout_marginRight="100dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_marginTop="3dp"
+				        android:paddingLeft="20dp"
+				        android:paddingRight="20dp"
+                        android:enabled="true"
+                        android:text="@string/cloudprint_dialog_button_preview" />
+                    
+                    <Button
+                        android:id="@+id/cloudprint_print_button"
+				        android:layout_weight=".5"
+				        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
+				        android:paddingLeft="20dp"
+				        android:paddingRight="20dp"
                         android:enabled="true"
                         android:text="@string/cloudprint_dialog_button_print" />
                 </LinearLayout>

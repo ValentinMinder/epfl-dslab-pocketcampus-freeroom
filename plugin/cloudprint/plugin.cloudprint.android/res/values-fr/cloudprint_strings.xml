@@ -5,7 +5,10 @@
     
     <string name="cloudprint_dialog_button_upload">Uploader</string>
     <string name="cloudprint_dialog_button_print">Imprimer</string>
+    <string name="cloudprint_dialog_button_preview">Aperçu</string>
+    <string name="cloudprint_dialog_button_back">Retour</string>
     
+    <string name="cloudprint_dialog_text_pagenumber">Page %1$d de %2$d</string>
     <string name="cloudprint_dialog_text_upload">Vous êtes sur le point d\'uploader &lt;br&gt; &lt;b&gt; %s &lt;/b&gt;</string>
     <string name="cloudprint_dialog_text_print"> &lt;b&gt; Imprimante: &lt;/b&gt; pool1 &lt;br&gt; &lt;b&gt; Document: &lt;/b&gt; %s </string>
     <string name="cloudprint_dialog_help_string">Après avoir imprimé votre document sur pool1, vous devez aller à n\'importe quelle imprimante sur le campus de l\'EPFL, et placer votre carte Camipro sur le capteur, afin de libérer le document. Vous pouvez voir la file d\'impressions en attente sur l\'imprimante même.</string>
@@ -20,7 +23,7 @@
     
     
     <string name="cloudprint_string_color">Couleur</string>
-    <string name="cloudprint_string_grayscale">Noir et blanc</string>
+    <string name="cloudprint_string_blackwhite">Noir et blanc</string>
     <string name="cloudprint_string_one_copy">1 copie</string>
     <string name="cloudprint_string_n_copies">%1$d copies</string>
     <string name="cloudprint_string_comma_collate">, rassembler</string>
