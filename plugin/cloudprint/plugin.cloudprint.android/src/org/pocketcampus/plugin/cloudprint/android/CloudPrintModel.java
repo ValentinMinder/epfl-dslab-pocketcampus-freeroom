@@ -80,6 +80,8 @@ public class CloudPrintModel extends PluginModel implements ICloudPrintModel {
 
 	private Uri fileToPrint;
 	private Long printjobId;
+	private int pageCount;
+	private int currPage;
 	
 	/**
 	 * Constructor with reference to the context.
@@ -239,6 +241,20 @@ public class CloudPrintModel extends PluginModel implements ICloudPrintModel {
 	}
 	public Long getPrintJobId() {
 		return printjobId;
+	}
+	
+	public void setPageCount(int val) {
+		pageCount = val;
+	}
+	public int getPageCount() {
+		return pageCount;
+	}
+	
+	public void setCurrPage(int val) {
+		currPage = val;
+	}
+	public int getCurrPage() {
+		return currPage;
 	}
 	
 	

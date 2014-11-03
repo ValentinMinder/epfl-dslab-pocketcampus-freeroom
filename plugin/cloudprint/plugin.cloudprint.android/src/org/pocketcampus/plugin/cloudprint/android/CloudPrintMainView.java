@@ -2,10 +2,12 @@ package org.pocketcampus.plugin.cloudprint.android;
 
 import java.io.File;
 
+import org.pocketcampus.platform.android.core.GlobalContext;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.utils.DialogUtils;
 import org.pocketcampus.plugin.cloudprint.R;
+import org.pocketcampus.plugin.cloudprint.android.CloudPrintController.CloudPrintImageLoader;
 import org.pocketcampus.plugin.cloudprint.android.iface.ICloudPrintView;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintColorConfig;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintDoubleSidedConfig;
@@ -37,6 +39,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 /**
  * CloudPrintMainView - Main view that shows CloudPrint courses.
@@ -160,16 +164,25 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 			ImageView iv = (ImageView) findViewById(R.id.cloudprint_info_button);
 			iv.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
+					trackEvent("Info", null);
 					DialogUtils.alert(CloudPrintMainView.this, getString(R.string.cloudprint_plugin_title), getString(R.string.cloudprint_dialog_help_string));
 				}
 			});
 			
-			Button b = (Button) findViewById(R.id.cloudprint_print_button);
+			Button b = (Button) findViewById(R.id.cloudprint_preview_button);
 			b.setOnClickListener(new OnClickListener() {
+				public void onClick(View arg0) {
+					trackEvent("PrintPreview", null);
+					showLoading();
+					mController.printFileJob(CloudPrintMainView.this, mModel.getPrintJobId(), true);
+				}
+			});
+			Button b1 = (Button) findViewById(R.id.cloudprint_print_button);
+			b1.setOnClickListener(new OnClickListener() {
 				public void onClick(View arg0) {
 					trackEvent("Print", null);
 					showLoading();
-					mController.printFileJob(CloudPrintMainView.this, mModel.getPrintJobId());
+					mController.printFileJob(CloudPrintMainView.this, mModel.getPrintJobId(), false);
 				}
 			});
 			
@@ -194,6 +207,60 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 		
 	}
 
+	private void showPrintPreview() {
+		setContentView(R.layout.cloudprint_preview);
+		
+		TextView tv = (TextView) findViewById(R.id.cloudprint_pagenumber);
+		tv.setText(Html.fromHtml(getString(R.string.cloudprint_dialog_text_pagenumber, mModel.getCurrPage() + 1, mModel.getPageCount())));
+
+		ImageView iv = (ImageView) findViewById(R.id.cloudprint_printpreview_image);
+
+		DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.showImageOnLoading(android.R.drawable.ic_popup_sync)
+				.showImageForEmptyUri(android.R.drawable.ic_menu_gallery)
+				.showImageOnFail(android.R.drawable.ic_menu_report_image)
+				.cacheInMemory(false)
+				.cacheOnDisk(false)
+				.extraForDownloader(((GlobalContext) getApplicationContext()).getPcSessionId())
+				.build();
+		CloudPrintImageLoader.getInstance().displayImage(mController.getPageThumbnailUrl(), iv, options);
+
+		Button p = (Button) findViewById(R.id.cloudprint_previouspage_button);
+		p.setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				trackEvent("PreviousPage", null);
+				mModel.setCurrPage(Math.max(mModel.getCurrPage() - 1, 0));
+				showPrintPreview();
+			}
+		});
+		Button n = (Button) findViewById(R.id.cloudprint_nextpage_button);
+		n.setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				trackEvent("NextPage", null);
+				mModel.setCurrPage(Math.min(mModel.getCurrPage() + 1, mModel.getPageCount() - 1));
+				showPrintPreview();
+			}
+		});
+		
+
+		Button b = (Button) findViewById(R.id.cloudprint_back_button);
+		b.setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				trackEvent("BackFromPreview", null);
+				updateDisplay();
+			}
+		});
+		Button b1 = (Button) findViewById(R.id.cloudprint_print_button);
+		b1.setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				trackEvent("Print", null);
+				showLoading();
+				mController.printFileJob(CloudPrintMainView.this, mModel.getPrintJobId(), false);
+			}
+		});
+		
+		
+	}
 	
 	
 	
@@ -535,6 +602,13 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 		
 	}
 
+	@Override
+	public void printPreviewReady(int pageCount) {
+		mModel.setPageCount(pageCount);
+		mModel.setCurrPage(0);
+		showPrintPreview();
+	}
+	
 	@Override
 	public void authenticationFailed() {
 		Toast.makeText(getApplicationContext(), getString(

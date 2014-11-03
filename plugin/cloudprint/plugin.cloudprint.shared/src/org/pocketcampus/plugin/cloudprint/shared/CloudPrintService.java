@@ -27,7 +27,7 @@ public class CloudPrintService {
 
     public PrintDocumentResponse printDocument(PrintDocumentRequest request) throws org.apache.thrift.TException;
 
-    public PrintDocumentResponse printPreview(PrintDocumentRequest request) throws org.apache.thrift.TException;
+    public PrintPreviewDocumentResponse printPreview(PrintDocumentRequest request) throws org.apache.thrift.TException;
 
   }
 
@@ -82,7 +82,7 @@ public class CloudPrintService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "printDocument failed: unknown result");
     }
 
-    public PrintDocumentResponse printPreview(PrintDocumentRequest request) throws org.apache.thrift.TException
+    public PrintPreviewDocumentResponse printPreview(PrintDocumentRequest request) throws org.apache.thrift.TException
     {
       send_printPreview(request);
       return recv_printPreview();
@@ -95,7 +95,7 @@ public class CloudPrintService {
       sendBase("printPreview", args);
     }
 
-    public PrintDocumentResponse recv_printPreview() throws org.apache.thrift.TException
+    public PrintPreviewDocumentResponse recv_printPreview() throws org.apache.thrift.TException
     {
       printPreview_result result = new printPreview_result();
       receiveBase(result, "printPreview");
@@ -177,7 +177,7 @@ public class CloudPrintService {
         prot.writeMessageEnd();
       }
 
-      public PrintDocumentResponse getResult() throws org.apache.thrift.TException {
+      public PrintPreviewDocumentResponse getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -1158,7 +1158,7 @@ public class CloudPrintService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    private PrintDocumentResponse success; // required
+    private PrintPreviewDocumentResponse success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1224,7 +1224,7 @@ public class CloudPrintService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, PrintDocumentResponse.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, PrintPreviewDocumentResponse.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(printPreview_result.class, metaDataMap);
     }
@@ -1233,7 +1233,7 @@ public class CloudPrintService {
     }
 
     public printPreview_result(
-      PrintDocumentResponse success)
+      PrintPreviewDocumentResponse success)
     {
       this();
       this.success = success;
@@ -1244,7 +1244,7 @@ public class CloudPrintService {
      */
     public printPreview_result(printPreview_result other) {
       if (other.isSetSuccess()) {
-        this.success = new PrintDocumentResponse(other.success);
+        this.success = new PrintPreviewDocumentResponse(other.success);
       }
     }
 
@@ -1257,11 +1257,11 @@ public class CloudPrintService {
       this.success = null;
     }
 
-    public PrintDocumentResponse getSuccess() {
+    public PrintPreviewDocumentResponse getSuccess() {
       return this.success;
     }
 
-    public printPreview_result setSuccess(PrintDocumentResponse success) {
+    public printPreview_result setSuccess(PrintPreviewDocumentResponse success) {
       this.success = success;
       return this;
     }
@@ -1287,7 +1287,7 @@ public class CloudPrintService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((PrintDocumentResponse)value);
+          setSuccess((PrintPreviewDocumentResponse)value);
         }
         break;
 
@@ -1390,7 +1390,7 @@ public class CloudPrintService {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new PrintDocumentResponse();
+              this.success = new PrintPreviewDocumentResponse();
               this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);

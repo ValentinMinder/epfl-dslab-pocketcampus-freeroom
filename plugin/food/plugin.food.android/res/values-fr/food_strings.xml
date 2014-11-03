@@ -30,7 +30,8 @@
 	<string name="food_button_send">Soumettre</string>
 	<string name="food_button_googletranslate">Traduire avec Google Translate</string>
 	<string name="food_button_copytext">Copier texte</string>
-						
+	<string name="food_button_showprices">Afficher prix</string>
+							
 	<string name="food_toast_nogoogletranslate">Veuillez installer Google Translate</string>
 	<string name="food_toast_vote_noselection">Veuillez sélectionner un smiley</string>
 	<string name="food_toast_copied">Copié</string>

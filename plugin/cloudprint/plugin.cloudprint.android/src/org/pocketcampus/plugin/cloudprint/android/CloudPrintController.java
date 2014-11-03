@@ -1,6 +1,8 @@
 package org.pocketcampus.plugin.cloudprint.android;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,10 +11,12 @@ import org.pocketcampus.platform.android.core.AuthenticationListener;
 import org.pocketcampus.platform.android.core.GlobalContext;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
+import org.pocketcampus.platform.shared.PCConstants;
 import org.pocketcampus.plugin.cloudprint.R;
 import org.pocketcampus.plugin.cloudprint.android.iface.ICloudPrintController;
 import org.pocketcampus.plugin.cloudprint.android.iface.ICloudPrintView;
 import org.pocketcampus.plugin.cloudprint.android.req.PrintFileRequest;
+import org.pocketcampus.plugin.cloudprint.android.req.PrintPreviewRequest;
 import org.pocketcampus.plugin.cloudprint.android.req.UploadFileRequest;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintColorConfig;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintDoubleSidedConfig;
@@ -30,6 +34,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
 
 /**
@@ -72,6 +80,24 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 	
 	
 	
+	public static class CloudPrintImageLoader extends ImageLoader {
+
+	    private volatile static CloudPrintImageLoader instance;
+
+	    /** Returns singletone class instance */
+	    public static CloudPrintImageLoader getInstance() {
+	        if (instance == null) {
+	            synchronized (CloudPrintImageLoader.class) {
+	                if (instance == null) {
+	                    instance = new CloudPrintImageLoader();
+	                }
+	            }
+	        }
+	        return instance;
+	    }
+	}
+	
+	
 	/**
 	 *  This name must match given in the Server.java file in plugin.launcher.server.
 	 *  It's used to route the request to the right server implementation.
@@ -97,7 +123,18 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 		threadSafeClient = getThreadSafeClient();
 
-
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+				getApplicationContext()).imageDownloader(
+						new BaseImageDownloader(getApplicationContext()) {
+							@Override
+						    protected HttpURLConnection createConnection(String url, Object extra) throws IOException {
+						        HttpURLConnection conn = super.createConnection(url, extra);
+						        if(extra != null)
+						        	conn.setRequestProperty(PCConstants.HTTP_HEADER_AUTH_PCSESSID, extra.toString());
+						        return conn;
+						    }
+						} ).build();
+		CloudPrintImageLoader.getInstance().init(config);
 	}
 	
 
@@ -133,7 +170,7 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 	
 	
 
-	public void printFileJob(ICloudPrintView caller, long documentId) {
+	public void printFileJob(ICloudPrintView caller, long documentId, boolean previewOnly) {
 		PrintDocumentRequest req = new PrintDocumentRequest(documentId);
 		req.setPageSelection(mModel.getPageRangeList().get(mModel.getSelPageRangeList()));
 		req.setMultiPageConfig(mModel.getMultiPageList().get(mModel.getSelMultiPageList()));
@@ -141,13 +178,19 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 		req.setOrientation(mModel.getOrientationList().get(mModel.getSelOrientationList()));
 		req.setMultipleCopies(mModel.getMultipleCopiesList().get(mModel.getSelMultipleCopiesList()));
 		req.setColorConfig(mModel.getColorConfigList().get(mModel.getSelColorConfigList()));
-		new PrintFileRequest(caller).start(this, mClient, req);
+		if(previewOnly)
+			new PrintPreviewRequest(caller).start(this, mClient, req);
+		else
+			new PrintFileRequest(caller).start(this, mClient, req);
 	}
 	
 	public void uploadFileToPrint(ICloudPrintView caller, File file) {
 		new UploadFileRequest(caller, getHttpPost(mPluginName)).start(this, threadSafeClient, file);
 	}
 	
+	public String getPageThumbnailUrl() {
+		return getBackendUrl(mPluginName, true) + "?file_id=" + mModel.getPrintJobId() + "&page=" + mModel.getCurrPage();
+	}
 
 	
 	
@@ -189,7 +232,7 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 			return getString(R.string.cloudprint_string_color);
 		switch (s) {
 		case BLACK_WHITE:
-			return getString(R.string.cloudprint_string_grayscale);
+			return getString(R.string.cloudprint_string_blackwhite);
 		case COLOR:
 			return getString(R.string.cloudprint_string_color);
 		}

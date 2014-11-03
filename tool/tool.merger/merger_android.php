@@ -23,14 +23,14 @@ $libs_to_export = array(
 		"libGoogleAnalyticsServices.jar", "libthrift-0.7.0.jar",
 		"osmdroid-android-3.0.3.jar",
 		"servlet-api-3.0.jar", "slf4j-api-1.6.2.jar", 
-		"universal-image-loader-1.8.0.jar");
+		"universal-image-loader-1.9.3.jar");
 
 $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
 $path_to_lib_dir = "../../platform/platform.android/libs";
 
-$versionCode = "29";
-$versionName = "2.3";
+$versionCode = "30";
+$versionName = "2.4";
 
 function import_nodes($file, $tag, $doc, $parent_node, $nodes_to_remove) {
 	$doc2 = new DOMDocument();

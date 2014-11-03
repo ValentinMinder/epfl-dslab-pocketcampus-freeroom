@@ -27,7 +27,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 /**
  * MoodleMainView - Main view that shows Moodle courses.

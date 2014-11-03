@@ -30,7 +30,7 @@ public class LazyAdapter extends BaseAdapter {
     private String[] fromKeys;
     private int[] toViews;
     private int noImage;
-    private int stubImage;
+    private int imageOnLoading;
     private int imageForEmptyUri;
     private int imageOnFail;
     
@@ -50,7 +50,7 @@ public class LazyAdapter extends BaseAdapter {
 	    //noImage = android.R.drawable.ic_menu_recent_history;
 	    //noImage = android.R.drawable.ic_menu_add;
 	    noImage = android.R.drawable.ic_menu_gallery;
-	    stubImage = android.R.drawable.ic_popup_sync;
+	    imageOnLoading = android.R.drawable.ic_popup_sync;
 	    imageForEmptyUri = android.R.drawable.ic_menu_gallery;
 	    imageOnFail = android.R.drawable.ic_menu_report_image;
 		createOptions();
@@ -58,16 +58,16 @@ public class LazyAdapter extends BaseAdapter {
     
     private void createOptions() {
 		options = new DisplayImageOptions.Builder()
-				.showStubImage(stubImage)
+				.showImageOnLoading(imageOnLoading)
 				.showImageForEmptyUri(imageForEmptyUri)
 				.showImageOnFail(imageOnFail)
-				.cacheInMemory()
-				.cacheOnDisc()
+				.cacheInMemory(true)
+				.cacheOnDisk(true)
 				.build();
     }
     
     public LazyAdapter setStubImage(int resourceId) {
-	    stubImage = resourceId;
+	    imageOnLoading = resourceId;
 		createOptions();
     	return this;
     }

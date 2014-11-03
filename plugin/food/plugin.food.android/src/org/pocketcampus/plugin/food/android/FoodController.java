@@ -24,6 +24,8 @@ import org.pocketcampus.plugin.food.shared.FoodService.Iface;
 import org.pocketcampus.plugin.food.shared.VoteRequest;
 import org.pocketcampus.plugin.map.shared.MapItem;
 
+import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.provider.Settings.Secure;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -53,6 +55,8 @@ public class FoodController extends PluginController implements IFoodController 
 	private String androidId;
 	private Map<MealType, String> iMealTypePicUrls;
 	private Map<Long, AResto> iRestos;
+	private Map<Long, AMeal> iMeals;
+	private PriceTarget iServerDetectedPriceTarget;
 
 	private Map<Long, String> iRestoNames;
 	private Map<MealType, String> iTypeNames;
@@ -102,6 +106,13 @@ public class FoodController extends PluginController implements IFoodController 
 	public void setRestos(Map<Long, AResto> obj) {
 		iRestos = obj;
 	}
+	public Map<Long, AMeal> getMeals() {
+		return iMeals;
+	}
+	public void setMeals(Map<Long, AMeal> obj) {
+		iMeals = obj;
+		mModel.getListenersToNotify().foodUpdated();
+	}
 	public Map<Long, String> getRestoNames() {
 		return iRestoNames;
 	}
@@ -114,26 +125,25 @@ public class FoodController extends PluginController implements IFoodController 
 	public void setTypeNames(Map<MealType, String> obj) {
 		iTypeNames = obj;
 	}
+	public PriceTarget getServerDetectedPriceTarget() {
+		return iServerDetectedPriceTarget;
+	}
+	public void setServerDetectedPriceTarget(PriceTarget val) {
+		iServerDetectedPriceTarget = val;
+	}
 
 	
 	
-	public void setEpflMenus(List<EpflRestaurant> menus, PriceTarget priceTarget) {
+	@SuppressLint("UseSparseArrays")
+	public void setEpflMenus(List<EpflRestaurant> menus) {
 		
-//		System.out.println("setEpflMenus # of resto " + menus.size());
-		
-		if(mModel.getUserStatus() != null)
-			priceTarget = mModel.getUserStatus();
-
 		Map<Long, AResto> restos = new HashMap<Long, AResto>();
 		Map<Long, AMeal> meals = new HashMap<Long, AMeal>();
 		
 		for(EpflRestaurant r : menus) {
-//			System.out.println("# of resto's meals " + r.getRMealsSize());
 			restos.put(r.getRId(), new AResto(r.getRId(), r.getRName(), getSatisfaction(r.getRRating()), r.getRLocation()));
 			for(EpflMeal m : r.getRMeals()) {
-				Double price = m.getMPrices().get(priceTarget != null ? priceTarget : PriceTarget.VISITOR);
-				if(price == null) price = m.getMPrices().get(PriceTarget.ALL);
-				meals.put(m.getMId(), new AMeal(m.getMId(), m.getMName(), getDescription(m.getMDescription()), getPrice(price), getSatisfaction(m.getMRating()), m.getMTypes(), r.getRId()));
+				meals.put(m.getMId(), new AMeal(m.getMId(), m.getMName(), getDescription(m.getMDescription()), m.getMPrices(), getSatisfaction(m.getMRating()), m.getMTypes(), r.getRId()));
 			}
 		}
 		
@@ -147,7 +157,7 @@ public class FoodController extends PluginController implements IFoodController 
 		setTypeNames(typeNames);
 		
 		setRestos(restos);
-		mModel.setMeals(meals);
+		setMeals(meals);
 	}
 	
 	
@@ -164,6 +174,7 @@ public class FoodController extends PluginController implements IFoodController 
 			req.setMealDate(foodDay);
 		if(foodTime != null)
 			req.setMealTime(foodTime);
+		req.setUserGaspar(getUserGaspar());
 		new GetFoodRequest(caller).setBypassCache(!useCache).start(this, mClient, req);
 	}
 
@@ -175,6 +186,18 @@ public class FoodController extends PluginController implements IFoodController 
 		new CastVoteRequest(caller).start(this, mClient, req);
 	}
 
+
+	/*********
+	 * SUPER DUPER HACK !!!
+	 */
+	
+	public String getUserGaspar() {
+		// we just read the private files of the auth plugin :-(
+		SharedPreferences iStorage = getSharedPreferences("AUTH_STORAGE_NAME", 0);
+		return iStorage.getString("GASPAR_USERNAME_KEY", null);
+	}
+	
+	
 	/**
 	 * HELPERS CLASSES
 	 *
@@ -193,11 +216,11 @@ public class FoodController extends PluginController implements IFoodController 
 		MapItem location;
 	}
 	public static class AMeal {
-		public AMeal(long id, String name, String desc, String price, String satisfaction, List<MealType> types, long resto) {
+		public AMeal(long id, String name, String desc, Map<PriceTarget, Double> price, String satisfaction, List<MealType> types, long resto) {
 			this.id = id;
 			this.name = name;
 			this.desc = desc;
-			this.price = price;
+			this.prices = price;
 			this.satisfaction = satisfaction;
 			this.types = types;
 			this.resto = resto;
@@ -205,10 +228,13 @@ public class FoodController extends PluginController implements IFoodController 
 		long id;
 		String name;
 		String desc;
-		String price;
+		Map<PriceTarget, Double> prices;
 		String satisfaction;
 		List<MealType> types;
 		long resto;
+		String getSummary() {
+			return name + " " + (desc == null ? "" : desc.replaceAll("<br>", " "));
+		}
 	}
 	
 	private String getSatisfaction(EpflRating rating) {
@@ -224,10 +250,6 @@ public class FoodController extends PluginController implements IFoodController 
 			return null;
 		return desc.replaceAll("\\n", "<br>");
 	}
-	private String getPrice(Double d) {
-		return (d == null ? null : (String.format("%1$.2f", d) + "<br>CHF"));
-	}
-
 	
 	public String translateEnum (String enumVal) {
 		int resId = getResources().getIdentifier("food_enum_" + enumVal, "string", getPackageName());

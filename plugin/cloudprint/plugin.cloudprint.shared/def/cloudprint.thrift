@@ -78,8 +78,13 @@ struct PrintDocumentResponse {
     1: required CloudPrintStatusCode statusCode;
 }
 
+struct PrintPreviewDocumentResponse {
+    1: required CloudPrintStatusCode statusCode;
+    2: optional i32 numberOfPages;
+}
+
 
 service CloudPrintService {
 	PrintDocumentResponse printDocument( 1: PrintDocumentRequest request );
-	PrintDocumentResponse printPreview( 1: PrintDocumentRequest request );
+	PrintPreviewDocumentResponse printPreview( 1: PrintDocumentRequest request );
 }
