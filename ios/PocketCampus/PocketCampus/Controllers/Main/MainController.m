@@ -816,6 +816,8 @@ static MainController<MainControllerPublic>* instance = nil;
     UIViewController* pluginRootViewController = nil;
     if (pluginController.mainNavigationController) {
         pluginRootViewController = pluginController.mainNavigationController;
+    } else if (pluginController.mainTabBarController) {
+        pluginRootViewController = pluginController.mainTabBarController;
     } else if (pluginController.mainSplitViewController) {
         pluginRootViewController = pluginController.mainSplitViewController;
     } else {
@@ -827,21 +829,26 @@ static MainController<MainControllerPublic>* instance = nil;
 - (void)adaptInitializedNavigationOrSplitViewControllerOfPluginController:(PluginController*)pluginController {
     
     if (!pluginController) {
-        @throw [NSException exceptionWithName:@"bad pluginController argument" reason:@"cannot be nil" userInfo:nil];
+        [NSException raise:@"Illegal argument" format:@"pluginController cannot be nil"];
     }
     
-    if (pluginController.mainNavigationController && pluginController.mainSplitViewController) {
-        @throw [NSException exceptionWithName:@"incorrect attributes" reason:@"pluginController properties mainNavigationController and mainSplitViewController cannot be both instancied" userInfo:nil];
+    NSInteger nbControllersInstanciated = 0;
+    nbControllersInstanciated += (pluginController.mainNavigationController ? 1 : 0);
+    nbControllersInstanciated += (pluginController.mainTabBarController ? 1 : 0);
+    nbControllersInstanciated += (pluginController.mainSplitViewController ? 1 : 0);
+    
+    if (nbControllersInstanciated > 1) {
+        [NSException raise:@"Incorrect attributes" format:@"only one among mainNavigationController, mainTabBarController, or mainSplitViewController can be instanciated."];
     }
     
-    if (!pluginController.mainNavigationController && !pluginController.mainSplitViewController) {
-        @throw [NSException exceptionWithName:@"incorrect attributes" reason:@"pluginController properties mainNavigationController and mainSplitViewController cannot be both nil" userInfo:nil];
+    if (nbControllersInstanciated == 0) {
+        [NSException raise:@"Incorrect attributes" format:@"at least one among mainNavigationController, mainTabBarController, or mainSplitViewController can be instanciated."];
     }
     
     UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:pluginController];
     
     if (!pluginRootViewController || ![pluginRootViewController respondsToSelector:@selector(pluginIdentifier)] || ![(id)pluginRootViewController pluginIdentifier]) {
-        @throw [NSException exceptionWithName:@"incorrect attribute pluginIdentifier" reason:@"root view controller of pluginController must have initialized pluginIdentifier property" userInfo:nil];
+        [NSException raise:@"Incorrect attribute pluginIdentifier" format:@"Root view controller of pluginController must have initialized pluginIdentifier property"];
     }
     
     /*
@@ -869,24 +876,49 @@ static MainController<MainControllerPublic>* instance = nil;
         [navController.view addSubview:bringToFrontGesturesView];
 
         [[(UIViewController*)(navController.viewControllers[0]) navigationItem] setLeftBarButtonItem:[self newMainMenuButton]];
-    }
-    
-    if ([pluginRootViewController isKindOfClass:[UISplitViewController class]]) {
+        
+    } else if ([pluginRootViewController isKindOfClass:[UITabBarController class]]) {
+        UITabBarController* tabBarController = (UITabBarController*)pluginRootViewController;
+        [tabBarController.view addGestureRecognizer:revealPanGesture];
+        [tabBarController.view addSubview:bringToFrontGesturesView];
+        
+        for (UIViewController* level1ViewController in tabBarController.viewControllers) {
+            UIViewController* viewControllerMenuButton = level1ViewController;
+            if ([level1ViewController isKindOfClass:[UINavigationController class]]) {
+                viewControllerMenuButton = [[(UINavigationController*)level1ViewController viewControllers] firstObject];
+            }
+            viewControllerMenuButton.navigationItem.leftBarButtonItem = [self newMainMenuButton];
+        }
+        
+    } else if ([pluginRootViewController isKindOfClass:[UISplitViewController class]]) {
         UISplitViewController* splitController = (UISplitViewController*)pluginRootViewController;
         [splitController.view addGestureRecognizer:revealPanGesture];
         splitController.view.autoresizesSubviews = YES;
         [splitController.view addSubview:bringToFrontGesturesView];
         
-        for (int i = 0; i<splitController.viewControllers.count; i++) {
-            if([splitController.viewControllers[i] isKindOfClass:[UINavigationController class]]) {
-                UINavigationController* navController = (UINavigationController*)splitController.viewControllers[i];
-                if (i == 0) {
-                    [navController.viewControllers[0] navigationItem].leftBarButtonItem = [self newMainMenuButton];
+        UIViewController* masterViewController = splitController.viewControllers[0];
+        NSArray* viewControllersMenuButton = nil;
+        if ([masterViewController isKindOfClass:[UINavigationController class]]) {
+            viewControllersMenuButton = @[[[(UINavigationController*)masterViewController viewControllers] firstObject]];
+        } else if ([masterViewController isKindOfClass:[UITabBarController class]]) {
+            UITabBarController* tabBarController = (UITabBarController*)masterViewController;
+            NSMutableArray* mViewControllersMenuButton = [NSMutableArray arrayWithCapacity:tabBarController.viewControllers.count];
+            for (UIViewController* level1ViewController in tabBarController.viewControllers) {
+                if ([level1ViewController isKindOfClass:[UINavigationController class]]) {
+                    [mViewControllersMenuButton addObject:[[(UINavigationController*)level1ViewController viewControllers] firstObject]];
+                } else {
+                    [mViewControllersMenuButton addObject:level1ViewController];
                 }
             }
+            viewControllersMenuButton = mViewControllersMenuButton;
+        } else {
+            viewControllersMenuButton = @[masterViewController];
+        }
+    
+        for (UIViewController* viewController in viewControllersMenuButton) {
+            viewController.navigationItem.leftBarButtonItem = [self newMainMenuButton];
         }
     }
-    
 }
 
 - (UIBarButtonItem*)newMainMenuButton {

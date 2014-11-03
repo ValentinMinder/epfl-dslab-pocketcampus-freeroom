@@ -19,6 +19,7 @@
     #import "PCPersistenceManager.h"
     #import "PCGAITracker.h"
     #import "PCNavigationController.h"
+    #import "PCTabBarController.h"
 
     #import "AuthenticationController.h"
 

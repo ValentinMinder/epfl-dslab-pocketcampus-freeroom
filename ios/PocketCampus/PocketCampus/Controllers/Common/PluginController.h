@@ -33,14 +33,18 @@
 #import "MainController.h"
 
 #import "PluginNavigationController.h"
+#import "PluginTabBarController.h"
 #import "PluginSplitViewController.h"
 
 /*Each plugin must have a controller named <plugin_name>Controller, and that subclasses PluginController. Is it NOT an instance of UIViewController*/
 
 @interface PluginController : NSObject
 
-/* Either mainNavigationController or mainSplitViewController can be instantiated. Not both. */
+/*
+ * Either mainNavigationController, mainTabBarController, or mainSplitViewController can be instantiated.
+ */
 @property (strong) PluginNavigationController* mainNavigationController;
+@property (strong) PluginTabBarController* mainTabBarController;
 @property (strong) PluginSplitViewController* mainSplitViewController;
 
 @property (strong) NSArray* menuRevealingGesureRecognizers;
