@@ -9,7 +9,7 @@ import org.joda.time.*;
 /**
  * Implementation of IsAcademiaService.
  * 
- * @author Solal Pirelli <solal.pirelli@epfl.ch>
+ * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public final class IsAcademiaServiceImpl implements IsAcademiaService.Iface {
 	private final Schedule _schedule;
