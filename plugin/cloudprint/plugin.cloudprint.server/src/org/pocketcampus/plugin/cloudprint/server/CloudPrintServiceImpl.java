@@ -217,6 +217,7 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 				switch (request.getOrientation()) {
 				case PORTRAIT:
 				case REVERSE_PORTRAIT:
+					request.getMultiPageConfig().setLayout(rotate90left(request.getMultiPageConfig().getLayout()));
 					extras.add("-o");extras.add("media=Custom.600x450");
 					//extras.add("-o");extras.add("media=Custom.700x660");
 					break;
@@ -329,6 +330,54 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 	private static String decodeLayout(CloudPrintMultiPageLayout layout) {
 		return layout.name().toLowerCase(Locale.US).replace("to_", "").replaceAll("([a-z])[a-z]+_([a-z])[a-z]+_([a-z])[a-z]+_([a-z])[a-z]+", "$1$2$3$4");
 	}
+	
+	private static CloudPrintMultiPageLayout rotate90left(CloudPrintMultiPageLayout layout) {
+		// page is rotated 90 degrees to the left
+		switch (layout) {
+		case BOTTOM_TO_TOP_LEFT_TO_RIGHT:
+			return CloudPrintMultiPageLayout.RIGHT_TO_LEFT_BOTTOM_TO_TOP;
+		case BOTTOM_TO_TOP_RIGHT_TO_LEFT:
+			return CloudPrintMultiPageLayout.RIGHT_TO_LEFT_TOP_TO_BOTTOM;
+		case LEFT_TO_RIGHT_BOTTOM_TO_TOP:
+			return CloudPrintMultiPageLayout.BOTTOM_TO_TOP_RIGHT_TO_LEFT;
+		case LEFT_TO_RIGHT_TOP_TO_BOTTOM:
+			return CloudPrintMultiPageLayout.BOTTOM_TO_TOP_LEFT_TO_RIGHT;
+		case RIGHT_TO_LEFT_BOTTOM_TO_TOP:
+			return CloudPrintMultiPageLayout.TOP_TO_BOTTOM_RIGHT_TO_LEFT;
+		case RIGHT_TO_LEFT_TOP_TO_BOTTOM:
+			return CloudPrintMultiPageLayout.TOP_TO_BOTTOM_LEFT_TO_RIGHT;
+		case TOP_TO_BOTTOM_LEFT_TO_RIGHT:
+			return CloudPrintMultiPageLayout.LEFT_TO_RIGHT_BOTTOM_TO_TOP;
+		case TOP_TO_BOTTOM_RIGHT_TO_LEFT:
+			return CloudPrintMultiPageLayout.LEFT_TO_RIGHT_TOP_TO_BOTTOM;
+		}
+		return layout;
+	}
+
+	/*
+	private static String rotate90left(String layout) {
+		StringBuilder sb = new StringBuilder();
+		for(char c : layout.toCharArray()) {
+			switch (c) {
+			case 'b':
+				sb.append('r');
+				break;
+			case 't':
+				sb.append('l');
+				break;
+			case 'l':
+				sb.append('b');
+				break;
+			case 'r':
+				sb.append('t');
+				break;
+			default:
+				break;
+			}
+		}
+		return sb.toString();
+	}
+	*/
 
 	public static String getFilenameFromContentDispositionWithoutAccents(String contentDisposition) {
 	    for (String cd : contentDisposition.split(";")) {
