@@ -80,6 +80,24 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 	
 	
 	
+	public static class CloudPrintImageLoader extends ImageLoader {
+
+	    private volatile static CloudPrintImageLoader instance;
+
+	    /** Returns singletone class instance */
+	    public static CloudPrintImageLoader getInstance() {
+	        if (instance == null) {
+	            synchronized (CloudPrintImageLoader.class) {
+	                if (instance == null) {
+	                    instance = new CloudPrintImageLoader();
+	                }
+	            }
+	        }
+	        return instance;
+	    }
+	}
+	
+	
 	/**
 	 *  This name must match given in the Server.java file in plugin.launcher.server.
 	 *  It's used to route the request to the right server implementation.
@@ -116,7 +134,7 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 						        return conn;
 						    }
 						} ).build();
-		ImageLoader.getInstance().init(config);
+		CloudPrintImageLoader.getInstance().init(config);
 	}
 	
 

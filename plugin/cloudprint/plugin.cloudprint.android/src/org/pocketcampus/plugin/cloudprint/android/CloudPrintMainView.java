@@ -7,6 +7,7 @@ import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.utils.DialogUtils;
 import org.pocketcampus.plugin.cloudprint.R;
+import org.pocketcampus.plugin.cloudprint.android.CloudPrintController.CloudPrintImageLoader;
 import org.pocketcampus.plugin.cloudprint.android.iface.ICloudPrintView;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintColorConfig;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintDoubleSidedConfig;
@@ -40,7 +41,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * CloudPrintMainView - Main view that shows CloudPrint courses.
@@ -223,7 +223,7 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 				.cacheOnDisk(false)
 				.extraForDownloader(((GlobalContext) getApplicationContext()).getPcSessionId())
 				.build();
-		ImageLoader.getInstance().displayImage(mController.getPageThumbnailUrl(), iv, options);
+		CloudPrintImageLoader.getInstance().displayImage(mController.getPageThumbnailUrl(), iv, options);
 
 		Button p = (Button) findViewById(R.id.cloudprint_previouspage_button);
 		p.setOnClickListener(new OnClickListener() {
