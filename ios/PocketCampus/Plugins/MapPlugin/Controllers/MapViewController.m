@@ -639,6 +639,10 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 #pragma mark - Actions
 
 - (void)resultsListPressed {
+    if (self.presentedViewController) {
+        [self dismissViewControllerAnimated:NO completion:NULL];
+    }
+    
     __weak __typeof(self) welf = self;
     MapResultsListViewController* resultsViewController = [[MapResultsListViewController alloc] initWithMapItems:self.mapItemsAllResults selectedInitially:nil userValidatedSelectionBlock:^(NSArray *newlySelected) {
         [welf.mapView removeAnnotations:[MapUtils mapItemAnnotations:welf.mapView.annotations]];
@@ -662,16 +666,15 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     }];
     PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:resultsViewController];
     if ([PCUtils isIdiomPad]) {
-        if (self.resultsListPopOverController) {
-            self.resultsListPopOverController.contentViewController = navController;
+        if (self.resultsListPopOverController.isPopoverVisible) {
+            [self.resultsListPopOverController dismissPopoverAnimated:YES];
+            self.resultsListPopOverController = nil;
         } else {
             self.resultsListPopOverController = [[UIPopoverController alloc] initWithContentViewController:navController];
             self.resultsListPopOverController.delegate = self;
-        }
-        if (!self.resultsListPopOverController.isPopoverVisible) {
             [self trackAction:@"ShowResultsList"];
+            [self.resultsListPopOverController togglePopoverFromBarButtonItem:self.searchBarItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         }
-        [self.resultsListPopOverController togglePopoverFromBarButtonItem:self.searchBarItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
         [self trackAction:@"ShowResultsList"];
         [self presentViewController:navController animated:YES completion:NULL];
@@ -682,6 +685,12 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     if (!self.mapLayerForLayerId) {
         return;
     }
+    
+    if (self.resultsListPopOverController.isPopoverVisible) {
+        [self.resultsListPopOverController dismissPopoverAnimated:NO];
+        self.resultsListPopOverController = nil;
+    }
+    
     __weak __typeof(self) welf = self;
     MapLayersListSelectionViewController* layersViewController = [[MapLayersListSelectionViewController alloc] initWithAllSelectableMapLayers:self.mapLayerForLayerId.allValues doneButtonTappedBlock:^{
         if ([PCUtils isIdiomPad]) {
@@ -693,16 +702,16 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:layersViewController];
     if ([PCUtils isIdiomPad]) {
-        if (self.mapLayersPopover) {
-            self.mapLayersPopover.contentViewController = navController;
+        if (self.mapLayersPopover.isPopoverVisible) {
+            [self.mapLayersPopover dismissPopoverAnimated:YES];
+            self.mapLayersPopover = nil;
         } else {
             self.mapLayersPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
             self.mapLayersPopover.delegate = self;
-        }
-        if (!self.mapLayersPopover.isPopoverVisible) {
             [self trackAction:@"ShowLayersList"];
+            [self.mapLayersPopover togglePopoverFromBarButtonItem:self.layersListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         }
-        [self.mapLayersPopover togglePopoverFromBarButtonItem:self.layersListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        
     } else {
         [self trackAction:@"ShowLayersList"];
         [self presentViewController:navController animated:YES completion:NULL];

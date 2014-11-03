@@ -62,7 +62,7 @@
 		3216C95816A6098C0050D17D /* DirectoryProfilePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216C95716A6098C0050D17D /* DirectoryProfilePictureViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3216C95916A609CA0050D17D /* DirectoryProfilePictureView.xib */; };
 		3217CE0A1508E31200BF94F7 /* FoodController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE091508E31200BF94F7 /* FoodController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		3217CE0F1508F92700BF94F7 /* FoodRestaurantsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE0E1508F92700BF94F7 /* FoodRestaurantsListViewController.m */; };
+		3217CE0F1508F92700BF94F7 /* FoodMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE0E1508F92700BF94F7 /* FoodMainViewController.m */; };
 		3218CD2415B8359F00CEB238 /* MoodleLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 3218CD2315B8359F00CEB238 /* MoodleLarge.png */; };
 		3219EF5114FCDE4900A271CD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5014FCDE4900A271CD /* UIKit.framework */; };
 		3219EF5314FCDE4900A271CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5214FCDE4900A271CD /* Foundation.framework */; };
@@ -170,6 +170,7 @@
 		32617BCE16E7DA5F004F9CF9 /* PCTableViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32617BCD16E7DA5F004F9CF9 /* PCTableViewAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		326494C11A07A44A00C63622 /* PCTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 326494C01A07A44A00C63622 /* PCTabBarController.m */; };
 		326494C41A07A4D400C63622 /* PluginTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 326494C31A07A4D400C63622 /* PluginTabBarController.m */; };
+		326494CB1A07B97900C63622 /* FoodMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 326494CA1A07B97900C63622 /* FoodMainViewController.xib */; };
 		32649B23160DD7DA002E6498 /* DirectoryPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32649B22160DD7DA002E6498 /* DirectoryPersonViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32675C2415F50F4A00880387 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32675C2315F50F4A00880387 /* Config.plist */; };
 		3267676319E2C96800365F6D /* RecommendedAppsForCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3267676119E2C96800365F6D /* RecommendedAppsForCategoryCell.m */; };
@@ -631,8 +632,8 @@
 		3216C95916A609CA0050D17D /* DirectoryProfilePictureView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryProfilePictureView.xib; sourceTree = "<group>"; };
 		3217CE081508E31200BF94F7 /* FoodController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodController.h; sourceTree = "<group>"; };
 		3217CE091508E31200BF94F7 /* FoodController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodController.m; sourceTree = "<group>"; };
-		3217CE0D1508F92700BF94F7 /* FoodRestaurantsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodRestaurantsListViewController.h; sourceTree = "<group>"; };
-		3217CE0E1508F92700BF94F7 /* FoodRestaurantsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FoodRestaurantsListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		3217CE0D1508F92700BF94F7 /* FoodMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodMainViewController.h; sourceTree = "<group>"; };
+		3217CE0E1508F92700BF94F7 /* FoodMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FoodMainViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		3218CD2315B8359F00CEB238 /* MoodleLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MoodleLarge.png; sourceTree = "<group>"; };
 		3219EF4C14FCDE4900A271CD /* PocketCampus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketCampus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3219EF5014FCDE4900A271CD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -783,6 +784,7 @@
 		326494C01A07A44A00C63622 /* PCTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCTabBarController.m; sourceTree = "<group>"; };
 		326494C21A07A4D400C63622 /* PluginTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginTabBarController.h; sourceTree = "<group>"; };
 		326494C31A07A4D400C63622 /* PluginTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginTabBarController.m; sourceTree = "<group>"; };
+		326494CA1A07B97900C63622 /* FoodMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FoodMainViewController.xib; sourceTree = "<group>"; };
 		32649B21160DD7DA002E6498 /* DirectoryPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DirectoryPersonViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32649B22160DD7DA002E6498 /* DirectoryPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DirectoryPersonViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32675C2315F50F4A00880387 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
@@ -1687,8 +1689,9 @@
 			children = (
 				3217CE081508E31200BF94F7 /* FoodController.h */,
 				3217CE091508E31200BF94F7 /* FoodController.m */,
-				3217CE0D1508F92700BF94F7 /* FoodRestaurantsListViewController.h */,
-				3217CE0E1508F92700BF94F7 /* FoodRestaurantsListViewController.m */,
+				3217CE0D1508F92700BF94F7 /* FoodMainViewController.h */,
+				3217CE0E1508F92700BF94F7 /* FoodMainViewController.m */,
+				326494CA1A07B97900C63622 /* FoodMainViewController.xib */,
 				3243FB9B18215CEC000F3CB5 /* FoodRestaurantViewController.h */,
 				3243FB9C18215CEC000F3CB5 /* FoodRestaurantViewController.m */,
 				32290ACD18200A0A005869E7 /* FoodSplashDetailViewController.h */,
@@ -2911,6 +2914,7 @@
 				32A63A4B1535FFF400237841 /* TransportTripsHeaderCell.xib in Resources */,
 				32342A8017F43347009C05FA /* DirectoryEmptyPicture.png in Resources */,
 				32B3325817E5C708004F5E75 /* Images.xcassets in Resources */,
+				326494CB1A07B97900C63622 /* FoodMainViewController.xib in Resources */,
 				32CAE432153628C100AB17CC /* TransportTripPartsView.xib in Resources */,
 				32125BBF1536F215009B8D37 /* TransportFeetConnection.png in Resources */,
 				32125BC01536F215009B8D37 /* TransportFeetConnection@2x.png in Resources */,
@@ -3275,7 +3279,7 @@
 				3242DE1F150577050082D720 /* PCService.m in Sources */,
 				32DD525319B4DEAE00B5B241 /* cloudprint.m in Sources */,
 				3217CE0A1508E31200BF94F7 /* FoodController.m in Sources */,
-				3217CE0F1508F92700BF94F7 /* FoodRestaurantsListViewController.m in Sources */,
+				3217CE0F1508F92700BF94F7 /* FoodMainViewController.m in Sources */,
 				3247CAF815135FD800105A71 /* PCTableViewSectionHeader.m in Sources */,
 				32FB2E0A15179014007AE82B /* transport.m in Sources */,
 				32FB2E0B15179014007AE82B /* TransportService.m in Sources */,

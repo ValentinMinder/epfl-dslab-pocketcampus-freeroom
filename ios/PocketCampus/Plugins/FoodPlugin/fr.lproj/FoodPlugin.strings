@@ -1,6 +1,9 @@
 // Created by Loïc Gardiol on 01.03.12.
 
 "PluginName" = "Restaurants";
+"ByRestaurant" = "Par restaurant";
+"ByMealTypes" = "Par type de plat";
+"Menus" = "Menus";
 "MenusTableViewSectionName" = "Menus";
 "LoadingMenus" = "Chargement des menus";
 "NoMealsToday" = "Aucun menu aujourd'hui";

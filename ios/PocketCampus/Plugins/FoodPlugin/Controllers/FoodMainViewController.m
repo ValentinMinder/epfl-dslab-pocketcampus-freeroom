@@ -27,13 +27,9 @@
 
 //  Created by Loïc Gardiol on 08.03.12.
 
-#import "FoodRestaurantsListViewController.h"
+#import "FoodMainViewController.h"
 
 #import "FoodRestaurantViewController.h"
-
-#import "PCUtils.h"
-
-#import "PCValues.h"
 
 #import "PCTableViewSectionHeader.h"
 
@@ -58,9 +54,19 @@ static NSString* const kLastRefreshDateKey = @"lastRefreshDate";
  * Important to refresh often, otherwise ratings are not updated. Background update of ratings should be
  * considered in a future update.
  */
-static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
+static NSTimeInterval const kRefreshValiditySeconds = 300.0; //5 min.
 
-@interface FoodRestaurantsListViewController ()<FoodServiceDelegate> 
+static NSInteger const kRestaurantsSegmentIndex = 0;
+static NSInteger const kMealTypesSegmentIndex = 1;
+
+@interface FoodMainViewController ()<FoodServiceDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate>
+
+@property (nonatomic, strong) UITableViewController* restaurantsTableViewController;
+
+@property (nonatomic, weak) IBOutlet PCTableViewAdditions* restaurantsTableView;
+@property (nonatomic, weak) IBOutlet UICollectionView* mealTypesCollectionView;
+
+@property (nonatomic, strong) UISegmentedControl* segmentedControl;
 
 @property (nonatomic, strong) FoodService* foodService;
 @property (nonatomic, strong) FoodResponse* foodResponse;
@@ -72,12 +78,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 
 @end
 
-@implementation FoodRestaurantsListViewController
+@implementation FoodMainViewController
 
-- (id)init
+- (instancetype)init
 {
-    self = [super initWithStyle:UITableViewStylePlain];
+    self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self.class) owner:nil options:nil] firstObject];
     if (self) {
+        self.title = NSLocalizedStringFromTable(@"Menus", @"FoodPlugin", nil);
         self.gaiScreenName = @"/food";
         self.foodService = [FoodService sharedInstanceToRetain];
         self.foodResponse = [self.foodService getFoodFromCacheForRequest:[self createFoodRequest]];
@@ -87,23 +94,43 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] init];
-    self.tableView = tableViewAdditions;
-    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+    self.restaurantsTableViewController = [[UITableViewController alloc] initWithStyle:self.restaurantsTableView.style];
+    [self addChildViewController:self.restaurantsTableViewController];
+    self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self.restaurantsTableViewController refreshedDataIdentifier:[LGARefreshControl dataIdentifierForPluginName:@"food" dataName:@"restaurantsAndMeals"]];
+    [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
+    self.restaurantsTableViewController.tableView = self.restaurantsTableView;
+    
+    self.restaurantsTableView.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
         return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
     };
     
+    NSArray* segmentedControlItems = @[NSLocalizedStringFromTable(@"ByRestaurant", @"FoodPlugin", nil), NSLocalizedStringFromTable(@"ByMealTypes", @"FoodPlugin", nil)];
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentedControlItems];
+    self.segmentedControl.selectedSegmentIndex = kRestaurantsSegmentIndex;
+    [self.segmentedControl addTarget:self action:@selector(segmentedControlValueChanged) forControlEvents:UIControlEventValueChanged];
+    UIBarButtonItem* segmentedControlBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.segmentedControl];
+    
+    [self.segmentedControl addObserver:self forKeyPath:NSStringFromSelector(@selector(frame)) options:0 context:NULL];
+    
+    UIBarButtonItem* flexibleSpaceLeft = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem* flexibleSpaceRight = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    self.toolbarItems = @[flexibleSpaceLeft, segmentedControlBarItem, flexibleSpaceRight];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fillCollectionsAndReloadTableView) name:kFoodFavoritesRestaurantsUpdatedNotification object:self.foodService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fillCollectionsAndReloadViews) name:kFoodFavoritesRestaurantsUpdatedNotification object:self.foodService];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kFoodMealCellUserSuccessfullyRatedMealNotification object:nil];
-    self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGARefreshControl dataIdentifierForPluginName:@"food" dataName:@"restaurantsAndMeals"]];
-    [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
 }
 
 - (void)viewWillAppear:(BOOL)animated  {
     [super viewWillAppear:animated];
     [self trackScreen];
     [self refreshIfNeeded];
+    [self.navigationController setToolbarHidden:NO animated:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController setToolbarHidden:YES animated:animated];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -129,7 +156,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
         }
         [self refresh];
     }
-    [self fillCollectionsAndReloadTableView];
+    [self fillCollectionsAndReloadViews];
 }
 
 - (void)refresh {
@@ -138,10 +165,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     [self.foodService getFoodForRequest:[self createFoodRequest] delegate:self];
 }
 
-- (void)fillCollectionsAndReloadTableView {
+- (void)fillCollectionsAndReloadViews {
     [self fillCollections];
-    [self.tableView reloadData];
+    [self.restaurantsTableView reloadData];
+    [self.mealTypesCollectionView reloadData];
     [self reselectLastSelectedItem]; //keep selection ater refresh on iPad
+    self.restaurantsTableView.hidden = (self.segmentedControl.selectedSegmentIndex != kRestaurantsSegmentIndex);
+    self.mealTypesCollectionView.hidden = (self.segmentedControl.selectedSegmentIndex != kMealTypesSegmentIndex);
 }
 
 - (void)fillCollections {
@@ -159,7 +189,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     BOOL found __block = NO;
     [self.restaurantsSorted enumerateObjectsUsingBlock:^(EpflRestaurant* restaurant, NSUInteger index, BOOL *stop) {
         if ([restaurant isEqual:self.selectedRestaurant]) {
-            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+            [self.restaurantsTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
             self.selectedRestaurant = restaurant;
             *stop = YES;
             found = YES;
@@ -170,13 +200,38 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     }
 }
 
+#pragma mark - Actions
+
+- (void)segmentedControlValueChanged {
+    [self refreshIfNeeded];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (object == self.segmentedControl && [keyPath isEqualToString:NSStringFromSelector(@selector(frame))]) {
+        if (!self.segmentedControl.superview) {
+            return;
+        }
+        CGFloat width = self.segmentedControl.superview.frame.size.width-18.0;
+        if (width > 350.0) {
+            width = 350.0;
+        }
+        CGFloat height = self.segmentedControl.superview.frame.size.height-16.0;
+        if (height < 20.0) {
+            height = 20.0;
+        }
+        self.segmentedControl.bounds = CGRectMake(0, 0, width, height);
+    }
+}
+
 #pragma mark - FoodServiceDelegate
 
 - (void)getFoodForRequest:(FoodRequest *)request didReturn:(FoodResponse *)response {
     switch (response.statusCode) {
         case FoodStatusCode_OK:
             self.foodResponse = response;
-            [self fillCollectionsAndReloadTableView];
+            [self fillCollectionsAndReloadViews];
             [self.lgRefreshControl endRefreshingAndMarkSuccessful];
             if (self.restaurantViewController) {
                 NSInteger index = [self.foodResponse.menu indexOfObject:self.restaurantViewController.restaurant];
@@ -228,7 +283,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     
     dateString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"MenusForTodayWithFormat", @"FoodPlugin", nil), dateString];
     
-    PCTableViewSectionHeader* sectionHeader = [[PCTableViewSectionHeader alloc] initWithSectionTitle:dateString tableView:self.tableView];
+    PCTableViewSectionHeader* sectionHeader = [[PCTableViewSectionHeader alloc] initWithSectionTitle:dateString tableView:self.restaurantsTableView];
     return sectionHeader;
     
 }
@@ -281,7 +336,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     
     EpflRestaurant* restaurant = self.restaurantsSorted[indexPath.row];
     NSString* const identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"RestaurantCell"];
-    PCTableViewCellAdditions* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+    PCTableViewCellAdditions* cell = [self.restaurantsTableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         cell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
@@ -307,11 +362,34 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     return 1;
 }
 
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+#warning TODO
+}
+
+#pragma mark - UICollectionViewDataSource
+
+- (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    /*RecommendedAppCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellsReuseIdentifier forIndexPath:indexPath];
+    cell.app = self.recommendedApps[indexPath.item];
+    return cell;*/
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    //return self.recommendedApps.count;
+    return 0;
+}
+
 #pragma mark - dealloc
 
 - (void)dealloc {
     [self.foodService cancelOperationsForDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    @try {
+        [self.segmentedControl removeObserver:self forKeyPath:NSStringFromSelector(@selector(frame))];
+    }
+    @catch (NSException *exception) {}
 }
 
 @end

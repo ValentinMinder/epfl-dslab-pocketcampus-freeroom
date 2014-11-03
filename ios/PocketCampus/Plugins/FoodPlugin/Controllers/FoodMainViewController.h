@@ -25,15 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 08.03.12.
 
+@import UIKit;
 
-#import <UIKit/UIKit.h>
+@interface FoodMainViewController : UIViewController
 
-@interface FoodRestaurantsListViewController : UITableViewController
-
+- (instancetype)init;
 
 @end
