@@ -48,7 +48,7 @@ extern NSString* const kMapSelectedMapLayerIdsModifiedNotificaiton; //posted by 
  
 */
 
-- (void)getLayerWithDelegate:(id)delegate;
+- (void)getLayersWithDelegate:(id)delegate;
 - (void)searchFor:(NSString*)query delegate:(id)delegate;
 
 #pragma mark - MapLayers

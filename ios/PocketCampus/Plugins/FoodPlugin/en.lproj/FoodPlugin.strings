@@ -27,6 +27,19 @@
 "RatingStatusRatedText" = "Thank you !";
 "UnknownPrice" = "Unknown\nprice";
 
+// Meal types
+"MealType_UNKNOWN" = "All";
+"MealType_FISH" = "Fish";
+"MealType_MEAT" = "Meat";
+"MealType_POULTRY" = "Poultry";
+"MealType_VEGETARIAN" = "Vegetarian";
+"MealType_GREEN_FORK" = "Green fork";
+"MealType_PASTA" = "Pasta";
+"MealType_PIZZA" = "Pizza";
+"MealType_THAI" = "Thai";
+"MealType_INDIAN" = "Indian";
+"MealType_LEBANESE" = "Lebanese";
+
 
 /* Accessiblity */
 

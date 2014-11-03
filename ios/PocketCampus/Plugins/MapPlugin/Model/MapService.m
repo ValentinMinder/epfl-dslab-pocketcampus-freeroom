@@ -76,7 +76,7 @@ static MapService* instance __weak = nil;
     }
 }
 
-- (void)getLayerWithDelegate:(id)delegate {
+- (void)getLayersWithDelegate:(id)delegate {
     PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];    
     operation.keepInCache = YES;
     operation.keepInCacheBlock = ^BOOL(void* result) {

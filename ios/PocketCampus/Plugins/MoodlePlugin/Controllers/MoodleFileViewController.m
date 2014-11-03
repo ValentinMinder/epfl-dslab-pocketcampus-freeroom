@@ -509,7 +509,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     switch (response.statusCode) {
         case MoodleStatusCode2_OK:
         {
-            
             PrintDocumentRequest* printRequest = [PrintDocumentRequest createDefaultRequest];
             printRequest.documentId = response.printJobId;
             __weak __typeof(self) welf = self;
@@ -523,6 +522,10 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
             }];
             
             if ([PCUtils isIdiomPad]) {
+                if (self.printPopoverController.isPopoverVisible) {
+                    [self.printPopoverController dismissPopoverAnimated:NO];
+                    self.printPopoverController = nil;
+                }
                 self.printPopoverController = [[UIPopoverController alloc] initWithContentViewController:printViewController];
                 [self.printPopoverController presentPopoverFromBarButtonItem:[self printButton] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             } else {

@@ -57,12 +57,12 @@ extern NSInteger kFoodDefaultUnknownUserPriceTarget;
 
 - (void)getFoodForRequest:(FoodRequest*)request delegate:(id)delegate;
 
-/*
+/**
  * Set after any successfull getFoodForRequest:delegate: (nil before that)
  */
 @property (nonatomic, strong) NSDictionary* pictureUrlForMealType;
 
-/*
+/**
  * Set after any successfull getFoodForRequest:delegate:
  * Default: PriceTarget_ALL
  */

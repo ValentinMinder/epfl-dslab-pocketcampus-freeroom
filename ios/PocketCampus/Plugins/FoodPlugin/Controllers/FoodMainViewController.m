@@ -47,6 +47,8 @@
 
 #import "FoodMealCell.h"
 
+#import "FoodMealTypeCell.h"
+
 static NSString* const kLastRefreshDateKey = @"lastRefreshDate";
 
 /*
@@ -58,6 +60,8 @@ static NSTimeInterval const kRefreshValiditySeconds = 300.0; //5 min.
 
 static NSInteger const kRestaurantsSegmentIndex = 0;
 static NSInteger const kMealTypesSegmentIndex = 1;
+
+static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
 
 @interface FoodMainViewController ()<FoodServiceDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate>
 
@@ -116,6 +120,11 @@ static NSInteger const kMealTypesSegmentIndex = 1;
     UIBarButtonItem* flexibleSpaceRight = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     self.toolbarItems = @[flexibleSpaceLeft, segmentedControlBarItem, flexibleSpaceRight];
     
+    [self.mealTypesCollectionView registerNib:[UINib nibWithNibName:NSStringFromClass([FoodMealTypeCell class]) bundle:nil] forCellWithReuseIdentifier:kMealTypeCellReuseIdentifier];
+    UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)(self.mealTypesCollectionView.collectionViewLayout);
+    layout.itemSize = [FoodMealTypeCell preferredSize];
+    self.mealTypesCollectionView.collectionViewLayout = layout;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fillCollectionsAndReloadViews) name:kFoodFavoritesRestaurantsUpdatedNotification object:self.foodService];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kFoodMealCellUserSuccessfullyRatedMealNotification object:nil];
@@ -172,6 +181,8 @@ static NSInteger const kMealTypesSegmentIndex = 1;
     [self reselectLastSelectedItem]; //keep selection ater refresh on iPad
     self.restaurantsTableView.hidden = (self.segmentedControl.selectedSegmentIndex != kRestaurantsSegmentIndex);
     self.mealTypesCollectionView.hidden = (self.segmentedControl.selectedSegmentIndex != kMealTypesSegmentIndex);
+    self.mealTypesCollectionView.contentInset = self.restaurantsTableView.contentInset;
+    self.mealTypesCollectionView.scrollIndicatorInsets = self.restaurantsTableView.scrollIndicatorInsets;
 }
 
 - (void)fillCollections {
@@ -371,14 +382,14 @@ static NSInteger const kMealTypesSegmentIndex = 1;
 #pragma mark - UICollectionViewDataSource
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    /*RecommendedAppCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellsReuseIdentifier forIndexPath:indexPath];
-    cell.app = self.recommendedApps[indexPath.item];
-    return cell;*/
+    FoodMealTypeCell* cell = [self.mealTypesCollectionView dequeueReusableCellWithReuseIdentifier:kMealTypeCellReuseIdentifier forIndexPath:indexPath];
+    NSNumber* nbMealType = [EpflMeal allMealTypes][indexPath.item];
+    cell.mealType = [nbMealType integerValue];
+    return cell;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    //return self.recommendedApps.count;
-    return 0;
+    return [EpflMeal allMealTypes].count;
 }
 
 #pragma mark - dealloc

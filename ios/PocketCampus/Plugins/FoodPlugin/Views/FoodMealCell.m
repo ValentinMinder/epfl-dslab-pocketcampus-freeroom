@@ -183,13 +183,13 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     NSString* urlString = [[FoodService sharedInstanceToRetain] pictureUrlForMealType][primaryType];
     if (urlString) {
         NSURLRequest* req = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
-        __weak __typeof(self) weakSelf = self;
+        __weak __typeof(self) welf = self;
         [self.mealTypeImageView setImageWithURLRequest:req placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-            weakSelf.mealTypeImageView.image = image;
-            weakSelf.mealTypeImageViewHeightConstraint.constant = kmealTypeImageViewDefaultHeightConstraint;
+            welf.mealTypeImageView.image = image;
+            welf.mealTypeImageViewHeightConstraint.constant = kmealTypeImageViewDefaultHeightConstraint;
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            weakSelf.mealTypeImageView.image = nil;
-            weakSelf.mealTypeImageViewHeightConstraint.constant = 3.0;
+            welf.mealTypeImageView.image = nil;
+            welf.mealTypeImageViewHeightConstraint.constant = 3.0;
         }];
     } else {
         self.mealTypeImageView.image = nil;

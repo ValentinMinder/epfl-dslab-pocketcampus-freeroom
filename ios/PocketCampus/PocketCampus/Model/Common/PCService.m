@@ -168,6 +168,10 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
     if (pcAuthSessionid) {
         [request setValue:pcAuthSessionid forHTTPHeaderField:@"X-PC-AUTH-PCSESSID"];
     }
+    NSString* langCode = [PCUtils userLanguageCode];
+    if (langCode) {
+        [request setValue:langCode forHTTPHeaderField:@"X-PC-LANG-CODE"];
+    }
 }
 
 #pragma mark - Dealloc

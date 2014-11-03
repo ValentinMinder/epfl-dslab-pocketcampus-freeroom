@@ -340,7 +340,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         return;
     }
     self.getMapLayersRequestInProgress = YES;
-    [self.mapService getLayerWithDelegate:self];
+    [self.mapService getLayersWithDelegate:self];
 }
 
 - (void)startSearchForQuery:(NSString*)query {

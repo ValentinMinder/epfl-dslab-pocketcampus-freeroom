@@ -98,6 +98,44 @@
 
 @implementation EpflMeal (Additions)
 
++ (NSArray*)allMealTypes {
+    static NSArray* mealTypes;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        mealTypes = @[@(MealType_UNKNOWN), @(MealType_FISH), @(MealType_MEAT), @(MealType_POULTRY), @(MealType_VEGETARIAN), @(MealType_GREEN_FORK), @(MealType_PASTA), @(MealType_PIZZA), @(MealType_THAI), @(MealType_INDIAN), @(MealType_LEBANESE)];
+    });
+    return mealTypes;
+}
+
++ (NSString*)localizedNameForMealType:(NSInteger)mealType {
+    switch (mealType) {
+        case MealType_UNKNOWN:
+            return NSLocalizedStringFromTable(@"MealType_UNKNOWN", @"FoodPlugin", nil);
+        case MealType_FISH:
+            return NSLocalizedStringFromTable(@"MealType_FISH", @"FoodPlugin", nil);
+        case MealType_MEAT:
+            return NSLocalizedStringFromTable(@"MealType_MEAT", @"FoodPlugin", nil);
+        case MealType_POULTRY:
+            return NSLocalizedStringFromTable(@"MealType_POULTRY", @"FoodPlugin", nil);
+        case MealType_VEGETARIAN:
+            return NSLocalizedStringFromTable(@"MealType_VEGETARIAN", @"FoodPlugin", nil);
+        case MealType_GREEN_FORK:
+            return NSLocalizedStringFromTable(@"MealType_GREEN_FORK", @"FoodPlugin", nil);
+        case MealType_PASTA:
+            return NSLocalizedStringFromTable(@"MealType_PASTA", @"FoodPlugin", nil);
+        case MealType_PIZZA:
+            return NSLocalizedStringFromTable(@"MealType_PIZZA", @"FoodPlugin", nil);
+        case MealType_THAI:
+            return NSLocalizedStringFromTable(@"MealType_THAI", @"FoodPlugin", nil);
+        case MealType_INDIAN:
+            return NSLocalizedStringFromTable(@"MealType_INDIAN", @"FoodPlugin", nil);
+        case MealType_LEBANESE:
+            return NSLocalizedStringFromTable(@"MealType_LEBANESE", @"FoodPlugin", nil);
+        default:
+            return NSLocalizedStringFromTable(@"Unknown", @"PocketCampus", nil);
+    }
+}
+
 - (BOOL)isEqual:(id)object {
     if (self == object) {
         return YES;
