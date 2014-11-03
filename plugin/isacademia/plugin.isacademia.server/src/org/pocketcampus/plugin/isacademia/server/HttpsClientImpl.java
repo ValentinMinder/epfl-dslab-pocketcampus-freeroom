@@ -19,6 +19,7 @@ import org.apache.http.util.EntityUtils;
 
 /**
  * Implementation of HttpsClient.
+ * Forces the protocol to be TLSv1, since ISA doesn't support anything better.
  * 
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
@@ -26,9 +27,6 @@ public class HttpsClientImpl implements HttpsClient {
 	private static final SchemeRegistry SCHEME_REGISTRY = new SchemeRegistry();
 
 	static {
-		// This is required because the ISA server is... not exactly standards-compliant or up-to-date.
-		System.setProperty("jsse.enableSNIExtension", "false");
-
 		try {
 			SCHEME_REGISTRY.register(new Scheme("https", 443, new InsecureSocketFactory()));
 		} catch (Exception e) {
@@ -69,11 +67,7 @@ public class HttpsClientImpl implements HttpsClient {
 		}
 
 		private static Socket processSocket(Socket socket) {
-			// The second cipher suite is not really a cipher suite
-			// it just tells Java not to send the SSL renegotiation_info extension
-			// that the IS-Academia server doesn't like (and by "doesn't like" I mean "closes the connection if it receives it")
-			((SSLSocket) socket).setEnabledCipherSuites(new String[] { "SSL_RSA_WITH_RC4_128_SHA", "TLS_EMPTY_RENEGOTIATION_INFO_SCSV" });
-			((SSLSocket) socket).setEnabledProtocols(new String[] { "SSLv3" });
+			((SSLSocket) socket).setEnabledProtocols(new String[] { "TLSv1" });
 			return socket;
 		}
 	}
