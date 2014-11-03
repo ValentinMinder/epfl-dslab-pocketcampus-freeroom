@@ -35,7 +35,7 @@ public class HttpsClientImpl implements HttpsClient {
 	}
 
 	@Override
-	public String get(String url, Charset charset) throws Exception {
+	public String get(String url, Charset charset) throws IOException {
 		ClientConnectionManager cm = new SingleClientConnManager(SCHEME_REGISTRY);
 		AbstractHttpClient client = new DefaultHttpClient(cm);
 

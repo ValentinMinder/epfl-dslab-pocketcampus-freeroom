@@ -117,7 +117,7 @@ public final class ScheduleTests {
 		}
 
 		@Override
-		public String get(String url, Charset charset) throws Exception {
+		public String get(String url, Charset charset) {
 			return _returnValue;
 		}
 	}

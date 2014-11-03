@@ -10,5 +10,5 @@ import org.joda.time.*;
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public interface Schedule {
-	ScheduleResponse get(LocalDate weekBeginning, String language, String sciper) throws Exception;
+	ScheduleResponse get(LocalDate weekBeginning, String language, String sciper);
 }
