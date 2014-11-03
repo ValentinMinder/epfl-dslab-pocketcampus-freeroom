@@ -75,9 +75,8 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 					resp.setStatus(HttpURLConnection.HTTP_PROXY_AUTH);
 					return;
 				}
-				String filename = PocketCampusServer.CONFIG.getString("CLOUDPRINT_CUPSPDF_OUTDIR") + "/" + gaspar + "_" + id;
-				String pdf = filename + ".pdf";
-				String png = filename + ".png";
+				String pdf = PocketCampusServer.CONFIG.getString("CLOUDPRINT_CUPSPDF_OUTDIR") + "/" + gaspar + "_" + id + ".pdf";
+				String png = PocketCampusServer.CONFIG.getString("CLOUDPRINT_CUPSPDF_OUTDIR") + "/" + gaspar + "_" + System.nanoTime() + ".png";
 				if(!new File(pdf).exists()) {
 					resp.setStatus(HttpURLConnection.HTTP_NOT_FOUND);
 					return;
