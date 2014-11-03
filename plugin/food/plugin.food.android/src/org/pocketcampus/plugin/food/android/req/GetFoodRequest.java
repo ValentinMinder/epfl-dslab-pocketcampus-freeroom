@@ -32,8 +32,8 @@ public class GetFoodRequest extends Request<FoodController, Iface, FoodRequest, 
 	protected void onResult(FoodController controller, FoodResponse result) {
 		if(result.getStatusCode() == FoodStatusCode.OK) {
 			controller.setMealTypePicUrls(result.getMealTypePictureUrls());
-			controller.setEpflMenus(result.getMenu());
 			controller.setServerDetectedPriceTarget(result.getUserStatus());
+			controller.setEpflMenus(result.getMenu());
 			
 			keepInCache();
 		} else {
