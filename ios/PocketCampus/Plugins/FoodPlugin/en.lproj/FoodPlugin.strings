@@ -5,6 +5,11 @@
 "ByMealTypes" = "By meal types";
 "Menus" = "Menus";
 "MenusTableViewSectionName" = "Menus";
+"AllMenus" = "All menus";
+"DinnerMenus" = "Dinner menus";
+"LunchMenus" = "Lunch menus";
+"SeeMenusForAnotherDay" = "See menus for another day";
+"MenuWithMealTypeWithFormat" = "%@ menus";
 "LoadingMenus" = "Loading menus";
 "NoMealsToday" = "No menu today";
 "NoMealsWeekend" = "No menu during the weekend";

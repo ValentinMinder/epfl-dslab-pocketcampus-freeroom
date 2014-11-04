@@ -379,7 +379,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         //should not happen
         return;
     }
-    [[PCGAITracker sharedTracker] trackAction:@"RateMeal" inScreenWithName:@"/food/restaurant" contentInfo:[NSString stringWithFormat:@"%lld-%@", self.meal.mId, self.meal.mName]];
+    [[PCGAITracker sharedTracker] trackAction:@"RateMeal" inScreenWithName:self.screenNameForGoogleAnalytics contentInfo:[NSString stringWithFormat:@"%lld-%@", self.meal.mId, self.meal.mName]];
     self.ratingStatus = RatingStatusLoading;
     NSString* identifier = [PCUtils uniqueDeviceIdentifier];
     VoteRequest* req = [[VoteRequest alloc] initWithMealId:self.meal.mId rating:ratingValue deviceId:identifier];
@@ -403,10 +403,12 @@ static const CGFloat kRateControlsViewWidth = 248.0;
             break;
         }
         case SubmitStatus_ALREADY_VOTED:
+        {
             self.ratingStatus = RatingStatusReady;
             [[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"RatingAlreadyDone", @"FoodPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
             [self infoContentViewTapped]; //hide rating controls, not longer need them
             break;
+        }
         case SubmitStatus_TOO_EARLY:
             self.ratingStatus = RatingStatusReady;
             [[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"RatingTooEarly", @"FoodPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];

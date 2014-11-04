@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,38 +22,28 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 01.11.13.
+//  Created by Loïc Gardiol on 04.11.14.
 
-/*
- * Posted by self everytime rateModeEnabled goes from NO to YES
- */
-extern NSString* const kFoodMealCellDidEnableRateModeNotification;
-
-/*
- * Posted by self when the user has rated a meal
- */
-extern NSString* const kFoodMealCellUserSuccessfullyRatedMealNotification;
-
+@import UIKit;
 
 @class EpflMeal;
 
-@interface FoodMealCell : UITableViewCell
+@interface FoodMealsByRestaurantViewController : UITableViewController
 
-- (instancetype)initWithReuseIdentifier:(NSString*)reuseIdentifier;
-
-@property (nonatomic, strong) EpflMeal* meal;
-
-+ (CGFloat)preferredHeightForMeal:(EpflMeal*)meal inTableView:(UITableView*)tableView;
+- (instancetype)init;
 
 /**
- * If YES, cell's content is shifted to the right and reveals rating controls
- * Default: NO
+ * Reloads the table view
+ * @param restaurants array of EpflRestaurant menus to display
+ * @param shouldShowMealBlock if set, will be called for each meal of each restaurant to know wether the meal should be displayed. 
+ * If nil, all meals are displayed.
  */
-@property (nonatomic, getter = isRateModeEnabled) BOOL rateModeEnabled;
+- (void)setRestaurants:(NSArray*)restaurants shouldShowMealBlock:(BOOL (^)(EpflMeal* meal))shouldShowMealBlock;
 
-@property (nonatomic, copy) NSString* screenNameForGoogleAnalytics;
+@property (nonatomic, readonly, copy) NSArray* restaurants;
+@property (nonatomic, readonly, copy) BOOL (^shouldShowMealBlock)(EpflMeal* meal);
 
 @end

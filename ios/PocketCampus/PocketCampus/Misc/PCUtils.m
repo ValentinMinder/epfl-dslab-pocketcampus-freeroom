@@ -125,6 +125,7 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
     CGFloat topBar = [viewController prefersStatusBarHidden] ? 0.0 : 20.0;
     CGFloat top = viewController.navigationController ? topBar + viewController.navigationController.navigationBar.frame.size.height : topBar;
     CGFloat bottom = viewController.tabBarController ? viewController.tabBarController.tabBarController.tabBar.frame.size.height : 0.0;
+    bottom += viewController.navigationController.toolbarHidden ? 0.0 : viewController.navigationController.toolbar.frame.size.height;
     return UIEdgeInsetsMake(top, 0, bottom, 0);
 }
 

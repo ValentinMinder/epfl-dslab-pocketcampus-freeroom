@@ -34,14 +34,14 @@
 @interface EpflRestaurant (Additions)
 
 - (BOOL)isEqual:(id)object;
-/*
- * YES if self and otherRestaurant have same rId
- * NO otherwise
+
+/**
+ * @return YES if self and otherRestaurant have same rId, NO otherwise
  */
 - (BOOL)isEqualToEpflRestaurant:(EpflRestaurant*)otherRestaurant;
 - (NSUInteger)hash;
 
-/*
+/**
  * Sorted on favorite first (according to FoodService) then rName
  */
 - (NSComparisonResult)compareToEpflRestaurant:(EpflRestaurant*)otherRestaurant;
@@ -65,9 +65,9 @@
 + (NSString*)localizedNameForMealType:(NSInteger)mealType;
 
 - (BOOL)isEqual:(id)object;
-/*
- * YES if self and otherMeal have same rId
- * NO otherwise
+
+/**
+ * @return YES if self and otherMeal have same rId, NO otherwise
  */
 - (BOOL)isEqualToEpflMeal:(EpflMeal*)otherMeal;
 - (NSUInteger)hash;

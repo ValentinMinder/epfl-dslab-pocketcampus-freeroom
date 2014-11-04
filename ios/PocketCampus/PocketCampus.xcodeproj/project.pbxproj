@@ -476,6 +476,11 @@
 		32FB2E0A15179014007AE82B /* transport.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0415179014007AE82B /* transport.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32FB2E0B15179014007AE82B /* TransportService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0615179014007AE82B /* TransportService.m */; };
 		32FB442017650268008C8282 /* NSDate+Addtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB441F17650268008C8282 /* NSDate+Addtions.m */; };
+		32FBAD191A08DCBD00D5C515 /* FoodMealsByRestaurantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FBAD181A08DCBD00D5C515 /* FoodMealsByRestaurantViewController.m */; };
+		32FBAD1E1A09056100D5C515 /* ClockBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FBAD1A1A09056100D5C515 /* ClockBarButton.png */; };
+		32FBAD1F1A09056100D5C515 /* ClockBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FBAD1B1A09056100D5C515 /* ClockBarButton@2x.png */; };
+		32FBAD201A09056100D5C515 /* ClockBarButtonSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FBAD1C1A09056100D5C515 /* ClockBarButtonSelected.png */; };
+		32FBAD211A09056100D5C515 /* ClockBarButtonSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FBAD1D1A09056100D5C515 /* ClockBarButtonSelected@2x.png */; };
 		32FDA99D1854A06F00C6393A /* NSOperationWithDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA99C1854A06F00C6393A /* NSOperationWithDelegate.m */; };
 		32FDA9A11854B5E600C6393A /* PCServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA9A01854B5E600C6393A /* PCServiceRequest.m */; settings = {COMPILER_FLAGS = "-fobjc-arc-exceptions"; }; };
 		32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF46541636FB2500932FF5 /* PluginNavigationController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -1117,6 +1122,12 @@
 		32FB2E0615179014007AE82B /* TransportService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TransportService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32FB441E17650268008C8282 /* NSDate+Addtions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Addtions.h"; sourceTree = "<group>"; };
 		32FB441F17650268008C8282 /* NSDate+Addtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Addtions.m"; sourceTree = "<group>"; };
+		32FBAD171A08DCBD00D5C515 /* FoodMealsByRestaurantViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodMealsByRestaurantViewController.h; sourceTree = "<group>"; };
+		32FBAD181A08DCBD00D5C515 /* FoodMealsByRestaurantViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodMealsByRestaurantViewController.m; sourceTree = "<group>"; };
+		32FBAD1A1A09056100D5C515 /* ClockBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClockBarButton.png; sourceTree = "<group>"; };
+		32FBAD1B1A09056100D5C515 /* ClockBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ClockBarButton@2x.png"; sourceTree = "<group>"; };
+		32FBAD1C1A09056100D5C515 /* ClockBarButtonSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClockBarButtonSelected.png; sourceTree = "<group>"; };
+		32FBAD1D1A09056100D5C515 /* ClockBarButtonSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ClockBarButtonSelected@2x.png"; sourceTree = "<group>"; };
 		32FD4D6719D3569F00716592 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/TransportTripsHeaderCell.xib; sourceTree = "<group>"; };
 		32FDA99B1854A06F00C6393A /* NSOperationWithDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOperationWithDelegate.h; sourceTree = "<group>"; };
 		32FDA99C1854A06F00C6393A /* NSOperationWithDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationWithDelegate.m; sourceTree = "<group>"; };
@@ -1464,6 +1475,10 @@
 				320037501811843500901F6A /* CheckmarkRoundedSquare@2x.png */,
 				3200375318118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png */,
 				3200375418118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png */,
+				32FBAD1A1A09056100D5C515 /* ClockBarButton.png */,
+				32FBAD1B1A09056100D5C515 /* ClockBarButton@2x.png */,
+				32FBAD1C1A09056100D5C515 /* ClockBarButtonSelected.png */,
+				32FBAD1D1A09056100D5C515 /* ClockBarButtonSelected@2x.png */,
 				32E67DBA16847A0900E5CFF6 /* ClockCell.png */,
 				32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */,
 				32AF954619B39F91008CB161 /* Cross.png */,
@@ -1699,6 +1714,8 @@
 				326494CA1A07B97900C63622 /* FoodMainViewController.xib */,
 				3243FB9B18215CEC000F3CB5 /* FoodRestaurantViewController.h */,
 				3243FB9C18215CEC000F3CB5 /* FoodRestaurantViewController.m */,
+				32FBAD171A08DCBD00D5C515 /* FoodMealsByRestaurantViewController.h */,
+				32FBAD181A08DCBD00D5C515 /* FoodMealsByRestaurantViewController.m */,
 				32290ACD18200A0A005869E7 /* FoodSplashDetailViewController.h */,
 				32290ACE18200A0A005869E7 /* FoodSplashDetailViewController.m */,
 			);
@@ -2918,6 +2935,7 @@
 				327513311825465D0037FE00 /* FavoriteCorner.png in Resources */,
 				326F5A8519BDCE8C000693A2 /* PrintBarButton.png in Resources */,
 				324A599A151DFDF700977F33 /* TransportAddStationView.xib in Resources */,
+				32FBAD211A09056100D5C515 /* ClockBarButtonSelected@2x.png in Resources */,
 				3289F2BA183FAB8C00D833C2 /* LocationArrow2Active@2x.png in Resources */,
 				32A63A4B1535FFF400237841 /* TransportTripsHeaderCell.xib in Resources */,
 				32342A8017F43347009C05FA /* DirectoryEmptyPicture.png in Resources */,
@@ -2930,6 +2948,7 @@
 				324151CC15373A1700CCFB22 /* MapPlugin.strings in Resources */,
 				326494CD1A07CC5100C63622 /* FoodMealTypeCell.xib in Resources */,
 				324151E015374FB100CCFB22 /* MapView-phone.xib in Resources */,
+				32FBAD201A09056100D5C515 /* ClockBarButtonSelected.png in Resources */,
 				324151E515375BDD00CCFB22 /* Map.png in Resources */,
 				32FFA797186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png in Resources */,
 				324151E615375BDD00CCFB22 /* Map@2x.png in Resources */,
@@ -2981,6 +3000,7 @@
 				327513341825465D0037FE00 /* FavoriteCornerSelected@2x.png in Resources */,
 				32CBF059163450E500FD92E5 /* PocketCampusDrawing.png in Resources */,
 				326F5A8619BDCE8C000693A2 /* PrintBarButton@2x.png in Resources */,
+				32FBAD1F1A09056100D5C515 /* ClockBarButton@2x.png in Resources */,
 				32E0E319194B206D003251CC /* FilterBarButtonSelected.png in Resources */,
 				32574ED7182140AE008F3163 /* DirectoryEmptyPictureSmall@2x.png in Resources */,
 				327585A91844DE93004215FC /* TransportSmallBus@2x.png in Resources */,
@@ -3067,6 +3087,7 @@
 				32503AA5195EE4F1007B709E /* PCDatePickerView.xib in Resources */,
 				32F7218C171B0BB4005755A2 /* CamiproView~ipad.xib in Resources */,
 				27B74CE819A206C8006B2F17 /* RecommendedAppsPlugin.strings in Resources */,
+				32FBAD1E1A09056100D5C515 /* ClockBarButton.png in Resources */,
 				32150DD9197D6D0400CCF2AB /* FolderIcon@2x.png in Resources */,
 				328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */,
 				32C509EA17FC6D73005A5635 /* SortBarButton.png in Resources */,
@@ -3280,6 +3301,7 @@
 				32FAC0F61500F40700925180 /* DirectorySearchViewController.m in Sources */,
 				32503AA3195EE49C007B709E /* PCDatePickerView.m in Sources */,
 				32FAC0F91500F40700925180 /* DirectoryService.m in Sources */,
+				32FBAD191A08DCBD00D5C515 /* FoodMealsByRestaurantViewController.m in Sources */,
 				32FAC0FA1500F40700925180 /* directory.m in Sources */,
 				32102B6615050B9D0076537E /* food.m in Sources */,
 				3245DF3018881B5F0072E086 /* PCUsageViewController.m in Sources */,

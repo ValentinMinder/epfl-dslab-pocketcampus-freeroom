@@ -31,6 +31,8 @@
 
 #import "FoodRestaurantViewController.h"
 
+#import "FoodMealsByRestaurantViewController.h"
+
 #import "PCTableViewSectionHeader.h"
 
 #import "PCPersistenceManager.h"
@@ -49,6 +51,8 @@
 
 #import "FoodMealTypeCell.h"
 
+#import "PCDatePickerView.h"
+
 static NSString* const kLastRefreshDateKey = @"lastRefreshDate";
 
 /*
@@ -56,6 +60,7 @@ static NSString* const kLastRefreshDateKey = @"lastRefreshDate";
  * Important to refresh often, otherwise ratings are not updated. Background update of ratings should be
  * considered in a future update.
  */
+
 static NSTimeInterval const kRefreshValiditySeconds = 300.0; //5 min.
 
 static NSInteger const kRestaurantsSegmentIndex = 0;
@@ -77,8 +82,14 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
 @property (nonatomic, strong) NSArray* restaurantsSorted; //sorted first by favorite on top, then by name
 @property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 @property (nonatomic, strong) EpflRestaurant* selectedRestaurant;
+@property (nonatomic) NSInteger selectedMealType; //of enum type MealType
+
+@property (nonatomic) NSInteger selectedMealTime; //of enum type MealTime
+@property (nonatomic) NSDate* selectedMealDate;
 
 @property (nonatomic, weak) FoodRestaurantViewController* restaurantViewController;
+
+@property (nonatomic, weak) FoodMealsByRestaurantViewController* mealsByRestaurantViewController;
 
 @end
 
@@ -92,6 +103,7 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
         self.gaiScreenName = @"/food";
         self.foodService = [FoodService sharedInstanceToRetain];
         self.foodResponse = [self.foodService getFoodFromCacheForRequest:[self createFoodRequest]];
+        self.selectedMealTime = MealTime_LUNCH; //default
     }
     return self;
 }
@@ -126,7 +138,7 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     self.mealTypesCollectionView.collectionViewLayout = layout;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fillCollectionsAndReloadViews) name:kFoodFavoritesRestaurantsUpdatedNotification object:self.foodService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fillCollectionsAndUpdateUI) name:kFoodFavoritesRestaurantsUpdatedNotification object:self.foodService];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kFoodMealCellUserSuccessfullyRatedMealNotification object:nil];
 }
 
@@ -135,6 +147,7 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     [self trackScreen];
     [self refreshIfNeeded];
     [self.navigationController setToolbarHidden:NO animated:animated];
+    self.mealTypesCollectionView.contentInset = self.mealTypesCollectionView.scrollIndicatorInsets = [PCUtils edgeInsetsForViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -152,8 +165,8 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
 - (FoodRequest*)createFoodRequest {
     FoodRequest* req = [FoodRequest new];
     req.deviceLanguage = [PCUtils userLanguageCode];
-    req.mealTime = MealTime_LUNCH;
-    req.mealDate = -1; //now
+    req.mealTime = (int)self.selectedMealTime;
+    req.mealDate = self.selectedMealDate ? [self.selectedMealDate timeIntervalSince1970]*1000 : -1; //now
     req.userGaspar = [AuthenticationService savedUsername];
     return req;
 }
@@ -165,7 +178,7 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
         }
         [self refresh];
     }
-    [self fillCollectionsAndReloadViews];
+    [self fillCollectionsAndUpdateUI];
 }
 
 - (void)refresh {
@@ -174,15 +187,17 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     [self.foodService getFoodForRequest:[self createFoodRequest] delegate:self];
 }
 
-- (void)fillCollectionsAndReloadViews {
+- (void)fillCollectionsAndUpdateUI {
     [self fillCollections];
     [self.restaurantsTableView reloadData];
     [self.mealTypesCollectionView reloadData];
     [self reselectLastSelectedItem]; //keep selection ater refresh on iPad
     self.restaurantsTableView.hidden = (self.segmentedControl.selectedSegmentIndex != kRestaurantsSegmentIndex);
     self.mealTypesCollectionView.hidden = (self.segmentedControl.selectedSegmentIndex != kMealTypesSegmentIndex);
-    self.mealTypesCollectionView.contentInset = self.restaurantsTableView.contentInset;
-    self.mealTypesCollectionView.scrollIndicatorInsets = self.restaurantsTableView.scrollIndicatorInsets;
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ClockBarButton"] style:UIBarButtonItemStylePlain target:self action:@selector(clockButtonTapped)];
+    
+#warning TODO set title accordingly
 }
 
 - (void)fillCollections {
@@ -194,27 +209,88 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
 }
 
 - (void)reselectLastSelectedItem {
-    if (!self.selectedRestaurant) {
-        return;
-    }
-    BOOL found __block = NO;
-    [self.restaurantsSorted enumerateObjectsUsingBlock:^(EpflRestaurant* restaurant, NSUInteger index, BOOL *stop) {
-        if ([restaurant isEqual:self.selectedRestaurant]) {
-            [self.restaurantsTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
-            self.selectedRestaurant = restaurant;
-            *stop = YES;
-            found = YES;
+    if (self.selectedRestaurant) {
+        BOOL found __block = NO;
+        [self.restaurantsSorted enumerateObjectsUsingBlock:^(EpflRestaurant* restaurant, NSUInteger index, BOOL *stop) {
+            if ([restaurant isEqual:self.selectedRestaurant]) {
+                [self.restaurantsTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                self.selectedRestaurant = restaurant;
+                *stop = YES;
+                found = YES;
+            }
+        }];
+        if (!found) {
+            self.selectedRestaurant = nil;
         }
-    }];
-    if (!found) {
-        self.selectedRestaurant = nil;
+    }
+    
+    if (self.selectedMealType != 0) {
+        NSUInteger itemIndex = [[EpflMeal allMealTypes] indexOfObject:@(self.selectedMealType)];
+        if (itemIndex != NSNotFound) {
+            [self.mealTypesCollectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:itemIndex inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+        }
     }
 }
 
 #pragma mark - Actions
 
+- (void)clockButtonTapped {
+    
+    NSString* mealTimeActionTitle = nil;
+    NSInteger newMealTime = 0;
+    if (self.selectedMealTime == MealTime_LUNCH) {
+        mealTimeActionTitle = NSLocalizedStringFromTable(@"DinnerMenus", @"FoodPlugin", nil);
+        newMealTime = MealTime_DINNER;
+    } else {
+        mealTimeActionTitle = NSLocalizedStringFromTable(@"LunchMenus", @"FoodPlugin", nil);
+        newMealTime = MealTime_LUNCH;
+    }
+    
+    if ([UIAlertController class]) {
+        __weak __typeof(self) welf = self;
+        UIAlertController* alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) style:UIAlertActionStyleCancel handler:NULL];
+        [alertController addAction:cancelAction];
+        
+        UIAlertAction* mealTimeAction = [UIAlertAction actionWithTitle:mealTimeActionTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            welf.selectedMealTime = newMealTime;
+            [welf refresh];
+        }];
+        [alertController addAction:mealTimeAction];
+        
+        UIAlertAction* mealDateAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"SeeMenusForAnotherDay", @"FoodPlugin", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [welf showMealDatePicker];
+        }];
+        [alertController addAction:mealDateAction];
+        [welf presentViewController:alertController animated:YES completion:NULL];
+        
+    } else {
+#warning TODO
+    }
+}
+
 - (void)segmentedControlValueChanged {
+#warning GA
     [self refreshIfNeeded];
+}
+
+#pragma mark - Private
+
+- (void)showMealDatePicker {
+    PCDatePickerView* pickerView = [[PCDatePickerView alloc] init];
+    pickerView.datePicker.datePickerMode = UIDatePickerModeDate;
+    [pickerView setUserCancelledBlock:^(PCDatePickerView* view) {
+        [view dismiss];
+    }];
+    __weak __typeof(self) welf = self;
+    [pickerView setUserValidatedDateBlock:^(PCDatePickerView* view, NSDate* date) {
+#warning GA
+        [view dismiss];
+        welf.selectedMealDate = date;
+        [welf refresh];
+    }];
+    [pickerView presentInView:self.navigationController.view];
 }
 
 #pragma mark - KVO
@@ -242,7 +318,7 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     switch (response.statusCode) {
         case FoodStatusCode_OK:
             self.foodResponse = response;
-            [self fillCollectionsAndReloadViews];
+            [self fillCollectionsAndUpdateUI];
             [self.lgRefreshControl endRefreshingAndMarkSuccessful];
             if (self.restaurantViewController) {
                 NSInteger index = [self.foodResponse.menu indexOfObject:self.restaurantViewController.restaurant];
@@ -250,6 +326,9 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
                     EpflRestaurant* restaurant = self.foodResponse.menu[index];
                     self.restaurantViewController.restaurant = restaurant;
                 }
+            }
+            if (self.mealsByRestaurantViewController) {
+                [self.mealsByRestaurantViewController setRestaurants:self.restaurantsSorted shouldShowMealBlock:self.mealsByRestaurantViewController.shouldShowMealBlock];
             }
             break;
         default:
@@ -269,35 +348,11 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil)];
 }
 
+#pragma mark - UIActionSheet
+
+
+
 #pragma mark - UITableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (!self.restaurantsSorted.count) {
-        return 0.0;
-    }
-    return [PCTableViewSectionHeader preferredHeight];
-}
-
-- (UIView *)tableView:(UITableView *)tableView_ viewForHeaderInSection:(NSInteger)section {
-    if (!self.restaurantsSorted.count) {
-        return nil;
-    }
-    
-    static NSDateFormatter* dateFormatter = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        dateFormatter = [NSDateFormatter new];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    });
-    
-    NSString* dateString = [dateFormatter stringFromDate:[NSDate date]]; //now
-    
-    dateString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"MenusForTodayWithFormat", @"FoodPlugin", nil), dateString];
-    
-    PCTableViewSectionHeader* sectionHeader = [[PCTableViewSectionHeader alloc] initWithSectionTitle:dateString tableView:self.restaurantsTableView];
-    return sectionHeader;
-    
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (!self.restaurantsSorted.count) {
@@ -313,6 +368,7 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     self.restaurantViewController = viewController;
     if (self.splitViewController) {
         self.selectedRestaurant = restaurant;
+        self.selectedMealType = 0;
         PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:self.restaurantViewController];
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], navController];
     } else {
@@ -322,16 +378,6 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
 }
 
 #pragma mark - UITableViewDataSource
-
-/*- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (!self.restaurants.count) {
-        return nil;
-    }
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    NSString* dateString = [dateFormatter stringFromDate:[NSDate date]]; //now
-    return [NSString stringWithFormat:NSLocalizedStringFromTable(@"MenusForTodayWithFormat", @"FoodPlugin", nil), dateString];
-}*/
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -376,14 +422,41 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-#warning TODO
+    FoodMealsByRestaurantViewController* viewController = self.mealsByRestaurantViewController ?: [[FoodMealsByRestaurantViewController alloc] init];
+    NSNumber* nsMealType = [EpflMeal allMealTypes][indexPath.item];
+    NSInteger mealType = [nsMealType integerValue];
+    if (mealType == MealType_UNKNOWN) {
+        //means all
+        viewController.title = NSLocalizedStringFromTable(@"AllMenus", @"FoodPlugin", nil);
+        [viewController setRestaurants:self.restaurantsSorted shouldShowMealBlock:nil];
+    } else {
+        viewController.title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"MenuWithMealTypeWithFormat", @"FoodPlugin", nil), [EpflMeal localizedNameForMealType:mealType]];
+        [viewController setRestaurants:self.restaurantsSorted shouldShowMealBlock:^BOOL(EpflMeal *meal) {
+            return [meal.mTypes containsObject:nsMealType];
+        }];
+    }
+    
+    self.mealsByRestaurantViewController = viewController;
+    if (self.splitViewController) {
+        self.selectedMealType = mealType;
+        self.selectedRestaurant = nil;
+        UINavigationController* navController = self.splitViewController.viewControllers[1];
+        if ([navController isKindOfClass:[UINavigationController class]] && [[navController.viewControllers firstObject] isKindOfClass:[FoodMealsByRestaurantViewController class]]) {
+            [navController popToRootViewControllerAnimated:NO];
+        } else {
+            navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
+        }
+        self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], navController];
+    } else {
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
 }
 
 #pragma mark - UICollectionViewDataSource
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    FoodMealTypeCell* cell = [self.mealTypesCollectionView dequeueReusableCellWithReuseIdentifier:kMealTypeCellReuseIdentifier forIndexPath:indexPath];
     NSNumber* nbMealType = [EpflMeal allMealTypes][indexPath.item];
+    FoodMealTypeCell* cell = [self.mealTypesCollectionView dequeueReusableCellWithReuseIdentifier:kMealTypeCellReuseIdentifier forIndexPath:indexPath];
     cell.mealType = [nbMealType integerValue];
     return cell;
 }

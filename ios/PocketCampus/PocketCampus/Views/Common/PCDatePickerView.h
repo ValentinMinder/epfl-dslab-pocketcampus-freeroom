@@ -29,6 +29,8 @@
 
 @interface PCDatePickerView : UIView
 
+- (instancetype)init;
+
 @property (nonatomic, readonly, strong) IBOutlet UIDatePicker* datePicker;
 
 /**
