@@ -103,9 +103,9 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     if (self) {
         self.title = NSLocalizedStringFromTable(@"Menus", @"FoodPlugin", nil);
         self.gaiScreenName = @"/food";
+        self.selectedMealTime = MealTime_LUNCH; //default
         self.foodService = [FoodService sharedInstanceToRetain];
         self.foodResponse = [self.foodService getFoodFromCacheForRequest:[self createFoodRequest]];
-        self.selectedMealTime = MealTime_LUNCH; //default
     }
     return self;
 }
@@ -268,8 +268,14 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
         __weak __typeof(self) welf = self;
         UIAlertController* alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         
-        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) style:UIAlertActionStyleCancel handler:NULL];
-        [alertController addAction:cancelAction];
+        if (self.selectedMealTime != MealTime_LUNCH || self.selectedMealDate) {
+            UIAlertAction* backToDefaultsActions = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"BackToTodayLunchMenus", @"FoodPlugin", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+                welf.selectedMealDate = nil;
+                welf.selectedMealTime = MealTime_LUNCH;
+                [welf refresh];
+            }];
+            [alertController addAction:backToDefaultsActions];
+        }
         
         UIAlertAction* mealTimeAction = [UIAlertAction actionWithTitle:mealTimeActionTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             welf.selectedMealTime = newMealTime;
@@ -282,14 +288,8 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
         }];
         [alertController addAction:mealDateAction];
         
-        if (self.selectedMealTime != MealTime_LUNCH || self.selectedMealDate) {
-            UIAlertAction* backToDefaultsActions = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"BackToTodayLunchMenus", @"FoodPlugin", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-                welf.selectedMealDate = nil;
-                welf.selectedMealTime = MealTime_LUNCH;
-                [welf refresh];
-            }];
-            [alertController addAction:backToDefaultsActions];
-        }
+        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) style:UIAlertActionStyleCancel handler:NULL];
+        [alertController addAction:cancelAction];
         
         [welf presentViewController:alertController animated:YES completion:NULL];
         
@@ -500,7 +500,7 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     return [EpflMeal allMealTypes].count;
 }
 
-#pragma mark - dealloc
+#pragma mark - Dealloc
 
 - (void)dealloc {
     [self.foodService cancelOperationsForDelegate:self];

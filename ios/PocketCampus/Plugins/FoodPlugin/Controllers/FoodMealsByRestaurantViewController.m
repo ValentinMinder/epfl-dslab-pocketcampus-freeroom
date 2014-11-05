@@ -37,12 +37,16 @@
 
 #import "FoodRestaurantViewController.h"
 
+#import "PCCenterMessageCell.h"
+
 @interface FoodMealsByRestaurantViewController ()
 
 @property (nonatomic, readwrite, copy) NSArray* restaurants;
 @property (nonatomic, readwrite, copy) BOOL (^shouldShowMealBlock)(EpflMeal* meal);
 
 @property (nonatomic, strong) NSDictionary* filteredMealsForRestaurantId; //key: @(EpflRestaurant.rId), value: NSOrderedSet of EpflMeal
+
+@property (nonatomic) BOOL existsMenus;
 
 @property (nonatomic, weak) FoodRestaurantViewController* restaurantViewController;
 
@@ -90,6 +94,7 @@
 - (void)fillCollectionsAndReloadTableView {
     if (!self.restaurants.count) {
         self.filteredMealsForRestaurantId = nil;
+        self.existsMenus = NO;
         [self.tableView reloadData];
         return;
     }
@@ -106,6 +111,9 @@
         } else {
             filteredMealsForRestaurantId[@(restaurant.rId)] = restaurant.rUniqueMeals;
         }
+        if (!self.existsMenus) {
+            self.existsMenus = [filteredMealsForRestaurantId[@(restaurant.rId)] count] > 0;
+        }
     }
     self.filteredMealsForRestaurantId = filteredMealsForRestaurantId;
     [self.tableView reloadData];
@@ -114,12 +122,18 @@
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (!self.existsMenus) {
+        return 44.0;
+    }
     EpflRestaurant* restaurant = self.restaurants[indexPath.section];
     EpflMeal* meal = self.filteredMealsForRestaurantId[@(restaurant.rId)][indexPath.row];
     return [FoodMealCell preferredHeightForMeal:meal inTableView:tableView];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (!self.existsMenus) {
+        return 0.0;
+    }
     EpflRestaurant* restaurant = self.restaurants[section];
     NSOrderedSet* filteredMeals = self.filteredMealsForRestaurantId[@(restaurant.rId)];
     if (!filteredMeals.count) {
@@ -129,6 +143,9 @@
 }
 
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (!self.existsMenus) {
+        return nil;
+    }
     EpflRestaurant* restaurant = self.restaurants[section];
     NSOrderedSet* filteredMeals = self.filteredMealsForRestaurantId[@(restaurant.rId)];
     if (!filteredMeals.count) {
@@ -145,10 +162,18 @@
     return header;
 }
 
-
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (!self.existsMenus) {
+        if (indexPath.row == 1) {
+            return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NoMeals", @"FoodPlugin", nil)];
+        } else {
+            UITableViewCell* cell =[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        }
+    }
     EpflRestaurant* restaurant = self.restaurants[indexPath.section];
     EpflMeal* meal = self.filteredMealsForRestaurantId[@(restaurant.rId)][indexPath.row];
     static NSString* const identifier = @"FoodMealCell";
@@ -162,12 +187,18 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (!self.existsMenus) {
+        return 2;
+    }
     EpflRestaurant* restaurant = self.restaurants[section];
     NSOrderedSet* filteredMeals = self.filteredMealsForRestaurantId[@(restaurant.rId)];
     return filteredMeals.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (!self.existsMenus) {
+        return 1;
+    }
     return self.restaurants.count;
 }
 

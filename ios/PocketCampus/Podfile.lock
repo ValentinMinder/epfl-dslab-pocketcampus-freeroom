@@ -38,7 +38,7 @@ DEPENDENCIES:
   - CDZQRScanningViewController
   - GoogleAnalytics-iOS-SDK (~> 3.0)
   - JTTargetActionBlock
-  - LGALibrary
+  - LGALibrary (from `git@github.com:loicgardiol/LGALibrary.git`)
   - MBProgressHUD
   - NSTimer-Blocks
   - SSKeychain (~> 1.2)
@@ -48,6 +48,8 @@ DEPENDENCIES:
   - TUSafariActivity
 
 EXTERNAL SOURCES:
+  LGALibrary:
+    :git: git@github.com:loicgardiol/LGALibrary.git
   TapkuLibrary:
     :git: git@github.com:loicgardiol/tapkulibrary.git
 
@@ -56,7 +58,7 @@ SPEC CHECKSUMS:
   CDZQRScanningViewController: 69cb48a4d02c483a8ee43da15b8fd23fc4e853f3
   GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   JTTargetActionBlock: bef69054d368a91b33b98a520fa9e78e218a5a25
-  LGALibrary: a6cff93b25b1afd5faed2685f86184be6cb8732b
+  LGALibrary: 075a44d5b39fb450aedd55d905f38aaa5a957cab
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   NSTimer-Blocks: 0a653b84ab33068a085f5c03c82c18be1f61eba9
   SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9
