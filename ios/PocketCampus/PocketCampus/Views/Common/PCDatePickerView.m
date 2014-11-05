@@ -48,6 +48,7 @@
     self = (PCDatePickerView*)elements[0];
     if (self) {
         self.navBar.topItem.title = NSLocalizedStringFromTable(@"SelectDate", @"PocketCampus", nil);
+        self.showTodayButton = NO; //defaut. Sets the bar items.
     }
     return self;
 }
@@ -56,17 +57,37 @@
     return [self init];
 }
 
+#pragma mark - Bar items
+
+- (void)setShowTodayButton:(BOOL)showTodayButton {
+    _showTodayButton = showTodayButton;
+    UIBarButtonItem* cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
+    if (showTodayButton) {
+        UIBarButtonItem* todayButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Today", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(todayTapped)];
+        self.navBar.topItem.leftBarButtonItems = @[cancelButton, todayButton];
+    } else {
+        self.navBar.topItem.leftBarButtonItem = cancelButton;
+    }
+    self.navBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneTapped)];
+}
+
 #pragma mark - Buttons actions
 
-- (IBAction)doneTapped {
+- (void)doneTapped {
     if (self.userValidatedDateBlock) {
         self.userValidatedDateBlock(self, self.datePicker.date);
     }
 }
 
-- (IBAction)cancelTapped {
+- (void)cancelTapped {
     if (self.userCancelledBlock) {
         self.userCancelledBlock(self);
+    }
+}
+
+- (void)todayTapped {
+    if (self.userTappedTodayBlock) {
+        self.userTappedTodayBlock(self);
     }
 }
 

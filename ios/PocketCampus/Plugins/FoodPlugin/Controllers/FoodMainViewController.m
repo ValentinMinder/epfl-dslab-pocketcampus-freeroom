@@ -66,9 +66,12 @@ static NSTimeInterval const kRefreshValiditySeconds = 300.0; //5 min.
 static NSInteger const kRestaurantsSegmentIndex = 0;
 static NSInteger const kMealTypesSegmentIndex = 1;
 
+static NSInteger const kMealTimeButtonIndex = 0;
+static NSInteger const kMealDateButtonIndex = 1;
+
 static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
 
-@interface FoodMainViewController ()<FoodServiceDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface FoodMainViewController ()<FoodServiceDelegate, UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, strong) UITableViewController* restaurantsTableViewController;
 
@@ -256,12 +259,15 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     
     NSString* mealTimeActionTitle = nil;
     NSInteger newMealTime = 0;
+    NSString* newMealTimeGAAction = nil;
     if (self.selectedMealTime == MealTime_LUNCH) {
         mealTimeActionTitle = NSLocalizedStringFromTable(@"DinnerMenus", @"FoodPlugin", nil);
         newMealTime = MealTime_DINNER;
+        newMealTimeGAAction = @"ViewDinner";
     } else {
         mealTimeActionTitle = NSLocalizedStringFromTable(@"LunchMenus", @"FoodPlugin", nil);
         newMealTime = MealTime_LUNCH;
+        newMealTimeGAAction = @"ViewLunch";
     }
     
     if ([UIAlertController class]) {
@@ -270,6 +276,7 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
         
         if (self.selectedMealTime != MealTime_LUNCH || self.selectedMealDate) {
             UIAlertAction* backToDefaultsActions = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"BackToTodayLunchMenus", @"FoodPlugin", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+                [welf trackAction:@"BackToTodayLunch"];
                 welf.selectedMealDate = nil;
                 welf.selectedMealTime = MealTime_LUNCH;
                 [welf refresh];
@@ -278,6 +285,7 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
         }
         
         UIAlertAction* mealTimeAction = [UIAlertAction actionWithTitle:mealTimeActionTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [welf trackAction:newMealTimeGAAction];
             welf.selectedMealTime = newMealTime;
             [welf refresh];
         }];
@@ -291,15 +299,25 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
         UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) style:UIAlertActionStyleCancel handler:NULL];
         [alertController addAction:cancelAction];
         
+        alertController.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItem;
+        
         [welf presentViewController:alertController animated:YES completion:NULL];
         
     } else {
-#warning TODO
+        UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:mealTimeActionTitle, NSLocalizedStringFromTable(@"SeeMenusForAnotherDay", @"FoodPlugin", nil), nil];
+        [actionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
     }
 }
 
 - (void)segmentedControlValueChanged {
-#warning GA
+    switch (self.segmentedControl.selectedSegmentIndex) {
+        case kRestaurantsSegmentIndex:
+            [self trackAction:@"FilterByRestaurant"];
+            break;
+        case kMealTypesSegmentIndex:
+            [self trackAction:@"FilterByIngredient"];
+            break;
+    }
     [self refreshIfNeeded];
 }
 
@@ -308,15 +326,20 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
 - (void)showMealDatePicker {
     PCDatePickerView* pickerView = [[PCDatePickerView alloc] init];
     pickerView.datePicker.datePickerMode = UIDatePickerModeDate;
+    __weak __typeof(self) welf = self;
     if (self.selectedMealDate) {
         pickerView.datePicker.date = self.selectedMealDate;
     }
     [pickerView setUserCancelledBlock:^(PCDatePickerView* view) {
         [view dismiss];
     }];
-    __weak __typeof(self) welf = self;
     [pickerView setUserValidatedDateBlock:^(PCDatePickerView* view, NSDate* date) {
-#warning GA
+        //GA stuff
+        NSDateFormatter* formatter = [NSDateFormatter new];
+        formatter.dateFormat = @"yyyy-MM-dd";
+        NSString* dateString = [formatter stringFromDate:date];
+        [welf trackAction:@"ViewDay" contentInfo:dateString];
+        
         [view dismiss];
         if ([date isSameDayAsDate:[NSDate date]]) {
             welf.selectedMealDate = nil;
@@ -325,6 +348,14 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
         }
         [welf refresh];
     }];
+    if (![UIAlertController class]) {
+        pickerView.showTodayButton = YES;
+        [pickerView setUserTappedTodayBlock:^(PCDatePickerView* view) {
+            [view dismiss];
+            welf.selectedMealDate = nil;
+            [welf refresh];
+        }];
+    }
     [pickerView presentInView:self.navigationController.view];
 }
 
@@ -344,6 +375,28 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
             height = 20.0;
         }
         self.segmentedControl.bounds = CGRectMake(0, 0, width, height);
+    }
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case kMealTimeButtonIndex:
+            if (self.selectedMealTime == MealTime_LUNCH) {
+                [self trackAction:@"ViewDinner"];
+                self.selectedMealTime = MealTime_DINNER;
+            } else {
+                [self trackAction:@"ViewLunch"];
+                self.selectedMealTime = MealTime_LUNCH;
+            }
+            [self refresh];
+            break;
+        case kMealDateButtonIndex:
+            [self showMealDatePicker];
+            break;
+        default:
+            break;
     }
 }
 

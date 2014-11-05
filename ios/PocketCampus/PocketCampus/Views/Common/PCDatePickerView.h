@@ -40,6 +40,13 @@
 @property (nonatomic, copy) NSString* title;
 
 /**
+ * If YES, a Today button is displayed. Action can be handled
+ * by setting userTappedTodayBlock.
+ * Default: NO
+ */
+@property (nonatomic) BOOL showTodayButton;
+
+/**
  * Executed when user taps on the Done button.
  * You should typically dismiss the view then.
  */
@@ -50,6 +57,11 @@
  * You should typically dismiss the view then.
  */
 @property (nonatomic, copy) void (^userCancelledBlock)(PCDatePickerView* view);
+
+/**
+ * Executed when user taps on the Today button.
+ */
+@property (nonatomic, copy) void (^userTappedTodayBlock)(PCDatePickerView* view);
 
 
 - (void)presentInView:(UIView*)view;
