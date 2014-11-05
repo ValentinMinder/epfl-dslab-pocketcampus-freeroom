@@ -281,6 +281,9 @@
 		32A63A4B1535FFF400237841 /* TransportTripsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A63A4D1535FFF400237841 /* TransportTripsHeaderCell.xib */; };
 		32A77DC316A564460018976F /* UIPopoverController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC216A564460018976F /* UIPopoverController+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32A77DC616A565600018976F /* UIActionSheet+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC516A565600018976F /* UIActionSheet+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32AA25761A0A95D100146D68 /* MealType_MEAT.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25731A0A95D100146D68 /* MealType_MEAT.png */; };
+		32AA25771A0A95D100146D68 /* MealType_MEAT@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25741A0A95D100146D68 /* MealType_MEAT@2x.png */; };
+		32AA25781A0A95D100146D68 /* MealType_MEAT@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25751A0A95D100146D68 /* MealType_MEAT@3x.png */; };
 		32AA6CCA16DFF0D100783E9C /* EventsPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AA6CCC16DFF0D100783E9C /* EventsPlugin.strings */; };
 		32ADC7191659AAEB0039F6A6 /* Download.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC7171659AAEB0039F6A6 /* Download.png */; };
 		32ADC71A1659AAEB0039F6A6 /* Download@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC7181659AAEB0039F6A6 /* Download@2x.png */; };
@@ -939,6 +942,9 @@
 		32A77DC216A564460018976F /* UIPopoverController+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPopoverController+Additions.m"; sourceTree = "<group>"; };
 		32A77DC416A565600018976F /* UIActionSheet+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Additions.h"; sourceTree = "<group>"; };
 		32A77DC516A565600018976F /* UIActionSheet+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Additions.m"; sourceTree = "<group>"; };
+		32AA25731A0A95D100146D68 /* MealType_MEAT.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MealType_MEAT.png; sourceTree = "<group>"; };
+		32AA25741A0A95D100146D68 /* MealType_MEAT@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_MEAT@2x.png"; sourceTree = "<group>"; };
+		32AA25751A0A95D100146D68 /* MealType_MEAT@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_MEAT@3x.png"; sourceTree = "<group>"; };
 		32AA6CCB16DFF0D100783E9C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EventsPlugin.strings; sourceTree = "<group>"; };
 		32AA6CCD16DFF0D400783E9C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/EventsPlugin.strings; sourceTree = "<group>"; };
 		32ADC7171659AAEB0039F6A6 /* Download.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Download.png; sourceTree = "<group>"; };
@@ -1764,6 +1770,7 @@
 		3247C3B61504F2E10079522A /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				32AA25721A0A95D100146D68 /* MealTypes */,
 				32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */,
 				32290AD218200C67005869E7 /* FoodLarge@2x.png */,
 				3289D28C1509474A008DD299 /* Food.png */,
@@ -1951,6 +1958,16 @@
 				32875E5E194CF2EF0071CDF8 /* PCWebViewController.m */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		32AA25721A0A95D100146D68 /* MealTypes */ = {
+			isa = PBXGroup;
+			children = (
+				32AA25731A0A95D100146D68 /* MealType_MEAT.png */,
+				32AA25741A0A95D100146D68 /* MealType_MEAT@2x.png */,
+				32AA25751A0A95D100146D68 /* MealType_MEAT@3x.png */,
+			);
+			path = MealTypes;
 			sourceTree = "<group>";
 		};
 		32B5870F156458FA0051C57E /* CamiproPlugin */ = {
@@ -3041,6 +3058,7 @@
 				32035BB5166E988600E134DD /* MoodleFileView.xib in Resources */,
 				324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */,
 				327412DA167E776A001E8C62 /* DownloadedCorner.png in Resources */,
+				32AA25781A0A95D100146D68 /* MealType_MEAT@3x.png in Resources */,
 				325F1FB919FA95470019CFCB /* CloudPrintExtensionSafari.png in Resources */,
 				327412DB167E776A001E8C62 /* DownloadedCorner@2x.png in Resources */,
 				327412E1167E7E56001E8C62 /* DownloadedCornerSelected.png in Resources */,
@@ -3107,6 +3125,7 @@
 				32CE952319DDDE180071F987 /* CamiproWidget-Info.plist in Resources */,
 				32074B7D17FB09CA009804CE /* NewsLarge@2x.png in Resources */,
 				32CACD98183E366B00BD36F9 /* LocationArrow@2x.png in Resources */,
+				32AA25771A0A95D100146D68 /* MealType_MEAT@2x.png in Resources */,
 				3200375618118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png in Resources */,
 				3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */,
 				32456C0C184373FE00993F8B /* TransportNextDeparturesCell.xib in Resources */,
@@ -3115,6 +3134,7 @@
 				320F8599194EED8C00BF3228 /* ArrowLeftBarButton.png in Resources */,
 				320480C618479D4E00116380 /* TransportSmallBusGreen@2x.png in Resources */,
 				324FD733176574DD0003EE30 /* CamiproTransactionCell.xib in Resources */,
+				32AA25761A0A95D100146D68 /* MealType_MEAT.png in Resources */,
 				328A132518296E2D00F4C622 /* FoodSmileySad.png in Resources */,
 				32FFA796186DDD5500237957 /* FavoriteNavBarButtonLandscape.png in Resources */,
 				C5894949AFC59FDB4346CF53 /* IsAcademia@2x.png in Resources */,

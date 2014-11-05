@@ -66,17 +66,23 @@
     _mealType = mealType;
     [self.imageView cancelImageRequestOperation];
     self.imageView.image = nil;
-    NSString* urlString = [[FoodService sharedInstanceToRetain] pictureUrlForMealType][@(mealType)];
-    if (urlString) {
-        NSURLRequest* req = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
-        __weak __typeof(self) welf = self;
-        [self.imageView setImageWithURLRequest:req placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-            welf.imageView.image = image;
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            NSLog(@"%@", error);
-        }];
+    UIImage* mealTypeImage = [EpflMeal imageForMealType:mealType];
+    
+    if (mealTypeImage) {
+        self.imageView.image = mealTypeImage;
     } else {
-        self.imageView.image = nil;
+        NSString* urlString = [[FoodService sharedInstanceToRetain] pictureUrlForMealType][@(mealType)];
+        if (urlString) {
+            NSURLRequest* req = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10.0];
+            __weak __typeof(self) welf = self;
+            [self.imageView setImageWithURLRequest:req placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                welf.imageView.image = image;
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                NSLog(@"%@", error);
+            }];
+        } else {
+            self.imageView.image = nil;
+        }
     }
     self.titleLabel.text = [EpflMeal localizedNameForMealType:self.mealType];
 }

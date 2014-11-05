@@ -136,6 +136,35 @@
     }
 }
 
++ (UIImage*)imageForMealType:(NSInteger)mealType {
+    switch (mealType) {
+        case MealType_UNKNOWN:
+            return [UIImage imageNamed:@"MealType_UNKNOWN"];
+        case MealType_FISH:
+            return [UIImage imageNamed:@"MealType_FISH"];
+        case MealType_MEAT:
+            return [UIImage imageNamed:@"MealType_MEAT"];
+        case MealType_POULTRY:
+            return [UIImage imageNamed:@"MealType_POULTRY"];
+        case MealType_VEGETARIAN:
+            return [UIImage imageNamed:@"MealType_VEGETARIAN"];
+        case MealType_GREEN_FORK:
+            return [UIImage imageNamed:@"MealType_GREEN_FORK"];
+        case MealType_PASTA:
+            return [UIImage imageNamed:@"MealType_PASTA"];
+        case MealType_PIZZA:
+            return [UIImage imageNamed:@"MealType_PIZZA"];
+        case MealType_THAI:
+            return [UIImage imageNamed:@"MealType_THAI"];
+        case MealType_INDIAN:
+            return [UIImage imageNamed:@"MealType_INDIAN"];
+        case MealType_LEBANESE:
+            return [UIImage imageNamed:@"MealType_LEBANESE"];
+        default:
+            return nil;
+    }
+}
+
 - (BOOL)isEqual:(id)object {
     if (self == object) {
         return YES;

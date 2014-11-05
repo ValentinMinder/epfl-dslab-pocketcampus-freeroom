@@ -64,6 +64,11 @@
  */
 + (NSString*)localizedNameForMealType:(NSInteger)mealType;
 
+/**
+ * @return a 80x80 points image for the meal type, nil if mealType is unknown
+ */
++ (UIImage*)imageForMealType:(NSInteger)mealType;
+
 - (BOOL)isEqual:(id)object;
 
 /**
