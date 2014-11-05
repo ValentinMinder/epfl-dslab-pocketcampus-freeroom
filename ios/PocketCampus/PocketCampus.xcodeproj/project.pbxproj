@@ -284,6 +284,36 @@
 		32AA25761A0A95D100146D68 /* MealType_MEAT.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25731A0A95D100146D68 /* MealType_MEAT.png */; };
 		32AA25771A0A95D100146D68 /* MealType_MEAT@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25741A0A95D100146D68 /* MealType_MEAT@2x.png */; };
 		32AA25781A0A95D100146D68 /* MealType_MEAT@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25751A0A95D100146D68 /* MealType_MEAT@3x.png */; };
+		32AA25971A0A9F1A00146D68 /* MealType_FISH.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25791A0A9F1A00146D68 /* MealType_FISH.png */; };
+		32AA25981A0A9F1A00146D68 /* MealType_FISH@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA257A1A0A9F1A00146D68 /* MealType_FISH@2x.png */; };
+		32AA25991A0A9F1A00146D68 /* MealType_FISH@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA257B1A0A9F1A00146D68 /* MealType_FISH@3x.png */; };
+		32AA259A1A0A9F1A00146D68 /* MealType_GREEN_FORK.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA257C1A0A9F1A00146D68 /* MealType_GREEN_FORK.png */; };
+		32AA259B1A0A9F1A00146D68 /* MealType_GREEN_FORK@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA257D1A0A9F1A00146D68 /* MealType_GREEN_FORK@2x.png */; };
+		32AA259C1A0A9F1A00146D68 /* MealType_GREEN_FORK@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA257E1A0A9F1A00146D68 /* MealType_GREEN_FORK@3x.png */; };
+		32AA259D1A0A9F1A00146D68 /* MealType_INDIAN.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA257F1A0A9F1A00146D68 /* MealType_INDIAN.png */; };
+		32AA259E1A0A9F1A00146D68 /* MealType_INDIAN@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25801A0A9F1A00146D68 /* MealType_INDIAN@2x.png */; };
+		32AA259F1A0A9F1A00146D68 /* MealType_INDIAN@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25811A0A9F1A00146D68 /* MealType_INDIAN@3x.png */; };
+		32AA25A01A0A9F1A00146D68 /* MealType_LEBANESE.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25821A0A9F1A00146D68 /* MealType_LEBANESE.png */; };
+		32AA25A11A0A9F1A00146D68 /* MealType_LEBANESE@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25831A0A9F1A00146D68 /* MealType_LEBANESE@2x.png */; };
+		32AA25A21A0A9F1A00146D68 /* MealType_LEBANESE@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25841A0A9F1A00146D68 /* MealType_LEBANESE@3x.png */; };
+		32AA25A31A0A9F1A00146D68 /* MealType_PASTA.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25851A0A9F1A00146D68 /* MealType_PASTA.png */; };
+		32AA25A41A0A9F1A00146D68 /* MealType_PASTA@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25861A0A9F1A00146D68 /* MealType_PASTA@2x.png */; };
+		32AA25A51A0A9F1A00146D68 /* MealType_PASTA@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25871A0A9F1A00146D68 /* MealType_PASTA@3x.png */; };
+		32AA25A61A0A9F1A00146D68 /* MealType_PIZZA.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25881A0A9F1A00146D68 /* MealType_PIZZA.png */; };
+		32AA25A71A0A9F1A00146D68 /* MealType_PIZZA@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25891A0A9F1A00146D68 /* MealType_PIZZA@2x.png */; };
+		32AA25A81A0A9F1A00146D68 /* MealType_PIZZA@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA258A1A0A9F1A00146D68 /* MealType_PIZZA@3x.png */; };
+		32AA25A91A0A9F1A00146D68 /* MealType_POULTRY.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA258B1A0A9F1A00146D68 /* MealType_POULTRY.png */; };
+		32AA25AA1A0A9F1A00146D68 /* MealType_POULTRY@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA258C1A0A9F1A00146D68 /* MealType_POULTRY@2x.png */; };
+		32AA25AB1A0A9F1A00146D68 /* MealType_POULTRY@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA258D1A0A9F1A00146D68 /* MealType_POULTRY@3x.png */; };
+		32AA25AC1A0A9F1A00146D68 /* MealType_THAI.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA258E1A0A9F1A00146D68 /* MealType_THAI.png */; };
+		32AA25AD1A0A9F1A00146D68 /* MealType_THAI@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA258F1A0A9F1A00146D68 /* MealType_THAI@2x.png */; };
+		32AA25AE1A0A9F1A00146D68 /* MealType_THAI@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25901A0A9F1A00146D68 /* MealType_THAI@3x.png */; };
+		32AA25AF1A0A9F1A00146D68 /* MealType_UNKNOWN.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25911A0A9F1A00146D68 /* MealType_UNKNOWN.png */; };
+		32AA25B01A0A9F1A00146D68 /* MealType_UNKNOWN@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25921A0A9F1A00146D68 /* MealType_UNKNOWN@2x.png */; };
+		32AA25B11A0A9F1A00146D68 /* MealType_UNKNOWN@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25931A0A9F1A00146D68 /* MealType_UNKNOWN@3x.png */; };
+		32AA25B21A0A9F1A00146D68 /* MealType_VEGETARIAN.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25941A0A9F1A00146D68 /* MealType_VEGETARIAN.png */; };
+		32AA25B31A0A9F1A00146D68 /* MealType_VEGETARIAN@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25951A0A9F1A00146D68 /* MealType_VEGETARIAN@2x.png */; };
+		32AA25B41A0A9F1A00146D68 /* MealType_VEGETARIAN@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32AA25961A0A9F1A00146D68 /* MealType_VEGETARIAN@3x.png */; };
 		32AA6CCA16DFF0D100783E9C /* EventsPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AA6CCC16DFF0D100783E9C /* EventsPlugin.strings */; };
 		32ADC7191659AAEB0039F6A6 /* Download.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC7171659AAEB0039F6A6 /* Download.png */; };
 		32ADC71A1659AAEB0039F6A6 /* Download@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC7181659AAEB0039F6A6 /* Download@2x.png */; };
@@ -945,6 +975,36 @@
 		32AA25731A0A95D100146D68 /* MealType_MEAT.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MealType_MEAT.png; sourceTree = "<group>"; };
 		32AA25741A0A95D100146D68 /* MealType_MEAT@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_MEAT@2x.png"; sourceTree = "<group>"; };
 		32AA25751A0A95D100146D68 /* MealType_MEAT@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_MEAT@3x.png"; sourceTree = "<group>"; };
+		32AA25791A0A9F1A00146D68 /* MealType_FISH.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MealType_FISH.png; sourceTree = "<group>"; };
+		32AA257A1A0A9F1A00146D68 /* MealType_FISH@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_FISH@2x.png"; sourceTree = "<group>"; };
+		32AA257B1A0A9F1A00146D68 /* MealType_FISH@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_FISH@3x.png"; sourceTree = "<group>"; };
+		32AA257C1A0A9F1A00146D68 /* MealType_GREEN_FORK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MealType_GREEN_FORK.png; sourceTree = "<group>"; };
+		32AA257D1A0A9F1A00146D68 /* MealType_GREEN_FORK@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_GREEN_FORK@2x.png"; sourceTree = "<group>"; };
+		32AA257E1A0A9F1A00146D68 /* MealType_GREEN_FORK@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_GREEN_FORK@3x.png"; sourceTree = "<group>"; };
+		32AA257F1A0A9F1A00146D68 /* MealType_INDIAN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MealType_INDIAN.png; sourceTree = "<group>"; };
+		32AA25801A0A9F1A00146D68 /* MealType_INDIAN@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_INDIAN@2x.png"; sourceTree = "<group>"; };
+		32AA25811A0A9F1A00146D68 /* MealType_INDIAN@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_INDIAN@3x.png"; sourceTree = "<group>"; };
+		32AA25821A0A9F1A00146D68 /* MealType_LEBANESE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MealType_LEBANESE.png; sourceTree = "<group>"; };
+		32AA25831A0A9F1A00146D68 /* MealType_LEBANESE@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_LEBANESE@2x.png"; sourceTree = "<group>"; };
+		32AA25841A0A9F1A00146D68 /* MealType_LEBANESE@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_LEBANESE@3x.png"; sourceTree = "<group>"; };
+		32AA25851A0A9F1A00146D68 /* MealType_PASTA.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MealType_PASTA.png; sourceTree = "<group>"; };
+		32AA25861A0A9F1A00146D68 /* MealType_PASTA@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_PASTA@2x.png"; sourceTree = "<group>"; };
+		32AA25871A0A9F1A00146D68 /* MealType_PASTA@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_PASTA@3x.png"; sourceTree = "<group>"; };
+		32AA25881A0A9F1A00146D68 /* MealType_PIZZA.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MealType_PIZZA.png; sourceTree = "<group>"; };
+		32AA25891A0A9F1A00146D68 /* MealType_PIZZA@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_PIZZA@2x.png"; sourceTree = "<group>"; };
+		32AA258A1A0A9F1A00146D68 /* MealType_PIZZA@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_PIZZA@3x.png"; sourceTree = "<group>"; };
+		32AA258B1A0A9F1A00146D68 /* MealType_POULTRY.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MealType_POULTRY.png; sourceTree = "<group>"; };
+		32AA258C1A0A9F1A00146D68 /* MealType_POULTRY@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_POULTRY@2x.png"; sourceTree = "<group>"; };
+		32AA258D1A0A9F1A00146D68 /* MealType_POULTRY@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_POULTRY@3x.png"; sourceTree = "<group>"; };
+		32AA258E1A0A9F1A00146D68 /* MealType_THAI.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MealType_THAI.png; sourceTree = "<group>"; };
+		32AA258F1A0A9F1A00146D68 /* MealType_THAI@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_THAI@2x.png"; sourceTree = "<group>"; };
+		32AA25901A0A9F1A00146D68 /* MealType_THAI@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_THAI@3x.png"; sourceTree = "<group>"; };
+		32AA25911A0A9F1A00146D68 /* MealType_UNKNOWN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MealType_UNKNOWN.png; sourceTree = "<group>"; };
+		32AA25921A0A9F1A00146D68 /* MealType_UNKNOWN@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_UNKNOWN@2x.png"; sourceTree = "<group>"; };
+		32AA25931A0A9F1A00146D68 /* MealType_UNKNOWN@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_UNKNOWN@3x.png"; sourceTree = "<group>"; };
+		32AA25941A0A9F1A00146D68 /* MealType_VEGETARIAN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MealType_VEGETARIAN.png; sourceTree = "<group>"; };
+		32AA25951A0A9F1A00146D68 /* MealType_VEGETARIAN@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_VEGETARIAN@2x.png"; sourceTree = "<group>"; };
+		32AA25961A0A9F1A00146D68 /* MealType_VEGETARIAN@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MealType_VEGETARIAN@3x.png"; sourceTree = "<group>"; };
 		32AA6CCB16DFF0D100783E9C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EventsPlugin.strings; sourceTree = "<group>"; };
 		32AA6CCD16DFF0D400783E9C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/EventsPlugin.strings; sourceTree = "<group>"; };
 		32ADC7171659AAEB0039F6A6 /* Download.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Download.png; sourceTree = "<group>"; };
@@ -1963,9 +2023,39 @@
 		32AA25721A0A95D100146D68 /* MealTypes */ = {
 			isa = PBXGroup;
 			children = (
+				32AA25791A0A9F1A00146D68 /* MealType_FISH.png */,
+				32AA257A1A0A9F1A00146D68 /* MealType_FISH@2x.png */,
+				32AA257B1A0A9F1A00146D68 /* MealType_FISH@3x.png */,
+				32AA257C1A0A9F1A00146D68 /* MealType_GREEN_FORK.png */,
+				32AA257D1A0A9F1A00146D68 /* MealType_GREEN_FORK@2x.png */,
+				32AA257E1A0A9F1A00146D68 /* MealType_GREEN_FORK@3x.png */,
+				32AA257F1A0A9F1A00146D68 /* MealType_INDIAN.png */,
+				32AA25801A0A9F1A00146D68 /* MealType_INDIAN@2x.png */,
+				32AA25811A0A9F1A00146D68 /* MealType_INDIAN@3x.png */,
+				32AA25821A0A9F1A00146D68 /* MealType_LEBANESE.png */,
+				32AA25831A0A9F1A00146D68 /* MealType_LEBANESE@2x.png */,
+				32AA25841A0A9F1A00146D68 /* MealType_LEBANESE@3x.png */,
 				32AA25731A0A95D100146D68 /* MealType_MEAT.png */,
 				32AA25741A0A95D100146D68 /* MealType_MEAT@2x.png */,
 				32AA25751A0A95D100146D68 /* MealType_MEAT@3x.png */,
+				32AA25851A0A9F1A00146D68 /* MealType_PASTA.png */,
+				32AA25861A0A9F1A00146D68 /* MealType_PASTA@2x.png */,
+				32AA25871A0A9F1A00146D68 /* MealType_PASTA@3x.png */,
+				32AA25881A0A9F1A00146D68 /* MealType_PIZZA.png */,
+				32AA25891A0A9F1A00146D68 /* MealType_PIZZA@2x.png */,
+				32AA258A1A0A9F1A00146D68 /* MealType_PIZZA@3x.png */,
+				32AA258B1A0A9F1A00146D68 /* MealType_POULTRY.png */,
+				32AA258C1A0A9F1A00146D68 /* MealType_POULTRY@2x.png */,
+				32AA258D1A0A9F1A00146D68 /* MealType_POULTRY@3x.png */,
+				32AA258E1A0A9F1A00146D68 /* MealType_THAI.png */,
+				32AA258F1A0A9F1A00146D68 /* MealType_THAI@2x.png */,
+				32AA25901A0A9F1A00146D68 /* MealType_THAI@3x.png */,
+				32AA25911A0A9F1A00146D68 /* MealType_UNKNOWN.png */,
+				32AA25921A0A9F1A00146D68 /* MealType_UNKNOWN@2x.png */,
+				32AA25931A0A9F1A00146D68 /* MealType_UNKNOWN@3x.png */,
+				32AA25941A0A9F1A00146D68 /* MealType_VEGETARIAN.png */,
+				32AA25951A0A9F1A00146D68 /* MealType_VEGETARIAN@2x.png */,
+				32AA25961A0A9F1A00146D68 /* MealType_VEGETARIAN@3x.png */,
 			);
 			path = MealTypes;
 			sourceTree = "<group>";
@@ -2931,12 +3021,18 @@
 				3243FBA218216BBC000F3CB5 /* FoodRestaurantInfoCell.xib in Resources */,
 				3247C3B71504F2E10079522A /* FoodPlugin.strings in Resources */,
 				3289D28A15094739008DD299 /* Directory.png in Resources */,
+				32AA25B11A0A9F1A00146D68 /* MealType_UNKNOWN@3x.png in Resources */,
+				32AA259D1A0A9F1A00146D68 /* MealType_INDIAN.png in Resources */,
+				32AA25A31A0A9F1A00146D68 /* MealType_PASTA.png in Resources */,
 				3289D28B15094739008DD299 /* Directory@2x.png in Resources */,
+				32AA25981A0A9F1A00146D68 /* MealType_FISH@2x.png in Resources */,
 				3289D28E1509474A008DD299 /* Food.png in Resources */,
 				326F5A7919BCDC71000693A2 /* CloudPrintMultiPageLayoutButton.xib in Resources */,
 				32506D05181DC7AF003F08D7 /* MasterHidden.png in Resources */,
+				32AA25A11A0A9F1A00146D68 /* MealType_LEBANESE@2x.png in Resources */,
 				3289D28F1509474A008DD299 /* Food@2x.png in Resources */,
 				32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */,
+				32AA25AC1A0A9F1A00146D68 /* MealType_THAI.png in Resources */,
 				32506D02181DC41E003F08D7 /* MasterVisible@2x.png in Resources */,
 				32290AD118200A25005869E7 /* FoodSplashDetailView.xib in Resources */,
 				325F1FC519FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.xib in Resources */,
@@ -2946,6 +3042,7 @@
 				32442FEE151CFDED00685D10 /* Transport.png in Resources */,
 				32442FEF151CFDED00685D10 /* Transport@2x.png in Resources */,
 				32442FF1151D0F3000685D10 /* TransportNextDeparturesView.xib in Resources */,
+				32AA25B31A0A9F1A00146D68 /* MealType_VEGETARIAN@2x.png in Resources */,
 				32E3E5CB1897D1F200D263C5 /* TransportPlugin.strings in Resources */,
 				32506CFE181D4195003F08D7 /* MoodleLarge@2x.png in Resources */,
 				27B74CE619A205E6006B2F17 /* RecommendedApps.png in Resources */,
@@ -2958,9 +3055,12 @@
 				32342A8017F43347009C05FA /* DirectoryEmptyPicture.png in Resources */,
 				32B3325817E5C708004F5E75 /* Images.xcassets in Resources */,
 				326494CB1A07B97900C63622 /* FoodMainViewController.xib in Resources */,
+				32AA25AB1A0A9F1A00146D68 /* MealType_POULTRY@3x.png in Resources */,
+				32AA25971A0A9F1A00146D68 /* MealType_FISH.png in Resources */,
 				32CAE432153628C100AB17CC /* TransportTripPartsView.xib in Resources */,
 				32125BBF1536F215009B8D37 /* TransportFeetConnection.png in Resources */,
 				32125BC01536F215009B8D37 /* TransportFeetConnection@2x.png in Resources */,
+				32AA25A41A0A9F1A00146D68 /* MealType_PASTA@2x.png in Resources */,
 				3207A38619ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib in Resources */,
 				324151CC15373A1700CCFB22 /* MapPlugin.strings in Resources */,
 				326494CD1A07CC5100C63622 /* FoodMealTypeCell.xib in Resources */,
@@ -2977,6 +3077,7 @@
 				328A132618296E2D00F4C622 /* FoodSmileySad@2x.png in Resources */,
 				32CCB4EF1555237500220282 /* Moodle.png in Resources */,
 				32CCB4F01555237500220282 /* Moodle@2x.png in Resources */,
+				32AA25991A0A9F1A00146D68 /* MealType_FISH@3x.png in Resources */,
 				32342A8117F43347009C05FA /* DirectoryEmptyPicture@2x.png in Resources */,
 				32CCB500155546C100220282 /* NewsPlugin.strings in Resources */,
 				32875E61194CF3100071CDF8 /* PCWebView.xib in Resources */,
@@ -2988,6 +3089,7 @@
 				3270B7F118056E6F007EE85B /* ListBarButton.png in Resources */,
 				3270B7F218056E6F007EE85B /* ListBarButton@2x.png in Resources */,
 				3215446619E6B59D00D6FB33 /* MapLayersListSelectionView.xib in Resources */,
+				32AA25B41A0A9F1A00146D68 /* MealType_VEGETARIAN@3x.png in Resources */,
 				32B5871E156458FA0051C57E /* Camipro.png in Resources */,
 				32B5871F156458FA0051C57E /* Camipro@2x.png in Resources */,
 				32710E951565129600DE6984 /* CamiproLarge.png in Resources */,
@@ -3002,6 +3104,7 @@
 				327585A81844DE93004215FC /* TransportSmallBus.png in Resources */,
 				32AF214815B197DE00BB445D /* TransportHelp.html in Resources */,
 				3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */,
+				32AA25AD1A0A9F1A00146D68 /* MealType_THAI@2x.png in Resources */,
 				3218CD2415B8359F00CEB238 /* MoodleLarge.png in Resources */,
 				328A132118296E2D00F4C622 /* FoodSmileyMeh.png in Resources */,
 				3293AD2315D1BC930097D414 /* PCAboutView.xib in Resources */,
@@ -3011,6 +3114,7 @@
 				327513331825465D0037FE00 /* FavoriteCornerSelected.png in Resources */,
 				32B3F3941621956C007A75C7 /* MainMenuView.xib in Resources */,
 				326F5A8219BDA2D0000693A2 /* CloudPrintStatusView.xib in Resources */,
+				32AA25A91A0A9F1A00146D68 /* MealType_POULTRY.png in Resources */,
 				325C47AB1621D8FC006752B4 /* MainMenuItemCell.xib in Resources */,
 				325C47B4162200E8006752B4 /* BlankPluginView.xib in Resources */,
 				3200375918119B4100901F6A /* Info.png in Resources */,
@@ -3020,6 +3124,7 @@
 				32FBAD1F1A09056100D5C515 /* ClockBarButton@2x.png in Resources */,
 				32E0E319194B206D003251CC /* FilterBarButtonSelected.png in Resources */,
 				32574ED7182140AE008F3163 /* DirectoryEmptyPictureSmall@2x.png in Resources */,
+				32AA259B1A0A9F1A00146D68 /* MealType_GREEN_FORK@2x.png in Resources */,
 				327585A91844DE93004215FC /* TransportSmallBus@2x.png in Resources */,
 				32FF91EE19C62FC300559E1E /* CloudPrintAction-Info.plist in Resources */,
 				32CBF05A163450E500FD92E5 /* PocketCampusDrawing@2x.png in Resources */,
@@ -3053,21 +3158,27 @@
 				32D0B262166ABEA200F68304 /* FloorUp.png in Resources */,
 				32D0B263166ABEA200F68304 /* FloorUp@2x.png in Resources */,
 				329CA503166D452E00F7B1AE /* SettingsBarButton.png in Resources */,
+				32AA259F1A0A9F1A00146D68 /* MealType_INDIAN@3x.png in Resources */,
 				329CA504166D452E00F7B1AE /* SettingsBarButton@2x.png in Resources */,
 				32CE952519DDDF950071F987 /* CamiproWidget.storyboard in Resources */,
 				32035BB5166E988600E134DD /* MoodleFileView.xib in Resources */,
 				324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */,
 				327412DA167E776A001E8C62 /* DownloadedCorner.png in Resources */,
+				32AA25AA1A0A9F1A00146D68 /* MealType_POULTRY@2x.png in Resources */,
+				32AA259A1A0A9F1A00146D68 /* MealType_GREEN_FORK.png in Resources */,
 				32AA25781A0A95D100146D68 /* MealType_MEAT@3x.png in Resources */,
 				325F1FB919FA95470019CFCB /* CloudPrintExtensionSafari.png in Resources */,
+				32AA25B01A0A9F1A00146D68 /* MealType_UNKNOWN@2x.png in Resources */,
 				327412DB167E776A001E8C62 /* DownloadedCorner@2x.png in Resources */,
 				327412E1167E7E56001E8C62 /* DownloadedCornerSelected.png in Resources */,
 				327412E2167E7E56001E8C62 /* DownloadedCornerSelected@2x.png in Resources */,
+				32AA25A01A0A9F1A00146D68 /* MealType_LEBANESE.png in Resources */,
 				32E67DBC16847A0900E5CFF6 /* ClockCell.png in Resources */,
 				32E67DBD16847A0900E5CFF6 /* ClockCell@2x.png in Resources */,
 				32E67DC01684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib in Resources */,
 				328A131D18296E2D00F4C622 /* FoodSmileyHappy.png in Resources */,
 				322207EC1688E6B5003F6622 /* NewsSplashView.xib in Resources */,
+				32AA25A51A0A9F1A00146D68 /* MealType_PASTA@3x.png in Resources */,
 				328A72DF184A4EE0002C5A6B /* SplashImage4inch@2x.png in Resources */,
 				322207F11688F101003F6622 /* NewsItemView.xib in Resources */,
 				32D1DE18184663C700D0C866 /* TransportTripCell.xib in Resources */,
@@ -3078,6 +3189,7 @@
 				3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */,
 				32AF954819B39F91008CB161 /* Cross.png in Resources */,
 				323676C316BDB42D0004D5AD /* AppLogoCellImage@2x.png in Resources */,
+				32AA25AF1A0A9F1A00146D68 /* MealType_UNKNOWN.png in Resources */,
 				323676C516BDB5300004D5AD /* AppLogoCellImage.png in Resources */,
 				323676C816BDB6620004D5AD /* FacebookLikeCellImage.png in Resources */,
 				320480C518479D4E00116380 /* TransportSmallBusGreen.png in Resources */,
@@ -3101,6 +3213,7 @@
 				32C509E717FC60B0005A5635 /* CameraBarButton@2x.png in Resources */,
 				32150DD8197D6D0400CCF2AB /* FolderIcon.png in Resources */,
 				328A131E18296E2D00F4C622 /* FoodSmileyHappy@2x.png in Resources */,
+				32AA25B21A0A9F1A00146D68 /* MealType_VEGETARIAN.png in Resources */,
 				32DD525419B4DEAE00B5B241 /* CloudPrint.png in Resources */,
 				32503AA5195EE4F1007B709E /* PCDatePickerView.xib in Resources */,
 				32F7218C171B0BB4005755A2 /* CamiproView~ipad.xib in Resources */,
@@ -3112,11 +3225,13 @@
 				325F1FBB19FA95470019CFCB /* CloudPrintExtensionSafari@2x.png in Resources */,
 				32DE5B2517F1FB6800E03423 /* DirectoryPersonView.xib in Resources */,
 				32DD525519B4DEAE00B5B241 /* CloudPrint@2x.png in Resources */,
+				32AA25A81A0A9F1A00146D68 /* MealType_PIZZA@3x.png in Resources */,
 				32AEEC831747C11C006DBA2F /* CamiproView~iphone.xib in Resources */,
 				325F1FC719FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib in Resources */,
 				32C450B01824137B000C99A3 /* FoodMealCell.xib in Resources */,
 				32E637E119D0CCB000378788 /* SplashImage4_7inch@2x.png in Resources */,
 				327B0C24175199590011D81E /* ArrowUpRightCircleAccessory.png in Resources */,
+				32AA25A21A0A9F1A00146D68 /* MealType_LEBANESE@3x.png in Resources */,
 				32290AD318200C68005869E7 /* FoodLarge@2x.png in Resources */,
 				327B0C25175199590011D81E /* ArrowUpRightCircleAccessory@2x.png in Resources */,
 				327585A41844C5B1004215FC /* ArrowSimpleRight.png in Resources */,
@@ -3125,12 +3240,16 @@
 				32CE952319DDDE180071F987 /* CamiproWidget-Info.plist in Resources */,
 				32074B7D17FB09CA009804CE /* NewsLarge@2x.png in Resources */,
 				32CACD98183E366B00BD36F9 /* LocationArrow@2x.png in Resources */,
+				32AA259E1A0A9F1A00146D68 /* MealType_INDIAN@2x.png in Resources */,
+				32AA25A71A0A9F1A00146D68 /* MealType_PIZZA@2x.png in Resources */,
 				32AA25771A0A95D100146D68 /* MealType_MEAT@2x.png in Resources */,
 				3200375618118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png in Resources */,
 				3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */,
 				32456C0C184373FE00993F8B /* TransportNextDeparturesCell.xib in Resources */,
 				32449D5D17C3F248003269E5 /* DirectoryLarge@2x.png in Resources */,
+				32AA25A61A0A9F1A00146D68 /* MealType_PIZZA.png in Resources */,
 				3289F2B7183FAB8C00D833C2 /* LocationArrow2.png in Resources */,
+				32AA25AE1A0A9F1A00146D68 /* MealType_THAI@3x.png in Resources */,
 				320F8599194EED8C00BF3228 /* ArrowLeftBarButton.png in Resources */,
 				320480C618479D4E00116380 /* TransportSmallBusGreen@2x.png in Resources */,
 				324FD733176574DD0003EE30 /* CamiproTransactionCell.xib in Resources */,
@@ -3140,6 +3259,7 @@
 				C5894949AFC59FDB4346CF53 /* IsAcademia@2x.png in Resources */,
 				8193447294E5D065581CBAAD /* IsAcademia.png in Resources */,
 				32D29719185B64FE006530B7 /* IsAcademiaPlugin.strings in Resources */,
+				32AA259C1A0A9F1A00146D68 /* MealType_GREEN_FORK@3x.png in Resources */,
 				328501B419E5768F0049356E /* MapLayersBarButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
