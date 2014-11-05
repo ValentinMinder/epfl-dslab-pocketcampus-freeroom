@@ -9,9 +9,10 @@
 "DinnerMenus" = "Menus du soir";
 "LunchMenus" = "Menus de midi";
 "SeeMenusForAnotherDay" = "Voir les menus pour un autre jour";
+"BackToTodayLunchMenus" = "Retour aux menus d'aujourd'hui midi";
 "MenuWithMealTypeWithFormat" = "Menus %@";
 "LoadingMenus" = "Chargement des menus";
-"NoMealsToday" = "Aucun menu aujourd'hui";
+"NoMeals" = "Aucun menu";
 "NoMealsWeekend" = "Aucun menu pendant le weekend.";
 "MenusForTodayWithFormat" = "Menus du jour – %@";
 "Map" = "Plan";

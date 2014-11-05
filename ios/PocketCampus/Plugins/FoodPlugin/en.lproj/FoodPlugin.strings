@@ -9,9 +9,10 @@
 "DinnerMenus" = "Dinner menus";
 "LunchMenus" = "Lunch menus";
 "SeeMenusForAnotherDay" = "See menus for another day";
+"BackToTodayLunchMenus" = "Back to today lunch menus";
 "MenuWithMealTypeWithFormat" = "%@ menus";
 "LoadingMenus" = "Loading menus";
-"NoMealsToday" = "No menu today";
+"NoMeals" = "No menu";
 "NoMealsWeekend" = "No menu during the weekend";
 "MenusForTodayWithFormat" = "Menus for today – %@";
 "Map" = "Map";

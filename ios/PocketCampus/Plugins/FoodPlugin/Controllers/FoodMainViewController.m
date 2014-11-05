@@ -95,6 +95,8 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
 
 @implementation FoodMainViewController
 
+#pragma mark - Init
+
 - (instancetype)init
 {
     self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self.class) owner:nil options:nil] firstObject];
@@ -108,13 +110,15 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     return self;
 }
 
+#pragma mark - UIViewController overrides
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.restaurantsTableViewController = [[UITableViewController alloc] initWithStyle:self.restaurantsTableView.style];
+    self.restaurantsTableViewController.tableView = self.restaurantsTableView;
     [self addChildViewController:self.restaurantsTableViewController];
     self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self.restaurantsTableViewController refreshedDataIdentifier:[LGARefreshControl dataIdentifierForPluginName:@"food" dataName:@"restaurantsAndMeals"]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
-    self.restaurantsTableViewController.tableView = self.restaurantsTableView;
     
     self.restaurantsTableView.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
         return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
@@ -137,6 +141,8 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     layout.itemSize = [FoodMealTypeCell preferredSize];
     self.mealTypesCollectionView.collectionViewLayout = layout;
     
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ClockBarButton"] style:UIBarButtonItemStylePlain target:self action:@selector(clockButtonTapped)];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fillCollectionsAndUpdateUI) name:kFoodFavoritesRestaurantsUpdatedNotification object:self.foodService];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kFoodMealCellUserSuccessfullyRatedMealNotification object:nil];
@@ -155,8 +161,7 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     [self.navigationController setToolbarHidden:YES animated:animated];
 }
 
-- (NSUInteger)supportedInterfaceOrientations //iOS 6
-{
+- (NSUInteger)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;
 }
 
@@ -166,13 +171,15 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     FoodRequest* req = [FoodRequest new];
     req.deviceLanguage = [PCUtils userLanguageCode];
     req.mealTime = (int)self.selectedMealTime;
-    req.mealDate = self.selectedMealDate ? [self.selectedMealDate timeIntervalSince1970]*1000 : -1; //now
+    req.mealDate = self.selectedMealDate ? [self.selectedMealDate timeIntervalSince1970]*1000 : -1;
     req.userGaspar = [AuthenticationService savedUsername];
     return req;
 }
 
 - (void)refreshIfNeeded {
     if (!self.foodResponse || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds] || ![[NSDate date] isSameDayAsDate:self.lgRefreshControl.lastSuccessfulRefreshDate]) {
+        self.selectedMealDate = nil;
+        self.selectedMealTime = MealTime_LUNCH; // default
         if (!self.splitViewController && self.navigationController.topViewController != self) {
             [self.navigationController popToViewController:self animated:NO];
         }
@@ -191,13 +198,24 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     [self fillCollections];
     [self.restaurantsTableView reloadData];
     [self.mealTypesCollectionView reloadData];
-    [self reselectLastSelectedItem]; //keep selection ater refresh on iPad
+    [self reselectLastSelectedItem]; //keep selection after refresh on iPad
     self.restaurantsTableView.hidden = (self.segmentedControl.selectedSegmentIndex != kRestaurantsSegmentIndex);
     self.mealTypesCollectionView.hidden = (self.segmentedControl.selectedSegmentIndex != kMealTypesSegmentIndex);
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ClockBarButton"] style:UIBarButtonItemStylePlain target:self action:@selector(clockButtonTapped)];
-    
-#warning TODO set title accordingly
+    NSString* timeString = NSLocalizedStringFromTable(self.selectedMealTime == MealTime_LUNCH ? @"LunchMenus" : @"DinnerMenus", @"FoodPlugin", nil);
+    NSString* dateString = nil;
+    if (self.selectedMealDate) {
+        static NSDateFormatter* formatter = nil;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            formatter = [NSDateFormatter new];
+            formatter.doesRelativeDateFormatting = YES;
+            formatter.dateStyle = NSDateFormatterShortStyle;
+            formatter.timeStyle = NSDateFormatterNoStyle;
+        });
+        dateString = [formatter stringFromDate:self.selectedMealDate];
+    }
+    self.title = dateString ? [NSString stringWithFormat:@"%@ – %@", timeString, dateString] : timeString;
 }
 
 - (void)fillCollections {
@@ -263,6 +281,16 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
             [welf showMealDatePicker];
         }];
         [alertController addAction:mealDateAction];
+        
+        if (self.selectedMealTime != MealTime_LUNCH || self.selectedMealDate) {
+            UIAlertAction* backToDefaultsActions = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"BackToTodayLunchMenus", @"FoodPlugin", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+                welf.selectedMealDate = nil;
+                welf.selectedMealTime = MealTime_LUNCH;
+                [welf refresh];
+            }];
+            [alertController addAction:backToDefaultsActions];
+        }
+        
         [welf presentViewController:alertController animated:YES completion:NULL];
         
     } else {
@@ -280,6 +308,9 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
 - (void)showMealDatePicker {
     PCDatePickerView* pickerView = [[PCDatePickerView alloc] init];
     pickerView.datePicker.datePickerMode = UIDatePickerModeDate;
+    if (self.selectedMealDate) {
+        pickerView.datePicker.date = self.selectedMealDate;
+    }
     [pickerView setUserCancelledBlock:^(PCDatePickerView* view) {
         [view dismiss];
     }];
@@ -287,7 +318,11 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     [pickerView setUserValidatedDateBlock:^(PCDatePickerView* view, NSDate* date) {
 #warning GA
         [view dismiss];
-        welf.selectedMealDate = date;
+        if ([date isSameDayAsDate:[NSDate date]]) {
+            welf.selectedMealDate = nil;
+        } else {
+            welf.selectedMealDate = date;
+        }
         [welf refresh];
     }];
     [pickerView presentInView:self.navigationController.view];
@@ -383,7 +418,7 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     
     if (self.restaurantsSorted && self.restaurantsSorted.count == 0) {
         if (indexPath.row == 1) {
-            return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NoMealsToday", @"FoodPlugin", nil)];
+            return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NoMeals", @"FoodPlugin", nil)];
         } else {
             UITableViewCell* cell =[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;

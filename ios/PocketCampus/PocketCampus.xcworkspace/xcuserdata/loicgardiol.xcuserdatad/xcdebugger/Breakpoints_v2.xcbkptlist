@@ -349,22 +349,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Plugins/FoodPlugin/Controllers/FoodMainViewController.m"
-            timestampString = "436811543.551868"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
-            landmarkName = "-supportedInterfaceOrientations"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Common/PCNavigationController.m"
             timestampString = "415463333.581116"
             startingColumnNumber = "9223372036854775807"
@@ -3164,11 +3148,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Controllers/FoodMainViewController.m"
-            timestampString = "436812798.013776"
+            timestampString = "436891462.829827"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "336"
-            endingLineNumber = "336"
+            startingLineNumber = "379"
+            endingLineNumber = "379"
             landmarkName = "-getFoodForRequest:didReturn:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3484,11 +3468,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Controllers/FoodMainViewController.m"
-            timestampString = "436812798.013776"
+            timestampString = "436891462.829827"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "340"
-            endingLineNumber = "340"
+            startingLineNumber = "383"
+            endingLineNumber = "383"
             landmarkName = "-getFoodFailedForRequest:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6429,22 +6413,6 @@
             endingLineNumber = "209"
             landmarkName = "NS_EXTENSION_UNAVAILABLE_IOS()"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Plugins/FoodPlugin/Controllers/FoodMainViewController.m"
-            timestampString = "436811543.551868"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "150"
-            endingLineNumber = "150"
-            landmarkName = "-viewWillAppear:"
-            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
