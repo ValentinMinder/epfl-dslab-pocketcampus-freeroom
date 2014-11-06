@@ -160,6 +160,13 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     [self setRateModeEnabled:self.rateModeEnabled animated:NO postNotif:NO force:YES];
 }
 
+#pragma mark - UITableViewCell overrides
+
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    [self setRateModeEnabled:NO animated:NO postNotif:NO force:NO]; //if cell being reused, back to not rating mode
+}
+
 #pragma mark - Notifications listening
 
 - (void)rateModeEnabledNotification:(NSNotification*)notif {
