@@ -2,11 +2,13 @@
 
 "PluginName" = "Restaurants";
 "ByRestaurant" = "By restaurant";
-"ByMealTypes" = "By meal types";
+"ByMealTypes" = "By meal type";
 "Menus" = "Menus";
 "MenusTableViewSectionName" = "Menus";
 "AllMenus" = "All menus";
+"Dinner" = "Dinner";
 "DinnerMenus" = "Dinner menus";
+"Lunch" = "Lunch";
 "LunchMenus" = "Lunch menus";
 "SeeMenusForAnotherDay" = "See menus for another day";
 "BackToTodayLunchMenus" = "Back to today lunch menus";

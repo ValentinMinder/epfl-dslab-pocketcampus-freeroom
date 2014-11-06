@@ -205,9 +205,10 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     self.restaurantsTableView.hidden = (self.segmentedControl.selectedSegmentIndex != kRestaurantsSegmentIndex);
     self.mealTypesCollectionView.hidden = (self.segmentedControl.selectedSegmentIndex != kMealTypesSegmentIndex);
     
-    NSString* timeString = NSLocalizedStringFromTable(self.selectedMealTime == MealTime_LUNCH ? @"LunchMenus" : @"DinnerMenus", @"FoodPlugin", nil);
+    NSString* timeString = nil;
     NSString* dateString = nil;
     if (self.selectedMealDate) {
+        timeString = NSLocalizedStringFromTable(self.selectedMealTime == MealTime_LUNCH ? @"Lunch" : @"Dinner", @"FoodPlugin", nil);
         static NSDateFormatter* formatter = nil;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
@@ -217,6 +218,8 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
             formatter.timeStyle = NSDateFormatterNoStyle;
         });
         dateString = [formatter stringFromDate:self.selectedMealDate];
+    } else {
+        timeString = NSLocalizedStringFromTable(self.selectedMealTime == MealTime_LUNCH ? @"LunchMenus" : @"DinnerMenus", @"FoodPlugin", nil);
     }
     self.title = dateString ? [NSString stringWithFormat:@"%@ – %@", timeString, dateString] : timeString;
 }
@@ -356,7 +359,7 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
             [welf refresh];
         }];
     }
-    [pickerView presentInView:self.navigationController.view];
+    [pickerView presentFromBarButtonItem:self.navigationItem.rightBarButtonItem];
 }
 
 #pragma mark - KVO

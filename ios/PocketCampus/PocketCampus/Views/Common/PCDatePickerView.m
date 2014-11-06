@@ -29,12 +29,14 @@
 
 #import "PCDatePickerView.h"
 
-@interface PCDatePickerView ()
+@interface PCDatePickerView ()<UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) IBOutlet UINavigationBar* navBar;
 @property (nonatomic, readwrite, strong) IBOutlet UIDatePicker* datePicker;
 
 @property (nonatomic, weak) UITextField* textFieldForInputView; //weak because inputView already retains us (=> prevent retain cycle)
+
+@property (nonatomic, strong) UIPopoverController* popoverController;
 
 @end
 
@@ -118,14 +120,42 @@
     self.textFieldForInputView = textField;
 }
 
-- (void)dismiss {
-    if (!self.textFieldForInputView.superview) {
-        //not presented
+- (void)presentFromBarButtonItem:(UIBarButtonItem*)barButtonItem {
+    if (![PCUtils isIdiomPad]) {
+        UIView* view = [[[UIApplication sharedApplication] windows] firstObject];
+        [self presentInView:view];
         return;
     }
-    [self.textFieldForInputView resignFirstResponder];
-    [self.textFieldForInputView removeFromSuperview];
-    self.textFieldForInputView = nil;
+    [PCUtils throwExceptionIfObject:barButtonItem notKindOfClass:[UIBarButtonItem class]];
+    if (self.popoverController.isPopoverVisible) {
+        //already presented
+        return;
+    }
+    if (!self.popoverController) {
+        UIViewController* viewController = [[UIViewController alloc] init];
+        viewController.view = self;
+        viewController.preferredContentSize = self.bounds.size;
+        self.popoverController = [[UIPopoverController alloc] initWithContentViewController:viewController];
+        self.popoverController.delegate = self;
+    }
+    [self.popoverController presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+- (void)dismiss {
+    if (self.textFieldForInputView.superview) {
+        [self.textFieldForInputView resignFirstResponder];
+        [self.textFieldForInputView removeFromSuperview];
+        self.textFieldForInputView = nil;
+    } else if (self.popoverController) {
+        [self.popoverController dismissPopoverAnimated:YES];
+        self.popoverController = nil;
+    }
+}
+
+#pragma mark - UIPopoverControllerDelegate
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    self.popoverController = nil;
 }
 
 @end

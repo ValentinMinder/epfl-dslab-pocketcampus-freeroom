@@ -66,6 +66,8 @@
 
 - (void)presentInView:(UIView*)view;
 
+- (void)presentFromBarButtonItem:(UIBarButtonItem*)barButtonItem;
+
 - (void)dismiss;
 
 @end

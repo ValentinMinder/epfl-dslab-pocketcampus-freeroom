@@ -265,6 +265,7 @@ static NSInteger const kPageToTheEndValue = 10000;
     switch (indexPath.section) {
         case kPrinterInfoSectionIndex:
         {
+            [self trackAction:@"Info"];
             CloudPrintPOOL1InfoViewController* viewController = [CloudPrintPOOL1InfoViewController new];
             [self.navigationController pushViewController:viewController animated:YES];
             break;
