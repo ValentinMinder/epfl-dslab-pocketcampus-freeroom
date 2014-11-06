@@ -132,21 +132,21 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"Server cannot connect to the database");
 			e.printStackTrace();
 		}
-//		 USEME: Periodically update
-//		 new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
-//		 this)).start();
+		// USEME: Periodically update
+		// new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
+		// this)).start();
 		//
 		// USEME: Rebuild rooms list in DB, need to tune parameter for tsStart
 		// and tsEnd, (Start/End of semester)
-//		Calendar mCalendar = Calendar.getInstance();
-//		mCalendar.set(Calendar.MONTH, 8);
-//		mCalendar.set(Calendar.DAY_OF_MONTH, 1);
-//		long tsStart = mCalendar.getTimeInMillis();
-//		mCalendar.set(Calendar.MONTH, 11);
-//		mCalendar.set(Calendar.DAY_OF_MONTH, 31);
-//		long tsEnd = mCalendar.getTimeInMillis();
-//		new Thread(new RebuildDB(DB_URL, DB_USER, DB_PASSWORD, this, tsStart,
-//				tsEnd)).start();
+		// Calendar mCalendar = Calendar.getInstance();
+		// mCalendar.set(Calendar.MONTH, 8);
+		// mCalendar.set(Calendar.DAY_OF_MONTH, 1);
+		// long tsStart = mCalendar.getTimeInMillis();
+		// mCalendar.set(Calendar.MONTH, 11);
+		// mCalendar.set(Calendar.DAY_OF_MONTH, 31);
+		// long tsEnd = mCalendar.getTimeInMillis();
+		// new Thread(new RebuildDB(DB_URL, DB_USER, DB_PASSWORD, this, tsStart,
+		// tsEnd)).start();
 
 	}
 
@@ -278,11 +278,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	/**
 	 * This method's job is to ensure the data are stored in a proper way.
-	 * Whenever you need to insert an occupancy you should call this one. The
-	 * start of a user occupancy should be a full hour (e.g 10h00). Timestamps
+	 * Whenever you need to insert an occupancy you should call this method. The
+	 * start of an user occupancy should be a full hour (e.g 10h00). Timestamps
 	 * may be modified before insertion in the following ways : seconds and
 	 * milliseconds are set to 0, users occupancies are rounded to a full hour
-	 * before. User occupancies are cut into chunks of one hour if needed.
+	 * before (10h05 -> 10h00). User occupancies are cut into chunks of one hour
+	 * if needed (e.g total length is more than one hour).
 	 * 
 	 * @param period
 	 *            The period of the occupancy
@@ -292,11 +293,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            The room, the object has to contains the UID
 	 * @param hash
 	 *            null if ISA, id of user o/w
-	 * @return int error code defined by HttpURLConnection, OK insertion is
-	 *         successful, BAD_REQUEST, argument required is (are) null, or
-	 *         length of the message is too long, PRECON_FAILED if the message
-	 *         of the user contains forbidden words, INTERNAL_ERROR if the
-	 *         server failed at some point.
+	 * @return int error code defined by FRStatusCode, OK: insertion is
+	 *         successful, BAD_REQUEST: argument required is (are) null,
+	 *         PRECON_FAILED if the message of the user contains forbidden words
+	 *         or is too long, INTERNAL_ERROR if the server failed at some point
+	 *         and cannot answer properly.
 	 */
 	public FRStatusCode insertOccupancyDetailedReply(FRPeriod period,
 			OCCUPANCY_TYPE type, String uid, String hash, String userMessage) {
@@ -326,8 +327,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		if (type == OCCUPANCY_TYPE.USER) {
 			// round user occupancy to a full hour
-			// period.setTimeStampStart(FRTimes
-			// .roundToNearestHalfHourBefore(period.getTimeStampStart()));
 			period.setTimeStampStart(FRTimes.roundHourBefore(period
 					.getTimeStampStart()));
 			if (!Utils.checkUserMessage(userMessage)) {
@@ -338,10 +337,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					&& userMessage.length() > Constants.LENGTH_USERMESSAGE) {
 				log(Level.INFO, "User message is too long, length = "
 						+ userMessage.length());
-				return FRStatusCode.HTTP_BAD_REQUEST;
+				return FRStatusCode.HTTP_PRECON_FAILED;
 			}
 		}
 
+		// if the request is valid, we can try to insert it
 		boolean inserted = insertOccupancyAndCheckOccupancyInDB(period, uid,
 				type, hash, userMessage);
 		log(LOG_SIDE.SERVER,
@@ -359,7 +359,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	/**
 	 * Insert an occupancy in the database. It checks if there are no overlaps
-	 * between rooms occupancies.
+	 * between rooms occupancies. It assumes occupancies are correct as defined
+	 * in FRStatusCode insertOccupancyDetailedReply(...)
 	 * 
 	 * @param period
 	 *            The period of the occupancy
@@ -383,8 +384,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		boolean userOccupation = (typeToInsert == OCCUPANCY_TYPE.USER) ? true
 				: false;
 
-		// first check if you can fully insert it (no other overlapping
-		// occupancy of rooms)
+		// first check if you can fully insert it (no overlap with rooms)
 		String checkRequest = "SELECT * FROM `fr-occupancy` oc "
 				+ "WHERE ((oc.timestampStart < ? AND oc.timestampStart > ?) "
 				+ "OR (oc.timestampEnd > ? AND oc.timestampEnd < ?) "
@@ -409,15 +409,22 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			while (checkResult.next()) {
 				OCCUPANCY_TYPE type = OCCUPANCY_TYPE.valueOf(checkResult
 						.getString("type"));
+				long toInsertStart = checkResult.getLong("timestampStart");
+				long toInsertEnd = checkResult.getLong("timestampEnd");
 
 				// if we have a match and this is a room occupancy, we cannot go
-				// further there is an overlap
+				// further there is an overlap, log it.
 				if (typeToInsert == OCCUPANCY_TYPE.ROOM
 						&& type == OCCUPANCY_TYPE.ROOM) {
 					log(LOG_SIDE.SERVER, Level.WARNING,
 							"Error during insertion of occupancy, overlapping of two rooms occupancy, "
 									+ "want to insert : " + uid
-									+ " have conflict with " + uid);
+									+ " with timestamp start = " + tsStart
+									+ " and timestamp end = " + tsEnd
+									+ " have conflict with " + uid
+									+ " with timestamp start = "
+									+ toInsertStart + " and timestamp end = "
+									+ toInsertEnd);
 					return false;
 				}
 			}
@@ -428,6 +435,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						OCCUPANCY_TYPE.ROOM, 0);
 			} else {
 
+				// indicate whether the insertion has been successful or not.
 				boolean overallInsertion = true;
 
 				long hourSharpBefore = FRTimes.roundHourBefore(tsStart);
@@ -441,7 +449,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					String prevMessage = getLastMessage(hourSharpBefore + i
 							* FRTimes.ONE_HOUR_IN_MS, uid, hash);
 
-					// if first insertion or update of room
+					// if first insertion or update of room, insert a CHECK
+					// occupancy (to avoid multiple submit from same users)
 					insertOrUpdateCheckOccupancy(uid, hourSharpBefore + i
 							* FRTimes.ONE_HOUR_IN_MS, hash, prevRoom,
 							prevMessage, userMessage);
@@ -450,8 +459,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						// we increment the counter only if this is the first
 						// insertion (prevRoom == null) or if we change the
 						// room, in that case the counter for the new room has
-						// to be incremented, the old one has been taken care of
-						// in the previous method call
+						// to be incremented and the old counter decremented.
+						if (prevRoom != null && !prevRoom.equals(uid)) {
+							decrementUserOccupancyCount(prevRoom,
+									hourSharpBefore + i
+											* FRTimes.ONE_HOUR_IN_MS);
+						}
 						overallInsertion = overallInsertion
 								&& insertOccupancyInDB(uid, hourSharpBefore + i
 										* FRTimes.ONE_HOUR_IN_MS,
@@ -575,7 +588,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	/**
 	 * Insert an entry in the database which is used to deny multiple submits of
 	 * user occupancies. It should not be called without pre-checking. If you
-	 * want to insert a new occupancy call public insertOccupancy(...)
+	 * want to insert a new occupancy call public insertOccupancy(...).
 	 * 
 	 * @param uid
 	 *            The uid of the room
@@ -617,7 +630,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			}
 
 			updateCheckOccupancyInDB(uid, prevRoom, tsStart, hash,
-					duplicateMessage, !prevRoom.equals(uid));
+					duplicateMessage);
 		}
 
 	}
@@ -678,7 +691,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	}
 
 	/**
-	 * Update checkOccupancy attributs
+	 * Update checkOccupancy attributs (used to deny multiple submits from
+	 * users).
 	 * 
 	 * @param uid
 	 *            The new uid
@@ -690,12 +704,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            The hash of the record to update
 	 * @param message
 	 *            The new message
-	 * @param updateCount
-	 *            If we should also decrement the count in occupancy table for
-	 *            the old uid
 	 */
 	private void updateCheckOccupancyInDB(String uid, String prevRoom,
-			long tsStart, String hash, String message, boolean updateCount) {
+			long tsStart, String hash, String message) {
 
 		String insertRequest = "UPDATE `fr-checkOccupancy` SET uid = ?, message = ? "
 				+ "WHERE uid = ? AND timestampStart = ? AND hash = ?";
@@ -713,10 +724,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			insertQuery.setString(5, hash);
 
 			insertQuery.executeUpdate();
-
-			if (updateCount) {
-				decrementUserOccupancyCount(prevRoom, tsStart);
-			}
 		} catch (SQLException e) {
 			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"SQL error when writing check Occupancy for uid = " + uid
@@ -727,7 +734,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	}
 
 	/**
-	 * Decrement the count of users in the room by one
+	 * Decrement the count of users in the room by one.
 	 * 
 	 * @param uid
 	 *            The room to update
@@ -849,7 +856,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		boolean allowWeekends = false;
 		boolean allowEvenings = false;
 
-		String userLanguage = Utils.getSupportedLanguage(request.getUserLanguage());
+		String userLanguage = Utils.getSupportedLanguage(request
+				.getUserLanguage());
 
 		if (FRTimes.validCalendarsString(period, System.currentTimeMillis(),
 				allowWeekends, allowEvenings).length() != 0) {
@@ -983,17 +991,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            The end of the period, should be rounded, see public
 	 *            getOccupancy
 	 * @return A HashMap organized as follows (building -> list of rooms in the
-	 *         building), null if an error occured
+	 *         building), null if an error occurred
 	 */
 	private HashMap<String, List<FRRoomOccupancy>> getOccupancyOfSpecificRoom(
 			List<String> uidList, boolean onlyFreeRooms, long tsStart,
 			long tsEnd, int userGroup, String language) {
-
-		// useless
-		// if (uidList.isEmpty()) {
-		// return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd,
-		// userGroup);
-		// }
 
 		uidList = Utils.removeDuplicate(uidList);
 
@@ -1045,8 +1047,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			String currentDoorCode = null;
 			OccupancySorted currentOccupancy = null;
 
-			// We can add the ActualOccupation as they come, no worries about
-			// the order, the class OccupancySorted sorts and deals with it
+			// For each result we have, we process room by room (currentUID),
+			// and for each room we add the occupation to the class
+			// OccupationSorted. It assumes it is grouped by rooms uid.
 			while (resultQuery.next()) {
 				// extract attributes of record
 				long start = resultQuery.getLong("timestampStart");
@@ -1075,12 +1078,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				mRoom.setSurface(surface);
 				Utils.addAliasIfNeeded(mRoom, alias);
 
-				if (type
- != null) {
+				if (type != null) {
 					mRoom.setType(typeLanguage);
 				}
 
-				// if this is the first iteration
+				// if this is the first iteration, initialization
 				if (currentUID == null) {
 					currentUID = uid;
 					currentDoorCode = mRoom.getDoorCode();
@@ -1088,10 +1090,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							tsEnd, onlyFreeRooms);
 				}
 
-				// we move on to the next room thus re-initialize attributes
-				// for the loop, as well as storing the previous room in the
+				// if the condition holds, the room has changed, we move on to
+				// the next room. Thus
+				// re-initialize attributes
+				// for the loop, as well as storing the previous room
+				// occupations (sorted and ready to be sent) in the
 				// resulting HashMap
 				if (!uid.equals(currentUID)) {
+					// get occupations
 					FRRoomOccupancy mOccupancy = currentOccupancy
 							.getOccupancy();
 
@@ -1099,7 +1105,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 					// remove the room from the list, this is important as all
 					// the rooms might not be matched by the query (if there are
-					// no entry for instance)
+					// no entry for instance -> we need to keep track of those)
 					uidList.remove(currentUID);
 
 					// re-initialize the value, and continue the process for
@@ -1126,14 +1132,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				uidList.remove(currentUID);
 			}
 
-			// for all the others rooms that hasn't been matched in the query,
-			// we need to add them too
+			// if some rooms have no occupancies during the given period, we
+			// need to cut the period into chunks of one hour for each room.
 			if (!uidList.isEmpty()) {
 				roomsListQueryFormat = "";
 				for (i = 0; i < uidList.size() - 1; ++i) {
 					roomsListQueryFormat += "?,";
 				}
 
+				//but we first need to get the additional info for each room
 				roomsListQueryFormat += "?";
 				String infoRequest = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.type"
 						+ language.toUpperCase()
@@ -1257,7 +1264,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 		String constraint = request.getConstraint();
-		String userLanguage = Utils.getSupportedLanguage(request.getUserLanguage());
+		String userLanguage = Utils.getSupportedLanguage(request
+				.getUserLanguage());
 
 		if (constraint.length() < Constants.MIN_AUTOCOMPL_LENGTH) {
 			return new FRAutoCompleteReply(FRStatusCode.HTTP_BAD_REQUEST,
@@ -1570,13 +1578,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * Clean old data, used when updating.
 	 */
 	public void cleanOldData() {
-		
+
 		try {
 			Connection connectBDD = connMgr.getConnection();
 			String cleanRequest = "DELETE FROM `fr-occupancy` WHERE 1";
 
-			PreparedStatement query = connectBDD
-					.prepareStatement(cleanRequest);
+			PreparedStatement query = connectBDD.prepareStatement(cleanRequest);
 
 			query.executeUpdate();
 		} catch (SQLException e) {
@@ -1587,15 +1594,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	}
 
 	/**
-	 * Clean the rooms list stored in the database, used when rebuilding the entire database.
+	 * Clean the rooms list stored in the database, used when rebuilding the
+	 * entire database.
 	 */
 	public void cleanRoomsList() {
 		try {
 			Connection connectBDD = connMgr.getConnection();
 			String cleanRequest = "DELETE FROM `fr-roomslist` WHERE 1";
 
-			PreparedStatement query = connectBDD
-					.prepareStatement(cleanRequest);
+			PreparedStatement query = connectBDD.prepareStatement(cleanRequest);
 
 			query.executeUpdate();
 		} catch (SQLException e) {

@@ -44,6 +44,12 @@ public class OccupancySorted {
 		onlyFreeRooms = onlyFree;
 	}
 
+	/**
+	 * Add an occupation to be ordered later.
+	 * 
+	 * @param occ
+	 *            The occupation to add
+	 */
 	public void addActualOccupation(FRPeriodOccupation occ) {
 		FRPeriod period = occ.getPeriod();
 		long start = FRTimes.roundSAndMSToZero(period.getTimeStampStart());
@@ -60,8 +66,7 @@ public class OccupancySorted {
 		if (occ.isAvailable() && end - start > FRTimes.ONE_HOUR_IN_MS) {
 			mActualOccupations.addAll(cutInStepsPeriod(start, end));
 		} else {
-			mActualOccupations.add(occ
-					.setPeriod(new FRPeriod(start, end)));
+			mActualOccupations.add(occ.setPeriod(new FRPeriod(start, end)));
 		}
 	}
 
@@ -73,10 +78,9 @@ public class OccupancySorted {
 	 *         returns the occupancy only if there is no occupied period in the
 	 *         list of ActualOccupation, otherwise it returns null. If boolean
 	 *         onlyFreeRooms is false, it returns the occupancy adapted and
-	 *         filled during the period given.
+	 *         filled during the given period.
 	 * **/
 	public FRRoomOccupancy getOccupancy() {
-		sortByTimestampStart();
 		fillGaps();
 		if (isAtLeastOccupiedOnce && onlyFreeRooms) {
 			return null;
@@ -88,8 +92,9 @@ public class OccupancySorted {
 						.get(mActualOccupations.size() - 1).getPeriod()
 						.getTimeStampEnd();
 				FRPeriod periodTreated = new FRPeriod(start, end);
-				FRRoomOccupancy mOccupancy = new FRRoomOccupancy(room, mActualOccupations,
-						isAtLeastOccupiedOnce, isAtLeastFreeOnce, periodTreated);
+				FRRoomOccupancy mOccupancy = new FRRoomOccupancy(room,
+						mActualOccupations, isAtLeastOccupiedOnce,
+						isAtLeastFreeOnce, periodTreated);
 				mOccupancy.setRatioWorstCaseProbableOccupancy(worstRatio);
 
 				return mOccupancy;
@@ -113,7 +118,8 @@ public class OccupancySorted {
 				new Comparator<FRPeriodOccupation>() {
 
 					@Override
-					public int compare(FRPeriodOccupation o1, FRPeriodOccupation o2) {
+					public int compare(FRPeriodOccupation o1,
+							FRPeriodOccupation o2) {
 						long thisStart = o1.getPeriod().getTimeStampStart();
 						long toCompareStart = o2.getPeriod()
 								.getTimeStampStart();
@@ -164,12 +170,14 @@ public class OccupancySorted {
 	}
 
 	/**
-	 * This method fills the gaps between ActualOccupation in the list of this
-	 * object, it reduces the period of an user occupancy that overlap some room
-	 * occupancy. It also fill the blank time with ActualOccupation in order to
-	 * have a contiguous list of period (with an error of MARGIN_FOR_ERROR)
+	 * This method fills the gaps between occupations's entries in the list of
+	 * this object, it reduces the period of an user occupancy that overlap some
+	 * room occupancy. It also fill the blank with user occupations in order to
+	 * have a contiguous list of period (with a margin of FRTimes.MIN_PERIOD).
+	 * No particular order is needed.
 	 */
 	private void fillGaps() {
+		sortByTimestampStart();
 		ArrayList<FRPeriodOccupation> resultList = new ArrayList<FRPeriodOccupation>();
 		boolean previousIsRoom = false;
 		long lastEnd = timestampStart;
@@ -180,12 +188,14 @@ public class OccupancySorted {
 			long tsStart = Math.max(timestampStart, actual.getPeriod()
 					.getTimeStampStart());
 
-			// we want to add a room and the previous added occupation is a user
-			// occupancy and this one end after the room occupancy starts ! it
-			// has to be resized
+			// we want to add a room and the previous occupation added is an
+			// user
+			// occupancy and this one ends after the room occupancy starts
+			// (overlap) !
+			// -> we resize the user occupancy.
 			if (!actual.isAvailable() && !previousIsRoom && lastEnd > tsStart) {
-				FRPeriodOccupation lastOccupation = resultList.remove(resultList
-						.size() - 1);
+				FRPeriodOccupation lastOccupation = resultList
+						.remove(resultList.size() - 1);
 				countFree = Math.max(0, countFree - 1);
 				FRPeriod previousPeriod = lastOccupation.getPeriod();
 				if (tsStart - previousPeriod.getTimeStampStart() > FRTimes.MIN_PERIOD) {
@@ -201,7 +211,7 @@ public class OccupancySorted {
 					.getTimeStampEnd());
 
 			// the previous occupation is a room thus it has priority over user
-			// : we need to resize.
+			// -> we need to resize.
 			if (previousIsRoom && tsStart < lastEnd) {
 				tsStart = lastEnd;
 				FRPeriod newPeriod = new FRPeriod(tsStart, tsEnd);
@@ -209,7 +219,7 @@ public class OccupancySorted {
 			}
 
 			if (tsStart - lastEnd > FRTimes.MIN_PERIOD) {
-				// We got a free period of time !
+				// We got a free period of time ! -> we fill the blank
 				ArrayList<FRPeriodOccupation> subDivised = cutInStepsPeriod(
 						lastEnd, tsStart);
 				resultList.addAll(subDivised);
@@ -243,9 +253,11 @@ public class OccupancySorted {
 
 		}
 
+		// if we have blank time between the last occupancy and the end of the
+		// period we want to cover
 		if (timestampEnd - lastEnd > FRTimes.MIN_PERIOD) {
-			ArrayList<FRPeriodOccupation> subDivised = cutInStepsPeriod(lastEnd,
-					timestampEnd);
+			ArrayList<FRPeriodOccupation> subDivised = cutInStepsPeriod(
+					lastEnd, timestampEnd);
 			resultList.addAll(subDivised);
 			countFree++;
 		}
@@ -259,7 +271,7 @@ public class OccupancySorted {
 	 * start will the rounded hour of the start's timestamp (e.g if given 10h13
 	 * -> start is 10h00) up to the end hour rounded (e.g 10h43 -> 11h). We
 	 * round the hour due to constraint on the database we decided. See
-	 * create-tables.sql for more information
+	 * create-tables.sql for more information.
 	 * 
 	 * @param start
 	 *            The start of the period
@@ -280,7 +292,8 @@ public class OccupancySorted {
 					* FRTimes.ONE_HOUR_IN_MS, end);
 			if (maxEnd - minStart > FRTimes.MIN_PERIOD) {
 				FRPeriod period = new FRPeriod(minStart, maxEnd);
-				FRPeriodOccupation mAccOcc = new FRPeriodOccupation(period, true);
+				FRPeriodOccupation mAccOcc = new FRPeriodOccupation(period,
+						true);
 				mAccOcc.setRatioOccupation(0.0);
 				result.add(mAccOcc);
 			}
