@@ -304,7 +304,7 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
         
         alertController.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItem;
         
-        [welf presentViewController:alertController animated:YES completion:NULL];
+        [self presentViewController:alertController animated:YES completion:NULL];
         
     } else {
         UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:mealTimeActionTitle, NSLocalizedStringFromTable(@"SeeMenusForAnotherDay", @"FoodPlugin", nil), nil];
