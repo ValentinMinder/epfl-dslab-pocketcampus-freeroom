@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.thrift.TException;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
 import org.pocketcampus.plugin.map.shared.MapLayersResponse;
@@ -21,7 +22,7 @@ public class MapServiceImpl implements MapService.Iface {
 	
 	@Override
 	public MapLayersResponse getLayers() throws TException {
-		String lang = "en"; //TODO get lang code dynamically from client request
+		String lang = PocketCampusServer.getUserLanguageCode();
 		try {
 			Map<Long, MapLayer> layers = mapDb.getMapLayers(lang);
 			MapLayersResponse response = new MapLayersResponse(MapStatusCode.OK, layers);
