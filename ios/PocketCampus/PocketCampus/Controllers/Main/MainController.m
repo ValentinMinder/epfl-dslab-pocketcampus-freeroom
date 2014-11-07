@@ -233,7 +233,7 @@ static MainController<MainControllerPublic>* instance = nil;
     NSString* action = [self.urlSchemeHander actionForPocketCampusURL:url];
     NSDictionary* params = [self.urlSchemeHander parametersForPocketCampusURL:url];
     
-    if ((action || params) && [pluginController respondsToSelector:@selector(handleURLQueryAction:parameters:)]) {
+    if ((action.length > 0 || params) && [pluginController respondsToSelector:@selector(handleURLQueryAction:parameters:)]) {
         if ([pluginController handleURLQueryAction:action parameters:params]) {
             CLSNSLog(@"    2. Plugin successfully handled action '%@' with parameters %@", action, params);
         } else {
@@ -570,7 +570,35 @@ static MainController<MainControllerPublic>* instance = nil;
         } repeats:NO];
         self.revealController.toggleAnimationDuration = 0.25;
     }
+    
+/*#warning REMOVE
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self goCrazyWithMap];
+    });*/
 }
+
+/*#warning REMOVE
+- (void)goCrazyWithMap {
+#define ARC4RANDOM_MAX      0x100000000
+    double val = ((double)arc4random() / ARC4RANDOM_MAX);
+    
+    if (self.activePluginController) {
+        [self setActivePluginWithIdentifier:nil];
+        if (val < 0.5) {
+#ifndef TARGET_IS_EXTENSION
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://pocketcampus.epfl.ch/redirect.php?time=1&url=pocketcampus://map.plugin.pocketcampus.org"]];
+#endif
+        }
+    } else {
+#ifndef TARGET_IS_EXTENSION
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"pocketcampus://map.plugin.pocketcampus.org"]];
+#endif
+    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5+(val*3.0) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self goCrazyWithMap];
+    });
+}*/
 
 #pragma mark - Memory warning handler
 
