@@ -850,8 +850,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		//check for updates
 		if (updater.checkUpdate()) {
-			new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
-					this, updater)).start();
+			Connection connUpdate;
+			try {
+				connUpdate = connMgr.getConnection();
+				new Thread(new PeriodicallyUpdate(this, updater, connUpdate)).start();
+			} catch (SQLException e) {
+				log(Level.WARNING, "Cannot create connection to the database for updating");
+				e.printStackTrace();
+			}
 		}
 		
 		// round the given period to full hours to have a nice display on UI.
@@ -1587,13 +1593,18 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	/**
 	 * Clean old data, used when updating.
 	 */
-	public void cleanOldData() {
-
+	public void cleanOldData(Connection connDB) {
 		try {
-			Connection connectBDD = connMgr.getConnection();
+			Connection conn = null;
+			if (connDB == null) {
+				conn = connMgr.getConnection();
+			} else {
+				conn = connDB;
+			}
+			
 			String cleanRequest = "DELETE FROM `fr-occupancy` WHERE 1";
 
-			PreparedStatement query = connectBDD.prepareStatement(cleanRequest);
+			PreparedStatement query = conn.prepareStatement(cleanRequest);
 
 			query.executeUpdate();
 		} catch (SQLException e) {

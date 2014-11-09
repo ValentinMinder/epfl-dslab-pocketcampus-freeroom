@@ -29,16 +29,22 @@ public class ExchangeServiceImpl {
 
 	private ConnectionManager connMgr = null;
 	private FreeRoomServiceImpl server = null;
+	private Connection connDB = null;
 
 	public ExchangeServiceImpl(String db_url, String username, String passwd,
 			FreeRoomServiceImpl server) {
 		try {
 			connMgr = new ConnectionManager(db_url, username, passwd);
 			this.server = server;
+			this.connDB = null;
 		} catch (ServerException e) {
 			e.printStackTrace();
 		}
+	}
 
+	public ExchangeServiceImpl(FreeRoomServiceImpl server, Connection conn) {
+		this.connDB = conn;
+		this.server = server;
 	}
 
 	/**
@@ -49,7 +55,11 @@ public class ExchangeServiceImpl {
 	private boolean resetExchangeData() {
 		Connection conn = null;
 		try {
-			conn = connMgr.getConnection();
+			if (connDB == null) {
+				conn = connMgr.getConnection();
+			} else {
+				conn = connDB;
+			}
 			PreparedStatement query;
 			String b = "UPDATE `fr-roomsoccupancy` SET EWAid = NULL WHERE *";
 			query = conn.prepareStatement(b);
@@ -75,7 +85,11 @@ public class ExchangeServiceImpl {
 		}
 		Connection conn = null;
 		try {
-			conn = connMgr.getConnection();
+			if (connDB == null) {
+				conn = connMgr.getConnection();
+			} else {
+				conn = connDB;
+			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			return false;
@@ -109,7 +123,11 @@ public class ExchangeServiceImpl {
 	private String getUIDFromDoorCode(String doorCode) {
 		Connection conn = null;
 		try {
-			conn = connMgr.getConnection();
+			if (connDB == null) {
+				conn = connMgr.getConnection();
+			} else {
+				conn = connDB;
+			}
 			PreparedStatement roomQuery = conn.prepareStatement("SELECT "
 					+ "rl.uid " + "FROM `fr-roomslist` rl "
 					+ "WHERE rl.doorCode = ? OR rl.doorCodeWithoutSpace = ?");
@@ -141,7 +159,11 @@ public class ExchangeServiceImpl {
 	private List<FRRoom> getEWARooms() {
 		Connection conn = null;
 		try {
-			conn = connMgr.getConnection();
+			if (connDB == null) {
+				conn = connMgr.getConnection();
+			} else {
+				conn = connDB;
+			}
 			PreparedStatement roomQuery = conn.prepareStatement("SELECT "
 					+ "rl.uid, rl.doorCode, rl.EWAid "
 					+ "FROM `fr-roomslist` rl " + "WHERE EWAid IS NOT NULL");
@@ -219,7 +241,11 @@ public class ExchangeServiceImpl {
 			if (length != 0) {
 				Connection conn = null;
 				try {
-					conn = connMgr.getConnection();
+					if (connDB == null) {
+						conn = connMgr.getConnection();
+					} else {
+						conn = connDB;
+					}
 					PreparedStatement query;
 					StringBuilder b = new StringBuilder(
 							"INSERT INTO `fr-roomsoccupancy`("
@@ -261,7 +287,11 @@ public class ExchangeServiceImpl {
 	private boolean deleteAllOccupancies(String uid) {
 		Connection conn = null;
 		try {
-			conn = connMgr.getConnection();
+			if (connDB == null) {
+				conn = connMgr.getConnection();
+			} else {
+				conn = connDB;
+			}
 			PreparedStatement query;
 			String b = "DELETE FROM `fr-occupancy` WHERE uid = ? AND type = ?";
 			query = conn.prepareStatement(b);

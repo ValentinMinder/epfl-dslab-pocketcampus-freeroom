@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.freeroom.data;
 
+import java.sql.Connection;
 import java.util.Calendar;
 import java.util.logging.Level;
 
@@ -24,6 +25,7 @@ public class PeriodicallyUpdate implements Runnable {
 	private String DB_PASSWORD;
 	private FreeRoomServiceImpl server;
 	private AutoUpdate updater;
+	private Connection conn;
 
 	public PeriodicallyUpdate(String db_url, String username, String passwd,
 			FreeRoomServiceImpl server, AutoUpdate updater) {
@@ -34,14 +36,20 @@ public class PeriodicallyUpdate implements Runnable {
 		this.updater = updater;
 	}
 
+	public PeriodicallyUpdate(FreeRoomServiceImpl freeRoomServiceImpl,
+			AutoUpdate updater, Connection connUpdate) {
+		this.server = freeRoomServiceImpl;
+		this.updater = updater;
+		this.conn = connUpdate;
+	}
+
 	@Override
 	public void run() {
 		server.log(Level.INFO, "Cleaning old data");
-		server.cleanOldData();
+		server.cleanOldData(conn);
 		
 		server.log(Level.INFO, "Starting update of data from ISA");
-		FetchOccupancyDataJSON fodj = new FetchOccupancyDataJSON(DB_URL,
-				DB_USER, DB_PASSWORD, server);
+		FetchOccupancyDataJSON fodj = new FetchOccupancyDataJSON(server, conn);
 		Calendar mCalendar = Calendar.getInstance();
 		long now = mCalendar.getTimeInMillis();
 		// start is one day before what is authorized by clients.
@@ -55,8 +63,7 @@ public class PeriodicallyUpdate implements Runnable {
 		fodj.fetchAndInsert(start, end);
 
 		server.log(Level.INFO, "Starting update of data from Exchange EWA");
-		ExchangeServiceImpl exchange = new ExchangeServiceImpl(DB_URL, DB_USER,
-				DB_PASSWORD, server);
+		ExchangeServiceImpl exchange = new ExchangeServiceImpl(server, conn);
 		exchange.updateEWAOccupancyFromTo(start, end);
 		server.log(Level.INFO, "Finished updating data for FreeRoom");
 		updater.updated();

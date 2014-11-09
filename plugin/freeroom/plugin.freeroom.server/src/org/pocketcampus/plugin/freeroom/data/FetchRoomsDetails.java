@@ -46,16 +46,25 @@ public class FetchRoomsDetails {
 	private HashMap<String, String> dincat_textEN = null;
 
 	private ConnectionManager connMgr = null;
+	private Connection connDB = null;
 
-	public FetchRoomsDetails(String db_url, String username, String passwd, String url_list, String url_indiv) {
+	public FetchRoomsDetails(String db_url, String username, String passwd,
+			String url_list, String url_indiv) {
 		try {
 			connMgr = new ConnectionManager(db_url, username, passwd);
 			URL_ROOMS_LIST = url_list;
 			URL_INDIVIDUAL_ROOM = url_indiv;
+			this.connDB = null;
 		} catch (ServerException e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	public FetchRoomsDetails(String url_list, String url_indiv, Connection conn) {
+		this.connDB = conn;
+		URL_ROOMS_LIST = url_list;
+		URL_INDIVIDUAL_ROOM = url_indiv;
 	}
 
 	/**
@@ -155,11 +164,16 @@ public class FetchRoomsDetails {
 	private int removeNotNeededRooms() {
 		Connection conn = null;
 		try {
-			conn = connMgr.getConnection();
+			if (connDB == null) {
+				conn = connMgr.getConnection();
+			} else {
+				conn = connDB;
+			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			return 0;
 		}
+
 		int countGlobal = 0;
 		PreparedStatement query;
 		try {
@@ -225,7 +239,11 @@ public class FetchRoomsDetails {
 
 		Connection conn = null;
 		try {
-			conn = connMgr.getConnection();
+			if (connDB == null) {
+				conn = connMgr.getConnection();
+			} else {
+				conn = connDB;
+			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			return false;

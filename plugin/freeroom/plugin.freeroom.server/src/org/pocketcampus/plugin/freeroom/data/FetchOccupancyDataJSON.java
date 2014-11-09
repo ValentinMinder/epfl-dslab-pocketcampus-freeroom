@@ -56,6 +56,8 @@ public class FetchOccupancyDataJSON {
 
 	private FreeRoomServiceImpl server = null;
 
+	private Connection connDB;
+
 	public FetchOccupancyDataJSON(String db_url, String username,
 			String passwd, FreeRoomServiceImpl server) {
 		try {
@@ -65,10 +67,16 @@ public class FetchOccupancyDataJSON {
 			DB_PASSWORD = passwd;
 			URL_DATA = server.getOCCUPANCIES_URL();
 			this.server = server;
+			this.connDB = null;
 		} catch (ServerException e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	public FetchOccupancyDataJSON(FreeRoomServiceImpl server, Connection conn) {
+		this.server = server;
+		this.connDB = conn;
 	}
 
 	/**
@@ -177,16 +185,26 @@ public class FetchOccupancyDataJSON {
 			}
 
 			// first fetch and insert the room from the other webservice
-			FetchRoomsDetails frd = new FetchRoomsDetails(DB_URL, DB_USER,
-					DB_PASSWORD, server.getROOMS_LIST_URL(), server.getROOM_DETAILS_URL());
+			FetchRoomsDetails frd = null;
+			if (connDB == null) {
+				frd = new FetchRoomsDetails(DB_URL, DB_USER, DB_PASSWORD,
+						server.getROOMS_LIST_URL(),
+						server.getROOM_DETAILS_URL());
+			} else {
+				frd = new FetchRoomsDetails(server.getROOMS_LIST_URL(),
+						server.getROOM_DETAILS_URL(), connDB);
+			}
+
 			if (!frd.fetchRoomDetailInDB(uid)) {
 				return null;
 			}
 
-			// from this webservice
 			Connection conn = null;
-
-			conn = connMgr.getConnection();
+			if (connDB == null) {
+				conn = connMgr.getConnection();
+			} else {
+				conn = connDB;
+			}
 
 			String reqCapacity = "UPDATE `fr-roomslist` SET capacity = ? WHERE uid = ? AND capacity = 0";
 			String reqAlias = "UPDATE `fr-roomslist` SET alias = ? WHERE uid = ? AND alias IS NULL";
