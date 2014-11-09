@@ -211,7 +211,7 @@
     <string name="freeroom_settings_date_EU">"French/European format"</string>
 
     <!-- WELCOME: beta-only -->
-    <string name="freeroom_authors">"This plugin in PocketCampus is the result of a semester project with DSLAB.\nAuthors: Julien WEBER, Valentin MINDER\nThanks to Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE for their support and advices."</string>
+    <string name="freeroom_authors">"This plugin in PocketCampus is the result of a semester project with DSLAB in Spring 2014.\nAuthors: Julien WEBER, Valentin MINDER\nThanks to Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE for their support and advices."</string>
     <string name="freeroom_welcome_title">"Welcome!"</string>
     <string name="freeroom_welcome_subtitle">"Thanks for testing FreeRoom!"</string>
     <string name="freeroom_welcome_expl">"In order to make this beta test work, we need you to register ONCE with your EPFL email address."</string>

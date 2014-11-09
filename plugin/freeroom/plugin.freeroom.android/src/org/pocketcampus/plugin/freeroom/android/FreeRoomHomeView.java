@@ -146,8 +146,8 @@ import com.taig.pmc.PopupMenuCompat;
  * {@link #error} display an error message with only the possibility to close
  * the popup <br>
  * {@link #welcome}: says hello and welcome to the user the first time and
- * provide information about using the app. For the beta, it forces the user to
- * "register" with its email account.<br>
+ * provide information about using the app. And it says that their developper
+ * are the best ;)<br>
  * {@link #settings} allow the user to change the default settings, like colors
  * for color-blind people of default home screen behavior.<br>
  * 
@@ -489,6 +489,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			addActionToActionBar(actionFavoritesEdit);
 			addActionToActionBar(actionSettings);
 			addActionToActionBar(actionRefresh);
+			addActionToActionBar(actionAbout);
 		} else {
 			// on phones, put all the other actions in the action
 			// actionOverflow.
@@ -507,7 +508,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initErrorDialog();
 		initSettingsDialog();
 		initWhoIsWorkingDialog();
+		initWelcomeDialog();
 
+		if (mModel.getRegisteredUserNeedUpdate()) {
+			welcome.show();
+			mModel.setRegisteredUserAuto();
+		}
 	}
 
 	/* ACTIONS FOR THE ACTION BAR */
@@ -597,7 +603,23 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 	};
 
-	/* MENUS */
+	/**
+	 * ACTION/MENU: Action to open the about menu.
+	 * <p>
+	 */
+	private Action actionAbout = new Action() {
+		public void performAction(View view) {
+			welcome.show();
+		}
+
+		public int getDrawable() {
+			return R.drawable.ic_action_about;
+		}
+	};
+
+	/**
+	 * /* MENUS
+	 */
 
 	/**
 	 * ACTION/MENU: Overrides {@link Activity#onCreateOptionsMenu(Menu)} and
@@ -654,6 +676,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			return true;
 		case R.id.freeroom_action_settings:
 			settings.show();
+			return true;
+		case R.id.freeroom_action_about:
+			welcome.show();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -4698,11 +4723,64 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		settingsRefreshTimeFormatExample();
 	}
 
+	// WELCOME DIALOG FOR BETA
 	/**
-	 * {@link #welcome}: Stores (non-permanent!) if it's the first time the user
-	 * want to dismiss the welcome dialog without being registered.
+	 * {@link #welcome}: Dialog that holds the {@link #welcome} Dialog.
+	 * <p>
 	 */
-	private boolean welcomeFirstTimeWithOutRegistered = true;
+	private AlertDialog welcome;
+	/**
+	 * - * {@link #welcome}: View that holds the {@link #welcome} dialog
+	 * content, - * defined in xml in layout folder.
+	 * <p>
+	 */
+	private View welcomeView;
+
+	/**
+	 * {@link #welcome}: Inits the {@link #welcome} dialog.
+	 * <p>
+	 * TODO: beta-only
+	 */
+	private void initWelcomeDialog() {
+		// Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.freeroom_welcome_title));
+		builder.setIcon(R.drawable.ic_action_about);
+		builder.setNeutralButton(getString(R.string.freeroom_welcome_dismiss),
+				null);
+
+		// Get the AlertDialog from create()
+		welcome = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = welcome.getWindow().getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.FILL_PARENT;
+		lp.height = LayoutParams.WRAP_CONTENT;
+		welcome.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		welcome.getWindow()
+				.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		welcome.getWindow().setAttributes(lp);
+
+		welcomeView = commonLayoutInflater.inflate(
+				R.layout.freeroom_layout_dialog_welcome, null);
+
+		// these work perfectly
+		welcomeView.setMinimumWidth((int) (activityWidth * 0.9f));
+		welcomeView.setMinimumHeight((int) (homeActivityHeight * 0.8f));
+
+		welcome.setView(welcomeView);
+
+		welcome.setOnShowListener(new OnShowListener() {
+			@Override
+			public void onShow(DialogInterface dialog) {
+				// Tracker
+				Tracker.getInstance().trackPageView("freeroom/welcome");
+			}
+		});
+	}
 
 	// KONAMI CODE
 
@@ -4936,9 +5014,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		konami.setImageResource(R.drawable.konami);
 		error.setView(konami);
 
-		errorDialogShowMessage("KONAMI CODE IS CHEATING! NOW FIND THE WAY OUT!"
-				+ "\nIf you find or want other hidden functions, "
-				+ "please contact us at freeroom.epfl@gmail.com :p");
+		errorDialogShowMessage("KONAMI CODE IS CHEATING! \nNOW FIND THE WAY OUT YOU CHEATER!");
 
 		error.setOnDismissListener(new OnDismissListener() {
 			@Override
@@ -4972,6 +5048,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		if (query.equalsIgnoreCase(konamiCodeEnglish)
 				|| query.equalsIgnoreCase(konamiCodeFrench)) {
 			konamiCodeActivate();
+		}
+		if (query.matches("[Jj][Ww]") || query.matches("[Vv][Mm]")) {
+			errorDialogShowMessage("Julien Weber and Valentin Minder\n"
+					+ "are those who made freeroom accesible to anyone!\nThanks! :D");
 		}
 		if (query.matches("[Dd][Aa][Tt][Ee]")) {
 			mModel.setAdvancedTime(!mModel.getAdvancedTime());
@@ -5054,191 +5134,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			mModel.setGroupAccess();
 			errorDialogShowMessage("Change group access disabled");
 		}
-	}
-
-	// FOR BETA/DEV
-
-	/**
-	 * DEVTEST: Return a String representation of device / build / settings.
-	 * <p>
-	 * It's useful for debugging remote device (beta-testers) and understand
-	 * their reports.
-	 * 
-	 * @param forUser
-	 *            true if designed for user display, false if for server
-	 *            sending.
-	 * @return a String representation of device / build / settings.
-	 */
-	public String devTestGetConfig(boolean forUser) {
-		boolean moreDetails = false;
-
-		Locale locale = Locale.getDefault();
-		Locale english = Locale.ENGLISH;
-		// if the user locale is not english
-		// we print to him to information in his language.
-		boolean printUserLocale = true;
-		if (locale.equals(english) || locale.equals(Locale.UK)
-				|| locale.equals(Locale.US)) {
-			printUserLocale = false;
-		}
-		if (!forUser) {
-			printUserLocale = false;
-		}
-
-		StringBuilder config = new StringBuilder(500);
-		String s = "\n";
-		String l = "/";
-
-		// basic device information
-		config.append("*** Device information ***" + s);
-		config.append("Brand: " + Build.BRAND + s);
-		config.append("Model: " + Build.MODEL + s);
-		config.append("Android version: " + Build.VERSION.RELEASE);
-		config.append(" (SDK " + Build.VERSION.SDK + ")" + s);
-
-		config.append("Mesured screen size: " + homeActivityHeight + "x"
-				+ activityWidth + s);
-
-		config.append("*** Preferences ***" + s);
-
-		// locale name
-		if (forUser) {
-			config.append("Language: ");
-		} else {
-			config.append("Locale: ");
-			config.append("[" + locale.toString() + "]" + s);
-		}
-		config.append(locale.getDisplayName(english));
-		if (printUserLocale) {
-			config.append(" [" + locale.getDisplayName(locale) + "]");
-		}
-		config.append(s);
-
-		if (!forUser) {
-			// language
-			config.append("Language: ");
-			config.append(locale.getLanguage() + l);
-			config.append(locale.getISO3Language() + l);
-			config.append(locale.getDisplayLanguage(english));
-			if (printUserLocale) {
-				config.append("(" + locale.getDisplayLanguage(locale) + ")");
-			}
-
-			String var = locale.getVariant();
-			if (var != null && !var.equals("")) {
-				config.append(l + "Variant:" + locale.getVariant() + l);
-				config.append(locale.getDisplayVariant(english));
-				if (printUserLocale) {
-					config.append("(" + locale.getDisplayVariant(locale) + ")");
-				}
-			}
-			config.append(s);
-			// country
-			config.append("Country: ");
-			config.append(locale.getCountry() + l);
-			config.append(locale.getISO3Country() + l);
-			config.append(locale.getDisplayCountry(english));
-			if (printUserLocale) {
-				config.append("(" + locale.getDisplayCountry(locale) + ")");
-			}
-			config.append(s);
-		}
-
-		// time
-		long nowAsLong = mModel.getRegisteredTime();
-		Date nowAsDate = new Date(nowAsLong);
-		config.append("Local time/format: " + nowAsDate.toLocaleString() + s);
-
-		if (!forUser) {
-			config.append("*** TIME ***" + s);
-			config.append("Default time: " + nowAsDate.toString() + s);
-			config.append("GMT time: " + nowAsDate.toGMTString() + s);
-
-			// test android formatting
-			config.append("Time/milliseconds: " + nowAsLong + s);
-			config.append("Is 24h format: " + DateFormat.is24HourFormat(this)
-					+ s);
-			java.text.DateFormat df = android.text.format.DateFormat
-					.getTimeFormat(this);
-			String time = df.format(nowAsDate);
-			java.text.DateFormat dd = android.text.format.DateFormat
-					.getDateFormat(this);
-			String date = dd.format(nowAsDate);
-			config.append("Android formatting: " + date + " // " + time + s);
-			char[] mmddyyyy = DateFormat.getDateFormatOrder(this);
-			config.append("DD/MM/YYYY format: " + Arrays.toString(mmddyyyy) + s);
-
-			// test our own times methods
-			config.append("times.formatTime(false): "
-					+ times.formatTime(nowAsLong, false) + s);
-			config.append("times.formatTime(true): "
-					+ times.formatTime(nowAsLong, true) + s);
-
-			// one week shift
-			nowAsLong += FRTimes.ONE_WEEK_IN_MS;
-			Calendar selected = Calendar.getInstance();
-			FRPeriod period = new FRPeriod(nowAsLong, nowAsLong + 2
-					* FRTimes.ONE_HOUR_IN_MS);
-			selected.setTimeInMillis(nowAsLong);
-			config.append("times.formatFullDate(): "
-					+ times.formatFullDate(selected) + s);
-			config.append("times.formatFullDateFullTimePeriod: "
-					+ times.formatFullDateFullTimePeriod(period) + s);
-		}
-
-		if (!forUser && moreDetails) {
-			config.append("*** Other settings ***" + s);
-
-			config.append("ANDROID_ID: "
-					+ Secure.getString(getContentResolver(), Secure.ANDROID_ID)
-					+ s);
-			config.append("Proxy: "
-					+ Secure.getString(getContentResolver(), Secure.HTTP_PROXY)
-					+ s);
-			config.append("Input method: "
-					+ Secure.getString(getContentResolver(),
-							Secure.DEFAULT_INPUT_METHOD) + s);
-			config.append("Wifi ON: "
-					+ Secure.getString(getContentResolver(), Secure.WIFI_ON)
-					+ s);
-			config.append("Network pref: "
-					+ Secure.getString(getContentResolver(),
-							Secure.NETWORK_PREFERENCE) + s);
-			config.append("Non market apps: "
-					+ Secure.getString(getContentResolver(),
-							Secure.INSTALL_NON_MARKET_APPS) + s);
-			config.append("ADB enabled: "
-					+ Secure.getString(getContentResolver(), Secure.ADB_ENABLED)
-					+ s);
-		}
-		if (!forUser && moreDetails) {
-
-			// hardware informations
-			config.append("*** Other hardware informations ***" + s);
-			config.append("Version.Codename: " + Build.VERSION.CODENAME + s);
-			config.append("Version.Incremental: " + Build.VERSION.INCREMENTAL
-					+ s);
-			config.append("Version.SDK_int: " + Build.VERSION.SDK_INT + s);
-			config.append("Board: " + Build.BOARD + s);
-			config.append("Bootloader: " + Build.BOOTLOADER + s);
-			config.append("CPU1: " + Build.CPU_ABI + s);
-			config.append("CPU2: " + Build.CPU_ABI2 + s);
-			config.append("Device:" + Build.DEVICE + s);
-			config.append("Display: " + Build.DISPLAY + s);
-			config.append("Fingerprint: " + Build.FINGERPRINT + s);
-			config.append("Hardware: " + Build.HARDWARE + s);
-			config.append("Host: " + Build.HOST + s);
-			config.append("ID: " + Build.ID + s);
-			config.append("Manufacturer: " + Build.MANUFACTURER + s);
-			config.append("Product: " + Build.PRODUCT + s);
-			config.append("Radio: " + Build.RADIO + s);
-			config.append("Tags: " + Build.TAGS + s);
-			config.append("Time of build: " + Build.TIME + s);
-			config.append("Type: " + Build.TYPE + s);
-			config.append("User: " + Build.USER + s);
-		}
-
-		return config.toString();
 	}
 
 	// SERVICE
