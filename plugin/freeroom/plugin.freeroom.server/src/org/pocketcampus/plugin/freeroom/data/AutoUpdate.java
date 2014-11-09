@@ -13,7 +13,7 @@ import java.util.Calendar;
  */
 public class AutoUpdate {
 	private int dayOfMonth;
-
+	
 	public AutoUpdate() {
 		Calendar mCalendar = Calendar.getInstance();
 		dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
@@ -27,7 +27,7 @@ public class AutoUpdate {
 	public boolean checkUpdate() {
 		Calendar mCalendar = Calendar.getInstance();
 		int today = mCalendar.get(Calendar.DAY_OF_MONTH);
-
+		
 		if (today != dayOfMonth) {
 			// launch update
 			return true;

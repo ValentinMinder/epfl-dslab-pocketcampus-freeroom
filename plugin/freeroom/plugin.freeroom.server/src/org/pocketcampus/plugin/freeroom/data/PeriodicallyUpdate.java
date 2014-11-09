@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.freeroom.data;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.logging.Level;
 
@@ -36,6 +37,9 @@ public class PeriodicallyUpdate implements Runnable {
 		this.updater = updater;
 	}
 
+	/**
+	 * Assume connUpdate's autocommit is set to false.
+	 */
 	public PeriodicallyUpdate(FreeRoomServiceImpl freeRoomServiceImpl,
 			AutoUpdate updater, Connection connUpdate) {
 		this.server = freeRoomServiceImpl;
@@ -65,8 +69,15 @@ public class PeriodicallyUpdate implements Runnable {
 		server.log(Level.INFO, "Starting update of data from Exchange EWA");
 		ExchangeServiceImpl exchange = new ExchangeServiceImpl(server, conn);
 		exchange.updateEWAOccupancyFromTo(start, end);
-		server.log(Level.INFO, "Finished updating data for FreeRoom");
-		updater.updated();
+		try {
+			this.conn.commit();
+			server.log(Level.INFO, "Finished updating data for FreeRoom");
+			updater.updated();
+		} catch (SQLException e) {
+			server.log(Level.SEVERE, "Cannot commit update change");
+			e.printStackTrace();
+		}
+
 	}
 
 }

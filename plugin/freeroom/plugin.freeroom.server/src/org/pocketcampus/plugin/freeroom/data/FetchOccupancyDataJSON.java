@@ -65,7 +65,7 @@ public class FetchOccupancyDataJSON {
 			DB_URL = db_url;
 			DB_USER = username;
 			DB_PASSWORD = passwd;
-			URL_DATA = server.getOCCUPANCIES_URL();
+			this.URL_DATA = server.getOCCUPANCIES_URL();
 			this.server = server;
 			this.connDB = null;
 		} catch (ServerException e) {
@@ -77,6 +77,7 @@ public class FetchOccupancyDataJSON {
 	public FetchOccupancyDataJSON(FreeRoomServiceImpl server, Connection conn) {
 		this.server = server;
 		this.connDB = conn;
+		this.URL_DATA = server.getOCCUPANCIES_URL();
 	}
 
 	/**
@@ -369,7 +370,7 @@ public class FetchOccupancyDataJSON {
 		try {
 			request = new HttpGet(URL);
 			request.addHeader("Accept", "application/json");
-
+			System.out.println(URL);
 			HttpResponse response = client.execute(request);
 
 			if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_OK) {

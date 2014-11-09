@@ -125,7 +125,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		OCCUPANCIES_URL = PC_SRV_CONFIG.getString("FR_OCCUPANCIES");
 		ROOMS_LIST_URL = PC_SRV_CONFIG.getString("FR_ROOMS_LIST");
 		ROOM_DETAILS_URL = PC_SRV_CONFIG.getString("FR_ROOM_DETAILS");
-
+		System.out.println(OCCUPANCIES_URL);
 		try {
 			connMgr = new ConnectionManager(DB_URL, DB_USER, DB_PASSWORD);
 		} catch (ServerException e) {
@@ -853,6 +853,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			Connection connUpdate;
 			try {
 				connUpdate = connMgr.getConnection();
+				connUpdate.setAutoCommit(false);
 				new Thread(new PeriodicallyUpdate(this, updater, connUpdate)).start();
 			} catch (SQLException e) {
 				log(Level.WARNING, "Cannot create connection to the database for updating");
