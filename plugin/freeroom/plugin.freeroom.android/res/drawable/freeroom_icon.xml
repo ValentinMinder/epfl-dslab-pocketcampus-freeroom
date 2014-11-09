@@ -4,7 +4,7 @@
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<item
-		android:drawable="@drawable/freeroom_beta_icon" />
+		android:drawable="@drawable/freeroom_normal_icon" />
 
 	<item
 		android:drawable="@drawable/freeroom_selected_icon"
