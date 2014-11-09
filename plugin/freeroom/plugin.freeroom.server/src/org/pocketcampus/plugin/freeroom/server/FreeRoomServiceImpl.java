@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +22,8 @@ import java.util.logging.SimpleFormatter;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
-import org.pocketcampus.plugin.freeroom.data.RebuildDB;
+import org.pocketcampus.plugin.freeroom.data.AutoUpdate;
+import org.pocketcampus.plugin.freeroom.data.PeriodicallyUpdate;
 import org.pocketcampus.plugin.freeroom.server.utils.CheckRequests;
 import org.pocketcampus.plugin.freeroom.server.utils.OccupancySorted;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
@@ -84,6 +84,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private String ROOMS_LIST_URL;
 	private String ROOM_DETAILS_URL;
 
+	private AutoUpdate updater;
 	// be careful when changing this, it might lead to invalid data already
 	// stored !
 	// this is what is used to differentiate a room from a student occupation in
@@ -132,6 +133,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"Server cannot connect to the database");
 			e.printStackTrace();
 		}
+		
+		updater = new AutoUpdate();
+		
 		// USEME: Periodically update
 		// new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
 		// this)).start();
@@ -844,6 +848,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
 		}
 
+		//check for updates
+		if (updater.checkUpdate()) {
+			new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
+					this, updater)).start();
+		}
+		
 		// round the given period to full hours to have a nice display on UI.
 		FRPeriod period = request.getPeriod();
 		period = FRTimes.roundFRRequestTimestamp(period);

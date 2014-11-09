@@ -23,13 +23,15 @@ public class PeriodicallyUpdate implements Runnable {
 	private String DB_USER;
 	private String DB_PASSWORD;
 	private FreeRoomServiceImpl server;
+	private AutoUpdate updater;
 
 	public PeriodicallyUpdate(String db_url, String username, String passwd,
-			FreeRoomServiceImpl server) {
+			FreeRoomServiceImpl server, AutoUpdate updater) {
 		DB_URL = db_url;
 		DB_USER = username;
 		DB_PASSWORD = passwd;
 		this.server = server;
+		this.updater = updater;
 	}
 
 	@Override
@@ -52,11 +54,12 @@ public class PeriodicallyUpdate implements Runnable {
 				* FRTimes.ONE_WEEK_IN_MS;
 		fodj.fetchAndInsert(start, end);
 
-		server.log(Level.INFO, "Starting update of data from Exchange");
+		server.log(Level.INFO, "Starting update of data from Exchange EWA");
 		ExchangeServiceImpl exchange = new ExchangeServiceImpl(DB_URL, DB_USER,
 				DB_PASSWORD, server);
 		exchange.updateEWAOccupancyFromTo(start, end);
 		server.log(Level.INFO, "Finished updating data for FreeRoom");
+		updater.updated();
 	}
 
 }
