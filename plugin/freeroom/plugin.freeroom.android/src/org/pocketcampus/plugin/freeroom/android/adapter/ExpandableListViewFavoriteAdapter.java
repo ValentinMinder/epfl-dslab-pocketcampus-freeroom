@@ -187,12 +187,10 @@ public class ExpandableListViewFavoriteAdapter<T> extends
 				text = room.getBuilding_name();
 			} else {
 				String code = room.getDoorCode();
-				label: while (code.length() >= 0) {
-					if ((code.charAt(0) + "").matches("[A-Za-z]")) {
-						text += code.charAt(0);
-					} else {
-						break label;
-					}
+				text = "";
+				while (code.length() > 0 && (code.charAt(0) + "").matches("[A-Za-z]")) {
+					text += code.charAt(0);
+					code = code.substring(1);
 				}
 			}
 		}
