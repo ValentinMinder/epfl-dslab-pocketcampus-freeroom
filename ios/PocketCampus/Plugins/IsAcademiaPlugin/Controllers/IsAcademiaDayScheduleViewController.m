@@ -201,7 +201,7 @@
         [view dismiss];
         welf.datePickerView = nil;
     }];
-    [pcDatePicker presentInView:self.view];
+    [pcDatePicker presentFromBarButtonItem:[self.toolbarItems lastObject]];
     self.datePickerView = pcDatePicker;
     [self trackAction:@"GoToDate"];
 }

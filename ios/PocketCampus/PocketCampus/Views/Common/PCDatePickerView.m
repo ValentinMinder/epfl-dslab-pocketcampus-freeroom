@@ -38,6 +38,8 @@
 
 @property (nonatomic, strong) UIPopoverController* popoverController;
 
+@property (nonatomic, strong) UIView* dimmingView;
+
 @end
 
 @implementation PCDatePickerView
@@ -118,6 +120,7 @@
     textField.inputView = self;
     [textField becomeFirstResponder];
     self.textFieldForInputView = textField;
+    [self setDimmingViewHidden:NO inView:view animated:YES];
 }
 
 - (void)presentFromBarButtonItem:(UIBarButtonItem*)barButtonItem {
@@ -146,9 +149,37 @@
         [self.textFieldForInputView resignFirstResponder];
         [self.textFieldForInputView removeFromSuperview];
         self.textFieldForInputView = nil;
+        [self setDimmingViewHidden:YES inView:nil animated:YES];
     } else if (self.popoverController) {
         [self.popoverController dismissPopoverAnimated:YES];
         self.popoverController = nil;
+    }
+}
+
+- (void)setDimmingViewHidden:(BOOL)hidden inView:(UIView*)view animated:(BOOL)animated {
+    if (hidden) {
+        [UIView animateWithDuration:animated ? 0.25 : 0.0 animations:^{
+            self.dimmingView.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            [self.dimmingView removeFromSuperview];
+            self.dimmingView = nil;
+        }];
+    } else {
+        if (!self.dimmingView) {
+            self.dimmingView = [[UIView alloc] init];
+            self.dimmingView.userInteractionEnabled = YES; //so that it prevents touches below
+            self.dimmingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            self.dimmingView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.35];
+            self.dimmingView.alpha = 0.0;
+            [self.dimmingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelTapped)]];
+        }
+        [view addSubview:self.dimmingView];
+        self.dimmingView.frame = view.bounds;
+        [UIView animateWithDuration:animated ? 0.25 : 0.0 animations:^{
+            self.dimmingView.alpha = 1.0;
+        } completion:^(BOOL finished) {
+            //nothing
+        }];
     }
 }
 
@@ -156,6 +187,13 @@
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
     self.popoverController = nil;
+}
+
+#pragma mark - Dealloc
+
+- (void)dealloc
+{
+    [self.dimmingView removeFromSuperview];
 }
 
 @end
