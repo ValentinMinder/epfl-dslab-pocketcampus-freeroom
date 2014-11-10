@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.apache.thrift.TProcessor;
 import org.pocketcampus.platform.server.RawPlugin;
 import org.pocketcampus.platform.server.StateChecker;
 import org.pocketcampus.platform.shared.PCConfig;
+import org.pocketcampus.platform.shared.PCConstants;
 
 public class PocketCampusServer extends ServerBase {
 	public static final PCConfig CONFIG = new PCConfig();
@@ -34,6 +36,36 @@ public class PocketCampusServer extends ServerBase {
 	/** Gets the request headers of the current request. */
 	public static Map<String, String> getRequestHeaders() {
 		return TrackingThriftServlet.receivedRequestHeaders.get();
+	}
+	
+	
+	/**
+	 * @return the ISO language code of the user who generated the request if it is part of the
+	 * PocketCampus supported languages, or the PocketCampus default language code if not.
+	 */
+	public static String getUserLanguageCode() {
+		return getUserLanguageCode(PCConstants.PC_ACCEPTED_LANGUAGES, PCConstants.PC_DEFAULT_LANGUAGE);
+	}
+	
+	private static String getUserLanguageCode(HashSet<String> acceptedCodes, String defaultCode) {
+		if (acceptedCodes == null) {
+			throw new IllegalArgumentException("acceptedCodes cannot be null");
+		}
+		if (defaultCode == null) {
+			throw new IllegalArgumentException("defaultCode cannot be null");
+		}
+		Map<String, String> headers = getRequestHeaders();
+		if (headers == null) {
+			return defaultCode;
+		}
+		String langCode = headers.get(PCConstants.HTTP_HEADER_USER_LANG_CODE);
+		if (langCode == null) {
+			return defaultCode;
+		}
+		if (acceptedCodes.contains(langCode)) {
+			return langCode;
+		}
+		return defaultCode;
 	}
 
 	/** Gets the available services. */

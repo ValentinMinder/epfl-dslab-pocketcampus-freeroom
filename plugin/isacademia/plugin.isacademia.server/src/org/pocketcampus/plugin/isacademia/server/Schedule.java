@@ -7,8 +7,8 @@ import org.joda.time.*;
 /**
  * Retrieves a student's schedule.
  * 
- * @author Solal Pirelli <solal.pirelli@epfl.ch>
+ * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public interface Schedule {
-	ScheduleResponse get(LocalDate weekBeginning, String language, String sciper) throws Exception;
+	ScheduleResponse get(LocalDate weekBeginning, String language, String sciper);
 }
