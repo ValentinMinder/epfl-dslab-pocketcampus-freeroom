@@ -90,6 +90,8 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
 @property (nonatomic) NSInteger selectedMealTime; //of enum type MealTime
 @property (nonatomic) NSDate* selectedMealDate;
 
+@property (nonatomic, readonly) NSInteger lastSelectedSegmentIndex; //used to save state of selected segment index when leaving plugin
+
 @property (nonatomic, weak) FoodRestaurantViewController* restaurantViewController;
 
 @property (nonatomic, weak) FoodMealsByRestaurantViewController* mealsByRestaurantViewController;
@@ -138,6 +140,12 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     UIBarButtonItem* flexibleSpaceLeft = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem* flexibleSpaceRight = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     self.toolbarItems = @[flexibleSpaceLeft, segmentedControlBarItem, flexibleSpaceRight];
+    
+    NSInteger lastSelectedSegmentedIndex = self.lastSelectedSegmentIndex;
+    if (lastSelectedSegmentedIndex != kRestaurantsSegmentIndex && lastSelectedSegmentedIndex != kMealTypesSegmentIndex) {
+        lastSelectedSegmentedIndex = 0; //in case segmented control has changed since last save
+    }
+    self.segmentedControl.selectedSegmentIndex = lastSelectedSegmentedIndex;
     
     [self.mealTypesCollectionView registerNib:[UINib nibWithNibName:NSStringFromClass([FoodMealTypeCell class]) bundle:nil] forCellWithReuseIdentifier:kMealTypeCellReuseIdentifier];
     UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)(self.mealTypesCollectionView.collectionViewLayout);
@@ -322,6 +330,7 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
             break;
     }
     [self refreshIfNeeded];
+    [self saveLastSelectedSegmentIndex];
 }
 
 #pragma mark - Private
@@ -360,6 +369,16 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
         }];
     }
     [pickerView presentFromBarButtonItem:self.navigationItem.rightBarButtonItem];
+}
+
+static NSString* const kLastSelectedSegmentedIndexKey = @"FoodMainViewControllerLastSelectedSegmentedIndex";
+
+- (void)saveLastSelectedSegmentIndex {
+    [[PCPersistenceManager userDefaultsForPluginName:@"food"] setInteger:self.segmentedControl.selectedSegmentIndex forKey:kLastSelectedSegmentedIndexKey];
+}
+
+- (NSInteger)lastSelectedSegmentIndex {
+    return [[PCPersistenceManager userDefaultsForPluginName:@"food"] integerForKey:kLastSelectedSegmentedIndexKey];
 }
 
 #pragma mark - KVO
