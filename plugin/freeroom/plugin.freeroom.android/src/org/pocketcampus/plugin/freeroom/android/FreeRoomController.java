@@ -2,7 +2,6 @@ package org.pocketcampus.plugin.freeroom.android;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
-import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
@@ -22,6 +21,7 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 import org.pocketcampus.plugin.freeroom.shared.RegisterUser;
 
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -145,21 +145,33 @@ public class FreeRoomController extends PluginController implements
 	public void autoCompleteBuilding(IFreeRoomView view,
 			FRAutoCompleteRequest request) {
 		mModel.autoCompleteLaunch();
-		new AutoCompleteRequestASyncTask(view).start(this, mClient, request);
+		autoCompleteBuildingForScheduledCall(view, request);
 	}
 
+	private AutoCompleteRequestASyncTask asyncReq = null;
+	private FRAutoCompleteRequest autoComplRequest = null;
 	/**
-	 * For scheduled call (auto-launch)
+	 * For scheduled call (auto-launch).
+	 * 
+	 * Inspirated by https://github.com/dslab-epfl/pocketcampus/blob/master/plugin/directory/plugin.directory.android/src/org/pocketcampus/plugin/directory/android/DirectoryController.java#L85
 	 * 
 	 * @param view
 	 * @param request
 	 */
-	public void autoCompleteBuildingForScheduledCall(IFreeRoomView view,
+	synchronized public void autoCompleteBuildingForScheduledCall(IFreeRoomView view,
 			FRAutoCompleteRequest request) {
 		// this is called from a timer thread.
 		// Therefore, we cannot update the view and the textbox while updating.
 		// mModel.autoCompleteLaunch();
-		new AutoCompleteRequestASyncTask(view).start(this, mClient, request);
+		if(autoComplRequest != null && autoComplRequest.getConstraint().equals(request.getConstraint()))
+			return;
+		if(asyncReq != null && !asyncReq.getStatus().equals(AsyncTask.Status.FINISHED)){
+			if(!asyncReq.cancel(true))
+				return;
+		}
+		autoComplRequest = request;
+		asyncReq = new AutoCompleteRequestASyncTask(view);
+		asyncReq.start(this, mClient, request);
 	}
 
 	public void setAutoCompleteResults(FRAutoCompleteReply result) {
