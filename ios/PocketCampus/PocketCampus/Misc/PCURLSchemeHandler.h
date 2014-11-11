@@ -29,6 +29,8 @@
 
 @import Foundation;
 
+extern NSString* const kPocketCampusURLNoPluginSpecified;
+
 @class MainController;
 
 @interface PCURLSchemeHandler : NSObject
@@ -43,7 +45,9 @@
 - (BOOL)isValidPocketCampusURL:(NSURL*)url;
 
 /**
- * @return plugin lower identifier for URL if valid, nil otherwise
+ * @return plugin lower identifier for URL if valid,
+ * kPocketCampusURLNoPluginSpecified if the URL has a valid PocketCampus scheme but no host,
+ * nil otherwise
  */
 - (NSString*)pluginIdentifierForPocketCampusURL:(NSURL*)url;
 

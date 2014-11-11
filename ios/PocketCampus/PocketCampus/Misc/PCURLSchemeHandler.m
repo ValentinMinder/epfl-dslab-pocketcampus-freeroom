@@ -25,14 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 03.03.13.
-
-
 
 #import "PCURLSchemeHandler.h"
 
@@ -41,6 +34,8 @@
 #import "MainController.h"
 
 #import "PluginController.h"
+
+NSString* const kPocketCampusURLNoPluginSpecified = @"no_plugin";
 
 @interface PCURLSchemeHandler ()
 
@@ -105,7 +100,7 @@
     
     NSString* pluginLowerIdentifier = [self pluginLowerIdentifierIfValidURL:url];
     
-    if (!pluginLowerIdentifier) {
+    if (!pluginLowerIdentifier || [pluginLowerIdentifier isEqualToString:kPocketCampusURLNoPluginSpecified]) {
         return nil;
     }
     
@@ -134,6 +129,10 @@
     
     if (![url.scheme isEqualToString:@"pocketcampus"]) {
         return nil;
+    }
+    
+    if (!url.host) {
+        return kPocketCampusURLNoPluginSpecified;
     }
     
     NSError* error = nil;
