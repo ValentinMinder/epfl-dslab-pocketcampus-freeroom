@@ -35,6 +35,7 @@ public abstract class FreeRoomAbstractView extends PluginView implements
 
 	@Override
 	public void networkErrorHappened() {
+		anyError();
 		Toast.makeText(
 				getApplicationContext(),
 				getResources().getString(
@@ -45,11 +46,19 @@ public abstract class FreeRoomAbstractView extends PluginView implements
 	/**
 	 * TODO: may not appear in final version ! >> basic error.
 	 */
+	private boolean debug = false;
+
 	@Override
 	public void freeRoomServerBadRequest() {
-		Toast.makeText(getApplicationContext(),
-				getResources().getString(R.string.freeroom_error_bad_request),
-				Toast.LENGTH_SHORT).show();
+		if (debug) {
+			Toast.makeText(
+					getApplicationContext(),
+					getResources().getString(
+							R.string.freeroom_error_bad_request),
+					Toast.LENGTH_SHORT).show();
+		} else {
+			anyError();
+		}
 	}
 
 	/**
@@ -57,11 +66,15 @@ public abstract class FreeRoomAbstractView extends PluginView implements
 	 */
 	@Override
 	public void freeRoomServersInternalError() {
-		Toast.makeText(
-				getApplicationContext(),
-				getResources()
-						.getString(R.string.freeroom_error_internal_error),
-				Toast.LENGTH_SHORT).show();
+		if (debug) {
+			Toast.makeText(
+					getApplicationContext(),
+					getResources().getString(
+							R.string.freeroom_error_internal_error),
+					Toast.LENGTH_SHORT).show();
+		} else {
+			anyError();
+		}
 	}
 
 	/**
@@ -69,9 +82,14 @@ public abstract class FreeRoomAbstractView extends PluginView implements
 	 */
 	@Override
 	public void freeRoomServersUnknownError() {
-		Toast.makeText(
-				getApplicationContext(),
-				getResources().getString(R.string.freeroom_error_unknown_error),
-				Toast.LENGTH_SHORT).show();
+		if (debug) {
+			Toast.makeText(
+					getApplicationContext(),
+					getResources().getString(
+							R.string.freeroom_error_unknown_error),
+					Toast.LENGTH_SHORT).show();
+		} else {
+			anyError();
+		}
 	}
 }

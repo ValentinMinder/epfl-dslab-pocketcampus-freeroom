@@ -404,6 +404,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	/**
 	 * Overrides {@link FreeRoomAbstractView#anyError()} and please see this for
 	 * javadoc.
+	 * 
+	 * To be called to show a generic error message.
 	 */
 	@Override
 	public void anyError() {
