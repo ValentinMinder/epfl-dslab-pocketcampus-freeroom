@@ -2,7 +2,6 @@ package org.pocketcampus.plugin.freeroom.server;
 
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.sql.Connection;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,16 +67,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	int defaultCapacity = 40;
 
 	private ConnectionManager connMgr;
-	private Logger logger = Logger.getLogger(FreeRoomServiceImpl.class
-			.getName());
+	private ConnectionManager connMgrUpdate;
+
 	private SimpleDateFormat dateLogFormat = new SimpleDateFormat(
 			"MMM dd,yyyy HH:mm");
-	private final String LOG_FOLDER = "log";
-	private final String PATH_LOG_PATTERN = "./" + LOG_FOLDER
-			+ "/freeroom%g.log";
-	// total size of log can be MAX_BYTES_PER_LOGFILE * MAX_LOGFILES
-	private final int MAX_BYTES_PER_LOGFILE = 4 * 1000 * 1000;
-	private final int MAX_LOGFILES = 200;
+	private Logger logger = Logger.getLogger(FreeRoomServiceImpl.class
+			.getName());
 	private String DB_URL;
 	private String DB_USER;
 	private String DB_PASSWORD;
@@ -85,6 +81,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private String ROOM_DETAILS_URL;
 
 	private AutoUpdate updater;
+
 	// be careful when changing this, it might lead to invalid data already
 	// stored !
 	// this is what is used to differentiate a room from a student occupation in
@@ -100,24 +97,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ... V2");
-		createLogFolder();
+
 		logger.setLevel(Level.WARNING);
-		FileHandler logHandler = null;
-		try {
-			logHandler = new FileHandler(PATH_LOG_PATTERN,
-					MAX_BYTES_PER_LOGFILE, MAX_LOGFILES, true);
-			SimpleFormatter logFormatter = new SimpleFormatter();
-			logHandler.setFormatter(logFormatter);
-		} catch (SecurityException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-		if (logHandler != null) {
-			logger.addHandler(logHandler);
-
-		}
+		ConsoleHandler logHandler = new ConsoleHandler();
+		logger.addHandler(logHandler);
 
 		DB_URL = PC_SRV_CONFIG.getString("DB_URL") + "?allowMultiQueries=true";
 		DB_USER = PC_SRV_CONFIG.getString("DB_USERNAME");
@@ -128,14 +111,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		System.out.println(OCCUPANCIES_URL);
 		try {
 			connMgr = new ConnectionManager(DB_URL, DB_USER, DB_PASSWORD);
+			connMgrUpdate = new ConnectionManager(DB_URL, DB_USER, DB_PASSWORD);
 		} catch (ServerException e) {
 			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"Server cannot connect to the database");
 			e.printStackTrace();
 		}
-		
+
 		updater = new AutoUpdate();
-		
+
 		// USEME: Periodically update
 		// new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
 		// this)).start();
@@ -170,13 +154,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public FreeRoomServiceImpl(ConnectionManager conn) {
 		System.out.println("Starting TEST FreeRoom plugin server ...");
 		connMgr = conn;
-	}
-
-	private void createLogFolder() {
-		File folder = new File("./" + LOG_FOLDER);
-		if (!folder.exists()) {
-			folder.mkdir();
-		}
 	}
 
 	public void log(Level level, String message) {
@@ -848,19 +825,21 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
 		}
 
-		//check for updates
+		// check for updates
 		if (updater.checkUpdate()) {
 			Connection connUpdate;
 			try {
-				connUpdate = connMgr.getConnection();
+				connUpdate = connMgrUpdate.getConnection();
 				connUpdate.setAutoCommit(false);
-				new Thread(new PeriodicallyUpdate(this, updater, connUpdate)).start();
+				new Thread(new PeriodicallyUpdate(this, updater, connUpdate))
+						.start();
 			} catch (SQLException e) {
-				log(Level.WARNING, "Cannot create connection to the database for updating");
+				log(Level.WARNING,
+						"Cannot create connection to the database for updating");
 				e.printStackTrace();
 			}
 		}
-		
+
 		// round the given period to full hours to have a nice display on UI.
 		FRPeriod period = request.getPeriod();
 		period = FRTimes.roundFRRequestTimestamp(period);
@@ -1157,7 +1136,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					roomsListQueryFormat += "?,";
 				}
 
-				//but we first need to get the additional info for each room
+				// but we first need to get the additional info for each room
 				roomsListQueryFormat += "?";
 				String infoRequest = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.type"
 						+ language.toUpperCase()
@@ -1602,7 +1581,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			} else {
 				conn = connDB;
 			}
-			
+
 			String cleanRequest = "DELETE FROM `fr-occupancy` WHERE 1";
 
 			PreparedStatement query = conn.prepareStatement(cleanRequest);
