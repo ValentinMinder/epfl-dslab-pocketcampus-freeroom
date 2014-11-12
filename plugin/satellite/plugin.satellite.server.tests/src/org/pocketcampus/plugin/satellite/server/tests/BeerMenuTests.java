@@ -60,12 +60,7 @@ public final class BeerMenuTests {
 	}
 
 	private static Map<SatelliteBeerContainer, SatelliteMenuPart> getBeers() {
-		try {
-			return new BeerMenuImpl(new TestHttpClient()).get().getBeerList();
-		} catch (Exception e) {
-			fail("An exception occurred.");
-			return null;
-		}
+		return new BeerMenuImpl(new TestHttpClient()).get().getBeerList();
 	}
 
 	private static final class TestHttpClient implements HttpClient {
