@@ -396,6 +396,9 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 	}
 
 	private String transcribeDate(String date) {
+		if(date == null) {
+			return null;
+		}
 		SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		SimpleDateFormat out = new SimpleDateFormat("dd.MM.yy HH'h'mm");
 		try {
