@@ -12,4 +12,9 @@ public final class AuthenticatorImpl implements Authenticator {
 	public String getSciper() {
 		return AuthenticationServiceImpl.authGetUserSciper();
 	}
+	
+	@Override
+	public String getGaspar(){
+		return AuthenticationServiceImpl.authGetUserGaspar();
+	}
 }

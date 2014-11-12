@@ -7,4 +7,5 @@ package org.pocketcampus.platform.server;
  */
 public interface Authenticator {
 	String getSciper();
+	String getGaspar();
 }
