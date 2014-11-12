@@ -29,6 +29,7 @@
 
 #import "PCEditableTableViewCell.h"
 
+#warning this should not be static
 static NSInteger credentialsSectionIndex = 0;
 static NSInteger loginOutButtonSectionIndex = 1;
 static NSInteger savePasswordSwitchSectionIndex = -1;
