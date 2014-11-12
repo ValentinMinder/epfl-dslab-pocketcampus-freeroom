@@ -1,4 +1,5 @@
-﻿using PocketCampus.Common.Services.Design;
+﻿#if DEBUG
+using PocketCampus.Common.Services.Design;
 using PocketCampus.Map.Services.Design;
 using ThinMvvm.Design;
 
@@ -6,7 +7,6 @@ namespace PocketCampus.Map.ViewModels.Design
 {
     public sealed class Design
     {
-#if DEBUG
         public MainViewModel Main { get; private set; }
         public SettingsViewModel Settings { get; private set; }
 
@@ -18,6 +18,11 @@ namespace PocketCampus.Map.ViewModels.Design
             Main.OnNavigatedTo();
             Settings.OnNavigatedTo();
         }
-#endif
     }
 }
+#else
+namespace PocketCampus.Map.ViewModels.Design
+{
+    public sealed class Design { }
+}
+#endif
