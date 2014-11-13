@@ -255,9 +255,12 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 
 		LinkedList<Transaction> decodedTrx = new LinkedList<Transaction>();
 		if (tTransactions.LastTransactionsList.LastTransactions != null)
-			for (TransactionsJson.TransactionsListJson.TransactionJson t : tTransactions.LastTransactionsList.LastTransactions)
-				// HACK since TransactionType isn't returned any more
-				decodedTrx.add(new Transaction(transcribeDate(t.TransactionDate), "" /*t.TransactionType*/, t.ElementDescription, t.TransactionAmount));
+			for (TransactionsJson.TransactionsListJson.TransactionJson t : tTransactions.LastTransactionsList.LastTransactions) {
+				if(t.TransactionDate == null || t.TransactionType == null || t.ElementDescription == null) {
+					continue;
+				}
+				decodedTrx.add(new Transaction(transcribeDate(t.TransactionDate), t.TransactionType, t.ElementDescription, t.TransactionAmount));
+			}
 
 		BalanceAndTransactions bt = new BalanceAndTransactions(200);
 		bt.setIBalance(tBalance.PersonalAccountBalance);
@@ -396,9 +399,6 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 	}
 
 	private String transcribeDate(String date) {
-		if(date == null) {
-			return null;
-		}
 		SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		SimpleDateFormat out = new SimpleDateFormat("dd.MM.yy HH'h'mm");
 		try {
