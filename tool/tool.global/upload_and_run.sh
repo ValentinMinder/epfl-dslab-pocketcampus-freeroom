@@ -19,10 +19,10 @@ then
 	server="https://test-pocketcampus.epfl.ch/deploy/kissrv120/"
 elif [ "$1" == "prod1" ]
 then
-	server="https://prod-pocketcampus.epfl.ch/deploy/kissrv118/"
+	server="https://pocketcampus.epfl.ch/deploy/kissrv118/"
 elif [ "$1" == "prod2" ]
 then
-	server="https://prod-pocketcampus.epfl.ch/deploy/kissrv119/"
+	server="https://pocketcampus.epfl.ch/deploy/kissrv119/"
 else
 	server=$1
 fi
