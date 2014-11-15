@@ -27,6 +27,7 @@ public class AutoUpdate {
 	public boolean checkUpdate() {
 		Calendar mCalendar = Calendar.getInstance();
 		int today = mCalendar.get(Calendar.DAY_OF_MONTH);
+		this.dayOfMonth = today;
 		
 		if (today != dayOfMonth) {
 			// launch update
@@ -35,11 +36,4 @@ public class AutoUpdate {
 		return false;
 	}
 
-	/**
-	 * Indicate an update has been performed
-	 */
-	public void updated() {
-		Calendar mCalendar = Calendar.getInstance();
-		this.dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
-	}
 }

@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -67,6 +68,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	int defaultCapacity = 40;
 
 	private ConnectionManager connMgr;
+	/**
+	 * Connection used for updates only.
+	 */
 	private ConnectionManager connMgrUpdate;
 
 	private SimpleDateFormat dateLogFormat = new SimpleDateFormat(
@@ -98,7 +102,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ... V2");
 
-		logger.setLevel(Level.WARNING);
+		logger.setLevel(Level.INFO);
 		ConsoleHandler logHandler = new ConsoleHandler();
 		logger.addHandler(logHandler);
 
@@ -112,9 +116,17 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		try {
 			connMgr = new ConnectionManager(DB_URL, DB_USER, DB_PASSWORD);
 			connMgrUpdate = new ConnectionManager(DB_URL, DB_USER, DB_PASSWORD);
+			connMgr.getConnection().setTransactionIsolation(
+					Connection.TRANSACTION_READ_COMMITTED);
+			connMgrUpdate.getConnection().setTransactionIsolation(
+					Connection.TRANSACTION_READ_COMMITTED);
 		} catch (ServerException e) {
 			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"Server cannot connect to the database");
+			e.printStackTrace();
+		} catch (SQLException e) {
+			log(LOG_SIDE.SERVER, Level.SEVERE,
+					"Cannot start transaction mode read commited");
 			e.printStackTrace();
 		}
 
@@ -306,6 +318,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return FRStatusCode.HTTP_BAD_REQUEST;
 		}
 
+		boolean inserted = true;
 		if (type == OCCUPANCY_TYPE.USER) {
 			// round user occupancy to a full hour
 			period.setTimeStampStart(FRTimes.roundHourBefore(period
@@ -320,11 +333,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						+ userMessage.length());
 				return FRStatusCode.HTTP_PRECON_FAILED;
 			}
+			inserted = insertOccupancyAndCheckOccupancyInDB(period, uid, type,
+					hash, userMessage);
+		} else {
+			inserted = insertOccupancyInDB(uid, period.getTimeStampStart(),
+					period.getTimeStampEnd(), type, 0);
 		}
 
-		// if the request is valid, we can try to insert it
-		boolean inserted = insertOccupancyAndCheckOccupancyInDB(period, uid,
-				type, hash, userMessage);
 		log(LOG_SIDE.SERVER,
 				Level.INFO,
 				formatServerLogInfo(
@@ -781,7 +796,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		Connection connectBDD;
 		try {
-			connectBDD = connMgr.getConnection();
+			if (type == OCCUPANCY_TYPE.ROOM) {
+				connectBDD = connMgrUpdate.getConnection();
+			} else {
+				connectBDD = connMgr.getConnection();
+			}
+			
 			PreparedStatement insertQuery = connectBDD
 					.prepareStatement(insertRequest);
 
@@ -830,7 +850,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			Connection connUpdate;
 			try {
 				connUpdate = connMgrUpdate.getConnection();
-				connUpdate.setAutoCommit(false);
+				connUpdate
+						.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 				new Thread(new PeriodicallyUpdate(this, updater, connUpdate))
 						.start();
 			} catch (SQLException e) {
@@ -1571,7 +1592,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	}
 
 	/**
-	 * Clean old data, used when updating.
+	 * Clean old data, used when updating, from the current day included.
 	 */
 	public void cleanOldData(Connection connDB) {
 		try {
@@ -1582,11 +1603,18 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				conn = connDB;
 			}
 
-			String cleanRequest = "DELETE FROM `fr-occupancy` WHERE 1";
+			Calendar mCalendar = Calendar.getInstance();
+			mCalendar.set(Calendar.HOUR, 0);
+			mCalendar.set(Calendar.MINUTE, 0);
+			mCalendar.set(Calendar.SECOND, 0);
+			long startDay = mCalendar.getTimeInMillis();
 
-			PreparedStatement query = conn.prepareStatement(cleanRequest);
+			String cleanRequest = "DELETE FROM `fr-occupancy` WHERE timestampStart > ?";
+			PreparedStatement cleanQuery = conn
+					.prepareStatement(cleanRequest);
 
-			query.executeUpdate();
+			cleanQuery.setLong(1, startDay);
+			cleanQuery.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log(LOG_SIDE.SERVER, Level.SEVERE,

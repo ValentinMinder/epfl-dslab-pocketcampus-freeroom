@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.freeroom.data;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.logging.Level;
@@ -49,16 +50,15 @@ public class PeriodicallyUpdate implements Runnable {
 
 	@Override
 	public void run() {
-		server.log(Level.INFO, "Cleaning old data");
-		server.cleanOldData(conn);
+		// The clean part, and setAutoCommit(false) is done just before
+		// inserting, the later the better. See the fetchAndInsert(start,end)
+		// below
 		
 		server.log(Level.INFO, "Starting update of data from ISA");
 		FetchOccupancyDataJSON fodj = new FetchOccupancyDataJSON(server, conn);
 		Calendar mCalendar = Calendar.getInstance();
 		long now = mCalendar.getTimeInMillis();
-		// start is one day before what is authorized by clients.
-		long start = now - Constants.MAXIMAL_WEEKS_IN_PAST
-				* FRTimes.ONE_WEEK_IN_MS + FRTimes.ONE_DAY_IN_MS;
+		long start = now;
 		// end is two weeks after what is authorized by clients.
 		// just in case the ISA server goes down for a while, or we cannot fetch
 		// data for any other reason, we have data for a longer period.
@@ -66,13 +66,12 @@ public class PeriodicallyUpdate implements Runnable {
 				* FRTimes.ONE_WEEK_IN_MS;
 		fodj.fetchAndInsert(start, end);
 
-		server.log(Level.INFO, "Starting update of data from Exchange EWA");
-		ExchangeServiceImpl exchange = new ExchangeServiceImpl(server, conn);
-		exchange.updateEWAOccupancyFromTo(start, end);
+		// server.log(Level.INFO, "Starting update of data from Exchange EWA");
+		// ExchangeServiceImpl exchange = new ExchangeServiceImpl(server, conn);
+		// exchange.updateEWAOccupancyFromTo(start, end);
 		try {
 			this.conn.commit();
 			server.log(Level.INFO, "Finished updating data for FreeRoom");
-			updater.updated();
 		} catch (SQLException e) {
 			server.log(Level.SEVERE, "Cannot commit update change");
 			e.printStackTrace();

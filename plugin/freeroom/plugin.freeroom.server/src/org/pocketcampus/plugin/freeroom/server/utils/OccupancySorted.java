@@ -185,6 +185,7 @@ public class OccupancySorted {
 		int countOccupied = 0;
 
 		for (FRPeriodOccupation actual : mActualOccupations) {
+			boolean added = false;
 			long tsStart = Math.max(timestampStart, actual.getPeriod()
 					.getTimeStampStart());
 
@@ -212,10 +213,19 @@ public class OccupancySorted {
 
 			// the previous occupation is a room thus it has priority over user
 			// -> we need to resize.
-			if (previousIsRoom && tsStart < lastEnd) {
+			if (previousIsRoom && tsStart < lastEnd && actual.isAvailable()) {
 				tsStart = lastEnd;
 				FRPeriod newPeriod = new FRPeriod(tsStart, tsEnd);
 				actual.setPeriod(newPeriod);
+			} else if (previousIsRoom && tsStart < lastEnd) {
+				// special case, overlap of two rooms occupancies
+				FRPeriodOccupation lastOccupation = resultList
+						.remove(resultList.size() - 1);
+				FRPeriod previousPeriod = lastOccupation.getPeriod();
+				previousPeriod.setTimeStampEnd(tsEnd);
+				resultList.add(lastOccupation);
+				added = true;
+				actual = lastOccupation;
 			}
 
 			if (tsStart - lastEnd > FRTimes.MIN_PERIOD) {
@@ -230,8 +240,10 @@ public class OccupancySorted {
 
 			// if the period is big enough (it might not be as we resize without
 			// checking when there are a room-user conflict, see above)
-			if (tsEnd - actualStart > FRTimes.MIN_PERIOD) {
-				resultList.add(actual);
+			if (added || tsEnd - actualStart > FRTimes.MIN_PERIOD) {
+				if (!added) {
+					resultList.add(actual);
+				}
 				previousIsRoom = !actual.isAvailable();
 				double ratio = actual.getRatioOccupation();
 

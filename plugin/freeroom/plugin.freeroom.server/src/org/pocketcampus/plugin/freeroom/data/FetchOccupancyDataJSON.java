@@ -122,7 +122,8 @@ public class FetchOccupancyDataJSON {
 	}
 
 	/**
-	 * Parse the json page and insert the data contained in the database
+	 * Parse the json page and insert the data contained in the database, it
+	 * first cleans the database if the connDB class object exists.
 	 * 
 	 * @param jsonSource
 	 *            The JSON to parse
@@ -131,6 +132,20 @@ public class FetchOccupancyDataJSON {
 	 *            otherwise
 	 */
 	private void extractJSONAndInsert(String jsonSource, boolean updateRooms) {
+		if (connDB != null) {
+			try {
+				// clean the DATA
+				connDB.setAutoCommit(false);
+				server.cleanOldData(connDB);
+				System.out.println("cleaned");
+			} catch (SQLException e) {
+				e.printStackTrace();
+				server.log(Level.SEVERE,
+						"Cannot execute transaction while updating, in FetchOccupancyDataJSON");
+				return;
+			}
+		}
+
 		try {
 			JSONArray sourceArray = new JSONArray(jsonSource);
 			int lengthSourceArray = sourceArray.length();
@@ -147,6 +162,7 @@ public class FetchOccupancyDataJSON {
 					String uid = extractAndInsertRoom(room, updateRooms);
 					if (uid != null) {
 						countRoom++;
+						System.out.println("room count = " + countRoom);
 						extractAndInsertOccupancies(occupancy, uid);
 					}
 				}
