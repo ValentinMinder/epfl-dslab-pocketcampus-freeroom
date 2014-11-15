@@ -101,6 +101,11 @@
     
     self.preferredContentSize = CGSizeMake(320.0, 50.0);
     
+    if (![[PCConfig defaults] boolForKey:PC_CONFIG_LOADED_FROM_BUNDLE_KEY]) {
+        [self showNeedToLogin];
+        return;
+    }
+    
     [self.camiproService cancelOperationsForDelegate:self];
     if (!self.camiproService) {
         self.camiproService = [CamiproService sharedInstanceToRetain];
