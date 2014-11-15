@@ -118,6 +118,9 @@ extern NSString* const kPCConfigDidFinishLoadingNotification;
  */
 + (void)loadConfigAsynchronously;
 
+/**
+ * @return YES if [self loadConfigAsynchronously] has finished, NO otherwise
+ */
 + (BOOL)isLoaded;
 
 + (NSUserDefaults*)defaults;

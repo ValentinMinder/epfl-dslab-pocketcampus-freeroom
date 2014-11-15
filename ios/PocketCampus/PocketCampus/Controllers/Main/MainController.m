@@ -213,6 +213,12 @@ static MainController<MainControllerPublic>* instance = nil;
         CLSNSLog(@"    !! ERROR: cannot parse plugin identifer. Returning NO.");
         return NO;
     }
+    
+    if ([pluginIdentifier isEqualToString:kPocketCampusURLNoPluginSpecified]) {
+        //just to open PocketCampus, no plugin to open in particular
+        return YES;
+    }
+    
     PluginController<PluginControllerProtocol>* pluginController = [self pluginControllerForPluginIdentifier:[self validPluginIdentifierForAnycasePluginIdentifier:pluginIdentifier]];
     if (!pluginController) {
         [self showActionNotSupportedAlert];

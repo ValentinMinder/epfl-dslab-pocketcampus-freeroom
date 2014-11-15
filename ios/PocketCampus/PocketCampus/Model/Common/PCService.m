@@ -78,8 +78,7 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
 + (NSURL*)serviceURLforServiceName:(NSString*)serviceName raw:(BOOL)raw {
     static NSURL* kServerURL;
     static NSString* kVersionURI;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    if (!kServerURL || !kVersionURI) {
         NSUserDefaults* defaults = [PCConfig defaults];
         NSString* serverProt = [defaults objectForKey:PC_CONFIG_SERVER_PROTOCOL_KEY];
         NSString* serverAddress = [defaults objectForKey:PC_CONFIG_SERVER_ADDRESS_KEY];
@@ -87,7 +86,7 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
         NSString* versionURI = [defaults objectForKey:PC_CONFIG_SERVER_URI_KEY];
         kServerURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@:%@", serverProt, serverAddress, serverPort]];
         kVersionURI = versionURI;
-    });
+    }
     if (raw) {
         serviceName = [@"raw-" stringByAppendingString:serviceName];
     }

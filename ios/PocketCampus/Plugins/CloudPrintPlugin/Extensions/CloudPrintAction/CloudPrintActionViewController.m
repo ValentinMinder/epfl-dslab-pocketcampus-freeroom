@@ -55,6 +55,12 @@
     self.view.tintColor = [PCValues pocketCampusRed];
     [self.cancelButton setTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) forState:UIControlStateNormal];
 
+    
+    if (![[PCConfig defaults] boolForKey:PC_CONFIG_LOADED_FROM_BUNDLE_KEY]) {
+        self.centerMessageLabel.text = NSLocalizedStringFromTable(@"OpenPocketCampusAndLoginFirst", @"CloudPrintPlugin", nil);
+        return;
+    }
+    
     [self.loadingIndicator startAnimating];
     self.centerMessageLabel.text = nil;
     
