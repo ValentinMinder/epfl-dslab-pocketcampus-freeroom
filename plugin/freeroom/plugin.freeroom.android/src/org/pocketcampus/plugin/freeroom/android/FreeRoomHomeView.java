@@ -1,14 +1,11 @@
 package org.pocketcampus.plugin.freeroom.android;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -64,10 +61,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings.Secure;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -410,6 +404,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	/**
 	 * Overrides {@link FreeRoomAbstractView#anyError()} and please see this for
 	 * javadoc.
+	 * 
+	 * To be called to show a generic error message.
 	 */
 	@Override
 	public void anyError() {

@@ -58,7 +58,6 @@ public class AutoCompleteRequestASyncTask
 	@Override
 	protected void onError(FreeRoomController mController, Exception e) {
 		callerView.networkErrorHappened();
-		callerView.anyError();
 		e.printStackTrace();
 	}
 }

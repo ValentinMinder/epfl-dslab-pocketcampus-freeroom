@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.freeroom.server.tests;
+package org.pocketcampus.plugin.freeroom.server.tests.servertests;
 
 import static org.junit.Assert.assertTrue;
 

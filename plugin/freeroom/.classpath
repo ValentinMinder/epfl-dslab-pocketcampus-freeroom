@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="lib" path="plugin.freeroom.android/bin/dexedLibs/android-support-v4-1b588fb9c2a20aa62ec485f4c6907fcd.jar"/>
+	<classpathentry kind="lib" path="plugin.freeroom.android/bin/dexedLibs/annotations-a841ab4497bdd10ba9661374711886d9.jar"/>
+	<classpathentry kind="lib" path="plugin.freeroom.android/bin/dexedLibs/bcprov-jdk15-146-01b0ea074f8a0a73273f6f085dd59204.jar"/>
+	<classpathentry kind="lib" path="plugin.freeroom.android/bin/dexedLibs/commons-io-2.0.1-22b265d9a3516b6bf3c738121056c2f0.jar"/>
+	<classpathentry kind="lib" path="plugin.freeroom.android/bin/dexedLibs/commons-lang-2.6-82c92fbbf935f0a4ec3804891a431c81.jar"/>
+	<classpathentry kind="lib" path="plugin.freeroom.android/bin/dexedLibs/gcm-43a6e633bc47b08976054108e71f760e.jar"/>
+	<classpathentry kind="lib" path="plugin.freeroom.android/bin/dexedLibs/httpclient-4.0-alpha1-5d0a18d7ea3e4a8dcc2253d0bf41156b.jar"/>
+	<classpathentry kind="lib" path="plugin.freeroom.android/bin/dexedLibs/libGoogleAnalytics-0e9decddc4c4d08bdcca0bd116f6dfff.jar"/>
+	<classpathentry kind="lib" path="plugin.freeroom.android/bin/dexedLibs/platform.sdk.android-a32759375e611f39b2e070935ed3d445.jar"/>
+	<classpathentry kind="lib" path="plugin.freeroom.android/bin/dexedLibs/PopupMenuCompatLib-c4f96bc9fcd2ffe246d2b5fbcadbd284.jar"/>
+	<classpathentry kind="lib" path="plugin.freeroom.android/bin/dexedLibs/slf4j-api-1.6.2-4f720c6e140f0b62aea879641b08d075.jar"/>
+	<classpathentry kind="lib" path="plugin.freeroom.android/bin/dexedLibs/universal-image-loader-1.8.0-22e7d6060b7adbf337365aa27f95e929.jar"/>
+	<classpathentry kind="lib" path="plugin.freeroom.android/libs/android-support-v4.jar"/>
+	<classpathentry kind="lib" path="plugin.freeroom.server/lib/android.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="/plugin.freeroom.server/lib/EWSJavaAPI_1.2-src.zip"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.freeroom.server"/>
+	<classpathentry kind="output" path="plugin.freeroom.shared/bin"/>
+</classpath>
