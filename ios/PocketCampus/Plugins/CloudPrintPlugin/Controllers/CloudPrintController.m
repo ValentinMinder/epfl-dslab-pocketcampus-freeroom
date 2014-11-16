@@ -171,7 +171,7 @@ static float const kProgressMax = 100;
         }
         
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             if (wjob.navController.topViewController == wjob.statusViewController) {
                 // if user tapped cancel so quickly that it was before this dispatch triggered, we should
                 // not start the request
@@ -188,7 +188,7 @@ static float const kProgressMax = 100;
                         case CloudPrintUploadFailureReasonAuthenticationError:
                         {
                             [[AuthenticationController sharedInstance] addLoginObserver:welf success:^{
-                                wjob.requestViewController.userValidatedRequestBlock(job.request);
+                                wjob.requestViewController.userValidatedRequestBlock(wjob.request);
                             } userCancelled:^{
                                 wjob.statusViewController.progress.completedUnitCount = 0;
                                 wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
@@ -196,7 +196,7 @@ static float const kProgressMax = 100;
                             } failure:^{
                                 wjob.statusViewController.progress.completedUnitCount = 0;
                                 wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
-                                [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:job.requestViewController];
+                                [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:wjob.requestViewController];
                                 [wjob.navController popToViewController:wjob.requestViewController animated:YES];
                             }];
                             break;
@@ -204,14 +204,14 @@ static float const kProgressMax = 100;
                         case CloudPrintUploadFailureReasonNetworkError:
                             wjob.statusViewController.progress.completedUnitCount = 0;
                             wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
-                            [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) onViewController:job.requestViewController];
+                            [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) onViewController:wjob.requestViewController];
                             [wjob.navController popToViewController:wjob.requestViewController animated:YES];
                             break;
                         default:
                             wjob.statusViewController.progress.completedUnitCount = 0;
                             wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
-                            [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:job.requestViewController];
-                            [job.navController popToViewController:wjob.requestViewController animated:YES];
+                            [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:wjob.requestViewController];
+                            [wjob.navController popToViewController:wjob.requestViewController animated:YES];
                             break;
                     }
                 }];
@@ -267,7 +267,7 @@ static float const kProgressMax = 100;
         if (!welf.cloudPrintService) {
             welf.cloudPrintService = [CloudPrintService sharedInstanceToRetain];
         }
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             if (wjob.navController.topViewController == wjob.statusViewController) {
                 // if user tapped cancel so quickly that it was before this dispatch triggered, we should
                 // not start the request
@@ -295,24 +295,26 @@ static float const kProgressMax = 100;
         {
             job.statusViewController.progress.completedUnitCount = kProgressMax;
             job.statusViewController.statusMessage = CloudPrintStatusMessageSuccess;
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ //give time for success message and animation
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.75 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ //give time for success message and animation
                 [self job:job completedWithStatusCode:CloudPrintCompletionStatusCodePrintSuccess];
             });
             break;
         }
         case CloudPrintStatusCode_AUTHENTICATION_ERROR:
         {
+            __weak __typeof(job) wjob = job;
+            __weak __typeof(self) welf = self;
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
-                job.requestViewController.userValidatedRequestBlock(job.request);
+                wjob.requestViewController.userValidatedRequestBlock(wjob.request);
             } userCancelled:^{
-                job.statusViewController.progress.completedUnitCount = 0;
-                job.statusViewController.statusMessage = CloudPrintStatusMessageError;
-                [job.navController popToViewController:job.requestViewController animated:YES];
+                wjob.statusViewController.progress.completedUnitCount = 0;
+                wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
+                [wjob.navController popToViewController:wjob.requestViewController animated:YES];
             } failure:^{
-                job.statusViewController.progress.completedUnitCount = 0;
-                job.statusViewController.statusMessage = CloudPrintStatusMessageError;
-                [job.navController popToViewController:job.requestViewController animated:YES];
-                [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:job.requestViewController];
+                wjob.statusViewController.progress.completedUnitCount = 0;
+                wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
+                [wjob.navController popToViewController:wjob.requestViewController animated:YES];
+                [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:wjob.requestViewController];
             }];
             break;
         }

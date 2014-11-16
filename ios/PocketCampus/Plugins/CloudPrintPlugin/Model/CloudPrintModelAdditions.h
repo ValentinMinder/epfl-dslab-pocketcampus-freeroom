@@ -63,8 +63,7 @@
 
 /**
  * @return a string ID that is unique for that print document request.
- * @discussion the id is generated the first time the property is accessed.
- * If does not rely on any attribute value.
+ * @discussion the id is randomly generated the first time the property is accessed and does not rely on any attribute value.
  */
 @property (nonatomic, readonly) NSString* jobUniqueId;
 
