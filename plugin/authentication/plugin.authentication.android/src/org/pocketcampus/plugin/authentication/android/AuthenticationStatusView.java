@@ -1,8 +1,8 @@
 package org.pocketcampus.plugin.authentication.android;
 
-import java.util.Arrays;
 import java.util.List;
 
+import org.pocketcampus.platform.android.cache.RequestCache;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.utils.DialogUtils;
@@ -11,7 +11,6 @@ import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
 import org.pocketcampus.plugin.authentication.android.req.FetchUserAttributes;
 import org.pocketcampus.plugin.authentication.android.req.LogoutAllSessions;
 import org.pocketcampus.plugin.authentication.shared.LogoutRequest;
-import org.pocketcampus.plugin.authentication.shared.UserAttributesRequest;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -73,8 +72,7 @@ public class AuthenticationStatusView extends PluginView implements IAuthenticat
 			updateDisplay(null);
 			return;
 		}
-		UserAttributesRequest req = new UserAttributesRequest(mModel.getPcSessionId(), Arrays.asList("firstname", "lastname"));
-		new FetchUserAttributes(this).start(mController, mController.getThriftClient(), req);
+		mController.getUserAttributes(this, true);
 	}
 
 	
@@ -117,6 +115,8 @@ public class AuthenticationStatusView extends PluginView implements IAuthenticat
 		mModel.setGasparUsername(null);
 		mModel.setStorePassword(true);
 		mModel.setPcSessionId(null);
+		
+		RequestCache.invalidateCache(this, FetchUserAttributes.class.getCanonicalName());
 
 		Intent intent = new Intent();
 		intent.setAction("org.pocketcampus.plugin.authentication.LOGOUT");
