@@ -99,7 +99,7 @@ public final class TripsServiceTests {
 		TripsService service = new TripsServiceImpl(client, "token");
 
 		TransportStation from = new TransportStation(8501214, 46522197, 6566143, "Ecublens VD, EPFL");
-		TransportStation to = new TransportStation(8503000, 47378177, 8540192, "Zürich HB");
+		TransportStation to = new TransportStation(8503000, 47378177, 8540192, "ZÃ¼rich HB");
 		DateTime now = DateTime.now();
 
 		TransportTrip trip = service.getTrips(from, to, now).get(0);
@@ -144,7 +144,7 @@ public final class TripsServiceTests {
 		TripsService service = new TripsServiceImpl(client, "token");
 
 		TransportStation from = new TransportStation(8592050, 46517594, 6629670, "Lausanne, gare");
-		TransportStation to = new TransportStation(8579254, 46519365, 6633481, "Lausanne, St-François");
+		TransportStation to = new TransportStation(8579254, 46519365, 6633481, "Lausanne, St-FranÃ§ois");
 		DateTime now = DateTime.now();
 
 		TransportTrip trip = service.getTrips(from, to, now).get(1);

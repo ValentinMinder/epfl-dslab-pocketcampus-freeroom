@@ -4,7 +4,7 @@
 
   This script merges the PocketCampus java server
   It transforms all the plugins into a single project
-  that you can build using ANT or imoprt it in eclipse
+  that you can build using ANT or import it in eclipse
 
   You should specify $plugins_to_merge and $libs_to_export
 
@@ -19,8 +19,8 @@ $libs_to_export = array(
 		"backport-util-concurrent-3.1.jar", "bcprov-jdk15-146.jar",
 		"commons-codec-1.4.jar", "commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar", "commons-logging-1.1.1.jar",
 		"gson-1.7.1.jar", 
-                "gcm-server.jar",
-                "org.json-20120521.jar",
+        "gcm-server.jar",
+        "org.json-20120521.jar",
 		"httpclient-4.1.2.jar", "httpcore-4.1.2.jar",
 		"ical4j-1.0.4.jar",
 		"javapns_2.2.jar",
@@ -31,7 +31,9 @@ $libs_to_export = array(
 		"mail.jar", "mysql-connector-java-5.1.15-bin.jar",
 		"servlet-api-3.0.jar", "slf4j-api-1.6.2.jar", "slf4j-simple-1.6.2.jar",
 		"tequila-client.jar",
-		"unboundid-ldapsdk-se.jar");
+		"unboundid-ldapsdk-se.jar",
+		"junit-4.11.jar",
+		"hamcrest-core-1.3.jar");
 
 $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
@@ -99,6 +101,32 @@ function generate_build_xml($output_dir, $project_name){
 	foreach($libs_to_export as $lib)
 		$jar->appendChild(create_elem_w_attrib($doc, "zipfileset", array("excludes" => "META-INF/*.SF", "src" => "lib/$lib")));
 
+	// path for junit
+	$proj->appendChild($target = create_elem_w_attrib($doc, "path", array("id" => "junit.class.path")));
+	$target->appendChild(create_elem_w_attrib($doc, "pathelement", array("location" => "lib/junit-4.11.jar")));
+	$target->appendChild(create_elem_w_attrib($doc, "pathelement", array("location" => "lib/hamcrest-core-1.3.jar")));
+	$target->appendChild(create_elem_w_attrib($doc, "pathelement", array("location" => "bin")));
+
+	// target to compile junit tests
+	$proj->appendChild($target = create_elem_w_attrib($doc, "target", array("depends" => "build-project", "name" => "compile_tests")));
+	$target->appendChild(create_elem_w_attrib($doc, "delete", array("dir" => "testreport")));
+	$target->appendChild(create_elem_w_attrib($doc, "mkdir", array("dir" => "testreport")));
+	$target->appendChild($javac = create_elem_w_attrib($doc, "javac", array("includeantruntime" => "false", "debug" => "true", "encoding" => "UTF-8", "debuglevel" => "\${debuglevel}", "destdir" => "bin", "source" => "\${source}", "target" => "\${target}")));
+	$javac->appendChild(create_elem_w_attrib($doc, "src", array("path" => "test/src")));
+	$javac->appendChild(create_elem_w_attrib($doc, "classpath", array("refid" => "$project_name.classpath")));
+	$javac->appendChild(create_elem_w_attrib($doc, "classpath", array("refid" => "junit.class.path")));
+
+	// target to run junit tests
+	$proj->appendChild($target = create_elem_w_attrib($doc, "target", array("depends" => "compile_tests", "name" => "junit")));
+	$target->appendChild($junit = create_elem_w_attrib($doc, "junit", array("printsummary" => "on", "fork" => "true", "haltonfailure" => "no")));
+	$junit->appendChild(create_elem_w_attrib($doc, "classpath", array("refid" => "junit.class.path")));
+	$junit->appendChild(create_elem_w_attrib($doc, "classpath", array("refid" => "PocketCampusServer.classpath")));
+	$junit->appendChild($classpath = create_elem_w_attrib($doc, "classpath", array()));
+	$classpath->appendChild(create_elem_w_attrib($doc, "pathelement", array("location" => "test/bin")));
+	$junit->appendChild(create_elem_w_attrib($doc, "formatter", array("type" => "xml")));
+	$junit->appendChild($batch_test = create_elem_w_attrib($doc, "batchtest", array("todir" => "testreport")));
+	$batch_test->appendChild($fileset = create_elem_w_attrib($doc, "fileset", array("dir" => "test/src")));
+	$fileset->appendChild($fileset = create_elem_w_attrib($doc, "include", array("name" => "**/*Test*.java")));
 	file_put_contents("$output_dir/build.xml", $doc->saveXML());
 }
 
@@ -195,6 +223,7 @@ function copyr($source, $dest) {
 
 	// Simple copy for a file
 	if (is_file($source)) {
+		// echo "$source -> $dest\n\n";
 		return copy($source, $dest);
 	}
 
@@ -235,10 +264,17 @@ function collect_src($output_dir) {
 			copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.server/src", "$output_dir/src");
 		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src")) // if has .shared proj
 			copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src", "$output_dir/src");
+		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.server.tests/src")){ // if has .tests proj
+			if(!is_dir("$output_dir/test")) {
+				mkdir("$output_dir/test");
+			}
+			copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.server.tests/src", "$output_dir/test/src");
+		}
 	}
 
 	copyr("$path_to_platform_dir/platform.server/src", "$output_dir/src");
 	copyr("$path_to_platform_dir/platform.shared/src", "$output_dir/src");
+	copyr("$path_to_platform_dir/platform.server.tests/src", "$output_dir/test/src");
 
 }
 
