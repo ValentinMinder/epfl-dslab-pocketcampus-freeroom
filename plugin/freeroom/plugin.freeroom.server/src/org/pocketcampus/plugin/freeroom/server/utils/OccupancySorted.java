@@ -107,6 +107,10 @@ public class OccupancySorted {
 	public int size() {
 		return mActualOccupations.size();
 	}
+	
+	public FRRoom getRoom() {
+		return room;
+	}
 
 	/**
 	 * This method's job is to sort the data in the mActualOccupations ArrayList

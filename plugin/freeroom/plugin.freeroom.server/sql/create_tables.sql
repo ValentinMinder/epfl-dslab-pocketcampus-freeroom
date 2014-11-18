@@ -33,10 +33,7 @@ CREATE TABLE IF NOT EXISTS `fr-roomslist` (
 	PRIMARY KEY (`uid`)
 ) CHARSET=utf8;
 
--- This table holds all types of occupancy, either a room or user occupancy. 
--- For practical reasons we assume timestampStart of a user occupancy to be a full hour (e.g 10h00), 
--- even if it overlaps some other room occupancy, this is why we put the type as a member of the primary key.
--- The overlaps of room/user occupancy are processed for a request, but not repercuted in the database.
+-- This table holds rooms occupancies
 CREATE TABLE IF NOT EXISTS `fr-occupancy` (
 	`uid` char(255) NOT NULL,
 	`timestampStart` bigint(20) NOT NULL,
@@ -58,3 +55,13 @@ CREATE TABLE IF NOT EXISTS `fr-checkOccupancy` (
 	PRIMARY KEY (`timestampStart`, `hash`),
 	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist` (`uid`) ON DELETE CASCADE
 ) CHARSET=utf8;
+
+-- This table holds users occupancies
+CREATE TABLE IF NOT EXISTS `fr-occupancy-users` (
+  `uid` varchar(255) NOT NULL,
+  `timestampStart` bigint(20) NOT NULL,
+  `timestampEnd` bigint(20) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `count` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+

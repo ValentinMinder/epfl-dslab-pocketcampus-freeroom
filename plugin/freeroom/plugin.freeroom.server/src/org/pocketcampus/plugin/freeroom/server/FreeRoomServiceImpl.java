@@ -2,7 +2,6 @@ package org.pocketcampus.plugin.freeroom.server;
 
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,12 +12,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
@@ -380,109 +378,52 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		boolean userOccupation = (typeToInsert == OCCUPANCY_TYPE.USER) ? true
 				: false;
 
-		// first check if you can fully insert it (no overlap with rooms)
-		String checkRequest = "SELECT * FROM `fr-occupancy` oc "
-				+ "WHERE ((oc.timestampStart < ? AND oc.timestampStart > ?) "
-				+ "OR (oc.timestampEnd > ? AND oc.timestampEnd < ?) "
-				+ "OR (oc.timestampStart > ? AND oc.timestampEnd < ?)) AND oc.uid = ?";
+		if (!userOccupation) {
+			return insertOccupancyInDB(uid, tsStart, tsEnd,
+					OCCUPANCY_TYPE.ROOM, 0);
+		} else {
 
-		Connection connectBDD;
-		try {
-			connectBDD = connMgr.getConnection();
-			PreparedStatement checkQuery = connectBDD
-					.prepareStatement(checkRequest);
+			// indicate whether the insertion has been successful or not.
+			boolean overallInsertion = true;
 
-			checkQuery.setLong(1, tsEnd);
-			checkQuery.setLong(2, tsStart);
-			checkQuery.setLong(3, tsStart);
-			checkQuery.setLong(4, tsEnd);
-			checkQuery.setLong(5, tsStart);
-			checkQuery.setLong(6, tsEnd);
-			checkQuery.setString(7, uid);
+			long hourSharpBefore = FRTimes.roundHourBefore(tsStart);
+			long numberHours = FRTimes.determineNumberHour(tsStart, tsEnd);
 
-			ResultSet checkResult = checkQuery.executeQuery();
+			for (int i = 0; i < numberHours; ++i) {
+				// also insert in the check table to prevent further submit
+				// during the same period from the same user
+				String prevRoom = getLastUID(hourSharpBefore + i
+						* FRTimes.ONE_HOUR_IN_MS, uid, hash);
+				String prevMessage = getLastMessage(hourSharpBefore + i
+						* FRTimes.ONE_HOUR_IN_MS, uid, hash);
 
-			while (checkResult.next()) {
-				OCCUPANCY_TYPE type = OCCUPANCY_TYPE.valueOf(checkResult
-						.getString("type"));
-				long toInsertStart = checkResult.getLong("timestampStart");
-				long toInsertEnd = checkResult.getLong("timestampEnd");
-
-				// if we have a match and this is a room occupancy, we cannot go
-				// further there is an overlap, log it.
-				if (typeToInsert == OCCUPANCY_TYPE.ROOM
-						&& type == OCCUPANCY_TYPE.ROOM) {
-					log(LOG_SIDE.SERVER, Level.WARNING,
-							"Error during insertion of occupancy, overlapping of two rooms occupancy, "
-									+ "want to insert : " + uid
-									+ " with timestamp start = " + tsStart
-									+ " and timestamp end = " + tsEnd
-									+ " have conflict with " + uid
-									+ " with timestamp start = "
-									+ toInsertStart + " and timestamp end = "
-									+ toInsertEnd);
-					return false;
-				}
-			}
-			// and now insert it !
-
-			if (!userOccupation) {
-				return insertOccupancyInDB(uid, tsStart, tsEnd,
-						OCCUPANCY_TYPE.ROOM, 0);
-			} else {
-
-				// indicate whether the insertion has been successful or not.
-				boolean overallInsertion = true;
-
-				long hourSharpBefore = FRTimes.roundHourBefore(tsStart);
-				long numberHours = FRTimes.determineNumberHour(tsStart, tsEnd);
-
-				for (int i = 0; i < numberHours; ++i) {
-					// also insert in the check table to prevent further submit
-					// during the same period from the same user
-					String prevRoom = getLastUID(hourSharpBefore + i
-							* FRTimes.ONE_HOUR_IN_MS, uid, hash);
-					String prevMessage = getLastMessage(hourSharpBefore + i
-							* FRTimes.ONE_HOUR_IN_MS, uid, hash);
-
-					// if first insertion or update of room, insert a CHECK
-					// occupancy (to avoid multiple submit from same users)
-					insertOrUpdateCheckOccupancy(uid, hourSharpBefore + i
-							* FRTimes.ONE_HOUR_IN_MS, hash, prevRoom,
-							prevMessage, userMessage);
-					if (prevRoom == null
-							|| (prevRoom != null && !prevRoom.equals(uid))) {
-						// we increment the counter only if this is the first
-						// insertion (prevRoom == null) or if we change the
-						// room, in that case the counter for the new room has
-						// to be incremented and the old counter decremented.
-						if (prevRoom != null && !prevRoom.equals(uid)) {
-							decrementUserOccupancyCount(prevRoom,
-									hourSharpBefore + i
-											* FRTimes.ONE_HOUR_IN_MS);
-						}
-						overallInsertion = overallInsertion
-								&& insertOccupancyInDB(uid, hourSharpBefore + i
-										* FRTimes.ONE_HOUR_IN_MS,
-										hourSharpBefore + (i + 1)
-												* FRTimes.ONE_HOUR_IN_MS,
-										OCCUPANCY_TYPE.USER, 1);
+				// if first insertion or update of room, insert a CHECK
+				// occupancy (to avoid multiple submit from same users)
+				insertOrUpdateCheckOccupancy(uid, hourSharpBefore + i
+						* FRTimes.ONE_HOUR_IN_MS, hash, prevRoom, prevMessage,
+						userMessage);
+				if (prevRoom == null
+						|| (prevRoom != null && !prevRoom.equals(uid))) {
+					// we increment the counter only if this is the first
+					// insertion (prevRoom == null) or if we change the
+					// room, in that case the counter for the new room has
+					// to be incremented and the old counter decremented.
+					if (prevRoom != null && !prevRoom.equals(uid)) {
+						decrementUserOccupancyCount(prevRoom, hourSharpBefore
+								+ i * FRTimes.ONE_HOUR_IN_MS);
 					}
-
+					overallInsertion = overallInsertion
+							&& insertOccupancyInDB(uid, hourSharpBefore + i
+									* FRTimes.ONE_HOUR_IN_MS, hourSharpBefore
+									+ (i + 1) * FRTimes.ONE_HOUR_IN_MS,
+									OCCUPANCY_TYPE.USER, 1);
 				}
 
-				return overallInsertion;
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			log(LOG_SIDE.SERVER, Level.SEVERE,
-					"SQL error when checking and inserting occupancies in DB for room = "
-							+ uid + " start = " + period.getTimeStampStart()
-							+ " end = " + period.getTimeStampEnd() + " hash = "
-							+ hash + " type = " + typeToInsert.toString());
-			return false;
+			return overallInsertion;
 		}
+
 	}
 
 	/**
@@ -743,7 +684,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return false;
 		}
 
-		String updateRequest = "UPDATE `fr-occupancy` co SET co.count = co.count - 1 "
+		String updateRequest = "UPDATE `fr-occupancy-users` co SET co.count = co.count - 1 "
 				+ "WHERE co.uid = ? AND co.timestampStart = ? AND count >= 1";
 
 		Connection connectBDD;
@@ -790,7 +731,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 */
 	private boolean insertOccupancyInDB(String uid, long tsStart, long tsEnd,
 			OCCUPANCY_TYPE type, int count) {
-		String insertRequest = "INSERT INTO `fr-occupancy` (uid, timestampStart, timestampEnd, type, count) "
+		String table = type == OCCUPANCY_TYPE.ROOM ? "`fr-occupancy`"
+				: "`fr-occupancy-users`";
+		String insertRequest = "INSERT INTO " + table
+				+ " (uid, timestampStart, timestampEnd, type, count) "
 				+ "VALUES (?, ?, ?, ?, ?) "
 				+ "ON DUPLICATE KEY UPDATE count = count + 1";
 
@@ -801,7 +745,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			} else {
 				connectBDD = connMgr.getConnection();
 			}
-			
+
 			PreparedStatement insertQuery = connectBDD
 					.prepareStatement(insertRequest);
 
@@ -1020,7 +964,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				+ onlyFreeRooms + ",tsStart=" + tsStart + ",tsEnd=" + tsEnd
 				+ ",userGroup=" + userGroup;
 
-		HashMap<String, List<FRRoomOccupancy>> result = new HashMap<String, List<FRRoomOccupancy>>();
 		int numberOfRooms = uidList.size();
 		// formatting for the query
 		String roomsListQueryFormat = "";
@@ -1028,136 +971,122 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			roomsListQueryFormat += "?,";
 		}
 		roomsListQueryFormat += "?";
-
 		Connection connectBDD;
+
+		HashMap<String, List<FRRoomOccupancy>> result = new HashMap<String, List<FRRoomOccupancy>>();
+		String[] tables = { "`fr-occupancy-users`", "`fr-occupancy`" };
+
+		// Hashmap that stores all the results
+		HashMap<String, OccupancySorted> tempResult = new HashMap<String, OccupancySorted>();
+
 		try {
 			connectBDD = connMgr.getConnection();
-			String request = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.type"
-					+ language.toUpperCase()
-					+ " AS typeRoom, "
-					+ "uo.count, uo.timestampStart, uo.timestampEnd, uo.type "
-					+ "FROM `fr-roomslist` rl, `fr-occupancy` uo "
-					+ "WHERE rl.uid = uo.uid AND rl.uid IN("
-					+ roomsListQueryFormat
-					+ ") "
-					+ "AND ((uo.timestampEnd <= ? AND uo.timestampEnd > ? ) "
-					+ "OR (uo.timestampStart < ? AND uo.timestampStart >= ?)"
-					+ "OR (uo.timestampStart <= ? AND uo.timestampEnd >= ?)) "
-					+ "ORDER BY rl.uid ASC, uo.timestampStart ASC";
 
-			PreparedStatement query = connectBDD.prepareStatement(request);
-			int i = 1;
-			for (; i <= numberOfRooms; ++i) {
-				query.setString(i, uidList.get(i - 1));
+			for (String t : tables) {
+				/**
+				 * We have to get users occupancies and rooms occupancies two
+				 * differents tables.
+				 */
+				String request = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.type"
+						+ language.toUpperCase()
+						+ " AS typeRoom, "
+						+ "uo.count, uo.timestampStart, uo.timestampEnd, uo.type "
+						+ "FROM `fr-roomslist` rl, "
+						+ t
+						+ " uo "
+						+ "WHERE rl.uid = uo.uid AND rl.uid IN("
+						+ roomsListQueryFormat
+						+ ") "
+						+ "AND ((uo.timestampEnd <= ? AND uo.timestampEnd > ? ) "
+						+ "OR (uo.timestampStart < ? AND uo.timestampStart >= ?)"
+						+ "OR (uo.timestampStart <= ? AND uo.timestampEnd >= ?)) "
+						+ "AND (uo.type = ? OR uo.count > 0) "
+						+ "ORDER BY rl.uid ASC, uo.timestampStart ASC";
+
+				PreparedStatement query = connectBDD.prepareStatement(request);
+				int i = 1;
+				for (; i <= numberOfRooms; ++i) {
+					query.setString(i, uidList.get(i - 1));
+				}
+
+				query.setLong(i, tsEnd);
+				query.setLong(i + 1, tsStart);
+				query.setLong(i + 2, tsEnd);
+				query.setLong(i + 3, tsStart);
+				query.setLong(i + 4, tsStart);
+				query.setLong(i + 5, tsEnd);
+				query.setString(i + 6, OCCUPANCY_TYPE.ROOM.toString());
+
+				ResultSet resultQuery = query.executeQuery();
+
+				while (resultQuery.next()) {
+					// extract attributes of record
+					long start = resultQuery.getLong("timestampStart");
+					long end = resultQuery.getLong("timestampEnd");
+					String uid = resultQuery.getString("uid");
+					int count = resultQuery.getInt("count");
+					String doorCode = resultQuery.getString("doorCode");
+					String alias = resultQuery.getString("alias");
+					String typeLanguage = resultQuery.getString("typeRoom");
+					double surface = resultQuery.getDouble("surface");
+
+					OCCUPANCY_TYPE type = OCCUPANCY_TYPE.valueOf(resultQuery
+							.getString("type"));
+					boolean available = (type == OCCUPANCY_TYPE.USER) ? true
+							: false;
+					int capacity = resultQuery.getInt("capacity");
+
+					int calculCapacity = capacity > 0 ? capacity
+							: defaultCapacity;
+					double ratio = (double) count / calculCapacity;
+
+					FRPeriod period = new FRPeriod(start, end);
+					FRRoom mRoom = new FRRoom(doorCode, uid);
+					mRoom.setBuilding_name(Utils.extractBuilding(doorCode));
+
+					mRoom.setCapacity(capacity);
+					mRoom.setSurface(surface);
+					Utils.addAliasIfNeeded(mRoom, alias);
+
+					if (type != null) {
+						mRoom.setType(typeLanguage);
+					}
+
+					if (uid == null) {
+						continue;
+					}
+
+					OccupancySorted currentOS = tempResult.get(uid);
+					if (currentOS == null) {
+						currentOS = new OccupancySorted(mRoom, tsStart, tsEnd,
+								onlyFreeRooms);
+						tempResult.put(uid, currentOS);
+					}
+
+					FRPeriodOccupation accOcc = new FRPeriodOccupation(period,
+							available);
+					accOcc.setRatioOccupation(ratio);
+					currentOS.addActualOccupation(accOcc);
+				}
 			}
 
-			query.setLong(i, tsEnd);
-			query.setLong(i + 1, tsStart);
-			query.setLong(i + 2, tsEnd);
-			query.setLong(i + 3, tsStart);
-			query.setLong(i + 4, tsStart);
-			query.setLong(i + 5, tsEnd);
-
-			ResultSet resultQuery = query.executeQuery();
-
-			String currentUID = null;
-			String currentDoorCode = null;
-			OccupancySorted currentOccupancy = null;
-
-			// For each result we have, we process room by room (currentUID),
-			// and for each room we add the occupation to the class
-			// OccupationSorted. It assumes it is grouped by rooms uid.
-			while (resultQuery.next()) {
-				// extract attributes of record
-				long start = resultQuery.getLong("timestampStart");
-				long end = resultQuery.getLong("timestampEnd");
-				String uid = resultQuery.getString("uid");
-				int count = resultQuery.getInt("count");
-				String doorCode = resultQuery.getString("doorCode");
-				String alias = resultQuery.getString("alias");
-				String typeLanguage = resultQuery.getString("typeRoom");
-				double surface = resultQuery.getDouble("surface");
-
-				OCCUPANCY_TYPE type = OCCUPANCY_TYPE.valueOf(resultQuery
-						.getString("type"));
-				boolean available = (type == OCCUPANCY_TYPE.USER) ? true
-						: false;
-				int capacity = resultQuery.getInt("capacity");
-
-				int calculCapacity = capacity > 0 ? capacity : defaultCapacity;
-				double ratio = (double) count / calculCapacity;
-
-				FRPeriod period = new FRPeriod(start, end);
-				FRRoom mRoom = new FRRoom(doorCode, uid);
-				mRoom.setBuilding_name(Utils.extractBuilding(doorCode));
-
-				mRoom.setCapacity(capacity);
-				mRoom.setSurface(surface);
-				Utils.addAliasIfNeeded(mRoom, alias);
-
-				if (type != null) {
-					mRoom.setType(typeLanguage);
-				}
-
-				// if this is the first iteration, initialization
-				if (currentUID == null) {
-					currentUID = uid;
-					currentDoorCode = mRoom.getDoorCode();
-					currentOccupancy = new OccupancySorted(mRoom, tsStart,
-							tsEnd, onlyFreeRooms);
-				}
-
-				// if the condition holds, the room has changed, we move on to
-				// the next room. Thus
-				// re-initialize attributes
-				// for the loop, as well as storing the previous room
-				// occupations (sorted and ready to be sent) in the
-				// resulting HashMap
-				if (!uid.equals(currentUID)) {
-					// get occupations
-					FRRoomOccupancy mOccupancy = currentOccupancy
-							.getOccupancy();
-
-					addToHashMapOccupancy(currentDoorCode, mOccupancy, result);
-
-					// remove the room from the list, this is important as all
-					// the rooms might not be matched by the query (if there are
-					// no entry for instance -> we need to keep track of those)
-					uidList.remove(currentUID);
-
-					// re-initialize the value, and continue the process for
-					// other rooms
-					currentDoorCode = mRoom.getDoorCode();
-					currentOccupancy = new OccupancySorted(mRoom, tsStart,
-							tsEnd, onlyFreeRooms);
-					currentUID = uid;
-				}
-
-				FRPeriodOccupation accOcc = new FRPeriodOccupation(period,
-						available);
-				accOcc.setRatioOccupation(ratio);
-				currentOccupancy.addActualOccupation(accOcc);
-			}
-
-			// the last room has not been added yet
-			if (currentOccupancy != null && currentOccupancy.size() != 0) {
-				FRRoomOccupancy mOccupancy = currentOccupancy.getOccupancy();
-
-				addToHashMapOccupancy(currentDoorCode, mOccupancy, result);
-
-				// remove the room from the list
-				uidList.remove(currentUID);
+			for (Entry<String, OccupancySorted> occ : tempResult.entrySet()) {
+				FRRoomOccupancy defOcc = occ.getValue().getOccupancy();
+				addToHashMapOccupancy(occ.getValue().getRoom().getDoorCode(),
+						defOcc, result);
+				uidList.remove(occ.getKey());
 			}
 
 			// if some rooms have no occupancies during the given period, we
 			// need to cut the period into chunks of one hour for each room.
 			if (!uidList.isEmpty()) {
 				roomsListQueryFormat = "";
-				for (i = 0; i < uidList.size() - 1; ++i) {
+				for (int i = 0; i < uidList.size() - 1; ++i) {
 					roomsListQueryFormat += "?,";
 				}
 
-				// but we first need to get the additional info for each room
+				// but we first need to get the additional info for each
+				// room
 				roomsListQueryFormat += "?";
 				String infoRequest = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.surface, rl.type"
 						+ language.toUpperCase()
@@ -1169,11 +1098,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				PreparedStatement infoQuery = connectBDD
 						.prepareStatement(infoRequest);
 
-				for (i = 1; i <= uidList.size(); ++i) {
+				for (int i = 1; i <= uidList.size(); ++i) {
 					infoQuery.setString(i, uidList.get(i - 1));
 				}
 
 				ResultSet infoRoom = infoQuery.executeQuery();
+				OccupancySorted currentOccupancy = null;
 
 				while (infoRoom.next()) {
 					String uid = infoRoom.getString("uid");
@@ -1610,8 +1540,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			long startDay = mCalendar.getTimeInMillis();
 
 			String cleanRequest = "DELETE FROM `fr-occupancy` WHERE timestampStart > ?";
-			PreparedStatement cleanQuery = conn
-					.prepareStatement(cleanRequest);
+			PreparedStatement cleanQuery = conn.prepareStatement(cleanRequest);
 
 			cleanQuery.setLong(1, startDay);
 			cleanQuery.executeUpdate();
