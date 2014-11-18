@@ -100,7 +100,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ... V2");
 
-		logger.setLevel(Level.INFO);
+		logger.setLevel(Level.WARNING);
 		ConsoleHandler logHandler = new ConsoleHandler();
 		logger.addHandler(logHandler);
 
