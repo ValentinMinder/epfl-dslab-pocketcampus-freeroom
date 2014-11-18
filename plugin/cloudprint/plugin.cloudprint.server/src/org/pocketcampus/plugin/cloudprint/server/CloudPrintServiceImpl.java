@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -57,8 +56,9 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 
 	@Override
 	public int checkState() throws IOException {
-		cleanupIfNeeded();
-		return (checkPrinterEnabled("mainPrinter") && checkPrinterEnabled("Cups-PDF") ? 200 : 500 );
+		TempFileCleaner.cleanupIfNeeded();
+		int status = checkPrintersAndJobs();
+		return ((status == 0) ? 200 : (status + 500));
 	}
 	
 	@Override
@@ -67,7 +67,7 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 			private static final long serialVersionUID = -6760157045775850293L;
 			@Override
 			protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-				cleanupIfNeeded();
+				TempFileCleaner.cleanupIfNeeded();
 				long id = Long.parseLong(req.getParameter("file_id"));
 				int page = Integer.parseInt(req.getParameter("page"));
 				String gaspar = AuthenticationServiceImpl.authGetUserGasparFromReq(req);
@@ -118,7 +118,7 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 			}
 			@Override
 			protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-				cleanupIfNeeded();
+				TempFileCleaner.cleanupIfNeeded();
 				String gaspar = AuthenticationServiceImpl.authGetUserGasparFromReq(req);
 				if (gaspar == null) {
 					resp.setStatus(HttpURLConnection.HTTP_PROXY_AUTH);
@@ -126,7 +126,7 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 				}
 				long id = System.currentTimeMillis();
 				String filePath = PocketCampusServer.CONFIG.getString("CLOUDPRINT_DUMP_DIRECTORY") + "/" + gaspar + "_" + id;
-			    synchronized(oldFileCleaner) { // we don't want the cleaner to delete the freshly created directory before we put a file in it
+			    synchronized(TempFileCleaner.oldFileCleaner) { // we don't want the cleaner to delete the freshly created directory before we put a file in it
 					new File(filePath).mkdirs();
 					//String description = request.getParameter("description"); // Retrieves <input type="text" name="description">
 				    Part filePart = req.getPart("file"); // Retrieves <input type="file" name="file">
@@ -156,7 +156,7 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 
 	@Override
 	public PrintDocumentResponse printDocument(PrintDocumentRequest request) throws TException {
-		cleanupIfNeeded();
+		TempFileCleaner.cleanupIfNeeded();
 		String gaspar = AuthenticationServiceImpl.authGetUserGaspar();
 		if (gaspar == null) {
 			return new PrintDocumentResponse(CloudPrintStatusCode.AUTHENTICATION_ERROR);
@@ -182,7 +182,7 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 	
 	@Override
 	public PrintPreviewDocumentResponse printPreview(PrintDocumentRequest request) throws TException {
-		cleanupIfNeeded();
+		TempFileCleaner.cleanupIfNeeded();
 		String gaspar = AuthenticationServiceImpl.authGetUserGaspar();
 		if (gaspar == null) {
 			return new PrintPreviewDocumentResponse(CloudPrintStatusCode.AUTHENTICATION_ERROR);
@@ -426,90 +426,28 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 				return false;
 		}
 	}
+
+	///////////////////
 	
-	private static boolean checkPrinterEnabled(String printerName) throws IOException {
-		Process proc = Runtime.getRuntime().exec(new String[]{"lpstat", "-p", printerName});
-		String status = IOUtils.toString(proc.getInputStream(), "UTF-8");
-		return status.contains("enabled");
+	private int checkPrintersAndJobs() throws IOException {
+		int status = 0, id = 0;
+		for(Map.Entry<String, PrintJobChecker> e : jobCheckers.entrySet()) {
+			id++;
+			if(!PrinterStateChecker.checkPrinterAndTakeAction(e.getKey())) {
+				status += id;
+			}
+			if(!e.getValue().checkJobAndTakeAction()) {
+				status += 10 * id;
+			}
+		}
+		return status;
 	}
-
-
-
-	
-	
-	private static final long OLD_FILE_CLEAN_PERIOD = 1l; // in minutes
-	private static final long STUCK_JOB_CHECK_PERIOD = 1l; // in minutes (if a job lasts for more than x minutes, it is considered stuck)
-	
-	
-	private final Runnable oldFileCleaner = new Runnable() {
-		public synchronized void run() {
-			String cupsPdfOutDir = PocketCampusServer.CONFIG.getString("CLOUDPRINT_CUPSPDF_OUTDIR");
-			String cloudPrintDumpDir = PocketCampusServer.CONFIG.getString("CLOUDPRINT_DUMP_DIRECTORY");
-			try {
-				// delete all MultiPart* files in /tmp/ that are more than 60 minutes old; these files are created by Jetty to temporarily store uploaded files
-				Runtime.getRuntime().exec(new String[]{"find", "/tmp/", "-maxdepth", "1", "-name", "MultiPart*", "-cmin", "+60", "-delete"}).waitFor();
-				// delete all PDFs in /tmp/CloudPrintPDF/ that are more than 60 minutes old; these are generated by cups-pdf for print preview
-				Runtime.getRuntime().exec(new String[]{"find", cupsPdfOutDir, "-type", "f", "-cmin", "+60", "-delete"}).waitFor();
-				
-				// delete all files in cloudprint_files/ that are more than 60 minutes old
-				Runtime.getRuntime().exec(new String[]{"find", cloudPrintDumpDir, "-type", "f", "-cmin", "+60", "-delete"}).waitFor();
-				// delete all empty directories in cloudprint_files/
-				Runtime.getRuntime().exec(new String[]{"find", cloudPrintDumpDir, "-mindepth", "1", "-type", "d", "-empty", "-delete"}).waitFor();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	};
-	private final Runnable stuckJobDetector = new Runnable() {
-		private Map<String, String> lastPrinterStatus = generateInitialStatusMap();
-		public synchronized void run() {
-			try {
-				for(Entry<String, String> e : lastPrinterStatus.entrySet()) {
-					Process proc = Runtime.getRuntime().exec(new String[]{"lpstat", "-p", e.getKey()});
-					String status = IOUtils.toString(proc.getInputStream(), "UTF-8");
-					if(!status.contains("idle") && status.equals(e.getValue())) { // stuck!
-						System.out.println("PRINTER IS STUCK!");
-						System.out.println(e.getValue());
-						// parse job id
-						int jobId = Integer.parseInt(StringUtils.substringBetween(status, "-", "."));
-						System.out.println("attempting to cancel job " + jobId);
-						Runtime.getRuntime().exec(new String[]{"cancel", jobId + ""});
-					}
-					e.setValue(status);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		private Map<String, String> generateInitialStatusMap() {
-			Map<String, String> statuses = new HashMap<String, String>();
-			statuses.put("mainPrinter", "");
-			statuses.put("Cups-PDF", "");
-			return statuses;
-		}
-	};
-	private long lastCleaned = getCurrentTimeDivision(OLD_FILE_CLEAN_PERIOD);
-	private long lastChecked = getCurrentTimeDivision(STUCK_JOB_CHECK_PERIOD);
-	private void cleanupIfNeeded() {
-		synchronized(this) {
-			long currCleaningSlot = getCurrentTimeDivision(OLD_FILE_CLEAN_PERIOD);
-			if(currCleaningSlot != lastCleaned) {
-				lastCleaned = currCleaningSlot;
-				new Thread(oldFileCleaner).start();
-			}
-		}
-		synchronized(this) {
-			long currCheckingSlot = getCurrentTimeDivision(STUCK_JOB_CHECK_PERIOD);
-			if(currCheckingSlot != lastChecked) {
-				lastChecked = currCheckingSlot;
-				new Thread(stuckJobDetector).start();
-			}
-		}
+	private final Map<String, PrintJobChecker> jobCheckers = generateInitialJobCheckersMap(); 
+	private Map<String, PrintJobChecker> generateInitialJobCheckersMap() {
+		Map<String, PrintJobChecker> jobCheckers = new HashMap<String, PrintJobChecker>();
+		jobCheckers.put("mainPrinter", new PrintJobChecker("mainPrinter"));
+		jobCheckers.put("Cups-PDF", new PrintJobChecker("Cups-PDF"));
+		return jobCheckers;
 	}
-	private long getCurrentTimeDivision(long periodInMinutes) {
-		return System.currentTimeMillis() / 1000l / 60l / periodInMinutes;
-	}
-
+	
 }
