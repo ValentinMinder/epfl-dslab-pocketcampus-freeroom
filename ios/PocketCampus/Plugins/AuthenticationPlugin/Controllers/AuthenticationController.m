@@ -219,10 +219,7 @@ static AuthenticationController* instance __strong = nil;
             self.loginObservers = [NSMutableSet set];
         }
         [self.loginObservers addObject:loginObserver];
-        if (!self.observerAuthenticationStarted) {
-            self.observerAuthenticationStarted = YES;
-            [self.authService getAuthTequilaTokenWithDelegate:self];
-        }
+        [self restartAuthenticationProcessIfNeeded];
     }
 }
 
@@ -494,6 +491,13 @@ static AuthenticationController* instance __strong = nil;
 
 #pragma mark - Private
 
+- (void)restartAuthenticationProcessIfNeeded {
+    if (!self.observerAuthenticationStarted && self.loginObservers.count > 0) {
+        self.observerAuthenticationStarted = YES;
+        [self.authService getAuthTequilaTokenWithDelegate:self];
+    }
+}
+
 - (void)startAuthenticationForToken:(NSString*)token {
     [PCUtils throwExceptionIfObject:token notKindOfClass:[NSString class]];
     [PCUtils throwExceptionIfObject:self.authService notKindOfClass:[AuthenticationService class]]; //must be initialized at this point
@@ -531,7 +535,6 @@ static AuthenticationController* instance __strong = nil;
             } else { //new-style (PocketCampus session) authentication
                 [welf dismissAuthenticationViewControllerCompletion:^{
                     [welf cleanAndNotifyUserCancelledToObservers];
-                    //[AuthenticationService enqueueLogoutNotification];
                 }];
             }
         }];
@@ -551,11 +554,8 @@ static AuthenticationController* instance __strong = nil;
         self.authenticationNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
         
 
-        UIViewController* topViewController = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
-        while (topViewController.presentedViewController) {
-            topViewController = topViewController.presentedViewController;
-        }
-        [topViewController presentViewController:self.authenticationNavigationController animated:YES completion:^{
+        UIViewController* rootViewController = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
+        [rootViewController presentViewController:self.authenticationNavigationController animated:YES completion:^{
             [self.authenticationViewController focusOnInput];
         }];
 #else
