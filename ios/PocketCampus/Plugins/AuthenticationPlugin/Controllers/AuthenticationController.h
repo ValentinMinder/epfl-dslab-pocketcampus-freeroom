@@ -49,13 +49,20 @@ typedef enum {
 
 @end
 
+/**
+ * Domain and codes used for NSError in addLoginObserver:... failure block
+ */
+extern NSString* kAuthenticationErrorDomain;
+extern NSInteger kAuthenticationErrorCodeCouldNotAskForCredentials; //login was required but crendentials could not asked to the user (for e.g. in extension that does not support user input)
+extern NSInteger kAuthenticationErrorCodeOther;
+
 @interface PCLoginObserver : NSObject
 
 @property (nonatomic, weak) id observer;
 @property (nonatomic, copy) NSString* operationIdentifier;
 @property (nonatomic, copy) VoidBlock successBlock;
 @property (nonatomic, copy) VoidBlock userCancelledBlock;
-@property (nonatomic, copy) VoidBlock failureBlock;
+@property (nonatomic, copy) void (^failureBlock)(NSError* error);
 
 @end
 
@@ -113,8 +120,10 @@ typedef enum {
  * @param observer is unified by address. Meaning that if you already have registered observer with this method,
  * calling it again with the same observer will not do anything. You have to call removeLoginObserver: first
  * if you want to change the success/userCancelled/failure blocks.
+ *
+ * @param failure error is one of the kAuthenticationErrorCode
  */
-- (void)addLoginObserver:(id)observer success:(VoidBlock)success userCancelled:(VoidBlock)userCancelled failure:(VoidBlock)failure;
+- (void)addLoginObserver:(id)observer success:(VoidBlock)success userCancelled:(VoidBlock)userCancelled failure:(void (^)(NSError* error))failure;
 
 /**
  * Removes observer from list of observers.

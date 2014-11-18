@@ -30,6 +30,10 @@
 
 #pragma mark - PCLoginObserver implementation
 
+NSString* kAuthenticationErrorDomain = @"PocketCampus-Authentication";
+NSInteger kAuthenticationErrorCodeCouldNotAskForCredentials = 1;
+NSInteger kAuthenticationErrorCodeOther = 10;
+
 @implementation PCLoginObserver
 
 @synthesize observer, operationIdentifier, successBlock, userCancelledBlock, failureBlock;
@@ -207,7 +211,7 @@ static AuthenticationController* instance __strong = nil;
 
 #pragma mark New-style authentication
 
-- (void)addLoginObserver:(id)observer success:(VoidBlock)success userCancelled:(VoidBlock)userCancelled failure:(VoidBlock)failure {
+- (void)addLoginObserver:(id)observer success:(VoidBlock)success userCancelled:(VoidBlock)userCancelled failure:(void (^)(NSError* error))failure {
     @synchronized(self) {
         PCLoginObserver* loginObserver = [[PCLoginObserver alloc] init];
         loginObserver.observer = observer;
@@ -248,14 +252,14 @@ static AuthenticationController* instance __strong = nil;
                 [self startAuthenticationForToken:response.tequilaToken];
             } else {
                 [self dismissAuthenticationViewControllerCompletion:^{
-                    [self cleanAndNotifyFailureToObservers];
+                    [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
                 }];
             }
             break;
         }
         default:
             [self dismissAuthenticationViewControllerCompletion:^{
-                [self cleanAndNotifyFailureToObservers];
+                [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
             }];
             break;
     }
@@ -267,7 +271,7 @@ static AuthenticationController* instance __strong = nil;
  */
 - (void)getAuthTequilaTokenFailed {
     [self dismissAuthenticationViewControllerCompletion:^{
-        [self cleanAndNotifyFailureToObservers];
+        [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
     }];
 }
 
@@ -353,7 +357,7 @@ static AuthenticationController* instance __strong = nil;
         if (!self.tequilaToken) {
             CLSNSLog(@"!! ERROR: authentication succeeded but no saved tequila token. Notifying failure to observers.");
             [self dismissAuthenticationViewControllerCompletion:^{
-                [self cleanAndNotifyFailureToObservers];
+                [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
             }];
             return;
         }
@@ -380,7 +384,7 @@ static AuthenticationController* instance __strong = nil;
         });
     } else { //new-style (PocketCampus session) authentication
         [self dismissAuthenticationViewControllerCompletion:^{
-            [self cleanAndNotifyFailureToObservers];
+            [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
         }];
     }
 }
@@ -402,7 +406,7 @@ static AuthenticationController* instance __strong = nil;
         case AuthStatusCode_NETWORK_ERROR:
         {
             [self dismissAuthenticationViewControllerCompletion:^{
-                [self cleanAndNotifyFailureToObservers];
+                [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
             }];
             break;
         }
@@ -410,14 +414,14 @@ static AuthenticationController* instance __strong = nil;
         {
             [self deletePocketCampusAuthSessionId];
             [self dismissAuthenticationViewControllerCompletion:^{
-                [self cleanAndNotifyFailureToObservers];
+                [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
             }];
             break;
         }
         default:
         {
             [self dismissAuthenticationViewControllerCompletion:^{
-                [self cleanAndNotifyFailureToObservers];
+                [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
             }];
             break;
         }
@@ -430,7 +434,7 @@ static AuthenticationController* instance __strong = nil;
  */
 - (void)getAuthSessionFailedForRequest:(AuthSessionRequest *)request {
     [self dismissAuthenticationViewControllerCompletion:^{
-        [self cleanAndNotifyFailureToObservers];
+        [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
     }];
 }
 
@@ -451,7 +455,7 @@ static AuthenticationController* instance __strong = nil;
     } else {
         if (self.tequilaToken) {
             [self dismissAuthenticationViewControllerCompletion:^{
-                [self cleanAndNotifyFailureToObservers];
+                [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
             }];
         } else {
             [PCUtils showConnectionToServerTimedOutAlert];
@@ -559,8 +563,8 @@ static AuthenticationController* instance __strong = nil;
             [self.authenticationViewController focusOnInput];
         }];
 #else
-        // Cannot present AuthenticationViewController is exentsion
-        // => auth fails is no or wrong credentials. User should open main app.
+        // Cannot present AuthenticationViewController in exentsion
+        // => auth fails if no or wrong credentials. User should open main app.
         
         if (self.delegate) { //old-style authentication
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -573,7 +577,7 @@ static AuthenticationController* instance __strong = nil;
             });
         } else { //new-style (PocketCampus session) authentication
             [self dismissAuthenticationViewControllerCompletion:^{
-                [self cleanAndNotifyFailureToObservers];
+                [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeCouldNotAskForCredentials];
             }];
         }
 #endif
@@ -625,12 +629,13 @@ static AuthenticationController* instance __strong = nil;
     }
 }
 
-- (void)cleanAndNotifyFailureToObservers {
+- (void)cleanAndNotifyFailureToObserversWithErrorCode:(NSInteger)errorCode {
     [self clean];
     self.observerAuthenticationStarted = NO;
     @synchronized (self) {
+        NSError* error = [NSError errorWithDomain:kAuthenticationErrorDomain code:errorCode userInfo:nil];
         for (PCLoginObserver* loginObserver in self.loginObservers) {
-            loginObserver.failureBlock();
+            loginObserver.failureBlock(error);
         }
         [self.loginObservers removeAllObjects];
     }

@@ -193,10 +193,14 @@ static float const kProgressMax = 100;
                                 wjob.statusViewController.progress.completedUnitCount = 0;
                                 wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
                                 [wjob.navController popToViewController:wjob.requestViewController animated:YES];
-                            } failure:^{
+                            } failure:^(NSError *error) {
                                 wjob.statusViewController.progress.completedUnitCount = 0;
                                 wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
-                                [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:wjob.requestViewController];
+                                if (error.code == kAuthenticationErrorCodeCouldNotAskForCredentials) {
+                                    [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:wjob.requestViewController];
+                                } else {
+                                    [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:wjob.requestViewController];
+                                }
                                 [wjob.navController popToViewController:wjob.requestViewController animated:YES];
                             }];
                             break;
@@ -310,11 +314,15 @@ static float const kProgressMax = 100;
                 wjob.statusViewController.progress.completedUnitCount = 0;
                 wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
                 [wjob.navController popToViewController:wjob.requestViewController animated:YES];
-            } failure:^{
+            } failure:^(NSError *error) {
                 wjob.statusViewController.progress.completedUnitCount = 0;
                 wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
                 [wjob.navController popToViewController:wjob.requestViewController animated:YES];
-                [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:wjob.requestViewController];
+                if (error.code == kAuthenticationErrorCodeCouldNotAskForCredentials) {
+                    [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:wjob.requestViewController];
+                } else {
+                    [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:wjob.requestViewController];
+                }
             }];
             break;
         }

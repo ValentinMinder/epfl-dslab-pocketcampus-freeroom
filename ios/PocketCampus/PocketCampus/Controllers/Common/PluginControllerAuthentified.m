@@ -37,7 +37,7 @@
 
 #pragma mark - Login observation
 
-- (void)addLoginObserver:(id)observer successBlock:(VoidBlock)successBlock userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(VoidBlock)failureBlock {
+- (void)addLoginObserver:(id)observer successBlock:(VoidBlock)successBlock userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(void (^)(NSError* error))failureBlock {
     @synchronized(self) {
         PCLoginObserver* loginObserver = [[PCLoginObserver alloc] init];
         loginObserver.observer = observer;
@@ -79,12 +79,13 @@
     }
 }
 
-- (void)cleanAndNotifyFailureToObservers {
+- (void)cleanAndNotifyFailureToObserversWithAuthenticationErrorCode:(NSInteger)errorCode {
     self.authController = nil;
     self.authenticationStarted = NO;
     @synchronized (self) {
+        NSError* error = [NSError errorWithDomain:kAuthenticationErrorDomain code:errorCode userInfo:nil];
         for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
-            loginObserver.failureBlock();
+            loginObserver.failureBlock(error);
             [self.loginObservers removeObject:loginObserver];
         }
     }
@@ -105,11 +106,12 @@
     self.authController = nil;
     self.authenticationStarted = NO;
     @synchronized (self) {
+        NSError* error = [NSError errorWithDomain:kAuthenticationErrorDomain code:kAuthenticationErrorCodeOther userInfo:nil];
         for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
             if ([loginObserver.observer respondsToSelector:@selector(serviceConnectionToServerFailed)]) {
                 [loginObserver.observer serviceConnectionToServerFailed];
             } else {
-                loginObserver.failureBlock();
+                loginObserver.failureBlock(error);
             }
             [self.loginObservers removeObject:loginObserver];
         }

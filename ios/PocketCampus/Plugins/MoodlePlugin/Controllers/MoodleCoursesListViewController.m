@@ -187,7 +187,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
                 [welf startGetCoursesListRequest];
             } userCancelled:^{
                 [welf.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"LoginRequired", @"PocketCampus", nil)];
-            } failure:^{
+            } failure:^(NSError *error) {
                 [welf error];
             }];
             break;
