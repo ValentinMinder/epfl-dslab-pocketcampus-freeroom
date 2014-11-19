@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		04544792AA1A14CFB6B2C4BA /* AlumniService.m in Sources */ = {isa = PBXBuildFile; fileRef = 57C743F9BC64592DC646E5B2 /* AlumniService.m */; };
-		0D39446F98FD3619345D2298 /* AlumniService.m in Sources */ = {isa = PBXBuildFile; fileRef = 57C743F9BC64592DC646E5B2 /* AlumniService.m */; };
 		18BE4633A56CF967183FC968 /* IsAcademiaController.m in Sources */ = {isa = PBXBuildFile; fileRef = 104F4598B47B32142EF41F88 /* IsAcademiaController.m */; };
 		1997124D15EFC9CA00E2A679 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B7322515C206F30091757D /* libsqlite3.dylib */; };
 		1E8A476B975E7A7BDF71ABF5 /* isacademia.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A324ABBA411E9EDDA54A1AB /* isacademia.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -537,17 +536,14 @@
 		3D60403F97790317C691C8A4 /* pushnotif.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4F4BE09D7B6CB26B98B895 /* pushnotif.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		435A47269DBBFFEEE4BC0920 /* PushNotifController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F427C8F702CC10F288D8C /* PushNotifController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		4C3C4FEEB609B30BEFA34726 /* events.m in Sources */ = {isa = PBXBuildFile; fileRef = 62FB4BFDBB53089EB412B0C1 /* events.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		52564A138B25483BD922789B /* AlumniService.m in Sources */ = {isa = PBXBuildFile; fileRef = 57C743F9BC64592DC646E5B2 /* AlumniService.m */; };
 		57FD42B68FA2EB290F49099E /* Alumni@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0F2443B6A4B62114CDE2BEB2 /* Alumni@2x.png */; };
 		6D37484BA9196EC2F8CA7AF8 /* Alumni@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0F2443B6A4B62114CDE2BEB2 /* Alumni@2x.png */; };
 		718D4D56B3591F1306C1875F /* IsAcademiaService.m in Sources */ = {isa = PBXBuildFile; fileRef = 152945DD901E004926831E89 /* IsAcademiaService.m */; };
 		73BB4592B71D5A2389E885F4 /* Alumni.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE440E1B8C0863B7672C4B4 /* Alumni.png */; };
 		76515AD1AD2B4332BDAD1DA1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96AF5068222245668954256E /* libPods.a */; };
-		775642AA9AF6161202CCEE5B /* AlumniController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5064295A6C6E3D7D55A7FE6 /* AlumniController.m */; };
 		8193447294E5D065581CBAAD /* IsAcademia.png in Resources */ = {isa = PBXBuildFile; fileRef = 2EDE488982F3A13DD8BF17AF /* IsAcademia.png */; };
 		8D964F08A876C676D9337E69 /* Events.png in Resources */ = {isa = PBXBuildFile; fileRef = C9574A2CA3E21EEE6B620DE7 /* Events.png */; };
 		9017DC7828C541BFBF7E785E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96AF5068222245668954256E /* libPods.a */; };
-		92AC48B8A78B4187C0123A49 /* AlumniController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5064295A6C6E3D7D55A7FE6 /* AlumniController.m */; };
 		96734DDF839CB17F066D38B0 /* Alumni@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0F2443B6A4B62114CDE2BEB2 /* Alumni@2x.png */; };
 		A4B74DCFBECCA89CA9FE691C /* AlumniController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5064295A6C6E3D7D55A7FE6 /* AlumniController.m */; };
 		C5894949AFC59FDB4346CF53 /* IsAcademia@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51224CC590D66476EC4D0CFB /* IsAcademia@2x.png */; };
@@ -3523,8 +3519,6 @@
 				32D834B219A4D71200844901 /* PushNotifController.m in Sources */,
 				323E5894193FC08F002B0B30 /* CamiproWidgetViewController.m in Sources */,
 				32D834A219A4D15D00844901 /* camipro.m in Sources */,
-				775642AA9AF6161202CCEE5B /* AlumniController.m in Sources */,
-				52564A138B25483BD922789B /* AlumniService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3741,8 +3735,6 @@
 				32F9619119C630DF006A4C46 /* CloudPrintMultiPageLayoutButton.m in Sources */,
 				32CE951A19DD90E10071F987 /* CloudPrintRequestViewController.m in Sources */,
 				32CE951E19DD9BD50071F987 /* CloudPrintController.m in Sources */,
-				92AC48B8A78B4187C0123A49 /* AlumniController.m in Sources */,
-				0D39446F98FD3619345D2298 /* AlumniService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

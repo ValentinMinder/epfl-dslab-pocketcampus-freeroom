@@ -25,9 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-//  Created by ___FULLUSERNAME___ on ___DATE___.
+//  Created by Loïc Gardiol on 19.11.2014
 
 #import "AlumniController.h"
+
+#import "EventItemViewController.h"
 
 static AlumniController* instance __weak = nil;
 
@@ -70,6 +72,12 @@ static AlumniController* instance __weak = nil;
              * self.mainSplitViewController.pluginIdentifier = [[self class] identifierName];
              *
              */
+            
+            UIViewController* eventItemViewController = [[EventItemViewController alloc] initAndLoadEventItemWithId:1];
+            PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:eventItemViewController];
+            navController.pluginIdentifier = [[self class] identifierName];
+            self.mainNavigationController = navController;
+            
             instance = self;
         }
         return self;

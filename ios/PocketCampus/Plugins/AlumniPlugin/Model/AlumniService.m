@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-//  Created by ___FULLUSERNAME___ on ___DATE___.
+//  Created by Loïc Gardiol on 19.11.2014
  
 #import "AlumniService.h"
 
@@ -40,7 +40,8 @@ static AlumniService* instance __weak = nil;
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"AlumniService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"alumni" thriftServiceClientClassName:NSStringFromClass(AlumniServiceClient.class)];
+        //self = [super initWithServiceName:@"alumni" thriftServiceClientClassName:NSStringFromClass(AlumniServiceClient.class)];
+        self = [super init];
         if (self) {
             instance = self;
         }
