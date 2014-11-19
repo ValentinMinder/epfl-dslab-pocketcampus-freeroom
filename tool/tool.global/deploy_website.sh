@@ -22,6 +22,7 @@ elif [ "$1" == "prod2" ]
 then
 	server="kissrv119.epfl.ch"
 else
+	echo "Unknown server (possible options: dev, prod1, prod2)";
 	exit
 fi
 
