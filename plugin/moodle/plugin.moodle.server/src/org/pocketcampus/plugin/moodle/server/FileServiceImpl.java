@@ -67,7 +67,9 @@ public final class FileServiceImpl implements FileService {
 			response.setContentType(conn.getContentType());
 			response.setContentLength(conn.getContentLength());
 			// "a means for the origin server to suggest a default filename if the user requests that the content is saved to a file"
-			response.addHeader(HTTP_CONTENT_DISPOSITION, conn.getHeaderField(HTTP_CONTENT_DISPOSITION));
+			if (conn.getHeaderField(HTTP_CONTENT_DISPOSITION) != null) {
+				response.addHeader(HTTP_CONTENT_DISPOSITION, conn.getHeaderField(HTTP_CONTENT_DISPOSITION));
+			}
 
 			IOUtils.copy(conn.getInputStream(), response.getOutputStream());
 		} finally {
