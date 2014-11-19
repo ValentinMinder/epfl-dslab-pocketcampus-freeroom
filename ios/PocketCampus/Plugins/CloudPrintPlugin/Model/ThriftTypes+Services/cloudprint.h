@@ -222,8 +222,37 @@ enum CloudPrintOrientation {
 
 @end
 
+@interface PrintPreviewDocumentResponse : NSObject <NSCoding> {
+  int __statusCode;
+  int32_t __numberOfPages;
+
+  BOOL __statusCode_isset;
+  BOOL __numberOfPages_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=statusCode, setter=setStatusCode:) int statusCode;
+@property (nonatomic, getter=numberOfPages, setter=setNumberOfPages:) int32_t numberOfPages;
+#endif
+
+- (id) initWithStatusCode: (int) statusCode numberOfPages: (int32_t) numberOfPages;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (int) statusCode;
+- (void) setStatusCode: (int) statusCode;
+- (BOOL) statusCodeIsSet;
+
+- (int32_t) numberOfPages;
+- (void) setNumberOfPages: (int32_t) numberOfPages;
+- (BOOL) numberOfPagesIsSet;
+
+@end
+
 @protocol CloudPrintService <NSObject>
 - (PrintDocumentResponse *) printDocument: (PrintDocumentRequest *) request;  // throws TException
+- (PrintPreviewDocumentResponse *) printPreview: (PrintDocumentRequest *) request;  // throws TException
 @end
 
 @interface CloudPrintServiceClient : NSObject <CloudPrintService> {

@@ -230,6 +230,8 @@
 		3281AB8216E221F700D8FAD1 /* EventItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3281AB8116E221F700D8FAD1 /* EventItemViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3281AB8316E2254600D8FAD1 /* EventItemView.xib */; };
 		3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3282C283181179E2002A4FAE /* EventsLarge@2x.png */; };
+		3283C4D41A1D012F00B7ED55 /* CloudPrintPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3283C4D21A1D012F00B7ED55 /* CloudPrintPreviewViewController.m */; };
+		3283C4D51A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4D31A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib */; };
 		328501B419E5768F0049356E /* MapLayersBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 328501B219E5768F0049356E /* MapLayersBarButton.png */; };
 		328501B519E5768F0049356E /* MapLayersBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328501B319E5768F0049356E /* MapLayersBarButton@2x.png */; };
 		32870F9E19B674AE00A3BC68 /* CloudPrintRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32870F9D19B674AE00A3BC68 /* CloudPrintRequestViewController.m */; };
@@ -902,6 +904,9 @@
 		3281AB8116E221F700D8FAD1 /* EventItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EventItemViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		3281AB8316E2254600D8FAD1 /* EventItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventItemView.xib; sourceTree = "<group>"; };
 		3282C283181179E2002A4FAE /* EventsLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EventsLarge@2x.png"; sourceTree = "<group>"; };
+		3283C4D11A1D012F00B7ED55 /* CloudPrintPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintPreviewViewController.h; sourceTree = "<group>"; };
+		3283C4D21A1D012F00B7ED55 /* CloudPrintPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintPreviewViewController.m; sourceTree = "<group>"; };
+		3283C4D31A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CloudPrintPreviewViewController.xib; sourceTree = "<group>"; };
 		328501B219E5768F0049356E /* MapLayersBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MapLayersBarButton.png; sourceTree = "<group>"; };
 		328501B319E5768F0049356E /* MapLayersBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapLayersBarButton@2x.png"; sourceTree = "<group>"; };
 		32870F9C19B674AE00A3BC68 /* CloudPrintRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintRequestViewController.h; sourceTree = "<group>"; };
@@ -2393,6 +2398,9 @@
 				325F1FB019FA8C060019CFCB /* CloudPrintExtensionInfoViewController.h */,
 				325F1FB119FA8C060019CFCB /* CloudPrintExtensionInfoViewController.m */,
 				325F1FCA19FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib */,
+				3283C4D11A1D012F00B7ED55 /* CloudPrintPreviewViewController.h */,
+				3283C4D21A1D012F00B7ED55 /* CloudPrintPreviewViewController.m */,
+				3283C4D31A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -3135,6 +3143,7 @@
 				320F859B194EED8C00BF3228 /* ArrowRightBarButton.png in Resources */,
 				3289F2B9183FAB8C00D833C2 /* LocationArrow2Active.png in Resources */,
 				32DE5B2117F1F8D900E03423 /* DirectoryLarge.png in Resources */,
+				3283C4D51A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib in Resources */,
 				326E3E3D1963FF7F00017F0C /* CellEmptyPicture.png in Resources */,
 				320F859A194EED8C00BF3228 /* ArrowLeftBarButton@2x.png in Resources */,
 				32574ED6182140AE008F3163 /* DirectoryEmptyPictureSmall.png in Resources */,
@@ -3472,6 +3481,7 @@
 				32456C0A184373DE00993F8B /* TransportNextDeparturesCell.m in Sources */,
 				324151F415377B4C00CCFB22 /* MapItemAnnotation.m in Sources */,
 				3232C45919B8A0BF002BA3C6 /* CloudPrintModelAdditions.m in Sources */,
+				3283C4D41A1D012F00B7ED55 /* CloudPrintPreviewViewController.m in Sources */,
 				3275435F153872DF00C94F3D /* MapUtils.m in Sources */,
 				326F5A7219BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.m in Sources */,
 				32CCB4C8155520FE00220282 /* AuthenticationController.m in Sources */,

@@ -42,6 +42,7 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
 @interface CloudPrintService ()
 
 @property (nonatomic, strong) AFHTTPSessionManager* filesUploadSessionManager;
+@property (nonatomic, strong) NSMutableDictionary* uploadStatusForJobUniqueId;
 
 @end
 
@@ -57,6 +58,7 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
         self = [super initWithServiceName:@"cloudprint" thriftServiceClientClassName:NSStringFromClass(CloudPrintServiceClient.class)];
         if (self) {
             instance = self;
+            instance.uploadStatusForJobUniqueId = [NSMutableDictionary dictionary];
         }
         return self;
     }
@@ -86,11 +88,29 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
     [self.operationQueue addOperation:operation];
 }
 
+- (void)printPreviewWithRequest:(PrintDocumentRequest*)request delegate:(id<CloudPrintServiceDelegate>)delegate {
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.userInfo = @{kCloudPrintServiceJobUniqueIdServiceRequestUserInfoKey:request.jobUniqueId};
+    operation.serviceClientSelector = @selector(printPreview:);
+    operation.delegateDidReturnSelector = @selector(printPreviewForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(printPreviewFailedForRequest:);
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    [self.operationQueue addOperation:operation];
+}
+
 #pragma mark - Misc
 
 - (void)uploadForPrintDocumentWithLocalURL:(NSURL*)localURL jobUniqueId:(NSString*)jobUniqueId success:(void (^)(int64_t documentId))success progress:(NSProgress* __autoreleasing*)progress failure:(void (^)(CloudPrintUploadFailureReason failureReason))failure {
     
     [PCUtils throwExceptionIfObject:localURL notKindOfClass:[NSURL class]];
+    
+    if (jobUniqueId) {
+        [PCUtils throwExceptionIfObject:jobUniqueId notKindOfClass:[NSString class]];
+        if (jobUniqueId.length == 0) {
+            [NSException exceptionWithName:@"Illegal argument" reason:@"jobUniqueId cannot be of length 0" userInfo:nil];
+        }
+    }
     
     if (!self.filesUploadSessionManager) {
         self.filesUploadSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
@@ -105,6 +125,7 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
     } error:&error];
     
     if (error) {
+        [self setUploadStatus:CloudPrintJobUploadStatusWaitingForUpload forJobWithUniqueIdOrNil:jobUniqueId];
         failure(CloudPrintUploadFailureReasonUnknown);
         return;
     }
@@ -122,12 +143,14 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
         }
         
         if (![response isKindOfClass:[NSHTTPURLResponse class]]) {
+            [self setUploadStatus:CloudPrintJobUploadStatusWaitingForUpload forJobWithUniqueIdOrNil:jobUniqueId];
             failure(CloudPrintUploadFailureReasonNetworkError);
             return;
         }
         
         NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
         if (error && httpResponse.statusCode == 0) {
+            [self setUploadStatus:CloudPrintJobUploadStatusWaitingForUpload forJobWithUniqueIdOrNil:jobUniqueId];
             failure(CloudPrintUploadFailureReasonUnknown);
         } else {
             switch (httpResponse.statusCode) {
@@ -135,25 +158,31 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
                 {
                     NSDictionary* responseDic = (NSDictionary*)responseObject;
                     if (![responseDic isKindOfClass:[NSDictionary class]]) {
+                        [self setUploadStatus:CloudPrintJobUploadStatusWaitingForUpload forJobWithUniqueIdOrNil:jobUniqueId];
                         failure(CloudPrintUploadFailureReasonUnknown);
                     }
                     NSString* documentIdString = responseDic[kCloudPrintRawUploadJSONResponseDocumentIdKey];
                     if (!documentIdString) {
+                        [self setUploadStatus:CloudPrintJobUploadStatusWaitingForUpload forJobWithUniqueIdOrNil:jobUniqueId];
                         failure(CloudPrintUploadFailureReasonUnknown);
                     }
                     int64_t documentId = [documentIdString longLongValue];
                     if (documentId <= 0) {
+                        [self setUploadStatus:CloudPrintJobUploadStatusWaitingForUpload forJobWithUniqueIdOrNil:jobUniqueId];
                         failure(CloudPrintUploadFailureReasonUnknown);
                     }
+                    [self setUploadStatus:CloudPrintJobUploadStatusUploaded forJobWithUniqueIdOrNil:jobUniqueId];
                     success(documentId);
                     break;
                 }
                 case 407:
                 {
+                    [self setUploadStatus:CloudPrintJobUploadStatusWaitingForUpload forJobWithUniqueIdOrNil:jobUniqueId];
                     failure(CloudPrintUploadFailureReasonAuthenticationError);
                     break;
                 }
                 default:
+                    [self setUploadStatus:CloudPrintJobUploadStatusWaitingForUpload forJobWithUniqueIdOrNil:jobUniqueId];
                     failure(CloudPrintUploadFailureReasonUnknown);
                     break;
             }
@@ -163,6 +192,19 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
     
     uploadTask.taskDescription = jobUniqueId;
     [uploadTask resume];
+    [self setUploadStatus:CloudPrintJobUploadStatusUploading forJobWithUniqueIdOrNil:jobUniqueId];
+}
+
+- (CloudPrintJobUploadStatus)uploadStatusForJobWithUniqueId:(NSString*)jobUniqueId {
+    [PCUtils throwExceptionIfObject:jobUniqueId notKindOfClass:[NSString class]];
+    if (jobUniqueId.length == 0) {
+        [NSException exceptionWithName:@"Illegal argument" reason:@"jobUniqueId cannot be of length 0" userInfo:nil];
+    }
+    NSNumber* nsStatus = self.uploadStatusForJobUniqueId[jobUniqueId];
+    if (!nsStatus) {
+        return CloudPrintJobUploadStatusWaitingForUpload;
+    }
+    return [nsStatus integerValue];
 }
 
 - (void)cancelJobsWithUniqueId:(NSString*)jobUniqueId {
@@ -181,8 +223,18 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
     for (NSURLSessionUploadTask* task in self.filesUploadSessionManager.uploadTasks) {
         if ([task.taskDescription isEqualToString:jobUniqueId]) {
             [task cancel];
+            [self setUploadStatus:CloudPrintJobUploadStatusWaitingForUpload forJobWithUniqueIdOrNil:jobUniqueId];
             NSLog(@"-> Cancelled CloudPrint job upload task operation (%@)", jobUniqueId);
         }
+    }
+}
+
+#pragma mark - Private
+
+//does nothing if jobUniqueId is nil or length 0
+- (void)setUploadStatus:(CloudPrintJobUploadStatus)status forJobWithUniqueIdOrNil:(NSString*)jobUniqueId {
+    if ([jobUniqueId isKindOfClass:[NSString class]] && jobUniqueId.length > 0) {
+        self.uploadStatusForJobUniqueId[jobUniqueId] = @(status);
     }
 }
 

@@ -954,6 +954,153 @@
 
 @end
 
+@implementation PrintPreviewDocumentResponse
+
+- (id) initWithStatusCode: (int) statusCode numberOfPages: (int32_t) numberOfPages
+{
+  self = [super init];
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
+  __numberOfPages = numberOfPages;
+  __numberOfPages_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"statusCode"])
+  {
+    __statusCode = [decoder decodeIntForKey: @"statusCode"];
+    __statusCode_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"numberOfPages"])
+  {
+    __numberOfPages = [decoder decodeInt32ForKey: @"numberOfPages"];
+    __numberOfPages_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__statusCode_isset)
+  {
+    [encoder encodeInt: __statusCode forKey: @"statusCode"];
+  }
+  if (__numberOfPages_isset)
+  {
+    [encoder encodeInt32: __numberOfPages forKey: @"numberOfPages"];
+  }
+}
+
+- (void) dealloc
+{
+  [super dealloc];
+}
+
+- (int) statusCode {
+  return __statusCode;
+}
+
+- (void) setStatusCode: (int) statusCode {
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
+}
+
+- (BOOL) statusCodeIsSet {
+  return __statusCode_isset;
+}
+
+- (void) unsetStatusCode {
+  __statusCode_isset = NO;
+}
+
+- (int32_t) numberOfPages {
+  return __numberOfPages;
+}
+
+- (void) setNumberOfPages: (int32_t) numberOfPages {
+  __numberOfPages = numberOfPages;
+  __numberOfPages_isset = YES;
+}
+
+- (BOOL) numberOfPagesIsSet {
+  return __numberOfPages_isset;
+}
+
+- (void) unsetNumberOfPages {
+  __numberOfPages_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setStatusCode: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setNumberOfPages: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"PrintPreviewDocumentResponse"];
+  if (__statusCode_isset) {
+    [outProtocol writeFieldBeginWithName: @"statusCode" type: TType_I32 fieldID: 1];
+    [outProtocol writeI32: __statusCode];
+    [outProtocol writeFieldEnd];
+  }
+  if (__numberOfPages_isset) {
+    [outProtocol writeFieldBeginWithName: @"numberOfPages" type: TType_I32 fieldID: 2];
+    [outProtocol writeI32: __numberOfPages];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"PrintPreviewDocumentResponse("];
+  [ms appendString: @"statusCode:"];
+  [ms appendFormat: @"%i", __statusCode];
+  [ms appendString: @",numberOfPages:"];
+  [ms appendFormat: @"%i", __numberOfPages];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @interface printDocument_args : NSObject <NSCoding> {
   PrintDocumentRequest * __request;
 
@@ -1223,6 +1370,275 @@
 
 @end
 
+@interface printPreview_args : NSObject <NSCoding> {
+  PrintDocumentRequest * __request;
+
+  BOOL __request_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=request, setter=setRequest:) PrintDocumentRequest * request;
+#endif
+
+- (id) initWithRequest: (PrintDocumentRequest *) request;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (PrintDocumentRequest *) request;
+- (void) setRequest: (PrintDocumentRequest *) request;
+- (BOOL) requestIsSet;
+
+@end
+
+@implementation printPreview_args
+
+- (id) initWithRequest: (PrintDocumentRequest *) request
+{
+  self = [super init];
+  __request = [request retain];
+  __request_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"request"])
+  {
+    __request = [[decoder decodeObjectForKey: @"request"] retain];
+    __request_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__request_isset)
+  {
+    [encoder encodeObject: __request forKey: @"request"];
+  }
+}
+
+- (void) dealloc
+{
+  [__request release];
+  [super dealloc];
+}
+
+- (PrintDocumentRequest *) request {
+  return [[__request retain] autorelease];
+}
+
+- (void) setRequest: (PrintDocumentRequest *) request {
+  [request retain];
+  [__request release];
+  __request = request;
+  __request_isset = YES;
+}
+
+- (BOOL) requestIsSet {
+  return __request_isset;
+}
+
+- (void) unsetRequest {
+  [__request release];
+  __request = nil;
+  __request_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          PrintDocumentRequest *fieldValue = [[PrintDocumentRequest alloc] init];
+          [fieldValue read: inProtocol];
+          [self setRequest: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"printPreview_args"];
+  if (__request_isset) {
+    if (__request != nil) {
+      [outProtocol writeFieldBeginWithName: @"request" type: TType_STRUCT fieldID: 1];
+      [__request write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"printPreview_args("];
+  [ms appendString: @"request:"];
+  [ms appendFormat: @"%@", __request];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface PrintPreview_result : NSObject <NSCoding> {
+  PrintPreviewDocumentResponse * __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=success, setter=setSuccess:) PrintPreviewDocumentResponse * success;
+#endif
+
+- (id) initWithSuccess: (PrintPreviewDocumentResponse *) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (PrintPreviewDocumentResponse *) success;
+- (void) setSuccess: (PrintPreviewDocumentResponse *) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation PrintPreview_result
+
+- (id) initWithSuccess: (PrintPreviewDocumentResponse *) success
+{
+  self = [super init];
+  __success = [success retain];
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [[decoder decodeObjectForKey: @"success"] retain];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeObject: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [__success release];
+  [super dealloc];
+}
+
+- (PrintPreviewDocumentResponse *) success {
+  return [[__success retain] autorelease];
+}
+
+- (void) setSuccess: (PrintPreviewDocumentResponse *) success {
+  [success retain];
+  [__success release];
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  [__success release];
+  __success = nil;
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_STRUCT) {
+          PrintPreviewDocumentResponse *fieldValue = [[PrintPreviewDocumentResponse alloc] init];
+          [fieldValue read: inProtocol];
+          [self setSuccess: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"PrintPreview_result"];
+
+  if (__success_isset) {
+    if (__success != nil) {
+      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
+      [__success write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"PrintPreview_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%@", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @implementation CloudPrintServiceClient
 - (id) initWithProtocol: (id <TProtocol>) protocol
 {
@@ -1284,6 +1700,46 @@
   return [self recv_printDocument];
 }
 
+- (void) send_printPreview: (PrintDocumentRequest *) request
+{
+  [outProtocol writeMessageBeginWithName: @"printPreview" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"printPreview_args"];
+  if (request != nil)  {
+    [outProtocol writeFieldBeginWithName: @"request" type: TType_STRUCT fieldID: 1];
+    [request write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (PrintPreviewDocumentResponse *) recv_printPreview
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  PrintPreview_result * result = [[[PrintPreview_result alloc] init] autorelease];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"printPreview failed: unknown result"];
+}
+
+- (PrintPreviewDocumentResponse *) printPreview: (PrintDocumentRequest *) request
+{
+  [self send_printPreview: request];
+  return [self recv_printPreview];
+}
+
 @end
 
 @implementation CloudPrintServiceProcessor
@@ -1303,6 +1759,14 @@
     [invocation setSelector: s];
     [invocation retainArguments];
     [mMethodMap setValue: invocation forKey: @"printDocument"];
+  }
+  {
+    SEL s = @selector(process_printPreview_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"printPreview"];
   }
   return self;
 }
@@ -1353,6 +1817,23 @@
   PrintDocument_result * result = [[PrintDocument_result alloc] init];
   [result setSuccess: [mService printDocument: [args request]]];
   [outProtocol writeMessageBeginWithName: @"printDocument"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release];
+  [args release];
+}
+
+- (void) process_printPreview_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  printPreview_args * args = [[printPreview_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  PrintPreview_result * result = [[PrintPreview_result alloc] init];
+  [result setSuccess: [mService printPreview: [args request]]];
+  [outProtocol writeMessageBeginWithName: @"printPreview"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
   [result write: outProtocol];

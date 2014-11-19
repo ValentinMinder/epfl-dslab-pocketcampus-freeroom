@@ -39,12 +39,20 @@ typedef NS_ENUM(NSInteger, CloudPrintUploadFailureReason) {
     CloudPrintUploadFailureReasonUnknown
 };
 
+typedef NS_ENUM(NSInteger, CloudPrintJobUploadStatus) {
+    CloudPrintJobUploadStatusWaitingForUpload,
+    CloudPrintJobUploadStatusUploading,
+    CloudPrintJobUploadStatusUploaded
+};
+
 @protocol CloudPrintServiceDelegate <PCServiceDelegate>
 
 @optional
 
 - (void)printDocumentForRequest:(PrintDocumentRequest*)request didReturn:(PrintDocumentResponse*)response;
 - (void)printDocumentFailedForRequest:(PrintDocumentRequest*)request;
+- (void)printPreviewForRequest:(PrintDocumentRequest*)request didReturn:(PrintPreviewDocumentResponse*)response;
+- (void)printPreviewFailedForRequest:(PrintDocumentRequest*)request;
 
 @end
 
@@ -52,11 +60,13 @@ typedef NS_ENUM(NSInteger, CloudPrintUploadFailureReason) {
 
 /*
  * Thrift service methods
- *
- * - (PrintDocumentResponse *) printDocument: (PrintDocumentRequest *) request;  // throws TException
+ 
+ - (PrintDocumentResponse *) printDocument: (PrintDocumentRequest *) request;  // throws TException
+ - (PrintPreviewDocumentResponse *) printPreview: (PrintDocumentRequest *) request;  // throws TException
  */
 
 - (void)printDocumentWithRequest:(PrintDocumentRequest*)request delegate:(id<CloudPrintServiceDelegate>)delegate;
+- (void)printPreviewWithRequest:(PrintDocumentRequest*)request delegate:(id<CloudPrintServiceDelegate>)delegate;
 
 /**
  * @param localURL must be the URL of a readable local file. Cannot be nil.
@@ -66,6 +76,13 @@ typedef NS_ENUM(NSInteger, CloudPrintUploadFailureReason) {
  * @param failure executed when the operation fails.
  */
 - (void)uploadForPrintDocumentWithLocalURL:(NSURL*)localURL jobUniqueId:(NSString*)jobUniqueId success:(void (^)(int64_t documentId))success progress:(NSProgress* __autoreleasing*)progress failure:(void (^)(CloudPrintUploadFailureReason failureReason))failure;
+
+/**
+ * Before calling uploadForPrintDocumentWithLocalURL: a job has the wating for upload status.
+ * Once called but before success/failure, the status is uploading.
+ * Then, on finish, the status is either uploaded if success, or waiting for upload if failure.
+ */
+- (CloudPrintJobUploadStatus)uploadStatusForJobWithUniqueId:(NSString*)jobUniqueId;
 
 /**
  * @discussion Loops through self.operationQueue.operations and cancels all operations
