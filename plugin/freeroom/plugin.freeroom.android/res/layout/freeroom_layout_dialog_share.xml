@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for the dialog that enables the user to share his location with friends and server. -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/background_light"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <!-- Basic summary of what will be shared with friends -->
+
+
+        <!-- on android 3.0+, add: android:textIsSelectable="true" -->
+
+        <TextView
+            android:id="@+id/freeroom_layout_dialog_share_textBasic"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:selectAllOnFocus="true"
+            android:text="I will be in room ... (mock text) "
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/black" />
+
+        <!-- Edit text for additional personalized text for friends only -->
+        <!-- Max length is also 30 on server-side! -->
+
+        <EditText
+            android:id="@+id/freeroom_layout_dialog_share_text_edit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:hint="@string/freeroom_dialog_share_textedit_hint"
+            android:imeOptions="actionSend"
+            android:maxLines="1"
+            android:maxLength="30"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/black" />
+
+        <!-- Checkbox to choose if course chosen should be shared also with server -->
+
+        <CheckBox
+            android:id="@+id/freeroom_layout_dialog_share_checkbox_server"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/freeroom_dialog_share_checkbox_msg"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/black" />
+
+        <!-- spinner to choose the course you're going to work on -->
+        <!-- TODO: gone while not finished -->
+
+        <Spinner
+            android:id="@+id/freeroom_layout_dialog_share_spinner_course"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <!-- Disclaimer that explains what is shared to the server and why. -->
+
+        <TextView
+            android:id="@+id/freeroom_layout_dialog_share_info"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/freeroom_dialog_share_disclaimer"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/darker_gray" />
+    </LinearLayout>
+
+</ScrollView>
