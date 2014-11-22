@@ -58,10 +58,12 @@ CREATE TABLE IF NOT EXISTS `fr-checkOccupancy` (
 
 -- This table holds users occupancies
 CREATE TABLE IF NOT EXISTS `fr-occupancy-users` (
-  `uid` varchar(255) NOT NULL,
-  `timestampStart` bigint(20) NOT NULL,
-  `timestampEnd` bigint(20) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `count` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+	`uid` char(255) NOT NULL,
+	`timestampStart` bigint(20) NOT NULL,
+	`timestampEnd` bigint(20) NOT NULL,
+	`type` char(255) NOT NULL,
+	`count` int(11) DEFAULT 0,
+	PRIMARY KEY (`uid`, `timestampStart`, `type`),
+	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist`(`uid`) ON DELETE CASCADE	
+) CHARSET=utf8;
 
