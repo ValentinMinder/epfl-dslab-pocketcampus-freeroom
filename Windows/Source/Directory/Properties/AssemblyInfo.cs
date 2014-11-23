@@ -4,7 +4,7 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle( "PocketCampus.Directory.Common" )]
+[assembly: AssemblyTitle( "PocketCampus.Directory" )]
 [assembly: AssemblyCopyright( "Copyright © PocketCampus.Org 2014" )]
 [assembly: AssemblyCulture( "" )]
 
