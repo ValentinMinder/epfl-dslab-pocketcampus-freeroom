@@ -6,7 +6,7 @@
              xmlns:cc="using:PocketCampus.Common.Controls"
              xmlns:my="using:PocketCampus.Map"
              DesignDataContext="{Binding Main, Source={StaticResource Design}}">
-    <!-- TODO geolocationstatus in statusbar -->
+    <!-- TODO/BUG Geolocationstatus in statusbar... but there's a bug with markup extensions in the status bar properties :( -->
     <cc:PageBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
