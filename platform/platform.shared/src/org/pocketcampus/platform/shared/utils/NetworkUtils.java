@@ -17,7 +17,7 @@ public class NetworkUtils {
 			return connection.getResponseCode() == 200
 					&& connection.getContentType() != null
 					&& connection.getContentType().contains("image");
-		} catch (Exception _) {
+		} catch (Exception e) {
 			return false;
 		}
 	}
