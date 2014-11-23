@@ -91,7 +91,7 @@
     <Compile Include="Services\CredentialsStorage.cs" />
     <Compile Include="Services\DeviceIdentifier.cs" />
     <Compile Include="Services\EmailService.cs" />
-    <Compile Include="Services\GoogleAnalyticsNavigationLogger.cs" />
+    <Compile Include="Services\GoogleAnalyticsLogger.cs" />
     <Compile Include="Services\HttpClient.cs" />
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\PhoneService.cs" />

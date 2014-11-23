@@ -60,7 +60,7 @@
             <cc:DataStatusDisplay Data="{Binding SearchProvider.DataStatus}"
                                   TextStyle="{StaticResource AppLargeTextBlockStyle}"
                                   Background="Transparent"
-                                  Margin="19,4" />
+                                  Padding="19,4" />
         </StackPanel>
 
         <map:MapControl x:Name="Map"
@@ -118,7 +118,7 @@
                 
                 <AppBarToggleButton Command="{Binding ToggleCenterOnUserCommand}"
                                     IsChecked="{Binding IsCenteredOnUser,
-                                                        Mode=OneWay}"
+                                                        Mode=TwoWay}"
                                     Icon="MapPin"
                                     Label="{CustomResource Main.CenterOnUser}" />
                 

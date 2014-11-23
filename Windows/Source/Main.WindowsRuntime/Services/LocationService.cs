@@ -129,7 +129,7 @@ namespace PocketCampus.Main.Services
         /// </summary>
         private static GeoPosition PositionFromCoordinate( Geocoordinate coord )
         {
-            return new GeoPosition( coord.Point.Position.Latitude, coord.Point.Position.Longitude, coord.Heading );
+            return new GeoPosition( coord.Point.Position.Latitude, coord.Point.Position.Longitude );
         }
     }
 }

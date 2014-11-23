@@ -28,7 +28,7 @@
                  IsTextPredictionEnabled="False"
                  Foreground="{Binding Foreground}"
                  Background="{Binding Background}"
-                 Padding="10,3,50,5" />
+                 Padding="10,3,40,3" />
         
         <Border Grid.Row="1"
                 BorderThickness="{StaticResource TextControlBorderThemeThickness}"

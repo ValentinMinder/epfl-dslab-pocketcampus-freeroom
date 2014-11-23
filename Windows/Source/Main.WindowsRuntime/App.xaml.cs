@@ -7,6 +7,7 @@ using PocketCampus.Main.Services;
 using PocketCampus.Main.ViewModels;
 using PocketCampus.Main.Views;
 using ThinMvvm;
+using ThinMvvm.Logging;
 using ThinMvvm.WindowsRuntime;
 using Windows.ApplicationModel.Activation;
 using Windows.Phone.UI.Input;
@@ -49,6 +50,9 @@ namespace PocketCampus.Main
             Container.Bind<IDeviceIdentifier, DeviceIdentifier>();
             Container.Bind<IAppRatingService, RatingService>();
             Container.Bind<ICredentialsStorage, CredentialsStorage>();
+
+            // Logger
+            Container.Bind<Logger, GoogleAnalyticsLogger>().Start();
 
             // Types dependent on one of the above types
             _serverAccess = Container.Bind<IServerAccess, ServerAccess>();

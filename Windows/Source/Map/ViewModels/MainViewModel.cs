@@ -14,6 +14,8 @@ namespace PocketCampus.Map.ViewModels
     [LogId( "/map" )]
     public sealed class MainViewModel : ViewModel<MapSearchRequest>, IDisposable
     {
+        // If the user toggled centering the map on their position, moving this far will toggle it off (in meters)
+        private const double StopCenterOnUserThreshold = 5.0;
         // The zoom level used when centering the map on the campus.
         private const int CampusZoomLevel = 16;
         // The coordinates of the campus center.
@@ -50,14 +52,6 @@ namespace PocketCampus.Map.ViewModels
             get { return this.GetCommand( CenterOnCampus ); }
         }
 
-        [LogId( "ToggleCenterOnUser" )]
-        [LogParameter( "IsCenteredOnUser" )]
-        [LogValueConverter( typeof( ToggleCenterOnUserLogConverter ) )]
-        public Command ToggleCenterOnUserCommand
-        {
-            get { return this.GetCommand( ToggleCenterOnUser, () => _settings.UseGeolocation ); }
-        }
-
         [LogId( "OpenSettings" )]
         public Command ViewSettingsCommand
         {
@@ -81,6 +75,9 @@ namespace PocketCampus.Map.ViewModels
             Properties = new MapProperties();
 
             SearchProvider.ExecuteRequest( request );
+
+            this.ListenToProperty( x => x.IsCenteredOnUser, IsCenterdOnUserChanged );
+            Properties.ListenToProperty( x => x.Center, OnCenterChanged );
         }
 
 
@@ -111,14 +108,28 @@ namespace PocketCampus.Map.ViewModels
             Properties.Center = CampusPosition;
         }
 
-        private void ToggleCenterOnUser()
+        private void IsCenterdOnUserChanged()
         {
-            IsCenteredOnUser = !IsCenteredOnUser;
+            Messenger.Send( new EventLogRequest( "ToggleCenterOnUser", IsCenteredOnUser.ToString() ) );
 
             if ( IsCenteredOnUser )
             {
                 Properties.UserPosition = _locationService.LastKnownLocation;
                 Properties.Center = Properties.UserPosition;
+            }
+        }
+
+        private void OnCenterChanged()
+        {
+            if ( Properties.Center == null || Properties.UserPosition == null )
+            {
+                // when loading the map, or if geolocation is disabled
+                return;
+            }
+
+            if ( Properties.Center.DistanceTo( Properties.UserPosition ) >= StopCenterOnUserThreshold )
+            {
+                IsCenteredOnUser = false;
             }
         }
 
@@ -143,7 +154,7 @@ namespace PocketCampus.Map.ViewModels
         }
 
 
-        // Avoid memory leaks, since the geolocator is static
+        // Avoid memory leaks
         public void Dispose()
         {
             _locationService.Ready -= LocationService_Ready;
