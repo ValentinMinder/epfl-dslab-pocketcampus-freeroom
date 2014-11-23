@@ -9,7 +9,7 @@
     <ProjectGuid>{79DF6F47-E728-4A56-8172-762356BC54D2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PocketCampus.CloudPrint.WindowsRuntime</RootNamespace>
+    <RootNamespace>PocketCampus.CloudPrint</RootNamespace>
     <AssemblyName>PocketCampus.CloudPrint.WindowsRuntime</AssemblyName>
     <DefaultLanguage>en</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
