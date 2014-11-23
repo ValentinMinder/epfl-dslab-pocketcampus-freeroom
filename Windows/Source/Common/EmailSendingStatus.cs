@@ -15,6 +15,11 @@ namespace PocketCampus.Common
         NotRequested,
 
         /// <summary>
+        /// An e-mail was requested.
+        /// </summary>
+        Requested,
+
+        /// <summary>
         /// The request was successfully completed.
         /// </summary>
         Success,

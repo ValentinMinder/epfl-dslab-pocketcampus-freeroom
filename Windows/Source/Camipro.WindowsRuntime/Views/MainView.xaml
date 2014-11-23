@@ -131,8 +131,8 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
 
                     <!-- Payment type -->
@@ -178,8 +178,9 @@
                                Margin="0,0,0,32" />
 
                     <cc:Switch Grid.Row="9"
-                               Value="{Binding EmailStatus}">
-                        
+                               Value="{Binding EmailStatus}"
+                               VerticalAlignment="Bottom"
+                               Margin="0,0,0,19">                      
                         <!-- 'Request e-mail with info' button -->
                         <cc:SwitchCase Values="NotRequested">
                             <Button Command="{Binding RequestEbankingEmailCommand}"
@@ -187,9 +188,15 @@
                                     HorizontalAlignment="Stretch" />
                         </cc:SwitchCase>
                         
+                        <!-- Loading... -->
+                        <cc:SwitchCase Values="Requested">
+                            <ProgressBar IsIndeterminate="True" />
+                        </cc:SwitchCase>
+                        
                         <!-- E-mail status text -->
                         <cc:SwitchCase Values="Success, Error">
-                            <TextBlock Text="{Binding EmailStatus, Converter={StaticResource EnumToString}}"
+                            <TextBlock Text="{Binding EmailStatus,
+                                                      Converter={StaticResource EnumToString}}"
                                        Style="{StaticResource AppNormalTextBlockStyle}" />
                         </cc:SwitchCase>
                     </cc:Switch>

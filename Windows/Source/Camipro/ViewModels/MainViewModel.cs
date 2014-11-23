@@ -106,6 +106,8 @@ namespace PocketCampus.Camipro.ViewModels
         {
             return _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession>( _camiproService, async session =>
             {
+                EmailStatus = EmailSendingStatus.Requested;
+
                 var request = new CamiproRequest
                 {
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
