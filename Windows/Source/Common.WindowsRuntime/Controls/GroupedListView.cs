@@ -94,11 +94,17 @@ namespace PocketCampus.Common.Controls
             var view = new ListView
             {
                 ItemTemplate = ItemTemplate,
-                GroupStyle = { new GroupStyle { HeaderTemplate = GetGroupHeaderTemplate( GroupKeyPath ) } },
+                GroupStyle = // ListView.GroupStyle is a collection, yes...
+                {
+                    new GroupStyle
+                    {
+                        HeaderTemplate = GetGroupHeaderTemplate()
+                    }
+                },
                 // HACK: The group header template contains a top margin, so we cancel the first one here
                 Padding = new Thickness( 0, ZoomedInViewTopMargin - ZoomedInGroupFooterSize, ZoomedInViewRightMargin, 0 )
             };
-            // weird way CollectionViewSources have to be used
+            // Weird way CollectionViewSources have to be used
             view.SetBinding
             (
                 ListView.ItemsSourceProperty,
@@ -116,7 +122,7 @@ namespace PocketCampus.Common.Controls
         {
             var view = new ListView
             {
-                ItemTemplate = GetGroupItemTemplate( GroupKeyPath ),
+                ItemTemplate = GetGroupItemTemplate(),
                 Foreground = ZoomedOutForegroundBrush,
                 Background = ZoomedOutBackgroundBrush,
                 Padding = ZoomedOutViewPadding
@@ -135,15 +141,15 @@ namespace PocketCampus.Common.Controls
             return view;
         }
 
-        // N.B. DataTemplates cannot be created in code directly...
+        // DataTemplates can't be created in code directly...
 
-        private DataTemplate GetGroupHeaderTemplate( string keyPath )
+        private DataTemplate GetGroupHeaderTemplate()
         {
             if ( GroupSubheaderTemplate == null )
             {
                 return (DataTemplate) XamlReader.Load(
               @"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
-                    <TextBlock Text=""{Binding " + keyPath + @"}""
+                    <TextBlock Text=""{Binding " + GroupKeyPath + @"}""
                                Style=""{StaticResource AppGroupHeaderTextBlockStyle}""
                                Foreground=""{ThemeResource ApplicationForegroundThemeBrush}""
                                Margin=""0," + ZoomedInGroupFooterSize + @",0,0"" />
@@ -151,23 +157,23 @@ namespace PocketCampus.Common.Controls
             }
 
             return (DataTemplate) XamlReader.Load(
-            @"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
-                  <StackPanel>
-                      <TextBlock Text=""{Binding " + keyPath + @"}""
-                                 Style=""{StaticResource AppGroupHeaderTextBlockStyle}""
-                                 Foreground=""{ThemeResource ApplicationForegroundThemeBrush}""
-                                 Margin=""0," + ZoomedInGroupFooterSize + @",0,0"" />
-                      <ContentControl Content=""{Binding}""
-                                      ContentTemplate=""{Binding GroupSubheaderTemplate, ElementName=" + Name + @"}"" />
-                  </StackPanel>
-              </DataTemplate>" );
+          @"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
+                <StackPanel>
+                    <TextBlock Text=""{Binding " + GroupKeyPath + @"}""
+                               Style=""{StaticResource AppGroupHeaderTextBlockStyle}""
+                               Foreground=""{ThemeResource ApplicationForegroundThemeBrush}""
+                               Margin=""0," + ZoomedInGroupFooterSize + @",0,0"" />
+                    <ContentControl Content=""{Binding}""
+                                    ContentTemplate=""{Binding GroupSubheaderTemplate, ElementName=" + Name + @"}"" />
+                </StackPanel>
+            </DataTemplate>" );
         }
 
-        private static DataTemplate GetGroupItemTemplate( string keyPath )
+        private DataTemplate GetGroupItemTemplate()
         {
             return (DataTemplate) XamlReader.Load(
            @"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
-                <TextBlock Text=""{Binding Group." + keyPath + @"}""
+                <TextBlock Text=""{Binding Group." + GroupKeyPath + @"}""
                            FontSize=""{StaticResource TextStyleExtraLargeFontSize}""
                            Margin=""0,0,0," + ItemBottomMargin + @""" />
             </DataTemplate>" );

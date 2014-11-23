@@ -3,7 +3,6 @@
 // File author: Solal Pirelli
 
 using System;
-using System.Runtime.Serialization;
 using ThriftSharp;
 
 namespace PocketCampus.Moodle.Models
@@ -11,9 +10,6 @@ namespace PocketCampus.Moodle.Models
     [ThriftStruct( "MoodleCourseSection2" )]
     public sealed class CourseSection
     {
-        private const string DatesFormat = "{0:M} - {1:M}";
-
-
         [ThriftField( 1, true, "resources" )]
         public MoodleResource[] Resources { get; set; }
 
@@ -30,12 +26,5 @@ namespace PocketCampus.Moodle.Models
 
         [ThriftField( 5, false, "details" )]
         public string Details { get; set; }
-
-
-        [IgnoreDataMember]
-        public string DisplayTitle
-        {
-            get { return Title ?? string.Format( DatesFormat, StartDate.Value, EndDate.Value ); }
-        }
     }
 }

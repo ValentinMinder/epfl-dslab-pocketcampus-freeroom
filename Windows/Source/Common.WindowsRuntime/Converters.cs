@@ -54,6 +54,25 @@ namespace PocketCampus.Common
         }
     }
 
+    public sealed class DateToWeekStringConverter : ValueConverter<DateTime, string>
+    {
+        private const string DifferentMonthFormat = "{0:M} - {1:M}";
+
+        // There's no standard way to display a localized version of "December 2 - 8", since order can vary (e.g. French is "2 - 8 décembre")
+        // Simple workaround: Find the number.
+        // The percent is necessary for 'd' to be interpreted as 'day between 1 and 31' instead of 'standard date format'.
+        private static readonly string SameMonthFormat = DateTime.Now.ToString( "M" ).Split( ' ' )[0].Any( char.IsDigit ) ?
+                                                         "{0:%d} - {1:M}"
+                                                       : "{0:M} - {1:%d}";
+
+        public override string Convert( DateTime value )
+        {
+            var end = value.AddDays( 6 );
+            string format = value.Month == end.Month ? SameMonthFormat : DifferentMonthFormat;
+            return string.Format( format, value, end );
+        }
+    }
+
     public sealed class EnumToStringConverter : ValueConverter<Enum, string>
     {
         public override string Convert( Enum value )

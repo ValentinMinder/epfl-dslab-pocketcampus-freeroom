@@ -25,6 +25,7 @@
     <my:DictionaryFixer x:Key="DictionaryFixer" />
     <my:StringFormatConverter x:Key="StringFormat" />
     <my:MoneyFormatConverter x:Key="MoneyFormat" />
+    <my:DateToWeekStringConverter x:Key="DateToWeek" />
     <my:EnumToStringConverter x:Key="EnumToString" />
     <my:DefaultToVisibilityConverter x:Key="DefaultToVisibility" />
     <my:DefaultToVisibilityConverter x:Key="NonDefaultToVisibility"

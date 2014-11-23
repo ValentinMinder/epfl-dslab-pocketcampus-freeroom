@@ -66,8 +66,8 @@ namespace PocketCampus.Moodle.ViewModels
 
 
         public CourseViewModel( IDataCache cache, ISecureRequestHandler requestHandler, IMoodleService moodleService,
-                                IMoodleDownloader downloader, IFileStorage storage, IBrowserService browserService,
-                                Course course )
+                               IMoodleDownloader downloader, IFileStorage storage, IBrowserService browserService,
+                               Course course )
             : base( cache )
         {
             _requestHandler = requestHandler;
@@ -118,24 +118,21 @@ namespace PocketCampus.Moodle.ViewModels
                     {
                         if ( resource.File != null )
                         {
-                            resource.File.PathComponents = new[] { Course.Name, section.DisplayTitle };
+                            resource.File.PathComponents = new[] { Course.Name, GetSectionPath( section ) };
                         }
                         if ( resource.Folder != null )
                         {
                             foreach ( var file in resource.Folder.Files )
                             {
-                                file.PathComponents = new[] { Course.Name, section.DisplayTitle, resource.Folder.Name };
+                                file.PathComponents = new[] { Course.Name, GetSectionPath( section ), resource.Folder.Name };
                             }
                         }
                     }
                 }
 
                 Sections = data.Sections;
-                if ( SelectedSection == null )
-                {
-                    SelectedSection = Sections.FirstOrDefault( s => s.Title == null && s.StartDate.Value <= DateTime.Now && DateTime.Now <= s.EndDate.Value )
-                                   ?? Sections.FirstOrDefault();
-                }
+                SelectedSection = Sections.FirstOrDefault( s => s.Title == null && s.StartDate.Value <= DateTime.Now && DateTime.Now <= s.EndDate.Value )
+                               ?? Sections.FirstOrDefault();
             }
 
             return true;
@@ -169,6 +166,11 @@ namespace PocketCampus.Moodle.ViewModels
             {
                 DownloadStatus = DownloadStatus.Error;
             }
+        }
+
+        private static string GetSectionPath( CourseSection section )
+        {
+            return section.Title ?? section.StartDate.Value.ToString( "M" );
         }
     }
 }

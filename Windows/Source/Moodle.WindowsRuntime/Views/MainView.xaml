@@ -10,11 +10,12 @@
             </ResourceDictionary.MergedDictionaries>
             
             <DataTemplate x:Key="CourseTemplate">
-                <cc:SimpleButton Command="{Binding DataContext.ViewCourseCommand, ElementName=Root}"
+                <cc:SimpleButton Command="{Binding DataContext.ViewCourseCommand, 
+                                                   ElementName=Root}"
                                  CommandParameter="{Binding}"
-                                 Margin="19,16,19,0">
+                                 Margin="19,8">
                     <TextBlock Text="{Binding Name}"
-                               Style="{StaticResource AppLargeTextBlockStyle}" />
+                               Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
                 </cc:SimpleButton>
             </DataTemplate>
         </ResourceDictionary>

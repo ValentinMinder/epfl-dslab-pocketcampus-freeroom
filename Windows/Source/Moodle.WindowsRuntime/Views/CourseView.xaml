@@ -50,7 +50,7 @@
                         <TextBlock Text="&#xE167;"
                                    FontFamily="Segoe UI Symbol"
                                    FontSize="{StaticResource TextStyleExtraLargeFontSize}" />
-                        
+
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Name}"
                                    Style="{StaticResource AppLargeTextBlockStyle}"
@@ -74,20 +74,20 @@
                             <TextBlock Text="&#xE188;"
                                        FontFamily="Segoe UI Symbol"
                                        FontSize="{StaticResource TextStyleExtraLargeFontSize}" />
-                            
+
                             <TextBlock Grid.Column="1"
                                        Text="{Binding Name}"
                                        Style="{StaticResource AppLargeTextBlockStyle}"
                                        Margin="8,0,0,0" />
                         </Grid>
                     </ToggleSwitch.Header>
-                    
+
                     <ToggleSwitch.OnContent>
                         <ItemsControl ItemsSource="{Binding Files}"
                                       ItemTemplate="{StaticResource FileTemplate}"
                                       Margin="19,0,0,0" />
                     </ToggleSwitch.OnContent>
-                    
+
                     <ToggleSwitch.OffContent>
                         <!-- nothing -->
                         <Rectangle />
@@ -101,10 +101,34 @@
                                              LinkTemplate="{StaticResource LinkTemplate}"
                                              FolderTemplate="{StaticResource FolderTemplate}" />
             </DataTemplate>
-            
-            <DataTemplate x:Key="SectionSubheaderTemplate">
-                <RichTextBlock h2x:Properties.Html="{Binding Details}"
-                               Style="{StaticResource AppNormalRichTextBlockStyle}" />
+
+            <DataTemplate x:Key="SectionTemplate">
+                <ScrollViewer>
+                    <StackPanel>
+                        <RichTextBlock h2x:Properties.Html="{Binding Details}"
+                                       Style="{StaticResource AppNormalRichTextBlockStyle}"
+                                       Margin="0,5,19,0" />
+
+                        <ItemsControl ItemsSource="{Binding Resources}"
+                                      ItemTemplate="{StaticResource ResourceTemplate}"
+                                      Margin="0,0,19,95" />
+                    </StackPanel>
+                </ScrollViewer>
+            </DataTemplate>
+
+            <DataTemplate x:Key="SectionHeaderTemplate">
+                <Grid>
+                    <TextBlock Text="{Binding Title}"
+                               FontSize="{StaticResource TextStyleExtraLargeFontSize}"
+                               OpticalMarginAlignment="TrimSideBearings" />
+                    
+                    <cc:Placeholder For="{Binding Title}">
+                        <TextBlock Text="{Binding StartDate,
+                                                  Converter={StaticResource DateToWeek}}"
+                                   FontSize="{StaticResource TextStyleExtraLargeFontSize}"
+                                   OpticalMarginAlignment="TrimSideBearings" />
+                    </cc:Placeholder>
+                </Grid>
             </DataTemplate>
         </ResourceDictionary>
     </cc:PageBase.Resources>
@@ -117,29 +141,20 @@
         </Grid.RowDefinitions>
 
         <StackPanel Background="{StaticResource AppHeaderBackgroundBrush}">
-            <TextBlock Text="{CustomResource PagesHeader}"
-                       Style="{StaticResource AppHeaderTextBlockStyle}" />
-
             <TextBlock Text="{Binding Course.Name}"
-                       Style="{StaticResource AppTitleTextBlockStyle}" />
+                       Style="{StaticResource AppHeaderTextBlockStyle}" />
         </StackPanel>
-        
+
         <cc:CacheStatusDisplay Grid.Row="1"
                                Status="{Binding CacheStatus}"
                                RetryCommand="{Binding RefreshCommand}" />
 
-        <cc:GroupedListView Grid.Row="2"
-                            ItemTemplate="{StaticResource ResourceTemplate}"
-                            SelectedItem="{Binding SelectedSection}"
-                            GroupKeyPath="DisplayTitle"
-                            GroupSubheaderTemplate="{StaticResource SectionSubheaderTemplate}"
-                            Margin="19,0,0,0">
-            <cc:GroupedListView.ItemsViewSource>
-                <CollectionViewSource Source="{Binding Sections}"
-                                      IsSourceGrouped="True"
-                                      ItemsPath="Resources" />
-            </cc:GroupedListView.ItemsViewSource>
-        </cc:GroupedListView>
+        <!-- TODO: The SelectedItem binding doesn't work for some reason :/ -->
+        <Pivot Grid.Row="2"
+               ItemsSource="{Binding Sections}"
+               SelectedItem="{Binding SelectedSection}"
+               ItemTemplate="{StaticResource SectionTemplate}"
+               HeaderTemplate="{StaticResource SectionHeaderTemplate}" />
 
         <cc:DataStatusDisplay Grid.Row="2"
                               Data="{Binding DataStatus}"
