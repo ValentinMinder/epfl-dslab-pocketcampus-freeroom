@@ -59,7 +59,8 @@
             
             <cc:DataStatusDisplay Data="{Binding SearchProvider.DataStatus}"
                                   TextStyle="{StaticResource AppLargeTextBlockStyle}"
-                                  Margin="19,4"/>
+                                  Background="Transparent"
+                                  Margin="19,4" />
         </StackPanel>
 
         <map:MapControl x:Name="Map"

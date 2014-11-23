@@ -419,7 +419,7 @@
                     <myc:Switch Value="{TemplateBinding Data}"
                                 Background="{TemplateBinding Background}">
                         <myc:SwitchCase Values="Loading">
-                            <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                            <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
@@ -435,7 +435,7 @@
                             </Grid>
                         </myc:SwitchCase>
                         <myc:SwitchCase Values="Error">
-                            <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                            <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
@@ -453,7 +453,7 @@
                             </Grid>
                         </myc:SwitchCase>
                         <myc:SwitchCase Values="NetworkError">
-                            <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                            <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />

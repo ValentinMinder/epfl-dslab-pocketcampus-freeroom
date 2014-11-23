@@ -3,16 +3,16 @@
 // File author: Solal Pirelli
 
 using System;
+using PocketCampus.Common;
 using PocketCampus.Common.Services;
-using Windows.System;
 
 namespace PocketCampus.Main.Services
 {
     public sealed class BrowserService : IBrowserService
     {
-        public async void NavigateTo( string url )
+        public void NavigateTo( string url )
         {
-            await Launcher.LaunchUriAsync( new Uri( url ) );
+            LauncherEx.Launch( new Uri( url, UriKind.Absolute ) );
         }
     }
 }

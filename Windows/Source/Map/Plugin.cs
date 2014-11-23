@@ -48,7 +48,7 @@ namespace PocketCampus.Map
         {
             if ( destination == SearchQuery )
             {
-                Messenger.Send( new MapSearchRequest( parameters[SearchQueryParameter] ) );
+                navigationService.NavigateTo<MainViewModel, MapSearchRequest>( new MapSearchRequest( parameters[SearchQueryParameter] ) );
             }
         }
     }
