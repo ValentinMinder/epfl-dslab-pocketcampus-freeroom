@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 using PocketCampus.CloudPrint.Models;
 using PocketCampus.Common.Services;
 using ThriftSharp;
@@ -18,5 +19,9 @@ namespace PocketCampus.CloudPrint.Services
         {
             return CallAsync<PrintDocumentRequest, PrintPreviewDocumentResponse>( x => x.PreviewPrintAsync, request );
         }
+
+        public abstract Task<long> UploadFileAsync( Stream file );
+
+        public abstract Task<Stream> GetPagePreviewAsync( long fileId, int pageIndex );
     }
 }

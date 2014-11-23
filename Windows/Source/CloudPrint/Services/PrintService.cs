@@ -1,4 +1,6 @@
-﻿using PocketCampus.Common.Services;
+﻿using System.IO;
+using System.Threading.Tasks;
+using PocketCampus.Common.Services;
 
 namespace PocketCampus.CloudPrint.Services
 {
@@ -13,5 +15,15 @@ namespace PocketCampus.CloudPrint.Services
         }
 
         // TODO create an IRawHttpClient that takes headers/params and returns streams, also use it in Moodle
+
+        public override Task<long> UploadFileAsync( Stream file )
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override Task<Stream> GetPagePreviewAsync( long fileId, int pageIndex )
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
