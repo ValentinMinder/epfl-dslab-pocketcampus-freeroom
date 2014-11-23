@@ -121,6 +121,9 @@
     <value>date</value>
     <comment>Field header</comment>
   </data>
+  <data name="Favorite" xml:space="preserve">
+    <value>favorite</value>
+  </data>
   <data name="Location" xml:space="preserve">
     <value>location</value>
     <comment>Field header</comment>

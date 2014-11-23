@@ -90,18 +90,8 @@
                       Margin="19,0">
             <StackPanel>
                 <!-- Information -->
-                <Grid Visibility="{Binding Item.HideInformation, 
-                                           Converter={StaticResource DefaultToVisibility}}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
+                <StackPanel Visibility="{Binding Item.HideInformation, 
+                                                 Converter={StaticResource DefaultToVisibility}}">
                     <!-- Date -->
                     <StackPanel Margin="0,16,0,0"
                                 Visibility="{Binding Item.StartDate, 
@@ -115,8 +105,7 @@
                     </StackPanel>
 
                     <!-- Location -->
-                    <StackPanel Grid.Row="1"
-                                Margin="0,16,0,0"
+                    <StackPanel Margin="0,16,0,0"
                                 Visibility="{Binding Item.Location, 
                                                      Converter={StaticResource NonDefaultToVisibility}}">
                         <TextBlock Text="{CustomResource EventItem.Location}"
@@ -140,8 +129,7 @@
                     </StackPanel>
 
                     <!-- Speaker -->
-                    <StackPanel Grid.Row="2"
-                                Margin="0,16,0,0"
+                    <StackPanel Margin="0,16,0,0"
                                 Visibility="{Binding Item.SpeakerName, 
                                                      Converter={StaticResource NonDefaultToVisibility}}">
                         <TextBlock Text="{CustomResource EventItem.Speaker}"
@@ -150,15 +138,7 @@
                         <RichTextBlock h2x:Properties.Html="{Binding Item.SpeakerName}"
                                        Style="{StaticResource AppLargeRichTextBlockStyle}" />
                     </StackPanel>
-
-                    <!-- "Mark as favorite" button -->
-                    <AppBarToggleButton Grid.Column="1"
-                                        Grid.RowSpan="3"
-                                        Margin="0,16,0,0"
-                                        IsChecked="{Binding IsFavorite, 
-                                                            Mode=TwoWay}"
-                                        Icon="Favorite" />
-                </Grid>
+                </StackPanel>
 
                 <!-- Large image -->
                 <Image Source="{Binding Item.PictureUrl}"
@@ -197,4 +177,16 @@
                               Cache="{Binding CacheStatus}"
                               RetryCommand="{Binding RefreshCommand}" />
     </Grid>
+    
+    <cc:PageBase.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Minimal">
+            <CommandBar.PrimaryCommands>
+                <!-- "Mark as favorite" button -->
+                <AppBarToggleButton IsChecked="{Binding IsFavorite, 
+                                                        Mode=TwoWay}"
+                                    Icon="Favorite"
+                                    Label="{CustomResource EventItem.Favorite}" />
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </cc:PageBase.BottomAppBar>
 </cc:PageBase>
