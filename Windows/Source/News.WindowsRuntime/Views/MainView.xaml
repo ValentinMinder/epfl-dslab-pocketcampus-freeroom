@@ -44,7 +44,7 @@
                             <TextBlock Text="{Binding Date,
                                                       Converter={StaticResource StringFormat},
                                                       ConverterParameter='D'}"
-                                       Style="{StaticResource AppSmallTextBlockStyle}" />
+                                       Style="{StaticResource AppSubtleTextBlockStyle}" />
                         </StackPanel>
 
                     </Grid>

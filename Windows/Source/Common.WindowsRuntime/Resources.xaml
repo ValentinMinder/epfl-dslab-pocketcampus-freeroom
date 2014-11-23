@@ -47,14 +47,6 @@
         <Setter Property="TextWrapping" Value="WrapWholeWords" />
     </Style>
 
-    <!-- Small (and subtle) text -->
-    <Style x:Key="AppSmallTextBlockStyle" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="{StaticResource AppSubtleBrush}" />
-        <Setter Property="FontSize" Value="{StaticResource TextStyleSmallFontSize}" />
-        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
-        <Setter Property="TextWrapping" Value="WrapWholeWords" />
-    </Style>
-
     <!-- Large text -->
     <Style x:Key="AppLargeTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}" />
@@ -417,10 +409,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="myc:DataStatusDisplay">
                     <myc:Switch Value="{TemplateBinding Data}"
-                                Background="{TemplateBinding Background}"
                                 Padding="{TemplateBinding Padding}">
                         <myc:SwitchCase Values="Loading">
-                            <Grid>
+                            <Grid Background="{TemplateBinding Background}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
@@ -436,7 +427,7 @@
                             </Grid>
                         </myc:SwitchCase>
                         <myc:SwitchCase Values="Error">
-                            <Grid>
+                            <Grid Background="{TemplateBinding Background}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
@@ -454,7 +445,7 @@
                             </Grid>
                         </myc:SwitchCase>
                         <myc:SwitchCase Values="NetworkError">
-                            <Grid>
+                            <Grid Background="{TemplateBinding Background}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />

@@ -12,7 +12,7 @@
 
             <!-- Meal template -->
             <DataTemplate x:Key="MealTemplate">
-                <Grid Margin="0,8,19,16">
+                <Grid Margin="0,8,0,16">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition />
@@ -28,7 +28,7 @@
                         <TextBlock Text="{Binding CurrentPrice, Converter={StaticResource MoneyFormat}}"
                                    TextAlignment="Center"
                                    Style="{StaticResource AppNormalTextBlockStyle}" />
-                        
+
                         <!-- Price placeholder -->
                         <cc:Placeholder For="{Binding CurrentPrice}">
                             <TextBlock Text="{CustomResource Main.UnknownPrice}"
@@ -62,29 +62,29 @@
                                    Style="{StaticResource AppSubtleTextBlockStyle}"
                                    Margin="0,0,0,8" />
 
-                        <!-- Rating & vote button -->
-                        <StackPanel Orientation="Horizontal">
-                            <myc:RatingDisplay Rating="{Binding Rating}"
-                                               TextStyle="{StaticResource AppSubtleTextBlockStyle}" />
+                        <!-- Rating -->
+                        <myc:RatingDisplay Rating="{Binding Rating}"
+                                           TextStyle="{StaticResource AppSubtleTextBlockStyle}" />
 
-                            <!-- HACK: Non-breaking spaces, otherwise WinRT magically removes them. -->
-                            <TextBlock Text="&#160;-&#160;"
-                                       Style="{StaticResource AppSubtleTextBlockStyle}" />
-
-                            <cc:SimpleButton Command="{Binding DataContext.RateMealCommand, 
-                                                               ElementName=Root}"
-                                             CommandParameter="{Binding}">
-                                <TextBlock Text="{CustomResource Main.Vote}"
-                                           Style="{StaticResource AppNormalTextBlockStyle}"
-                                           Foreground="{StaticResource AppAccentBrush}" />
-                            </cc:SimpleButton>
-                        </StackPanel>
+                        <!-- "Vote" button -->
+                        <cc:SimpleButton Command="{Binding DataContext.RateMealCommand, 
+                                                           ElementName=Root}"
+                                         CommandParameter="{Binding}">
+                            <TextBlock Text="{CustomResource Main.Vote}"
+                                       Style="{StaticResource AppNormalTextBlockStyle}"
+                                       Foreground="{StaticResource AppAccentBrush}" />
+                        </cc:SimpleButton>
                     </StackPanel>
                 </Grid>
             </DataTemplate>
+
+            <DataTemplate x:Key="RestaurantSubheaderTemplate">
+                <myc:RatingDisplay Rating="{Binding Rating}"
+                                   TextStyle="{StaticResource AppSubtleTextBlockStyle}" />
+            </DataTemplate>
         </ResourceDictionary>
     </cc:PageBase.Resources>
-    
+
     <Grid x:Name="Root">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -92,37 +92,38 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
+
         <Grid Background="{StaticResource AppHeaderBackgroundBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            
+
             <TextBlock Text="{CustomResource PagesHeader}"
                        Style="{StaticResource AppHeaderTextBlockStyle}"
                        VerticalAlignment="Center" />
-            
+
             <myc:MealTimePicker Grid.Column="1"
                                 Value="{Binding MealTime,
                                                 Mode=TwoWay}"
                                 Foreground="{StaticResource AppHeaderForegroundBrush}" />
         </Grid>
-        
+
         <Border Grid.Row="1"
                 Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
-            <myc:DayPicker Value="{Binding MealDate, 
+            <myc:DayPicker Value="{Binding MealDate,
                                            Mode=TwoWay}"
                            TextStyle="{StaticResource AppLargeTextBlockStyle}"
-                           Margin="19,8" />
+                           Margin="19,5" />
         </Border>
-        
+
         <cc:CacheStatusDisplay Grid.Row="2"
                                Status="{Binding CacheStatus}" />
-        
+
         <cc:GroupedListView Grid.Row="3"
                             ItemTemplate="{StaticResource MealTemplate}"
                             GroupKeyPath="Name"
+                            GroupSubheaderTemplate="{StaticResource RestaurantSubheaderTemplate}"
                             Margin="19,0,0,0">
             <cc:GroupedListView.ItemsViewSource>
                 <CollectionViewSource Source="{Binding Menu}"
@@ -130,7 +131,7 @@
                                       ItemsPath="Meals" />
             </cc:GroupedListView.ItemsViewSource>
         </cc:GroupedListView>
-        
+
         <cc:Placeholder Grid.Row="3"
                         For="{Binding Menu}">
             <cc:Condition Value="{Binding AreAllMealsFilteredOut}">
@@ -144,13 +145,13 @@
                 </cc:Condition.False>
             </cc:Condition>
         </cc:Placeholder>
-        
+
         <cc:DataStatusDisplay Grid.Row="3"
                               Data="{Binding DataStatus}"
                               Cache="{Binding CacheStatus}"
                               RetryCommand="{Binding RefreshCommand}" />
     </Grid>
-    
+
     <cc:PageBase.BottomAppBar>
         <CommandBar ClosedDisplayMode="Minimal">
             <CommandBar.PrimaryCommands>

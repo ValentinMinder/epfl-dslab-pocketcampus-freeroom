@@ -96,7 +96,7 @@
         <!-- Meal type filters explanation -->
         <TextBlock Grid.Row="3"
                    Text="{CustomResource Settings.MealTypePickerExplanation}"
-                   Style="{StaticResource AppSmallTextBlockStyle}"
+                   Style="{StaticResource AppSubtleTextBlockStyle}"
                    Margin="19,8,19,0" />
 
         <!-- Meal type filters -->
