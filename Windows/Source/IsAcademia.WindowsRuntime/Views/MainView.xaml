@@ -47,9 +47,12 @@
 
             <!-- Room template -->
             <DataTemplate x:Key="PeriodRoomTemplate">
-                <HyperlinkButton Command="{Binding DataContext.ViewRoomOnMapCommand, 
+                <!-- HACK: The following code only works when it's shown in a popup in landscape mode, for some reason.
+                           The "Root" element can't be found otherwise. Framework bug?
+                                 Command="{Binding DataContext.ViewRoomOnMapCommand, 
                                                    ElementName=Root}"
-                                 CommandParameter="{Binding}"
+                                 CommandParameter="{Binding}" -->
+                <HyperlinkButton Tapped="OnRoomHyperlinkTapped"
                                  Margin="0,0,16,8">
                     <TextBlock Style="{StaticResource AppSubtleTextBlockStyle}">
                         <Underline>
@@ -212,7 +215,7 @@
                             Value="{Binding WeekDate, 
                                             Mode=TwoWay}"
                             Visibility="Collapsed"
-                            TextStyle="{StaticResource AppHeaderTextBlockStyle}"
+                            TextStyle="{StaticResource AppLargeTextBlockStyle}"
                             Margin="4,2" />
         </Grid>
 
