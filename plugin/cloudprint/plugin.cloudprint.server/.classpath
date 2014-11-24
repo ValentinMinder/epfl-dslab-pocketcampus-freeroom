@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="/platform.shared/lib/commons-io-2.0.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.authentication.server"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/gson-1.7.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.authentication.shared"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
