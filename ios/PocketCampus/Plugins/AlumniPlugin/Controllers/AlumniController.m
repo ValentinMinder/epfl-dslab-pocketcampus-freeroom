@@ -31,6 +31,8 @@
 
 #import "EventItemViewController.h"
 
+#import "EventsService.h"
+
 static AlumniController* instance __weak = nil;
 
 @interface AlumniController ()
@@ -73,7 +75,8 @@ static AlumniController* instance __weak = nil;
              *
              */
             
-            UIViewController* eventItemViewController = [[EventItemViewController alloc] initAndLoadEventItemWithId:1];
+            UIViewController* eventItemViewController = [[EventItemViewController alloc] initAndLoadEventItemWithId:122000000];
+            [[EventsService sharedInstanceToRetain] addUserTicket:@"amer"];
             PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:eventItemViewController];
             navController.pluginIdentifier = [[self class] identifierName];
             self.mainNavigationController = navController;
