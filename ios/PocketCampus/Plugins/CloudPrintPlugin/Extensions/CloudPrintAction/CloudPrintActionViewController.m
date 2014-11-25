@@ -74,7 +74,7 @@
                         [welf.loadingIndicator stopAnimating];
                         welf.centerMessageLabel.text = nil;
                         NSString* filename = [pdfURL lastPathComponent];
-                        UIViewController* viewController = [welf.cloudPrintController viewControllerForPrintDocumentWithLocalURL:pdfURL docName:filename printDocumentRequestOrNil:nil completion:^(CloudPrintCompletionStatusCode printStatusCode) {
+                        UIViewController* viewController = [welf.cloudPrintController viewControllerForPrintDocumentWithURL:pdfURL docName:filename printDocumentRequestOrNil:nil completion:^(CloudPrintCompletionStatusCode printStatusCode) {
                             [welf.extensionContext completeRequestReturningItems:@[] completionHandler:NULL];
                         }];
                         viewController.view.tintColor = [PCValues pocketCampusRed];

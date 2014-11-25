@@ -136,7 +136,6 @@
 
 static CloudPrintController* instance __strong = nil;
 
-static float const kUploadFileProgressStart = 5;
 static float const kSendToPrinterProgressStart = 80;
 static float const kProgressMax = 100;
 
@@ -235,6 +234,8 @@ static float const kProgressMax = 100;
     
     self.jobForJobUniqueId[job.request.jobUniqueId] = job;
     
+    [self handleJob:job];
+    
     return job.navController;
 }
 
@@ -323,7 +324,7 @@ static float const kProgressMax = 100;
 
 - (void)handleJob:(CloudPrintJob*)job {
     __weak __typeof(self) welf = self;
-    __weak __typeof(job) wjob = self;
+    __weak __typeof(job) wjob = job;
 
     
     // Generic
@@ -342,8 +343,7 @@ static float const kProgressMax = 100;
             return; // Already started
         }
         
-        NSProgress* progress = [NSProgress progressWithTotalUnitCount:kProgressMax];
-        wjob.preRequestStatusViewController.progress = progress;
+        NSProgress* progress;
         [self downloadDocumentForJob:wjob progress:&progress completion:^(NSError *error) {
             wjob.documentDownloadTask = nil;
             if (error) {
@@ -356,6 +356,7 @@ static float const kProgressMax = 100;
             }
             [welf handleJob:wjob];
         }];
+        wjob.preRequestStatusViewController.progress = progress;
         wjob.preRequestStatusViewController.documentName = wjob.docName ?: wjob.documentURL.absoluteString;
         wjob.preRequestStatusViewController.showTryAgainButtonWithTappedBlock = nil;
         wjob.preRequestStatusViewController.statusMessage = CloudPrintStatusMessageDownloadingFile;
@@ -384,9 +385,8 @@ static float const kProgressMax = 100;
             return;
         }
         
-        NSProgress* progress = wjob.preRequestStatusViewController.progress;
         
-        wjob.preRequestStatusViewController.progress = [NSProgress progressWithTotalUnitCount:kProgressMax];
+        NSProgress* progress;
         [wjob.cloudPrintService uploadForPrintDocumentWithLocalURL:wjob.documentLocalURL jobUniqueId:wjob.request.jobUniqueId success:^(int64_t documentId) {
             wjob.request.documentId = documentId;
             [welf handleJob:wjob];
@@ -433,6 +433,7 @@ static float const kProgressMax = 100;
             }
         }];
         
+        wjob.preRequestStatusViewController.progress = progress;
         wjob.preRequestStatusViewController.documentName = wjob.docName ?: wjob.documentLocalURL.lastPathComponent;
         wjob.preRequestStatusViewController.showTryAgainButtonWithTappedBlock = nil;
         wjob.preRequestStatusViewController.statusMessage = CloudPrintStatusMessageUploadingFile;
@@ -445,7 +446,9 @@ static float const kProgressMax = 100;
     // Phase 3: document is now known by server
     
     [wjob.cloudPrintService cancelJobsWithUniqueId:wjob.request.jobUniqueId];
-    
+
+    wjob.requestViewController.documentName = wjob.docName ?: wjob.documentLocalURL.lastPathComponent;
+    wjob.requestViewController.printRequest = wjob.request;
     [wjob.requestViewController setUserCancelledBlock:^{
         [wjob.cloudPrintService cancelJobsWithUniqueId:wjob.request.jobUniqueId];
         [welf job:wjob completedWithStatusCode:CloudPrintCompletionStatusCodeUserCancelled];
@@ -459,18 +462,12 @@ static float const kProgressMax = 100;
         
         [wjob.postRequestStatusViewController setUserCancelledBlock:^{
             [wjob.cloudPrintService cancelJobsWithUniqueId:wjob.request.jobUniqueId];
-            [welf job:wjob completedWithStatusCode:CloudPrintCompletionStatusCodeUserCancelled];
+            [wjob setCurrentViewController:wjob.requestViewController animated:YES];
         }];
         
         [wjob setCurrentViewController:wjob.postRequestStatusViewController animated:YES];
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            if (wjob.navController.topViewController == wjob.postRequestStatusViewController) {
-                // if user tapped cancel so quickly that it was before this dispatch triggered, we should
-                // not start the request
-                [wjob.cloudPrintService printDocumentWithRequest:wjob.request delegate:welf];
-            }
-        });
+        [wjob.cloudPrintService printDocumentWithRequest:wjob.request delegate:welf];
     }];
     
     [wjob setCurrentViewController:wjob.requestViewController animated:YES];

@@ -126,7 +126,7 @@
     return value;
 }
 
-- (BOOL)documentNeedsToBeUploaded {
+- (BOOL)documentIdIsDefault {
     return self.documentId == 0;
 }
 
