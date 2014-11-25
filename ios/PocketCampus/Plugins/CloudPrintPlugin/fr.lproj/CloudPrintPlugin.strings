@@ -78,6 +78,7 @@
 "SendingToPrinter" = "Envoi à l'imprimante";
 "Success" = "Terminé";
 "Error" = "Erreur";
+"TryAgain" = "Réessayer";
 
 //Extension
 "SorryUnsupportedFileFormat" = "Désolé, ce format de fichier n'est pas supporté.\nSeuls les PDFs sont supportés pour le moment.";

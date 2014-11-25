@@ -55,7 +55,8 @@ typedef NS_ENUM(NSInteger, CloudPrintStatusMessage) {
 @property (nonatomic, copy) void (^userCancelledBlock)();
 
 /**
- * If set. 
+ * If set, will show a Try Again button, and this block
+ * will be executed if tapped.
  */
 @property (nonatomic, copy) void (^showTryAgainButtonWithTappedBlock)();
 

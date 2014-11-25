@@ -34,6 +34,7 @@
 @property (nonatomic, weak) IBOutlet UILabel* documentNameLabel;
 @property (nonatomic, weak) IBOutlet UILabel* label;
 @property (nonatomic, weak) IBOutlet UIProgressView* progressView;
+@property (nonatomic, weak) IBOutlet UIButton* tryAgainButton;
 
 @end
 
@@ -59,6 +60,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
+    [self.tryAgainButton setTitle:NSLocalizedStringFromTable(@"TryAgain", @"CloudPrintPlugin", nil) forState:UIControlStateNormal];
     self.documentName = self.documentName;
     self.statusMessage = self.statusMessage;
     [self updateProgress];
@@ -75,6 +77,12 @@
     if (self.userCancelledBlock) {
         [self trackAction:@"Cancel"];
         self.userCancelledBlock();
+    }
+}
+
+- (IBAction)tryAgainTapped {
+    if (self.showTryAgainButtonWithTappedBlock) {
+        self.showTryAgainButtonWithTappedBlock();
     }
 }
 
@@ -120,6 +128,11 @@
     
     _progress = progress;
     [self.progress addObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted)) options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+- (void)setShowTryAgainButtonWithTappedBlock:(void (^)())showTryAgainButtonWithTappedBlock {
+    _showTryAgainButtonWithTappedBlock = showTryAgainButtonWithTappedBlock;
+    self.tryAgainButton.hidden = (showTryAgainButtonWithTappedBlock == nil);
 }
 
 #pragma mark - Private

@@ -39,13 +39,15 @@
 
 #import "AuthenticationController.h"
 
+#import <AFNetworking/AFNetworking.h>
+
 @interface CloudPrintJob : NSObject
 
 @property (nonatomic, strong) PrintDocumentRequest* request;
 @property (nonatomic, copy) NSString* docName;
 @property (nonatomic, copy) NSURL* documentURL;
 @property (nonatomic, copy) NSURL* documentLocalURL;
-@property (nonatomic) BOOL isDownloadingDocument;
+@property (nonatomic) AFHTTPRequestOperation* documentDownloadOperation;
 @property (nonatomic, copy) CloudPrintCompletionBlock completion;
 
 @property (nonatomic, strong) CloudPrintService* cloudPrintService;
@@ -453,32 +455,59 @@ static float const kProgressMax = 100;
 - (void)handleJob:(CloudPrintJob*)job {
     __weak __typeof(self) welf = self;
     __weak __typeof(job) wjob = self;
+
+    
+    // Generic
+    
+    [wjob.preRequestStatusViewController setUserCancelledBlock:^{
+        [wjob.documentDownloadOperation setCompletionBlockWithSuccess:NULL failure:NULL];
+        [wjob.documentDownloadOperation cancel];
+        [wjob.cloudPrintService cancelJobsWithUniqueId:wjob.request.jobUniqueId];
+        [welf job:wjob completedWithStatusCode:CloudPrintCompletionStatusCodeUserCancelled];
+    }];
+    
     
     // Phase 1: download document if needed
     
     if (wjob.documentURL && !wjob.documentLocalURL) {
         // Document needs to be downloaded first
-        if (wjob.isDownloadingDocument) {
+        if (wjob.documentDownloadOperation) {
             return; // Already started
         }
         
-        wjob.preRequestStatusViewController.progress = [NSProgress progressWithTotalUnitCount:kProgressMax]
+        wjob.preRequestStatusViewController.progress = [NSProgress progressWithTotalUnitCount:kProgressMax];
         [self downloadDocumentForJob:wjob progress:wjob.preRequestStatusViewController.progress completion:^(NSError *error) {
-            wjob.isDownloadingDocument = NO;
+            wjob.documentDownloadOperation = nil;
             if (error) {
-#warning show error message and propose to try again
+                wjob.preRequestStatusViewController.statusMessage = CloudPrintStatusMessageError;
+#warning error message ?
+                [wjob.preRequestStatusViewController setShowTryAgainButtonWithTappedBlock:^{
+                    [welf handleJob:wjob];
+                }];
                 return;
             }
             [welf handleJob:wjob];
         }];
+        wjob.preRequestStatusViewController.documentName = wjob.docName ?: wjob.documentURL.absoluteString;
+        wjob.preRequestStatusViewController.showTryAgainButtonWithTappedBlock = nil;
         wjob.preRequestStatusViewController.statusMessage = CloudPrintStatusMessageDownloadingFile;
         wjob.currentViewController = wjob.preRequestStatusViewController;
+        
         return;
     }
     
+    
     // Phase 2: upload document if needed
     
-    if (wjob.request.documentNeedsToBeUploaded) {
+    if (wjob.request.documentIdIsDefault) {
+        CloudPrintJobUploadStatus uploadStatus = [wjob.cloudPrintService uploadStatusForJobWithUniqueId:wjob.request.jobUniqueId];
+        if (uploadStatus == CloudPrintJobUploadStatusUploading) {
+            // upload already started
+            return;
+        }
+        if (uploadStatus == CloudPrintJobUploadStatusUploaded) {
+            [NSException raise:@"Illegal state" format:@"Document upload status is uploaded, yet its documentId has default value."];
+        }
         if (!wjob.documentLocalURL) {
             [NSException raise:@"Illegal state" format:@"Before being uploaded, document needs to be stored locally and documentLocalURL must be set"];
         }
@@ -486,6 +515,8 @@ static float const kProgressMax = 100;
             [welf job:wjob completedWithStatusCode:CloudPrintCompletionStatusCodeUnsupportedFile];
             return;
         }
+        
+        wjob.preRequestStatusViewController.progress = [NSProgress progressWithTotalUnitCount:kProgressMax];
         [wjob.cloudPrintService uploadForPrintDocumentWithLocalURL:wjob.documentLocalURL jobUniqueId:wjob.request.jobUniqueId success:^(int64_t documentId) {
             wjob.request.documentId = documentId;
             [welf handleJob:wjob];
@@ -498,29 +529,66 @@ static float const kProgressMax = 100;
                     } userCancelled:^{
                         [wjob.cloudPrintService cancelJobsWithUniqueId:wjob.request.jobUniqueId];
                         [welf job:wjob completedWithStatusCode:CloudPrintCompletionStatusCodeUserCancelled];
-                    } failure:^{
-                        
-                        [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:job.requestViewController];
-                        [wjob.navController popToViewController:wjob.requestViewController animated:YES];
+                    } failure:^(NSError *error){
+                        if (error.code == kAuthenticationErrorCodeCouldNotAskForCredentials) {
+                            [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:wjob.preRequestStatusViewController];
+                        } else {
+                            [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:wjob.preRequestStatusViewController];
+                        }
+                        wjob.preRequestStatusViewController.statusMessage = CloudPrintStatusMessageError;
+                        [wjob.preRequestStatusViewController setShowTryAgainButtonWithTappedBlock:^{
+                            [welf handleJob:wjob];
+                        }];
                     }];
                     break;
                 }
                 case CloudPrintUploadFailureReasonNetworkError:
-                    wjob.statusViewController.progress.completedUnitCount = 0;
-                    wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
-                    [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) onViewController:job.requestViewController];
-                    [wjob.navController popToViewController:wjob.requestViewController animated:YES];
+                    [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) onViewController:wjob.preRequestStatusViewController];
+                    wjob.preRequestStatusViewController.statusMessage = CloudPrintStatusMessageError;
+                    [wjob.preRequestStatusViewController setShowTryAgainButtonWithTappedBlock:^{
+                        [welf handleJob:wjob];
+                    }];
                     break;
                 default:
-                    wjob.statusViewController.progress.completedUnitCount = 0;
-                    wjob.statusViewController.statusMessage = CloudPrintStatusMessageError;
-                    [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:job.requestViewController];
-                    [job.navController popToViewController:wjob.requestViewController animated:YES];
+                    [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:wjob.preRequestStatusViewController];
+                    wjob.preRequestStatusViewController.statusMessage = CloudPrintStatusMessageError;
+                    [wjob.preRequestStatusViewController setShowTryAgainButtonWithTappedBlock:^{
+                        [welf handleJob:wjob];
+                    }];
                     break;
             }
         }];
         
+        wjob.preRequestStatusViewController.documentName = wjob.docName ?: wjob.documentLocalURL.lastPathComponent;
+        wjob.preRequestStatusViewController.showTryAgainButtonWithTappedBlock = nil;
+        wjob.preRequestStatusViewController.statusMessage = CloudPrintStatusMessageUploadingFile;
+        wjob.currentViewController = wjob.preRequestStatusViewController;
+        
+        return;
     }
+    
+    
+    // Phase 3: document is now known by server
+    
+    [wjob.requestViewController setUserValidatedRequestBlock:^(PrintDocumentRequest* request) {
+        wjob.postRequestStatusViewController.documentName = wjob.docName ?: wjob.documentLocalURL.lastPathComponent;
+        wjob.postRequestStatusViewController.showTryAgainButtonWithTappedBlock = nil;
+        wjob.postRequestStatusViewController.statusMessage = CloudPrintStatusMessageSendingToPrinter;
+        wjob.postRequestStatusViewController.progress = [NSProgress progressWithTotalUnitCount:kProgressMax];
+        wjob.postRequestStatusViewController.progress.completedUnitCount = kSendToPrinterProgressStart;
+        [wjob setCurrentViewController:wjob.postRequestStatusViewController animated:YES];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (wjob.navController.topViewController == wjob.postRequestStatusViewController) {
+                // if user tapped cancel so quickly that it was before this dispatch triggered, we should
+                // not start the request
+                [wjob.cloudPrintService printDocumentWithRequest:wjob.request delegate:welf];
+            }
+        });
+    }]
+    [wjob setCurrentViewController:wjob.requestViewController animated:YES];
+    
+    
 }
 
 - (void)job:(CloudPrintJob*)job completedWithStatusCode:(CloudPrintCompletionStatusCode)statusCode {
@@ -535,7 +603,8 @@ static float const kProgressMax = 100;
 }
 
 /**
- * Downloads the document at url job.documentURL.
+ * Downloads the document pointed by job.documentURL.
+ * Sets job.documentDownloadOperation.
  * At end download, if no error, job.documentLocalURL is set.
  */
 - (void)downloadDocumentForJob:(CloudPrintJob*)job progress:(NSProgress* __autoreleasing*)progress completion:(void (^)(NSError* error))completion {

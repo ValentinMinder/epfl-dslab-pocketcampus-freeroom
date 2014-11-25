@@ -68,10 +68,10 @@
 @property (nonatomic, readonly) NSString* jobUniqueId;
 
 /**
- * @return YES if the document needs to be uploaded to the
- * server before it can be printed.
- * This value is computed based on documentId.
+ * @return YES if documentId is the default
+ * value, thus meaning that it was not set by the server.
+ * Document typically needs to be uploaded if so.
  */
-@property (nonatomic, readonly) BOOL documentNeedsToBeUploaded;
+@property (nonatomic, readonly) BOOL documentIdIsDefault;
 
 @end
