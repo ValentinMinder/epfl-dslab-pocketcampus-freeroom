@@ -90,6 +90,11 @@ typedef NS_ENUM(NSInteger, CloudPrintJobUploadStatus) {
  */
 - (void)cancelJobsWithUniqueId:(NSString*)jobUniqueId;
 
+/**
+ * You MUST have called printPreviewWithRequest:delegate: for this id before calling this method
+ */
+- (NSURLRequest*)printPreviewImageRequestForDocumentId:(int64_t)documentId pageIndex:(NSInteger)pageIndex;
+
 @end
 
 

@@ -29,6 +29,14 @@
 
 @import UIKit;
 
+@class PrintDocumentRequest;
+
 @interface CloudPrintPreviewViewController : UIViewController
+
+- (instancetype)init;
+
+@property (nonatomic, strong) PrintDocumentRequest* printDocumentRequest;
+
+@property (nonatomic, copy) void (^doneTappedBlock)();
 
 @end

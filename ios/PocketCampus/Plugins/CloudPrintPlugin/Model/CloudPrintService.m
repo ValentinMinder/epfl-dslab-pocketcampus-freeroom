@@ -35,7 +35,9 @@ static CloudPrintService* instance __weak = nil;
 
 static NSString* const kCloudPrintServiceJobUniqueIdServiceRequestUserInfoKey = @"JobUniqueId";
 
-static NSString* const kCloudPrintRawUploadJSONResponseDocumentIdKey = @"file_id";
+static NSString* const kCloudPrintRawDocumentIdKey = @"file_id";
+
+static NSString* const kCloudPrintRawPageIndexKey = @"page";
 
 static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
 
@@ -161,7 +163,7 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
                         [self setUploadStatus:CloudPrintJobUploadStatusWaitingForUpload forJobWithUniqueIdOrNil:jobUniqueId];
                         failure(CloudPrintUploadFailureReasonUnknown);
                     }
-                    NSString* documentIdString = responseDic[kCloudPrintRawUploadJSONResponseDocumentIdKey];
+                    NSString* documentIdString = responseDic[kCloudPrintRawDocumentIdKey];
                     if (!documentIdString) {
                         [self setUploadStatus:CloudPrintJobUploadStatusWaitingForUpload forJobWithUniqueIdOrNil:jobUniqueId];
                         failure(CloudPrintUploadFailureReasonUnknown);
@@ -227,6 +229,14 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
             NSLog(@"-> Cancelled CloudPrint job upload task operation (%@)", jobUniqueId);
         }
     }
+}
+
+- (NSURLRequest*)printPreviewImageRequestForDocumentId:(int64_t)documentId pageIndex:(NSInteger)pageIndex {
+    NSMutableURLRequest* rawRequest = [self pcProxiedRequest];
+    rawRequest.cachePolicy = NSURLRequestReloadIgnoringCacheData;
+    [rawRequest setValue:[NSString stringWithFormat:@"%lld", documentId] forHTTPHeaderField:kCloudPrintRawDocumentIdKey];
+    [rawRequest setValue:[NSString stringWithFormat:@"%ld", pageIndex] forHTTPHeaderField:kCloudPrintRawPageIndexKey];
+    return rawRequest;
 }
 
 #pragma mark - Private

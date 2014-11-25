@@ -29,30 +29,154 @@
 
 #import "CloudPrintPreviewViewController.h"
 
-@interface CloudPrintPreviewViewController ()
+#import "CloudPrintService.h"
+
+#import "UIImageView+AFNetworking.h"
+
+@interface CloudPrintPreviewViewController ()<CloudPrintServiceDelegate>
+
+@property (nonatomic, weak) IBOutlet UIImageView* imageView;
+@property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* loadingIndicator;
+@property (nonatomic, weak) IBOutlet UIButton* prevPageButton;
+@property (nonatomic, weak) IBOutlet UILabel* pageLabel;
+@property (nonatomic, weak) IBOutlet UIButton* nextPageButton;
+
+@property (nonatomic, strong) CloudPrintService* cloudPrintService;
+
+@property (nonatomic) NSInteger totalNbPages;
+@property (nonatomic) NSInteger currentPageIndex;
 
 @end
 
 @implementation CloudPrintPreviewViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+#pragma mark - Init
+
+- (instancetype)init {
+    self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self.class) owner:nil options:nil] firstObject];
+    if (self) {
+        self.title = NSLocalizedStringFromTable(@"Preview", @"CloudPrintPlugin", nil);
+        self.cloudPrintService = [CloudPrintService sharedInstanceToRetain];
+    }
+    return self;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - Public
+
+- (void)setPrintDocumentRequest:(PrintDocumentRequest *)printDocumentRequest {
+    _printDocumentRequest = printDocumentRequest;
+    self.totalNbPages = -1;
+    self.currentPageIndex = 0;
+    [self.cloudPrintService cancelOperationsForDelegate:self];
+    [self.cloudPrintService printPreviewWithRequest:printDocumentRequest delegate:self];
+    [self update];
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark - Actions
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)doneTapped {
+    if (self.doneTappedBlock) {
+        self.doneTappedBlock();
+    }
 }
-*/
+
+- (IBAction)prevPageTapped {
+    if (self.currentPageIndex > 0) {
+        self.currentPageIndex--;
+    }
+}
+
+- (IBAction)nextPageTapped {
+    if (self.currentPageIndex < self.totalNbPages - 1) {
+        self.currentPageIndex++;
+    }
+}
+
+#pragma mark - Private
+
+- (void)update {
+    if (self.totalNbPages < 0) {
+        self.prevPageButton.hidden = YES;
+        self.pageLabel.hidden = YES;
+        self.nextPageButton.hidden = YES;
+    } else {
+        self.prevPageButton.hidden = NO;
+        self.pageLabel.hidden = NO;
+        self.nextPageButton.hidden = NO;
+        self.prevPageButton.enabled = self.currentPageIndex > 0;
+        self.nextPageButton.enabled = self.currentPageIndex < self.totalNbPages - 1;
+        self.pageLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PageIndexOutOfTotalWithFormat", @"CloudPrintPlugin", nil), self.currentPageIndex, self.totalNbPages];
+        
+        NSURLRequest* request = [self.cloudPrintService printPreviewImageRequestForDocumentId:self.printDocumentRequest.documentId pageIndex:self.currentPageIndex];
+        
+        self.imageView.image = nil;
+        [self.loadingIndicator startAnimating];
+        __weak __typeof(self) welf = self;
+        [self.imageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [welf.loadingIndicator stopAnimating];
+            welf.imageView.image = image;
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            [welf.loadingIndicator stopAnimating];
+            welf.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
+        }];
+    }
+    
+}
+
+#pragma mark - CloudPrintService
+
+- (void)printPreviewForRequest:(PrintDocumentRequest *)request didReturn:(PrintPreviewDocumentResponse *)response {
+    switch (response.statusCode) {
+        case CloudPrintStatusCode_OK:
+            self.totalNbPages = response.numberOfPages;
+            [self update];
+            break;
+        case CloudPrintStatusCode_AUTHENTICATION_ERROR:
+        {
+            __weak __typeof(self) welf = self;
+            [[AuthenticationController sharedInstanceToRetain] addLoginObserver:self success:^{
+                welf.printDocumentRequest = welf.printDocumentRequest;
+            } userCancelled:^{
+                [welf doneTappedBlock]; //cancel
+            } failure:^(NSError *error) {
+                [welf.loadingIndicator stopAnimating];
+                welf.totalNbPages = -1;
+                [welf update];
+                if (error.code == kAuthenticationErrorCodeCouldNotAskForCredentials) {
+                    welf.centerMessageLabel.text = NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil);
+                } else {
+                    welf.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
+                }
+            }];
+            break;
+        }
+        default:
+            [self printPreviewFailedForRequest:request];
+            break;
+    }
+}
+
+- (void)printPreviewFailedForRequest:(PrintDocumentRequest *)request {
+    [self.loadingIndicator stopAnimating];
+    self.totalNbPages = -1;
+    [self update];
+     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
+}
+
+- (void)serviceConnectionToServerFailed {
+    [self.loadingIndicator stopAnimating];
+    self.totalNbPages = -1;
+    [self update];
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil);
+}
+
+#pragma mark - Dealloc
+
+- (void)dealloc
+{
+    [self.cloudPrintService cancelOperationsForDelegate:self];
+    [self.imageView cancelImageRequestOperation];
+}
 
 @end
