@@ -104,6 +104,7 @@
 
 + (PrintDocumentRequest*)createDefaultRequest {
     PrintDocumentRequest* request = [PrintDocumentRequest new];
+    request.documentId = 0;
     request.orientation = CloudPrintOrientation_PORTRAIT;
     request.colorConfig = CloudPrintColorConfig_BLACK_WHITE;
     request.doubleSided = CloudPrintDoubleSidedConfig_LONG_EDGE;
