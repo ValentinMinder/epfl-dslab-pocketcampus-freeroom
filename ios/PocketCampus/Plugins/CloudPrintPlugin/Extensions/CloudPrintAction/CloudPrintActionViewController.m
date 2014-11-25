@@ -77,7 +77,8 @@
                 itemFound = YES;
                 break;
             }
-            if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeURL]) {
+            
+            if (!itemFound && [itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeURL]) {
                 [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeURL options:nil completionHandler:^(NSURL* url, NSError *error) {
                     if (welf && url && !error) {
                         [welf loadItemWithURL:url];
@@ -85,8 +86,7 @@
                 }];
                 itemFound = YES;
                 break;
-            }
-            if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeFileURL]) {
+            } if (!itemFound && [itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeFileURL]) {
                 [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeURL options:nil completionHandler:^(NSURL* fileURL, NSError *error) {
                     if (welf && fileURL && !error) {
                         [welf loadItemWithURL:fileURL];
@@ -117,19 +117,23 @@
 #pragma mark - Private
 
 - (void)loadItemWithURL:(NSURL*)url {
-    [self.loadingIndicator stopAnimating];
-    self.centerMessageLabel.text = nil;
-    NSString* filename = [url lastPathComponent];
-    __weak __typeof(self) welf = self;
-    UIViewController* viewController = [self.cloudPrintController viewControllerForPrintDocumentWithURL:url docName:filename printDocumentRequestOrNil:nil completion:^(CloudPrintCompletionStatusCode printStatusCode) {
-        if (printStatusCode == CloudPrintCompletionStatusCodeUnsupportedFile) {
-            [welf showUnsupportedFileFormatError];
-        } else {
-            [welf.extensionContext completeRequestReturningItems:@[] completionHandler:NULL];
-        }
-    }];
-    viewController.view.tintColor = [PCValues pocketCampusRed];
-    [self presentViewController:viewController animated:NO completion:NULL];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.loadingIndicator stopAnimating];
+        self.centerMessageLabel.text = nil;
+        NSString* filename = [url lastPathComponent];
+        __weak __typeof(self) welf = self;
+        UIViewController* viewController = [self.cloudPrintController viewControllerForPrintDocumentWithURL:url docName:filename printDocumentRequestOrNil:nil completion:^(CloudPrintCompletionStatusCode printStatusCode) {
+            if (printStatusCode == CloudPrintCompletionStatusCodeUnsupportedFile) {
+                [welf dismissViewControllerAnimated:YES completion:^{
+                    [welf showUnsupportedFileFormatError];
+                }];
+            } else {
+                [welf.extensionContext completeRequestReturningItems:@[] completionHandler:NULL];
+            }
+        }];
+        viewController.view.tintColor = [PCValues pocketCampusRed];
+        [self presentViewController:viewController animated:NO completion:NULL];
+    });
 }
 
 - (void)showUnsupportedFileFormatError {

@@ -42,6 +42,9 @@
                     <state key="normal" title="Try again">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="tryAgainTapped" destination="-1" eventType="touchUpInside" id="8ee-af-3Pf"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>

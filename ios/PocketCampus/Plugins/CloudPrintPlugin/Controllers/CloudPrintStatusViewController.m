@@ -127,6 +127,7 @@
     @catch (NSException *exception) {}
     
     _progress = progress;
+    [self updateProgress];
     [self.progress addObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted)) options:NSKeyValueObservingOptionNew context:NULL];
 }
 
@@ -138,15 +139,19 @@
 #pragma mark - Private
 
 - (void)updateProgress {
-    [self.progressView setProgress:self.progress.fractionCompleted animated:YES];
+    [self.progressView setProgress:self.progress.fractionCompleted animated:self.progress.fractionCompleted >= self.progressView.progress];
 }
 
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self updateProgress];
-    });
+    if (object == self.progress) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self updateProgress];
+        });
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 #pragma mark - Dealloc

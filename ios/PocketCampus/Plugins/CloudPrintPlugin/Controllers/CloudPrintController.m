@@ -113,9 +113,6 @@
     if (newCurrentViewController == self.currentViewController) {
         return;
     }
-    if (!self.navController) {
-        self.navController = [[PCNavigationController alloc] initWithRootViewController:self.preRequestStatusViewController];
-    }
     if (newCurrentViewController.navigationController) {
         [self.navController popToViewController:newCurrentViewController animated:animated];
     } else {
@@ -210,6 +207,19 @@ static float const kProgressMax = 100;
     }
     CFRelease(mimeType);
     return isSupported;
+    
+    /*
+     Hacky way, problem, might crash because whole file loaded in memory
+     http://stackoverflow.com/a/1401918/1423774
+     
+     NSURLRequest* fileURLRequest = [[NSURLRequest alloc] initWithURL:localURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:.1];
+    NSURLResponse* response = nil;
+    [NSURLConnection sendSynchronousRequest:fileURLRequest returningResponse:&response error:nil];
+    NSString* mimeType = [response MIMEType];
+    
+    if ([mimeType isEqualToString:@"application/pdf"]) {
+        return YES;
+    }*/
 }
 
 - (UIViewController*)viewControllerForPrintDocumentWithURL:(NSURL*)url docName:(NSString*)docName printDocumentRequestOrNil:(PrintDocumentRequest*)requestOrNil completion:(CloudPrintCompletionBlock)completion {
@@ -277,8 +287,8 @@ static float const kProgressMax = 100;
         }
         case CloudPrintStatusCode_AUTHENTICATION_ERROR:
         {
-            __weak __typeof(job) wjob = job;
             __weak __typeof(self) welf = self;
+            __weak __typeof(job) wjob = job;
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
                 wjob.requestViewController.userValidatedRequestBlock(wjob.request);
             } userCancelled:^{
@@ -323,10 +333,10 @@ static float const kProgressMax = 100;
 #pragma mark - Private
 
 - (void)handleJob:(CloudPrintJob*)job {
+    
     __weak __typeof(self) welf = self;
     __weak __typeof(job) wjob = job;
 
-    
     // Generic
     
     [wjob.preRequestStatusViewController setUserCancelledBlock:^{
@@ -344,11 +354,11 @@ static float const kProgressMax = 100;
         }
         
         NSProgress* progress;
-        [self downloadDocumentForJob:wjob progress:&progress completion:^(NSError *error) {
+        [welf downloadDocumentForJob:wjob progress:&progress completion:^(NSError *error) {
             wjob.documentDownloadTask = nil;
             if (error) {
+                [welf showErrorAlertWithMessage:error.localizedDescription onViewController:wjob.preRequestStatusViewController];
                 wjob.preRequestStatusViewController.statusMessage = CloudPrintStatusMessageError;
-#warning error message ?
                 [wjob.preRequestStatusViewController setShowTryAgainButtonWithTappedBlock:^{
                     [welf handleJob:wjob];
                 }];
@@ -385,7 +395,6 @@ static float const kProgressMax = 100;
             return;
         }
         
-        
         NSProgress* progress;
         [wjob.cloudPrintService uploadForPrintDocumentWithLocalURL:wjob.documentLocalURL jobUniqueId:wjob.request.jobUniqueId success:^(int64_t documentId) {
             wjob.request.documentId = documentId;
@@ -414,7 +423,7 @@ static float const kProgressMax = 100;
                 }
                 case CloudPrintUploadFailureReasonNetworkError:
                 {
-                    [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) onViewController:wjob.preRequestStatusViewController];
+                    [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) onViewController:wjob.preRequestStatusViewController];
                     wjob.preRequestStatusViewController.statusMessage = CloudPrintStatusMessageError;
                     [wjob.preRequestStatusViewController setShowTryAgainButtonWithTappedBlock:^{
                         [welf handleJob:wjob];
@@ -423,7 +432,7 @@ static float const kProgressMax = 100;
                 }
                 default:
                 {
-                    [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:wjob.preRequestStatusViewController];
+                    [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:wjob.preRequestStatusViewController];
                     wjob.preRequestStatusViewController.statusMessage = CloudPrintStatusMessageError;
                     [wjob.preRequestStatusViewController setShowTryAgainButtonWithTappedBlock:^{
                         [welf handleJob:wjob];
@@ -500,19 +509,24 @@ static float const kProgressMax = 100;
     
     NSURLRequest* request = [NSURLRequest requestWithURL:job.documentURL];
     
-    NSString* destPath = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"CloudPrintJob-document-%@", job.request.jobUniqueId]];
+    NSString* filename = [NSString stringWithFormat:@"%@-%@", job.request.jobUniqueId, request.URL.lastPathComponent];
+    NSString* finalPath = [NSTemporaryDirectory() stringByAppendingPathComponent:filename];
     
     __weak __typeof(job) wjob = job;
     job.documentDownloadTask = [self.documentsDownloadSessionManager downloadTaskWithRequest:request progress:progress destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-        return [NSURL fileURLWithPath:destPath];
+        return [NSURL fileURLWithPath:finalPath];
     } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
         if (error) {
             wjob.documentLocalURL = nil;
         } else {
             wjob.documentLocalURL = filePath;
         }
-        completion(error);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(error);
+        });
     }];
+    
+    [job.documentDownloadTask resume];
 }
 
 - (void)showErrorAlertWithMessage:(NSString*)message onViewController:(UIViewController*)viewController {

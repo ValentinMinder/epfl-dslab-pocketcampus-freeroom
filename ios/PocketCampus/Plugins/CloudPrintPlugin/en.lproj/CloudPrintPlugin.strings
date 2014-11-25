@@ -73,8 +73,8 @@
 
 //CloudPrintStatusViewController
 "Loading" = "Loading";
-"DownloadingFile" = "Downloading file";
-"UploadingFile" = "Uploading file";
+"DownloadingFile" = "Preparing (downloading file)";
+"UploadingFile" = "Preparing (uploading file)";
 "SendingToPrinter" = "Sending to printer";
 "Success" = "Success";
 "Error" = "Error";
