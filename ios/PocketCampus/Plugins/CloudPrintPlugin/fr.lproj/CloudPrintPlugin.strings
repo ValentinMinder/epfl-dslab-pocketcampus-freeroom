@@ -73,6 +73,7 @@
 
 //CloudPrintStatusViewController
 "Loading" = "Chargement";
+"DownloadingFile" = "Téléchargement du fichier";
 "UploadingFile" = "Upload du fichier";
 "SendingToPrinter" = "Envoi à l'imprimante";
 "Success" = "Terminé";

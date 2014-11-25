@@ -34,6 +34,7 @@
 typedef NS_ENUM(NSInteger, CloudPrintCompletionStatusCode) {
     CloudPrintCompletionStatusCodePrintSuccess,
     CloudPrintCompletionStatusCodeUserCancelled,
+    CloudPrintCompletionStatusCodeUnsupportedFile
 };
 
 typedef void (^CloudPrintCompletionBlock)(CloudPrintCompletionStatusCode printStatusCode);
@@ -54,11 +55,11 @@ typedef void (^CloudPrintCompletionBlock)(CloudPrintCompletionStatusCode printSt
 
 /**
  * @return a view controller that you can present to print a local file. Upload will be handled and user will be able to validate/change print config and start the print.
- * @param localURL must be the URL of a readable local file. Cannot be nil. See isSupportedFileWithLocalURL: to know wether your file can be printed.
+ * @param url must be the URL of a readable local file or a of a remote file (that will be downloaded). Cannot be nil. See isSupportedFileWithLocalURL: to know wether your local file can be printed.
  * @param printDocumentRequestOrNil you can pass a print request to pre-fill the config. The documentId attribute will be ignored.
  * @discussion you're excpected to dismiss the returned view controller when completion is executed (no matter the status code value)
  */
-- (UIViewController*)viewControllerForPrintDocumentWithLocalURL:(NSURL*)localURL docName:(NSString*)docName printDocumentRequestOrNil:(PrintDocumentRequest*)request completion:(CloudPrintCompletionBlock)completion;
+- (UIViewController*)viewControllerForPrintDocumentWithURL:(NSURL*)url docName:(NSString*)docName printDocumentRequestOrNil:(PrintDocumentRequest*)request completion:(CloudPrintCompletionBlock)completion;
 
 /**
  * @return a view controller that you can present to print a document for which you already have an id for, letting user validate/change print config and start the print.

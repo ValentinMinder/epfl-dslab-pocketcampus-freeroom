@@ -91,6 +91,9 @@
         case CloudPrintStatusMessageLoading:
             self.label.text = NSLocalizedStringFromTable(@"Loading", @"CloudPrintPlugin", nil);
             break;
+        case CloudPrintStatusMessageDownloadingFile:
+            self.label.text = NSLocalizedStringFromTable(@"DownloadingFile", @"CloudPrintPlugin", nil);
+            break;
         case CloudPrintStatusMessageUploadingFile:
             self.label.text = NSLocalizedStringFromTable(@"UploadingFile", @"CloudPrintPlugin", nil);
             break;

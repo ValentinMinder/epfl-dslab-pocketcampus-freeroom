@@ -70,9 +70,6 @@ static NSInteger const kPageToTheEndValue = 10000;
 
 @interface CloudPrintRequestViewController ()<UIActionSheetDelegate>
 
-@property (nonatomic, strong) NSString* documentName;
-@property (nonatomic, strong) PrintDocumentRequest* printRequest;
-
 @property (nonatomic, strong) CloudPrintExtensionInfoCell* extensionInfoCell;
 @property (nonatomic, strong) UIStepper* nbCopiesStepper;
 @property (nonatomic, strong) UISegmentedControl* pageRangeSegmentedControl;
@@ -92,13 +89,11 @@ static NSInteger const kPageToTheEndValue = 10000;
 
 #pragma mark - Init
 
-- (instancetype)initWithDocumentName:(NSString*)docName printRequest:(PrintDocumentRequest*)printRequest {
+- (instancetype)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = @"EPFL Print";
         self.gaiScreenName = @"/cloudprint";
-        self.documentName = docName;
-        self.printRequest = printRequest ?: [PrintDocumentRequest createDefaultRequest];
     }
     return self;
 }
@@ -123,6 +118,18 @@ static NSInteger const kPageToTheEndValue = 10000;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
+}
+
+#pragma mark - Public
+
+- (void)setDocumentName:(NSString *)documentName {
+    _documentName = [documentName copy];
+    [self.tableView reloadData];
+}
+
+- (void)setPrintRequest:(PrintDocumentRequest *)printRequest {
+    _printRequest = printRequest;
+    [self.tableView reloadData];
 }
 
 #pragma mark - Actions

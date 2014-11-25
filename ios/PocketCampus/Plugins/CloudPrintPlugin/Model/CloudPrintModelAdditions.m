@@ -125,4 +125,8 @@
     return value;
 }
 
+- (BOOL)documentNeedsToBeUploaded {
+    return self.documentId == 0;
+}
+
 @end
