@@ -65,36 +65,46 @@
     self.centerMessageLabel.text = nil;
     
     __weak __typeof(self) welf = self;
-    BOOL pdfFound = NO;
+    BOOL itemFound = NO;
     for (NSExtensionItem *item in self.extensionContext.inputItems) {
         for (NSItemProvider *itemProvider in item.attachments) {
             if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypePDF]) {
                 [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypePDF options:nil completionHandler:^(NSURL* pdfURL, NSError *error) {
                     if (welf && pdfURL && !error) {
-                        [welf.loadingIndicator stopAnimating];
-                        welf.centerMessageLabel.text = nil;
-                        NSString* filename = [pdfURL lastPathComponent];
-                        UIViewController* viewController = [welf.cloudPrintController viewControllerForPrintDocumentWithURL:pdfURL docName:filename printDocumentRequestOrNil:nil completion:^(CloudPrintCompletionStatusCode printStatusCode) {
-                            [welf.extensionContext completeRequestReturningItems:@[] completionHandler:NULL];
-                        }];
-                        viewController.view.tintColor = [PCValues pocketCampusRed];
-                        [welf presentViewController:viewController animated:NO completion:NULL];
+                        [welf loadItemWithURL:pdfURL];
                     }
                 }];
-                pdfFound = YES;
+                itemFound = YES;
+                break;
+            }
+            if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeURL]) {
+                [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeURL options:nil completionHandler:^(NSURL* url, NSError *error) {
+                    if (welf && url && !error) {
+                        [welf loadItemWithURL:url];
+                    }
+                }];
+                itemFound = YES;
+                break;
+            }
+            if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeFileURL]) {
+                [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeURL options:nil completionHandler:^(NSURL* fileURL, NSError *error) {
+                    if (welf && fileURL && !error) {
+                        [welf loadItemWithURL:fileURL];
+                    }
+                }];
+                itemFound = YES;
                 break;
             }
         }
         
-        if (pdfFound) {
+        if (itemFound) {
             // We only handle one PDF, so stop looking for more.
             break;
         }
     }
     
-    if (!pdfFound) {
-        [self.loadingIndicator stopAnimating];
-        self.centerMessageLabel.text = NSLocalizedStringFromTable(@"SorryUnsupportedFileFormat", @"CloudPrintPlugin", nil);
+    if (!itemFound) {
+        [self showUnsupportedFileFormatError];
     }
 }
 
@@ -102,6 +112,29 @@
 
 - (IBAction)cancelTapped:(id)sender {
     [self.extensionContext cancelRequestWithError:[NSError errorWithDomain:@"User cancelled" code:0 userInfo:nil]];
+}
+
+#pragma mark - Private
+
+- (void)loadItemWithURL:(NSURL*)url {
+    [self.loadingIndicator stopAnimating];
+    self.centerMessageLabel.text = nil;
+    NSString* filename = [url lastPathComponent];
+    __weak __typeof(self) welf = self;
+    UIViewController* viewController = [self.cloudPrintController viewControllerForPrintDocumentWithURL:url docName:filename printDocumentRequestOrNil:nil completion:^(CloudPrintCompletionStatusCode printStatusCode) {
+        if (printStatusCode == CloudPrintCompletionStatusCodeUnsupportedFile) {
+            [welf showUnsupportedFileFormatError];
+        } else {
+            [welf.extensionContext completeRequestReturningItems:@[] completionHandler:NULL];
+        }
+    }];
+    viewController.view.tintColor = [PCValues pocketCampusRed];
+    [self presentViewController:viewController animated:NO completion:NULL];
+}
+
+- (void)showUnsupportedFileFormatError {
+    [self.loadingIndicator stopAnimating];
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"SorryUnsupportedFileFormat", @"CloudPrintPlugin", nil);
 }
 
 @end
