@@ -261,6 +261,7 @@
 		328D3828174794B5006FE6F3 /* EventsTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328D3827174794B5006FE6F3 /* EventsTagsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 328D38291747A8C9006FE6F3 /* EventsTagView.xib */; };
 		329262F91A253F7C0023CF01 /* CloudPrintPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3283C4D21A1D012F00B7ED55 /* CloudPrintPreviewViewController.m */; };
+		329262FA1A261EC40023CF01 /* CloudPrintPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4D31A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib */; };
 		32930A7517F882010025F864 /* LGARefreshControl+PCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A7417F882010025F864 /* LGARefreshControl+PCAdditions.m */; };
 		32930AB817F898910025F864 /* ZUUIRevealController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930AA717F898910025F864 /* ZUUIRevealController.m */; };
 		3293AD2015D1BC7C0097D414 /* PCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293AD1F15D1BC7C0097D414 /* PCAboutViewController.m */; };
@@ -3279,6 +3280,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				325F1FBC19FA95470019CFCB /* CloudPrintExtensionSafari@2x.png in Resources */,
+				329262FA1A261EC40023CF01 /* CloudPrintPreviewViewController.xib in Resources */,
 				32CE952119DDBB270071F987 /* Images.xcassets in Resources */,
 				3207A38719ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib in Resources */,
 				32F9619D19C63227006A4C46 /* InfoPlist.strings in Resources */,

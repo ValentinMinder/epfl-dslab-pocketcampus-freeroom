@@ -31,6 +31,7 @@
 "Print" = "Imprimer";
 "Printer" = "Imprimante";
 "Printing" = "Impression";
+"PrintPreview" = "Aperçu avant impression";
 "OpenPocketCampusAndLoginFirst" = "Pour pouvoir imprimer, ouvrez PocketCampus une première fois et connectez-vous avec votre compte Gaspar.";
 "POOL1Printers" = "Imprimantes POOL1";
 "OpenPCandShowMyPrintLayerExplanations" = "Le plan ne peut pas être affiché depuis ici. Ouvrez PocketCampus > Plan, puis affichez le layer «Imprimantes».";
@@ -81,6 +82,8 @@
 "TryAgain" = "Réessayer";
 
 //CloudPrintPreviewViewController
+"PreviousWithArrow" = "← Précédente";
+"NextWithArrow" = "Suivante →";
 "PageIndexOutOfTotalWithFormat" = "Page %ld sur %ld";
 
 //Extension

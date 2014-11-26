@@ -41,6 +41,8 @@
 
 #import "CloudPrintMultiPageLayoutCell.h"
 
+#import "CloudPrintPreviewViewController.h"
+
 static NSInteger const kPrinterInfoSectionIndex = 0;
 static NSInteger const kCopiesAndRangeSectionIndex = 1;
 static NSInteger const kOrientationSectionIndex = 2;
@@ -104,6 +106,11 @@ static NSInteger const kPageToTheEndValue = 10000;
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Print", @"CloudPrintPlugin", nil) style:UIBarButtonItemStyleDone target:self action:@selector(printTapped)];
+    
+    UIBarButtonItem* previewButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"PrintPreview", @"CloudPrintPlugin", nil) style:UIBarButtonItemStylePlain target:self action:@selector(printPreviewTapped)];
+    UIBarButtonItem* flexibleItems = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    self.toolbarItems = @[flexibleItems, previewButtonItem];
+    
     /*PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] initWithFrame:self.tableView.frame style:self.tableView.style];
     self.tableView = tableViewAdditions;
     tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
@@ -118,6 +125,12 @@ static NSInteger const kPageToTheEndValue = 10000;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
+    [self.navigationController setToolbarHidden:NO animated:NO];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController setToolbarHidden:YES animated:NO];
 }
 
 #pragma mark - Public
@@ -146,6 +159,17 @@ static NSInteger const kPageToTheEndValue = 10000;
         [self trackAction:@"Print"];
         self.userValidatedRequestBlock(self.printRequest);
     }
+}
+
+- (void)printPreviewTapped {
+    [self trackAction:@"PrintPreview"];
+    CloudPrintPreviewViewController* viewController = [CloudPrintPreviewViewController new];
+    viewController.printDocumentRequest = self.printRequest;
+    __weak __typeof(self) welf = self;
+    [viewController setDoneTappedBlock:^{
+        [welf dismissViewControllerAnimated:YES completion:NULL];
+    }];
+    [self presentViewController:[[PCNavigationController alloc] initWithRootViewController:viewController] animated:YES completion:NULL];
 }
 
 - (void)valueChanged:(id)sender {

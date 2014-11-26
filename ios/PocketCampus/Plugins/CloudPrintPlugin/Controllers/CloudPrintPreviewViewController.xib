@@ -16,14 +16,14 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aB6-ek-ZFg">
-                        <rect key="frame" x="5" y="20" width="310" height="410"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aB6-ek-ZFg">
+                        <rect key="frame" x="5" y="25" width="310" height="405"/>
                     </imageView>
                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="SAA-Ta-RHo">
                         <rect key="frame" x="142" y="222" width="37" height="37"/>
                         <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </activityIndicatorView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEP-Xx-MCa" userLabel="Center message label">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEP-Xx-MCa" userLabel="Center message label">
                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
@@ -35,33 +35,39 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JP0-2e-iFd">
-                        <rect key="frame" x="33" y="439" width="78" height="29"/>
+                        <rect key="frame" x="59" y="439" width="56" height="29"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <state key="normal" title="←  Previous"/>
+                        <state key="normal" title="Previous"/>
+                        <connections>
+                            <action selector="prevPageTapped" destination="dIU-dd-xtj" eventType="touchUpInside" id="86r-8n-nKK"/>
+                        </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N3C-jO-vgQ">
-                        <rect key="frame" x="209" y="440" width="53" height="29"/>
+                        <rect key="frame" x="205" y="439" width="31" height="29"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <state key="normal" title="Next  →">
+                        <state key="normal" title="Next">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <connections>
+                            <action selector="nextPageTapped" destination="dIU-dd-xtj" eventType="touchUpInside" id="f6M-RH-zpD"/>
+                        </connections>
                     </button>
                 </subviews>
                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                 <constraints>
-                    <constraint firstItem="N3C-jO-vgQ" firstAttribute="centerY" secondItem="PF7-XQ-Ski" secondAttribute="centerY" constant="0.5" id="32S-LM-IEH"/>
-                    <constraint firstItem="N3C-jO-vgQ" firstAttribute="leading" secondItem="PF7-XQ-Ski" secondAttribute="trailing" constant="20" id="BXd-vI-wce"/>
+                    <constraint firstItem="N3C-jO-vgQ" firstAttribute="centerY" secondItem="PF7-XQ-Ski" secondAttribute="centerY" id="32S-LM-IEH"/>
+                    <constraint firstItem="N3C-jO-vgQ" firstAttribute="leading" secondItem="PF7-XQ-Ski" secondAttribute="trailing" constant="16" id="BXd-vI-wce"/>
                     <constraint firstAttribute="centerY" secondItem="dEP-Xx-MCa" secondAttribute="centerY" id="DKy-cW-D6V"/>
-                    <constraint firstItem="PF7-XQ-Ski" firstAttribute="leading" secondItem="JP0-2e-iFd" secondAttribute="trailing" constant="20" id="DsS-DK-uBK"/>
+                    <constraint firstItem="PF7-XQ-Ski" firstAttribute="leading" secondItem="JP0-2e-iFd" secondAttribute="trailing" constant="16" id="DsS-DK-uBK"/>
                     <constraint firstItem="aB6-ek-ZFg" firstAttribute="leading" secondItem="jnQ-C3-eXB" secondAttribute="leading" constant="5" id="LpE-5X-5Sw"/>
                     <constraint firstAttribute="centerX" secondItem="SAA-Ta-RHo" secondAttribute="centerX" id="XnE-ci-5N1"/>
                     <constraint firstAttribute="centerY" secondItem="SAA-Ta-RHo" secondAttribute="centerY" id="aOG-QW-6IE"/>
                     <constraint firstItem="dEP-Xx-MCa" firstAttribute="leading" secondItem="jnQ-C3-eXB" secondAttribute="leading" constant="10" id="bT5-YG-YAg"/>
                     <constraint firstAttribute="trailing" secondItem="dEP-Xx-MCa" secondAttribute="trailing" constant="10" id="bgH-4f-oaW"/>
                     <constraint firstAttribute="trailing" secondItem="aB6-ek-ZFg" secondAttribute="trailing" constant="5" id="hMz-wH-9jK"/>
-                    <constraint firstItem="JP0-2e-iFd" firstAttribute="centerY" secondItem="PF7-XQ-Ski" secondAttribute="centerY" constant="-0.5" id="iRk-eA-P4O"/>
+                    <constraint firstItem="JP0-2e-iFd" firstAttribute="centerY" secondItem="PF7-XQ-Ski" secondAttribute="centerY" id="iRk-eA-P4O"/>
                     <constraint firstAttribute="centerX" secondItem="PF7-XQ-Ski" secondAttribute="centerX" id="qGf-mX-J6i"/>
-                    <constraint firstItem="aB6-ek-ZFg" firstAttribute="top" secondItem="Mdr-Iw-THi" secondAttribute="bottom" id="ti3-LR-i0B"/>
+                    <constraint firstItem="aB6-ek-ZFg" firstAttribute="top" secondItem="Mdr-Iw-THi" secondAttribute="bottom" constant="5" id="ti3-LR-i0B"/>
                     <constraint firstItem="csM-02-qts" firstAttribute="top" secondItem="PF7-XQ-Ski" secondAttribute="bottom" constant="18" id="xVT-Xl-LRf"/>
                     <constraint firstItem="csM-02-qts" firstAttribute="top" secondItem="aB6-ek-ZFg" secondAttribute="bottom" constant="50" id="y8x-uh-7EO"/>
                 </constraints>

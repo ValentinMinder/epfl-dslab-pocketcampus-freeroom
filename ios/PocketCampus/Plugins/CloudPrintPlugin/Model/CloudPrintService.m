@@ -91,7 +91,7 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
 }
 
 - (void)printPreviewWithRequest:(PrintDocumentRequest*)request delegate:(id<CloudPrintServiceDelegate>)delegate {
-    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstanceWithCustomTimeoutInterval:60.0] service:self delegate:delegate]; //print preview can be very long for big document
     operation.userInfo = @{kCloudPrintServiceJobUniqueIdServiceRequestUserInfoKey:request.jobUniqueId};
     operation.serviceClientSelector = @selector(printPreview:);
     operation.delegateDidReturnSelector = @selector(printPreviewForRequest:didReturn:);
@@ -244,10 +244,9 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
 
 - (NSURLRequest*)printPreviewImageRequestForDocumentId:(int64_t)documentId pageIndex:(NSInteger)pageIndex {
     NSMutableURLRequest* rawRequest = [self pcProxiedRequest];
-    rawRequest.cachePolicy = NSURLRequestReloadIgnoringCacheData;
-    [rawRequest setValue:[NSString stringWithFormat:@"%lld", documentId] forHTTPHeaderField:kCloudPrintRawDocumentIdKey];
-    [rawRequest setValue:[NSString stringWithFormat:@"%ld", pageIndex] forHTTPHeaderField:kCloudPrintRawPageIndexKey];
-    return rawRequest;
+    NSMutableURLRequest* request = [[[[AFHTTPSessionManager manager] requestSerializer] requestBySerializingRequest:rawRequest withParameters:@{kCloudPrintRawDocumentIdKey:@(documentId), kCloudPrintRawPageIndexKey:@(pageIndex)} error:nil] mutableCopy];
+    request.cachePolicy = NSURLRequestReloadIgnoringCacheData;
+    return request;
 }
 
 #pragma mark - Private

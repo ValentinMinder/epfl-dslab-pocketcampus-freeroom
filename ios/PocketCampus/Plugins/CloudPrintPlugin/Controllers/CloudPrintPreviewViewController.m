@@ -56,10 +56,25 @@
 - (instancetype)init {
     self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self.class) owner:nil options:nil] firstObject];
     if (self) {
-        self.title = NSLocalizedStringFromTable(@"Preview", @"CloudPrintPlugin", nil);
+        self.gaiScreenName = @"/cloudprint/printpreview";
+        self.title = NSLocalizedStringFromTable(@"PrintPreview", @"CloudPrintPlugin", nil);
         self.cloudPrintService = [CloudPrintService sharedInstanceToRetain];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneTapped)];
+        self.imageView.layer.shadowColor = [UIColor grayColor].CGColor;
+        self.imageView.layer.shadowRadius = 4.0;
+        self.imageView.layer.shadowOpacity = 0.5;
+        self.imageView.layer.shadowOffset = CGSizeMake(0, 0);
+        [self.prevPageButton setTitle:NSLocalizedStringFromTable(@"PreviousWithArrow", @"CloudPrintPlugin", nil) forState:UIControlStateNormal];
+        [self.nextPageButton setTitle:NSLocalizedStringFromTable(@"NextWithArrow", @"CloudPrintPlugin", nil) forState:UIControlStateNormal];
     }
     return self;
+}
+
+#pragma mark - UIViewController overrides
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
 }
 
 #pragma mark - Public
@@ -68,6 +83,7 @@
     _printDocumentRequest = printDocumentRequest;
     self.totalNbPages = -1;
     self.currentPageIndex = 0;
+    [self.loadingIndicator startAnimating];
     [self.cloudPrintService cancelOperationsForDelegate:self];
     [self.cloudPrintService printPreviewWithRequest:printDocumentRequest delegate:self];
     [self update];
@@ -83,13 +99,17 @@
 
 - (IBAction)prevPageTapped {
     if (self.currentPageIndex > 0) {
+        [self trackAction:@"PreviousPage"];
         self.currentPageIndex--;
+        [self update];
     }
 }
 
 - (IBAction)nextPageTapped {
     if (self.currentPageIndex < self.totalNbPages - 1) {
+        [self trackAction:@"NextPage"];
         self.currentPageIndex++;
+        [self update];
     }
 }
 
@@ -100,17 +120,23 @@
         self.prevPageButton.hidden = YES;
         self.pageLabel.hidden = YES;
         self.nextPageButton.hidden = YES;
+        self.imageView.image = nil;
     } else {
         self.prevPageButton.hidden = NO;
         self.pageLabel.hidden = NO;
         self.nextPageButton.hidden = NO;
         self.prevPageButton.enabled = self.currentPageIndex > 0;
         self.nextPageButton.enabled = self.currentPageIndex < self.totalNbPages - 1;
-        self.pageLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PageIndexOutOfTotalWithFormat", @"CloudPrintPlugin", nil), self.currentPageIndex, self.totalNbPages];
+        self.pageLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PageIndexOutOfTotalWithFormat", @"CloudPrintPlugin", nil), self.currentPageIndex+1, self.totalNbPages];
+        self.imageView.image = nil;
         
         NSURLRequest* request = [self.cloudPrintService printPreviewImageRequestForDocumentId:self.printDocumentRequest.documentId pageIndex:self.currentPageIndex];
+        if (!request) {
+            [self.loadingIndicator stopAnimating];
+            self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
+            return;
+        }
         
-        self.imageView.image = nil;
         [self.loadingIndicator startAnimating];
         __weak __typeof(self) welf = self;
         [self.imageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -127,6 +153,7 @@
 #pragma mark - CloudPrintService
 
 - (void)printPreviewForRequest:(PrintDocumentRequest *)request didReturn:(PrintPreviewDocumentResponse *)response {
+    [self.loadingIndicator stopAnimating];
     switch (response.statusCode) {
         case CloudPrintStatusCode_OK:
             self.totalNbPages = response.numberOfPages;
@@ -140,7 +167,6 @@
             } userCancelled:^{
                 [welf doneTappedBlock]; //cancel
             } failure:^(NSError *error) {
-                [welf.loadingIndicator stopAnimating];
                 welf.totalNbPages = -1;
                 [welf update];
                 if (error.code == kAuthenticationErrorCodeCouldNotAskForCredentials) {
@@ -168,7 +194,7 @@
     [self.loadingIndicator stopAnimating];
     self.totalNbPages = -1;
     [self update];
-    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil);
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
 }
 
 #pragma mark - Dealloc
