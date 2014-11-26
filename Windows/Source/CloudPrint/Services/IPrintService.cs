@@ -9,8 +9,5 @@ namespace PocketCampus.CloudPrint.Services
     {
         [ThriftMethod( "printDocument" )]
         Task<PrintDocumentResponse> PrintAsync( [ThriftParameter( 1, "request" )] PrintDocumentRequest request );
-
-        [ThriftMethod( "printPreview" )]
-        Task<PrintPreviewDocumentResponse> PreviewPrintAsync( [ThriftParameter( 1, "request" )] PrintDocumentRequest request );
     }
 }

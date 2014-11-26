@@ -50,13 +50,17 @@
     <Compile Include="Models\PageRange.cs" />
     <Compile Include="Models\PagesPerSheet.cs" />
     <Compile Include="Models\PrintDocumentRequest.cs" />
-    <Compile Include="Models\PrintPreviewDocumentResponse.cs" />
     <Compile Include="Models\PrintDocumentResponse.cs" />
     <Compile Include="Models\ResponseStatus.cs" />
     <Compile Include="Plugin.cs" />
+    <Compile Include="PrintRequest.cs" />
+    <Compile Include="PrintRequestStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IFileLoader.cs" />
+    <Compile Include="Services\IFileUploader.cs" />
     <Compile Include="Services\IPrintService.cs" />
     <Compile Include="Services\PrintService.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThinMvvm">
@@ -72,9 +76,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

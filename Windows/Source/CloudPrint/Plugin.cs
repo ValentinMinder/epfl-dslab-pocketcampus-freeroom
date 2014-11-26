@@ -29,14 +29,10 @@ namespace PocketCampus.CloudPrint
         {
         }
 
-        public void NavigateTo( INavigationService navigationService )
-        {
+        // This plugin cannot be navigated to directly
+        public void NavigateTo( INavigationService navigationService ) { }
 
-        }
-
-        public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService )
-        {
-
-        }
+        // This plugin cannot be navigated to directly
+        public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService ) { }
     }
 }

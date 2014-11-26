@@ -15,15 +15,15 @@ namespace PocketCampus.CloudPrint.Models
         public MultiPageConfig MultiPageConfig { get; set; }
 
         [ThriftField( 7, false, "doubleSided" )]
-        public DoubleSidedConfig DoubleSidedConfig { get; set; }
+        public DoubleSidedConfig? DoubleSidedConfig { get; set; }
 
         [ThriftField( 8, false, "orientation" )]
-        public PageOrientation Orientation { get; set; }
+        public PageOrientation? Orientation { get; set; }
 
         [ThriftField( 9, false, "multipleCopies" )]
         public CopiesConfig CopiesConfig { get; set; }
 
         [ThriftField( 10, false, "colorConfig" )]
-        public ColorConfig ColorConfig { get; set; }
+        public ColorConfig? ColorConfig { get; set; }
     }
 }

@@ -13,10 +13,5 @@ namespace PocketCampus.CloudPrint.Services
         {
             return CallAsync<PrintDocumentRequest, PrintDocumentResponse>( x => x.PrintAsync, request );
         }
-
-        public Task<PrintPreviewDocumentResponse> PreviewPrintAsync( PrintDocumentRequest request )
-        {
-            return CallAsync<PrintDocumentRequest, PrintPreviewDocumentResponse>( x => x.PreviewPrintAsync, request );
-        }
     }
 }
