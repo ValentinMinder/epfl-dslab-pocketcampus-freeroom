@@ -1,29 +1,22 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using PocketCampus.CloudPrint.Models;
 using PocketCampus.Common.Services;
+using ThriftSharp;
 
 namespace PocketCampus.CloudPrint.Services
 {
-    public sealed class PrintService : ThriftPrintService
+    public abstract class PrintService : ThriftServiceImplementation<IPrintService>, IPrintService
     {
-        private IHttpClient _client;
+        protected PrintService( IServerAccess access ) : base( access.CreateCommunication( "cloudprint" ) ) { }
 
-        public PrintService( IHttpClient client, IServerAccess access )
-            : base( access )
+        public Task<PrintDocumentResponse> PrintAsync( PrintDocumentRequest request )
         {
-            _client = client;
+            return CallAsync<PrintDocumentRequest, PrintDocumentResponse>( x => x.PrintAsync, request );
         }
 
-        // TODO create an IRawHttpClient that takes headers/params and returns streams, also use it in Moodle
-
-        public override Task<long> UploadFileAsync( Stream file )
+        public Task<PrintPreviewDocumentResponse> PreviewPrintAsync( PrintDocumentRequest request )
         {
-            throw new System.NotImplementedException();
-        }
-
-        public override Task<Stream> GetPagePreviewAsync( long fileId, int pageIndex )
-        {
-            throw new System.NotImplementedException();
+            return CallAsync<PrintDocumentRequest, PrintPreviewDocumentResponse>( x => x.PreviewPrintAsync, request );
         }
     }
 }

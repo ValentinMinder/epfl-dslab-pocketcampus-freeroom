@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using PocketCampus.CloudPrint.Models;
 using ThriftSharp;
 
@@ -13,9 +12,5 @@ namespace PocketCampus.CloudPrint.Services
 
         [ThriftMethod( "printPreview" )]
         Task<PrintPreviewDocumentResponse> PreviewPrintAsync( [ThriftParameter( 1, "request" )] PrintDocumentRequest request );
-
-        Task<long> UploadFileAsync( Stream file );
-
-        Task<Stream> GetPagePreviewAsync( long fileId, int pageIndex );
     }
 }
