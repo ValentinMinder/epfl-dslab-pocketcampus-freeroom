@@ -7,5 +7,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.satellite.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.server"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/commons-io-2.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
