@@ -187,11 +187,20 @@ static float const kProgressMax = 100;
 #pragma mark - Public
     
 + (BOOL)isSupportedFileWithLocalURL:(NSURL*)localURL {
+    
     NSString* path = localURL.path;
     if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
         return NO;
     }
-
+    
+    // Method 1: try to find the "%PDF" header in the file
+    NSError* error = nil;
+    NSString* string = [NSString stringWithContentsOfURL:localURL encoding:NSASCIIStringEncoding error:&error];
+    if (!error && string) {
+        return [[string substringToIndex:10] containsString:@"%PDF"];
+    }
+    
+    // Method 2 if method 1 failed: rely on file extension
     CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[path pathExtension], NULL);
     if (!UTI) {
         return NO;
@@ -207,19 +216,6 @@ static float const kProgressMax = 100;
     }
     CFRelease(mimeType);
     return isSupported;
-    
-    /*
-     Hacky way, problem, might crash because whole file loaded in memory
-     http://stackoverflow.com/a/1401918/1423774
-     
-     NSURLRequest* fileURLRequest = [[NSURLRequest alloc] initWithURL:localURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:.1];
-    NSURLResponse* response = nil;
-    [NSURLConnection sendSynchronousRequest:fileURLRequest returningResponse:&response error:nil];
-    NSString* mimeType = [response MIMEType];
-    
-    if ([mimeType isEqualToString:@"application/pdf"]) {
-        return YES;
-    }*/
 }
 
 - (UIViewController*)viewControllerForPrintDocumentWithURL:(NSURL*)url docName:(NSString*)docName printDocumentRequestOrNil:(PrintDocumentRequest*)requestOrNil completion:(CloudPrintCompletionBlock)completion {
@@ -396,8 +392,9 @@ static float const kProgressMax = 100;
         }
         
         NSProgress* progress;
-        [wjob.cloudPrintService uploadForPrintDocumentWithLocalURL:wjob.documentLocalURL jobUniqueId:wjob.request.jobUniqueId success:^(int64_t documentId) {
+        [wjob.cloudPrintService uploadForPrintDocumentWithLocalURL:wjob.documentLocalURL desiredFilename:wjob.docName ?: [wjob.documentURL lastPathComponent] jobUniqueId:wjob.request.jobUniqueId success:^(int64_t documentId) {
             wjob.request.documentId = documentId;
+            
             [welf handleJob:wjob];
         } progress:&progress failure:^(CloudPrintUploadFailureReason failureReason) {
             switch (failureReason) {
@@ -485,6 +482,7 @@ static float const kProgressMax = 100;
 
 - (void)job:(CloudPrintJob*)job completedWithStatusCode:(CloudPrintCompletionStatusCode)statusCode {
     @synchronized (self) {
+        [self deleteIfNecessaryDownloadedDocumentForJob:job];
         if (job.completion) {
             job.completion(statusCode);
         }
@@ -507,7 +505,9 @@ static float const kProgressMax = 100;
         self.documentsDownloadSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     }
     
-    NSURLRequest* request = [NSURLRequest requestWithURL:job.documentURL];
+    NSMutableURLRequest* request = [[NSURLRequest requestWithURL:job.documentURL] mutableCopy];
+    
+    request.allHTTPHeaderFields = [NSHTTPCookie requestHeaderFieldsWithCookies:[NSHTTPCookieStorage sharedHTTPCookieStorage].cookies];
     
     NSString* filename = [NSString stringWithFormat:@"%@-%@", job.request.jobUniqueId, request.URL.lastPathComponent];
     NSString* finalPath = [NSTemporaryDirectory() stringByAppendingPathComponent:filename];
@@ -527,6 +527,16 @@ static float const kProgressMax = 100;
     }];
     
     [job.documentDownloadTask resume];
+}
+
+- (void)deleteIfNecessaryDownloadedDocumentForJob:(CloudPrintJob*)job {
+    if (job.documentURL && job.documentLocalURL) { //means document was downloaded
+        NSError* error = nil;
+        [[NSFileManager defaultManager] removeItemAtURL:job.documentLocalURL error:&error];
+        if (error) {
+            CLSNSLog(@"-> ERROR CloudPrint job completed but could not delete downloaded file. Ignoring. (file: %@ error: %@)", job.documentLocalURL, error);
+        }
+    }
 }
 
 - (void)showErrorAlertWithMessage:(NSString*)message onViewController:(UIViewController*)viewController {

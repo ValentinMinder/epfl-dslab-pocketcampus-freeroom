@@ -41,6 +41,8 @@
 
 @property (nonatomic, strong) CloudPrintController* cloudPrintController;
 
+@property (nonatomic, copy) NSString* loadedUTType;
+
 @end
 
 @implementation CloudPrintActionViewController
@@ -71,25 +73,28 @@
             if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypePDF]) {
                 [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypePDF options:nil completionHandler:^(NSURL* pdfURL, NSError *error) {
                     if (welf && pdfURL && !error) {
+                        welf.loadedUTType = (NSString*)kUTTypePDF;
                         [welf loadItemWithURL:pdfURL];
                     }
                 }];
                 itemFound = YES;
                 break;
             }
-            
-            if (!itemFound && [itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeURL]) {
-                [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeURL options:nil completionHandler:^(NSURL* url, NSError *error) {
-                    if (welf && url && !error) {
-                        [welf loadItemWithURL:url];
+            if (!itemFound && [itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeFileURL]) {
+                [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeURL options:nil completionHandler:^(NSURL* fileURL, NSError *error) {
+                    if (welf && fileURL && !error) {
+                        welf.loadedUTType = (NSString*)kUTTypeFileURL;
+                        [welf loadItemWithURL:fileURL];
                     }
                 }];
                 itemFound = YES;
                 break;
-            } if (!itemFound && [itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeFileURL]) {
-                [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeURL options:nil completionHandler:^(NSURL* fileURL, NSError *error) {
-                    if (welf && fileURL && !error) {
-                        [welf loadItemWithURL:fileURL];
+            }
+            if (!itemFound && [itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeURL]) {
+                [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeURL options:nil completionHandler:^(NSURL* url, NSError *error) {
+                    if (welf && url && !error) {
+                        welf.loadedUTType = (NSString*)kUTTypeURL;
+                        [welf loadItemWithURL:url];
                     }
                 }];
                 itemFound = YES;
@@ -124,21 +129,26 @@
         __weak __typeof(self) welf = self;
         UIViewController* viewController = [self.cloudPrintController viewControllerForPrintDocumentWithURL:url docName:filename printDocumentRequestOrNil:nil completion:^(CloudPrintCompletionStatusCode printStatusCode) {
             if (printStatusCode == CloudPrintCompletionStatusCodeUnsupportedFile) {
-                [welf dismissViewControllerAnimated:YES completion:^{
-                    [welf showUnsupportedFileFormatError];
-                }];
+                [welf dismissViewControllerAnimated:YES completion:NULL];
+                [welf showUnsupportedFileFormatError];
             } else {
                 [welf.extensionContext completeRequestReturningItems:@[] completionHandler:NULL];
             }
         }];
-        viewController.view.tintColor = [PCValues pocketCampusRed];
-        [self presentViewController:viewController animated:NO completion:NULL];
+        if (viewController) {
+            viewController.view.tintColor = [PCValues pocketCampusRed];
+            [self presentViewController:viewController animated:NO completion:NULL];
+        }
     });
 }
 
 - (void)showUnsupportedFileFormatError {
     [self.loadingIndicator stopAnimating];
-    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"SorryUnsupportedFileFormat", @"CloudPrintPlugin", nil);
+    if ([self.loadedUTType isEqualToString:(NSString*)kUTTypeURL]) {
+        self.centerMessageLabel.text = NSLocalizedStringFromTable(@"SorryUnsupportedURLSafariExplanations", @"CloudPrintPlugin", nil);
+    } else {
+        self.centerMessageLabel.text = NSLocalizedStringFromTable(@"SorryUnsupportedFileFormat", @"CloudPrintPlugin", nil);
+    }
 }
 
 @end

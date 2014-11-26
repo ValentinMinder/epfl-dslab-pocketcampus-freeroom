@@ -134,6 +134,7 @@
 - (void)setShowTryAgainButtonWithTappedBlock:(void (^)())showTryAgainButtonWithTappedBlock {
     _showTryAgainButtonWithTappedBlock = showTryAgainButtonWithTappedBlock;
     self.tryAgainButton.hidden = (showTryAgainButtonWithTappedBlock == nil);
+    self.progressView.hidden = (showTryAgainButtonWithTappedBlock != nil);
 }
 
 #pragma mark - Private

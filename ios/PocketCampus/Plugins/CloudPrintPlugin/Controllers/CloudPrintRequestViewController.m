@@ -152,6 +152,7 @@ static NSInteger const kPageToTheEndValue = 10000;
     if (sender == self.nbCopiesStepper) {
         if (!self.printRequest.multipleCopies) {
             self.printRequest.multipleCopies = [CloudPrintMultipleCopies new];
+            self.printRequest.multipleCopies.collate = NO;
         }
         self.printRequest.multipleCopies.numberOfCopies = (int)(self.nbCopiesStepper.value);
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kNbCopiesRowIndex inSection:kCopiesAndRangeSectionIndex]] withRowAnimation:UITableViewRowAnimationNone];

@@ -103,9 +103,20 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
 
 #pragma mark - Misc
 
-- (void)uploadForPrintDocumentWithLocalURL:(NSURL*)localURL jobUniqueId:(NSString*)jobUniqueId success:(void (^)(int64_t documentId))success progress:(NSProgress* __autoreleasing*)progress failure:(void (^)(CloudPrintUploadFailureReason failureReason))failure {
+- (void)uploadForPrintDocumentWithLocalURL:(NSURL*)localURL desiredFilename:(NSString*)desiredFilename jobUniqueId:(NSString*)jobUniqueId success:(void (^)(int64_t documentId))success progress:(NSProgress* __autoreleasing*)progress failure:(void (^)(CloudPrintUploadFailureReason failureReason))failure {
     
     [PCUtils throwExceptionIfObject:localURL notKindOfClass:[NSURL class]];
+    
+    NSString* filename = nil;
+    if (desiredFilename) {
+        [PCUtils throwExceptionIfObject:desiredFilename notKindOfClass:[NSString class]];
+        if (desiredFilename.length == 0) {
+            [NSException exceptionWithName:@"Illegal argument" reason:@"desiredFilename cannot be of length 0" userInfo:nil];
+        }
+        filename = desiredFilename;
+    } else {
+        filename = [localURL lastPathComponent];
+    }
     
     if (jobUniqueId) {
         [PCUtils throwExceptionIfObject:jobUniqueId notKindOfClass:[NSString class]];
@@ -123,7 +134,7 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
     
     NSError* error = nil;
     NSMutableURLRequest* finalRequest = [[self.filesUploadSessionManager requestSerializer] multipartFormRequestWithMethod:@"POST" URLString:rawRequest.URL.absoluteString parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        [formData appendPartWithFileURL:localURL name:kCloudPrintRawUploadFileParameterNameKey fileName:[localURL lastPathComponent] mimeType:@"application/pdf" error:nil];
+        [formData appendPartWithFileURL:localURL name:kCloudPrintRawUploadFileParameterNameKey fileName:filename mimeType:@"application/pdf" error:nil];
     } error:&error];
     
     if (error) {
