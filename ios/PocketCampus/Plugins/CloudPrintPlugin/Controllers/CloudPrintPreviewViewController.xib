@@ -20,7 +20,7 @@
                         <rect key="frame" x="5" y="25" width="310" height="405"/>
                     </imageView>
                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="SAA-Ta-RHo">
-                        <rect key="frame" x="142" y="222" width="37" height="37"/>
+                        <rect key="frame" x="142" y="214" width="37" height="37"/>
                         <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </activityIndicatorView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEP-Xx-MCa" userLabel="Center message label">
@@ -60,10 +60,12 @@
                     <constraint firstAttribute="centerY" secondItem="dEP-Xx-MCa" secondAttribute="centerY" id="DKy-cW-D6V"/>
                     <constraint firstItem="PF7-XQ-Ski" firstAttribute="leading" secondItem="JP0-2e-iFd" secondAttribute="trailing" constant="16" id="DsS-DK-uBK"/>
                     <constraint firstItem="aB6-ek-ZFg" firstAttribute="leading" secondItem="jnQ-C3-eXB" secondAttribute="leading" constant="5" id="LpE-5X-5Sw"/>
+                    <constraint firstItem="SAA-Ta-RHo" firstAttribute="top" secondItem="dEP-Xx-MCa" secondAttribute="bottom" constant="10" id="T8M-do-NsE"/>
                     <constraint firstAttribute="centerX" secondItem="SAA-Ta-RHo" secondAttribute="centerX" id="XnE-ci-5N1"/>
-                    <constraint firstAttribute="centerY" secondItem="SAA-Ta-RHo" secondAttribute="centerY" id="aOG-QW-6IE"/>
+                    <constraint firstAttribute="centerY" secondItem="SAA-Ta-RHo" secondAttribute="centerY" constant="8" id="aOG-QW-6IE"/>
                     <constraint firstItem="dEP-Xx-MCa" firstAttribute="leading" secondItem="jnQ-C3-eXB" secondAttribute="leading" constant="10" id="bT5-YG-YAg"/>
                     <constraint firstAttribute="trailing" secondItem="dEP-Xx-MCa" secondAttribute="trailing" constant="10" id="bgH-4f-oaW"/>
+                    <constraint firstItem="dEP-Xx-MCa" firstAttribute="top" secondItem="SAA-Ta-RHo" secondAttribute="bottom" constant="15" id="eDK-f6-1F6"/>
                     <constraint firstAttribute="trailing" secondItem="aB6-ek-ZFg" secondAttribute="trailing" constant="5" id="hMz-wH-9jK"/>
                     <constraint firstItem="JP0-2e-iFd" firstAttribute="centerY" secondItem="PF7-XQ-Ski" secondAttribute="centerY" id="iRk-eA-P4O"/>
                     <constraint firstAttribute="centerX" secondItem="PF7-XQ-Ski" secondAttribute="centerX" id="qGf-mX-J6i"/>
@@ -71,6 +73,12 @@
                     <constraint firstItem="csM-02-qts" firstAttribute="top" secondItem="PF7-XQ-Ski" secondAttribute="bottom" constant="18" id="xVT-Xl-LRf"/>
                     <constraint firstItem="csM-02-qts" firstAttribute="top" secondItem="aB6-ek-ZFg" secondAttribute="bottom" constant="50" id="y8x-uh-7EO"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="T8M-do-NsE"/>
+                        <exclude reference="DKy-cW-D6V"/>
+                    </mask>
+                </variation>
             </view>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
             <connections>

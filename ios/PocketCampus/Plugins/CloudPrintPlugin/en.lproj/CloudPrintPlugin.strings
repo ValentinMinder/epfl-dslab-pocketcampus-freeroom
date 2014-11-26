@@ -82,6 +82,7 @@
 "TryAgain" = "Try again";
 
 //CloudPrintPreviewViewController
+"PreparingPrintPreviewMightTakeSomeTime" = "Generating preview\nMight last a few seconds...";
 "PreviousWithArrow" = "← Previous";
 "NextWithArrow" = "Next →";
 "PageIndexOutOfTotalWithFormat" = "Page %ld of %ld";

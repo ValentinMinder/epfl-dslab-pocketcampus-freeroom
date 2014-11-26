@@ -94,6 +94,7 @@
     self.totalNbPages = -1;
     self.currentPageIndex = 0;
     [self.loadingIndicator startAnimating];
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"PreparingPrintPreviewMightTakeSomeTime", @"CloudPrintPlugin", nil);
     [self.cloudPrintService cancelOperationsForDelegate:self];
     [self.cloudPrintService printPreviewWithRequest:printDocumentRequest delegate:self];
     [self update];
@@ -103,12 +104,14 @@
 
 - (void)closeTapped {
     if (self.closeTappedBlock) {
+        [self trackAction:@"Close"];
         self.closeTappedBlock();
     }
 }
 
 - (void)printTapped {
     if (self.printTappedBlock) {
+        [self trackAction:@"Print"];
         self.printTappedBlock();
     }
 }
@@ -180,6 +183,7 @@
 
 - (void)printPreviewForRequest:(PrintDocumentRequest *)request didReturn:(PrintPreviewDocumentResponse *)response {
     [self.loadingIndicator stopAnimating];
+    self.centerMessageLabel.text = nil;
     switch (response.statusCode) {
         case CloudPrintStatusCode_OK:
             self.totalNbPages = response.numberOfPages;
