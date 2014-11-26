@@ -15,6 +15,14 @@ namespace PocketCampus.Common
     [DataContract]
     public sealed class ServerConfiguration
     {
+        // The format of the server URL
+        // Parameters are the protocol, the URL and the port
+#if DEBUG
+        private const string ServerBaseUrlFormat = "http://test-pocketcampus.epfl.ch:14610/v3r1/";
+#else
+        private const string ServerBaseUrlFormat = "{0}://{1}:{2}/v3r1/";
+#endif
+
         /// <summary>
         /// Gets the protocol used to access the server.
         /// </summary>
@@ -39,6 +47,15 @@ namespace PocketCampus.Common
         /// </remarks>
         [DataMember( Name = "ENABLED_PLUGINS" )]
         public string[] EnabledPlugins { get; set; }
+
+        /// <summary>
+        /// Gets the server's base URL.
+        /// </summary>
+        [IgnoreDataMember]
+        public string ServerBaseUrl
+        {
+            get { return string.Format( ServerBaseUrlFormat, Protocol, Address, Port ); }
+        }
 
 
         /// <summary>

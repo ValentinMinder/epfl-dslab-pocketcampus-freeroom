@@ -42,6 +42,7 @@ namespace PocketCampus.Main
             _pluginLoader = Container.Bind<IPluginLoader, PluginLoader>();
             _settings = Container.Bind<IMainSettings, MainSettings>();
             Container.Bind<IHttpClient, HttpClient>();
+            Container.Bind<IHttpHeaders, HttpHeaders>();
             Container.Bind<IBrowserService, BrowserService>();
             Container.Bind<IEmailService, EmailService>();
             Container.Bind<IPhoneService, PhoneService>();

@@ -14,26 +14,29 @@ namespace PocketCampus.Moodle.Services
 {
     public sealed class MoodleDownloader : IMoodleDownloader
     {
-        private const string SessionHeaderName = "X-PC-AUTH-PCSESSID";
-
-        private const string DownloadUrlFormat = "{0}://pocketcampus.epfl.ch:{1}/v3r1/raw-moodle";
+        private const string PluginName = "raw-moodle";
         private const string ActionKey = "action";
         private const string ActionValue = "download_file";
         private const string FilePathKey = "file_path";
 
-        private readonly IServerSettings _serverSettings;
+        private readonly IServerSettings _settings;
+        private readonly IHttpHeaders _headers;
 
 
-        public MoodleDownloader( IServerSettings serverSettings )
+        public MoodleDownloader( IServerSettings settings, IHttpHeaders headers )
         {
-            _serverSettings = serverSettings;
+            _settings = settings;
+            _headers = headers;
         }
 
 
         public async Task<byte[]> DownloadAsync( MoodleFile file )
         {
-            var client = new HttpClient(); // not the PocketCampus HTTP client, the .NET one
-            client.DefaultRequestHeaders.Add( SessionHeaderName, _serverSettings.Session );
+            var client = new HttpClient();
+            foreach ( var pair in _headers.Current )
+            {
+                client.DefaultRequestHeaders.Add( pair.Key, pair.Value );
+            }
 
             var postParams = new Dictionary<string, string>
             {
@@ -41,7 +44,7 @@ namespace PocketCampus.Moodle.Services
                 { FilePathKey, file.DownloadUrl }
             };
 
-            string downloadUrl = string.Format( DownloadUrlFormat, _serverSettings.Configuration.Protocol, _serverSettings.Configuration.Port );
+            string downloadUrl = _settings.Configuration.ServerBaseUrl + PluginName;
             var uri = new Uri( downloadUrl, UriKind.Absolute );
 
             var response = await client.PostAsync( uri, new HttpFormUrlEncodedContent( postParams ) );

@@ -23,7 +23,7 @@ namespace PocketCampus.Common.Services
         string Session { get; set; }
 
         /// <summary>
-        /// Gets or sets the per-plugin sessions for the old authentication models.
+        /// Gets or sets the per-plugin sessions for the old authentication model.
         /// </summary>
         Dictionary<string, string> Sessions { get; set; }
 

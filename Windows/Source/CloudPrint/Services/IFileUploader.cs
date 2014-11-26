@@ -5,6 +5,6 @@ namespace PocketCampus.CloudPrint.Services
 {
     public interface IFileUploader
     {
-        Task<long> UploadFileAsync( Stream file );
+        Task<long> UploadFileAsync( string fileName, Stream fileContent );
     }
 }

@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\FileUploader.cs" />
     <Compile Include="WindowsRuntimePlugin.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -99,8 +100,9 @@
     <Reference Include="ThinMvvm.WindowsRuntime">
       <HintPath>..\..\packages\ThinMvvm.WindowsRuntime.0.9.26.0\lib\portable-win81+WindowsPhoneApp81\ThinMvvm.WindowsRuntime.dll</HintPath>
     </Reference>
-    <Reference Include="ThriftSharp">
-      <HintPath>..\..\packages\ThriftSharp.2.2.0.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThriftSharp.dll</HintPath>
+    <Reference Include="ThriftSharp, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\ThriftSharp.2.3.0.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThriftSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

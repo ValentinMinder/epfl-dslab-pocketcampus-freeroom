@@ -97,7 +97,7 @@ namespace PocketCampus.CloudPrint.ViewModels
                 try
                 {
                     var stream = await _fileLoader.GetFileAsync( _request.FileUri );
-                    var documentId = await _fileUploader.UploadFileAsync( stream );
+                    var documentId = await _fileUploader.UploadFileAsync( _request.DocumentName, stream );
                     serverRequest.DocumentId = documentId;
                 }
                 catch
