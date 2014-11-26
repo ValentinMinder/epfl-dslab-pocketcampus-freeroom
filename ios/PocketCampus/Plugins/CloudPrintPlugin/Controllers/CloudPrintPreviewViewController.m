@@ -42,6 +42,8 @@
 @property (nonatomic, weak) IBOutlet UILabel* pageLabel;
 @property (nonatomic, weak) IBOutlet UIButton* nextPageButton;
 
+@property (nonatomic, strong) NSTimer* updateImageTimer;
+
 @property (nonatomic, strong) CloudPrintService* cloudPrintService;
 
 @property (nonatomic) NSInteger totalNbPages;
@@ -66,6 +68,13 @@
         self.imageView.layer.shadowOffset = CGSizeMake(0, 0);
         [self.prevPageButton setTitle:NSLocalizedStringFromTable(@"PreviousWithArrow", @"CloudPrintPlugin", nil) forState:UIControlStateNormal];
         [self.nextPageButton setTitle:NSLocalizedStringFromTable(@"NextWithArrow", @"CloudPrintPlugin", nil) forState:UIControlStateNormal];
+        self.imageView.userInteractionEnabled = YES;
+        UISwipeGestureRecognizer* prevGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(prevPageTapped)];
+        prevGesture.direction = UISwipeGestureRecognizerDirectionRight;
+        [self.imageView addGestureRecognizer:prevGesture];
+        UISwipeGestureRecognizer* nextGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextPageTapped)];
+        nextGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+        [self.imageView addGestureRecognizer:nextGesture];
     }
     return self;
 }
@@ -128,26 +137,36 @@
         self.prevPageButton.enabled = self.currentPageIndex > 0;
         self.nextPageButton.enabled = self.currentPageIndex < self.totalNbPages - 1;
         self.pageLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PageIndexOutOfTotalWithFormat", @"CloudPrintPlugin", nil), self.currentPageIndex+1, self.totalNbPages];
+        
+        [self.imageView cancelImageRequestOperation];
         self.imageView.image = nil;
         
-        NSURLRequest* request = [self.cloudPrintService printPreviewImageRequestForDocumentId:self.printDocumentRequest.documentId pageIndex:self.currentPageIndex];
-        if (!request) {
-            [self.loadingIndicator stopAnimating];
-            self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
-            return;
-        }
-        
         [self.loadingIndicator startAnimating];
-        __weak __typeof(self) welf = self;
-        [self.imageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-            [welf.loadingIndicator stopAnimating];
-            welf.imageView.image = image;
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            [welf.loadingIndicator stopAnimating];
-            welf.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
-        }];
+
+        NSTimeInterval interval = self.updateImageTimer ? 0.4 : 0.0;
+        [self.updateImageTimer invalidate];
+        self.updateImageTimer = [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(updateImage) userInfo:nil repeats:NO];
     }
     
+}
+
+- (void)updateImage {
+    NSURLRequest* request = [self.cloudPrintService printPreviewImageRequestForDocumentId:self.printDocumentRequest.documentId pageIndex:self.currentPageIndex];
+    if (!request) {
+        [self.loadingIndicator stopAnimating];
+        self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
+        return;
+    }
+    __weak __typeof(self) welf = self;
+    [self.imageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        welf.updateImageTimer = nil;
+        [welf.loadingIndicator stopAnimating];
+        welf.imageView.image = image;
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        welf.updateImageTimer = nil;
+        [welf.loadingIndicator stopAnimating];
+        welf.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
+    }];
 }
 
 #pragma mark - CloudPrintService
