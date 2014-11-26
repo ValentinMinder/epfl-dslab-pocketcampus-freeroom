@@ -61,7 +61,6 @@
         self.gaiScreenName = @"/cloudprint/printpreview";
         self.title = NSLocalizedStringFromTable(@"PrintPreview", @"CloudPrintPlugin", nil);
         self.cloudPrintService = [CloudPrintService sharedInstanceToRetain];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneTapped)];
         self.imageView.layer.shadowColor = [UIColor grayColor].CGColor;
         self.imageView.layer.shadowRadius = 4.0;
         self.imageView.layer.shadowOpacity = 0.5;
@@ -84,6 +83,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Close", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(closeTapped)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Print", @"CloudPrintPlugin", nil) style:UIBarButtonItemStyleDone target:self action:@selector(printTapped)];
 }
 
 #pragma mark - Public
@@ -100,9 +101,15 @@
 
 #pragma mark - Actions
 
-- (void)doneTapped {
-    if (self.doneTappedBlock) {
-        self.doneTappedBlock();
+- (void)closeTapped {
+    if (self.closeTappedBlock) {
+        self.closeTappedBlock();
+    }
+}
+
+- (void)printTapped {
+    if (self.printTappedBlock) {
+        self.printTappedBlock();
     }
 }
 
@@ -184,7 +191,7 @@
             [[AuthenticationController sharedInstanceToRetain] addLoginObserver:self success:^{
                 welf.printDocumentRequest = welf.printDocumentRequest;
             } userCancelled:^{
-                [welf doneTappedBlock]; //cancel
+                [welf closeTapped]; //cancel
             } failure:^(NSError *error) {
                 welf.totalNbPages = -1;
                 [welf update];

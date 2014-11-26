@@ -108,8 +108,9 @@ static NSInteger const kPageToTheEndValue = 10000;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Print", @"CloudPrintPlugin", nil) style:UIBarButtonItemStyleDone target:self action:@selector(printTapped)];
     
     UIBarButtonItem* previewButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"PrintPreview", @"CloudPrintPlugin", nil) style:UIBarButtonItemStylePlain target:self action:@selector(printPreviewTapped)];
-    UIBarButtonItem* flexibleItems = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    self.toolbarItems = @[flexibleItems, previewButtonItem];
+    UIBarButtonItem* flexibleItem1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem* flexibleItem2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    self.toolbarItems = @[flexibleItem1, previewButtonItem, flexibleItem2];
     
     /*PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] initWithFrame:self.tableView.frame style:self.tableView.style];
     self.tableView = tableViewAdditions;
@@ -166,10 +167,17 @@ static NSInteger const kPageToTheEndValue = 10000;
     CloudPrintPreviewViewController* viewController = [CloudPrintPreviewViewController new];
     viewController.printDocumentRequest = self.printRequest;
     __weak __typeof(self) welf = self;
-    [viewController setDoneTappedBlock:^{
+    [viewController setCloseTappedBlock:^{
         [welf dismissViewControllerAnimated:YES completion:NULL];
     }];
-    [self presentViewController:[[PCNavigationController alloc] initWithRootViewController:viewController] animated:YES completion:NULL];
+    [viewController setPrintTappedBlock:^{
+        [welf dismissViewControllerAnimated:YES completion:^{
+            [welf printTapped];
+        }];
+    }];
+    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
+    navController.view.tintColor = self.view.tintColor; //if in extension
+    [self presentViewController:navController animated:YES completion:NULL];
 }
 
 - (void)valueChanged:(id)sender {

@@ -37,6 +37,8 @@
 
 @property (nonatomic, strong) PrintDocumentRequest* printDocumentRequest;
 
-@property (nonatomic, copy) void (^doneTappedBlock)();
+@property (nonatomic, copy) void (^closeTappedBlock)();
+
+@property (nonatomic, copy) void (^printTappedBlock)();
 
 @end

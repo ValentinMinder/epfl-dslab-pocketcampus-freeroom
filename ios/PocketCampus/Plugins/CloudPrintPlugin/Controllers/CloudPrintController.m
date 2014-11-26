@@ -197,7 +197,8 @@ static float const kProgressMax = 100;
     NSError* error = nil;
     NSString* string = [NSString stringWithContentsOfURL:localURL encoding:NSASCIIStringEncoding error:&error];
     if (!error && string) {
-        return [[string substringToIndex:10] containsString:@"%PDF"];
+        NSUInteger index = 10 < string.length - 1 ? 10 : string.length - 1; //10 is normally too big, but taking some margin
+        return ([[string substringToIndex:index] rangeOfString:@"%PDF"].location != NSNotFound);
     }
     
     // Method 2 if method 1 failed: rely on file extension
