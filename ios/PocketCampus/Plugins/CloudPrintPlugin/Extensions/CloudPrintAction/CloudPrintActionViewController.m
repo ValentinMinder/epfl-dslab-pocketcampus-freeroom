@@ -55,7 +55,7 @@
     self.cloudPrintController.extensionContext = self.extensionContext;
     
     self.view.tintColor = [PCValues pocketCampusRed];
-    [self.cancelButton setTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) forState:UIControlStateNormal];
+    [self.cancelButton setTitle:NSLocalizedStringFromTable(@"Close", @"PocketCampus", nil) forState:UIControlStateNormal];
 
     
     if (![[PCConfig defaults] boolForKey:PC_CONFIG_LOADED_FROM_BUNDLE_KEY]) {
