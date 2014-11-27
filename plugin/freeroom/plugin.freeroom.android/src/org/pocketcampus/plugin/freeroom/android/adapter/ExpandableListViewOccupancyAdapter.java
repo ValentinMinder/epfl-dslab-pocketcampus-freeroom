@@ -147,9 +147,9 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 		final boolean isFav = mModel.isFavorite(mRoom);
 
 		if (isFav) {
-			star.setImageResource(R.drawable.ic_action_favorite_enabled);
+			star.setImageResource(R.drawable.freeroom_ic_action_favorite_enabled);
 		} else {
-			star.setImageResource(R.drawable.ic_action_favorite_disabled);
+			star.setImageResource(R.drawable.freeroom_ic_action_favorite_disabled);
 		}
 
 		star.setOnClickListener(new OnClickListener() {
@@ -157,10 +157,10 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 			@Override
 			public void onClick(View v) {
 				if (isFav) {
-					star.setImageResource(android.R.drawable.star_big_off);
+					star.setImageResource(android.R.drawable.freeroom_star_big_off);
 					mModel.removeFavorite(mRoom);
 				} else {
-					star.setImageResource(android.R.drawable.star_big_on);
+					star.setImageResource(android.R.drawable.freeroom_star_big_on);
 					mModel.addFavorite(mRoom);
 				}
 				notifyDataSetChanged();
@@ -185,10 +185,10 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 							.getRatioWorstCaseProbableOccupancy()));
 			people.setOnClickListener(onClickDirectServerShare);
 		} else if (occupancy.isIsOccupiedAtLeastOnce()) {
-			people.setImageResource(R.drawable.ic_occupation_occupied);
+			people.setImageResource(R.drawable.freeroom_ic_occupation_occupied);
 			people.setOnClickListener(null);
 		} else {
-			people.setImageResource(R.drawable.ic_occupation_unknown);
+			people.setImageResource(R.drawable.freeroom_ic_occupation_unknown);
 			people.setOnClickListener(null);
 		}
 
@@ -390,9 +390,9 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 					roomNumber));
 
 			if (ev.isGroupExpanded(groupPosition)) {
-				iv.setImageResource(R.drawable.ic_action_collapse);
+				iv.setImageResource(R.drawable.freeroom_ic_action_collapse);
 			} else {
-				iv.setImageResource(R.drawable.ic_action_expand);
+				iv.setImageResource(R.drawable.freeroom_ic_action_expand);
 			}
 
 		} else {
@@ -401,13 +401,13 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 			if (data.getAvailable(groupPosition)) {
 				more.setText(context
 						.getString(R.string.freeroom_results_room_header_reduce));
-				iv.setImageResource(R.drawable.ic_action_collapse);
+				iv.setImageResource(R.drawable.freeroom_ic_action_collapse);
 			} else {
 				// else, if not everything available, arrow down to see more
 				more.setText(context
 						.getString(R.string.freeroom_results_room_header_more)
 						+ ": " + data.getChildCountNonAvailable(groupPosition));
-				iv.setImageResource(R.drawable.ic_action_expand);
+				iv.setImageResource(R.drawable.freeroom_ic_action_expand);
 			}
 		}
 	}

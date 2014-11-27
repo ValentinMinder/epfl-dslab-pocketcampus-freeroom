@@ -1070,7 +1070,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	public int getColoredDotDrawable(FRRoomOccupancy mOccupancy) {
 		if (!isColorColoredDots()) {
-			return R.drawable.ic_dot_empty;
+			return R.drawable.freeroom_ic_dot_empty;
 		}
 
 		if (mOccupancy.isIsFreeAtLeastOnce()) {
@@ -1100,7 +1100,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	public int getColoredDotDrawable(FRPeriodOccupation mActualOccupation) {
 		if (!isColorColoredDots()) {
-			return R.drawable.ic_dot_empty;
+			return R.drawable.freeroom_ic_dot_empty;
 		}
 		if (mActualOccupation.isAvailable()) {
 			return getColoredDotGreen();
@@ -1189,10 +1189,10 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 				|| colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL)
 				|| colorBlindMode
 						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
-			return R.drawable.ic_dot_grey_symbol;
+			return R.drawable.freeroom_ic_dot_grey_symbol;
 		} else {
 			// grey is the same for color-blind and default mode
-			return R.drawable.ic_dot_grey;
+			return R.drawable.freeroom_ic_dot_grey;
 		}
 	}
 
@@ -1210,14 +1210,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	private int getColoredDotRed() {
 		if (colorBlindMode.equals(ColorBlindMode.DOTS_DISCOLORED)) {
-			return R.drawable.ic_dot_red_cb;
+			return R.drawable.freeroom_ic_dot_red_cb;
 		} else if (colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL)
 				|| colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL)
 				|| colorBlindMode
 						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
-			return R.drawable.ic_dot_red_symbol;
+			return R.drawable.freeroom_ic_dot_red_symbol;
 		} else {
-			return R.drawable.ic_dot_red;
+			return R.drawable.freeroom_ic_dot_red;
 		}
 	}
 
@@ -1235,14 +1235,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	private int getColoredDotGreen() {
 		if (colorBlindMode.equals(ColorBlindMode.DOTS_DISCOLORED)) {
-			return R.drawable.ic_dot_green_cb;
+			return R.drawable.freeroom_ic_dot_green_cb;
 		} else if (colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL)
 				|| colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL)
 				|| colorBlindMode
 						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
-			return R.drawable.ic_dot_green_symbol;
+			return R.drawable.freeroom_ic_dot_green_symbol;
 		} else {
-			return R.drawable.ic_dot_green;
+			return R.drawable.freeroom_ic_dot_green;
 		}
 	}
 
@@ -1260,14 +1260,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	private int getColoredDotOrange() {
 		if (colorBlindMode.equals(ColorBlindMode.DOTS_DISCOLORED)) {
-			return R.drawable.ic_dot_orange_cb;
+			return R.drawable.freeroom_ic_dot_orange_cb;
 		} else if (colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL)
 				|| colorBlindMode.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL)
 				|| colorBlindMode
 						.equals(ColorBlindMode.DOTS_SYMBOL_LINEFULL_DISCOLORED)) {
-			return R.drawable.ic_dot_orange_symbol;
+			return R.drawable.freeroom_ic_dot_orange_symbol;
 		} else {
-			return R.drawable.ic_dot_orange;
+			return R.drawable.freeroom_ic_dot_orange;
 		}
 	}
 
@@ -1288,22 +1288,22 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		double ratioMed = 0.15;
 		double ratioHighg = 0.20;
 		double ratioHigh = 0.25;
-		int id = R.drawable.ic_occupation_empty;
+		int id = R.drawable.freeroom_ic_occupation_empty;
 		if (ratio < 0) {
-			id = R.drawable.ic_occupation_unknown;
+			id = R.drawable.freeroom_ic_occupation_unknown;
 		}
 		if (ratio > ratioLowg) {
-			id = R.drawable.ic_occupation_lowg;
+			id = R.drawable.freeroom_ic_occupation_lowg;
 			if (ratio > ratioLow) {
-				id = R.drawable.ic_occupation_low;
+				id = R.drawable.freeroom_ic_occupation_low;
 				if (ratio > ratioMedg) {
-					id = R.drawable.ic_occupation_medg;
+					id = R.drawable.freeroom_ic_occupation_medg;
 					if (ratio > ratioMed) {
-						id = R.drawable.ic_occupation_med;
+						id = R.drawable.freeroom_ic_occupation_med;
 						if (ratio > ratioHighg) {
-							id = R.drawable.ic_occupation_highg;
+							id = R.drawable.freeroom_ic_occupation_highg;
 							if (ratio > ratioHigh) {
-								id = R.drawable.ic_occupation_high;
+								id = R.drawable.freeroom_ic_occupation_high;
 							}
 						}
 					}

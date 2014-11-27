@@ -527,7 +527,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		public int getDrawable() {
-			return R.drawable.ic_action_overflow;
+			return R.drawable.freeroom_ic_action_overflow;
 		}
 	};
 
@@ -543,7 +543,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		public int getDrawable() {
-			return R.drawable.ic_action_settings;
+			return R.drawable.freeroom_freeroom_ic_action_settings;
 		}
 	};
 	/**
@@ -556,7 +556,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		public int getDrawable() {
-			return R.drawable.ic_action_search;
+			return R.drawable.freeroom_ic_action_search;
 		}
 	};
 
@@ -574,7 +574,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		public int getDrawable() {
-			return R.drawable.ic_action_important;
+			return R.drawable.freeroom_ic_action_important;
 		}
 	};
 
@@ -594,7 +594,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		public int getDrawable() {
-			return R.drawable.ic_action_refresh;
+			return R.drawable.freeroom_ic_action_refresh;
 		}
 	};
 
@@ -608,7 +608,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		public int getDrawable() {
-			return R.drawable.ic_action_about;
+			return R.drawable.freeroom_ic_action_about;
 		}
 	};
 
@@ -1425,7 +1425,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void initInfoDetailsRoomDialog() {
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setIcon(R.drawable.ic_action_view_as_list);
+		builder.setIcon(R.drawable.freeroom_ic_action_view_as_list);
 		// erased when calling the intended method to show the details
 		builder.setTitle("Mock title");
 		builder.setPositiveButton(
@@ -1606,7 +1606,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void initWhoIsWorkingDialog() {
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setIcon(R.drawable.ic_action_view_as_list);
+		builder.setIcon(R.drawable.freeroom_ic_action_view_as_list);
 		// erased when calling the intended method to show the details
 		builder.setTitle(getString(R.string.freeroom_whoIsWorking_title));
 
@@ -1729,7 +1729,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.freeroom_dialog_fav_title));
-		builder.setIcon(R.drawable.ic_action_important);
+		builder.setIcon(R.drawable.freeroom_ic_action_important);
 		builder.setPositiveButton(getString(R.string.freeroom_dialog_fav_add),
 				null);
 		builder.setNegativeButton(
@@ -1870,7 +1870,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				null);
 		builder.setNeutralButton(
 				getString(R.string.freeroom_dialog_share_button_server), null);
-		builder.setIcon(R.drawable.ic_action_share);
+		builder.setIcon(R.drawable.freeroom_ic_action_share);
 
 		// Get the AlertDialog from create()
 		share = builder.create();
@@ -1962,7 +1962,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			shareView.setEnabled(true);
 			if (shareView instanceof ImageView) {
 				((ImageView) shareView)
-						.setImageResource(R.drawable.ic_action_share_enabled);
+						.setImageResource(R.drawable.freeroom_ic_action_share_enabled);
 			}
 			shareView.setOnClickListener(new OnClickListener() {
 				@Override
@@ -1978,7 +1978,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			if (shareView instanceof ImageView) {
 				((ImageView) shareView)
-						.setImageResource(R.drawable.ic_action_share_disabled);
+						.setImageResource(R.drawable.freeroom_ic_action_share_disabled);
 			}
 		}
 	}
@@ -2164,7 +2164,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.freeroom_dialog_warn_title));
 		builder.setMessage(getString(R.string.freeroom_dialog_warn_delete_fav_text));
-		builder.setIcon(R.drawable.ic_action_warning);
+		builder.setIcon(R.drawable.freeroom_ic_action_warning);
 		builder.setPositiveButton(
 				getString(R.string.freeroom_dialog_warn_confirm),
 				new AlertDialog.OnClickListener() {
@@ -2219,7 +2219,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void initErrorDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.freeroom_dialog_error_title));
-		builder.setIcon(R.drawable.ic_action_error);
+		builder.setIcon(R.drawable.freeroom_ic_action_error);
 		builder.setNeutralButton(R.string.freeroom_dialog_error_dismiss, null);
 
 		// Get the AlertDialog from create()
@@ -2312,7 +2312,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.freeroom_dialog_add_favorites_title));
-		builder.setIcon(R.drawable.ic_action_new);
+		builder.setIcon(R.drawable.freeroom_ic_action_new);
 
 		// Get the AlertDialog from create()
 		addFavorites = builder.create();
@@ -2537,7 +2537,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.freeroom_dialog_add_room_title));
-		builder.setIcon(R.drawable.ic_action_new);
+		builder.setIcon(R.drawable.freeroom_ic_action_new);
 
 		// Get the AlertDialog from create()
 		addSearchRoom = builder.create();
@@ -2822,7 +2822,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.freeroom_dialog_edit_room_title));
-		builder.setIcon(R.drawable.ic_action_edit_light);
+		builder.setIcon(R.drawable.freeroom_ic_action_edit_light);
 
 		// Get the AlertDialog from create()
 		editSearchRoom = builder.create();
@@ -3061,7 +3061,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				null);
 		builder.setNeutralButton(getString(R.string.freeroom_search_reset),
 				null);
-		builder.setIcon(R.drawable.ic_action_search);
+		builder.setIcon(R.drawable.freeroom_ic_action_search);
 
 		// Get the AlertDialog from create()
 
@@ -4264,7 +4264,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.freeroom_settings_title));
-		builder.setIcon(R.drawable.ic_action_settings);
+		builder.setIcon(R.drawable.freeroom_ic_action_settings);
 
 		// Get the AlertDialog from create()
 		settings = builder.create();
@@ -4729,7 +4729,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.freeroom_welcome_title));
-		builder.setIcon(R.drawable.ic_action_about);
+		builder.setIcon(R.drawable.freeroom_ic_action_about);
 		builder.setNeutralButton(getString(R.string.freeroom_welcome_dismiss),
 				null);
 
@@ -4994,7 +4994,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private void konamiCodeActivate() {
 		ImageView konami = new ImageView(this);
-		konami.setImageResource(R.drawable.freeroom_konami);
+		konami.setImageResource(R.drawable.freeroom_freeroom_konami);
 		error.setView(konami);
 
 		errorDialogShowMessage("KONAMI CODE IS CHEATING! \nNOW FIND THE WAY OUT YOU CHEATER!");
