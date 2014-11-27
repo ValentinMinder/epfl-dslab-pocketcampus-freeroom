@@ -22,6 +22,8 @@
 
 #import "UIScrollView+LGAAdditions.h"
 
+#import "NSObject+LGAAdditions.h"
+
 #import <objc/runtime.h>
 
 static NSString* kKVOContext = 0;
@@ -39,69 +41,10 @@ static NSString* kKVOContext = 0;
 @implementation UIScrollView (LGAAdditions)
 
 + (void)load {
-    [self swizzleKVO];
-    [self swizzleDealloc];
-}
-
-+ (void)swizzleKVO {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        Class class = [self class];
-        
-        // When swizzling a class method, use the following:
-        // Class class = object_getClass((id)self);
-        
-        SEL originalSelector = @selector(observeValueForKeyPath:ofObject:change:context:);
-        SEL swizzledSelector = @selector(lga_observeValueForKeyPath:ofObject:change:context:);
-        
-        Method originalMethod = class_getInstanceMethod(class, originalSelector);
-        Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
-        
-        BOOL didAddMethod =
-        class_addMethod(class,
-                        originalSelector,
-                        method_getImplementation(swizzledMethod),
-                        method_getTypeEncoding(swizzledMethod));
-        
-        if (didAddMethod) {
-            class_replaceMethod(class,
-                                swizzledSelector,
-                                method_getImplementation(originalMethod),
-                                method_getTypeEncoding(originalMethod));
-        } else {
-            method_exchangeImplementations(originalMethod, swizzledMethod);
-        }
-    });
-}
-
-+ (void)swizzleDealloc {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        Class class = [self class];
-        
-        // When swizzling a class method, use the following:
-        // Class class = object_getClass((id)self);
-        
-        SEL originalSelector = NSSelectorFromString(@"dealloc");
-        SEL swizzledSelector = @selector(lga_dealloc);
-        
-        Method originalMethod = class_getInstanceMethod(class, originalSelector);
-        Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
-        
-        BOOL didAddMethod =
-        class_addMethod(class,
-                        originalSelector,
-                        method_getImplementation(swizzledMethod),
-                        method_getTypeEncoding(swizzledMethod));
-        
-        if (didAddMethod) {
-            class_replaceMethod(class,
-                                swizzledSelector,
-                                method_getImplementation(originalMethod),
-                                method_getTypeEncoding(originalMethod));
-        } else {
-            method_exchangeImplementations(originalMethod, swizzledMethod);
-        }
+        [self lga_swizzleMethodWithOriginalSelector:@selector(observeValueForKeyPath:ofObject:change:context:) withSwizzledSelector:@selector(lga_uiscrollview_observeValueForKeyPath:ofObject:change:context:) isClassMethod:NO];
+        [self lga_swizzleMethodWithOriginalSelector:NSSelectorFromString(@"dealloc") withSwizzledSelector:@selector(lga_uiscrollview_dealloc) isClassMethod:NO];
     });
 }
 
@@ -143,15 +86,23 @@ static NSString* const kToggleElementsVisiblityOnScrollBlockKey = @"lga_toggleEl
     }
 }
 
+- (BOOL)lga_isAtTop {
+    return self.contentOffset.y <= -self.contentInset.top;
+}
+
+- (BOOL)lga_isAtBottom {
+    return self.contentOffset.y >= (self.contentSize.height + self.contentInset.bottom - self.bounds.size.height);
+}
+
 #pragma mark - KVO
 
-- (void)lga_observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void)lga_uiscrollview_observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (object == self && context == &kKVOContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self lga_handleScroll];
         });
     } else {
-        [self lga_observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        [self lga_uiscrollview_observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 
@@ -223,7 +174,7 @@ static NSString* const kLastScrollDirection = @"lga_lastScrollDirection";
 
 #pragma mark - Dealloc
 
-- (void)lga_dealloc
+- (void)lga_uiscrollview_dealloc
 {
     if (self.lga_toggleElementsVisiblityOnScrollBlock) {
         @try {
@@ -231,7 +182,7 @@ static NSString* const kLastScrollDirection = @"lga_lastScrollDirection";
         }
         @catch (NSException *exception) {}
     }
-    [self lga_dealloc]; //calling original implementation
+    [self lga_uiscrollview_dealloc]; //calling original implementation
 }
 
 @end

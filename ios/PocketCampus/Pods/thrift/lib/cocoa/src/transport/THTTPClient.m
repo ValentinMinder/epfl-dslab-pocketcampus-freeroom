@@ -29,6 +29,7 @@
   if (mRequest != nil) {
     [mRequest release_stub];
   }
+
   // set up our request object that we'll use for each request
   mRequest = [[NSMutableURLRequest alloc] initWithURL: mURL];
   [mRequest setHTTPMethod: @"POST"];

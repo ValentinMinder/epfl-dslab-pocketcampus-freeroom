@@ -1,6 +1,7 @@
 Apache Thrift
+=============
 
-Last Modified: 2013-June-6
+Last Modified: 2014-03-16
 
 License
 =======
@@ -36,7 +37,7 @@ Thrift is specifically designed to support non-atomic version changes
 across client and server code.
 
 For more details on Thrift's design and implementation, take a gander at
-the Thrift whitepaper included in this distribution or at the README files
+the Thrift whitepaper included in this distribution or at the README.md files
 in your particular subdirectory of interest.
 
 Hierarchy
@@ -52,6 +53,7 @@ thrift/
     language of implementation.
 
     cpp/
+    go/
     java/
     php/
     py/
@@ -70,8 +72,7 @@ thrift/
 Requirements
 ============
 
-See http://wiki.apache.org/thrift/ThriftRequirements for
-an up-to-date list of build requirements.
+See http://thrift.apache.org/docs/install for an up-to-date list of build requirements.
 
 Resources
 =========
@@ -93,25 +94,29 @@ If you are building from the first time out of the source repository, you will
 need to generate the configure scripts.  (This is not necessary if you
 downloaded a tarball.)  From the top directory, do:
 
-	./bootstrap.sh
+    ./bootstrap.sh
 
 Once the configure scripts are generated, thrift can be configured.
 From the top directory, do:
 
-	./configure
+    ./configure
 
 You may need to specify the location of the boost files explicitly.
 If you installed boost in /usr/local, you would run configure as follows:
 
-	./configure --with-boost=/usr/local
+    ./configure --with-boost=/usr/local
 
 Note that by default the thrift C++ library is typically built with debugging
 symbols included. If you want to customize these options you should use the
 CXXFLAGS option in configure, as such:
 
-        ./configure CXXFLAGS='-g -O2'
-        ./configure CFLAGS='-g -O2'
-        ./configure CPPFLAGS='-DDEBUG_MY_FEATURE'
+    ./configure CXXFLAGS='-g -O2'
+    ./configure CFLAGS='-g -O2'
+    ./configure CPPFLAGS='-DDEBUG_MY_FEATURE'
+
+To enable gcov required options -fprofile-arcs -ftest-coverage enable them:
+
+    ./configure  --enable-coverage
 
 Run ./configure --help to see other configuration options
 
@@ -133,7 +138,7 @@ Note that some language packages must be installed manually using build tools
 better suited to those languages (at the time of this writing, this applies
 to Java, Ruby, PHP).
 
-Look for the README file in the lib/<language>/ folder for more details on the
+Look for the README.md file in the lib/<language>/ folder for more details on the
 installation of each language library package.
 
 Testing
@@ -151,7 +156,7 @@ at the end.
 
 To run the cross-language test suite, please run:
 
-          sh test/test.sh
+          make cross
 
 This will run a set of tests that use different language clients and
 servers.
