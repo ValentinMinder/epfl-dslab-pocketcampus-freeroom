@@ -543,7 +543,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		public int getDrawable() {
-			return R.drawable.freeroom_freeroom_ic_action_settings;
+			return R.drawable.freeroom_ic_action_settings;
 		}
 	};
 	/**
@@ -4994,7 +4994,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private void konamiCodeActivate() {
 		ImageView konami = new ImageView(this);
-		konami.setImageResource(R.drawable.freeroom_freeroom_konami);
+		konami.setImageResource(R.drawable.freeroom_konami);
 		error.setView(konami);
 
 		errorDialogShowMessage("KONAMI CODE IS CHEATING! \nNOW FIND THE WAY OUT YOU CHEATER!");

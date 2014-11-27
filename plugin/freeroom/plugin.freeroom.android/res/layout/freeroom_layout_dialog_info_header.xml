@@ -27,7 +27,7 @@
             android:layout_alignParentTop="true"
             android:layout_gravity="right"
             android:contentDescription="@string/freeroom_layout_roomslist_img_share"
-            android:src="@drawable/ic_action_share_enabled" />
+            android:src="@drawable/freeroom_ic_action_share_enabled" />
 
         <TextView
             android:id="@+id/freeroom_layout_dialog_info_separator_1"
@@ -44,7 +44,7 @@
             android:layout_gravity="right"
             android:layout_toLeftOf="@id/freeroom_layout_dialog_info_separator_1"
             android:contentDescription="@string/freeroom_layout_roomslist_img_map"
-            android:src="@drawable/ic_occupation_unknown" />
+            android:src="@drawable/freeroom_ic_occupation_unknown" />
 
         <TextView
             android:id="@+id/freeroom_layout_dialog_info_separator_2"

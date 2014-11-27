@@ -19,7 +19,7 @@
         android:layout_gravity="right"
         android:layout_marginRight="5dip"
         android:contentDescription="@string/freeroom_layout_roomslist_img_share"
-        android:src="@drawable/ic_action_share_enabled" />
+        android:src="@drawable/freeroom_ic_action_share_enabled" />
 
     <TextView
         android:id="@+id/freeroom_layout_roomslist_separator_2"
@@ -35,7 +35,7 @@
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@id/freeroom_layout_roomslist_separator_2"
         android:contentDescription="@string/freeroom_layout_roomslist_img_fav"
-        android:src="@drawable/ic_action_half_important" />
+        android:src="@drawable/freeroom_ic_action_half_important" />
 
     <TextView
         android:id="@+id/freeroom_layout_roomslist_separator_3"
@@ -51,7 +51,7 @@
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@id/freeroom_layout_roomslist_separator_3"
         android:contentDescription="@string/freeroom_layout_roomslist_img_people"
-        android:src="@drawable/ic_occupation_unknown" />
+        android:src="@drawable/freeroom_ic_occupation_unknown" />
 
     <TextView
         android:id="@+id/freeroom_layout_roomslist_separator_4"
@@ -67,7 +67,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="left"
         android:layout_toLeftOf="@id/freeroom_layout_roomslist_separator_4"
-        android:drawableLeft="@drawable/ic_dot_grey"
+        android:drawableLeft="@drawable/freeroom_ic_dot_grey"
         android:gravity="left|center_vertical"
         android:text="text"
         android:textAppearance="?android:attr/textAppearanceLarge"

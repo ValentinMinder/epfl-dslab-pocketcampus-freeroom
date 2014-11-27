@@ -14,7 +14,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="left|center_vertical"
-        android:drawableLeft="@drawable/ic_action_new_grey"
+        android:drawableLeft="@drawable/freeroom_ic_action_new_grey"
         android:text="mock room name"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/black" />

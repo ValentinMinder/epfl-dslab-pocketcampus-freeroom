@@ -157,10 +157,10 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 			@Override
 			public void onClick(View v) {
 				if (isFav) {
-					star.setImageResource(android.R.drawable.freeroom_star_big_off);
+					star.setImageResource(android.R.drawable.star_big_off);
 					mModel.removeFavorite(mRoom);
 				} else {
-					star.setImageResource(android.R.drawable.freeroom_star_big_on);
+					star.setImageResource(android.R.drawable.star_big_on);
 					mModel.addFavorite(mRoom);
 				}
 				notifyDataSetChanged();
