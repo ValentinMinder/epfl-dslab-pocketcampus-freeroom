@@ -7,14 +7,14 @@ then
 #	echo "    ./tool/tool.global/upload_and_run.sh https://test-pocketcampus.epfl.ch/deploy/kissrv120/"
 #	echo "    ./tool/tool.global/upload_and_run.sh https://prod-pocketcampus.epfl.ch/deploy/kissrv119/"
 #	echo "    ./tool/tool.global/upload_and_run.sh https://prod-pocketcampus.epfl.ch/deploy/kissrv118/"
-	echo "    ./tool/tool.global/upload_and_run.sh dev";
+	echo "    ./tool/tool.global/upload_and_run.sh test";
 	echo "    ./tool/tool.global/upload_and_run.sh prod1";
 	echo "    ./tool/tool.global/upload_and_run.sh prod2";
 	echo "    ./tool/tool.global/upload_and_run.sh <URL>";
 	exit
 fi
 
-if [ "$1" == "dev" ]
+if [ "$1" == "test" ]
 then
 	server="https://test-pocketcampus.epfl.ch/deploy/kissrv120/"
 elif [ "$1" == "prod1" ]
