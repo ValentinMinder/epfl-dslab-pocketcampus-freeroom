@@ -44,6 +44,7 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
 @interface CloudPrintService ()
 
 @property (nonatomic, strong) AFHTTPSessionManager* filesUploadSessionManager;
+@property (nonatomic, strong) AFHTTPRequestSerializer* requestSerializer;
 @property (nonatomic, strong) NSMutableDictionary* uploadStatusForJobUniqueId;
 
 @end
@@ -244,7 +245,10 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
 
 - (NSURLRequest*)printPreviewImageRequestForDocumentId:(int64_t)documentId pageIndex:(NSInteger)pageIndex {
     NSMutableURLRequest* rawRequest = [self pcProxiedRequest];
-    NSMutableURLRequest* request = [[[[AFHTTPSessionManager manager] requestSerializer] requestBySerializingRequest:rawRequest withParameters:@{kCloudPrintRawDocumentIdKey:@(documentId), kCloudPrintRawPageIndexKey:@(pageIndex)} error:nil] mutableCopy];
+    if (!self.requestSerializer) {
+        self.requestSerializer = [AFHTTPRequestSerializer serializer];
+    }
+    NSMutableURLRequest* request = [[self.requestSerializer requestBySerializingRequest:rawRequest withParameters:@{kCloudPrintRawDocumentIdKey:@(documentId), kCloudPrintRawPageIndexKey:@(pageIndex)} error:nil] mutableCopy];
     request.cachePolicy = NSURLRequestReloadIgnoringCacheData;
     return request;
 }
@@ -256,6 +260,16 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
     if ([jobUniqueId isKindOfClass:[NSString class]] && jobUniqueId.length > 0) {
         self.uploadStatusForJobUniqueId[jobUniqueId] = @(status);
     }
+}
+
+#pragma mark - PCService overrides
+
+- (void)cancelAllOperations {
+    for (NSURLSessionUploadTask* task in self.filesUploadSessionManager.uploadTasks) {
+        [task cancel];
+        [self setUploadStatus:CloudPrintJobUploadStatusWaitingForUpload forJobWithUniqueIdOrNil:task.taskDescription];
+    }
+    [super cancelAllOperations];
 }
 
 #pragma mark - Dealloc
