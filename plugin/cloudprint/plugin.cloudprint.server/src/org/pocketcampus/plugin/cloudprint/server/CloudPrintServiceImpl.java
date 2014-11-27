@@ -296,7 +296,6 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 		if(request.isSetColorConfig()) {
 			if(request.getColorConfig() == CloudPrintColorConfig.BLACK_WHITE) {
 				command.add("-o");command.add("JCLColorCorrection=BlackWhite");
-				command.add("-o");command.add("saturation=0");
 				//command.add("-o");command.add("blackplot");
 			}
 		}
