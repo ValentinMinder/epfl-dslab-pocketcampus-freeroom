@@ -286,7 +286,7 @@ static float const kProgressMax = 100;
         {
             __weak __typeof(self) welf = self;
             __weak __typeof(job) wjob = job;
-            [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
+            [[AuthenticationController sharedInstance] addLoginObserver:wjob success:^{
                 wjob.requestViewController.userValidatedRequestBlock(wjob.request);
             } userCancelled:^{
                 [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:wjob.requestViewController];
@@ -401,7 +401,7 @@ static float const kProgressMax = 100;
             switch (failureReason) {
                 case CloudPrintUploadFailureReasonAuthenticationError:
                 {
-                    [[AuthenticationController sharedInstance] addLoginObserver:welf success:^{
+                    [[AuthenticationController sharedInstance] addLoginObserver:wjob success:^{
                         [welf handleJob:wjob];
                     } userCancelled:^{
                         [wjob.cloudPrintService cancelJobsWithUniqueId:wjob.request.jobUniqueId];
@@ -483,6 +483,7 @@ static float const kProgressMax = 100;
 
 - (void)job:(CloudPrintJob*)job completedWithStatusCode:(CloudPrintCompletionStatusCode)statusCode {
     @synchronized (self) {
+        [[AuthenticationController sharedInstance] removeLoginObserver:job];
         [self deleteIfNecessaryDownloadedDocumentForJob:job];
         if (job.completion) {
             job.completion(statusCode);

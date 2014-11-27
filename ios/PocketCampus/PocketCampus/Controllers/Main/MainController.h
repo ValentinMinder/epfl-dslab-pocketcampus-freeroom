@@ -76,6 +76,11 @@ typedef enum {
  */
 - (void)removePluginStateObserver:(id)observer;
 
+/**
+ * @return the view controller that is currently visible,
+ * i.e. on which you can safely present a view controller and it be visible.
+ */
+- (UIViewController*)currentTopMostViewController;
 
 - (PCURLSchemeHandler*)urlSchemeHandlerSharedInstance;
 

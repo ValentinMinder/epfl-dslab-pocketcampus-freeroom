@@ -174,11 +174,33 @@
     [self.imageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
         welf.updateImageTimer = nil;
         [welf.loadingIndicator stopAnimating];
+        welf.centerMessageLabel.text = nil;
         welf.imageView.image = image;
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         welf.updateImageTimer = nil;
         [welf.loadingIndicator stopAnimating];
-        welf.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
+        switch (response.statusCode) {
+            case CloudPrintStatusCode_AUTHENTICATION_ERROR:
+            {
+                __weak __typeof(self) welf = self;
+                [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
+                    [welf.loadingIndicator startAnimating];
+                    [welf updateImage];
+                } userCancelled:^{
+                    welf.centerMessageLabel.text = NSLocalizedStringFromTable(@"LoginRequired", @"PocketCampus", nil);
+                } failure:^(NSError *error) {
+                    if (error.code == kAuthenticationErrorCodeCouldNotAskForCredentials) {
+                        welf.centerMessageLabel.text = NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil);
+                    } else {
+                        welf.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
+                    }
+                }];
+                break;
+            }
+            default:
+                welf.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
+                break;
+        }
     }];
 }
 
@@ -235,6 +257,7 @@
 - (void)dealloc
 {
     [self.updateImageTimer invalidate];
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [self.cloudPrintService cancelOperationsForDelegate:self];
     [self.imageView cancelImageRequestOperation];
 }
