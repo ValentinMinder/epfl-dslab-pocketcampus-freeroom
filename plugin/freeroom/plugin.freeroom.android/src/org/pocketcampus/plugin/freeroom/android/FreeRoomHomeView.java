@@ -279,6 +279,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		// add the main layout to the pocketcampus titled layout.
 		homeTitleLayout.addFillerView(homeMainContentLayout);
+		
+		setActionBarTitle(getString(R.string.freeroom_plugin_title));
 	}
 
 	/**
@@ -629,7 +631,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		if (!commonIsLandscapeTabletMode()) {
 			// Inflate the menu items, the same as in actionOverflow action bar
 			MenuInflater inflater = getMenuInflater();
-			inflater.inflate(R.menu.main_activity_actions, menu);
+			inflater.inflate(R.menu.freeroom_main_activity_actions, menu);
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -641,7 +643,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	public void showPopupMenuCompat(View v) {
 		PopupMenuCompat menu = PopupMenuCompat.newInstance(this, v);
-		menu.inflate(R.menu.main_activity_actions);
+		menu.inflate(R.menu.freeroom_main_activity_actions);
 		menu.setOnMenuItemClickListener(new PopupMenuCompat.OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
@@ -4992,7 +4994,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private void konamiCodeActivate() {
 		ImageView konami = new ImageView(this);
-		konami.setImageResource(R.drawable.konami);
+		konami.setImageResource(R.drawable.freeroom_konami);
 		error.setView(konami);
 
 		errorDialogShowMessage("KONAMI CODE IS CHEATING! \nNOW FIND THE WAY OUT YOU CHEATER!");
