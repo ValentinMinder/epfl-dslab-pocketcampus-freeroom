@@ -19,7 +19,6 @@ import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
-import org.pocketcampus.plugin.freeroom.shared.RegisterUser;
 
 import android.os.AsyncTask;
 import android.util.Log;
