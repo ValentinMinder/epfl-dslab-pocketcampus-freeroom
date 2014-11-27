@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
@@ -24,6 +25,7 @@ public class TestTimeStampConverter {
 	 * run them.
 	 */
 	@Test
+	@Ignore
 	public void testMonday819() {
 		FRPeriod period = FRTimes.convertFRPeriod(Calendar.MONDAY, 8, 19);
 		long tsStart = period.getTimeStampStart();
@@ -66,6 +68,7 @@ public class TestTimeStampConverter {
 	}
 
 	@Test
+	@Ignore
 	public void testTuesday89() {
 		FRPeriod period = FRTimes.convertFRPeriod(Calendar.TUESDAY, 8, 9);
 		long tsStart = period.getTimeStampStart();
@@ -90,6 +93,7 @@ public class TestTimeStampConverter {
 	}
 
 	@Test
+	@Ignore
 	public void testWednesday89() {
 		FRPeriod period = FRTimes.convertFRPeriod(Calendar.WEDNESDAY, 8, 9);
 		long tsStart = period.getTimeStampStart();

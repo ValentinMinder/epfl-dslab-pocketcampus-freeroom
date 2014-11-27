@@ -13,11 +13,12 @@
 
 chdir(dirname(__FILE__));
 
-$plugins_to_merge = array("Authentication", "Camipro", "Moodle", "Food", "Transport", "News", "Satellite", "Map", "Directory", "PushNotif", "Events", "IsAcademia", "CloudPrint", "RecommendedApps");
+$plugins_to_merge = array("Authentication", "Camipro", "Moodle", "Food", "Transport", "News", "Satellite", "Map", "Directory", "PushNotif", "Events", "IsAcademia", "CloudPrint", "RecommendedApps", "FreeRoom");
 
 $libs_to_export = array( // keep this alphabetical
 		"backport-util-concurrent-3.1.jar", "bcprov-jdk15-146.jar",
 		"commons-codec-1.4.jar", "commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar", "commons-logging-1.1.1.jar",
+		"EWSJavaAPI.jar",
 		"gcm-server.jar", "gson-1.7.1.jar", 
 		"org.json-20120521.jar",
 		"httpclient-4.1.2.jar", "httpcore-4.1.2.jar",
