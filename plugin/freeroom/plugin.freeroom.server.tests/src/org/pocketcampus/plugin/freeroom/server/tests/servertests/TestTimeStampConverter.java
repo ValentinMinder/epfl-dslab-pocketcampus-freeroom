@@ -112,12 +112,6 @@ public class TestTimeStampConverter {
 		assertTrue(day == Calendar.THURSDAY);
 		assertTrue(startHour == 8);
 		assertTrue(endHour == 9);
-
-		int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
-		mCalendar.setTimeInMillis(System.currentTimeMillis());
-		int todayDay = mCalendar.get(Calendar.DAY_OF_MONTH);
-
-		assertTrue(todayDay <= dayOfMonth);
 	}
 
 	@Test
@@ -136,12 +130,6 @@ public class TestTimeStampConverter {
 		assertTrue(day == Calendar.FRIDAY);
 		assertTrue(startHour == 8);
 		assertTrue(endHour == 9);
-
-		int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
-		mCalendar.setTimeInMillis(System.currentTimeMillis());
-		int todayDay = mCalendar.get(Calendar.DAY_OF_MONTH);
-
-		assertTrue(todayDay <= dayOfMonth);
 	}
 
 	@Test
@@ -160,12 +148,6 @@ public class TestTimeStampConverter {
 		assertTrue(day == Calendar.SATURDAY);
 		assertTrue(startHour == 8);
 		assertTrue(endHour == 9);
-
-		int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
-		mCalendar.setTimeInMillis(System.currentTimeMillis());
-		int todayDay = mCalendar.get(Calendar.DAY_OF_MONTH);
-
-		assertTrue(todayDay <= dayOfMonth);
 	}
 
 	@Test
@@ -184,12 +166,6 @@ public class TestTimeStampConverter {
 		assertTrue(day == Calendar.SUNDAY);
 		assertTrue(startHour == 8);
 		assertTrue(endHour == 9);
-
-		int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
-		mCalendar.setTimeInMillis(System.currentTimeMillis());
-		int todayDay = mCalendar.get(Calendar.DAY_OF_MONTH);
-
-		assertTrue(todayDay <= dayOfMonth);
 	}
 
 }
