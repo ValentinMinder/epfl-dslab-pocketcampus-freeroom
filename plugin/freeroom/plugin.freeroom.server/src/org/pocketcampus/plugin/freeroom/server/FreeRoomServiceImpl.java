@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.freeroom.server;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
-
 import java.net.HttpURLConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,8 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.thrift.TException;
-import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
-import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.freeroom.data.AutoUpdate;
 import org.pocketcampus.plugin.freeroom.data.PeriodicallyUpdate;
 import org.pocketcampus.plugin.freeroom.server.utils.CheckRequests;
@@ -104,12 +102,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		ConsoleHandler logHandler = new ConsoleHandler();
 		logger.addHandler(logHandler);
 
-		DB_URL = PC_SRV_CONFIG.getString("DB_URL") + "?allowMultiQueries=true";
-		DB_USER = PC_SRV_CONFIG.getString("DB_USERNAME");
-		DB_PASSWORD = PC_SRV_CONFIG.getString("DB_PASSWORD");
-		OCCUPANCIES_URL = PC_SRV_CONFIG.getString("FR_OCCUPANCIES");
-		ROOMS_LIST_URL = PC_SRV_CONFIG.getString("FR_ROOMS_LIST");
-		ROOM_DETAILS_URL = PC_SRV_CONFIG.getString("FR_ROOM_DETAILS");
+		DB_URL = PocketCampusServer.CONFIG.getString("DB_URL") + "?allowMultiQueries=true";
+		DB_USER = PocketCampusServer.CONFIG.getString("DB_USERNAME");
+		DB_PASSWORD = PocketCampusServer.CONFIG.getString("DB_PASSWORD");
+		OCCUPANCIES_URL = PocketCampusServer.CONFIG.getString("FR_OCCUPANCIES");
+		ROOMS_LIST_URL = PocketCampusServer.CONFIG.getString("FR_ROOMS_LIST");
+		ROOM_DETAILS_URL = PocketCampusServer.CONFIG.getString("FR_ROOM_DETAILS");
 		System.out.println(OCCUPANCIES_URL);
 		try {
 			connMgr = new ConnectionManager(DB_URL, DB_USER, DB_PASSWORD);
@@ -118,10 +116,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					Connection.TRANSACTION_READ_COMMITTED);
 			connMgrUpdate.getConnection().setTransactionIsolation(
 					Connection.TRANSACTION_READ_COMMITTED);
-		} catch (ServerException e) {
-			log(LOG_SIDE.SERVER, Level.SEVERE,
-					"Server cannot connect to the database");
-			e.printStackTrace();
 		} catch (SQLException e) {
 			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"Cannot start transaction mode read commited");

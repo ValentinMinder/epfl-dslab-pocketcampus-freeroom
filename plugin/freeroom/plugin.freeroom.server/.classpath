@@ -3,20 +3,10 @@
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.freeroom.shared"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.server"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex.jar" sourcepath="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-codec-1.4.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-io-2.0.1.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang-2.6.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang3-3.0.1.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-logging-1.1.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.freeroom.android"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jcifs-1.3.17.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-codec-1.9.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-httpclient-3.1.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-logging-1.1.3.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/EWSJavaAPI_1.2.jar" sourcepath="lib/EWSJavaAPI_1.2-src.zip"/>
-	<classpathentry kind="lib" path="lib/android.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/platform.server"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/platform.shared"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/org.json-20120521.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/EWSJavaAPI.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

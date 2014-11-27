@@ -1,24 +1,21 @@
 package org.pocketcampus.plugin.freeroom.data;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.logging.Level;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
-import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+import org.pocketcampus.platform.server.HttpClient;
+import org.pocketcampus.platform.server.HttpClientImpl;
+import org.pocketcampus.platform.server.database.ConnectionManager;
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl.OCCUPANCY_TYPE;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
@@ -60,17 +57,13 @@ public class FetchOccupancyDataJSON {
 
 	public FetchOccupancyDataJSON(String db_url, String username,
 			String passwd, FreeRoomServiceImpl server) {
-		try {
-			connMgr = new ConnectionManager(db_url, username, passwd);
-			DB_URL = db_url;
-			DB_USER = username;
-			DB_PASSWORD = passwd;
-			this.URL_DATA = server.getOCCUPANCIES_URL();
-			this.server = server;
-			this.connDB = null;
-		} catch (ServerException e) {
-			e.printStackTrace();
-		}
+		connMgr = new ConnectionManager(db_url, username, passwd);
+		DB_URL = db_url;
+		DB_USER = username;
+		DB_PASSWORD = passwd;
+		this.URL_DATA = server.getOCCUPANCIES_URL();
+		this.server = server;
+		this.connDB = null;
 
 	}
 
@@ -379,39 +372,12 @@ public class FetchOccupancyDataJSON {
 	 * @return The JSON page located at the given URL, null if none
 	 */
 	private String fetch(String URL) {
-		server.log(Level.INFO,
-				"Starting fetching data from ISA webservice for URL " + URL);
-		DefaultHttpClient client = new DefaultHttpClient();
-		HttpGet request;
+		HttpClient client = new HttpClientImpl();
 		try {
-			request = new HttpGet(URL);
-			request.addHeader("Accept", "application/json");
-			System.out.println(URL);
-			HttpResponse response = client.execute(request);
-
-			if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_OK) {
-
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(response.getEntity().getContent()));
-
-				StringBuffer jsonBuffer = new StringBuffer();
-				String line = "";
-				while ((line = reader.readLine()) != null) {
-					jsonBuffer.append(line);
-				}
-				server.log(Level.INFO,
-						"Successfully fetched data from ISA webservice");
-				return jsonBuffer.toString();
-			} else {
-				server.log(Level.WARNING,
-						"Error while fetching from ISA webservice, status "
-								+ response.getStatusLine().getStatusCode());
-			}
-			// TODO compile and merge script does not like URISyntaxException
-			// and HttpException
-		} catch (Exception e) {
+			return client.get(URL, Charset.forName("UTF-8"));
+		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 }

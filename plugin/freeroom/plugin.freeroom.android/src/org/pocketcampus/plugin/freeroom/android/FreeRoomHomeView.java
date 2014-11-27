@@ -10,12 +10,11 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
-import org.pocketcampus.android.platform.sdk.ui.element.InputBarElement;
-import org.pocketcampus.android.platform.sdk.ui.element.OnKeyPressedListener;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.element.InputBarElement;
+import org.pocketcampus.platform.android.ui.element.OnKeyPressedListener;
+import org.pocketcampus.platform.android.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.ColorBlindMode;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel.HomeBehaviourRoom;
@@ -255,8 +254,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
-		// Tracker
-		Tracker.getInstance().trackPageView("freeroom");
 
 		// Get and cast the controller and model
 		mController = (FreeRoomController) controller;
@@ -1468,8 +1465,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		infoDetailsRoom.setOnShowListener(new OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/details");
+				trackEvent("Details", null);
 			}
 		});
 	}
@@ -1642,8 +1638,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onShow(DialogInterface dialog) {
 				whoIsWorkingDisclaimer
 						.setText(R.string.freeroom_whoIsWorking_wait);
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/workingthere");
+				trackEvent("WorkingThere", null);
 			}
 		});
 
@@ -1769,8 +1764,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onShow(DialogInterface dialog) {
 				favoritesListAdapter.notifyDataSetChanged();
 				favoritesUpdateSummary();
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/favorites");
+				trackEvent("Favorites", null);
 			}
 		});
 
@@ -1900,8 +1894,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onShow(DialogInterface dialog) {
 				commonDismissSoftKeyBoard(shareView);
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/share");
+				trackEvent("Share", null);
 			}
 		});
 
@@ -2204,8 +2197,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onDismiss(DialogInterface dialog) {
 				favoritesUpdateSummary();
 				favoritesListAdapter.notifyDataSetChanged();
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/warning");
+				trackEvent("Warning", null);
 			}
 		});
 	}
@@ -2255,8 +2247,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		error.setOnShowListener(new OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/error");
+				trackEvent("Error", null);
 			}
 		});
 	}
@@ -2350,8 +2341,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		addFavorites.setOnShowListener(new OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/favorites/add");
+				trackEvent("AddFavorite", null);
 			}
 		});
 
@@ -2576,8 +2566,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		addSearchRoom.setOnShowListener(new OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/search/add");
+				trackEvent("AddSearch", null);
 			}
 		});
 
@@ -2891,8 +2880,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onShow(DialogInterface dialog) {
 				addSearchRoomSelectedRoomArrayAdapter.notifyDataSetChanged();
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/search/edit");
+				trackEvent("EditSearch", null);
 			}
 		});
 
@@ -3102,8 +3090,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				searchLaunchValidateButton.setEnabled(searchAuditSubmit() == 0);
 				searchPreviousRequestInitTitle();
 				searchResetMain();
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/search");
+				trackEvent("Search", null);
 			}
 		});
 
@@ -4315,8 +4302,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		settings.setOnShowListener(new OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/settings");
+				trackEvent("Settings", null);
 			}
 		});
 	}
@@ -4772,8 +4758,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		welcome.setOnShowListener(new OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
-				// Tracker
-				Tracker.getInstance().trackPageView("freeroom/welcome");
+				trackEvent("Welcome", null);
 			}
 		});
 	}
@@ -5163,6 +5148,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				}
 			}
 		}
+	}
+
+	@Override
+	protected String screenName() {
+		return "freeroom";
 	}
 
 }

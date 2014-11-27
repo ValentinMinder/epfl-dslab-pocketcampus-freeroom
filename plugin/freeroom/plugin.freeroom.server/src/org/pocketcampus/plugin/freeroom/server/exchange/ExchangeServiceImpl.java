@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
-import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+import org.pocketcampus.platform.server.database.ConnectionManager;
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl.OCCUPANCY_TYPE;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
@@ -33,13 +32,9 @@ public class ExchangeServiceImpl {
 
 	public ExchangeServiceImpl(String db_url, String username, String passwd,
 			FreeRoomServiceImpl server) {
-		try {
-			connMgr = new ConnectionManager(db_url, username, passwd);
-			this.server = server;
-			this.connDB = null;
-		} catch (ServerException e) {
-			e.printStackTrace();
-		}
+		connMgr = new ConnectionManager(db_url, username, passwd);
+		this.server = server;
+		this.connDB = null;
 	}
 
 	public ExchangeServiceImpl(FreeRoomServiceImpl server, Connection conn) {

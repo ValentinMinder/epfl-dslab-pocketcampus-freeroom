@@ -1,12 +1,12 @@
 package org.pocketcampus.plugin.freeroom.android.req;
 
-import org.pocketcampus.android.platform.sdk.io.Request;
+import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.shared.FRStatusCode;
-import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.FRWhoIsWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 
 import android.util.Log;
 
