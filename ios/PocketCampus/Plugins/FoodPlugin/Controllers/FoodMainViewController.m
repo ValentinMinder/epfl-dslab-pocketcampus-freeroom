@@ -545,7 +545,7 @@ static NSString* const kLastSelectedSegmentedIndexKey = @"FoodMainViewController
             return [meal.mTypes containsObject:nsMealType];
         }];
     }
-    
+    [self trackAction:@"ShowMenusForIngredient" contentInfo:[EpflMeal enumNameForMealType:mealType]];
     self.mealsByRestaurantViewController = viewController;
     if (self.splitViewController) {
         self.selectedMealType = mealType;

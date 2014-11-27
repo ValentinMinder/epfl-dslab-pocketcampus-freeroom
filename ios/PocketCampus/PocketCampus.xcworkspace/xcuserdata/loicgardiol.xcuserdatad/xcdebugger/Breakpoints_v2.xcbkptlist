@@ -6748,11 +6748,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintPreviewViewController.m"
-            timestampString = "438780194.701751"
+            timestampString = "438781901.64345"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
             landmarkName = "@implementation CloudPrintPreviewViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -6780,11 +6780,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintPreviewViewController.m"
-            timestampString = "438780194.701751"
+            timestampString = "438781901.64345"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "208"
-            endingLineNumber = "208"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
             landmarkName = "-updateImage"
             landmarkType = "5">
          </BreakpointContent>
@@ -6802,6 +6802,22 @@
             startingLineNumber = "246"
             endingLineNumber = "246"
             landmarkName = "-printPreviewImageRequestForDocumentId:pageIndex:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintPreviewViewController.m"
+            timestampString = "438781936.495582"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
+            landmarkName = "-setPrintDocumentRequest:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
