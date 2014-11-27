@@ -1,9 +1,20 @@
 // Created by Loïc Gardiol on 01.03.12.
 
 "PluginName" = "Restaurants";
+"ByRestaurant" = "By restaurant";
+"ByMealTypes" = "By meal type";
+"Menus" = "Menus";
 "MenusTableViewSectionName" = "Menus";
+"AllMenus" = "All menus";
+"Dinner" = "Dinner";
+"DinnerMenus" = "Dinner menus";
+"Lunch" = "Lunch";
+"LunchMenus" = "Lunch menus";
+"SeeMenusForAnotherDay" = "See menus for another day";
+"BackToTodayLunchMenus" = "Back to today lunch menus";
+"MenuWithMealTypeWithFormat" = "%@ menus";
 "LoadingMenus" = "Loading menus";
-"NoMealsToday" = "No menu today";
+"NoMeals" = "No menu";
 "NoMealsWeekend" = "No menu during the weekend";
 "MenusForTodayWithFormat" = "Menus for today – %@";
 "Map" = "Map";
@@ -23,6 +34,19 @@
 "RatingStatusReadyText" = "How did you like this meal ?";
 "RatingStatusRatedText" = "Thank you !";
 "UnknownPrice" = "Unknown\nprice";
+
+// Meal types
+"MealType_UNKNOWN" = "All";
+"MealType_FISH" = "Fish";
+"MealType_MEAT" = "Meat";
+"MealType_POULTRY" = "Poultry";
+"MealType_VEGETARIAN" = "Vegetarian";
+"MealType_GREEN_FORK" = "Green fork";
+"MealType_PASTA" = "Pasta";
+"MealType_PIZZA" = "Pizza";
+"MealType_THAI" = "Thai";
+"MealType_INDIAN" = "Indian";
+"MealType_LEBANESE" = "Lebanese";
 
 
 /* Accessiblity */

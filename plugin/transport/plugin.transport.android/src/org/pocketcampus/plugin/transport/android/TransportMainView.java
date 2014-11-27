@@ -8,16 +8,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.PCSectionedList.PCEntryAdapter;
+import org.pocketcampus.platform.android.ui.PCSectionedList.PCEntryItem;
+import org.pocketcampus.platform.android.ui.PCSectionedList.PCItem;
+import org.pocketcampus.platform.android.ui.PCSectionedList.PCSectionItem;
+import org.pocketcampus.platform.android.ui.element.ButtonElement;
+import org.pocketcampus.platform.android.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.transport.R;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
-import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryAdapter;
-import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryItem;
-import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCItem;
-import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCSectionItem;
-import org.pocketcampus.android.platform.sdk.ui.element.ButtonElement;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
 import org.pocketcampus.plugin.transport.android.ui.TransportTripDetailsDialog;
 import org.pocketcampus.plugin.transport.android.utils.DestinationFormatter;
@@ -41,7 +40,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
-import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 
 /**
@@ -66,8 +64,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 	/** The plugin model. */
 	private TransportModel mModel;
 	/* Layout */
-	/** Refresh action in the action bar. */
-	private RefreshAction mRefreshAction;
 	/** Change direction action in the action bar. */
 	private ChangeDirectionAction mDirectionAction;
 	/** The main Layout consisting of two inner layouts and a title. */
@@ -103,8 +99,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
-		// Tracker
-		Tracker.getInstance().trackPageView("transport");
 
 		mController = (TransportController) controller;
 		mModel = (TransportModel) mController.getModel();
@@ -124,6 +118,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		// Set up destinations that will be displayed
 		mModel.freeDestinations();
 		setUpDestinations();
+		setActionBarTitle(getString(R.string.transport_plugin_name));
 	}
 
 	/**
@@ -136,6 +131,11 @@ public class TransportMainView extends PluginView implements ITransportView {
 		mModel.freeDestinations();
 		mLayout.hideText();
 		setUpDestinations();
+	}
+	
+	@Override
+	protected String screenName() {
+		return "/transport";
 	}
 
 	/**
@@ -157,6 +157,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		int id = item.getItemId();
 
 		if (id == R.id.transport_stations) {
+			trackEvent("UserStations", null);
 			mFromEpfl = true;
 			Intent i = new Intent(this, TransportEditView.class);
 			startActivity(i);
@@ -212,10 +213,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 						TransportTripDetailsDialog dialog = new TransportTripDetailsDialog(
 								TransportMainView.this, trip);
 
-						// Tracker
-						Tracker.getInstance().trackPageView(
-								"transport/dialog/" + trip.getFrom().getName()
-										+ "/" + trip.getTo().getName());
+						trackEvent("ViewTripDetails", null);
 
 						dialog.show();
 						break;
@@ -264,8 +262,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 				 */
 				@Override
 				public void onClick(View v) {
-					// Tracker
-					Tracker.getInstance().trackPageView("transport/button/add");
+					trackEvent("AddStation", null);
 
 					mFromEpfl = true;
 					Intent add = new Intent(getApplicationContext(),
@@ -375,9 +372,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void networkErrorHappened() {
-		// Tracker
-		Tracker.getInstance().trackPageView("transport/network_error");
-
 		if (mDestPrefs.getAll() != null && !mDestPrefs.getAll().isEmpty()) {
 			mLayout.removeFillerView();
 			mLayout.setText(getResources().getString(
@@ -407,7 +401,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 								.getFrom());
 				TransportTrip t = mDisplayedLocations.get(l).get(0);
 				String to = DestinationFormatter
-						.getNiceName(t.getParts().get(t.getParts().size()-1).arrival.getName());
+						.getNiceName(t.getParts().get(t.getParts().size()-1).getArrival().getName());
 
 				items.add(new PCSectionItem(from + " - " + to));
 				int i = 0;
@@ -424,24 +418,24 @@ public class TransportMainView extends PluginView implements ITransportView {
 								if (!c.getTo().getName()
 										.equals("Ecublens VD, EPFL")) {
 									mDestPrefsEditor.putInt(
-											c.getParts().get(c.getParts().size()-1).arrival.getName(), 
-											c.getParts().get(c.getParts().size()-1).arrival.getId());
+											c.getParts().get(c.getParts().size()-1).getArrival().getName(), 
+											c.getParts().get(c.getParts().size()-1).getArrival().getId());
 									mDestPrefsEditor.commit();
 								}
 							} else {
 								if (!c.getFrom().getName()
 										.equals("Ecublens VD, EPFL")) {
 									mDestPrefsEditor.putInt(
-											c.getParts().get(0).departure.getName(),
-											c.getParts().get(0).departure.getId());
+											c.getParts().get(0).getDeparture().getName(),
+											c.getParts().get(0).getDeparture().getId());
 									mDestPrefsEditor.commit();
 								}
 							}
 							// String representing the type of transport
 							String logo = "";
-							for (TransportConnection p : c.parts) {
-								if (!p.foot && p.line != null) {
-									logo = p.line.getName();
+							for (TransportConnection p : c.getParts()) {
+								if (!p.isFoot() && p.getLine() != null) {
+									logo = p.getLine().getName();
 									break;
 								}
 							}
@@ -449,7 +443,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 							if (mFromEpfl) {
 								PCEntryItem entry = new PCEntryItem(
 										timeString(c.getDepartureTime()), logo,
-										c.getParts().get(c.getParts().size()-1).arrival.getName() + ":"
+										c.getParts().get(c.getParts().size()-1).getArrival().getName() + ":"
 												+ c.getDepartureTime() + ":"
 												+ c.getArrivalTime() + ":"
 												+ c.getId());
@@ -458,7 +452,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 							} else {
 								PCEntryItem entry = new PCEntryItem(
 										timeString(c.getDepartureTime()), logo,
-										c.getParts().get(0).departure.getName() + ":"
+										c.getParts().get(0).getDeparture().getName() + ":"
 												+ c.getDepartureTime() + ":"
 												+ c.getArrivalTime() + ":"
 												+ c.getId());
@@ -571,8 +565,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		 */
 		@Override
 		public void performAction(View view) {
-			// Tracker
-			Tracker.getInstance().trackPageView("transport/refresh");
+			trackEvent("Refresh", null);
 
 			mLayout.removeFillerView();
 			// mLayout.addFillerView(mListView);
@@ -616,8 +609,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		 */
 		@Override
 		public void performAction(View view) {
-			// Tracker
-			Tracker.getInstance().trackPageView("transport/changed/direction");
+			trackEvent("ChangeDirection", null);
 
 			if (mFromEpfl) {
 				mFromEpfl = false;

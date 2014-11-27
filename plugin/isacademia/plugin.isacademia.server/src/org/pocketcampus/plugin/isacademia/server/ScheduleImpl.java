@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.isacademia.server;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
-
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.ArrayList;
@@ -11,8 +10,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.pocketcampus.plugin.isacademia.shared.*;
-import org.pocketcampus.platform.sdk.server.XElement;
-
+import org.pocketcampus.platform.server.XElement;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.joda.time.*;
 import org.joda.time.format.*;
 
@@ -22,7 +21,7 @@ import org.joda.time.format.*;
  * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public final class ScheduleImpl implements Schedule {
-	private static final String ISA_SCHEDULE_URL = PC_SRV_CONFIG.getString("ISA_SCHEDULE_URL");
+	private static final String ISA_SCHEDULE_URL = PocketCampusServer.CONFIG.getString("ISA_SCHEDULE_URL");
 	// The encoding of IS-Academia's schedule API.
 	private static final Charset ISA_CHARSET = Charset.forName("ISO-8859-1");
 	// The time zone for the IS-Academia replies
@@ -73,7 +72,7 @@ public final class ScheduleImpl implements Schedule {
 	}
 
 	@Override
-	public ScheduleResponse get(LocalDate weekBeginning, String language, String sciper) throws Exception {
+	public ScheduleResponse get(LocalDate weekBeginning, String language, String sciper) {
 		if (sciper == null) {
 			return new ScheduleResponse(IsaStatusCode.INVALID_SESSION);
 		}
@@ -88,7 +87,7 @@ public final class ScheduleImpl implements Schedule {
 		try {
 			String xml = _client.get(url, ISA_CHARSET);
 			rootElem = XElement.parse(xml);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			return new ScheduleResponse(IsaStatusCode.NETWORK_ERROR);
 		}
 
@@ -101,9 +100,9 @@ public final class ScheduleImpl implements Schedule {
 		for (XElement periodElem : rootElem.children(STUDY_PERIOD_TAG)) {
 			StudyPeriod period = new StudyPeriod();
 
-			LocalDate periodDate = LocalDate.parse(periodElem.elementText(DATE_ELEMENT), DATE_FORMATTER);
-			LocalTime startTime = LocalTime.parse(periodElem.elementText(START_TIME_ELEMENT), TIME_FORMATTER);
-			LocalTime endTime = LocalTime.parse(periodElem.elementText(END_TIME_ELEMENT), TIME_FORMATTER);
+			LocalDate periodDate = LocalDate.parse(periodElem.child(DATE_ELEMENT).text(), DATE_FORMATTER);
+			LocalTime startTime = LocalTime.parse(periodElem.child(START_TIME_ELEMENT).text(), TIME_FORMATTER);
+			LocalTime endTime = LocalTime.parse(periodElem.child(END_TIME_ELEMENT).text(), TIME_FORMATTER);
 			period.setStartTime(periodDate.toDateTime(startTime, ISA_TIME_ZONE).getMillis());
 			period.setEndTime(periodDate.toDateTime(endTime, ISA_TIME_ZONE).getMillis());
 
@@ -113,7 +112,10 @@ public final class ScheduleImpl implements Schedule {
 
 			List<String> rooms = new ArrayList<String>();
 			for (XElement roomElem : periodElem.children(ROOM_ELEMENT)) {
-				rooms.add(removeExtraSpaces(getLocalizedText(roomElem, ROOM_NAME_LANGUAGE)));
+				String roomNames = getLocalizedText(roomElem, ROOM_NAME_LANGUAGE);
+				for (String actualName : RoomUtil.parseRoomNames(roomNames)) {
+					rooms.add(actualName);
+				}
 			}
 			period.setRooms(rooms);
 
@@ -161,24 +163,5 @@ public final class ScheduleImpl implements Schedule {
 		}
 
 		return result == null ? defaultResult : result;
-	}
-
-	/** Removes consecutive spaces in the specified string. */
-	private static String removeExtraSpaces(String text) {
-		StringBuilder builder = new StringBuilder();
-		boolean wasSpace = false;
-		for (char c : text.toCharArray()) {
-			if (Character.isSpaceChar(c)) {
-				wasSpace = true;
-			} else {
-				if (wasSpace) {
-					builder.append(' ');
-					wasSpace = false;
-				}
-				builder.append(c);
-			}
-		}
-
-		return builder.toString();
 	}
 }

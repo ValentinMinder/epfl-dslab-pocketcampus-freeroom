@@ -3,9 +3,10 @@
 // File author: Solal Pirelli
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Windows.Media;
-using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using PocketCampus.Common;
@@ -23,22 +24,39 @@ namespace PocketCampus.Main
     /// <summary>
     /// The PocketCampus application.
     /// </summary>
-    public partial class App : BaseApp
+    public partial class App : AppBase
     {
-        public new static App Current
+        // The key to the redirect parameter for Redirect.xaml.
+        public const string RedirectRequestKey = "redirect";
+        public const string PocketCampusProtocol = "pocketcampus";
+
+        // Logging stuff
+        private const string CustomUriEventId = "OpenPocketCampusURL";
+        private const string CustomUriScreenId = "/";
+
+        // Constants for the parsing of PocketCampus URIs.
+        private const string PocketCampusPrefix = "pocketcampus://";
+        private const string ProtocolPrefix = "/Protocol?encodedLaunchUri=";
+        private const char PluginActionDelimiter = '/';
+        private const string PluginSuffix = ".plugin.pocketcampus.org";
+        private const char ActionParametersDelimiter = '?';
+        private const char ParametersSeparator = '&';
+        private const char KeyValueDelimiter = '=';
+
+        private readonly IWindowsPhoneNavigationService _navigationService;
+        private readonly IPluginLoader _pluginLoader;
+        private readonly Logger _logger;
+        private readonly IWindowsPhonePlugin[] _plugins;
+
+        protected override string Language
         {
-            get { return (App) BaseApp.Current; }
+            get { return AppResources.ResourceLanguage; }
         }
 
-        /// <summary>
-        /// Gets the navigation service used by the app.
-        /// </summary>
-        public IWindowsPhoneNavigationService NavigationService { get; private set; }
-
-        /// <summary>
-        /// Gets the URI mapper used by the app.
-        /// </summary>
-        public PocketCampusUriMapper UriMapper { get; private set; }
+        protected override string FlowDirection
+        {
+            get { return AppResources.ResourceFlowDirection; }
+        }
 
         /// <summary>
         /// Creates a new App.
@@ -47,14 +65,45 @@ namespace PocketCampus.Main
         {
             InitializeComponent();
 
+            // Services
+            _navigationService = Container.Bind<IWindowsPhoneNavigationService, WindowsPhoneNavigationService>();
+            Container.Bind<ISettingsStorage, WindowsPhoneSettingsStorage>();
+            Container.Bind<IHttpClient, HttpClient>();
+            Container.Bind<IBrowserService, BrowserService>();
+            Container.Bind<IEmailService, EmailService>();
+            Container.Bind<IPhoneService, PhoneService>();
+            Container.Bind<ILocationService, LocationService>();
+            Container.Bind<ITileService, TileService>();
+            Container.Bind<IDeviceIdentifier, DeviceIdentifier>();
+            Container.Bind<IRatingService, RatingService>();
+            Container.Bind<IDataCache, WindowsPhoneDataCache>();
+            Container.Bind<ICredentialsStorage, WindowsPhoneCredentialsStorage>();
+            _pluginLoader = Container.Bind<IPluginLoader, PluginLoader>();
+            _logger = Container.Bind<Logger, GoogleAnalyticsLogger>();
+
+            // Common part of plugins & services initialization
+            AppInitializer.Initialize( _pluginLoader, _navigationService );
+
+            // View-ViewModels bindings for Main
+            _navigationService.Bind<MainViewModel>( "/Views/MainView.xaml" );
+            _navigationService.Bind<SettingsViewModel>( "/Views/SettingsView.xaml" );
+            _navigationService.Bind<AboutViewModel>( "/Views/AboutView.xaml" );
+
+            // URI mapping
+            LauncherEx.RegisterProtocol( PocketCampusProtocol, NavigateToCustomUri );
+
+            // WP-specific part of plugin initialization
+            _plugins = _pluginLoader.GetPlugins().Cast<IWindowsPhonePlugin>().ToArray();
+            foreach ( var plugin in _plugins )
+            {
+                plugin.Initialize( _navigationService );
+            }
+
             // Debug settings
-            DebugSettings.EnableFrameRateCounter = false;
-            DebugSettings.EnableRedrawRegions = false;
-            DebugSettings.EnableCacheVisualization = false;
             DebugSettings.UserIdleDetectionMode = IdleDetectionMode.Disabled;
 
             // Theme initialization
-            ThemeManager.OverrideOptions = ThemeManagerOverrideOptions.None;
+            ThemeManager.OverrideOptions = ThemeManagerOverrideOptions.ApplicationBarColors;
             ThemeManager.ToLightTheme();
             ThemeManager.SetAccentColor( (Color) Resources["AppAccentColor"] );
         }
@@ -67,64 +116,67 @@ namespace PocketCampus.Main
             return new OrientationChangingFrame();
         }
 
-        /// <summary>
-        /// Gets the language and flow direction of the app.
-        /// </summary>
-        protected override Tuple<string, string> GetLanguageAndFlowDirection()
+        protected override void Start( AppArguments arguments )
         {
-            return Tuple.Create( AppResources.ResourceLanguage, AppResources.ResourceFlowDirection );
-        }
+            // Logging
+            _logger.Start();
 
-        /// <summary>
-        /// Initializes the app, by binding interfaces to concrete types and ViewModels to Views, and also loading plugins.
-        /// </summary>
-        protected override void Initialize()
-        {
-            // Basic building blocks
-            Container.Bind<IHttpClient, HttpClient>();
-            Container.Bind<IApplicationSettings, ApplicationSettings>();
-            var pluginLoader = Container.Bind<IPluginLoader, PluginLoader>();
-
-            // Single-purpose services with no dependencies
-            Container.Bind<Logger, GoogleAnalyticsLogger>();
-            Container.Bind<IBrowserService, BrowserService>();
-            Container.Bind<IEmailService, EmailService>();
-            Container.Bind<IPhoneService, PhoneService>();
-            Container.Bind<ILocationService, LocationService>();
-            Container.Bind<ITileCreator, TileCreator>();
-            Container.Bind<IDeviceIdentifier, DeviceIdentifier>();
-            Container.Bind<IRatingService, RatingService>();
-
-            // URI mapping
-            RootFrame.UriMapper = UriMapper = new PocketCampusUriMapper( pluginLoader.GetPlugins() );
-            LauncherEx.RegisterProtocol( PocketCampusUriMapper.PocketCampusProtocol, UriMapper.NavigateToCustomUri );
-
-            // ViewModels from Main
-            NavigationService = Container.Bind<INavigationService, WindowsPhoneNavigationService>();
-            NavigationService.Bind<MainViewModel>( "/Views/MainView.xaml" );
-            NavigationService.Bind<AuthenticationViewModel>( "/Views/AuthenticationView.xaml" );
-            NavigationService.Bind<SettingsViewModel>( "/Views/SettingsView.xaml" );
-            NavigationService.Bind<AboutViewModel>( "/Views/AboutView.xaml" );
-
-            // Common services
-            AppInitializer.BindImplementations();
-
-            // Common part of plugin initialization
-            AppInitializer.InitializePlugins( pluginLoader, NavigationService );
-
-            // WP-specific part of plugin initialization
-            foreach ( var plugin in pluginLoader.GetPlugins().Cast<IWindowsPhonePlugin>() )
+            // Go to a specific plugin if needed
+            string id;
+            if ( arguments.NavigationArguments.TryGetValue( TileService.PluginKey, out id ) )
             {
-                plugin.Initialize( NavigationService );
+                _navigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest( id ) );
+                return;
             }
+
+            // or to a custom URI
+            string redirect;
+            if ( arguments.NavigationArguments.TryGetValue( RedirectRequestKey, out redirect ) )
+            {
+                redirect = HttpUtility.UrlDecode( redirect );
+                Messenger.Send( new EventLogRequest( CustomUriEventId, redirect, CustomUriScreenId ) );
+                NavigateToCustomUri( redirect );
+                return;
+            }
+
+            // Go to main
+            _navigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest() );
         }
 
         /// <summary>
-        /// Called when the app runs for the very first time after installation.
+        /// Navigates to the specified PocketCampus URI.
         /// </summary>
-        protected override void OnFirstRun()
+        private void NavigateToCustomUri( string uri )
         {
-            MessageBoxEx.ShowDialog( AppResources.FirstRunCaption, AppResources.FirstRunMessage );
+            var pluginAndParams = ParseQuery( uri );
+            _plugins.First( p => p.Id.Equals( pluginAndParams.Item1, StringComparison.OrdinalIgnoreCase ) )
+                    .NavigateTo( pluginAndParams.Item2, pluginAndParams.Item3, _navigationService );
+        }
+
+        /// <summary>
+        /// Parses the specified query to get the plugin name, action name and parameters.
+        /// </summary>
+        private static Tuple<string, string, Dictionary<string, string>> ParseQuery( string uri )
+        {
+            // The URI we get from WP has already been URL-decided, but the original URI is URL-encoded too
+            string query = HttpUtility.UrlDecode( uri );
+
+            query = query.Replace( PocketCampusPrefix, "" );
+
+            string[] parts = query.Split( PluginActionDelimiter );
+            string pluginName = parts[0].Replace( PluginSuffix, "" );
+
+            parts = parts[1].Split( ActionParametersDelimiter );
+            string actionName = parts[0];
+
+            if ( parts.Length > 0 )
+            {
+                var parameters = parts[1].Split( ParametersSeparator ).Select( s => s.Split( KeyValueDelimiter ) ).ToDictionary( s => s[0], s => s[1] );
+
+                return Tuple.Create( pluginName, actionName, parameters );
+            }
+
+            return Tuple.Create( pluginName, actionName, new Dictionary<string, string>() );
         }
     }
 }

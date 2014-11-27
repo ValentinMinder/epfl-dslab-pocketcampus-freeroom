@@ -30,11 +30,11 @@ public class EventItemReply implements org.apache.thrift.TBase<EventItemReply, E
   private static final org.apache.thrift.protocol.TField CATEGS_FIELD_DESC = new org.apache.thrift.protocol.TField("categs", org.apache.thrift.protocol.TType.MAP, (short)5);
   private static final org.apache.thrift.protocol.TField TAGS_FIELD_DESC = new org.apache.thrift.protocol.TField("tags", org.apache.thrift.protocol.TType.MAP, (short)6);
 
-  public int status; // required
-  public EventItem eventItem; // required
-  public Map<Long,EventPool> childrenPools; // required
-  public Map<Integer,String> categs; // required
-  public Map<String,String> tags; // required
+  private int status; // required
+  private EventItem eventItem; // required
+  private Map<Long,EventPool> childrenPools; // required
+  private Map<Integer,String> categs; // required
+  private Map<String,String> tags; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

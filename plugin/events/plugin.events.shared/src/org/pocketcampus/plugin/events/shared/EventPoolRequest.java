@@ -30,15 +30,17 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
   private static final org.apache.thrift.protocol.TField STARRED_EVENT_ITEMS_FIELD_DESC = new org.apache.thrift.protocol.TField("starredEventItems", org.apache.thrift.protocol.TType.LIST, (short)4);
   private static final org.apache.thrift.protocol.TField LANG_FIELD_DESC = new org.apache.thrift.protocol.TField("lang", org.apache.thrift.protocol.TType.STRING, (short)5);
   private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.I32, (short)6);
+  private static final org.apache.thrift.protocol.TField PERIOD_IN_HOURS_FIELD_DESC = new org.apache.thrift.protocol.TField("periodInHours", org.apache.thrift.protocol.TType.I32, (short)8);
   private static final org.apache.thrift.protocol.TField FETCH_PAST_FIELD_DESC = new org.apache.thrift.protocol.TField("fetchPast", org.apache.thrift.protocol.TType.BOOL, (short)7);
 
-  public long eventPoolId; // required
-  public String userToken; // required
-  public List<String> userTickets; // required
-  public List<Long> starredEventItems; // required
-  public String lang; // required
-  public int period; // required
-  public boolean fetchPast; // required
+  private long eventPoolId; // required
+  private String userToken; // required
+  private List<String> userTickets; // required
+  private List<Long> starredEventItems; // required
+  private String lang; // required
+  private int period; // required
+  private int periodInHours; // required
+  private boolean fetchPast; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -48,6 +50,7 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
     STARRED_EVENT_ITEMS((short)4, "starredEventItems"),
     LANG((short)5, "lang"),
     PERIOD((short)6, "period"),
+    PERIOD_IN_HOURS((short)8, "periodInHours"),
     FETCH_PAST((short)7, "fetchPast");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -75,6 +78,8 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
           return LANG;
         case 6: // PERIOD
           return PERIOD;
+        case 8: // PERIOD_IN_HOURS
+          return PERIOD_IN_HOURS;
         case 7: // FETCH_PAST
           return FETCH_PAST;
         default:
@@ -119,8 +124,9 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
   // isset id assignments
   private static final int __EVENTPOOLID_ISSET_ID = 0;
   private static final int __PERIOD_ISSET_ID = 1;
-  private static final int __FETCHPAST_ISSET_ID = 2;
-  private BitSet __isset_bit_vector = new BitSet(3);
+  private static final int __PERIODINHOURS_ISSET_ID = 2;
+  private static final int __FETCHPAST_ISSET_ID = 3;
+  private BitSet __isset_bit_vector = new BitSet(4);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -138,6 +144,8 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
     tmpMap.put(_Fields.LANG, new org.apache.thrift.meta_data.FieldMetaData("lang", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.PERIOD, new org.apache.thrift.meta_data.FieldMetaData("period", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.PERIOD_IN_HOURS, new org.apache.thrift.meta_data.FieldMetaData("periodInHours", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.FETCH_PAST, new org.apache.thrift.meta_data.FieldMetaData("fetchPast", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
@@ -184,6 +192,7 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
       this.lang = other.lang;
     }
     this.period = other.period;
+    this.periodInHours = other.periodInHours;
     this.fetchPast = other.fetchPast;
   }
 
@@ -201,6 +210,8 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
     this.lang = null;
     setPeriodIsSet(false);
     this.period = 0;
+    setPeriodInHoursIsSet(false);
+    this.periodInHours = 0;
     setFetchPastIsSet(false);
     this.fetchPast = false;
   }
@@ -377,6 +388,29 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
     __isset_bit_vector.set(__PERIOD_ISSET_ID, value);
   }
 
+  public int getPeriodInHours() {
+    return this.periodInHours;
+  }
+
+  public EventPoolRequest setPeriodInHours(int periodInHours) {
+    this.periodInHours = periodInHours;
+    setPeriodInHoursIsSet(true);
+    return this;
+  }
+
+  public void unsetPeriodInHours() {
+    __isset_bit_vector.clear(__PERIODINHOURS_ISSET_ID);
+  }
+
+  /** Returns true if field periodInHours is set (has been assigned a value) and false otherwise */
+  public boolean isSetPeriodInHours() {
+    return __isset_bit_vector.get(__PERIODINHOURS_ISSET_ID);
+  }
+
+  public void setPeriodInHoursIsSet(boolean value) {
+    __isset_bit_vector.set(__PERIODINHOURS_ISSET_ID, value);
+  }
+
   public boolean isFetchPast() {
     return this.fetchPast;
   }
@@ -450,6 +484,14 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
       }
       break;
 
+    case PERIOD_IN_HOURS:
+      if (value == null) {
+        unsetPeriodInHours();
+      } else {
+        setPeriodInHours((Integer)value);
+      }
+      break;
+
     case FETCH_PAST:
       if (value == null) {
         unsetFetchPast();
@@ -481,6 +523,9 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
     case PERIOD:
       return Integer.valueOf(getPeriod());
 
+    case PERIOD_IN_HOURS:
+      return Integer.valueOf(getPeriodInHours());
+
     case FETCH_PAST:
       return Boolean.valueOf(isFetchPast());
 
@@ -507,6 +552,8 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
       return isSetLang();
     case PERIOD:
       return isSetPeriod();
+    case PERIOD_IN_HOURS:
+      return isSetPeriodInHours();
     case FETCH_PAST:
       return isSetFetchPast();
     }
@@ -580,6 +627,15 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
         return false;
     }
 
+    boolean this_present_periodInHours = true && this.isSetPeriodInHours();
+    boolean that_present_periodInHours = true && that.isSetPeriodInHours();
+    if (this_present_periodInHours || that_present_periodInHours) {
+      if (!(this_present_periodInHours && that_present_periodInHours))
+        return false;
+      if (this.periodInHours != that.periodInHours)
+        return false;
+    }
+
     boolean this_present_fetchPast = true && this.isSetFetchPast();
     boolean that_present_fetchPast = true && that.isSetFetchPast();
     if (this_present_fetchPast || that_present_fetchPast) {
@@ -625,6 +681,11 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
     builder.append(present_period);
     if (present_period)
       builder.append(period);
+
+    boolean present_periodInHours = true && (isSetPeriodInHours());
+    builder.append(present_periodInHours);
+    if (present_periodInHours)
+      builder.append(periodInHours);
 
     boolean present_fetchPast = true && (isSetFetchPast());
     builder.append(present_fetchPast);
@@ -698,6 +759,16 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
     }
     if (isSetPeriod()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.period, typedOther.period);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetPeriodInHours()).compareTo(typedOther.isSetPeriodInHours());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetPeriodInHours()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.periodInHours, typedOther.periodInHours);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -793,6 +864,14 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 8: // PERIOD_IN_HOURS
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.periodInHours = iprot.readI32();
+            setPeriodInHoursIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         case 7: // FETCH_PAST
           if (field.type == org.apache.thrift.protocol.TType.BOOL) {
             this.fetchPast = iprot.readBool();
@@ -874,6 +953,11 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
       oprot.writeBool(this.fetchPast);
       oprot.writeFieldEnd();
     }
+    if (isSetPeriodInHours()) {
+      oprot.writeFieldBegin(PERIOD_IN_HOURS_FIELD_DESC);
+      oprot.writeI32(this.periodInHours);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -930,6 +1014,12 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
       if (!first) sb.append(", ");
       sb.append("period:");
       sb.append(this.period);
+      first = false;
+    }
+    if (isSetPeriodInHours()) {
+      if (!first) sb.append(", ");
+      sb.append("periodInHours:");
+      sb.append(this.periodInHours);
       first = false;
     }
     if (isSetFetchPast()) {

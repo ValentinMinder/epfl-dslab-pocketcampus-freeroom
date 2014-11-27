@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Linq;
 using Microsoft.Phone.Tasks;
 using PocketCampus.Directory.Models;
 
@@ -24,7 +25,7 @@ namespace PocketCampus.Directory.Services
                 HomePhone = person.PrivatePhoneNumber,
                 WorkPhone = person.OfficePhoneNumber,
                 WorkEmail = person.EmailAddress,
-                Website = person.Website
+                Website = ( person.Homepages != null && person.Homepages.Any() ) ? person.Homepages.First().Value : null
             }.Show();
         }
     }

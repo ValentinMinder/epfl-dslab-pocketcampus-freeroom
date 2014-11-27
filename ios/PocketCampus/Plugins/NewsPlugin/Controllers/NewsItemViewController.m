@@ -25,11 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 24.12.12.
-
 
 #import "NewsItemViewController.h"
 
@@ -47,13 +43,16 @@
 
 #import "NewsModelAdditions.h"
 
-@interface NewsItemViewController ()<NewsServiceDelegate, UIAlertViewDelegate, UIWebViewDelegate>
+#import "PCWebViewController.h"
+
+#import "UIScrollView+LGAAdditions.h"
+
+@interface NewsItemViewController ()<NewsServiceDelegate, UIWebViewDelegate>
 
 @property (nonatomic, strong) UIPopoverController* actionsPopover;
 @property (nonatomic, strong) NewsFeedItem* newsFeedItem;
 @property (nonatomic, strong) NewsFeedItemContent* newsFeedItemContent;
 @property (nonatomic, strong) NewsService* newsService;
-@property (nonatomic, strong) NSURL* urlClicked;
 @property (nonatomic, strong) AFNetworkReachabilityManager* reachabilityManager;
     
 @property (nonatomic, strong) IBOutlet UIWebView* webView;
@@ -65,6 +64,8 @@
 @end
 
 @implementation NewsItemViewController
+
+#pragma mark - Init
 
 - (id)initWithNewsFeedItem:(NewsFeedItem*)newsFeedItem
 {
@@ -79,8 +80,9 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+#pragma mark - UIViewController overrides
+
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     if (self.splitViewController) {
@@ -93,11 +95,35 @@
     self.webView.scalesPageToFit = NO;
     
     [self loadNewsItem];
+    
+    if (![PCUtils isIdiomPad]) {
+        __weak __typeof(self) welf = self;
+        [self.webView.scrollView setLga_toggleElementsVisiblityOnScrollBlock:^(BOOL hidden) {
+            [welf.navigationController setNavigationBarHidden:hidden animated:YES];
+            [welf setNeedsStatusBarAppearanceUpdate];
+        }];
+    }
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return self.navigationController.navigationBarHidden;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    if (!self.isDisappearingBecauseOtherPushed) {
+        [self.webView loadHTMLString:@"" baseURL:nil]; //prevent major memory leak, see http://stackoverflow.com/a/16514274/1423774
+    }
 }
 
 - (void)loadNewsItem {
@@ -111,7 +137,7 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [self.webView reload]; //should release a bit of memory
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -130,10 +156,10 @@
     UIActivityViewController* viewController = [[UIActivityViewController alloc] initWithActivityItems:@[newsItemURL] applicationActivities:@[safariActivity]];
     viewController.completionHandler = ^(NSString* activityType, BOOL completed) {
         if ([activityType isEqualToString:safariActivity.activityType]) {
-            [self trackAction:@"ViewInBrowser"];
+            [self trackAction:@"ViewInBrowser" contentInfo:[NSString stringWithFormat:@"%ld-%@", self.newsFeedItem.itemId, self.newsFeedItem.title]];
         }
     };
-    [self trackAction:PCGAITrackerActionActionButtonPressed];
+    [self trackAction:PCGAITrackerActionActionButtonPressed contentInfo:[NSString stringWithFormat:@"%ld-%@", self.newsFeedItem.itemId, self.newsFeedItem.title]];
     if (self.splitViewController) {
         if (!self.actionsPopover) {
             self.actionsPopover = [[UIPopoverController alloc] initWithContentViewController:viewController];
@@ -186,6 +212,7 @@
             dispatch_once(&onceToken, ^{
                 formatter = [NSDateFormatter new];
                 formatter.dateStyle = NSDateFormatterLongStyle;
+                formatter.doesRelativeDateFormatting = YES;
             });
             
             NSString* dateString = [formatter stringFromDate:date];
@@ -244,34 +271,11 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        self.urlClicked = request.URL;
-        NSString* title = self.urlClicked.host;
-        if (self.urlClicked.path.length > 1) { //empty path is "/"
-            title = [title stringByAppendingString:@"/..."];
-        }
-        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:title message:NSLocalizedStringFromTable(@"ClickLinkLeaveApplicationExplanation", @"NewsPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:@"OK", nil];
-        [alertView show];
+        PCWebViewController* webViewController = [[PCWebViewController alloc] initWithURL:request.URL title:nil];
+        [self.navigationController pushViewController:webViewController animated:YES];
         return NO;
     }
     return YES;
-}
-
-#pragma mark - UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (self.urlClicked) {
-        switch (buttonIndex) {
-            case 0: //cancel
-                //Nothing to do
-                break;
-            case 1: //OK
-                [[UIApplication sharedApplication] openURL:self.urlClicked];
-                break;
-            default:
-                break;
-        }
-        self.urlClicked = nil;
-    }
 }
 
 #pragma mark - dealloc
@@ -279,7 +283,6 @@
 - (void)dealloc {
     [self.reachabilityManager stopMonitoring];
     self.webView.delegate = nil;
-    [self.webView stopLoading];
     [self.newsService cancelOperationsForDelegate:self];
 }
 

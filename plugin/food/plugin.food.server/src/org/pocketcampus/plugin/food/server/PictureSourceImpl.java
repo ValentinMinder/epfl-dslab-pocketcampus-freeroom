@@ -4,20 +4,21 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.platform.shared.utils.StringUtils;
 import org.pocketcampus.plugin.food.shared.MealType;
 
 public final class PictureSourceImpl implements PictureSource {
-	private static final String MEAL_PICS_FOLDER_URL = "http://pocketcampus.epfl.ch/backend/meal-pics/";
 	private static final Map<MealType, String> MEAL_TYPE_PICTURE_URLS = new HashMap<MealType, String>();
 
-	private static final String RESTAURANTS_PHOTOS_FOLDER_URL = "http://pocketcampus.epfl.ch/backend/restaurant-pics/";
-	private static final String RESTAURANTS_PHOTOS_FOLDER_LOCAL_PATH = "/var/www/backend/restaurant-pics/";
+	private static final String MEAL_PICS_FOLDER_URI = "backend/meal-pics";
+	private static final String RESTAURANTS_PHOTOS_FOLDER_URI = "backend/restaurant-pics";
 	private static final String RESTAURANTS_PHOTOS_FILE_EXTENSION = ".jpg";
 
 	static {
 		for (MealType type : MealType.values()) {
-			MEAL_TYPE_PICTURE_URLS.put(type, MEAL_PICS_FOLDER_URL + type + ".png");
+			String prefix = PocketCampusServer.CONFIG.getString("APACHE_SERVER_BASE_URL") + "/" + MEAL_PICS_FOLDER_URI;
+			MEAL_TYPE_PICTURE_URLS.put(type, prefix + "/" + type + ".png");
 		}
 	}
 
@@ -29,13 +30,18 @@ public final class PictureSourceImpl implements PictureSource {
 	/** Gets the picture URL of the specified restaurant if it exists, otherwise null. */
 	public String forRestaurant(String restaurantName) {
 		String normalizedName = normalizedNameForFilename(restaurantName);
-		String filePath = RESTAURANTS_PHOTOS_FOLDER_LOCAL_PATH + normalizedName + RESTAURANTS_PHOTOS_FILE_EXTENSION;
-		File file = new File(filePath);
+		String folderPath = PocketCampusServer.CONFIG.getString("FOOD_RESTAURANTS_PHOTOS_FOLDER_LOCATION");
+		File file = new File(folderPath + "/" + normalizedName + RESTAURANTS_PHOTOS_FILE_EXTENSION);
 		if (!file.isFile()) {
-			System.err.println("INFO: did not find expected photo file for restaurant " + restaurantName + " at path '" + filePath + "'");
+			System.err.println("INFO: did not find expected photo file for restaurant " + restaurantName + " in '" + folderPath + "'");
 			return null;
 		}
-		return RESTAURANTS_PHOTOS_FOLDER_URL + normalizedName + RESTAURANTS_PHOTOS_FILE_EXTENSION;
+		String prefix = PocketCampusServer.CONFIG.getString("APACHE_SERVER_BASE_URL") + "/" + RESTAURANTS_PHOTOS_FOLDER_URI;
+		String filenamePostfix = PocketCampusServer.CONFIG.getString("FOOD_RESTAURANTS_PHOTOS_FILENAME_POSTFIX");
+		if (filenamePostfix == null) {
+			filenamePostfix = "";
+		}
+		return prefix + "/" + normalizedName + filenamePostfix + RESTAURANTS_PHOTOS_FILE_EXTENSION;
 	}
 
 	/**
@@ -47,7 +53,7 @@ public final class PictureSourceImpl implements PictureSource {
 	 *         Cafétéria BC => cafeteria_bc
 	 */
 	private static String normalizedNameForFilename(String restaurantName) {
-		restaurantName = StringUtils.stripAccents(restaurantName);
+		restaurantName = StringUtils.removeAccents(restaurantName);
 		restaurantName = restaurantName.toLowerCase();
 		restaurantName = restaurantName.replace("'", "_");
 		restaurantName = restaurantName.replace(" ", "_");

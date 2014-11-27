@@ -71,4 +71,31 @@ static NSString* const kGAIScreenNameKey = @"GAIScreenName";
     [[PCGAITracker sharedTracker] trackAction:action inScreenWithName:screenName contentInfo:contentInfo];
 }
 
+- (BOOL)isDisappearingBecausePopped {
+    return ([self navControllerStackDirection] == -1);
+}
+
+- (BOOL)isDisappearingBecauseOtherPushed {
+    return ([self navControllerStackDirection] == 1);
+}
+
+#pragma mark - Private
+
+/**
+ * Returns 1 if self is being pushed, -1 is self is being popped
+ * 0 otherwise
+ */
+- (int)navControllerStackDirection {
+    // http://stackoverflow.com/a/1816682/1423774
+    NSArray* viewControllers = self.navigationController.viewControllers;
+    if (viewControllers.count > 1 && [viewControllers objectAtIndex:viewControllers.count-2] == self) {
+        // View is disappearing because a new view controller was pushed onto the stack
+        return 1;
+    } else if ([viewControllers indexOfObject:self] == NSNotFound) {
+        // View is disappearing because it was popped from the stack
+        return -1;
+    }
+    return 0;
+}
+
 @end

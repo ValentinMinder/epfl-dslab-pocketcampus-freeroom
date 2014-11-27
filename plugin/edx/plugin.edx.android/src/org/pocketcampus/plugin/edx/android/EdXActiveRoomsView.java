@@ -7,14 +7,14 @@ import java.util.Random;
 
 import org.pocketcampus.platform.sdk.shared.utils.Callback;
 import org.pocketcampus.plugin.edx.R;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
-import org.pocketcampus.android.platform.sdk.ui.adapter.SeparatedListAdapter;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
-import org.pocketcampus.android.platform.sdk.utils.Preparated;
-import org.pocketcampus.android.platform.sdk.utils.Preparator;
-import org.pocketcampus.android.platform.sdk.utils.ScrollStateSaver;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
+import org.pocketcampus.platform.android.ui.layout.StandardLayout;
+import org.pocketcampus.platform.android.utils.Preparated;
+import org.pocketcampus.platform.android.utils.Preparator;
+import org.pocketcampus.platform.android.utils.ScrollStateSaver;
 import org.pocketcampus.plugin.edx.android.EdXModel.ActiveRoom;
 import org.pocketcampus.plugin.edx.android.EdXModel.MyMenuItem;
 import org.pocketcampus.plugin.edx.android.iface.IEdXView;
@@ -354,6 +354,12 @@ public class EdXActiveRoomsView extends PluginView implements IEdXView {
 	@Override
 	public void sessionTimedOut() {
 		mController.performLogin(this);
+	}
+
+	@Override
+	protected String screenName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

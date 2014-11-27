@@ -1,28 +1,37 @@
 package org.pocketcampus.plugin.news.android.iface;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
+import org.pocketcampus.platform.android.core.IView;
 
 /**
- * Interface to the public methods of the NewsView.
+ * INewsView
  * 
- * @author Elodie <elodienilane.triponez@epfl.ch>
+ * Interface for the Views of the News plugin.
  * 
+ * It contains the method that are called by the Model
+ * when some data is updated, as well as the methods that
+ * are called by the "HttpRequest" classes when some unusual
+ * behavior occurs.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ *
  */
 public interface INewsView extends IView {
-
-	/**
-	 * Called when the list of news has been updated.
-	 */
-	public void newsUpdated();
-
-	/**
-	 * Called when the list of feed names and urls has been updated.
-	 */
-	public void feedUrlsUpdated();
 	
 	/**
-	 * Called when the content of a news has been loaded.
+	 * Update display when we get data.
+	 * Called from Model
+	 * Called on ALL listeners
 	 */
-	public void newsContentLoaded(String content);
-
+	void gotFeeds();
+	void gotContents();
+	
+	/**
+	 * Display errors and notices.
+	 * Called from Request
+	 * Called on the particular object that issued the request
+	 */
+	void networkErrorHappened();
+	void networkErrorCacheExists();
+	void newsServersDown();
+	
 }

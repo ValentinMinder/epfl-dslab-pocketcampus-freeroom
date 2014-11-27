@@ -24,6 +24,7 @@
 	    	width: 100%;
             margin: 0px;
             padding: 0px;
+            table-layout: fixed;
             border: 0px solid black;
 	    }
     
@@ -42,7 +43,7 @@
         }
         
         #thumbnail img {
-	        max-width: 120px;
+	        width: 100%;
 	        display: block;
         }
 		
@@ -50,7 +51,8 @@
 			font: -apple-system-headline;
             text-align: left;
 			padding-top: 2px;
-			padding-left: $PADDING_LEFT_TITLE_PX$px;
+			padding-left: $PADDING_LEFT_TITLE$;
+            width: $WIDTH_TITLE$;
 			padding-bottom: 2px;
 			padding-right: 2px;
 		}
@@ -73,7 +75,7 @@
 			margin: auto;
 			display: block;
 		}
-		
+    
 	</style>
 	</head>
 <body>
@@ -81,7 +83,7 @@
     <table border="0">
         <tr>
             <td id="thumbnail" rowspan="2">$EVENT_ITEM_THUMBNAIL$</td>
-            <td width="100%" id="title">$EVENT_ITEM_TITLE$</td>
+            <td id="title">$EVENT_ITEM_TITLE$</td>
         </tr>
         <tr>
 	        <td id="second_line">$EVENT_ITEM_SECOND_LINE$</td>

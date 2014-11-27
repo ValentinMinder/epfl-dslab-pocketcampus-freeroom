@@ -115,13 +115,12 @@ creates the above structure and skeletons classes is provided. It is located in
 ios->iphone->Tools->PluginCreator.
 
  1. cd into the PluginCreator folder
- 2. Run "python create_plugin.py PluginName". PluginName should be in CamelCase
+ 2. Run "python create_plugin.py PluginName". PluginName should be in CamelCase.
     This will create a folder <PluginName>Plugin into 
-    ios/iphone/PocketCampus/Plugins
+    ios/PocketCampus/Plugins
  3. At that point, put the Thrift Objective-C generated files into 
     ios/iphone/PocketCampus/Plugins/<PluginName>Plugin/Model/ThriftTypes+Services/
- 4. Still from the PluginCreator folder, run "python add_plugin_to_xcode.py
-    .../iphone/PocketCampus/Plugins/<PluginName>Plugin"
+ 4. Still from the PluginCreator folder, run "python add_plugin_to_xcode.py ../../PocketCampus/Plugins/<PluginName>Plugin"
     This will add the plugin to the Xcode project.
 
 

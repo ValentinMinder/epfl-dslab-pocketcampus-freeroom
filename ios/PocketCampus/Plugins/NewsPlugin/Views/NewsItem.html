@@ -31,7 +31,7 @@
             padding-bottom: 0px;
         }
         
-        h1 {
+        .title {
             font: -apple-system-headline;
             margin: 0px;
             padding: 0px;
@@ -50,73 +50,90 @@
             padding-bottom: 8px;
         }
     
-        img {
-            float: left !important;
-            width: 300px !important;
-            height: auto !important;
-            padding: 0px !important;
-            border: 0px solid black;
-            margin: 0px !important;
-            
-        }
-    
-        #main_image {
-            width: 320px !important;
-        }
-    
-        .news_text {
-            padding-left: 10px;
-            padding-right: 10px;
-            border: 0px solid black;
-        }
-    
         /* iPhone portrait */
-        @media only screen and (min-device-width : 320px) and (max-device-width : 568px) and (orientation : portrait) {
+        @media only screen and (max-device-width : 736px) and (orientation : portrait) {
             img {
-                padding-right: 0px !important;;
-                padding-bottom: 8px !important;
+                float: left;
+                height: auto;
+                max-width 90%;
+                margin: 0px;
+                padding: 0px;
+                margin-right: 10px;
+                margin-bottom: 8px;
+            }
+            
+            #main_image {
+                width: 100% !important;
+                margin-right: 0px;
             }
             
             .news_text {
+                padding-left: 10px;
+                padding-right: 10px;
                 padding-top: 0px;
             }
         }
-    
+        
         /* iPhone landscape */
-        @media only screen and (min-device-width : 320px) and (max-device-width : 568px) and (orientation : landscape) {
+        @media only screen and (max-device-width : 736px) and (orientation : landscape) {
             img {
-                padding-left: 10px !important;
-                padding-right: 10px !important;
-                padding-bottom: 5px !important;
+                float: left;
+                height: auto;
+                max-width 90%;
+                margin: 0px;
+                padding: 0px;
+                margin-right: 10px;
+                margin-bottom: 8px;
+            }
+            
+            #main_image {
+                max-width: 65% !important;
+                margin-left: 10px !important;
+                margin-right: 10px !important;
+                margin-bottom: 5px !important;
             }
             
             .news_text {
+                margin-top: -7px;
+                padding-left: 10px;
+                padding-right: 10px;
                 padding-top: 0px;
-                margin-top:-7px;
             }
         }
     
         /* iPad */
         @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
             img {
-                padding-left: 10px !important;
-                padding-right: 10px !important;
-                padding-bottom: 5px !important;
+                float: left;
+                height: auto;
+                max-width: 50%;
+                margin: 0px;
+                padding: 0px;
+                margin-right: 10px;
+                margin-bottom: 8px;
+            }
+            
+            #main_image {
+                max-width: 65% !important;
+                margin-left: 10px !important;
+                margin-right: 10px !important;
+                margin-bottom: 5px !important;
             }
             
             .news_text {
+                margin-top: -7px;
+                padding-left: 10px;
+                padding-right: 10px;
                 padding-top: 0px;
-                margin-top:-7px;
             }
         }
-    
     
 	</style>
 	</head>
     
 <body>
     <div class="feed_name">$NEWS_ITEM_FEED_NAME$</div>
-	<h1>$NEWS_ITEM_TITLE$</h1>
+	<div class="title">$NEWS_ITEM_TITLE$</div>
     <div class="pub_date">$NEW_ITEM_PUB_DATE$</div>
     <img id="main_image" src="$NEW_ITEM_IMAGE_SRC$" style="display:$NEWS_ITEM_IMAGE_DISPLAY_CSS$;" alt="Image">
 	<div class="news_text">$NEWS_ITEM_CONTENT$</div>

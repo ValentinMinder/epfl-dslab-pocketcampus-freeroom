@@ -5,21 +5,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
-import org.pocketcampus.android.platform.sdk.ui.adapter.MultiListAdapter;
-import org.pocketcampus.android.platform.sdk.utils.Preparated;
-import org.pocketcampus.android.platform.sdk.utils.Preparator;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.ui.adapter.MultiListAdapter;
+import org.pocketcampus.platform.android.utils.Preparated;
+import org.pocketcampus.platform.android.utils.Preparator;
 import org.pocketcampus.plugin.directory.R;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
+import org.pocketcampus.plugin.directory.shared.DirectoryPersonRole;
 import org.pocketcampus.plugin.directory.shared.Person;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -29,7 +32,7 @@ import android.widget.Toast;
 
 import com.markupartist.android.widget.ActionBar.Action;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 /**
  * The Main View of the Directory plugin.
@@ -114,6 +117,10 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 		super.onPause();
 	}
 	
+	@Override
+	protected String screenName() {
+		return "/directory/person";
+	}
 	
 	
 	@Override
@@ -123,8 +130,19 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 	}
 
 	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		Rect dialogBounds = new Rect();
+		getWindow().getDecorView().getHitRect(dialogBounds);
 
+		if (!dialogBounds.contains((int) ev.getX(), (int) ev.getY())) {
+			// Tapped outside so we finish the activity
+			this.finish();
+		}
+		return super.dispatchTouchEvent(ev);
+	}
 
+	
 	@Override
 	public void resultListUpdated() {
 		
@@ -139,16 +157,14 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 
 		Preparated<Person> pp = new Preparated<Person>(Arrays.asList(new Person[]{p}), new Preparator<Person>() {
 			public int[] resources() {
-				return new int[] { R.id.directory_person_details_picture, R.id.directory_person_details_name, R.id.directory_person_details_affiliation };
+				return new int[] { R.id.directory_person_details_picture, R.id.directory_person_details_name, R.id.directory_person_details_affiliation, R.id.directory_person_details_expanded_affiliation };
 			}
 			public Object content(int res, final Person e) {
 				switch (res) {
 				case R.id.directory_person_details_picture:
 					return e.getPictureUrl();
 				case R.id.directory_person_details_name:
-					return DirectoryController.getFullName(e);
-				case R.id.directory_person_details_affiliation:
-					return new LazyAdapter.Actuated(TextUtils.join(", ",  e.getOrganisationalUnits()), new LazyAdapter.Actuator() {
+					return new LazyAdapter.Actuated(DirectoryController.getFullName(e), new LazyAdapter.Actuator() {
 						int count = 10;
 						public void triggered() {
 							count--;
@@ -156,6 +172,11 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + e.getSciper() + "&show=1")));
 						}
 					});
+				case R.id.directory_person_details_affiliation:
+					//return TextUtils.join(", ",  e.getOrganisationalUnits());
+					return getOrgUnitsString(e);
+				case R.id.directory_person_details_expanded_affiliation:
+					return null;
 				default:
 					return null;
 				}
@@ -174,21 +195,24 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 		if(p.isSetOfficePhoneNumber() || p.isSetPrivatePhoneNumber()) {
 			//ic_menu_call,ic_dialog_dialer
 			String pN = (p.isSetOfficePhoneNumber() ? p.getOfficePhoneNumber() : p.getPrivatePhoneNumber());
-			actions.add(new PersonInteraction(R.drawable.directory_phone, pN, Uri.parse("tel:" + pN)));
+			actions.add(new PersonInteraction(R.drawable.directory_phone, pN, Uri.parse("tel:" + pN), "Call"));
 		}
 		if(p.isSetEmail()) {
 			//ic_dialog_email, ic_menu_send
-			actions.add(new PersonInteraction(R.drawable.directory_mail, p.getEmail(), Uri.parse("mailto:" + p.getEmail())));
+			actions.add(new PersonInteraction(R.drawable.directory_mail, p.getEmail(), Uri.parse("mailto:" + p.getEmail()), "SendEmail"));
 		}
-		if(p.isSetWeb()) {
+		if(p.isSetHomepages() && p.getHomepages().containsKey("Personal profile")) {
 			//ic_dialog_info, ic_menu_info_details
-			actions.add(new PersonInteraction(R.drawable.directory_web, p.getWeb(), Uri.parse(p.getWeb())));
+			String homepage = p.getHomepages().get("Personal profile");
+			actions.add(new PersonInteraction(R.drawable.directory_web, homepage, Uri.parse(homepage), "ViewWebsite"));
+		} else if(p.isSetWeb()) {
+			actions.add(new PersonInteraction(R.drawable.directory_web, p.getWeb(), Uri.parse(p.getWeb()), "ViewWebsite"));
 		}
 		if(p.isSetOffice()) {
 			//ic_dialog_map, ic_menu_compass, ic_menu_mapmode
 			Uri.Builder builder = new Uri.Builder();
 			builder.scheme("pocketcampus").authority("map.plugin.pocketcampus.org").appendPath("search").appendQueryParameter("q", p.getOffice());
-			actions.add(new PersonInteraction(R.drawable.directory_map, p.getOffice(), builder.build()));
+			actions.add(new PersonInteraction(R.drawable.directory_map, p.getOffice(), builder.build(), "ViewOffice"));
 		}
 		
 		
@@ -227,6 +251,7 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 				if(o instanceof Map<?, ?>) {
 					Object obj = ((Map<?, ?>) o).get(MAP_KEY_ACTION_URI);
 					if(obj != null && obj instanceof PersonInteraction) {
+						trackEvent(((PersonInteraction) obj).tracking, ((PersonInteraction) obj).text);
 						Intent i = new Intent(Intent.ACTION_VIEW, ((PersonInteraction) obj).uri);
 						startActivity(i);
 					}
@@ -239,6 +264,7 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 		removeAllActionsFromActionBar();
 		addActionToActionBar(new Action() {
 			public void performAction(View view) {
+				trackEvent("CreateNewContact", null);
 				DirectoryController.importContact(DirectoryPersonView.this, p);
 			}
 			public int getDrawable() {
@@ -254,10 +280,12 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 		int icon;
 		String text;
 		Uri uri;
-		public PersonInteraction(int icon, String text, Uri uri) {
+		String tracking;
+		public PersonInteraction(int icon, String text, Uri uri, String tracking) {
 			this.icon = icon;
 			this.text = text;
 			this.uri = uri;
+			this.tracking = tracking;
 		}
 	}
 	
@@ -289,5 +317,15 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 		finish();
 	}
 
+	private static String getOrgUnitsString(Person p) {
+		if(!p.isSetRoles())
+			return null;
+		List<String> roles = new LinkedList<String>();
+		for(String k : p.getRoles().keySet()) {
+			DirectoryPersonRole r = p.getRoles().get(k);
+			roles.add("<b>&bull; <i>" + r.getLocalizedTitle() + "</i></b> &mdash; <i>" + r.getExtendedLocalizedUnit() + " (<a href=\"pocketcampus://directory.plugin.pocketcampus.org/query?q=" + k + "\">" + k + "</a>)</i>");
+		}
+		return TextUtils.join("<br>",  roles);
+	}
 	
 }

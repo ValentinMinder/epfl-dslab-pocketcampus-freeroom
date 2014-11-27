@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+	
+	<!-- Common Styles -->
+	<style name="Dialog" parent="@android:style/Theme.Dialog">
+		<item name="android:background">@color/white</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowIsFloating">true</item>
+		<item name="android:windowFullscreen">false</item>		
+	</style>	
+		
+	<!-- Layouts -->
+	<style name="Dialog.Top" parent="@style/PocketCampusTheme.Primary">
+		<item name="android:padding">12sp</item>
+	</style>
+
+	<style name="Dialog.Middle" parent="@style/PocketCampusTheme.Secondary">
+		<item name="android:padding">12sp</item>
+	</style>
+
+	<style name="Dialog.Bottom" parent="@style/PocketCampusTheme.Secondary">
+		<item name="android:background">#9c9c9c</item>
+	</style>
+	
+	<!-- Texts -->
+	<style name="DialogText" parent="@style/PocketCampusTheme.Secondary">
+		<item name="android:textColor">@color/black</item>
+	</style>
+ 
+	<style name="DialogText.Title" parent="@style/PocketCampusTheme.Primary">
+		<!-- TODO inherit from a new "Title" style? -->
+		<item name="android:background">@color/transparent</item>
+		<item name="android:textSize">@dimen/dialog_title_size</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+	
+</resources>

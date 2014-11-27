@@ -25,14 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 15.10.13.
-
-
 
 #import "MapRecentSearchesListViewController.h"
 
@@ -139,10 +132,7 @@
 #pragma mark - Dealloc
 
 - (void)dealloc {
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    @catch (NSException *exception) {}
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

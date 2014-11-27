@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.apache.thrift.TException;
 import org.joda.time.Duration;
-import org.pocketcampus.platform.sdk.server.CachingProxy;
-import org.pocketcampus.platform.sdk.server.HttpClientImpl;
+import org.pocketcampus.platform.server.CachingProxy;
+import org.pocketcampus.platform.server.HttpClientImpl;
 import org.pocketcampus.plugin.news.shared.*;
 
 /**
@@ -51,7 +51,7 @@ public final class NewsServiceImpl implements NewsService.Iface {
 				returnedItems.add(returnedItem);
 			}
 
-			returnedFeeds.add(new NewsFeed(feed.name, returnedItems));
+			returnedFeeds.add(new NewsFeed(feed.name, returnedItems, feed.id));
 		}
 
 		return new NewsFeedsResponse(NewsStatusCode.OK, returnedFeeds);
@@ -81,7 +81,6 @@ public final class NewsServiceImpl implements NewsService.Iface {
 		return new NewsFeedItemContentResponse(NewsStatusCode.INVALID_ID);
 	}
 
-	
 	// OLD STUFF - DO NOT TOUCH
 	private org.pocketcampus.plugin.news.server.old.NewsServiceImpl _oldService = new org.pocketcampus.plugin.news.server.old.NewsServiceImpl();
 

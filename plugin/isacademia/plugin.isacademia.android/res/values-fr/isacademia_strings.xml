@@ -3,15 +3,22 @@
 
     <string name="isacademia_plugin_title">IS-Academia</string>
     
-    <string name="isacademia_string_schedule">Horaires</string>
-    <string name="isacademia_string_exams">Examens</string>
-    <string name="isacademia_string_logout">Déconnexion</string>
-        
-    <string name="isacademia_courses_view_title">Liste des Cours ISA inscrits</string>
-    <string name="isacademia_schedule_view_title">Horaires Courants</string>
-    <string name="isacademia_exams_view_title">Liste des Examens ISA inscrits</string>
-        
-    <string name="isacademia_error_isa_down">PocketCampus a essayé de se connecter aux serveurs ISA, mais ils semblent hors-ligne.</string>
-    <string name="isacademia_connection_error_happened">Nous ne pouvons pas récupérer les données ISA maintenant, car vous n\'êtes pas connecté à Internet.</string>
-        
+    <string name="isacademia_schedule_for">Horaires du %s</string>
+    <string name="isacademia_no_classes_on">Pas de cours le %s</string>
+    <string name="isacademia_network_error">Une erreur de connexion s\'est produite\nlors du chargement des horaires du\n%s</string>
+    
+    <string name="isacademia_go_to_date">Aller à</string>
+    
+    <string name="isacademia_period_type_LECTURE">Cours</string>
+    <string name="isacademia_period_type_EXERCISES">Exercises</string>
+    <string name="isacademia_period_type_LAB">Labo</string>
+    <string name="isacademia_period_type_PROJECT">Projet</string>
+    <string name="isacademia_period_type_ORAL_EXAM">Oral</string>
+    <string name="isacademia_period_type_WRITTEN_EXAM">Ecrit</string>
+
+    <string name="isacademia_show_on_map">Visualiser sur la carte</string>
+    
+    <string name="isacademia_error_isacademia_down">PocketCampus a essayé de se connecter aux serveurs IsAcademia, mais ils semblent hors-ligne.</string>
+    
+    
 </resources>

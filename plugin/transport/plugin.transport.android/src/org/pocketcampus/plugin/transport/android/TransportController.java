@@ -2,8 +2,8 @@ package org.pocketcampus.plugin.transport.android;
 
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportController;
 import org.pocketcampus.plugin.transport.android.req.AutoCompleteRequest;
 import org.pocketcampus.plugin.transport.android.req.StationsFromNamesRequest;

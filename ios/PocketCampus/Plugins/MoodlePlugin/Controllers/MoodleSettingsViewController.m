@@ -91,11 +91,11 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 #pragma mark - Properties
 
 - (BOOL)saveDocsPositionGeneralSetting {
-    return [[[PCPersistenceManager defaultsForPluginName:@"moodle"] objectForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey] boolValue];
+    return [[[PCPersistenceManager userDefaultsForPluginName:@"moodle"] objectForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey] boolValue];
 }
 
 - (void)setSaveDocsPositionGeneralSetting:(BOOL)saveDocsPositionGeneralSetting {
-    [[PCPersistenceManager defaultsForPluginName:@"moodle"] setObject:[NSNumber numberWithBool:saveDocsPositionGeneralSetting] forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
+    [[PCPersistenceManager userDefaultsForPluginName:@"moodle"] setObject:[NSNumber numberWithBool:saveDocsPositionGeneralSetting] forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
 }
 
 #pragma mark - UITableViewDelegate
@@ -119,7 +119,7 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
             if (self.tmpTotalNbResourcesSize == -2) {
                 self.tmpTotalNbResourcesSize = -1;
                 __weak __typeof(self) welf = self;
-                [self.moodleService totalNbBytesAllDownloadedMoodleResourcesWithCompletion:^(unsigned long long totalNbBytes, BOOL error) {
+                [self.moodleService totalNbBytesAllDownloadedMoodleFilesWithCompletion:^(unsigned long long totalNbBytes, BOOL error) {
                     if (!welf) {
                         return;
                     }
@@ -235,7 +235,7 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
     if (actionSheet == self.deleteAllDocsActionSheet) {
         if (buttonIndex == actionSheet.destructiveButtonIndex) {
             [self trackAction:@"DeleteAllDownloadedDocuments"];
-            [[MoodleService sharedInstanceToRetain] deleteAllDownloadedMoodleResources];
+            [[MoodleService sharedInstanceToRetain] deleteAllDownloadedMoodleFiles];
             self.tmpTotalNbResourcesSize = -2;
             [self.tableView reloadData];
         }
@@ -248,7 +248,7 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 
 - (void)dealloc
 {
-    [self.moodleService cancelDownloadOfMoodleResourceForDelegate:self];
+    [self.moodleService cancelDownloadOfMoodleFilesForDelegate:self];
 }
 
 @end

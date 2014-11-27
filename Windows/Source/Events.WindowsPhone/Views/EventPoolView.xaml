@@ -6,13 +6,9 @@
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      mc:Ignorable="d">
+                      mc:Ignorable="d"
+                      d:DataContext="{Binding EventPool, Source={StaticResource Design}}">
     <!-- The app bar is created in code-behind because it's very dymanic -->
-
-    <!-- Design-time DataContext -->
-    <d:DesignProperties.DataContext>
-        <design:DesignEventPoolViewModel xmlns:design="clr-namespace:PocketCampus.Events.ViewModels.Design;assembly=PocketCampus.Events.Common" />
-    </d:DesignProperties.DataContext>
 
     <!-- Page resources -->
     <comControls:BasePage.Resources>
@@ -127,6 +123,7 @@
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -135,9 +132,12 @@
             <TextBlock Text="{Binding Resources.PagesHeader, Source={StaticResource Strings}}"
                        Style="{StaticResource AppTextHeaderStyle}" />
         </Border>
+        
+        <!-- Stale data indicator -->
+        <comControls:StaleDataIndicator Grid.Row="1" />
 
         <!-- Items -->
-        <phone:LongListSelector Grid.Row="1"
+        <phone:LongListSelector Grid.Row="2"
                                 ItemsSource="{Binding ItemGroups}"
                                 ItemTemplate="{StaticResource EventItemTemplate}"
                                 IsGroupingEnabled="True"
@@ -147,12 +147,13 @@
                                 Margin="0,0,-13,0" />
         
         <!-- "No items" text -->
-        <TextBlock Grid.Row="1"
+        <TextBlock Grid.Row="2"
                    Text="{Binding Pool.NoEventsFallbackText}"
                    Style="{StaticResource AppTextCenterStyle}"
-                   Visibility="{Binding AnyItems, Converter={StaticResource BoolToOppositeVisibility}}" />
+                   Visibility="{Binding ItemGroups, Converter={StaticResource NoneToVisibility}}" />
 
         <!-- Loading & error -->
-        <comControls:LoadingAndError Grid.Row="1" />
+        <comControls:LoadingAndError Grid.RowSpan="2"
+                                     Grid.Row="1" />
     </Grid>
 </comControls:BasePage>

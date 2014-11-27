@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.authentication.shared
-namespace csharp org.pocketcampus.plugin.authentication.shared
 
 enum AuthStatusCode {
   // The request was successful
@@ -7,7 +6,9 @@ enum AuthStatusCode {
   // A network error occurred
   NETWORK_ERROR = 404,
   // The provided session is invalid
-  INVALID_SESSION = 407
+  INVALID_SESSION = 407,
+  // Internal server error
+  SERVER_ERROR = 500
 }
 
 struct AuthTokenResponse {
@@ -25,8 +26,29 @@ struct AuthSessionRequest {
   2: optional bool rememberMe;
 }
 
+struct LogoutResponse {
+  1: required AuthStatusCode statusCode;
+  2: optional i32 deletedSessionsCount;
+}
+
+struct LogoutRequest {
+  1: required string sessionId;
+}
+
+struct UserAttributesResponse {
+  1: optional list<string> userAttributes;
+  2: required AuthStatusCode statusCode;
+}
+
+struct UserAttributesRequest {
+  1: required string sessionId;
+  2: required list<string> attributeNames;
+}
+
 service AuthenticationService {
     AuthTokenResponse getAuthTequilaToken();
-    AuthSessionResponse getAuthSession(1: AuthSessionRequest req); // TODO add logout func
+    AuthSessionResponse getAuthSession(1: AuthSessionRequest req);
+    LogoutResponse destroyAllUserSessions(1: LogoutRequest req);
+    UserAttributesResponse getUserAttributes(1: UserAttributesRequest req);
     AuthSessionResponse getAuthSessionId(1: string tequilaToken); // deprecated
 }

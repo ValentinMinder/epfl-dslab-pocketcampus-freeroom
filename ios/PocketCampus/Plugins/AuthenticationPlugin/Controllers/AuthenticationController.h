@@ -25,15 +25,29 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
 #import "PluginController.h"
 
 #import "AuthenticationService.h"
 
 #import "AuthenticationViewController.h"
 
-@class AuthenticationViewController;
+/**
+ * Delegation protocol for standard (old-style) authentication (see below)
+ */
+typedef enum {
+    AuthenticationFailureReasonInvalidToken,
+    AuthenticationFailureReasonUserCancelled,
+    AuthenticationFailureReasonCannotAskForCredentials, //typically when authentication would require (non-saved) credentials but those cannot be asked to the user because target is running in an extension that does not support user input.
+    AuthenticationFailureReasonInternalError
+} AuthenticationFailureReason;
+
+@protocol AuthenticationControllerDelegate
+
+@required
+- (void)authenticationSucceeded;
+- (void)authenticationFailedWithReason:(AuthenticationFailureReason)reason;
+
+@end
 
 @interface PCLoginObserver : NSObject
 
@@ -47,15 +61,25 @@
 
 @interface AuthenticationController : PluginController<PluginControllerProtocol>
 
-
 /*
- * Same as sharedInstanceToRetain, but once called AuthenticationController
- * becomes a singleton and is thus never released, which is ok as widely
- * used throught PocketCampus.
- * IMPORTANT: you MUST use this instead of sharedInstanceToRetain
- * when using new-style authentication (addLoginObserver:...)
+ * Same as sharedInstanceToRetain
+ * Only indicates that sharedInstanceToRetain actually does not
+ * need to be retained (singleton).
  */
 + (instancetype)sharedInstance;
+
+/**
+ * Returns the view controller that shows which user is connected if so,
+ * and allows to login/logout without the goal of authenticating a token.
+ */
+- (AuthenticationViewController*)statusViewController;
+
+
+/**
+ * @return the username that is currently logged in, or
+ * nil of it does not exist.
+ */
+- (NSString*)loggedInUsername;
 
 /*
  * ######### Standard authentication #########
@@ -64,12 +88,12 @@
  *  to benefit from easy support of login observeration management).
  *
  * Use this method to authenticate a tequila token.
- * Delegte MUST implement AuthenticateDelegate methods.
+ * Delegte MUST implement AuthenticationDelegate methods.
  * 
  * WARNING: this method cannot be called by multiple instances 
  * at the same time (1 delegate at a time). CRASH might occur if so.
  */
-- (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationDelegate>)delegate;
+- (void)authenticateToken:(NSString*)token delegate:(id<AuthenticationControllerDelegate>)delegate;
 
 /*
  * ######### New-style authentication #########

@@ -1,0 +1,1 @@
+../../../LGALibrary/Pod/Classes/UIScrollView+LGAAdditions.h

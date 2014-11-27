@@ -1,61 +1,4 @@
--- phpMyAdmin SQL Dump
--- version 4.2.10.1deb1
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Nov 10, 2014 at 10:16 AM
--- Server version: 5.5.40-0+wheezy1
--- PHP Version: 5.6.2-1
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `pocketcampus`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `fr-roomslist`
---
-
-CREATE TABLE IF NOT EXISTS `fr-roomslist` (
-  `uid` char(255) NOT NULL,
-  `doorCode` char(255) NOT NULL,
-  `doorCodeWithoutSpace` char(255) NOT NULL,
-  `alias` char(255) DEFAULT NULL,
-  `capacity` int(11) DEFAULT NULL,
-  `site_label` char(255) DEFAULT NULL,
-  `surface` double DEFAULT NULL,
-  `building_name` char(255) DEFAULT NULL,
-  `zone` char(255) DEFAULT NULL,
-  `unitlabel` char(255) DEFAULT NULL,
-  `site_id` int(11) DEFAULT NULL,
-  `floor` int(11) DEFAULT NULL,
-  `unitname` char(255) DEFAULT NULL,
-  `site_name` char(255) DEFAULT NULL,
-  `unitid` int(11) DEFAULT NULL,
-  `building_label` char(255) DEFAULT NULL,
-  `cf` char(255) DEFAULT NULL,
-  `adminuse` char(255) DEFAULT NULL,
-  `EWAid` char(255) DEFAULT NULL,
-  `typeFR` char(255) DEFAULT NULL,
-  `typeEN` char(255) DEFAULT NULL,
-  `dincat` char(255) DEFAULT NULL,
-  `enabled` tinyint(1) DEFAULT '1',
-  `groupAccess` int(11) DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `fr-roomslist`
---
 
 INSERT INTO `fr-roomslist` (`uid`, `doorCode`, `doorCodeWithoutSpace`, `alias`, `capacity`, `site_label`, `surface`, `building_name`, `zone`, `unitlabel`, `site_id`, `floor`, `unitname`, `site_name`, `unitid`, `building_label`, `cf`, `adminuse`, `EWAid`, `typeFR`, `typeEN`, `dincat`, `enabled`, `groupAccess`) VALUES
 ('10698', 'CO 6', 'CO6', 'CO6', NULL, 'ECUBLENS', 137.23, 'CO', 'Z', 'Domaine de la formation', 3, 2, 'DAF', 'E', 10026, 'Coupole', '0021', 'LOCAUX D''ENS.ET D''EX.SPEC.SANS MOB.FIXE', NULL, 'SALLE TP', 'PW LAB', '5.3.IT', 1, 20),
@@ -229,16 +172,3 @@ INSERT INTO `fr-roomslist` (`uid`, `doorCode`, `doorCodeWithoutSpace`, `alias`, 
 ('9620', 'BCH 4310', 'BCH4310', 'Bch 4310', 18, 'ECUBLENS', 44.73, 'BCH', 'Z', 'Domaine de la formation', 3, 4, 'DAF', 'E', 10026, 'Batochime UNIL', '0021', 'LOCAUX D''ENS.ET D''EX.GEN.SANS MOB.FIXE', NULL, 'SALLE DE COURS', 'EDUCATION', '5.2.A', 1, 20),
 ('9666', 'BCH 5310', 'BCH5310', 'Bch 5310', 23, 'ECUBLENS', 56.31, 'BCH', 'Z', 'Domaine de la formation', 3, 5, 'DAF', 'E', 10026, 'Batochime UNIL', '0021', 'LOCAUX D''ENS.ET D''EX.GEN.SANS MOB.FIXE', NULL, 'SALLE DE COURS', 'EDUCATION', '5.2.A', 1, 20);
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `fr-roomslist`
---
-ALTER TABLE `fr-roomslist`
- ADD PRIMARY KEY (`uid`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

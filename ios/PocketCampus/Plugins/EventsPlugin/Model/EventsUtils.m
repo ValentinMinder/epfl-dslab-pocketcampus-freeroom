@@ -33,12 +33,9 @@
 
 #import "EventItem+Additions.h"
 
-static NSNumber* favoriteCategNSNumber = nil;
-static NSNumber* featuredCategNSNumber = nil;
-
 @implementation EventsUtils
 
-+ (NSDictionary*)sectionsOfEventItem:(NSArray*)eventItems forCategories:(NSDictionary*)categs andTags:(NSDictionary*)tags inverseSort:(BOOL)inverseSort; {
++ (NSDictionary*)sectionsOfEventItem:(NSArray*)eventItems forCategories:(NSDictionary*)categs andTags:(NSDictionary*)tags inverseSort:(BOOL)inverseSort {
     NSMutableDictionary* itemsForCategs = [NSMutableDictionary dictionaryWithCapacity:[categs count]];
     NSSet* tagSet = [NSSet setWithArray:[tags allKeys]]; //set of NSString (tags shortname)
     
@@ -47,9 +44,10 @@ static NSNumber* featuredCategNSNumber = nil;
     for (EventItem* event in eventItems) {
         
         NSSet* eventTagSet = [NSSet setWithArray:event.eventTags];
+        
         NSNumber* eventCategNumber = [NSNumber numberWithInt:event.eventCateg];
         if ([eventsService isEventItemIdFavorite:event.eventId]) {
-            eventCategNumber = [NSNumber numberWithInt:-2];
+            eventCategNumber = kEventItemCategoryFavorite;
         }
         NSString* eventCategName = categs[eventCategNumber];
         if ([eventTagSet intersectsSet:tagSet] //returns YES if at least one tag in common
@@ -86,20 +84,6 @@ static NSNumber* featuredCategNSNumber = nil;
 
 + (NSNumber*)nsNumberForEventId:(int64_t)eventId {
     return [NSNumber numberWithLong:(long)eventId];
-}
-
-+ (NSNumber*)favoriteCategory {
-    if (!favoriteCategNSNumber) {
-        favoriteCategNSNumber = [NSNumber numberWithInt:-2];
-    }
-    return favoriteCategNSNumber;
-}
-
-+ (NSNumber*)featuredCategory {
-    if (!featuredCategNSNumber) {
-        featuredCategNSNumber = [NSNumber numberWithInt:-1];
-    }
-    return featuredCategNSNumber;
 }
 
 + (NSString*)periodStringForEventsPeriod:(int)period selected:(BOOL)selected {

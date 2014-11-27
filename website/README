@@ -1,0 +1,6 @@
+To update the website:
+  Log in (SSH) to each server and run:
+$ cd pocketcampus
+$ git pull
+$ cp -r website/* /var/www/vhosts/pocketcampus/htdocs/
+

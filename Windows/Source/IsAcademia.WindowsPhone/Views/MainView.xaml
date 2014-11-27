@@ -9,20 +9,20 @@
                       xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
                       xmlns:my="clr-namespace:PocketCampus.IsAcademia"
                       xmlns:myControls="clr-namespace:PocketCampus.IsAcademia.Controls"
+                      xmlns:myDesign="clr-namespace:PocketCampus.IsAcademia.ViewModels.Design;assembly=PocketCampus.IsAcademia"
                       xmlns:com="clr-namespace:PocketCampus.Common;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       mc:Ignorable="d"
+                      d:DataContext="{Binding Main, Source={StaticResource Design}}"
                       SupportedOrientations="PortraitOrLandscape"
                       OrientationChanged="Page_OrientationChanged">
-    <!-- Design-time DataContext -->
-    <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.IsAcademia.ViewModels.Design;assembly=PocketCampus.IsAcademia.Common" />
-    </d:DesignProperties.DataContext>
-
     <!-- Page resources-->
     <comControls:BasePage.Resources>
+        <!-- Design-time DataContext -->
+        <myDesign:Design x:Key="Design" />
+        
         <!-- Localized strings -->
         <my:LocalizedStrings x:Key="Strings" />
 
@@ -203,6 +203,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -223,14 +224,17 @@
                                Value="{Binding WeekDate, Mode=TwoWay}"
                                TextStyle="{StaticResource AppTextSecondaryHeaderStyle}"
                                Margin="10,0" />
-
+        
+        <!-- Stale data indicator -->
+        <comControls:StaleDataIndicator Grid.ColumnSpan="2"
+                                        Grid.Row="2" />
 
         <!-- Portrait schedule -->
         <!-- HACK: It must not use virtualization because of the datacontext issues... 
                    Maybe there's a solution? -->
         <ScrollViewer x:Name="PortraitDays"
                       Grid.ColumnSpan="2"
-                      Grid.Row="2">
+                      Grid.Row="3">
             <ItemsControl ItemsSource="{Binding Days}"
                           ItemTemplate="{StaticResource PortraitDayTemplate}" />
         </ScrollViewer>
@@ -238,7 +242,7 @@
         <!-- Landscape schedule -->
         <myControls:DayDisplay x:Name="LandscapeDays"
                                Grid.ColumnSpan="2"
-                               Grid.Row="2"
+                               Grid.Row="3"
                                Day="{x:Null}"
                                Days="{Binding Days}"
                                HourIncrement="2"
@@ -250,7 +254,7 @@
 
         <!-- Loading & error -->
         <comControls:LoadingAndError Grid.ColumnSpan="2"
-                                     Grid.Row="2" />
+                                     Grid.Row="3" />
 
         <!-- Handles orientation changes -->
         <VisualStateManager.VisualStateGroups>

@@ -7,13 +7,13 @@
      >
 
 	    
-	<LinearLayout  android:id="@+id/event_header_container" 
+	<LinearLayout  
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content" 
 	    android:orientation="horizontal">
 
 		<ImageView     
-		    android:background="@drawable/events_image_bg"
+		    android:background="@drawable/pocketcampus_image_border"
 			android:id="@+id/event_list_complex_image"   
 			android:padding="3dip"
 			android:layout_margin="2dip"
@@ -22,7 +22,7 @@
 	
 			    
 			
-		<LinearLayout  android:id="@+id/event_header_container" 
+		<LinearLayout  
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content" 
 		    android:orientation="vertical">
@@ -40,7 +40,7 @@
 		        android:typeface="sans" 
 		        android:layout_marginRight="0dip"
 		        android:layout_marginTop="0dip"
-		        android:textSize="20dip"
+		        android:textSize="20sp"
 		        android:textStyle="bold"/>
 		    
 		    
@@ -57,7 +57,7 @@
 		        android:typeface="sans" 
 		        android:layout_marginRight="0dip"
 		        android:layout_marginTop="15dip"
-		        android:textSize="15dip"
+		        android:textSize="15sp"
 		        android:textStyle="italic"/>
 		    		
 		</LinearLayout>
@@ -71,9 +71,8 @@
         android:id="@+id/event_list_item_details"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/event_header_container"
         android:textColor="#343434"
-        android:textSize="15dip"
+        android:textSize="15sp"
         android:paddingLeft="5dip"
         android:paddingRight="5dip"
         android:layout_marginTop="0dip"
@@ -92,9 +91,8 @@
         android:id="@+id/event_list_complex_caption"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/event_list_item_details"
         android:textColor="#343434"
-        android:textSize="15dip"
+        android:textSize="15sp"
         android:paddingLeft="5dip"
         android:paddingRight="5dip"
         android:layout_marginTop="0dip"

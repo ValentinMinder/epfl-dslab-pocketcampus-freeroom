@@ -25,14 +25,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 08.03.12.
 
-
 #import "FoodController.h"
-#import "FoodRestaurantsListViewController.h"
+#import "FoodMainViewController.h"
 #import "FoodSplashDetailViewController.h"
 #import "FoodService.h"
 
@@ -54,8 +50,7 @@ static FoodController* instance __weak = nil;
         }
         self = [super init];
         if (self) {
-            FoodRestaurantsListViewController* restaurantsListViewController = [[FoodRestaurantsListViewController alloc] init];
-            restaurantsListViewController.title = [[self class] localizedName];
+            FoodMainViewController* restaurantsListViewController = [[FoodMainViewController alloc] init];
             if ([PCUtils isIdiomPad]) {
                 PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:restaurantsListViewController];
                 FoodSplashDetailViewController* splashDetailViewController = [FoodSplashDetailViewController new];

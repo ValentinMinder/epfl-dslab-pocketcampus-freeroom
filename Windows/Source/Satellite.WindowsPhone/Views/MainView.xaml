@@ -7,19 +7,19 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
                       xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
-                      xmlns:my="clr-namespace:PocketCampus.Satellite"
                       xmlns:com="clr-namespace:PocketCampus.Common;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
+                      xmlns:my="clr-namespace:PocketCampus.Satellite"
+                      xmlns:myDesign="clr-namespace:PocketCampus.Satellite.ViewModels.Design;assembly=PocketCampus.Satellite"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      mc:Ignorable="d">
-    <!-- Design-time DataContext -->
-    <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Satellite.ViewModels.Design;assembly=PocketCampus.Satellite.Common" />
-    </d:DesignProperties.DataContext>
-
+                      mc:Ignorable="d"
+                      d:DataContext="{Binding Main, Source={StaticResource Design}}">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
+        <!-- Design-time DataContext -->
+        <myDesign:Design x:Key="Design" />
+        
         <!-- Localized strings -->
         <my:LocalizedStrings x:Key="Strings" />
 
@@ -109,12 +109,24 @@
 
         <!-- Beer menu part-->
         <DataTemplate x:Key="BeerMenuPartTemplate">
-            <phone:LongListSelector ItemsSource="{Binding}"
-                                    ItemTemplate="{StaticResource BeerListItemTemplate}"
-                                    IsGroupingEnabled="True"
-                                    GroupHeaderTemplate="{StaticResource BeerGroupListHeaderTemplate}"
-                                    GroupFooterTemplate="{StaticResource SpacerFooterTemplate}"
-                                    JumpListStyle="{StaticResource BeerGroupJumpListStyle}" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                
+                <!-- Stale data indicator (here because it needs to be inside the Pivot) -->
+                <comControls:StaleDataIndicator Margin="0,-15,0,0"
+                                                DataContext="{Binding DataContext, ElementName=LayoutRoot}" />
+
+                <phone:LongListSelector Grid.Row="1"
+                                        ItemsSource="{Binding}"
+                                        ItemTemplate="{StaticResource BeerListItemTemplate}"
+                                        IsGroupingEnabled="True"
+                                        GroupHeaderTemplate="{StaticResource BeerGroupListHeaderTemplate}"
+                                        GroupFooterTemplate="{StaticResource SpacerFooterTemplate}"
+                                        JumpListStyle="{StaticResource BeerGroupJumpListStyle}" />
+            </Grid>
         </DataTemplate>
 
         <!-- Header template for menu parts -->
@@ -124,7 +136,7 @@
     </comControls:BasePage.Resources>
 
     <!-- Main grid -->
-    <Grid>
+    <Grid x:Name="LayoutRoot">
         <!-- Pivot title & header background -->
         <Rectangle Fill="{StaticResource AppHeaderBackgroundBrush}"
                    Height="150"

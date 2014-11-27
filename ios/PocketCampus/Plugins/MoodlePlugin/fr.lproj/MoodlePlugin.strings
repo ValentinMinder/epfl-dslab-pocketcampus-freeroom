@@ -19,6 +19,7 @@
 "DownloadingFile" = "Téléchargement du fichier...";
 "DeleteFileFromCacheQuestion" = "Supprimer le fichier du stockage local ?\nVous devrez le télécharger à nouveau pour pouvoir le lire.";
 "ImpossibleDeleteFile" = "Désolé, une erreur s'est produite lors de la suppression du fichier.";
+"SearchCourse" = "Rechercher dans le cours";
 
 //MoodleSettingsViewController
 "MoodleSettings" = "Réglages Moodle";
@@ -31,9 +32,24 @@
 "AllDocsWillBeDeletedExplanation" = "Les documents de tous les cours seront supprimés.\nVous devrez les télécharger à nouveau pour pouvoir les lire.";
 "DeleteAll" = "Tout supprimer";
 
+//MoodleFileViewController
+"Preparing" = "Préparation";
+"TapToCancel" = "Touchez pour annuler";
+
+//MoodleFolderViewController
+"MoodleEmptyFolder" = "Dossier vide";
+
+//MoodleResourceCell
+"FolderNbElementsWithFormat" = "Dossier (%d élém.)";
+
 //Accessibility
 "ShowsDocumentsForThisCourse" = "Affiche les documents de ce cours.";
 "DocumentDescriptionWithFormat" = "%@, fichier '%@', téléchargé: %@";
+"FolderDescriptionWithFormat" = "%@, dossier contenant %d fichiers";
+"LinkDescriptionWithFormat" = "%@, lien";
 "AddDocumentToFavorites" = "Ajouter ce document aux favoris";
 "RemoveDocumentFromFavorites" = "Enlever ce document des favoris";
+"AddLinkToFavorites" = "Ajouter ce lien aux favoris";
+"RemoveLinkFromFavorites" = "Enlever ce lien des favoris";
 "DeleteDocumentFromLocalStorage" = "Supprimer ce fichier du stockage local";
+"PrintThisDocumentAtEPFL" = "Imprimer ce document à l'EPFL";

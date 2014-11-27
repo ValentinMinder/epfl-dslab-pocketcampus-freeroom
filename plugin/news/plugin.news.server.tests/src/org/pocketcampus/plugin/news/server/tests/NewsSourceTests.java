@@ -6,11 +6,12 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
-import org.pocketcampus.platform.sdk.server.HttpClient;
+import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.plugin.news.server.NewsSourceImpl;
 import org.pocketcampus.plugin.news.server.NewsSource.*;
 
@@ -26,6 +27,14 @@ public class NewsSourceTests {
 
 		assertEquals("The first feed should be Mediacom, a.k.a. General.",
 				"Général", feed.name);
+	}
+	
+	@Test
+	public void feedIdIsSet() {
+		Feed feed = getFeeds()[0];
+
+		assertEquals("The first feed should be Mediacom, a.k.a. General.",
+				"mediacom", feed.id);
 	}
 
 	@Test
@@ -88,8 +97,13 @@ public class NewsSourceTests {
 		private static final String RETURN_VALUE = getFileContents("ExampleRssFeed.xml");
 
 		@Override
-		public String getString(String url, Charset charset) throws Exception {
+		public String get(String url, Charset charset) throws IOException {
 			return RETURN_VALUE;
+		}
+		
+		@Override
+		public String post(String url, byte[] body, Charset charset) throws IOException {
+			throw new RuntimeException("post(String, byte[], Charset) should not be called.");
 		}
 
 		@SuppressWarnings("resource")

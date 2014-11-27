@@ -139,13 +139,13 @@
     <value>Geolocation error.</value>
   </data>
   <data name="MainViewTitle" xml:space="preserve">
-    <value>Transports</value>
+    <value>Transport</value>
   </data>
   <data name="PagesHeader" xml:space="preserve">
-    <value>TRANSPORTS</value>
+    <value>TRANSPORT</value>
   </data>
   <data name="PluginName" xml:space="preserve">
-    <value>Transports</value>
+    <value>Transport</value>
   </data>
   <data name="RefreshButton" xml:space="preserve">
     <value>refresh</value>
@@ -173,6 +173,12 @@
   </data>
   <data name="TripDeparture" xml:space="preserve">
     <value>departure</value>
+  </data>
+  <data name="TripError" xml:space="preserve">
+    <value>Error. Try again later.</value>
+  </data>
+  <data name="TripNetworkError" xml:space="preserve">
+    <value>Error. Check your Internet connection.</value>
   </data>
   <data name="UseGeolocationCaption" xml:space="preserve">
     <value>Geolocation</value>

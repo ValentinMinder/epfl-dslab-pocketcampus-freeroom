@@ -1,7 +1,7 @@
 // Created by Loïc Gardiol on 01.03.12.
 
 "PluginName" = "Directory";
-"SearchFieldPlaceholder" = "Name or sciper";
+"SearchFieldPlaceholder" = "Name, sciper, unit, phone";
 "SearchNoResult" = "No result\nHave you tried with the exact spelling (accents) ?";
 "OfficeLabel" = "office";
 "NoContactSelected" = "No contact selected";

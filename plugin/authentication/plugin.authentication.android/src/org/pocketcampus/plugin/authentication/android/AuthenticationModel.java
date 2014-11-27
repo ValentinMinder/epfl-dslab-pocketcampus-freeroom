@@ -1,9 +1,10 @@
 package org.pocketcampus.plugin.authentication.android;
 
 import java.util.List;
+import java.util.Map;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.IView;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationModel;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
 
@@ -34,6 +35,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	private static final String GASPAR_USERNAME_KEY = "GASPAR_USERNAME_KEY";
 	private static final String GASPAR_PASSWORD_KEY = "GASPAR_PASSWORD_KEY";
 	private static final String AUTH_STORE_PASSWORD_KEY = "AUTH_STORE_PASSWORD_KEY";
+	private static final String PC_SESSION_ID_KEY = "PC_SESSION_ID_KEY";
 	
 	/**
 	 * Some utility classes.
@@ -73,6 +75,8 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	private List<String> serviceAccess;
 	private boolean fromBrowser;
 	private boolean selfAuth;
+	private boolean notFromEpfl;
+	private Map<String, String> serviceOrgs;
 	
 	private String tequilaCookie;
 	private String tempPassword;
@@ -85,6 +89,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	private String gasparUsername;
 	private String gasparPassword;
 	private boolean storePassword;
+	private String pcSessionId;
 	//private boolean staySignedIn;
 
 	/**
@@ -102,6 +107,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		gasparUsername = iStorage.getString(GASPAR_USERNAME_KEY, null);
 		gasparPassword = iStorage.getString(GASPAR_PASSWORD_KEY, null);
 		storePassword = iStorage.getBoolean(AUTH_STORE_PASSWORD_KEY, true);
+		pcSessionId = iStorage.getString(PC_SESSION_ID_KEY, null);
 		//staySignedIn = iStorage.getBoolean(STAYSIGNEDIN_KEY, false);
 		
 		
@@ -163,6 +169,22 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	public void setSelfAuth(boolean b) {
 		selfAuth = b;
 	}
+	
+	public boolean getNotFromEpfl() {
+		return this.notFromEpfl;
+	}
+	
+	public void setNotFromEpfl(boolean v) {
+		this.notFromEpfl = v;
+	}
+	
+	public Map<String, String> getServiceOrgs() {
+		return this.serviceOrgs;
+	}
+	
+	public void setServiceOrgs(Map<String, String> v) {
+		this.serviceOrgs = v;
+	}
 
 	public String getTequilaCookie() {
 		return tequilaCookie;
@@ -208,6 +230,16 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		storePassword = val;
 		Editor editor = iStorage.edit();
 		editor.putBoolean(AUTH_STORE_PASSWORD_KEY, storePassword);
+		editor.commit();
+	}
+	
+	public String getPcSessionId() {
+		return pcSessionId;
+	}
+	public void setPcSessionId(String val) {
+		pcSessionId = val;
+		Editor editor = iStorage.edit();
+		editor.putString(PC_SESSION_ID_KEY, pcSessionId);
 		editor.commit();
 	}
 	

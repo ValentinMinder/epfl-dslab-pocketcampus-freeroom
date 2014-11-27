@@ -5,9 +5,9 @@
 using System;
 using System.Windows;
 using PocketCampus.Common.Controls;
+using PocketCampus.Satellite.Models;
 using ThinMvvm;
 using ThinMvvm.Logging;
-using PocketCampus.Satellite.Models;
 
 namespace PocketCampus.Satellite.Views
 {

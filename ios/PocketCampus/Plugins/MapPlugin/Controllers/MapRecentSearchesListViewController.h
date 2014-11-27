@@ -25,16 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 15.10.13.
 
-
-
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 @interface MapRecentSearchesListViewController : UITableViewController
 

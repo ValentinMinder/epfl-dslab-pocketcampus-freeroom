@@ -1,8 +1,8 @@
 package org.pocketcampus.plugin.blank.android;
 
 
-import org.pocketcampus.android.platform.sdk.core.IView;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.IView;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.blank.android.iface.IBlankModel;
 import org.pocketcampus.plugin.blank.android.iface.IBlankView;
 

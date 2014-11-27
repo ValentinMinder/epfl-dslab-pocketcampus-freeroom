@@ -1,6 +1,7 @@
 // Created by Loïc Gardiol on 01.03.12.
 
 "PluginName" = "Camipro";
+"Balance" = "Solde";
 "CamiproBalance" = "Solde Camipro";
 "TransactionsHistory" = "Historique";
 "ReloadCard" = "Recharger la carte";
@@ -14,6 +15,13 @@
 "StatsWithFormat" = "30 derniers jours cumulés\nCHF %.2lf\n\n90 derniers jours cumulés\nCHF %.2lf\n\nMoyenne sur 3 mois\nCHF %.2lf / mois";
 "CamiproDown" = "Désolé, les serveurs de Camipro semblent inaccessibles. Réessayez plus tard.";
 "LastUpdate" = "Dernière m.à.j.";
+"CamiproWidgetTitle" = "Widget Camipro pour iOS 8";
+"CamiproWidgetSubtitle" = "Ouvrez le Centre de Notifications et touchez le bouton Modifier en bas de la liste pour installer le widget Camipro et vérifier votre solde d'un geste !";
+
+// Camipro Widget
+
+"LoginRequired" = "Login requis";
+"TapToOpenPocketCampus" = "Touchez pour ouvrir PocketCampus";
 
 //Accessibility
 

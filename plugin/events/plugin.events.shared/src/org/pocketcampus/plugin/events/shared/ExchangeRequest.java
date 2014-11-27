@@ -28,9 +28,9 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
   private static final org.apache.thrift.protocol.TField USER_TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("userToken", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField USER_TICKETS_FIELD_DESC = new org.apache.thrift.protocol.TField("userTickets", org.apache.thrift.protocol.TType.LIST, (short)3);
 
-  public String exchangeToken; // required
-  public String userToken; // required
-  public List<String> userTickets; // required
+  private String exchangeToken; // required
+  private String userToken; // required
+  private List<String> userTickets; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

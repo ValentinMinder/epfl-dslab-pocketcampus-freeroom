@@ -19,7 +19,7 @@
 "DownloadingFile" = "Downloading file...";
 "DeleteFileFromCacheQuestion" = "Delete file from local storage ?\nYou will have to download it again to read it.";
 "ImpossibleDeleteFile" = "Sorry, an error occured while deleting file.";
-
+"SearchCourse" = "Search course";
 
 //MoodleSettingsViewController
 "MoodleSettings" = "Moodle settings";
@@ -32,10 +32,24 @@
 "AllDocsWillBeDeletedExplanation" = "All documents of all courses will be deleted.\nYou will need to download them again to read them.";
 "DeleteAll" = "Delete all";
 
+//MoodleFileViewController
+"Preparing" = "Preparing";
+"TapToCancel" = "Tap to cancel";
+
+//MoodleFolderViewController
+"MoodleEmptyFolder" = "Empty folder";
+
+//MoodleResourceCell
+"FolderNbElementsWithFormat" = "Folder (%d elem.)";
 
 //Accessibility
 "ShowsDocumentsForThisCourse" = "Shows documents for this course.";
 "DocumentDescriptionWithFormat" = "%@, '%@' file, downloaded: %@";
+"FolderDescriptionWithFormat" = "%@, folder containing %d files";
+"LinkDescriptionWithFormat" = "%@, external link";
 "AddDocumentToFavorites" = "Add this document to favorites";
 "RemoveDocumentFromFavorites" = "Remove this document from favorites";
+"AddLinkToFavorites" = "Add this link to favorites";
+"RemoveLinkFromFavorites" = "Remove this link from favorites";
 "DeleteDocumentFromLocalStorage" = "Delete this document from local storage";
+"PrintThisDocumentAtEPFL" = "Print this document at EPFL";

@@ -25,13 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 12.04.12.
 
-
-#import "Service.h"
+#import "PCService.h"
 
 #import "map.h"
 
@@ -39,52 +35,57 @@
 
 extern NSString* const kMapRecentSearchesModifiedNotification; //posted by self on default notification center
 
-@interface MapService : Service<ServiceProtocol>
+extern NSString* const kMapSelectedMapLayerIdsModifiedNotificaiton; //posted by self default notification center
+
+@interface MapService : PCService<PCServiceProtocol>
 
 /*
  
  THRIFT SERVICE
  
- - (NSArray *) getLayerList;  // throws TException
- - (NSArray *) getLayerItems: (int64_t) layerId;  // throws TException
+ - (MapLayersResponse *) getLayers;  // throws TException
  - (NSArray *) search: (NSString *) query;  // throws TException
  
 */
 
-- (void)getLayerListWithDelegate:(id)delegate;
-- (void)getLayerItemsForLayerId:(int64_t)layerId delegate:(id)delegate;
+- (void)getLayersWithDelegate:(id)delegate;
 - (void)searchFor:(NSString*)query delegate:(id)delegate;
 
+#pragma mark - MapLayers
+
+/**
+ * @return set of all MapLayer.layerId as NSNumber that user has selected to display
+ * @discussion this property is persisted
+ */
+@property (nonatomic, copy) NSSet* selectedMapLayerIds;
 
 #pragma mark - Recent searches
 
-/*
- * Returns ordered set of string of recent search pattern, with most recent at beginning.
+/**
+ * @return Ordered set of string of recent search pattern, with most recent at beginning.
  * recentSearches are persisted.
  * Returns empty array if not recent search.
  */
-- (NSOrderedSet*)recentSearches;
+@property (nonatomic, readonly) NSOrderedSet* recentSearches;
 
-/*
- * Adds pattern to top of recent searches. If pattern
+/**
+ * @discussion Adds pattern to top of recent searches. If pattern
  * already exists in recentSearches, it is put at beginnig of ordered set.
  */
 - (void)addOrPromoteRecentSearch:(NSString*)pattern;
 
-/*
- * Clears in memory and persisted recent searches.
+/**
+ * @discussion Clears in memory and persisted recent searches.
  */
 - (void)clearRecentSearches;
 
 @end
 
-@protocol MapServiceDelegate <ServiceDelegate>
+@protocol MapServiceDelegate <PCServiceDelegate>
 
 @optional
-- (void)getLayerListDidReturn:(NSArray*)layerList; //array of MapLayer
-- (void)getLayerListFailed;
-- (void)getLayerItemsForLayerId:(int64_t)layerID didReturn:(NSArray*)layerItems; //array of MapItem
-- (void)getLayerItemsFailedForLayerId:(int64_t)layerID;
+- (void)getLayersDidReturn:(MapLayersResponse*)response;
+- (void)getLayersFailed;
 - (void)searchMapFor:(NSString*)query didReturn:(NSArray*)results; //array of MapItem
 - (void)searchMapFailedFor:(NSString*)query;
 

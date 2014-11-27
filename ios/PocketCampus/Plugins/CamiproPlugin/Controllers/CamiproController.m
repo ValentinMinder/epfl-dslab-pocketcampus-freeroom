@@ -35,14 +35,12 @@
 
 #import "CamiproService.h"
 
-#import "AuthenticationService.h"
+#import "AuthenticationController.h"
 
-@interface CamiproController ()<CamiproServiceDelegate, AuthenticationDelegate>
+@interface CamiproController ()<CamiproServiceDelegate, AuthenticationControllerDelegate>
 
 @property (nonatomic, strong) CamiproService* camiproService;
 @property (nonatomic, strong) TequilaToken* tequilaToken;
-
-@property (nonatomic) BOOL persistSession;
 
 @end
 
@@ -59,16 +57,20 @@ static CamiproController* instance __weak = nil;
         }
         self = [super init];
         if (self) {
+#ifdef TARGET_IS_MAIN_APP
             CamiproViewController* camiproViewController = [[CamiproViewController alloc] init];
             camiproViewController.title = [[self class] localizedName];
             PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:camiproViewController];
             navController.pluginIdentifier = [[self class] identifierName];
             self.mainNavigationController = navController;
             instance = self;
+#endif
         }
         return self;
     }
 }
+
+#pragma mark - PluginController
 
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
@@ -89,7 +91,9 @@ static CamiproController* instance __weak = nil;
             CLSNSLog(@"-> Camipro received %@ notification", kAuthenticationLogoutNotification);
             [[CamiproService sharedInstanceToRetain] deleteCamiproSession]; //removing stored session
             [PCPersistenceManager deleteCacheForPluginName:@"camipro"];
+#ifndef TARGET_IS_EXTENSION
             [[MainController publicController] requestLeavePlugin:@"Camipro"];
+#endif
         }];
     });
 }
@@ -119,6 +123,7 @@ static CamiproController* instance __weak = nil;
     [super removeLoginObserver:observer];
     if ([self.loginObservers count] == 0) {
         [self.camiproService cancelOperationsForDelegate:self]; //abandon login attempt if no more observer interested
+        self.authenticationStarted = NO;
     }
 }
 
@@ -126,7 +131,7 @@ static CamiproController* instance __weak = nil;
 
 - (void)getTequilaTokenForCamiproDidReturn:(TequilaToken *)tequilaKey {
     self.tequilaToken = tequilaKey;
-    [self.authController authToken:tequilaKey.iTequilaKey presentationViewController:self.mainNavigationController delegate:self];
+    [[AuthenticationController sharedInstance] authenticateToken:tequilaKey.iTequilaKey delegate:self];
 }
 
 - (void)getTequilaTokenForCamiproFailed {
@@ -134,7 +139,7 @@ static CamiproController* instance __weak = nil;
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken *)tequilaKey didReturn:(CamiproSession *)session {
-    [self.camiproService setCamiproSession:session persist:self.persistSession];
+    [self.camiproService setCamiproSession:session persist:YES];
     [self cleanAndNotifySuccessToObservers];
 }
 
@@ -146,14 +151,13 @@ static CamiproController* instance __weak = nil;
     [super cleanAndNotifyConnectionToServerTimedOutToObservers];
 }
 
-#pragma mark - AuthenticationCallbackDelegate
+#pragma mark - AuthenticationControllerDelegate
 
-- (void)authenticationSucceededPersistSession:(BOOL)persistSession {
+- (void)authenticationSucceeded {
     if (!self.tequilaToken) {
         CLSNSLog(@"-> ERROR : no tequilaToken saved after successful authentication");
         return;
     }
-    self.persistSession = persistSession;
     [self.camiproService getSessionIdForServiceWithTequilaKey:self.tequilaToken delegate:self];
 }
 
@@ -162,6 +166,10 @@ static CamiproController* instance __weak = nil;
         case AuthenticationFailureReasonUserCancelled:
             [self.camiproService cancelOperationsForDelegate:self];
             [self cleanAndNotifyUserCancelledToObservers];
+            break;
+        case AuthenticationFailureReasonCannotAskForCredentials:
+            [self.camiproService cancelOperationsForDelegate:self];
+            [self cleanAndNotifyFailureToObservers];
             break;
         case AuthenticationFailureReasonInvalidToken:
             [self.camiproService getTequilaTokenForCamiproDelegate:self]; //restart to get new token

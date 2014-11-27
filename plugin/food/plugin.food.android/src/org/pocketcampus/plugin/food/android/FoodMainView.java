@@ -1,8 +1,10 @@
 package org.pocketcampus.plugin.food.android;
 
-import static org.pocketcampus.android.platform.sdk.utils.SetUtils.*;
-import static org.pocketcampus.android.platform.sdk.utils.MapUtils.*;
-import static org.pocketcampus.android.platform.sdk.utils.DialogUtils.*;
+import static org.pocketcampus.platform.android.utils.DialogUtils.showMultiChoiceDialog;
+import static org.pocketcampus.platform.android.utils.DialogUtils.showMultiChoiceDialogSbN;
+import static org.pocketcampus.platform.android.utils.DialogUtils.showSingleChoiceDialog;
+import static org.pocketcampus.platform.android.utils.MapUtils.subMap;
+import static org.pocketcampus.platform.android.utils.SetUtils.difference;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -22,17 +24,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuated;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuator;
+import org.pocketcampus.platform.android.ui.adapter.MultiListAdapter;
+import org.pocketcampus.platform.android.ui.layout.StandardLayout;
+import org.pocketcampus.platform.android.utils.DialogUtils.MultiChoiceHandler;
+import org.pocketcampus.platform.android.utils.DialogUtils.SingleChoiceHandler;
+import org.pocketcampus.platform.android.utils.Preparated;
+import org.pocketcampus.platform.android.utils.Preparator;
+import org.pocketcampus.platform.android.utils.ScrollStateSaver;
 import org.pocketcampus.plugin.food.R;
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
-import org.pocketcampus.android.platform.sdk.ui.adapter.MultiListAdapter;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuated;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuator;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
-import org.pocketcampus.android.platform.sdk.utils.Preparated;
-import org.pocketcampus.android.platform.sdk.utils.Preparator;
-import org.pocketcampus.android.platform.sdk.utils.ScrollStateSaver;
 import org.pocketcampus.plugin.food.android.FoodController.AMeal;
 import org.pocketcampus.plugin.food.android.FoodController.AResto;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
@@ -40,8 +44,8 @@ import org.pocketcampus.plugin.food.shared.MealTime;
 import org.pocketcampus.plugin.food.shared.MealType;
 import org.pocketcampus.plugin.food.shared.PriceTarget;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
-import org.pocketcampus.plugin.map.shared.MapItem;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -52,23 +56,25 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.util.LongSparseArray;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 import com.markupartist.android.widget.ActionBar.Action;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 /**
  * The Main View of the Food plugin, first displayed when accessing Food.
@@ -97,7 +103,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 	Set<Long> filteredRestos = new HashSet<Long>();
 	Set<MealType> filteredTypes = new HashSet<MealType>();
 	
-	Long foodDay = null; // today
+	Long foodDay;
 	MealTime foodTime = MealTime.LUNCH;
 	
 	ListView mList;
@@ -120,6 +126,8 @@ public class FoodMainView extends PluginView implements IFoodView {
 		displayingList = false;
 		StandardLayout sl = new StandardLayout(this);
 		setContentView(sl);
+		
+		foodDay = getToday();
 
 		setActionBarTitle(getString(R.string.food_plugin_title));
 	}
@@ -135,11 +143,6 @@ public class FoodMainView extends PluginView implements IFoodView {
 		
 		mController.refreshFood(this, foodDay, foodTime, false);
 
-		
-		
-		//Tracker
-		//if(eventPoolId == Constants.CONTAINER_EVENT_ID) Tracker.getInstance().trackPageView("food");
-		//else Tracker.getInstance().trackPageView("food/" + eventPoolId + "/subevents");
 	}
 
 	/**
@@ -158,6 +161,11 @@ public class FoodMainView extends PluginView implements IFoodView {
 	}
 
 	@Override
+	protected String screenName() {
+		return "/food";
+	}
+	
+	@Override
 	protected void onPause() {
 		super.onPause();
 		if(displayingList)
@@ -173,18 +181,14 @@ public class FoodMainView extends PluginView implements IFoodView {
 		pickDateMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				Calendar c = Calendar.getInstance();
+				c.setTime(new Date(foodDay));
 				DatePickerDialog dpd = new DatePickerDialog(FoodMainView.this, new OnDateSetListener() {
 					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 						if(!view.isShown())
 							return; // bug in Jely Bean: http://stackoverflow.com/questions/11444238/jelly-bean-datepickerdialog-is-there-a-way-to-cancel
-						try {
-							DateFormat df = new SimpleDateFormat("yyyy-M-d'T'HH:mm:ss'Z'", Locale.US);
-							df.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
-							foodDay = df.parse(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + "T12:00:00Z").getTime();
-							mController.refreshFood(FoodMainView.this, foodDay, foodTime, false);
-						} catch (ParseException e) {
-							e.printStackTrace();
-						}
+						foodDay = computeFoodDay(year, monthOfYear + 1, dayOfMonth);
+						trackEvent("ViewDay", "" + (foodDay - getToday()) / 1000 / 3600 / 24);
+						mController.refreshFood(FoodMainView.this, foodDay, foodTime, false);
 					}
 				}, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 				dpd.show();
@@ -195,6 +199,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		pickTimeMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				foodTime = (foodTime == MealTime.DINNER ? MealTime.LUNCH : MealTime.DINNER);
+				trackEvent((foodTime == MealTime.DINNER ? "ViewDinner" : "ViewLunch"), null);
 				mController.refreshFood(FoodMainView.this, foodDay, foodTime, false);
 				return true;
 			}
@@ -203,6 +208,23 @@ public class FoodMainView extends PluginView implements IFoodView {
 	}
 
 	
+	
+	private Long computeFoodDay(int year, int month, int day) {
+		try {
+			DateFormat df = new SimpleDateFormat("yyyy-M-d'T'HH:mm:ss'Z'", Locale.US);
+			df.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+			String d = year + "-" + month + "-" + day;
+			return df.parse(d + "T12:00:00Z").getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private long getToday() {
+		Calendar c = Calendar.getInstance();
+		return computeFoodDay(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH));
+	}
 
 
 
@@ -214,7 +236,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		mealsByTypes = new HashMap<MealType, List<AMeal>>();
 		Set<Long> newRestosInRS = new HashSet<Long>();
 		Set<MealType> newTypesInRS = new HashSet<MealType>();
-		for(AMeal m : mModel.getMeals().values()) {
+		for(AMeal m : mController.getMeals().values()) {
 			newRestosInRS.add(m.resto);
 			newTypesInRS.addAll(m.types);
 			for(MealType t : m.types) {
@@ -242,10 +264,11 @@ public class FoodMainView extends PluginView implements IFoodView {
 	private void updateActionBar() {
 		removeAllActionsFromActionBar();
 		final Map<Long, String> subMapRestos = subMap(mController.getRestoNames(), restosInRS);
-		final int restoFilterIcon = (difference(restosInRS, filteredRestos).size() == 0 ? R.drawable.food_filter : R.drawable.food_filter_sel);
+		final int restoFilterIcon = (difference(restosInRS, filteredRestos).size() == 0 ? R.drawable.pocketcampus_filter : R.drawable.pocketcampus_filter_sel);
 		if(subMapRestos.size() > 0) {
 			addActionToActionBar(new Action() {
 				public void performAction(View view) {
+					trackEvent("FilterByRestaurant", null);
 					showMultiChoiceDialogSbN(FoodMainView.this, subMapRestos, getString(R.string.food_dialog_resto), filteredRestos, new MultiChoiceHandler<Long>() {
 						public void saveSelection(Long t, boolean isChecked) {
 							if(isChecked)
@@ -266,6 +289,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		if(subMapTypes.size() > 0) {
 			addActionToActionBar(new Action() {
 				public void performAction(View view) {
+					trackEvent("FilterByIngredient", null);
 					showMultiChoiceDialog(FoodMainView.this, subMapTypes, getString(R.string.food_dialog_types), filteredTypes, new MultiChoiceHandler<MealType>() {
 						public void saveSelection(MealType t, boolean isChecked) {
 							if(isChecked)
@@ -300,11 +324,12 @@ public class FoodMainView extends PluginView implements IFoodView {
 			dislikedMeals.addAll(typeMeals);
 		}
 		
-		Map<Long, List<AMeal>> mealsByResto = new HashMap<Long, List<AMeal>>();
+		
+		LongSparseArray<List<AMeal>> mealsByResto = new LongSparseArray<List<AMeal>>();
 		
 		
-		for(AMeal m : difference(mModel.getMeals().values(), dislikedMeals)) {
-			if(!mealsByResto.containsKey(m.resto))
+		for(AMeal m : difference(mController.getMeals().values(), dislikedMeals)) {
+			if(mealsByResto.get(m.resto) == null)
 				mealsByResto.put(m.resto, new LinkedList<AMeal>());
 			mealsByResto.get(m.resto).add(m);
 		}
@@ -332,11 +357,11 @@ public class FoodMainView extends PluginView implements IFoodView {
 					case R.id.food_list_header_satisfaction:
 						return e.satisfaction;
 					case R.id.food_list_header_map:
-						return new Actuated(getString(R.string.food_button_seemap_inline), new Actuator() {
+						return e.location != null ? new Actuated(getString(R.string.food_button_seemap_inline), new Actuator() {
 							public void triggered() {
-								showOnMap(e.location);
+								showOnMap(e);
 							}
-						});
+						}) : null;
 					default:
 						return null;
 					}
@@ -362,9 +387,10 @@ public class FoodMainView extends PluginView implements IFoodView {
 					case R.id.food_thumbnail:
 						return mController.getMealTypePicUrls().get(e.types.get(0));
 					case R.id.food_price:
-						return new Actuated(e.price, new Actuator() {
+						Object price = getMealPrice(e.prices, null, "%s<br>CHF", null);
+						return new Actuated(price, new Actuator() {
 							public void triggered() {
-								promptUserStatus();
+								promptUserStatus(e.prices);
 							}
 						});
 					case R.id.food_meal_satisfaction:
@@ -389,10 +415,13 @@ public class FoodMainView extends PluginView implements IFoodView {
 			
 		}
 		
-		if(mModel.getMeals().size() == 0) {
+		if(mController.getMeals().size() == 0) {
 			displayingList = false;
 			StandardLayout sl = new StandardLayout(this);
-			sl.setText(getString(R.string.food_no_menus));
+			DateFormat dateFormat = new SimpleDateFormat("EEE dd", getResources().getConfiguration().locale);
+			String t = (foodTime == MealTime.DINNER ? getString(R.string.food_string_no_evening_menus) : getString(R.string.food_string_no_lunch_menus));
+			String d = (dateFormat.format(new Date(foodDay)));
+			sl.setText(String.format(t, d));
 			setContentView(sl);
 		} else {
 			if(!displayingList) {
@@ -402,10 +431,11 @@ public class FoodMainView extends PluginView implements IFoodView {
 			}
 			TextView headerTitle = (TextView) findViewById(R.id.food_header_title);
 			//TextView headerDate = (TextView) findViewById(R.id.food_header_date);
-			DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(this);
+			//DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(this);
+			DateFormat dateFormat = new SimpleDateFormat("EEE dd", getResources().getConfiguration().locale);
 			String t = (foodTime == MealTime.DINNER ? getString(R.string.food_title_evening_menus) : getString(R.string.food_title_lunch_menus));
-			String d = (dateFormat.format(new Date(foodDay == null ? System.currentTimeMillis() : foodDay)));
-			headerTitle.setText(t + " " + d);
+			String d = (dateFormat.format(new Date(foodDay)));
+			headerTitle.setText(String.format(t, d));
 			//headerDate.setText("");
 			mList.setAdapter(adapter);
 			//mList.setCacheColorHint(Color.TRANSPARENT);
@@ -437,11 +467,12 @@ public class FoodMainView extends PluginView implements IFoodView {
 		}
 	}
 	
-	private void sendToGoogleTranslate(String str) {
+	private void sendToGoogleTranslate(AMeal m) {
+		trackEvent("SendToGoogleTranslate", "" + m.id);
 		try{
 			Intent i = new Intent();
 			i.setAction(Intent.ACTION_SEND);
-			i.putExtra(Intent.EXTRA_TEXT, str);
+			i.putExtra(Intent.EXTRA_TEXT, m.getSummary());
 			i.setComponent(new ComponentName("com.google.android.apps.translate", "com.google.android.apps.translate.TranslateActivity"));
 			startActivity(i);
 		} catch(Exception e) {
@@ -449,12 +480,13 @@ public class FoodMainView extends PluginView implements IFoodView {
 		}
 	}
 	
-	private void showOnMap(MapItem mapItem) {
+	private void showOnMap(AResto r) {
+		trackEvent("ViewRestaurantOnMap", r.name);
 		try{
 			Intent i = new Intent();
 			i.setAction(Intent.ACTION_VIEW);
 			i.setData(Uri.parse("pocketcampus://map.plugin.pocketcampus.org/search"));
-			i.putExtra("MapElement", mapItem);
+			i.putExtra("MapElement", r.location);
 			startActivity(i);
 		} catch(Exception e) {
 			// Should never happen
@@ -462,33 +494,64 @@ public class FoodMainView extends PluginView implements IFoodView {
 		}
 	}
 	
-	private void promptUserStatus() {
-		Map<PriceTarget, String> priceTargets = new HashMap<PriceTarget, String>();
+	@SuppressLint("UseSparseArrays")
+	private void promptUserStatus(Map<PriceTarget, Double> prices) {
+		trackEvent("PromptUserStatus", null);
+		String priceTagFormat = "<br><i>(%s CHF)</i>";
+		Map<Integer, CharSequence> priceTargets = new HashMap<Integer, CharSequence>();
+		if(mController.getServerDetectedPriceTarget() != null) {
+			String priceTag = getMealPrice(prices, mController.getServerDetectedPriceTarget(), priceTagFormat, "");
+			priceTargets.put(0, Html.fromHtml(getString(R.string.food_pricetag_auto) + priceTag));
+		}
 		for(PriceTarget t : PriceTarget.values()) {
 			if(t == PriceTarget.ALL)
 				continue;
-			priceTargets.put(t, mController.translateEnum(t.name()));
+			String priceTag = getMealPrice(prices, t, priceTagFormat, "");
+			priceTargets.put(t.getValue(), Html.fromHtml(mController.translateEnum(t.name()) + priceTag));
 		}
-		showSingleChoiceDialog(this, priceTargets, getString(R.string.food_dialog_prices), mModel.getUserStatus(), new SingleChoiceHandler<PriceTarget>() {
-			public void saveSelection(PriceTarget t) {
-				mModel.setUserStatus(t);
+		int selected = 0;
+		if(mModel.getUserStatus() != null) selected = mModel.getUserStatus().getValue();
+		showSingleChoiceDialog(this, priceTargets, getString(R.string.food_dialog_prices), selected, new SingleChoiceHandler<Integer>() {
+			public void saveSelection(Integer t) {
+				if(t == 0) {
+					mModel.setUserStatus(null);
+				} else {
+					mModel.setUserStatus(PriceTarget.findByValue(t));
+				}
 				mController.refreshFood(FoodMainView.this, foodDay, foodTime, false);
 			}
 		});
 	}
+	
+	private String getMealPrice(Map<PriceTarget, Double> prices, PriceTarget priceTarget, String format, String retValIfNoPrice) {
+		if(priceTarget == null) {
+			// first use server detection
+			priceTarget = mController.getServerDetectedPriceTarget();
+			// then override with user selection
+			if (mModel.getUserStatus() != null)
+				priceTarget = mModel.getUserStatus();
+		}
+		Double price = prices.get(priceTarget != null ? priceTarget : PriceTarget.VISITOR);
+		if(price == null) price = prices.get(PriceTarget.ALL);
+		if(price == null)
+			return retValIfNoPrice;
+		String priceTag = String.format(Locale.US, "%1$.2f", price);
+		return String.format(format, priceTag);
+	}
 
 	private void voteFor(final AMeal e) {
+		trackEvent("RateMeal", "" + e.id);
 		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		View titleV = inflater.inflate(R.layout.sdk_actionbar_dialog, null);
+		View titleV = inflater.inflate(R.layout.sdk_actionbar_dialog, new LinearLayout(this));
 		((TextView) titleV.findViewById(R.id.actionbar_title)).setText(getString(R.string.food_dialog_vote));
 		//v.setOnClickListener()
-		final View bodyV = inflater.inflate(R.layout.food_vote_view, null);
+		final View bodyV = inflater.inflate(R.layout.food_vote_view, new LinearLayout(this));
 		((TextView) bodyV.findViewById(R.id.food_dialog_h1)).setText(mController.getRestos().get(e.resto).name);
 		((TextView) bodyV.findViewById(R.id.food_dialog_h2)).setText(e.name);
-		final ImageView im1 = (ImageView) bodyV.findViewById(R.id.food_smiley_sad);
-		final ImageView im2 = (ImageView) bodyV.findViewById(R.id.food_smiley_soso);
-		final ImageView im3 = (ImageView) bodyV.findViewById(R.id.food_smiley_happy);
+		final LinearLayout im1 = (LinearLayout) bodyV.findViewById(R.id.food_smiley_sad);
+		final LinearLayout im2 = (LinearLayout) bodyV.findViewById(R.id.food_smiley_soso);
+		final LinearLayout im3 = (LinearLayout) bodyV.findViewById(R.id.food_smiley_happy);
 		im1.setClickable(true);
 		im2.setClickable(true);
 		im3.setClickable(true);
@@ -497,7 +560,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 				//Toast.makeText(getApplicationContext(), "Click!!", Toast.LENGTH_SHORT).show();
 				bodyV.setTag((Double) 0.0);
 				Resources res = getResources();
-				im1.setBackgroundColor(res.getColor(R.color.epfl_official_red));
+				im1.setBackgroundColor(res.getColor(R.color.epfl_corrected_red));
 				im2.setBackgroundColor(res.getColor(R.color.transparent));
 				im3.setBackgroundColor(res.getColor(R.color.transparent));
 				bodyV.invalidate();
@@ -509,7 +572,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 				bodyV.setTag((Double) 0.5);
 				Resources res = getResources();
 				im1.setBackgroundColor(res.getColor(R.color.transparent));
-				im2.setBackgroundColor(res.getColor(R.color.epfl_official_red));
+				im2.setBackgroundColor(res.getColor(R.color.epfl_corrected_red));
 				im3.setBackgroundColor(res.getColor(R.color.transparent));
 				bodyV.invalidate();
 			}
@@ -521,7 +584,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 				Resources res = getResources();
 				im1.setBackgroundColor(res.getColor(R.color.transparent));
 				im2.setBackgroundColor(res.getColor(R.color.transparent));
-				im3.setBackgroundColor(res.getColor(R.color.epfl_official_red));
+				im3.setBackgroundColor(res.getColor(R.color.epfl_corrected_red));
 				bodyV.invalidate();
 			}
 		});
@@ -548,13 +611,13 @@ public class FoodMainView extends PluginView implements IFoodView {
 	private void mealMenu(final AMeal m) {
 		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		View titleV = inflater.inflate(R.layout.sdk_actionbar_dialog, null);
+		View titleV = inflater.inflate(R.layout.sdk_actionbar_dialog, new LinearLayout(this));
 		((TextView) titleV.findViewById(R.id.actionbar_title)).setText(m.name);
 		
 		AlertDialog dialog = new AlertDialog.Builder(this)
 				.setCustomTitle(titleV)
 				.setAdapter(new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, 
-						new String[] {getString(R.string.food_button_vote), getString(R.string.food_button_googletranslate), getString(R.string.food_button_copytext)}), 
+						new String[] {getString(R.string.food_button_vote), getString(R.string.food_button_googletranslate), getString(R.string.food_button_copytext), getString(R.string.food_button_showprices)}), 
 						new DialogInterface.OnClickListener() {
 
 					@Override
@@ -564,12 +627,16 @@ public class FoodMainView extends PluginView implements IFoodView {
 							voteFor(m);
 							break;
 						case 1:
-							sendToGoogleTranslate(m.name + " " + m.desc);
+							sendToGoogleTranslate(m);
 							break;
 						case 2:
 							android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-						    clipboard.setText(m.name + " " + m.desc);
+						    clipboard.setText(m.getSummary());
 							Toast.makeText(getApplicationContext(), getString(R.string.food_toast_copied), Toast.LENGTH_SHORT).show();
+							trackEvent("CopyToClipboard", "" + m.id);
+							break;
+						case 3:
+							promptUserStatus(m.prices);
 							break;
 						default:
 							Toast.makeText(getApplicationContext(), arg1, Toast.LENGTH_SHORT).show();
@@ -586,84 +653,8 @@ public class FoodMainView extends PluginView implements IFoodView {
 		
 	}
 	
-	/*
-	private void updateDisplay(boolean saveScroll) {
 
-		List<EpflRestaurant> meals;
-
-		if(saveScroll && displayingList)
-			scrollState = new ScrollStateSaver(mList);
-		
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.food_list_header);
-		
-		Preparated<EpflRestaurant> p = new Preparated<EpflRestaurant>(meals, new Preparator<EpflRestaurant>() {
-			public int[] resources() {
-				return new int[] { R.id.food_title, R.id.food_speaker, R.id.food_thumbnail, R.id.food_time, R.id.food_fav_star };
-			}
-			public Object content(int res, final EpflRestaurant e) {
-				switch (res) {
-				case R.id.food_title:
-					return e.getCourseTitle();
-				case R.id.food_speaker:
-					return e.getCourseId();
-				case R.id.food_thumbnail:
-					return null;
-				case R.id.food_time:
-					return null;
-				case R.id.food_fav_star:
-					return R.drawable.sdk_transparent;
-				default:
-					return null;
-				}
-			}
-			public void finalize(Map<String, Object> map, EpflRestaurant item) {
-				map.put(MAP_KEY_COURSEID, item.getCourseId());
-			}
-		});
-		adapter.addSection("Courses", new LazyAdapter(this, p.getMap(), 
-				R.layout.food_list_row, p.getKeys(), p.getResources()));
-		
-		
-		if(userCourses.size() == 0) {
-			displayingList = false;
-			StandardLayout sl = new StandardLayout(this);
-			sl.setText(getResources().getString(R.string.food_no_menus));
-			setContentView(sl);
-		} else {
-			if(!displayingList) {
-				setContentView(R.layout.food_main);
-				mList = (ListView) findViewById(R.id.food_main_list);
-				displayingList = true;
-			}
-			mList.setAdapter(adapter);
-			//mList.setCacheColorHint(Color.TRANSPARENT);
-			//mList.setFastScrollEnabled(true);
-			//mList.setScrollingCacheEnabled(false);
-			//mList.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
-			//mList.setDivider(null);
-			//mList.setDividerHeight(0);
-			
-			mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
-			
-			mList.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-					Object o = arg0.getItemAtPosition(arg2);
-					if(o instanceof Map<?, ?>) {
-						Intent i = new Intent(FoodMainView.this, FoodCourseView.class);
-						i.putExtra(FoodCourseView.EXTRAS_KEY_COURSEID, ((Map<?, ?>) o).get(MAP_KEY_COURSEID).toString());
-						FoodMainView.this.startActivity(i);
-					} else {
-						Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
-					}
-				}
-			});
-			
-			if(scrollState != null)
-				scrollState.restore(mList);
-			
-		}
-	}
-	*/
+	
 	
 	public static Comparator<AMeal> getMealComp4sort() {
 		return new Comparator<AMeal>() {

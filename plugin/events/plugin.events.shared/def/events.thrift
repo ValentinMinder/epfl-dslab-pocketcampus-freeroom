@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.events.shared
-namespace csharp org.pocketcampus.plugin.events.shared
 
 const i64 CONTAINER_EVENT_ID = -1;
 
@@ -134,7 +133,7 @@ struct EventPool {
 
 struct EventItemRequest {
 	1: required i64 eventItemId;
-	2: optional string userToken;
+	2: optional string userToken; // deprecated, use userTickets
 	3: optional list<string> userTickets;
 	
 	5: optional string lang;
@@ -142,13 +141,14 @@ struct EventItemRequest {
 
 struct EventPoolRequest {
 	1: required i64 eventPoolId;
-	2: optional string userToken;
+	2: optional string userToken; // deprecated, use userTickets
 	3: optional list<string> userTickets;
 	
 	4: optional list<i64> starredEventItems;
 	
 	5: optional string lang;
-	6: optional i32 period;
+	6: optional i32 period; // in days, deprecated, use periodInHours
+	8: optional i32 periodInHours; // if set, will override period
 	7: optional bool fetchPast;
 }
 
@@ -207,7 +207,7 @@ struct AdminSendRegEmailReply {
 service EventsService {
 	EventItemReply getEventItem(1: EventItemRequest iRequest);
 	EventPoolReply getEventPool(1: EventPoolRequest iRequest);
-	ExchangeReply exchangeContacts(1: ExchangeRequest iRequest);
+	ExchangeReply exchangeContacts(1: ExchangeRequest iRequest); // deprecated
 	SendEmailReply sendStarredItemsByEmail(1: SendEmailRequest iRequest);
 	AdminSendRegEmailReply adminSendRegistrationEmail(1: AdminSendRegEmailRequest iRequest);
 }

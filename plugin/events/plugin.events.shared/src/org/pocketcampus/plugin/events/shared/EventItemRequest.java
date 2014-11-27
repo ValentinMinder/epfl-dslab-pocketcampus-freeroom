@@ -29,10 +29,10 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
   private static final org.apache.thrift.protocol.TField USER_TICKETS_FIELD_DESC = new org.apache.thrift.protocol.TField("userTickets", org.apache.thrift.protocol.TType.LIST, (short)3);
   private static final org.apache.thrift.protocol.TField LANG_FIELD_DESC = new org.apache.thrift.protocol.TField("lang", org.apache.thrift.protocol.TType.STRING, (short)5);
 
-  public long eventItemId; // required
-  public String userToken; // required
-  public List<String> userTickets; // required
-  public String lang; // required
+  private long eventItemId; // required
+  private String userToken; // required
+  private List<String> userTickets; // required
+  private String lang; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

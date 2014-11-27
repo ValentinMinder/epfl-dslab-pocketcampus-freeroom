@@ -1,6 +1,10 @@
 namespace java org.pocketcampus.plugin.directory.shared
-namespace csharp org.pocketcampus.plugin.directory.shared
 
+
+struct DirectoryPersonRole {
+	1: required string extendedLocalizedUnit;
+	2: required string localizedTitle;
+}
 
 struct Person {
 	1: required string firstName;
@@ -15,6 +19,8 @@ struct Person {
 	10: optional list<string> organisationalUnits;
 	11: optional string pictureUrl;
 	
+	12: optional map<string, DirectoryPersonRole> roles;
+	13: optional map<string, string> homepages;
 }
 
 exception LDAPException {
@@ -27,7 +33,7 @@ exception NoPictureFound{
 
 struct DirectoryRequest {
 	1: required string query;
-	2: optional string directorySession;
+	4: optional string language;
 	3: optional binary resultSetCookie;
 }
 

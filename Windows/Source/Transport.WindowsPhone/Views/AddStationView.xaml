@@ -9,23 +9,27 @@
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      mc:Ignorable="d">
-    <!-- Design-time DataContext -->
-    <d:DesignProperties.DataContext>
-        <design:DesignAddStationViewModel xmlns:design="clr-namespace:PocketCampus.Transport.ViewModels.Design;assembly=PocketCampus.Transport.Common" />
-    </d:DesignProperties.DataContext>
-
+                      mc:Ignorable="d"
+                      d:DataContext="{Binding AddStation, Source={StaticResource Design}}">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
+            <DataTemplate x:Key="StationTemplate">
+                <Button BorderThickness="0"
+                        Content="{Binding Name}"
+                        HorizontalContentAlignment="Left"
+                        Command="{Binding DataContext.AddStationCommand, ElementName=LayoutRoot}"
+                        CommandParameter="{Binding}" />
+            </DataTemplate>
         </ResourceDictionary>
     </comControls:BasePage.Resources>
 
     <!-- Main grid -->
-    <Grid>
+    <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -46,12 +50,19 @@
                        Style="{StaticResource AppTextTitleStyle}" />
         </Border>
 
-        <!-- Search box -->
-        <comControls:SearchBox Grid.Row="2"
-                               SearchCommandSymbol="+"
-                               AutoCompleteProvider="{Binding AutoCompleteProvider}"
-                               SearchCommand="{Binding AddCommand}"
-                               Margin="12,0" />
+        <!-- Search box
+             HACK: See code-behind -->
+        <TextBox x:Name="SearchBox"
+                 Grid.Row="2"
+                 Text="{Binding Query, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                 TextChanged="TextBox_TextChanged"
+                 com:TextBoxEx.EnterCommand="{Binding AddStationByNameCommand}"
+                 Margin="12,0" />
+        
+        <!-- Suggestions -->
+        <ItemsControl Grid.Row="3"
+                      ItemsSource="{Binding Stations}"
+                      ItemTemplate="{StaticResource StationTemplate}" />
 
         <!-- Loading and error -->
         <comControls:LoadingAndError Grid.Row="3" />

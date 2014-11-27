@@ -6,7 +6,7 @@
 -- enabled is used to temporarily disable a room, (e.g during a special event, it there are no occupancy for the room
 -- it will be displayed as entirely free, enabled can be used to prevent such things)
 CREATE TABLE IF NOT EXISTS `fr-roomslist` (
-	`uid` char(255) NOT NULL,
+	`uid` char(32) NOT NULL,
 	`doorCode` char(255) NOT NULL,
 	`doorCodeWithoutSpace` char(255) NOT NULL,
 	`alias` char(255),
@@ -35,10 +35,10 @@ CREATE TABLE IF NOT EXISTS `fr-roomslist` (
 
 -- This table holds rooms occupancies
 CREATE TABLE IF NOT EXISTS `fr-occupancy` (
-	`uid` char(255) NOT NULL,
+	`uid` char(32) NOT NULL,
 	`timestampStart` bigint(20) NOT NULL,
 	`timestampEnd` bigint(20) NOT NULL,
-	`type` char(255) NOT NULL,
+	`type` char(64) NOT NULL,
 	`count` int(11) DEFAULT 0,
 	PRIMARY KEY (`uid`, `timestampStart`, `type`),
 	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist`(`uid`) ON DELETE CASCADE	
@@ -47,10 +47,10 @@ CREATE TABLE IF NOT EXISTS `fr-occupancy` (
 -- This table is used to avoid multiple submission by a single client of user occupancies 
 -- and to store messages from users
 CREATE TABLE IF NOT EXISTS `fr-checkOccupancy` (
-	`uid` char(255) NOT NULL,
+	`uid` char(32) NOT NULL,
 	`timestampStart` bigint(20) NOT NULL,
 	`timestampEnd` bigint(20) NOT NULL,
-	`hash` char(255) NOT NULL,
+	`hash` char(64) NOT NULL,
 	`message` varchar(255) DEFAULT NULL,
 	PRIMARY KEY (`timestampStart`, `hash`),
 	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist` (`uid`) ON DELETE CASCADE

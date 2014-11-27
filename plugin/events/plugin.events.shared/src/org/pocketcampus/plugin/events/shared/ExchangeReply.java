@@ -26,7 +26,7 @@ public class ExchangeReply implements org.apache.thrift.TBase<ExchangeReply, Exc
 
   private static final org.apache.thrift.protocol.TField STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("status", org.apache.thrift.protocol.TType.I32, (short)1);
 
-  public int status; // required
+  private int status; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

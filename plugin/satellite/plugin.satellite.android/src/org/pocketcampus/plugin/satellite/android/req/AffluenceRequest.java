@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.satellite.android.req;
 
-import org.pocketcampus.android.platform.sdk.io.Request;
+import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.satellite.android.SatelliteController;
 import org.pocketcampus.plugin.satellite.android.SatelliteModel;
 import org.pocketcampus.plugin.satellite.shared.Affluence;

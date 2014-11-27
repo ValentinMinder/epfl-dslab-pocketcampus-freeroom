@@ -3,13 +3,11 @@ package org.pocketcampus.plugin.map.android;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.IView;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.map.android.iface.IMapView;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
-
-import android.widget.ArrayAdapter;
 
 /**
  * Map model.

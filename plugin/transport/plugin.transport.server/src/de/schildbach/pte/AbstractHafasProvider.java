@@ -185,18 +185,6 @@ public abstract class AbstractHafasProvider extends AbstractNetworkProvider
 		throw new IllegalStateException("cannot handle: " + type);
 	}
 
-	private static final Location parseReqLoc(final XmlPullParser pp)
-	{
-		final String type = pp.getName();
-		if ("ReqLoc".equals(type))
-		{
-			XmlPullUtil.requireAttr(pp, "type", "ADR");
-			final String name = pp.getAttributeValue(null, "output").trim();
-			return new Location(LocationType.ADDRESS, 0, null, name);
-		}
-		throw new IllegalStateException("cannot handle: " + type);
-	}
-
 	private static final String parsePlatform(final XmlPullParser pp) throws XmlPullParserException, IOException
 	{
 		XmlPullUtil.enter(pp, "Platform");
@@ -874,7 +862,6 @@ public abstract class AbstractHafasProvider extends AbstractNetworkProvider
 						String name = null;
 						String category = null;
 						String shortCategory = null;
-						String longCategory = null;
 						while (XmlPullUtil.test(pp, "JourneyAttribute"))
 						{
 							XmlPullUtil.enter(pp, "JourneyAttribute");
@@ -893,7 +880,6 @@ public abstract class AbstractHafasProvider extends AbstractNetworkProvider
 							{
 								shortCategory = attributeVariants.get("SHORT");
 								category = attributeVariants.get("NORMAL");
-								longCategory = attributeVariants.get("LONG");
 							}
 							else if ("DIRECTION".equals(attrName))
 							{
@@ -1756,8 +1742,6 @@ public abstract class AbstractHafasProvider extends AbstractNetworkProvider
 
 	private static final Pattern P_NORMALIZE_LINE_AND_TYPE = Pattern.compile("([^#]*)#(.*)");
 	private static final Pattern P_NORMALIZE_LINE_NUMBER = Pattern.compile("\\d{2,5}");
-	// saved from RtProvider
-	private static final Pattern P_NORMALIZE_LINE_RUSSIA = Pattern.compile("(\\d{3}(BJ|FJ|IJ|MJ|NJ|OJ|TJ|SZ))");
 
 	protected final String parseLineAndType(final String lineAndType)
 	{

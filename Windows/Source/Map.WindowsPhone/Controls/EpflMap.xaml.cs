@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
 using System.Device.Location;
 using System.Linq;
 using System.Reflection;
@@ -113,9 +114,21 @@ namespace PocketCampus.Map.Controls
         /// </summary>
         private void LayoutRoot_Loaded( object sender, RoutedEventArgs e )
         {
-            string[] tokens = AssemblyReader.GetText( typeof( EpflMap ).GetTypeInfo().Assembly, "PocketCampus.Map.MapTokens.txt" ).Split();
-            MapsSettings.ApplicationContext.ApplicationId = tokens[0];
-            MapsSettings.ApplicationContext.AuthenticationToken = tokens[1];
+            string text = AssemblyReader.GetText( typeof( EpflMap ).GetTypeInfo().Assembly, "PocketCampus.Map.MapTokens.txt" );
+            if ( text == string.Empty )
+            {
+#if DEBUG
+                MessageBox.Show( "The file with the map tokens is missing. "
+                               + "Please add a file called MapTokens.txt in PocketCampus.Map.WindowsPhone with BuildAction 'Embedded Resource'. "
+                               + "The first line contains the application ID, the second like the authentication token." );
+#endif
+            }
+            else
+            {
+                string[] tokens = text.Split( new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries );
+                MapsSettings.ApplicationContext.ApplicationId = tokens[0];
+                MapsSettings.ApplicationContext.AuthenticationToken = tokens[1];
+            }
         }
 
         /// <summary>

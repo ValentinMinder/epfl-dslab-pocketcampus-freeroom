@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.camipro.android.req;
 
-import org.pocketcampus.android.platform.sdk.io.Request;
+import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.camipro.android.CamiproController;
 import org.pocketcampus.plugin.camipro.android.CamiproModel;
 import org.pocketcampus.plugin.camipro.shared.BalanceAndTransactions;

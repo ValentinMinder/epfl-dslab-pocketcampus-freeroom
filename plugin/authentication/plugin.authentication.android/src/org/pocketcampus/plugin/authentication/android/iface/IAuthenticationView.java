@@ -1,6 +1,8 @@
 package org.pocketcampus.plugin.authentication.android.iface;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
+import java.util.List;
+
+import org.pocketcampus.platform.android.core.IView;
 
 /**
  * IAuthenticationView
@@ -18,22 +20,7 @@ import org.pocketcampus.android.platform.sdk.core.IView;
 public interface IAuthenticationView extends IView {
 	
 	void shouldFinish();
-	
-	/**
-	 * Methods called from the Model when data is updated.
-	 */
-	/*void gotTequilaCookie();
-	void gotTequilaKey();
-	void gotSessionId();*/
-	
-	/**
-	 * Methods called from the "Request" classes
-	 * when something unusual happens.
-	 */
-	/*void doneAuthenticatingToken();
-	void doneAuthenticatingSecToken();
-	void notifyBadCredentials();
-	void notifyCookieTimedOut();
-	void networkErrorHappened();*/
+	void gotUserAttributes(List<String> attr);
+	void deletedSessions(Integer c);
 	
 }

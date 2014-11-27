@@ -1,5 +1,3 @@
-
-
 CREATE TABLE `pocketcampus`.`authsessions` (
 	`sessionid` VARCHAR(50) NOT NULL, 
 	`expiry` BIGINT NOT NULL, 
@@ -24,6 +22,4 @@ CREATE TABLE `pocketcampus`.`authsessions` (
 	`groupid` TEXT NULL, 
 	`authstrength` TEXT NULL, 
 	PRIMARY KEY (`sessionid`)
-) ENGINE = MyISAM  DEFAULT CHARSET=utf8;
-
- 
+) ENGINE = MyISAM DEFAULT CHARSET=utf8;

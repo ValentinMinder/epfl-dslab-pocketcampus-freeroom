@@ -45,7 +45,8 @@
 - (id)initAndLoadRootPool;
 - (id)initAndLoadEventPoolWithId:(int64_t)poolId;
 
-- (int64_t)poolId;
+@property (nonatomic, readonly) int64_t poolId;
+
 - (void)refresh;
 
 @end

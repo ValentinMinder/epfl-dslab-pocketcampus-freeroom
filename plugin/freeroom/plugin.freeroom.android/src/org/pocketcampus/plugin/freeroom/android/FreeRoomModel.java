@@ -18,8 +18,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.IView;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
@@ -32,7 +32,6 @@ import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriodOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
-import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 import android.content.Context;
 import android.content.SharedPreferences;

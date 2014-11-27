@@ -24,36 +24,18 @@ import org.slf4j.LoggerFactory;
 public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResult, QueryTripsResult._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("QueryTripsResult");
 
-  private static final org.apache.thrift.protocol.TField AMBIGUOUS_FROM_FIELD_DESC = new org.apache.thrift.protocol.TField("ambiguousFrom", org.apache.thrift.protocol.TType.LIST, (short)1);
-  private static final org.apache.thrift.protocol.TField AMBIGUOUS_VIA_FIELD_DESC = new org.apache.thrift.protocol.TField("ambiguousVia", org.apache.thrift.protocol.TType.LIST, (short)2);
-  private static final org.apache.thrift.protocol.TField AMBIGUOUS_TO_FIELD_DESC = new org.apache.thrift.protocol.TField("ambiguousTo", org.apache.thrift.protocol.TType.LIST, (short)3);
-  private static final org.apache.thrift.protocol.TField QUERY_URI_FIELD_DESC = new org.apache.thrift.protocol.TField("queryUri", org.apache.thrift.protocol.TType.STRING, (short)4);
   private static final org.apache.thrift.protocol.TField FROM_FIELD_DESC = new org.apache.thrift.protocol.TField("from", org.apache.thrift.protocol.TType.STRUCT, (short)5);
-  private static final org.apache.thrift.protocol.TField VIA_FIELD_DESC = new org.apache.thrift.protocol.TField("via", org.apache.thrift.protocol.TType.STRUCT, (short)6);
   private static final org.apache.thrift.protocol.TField TO_FIELD_DESC = new org.apache.thrift.protocol.TField("to", org.apache.thrift.protocol.TType.STRUCT, (short)7);
-  private static final org.apache.thrift.protocol.TField CONTEXT_FIELD_DESC = new org.apache.thrift.protocol.TField("context", org.apache.thrift.protocol.TType.STRING, (short)8);
   private static final org.apache.thrift.protocol.TField CONNECTIONS_FIELD_DESC = new org.apache.thrift.protocol.TField("connections", org.apache.thrift.protocol.TType.LIST, (short)9);
 
-  public List<TransportStation> ambiguousFrom; // required
-  public List<TransportStation> ambiguousVia; // required
-  public List<TransportStation> ambiguousTo; // required
-  public String queryUri; // required
-  public TransportStation from; // required
-  public TransportStation via; // required
-  public TransportStation to; // required
-  public String context; // required
-  public List<TransportTrip> connections; // required
+  private TransportStation from; // required
+  private TransportStation to; // required
+  private List<TransportTrip> connections; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    AMBIGUOUS_FROM((short)1, "ambiguousFrom"),
-    AMBIGUOUS_VIA((short)2, "ambiguousVia"),
-    AMBIGUOUS_TO((short)3, "ambiguousTo"),
-    QUERY_URI((short)4, "queryUri"),
     FROM((short)5, "from"),
-    VIA((short)6, "via"),
     TO((short)7, "to"),
-    CONTEXT((short)8, "context"),
     CONNECTIONS((short)9, "connections");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -69,22 +51,10 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // AMBIGUOUS_FROM
-          return AMBIGUOUS_FROM;
-        case 2: // AMBIGUOUS_VIA
-          return AMBIGUOUS_VIA;
-        case 3: // AMBIGUOUS_TO
-          return AMBIGUOUS_TO;
-        case 4: // QUERY_URI
-          return QUERY_URI;
         case 5: // FROM
           return FROM;
-        case 6: // VIA
-          return VIA;
         case 7: // TO
           return TO;
-        case 8: // CONTEXT
-          return CONTEXT;
         case 9: // CONNECTIONS
           return CONNECTIONS;
         default:
@@ -131,25 +101,10 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.AMBIGUOUS_FROM, new org.apache.thrift.meta_data.FieldMetaData("ambiguousFrom", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class))));
-    tmpMap.put(_Fields.AMBIGUOUS_VIA, new org.apache.thrift.meta_data.FieldMetaData("ambiguousVia", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class))));
-    tmpMap.put(_Fields.AMBIGUOUS_TO, new org.apache.thrift.meta_data.FieldMetaData("ambiguousTo", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class))));
-    tmpMap.put(_Fields.QUERY_URI, new org.apache.thrift.meta_data.FieldMetaData("queryUri", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.FROM, new org.apache.thrift.meta_data.FieldMetaData("from", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class)));
-    tmpMap.put(_Fields.VIA, new org.apache.thrift.meta_data.FieldMetaData("via", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class)));
     tmpMap.put(_Fields.TO, new org.apache.thrift.meta_data.FieldMetaData("to", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class)));
-    tmpMap.put(_Fields.CONTEXT, new org.apache.thrift.meta_data.FieldMetaData("context", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.CONNECTIONS, new org.apache.thrift.meta_data.FieldMetaData("connections", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportTrip.class))));
@@ -175,41 +130,11 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
    * Performs a deep copy on <i>other</i>.
    */
   public QueryTripsResult(QueryTripsResult other) {
-    if (other.isSetAmbiguousFrom()) {
-      List<TransportStation> __this__ambiguousFrom = new ArrayList<TransportStation>();
-      for (TransportStation other_element : other.ambiguousFrom) {
-        __this__ambiguousFrom.add(new TransportStation(other_element));
-      }
-      this.ambiguousFrom = __this__ambiguousFrom;
-    }
-    if (other.isSetAmbiguousVia()) {
-      List<TransportStation> __this__ambiguousVia = new ArrayList<TransportStation>();
-      for (TransportStation other_element : other.ambiguousVia) {
-        __this__ambiguousVia.add(new TransportStation(other_element));
-      }
-      this.ambiguousVia = __this__ambiguousVia;
-    }
-    if (other.isSetAmbiguousTo()) {
-      List<TransportStation> __this__ambiguousTo = new ArrayList<TransportStation>();
-      for (TransportStation other_element : other.ambiguousTo) {
-        __this__ambiguousTo.add(new TransportStation(other_element));
-      }
-      this.ambiguousTo = __this__ambiguousTo;
-    }
-    if (other.isSetQueryUri()) {
-      this.queryUri = other.queryUri;
-    }
     if (other.isSetFrom()) {
       this.from = new TransportStation(other.from);
     }
-    if (other.isSetVia()) {
-      this.via = new TransportStation(other.via);
-    }
     if (other.isSetTo()) {
       this.to = new TransportStation(other.to);
-    }
-    if (other.isSetContext()) {
-      this.context = other.context;
     }
     if (other.isSetConnections()) {
       List<TransportTrip> __this__connections = new ArrayList<TransportTrip>();
@@ -226,156 +151,9 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
 
   @Override
   public void clear() {
-    this.ambiguousFrom = null;
-    this.ambiguousVia = null;
-    this.ambiguousTo = null;
-    this.queryUri = null;
     this.from = null;
-    this.via = null;
     this.to = null;
-    this.context = null;
     this.connections = null;
-  }
-
-  public int getAmbiguousFromSize() {
-    return (this.ambiguousFrom == null) ? 0 : this.ambiguousFrom.size();
-  }
-
-  public java.util.Iterator<TransportStation> getAmbiguousFromIterator() {
-    return (this.ambiguousFrom == null) ? null : this.ambiguousFrom.iterator();
-  }
-
-  public void addToAmbiguousFrom(TransportStation elem) {
-    if (this.ambiguousFrom == null) {
-      this.ambiguousFrom = new ArrayList<TransportStation>();
-    }
-    this.ambiguousFrom.add(elem);
-  }
-
-  public List<TransportStation> getAmbiguousFrom() {
-    return this.ambiguousFrom;
-  }
-
-  public QueryTripsResult setAmbiguousFrom(List<TransportStation> ambiguousFrom) {
-    this.ambiguousFrom = ambiguousFrom;
-    return this;
-  }
-
-  public void unsetAmbiguousFrom() {
-    this.ambiguousFrom = null;
-  }
-
-  /** Returns true if field ambiguousFrom is set (has been assigned a value) and false otherwise */
-  public boolean isSetAmbiguousFrom() {
-    return this.ambiguousFrom != null;
-  }
-
-  public void setAmbiguousFromIsSet(boolean value) {
-    if (!value) {
-      this.ambiguousFrom = null;
-    }
-  }
-
-  public int getAmbiguousViaSize() {
-    return (this.ambiguousVia == null) ? 0 : this.ambiguousVia.size();
-  }
-
-  public java.util.Iterator<TransportStation> getAmbiguousViaIterator() {
-    return (this.ambiguousVia == null) ? null : this.ambiguousVia.iterator();
-  }
-
-  public void addToAmbiguousVia(TransportStation elem) {
-    if (this.ambiguousVia == null) {
-      this.ambiguousVia = new ArrayList<TransportStation>();
-    }
-    this.ambiguousVia.add(elem);
-  }
-
-  public List<TransportStation> getAmbiguousVia() {
-    return this.ambiguousVia;
-  }
-
-  public QueryTripsResult setAmbiguousVia(List<TransportStation> ambiguousVia) {
-    this.ambiguousVia = ambiguousVia;
-    return this;
-  }
-
-  public void unsetAmbiguousVia() {
-    this.ambiguousVia = null;
-  }
-
-  /** Returns true if field ambiguousVia is set (has been assigned a value) and false otherwise */
-  public boolean isSetAmbiguousVia() {
-    return this.ambiguousVia != null;
-  }
-
-  public void setAmbiguousViaIsSet(boolean value) {
-    if (!value) {
-      this.ambiguousVia = null;
-    }
-  }
-
-  public int getAmbiguousToSize() {
-    return (this.ambiguousTo == null) ? 0 : this.ambiguousTo.size();
-  }
-
-  public java.util.Iterator<TransportStation> getAmbiguousToIterator() {
-    return (this.ambiguousTo == null) ? null : this.ambiguousTo.iterator();
-  }
-
-  public void addToAmbiguousTo(TransportStation elem) {
-    if (this.ambiguousTo == null) {
-      this.ambiguousTo = new ArrayList<TransportStation>();
-    }
-    this.ambiguousTo.add(elem);
-  }
-
-  public List<TransportStation> getAmbiguousTo() {
-    return this.ambiguousTo;
-  }
-
-  public QueryTripsResult setAmbiguousTo(List<TransportStation> ambiguousTo) {
-    this.ambiguousTo = ambiguousTo;
-    return this;
-  }
-
-  public void unsetAmbiguousTo() {
-    this.ambiguousTo = null;
-  }
-
-  /** Returns true if field ambiguousTo is set (has been assigned a value) and false otherwise */
-  public boolean isSetAmbiguousTo() {
-    return this.ambiguousTo != null;
-  }
-
-  public void setAmbiguousToIsSet(boolean value) {
-    if (!value) {
-      this.ambiguousTo = null;
-    }
-  }
-
-  public String getQueryUri() {
-    return this.queryUri;
-  }
-
-  public QueryTripsResult setQueryUri(String queryUri) {
-    this.queryUri = queryUri;
-    return this;
-  }
-
-  public void unsetQueryUri() {
-    this.queryUri = null;
-  }
-
-  /** Returns true if field queryUri is set (has been assigned a value) and false otherwise */
-  public boolean isSetQueryUri() {
-    return this.queryUri != null;
-  }
-
-  public void setQueryUriIsSet(boolean value) {
-    if (!value) {
-      this.queryUri = null;
-    }
   }
 
   public TransportStation getFrom() {
@@ -402,30 +180,6 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
     }
   }
 
-  public TransportStation getVia() {
-    return this.via;
-  }
-
-  public QueryTripsResult setVia(TransportStation via) {
-    this.via = via;
-    return this;
-  }
-
-  public void unsetVia() {
-    this.via = null;
-  }
-
-  /** Returns true if field via is set (has been assigned a value) and false otherwise */
-  public boolean isSetVia() {
-    return this.via != null;
-  }
-
-  public void setViaIsSet(boolean value) {
-    if (!value) {
-      this.via = null;
-    }
-  }
-
   public TransportStation getTo() {
     return this.to;
   }
@@ -447,30 +201,6 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
   public void setToIsSet(boolean value) {
     if (!value) {
       this.to = null;
-    }
-  }
-
-  public String getContext() {
-    return this.context;
-  }
-
-  public QueryTripsResult setContext(String context) {
-    this.context = context;
-    return this;
-  }
-
-  public void unsetContext() {
-    this.context = null;
-  }
-
-  /** Returns true if field context is set (has been assigned a value) and false otherwise */
-  public boolean isSetContext() {
-    return this.context != null;
-  }
-
-  public void setContextIsSet(boolean value) {
-    if (!value) {
-      this.context = null;
     }
   }
 
@@ -515,38 +245,6 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case AMBIGUOUS_FROM:
-      if (value == null) {
-        unsetAmbiguousFrom();
-      } else {
-        setAmbiguousFrom((List<TransportStation>)value);
-      }
-      break;
-
-    case AMBIGUOUS_VIA:
-      if (value == null) {
-        unsetAmbiguousVia();
-      } else {
-        setAmbiguousVia((List<TransportStation>)value);
-      }
-      break;
-
-    case AMBIGUOUS_TO:
-      if (value == null) {
-        unsetAmbiguousTo();
-      } else {
-        setAmbiguousTo((List<TransportStation>)value);
-      }
-      break;
-
-    case QUERY_URI:
-      if (value == null) {
-        unsetQueryUri();
-      } else {
-        setQueryUri((String)value);
-      }
-      break;
-
     case FROM:
       if (value == null) {
         unsetFrom();
@@ -555,27 +253,11 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
       }
       break;
 
-    case VIA:
-      if (value == null) {
-        unsetVia();
-      } else {
-        setVia((TransportStation)value);
-      }
-      break;
-
     case TO:
       if (value == null) {
         unsetTo();
       } else {
         setTo((TransportStation)value);
-      }
-      break;
-
-    case CONTEXT:
-      if (value == null) {
-        unsetContext();
-      } else {
-        setContext((String)value);
       }
       break;
 
@@ -592,29 +274,11 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case AMBIGUOUS_FROM:
-      return getAmbiguousFrom();
-
-    case AMBIGUOUS_VIA:
-      return getAmbiguousVia();
-
-    case AMBIGUOUS_TO:
-      return getAmbiguousTo();
-
-    case QUERY_URI:
-      return getQueryUri();
-
     case FROM:
       return getFrom();
 
-    case VIA:
-      return getVia();
-
     case TO:
       return getTo();
-
-    case CONTEXT:
-      return getContext();
 
     case CONNECTIONS:
       return getConnections();
@@ -630,22 +294,10 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
     }
 
     switch (field) {
-    case AMBIGUOUS_FROM:
-      return isSetAmbiguousFrom();
-    case AMBIGUOUS_VIA:
-      return isSetAmbiguousVia();
-    case AMBIGUOUS_TO:
-      return isSetAmbiguousTo();
-    case QUERY_URI:
-      return isSetQueryUri();
     case FROM:
       return isSetFrom();
-    case VIA:
-      return isSetVia();
     case TO:
       return isSetTo();
-    case CONTEXT:
-      return isSetContext();
     case CONNECTIONS:
       return isSetConnections();
     }
@@ -665,42 +317,6 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
     if (that == null)
       return false;
 
-    boolean this_present_ambiguousFrom = true && this.isSetAmbiguousFrom();
-    boolean that_present_ambiguousFrom = true && that.isSetAmbiguousFrom();
-    if (this_present_ambiguousFrom || that_present_ambiguousFrom) {
-      if (!(this_present_ambiguousFrom && that_present_ambiguousFrom))
-        return false;
-      if (!this.ambiguousFrom.equals(that.ambiguousFrom))
-        return false;
-    }
-
-    boolean this_present_ambiguousVia = true && this.isSetAmbiguousVia();
-    boolean that_present_ambiguousVia = true && that.isSetAmbiguousVia();
-    if (this_present_ambiguousVia || that_present_ambiguousVia) {
-      if (!(this_present_ambiguousVia && that_present_ambiguousVia))
-        return false;
-      if (!this.ambiguousVia.equals(that.ambiguousVia))
-        return false;
-    }
-
-    boolean this_present_ambiguousTo = true && this.isSetAmbiguousTo();
-    boolean that_present_ambiguousTo = true && that.isSetAmbiguousTo();
-    if (this_present_ambiguousTo || that_present_ambiguousTo) {
-      if (!(this_present_ambiguousTo && that_present_ambiguousTo))
-        return false;
-      if (!this.ambiguousTo.equals(that.ambiguousTo))
-        return false;
-    }
-
-    boolean this_present_queryUri = true && this.isSetQueryUri();
-    boolean that_present_queryUri = true && that.isSetQueryUri();
-    if (this_present_queryUri || that_present_queryUri) {
-      if (!(this_present_queryUri && that_present_queryUri))
-        return false;
-      if (!this.queryUri.equals(that.queryUri))
-        return false;
-    }
-
     boolean this_present_from = true && this.isSetFrom();
     boolean that_present_from = true && that.isSetFrom();
     if (this_present_from || that_present_from) {
@@ -710,30 +326,12 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
         return false;
     }
 
-    boolean this_present_via = true && this.isSetVia();
-    boolean that_present_via = true && that.isSetVia();
-    if (this_present_via || that_present_via) {
-      if (!(this_present_via && that_present_via))
-        return false;
-      if (!this.via.equals(that.via))
-        return false;
-    }
-
     boolean this_present_to = true && this.isSetTo();
     boolean that_present_to = true && that.isSetTo();
     if (this_present_to || that_present_to) {
       if (!(this_present_to && that_present_to))
         return false;
       if (!this.to.equals(that.to))
-        return false;
-    }
-
-    boolean this_present_context = true && this.isSetContext();
-    boolean that_present_context = true && that.isSetContext();
-    if (this_present_context || that_present_context) {
-      if (!(this_present_context && that_present_context))
-        return false;
-      if (!this.context.equals(that.context))
         return false;
     }
 
@@ -753,45 +351,15 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_ambiguousFrom = true && (isSetAmbiguousFrom());
-    builder.append(present_ambiguousFrom);
-    if (present_ambiguousFrom)
-      builder.append(ambiguousFrom);
-
-    boolean present_ambiguousVia = true && (isSetAmbiguousVia());
-    builder.append(present_ambiguousVia);
-    if (present_ambiguousVia)
-      builder.append(ambiguousVia);
-
-    boolean present_ambiguousTo = true && (isSetAmbiguousTo());
-    builder.append(present_ambiguousTo);
-    if (present_ambiguousTo)
-      builder.append(ambiguousTo);
-
-    boolean present_queryUri = true && (isSetQueryUri());
-    builder.append(present_queryUri);
-    if (present_queryUri)
-      builder.append(queryUri);
-
     boolean present_from = true && (isSetFrom());
     builder.append(present_from);
     if (present_from)
       builder.append(from);
 
-    boolean present_via = true && (isSetVia());
-    builder.append(present_via);
-    if (present_via)
-      builder.append(via);
-
     boolean present_to = true && (isSetTo());
     builder.append(present_to);
     if (present_to)
       builder.append(to);
-
-    boolean present_context = true && (isSetContext());
-    builder.append(present_context);
-    if (present_context)
-      builder.append(context);
 
     boolean present_connections = true && (isSetConnections());
     builder.append(present_connections);
@@ -809,46 +377,6 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
     int lastComparison = 0;
     QueryTripsResult typedOther = (QueryTripsResult)other;
 
-    lastComparison = Boolean.valueOf(isSetAmbiguousFrom()).compareTo(typedOther.isSetAmbiguousFrom());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetAmbiguousFrom()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.ambiguousFrom, typedOther.ambiguousFrom);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetAmbiguousVia()).compareTo(typedOther.isSetAmbiguousVia());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetAmbiguousVia()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.ambiguousVia, typedOther.ambiguousVia);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetAmbiguousTo()).compareTo(typedOther.isSetAmbiguousTo());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetAmbiguousTo()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.ambiguousTo, typedOther.ambiguousTo);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetQueryUri()).compareTo(typedOther.isSetQueryUri());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetQueryUri()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.queryUri, typedOther.queryUri);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     lastComparison = Boolean.valueOf(isSetFrom()).compareTo(typedOther.isSetFrom());
     if (lastComparison != 0) {
       return lastComparison;
@@ -859,32 +387,12 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetVia()).compareTo(typedOther.isSetVia());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetVia()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.via, typedOther.via);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     lastComparison = Boolean.valueOf(isSetTo()).compareTo(typedOther.isSetTo());
     if (lastComparison != 0) {
       return lastComparison;
     }
     if (isSetTo()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.to, typedOther.to);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetContext()).compareTo(typedOther.isSetContext());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetContext()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.context, typedOther.context);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -916,79 +424,10 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
         break;
       }
       switch (field.id) {
-        case 1: // AMBIGUOUS_FROM
-          if (field.type == org.apache.thrift.protocol.TType.LIST) {
-            {
-              org.apache.thrift.protocol.TList _list32 = iprot.readListBegin();
-              this.ambiguousFrom = new ArrayList<TransportStation>(_list32.size);
-              for (int _i33 = 0; _i33 < _list32.size; ++_i33)
-              {
-                TransportStation _elem34; // required
-                _elem34 = new TransportStation();
-                _elem34.read(iprot);
-                this.ambiguousFrom.add(_elem34);
-              }
-              iprot.readListEnd();
-            }
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 2: // AMBIGUOUS_VIA
-          if (field.type == org.apache.thrift.protocol.TType.LIST) {
-            {
-              org.apache.thrift.protocol.TList _list35 = iprot.readListBegin();
-              this.ambiguousVia = new ArrayList<TransportStation>(_list35.size);
-              for (int _i36 = 0; _i36 < _list35.size; ++_i36)
-              {
-                TransportStation _elem37; // required
-                _elem37 = new TransportStation();
-                _elem37.read(iprot);
-                this.ambiguousVia.add(_elem37);
-              }
-              iprot.readListEnd();
-            }
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 3: // AMBIGUOUS_TO
-          if (field.type == org.apache.thrift.protocol.TType.LIST) {
-            {
-              org.apache.thrift.protocol.TList _list38 = iprot.readListBegin();
-              this.ambiguousTo = new ArrayList<TransportStation>(_list38.size);
-              for (int _i39 = 0; _i39 < _list38.size; ++_i39)
-              {
-                TransportStation _elem40; // required
-                _elem40 = new TransportStation();
-                _elem40.read(iprot);
-                this.ambiguousTo.add(_elem40);
-              }
-              iprot.readListEnd();
-            }
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 4: // QUERY_URI
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.queryUri = iprot.readString();
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
         case 5: // FROM
           if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
             this.from = new TransportStation();
             this.from.read(iprot);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 6: // VIA
-          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.via = new TransportStation();
-            this.via.read(iprot);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -1001,24 +440,17 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 8: // CONTEXT
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.context = iprot.readString();
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
         case 9: // CONNECTIONS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list41 = iprot.readListBegin();
-              this.connections = new ArrayList<TransportTrip>(_list41.size);
-              for (int _i42 = 0; _i42 < _list41.size; ++_i42)
+              org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
+              this.connections = new ArrayList<TransportTrip>(_list8.size);
+              for (int _i9 = 0; _i9 < _list8.size; ++_i9)
               {
-                TransportTrip _elem43; // required
-                _elem43 = new TransportTrip();
-                _elem43.read(iprot);
-                this.connections.add(_elem43);
+                TransportTrip _elem10; // required
+                _elem10 = new TransportTrip();
+                _elem10.read(iprot);
+                this.connections.add(_elem10);
               }
               iprot.readListEnd();
             }
@@ -1041,86 +473,23 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.ambiguousFrom != null) {
-      if (isSetAmbiguousFrom()) {
-        oprot.writeFieldBegin(AMBIGUOUS_FROM_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.ambiguousFrom.size()));
-          for (TransportStation _iter44 : this.ambiguousFrom)
-          {
-            _iter44.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
-    }
-    if (this.ambiguousVia != null) {
-      if (isSetAmbiguousVia()) {
-        oprot.writeFieldBegin(AMBIGUOUS_VIA_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.ambiguousVia.size()));
-          for (TransportStation _iter45 : this.ambiguousVia)
-          {
-            _iter45.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
-    }
-    if (this.ambiguousTo != null) {
-      if (isSetAmbiguousTo()) {
-        oprot.writeFieldBegin(AMBIGUOUS_TO_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.ambiguousTo.size()));
-          for (TransportStation _iter46 : this.ambiguousTo)
-          {
-            _iter46.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
-    }
-    if (this.queryUri != null) {
-      if (isSetQueryUri()) {
-        oprot.writeFieldBegin(QUERY_URI_FIELD_DESC);
-        oprot.writeString(this.queryUri);
-        oprot.writeFieldEnd();
-      }
-    }
     if (this.from != null) {
       oprot.writeFieldBegin(FROM_FIELD_DESC);
       this.from.write(oprot);
       oprot.writeFieldEnd();
-    }
-    if (this.via != null) {
-      if (isSetVia()) {
-        oprot.writeFieldBegin(VIA_FIELD_DESC);
-        this.via.write(oprot);
-        oprot.writeFieldEnd();
-      }
     }
     if (this.to != null) {
       oprot.writeFieldBegin(TO_FIELD_DESC);
       this.to.write(oprot);
       oprot.writeFieldEnd();
     }
-    if (this.context != null) {
-      if (isSetContext()) {
-        oprot.writeFieldBegin(CONTEXT_FIELD_DESC);
-        oprot.writeString(this.context);
-        oprot.writeFieldEnd();
-      }
-    }
     if (this.connections != null) {
       oprot.writeFieldBegin(CONNECTIONS_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.connections.size()));
-        for (TransportTrip _iter47 : this.connections)
+        for (TransportTrip _iter11 : this.connections)
         {
-          _iter47.write(oprot);
+          _iter11.write(oprot);
         }
         oprot.writeListEnd();
       }
@@ -1135,46 +504,6 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
     StringBuilder sb = new StringBuilder("QueryTripsResult(");
     boolean first = true;
 
-    if (isSetAmbiguousFrom()) {
-      sb.append("ambiguousFrom:");
-      if (this.ambiguousFrom == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.ambiguousFrom);
-      }
-      first = false;
-    }
-    if (isSetAmbiguousVia()) {
-      if (!first) sb.append(", ");
-      sb.append("ambiguousVia:");
-      if (this.ambiguousVia == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.ambiguousVia);
-      }
-      first = false;
-    }
-    if (isSetAmbiguousTo()) {
-      if (!first) sb.append(", ");
-      sb.append("ambiguousTo:");
-      if (this.ambiguousTo == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.ambiguousTo);
-      }
-      first = false;
-    }
-    if (isSetQueryUri()) {
-      if (!first) sb.append(", ");
-      sb.append("queryUri:");
-      if (this.queryUri == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.queryUri);
-      }
-      first = false;
-    }
-    if (!first) sb.append(", ");
     sb.append("from:");
     if (this.from == null) {
       sb.append("null");
@@ -1182,16 +511,6 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
       sb.append(this.from);
     }
     first = false;
-    if (isSetVia()) {
-      if (!first) sb.append(", ");
-      sb.append("via:");
-      if (this.via == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.via);
-      }
-      first = false;
-    }
     if (!first) sb.append(", ");
     sb.append("to:");
     if (this.to == null) {
@@ -1200,16 +519,6 @@ public class QueryTripsResult implements org.apache.thrift.TBase<QueryTripsResul
       sb.append(this.to);
     }
     first = false;
-    if (isSetContext()) {
-      if (!first) sb.append(", ");
-      sb.append("context:");
-      if (this.context == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.context);
-      }
-      first = false;
-    }
     if (!first) sb.append(", ");
     sb.append("connections:");
     if (this.connections == null) {

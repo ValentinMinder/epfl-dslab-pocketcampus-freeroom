@@ -18,9 +18,7 @@ import java.util.Scanner;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
-import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
-import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
+import org.pocketcampus.platform.server.database.ConnectionManager;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
 
 /**
@@ -50,14 +48,10 @@ public class FetchRoomsDetails {
 
 	public FetchRoomsDetails(String db_url, String username, String passwd,
 			String url_list, String url_indiv) {
-		try {
-			connMgr = new ConnectionManager(db_url, username, passwd);
-			URL_ROOMS_LIST = url_list;
-			URL_INDIVIDUAL_ROOM = url_indiv;
-			this.connDB = null;
-		} catch (ServerException e) {
-			e.printStackTrace();
-		}
+		connMgr = new ConnectionManager(db_url, username, passwd);
+		URL_ROOMS_LIST = url_list;
+		URL_INDIVIDUAL_ROOM = url_indiv;
+		this.connDB = null;
 
 	}
 

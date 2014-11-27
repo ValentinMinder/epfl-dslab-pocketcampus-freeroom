@@ -27,8 +27,8 @@ public class AdminSendRegEmailRequest implements org.apache.thrift.TBase<AdminSe
   private static final org.apache.thrift.protocol.TField TEMPLATE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("templateId", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField SEND_ONLY_TO_FIELD_DESC = new org.apache.thrift.protocol.TField("sendOnlyTo", org.apache.thrift.protocol.TType.LIST, (short)2);
 
-  public String templateId; // required
-  public List<String> sendOnlyTo; // required
+  private String templateId; // required
+  private List<String> sendOnlyTo; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

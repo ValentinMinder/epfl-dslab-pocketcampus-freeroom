@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.freeroom.android;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
+import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 
@@ -33,9 +32,7 @@ public class FreeRoomCopyClipBoard extends FreeRoomAbstractView implements
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
-		// Tracker
-		Tracker.getInstance().trackPageView("freeroom/clipboard");
-
+		
 		Intent intent = getIntent();
 		String action = intent.getAction();
 		String type = intent.getType();
@@ -142,5 +139,10 @@ public class FreeRoomCopyClipBoard extends FreeRoomAbstractView implements
 	@Override
 	public void workingMessageUpdated() {
 		// WE DO NOTHING!
+	}
+
+	@Override
+	protected String screenName() {
+		return "freeroom/clipboard";
 	}
 }

@@ -1,0 +1,855 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+    <head profile="http://www.w3.org/2005/10/profile">
+
+        <title>PocketCampus - The app for EPFL students, staff, and visitors.</title>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        
+        <!-- App Store smart banner -->
+        <meta name="apple-itunes-app" content="app-id=549799535">
+        
+        <!-- Favicon -->
+        <link rel='icon' href='images/shots/icon.ico' type='image/ico' />
+
+        <!-- Style Sheets -->
+        <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen, projection" />
+        <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection" />
+        
+        <!-- Include Scripts -->    
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery.backgroundPosition.js"></script>
+        <script type="text/javascript" src="js/jquery.equalize.js"></script>
+        <script type="text/javascript" src="js/jquery.cycle.js"></script>
+        <script type="text/javascript" src="js/jquery.client.js"></script>
+        <script type="text/javascript" src="js/jquery.pngFix.pack.js"></script>
+        <script type="text/javascript" src="js/custom.js"></script>
+        
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        
+          ga('create', 'UA-22135241-1', 'pocketcampus.org');
+          ga('send', 'pageview');
+        
+        </script>
+        
+    </head>
+
+<body>
+<div id="header_support"></div>
+<div id="container">
+
+    <div id="header">
+    
+        <div id="header-main">
+        
+            <div class="wrapper">
+            
+                <div id="pocketcampus-logo"></div>
+                <!-- <h1 class="logo">PocketCampus Logo</h1> -->
+                
+                <div class="intro">
+                
+                    <div class="pocketcampus_title">PocketCampus EPFL</div>
+            
+                    <div id="slogan_fr" class="slogan">L'app tout-en-un pour les étudiants, collaborateurs et visiteurs de l'EPFL.</div>
+                    <div id="slogan_en" class="slogan">The all-in-one app for EPFL students, staff, and visitors.</div>
+
+                
+                    <div class="stores-block">
+                        <!-- <a href="market://details?id=org.pocketcampus" id="play-store"></a> -->
+                        <a href="http://itunes.apple.com/en/app/epfl/id549799535?l=fr&mt=8" id="app-store"></a>
+                        <a href="https://play.google.com/store/apps/details?id=org.pocketcampus" id="play-store"></a>
+                        <a href="http://windowsphone.com/s?appId=28f8300e-8a84-4e3e-8d68-9a07c5b2a83a" id="windowsphone-store"></a>
+                    </div>
+                
+                </div>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    
+    <div id="mainContent">
+    
+        <div class="wrapper">
+        
+            <div id="content">
+                <div class="new_icon" id='new_icon_windowsphone'></div>
+                <ul id="tabs">
+                    <li data-panel="panel_iphone" class="current" id="panel_iphone_tab">iPhone</li>
+                    <li data-panel="panel_ipad" id="panel_ipad_tab">iPad</li>
+                    <li data-panel="panel_android" id="panel_android_tab">Android</li>
+                    <li data-panel="panel_windowsphone" id="panel_windowsphone_tab">Windows Phone</li>
+                    <li style="cursor:default;" class="disabled">|</li>
+                    <li data-panel="panel_labs" id="panel_labs_tab">Labs</li>
+                    <!-- <li data-panel="panel_contribute" id="panel_contribute_tab">Contribute</li> -->
+                    <li data-panel="panel_about" id="panel_about_tab">About & Contact</li>
+                    <br class="clear" />
+                </ul>
+                
+                <div id="social-icons-top">
+                    <a title="Facebook" href="http://www.facebook.com/pages/PocketCampus-EPFL/188616577853493"><img src="images/social-icons/facebook.png" border="0" /></a>
+                    <a title="Twitter" href="https://twitter.com/PocketCampus"><img src="images/social-icons/twitter.png" border="0" /></a>
+                </div>
+                
+                <a href="javascript:"  id="language-switch"></a>
+                
+                 <!-- IPHONE FEATURES -->
+                <div id="panel_iphone" class="panel">
+                
+                    
+                    <ul class="features">
+                        <li>
+                            <h2 class="menus">Restaurants menus</h2>
+                            <p>There is a multitude of restaurants, cafeterias, and food stands at EPFL, offering a wide variety of dishes. PocketCampus shows all the menus for the day and helps you choose your cafeteria for lunch. Liked your dish ? Don't forget to rate it to help your peers find the best place to go !</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="transport">Transport</h2>
+                            <p>There are more metro stops in your life than just EPFL and home, and managing them is not easy. PocketCampus features a smart transportation system that automatically picks the bus or metro station from your list of stations that is closest to you, so you can just take out your phone and see when you have to hop on the bus to get to any of your destinations.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="isacademia">IS-Academia</h2>
+                            <p>What's my next class, where should I go? PocketCampus can easily tell you that, showing you your schedule and the location of the rooms on the map.</p>
+                        </li>
+                
+                        <li>
+                            <h2 class="map">Map</h2>
+                            <p>As a new student, but even after a few years, the EPFL campus feels like a giant maze. PocketCampus knows all about where each classroom and everyone’s office is and displays them on a detailed map, automatically selecting the right floor.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="print">Print</h2>
+                            <p>Print PDFs at EPFL directly from your iPhone in one tap! Configuring printers belongs to the past.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="directory">Directory</h2>
+                            <p>Looking for someone? You can now find the phone number, office and picture of anyone on campus in instant.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="news">News</h2>
+                            <p>New startups, exciting researches and new nominations: keep an eye on everything that's happening at EPFL from your phone.</p>
+                        </li>
+                
+                        <li>
+                            <h2 class="moodle">Moodle</h2>
+                            <p>Coursework used to mean a heavy backpack. PocketCampus makes your coursework light and digital, reachable in a few clicks. You can log in to Moodle, download today’s lectures slides, and revise them while taking the metro back home.
+                            </p>
+                        </li>
+                        
+                         <li>
+                            <h2 class="camipro">Camipro</h2>
+                            <p>The Camipro card is your EPFL identity card, and one of its uses is to pay for food, coffee, printing, or cookies. If you have enough money. You can use PocketCampus to easily check your Camipro balance. You can even have statistics on your average monthly expenses.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="events">Events</h2>
+                            <p>There is always activity at EPFL !<br>PocketCampus gives you all the information your are looking for upcoming events at EPFL. Conferences, festivals, movies, there is something for everybody.</p>
+                        </li>
+                    </ul>    
+                </div>
+                
+                <!-- IPHONE FEATURES FRENCH -->
+                <div id="panel_iphone_fr" class="panel hide">
+                
+                    <!-- <div class="latest_info">PocketCampus est maintenant optimisé pour l'iPad ! Avec Moodle, Plan, News<br>et Annuaire pour commencer.</div> -->
+                    
+                    <ul class="features">
+                        
+                        <li>
+                            <h2 class="menus">Menus</h2>
+                            <p>Des dizaines de restaurants, caféterias et stands existent à l'EPFL. Il y en a pour tous les goûts ! Pour ne pas se perdre parmis toutes ces possibilités et trouver ce que vous aimez, vous pouvez compter sur PocketCampus, qui vous montrent en plus les notes attribuées à chaque plat par ceux qui les ont déjà testés.</p>
+                        </li>
+                    
+                        <li>
+                            <h2 class="transport">Transports publics</h2>
+                            <p>PocketCampus met à votre disposition un système d’affichage intelligent des horaires. En utilisant votre position, PocketCampus devine d'où vous voulez partir et vous indique en quelques secondes tous les prochains départs vers vos destinations habituelles. Métro, train, bateau, tous les moyens sont bons !</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="isacademia">IS-Academia</h2>
+                            <p>Quel est mon prochain cours, où dois-je aller ? PocketCampus peut facilement répondre à ces question en affichant ton horaire détaillé et la position des salles sur la carte.</p>
+                        </li>
+                
+                        <li>
+                            <h2 class="map">Plan</h2>
+                            <p>En tant que nouvel étudiant, et même après quelques années, le campus de l’EPFL peut se révéler être un véritable labyrinthe. Difficile parfois de trouver la salle que l’on cherche. PocketCampus se révèle très utile dans ce cas en vous affichant la position de la salle en question (ou la personne) sur un plan détaillé du campus. Impossible de se perdre !</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="print">Impression</h2>
+                            <p>Imprimez des PDFs à l'EPFL directement depuis votre iPhone! Oubliez les configurations d'imprimantes, elles appartiennent au passé.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="moodle">Moodle</h2>
+                            <p>Les cours sont traditionnellement synonymes de papiers et de livres, lourds à porter et peu pratique à lire en déplacement. PocketCampus rend le matériel de vos cours léger, numérique, et accessible du bout des doigts. Vous pouvez vous connecter à Moodle, télécharger les slides des cours du jour et les réviser pendant vos trajets.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="directory">Annuaire</h2>
+                            <p>Vous cherchez quelqu'un? Trouvez le numéro de téléphone, le bureau et photo de profil de n'importe qui sur le campus.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="news">News</h2>
+                            <p>Nouvelles startups, nominations récentes ou recherches excitantes: gardez un oeil sur tout ce qui se passe à l'EPFL depuis votre iPhone.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="camipro">Camipro</h2>
+                            <p>La carte Camipro est votre carte d'étudiant à l’EPFL. Vous pouvez l’utiliser pour payer à peu près tout sur le campus : nourriture, boissons, impressions, etc. PocketCampus vous permet de vérifier facilement s’il vous reste assez d'argent sur votre carte. Mais vous pouvez également afficher l’historique de vos dernières transactions, et même des statistiques concernant vos dépenses mensuelles.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="events">Événements</h2>
+                            <p>Ça bouge à l'EPFL, il y a tout le temps de l'activité !<br>PocketCampus vous donne toutes les informations que vous cherchez sur les événements à l'EPFL. Prochaines conférences, festivals, films, il y en a pour tout le monde.</p>
+                        </li>
+                        
+                     </ul>
+                </div>
+                
+                <!-- ANDROID FEATURES -->
+                <div id="panel_android" class="panel hide">
+                    
+                   <ul class="features">                        
+                        <li>
+                            <h2 class="menus">Restaurants Menus</h2>
+                            <p>There is a multitude of restaurants, cafeterias, and food stands at EPFL, offering a wide variety of dishes. PocketCampus shows all the menus for the day and helps you choose your cafeteria for lunch. Don't forget to rate your meal to help your peers !</p>
+                        </li>
+    
+                        <li>
+                            <h2 class="transport">Transport</h2>
+                            <p>There are more metro stops in your life than just EPFL and home, and managing them is not easy. PocketCampus features a smart transportation system that automatically picks the bus or metro station from your list of stations that is closest to you, so you can just take out your phone and see when you have to hop on the bus to get to any of your destinations.</p>
+                        </li>
+                
+                <li>
+                            <h2 class="map">Map</h2>
+                            <p>As a new student, but even after a few years, the EPFL campus feels like a giant maze. PocketCampus knows all about where each classroom and everyone’s office is and displays them on a detailed map, automatically selecting the right floor.</p>
+                        </li>
+                
+                        <li>
+                            <h2 class="moodle">Moodle</h2>
+                            <p>Coursework used to mean a heavy backpack. PocketCampus makes your coursework light and digital, reachable in a few clicks. You can log in to Moodle, download today’s lectures slides, and revise them while taking the metro back home -- even without an Internet connection.
+                            </p>
+                        </li>
+                        
+                        <!--
+<li>
+                            <h2 class="bikes">Bikes</h2>
+                            <p>Do you suddenly feel like cycling home? Or quickly getting down to the Dorigny beach at the end of the day? PocketCampus will let you know where you can pick up or give back a bike from EPFL's bike-sharing system.</p>
+                        </li>
+-->
+                        
+                        <li>
+                            <h2 class="camipro">Camipro</h2>
+                            <p>The Camipro card is your EPFL identity card, and one of its uses is to pay for food, coffee, printing, or cookies. If you have enough money. You can use PocketCampus to easily check your Camipro balance. You can even have statistics on your average monthly expenses.</p>
+                        </li>
+                        
+                         <li>
+                            <h2 class="directory">Directory</h2>
+                            <p>Looking for someone? You can now find the phone number, office and picture of anyone on campus.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="news">News</h2>
+                            <p>New startups, exciting researches and nominations: keep an eye on everything that's happening at EPFL from your phone.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="print">Print</h2>
+                            <p>Print PDFs at EPFL directly from your Android device in one tap! Configuring printers belongs to the past.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="satellite">Satellite</h2>
+                            <p>Want to have a beer with friends? See the current affluence at the famous EPFL bar, and read more about the beer of the month.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="events">Events</h2>
+                            <p>There is always activity at EPFL !<br>PocketCampus gives you all the information your are looking for upcoming events at EPFL. Conferences, festivals, movies, there is something for everybody.</p>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- ANDROID FEATURES FRENCH -->
+                <div id="panel_android_fr" class="panel hide">
+
+                   <ul class="features">                        
+                         
+                        <li>
+                            <h2 class="map">Plan</h2>
+                            <p>En tant que nouvel étudiant, et même après quelques années, le campus de l’EPFL peut se révéler être un véritable labyrinthe. Difficile parfois de trouver la salle que l’on cherche. PocketCampus se révèle très utile dans ce cas en vous affichant la position de la salle en question (ou la personne) sur un plan détaillé du campus. Impossible de se perdre !</p>
+                        </li>
+                
+                        <li>
+                            <h2 class="moodle">Moodle</h2>
+                            <p>Les cours sont traditionnellement synonymes de papiers et de livres, lourds à porter et peu pratique à lire en déplacement. PocketCampus rend le matériel de vos cours léger, numérique, et accessible du bout des doigts. Vous pouvez vous connecter à Moodle, télécharger les slides des cours du jour et les réviser pendant vos trajets, même sans connexion à internet.</p>
+                        </li>
+                        
+                         <li>
+                            <h2 class="camipro">Camipro</h2>
+                            <p>La carte Camipro est votre carte d'étudiant à l’EPFL. Vous pouvez l’utiliser pour payer à peu près tout sur le campus : nourriture, boissons, impressions, etc. PocketCampus vous permet de vérifier facilement s’il vous reste assez d'argent sur votre carte. Mais vous pouvez également afficher l’historique de vos dernières transactions, et même des statistiques concernant vos dépenses mensuelles.</p>
+                        </li>
+                        
+                         <li>
+                            <h2 class="menus">Menus</h2>
+                            <p>Des dizaines de restaurants, caféterias et stands sont ouverts à l'EPFL. Vous pouvez compter sur PocketCampus pour trouver ce que vous aimez, et voir les notes attribuées à chaque plat par vos collègues.</p>
+                        </li>
+                        
+                        <!--
+<li>
+                            <h2 class="bikes">Vélos</h2>
+                            <p>Une soudaine envie de rentrer en vélo? Ou de passer par la plage de Dorigny en rentrant? PocketCampus vous permet de voir où prendre ou déposer un des vélos mis à votre libre disposition par l'EPFL à de nombreuses bornes sur le campus.</p>
+                        </li>
+-->
+                        
+                        <li>
+                            <h2 class="directory">Annuaire</h2>
+                            <p>Vous cherchez quelqu'un? Trouvez le numéro de téléphone, bureau et photo de profil de n'importe qui sur le campus.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="print">Impression</h2>
+                            <p>Imprimez des PDFs à l'EPFL directement depuis votre Android! Oubliez les configurations d'imprimantes, elles appartiennent au passé.</p>
+                        </li>
+            
+                        <li>
+                            <h2 class="news">News</h2>
+                            <p>Nouvelles startups, nominations récentes ou recherches excitantes: gardez un oeil sur tout ce qui se passe à l'EPFL depuis votre téléphone.</p>
+                        </li>           
+                                    
+                        <li>
+                            <h2 class="satellite">Satellite</h2>
+                            <p>Envie d'une bière avec des amis? PocketCampus vous permet de voir l'affluence actuelle du bar fétiche de l'EPFL, ainsi que la bière du mois proposée.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="events">Événements</h2>
+                            <p>Ça bouge à l'EPFL, il y a tout le temps de l'activité !<br>PocketCampus vous donne toutes les informations que vous cherchez sur les événements à l'EPFL. Prochaines conférences, festivals, films, il y en a pour tout le monde.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="transport">Transports publics</h2>
+                            <p>Greffé sur le système des CFF, PocketCampus vous présente en un clin d'oeil les prochains départs vers vos destinations habituelles (à entrer préalablement).</p>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- IPAD FEATURES -->
+                <div id="panel_ipad" class="panel hide">
+                    
+                    <ul class="features">
+                    
+                        <li>
+                            <h2 class="menus">Restaurants menus</h2>
+                            <p>There is a multitude of restaurants, cafeterias, and food stands at EPFL, offering a wide variety of dishes. PocketCampus shows all the menus for the day and helps you choose your cafeteria for lunch. Don't forget to rate your meal to help your peers find the best place to go !</p>
+                        </li>
+                
+                        <li>
+                            <h2 class="moodle">Moodle</h2>
+                            <p>Coursework used to mean a heavy backpack. PocketCampus makes your coursework light and digital, reachable in a few taps. You can log in to Moodle, download all the Moodle documents, and revise them directly on your iPad, benefitting from the large screen.<br><br><br>
+                            </p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="directory">Directory</h2>
+                            <p>Looking for someone? You can now find the phone number, office and picture of anyone on campus in instant.</p>
+                        </li>
+                
+                        <li>
+                            <h2 class="map">Map</h2>
+                            <p>As a new student, but even after a few years, the EPFL campus feels like a giant maze. PocketCampus knows all about where each classroom and everyone’s office is and displays them on a detailed map, automatically selecting the right floor.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="news">News</h2>
+                            <p>New startups, exciting researches and new nominations: keep an eye on everything that's happening at EPFL from your iPad.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="events">Events</h2>
+                            <p>There is always activity at EPFL !<br>PocketCampus gives you all the information your are looking for upcoming events at EPFL. Conferences, festivals, movies, there is something for everybody.</p>
+                        </li>
+                        <li>
+                            <h2 class="camipro">Camipro</h2>
+                            <p>The Camipro card is your EPFL identity card, and one of its uses is to pay for food, coffee, printing, or cookies. If you have enough money. You can use PocketCampus to easily check your Camipro balance. You can even have statistics on your average monthly expenses and get instructions on how to recharge the card.</p>
+                        </li>
+                    </ul>    
+                </div>
+                
+                <!-- IPAD FEATURES FRENCH -->
+                <div id="panel_ipad_fr" class="panel hide">
+                    
+                    <ul class="features">
+                        
+                        <li>
+                            <h2 class="menus">Menus</h2>
+                            <p>Des dizaines de restaurants, caféterias et stands existent à l'EPFL. Il y en a pour tous les goûts ! Pour ne pas se perdre parmis toutes ces possibilités et trouver ce que vous aimez, vous pouvez compter sur PocketCampus, qui vous montrent en plus les notes attribuées à chaque plat par ceux qui les ont déjà testés.</p>
+                        </li>
+                
+                        <li>
+                            <h2 class="moodle">Moodle</h2>
+                            <p>Les cours sont traditionnellement synonymes de papiers et de livres, lourds à porter et peu pratique à lire en déplacement. PocketCampus rend le matériel de vos cours léger, numérique, et accessible du bout des doigts. Vous pouvez vous connecter à Moodle, télécharger les slides que vous voulez et les réviser sur votre iPad.</p>
+                        </li>
+                        
+                        
+                        <li>
+                            <h2 class="map">Plan</h2>
+                            <p>En tant que nouvel étudiant, et même après quelques années, le campus de l’EPFL peut se révéler être un véritable labyrinthe. Difficile parfois de trouver la salle que l’on cherche. PocketCampus se révèle très utile dans ce cas en vous affichant la position de la salle en question (ou la personne) sur un plan détaillé du campus. Impossible de se perdre !</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="directory">Annuaire</h2>
+                            <p>Vous cherchez quelqu'un ? Trouvez le numéro de téléphone, bureau et photo de profil de n'importe qui sur le campus.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="news">News</h2>
+                            <p>Nouvelles startups, nominations récentes ou recherches excitantes: gardez un oeil sur tout ce qui se passe à l'EPFL depuis votre iPad.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="events">Événements</h2>
+                            <p>Ça bouge à l'EPFL, il y a tout le temps de l'activité !<br>PocketCampus vous donne toutes les informations que vous cherchez sur les événements à l'EPFL. Prochaines conférences, festivals, films, il y en a pour tout le monde.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="camipro">Camipro</h2>
+                            <p>La carte Camipro est votre carte d'étudiant à l’EPFL. Vous pouvez l’utiliser pour payer à peu près tout sur le campus : nourriture, boissons, impressions, etc. PocketCampus vous permet de vérifier facilement s’il vous reste assez d'argent sur votre carte. Mais vous pouvez également afficher l’historique de vos dernières transactions, et même des statistiques concernant vos dépenses mensuelles.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="print">Impression</h2>
+                            <p>Imprimez des PDFs à l'EPFL directement depuis votre iPad! Oubliez les configurations d'imprimantes, elles appartiennent au passé.</p>
+                        </li>
+                        
+                     </ul>
+                </div>
+                
+                <!-- WP FEATURES -->
+                <div id="panel_windowsphone" class="panel hide">
+                
+                    
+                    <ul class="features">
+                        <li>
+                            <h2 class="menus">Restaurants menus</h2>
+                            <p>There is a multitude of restaurants, cafeterias, and food stands at EPFL, offering a wide variety of dishes. PocketCampus shows all the menus for the day and helps you choose your cafeteria for lunch. Liked your dished ? Don't forget to rate it to help your peers find the best place to go !</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="transport">Transport</h2>
+                            <p>There are more metro stops in your life than just EPFL and home, and managing them is not easy. PocketCampus features a smart transportation system that automatically picks the bus or metro station from your list of stations that is closest to you, so you can just take out your phone and see when you have to hop on the bus to get to any of your destinations.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="isacademia">IS-Academia</h2>
+                            <p>What's my next class, where should I go? PocketCampus for Windows Phone can easily tell you that, showing you your schedule and the location of the rooms on the map.</p>
+                        </li>
+                
+                        <li>
+                            <h2 class="map">Map</h2>
+                            <p>As a new student, but even after a few years, the EPFL campus feels like a giant maze. PocketCampus knows all about where each classroom and everyone’s office is and displays them on a detailed map, automatically selecting the right floor.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="directory">Directory</h2>
+                            <p>Looking for someone? You can now find the phone number, office and picture of anyone on campus in instant.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="news">News</h2>
+                            <p>New startups, exciting researches and new nominations: keep an eye on everything that's happening at EPFL from your phone.</p>
+                        </li>
+                
+                        <li>
+                            <h2 class="moodle">Moodle</h2>
+                            <p>Coursework used to mean a heavy backpack. PocketCampus makes your coursework light and digital, reachable in a few clicks. You can log in to Moodle, download today’s lectures slides, and revise them while taking the metro back home.
+                            </p>
+                        </li>
+                        
+                         <li>
+                            <h2 class="camipro">Camipro</h2>
+                            <p>The Camipro card is your EPFL identity card, and one of its uses is to pay for food, coffee, printing, or cookies. If you have enough money. You can use PocketCampus to easily check your Camipro balance. You can even have statistics on your average monthly expenses.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="satellite">Satellite</h2>
+                            <p>See all the beers the famous EPFL bar, Satellite, has to offer to have a nice evening with your friends.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="events">Events</h2>
+                            <p>There is always activity at EPFL !<br>PocketCampus gives you all the information your are looking for upcoming events at EPFL. Conferences, festivals, movies, there is something for everybody.</p>
+                        </li>
+                    </ul>    
+                </div>
+                
+                <!-- WP FEATURES FRENCH -->
+                <div id="panel_windowsphone_fr" class="panel hide">
+                
+                    <!-- <div class="latest_info">PocketCampus est maintenant optimisé pour l'iPad ! Avec Moodle, Plan, News<br>et Annuaire pour commencer.</div> -->
+                    
+                    <ul class="features">
+                        
+                        <li>
+                            <h2 class="menus">Menus</h2>
+                            <p>Des dizaines de restaurants, caféterias et stands existent à l'EPFL. Il y en a pour tous les goûts ! Pour ne pas se perdre parmis toutes ces possibilités et trouver ce que vous aimez, vous pouvez compter sur PocketCampus, qui vous montrent en plus les notes attribuées à chaque plat par ceux qui les ont déjà testés.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="transport">Transports publics</h2>
+                            <p>PocketCampus met à votre disposition un système d’affichage intelligent des horaires. En utilisant votre position, PocketCampus devine d'où vous voulez partir et vous indique en quelques secondes tous les prochains départs vers vos destinations habituelles. Métro, train, bateau, tous les moyens sont bons !</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="isacademia">IS-Academia</h2>
+                            <p>Quel est mon prochain cours, où dois-je aller ? PocketCampus pour Windows Phone peut facilement répondre à ces question en affichant ton horaire détaillé et la position des salles sur la carte.</p>
+                        </li>
+                
+                        <li>
+                            <h2 class="map">Plan</h2>
+                            <p>En tant que nouvel étudiant, et même après quelques années, le campus de l’EPFL peut se révéler être un véritable labyrinthe. Difficile parfois de trouver la salle que l’on cherche. PocketCampus se révèle très utile dans ce cas en vous affichant la position de la salle en question (ou la personne) sur un plan détaillé du campus. Impossible de se perdre !</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="moodle">Moodle</h2>
+                            <p>Les cours sont traditionnellement synonymes de papiers et de livres, lourds à porter et peu pratique à lire en déplacement. PocketCampus rend le matériel de vos cours léger, numérique, et accessible du bout des doigts. Vous pouvez vous connecter à Moodle, télécharger les slides des cours du jour et les réviser pendant vos trajets.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="directory">Annuaire</h2>
+                            <p>Vous cherchez quelqu'un? Trouvez le numéro de téléphone, le bureau et photo de profil de n'importe qui sur le campus.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="news">News</h2>
+                            <p>Nouvelles startups, nominations récentes ou recherches excitantes: gardez un oeil sur tout ce qui se passe à l'EPFL depuis votre Windows Phone.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="camipro">Camipro</h2>
+                            <p>La carte Camipro est votre carte d'étudiant à l’EPFL. Vous pouvez l’utiliser pour payer à peu près tout sur le campus : nourriture, boissons, impressions, etc. PocketCampus vous permet de vérifier facilement s’il vous reste assez d'argent sur votre carte. Mais vous pouvez également afficher l’historique de vos dernières transactions, et même des statistiques concernant vos dépenses mensuelles.</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="satellite">Satellite</h2>
+                            <p>Découvre toutes les bières que le fameux bar de l'EPFL a à offrir, et passe un bon moment entre amis !</p>
+                        </li>
+                        
+                        <li>
+                            <h2 class="events">Événements</h2>
+                            <p>Ça bouge à l'EPFL, il y a tout le temps de l'activité !<br>PocketCampus vous donne toutes les informations que vous cherchez sur les événements à l'EPFL. Prochaines conférences, festivals, films, il y en a pour tout le monde.</p>
+                        </li>
+                        
+                     </ul>
+                </div>
+                
+                <!-- LABS -->
+                <div id="panel_labs" class="panel hide">
+                    <p class="top_text">We are always thinking of ways to improve PocketCampus, to make your life easier. Below, you'll find some of our ideas and prototypes. Feel free to try them out and give us feedback.</p>
+                    <br/>
+                    <br/>
+                    <ul class="features">
+                        <li>
+                            <h2 class="freeroom">FreeRoom</h2>
+                            <p>Are you a student in need of a room to study? PocketCampus is here for you. The new <a href="freeroom.html">FreeRoom</a> functionality allows you to see what rooms are accessible when. <a href="freeroom.html">Click here for information on how to get FreeRoom on your Android device</a>.</p>
+                        </li>
+                        <li>
+                            <h2 class="microphone">Microphone</h2>
+                            <p>When you're at a conference, passing around mics is silly, because you waste lots of time. But, you already have a mic with you, your smartphone. We're now experimenting with enabling PocketCampus to act as a microphone. <a href="#">Click here for information on how to get it on your Android device</a> <b>(coming soon)</b>.</p>
+                        </li>
+                        <li>
+                            <h2 class="noqueue">No queue</h2>
+                            <p>Nobody likes queues. At PocketCampus, we're trying to make queues a thing of the past. By using the latest Bluetooth technology, we are able to track how big a queue is, so you can make the best decision. <a href="#">Click here for information on how to get it on your Android device</a> <b>(coming soon)</b>.</p>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- LABS FR -->
+                <div id="panel_labs_fr" class="panel hide">
+                    <p class="top_text">We are always thinking of ways to improve PocketCampus, to make your life easier. Below, you'll find some of our ideas and prototypes. Feel free to try them out and give us feedback.</p>
+                    <br/>
+                    <br/>
+                    <ul class="features">
+                        <li>
+                            <h2 class="freeroom">FreeRoom</h2>
+                            <p>Are you a student in need of a room to study? PocketCampus is here for you. The new <a href="freeroom.html">FreeRoom</a> functionality allows you to see what rooms are accessible when. <a href="freeroom.html">Click here for information on how to get FreeRoom on your Android device</a>.</p>
+                        </li>
+                        <li>
+                            <h2 class="microphone">Microphone</h2>
+                            <p>When you're at a conference, passing around mics is silly, because you waste lots of time. But, you already have a mic with you, your smartphone. We're now experimenting with enabling PocketCampus to act as a microphone. <a href="#">Click here for information on how to get it on your Android device</a> <b>(coming soon)</b>.</p>
+                        </li>
+                        <li>
+                            <h2 class="noqueue">No queue</h2>
+                            <p>Nobody likes queues. At PocketCampus, we're trying to make queues a thing of the past. By using the latest Bluetooth technology, we are able to track how big a queue is, so you can make the best decision. <a href="#">Click here for information on how to get it on your Android device</a> <b>(coming soon)</b>.</p>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <!-- CONTRIBUTE -->
+                <div id="panel_contribute" class="panel hide">
+                    <p class="contribute_header_text">Do you have ideas for features you want to see in PocketCampus ?<br>Join the team and make them become a reality !</p>
+                    <div class="contribute_text">
+                    
+                        <p>PocketCampus is an open-source application, made by students, for students. We are a small team and are mainly working in parallel with our studies. This is why we are always very happy when people are willing to contribute and help improve this wonderful project.</p>
+                        <br>
+                        <p>Do no hesitate to contact us if you have any question. We would be very happy to give you more details about the project.</p>
+                        <br>
+                        <p>You can have a look at the code and explore it on GitHub.<br><br>
+                        <span class="contribute_header_text">PocketCampus GitHub: <a target="_blank" href="https://github.com/PocketCampus/pocketcampus">https://github.com/PocketCampus/pocketcampus</a></span></p>
+                        
+                        <br>
+                        <h2>A few numbers</h2>
+                        <p>PocketCampus has more than 4'500 users, of which 1'600 use it daily.</p>
+                        <br>
+                        <p>The PocketCampus codebase is made out of three parts:
+                        <br><br>
+                        <li>Server</li>
+                        <li>Android app</li>
+                        <li>iOS app</li>
+                        <br>The server is composed of 10'000 lines of codes, mainly written in Java.<br>The Android app is also programmed in Java and contains about 18'000 lines of code.<br>Finally, the iOS app is written in the Objective-C programming language and represents about 20'000 lines of code.
+                        <br>These numbers exclude auto-generated code and third-party libraries. 
+                    
+                    </div>
+                    
+                </div>
+                
+                
+                <!-- CONTRIBUTE FRENCH -->
+                <div id="panel_contribute_fr" class="panel hide">
+
+                    <p class="contribute_header_text">Tu as des idées de fonctionnalités que tu souhaiterais avoir dans PocketCampus ? Rejoins l'équipe et participe à leur réalisation !</p>
+                    <div class="contribute_text">
+                    
+                        <p>PocketCampus est une application open source, créée par étudiants, pour des étudiants. Nous sommes une petite équipe et travaillons principalement sur l'application en parallèle à nos études. Nous sommes ainsi très heureux quand des personnes sont motivées à contribuer au projet.</p>
+                        <br>
+                        <p>N'hésite pas à nous contacter pour toute question. Nous serions heureux de pouvoir te donner plus d'informations sur le projet.</p>
+                        <br>
+                        <p>Tout le code de PocketCampus est disponible sur GitHub.<br><br>
+                        <span class="contribute_header_text">PocketCampus sur GitHub : <a target="_blank" href="https://github.com/PocketCampus/pocketcampus">https://github.com/PocketCampus/pocketcampus</a></span></p>
+                    
+                        <br>
+                        <h2>Quelques chiffres</h2>
+                        <p>PocketCampus a plus de 4'500 utilisateurs, dont plus de 1'600 qui l'utilisent quotidiennement.</p>
+                        <br>
+                        <p>Le code the PocketCampus peut être divisé en trois parties :
+                        <br><br>
+                        <li>Le serveur</li>
+                        <li>L'app Android</li>
+                        <li>L'app iOS</li>
+                        <br>Le serveur est composé de 10'000 lignes de code, principalement écrites en Java.<br>L'app Android est également en Java et contient environ 18'000 lignes de code.<br>Enfin, l'app iOS est écrite dans le language de programmation Objectif-C et représente environ 20'000 lignes de code.
+                        <br><br>Ces chiffres exluent le code auto-généré et les librairies tierces.
+                        
+                        
+                    </div>
+                
+                </div>
+                
+                <!-- ABOUT -->
+                <div id="panel_about" class="panel hide">
+                    <p class="top_text">
+                        PocketCampus EPFL is brought to you by PocketCampus.Org.
+                    </p>
+                    <br><br>
+                    <ul class="features">
+                    <li style="width: 500px; height: 60px;">
+                        <h2 class="contact">Contact</h2>
+                        <p>Support: <a href="mailto:1234@epfl.ch">1234@epfl.ch</a></p>
+                        <p>Contact the team: <a href="mailto:team@pocketcampus.org">team@pocketcampus.org</a></p>
+                    </li>
+                    
+                    <br>
+                    
+                    <li>
+                         <h2 class="globe">PocketCampus.Org</h2>
+                         <p>
+                             <b>Advisor</b>
+                             <br><a href="mailto:george.candea@epfl.ch">Prof. George Candea</a>
+                         </p><br>
+                         
+                         <p>
+                             <b>Members</b>
+                             <br><a href="mailto:silviu@pocketcampus.org">Silviu Andrica</a>
+                             <br><a href="mailto:amer@pocketcampus.org">Amer Chamseddine</a>
+                             <br><a href="mailto:loic@pocketcampus.org">Loïc Gardiol</a>
+                             <br><a href="mailto:solal@pocketcampus.org">Solal Pirelli</a>
+                         </p><br>
+                     </li>
+                     
+                     <li>
+                        <br><br>
+                        <p>
+                             <b>"Alumni"</b>
+                             <br>Florian Laurent
+                             <br>Élodie Nilane Triponez
+                             <br>Gianluca Dalmas
+                             <br>Guillaume Ulrich
+                             <br>Jeremiah Menétrey
+                             <br>Johan Leuenberger
+                             <br>Jonas Schmid
+                             <br>Oriane Rodriguez
+                             <br>Pascal Scheiben
+                             <br>Tarek Benoudina
+                         </p><br>
+                     </li>
+                        
+                    </ul>    
+                </div>
+                
+                <!-- ABOUT FRENCH -->
+                <div id="panel_about_fr" class="panel hide">
+                    <p class="top_text">
+                        PocketCampus EPFL est produit par PocketCampus.Org.
+                    </p>
+                    <br><br>
+                    <ul class="features">
+                    <li style="width: 500px; height: 60px;">
+                        <h2 class="contact">Contact</h2>
+                        <p>Support: <a href="mailto:1234@epfl.ch">1234@epfl.ch</a></p>
+                        <p>Contacter l'équipe: <a href="mailto:team@pocketcampus.org">team@pocketcampus.org</a></p>
+                    </li>
+                    
+                    <li>
+                         <h2 class="globe">PocketCampus.Org</h2>
+                         <p>
+                             <b>Conseiller</b>
+                             <br><a href="mailto:george.candea@epfl.ch">Prof. George Candea</a>
+                         </p><br>
+                         
+                         <p>
+                             <b>Membres</b>
+                             <br><a href="mailto:silviu@pocketcampus.org">Silviu Andrica</a>
+                             <br><a href="mailto:amer@pocketcampus.org">Amer Chamseddine</a>
+                             <br><a href="mailto:loic@pocketcampus.org">Loïc Gardiol</a>
+                             <br><a href="mailto:solal@pocketcampus.org">Solal Pirelli</a>
+                         </p><br>
+                     </li>
+                     
+                     <li>
+                        <br><br>
+                        <p>
+                             <b>"Alumni"</b>
+                             <br>Florian Laurent
+                             <br>Élodie Nilane Triponez
+                             <br>Gianluca Dalmas
+                             <br>Guillaume Ulrich
+                             <br>Jeremiah Menétrey
+                             <br>Johan Leuenberger
+                             <br>Jonas Schmid
+                             <br>Oriane Rodriguez
+                             <br>Pascal Scheiben
+                             <br>Tarek Benoudina
+                         </p><br>
+                     </li>
+                        
+                    </ul>   
+                </div>
+                
+        <div id="footer">
+                
+                    <div id="footer-right">
+                    
+                        <div id="social-icons">
+                            <a href="javascript:"  id="language-switch"></a>
+                <a title="Facebook" href="http://www.facebook.com/pages/PocketCampus-EPFL/188616577853493"><img src="images/social-icons/facebook.png" border="0" /></a>
+<a title="Twitter" href="https://twitter.com/PocketCampus"><img src="images/social-icons/twitter.png" border="0" /></a>
+
+                        </div>
+                    
+                    </div>
+                    
+                    <p class="footer-left">
+            Copyright © 2014 PocketCampus.Org
+<br />
+            <br />
+                    
+                    </p>
+                    
+                    <br class="clear" />
+                </div>
+
+            </div>
+
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="YJ6PXCQN94Q3Q">
+<div class="">
+    <div class="outer-center">
+        <div class="inner-center">
+<input type="image" src="https://www.paypalobjects.com/fr_FR/CH/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - la solution de paiement en ligne la plus simple et la plus sécurisée !">
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+
+            <div id="android">
+                <ul class="slides" id="slides-android">
+                    <li><img class="screenshot-android" src="images/shots/android/Nexus_home.png" alt="Screenshot" border="0"/></li>
+                    <li><img class="screenshot-android" src="images/shots/android/Nexus_food.png" alt="Screenshot" border="0"/></li>
+                    <li><img class="screenshot-android" src="images/shots/android/Nexus_satellite.png" alt="Screenshot" border="0"/></li>
+                    <li><img class="screenshot-android" src="images/shots/android/Nexus_news.png" alt="Screenshot" border="0"/></li>
+                    <li><img class="screenshot-android" src="images/shots/android/Nexus_directory.png" alt="Screenshot" border="0"/></li>
+                    <li><img class="screenshot-android" src="images/shots/android/Nexus_map.png" alt="Screenshot" border="0"/></li>
+
+                </ul>
+            </div>
+            
+            <div id="iphone">
+                <ul class="slides" id="slides-iphone">            
+                    <li><img src="images/shots/iphone2_0/home.png" class="screenshot-iphone" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/iphone2_0/food.png" class="screenshot-iphone" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/iphone2_0/map.png" class="screenshot-iphone" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/iphone2_0/isacademia.png" class="screenshot-iphone" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/iphone2_0/transport.png" class="screenshot-iphone" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/iphone2_0/camipro.png" class="screenshot-iphone" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/iphone2_0/directory.png" class="screenshot-iphone" alt="Screenshot" border="0" /></li>
+                </ul>
+            </div>
+            
+            <div id="ipad">
+                <ul class="slides" id="slides-ipad">            
+                    <li><img src="images/shots/ipad2_0/home.png" class="screenshot-ipad" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/ipad2_0/map.png" class="screenshot-ipad" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/ipad2_0/moodle.png" class="screenshot-ipad" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/ipad2_0/camipro.png" class="screenshot-ipad" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/ipad2_0/news.png" class="screenshot-ipad" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/ipad2_0/directory.png" class="screenshot-ipad" alt="Screenshot" border="0" /></li>
+                </ul>
+            </div>
+            
+            <div id="windowsphone">
+                <ul class="slides" id="slides-windowsphone">            
+                    <li><img src="images/shots/windowsphone/food.png" class="screenshot-windowsphone" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/windowsphone/isacademia.png" class="screenshot-windowsphone" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/windowsphone/moodle.png" class="screenshot-windowsphone" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/windowsphone/map.png" class="screenshot-windowsphone" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/windowsphone/transport.png" class="screenshot-windowsphone" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/windowsphone/camipro.png" class="screenshot-windowsphone" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/windowsphone/events.png" class="screenshot-windowsphone" alt="Screenshot" border="0" /></li>
+                    <li><img src="images/shots/windowsphone/directory.png" class="screenshot-windowsphone" alt="Screenshot" border="0" /></li>
+                </ul>
+            </div>
+            
+        </div>
+        
+    </div>
+    
+</div>
+
+</body>
+</html>

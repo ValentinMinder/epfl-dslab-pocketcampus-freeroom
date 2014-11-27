@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.blank.android;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.blank.android.iface.IBlankController;
 import org.pocketcampus.plugin.blank.android.BlankModel;
 import org.pocketcampus.plugin.blank.shared.BlankService.Client;

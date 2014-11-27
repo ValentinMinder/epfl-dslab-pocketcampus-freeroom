@@ -4,6 +4,7 @@
 
 using PocketCampus.Common;
 using PocketCampus.Transport.Resources;
+using PocketCampus.Transport.Services;
 using PocketCampus.Transport.ViewModels;
 using ThinMvvm;
 using ThinMvvm.WindowsPhone;

@@ -25,17 +25,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 04.07.12.
-
 
 #import "PCUtils.h"
 
 #import "AFNetworking.h"
 
 #import <CoreLocation/CoreLocation.h>
+
+NSString* const kPCUtilsExtensionLink = @"PCUtilsExtensionLink";
+NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 
 @implementation PCUtils
 
@@ -45,6 +44,20 @@
 
 + (BOOL)is4inchDevice {
     if ([UIScreen mainScreen].bounds.size.height == 568) {
+        return YES;
+    }
+    return NO;
+}
+
++ (BOOL)is4_7inchDevice {
+    if ([UIScreen mainScreen].bounds.size.height == 667) {
+        return YES;
+    }
+    return NO;
+}
+
++ (BOOL)is5_5inchDevice {
+    if ([UIScreen mainScreen].bounds.size.height == 736) {
         return YES;
     }
     return NO;
@@ -60,6 +73,10 @@
 
 + (BOOL)isOSVersionSmallerThan:(float)version {
     return [[UIDevice currentDevice].systemVersion floatValue] < version;
+}
+
++ (BOOL)isOSVersionGreaterThanOrEqualTo:(float)version {
+    return [[UIDevice currentDevice].systemVersion floatValue] >= version;
 }
 
 + (float)OSVersion {
@@ -108,6 +125,7 @@
     CGFloat topBar = [viewController prefersStatusBarHidden] ? 0.0 : 20.0;
     CGFloat top = viewController.navigationController ? topBar + viewController.navigationController.navigationBar.frame.size.height : topBar;
     CGFloat bottom = viewController.tabBarController ? viewController.tabBarController.tabBarController.tabBar.frame.size.height : 0.0;
+    bottom += viewController.navigationController.toolbarHidden ? 0.0 : viewController.navigationController.toolbar.frame.size.height;
     return UIEdgeInsetsMake(top, 0, bottom, 0);
 }
 
@@ -148,15 +166,21 @@
 }
 
 + (void)showUnknownErrorAlertTryRefresh:(BOOL)tryRefresh {
+#ifndef TARGET_IS_EXTENSION
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:tryRefresh ? NSLocalizedStringFromTable(@"UnknownErrorTryRefresh", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"UnknownError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
 }
 
 + (void)showServerErrorAlert {
+#ifndef TARGET_IS_EXTENSION
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
 }
 
 + (void)showConnectionToServerTimedOutAlert {
+#ifndef TARGET_IS_EXTENSION
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
 }
 
 + (NSDictionary*)urlStringParameters:(NSString*)urlString {
@@ -174,11 +198,13 @@
             NSArray* pairComponents = [keyValuePair componentsSeparatedByString:@"="];
             NSString* key = pairComponents[0];
             NSString* value = pairComponents[1];
-            [queryStringDictionary setObject:value forKey:key];
+            value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // convert HTML entities
+            value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "]; //sometimes + are used for spaces in URLs
+            queryStringDictionary[key] = value;
         }
     }
     @catch (NSException *exception) {
-        CLSNSLog(@"!! ERROR: wrong URL format");
+        return nil;
     }
     return  [queryStringDictionary copy]; //non-mutable copy
 }
@@ -219,6 +245,51 @@
     });
 }
 
++ (UIImage*)iconForFileExtension:(NSString*)extension {
+    if (extension == kPCUtilsExtensionFolder) {
+        return [UIImage imageNamed:@"FolderIcon"];
+    }
+    if (extension == kPCUtilsExtensionLink) {
+        return [UIImage imageNamed:@"LinkIcon"];
+    }
+    static NSCache* cachedIconForExtension;
+    static NSString* const kExtensionForGenericFile = @"qwertzuiop"; //this exentsion does not exist, thus a generic file icon will be generated
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        cachedIconForExtension = [NSCache new];
+    });
+    if (!extension) {
+        extension = kExtensionForGenericFile;
+    }
+    UIImage* cachedIcon = cachedIconForExtension[extension];
+    if (cachedIcon) {
+        return cachedIcon;
+    }
+    
+    // This is a trick, UIDocumentInteractionController does not actually need
+    // to have the file downloaded to have the icon, it just looks at the extension.
+    NSString* fakePath = [NSString stringWithFormat:@"sample.%@", extension];
+    UIDocumentInteractionController* controller = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:fakePath]];
+    UIImage* systemImage = [controller.icons lastObject]; //take biggest as source, see doc.
+    if (!systemImage) {
+        // should not happen, doc says controller.icons ALWAYS contain an image
+        return nil;
+    }
+    
+    CGFloat newWidth = ceilf(systemImage.size.width * 0.89);
+    CGFloat newHeight = ceilf(systemImage.size.height * 0.89);
+    UIImage* smallerSystemImage = [systemImage imageScaledToSize:CGSizeMake(newWidth, newHeight) applyDeviceScreenMultiplyingFactor:NO];
+    
+    UIGraphicsBeginImageContextWithOptions(systemImage.size, NO, systemImage.scale);
+    CGFloat x = (systemImage.size.width - newWidth) / 2.0;
+    CGFloat y = (systemImage.size.height - newHeight) / 2.0;
+    [smallerSystemImage drawAtPoint:CGPointMake(x, y)];
+    UIImage* finalImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    cachedIconForExtension[extension] = finalImage ?: systemImage;
+    return finalImage ?: systemImage;
+}
+
 + (BOOL)hasDeviceInternetConnection {
     AFNetworkReachabilityManager* manager = [AFNetworkReachabilityManager sharedManager];
     if (manager.networkReachabilityStatus == AFNetworkReachabilityStatusUnknown) {
@@ -228,7 +299,16 @@
 }
 
 + (BOOL)hasAppAccessToLocation {
-    return ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized);
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    if ([PCUtils isOSVersionSmallerThan:8.0]) {
+#ifndef TARGET_IS_EXTENSION
+        return (status == kCLAuthorizationStatusAuthorized || status == kCLAuthorizationStatusNotDetermined);
+#else
+        return NO;
+#endif
+    } else {
+        return (status == kCLAuthorizationStatusAuthorizedAlways || status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusNotDetermined);
+    }
 }
 
 + (void)throwExceptionIfObject:(id)object notKindOfClass:(Class)class; {

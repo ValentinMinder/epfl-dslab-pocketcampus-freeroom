@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.food.server;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
-
 import java.sql.*;
 import java.text.Normalizer;
 import java.util.HashMap;
@@ -12,8 +10,8 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
-import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
-import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.food.shared.*;
 
 /**
@@ -34,20 +32,17 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	private final Days _maxVotingDaysInPast;
 
 	public RatingDatabaseImpl(Days maxVotingDaysInPast) {
-		this(PC_SRV_CONFIG.getString("DB_URL"), PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"), maxVotingDaysInPast);
+		this(PocketCampusServer.CONFIG.getString("DB_URL"), PocketCampusServer.CONFIG.getString("DB_USERNAME"), 
+				PocketCampusServer.CONFIG.getString("DB_PASSWORD"), maxVotingDaysInPast);
 	}
 
 	public RatingDatabaseImpl(String databaseUrl, String userName, String password, Days maxVotingDaysInPast) {
-		try {
-			_connectionManager = new ConnectionManager(databaseUrl, userName, password);
-			_maxVotingDaysInPast = maxVotingDaysInPast;
-		} catch (ServerException e) {
-			throw new RuntimeException(e);
-		}
+		_connectionManager = new ConnectionManager(databaseUrl, userName, password);
+		_maxVotingDaysInPast = maxVotingDaysInPast;
 	}
 
 	@Override
-	public void insertMenu(List<EpflRestaurant> menu, LocalDate date, MealTime time) throws Exception {
+	public void insertMenu(List<EpflRestaurant> menu, LocalDate date, MealTime time) throws SQLException {
 		Connection connection = _connectionManager.getConnection();
 
 		PreparedStatement restaurantStatement = null;
@@ -93,7 +88,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	}
 
 	@Override
-	public SubmitStatus vote(String deviceId, long mealId, double rating) throws Exception {
+	public SubmitStatus vote(String deviceId, long mealId, double rating) throws SQLException {
 		Connection connection = _connectionManager.getConnection();
 
 		LocalDate date;
@@ -164,7 +159,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	}
 
 	@Override
-	public void setRatings(List<EpflRestaurant> menu) throws Exception {
+	public void setRatings(List<EpflRestaurant> menu) throws SQLException {
 		Connection connection = _connectionManager.getConnection();
 
 		for (EpflRestaurant restaurant : menu) {
@@ -228,7 +223,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 					}
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

@@ -1,5 +1,4 @@
 namespace java org.pocketcampus.plugin.isacademia.shared
-namespace csharp org.pocketcampus.plugin.isacademia.shared
 
 /**
 
@@ -27,7 +26,7 @@ LIP_EXP Exposé
 
 typedef i64 timestamp
 
-enum StudyPeriodType {
+enum StudyPeriodType { // WARNING do not change the names of these, otherwise the Android app breaks
 	LECTURE,
 	EXERCISES,
 	LAB,

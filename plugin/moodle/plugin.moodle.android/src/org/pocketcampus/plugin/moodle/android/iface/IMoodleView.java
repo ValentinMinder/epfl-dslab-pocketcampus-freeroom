@@ -2,7 +2,7 @@ package org.pocketcampus.plugin.moodle.android.iface;
 
 import java.io.File;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
+import org.pocketcampus.platform.android.core.IView;
 
 /**
  * IMoodleView
@@ -46,4 +46,9 @@ public interface IMoodleView extends IView {
 	void authenticationFailed();
 	void userCancelledAuthentication();
 	
+	/**
+	 * Trigger a display update.
+	 * called from the dialog (after user deletes a file)
+	 */
+	void updateDisplay();
 }

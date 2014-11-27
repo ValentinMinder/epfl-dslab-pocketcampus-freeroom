@@ -1,14 +1,16 @@
 package org.pocketcampus.plugin.directory.android;
 
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
-import org.pocketcampus.android.platform.sdk.ui.adapter.MultiListAdapter;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
-import org.pocketcampus.android.platform.sdk.utils.Preparated;
-import org.pocketcampus.android.platform.sdk.utils.Preparator;
+import org.pocketcampus.platform.android.core.PluginController;
+import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.ui.adapter.MultiListAdapter;
+import org.pocketcampus.platform.android.ui.layout.StandardLayout;
+import org.pocketcampus.platform.android.utils.Preparated;
+import org.pocketcampus.platform.android.utils.Preparator;
 import org.pocketcampus.plugin.directory.R;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
 import org.pocketcampus.plugin.directory.shared.Person;
@@ -18,12 +20,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -33,7 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 /**
  * The Main View of the Directory plugin.
@@ -50,6 +54,10 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 	private DirectoryController mController;
 	private DirectoryModel mModel;
 	
+	final long REFRESH_DELAY = 500;	
+	private Timer refreshTimer;
+	private long lastKeyPress = 0;
+	private boolean stopRefresh;
 	
 	ListView listView;
 	StandardLayout msgView;
@@ -101,7 +109,7 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			}
 			public void afterTextChanged(Editable s) {
-				mController.search(DirectoryMainView.this, s.toString());
+				lastKeyPress = System.currentTimeMillis();
 			}
 		});
 		
@@ -109,9 +117,39 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 		clearButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				searchBar.setText("");
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.showSoftInput(searchBar, InputMethodManager.SHOW_FORCED);
 			}
 		});
 		
+	}
+	
+	private void performSearchIfNeeded() {
+		String s = ((EditText) findViewById(R.id.directory_searchinput)).getText().toString();
+		if(mController.search(this, s)) {
+			trackEvent("Search", s);
+		}
+	}
+	
+	private TimerTask getRefreshTask() {
+		return new TimerTask() {
+			public void run() {
+				if(stopRefresh)
+					return;
+				long interval = System.currentTimeMillis() - lastKeyPress;
+				refreshTimer = new Timer();
+				if(interval > REFRESH_DELAY) {
+					runOnUiThread(new Runnable() {
+						public void run() {
+							performSearchIfNeeded();
+						}
+					});
+					refreshTimer.schedule(getRefreshTask(), REFRESH_DELAY);
+				} else {
+					refreshTimer.schedule(getRefreshTask(), REFRESH_DELAY - interval);
+				}
+			}
+		};
 	}
 	
 
@@ -145,13 +183,23 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		
+		stopRefresh = false;
+		refreshTimer = new Timer();
+		refreshTimer.schedule(getRefreshTask(), REFRESH_DELAY);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
+		
+		stopRefresh = true;
 	}
 	
+	@Override
+	protected String screenName() {
+		return "/directory";
+	}
 	
 	
 	@Override
@@ -181,7 +229,7 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 				case R.id.directory_person_name:
 					return e.getFirstName() + " " + e.getLastName();
 				case R.id.directory_person_details:
-					return e.getOrganisationalUnits().iterator().next();
+					return TextUtils.join(", ", e.getOrganisationalUnits());
 				case R.id.directory_person_picture:
 					return e.getPictureUrl();
 				default:
@@ -223,6 +271,7 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 							builder.scheme("pocketcampus").authority("directory.plugin.pocketcampus.org").appendPath("search").appendQueryParameter("q", ((Person) obj).getSciper());
 							Intent i = new Intent(Intent.ACTION_VIEW, builder.build());
 							startActivity(i);
+							trackEvent("ViewPerson", ((Person) obj).getFirstName() + " " + ((Person) obj).getLastName());
 						}
 					} else {
 						Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
@@ -234,9 +283,7 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 				scrollState.restore(listView);*/
 			
 		}
-		
-		EditText s = (EditText) findViewById(R.id.directory_searchinput);
-		mController.search(this, s.getText().toString());
+
 		
 	}
 	

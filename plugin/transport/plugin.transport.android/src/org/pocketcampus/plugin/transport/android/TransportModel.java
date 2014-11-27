@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.android.core.IView;
+import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
 import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
@@ -92,7 +92,7 @@ public class TransportModel extends PluginModel implements ITransportModel {
 							i++;
 							// Update displayed stations
 							if (c.getTo().getName().equals("Ecublens VD, EPFL")) {
-								String fromName = c.getParts().get(0).departure.getName();
+								String fromName = c.getParts().get(0).getDeparture().getName();
 								
 								if (mFavoriteStations
 										.get(fromName) == null) {
@@ -104,7 +104,7 @@ public class TransportModel extends PluginModel implements ITransportModel {
 								
 								mFavoriteStations.get(fromName).add(c);
 							} else {
-								String toName = c.getParts().get(c.getParts().size()-1).arrival.getName();
+								String toName = c.getParts().get(c.getParts().size()-1).getArrival().getName();
 								
 								if (mFavoriteStations.get(toName) == null) {
 									mFavoriteStations.put(toName,

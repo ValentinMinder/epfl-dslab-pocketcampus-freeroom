@@ -30,34 +30,117 @@
 
 #import "MoodleModelAdditions.h"
 
+#import "MoodleService.h"
+
 #import <objc/runtime.h>
 
 NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey = @"SaveDocsPositionGeneralSettingBool";
-NSString* const kMoodleSavePositionResourceSettingBoolKey = @"SavePositionResourceSettingBool";
 
-@implementation MoodleResource (Comparison)
+@implementation MoodleCourseSection2 (Additions)
 
-- (NSString*)filename {
-    static NSString* key;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        key = NSStringFromSelector(_cmd);
-    });
-    id value = objc_getAssociatedObject(self, (__bridge const void *)(key));
-    if (!value) {
-        //Trick to remove url query paramters if any (we don't want them for the filename)
-        //http://stackoverflow.com/a/4272070/1423774
-        NSURL* url = [NSURL URLWithString:self.iUrl];
-        url = [[NSURL alloc] initWithScheme:url.scheme host:url.host path:url.path];
-        value = [[[url absoluteString] pathComponents] lastObject];
-        value = [value stringByRemovingPercentEncoding];
-        objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (BOOL)isCurrent {
+    if (self.title) {
+        return NO;
     }
-    return value;
+    NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
+    if (currentTimestamp < self.startDate/1000.0 || currentTimestamp > self.endDate/1000.0) {
+        return NO;
+    }
+    return YES;
 }
 
-- (NSString*)fileExtension {
-    return [self.filename pathExtension];
+- (NSString*)titleOrDateRangeString {
+    if (self.title) {
+        return self.title;
+    }
+    NSString* string = nil;
+    static NSDateFormatter* formatter = nil;
+    static NSString* startDateFormat = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        formatter = [NSDateFormatter new];
+        formatter.locale = [NSLocale currentLocale];
+        formatter.timeZone = [NSTimeZone timeZoneWithName:@"Europe/Zurich"];
+        formatter.dateStyle = NSDateFormatterMediumStyle;
+        formatter.timeStyle = NSDateFormatterNoStyle;
+        startDateFormat = [NSDateFormatter dateFormatFromTemplate:@"MMMd" options:0 locale:[NSLocale currentLocale]];
+    });
+    
+    formatter.dateFormat = startDateFormat;
+    NSString* startDateString = self.startDate != 0 ? [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.startDate/1000.0]] : nil;
+    formatter.dateFormat = nil;
+    NSString* endDateString = self.endDate != 0 ? [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.endDate/1000.0]] : nil;
+    
+    if (startDateString && endDateString) {
+        string = [NSString stringWithFormat:@"%@ - %@", startDateString, endDateString];
+    } else if (startDateString) {
+        string = startDateString;
+    } else if (endDateString) {
+        string = endDateString;
+    }
+    return string;
+}
+
+- (NSString*)webViewReadyDetails {
+    if (!self.details) {
+        return nil;
+    }
+    static NSString* const kStartingTags = @"<html><style type=\"text/css\">body {font-family: \"Helvetica Neue\";}</style><body>";
+    static NSString* const kEndingTags = @"</body></html>";
+    return [NSString stringWithFormat:@"%@%@%@", kStartingTags, self.details, kEndingTags];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    MoodleCourseSection2* newInstance = [[[self class] allocWithZone:zone] init];
+    newInstance.resources = self.resources;
+    newInstance.title = self.title;
+    newInstance.startDate = self.startDate;
+    newInstance.endDate = self.endDate;
+    newInstance.details = self.details;
+    return newInstance;
+}
+
+@end
+
+@implementation MoodleResource2 (Additions)
+
+- (id)item {
+    if (self.file) {
+        return self.file;
+    }
+    if (self.folder) {
+        return self.folder;
+    }
+    if (self.url) {
+        return self.url;
+    }
+    return nil;
+}
+
+- (NSString*)name {
+    if (self.file) {
+        return self.file.name;
+    }
+    if (self.folder) {
+        return self.folder.name;
+    }
+    if (self.url) {
+        return self.url.name;
+    }
+    return nil;
+}
+
+- (UIImage*)systemIcon {
+    if (self.file) {
+        return self.file.systemIcon;
+    }
+    if (self.folder) {
+        return self.folder.systemIcon;
+    }
+    if (self.url) {
+        return self.url.systemIcon;
+    }
+    return nil;
 }
 
 - (BOOL)isEqual:(id)object {
@@ -70,63 +153,186 @@ NSString* const kMoodleSavePositionResourceSettingBoolKey = @"SavePositionResour
     return [self isEqualToMoodleResource:object];
 }
 
-- (BOOL)isEqualToMoodleResource:(MoodleResource*)moodleResource {
-    return [self.iUrl isEqualToString:moodleResource.iUrl];
+- (BOOL)isEqualToMoodleResource:(MoodleResource2*)moodleResource {
+    return [self.item isEqual:moodleResource.item];
 }
 
 - (NSUInteger)hash {
     NSUInteger hash = 0;
-    hash += [self.iUrl hash];
+    hash += [self.item hash];
     return hash;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    MoodleResource* newInstance = [[[self class] allocWithZone:zone] init];
-    newInstance.iName = self.iName;
-    newInstance.iUrl = self.iUrl;
+    MoodleResource2* newInstance = [[[self class] allocWithZone:zone] init];
+    newInstance.file = self.file;
+    newInstance.folder = self.folder;
+    newInstance.url = self.url;
     return newInstance;
 }
 
-+ (NSDictionary*)defaultsDictionaryForMoodleResource:(MoodleResource*)resource {
-    NSUserDefaults* moodleDefaults = [PCPersistenceManager defaultsForPluginName:@"moodle"];
-    NSMutableDictionary* resourceDic = [[moodleDefaults objectForKey:[self keyForDefaultsDictionaryForMoodleResource:resource]] mutableCopy];
+
+@end
+
+@implementation MoodleFile2 (Additions)
+
+- (NSString*)filename {
+    if (!self.url) {
+        return nil;
+    }
+    static NSString* key;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        key = NSStringFromSelector(_cmd);
+    });
+    id value = objc_getAssociatedObject(self, (__bridge const void *)(key));
+    if (!value) {
+        //Trick to remove url query paramters if any (we don't want them for the filename)
+        //http://stackoverflow.com/a/4272070/1423774
+        NSURL* url = [NSURL URLWithString:self.url];
+        url = [[NSURL alloc] initWithScheme:url.scheme host:url.host path:url.path];
+        value = [[[url absoluteString] pathComponents] lastObject];
+        value = [value stringByRemovingPercentEncoding];
+        objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return value;
+}
+
+- (NSString*)fileExtension {
+    return [self.filename pathExtension];
+}
+
+- (UIImage*)systemIcon {
+    return [PCUtils iconForFileExtension:self.extension];
+}
+
+- (NSURL*)iconURLForMinimalSquareSideLength:(CGFloat)length {
+    if (!self.icon) {
+        return nil;
+    }
+    if (length < 24.0) {
+        length = 24.0;
+    } else if (length < 32.0) {
+        length = 32.0;
+    } else if (length < 64.0) {
+        length = 64.0;
+    } else if (length < 128.0) {
+        length = 128.0;
+    } else if (length < 256.0) {
+        length = 256.0;
+    } else {
+        length = 256.0;
+    }
+    NSString* urlString = [self.icon stringByReplacingOccurrencesOfString:@"{size}" withString:[NSString stringWithFormat:@"%d", (int)length]];
+    return [NSURL URLWithString:urlString];
+}
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+    if (![object isKindOfClass:[self class]]) {
+        return NO;
+    }
+    return [self isEqualToMoodleFile:object];
+}
+
+- (BOOL)isEqualToMoodleFile:(MoodleFile2 *)otherFile {
+    return [self.url isEqual:otherFile.url];
+}
+
+- (NSUInteger)hash {
+    NSUInteger hash = 0;
+    hash += [self.url hash];
+    return hash;
+}
+
+#pragma mark MoodleItemDefaults protocol
+
++ (NSDictionary*)defaultsDictionaryForMoodleItem:(id)item {
+    [PCUtils throwExceptionIfObject:item notKindOfClass:[MoodleFile2 class]];
+    MoodleFile2* file = (MoodleFile2*)item;
+    NSUserDefaults* moodleDefaults = [PCPersistenceManager userDefaultsForPluginName:@"moodle"];
+    NSMutableDictionary* resourceDic = [[moodleDefaults objectForKey:[self keyForDefaultsDictionaryForMoodleFile:file]] mutableCopy];
     if (!resourceDic) {
         resourceDic = [NSMutableDictionary dictionary];
     }
-    
-    //filling with default values
-    if (!resourceDic[kMoodleSavePositionResourceSettingBoolKey]) {
-        resourceDic[kMoodleSavePositionResourceSettingBoolKey] = @YES;
-    }
-    
     return resourceDic;
 }
 
-+ (void)setDefaultsDictionary:(NSDictionary*)defaultsDic forMoodleResource:(MoodleResource*)resource {
-    NSUserDefaults* moodleDefaults = [PCPersistenceManager defaultsForPluginName:@"moodle"];
-    [moodleDefaults setObject:defaultsDic forKey:[self keyForDefaultsDictionaryForMoodleResource:resource]];
++ (void)setDefaultsDictionary:(NSDictionary*)defaultsDic forMoodleItem:(id)item; {
+    [PCUtils throwExceptionIfObject:item notKindOfClass:[MoodleFile2 class]];
+    MoodleFile2* file = (MoodleFile2*)item;
+    NSUserDefaults* moodleDefaults = [PCPersistenceManager userDefaultsForPluginName:@"moodle"];
+    [moodleDefaults setObject:defaultsDic forKey:[self keyForDefaultsDictionaryForMoodleFile:file]];
 }
 
 #pragma mark Private
 
-+ (NSString*)keyForDefaultsDictionaryForMoodleResource:(MoodleResource*)resource {
-    [PCUtils throwExceptionIfObject:resource.iUrl notKindOfClass:[NSString class]];
-    static NSString* const kDicPostfix = @"MoodleResourceDictionary";
-    return [kDicPostfix stringByAppendingFormat:@"%u", [resource.iUrl hash]];
++ (NSString*)keyForDefaultsDictionaryForMoodleFile:(MoodleFile2*)file {
+    static NSString* const kDicPostfix = @"MoodleFileDictionary";
+    return [kDicPostfix stringByAppendingFormat:@"%u", [file.url hash]];
 }
 
 @end
 
-@implementation MoodleSection (Additions)
+@implementation MoodleFolder2 (Additions)
 
-- (id)copyWithZone:(NSZone *)zone {
-    MoodleSection* newInstance = [[[self class] allocWithZone:zone] init];
-    newInstance.iResources = self.iResources;
-    newInstance.iText = self.iText;
-    newInstance.iStartDate = self.iStartDate;
-    newInstance.iEndDate = self.iEndDate;
-    newInstance.iCurrent = self.iCurrent;
-    return newInstance;
+- (UIImage*)systemIcon {
+    return [PCUtils iconForFileExtension:kPCUtilsExtensionFolder];
+}
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+    if (![object isKindOfClass:[self class]]) {
+        return NO;
+    }
+    return [self isEqualToMoodleFolder:object];
+}
+
+- (BOOL)isEqualToMoodleFolder:(MoodleFolder2 *)otherFolder {
+    if (![self.name isEqual:otherFolder.name]) {
+        return NO;
+    }
+    return [self.files isEqualToArray:otherFolder.files];
+}
+
+- (NSUInteger)hash {
+    NSUInteger hash = 0;
+    for (MoodleFile2* file in self.files) {
+        hash += [file hash];
+    }
+    return hash;
+}
+
+@end
+
+@implementation MoodleUrl2 (Additions)
+
+- (UIImage*)systemIcon {
+    return [PCUtils iconForFileExtension:kPCUtilsExtensionLink];
+}
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+    if (![object isKindOfClass:[self class]]) {
+        return NO;
+    }
+    return [self isEqualToMoodleUrl:object];
+}
+
+- (BOOL)isEqualToMoodleUrl:(MoodleUrl2 *)otherUrl {
+    return [self.url isEqual:otherUrl.url];
+}
+
+- (NSUInteger)hash {
+    NSUInteger hash = 0;
+    hash += [self.url hash];
+    return hash;
 }
 
 @end

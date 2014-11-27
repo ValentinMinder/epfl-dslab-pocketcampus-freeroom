@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.pushnotif.server;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,7 +21,7 @@ import javapns.notification.PushedNotification;
 import javapns.notification.ResponsePacket;
 
 import org.json.JSONException;
-import org.pocketcampus.platform.launcher.server.PocketCampusServer;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 
 import com.google.android.gcm.server.Constants;
 import com.google.android.gcm.server.Message;
@@ -40,19 +38,19 @@ public class PushNotifMsgSender {
 																			// 24
 																			// hours
 
-	private static final String APNS_P12_PATH = PC_SRV_CONFIG
+	private static final String APNS_P12_PATH = PocketCampusServer.CONFIG
 			.getString("APNS_P12_PATH");
 
-	private static final String APNS_P12_PASSWORD = PC_SRV_CONFIG
+	private static final String APNS_P12_PASSWORD = PocketCampusServer.CONFIG
 			.getString("APNS_P12_PASSWORD");
 
 	private static final Boolean APNS_PROD = new Boolean(
-			PC_SRV_CONFIG.getString("APNS_PROD"));
+			PocketCampusServer.CONFIG.getString("APNS_PROD"));
 
 	private static long apnsFeedbackServiceLastCheckTimestamp = 0;
 
 	private static final Sender sender = new Sender(
-			PC_SRV_CONFIG.getString("GCM_SERVER_KEY"));
+			PocketCampusServer.CONFIG.getString("GCM_SERVER_KEY"));
 
 	private static final Executor threadPool = Executors.newFixedThreadPool(5);
 
@@ -132,7 +130,7 @@ public class PushNotifMsgSender {
 				
 				
 				if (users.size() > 0)
-					PocketCampusServer.pushNotifNotifyFailedUsers(message.getData().get("pluginName"), new ArrayList<String>(users));
+					PushNotifServiceImpl.pushNotifNotifyFailedUsers(message.getData().get("pluginName"), new ArrayList<String>(users));
 				
 			}
 		});
@@ -208,7 +206,7 @@ public class PushNotifMsgSender {
 				
 
 				if (users.size() > 0)
-					PocketCampusServer.pushNotifNotifyFailedUsers(msg.get("pluginName"), new ArrayList<String>(users));
+					PushNotifServiceImpl.pushNotifNotifyFailedUsers(msg.get("pluginName"), new ArrayList<String>(users));
 				
 				
 			}

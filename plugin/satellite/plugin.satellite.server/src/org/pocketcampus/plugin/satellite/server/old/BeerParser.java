@@ -2,7 +2,6 @@ package org.pocketcampus.plugin.satellite.server.old;
 
 import java.io.IOException;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,7 +16,7 @@ import org.pocketcampus.plugin.satellite.shared.Beer;
  */
 public class BeerParser {
 	/** The URL of the web site page we want to parse. */
-	private String BEER_URL = "http://sat.epfl.ch/pocket/flux.xml";
+	private String BEER_URL = "http://satellite.bar/pocket/flux.xml";
 	/** The document we get from the web site and that will be parsed. */
 	private Document mDoc;
 	/** The beer name. */
@@ -67,18 +66,9 @@ public class BeerParser {
 			}
 		}
 
-		cleantexts();
 		mBeer = new Beer((mBeerName + mBeerDescription).hashCode(), mBeerName,
 				mBeerDescription);
 		mBeer.setPictureUrl(mBeerPictureLink);
-	}
-
-	/**
-	 * Cleans the beer name and description to get rid of the bad characters.
-	 */
-	private void cleantexts() {
-		mBeerName = StringEscapeUtils.unescapeHtml4(mBeerName);
-		mBeerDescription = StringEscapeUtils.unescapeHtml4(mBeerDescription);
 	}
 
 	/**

@@ -8,14 +8,15 @@
     <application android:label="@string/app_name"
         android:theme="@style/PocketCampusTheme"
         android:icon="@drawable/authentication_icon"
-        android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext">
+        android:name="org.pocketcampus.platform.android.core.GlobalContext">
         
         
 		<activity android:name="org.pocketcampus.plugin.authentication.android.AuthenticationView"
 			xmlns:android="http://schemas.android.com/apk/res/android"
-			android:icon="@drawable/authentication_icon"
+			android:icon="@drawable/app_icon"
 			android:label="@string/authentication_plugin_title"
 			android:screenOrientation="nosensor"
+			android:windowSoftInputMode="adjustResize|stateVisible"
 			android:launchMode="singleTask"
 			 android:theme="@android:style/Theme.Dialog"
 			 android:excludeFromRecents="true">
@@ -52,52 +53,39 @@
 				<category android:name="android.intent.category.BROWSABLE" />
 				<data android:scheme="pocketcampus-redirect" android:host="login.pocketcampus.org" />
 			</intent-filter>
-<!-- 			<intent-filter> -->
-<!-- 				<action android:name="android.intent.action.VIEW" /> -->
-<!-- 				<category android:name="android.intent.category.DEFAULT" /> -->
-<!-- 				<category android:name="android.intent.category.BROWSABLE" /> -->
-<!-- 				http://moodle.epfl.ch/auth/tequila/teq_return.php?key=qwvgvxjo8lgtk57je7wc6ol4uqdupp3l -->
-<!-- 				<data android:scheme="http" android:host="moodle.epfl.ch" android:path="/auth/tequila/teq_return.php" /> -->
-<!-- 			 </intent-filter> -->
-<!-- 			<intent-filter> -->
-<!-- 				<action android:name="android.intent.action.VIEW" /> -->
-<!-- 				<category android:name="android.intent.category.DEFAULT" /> -->
-<!-- 				<category android:name="android.intent.category.BROWSABLE" /> -->
-<!-- 				<data android:scheme="https" android:host="cmp2www.epfl.ch" android:path="/client/serhome-en" /> -->
-<!-- 			 </intent-filter> -->
-	            
-			    
+				    
 			    
 			    
 			    
 		</activity>
+		
+		<activity
+		     android:name="org.pocketcampus.plugin.authentication.android.AuthenticationStatusView"
+			android:screenOrientation="nosensor">
+		    
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="pocketcampus" 
+				    android:host="authentication.plugin.pocketcampus.org"  
+				    android:pathPrefix="/status" />
+			</intent-filter>
+		    
+		</activity>
+		
 		<service android:name="org.pocketcampus.plugin.authentication.android.AuthenticationController"
 		    android:permission="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA"
 			xmlns:android="http://schemas.android.com/apk/res/android">
 			<intent-filter>
 				<action android:name="org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE" />
-				<action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
 				<category android:name="org.pocketcampus.plugin.authentication" />
 				<data android:scheme="pocketcampus" android:host="authentication.plugin.pocketcampus.org" />
 			</intent-filter>
 		    		    
 		</service>
             
-		<service android:name="org.pocketcampus.plugin.authentication.android.AuthenticationService">
-<!-- 			<intent-filter> -->
-<!-- 				<action android:name="org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE" /> -->
-<!-- 				<category android:name="org.pocketcampus.plugin.authentication" /> -->
-<!-- 				<data android:scheme="pocketcampus-authenticate" android:host="authentication.plugin.pocketcampus.org" /> -->
-<!-- 			</intent-filter> -->
-		</service>
-		
-		    
-		<receiver android:name="org.pocketcampus.plugin.authentication.android.AuthenticationController$Logouter" >
-            <intent-filter>
-                <action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
-            </intent-filter>
-        </receiver>		    
-		    
+		  
 		    
     </application>
     
@@ -111,7 +99,7 @@
 			    android:label="@string/authentication_permission_label"
 			    android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA"
 			    android:permissionGroup="org.pocketcampus.permission_groups.AUTHENTICATION"
-			    android:protectionLevel="dangerous" />
+			    android:protectionLevel="signature" />
         
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

@@ -18,24 +18,22 @@ import java.util.Collections;
 import java.util.BitSet;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryRequest, DirectoryRequest._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("DirectoryRequest");
 
   private static final org.apache.thrift.protocol.TField QUERY_FIELD_DESC = new org.apache.thrift.protocol.TField("query", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField DIRECTORY_SESSION_FIELD_DESC = new org.apache.thrift.protocol.TField("directorySession", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("language", org.apache.thrift.protocol.TType.STRING, (short)4);
   private static final org.apache.thrift.protocol.TField RESULT_SET_COOKIE_FIELD_DESC = new org.apache.thrift.protocol.TField("resultSetCookie", org.apache.thrift.protocol.TType.STRING, (short)3);
 
   private String query; // required
-  private String directorySession; // required
+  private String language; // required
   private ByteBuffer resultSetCookie; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     QUERY((short)1, "query"),
-    DIRECTORY_SESSION((short)2, "directorySession"),
+    LANGUAGE((short)4, "language"),
     RESULT_SET_COOKIE((short)3, "resultSetCookie");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -53,8 +51,8 @@ public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryReques
       switch(fieldId) {
         case 1: // QUERY
           return QUERY;
-        case 2: // DIRECTORY_SESSION
-          return DIRECTORY_SESSION;
+        case 4: // LANGUAGE
+          return LANGUAGE;
         case 3: // RESULT_SET_COOKIE
           return RESULT_SET_COOKIE;
         default:
@@ -103,7 +101,7 @@ public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryReques
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.QUERY, new org.apache.thrift.meta_data.FieldMetaData("query", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.DIRECTORY_SESSION, new org.apache.thrift.meta_data.FieldMetaData("directorySession", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("language", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.RESULT_SET_COOKIE, new org.apache.thrift.meta_data.FieldMetaData("resultSetCookie", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING        , true)));
@@ -128,8 +126,8 @@ public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryReques
     if (other.isSetQuery()) {
       this.query = other.query;
     }
-    if (other.isSetDirectorySession()) {
-      this.directorySession = other.directorySession;
+    if (other.isSetLanguage()) {
+      this.language = other.language;
     }
     if (other.isSetResultSetCookie()) {
       this.resultSetCookie = org.apache.thrift.TBaseHelper.copyBinary(other.resultSetCookie);
@@ -144,7 +142,7 @@ public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryReques
   @Override
   public void clear() {
     this.query = null;
-    this.directorySession = null;
+    this.language = null;
     this.resultSetCookie = null;
   }
 
@@ -172,27 +170,27 @@ public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryReques
     }
   }
 
-  public String getDirectorySession() {
-    return this.directorySession;
+  public String getLanguage() {
+    return this.language;
   }
 
-  public DirectoryRequest setDirectorySession(String directorySession) {
-    this.directorySession = directorySession;
+  public DirectoryRequest setLanguage(String language) {
+    this.language = language;
     return this;
   }
 
-  public void unsetDirectorySession() {
-    this.directorySession = null;
+  public void unsetLanguage() {
+    this.language = null;
   }
 
-  /** Returns true if field directorySession is set (has been assigned a value) and false otherwise */
-  public boolean isSetDirectorySession() {
-    return this.directorySession != null;
+  /** Returns true if field language is set (has been assigned a value) and false otherwise */
+  public boolean isSetLanguage() {
+    return this.language != null;
   }
 
-  public void setDirectorySessionIsSet(boolean value) {
+  public void setLanguageIsSet(boolean value) {
     if (!value) {
-      this.directorySession = null;
+      this.language = null;
     }
   }
 
@@ -240,11 +238,11 @@ public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryReques
       }
       break;
 
-    case DIRECTORY_SESSION:
+    case LANGUAGE:
       if (value == null) {
-        unsetDirectorySession();
+        unsetLanguage();
       } else {
-        setDirectorySession((String)value);
+        setLanguage((String)value);
       }
       break;
 
@@ -264,8 +262,8 @@ public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryReques
     case QUERY:
       return getQuery();
 
-    case DIRECTORY_SESSION:
-      return getDirectorySession();
+    case LANGUAGE:
+      return getLanguage();
 
     case RESULT_SET_COOKIE:
       return getResultSetCookie();
@@ -283,8 +281,8 @@ public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryReques
     switch (field) {
     case QUERY:
       return isSetQuery();
-    case DIRECTORY_SESSION:
-      return isSetDirectorySession();
+    case LANGUAGE:
+      return isSetLanguage();
     case RESULT_SET_COOKIE:
       return isSetResultSetCookie();
     }
@@ -313,12 +311,12 @@ public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryReques
         return false;
     }
 
-    boolean this_present_directorySession = true && this.isSetDirectorySession();
-    boolean that_present_directorySession = true && that.isSetDirectorySession();
-    if (this_present_directorySession || that_present_directorySession) {
-      if (!(this_present_directorySession && that_present_directorySession))
+    boolean this_present_language = true && this.isSetLanguage();
+    boolean that_present_language = true && that.isSetLanguage();
+    if (this_present_language || that_present_language) {
+      if (!(this_present_language && that_present_language))
         return false;
-      if (!this.directorySession.equals(that.directorySession))
+      if (!this.language.equals(that.language))
         return false;
     }
 
@@ -343,10 +341,10 @@ public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryReques
     if (present_query)
       builder.append(query);
 
-    boolean present_directorySession = true && (isSetDirectorySession());
-    builder.append(present_directorySession);
-    if (present_directorySession)
-      builder.append(directorySession);
+    boolean present_language = true && (isSetLanguage());
+    builder.append(present_language);
+    if (present_language)
+      builder.append(language);
 
     boolean present_resultSetCookie = true && (isSetResultSetCookie());
     builder.append(present_resultSetCookie);
@@ -374,12 +372,12 @@ public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryReques
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetDirectorySession()).compareTo(typedOther.isSetDirectorySession());
+    lastComparison = Boolean.valueOf(isSetLanguage()).compareTo(typedOther.isSetLanguage());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetDirectorySession()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.directorySession, typedOther.directorySession);
+    if (isSetLanguage()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.language, typedOther.language);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -418,9 +416,9 @@ public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryReques
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // DIRECTORY_SESSION
+        case 4: // LANGUAGE
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.directorySession = iprot.readString();
+            this.language = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -452,17 +450,17 @@ public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryReques
       oprot.writeString(this.query);
       oprot.writeFieldEnd();
     }
-    if (this.directorySession != null) {
-      if (isSetDirectorySession()) {
-        oprot.writeFieldBegin(DIRECTORY_SESSION_FIELD_DESC);
-        oprot.writeString(this.directorySession);
-        oprot.writeFieldEnd();
-      }
-    }
     if (this.resultSetCookie != null) {
       if (isSetResultSetCookie()) {
         oprot.writeFieldBegin(RESULT_SET_COOKIE_FIELD_DESC);
         oprot.writeBinary(this.resultSetCookie);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.language != null) {
+      if (isSetLanguage()) {
+        oprot.writeFieldBegin(LANGUAGE_FIELD_DESC);
+        oprot.writeString(this.language);
         oprot.writeFieldEnd();
       }
     }
@@ -482,13 +480,13 @@ public class DirectoryRequest implements org.apache.thrift.TBase<DirectoryReques
       sb.append(this.query);
     }
     first = false;
-    if (isSetDirectorySession()) {
+    if (isSetLanguage()) {
       if (!first) sb.append(", ");
-      sb.append("directorySession:");
-      if (this.directorySession == null) {
+      sb.append("language:");
+      if (this.language == null) {
         sb.append("null");
       } else {
-        sb.append(this.directorySession);
+        sb.append(this.language);
       }
       first = false;
     }

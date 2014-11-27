@@ -25,11 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 22.09.12.
-
 
 @import AddressBook;
 @import AddressBookUI;
@@ -40,7 +36,11 @@
 
 #import "MapController.h"
 
+#import "DirectoryController.h"
+
 #import "DirectoryPersonBaseInfoCell.h"
+
+#import "PCWebViewController.h"
 
 static const int kPersonBaseInfoSection = 0;
 static const int kPhonesSection = 1;
@@ -127,7 +127,7 @@ static CGFloat kRowHeight;
             self.tableView.hidden = YES;
             return;
         }
-        DirectoryRequest* req = [[DirectoryRequest alloc] initWithQuery:self.fullNameToSearch directorySession:nil resultSetCookie:nil];
+        DirectoryRequest* req = [[DirectoryRequest alloc] initWithQuery:self.fullNameToSearch language:[PCUtils userLanguageCode] resultSetCookie:nil];
         [self.directoryService searchForRequest:req delegate:self];
         [self.loadingIndicator startAnimating];
         self.tableView.hidden = YES;
@@ -179,7 +179,7 @@ static CGFloat kRowHeight;
     if (!self.personBaseInfoCell.profilePicture) {
         return;
     }
-    [self trackAction:@"ShowPictureLarge"];
+    [self trackAction:@"ShowPictureLarge" contentInfo:self.person.fullFirstnameLastname];
     DirectoryProfilePictureViewController* viewController = [[DirectoryProfilePictureViewController alloc] initWithImage:self.personBaseInfoCell.profilePicture];
     if (self.splitViewController) {
         if (!self.imagePopoverController) {
@@ -191,7 +191,7 @@ static CGFloat kRowHeight;
         viewController.title = self.person.fullFirstnameLastname;
         PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
         navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self presentViewController:navController animated:YES completion:NO];
+        [self presentViewController:navController animated:YES completion:NULL];
     }
 }
 
@@ -241,19 +241,31 @@ static CGFloat kRowHeight;
 #pragma mark - ABPeoplePickerNavigationControllerDelegate
 
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person {
-    person = [self.person newMergedWithABRecord:person addressBook:peoplePicker.addressBook];
+    ABAddressBookRef addressBook = peoplePicker.addressBook ?: ABAddressBookCreateWithOptions(NULL, nil);
+    if (!addressBook) {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"AddToExistingContactError", @"DirectoryPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        return NO;
+    }
+    person = [self.person newMergedWithABRecord:person addressBook:addressBook];
     if (!person) {
         [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"AddToExistingContactError", @"DirectoryPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
         return NO;
     }
     [self dismissViewControllerAnimated:YES completion:^{
-        [self createAndPresentNewContactWithRecordOrNil:person addressBookOrNil:peoplePicker.addressBook];
+        [self createAndPresentNewContactWithRecordOrNil:person addressBookOrNil:addressBook];
     }];
     return NO;
 }
 
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier {
     return NO;
+}
+
+/*
+ * On iOS 8, this method is called instead of peoplePickerNavigationController:shouldContinueAfterSelectingPerson: so, redirecting.
+ */
+- (void)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker didSelectPerson:(ABRecordRef)person {
+    [self peoplePickerNavigationController:peoplePicker shouldContinueAfterSelectingPerson:person];
 }
 
 - (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker {
@@ -263,19 +275,22 @@ static CGFloat kRowHeight;
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == actionSheet.cancelButtonIndex) {
+#warning ugly, see if updates of iOS 8 solve this problem
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (buttonIndex == actionSheet.cancelButtonIndex) {
+            self.actionSheet = nil;
+            return;
+        } else if (buttonIndex == kCreateNewContactActionIndex) {
+            [self trackAction:@"CreateNewContact" contentInfo:self.person.fullFirstnameLastname];
+            [self createAndPresentNewContactWithRecordOrNil:nil addressBookOrNil:nil];
+        } else if (buttonIndex == kAddToExistingContactActionIndex) {
+            [self trackAction:@"AddToExistingContact"];
+            [self presentContactsPicker];
+        } else {
+            //nothing
+        }
         self.actionSheet = nil;
-        return;
-    } else if (buttonIndex == kCreateNewContactActionIndex) {
-        [self trackAction:@"CreateNewContact"];
-        [self createAndPresentNewContactWithRecordOrNil:nil addressBookOrNil:nil];
-    } else if (buttonIndex == kAddToExistingContactActionIndex) {
-        [self trackAction:@"AddToExistingContact"];
-        [self presentContactsPicker];
-    } else {
-        //nothing
-    }
-    self.actionSheet = nil;
+    });
 }
 
 #pragma mark - DirectoryServiceDelegate
@@ -314,7 +329,7 @@ static CGFloat kRowHeight;
     }
     switch (indexPath.section) {
         case kPersonBaseInfoSection:
-            return [DirectoryPersonBaseInfoCell heightForStyle:DirectoryPersonBaseInfoCellStyleLarge];
+            return [DirectoryPersonBaseInfoCell preferredHeightForStyle:DirectoryPersonBaseInfoCellStyleLarge person:self.person inTableView:self.tableView];
     }
     return kRowHeight;
 }
@@ -346,7 +361,6 @@ static CGFloat kRowHeight;
             break;
         case kPhonesSection:
         {
-            [self trackAction:@"Call"];
             NSString* phone = nil;
             if (indexPath.row == [self privatePhoneNumberRowIndex]) {
                 phone = self.person.privatePhoneNumber;
@@ -356,25 +370,28 @@ static CGFloat kRowHeight;
                 //should not happen
                 return;
             }
+            [self trackAction:@"Call" contentInfo:phone];
             phone = [phone stringByReplacingOccurrencesOfString:@" " withString:@""];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phone]]];
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         }
         case kEmailSection:
-            [self trackAction:@"SendEmail"];
+            [self trackAction:@"SendEmail" contentInfo:self.person.email];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"mailto://%@", self.person.email]]];
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         case kWebpageSection:
-            [self trackAction:@"ViewWebsite"];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.person.web]];
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        {
+            [self trackAction:@"ViewWebsite" contentInfo:self.person.web];
+            PCWebViewController* webViewController = [[PCWebViewController alloc] initWithURL:[NSURL URLWithString:self.person.web] title:nil];
+            [self.navigationController pushViewController:webViewController animated:YES];
             break;
+        }
         case kOfficeSection:
         {
             if (self.allowShowOfficeOnMap) {
-                [self trackAction:@"ViewOffice"];
+                [self trackAction:@"ViewOffice" contentInfo:self.person.office];
                 UIViewController* viewController = [MapController viewControllerWithInitialSearchQuery:self.person.office pinLabelText:self.person.fullFirstnameLastname];
                 [self.navigationController pushViewController:viewController animated:YES];
             } else {
@@ -392,6 +409,9 @@ static CGFloat kRowHeight;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+    if (indexPath.section == kPersonBaseInfoSection) {
+        return NO;
+    }
     if ([NSStringFromSelector(action) isEqualToString:@"copy:"]) {
         return YES;
     }
@@ -399,7 +419,6 @@ static CGFloat kRowHeight;
 }
 
 - (void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-    [self trackAction:PCGAITrackerActionCopy];
     UIPasteboard* pasteboard = [UIPasteboard generalPasteboard];
     switch (indexPath.section) {
         case kPersonBaseInfoSection:
@@ -425,6 +444,7 @@ static CGFloat kRowHeight;
             pasteboard.string = self.person.office;
             break;
     }
+    [self trackAction:PCGAITrackerActionCopy contentInfo:pasteboard.string];
     CLSNSLog(@"-> Copy '%@' to pasteboard.", pasteboard.string);
 }
 
@@ -443,6 +463,12 @@ static CGFloat kRowHeight;
             secretTapGesture.numberOfTapsRequired = 3;
             secretTapGesture.numberOfTouchesRequired = 2;
             [self.personBaseInfoCell.contentView addGestureRecognizer:secretTapGesture];
+            __weak __typeof(self) welf = self;
+            [self.personBaseInfoCell setUnitTappedBlock:^(NSURL* unitURL) {
+                [welf trackAction:@"ViewUnit"];
+                PCWebViewController* webViewController = [[PCWebViewController alloc] initWithURL:unitURL title:nil];
+                [welf.navigationController pushViewController:webViewController animated:YES];
+            }];
         }
         self.personBaseInfoCell.person = self.person;
         return self.personBaseInfoCell;
@@ -472,6 +498,7 @@ static CGFloat kRowHeight;
             break;
         case kWebpageSection:
             cell.textLabel.text = NSLocalizedStringFromTable(@"Webpage", @"DirectoryPlugin", nil);
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.detailTextLabel.text = self.person.web;
             cell.detailTextLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
             cell.detailTextLabel.adjustsFontSizeToFitWidth = NO;

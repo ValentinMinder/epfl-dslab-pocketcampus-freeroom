@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -21,8 +21,8 @@
                             <constraint firstAttribute="height" constant="80" id="M6s-VF-u9k"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Firstname Lastname" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="206" translatesAutoresizingMaskIntoConstraints="NO" id="sbc-vp-W0Y">
-                        <rect key="frame" x="109" y="42" width="206" height="21"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="250" text="Firstname Lastname" lineBreakMode="tailTruncation" numberOfLines="100" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="206" translatesAutoresizingMaskIntoConstraints="NO" id="sbc-vp-W0Y" userLabel="Title label" customClass="TTTAttributedLabel">
+                        <rect key="frame" x="109" y="40" width="206" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -35,12 +35,12 @@
                     </activityIndicatorView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="m5q-Ja-ZpP" firstAttribute="centerY" secondItem="sbc-vp-W0Y" secondAttribute="centerY" id="9Vf-Qo-p3i"/>
+                    <constraint firstItem="m5q-Ja-ZpP" firstAttribute="top" secondItem="Mbw-uj-UTl" secondAttribute="top" constant="13" id="AQV-oT-hUk"/>
                     <constraint firstItem="sbc-vp-W0Y" firstAttribute="leading" secondItem="m5q-Ja-ZpP" secondAttribute="trailing" constant="14" id="Ahv-yF-OGm"/>
+                    <constraint firstAttribute="centerY" secondItem="sbc-vp-W0Y" secondAttribute="centerY" constant="2" id="BQJ-aX-Faf"/>
                     <constraint firstItem="m5q-Ja-ZpP" firstAttribute="leading" secondItem="Mbw-uj-UTl" secondAttribute="leading" constant="15" id="NGy-Xy-y4o"/>
                     <constraint firstItem="m5q-Ja-ZpP" firstAttribute="centerX" secondItem="5wV-2J-Nas" secondAttribute="centerX" id="RnL-9Y-FqZ"/>
                     <constraint firstAttribute="trailing" secondItem="sbc-vp-W0Y" secondAttribute="trailing" constant="5" id="swG-0O-ebB"/>
-                    <constraint firstAttribute="centerY" secondItem="m5q-Ja-ZpP" secondAttribute="centerY" id="xQI-FQ-6kI"/>
                     <constraint firstItem="m5q-Ja-ZpP" firstAttribute="centerY" secondItem="5wV-2J-Nas" secondAttribute="centerY" id="y6p-To-gF7"/>
                 </constraints>
             </tableViewCellContentView>

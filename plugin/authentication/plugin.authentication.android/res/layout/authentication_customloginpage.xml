@@ -49,18 +49,28 @@
 	        android:id="@+id/authentication_password"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_below="@+id/authentication_username"
 	        android:layout_marginTop="15dp"
 	        android:layout_marginLeft="5dp"
 	        android:layout_marginRight="5dp"
 	        android:hint="@string/authentication_string_password_hint"
 	        android:inputType="textPassword" />
 
+	    <TextView 
+	        android:id="@+id/authentication_notfromepfl"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="right"
+	        android:layout_marginTop="0dp"
+	        android:layout_marginLeft="5dp"
+	        android:layout_marginRight="5dp"
+	        android:textStyle="bold"
+	        android:text="@string/authentication_not_from_epfl"
+	        />
+	    
 	    <CheckBox
 	        android:id="@+id/authentication_staylogged_cb"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_below="@+id/authentication_password"
 	        android:layout_marginTop="5dp"
 	        android:layout_marginLeft="5dp"
 	        android:layout_marginRight="5dp"
@@ -83,7 +93,6 @@
 	        android:id="@+id/authentication_loginbutton"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_centerHorizontal="true"
 	        android:layout_marginTop="3dp"
 	        android:layout_marginLeft="100dp"
 	        android:layout_marginRight="100dp"

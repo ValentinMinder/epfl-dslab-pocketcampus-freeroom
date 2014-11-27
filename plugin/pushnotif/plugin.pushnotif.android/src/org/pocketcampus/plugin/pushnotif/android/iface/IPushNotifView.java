@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.pushnotif.android.iface;
 
-import org.pocketcampus.android.platform.sdk.core.IView;
+import org.pocketcampus.platform.android.core.IView;
 
 /**
  * IPushNotifView
@@ -11,10 +11,4 @@ import org.pocketcampus.android.platform.sdk.core.IView;
  *
  */
 public interface IPushNotifView extends IView {
-		
-	/**
-	 * Display errors and notices.
-	 */
-	void networkErrorHappened();
-	
 }

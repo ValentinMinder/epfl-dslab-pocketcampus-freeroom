@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
  
+ 
+		<LinearLayout 
+		    xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content" 
+		    android:orientation="vertical">
+			    
+ 
 	<LinearLayout 
-	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content" 
 	    android:orientation="horizontal">
 
 		<ImageView     
-		    android:background="@drawable/directory_image_bg"
+		    android:background="@drawable/pocketcampus_image_border"
 			android:id="@+id/directory_person_details_picture"   
 			android:padding="3dip"
 			android:layout_margin="2dip"
@@ -50,12 +58,29 @@
 		        android:textColor="#040404"
 		        android:typeface="sans" 
 		        android:layout_marginRight="0dip"
-		        android:layout_marginTop="15dip"
+		        android:layout_marginTop="5dip"
 		        android:textSize="15sp"
 		        android:textStyle="italic"/>
 		    		
 		</LinearLayout>
 		
 		
+	</LinearLayout>
+	
+			<!-- subtitle -->
+		    <TextView
+		        android:id="@+id/directory_person_details_expanded_affiliation"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="left"
+		        android:text="@string/actionbar_activity_not_found"
+		        android:paddingLeft="7dip"
+		        android:paddingRight="7dip"
+		        android:textColor="#040404"
+		        android:typeface="sans" 
+		        android:layout_marginTop="0dip"
+		        android:layout_marginBottom="2dip"
+		        android:textSize="15sp"/>
+		    	
 	</LinearLayout>
 	

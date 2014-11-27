@@ -25,26 +25,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 01.03.12.
 
-
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+@import Foundation;
+@import UIKit;
 
 #import "MainController.h"
 
 #import "PluginNavigationController.h"
+#import "PluginTabBarController.h"
 #import "PluginSplitViewController.h"
 
 /*Each plugin must have a controller named <plugin_name>Controller, and that subclasses PluginController. Is it NOT an instance of UIViewController*/
 
 @interface PluginController : NSObject
 
-/* Either mainNavigationController or mainSplitViewController can be instantiated. Not both. */
+/*
+ * Either mainNavigationController, mainTabBarController, or mainSplitViewController can be instantiated.
+ */
 @property (strong) PluginNavigationController* mainNavigationController;
+@property (strong) PluginTabBarController* mainTabBarController;
 @property (strong) PluginSplitViewController* mainSplitViewController;
 
 @property (strong) NSArray* menuRevealingGesureRecognizers;
@@ -87,8 +87,6 @@
  */
 + (void)initObservers;
 
-
-@optional
 /*
  * If either or both of these method(s) is/are implemented, this means that plugin supports
  * actions from URLs of the form:
@@ -106,31 +104,37 @@
  * Should return nil if the action/the parameters are not supported.
  *
  * handleURLQueryAction:parameters:
- * Implement this method to support being (the plugin) opened from a call external to the app.
+ * Implement this method to support getting actions and parameters being passed to the plugin
+ * controller when the app is opened with a URL.
+ * You can assume that your plugin is already getting foreground (no need to request it).
  * Should return YES if action was successfully handled, NO otherwise.
  */
 - (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters;
+
 - (BOOL)handleURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters;
 
+/**
+ * This method is *different* from viewControllerForURLQueryAction:parameters:
+ * In this case, webURL can be any HTTP(S) URL, and if the plugin has a way to display the data
+ * pointed by this URL via a view controller, it should return one, or nil otherwise.
+ */
++ (UIViewController*)viewControllerForWebURL:(NSURL*)webURL;
 
 /* 
  * Should return whether the plugin can be deallocated. 
  * Do not return NO unless there is an operation currently in progress that cannot be stopped.
  */
-@optional
 - (BOOL)canBeReleased;
 
 /*
  * Called when menu is revealed and plugin shifted to the right.
  */
-@optional
 - (void)pluginWillLoseForeground;
 
 /*
  * Called when plugin is presented or when it is shifted back
  * to the left after main menu was reaveled
  */
-@optional
 - (void)pluginDidEnterForeground;
 
 

@@ -20,6 +20,7 @@ namespace PocketCampus.Main.Services
         private bool _isEnabled;
 
         private Geolocator _locator;
+        private GeoPosition _lastKnownLocation;
 
         /// <summary>
         /// Gets or sets a value indicating whether the service is enabled.
@@ -38,6 +39,11 @@ namespace PocketCampus.Main.Services
             }
         }
 
+        public GeoPosition LastKnownLocation
+        {
+            get { return _lastKnownLocation; }
+        }
+
         /// <summary>
         /// Asynchronously gets the user's location.
         /// </summary>
@@ -45,8 +51,9 @@ namespace PocketCampus.Main.Services
         {
             try
             {
-                var position = await _locator.GetGeopositionAsync();
-                return Tuple.Create( PositionFromCoordinate( position.Coordinate ), GeoLocationStatus.Success );
+                var geoPosition = await _locator.GetGeopositionAsync();
+                _lastKnownLocation = PositionFromCoordinate( geoPosition.Coordinate );
+                return Tuple.Create( _lastKnownLocation, GeoLocationStatus.Success );
             }
             catch
             {
@@ -116,7 +123,8 @@ namespace PocketCampus.Main.Services
         /// </summary>
         private void Locator_PositionChanged( Geolocator sender, PositionChangedEventArgs args )
         {
-            OnLocationChanged( PositionFromCoordinate( args.Position.Coordinate ) );
+            _lastKnownLocation = PositionFromCoordinate( args.Position.Coordinate );
+            OnLocationChanged( _lastKnownLocation );
         }
 
         /// <summary>

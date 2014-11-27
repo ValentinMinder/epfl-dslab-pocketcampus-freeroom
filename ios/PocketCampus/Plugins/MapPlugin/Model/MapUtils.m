@@ -186,72 +186,6 @@ double tiley2lat(int y, int z) {
     return [mapView.annotations firstObject]; //otherwise select first one
 }
 
-+ (NSInteger)levelToSelectForRoomName:(NSString*)roomName {
-    NSString* roomNameWithoutSpace = [roomName stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSError* error = nil;
-    
-    { //Separation block
-        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"^\\D*(\\d{2,})" options:NSRegularExpressionCaseInsensitive error:&error]; //Example : BC329
-        if (error != nil) {
-            return 1;
-        }
-        NSTextCheckingResult* result = [regex firstMatchInString:roomNameWithoutSpace options:0 range:NSMakeRange(0, [roomNameWithoutSpace length])];
-        if (result.numberOfRanges > 1) {
-            NSRange range = [result rangeAtIndex:1];
-            if (range.length != 0) {
-                char levelChar = [[roomNameWithoutSpace substringWithRange:range] characterAtIndex:0];
-                NSInteger level = atoi(&levelChar);
-                return level;
-            }
-        }
-    }
-    
-    { //Separation block
-        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"^\\D*(\\d)$" options:NSRegularExpressionCaseInsensitive error:&error]; //Example CO1
-        if (error != nil) {
-            return 1;
-        }
-        NSTextCheckingResult* result = [regex firstMatchInString:roomNameWithoutSpace options:0 range:NSMakeRange(0, [roomNameWithoutSpace length])];
-        if (result.numberOfRanges > 1) {
-            return 1; //assume rooms with only 1 digit are always on first floor
-        }
-    }
-    
-    if ([roomName isEqualToString:@"RLC"]) {
-        return 1;
-    }
-    
-    if ([roomName isEqualToString:@"Cafeteria BC"]) {
-        return 4;
-    }
-    
-    if ([roomName isEqualToString:@"Cafeteria MX"]) {
-        return 3;
-    }
-    
-    if ([roomName isEqualToString:@"L'Atlantide"]) {
-        return 2;
-    }
-    
-    if ([roomName isEqualToString:@"Le Corbusier"]) {
-        return 0;
-    }
-    
-    if ([roomName isEqualToString:@"Le Parmentier"]) {
-        return 2;
-    }
-    
-    if ([roomName isEqualToString:@"Le Vinci"]) {
-        return 2;
-    }
-    
-    if ([[roomName lowercaseString] isEqualToString:@"satellite"]) {
-        return 2;
-    }
-    
-    return INT_MAX; //means level could not determined
-}
-
 + (BOOL)mapViewHasMapItemAnnotations:(MKMapView*)mapView {
     for (id<MKAnnotation> annotation in mapView.annotations) {
         if ([annotation isKindOfClass:[MapItemAnnotation class]]) {
@@ -436,8 +370,8 @@ double tiley2lat(int y, int z) {
 }
 
 + (CH1903BBox)tilePathToCH1903:(MKTileOverlayPath)tilePath tileSize:(CGSize)tileSize {
-    double lat = tiley2lat(tilePath.y, tilePath.z);
-    double lon = tilex2long(tilePath.x, tilePath.z);
+    double lat = tiley2lat((int)tilePath.y, (int)tilePath.z);
+    double lon = tilex2long((int)tilePath.x, (int)tilePath.z);
     
     CLLocationDegrees latSpan = (360.0*cos(lat * M_PI / 180.0)) / (double)(pow(2,tilePath.z));
     CLLocationDegrees lonSpan = (360.0*cos(lon * M_PI / 180.0)) / (double)(pow(2,tilePath.z));

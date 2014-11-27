@@ -13,12 +13,8 @@
                       xmlns:myControls="clr-namespace:PocketCampus.Food.Controls"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      mc:Ignorable="d">
-    <!-- Design-time DataContext -->
-    <d:DesignProperties.DataContext>
-        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Food.ViewModels.Design;assembly=PocketCampus.Food.Common" />
-    </d:DesignProperties.DataContext>
-
+                      mc:Ignorable="d"
+                      d:DataContext="{Binding Main, Source={StaticResource Design}}">
     <!-- Page resources -->
     <comControls:BasePage.Resources>
         <ResourceDictionary>
@@ -32,13 +28,12 @@
 
             <!-- Meal template -->
             <DataTemplate x:Key="MealItemTemplate">
-                <Grid Margin="24,10,24,30"
-                      Width="432">
+                <Grid Margin="24,10,0,30">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    
+
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -76,7 +71,8 @@
                         </StackPanel>
                     </Grid>
 
-                    <Grid Grid.Column="1">
+                    <Grid Grid.Column="1"
+                          Margin="0,0,10,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -106,11 +102,11 @@
                             <myControls:RatingDisplay Rating="{Binding Rating}"
                                                       Foreground="{StaticResource PhoneForegroundBrush}"
                                                       FontSize="{StaticResource PhoneFontSizeSmall}" />
-                            
+
                             <TextBlock Text="-"
                                        Style="{StaticResource PhoneTextSmallStyle}"
                                        Margin="-6,0,0,0" />
-                            
+
                             <Button Style="{StaticResource SimpleButtonStyle}"
                                     Content="{Binding Resources.RateMealButton, Source={StaticResource Strings}}"
                                     Foreground="{StaticResource AppAccentBrush}"
@@ -132,14 +128,14 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    
+
                     <!-- Name -->
                     <TextBlock Text="{Binding Restaurant.Name}"
                                TextTrimming="WordEllipsis"
                                Style="{StaticResource PhoneTextLargeStyle}"
                                Foreground="{StaticResource PhoneSubtleBrush}"
                                Margin="0,0,12,0" />
-                    
+
                     <!-- Rating -->
                     <myControls:RatingDisplay Grid.Row="1"
                                               Rating="{Binding Restaurant.Rating}"
@@ -181,6 +177,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="55" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -209,8 +206,11 @@
                                   Margin="10,0" Height="55" />
         </Border>
 
+        <!-- Stale data indicator -->
+        <comControls:StaleDataIndicator Grid.Row="2" />
+
         <!-- Meal list -->
-        <phone:LongListSelector Grid.Row="2"
+        <phone:LongListSelector Grid.Row="3"
                                 ItemsSource="{Binding Menu, Converter={StaticResource RestaurantsToGroups}}"
                                 ItemTemplate="{StaticResource MealItemTemplate}"
                                 IsGroupingEnabled="True"
@@ -218,22 +218,23 @@
                                 GroupFooterTemplate="{StaticResource SpacerFooterTemplate}"
                                 JumpListStyle="{StaticResource JumpListStyle}" />
 
-        <!-- "No filter results" text -->
-        <TextBlock Grid.Row="2"
-                   Text="{Binding Resources.AllResultsFilteredOut, Source={StaticResource Strings}}"
-                   Visibility="{Binding AnyFilterResults, Converter={StaticResource BoolToOppositeVisibility}}"
+        <!-- "No meals" text -->
+        <TextBlock Grid.Row="3"
+                   Text="{Binding Resources.NoMeals, Source={StaticResource Strings}}"
+                   Visibility="{Binding Menu, Converter={StaticResource NoneToVisibility}}"
                    Style="{StaticResource AppTextCenterStyle}" />
 
-        <!-- "No meals" text (the container is needed to hide the "no filter results" text) -->
-        <Border Grid.Row="2"
-                Visibility="{Binding AnyMeals, Converter={StaticResource BoolToOppositeVisibility}}"
+        <!-- "No filter results" text (container needed to hide "no meals" if both are true) -->
+        <Border Grid.Row="3"
+                Visibility="{Binding AllResultsFilteredOut, Converter={StaticResource BoolToVisibility}}"
                 Background="{StaticResource PhoneBackgroundBrush}">
-            <TextBlock Text="{Binding Resources.NoMeals, Source={StaticResource Strings}}"
+            <TextBlock Text="{Binding Resources.AllResultsFilteredOut, Source={StaticResource Strings}}"
                        Style="{StaticResource AppTextCenterStyle}" />
         </Border>
-
+        
         <!-- Loading & error -->
-        <comControls:LoadingAndError Grid.Row="2" />
+        <comControls:LoadingAndError Grid.RowSpan="2"
+                                     Grid.Row="2" />
     </Grid>
 
     <!-- App bar -->

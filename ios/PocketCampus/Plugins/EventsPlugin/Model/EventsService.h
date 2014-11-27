@@ -25,24 +25,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
 //  Created by Loïc Gardiol (loic.gardiol@gmail.com)
 
+@import Foundation;
 
-#import <Foundation/Foundation.h>
-
-#import "Service.h"
+#import "PCService.h"
 
 #import "events.h"
 
 /*
- * Possible action parameter for PocketCampus URL scheme for eEvents
+ * Possible action parameter for PocketCampus URL scheme for Events
  */
 extern NSString* const kEventsURLActionShowEventPool;
 extern NSString* const kEventsURLActionShowEventItem;
 
 /*
- * Other parameters for PocketCampus URL scheme for eEvents
+ * Other parameters for PocketCampus URL scheme for Events
  */
 extern NSString* const kEventsURLParameterEventPoolId;
 extern NSString* const kEventsURLParameterEventItemId;
@@ -55,7 +53,7 @@ extern NSString* const kEventsURLParameterExchangeToken;
  */
 extern NSString* const kEventsFavoritesEventItemsUpdatedNotification;
 
-@interface EventsService : Service <ServiceProtocol>
+@interface EventsService : PCService <PCServiceProtocol>
 
 /* Thrift methods
  
@@ -92,7 +90,7 @@ extern NSString* const kEventsFavoritesEventItemsUpdatedNotification;
 
 @end
 
-@protocol EventsServiceDelegate <ServiceDelegate>
+@protocol EventsServiceDelegate <PCServiceDelegate>
 
 @optional
 

@@ -1,217 +1,110 @@
 namespace java org.pocketcampus.plugin.transport.shared
-namespace csharp org.pocketcampus.plugin.transport.shared
 
-/**
-* Service definition for the Transport plugin.
-*/
-
-//To represent a date (milisec from January 1, 1970, 00:00:00 GMT)
-typedef i64 timestamp
-
-enum TransportStationType {
-	ANY;
-	STATION;
-	POI;
-	ADDRESS;
-}
+// most of this is old and looks too much like Schildbach's PTE (the library we used to use),
+// but it works and doesn't have major issues, so...
 
 struct TransportStation {
-	1: TransportStationType type;
-	2: i32 id;
-	3: i32 latitude;
-	4: i32 longitude;
-	5: string place;
-	6: string name;
+	// Don't use; for compatibility purposes only
+	2: required i32 id;
+	
+	// convert lat/lon to double by dividing by 1'000'000
+	3: required i32 latitude;
+	4: required i32 longitude;
+	
+	6: required string name;
 }
 
-enum Type{
-	ADULT; CHILD; YOUTH; STUDENT; MILITARY; SENIOR; DISABLED;
-}
-
-struct Fare{
-	1: required string network;
-	2: required Type type;
-	3: required string currency;
-	4: required double fare;
-	5: required string unitName;
-	6: required string units;
-}
-
-struct Point{
-	1: required i32 latitude;
-	2: required i32 longitude;
-}
-
-typedef i32 Integer
-struct TransportLine{
+struct TransportLine {
 	1: required string name;
-	2: required list<string> colors;
+	// must be there as long as old clients exist, since it's required
+	2: required list<string> _UNUSED;
 }
 
-
-struct Stop{
-	1: required TransportStation location;
-	2: optional string position;
-	3: required timestamp time;
-}
-
-struct TransportConnection{
+struct TransportConnection {
 	1: required TransportStation departure;
 	2: required TransportStation arrival;
-	3: optional list<Point> path;
-	
+	// required if not on foot
 	4: optional TransportLine line;
-	5: optional TransportStation destination;
-	6: optional timestamp departureTime;
+	// Java timestamp (UNIX in milliseconds)
+	// required if not on foot
+	6: optional i64 departureTime;
+	// e.g. platform 4
 	7: optional string departurePosition;
-	8: optional timestamp arrivalTime;
+	// Java timestamp (UNIX in milliseconds)
+	// required if not on foot
+	8: optional i64 arrivalTime;
+	// e.g. platform 4
 	9: optional string arrivalPosition;
-	10: optional list<Stop> intermediateStops;
 	
-	11: optional bool foot;
-	12: optional i32 min;
+	11: required bool foot;
+	// required if on foot; in minutes
+	12: optional i32 footDuration;
 }
 
-struct TransportTrip 
-{
+struct TransportTrip {
+	// Don't use; for compatibility purposes only
 	1: required string id;
-	2: optional string link;
-	3: required timestamp departureTime;
-	4: required timestamp arrivalTime;
+	
+	3: required i64 departureTime;
+	4: required i64 arrivalTime;
 	5: required TransportStation from;
 	6: required TransportStation to;
-	7: optional list<TransportConnection> parts;
-	8: optional list<Fare> fares;
+	7: required list<TransportConnection> parts;
 }
 
-enum FareType{
-	ADULT; CHILD; YOUTH; STUDENT; MILITARY; SENIOR; DISABLED;
-}
-
-struct Fare{
-	1: required string network;
-	2: required FareType type;
-	3: required string currency;
-	4: required double fare;
-	5: required string unitName;
-	6: required string units;
-}
-
-
-
-struct Departure{
-	1: required timestamp plannedTime;
-	2: required timestamp predictedTime;
-	3: required string line;
-	4: required list<i32> lineColors;
-	5: required string lineLink;
-	6: required string position;
-	7: required i32 destinationId;
-	8: required string destination;
-	9: required string message;
-}
-
-
-
-
-struct GetConnectionDetailsResult{
-	1: required timestamp currentDate;
-	2: required TransportTrip connection;
-}
-
-
-
-struct LineDestination{
-	1: required string line;
-	2: required list<string> lineColors;
-	3: required i32 destinationId;
-	4: required string destination;
-}
-
-
-
-
-enum NearbyStatus	{
-		OK; INVALID_STATION; SERVICE_DOWN;
-}
-struct NearbyStationsResult
-{
-	1: required NearbyStatus status;
-	2: required list<TransportStation> stations;
-}
-
-
-
-enum Status{
-		sOK; AMBIGUOUS; TOO_CLOSE; UNRESOLVABLE_ADDRESS; NO_CONNECTIONS; INVALID_DATE; SERVICE_DOWN;
-	}
-struct QueryTripsResult{
-	1: optional list<TransportStation> ambiguousFrom;
-	2: optional list<TransportStation> ambiguousVia;
-	3: optional list<TransportStation> ambiguousTo;
-
-	4: optional string queryUri;
+// THIS STRUCT IS OLD, DO NOT USE
+struct QueryTripsResult {
 	5: required TransportStation from;
-	6: optional TransportStation via;
 	7: required TransportStation to;
-	8: optional string context;
 	9: required list<TransportTrip> connections;
 }
 
-struct StationDepartures
-{
-	1: required TransportStation location;
-	2: required list<Departure> departures;
-	3: required list<LineDestination> lines;
+// NEW STUFF
+
+struct TransportGeoPoint {
+	1: required double latitude;
+	2: required double longitude;
 }
 
-struct QueryDepartureResult{
-	1: required NearbyStatus status;
-	2: required list<StationDepartures> stationDepartures
+enum TransportStatusCode {
+	OK = 200, 
+	NETWORK_ERROR = 404
 }
 
-struct RailwayNode{
- 	
- 	1: required map<string, string> tags_;
-	2: required i32 lat_;
-	3: required i32 lon_;
-	4: required i32 ref_;
-	5: required i32 num_;
-	6: required double distFromPrevious_;
-	7: required i32 previousRef_;
-	8: required i32 uicRef_;
- }
-struct RailwayNd{
- 	1: required i32 num;
- 	2: required i32 ref;
+struct TransportStationSearchRequest {
+	1: required string stationName;
+	2: optional TransportGeoPoint geoPoint;
 }
 
-struct RailwayWay{
- 	1: required set<RailwayNd> nds;
- 	2: required i32 num;
- }
- 
-struct RailwayMember{
-	1: required string type_;
-	2: required i32 ref_;
-	3: required string role_;
-	4: required i32 num_;
-} 
+struct TransportTripSearchRequest {
+	1: required TransportStation fromStation;
+	2: required TransportStation toStation;
+}
 
-struct Railway{
-	1: required map<i32, RailwayNode> nodes_;
-	2: required map<i32, RailwayWay> ways_;
-	3: required set<RailwayMember> members_;
-	4: required set<RailwayNode> railway_;
-	5: required map<i32, RailwayNode> stopNodes_;
+struct TransportStationSearchResponse {
+	1: optional list<TransportStation> stations;
+	2: required TransportStatusCode statusCode;
+}
+
+struct TransportDefaultStationsResponse {
+	1: optional list<TransportStation> stations;
+	2: required TransportStatusCode statusCode;
+}
+
+struct TransportTripSearchResponse {
+	1: optional list<TransportTrip> trips;
+	2: required TransportStatusCode statusCode;
 }
 
 service TransportService {
-	list<TransportStation> autocomplete(1:string constraint);
-	list<TransportStation> getLocationsFromIDs(1: list<i32> ids);
+    // OLD STUFF, DO NOT USE
+	list<TransportStation> autocomplete(1: string constraint);
 	list<TransportStation> getLocationsFromNames(1: list<string> names);
-	QueryDepartureResult nextDepartures(2:string IDStation);
-	QueryTripsResult getTrips(1:string from; 2:string to);
-	QueryTripsResult getTripsAtTime(1:string from; 2:string to; 3:timestamp time, 4:bool isDeparture);
-	QueryTripsResult getTripsFromStationsIDs(1: string fromID; 2:string toID);
+	QueryTripsResult getTrips(1: string from; 2: string to);
+
+
+    // NEW STUFF
+	TransportStationSearchResponse searchForStations(1: TransportStationSearchRequest request);
+	TransportDefaultStationsResponse getDefaultStations();
+	TransportTripSearchResponse searchForTrips(1: TransportTripSearchRequest request);
 }

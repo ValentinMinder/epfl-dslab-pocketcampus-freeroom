@@ -213,6 +213,11 @@ static NSTimeInterval kMaxIntervalForMinutesLeftString = 15.0;
 
 - (void)setState:(TransportNextDeparturesCellState)state {
     _state = state;
+    static NSString* errorText = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        errorText = [NSString stringWithFormat:@"%@   ", NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil)];
+    });
     switch (state) {
         case TransportNextDeparturesCellStateLoading:
             self.accessoryType = UITableViewCellAccessoryNone;
@@ -223,7 +228,7 @@ static NSTimeInterval kMaxIntervalForMinutesLeftString = 15.0;
             [self.loadingIndicator stopAnimating];
             self.lineLabel.font = self.originalLineLabelFont;
             self.lineLabel.textColor = self.originalLineLabelTextColor;
-            if ([self.lineLabel.text isEqualToString:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil)]) {
+            if ([self.lineLabel.text isEqualToString:errorText]) {
                 self.lineLabel.text = nil;
             }
             break;
@@ -232,7 +237,7 @@ static NSTimeInterval kMaxIntervalForMinutesLeftString = 15.0;
             [self.loadingIndicator stopAnimating];
             self.lineLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
             self.lineLabel.textColor = [UIColor orangeColor];
-            self.lineLabel.text = NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil);
+            self.lineLabel.text = errorText;
             break;
         default:
             [NSException raise:@"Illegal argument" format:@"state is not of enum type TransportNextDeparturesCellState"];
@@ -340,7 +345,7 @@ static NSTimeInterval kMaxIntervalForMinutesLeftString = 15.0;
                     break;
             }
             UILabel* timeLabel = timeLabels[index];
-            NSString* lineName = firstConnection ? firstConnection.line.veryShortName : @"";
+            NSString* lineName = firstConnection.line.veryShortName ?: @"";
             NSString* fullString = nil;
             if ([timeString isEqualToString:@"Now"]) {
                 [self setBusImageViewVisible:YES inLabel:timeLabel];

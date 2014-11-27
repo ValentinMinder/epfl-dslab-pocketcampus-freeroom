@@ -39,6 +39,8 @@
 
 #import "MBProgressHUD.h"
 
+#import "PCDatePickerView.h"
+
 @interface IsAcademiaDayScheduleViewController ()<IsAcademiaServiceDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) IsAcademiaService* isaService;
@@ -48,6 +50,8 @@
 @property (nonatomic, strong) MBProgressHUD* messageHUD;
 
 @property (nonatomic, strong) UIActionSheet* detailsActionSheet;
+
+@property (nonatomic, strong) PCDatePickerView* datePickerView;
 
 @property (nonatomic, strong) NSDate* lastRefreshDate;
 
@@ -78,9 +82,14 @@
     self.dayView.is24hClock = [PCUtils userLocaleIs24Hour];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshPressed)];
     UIBarButtonItem* todayItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Today", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(todayPressed)];
-    self.toolbarItems = @[todayItem];
+    UIBarButtonItem* flexibleSpaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem* goToDateItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"GoToDate", @"IsAcademiaPlugin", nil) style:UIBarButtonItemStylePlain target:self action:@selector(goToDatePressed)];
+    self.toolbarItems = @[todayItem, flexibleSpaceItem, goToDateItem];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferredContentSizeChanged) name:UIContentSizeCategoryDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
+    [[MainController publicController] addPluginStateObserver:self selector:@selector(willLoseForeground) notification:PluginWillLoseForegroundNotification pluginIdentifierName:@"IsAcademia"];
+    [[MainController publicController] addPluginStateObserver:self selector:@selector(didEnterForeground) notification:PluginDidEnterForegroundNotification pluginIdentifierName:@"IsAcademia"];
     
     self.progressHUD = [[MBProgressHUD alloc] initWithView:self.dayView];
     self.progressHUD.userInteractionEnabled = NO;
@@ -100,13 +109,13 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
-    self.navigationController.navigationBar.hairlineDividerImageView.hidden = YES;
+    self.navigationController.navigationBar.hairlineDividerView.hidden = YES;
     [self.navigationController setToolbarHidden:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.hairlineDividerImageView.hidden = NO;
+    self.navigationController.navigationBar.hairlineDividerView.hidden = NO;
     [self.navigationController setToolbarHidden:YES];
 }
 
@@ -125,6 +134,18 @@
 - (void)appDidBecomeActive {
     [self.dayView reloadData];
     [self refreshAndGoToTodayIfNeeded];
+}
+
+- (void)willLoseForeground {
+    [self.datePickerView dismiss];
+}
+
+- (void)didEnterForeground {
+    if (self.datePickerView) {
+        //check uncessary, just to make clear that
+        //self.datePickerView != nil means it was presented
+        [self.datePickerView presentInView:self.view];
+    }
 }
 
 #pragma mark - Refresh & actions
@@ -159,6 +180,32 @@
     [self calendarDayTimelineView:self.dayView didMoveToDate:self.dayView.date]; //force refresh
 }
 
+- (void)goToDatePressed {
+    PCDatePickerView* pcDatePicker = [PCDatePickerView new];
+    pcDatePicker.datePicker.datePickerMode = UIDatePickerModeDate;
+    pcDatePicker.datePicker.date = self.dayView.date;
+    __weak __typeof(self) welf = self;
+    [pcDatePicker setUserValidatedDateBlock:^(PCDatePickerView* view, NSDate* date) {
+        welf.dayView.date = date;
+        [welf calendarDayTimelineView:welf.dayView didMoveToDate:welf.dayView.date]; //force refresh
+        [view dismiss];
+        welf.datePickerView = nil;
+        
+        //GA stuff
+        NSDateFormatter* formatter = [NSDateFormatter new];
+        formatter.dateFormat = @"yyyy-MM-dd";
+        NSString* dateString = [formatter stringFromDate:date];
+        [welf trackAction:@"GoToDateSelected" contentInfo:dateString];
+    }];
+    [pcDatePicker setUserCancelledBlock:^(PCDatePickerView* view) {
+        [view dismiss];
+        welf.datePickerView = nil;
+    }];
+    [pcDatePicker presentFromBarButtonItem:[self.toolbarItems lastObject]];
+    self.datePickerView = pcDatePicker;
+    [self trackAction:@"GoToDate"];
+}
+
 #pragma mark - Date utils
 
 - (NSDate*)mondayReferenceDateForDate:(NSDate*)date {
@@ -168,7 +215,7 @@
     NSDateComponents* comps = [gregorianCalendar components:NSYearCalendarUnit | NSWeekCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:date];
     [comps setYear:comps.year];
     [comps setWeekday:2]; //Monday
-    [comps setWeek:comps.week];
+    [comps setWeekOfYear:comps.weekOfYear];
     [comps setHour:0]; //8a.m.
     [comps setMinute:0];
     [comps setSecond:0];
@@ -177,7 +224,7 @@
         //means monday8am is after date, meaning coming Monday was computed,
         //instead of previous one. => need to decrement 1 week
         NSDateComponents* minusOneWeekComps = [NSDateComponents new];
-        [minusOneWeekComps setWeek:-1];
+        [minusOneWeekComps setWeekOfYear:-1];
         monday8am = [gregorianCalendar dateByAddingComponents:minusOneWeekComps toDate:monday8am options:0];
     }
     return monday8am;
@@ -198,13 +245,15 @@
         }
         case IsaStatusCode_INVALID_SESSION:
         {
-            __weak __typeof(self) weakSelf = self;
+            __weak __typeof(self) welf = self;
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
-                [weakSelf refreshForDisplayedDaySkipCache:YES];
+                [welf refreshForDisplayedDaySkipCache:YES];
             } userCancelled:^{
-                //nothing to do
+                welf.messageHUD.labelText = NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil);
+                welf.messageHUD.detailsLabelText = NSLocalizedStringFromTable(@"LoginRequired", @"PocketCampus", nil);
+                [welf.messageHUD show:NO];
             } failure:^{
-                [weakSelf getScheduleFailedForRequest:request];
+                [welf getScheduleFailedForRequest:request];
             }];
             break;
         }
@@ -250,7 +299,7 @@
             NSString* room = [actionSheet buttonTitleAtIndex:buttonIndex];
             UIViewController* viewController = [MapController viewControllerWithInitialSearchQuery:room];
             [self.navigationController pushViewController:viewController animated:YES];
-            [self trackAction:@"ViewRoomOnMap"];
+            [self trackAction:@"ViewRoomOnMap" contentInfo:room];
         }
         self.detailsActionSheet = nil;
     }
@@ -294,7 +343,7 @@
     [self.detailsActionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil)];
     self.detailsActionSheet.cancelButtonIndex = self.detailsActionSheet.numberOfButtons-1;
     [self.detailsActionSheet showFromToolbar:self.navigationController.toolbar];
-    [self trackAction:@"ViewPeriodProperties"];
+    [self trackAction:@"ViewPeriodProperties" contentInfo:period.name];
 }
 
 #pragma mark - TKCalendarDayViewDataSource

@@ -33,14 +33,14 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
   private static final org.apache.thrift.protocol.TField FLOOR_FIELD_DESC = new org.apache.thrift.protocol.TField("floor", org.apache.thrift.protocol.TType.I32, (short)7);
   private static final org.apache.thrift.protocol.TField CATEGORY_FIELD_DESC = new org.apache.thrift.protocol.TField("category", org.apache.thrift.protocol.TType.STRING, (short)8);
 
-  public String title; // required
-  public String description; // required
-  public double latitude; // required
-  public double longitude; // required
-  public long layerId; // required
-  public long itemId; // required
-  public int floor; // required
-  public String category; // required
+  private String title; // required
+  private String description; // required
+  private double latitude; // required
+  private double longitude; // required
+  private long layerId; // required
+  private long itemId; // required
+  private int floor; // required
+  private String category; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -134,7 +134,7 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.TITLE, new org.apache.thrift.meta_data.FieldMetaData("title", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.DESCRIPTION, new org.apache.thrift.meta_data.FieldMetaData("description", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.DESCRIPTION, new org.apache.thrift.meta_data.FieldMetaData("description", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.LATITUDE, new org.apache.thrift.meta_data.FieldMetaData("latitude", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
@@ -157,7 +157,6 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
 
   public MapItem(
     String title,
-    String description,
     double latitude,
     double longitude,
     long layerId,
@@ -165,7 +164,6 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
   {
     this();
     this.title = title;
-    this.description = description;
     this.latitude = latitude;
     setLatitudeIsSet(true);
     this.longitude = longitude;
@@ -866,9 +864,11 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
       oprot.writeFieldEnd();
     }
     if (this.description != null) {
-      oprot.writeFieldBegin(DESCRIPTION_FIELD_DESC);
-      oprot.writeString(this.description);
-      oprot.writeFieldEnd();
+      if (isSetDescription()) {
+        oprot.writeFieldBegin(DESCRIPTION_FIELD_DESC);
+        oprot.writeString(this.description);
+        oprot.writeFieldEnd();
+      }
     }
     oprot.writeFieldBegin(LATITUDE_FIELD_DESC);
     oprot.writeDouble(this.latitude);
@@ -910,14 +910,16 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
       sb.append(this.title);
     }
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("description:");
-    if (this.description == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.description);
+    if (isSetDescription()) {
+      if (!first) sb.append(", ");
+      sb.append("description:");
+      if (this.description == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.description);
+      }
+      first = false;
     }
-    first = false;
     if (!first) sb.append(", ");
     sb.append("latitude:");
     sb.append(this.latitude);

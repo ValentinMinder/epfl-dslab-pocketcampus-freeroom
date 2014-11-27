@@ -25,14 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 30.11.13.
-
-
 
 #import "PCSplashView.h"
 
@@ -91,7 +84,7 @@
     [superview addConstraints:[NSLayoutConstraint constraintsToSuperview:superview forView:self edgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)]];
 }
 
-- (void)hideWithAnimationDelay:(NSTimeInterval)delay duration:(NSTimeInterval)duration completion:(VoidBlock)completion; {
+- (void)hideWithAnimationDelay:(NSTimeInterval)delay duration:(NSTimeInterval)duration completion:(VoidBlock)completion {
     //duration = 5.0;
     
     /*CAMediaTimingFunction* easeIn = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
@@ -170,6 +163,10 @@
 - (UIImage*)imageForDevice {
     if ([PCUtils is4inchDevice]) {
         return [UIImage imageNamed:@"SplashImage4inch"];
+    } else if ([PCUtils is4_7inchDevice]) {
+        return [UIImage imageNamed:@"SplashImage4_7inch"];
+    } else if ([PCUtils is5_5inchDevice]) {
+        return [UIImage imageNamed:@"SplashImage5_5inch"];
     } else {
         return [UIImage imageNamed:@"SplashImage"];
     }

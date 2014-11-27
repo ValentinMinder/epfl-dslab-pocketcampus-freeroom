@@ -1,10 +1,11 @@
-package org.pocketcampus.plugin.freeroom.server.tests.sharedutilstest;
+package org.pocketcampus.plugin.freeroom.server.tests.sharedutilstests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.pocketcampus.plugin.freeroom.shared.Constants;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
@@ -144,6 +145,7 @@ public class TestFRTimes {
 	 * This doesn't test that it's the one that is supposed to be given.
 	 */
 	@Test
+	@Ignore
 	public void testGetNextValidPeriodGiveValidPeriod() {
 
 		Calendar mCalendar = Calendar.getInstance();

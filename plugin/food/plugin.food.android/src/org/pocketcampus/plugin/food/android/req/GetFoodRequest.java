@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.food.android.req;
 
-import org.pocketcampus.android.platform.sdk.io.Request;
+import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.food.android.*;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
 import org.pocketcampus.plugin.food.shared.*;
@@ -32,7 +32,8 @@ public class GetFoodRequest extends Request<FoodController, Iface, FoodRequest, 
 	protected void onResult(FoodController controller, FoodResponse result) {
 		if(result.getStatusCode() == FoodStatusCode.OK) {
 			controller.setMealTypePicUrls(result.getMealTypePictureUrls());
-			controller.setEpflMenus(result.getMenu(), result.getUserStatus());
+			controller.setServerDetectedPriceTarget(result.getUserStatus());
+			controller.setEpflMenus(result.getMenu());
 			
 			keepInCache();
 		} else {
