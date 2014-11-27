@@ -25,15 +25,15 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRMessageFrequency");
 
   private static final org.apache.thrift.protocol.TField MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("message", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField FREQUENCY_FIELD_DESC = new org.apache.thrift.protocol.TField("frequency", org.apache.thrift.protocol.TType.I32, (short)2);
+  private static final org.apache.thrift.protocol.TField COUNT_FIELD_DESC = new org.apache.thrift.protocol.TField("count", org.apache.thrift.protocol.TType.I32, (short)2);
 
   private String message; // required
-  private int frequency; // required
+  private int count; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     MESSAGE((short)1, "message"),
-    FREQUENCY((short)2, "frequency");
+    COUNT((short)2, "count");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -50,8 +50,8 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
       switch(fieldId) {
         case 1: // MESSAGE
           return MESSAGE;
-        case 2: // FREQUENCY
-          return FREQUENCY;
+        case 2: // COUNT
+          return COUNT;
         default:
           return null;
       }
@@ -92,7 +92,7 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
   }
 
   // isset id assignments
-  private static final int __FREQUENCY_ISSET_ID = 0;
+  private static final int __COUNT_ISSET_ID = 0;
   private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
@@ -100,7 +100,7 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("message", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.FREQUENCY, new org.apache.thrift.meta_data.FieldMetaData("frequency", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.COUNT, new org.apache.thrift.meta_data.FieldMetaData("count", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRMessageFrequency.class, metaDataMap);
@@ -111,12 +111,12 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
 
   public FRMessageFrequency(
     String message,
-    int frequency)
+    int count)
   {
     this();
     this.message = message;
-    this.frequency = frequency;
-    setFrequencyIsSet(true);
+    this.count = count;
+    setCountIsSet(true);
   }
 
   /**
@@ -128,7 +128,7 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
     if (other.isSetMessage()) {
       this.message = other.message;
     }
-    this.frequency = other.frequency;
+    this.count = other.count;
   }
 
   public FRMessageFrequency deepCopy() {
@@ -138,8 +138,8 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
   @Override
   public void clear() {
     this.message = null;
-    setFrequencyIsSet(false);
-    this.frequency = 0;
+    setCountIsSet(false);
+    this.count = 0;
   }
 
   public String getMessage() {
@@ -166,27 +166,27 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
     }
   }
 
-  public int getFrequency() {
-    return this.frequency;
+  public int getCount() {
+    return this.count;
   }
 
-  public FRMessageFrequency setFrequency(int frequency) {
-    this.frequency = frequency;
-    setFrequencyIsSet(true);
+  public FRMessageFrequency setCount(int count) {
+    this.count = count;
+    setCountIsSet(true);
     return this;
   }
 
-  public void unsetFrequency() {
-    __isset_bit_vector.clear(__FREQUENCY_ISSET_ID);
+  public void unsetCount() {
+    __isset_bit_vector.clear(__COUNT_ISSET_ID);
   }
 
-  /** Returns true if field frequency is set (has been assigned a value) and false otherwise */
-  public boolean isSetFrequency() {
-    return __isset_bit_vector.get(__FREQUENCY_ISSET_ID);
+  /** Returns true if field count is set (has been assigned a value) and false otherwise */
+  public boolean isSetCount() {
+    return __isset_bit_vector.get(__COUNT_ISSET_ID);
   }
 
-  public void setFrequencyIsSet(boolean value) {
-    __isset_bit_vector.set(__FREQUENCY_ISSET_ID, value);
+  public void setCountIsSet(boolean value) {
+    __isset_bit_vector.set(__COUNT_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
@@ -199,11 +199,11 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
       }
       break;
 
-    case FREQUENCY:
+    case COUNT:
       if (value == null) {
-        unsetFrequency();
+        unsetCount();
       } else {
-        setFrequency((Integer)value);
+        setCount((Integer)value);
       }
       break;
 
@@ -215,8 +215,8 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
     case MESSAGE:
       return getMessage();
 
-    case FREQUENCY:
-      return Integer.valueOf(getFrequency());
+    case COUNT:
+      return Integer.valueOf(getCount());
 
     }
     throw new IllegalStateException();
@@ -231,8 +231,8 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
     switch (field) {
     case MESSAGE:
       return isSetMessage();
-    case FREQUENCY:
-      return isSetFrequency();
+    case COUNT:
+      return isSetCount();
     }
     throw new IllegalStateException();
   }
@@ -259,12 +259,12 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
         return false;
     }
 
-    boolean this_present_frequency = true;
-    boolean that_present_frequency = true;
-    if (this_present_frequency || that_present_frequency) {
-      if (!(this_present_frequency && that_present_frequency))
+    boolean this_present_count = true;
+    boolean that_present_count = true;
+    if (this_present_count || that_present_count) {
+      if (!(this_present_count && that_present_count))
         return false;
-      if (this.frequency != that.frequency)
+      if (this.count != that.count)
         return false;
     }
 
@@ -280,10 +280,10 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
     if (present_message)
       builder.append(message);
 
-    boolean present_frequency = true;
-    builder.append(present_frequency);
-    if (present_frequency)
-      builder.append(frequency);
+    boolean present_count = true;
+    builder.append(present_count);
+    if (present_count)
+      builder.append(count);
 
     return builder.toHashCode();
   }
@@ -306,12 +306,12 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetFrequency()).compareTo(typedOther.isSetFrequency());
+    lastComparison = Boolean.valueOf(isSetCount()).compareTo(typedOther.isSetCount());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetFrequency()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.frequency, typedOther.frequency);
+    if (isSetCount()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.count, typedOther.count);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -340,10 +340,10 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // FREQUENCY
+        case 2: // COUNT
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.frequency = iprot.readI32();
-            setFrequencyIsSet(true);
+            this.count = iprot.readI32();
+            setCountIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -356,8 +356,8 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetFrequency()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'frequency' was not found in serialized data! Struct: " + toString());
+    if (!isSetCount()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'count' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -371,8 +371,8 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
       oprot.writeString(this.message);
       oprot.writeFieldEnd();
     }
-    oprot.writeFieldBegin(FREQUENCY_FIELD_DESC);
-    oprot.writeI32(this.frequency);
+    oprot.writeFieldBegin(COUNT_FIELD_DESC);
+    oprot.writeI32(this.count);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -391,8 +391,8 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("frequency:");
-    sb.append(this.frequency);
+    sb.append("count:");
+    sb.append(this.count);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -403,7 +403,7 @@ public class FRMessageFrequency implements org.apache.thrift.TBase<FRMessageFreq
     if (message == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'message' was not present! Struct: " + toString());
     }
-    // alas, we cannot check 'frequency' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'count' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
