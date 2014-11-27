@@ -153,6 +153,9 @@
         
         [self.loadingIndicator startAnimating];
 
+        // We use a timer so that if user changes page quickly and multiple times,
+        // image download requests do not stack. We "wait" that the user stops on a page
+        // to start the download for this page only
         NSTimeInterval interval = self.updateImageTimer ? 0.4 : 0.0;
         [self.updateImageTimer invalidate];
         self.updateImageTimer = [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(updateImage) userInfo:nil repeats:NO];
@@ -231,6 +234,7 @@
 
 - (void)dealloc
 {
+    [self.updateImageTimer invalidate];
     [self.cloudPrintService cancelOperationsForDelegate:self];
     [self.imageView cancelImageRequestOperation];
 }
