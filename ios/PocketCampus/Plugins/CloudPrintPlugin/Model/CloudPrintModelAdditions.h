@@ -63,9 +63,15 @@
 
 /**
  * @return a string ID that is unique for that print document request.
- * @discussion the id is generated the first time the property is accessed.
- * If does not rely on any attribute value.
+ * @discussion the id is randomly generated the first time the property is accessed and does not rely on any attribute value.
  */
 @property (nonatomic, readonly) NSString* jobUniqueId;
+
+/**
+ * @return YES if documentId is the default
+ * value, thus meaning that it was not set by the server.
+ * Document typically needs to be uploaded if so.
+ */
+@property (nonatomic, readonly) BOOL documentIdIsDefault;
 
 @end

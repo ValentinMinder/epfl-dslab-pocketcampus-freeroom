@@ -33,13 +33,20 @@
 
 @interface CloudPrintRequestViewController : UITableViewController
 
+- (instancetype)init;
+
 /**
- * @return a view controller ready for user to configure the print request
- * @param docName the name of the document that will be displayed 
+ * The name of the document that will be displayed
  * (not part of print request, just there as indication that the right file was selected).
- * @param printRequest will be reflected in UI. A default one is created if nil.
+ * Default: nil
  */
-- (instancetype)initWithDocumentName:(NSString*)docName printRequest:(PrintDocumentRequest*)printRequest;
+@property (nonatomic, copy) NSString* documentName;
+
+/**
+ * The print request that is reflected in the UI.
+ * Default: [PrintDocumentRequest createDefaultRequest]
+ */
+@property (nonatomic, strong) PrintDocumentRequest* printRequest;
 
 /**
  * Exectued when user taps Print to validate the print request

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BCDF89681C7949E15A941A3F"
+               BlueprintIdentifier = "B17FDD3C144B536D5AB56990"
                BuildableName = "libPods-JTTargetActionBlock.a"
                BlueprintName = "Pods-JTTargetActionBlock"
                ReferencedContainer = "container:Pods.xcodeproj">

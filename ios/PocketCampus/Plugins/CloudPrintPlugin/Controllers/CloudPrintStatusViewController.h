@@ -29,6 +29,7 @@
 
 typedef NS_ENUM(NSInteger, CloudPrintStatusMessage) {
     CloudPrintStatusMessageLoading = 0,
+    CloudPrintStatusMessageDownloadingFile,
     CloudPrintStatusMessageUploadingFile,
     CloudPrintStatusMessageSendingToPrinter,
     CloudPrintStatusMessageSuccess,
@@ -52,5 +53,11 @@ typedef NS_ENUM(NSInteger, CloudPrintStatusMessage) {
  * Executed when user taps on cancel
  */
 @property (nonatomic, copy) void (^userCancelledBlock)();
+
+/**
+ * If set, will show a Try Again button, and this block
+ * will be executed if tapped.
+ */
+@property (nonatomic, copy) void (^showTryAgainButtonWithTappedBlock)();
 
 @end

@@ -65,6 +65,11 @@
 + (NSString*)localizedNameForMealType:(NSInteger)mealType;
 
 /**
+ * @return name derived from the enum name for mealType (e.g. MEAT), "UNKNOWN" otherwise
+ */
++ (NSString*)enumNameForMealType:(NSInteger)mealType;
+
+/**
  * @return a 80x80 points image for the meal type, nil if mealType is unknown
  */
 + (UIImage*)imageForMealType:(NSInteger)mealType;

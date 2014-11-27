@@ -575,7 +575,7 @@ static int i = 0;
                 [welf startGetSectionsRequest];
             } userCancelled:^{
                 [welf.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"LoginRequired", @"PocketCampus", nil)];
-            } failure:^{
+            } failure:^(NSError *error) {
                 [welf error];
             }];
             break;

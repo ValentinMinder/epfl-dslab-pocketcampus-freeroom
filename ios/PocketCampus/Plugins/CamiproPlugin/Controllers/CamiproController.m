@@ -109,7 +109,7 @@ static CamiproController* instance __weak = nil;
 #pragma mark - PluginControllerAuthentified
 
 - (void)addLoginObserver:(id)observer successBlock:(VoidBlock)successBlock
-      userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(VoidBlock)failureBlock {
+      userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(void (^)(NSError* error))failureBlock {
     
     [super addLoginObserver:observer successBlock:successBlock userCancelledBlock:userCancelledblock failureBlock:failureBlock];
     if (!super.authenticationStarted) {
@@ -135,7 +135,7 @@ static CamiproController* instance __weak = nil;
 }
 
 - (void)getTequilaTokenForCamiproFailed {
-    [self cleanAndNotifyFailureToObservers];
+    [self cleanAndNotifyFailureToObserversWithAuthenticationErrorCode:kAuthenticationErrorCodeOther];
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken *)tequilaKey didReturn:(CamiproSession *)session {
@@ -144,7 +144,7 @@ static CamiproController* instance __weak = nil;
 }
 
 - (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken *)aTequilaKey {
-    [self cleanAndNotifyFailureToObservers];
+    [self cleanAndNotifyFailureToObserversWithAuthenticationErrorCode:kAuthenticationErrorCodeOther];
 }
 
 - (void)serviceConnectionToServerFailed {
@@ -169,7 +169,7 @@ static CamiproController* instance __weak = nil;
             break;
         case AuthenticationFailureReasonCannotAskForCredentials:
             [self.camiproService cancelOperationsForDelegate:self];
-            [self cleanAndNotifyFailureToObservers];
+            [self cleanAndNotifyFailureToObserversWithAuthenticationErrorCode:kAuthenticationErrorCodeCouldNotAskForCredentials];
             break;
         case AuthenticationFailureReasonInvalidToken:
             [self.camiproService getTequilaTokenForCamiproDelegate:self]; //restart to get new token

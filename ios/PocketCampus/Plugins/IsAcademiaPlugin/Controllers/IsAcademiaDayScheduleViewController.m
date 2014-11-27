@@ -252,7 +252,7 @@
                 welf.messageHUD.labelText = NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil);
                 welf.messageHUD.detailsLabelText = NSLocalizedStringFromTable(@"LoginRequired", @"PocketCampus", nil);
                 [welf.messageHUD show:NO];
-            } failure:^{
+            } failure:^(NSError *error) {
                 [welf getScheduleFailedForRequest:request];
             }];
             break;

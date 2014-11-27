@@ -170,7 +170,7 @@ static NSInteger const kHistorySection = 1;
         [[CamiproController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
             [self.centerActivityIndicator stopAnimating];
             [[MainController publicController] requestLeavePlugin:[CamiproController identifierName]];
-        } failureBlock:^{
+        } failureBlock:^(NSError *error) {
             [self getBalanceAndTransactionsFailedForCamiproRequest:nil];
         }];
     }
@@ -189,7 +189,7 @@ static NSInteger const kHistorySection = 1;
                 return;
             }
             [self.statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
-        } failureBlock:^{
+        } failureBlock:^(NSError *error) {
             [self getStatsAndLoadingInfoFailedForCamiproRequest:nil];
         }];
     }

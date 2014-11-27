@@ -483,18 +483,18 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     } else if (statusCode == 303 || statusCode == 407) {
         //mans not logged in
         self.progressView.progress = 0.0;
-        __weak __typeof(self) weakSelf = self;
+        __weak __typeof(self) welf = self;
         [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
-            [weakSelf startMoodleResourceDownload];
+            [welf startMoodleResourceDownload];
         } userCancelled:^{
-            if (weakSelf.splitViewController) {
+            if (welf.splitViewController) {
                 MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
-                weakSelf.splitViewController.viewControllers = @[weakSelf.splitViewController.viewControllers[0], [[PCNavigationController alloc] initWithRootViewController:splashViewController]];
+                welf.splitViewController.viewControllers = @[welf.splitViewController.viewControllers[0], [[PCNavigationController alloc] initWithRootViewController:splashViewController]];
             } else {
-                [weakSelf.navigationController popViewControllerAnimated:YES];
+                [welf.navigationController popViewControllerAnimated:YES];
             }
-        } failure:^{
-            [weakSelf serviceConnectionToServerFailed];
+        } failure:^(NSError *error) {
+            [welf serviceConnectionToServerFailed];
         }];
         
     } else { //other unkown error
@@ -540,7 +540,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
                 [welf printButtonTapped];
             } userCancelled:^{
                 // nothing to do
-            } failure:^{
+            } failure:^(NSError *error) {
                 [PCUtils showServerErrorAlert];
             }];
             break;

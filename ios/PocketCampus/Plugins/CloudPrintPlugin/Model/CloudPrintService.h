@@ -39,12 +39,20 @@ typedef NS_ENUM(NSInteger, CloudPrintUploadFailureReason) {
     CloudPrintUploadFailureReasonUnknown
 };
 
+typedef NS_ENUM(NSInteger, CloudPrintJobUploadStatus) {
+    CloudPrintJobUploadStatusWaitingForUpload,
+    CloudPrintJobUploadStatusUploading,
+    CloudPrintJobUploadStatusUploaded
+};
+
 @protocol CloudPrintServiceDelegate <PCServiceDelegate>
 
 @optional
 
 - (void)printDocumentForRequest:(PrintDocumentRequest*)request didReturn:(PrintDocumentResponse*)response;
 - (void)printDocumentFailedForRequest:(PrintDocumentRequest*)request;
+- (void)printPreviewForRequest:(PrintDocumentRequest*)request didReturn:(PrintPreviewDocumentResponse*)response;
+- (void)printPreviewFailedForRequest:(PrintDocumentRequest*)request;
 
 @end
 
@@ -52,26 +60,41 @@ typedef NS_ENUM(NSInteger, CloudPrintUploadFailureReason) {
 
 /*
  * Thrift service methods
- *
- * - (PrintDocumentResponse *) printDocument: (PrintDocumentRequest *) request;  // throws TException
+ 
+ - (PrintDocumentResponse *) printDocument: (PrintDocumentRequest *) request;  // throws TException
+ - (PrintPreviewDocumentResponse *) printPreview: (PrintDocumentRequest *) request;  // throws TException
  */
 
 - (void)printDocumentWithRequest:(PrintDocumentRequest*)request delegate:(id<CloudPrintServiceDelegate>)delegate;
+- (void)printPreviewWithRequest:(PrintDocumentRequest*)request delegate:(id<CloudPrintServiceDelegate>)delegate;
 
 /**
  * @param localURL must be the URL of a readable local file. Cannot be nil.
+ * @param desiredFilename if you want to indicate a filename to the server, otherwise pass nil and [localURL lastPathComponent] is used.
  * @param jobUniqueId this parameter is optional, it's there only to give the opportunity to cancel it afterwards using cancelJobsWithUniqueId:
  * @param success executed when upload is successfull. documentId can be then used in PrintDocumentRequest to trigger the request.
  * @param progress [0.0, 1.0] regularly executed with new progress of operation
  * @param failure executed when the operation fails.
  */
-- (void)uploadForPrintDocumentWithLocalURL:(NSURL*)localURL jobUniqueId:(NSString*)jobUniqueId success:(void (^)(int64_t documentId))success progress:(NSProgress* __autoreleasing*)progress failure:(void (^)(CloudPrintUploadFailureReason failureReason))failure;
+- (void)uploadForPrintDocumentWithLocalURL:(NSURL*)localURL desiredFilename:(NSString*)desiredFilename jobUniqueId:(NSString*)jobUniqueId success:(void (^)(int64_t documentId))success progress:(NSProgress* __autoreleasing*)progress failure:(void (^)(CloudPrintUploadFailureReason failureReason))failure;
+
+/**
+ * Before calling uploadForPrintDocumentWithLocalURL: a job has the wating for upload status.
+ * Once called but before success/failure, the status is uploading.
+ * Then, on finish, the status is either uploaded if success, or waiting for upload if failure.
+ */
+- (CloudPrintJobUploadStatus)uploadStatusForJobWithUniqueId:(NSString*)jobUniqueId;
 
 /**
  * @discussion Loops through self.operationQueue.operations and cancels all operations
  * with userInfo key-value corresponding to jobUniqueId
  */
 - (void)cancelJobsWithUniqueId:(NSString*)jobUniqueId;
+
+/**
+ * You MUST have called printPreviewWithRequest:delegate: for this id before calling this method
+ */
+- (NSURLRequest*)printPreviewImageRequestForDocumentId:(int64_t)documentId pageIndex:(NSInteger)pageIndex;
 
 @end
 

@@ -141,10 +141,14 @@
             if (welf.completionHandler) {
                 welf.completionHandler(NCUpdateResultFailed);
             }
-        } failureBlock:^{
+        } failureBlock:^(NSError *error) {
             welf.camiproController = nil;
             welf.camiproService = nil;
-            [welf showNeedToLogin];
+            if (error.code == kAuthenticationErrorCodeCouldNotAskForCredentials) {
+                [welf showNeedToLogin];
+            } else {
+                [welf showError];
+            }
             if (welf.completionHandler) {
                 welf.completionHandler(NCUpdateResultFailed);
             }

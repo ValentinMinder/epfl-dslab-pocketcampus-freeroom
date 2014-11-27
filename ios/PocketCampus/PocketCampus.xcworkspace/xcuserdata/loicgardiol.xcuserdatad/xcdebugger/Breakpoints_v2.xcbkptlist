@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "437063806.273273"
+            timestampString = "438779643.874993"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1094"
-            endingLineNumber = "1094"
+            startingLineNumber = "1111"
+            endingLineNumber = "1111"
             landmarkName = "-gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "408191388.861286"
+            timestampString = "438103979.798141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "746"
-            endingLineNumber = "746"
+            startingLineNumber = "752"
+            endingLineNumber = "752"
             landmarkName = "-preferredStatusBarUpdateAnimation"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "408191388.861286"
+            timestampString = "438103979.798141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "762"
-            endingLineNumber = "762"
+            startingLineNumber = "768"
+            endingLineNumber = "768"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -104,11 +104,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainMenuViewController.m"
-            timestampString = "433088042.216876"
+            timestampString = "438104064.213054"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "271"
-            endingLineNumber = "271"
+            startingLineNumber = "283"
+            endingLineNumber = "283"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -120,11 +120,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainMenuViewController.m"
-            timestampString = "433088042.216876"
+            timestampString = "438104064.213054"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "-callMainController"
             landmarkType = "5">
          </BreakpointContent>
@@ -136,11 +136,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainMenuViewController.m"
-            timestampString = "433088042.216876"
+            timestampString = "438104064.213054"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "136"
-            endingLineNumber = "136"
+            startingLineNumber = "148"
+            endingLineNumber = "148"
             landmarkName = "-setEditing:"
             landmarkType = "5">
          </BreakpointContent>
@@ -852,11 +852,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "408191388.861286"
+            timestampString = "438103979.798141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "738"
-            endingLineNumber = "738"
+            startingLineNumber = "744"
+            endingLineNumber = "744"
             landmarkName = "-preferredStatusBarStyle"
             landmarkType = "5">
             <Actions>
@@ -1750,11 +1750,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "437063806.273273"
+            timestampString = "438779643.874993"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "736"
-            endingLineNumber = "736"
+            startingLineNumber = "753"
+            endingLineNumber = "753"
             landmarkName = "-setActivePluginWithIdentifier:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2713,11 +2713,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "412444289.135489"
+            timestampString = "438103979.798141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "680"
-            endingLineNumber = "680"
+            startingLineNumber = "686"
+            endingLineNumber = "686"
             landmarkName = "-viewWillAppear:"
             landmarkType = "5">
             <Actions>
@@ -2738,11 +2738,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "437063806.273273"
+            timestampString = "438779643.874993"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1123"
-            endingLineNumber = "1123"
+            startingLineNumber = "1140"
+            endingLineNumber = "1140"
             landmarkName = "-revealController:didRevealRearViewController:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2754,11 +2754,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "437063806.273273"
+            timestampString = "438779643.874993"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1103"
-            endingLineNumber = "1103"
+            startingLineNumber = "1120"
+            endingLineNumber = "1120"
             landmarkName = "-gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3275,22 +3275,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Plugins/MoodlePlugin/Controllers/MoodleCoursesListViewController.m"
-            timestampString = "431863139.239987"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "187"
-            endingLineNumber = "187"
-            landmarkName = "-getCoursesForRequest:didReturn:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCServiceRequest.m"
             timestampString = "414852073.540797"
             startingColumnNumber = "9223372036854775807"
@@ -3314,70 +3298,6 @@
             startingLineNumber = "153"
             endingLineNumber = "153"
             landmarkName = "-main"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Plugins/MoodlePlugin/Controllers/MoodleCoursesListViewController.m"
-            timestampString = "431863139.239987"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "189"
-            endingLineNumber = "189"
-            landmarkName = "-getCoursesForRequest:didReturn:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Plugins/MoodlePlugin/Controllers/MoodleCoursesListViewController.m"
-            timestampString = "431863139.239987"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "191"
-            endingLineNumber = "191"
-            landmarkName = "-getCoursesForRequest:didReturn:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Plugins/MoodlePlugin/Controllers/MoodleCoursesListViewController.m"
-            timestampString = "431863139.239987"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
-            landmarkName = "-getCoursesForRequest:didReturn:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Plugins/MoodlePlugin/Controllers/MoodleCoursesListViewController.m"
-            timestampString = "431863139.239987"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "185"
-            endingLineNumber = "185"
-            landmarkName = "-getCoursesForRequest:didReturn:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3436,11 +3356,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCService.m"
-            timestampString = "430917167.96343"
+            timestampString = "437781467.675706"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "103"
-            endingLineNumber = "103"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
             landmarkName = "-cancelOperationsForDelegate:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3452,12 +3372,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationViewController.m"
-            timestampString = "422882354.600141"
+            timestampString = "438018267.681709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "426"
-            endingLineNumber = "426"
-            landmarkName = "-updateDoneButtonVisibility"
+            startingLineNumber = "434"
+            endingLineNumber = "434"
+            landmarkName = "-recomputeSectionIndices"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4138,11 +4058,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationViewController.m"
-            timestampString = "422834414.373267"
+            timestampString = "438018267.681709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "205"
-            endingLineNumber = "205"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
             landmarkName = "-textFieldShouldClear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4154,11 +4074,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationViewController.m"
-            timestampString = "422880505.049549"
+            timestampString = "438018267.681709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
+            startingLineNumber = "298"
+            endingLineNumber = "298"
             landmarkName = "-tableView:titleForFooterInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4170,11 +4090,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationViewController.m"
-            timestampString = "422872173.743675"
+            timestampString = "438018238.957784"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
             landmarkName = "-viewWillAppear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4736,7 +4656,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCPersistenceManager.m"
@@ -4778,22 +4698,6 @@
             startingLineNumber = "176"
             endingLineNumber = "176"
             landmarkName = "+registerAndPersistDefaultsFromServerWithCompletionHandler:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Plugins/CamiproPlugin/Extensions/CamiproWidget/CamiproWidgetViewController.m"
-            timestampString = "436193173.645894"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
-            landmarkName = "-startBalanceAndTransactionsRequest"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4883,22 +4787,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PocketCampus/Model/Common/PCService.m"
-            timestampString = "430917167.96343"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
-            landmarkName = "+serviceURLforServiceName:raw:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCConfig.m"
             timestampString = "432553104.141752"
             startingColumnNumber = "9223372036854775807"
@@ -4916,11 +4804,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "430312798.787251"
+            timestampString = "438021313.195625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "501"
-            endingLineNumber = "501"
+            startingLineNumber = "509"
+            endingLineNumber = "509"
             landmarkName = "-startAuthenticationForToken:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4932,11 +4820,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "431888474.237166"
+            timestampString = "438021313.195625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "567"
-            endingLineNumber = "567"
+            startingLineNumber = "571"
+            endingLineNumber = "571"
             landmarkName = "-startAuthenticationForToken:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5192,22 +5080,6 @@
             startingLineNumber = "71"
             endingLineNumber = "71"
             landmarkName = "-objectForKey:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "433071684.837449"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
-            landmarkName = "-handlePocketCampusURL:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5552,13 +5424,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "431888474.237166"
+            timestampString = "438021313.195625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "555"
-            endingLineNumber = "555"
+            startingLineNumber = "562"
+            endingLineNumber = "562"
             landmarkName = "-startAuthenticationForToken:"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AuthenticationController startAuthenticationForToken:]"
+                  moduleName = "PocketCampus"
+                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
+                  timestampString = "438017435.153398"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "561"
+                  endingLineNumber = "561"
+                  offsetFromSymbolStart = "2504">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__56-[AuthenticationController startAuthenticationForToken:]_block_invoke_3362"
+                  moduleName = "PocketCampus"
+                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
+                  timestampString = "438017435.153594"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "561"
+                  endingLineNumber = "561"
+                  offsetFromSymbolStart = "24">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -5568,11 +5470,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "431888109.346651"
+            timestampString = "438021313.195625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "521"
-            endingLineNumber = "521"
+            startingLineNumber = "529"
+            endingLineNumber = "529"
             landmarkName = "-startAuthenticationForToken:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5584,12 +5486,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "434289052.499384"
+            timestampString = "438643503.814269"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "181"
             endingLineNumber = "181"
-            landmarkName = "-viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil:completion:"
+            landmarkName = "+localizedName"
             landmarkType = "5">
             <Locations>
                <Location
@@ -5630,12 +5532,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintRequestViewController.m"
-            timestampString = "436958556.894941"
+            timestampString = "438789005.740743"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "462"
-            endingLineNumber = "462"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            startingLineNumber = "502"
+            endingLineNumber = "502"
+            landmarkName = "-tableView:titleForFooterInSection:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5760,11 +5662,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintRequestViewController.m"
-            timestampString = "436958556.894941"
+            timestampString = "438789005.740743"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "452"
-            endingLineNumber = "452"
+            startingLineNumber = "492"
+            endingLineNumber = "492"
             landmarkName = "-tableView:titleForFooterInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5776,12 +5678,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Model/CloudPrintService.m"
-            timestampString = "432233625.725921"
+            timestampString = "438792898.996504"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
-            landmarkName = "-uploadForPrintDocumentWithLocalURL:jobUniqueId:success:progress:failure:"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
+            landmarkName = "-uploadForPrintDocumentWithLocalURL:desiredFilename:jobUniqueId:success:progress:failure:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5792,12 +5694,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "432253808.998483"
+            timestampString = "438643503.814269"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "116"
             endingLineNumber = "116"
-            landmarkName = "+isSupportedFileWithLocalURL:"
+            landmarkName = "-setCurrentViewController:animated:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5808,12 +5710,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "434289052.499384"
+            timestampString = "438643503.814269"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "152"
             endingLineNumber = "152"
-            landmarkName = "-viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil:completion:"
+            landmarkName = "-init"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5824,12 +5726,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "434289052.499384"
+            timestampString = "438643503.814269"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "182"
             endingLineNumber = "182"
-            landmarkName = "-viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil:completion:"
+            landmarkName = "+identifierName"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5840,12 +5742,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "434289052.499384"
+            timestampString = "438643503.814269"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "188"
             endingLineNumber = "188"
-            landmarkName = "-viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil:completion:"
+            landmarkName = "+isSupportedFileWithLocalURL:"
             landmarkType = "5">
             <Locations>
                <Location
@@ -5886,12 +5788,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Model/CloudPrintService.m"
-            timestampString = "432411224.254476"
+            timestampString = "438792898.996504"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
-            landmarkName = "-uploadForPrintDocumentWithLocalURL:jobUniqueId:success:progress:failure:"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
+            landmarkName = "-uploadForPrintDocumentWithLocalURL:desiredFilename:jobUniqueId:success:progress:failure:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5902,12 +5804,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Model/CloudPrintService.m"
-            timestampString = "432409976.118769"
+            timestampString = "438792898.996504"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "112"
-            endingLineNumber = "112"
-            landmarkName = "-uploadForPrintDocumentWithLocalURL:jobUniqueId:success:progress:failure:"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
+            landmarkName = "-uploadForPrintDocumentWithLocalURL:desiredFilename:jobUniqueId:success:progress:failure:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5950,11 +5852,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "437063806.273273"
+            timestampString = "438779643.874993"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1152"
-            endingLineNumber = "1152"
+            startingLineNumber = "1169"
+            endingLineNumber = "1169"
             landmarkName = "-revealController:didSwapToFrontViewController:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5966,11 +5868,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "432491234.86628"
+            timestampString = "438103979.798141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "789"
-            endingLineNumber = "789"
+            startingLineNumber = "795"
+            endingLineNumber = "795"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -5982,13 +5884,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintRequestViewController.m"
-            timestampString = "435860064.748296"
+            timestampString = "438789005.740743"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "245"
-            endingLineNumber = "245"
-            landmarkName = "@implementation CloudPrintRequestViewController"
-            landmarkType = "3">
+            startingLineNumber = "285"
+            endingLineNumber = "285"
+            landmarkName = "-actionSheet:willDismissWithButtonIndex:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -6078,11 +5980,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "437063806.273273"
+            timestampString = "438779643.874993"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "975"
-            endingLineNumber = "975"
+            startingLineNumber = "992"
+            endingLineNumber = "992"
             landmarkName = "-rotateDeviceToPortraitIfNecessary"
             landmarkType = "5">
          </BreakpointContent>
@@ -6142,11 +6044,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintRequestViewController.m"
-            timestampString = "436958556.894941"
+            timestampString = "438789005.740743"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "271"
-            endingLineNumber = "271"
+            startingLineNumber = "311"
+            endingLineNumber = "311"
             landmarkName = "-tableView:accessoryButtonTappedForRowWithIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6158,11 +6060,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Extensions/CloudPrintAction/CloudPrintActionViewController.m"
-            timestampString = "433963510.897384"
+            timestampString = "438702461.28332"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -6174,12 +6076,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "434289052.499384"
+            timestampString = "438701319.000768"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "193"
-            endingLineNumber = "193"
-            landmarkName = "-viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil:completion:"
+            startingLineNumber = "190"
+            endingLineNumber = "190"
+            landmarkName = "+isSupportedFileWithLocalURL:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -6190,11 +6092,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "437063806.273273"
+            timestampString = "438779643.874993"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1067"
-            endingLineNumber = "1067"
+            startingLineNumber = "1084"
+            endingLineNumber = "1084"
             landmarkName = "-gestureRecognizer:shouldReceiveTouch:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6206,11 +6108,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "437063806.273273"
+            timestampString = "438779643.874993"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1090"
-            endingLineNumber = "1090"
+            startingLineNumber = "1107"
+            endingLineNumber = "1107"
             landmarkName = "-gestureRecognizer:shouldReceiveTouch:"
             landmarkType = "5">
             <Actions>
@@ -6390,11 +6292,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "437057577.266488"
+            timestampString = "438779643.874993"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "586"
-            endingLineNumber = "586"
+            startingLineNumber = "603"
+            endingLineNumber = "603"
             landmarkName = "@implementation MainController"
             landmarkType = "3">
          </BreakpointContent>
@@ -6406,12 +6308,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "437057775.467925"
+            timestampString = "438779643.874993"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "236"
-            endingLineNumber = "236"
+            startingLineNumber = "253"
+            endingLineNumber = "253"
             landmarkName = "-handlePocketCampusURL:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CamiproPlugin/Extensions/CamiproWidget/CamiproWidgetViewController.m"
+            timestampString = "438021313.195625"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "205"
+            endingLineNumber = "205"
+            landmarkName = "-getBalanceAndTransactionsFailedForCamiproRequest:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -6421,13 +6339,469 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintRequestViewController.m"
-            timestampString = "437493335.47433"
+            filePath = "Plugins/MoodlePlugin/Controllers/MoodleCoursesListViewController.m"
+            timestampString = "438012957.053653"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "697"
-            endingLineNumber = "697"
-            landmarkName = "-shouldHideExtensionInfo"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
+            landmarkName = "-error"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
+            timestampString = "438021313.195625"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "499"
+            endingLineNumber = "499"
+            landmarkName = "-restartAuthenticationProcessIfNeeded"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/MoodlePlugin/Controllers/MoodleCoursesListViewController.m"
+            timestampString = "438015484.067133"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
+            landmarkName = "-getCoursesForRequest:didReturn:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[MoodleCoursesListViewController getCoursesForRequest:didReturn:]"
+                  moduleName = "PocketCampus"
+                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/MoodlePlugin/Controllers/MoodleCoursesListViewController.m"
+                  timestampString = "438017435.156985"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "186"
+                  endingLineNumber = "186"
+                  offsetFromSymbolStart = "348">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__66-[MoodleCoursesListViewController getCoursesForRequest:didReturn:]_block_invoke"
+                  moduleName = "PocketCampus"
+                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/MoodlePlugin/Controllers/MoodleCoursesListViewController.m"
+                  timestampString = "438017435.157174"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "187"
+                  endingLineNumber = "187"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/MoodlePlugin/Controllers/MoodleCoursesListViewController.m"
+            timestampString = "438015485.956975"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
+            landmarkName = "-refresh"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+            timestampString = "438709236.618725"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
+            landmarkName = "+isSupportedFileWithLocalURL:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+            timestampString = "438709236.618725"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "455"
+            endingLineNumber = "455"
+            landmarkName = "-handleJob:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+            timestampString = "438709236.618725"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "339"
+            endingLineNumber = "339"
+            landmarkName = "-handleJob:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[CloudPrintController handleJob:]"
+                  moduleName = "CloudPrintAction"
+                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+                  timestampString = "438641273.227324"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "332"
+                  endingLineNumber = "332"
+                  offsetFromSymbolStart = "108">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__34-[CloudPrintController handleJob:]_block_invoke"
+                  moduleName = "CloudPrintAction"
+                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+                  timestampString = "438641273.227615"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "333"
+                  endingLineNumber = "333"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+            timestampString = "438709236.618725"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
+            landmarkName = "-viewControllerForPrintDocumentWithURL:docName:printDocumentRequestOrNil:completion:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+            timestampString = "438709236.618725"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "378"
+            endingLineNumber = "378"
+            landmarkName = "-handleJob:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+            timestampString = "438709236.618725"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "397"
+            endingLineNumber = "397"
+            landmarkName = "-handleJob:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Extensions/CloudPrintAction/CloudPrintActionViewController.m"
+            timestampString = "438702461.28332"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Extensions/CloudPrintAction/CloudPrintActionViewController.m"
+            timestampString = "438703188.047557"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
+            landmarkName = "-loadItemWithURL:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__50-[CloudPrintActionViewController loadItemWithURL:]_block_invoke"
+                  moduleName = "CloudPrintAction"
+                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Extensions/CloudPrintAction/CloudPrintActionViewController.m"
+                  timestampString = "438643504.991159"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "136"
+                  endingLineNumber = "136"
+                  offsetFromSymbolStart = "704">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__50-[CloudPrintActionViewController loadItemWithURL:]_block_invoke"
+                  moduleName = "CloudPrintAction"
+                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Extensions/CloudPrintAction/CloudPrintActionViewController.m"
+                  timestampString = "438643504.991342"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "136"
+                  endingLineNumber = "136"
+                  offsetFromSymbolStart = "724">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+            timestampString = "438778546.735352"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "521"
+            endingLineNumber = "521"
+            landmarkName = "-downloadDocumentForJob:progress:completion:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+            timestampString = "438778546.735352"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "519"
+            endingLineNumber = "519"
+            landmarkName = "-downloadDocumentForJob:progress:completion:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+            timestampString = "438643197.635424"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
+            landmarkName = "-setCurrentViewController:animated:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+            timestampString = "438778546.735352"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "531"
+            endingLineNumber = "531"
+            landmarkName = "-downloadDocumentForJob:progress:completion:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+            timestampString = "438778546.735352"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "518"
+            endingLineNumber = "518"
+            landmarkName = "-downloadDocumentForJob:progress:completion:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[CloudPrintController downloadDocumentForJob:progress:completion:]"
+                  moduleName = "CloudPrintAction"
+                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+                  timestampString = "438701552.298207"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "516"
+                  endingLineNumber = "516"
+                  offsetFromSymbolStart = "1180">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__67-[CloudPrintController downloadDocumentForJob:progress:completion:]_block_invoke"
+                  moduleName = "CloudPrintAction"
+                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+                  timestampString = "438701552.298473"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "517"
+                  endingLineNumber = "517"
+                  offsetFromSymbolStart = "76">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+            timestampString = "438701627.203685"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
+            landmarkName = "+isSupportedFileWithLocalURL:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintPreviewViewController.m"
+            timestampString = "438781901.64345"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
+            landmarkName = "@implementation CloudPrintPreviewViewController"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintPreviewViewController.m"
+            timestampString = "438713506.158394"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
+            landmarkName = "-update"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintPreviewViewController.m"
+            timestampString = "438781901.64345"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
+            landmarkName = "-updateImage"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintPreviewViewController.m"
+            timestampString = "438781936.495582"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
+            landmarkName = "-setPrintDocumentRequest:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

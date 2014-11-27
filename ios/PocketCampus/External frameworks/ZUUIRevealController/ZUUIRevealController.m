@@ -191,7 +191,8 @@
 }
 
 - (void)_revealAnimationWithDuration:(NSTimeInterval)duration
-{	
+{
+    [self.rearViewController viewWillAppear:duration > 0.0];
 	[UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionCurveEaseInOut animations:^
 	{
 		self.frontView.frame = CGRectMake(self.rearViewRevealWidth, 0.0f, self.frontView.frame.size.width, self.frontView.frame.size.height);
@@ -199,6 +200,7 @@
 	}
 	completion:^(BOOL finished)
 	{
+        [self.rearViewController viewDidAppear:duration > 0.0];
 		// Dispatch message to delegate, telling it the 'rearView' _DID_ reveal, if appropriate:
 		if ([self.delegate respondsToSelector:@selector(revealController:didRevealRearViewController:)])
 		{
@@ -208,7 +210,8 @@
 }
 
 - (void)_concealAnimationWithDuration:(NSTimeInterval)duration resigningCompletelyFromRearViewPresentationMode:(BOOL)resigning
-{	
+{
+    [self.rearViewController viewWillDisappear:duration > 0.0];
 	[UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^
 	{
 		self.frontView.frame = CGRectMake(0.0f, 0.0f, self.frontView.frame.size.width, self.frontView.frame.size.height);
@@ -216,6 +219,7 @@
 	}
 	completion:^(BOOL finished)
 	{
+        [self.rearViewController viewDidDisappear:duration > 0.0];
 		if (resigning)
 		{
 			// Dispatch message to delegate, telling it the 'rearView' _DID_ resign full-screen presentation mode, if appropriate:
@@ -252,12 +256,14 @@
 
 - (void)_revealCompletelyAnimationWithDuration:(NSTimeInterval)duration
 {
+    [self.rearViewController viewWillAppear:duration > 0.0];
 	[UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^
 	{
 		self.frontView.frame = CGRectMake(self.rearViewPresentationWidth, 0.0f, self.frontView.frame.size.width, self.frontView.frame.size.height);
 	}
 	completion:^(BOOL finished)
 	{
+        [self.rearViewController viewDidAppear:duration > 0.0];
         self.frontView.alpha = 0.0;
 		// Dispatch message to delegate, telling it the 'rearView' _DID_ enter its full-screen presentation mode, if appropriate:
 		if ([self.delegate respondsToSelector:@selector(revealController:didEnterRearViewControllerPresentationMode:)])
