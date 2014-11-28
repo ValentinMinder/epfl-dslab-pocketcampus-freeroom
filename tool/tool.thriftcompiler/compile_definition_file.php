@@ -37,7 +37,7 @@ if ($plugin_name == null || $platform == null) {
 $thrift_bin = "binaries/thrift-linux-0.7.0";
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 	$cwd = getcwd();
-	$thrift_bin = "$cwd/binaries/thrift-win-0.7.0.exe";
+	$thrift_bin = "$cwd/binaries/thrift-win-0.9.2.exe";
 } elseif (strtoupper(substr(PHP_OS, 0, 6)) === 'DARWIN') {
 	$thrift_bin = "binaries/thrift-mac-0.7.0";
 }
