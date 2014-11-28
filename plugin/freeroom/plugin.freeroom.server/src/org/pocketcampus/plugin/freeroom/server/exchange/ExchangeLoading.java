@@ -1,10 +1,10 @@
 package org.pocketcampus.plugin.freeroom.server.exchange;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 
-import org.apache.commons.io.IOUtils;
+import org.pocketcampus.platform.shared.utils.StringUtils;
 
 /**
  * This class is used to update the rooms list with correct attributes in the
@@ -26,11 +26,10 @@ public class ExchangeLoading {
 			+ "exchange" + sep + "EWSRoomsData";
 
 	public ExchangeLoading(String DB_URL, String DB_USER, String DB_PWD) {
-		this.DB_URL = DB_URL ;
+		this.DB_URL = DB_URL;
 		this.DB_USERNAME = DB_USER;
 		this.DB_PASSWORD = DB_PWD;
 	}
-
 
 	/**
 	 * Load all the data in all files in the path.
@@ -71,7 +70,7 @@ public class ExchangeLoading {
 		}
 		boolean flag = true;
 		try {
-			String s = IOUtils.toString(new FileReader(file));
+			String s = StringUtils.fromStream(new FileInputStream(file), "UTF-8");
 			String[] tab = s.split("[,;]");
 			for (String string : tab) {
 				boolean result = loadExchangeData(string);
