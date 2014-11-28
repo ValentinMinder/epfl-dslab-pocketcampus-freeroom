@@ -68,5 +68,5 @@ To be valid, a period of time must be:
 - not more than 24h
 - if weekend are not accepted: only week days
 - if evenings are not accepted: not after the limit hour in evening, not before the beginning hour in the morning (thrift definition for hours, currently 8am-19pm)
-- limited in time in future (thrift def, currently 1 week)
-- limited in time in past (thrift def, currently 4 weeks)
+- limited in time in future (thrift def, currently 4 weeks)
+- limited in time in past (thrift def, currently 1 week)

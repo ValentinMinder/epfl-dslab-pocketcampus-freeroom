@@ -39,9 +39,8 @@ public class RebuildDB implements Runnable {
 				DB_USER, DB_PASSWORD, server);
 		fodJSON.fetchAndInsertRoomsList(tsStart, tsEnd);
 		
-		ExchangeLoading loadEWA = new ExchangeLoading(DB_URL, DB_USER, DB_PASSWORD);
-		loadEWA.loadExchangeData();
-		System.out.println("Rebuilt finished!");
+		//ExchangeLoading loadEWA = new ExchangeLoading(DB_URL, DB_USER, DB_PASSWORD);
+		//loadEWA.loadExchangeData();
 	}
 
 }

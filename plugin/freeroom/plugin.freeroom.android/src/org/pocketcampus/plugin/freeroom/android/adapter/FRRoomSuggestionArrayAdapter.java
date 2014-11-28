@@ -55,9 +55,9 @@ public class FRRoomSuggestionArrayAdapter<T> extends ArrayAdapter<FRRoom> {
 		
 		if (favorites) {
 			if (mModel.isFavorite(room)) {
-				tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite_enabled, 0, 0, 0);
+				tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.freeroom_ic_action_favorite_enabled, 0, 0, 0);
 			} else {
-				tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite_disabled, 0, 0, 0);
+				tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.freeroom_ic_action_favorite_disabled, 0, 0, 0);
 			}
 		}
 		return row;

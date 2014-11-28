@@ -5,7 +5,7 @@ const i32 LENGTH_USERMESSAGE = 50;
 const i32 MIN_AUTOCOMPL_LENGTH = 2;
 
 const i32 MAXIMAL_WEEKS_IN_FUTURE = 4;
-// TODO: evaluate usefulness
+// If might be useful to check in the past in you're a staff and want to check previous reservation.
 const i32 MAXIMAL_WEEKS_IN_PAST = 1;
 
 // after last hour check (7pm), epfl is closed for public, and most of the room are free
@@ -154,8 +154,7 @@ struct FRWorkingOccupancy {
 struct FRMessageFrequency {
 	1: required string message;
 	// how many times the same message appears
-	// rename: count
-	2: required i32 frequency;
+	2: required i32 count;
 }
 
 struct FRImWorkingRequest {

@@ -132,9 +132,9 @@ public class ExpandableListViewFavoriteAdapter<T> extends
 		final boolean isFav = mModel.isFavorite(room);
 
 		if (isFav) {
-			star.setImageResource(R.drawable.ic_action_remove);
+			star.setImageResource(R.drawable.freeroom_ic_action_remove);
 		} else {
-			star.setImageResource(R.drawable.ic_action_favorite_disabled);
+			star.setImageResource(R.drawable.freeroom_ic_action_favorite_disabled);
 		}
 
 		star.setOnClickListener(new OnClickListener() {
@@ -204,9 +204,9 @@ public class ExpandableListViewFavoriteAdapter<T> extends
 
 		ImageView iv_expand = vholder.getImageViewExpand();
 		if (isExpanded) {
-			iv_expand.setImageResource(R.drawable.ic_action_collapse);
+			iv_expand.setImageResource(R.drawable.freeroom_ic_action_collapse);
 		} else {
-			iv_expand.setImageResource(R.drawable.ic_action_expand);
+			iv_expand.setImageResource(R.drawable.freeroom_ic_action_expand);
 		}
 
 		return convertView;

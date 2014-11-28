@@ -17,7 +17,7 @@
         android:layout_alignParentTop="true"
         android:layout_gravity="right"
         android:contentDescription="@string/freeroom_layout_roomslist_img_share"
-        android:src="@drawable/ic_action_share_enabled" />
+        android:src="@drawable/freeroom_ic_action_share_enabled" />
 
     <TextView
         android:id="@+id/freeroom_layout_details_separator_1"
@@ -34,7 +34,7 @@
         android:layout_toLeftOf="@id/freeroom_layout_details_separator_1"
         android:contentDescription="@string/freeroom_layout_roomslist_img_people"
         android:gravity="center"
-        android:src="@drawable/ic_occupation_unknown" />
+        android:src="@drawable/freeroom_ic_occupation_unknown" />
 
     <TextView
         android:id="@+id/freeroom_layout_details_separator_2"
@@ -48,7 +48,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_toLeftOf="@id/freeroom_layout_details_separator_2"
-        android:drawableLeft="@drawable/ic_dot_grey"
+        android:drawableLeft="@drawable/freeroom_ic_dot_grey"
         android:gravity="left|center_vertical"
         android:maxLines="1"
         android:text="mock time data"

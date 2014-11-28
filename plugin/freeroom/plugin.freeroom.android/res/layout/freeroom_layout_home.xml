@@ -43,7 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:drawableRight="@drawable/ic_action_send_now"
+            android:drawableRight="@drawable/freeroom_ic_action_send_now"
             android:text="@string/freeroom_konami_start"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />

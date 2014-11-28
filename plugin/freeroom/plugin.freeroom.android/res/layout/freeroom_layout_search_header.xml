@@ -95,7 +95,7 @@
                 android:layout_gravity="right"
                 android:layout_weight="3"
                 android:contentDescription="@string/freeroom_layout_search_first_hour_img"
-                android:src="@drawable/ic_action_hour_down_down"
+                android:src="@drawable/freeroom_ic_action_hour_down_down"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
 
@@ -108,7 +108,7 @@
                 android:layout_gravity="right"
                 android:layout_weight="3"
                 android:contentDescription="@string/freeroom_layout_search_prev_hour_img"
-                android:src="@drawable/ic_action_hour_down"
+                android:src="@drawable/freeroom_ic_action_hour_down"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
 
@@ -131,7 +131,7 @@
                 android:layout_gravity="right"
                 android:layout_weight="3"
                 android:contentDescription="@string/freeroom_layout_search_next_hour_img"
-                android:src="@drawable/ic_action_hour_up"
+                android:src="@drawable/freeroom_ic_action_hour_up"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
 
@@ -144,7 +144,7 @@
                 android:layout_gravity="right"
                 android:layout_weight="3"
                 android:contentDescription="@string/freeroom_layout_search_prev_hour_img"
-                android:src="@drawable/ic_action_hour_down"
+                android:src="@drawable/freeroom_ic_action_hour_down"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
 
@@ -167,7 +167,7 @@
                 android:layout_gravity="right"
                 android:layout_weight="3"
                 android:contentDescription="@string/freeroom_layout_search_next_hour_img"
-                android:src="@drawable/ic_action_hour_up"
+                android:src="@drawable/freeroom_ic_action_hour_up"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
 
@@ -180,7 +180,7 @@
                 android:layout_gravity="right"
                 android:layout_weight="3"
                 android:contentDescription="@string/freeroom_layout_search_last_hour_img"
-                android:src="@drawable/ic_action_hour_up_up"
+                android:src="@drawable/freeroom_ic_action_hour_up_up"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
         </LinearLayout>
@@ -345,7 +345,7 @@
                 android:layout_height="fill_parent"
                 android:layout_gravity="bottom"
                 android:layout_weight="5"
-                android:drawableLeft="@drawable/ic_action_new_small"
+                android:drawableLeft="@drawable/freeroom_ic_action_new_small"
                 android:maxLines="1"
                 android:text="@string/freeroom_search_userdef_add"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -359,7 +359,7 @@
                 android:layout_height="fill_parent"
                 android:layout_gravity="bottom"
                 android:layout_weight="5"
-                android:drawableLeft="@drawable/ic_action_edit_small"
+                android:drawableLeft="@drawable/freeroom_ic_action_edit_small"
                 android:maxLines="1"
                 android:text="@string/freeroom_search_userdef_edit"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -373,7 +373,7 @@
                 android:layout_height="fill_parent"
                 android:layout_gravity="bottom"
                 android:layout_weight="5"
-                android:drawableLeft="@drawable/ic_action_discard_small"
+                android:drawableLeft="@drawable/freeroom_ic_action_discard_small"
                 android:maxLines="1"
                 android:text="@string/freeroom_search_userdef_reset"
                 android:textAppearance="?android:attr/textAppearanceSmall"

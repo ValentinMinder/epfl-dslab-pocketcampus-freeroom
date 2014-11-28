@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.pocketcampus.plugin.freeroom.shared.Constants;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
@@ -138,14 +137,13 @@ public class TestFRTimes {
 
 		// well... we tested so many cases !!!
 	}
-
+	
 	/**
 	 * This test ONLY that it gives a valid period.
 	 * 
 	 * This doesn't test that it's the one that is supposed to be given.
 	 */
 	@Test
-	@Ignore
 	public void testGetNextValidPeriodGiveValidPeriod() {
 
 		Calendar mCalendar = Calendar.getInstance();
@@ -154,108 +152,115 @@ public class TestFRTimes {
 
 		// thursday, early morning
 		mCalendar.set(2014, 04, 24, 01, 00);
+		// back in time reference,
+		long now = mCalendar.getTimeInMillis(); 
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// thursday, during day, usual
 		mCalendar.set(2014, 04, 24, 17, 59);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// thursday, late afternoon
 		mCalendar.set(2014, 04, 24, 18, 23);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// thursday, after delay
 		mCalendar.set(2014, 04, 24, 18, 56);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// thursday, after delay
 		mCalendar.set(2014, 04, 24, 19, 00);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
+		
+		// thursday, after delay
+				mCalendar.set(2014, 04, 24, 20, 30);
+				assertTrue(FRTimes
+						.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// friday, late afternoon
 		mCalendar.set(2014, 04, 25, 18, 23);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// friday, after delay
 		mCalendar.set(2014, 04, 25, 18, 56);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// friday, after delay
 		mCalendar.set(2014, 04, 25, 19, 00);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// saturday, early morning
 		mCalendar.set(2014, 04, 26, 00, 00);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// saturday, early morning
 		mCalendar.set(2014, 04, 26, 00, 21);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// saturday, during day, usual
 		mCalendar.set(2014, 04, 26, 17, 59);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// saturday, late afternoon
 		mCalendar.set(2014, 04, 26, 18, 00);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// saturday, after delay
 		mCalendar.set(2014, 04, 26, 18, 55);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// saturday, after delay
 		mCalendar.set(2014, 04, 26, 19, 00);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// saturday, early morning
 		mCalendar.set(2014, 04, 26, 00, 00);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// saturday, during day, usual
 		mCalendar.set(2014, 04, 26, 17, 59);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// saturday, late afternoon
 		mCalendar.set(2014, 04, 26, 18, 00);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// saturday, after delay
 		mCalendar.set(2014, 04, 26, 18, 55);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
 
 		// saturday, after delay
 		mCalendar.set(2014, 04, 26, 19, 00);
 		assertTrue(FRTimes
-				.validCalendars(FRTimes.getNextValidPeriod(mCalendar)));
+				.validCalendars(FRTimes.getNextValidPeriod(mCalendar), now));
+
 
 		// checks the validity of 100000 hasardous times during a week!
 		for (int i = 0; i < 100000; i++) {
-			long now = (long) (Math.random() * FRTimes.ONE_WEEK_IN_MS);
+			long randomTimeStamp = (long) (Math.random() * FRTimes.ONE_WEEK_IN_MS);
 			assertTrue(
 					"Hazardous test number " + i,
 					FRTimes.validCalendars(FRTimes.getNextValidPeriod(System
-							.currentTimeMillis() + now)));
+							.currentTimeMillis() + randomTimeStamp)));
 		}
 
 	}
-
 }

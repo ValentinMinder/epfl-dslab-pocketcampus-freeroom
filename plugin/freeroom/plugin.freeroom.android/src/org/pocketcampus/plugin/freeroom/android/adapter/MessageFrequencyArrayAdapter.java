@@ -54,7 +54,7 @@ public class MessageFrequencyArrayAdapter<T> extends
 			messageTextView.setText(req.getMessage());
 			messageTextView.setTextColor(Color.BLACK);
 		}
-		frequencyTextView.setText("x " + req.getFrequency());
+		frequencyTextView.setText("x " + req.getCount());
 		return (row);
 	}
 }

@@ -101,13 +101,13 @@ public class ActualOccupationArrayAdapter<T> extends
 				}
 			});
 		} else {
-			ivpeople.setImageResource(R.drawable.ic_occupation_occupied);
+			ivpeople.setImageResource(R.drawable.freeroom_ic_occupation_occupied);
 			ivpeople.setOnClickListener(null);
 		}
 
 		final ImageView ivshare = vholder.getImageViewShare();
 		if (free) {
-			ivshare.setImageResource(R.drawable.ic_action_share_enabled);
+			ivshare.setImageResource(R.drawable.freeroom_ic_action_share_enabled);
 			OnClickListener ocl = new OnClickListener() {
 
 				@Override
@@ -143,7 +143,7 @@ public class ActualOccupationArrayAdapter<T> extends
 				// green, and someone registered
 				tv.setCompoundDrawablesWithIntrinsicBounds(
 						mModel.getColoredDotDrawable(mActualOccupation), 0,
-						R.drawable.ic_action_next_item, 0);
+						R.drawable.freeroom_ic_action_next_item, 0);
 			} else {
 				// green, but nobody registered
 				tv.setCompoundDrawablesWithIntrinsicBounds(
@@ -156,7 +156,7 @@ public class ActualOccupationArrayAdapter<T> extends
 			// whole line clickable
 			// convertView.setOnClickListener(ocl);
 		} else {
-			ivshare.setImageResource(R.drawable.ic_action_share_disabled);
+			ivshare.setImageResource(R.drawable.freeroom_ic_action_share_disabled);
 			// share icon non clickable
 			ivshare.setOnClickListener(null);
 			// whole line non clickable

@@ -17,7 +17,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:contentDescription="@string/freeroom_layout_roomslist_img_fav"
-        android:src="@drawable/ic_action_discard" />
+        android:src="@drawable/freeroom_ic_action_discard" />
 
     <TextView
         android:id="@+id/freeroom_layout_favlist_separator_1"
