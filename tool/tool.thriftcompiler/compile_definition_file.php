@@ -34,12 +34,12 @@ if ($plugin_name == null || $platform == null) {
 
 // LOGIC: DONT TOUCH THE CODE BELOW
 
-$thrift_bin = "binaries/thrift-linux-0.7.0";
+$thrift_bin = "binaries/thrift-linux-0.9.2";
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 	$cwd = getcwd();
-	$thrift_bin = "$cwd/binaries/thrift-win-0.7.0.exe";
+	$thrift_bin = "$cwd/binaries/thrift-win-0.9.2.exe";
 } elseif (strtoupper(substr(PHP_OS, 0, 6)) === 'DARWIN') {
-	$thrift_bin = "binaries/thrift-mac-0.7.0";
+	$thrift_bin = "binaries/thrift-mac-0.9.2";
 }
 $plugin_ios_dir = "../../ios/PocketCampus/Plugins/{$plugin_name}Plugin/Model/ThriftTypes+Services";
 $plugin_name = strtolower($plugin_name);
