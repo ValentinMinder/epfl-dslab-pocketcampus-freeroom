@@ -229,7 +229,7 @@ function copyr($source, $dest) {
 	$dir = dir($source);
 	while (false !== $entry = $dir->read()) {
 		// Skip pointers
-		if ($entry == '.' || $entry == '..' || $entry == 'tests') {
+		if ($entry == '.' || $entry == '..') {
 			continue;
 		}
 
