@@ -25,14 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-//  DirectoryPlugin
 //  Created by Loïc Gardiol on 01.03.12.
 
-
 #import "DirectoryController.h"
-#import "PCUtils.h"
 #import "PluginNavigationController.h"
 #import "DirectorySearchViewController.h"
 #import "DirectoryPersonViewController.h"

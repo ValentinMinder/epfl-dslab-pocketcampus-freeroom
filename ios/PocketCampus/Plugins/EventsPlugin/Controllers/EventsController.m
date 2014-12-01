@@ -112,6 +112,10 @@ static EventsController* instance __weak = nil;
     }
 }
 
+- (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
+    return [self viewControllerForURLQueryAction:action parameters:parameters handleSilent:YES];
+}
+
 - (BOOL)handleURLQueryAction:(NSString *)action parameters:(NSDictionary *)parameters {
     
     BOOL foundSilent = [self handleSilentParameters:parameters];
@@ -171,11 +175,6 @@ static EventsController* instance __weak = nil;
     return YES;
 }
 
-- (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
-    return [self viewControllerForURLQueryAction:action parameters:parameters handleSilent:YES];
-}
-
-
 + (NSString*)localizedName {
     return NSLocalizedStringFromTable(@"PluginName", @"EventsPlugin", @"");
 }
@@ -230,8 +229,8 @@ static EventsController* instance __weak = nil;
         if (eventId) {
             viewController = [[EventItemViewController alloc] initAndLoadEventItemWithId:[eventId longLongValue]];
         }
-    } else {
-        //no other supported actions
+    } else if (action.length == 0) {
+        viewController = [[EventPoolViewController alloc] initAndLoadRootPool];
     }
     
     NSString* eventItemIdToMarkFavorite = parameters[kEventsURLParameterMarkFavoriteEventItemId];
