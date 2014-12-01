@@ -41,6 +41,8 @@
 
 #import "CloudPrintMultiPageLayoutCell.h"
 
+#import "CloudPrintPreviewViewController.h"
+
 static NSInteger const kPrinterInfoSectionIndex = 0;
 static NSInteger const kCopiesAndRangeSectionIndex = 1;
 static NSInteger const kOrientationSectionIndex = 2;
@@ -70,9 +72,6 @@ static NSInteger const kPageToTheEndValue = 10000;
 
 @interface CloudPrintRequestViewController ()<UIActionSheetDelegate>
 
-@property (nonatomic, strong) NSString* documentName;
-@property (nonatomic, strong) PrintDocumentRequest* printRequest;
-
 @property (nonatomic, strong) CloudPrintExtensionInfoCell* extensionInfoCell;
 @property (nonatomic, strong) UIStepper* nbCopiesStepper;
 @property (nonatomic, strong) UISegmentedControl* pageRangeSegmentedControl;
@@ -92,13 +91,11 @@ static NSInteger const kPageToTheEndValue = 10000;
 
 #pragma mark - Init
 
-- (instancetype)initWithDocumentName:(NSString*)docName printRequest:(PrintDocumentRequest*)printRequest {
+- (instancetype)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = @"EPFL Print";
         self.gaiScreenName = @"/cloudprint";
-        self.documentName = docName;
-        self.printRequest = printRequest ?: [PrintDocumentRequest createDefaultRequest];
     }
     return self;
 }
@@ -109,6 +106,12 @@ static NSInteger const kPageToTheEndValue = 10000;
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Print", @"CloudPrintPlugin", nil) style:UIBarButtonItemStyleDone target:self action:@selector(printTapped)];
+    
+    UIBarButtonItem* previewButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"PrintPreview", @"CloudPrintPlugin", nil) style:UIBarButtonItemStylePlain target:self action:@selector(printPreviewTapped)];
+    UIBarButtonItem* flexibleItem1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem* flexibleItem2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    self.toolbarItems = @[flexibleItem1, previewButtonItem, flexibleItem2];
+    
     /*PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] initWithFrame:self.tableView.frame style:self.tableView.style];
     self.tableView = tableViewAdditions;
     tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
@@ -123,6 +126,24 @@ static NSInteger const kPageToTheEndValue = 10000;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
+    [self.navigationController setToolbarHidden:NO animated:NO];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController setToolbarHidden:YES animated:NO];
+}
+
+#pragma mark - Public
+
+- (void)setDocumentName:(NSString *)documentName {
+    _documentName = [documentName copy];
+    [self.tableView reloadData];
+}
+
+- (void)setPrintRequest:(PrintDocumentRequest *)printRequest {
+    _printRequest = printRequest;
+    [self.tableView reloadData];
 }
 
 #pragma mark - Actions
@@ -141,10 +162,36 @@ static NSInteger const kPageToTheEndValue = 10000;
     }
 }
 
+- (void)printPreviewTapped {
+    [self trackAction:@"PrintPreview"];
+    CloudPrintPreviewViewController* viewController = [CloudPrintPreviewViewController new];
+    viewController.printDocumentRequest = self.printRequest;
+    __weak __typeof(self) welf = self;
+    [viewController setCloseTappedBlock:^{
+        [welf dismissViewControllerAnimated:YES completion:NULL];
+    }];
+    [viewController setPrintTappedBlock:^{
+        welf.navigationItem.leftBarButtonItem.enabled = NO;
+        welf.navigationItem.rightBarButtonItem.enabled = NO;
+        [welf dismissViewControllerAnimated:YES completion:^{
+            [welf printTapped];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                welf.navigationItem.leftBarButtonItem.enabled = YES;
+                welf.navigationItem.rightBarButtonItem.enabled = YES;
+            });
+        }];
+    }];
+    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
+    navController.view.tintColor = self.view.tintColor; //if in extension
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navController animated:YES completion:NULL];
+}
+
 - (void)valueChanged:(id)sender {
     if (sender == self.nbCopiesStepper) {
         if (!self.printRequest.multipleCopies) {
             self.printRequest.multipleCopies = [CloudPrintMultipleCopies new];
+            self.printRequest.multipleCopies.collate = NO;
         }
         self.printRequest.multipleCopies.numberOfCopies = (int)(self.nbCopiesStepper.value);
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kNbCopiesRowIndex inSection:kCopiesAndRangeSectionIndex]] withRowAnimation:UITableViewRowAnimationNone];

@@ -104,6 +104,7 @@
 
 + (PrintDocumentRequest*)createDefaultRequest {
     PrintDocumentRequest* request = [PrintDocumentRequest new];
+    request.documentId = 0;
     request.orientation = CloudPrintOrientation_PORTRAIT;
     request.colorConfig = CloudPrintColorConfig_BLACK_WHITE;
     request.doubleSided = CloudPrintDoubleSidedConfig_LONG_EDGE;
@@ -123,6 +124,10 @@
         objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return value;
+}
+
+- (BOOL)documentIdIsDefault {
+    return self.documentId == 0;
 }
 
 @end

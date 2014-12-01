@@ -67,4 +67,11 @@
  */
 @property (nonatomic, readonly) NSString* jobUniqueId;
 
+/**
+ * @return YES if documentId is the default
+ * value, thus meaning that it was not set by the server.
+ * Document typically needs to be uploaded if so.
+ */
+@property (nonatomic, readonly) BOOL documentIdIsDefault;
+
 @end

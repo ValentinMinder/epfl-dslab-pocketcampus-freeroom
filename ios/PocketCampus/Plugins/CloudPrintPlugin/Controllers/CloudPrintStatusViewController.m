@@ -34,6 +34,7 @@
 @property (nonatomic, weak) IBOutlet UILabel* documentNameLabel;
 @property (nonatomic, weak) IBOutlet UILabel* label;
 @property (nonatomic, weak) IBOutlet UIProgressView* progressView;
+@property (nonatomic, weak) IBOutlet UIButton* tryAgainButton;
 
 @end
 
@@ -59,6 +60,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
+    [self.tryAgainButton setTitle:NSLocalizedStringFromTable(@"TryAgain", @"CloudPrintPlugin", nil) forState:UIControlStateNormal];
     self.documentName = self.documentName;
     self.statusMessage = self.statusMessage;
     [self updateProgress];
@@ -78,6 +80,12 @@
     }
 }
 
+- (IBAction)tryAgainTapped {
+    if (self.showTryAgainButtonWithTappedBlock) {
+        self.showTryAgainButtonWithTappedBlock();
+    }
+}
+
 #pragma mark - Public
 
 - (void)setDocumentName:(NSString *)documentName {
@@ -90,6 +98,9 @@
     switch (statusMessage) {
         case CloudPrintStatusMessageLoading:
             self.label.text = NSLocalizedStringFromTable(@"Loading", @"CloudPrintPlugin", nil);
+            break;
+        case CloudPrintStatusMessageDownloadingFile:
+            self.label.text = NSLocalizedStringFromTable(@"DownloadingFile", @"CloudPrintPlugin", nil);
             break;
         case CloudPrintStatusMessageUploadingFile:
             self.label.text = NSLocalizedStringFromTable(@"UploadingFile", @"CloudPrintPlugin", nil);
@@ -116,21 +127,32 @@
     @catch (NSException *exception) {}
     
     _progress = progress;
+    [self updateProgress];
     [self.progress addObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted)) options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+- (void)setShowTryAgainButtonWithTappedBlock:(void (^)())showTryAgainButtonWithTappedBlock {
+    _showTryAgainButtonWithTappedBlock = showTryAgainButtonWithTappedBlock;
+    self.tryAgainButton.hidden = (showTryAgainButtonWithTappedBlock == nil);
+    self.progressView.hidden = (showTryAgainButtonWithTappedBlock != nil);
 }
 
 #pragma mark - Private
 
 - (void)updateProgress {
-    [self.progressView setProgress:self.progress.fractionCompleted animated:YES];
+    [self.progressView setProgress:self.progress.fractionCompleted animated:self.progress.fractionCompleted >= self.progressView.progress];
 }
 
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self updateProgress];
-    });
+    if (object == self.progress) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self updateProgress];
+        });
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 #pragma mark - Dealloc

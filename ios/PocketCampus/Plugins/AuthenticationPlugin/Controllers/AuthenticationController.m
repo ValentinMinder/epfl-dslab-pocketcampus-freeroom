@@ -558,8 +558,8 @@ static AuthenticationController* instance __strong = nil;
         self.authenticationNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
         
 
-        UIViewController* rootViewController = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
-        [rootViewController presentViewController:self.authenticationNavigationController animated:YES completion:^{
+        UIViewController* topViewController = [[MainController publicController] currentTopMostViewController];
+        [topViewController presentViewController:self.authenticationNavigationController animated:YES completion:^{
             [self.authenticationViewController focusOnInput];
         }];
 #else

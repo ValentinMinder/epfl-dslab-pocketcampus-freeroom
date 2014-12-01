@@ -184,6 +184,17 @@ static MainController<MainControllerPublic>* instance = nil;
     CLSNSLog(@"-> %@ unregistered of PluginStateNotifications", observer);
 }
 
+- (UIViewController*)currentTopMostViewController {
+    if (!self.activePluginController) {
+        return self.mainMenuViewController;
+    }
+    UIViewController* topViewController = [self rootViewControllerForPluginController:self.activePluginController];
+    while (topViewController.presentedViewController) {
+        topViewController = topViewController.presentedViewController;
+    }
+    return topViewController;
+}
+
 - (PCURLSchemeHandler*)urlSchemeHandlerSharedInstance {
     return self.urlSchemeHander;
 }

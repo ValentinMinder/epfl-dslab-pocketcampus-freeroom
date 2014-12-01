@@ -136,6 +136,36 @@
     }
 }
 
+
++ (NSString*)enumNameForMealType:(NSInteger)mealType {
+    switch (mealType) {
+        case MealType_UNKNOWN:
+            return @"UNKNOWN";
+        case MealType_FISH:
+            return @"FISH";
+        case MealType_MEAT:
+            return @"MEAT";
+        case MealType_POULTRY:
+            return @"POULTRY";
+        case MealType_VEGETARIAN:
+            return @"VEGETARIAN";
+        case MealType_GREEN_FORK:
+            return @"GREEN_FORK";
+        case MealType_PASTA:
+            return @"PASTA";
+        case MealType_PIZZA:
+            return @"PIZZA";
+        case MealType_THAI:
+            return @"THAI";
+        case MealType_INDIAN:
+            return @"INDIAN";
+        case MealType_LEBANESE:
+            return @"LEBANESE";
+        default:
+            return @"UNKNOWN";
+    }
+}
+
 + (UIImage*)imageForMealType:(NSInteger)mealType {
     switch (mealType) {
         case MealType_UNKNOWN:

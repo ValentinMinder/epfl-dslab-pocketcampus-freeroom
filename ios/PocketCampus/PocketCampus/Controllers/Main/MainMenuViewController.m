@@ -25,11 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 07.10.12.
-
 
 #import "MainMenuViewController.h"
 
@@ -82,7 +78,6 @@ static const int kPluginsSection = 0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self trackScreen];
     self.navigationController.navigationBar.translucent = NO;
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
     self.tableView.scrollsToTop = NO; //if not set to NO, front view controllers cannot be scrolled to top by tapping the status bar
@@ -96,6 +91,11 @@ static const int kPluginsSection = 0;
         self.navigationController.view.frame = frame;
         self.navigationController.view.autoresizingMask = self.navigationController.view.autoresizingMask & ~UIViewAutoresizingFlexibleWidth; //remove flexible width from mask (we want constant 320.0 width)
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
 }
 
 - (NSUInteger)supportedInterfaceOrientations

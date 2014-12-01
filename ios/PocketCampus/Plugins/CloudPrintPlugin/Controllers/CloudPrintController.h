@@ -34,6 +34,7 @@
 typedef NS_ENUM(NSInteger, CloudPrintCompletionStatusCode) {
     CloudPrintCompletionStatusCodePrintSuccess,
     CloudPrintCompletionStatusCodeUserCancelled,
+    CloudPrintCompletionStatusCodeUnsupportedFile
 };
 
 typedef void (^CloudPrintCompletionBlock)(CloudPrintCompletionStatusCode printStatusCode);
@@ -53,17 +54,17 @@ typedef void (^CloudPrintCompletionBlock)(CloudPrintCompletionStatusCode printSt
 + (BOOL)isSupportedFileWithLocalURL:(NSURL*)localURL;
 
 /**
- * @return a view controller that you can present to print a local file. Upload will be handled and user will be able to validate/change print config and start the print.
- * @param localURL must be the URL of a readable local file. Cannot be nil. See isSupportedFileWithLocalURL: to know wether your file can be printed.
+ * @return a view controller that you can present to print a local or remote file. Upload will be handled and user will be able to validate/change print config and start the print. Returns nil if url is a local file that is not supported. Completion is executed with CloudPrintCompletionStatusCodeUnsupportedFile then.
+ * @param url must be the URL of a readable local file or a a remote file (that will be downloaded). Cannot be nil. See isSupportedFileWithLocalURL: to know wether your local file can be printed.
  * @param printDocumentRequestOrNil you can pass a print request to pre-fill the config. The documentId attribute will be ignored.
  * @discussion you're excpected to dismiss the returned view controller when completion is executed (no matter the status code value)
  */
-- (UIViewController*)viewControllerForPrintDocumentWithLocalURL:(NSURL*)localURL docName:(NSString*)docName printDocumentRequestOrNil:(PrintDocumentRequest*)request completion:(CloudPrintCompletionBlock)completion;
+- (UIViewController*)viewControllerForPrintDocumentWithURL:(NSURL*)url docName:(NSString*)docName printDocumentRequestOrNil:(PrintDocumentRequest*)request completion:(CloudPrintCompletionBlock)completion;
 
 /**
  * @return a view controller that you can present to print a document for which you already have an id for, letting user validate/change print config and start the print.
  * @param docName the name of the document, is only used to show to user that he is printing the correct thing. Not used for identification.
- * @param request documentId cannot be 0. You can create a request with default parameters using [PrintDocumentRequest createDefaultRequest]
+ * @param request documentId cannot be 0. You can create a request with default parameters using [PrintDocumentRequest createDefaultRequest] and set its id.
  * @discussion Use this method when you *already* have a PrintDocumentRequest.documentId (i.e. the document is already known by the server).
  * You're excpected to dismiss the returned view controller when completion is executed (no matter the status code value).
  * If you want to print a local file, use viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil.

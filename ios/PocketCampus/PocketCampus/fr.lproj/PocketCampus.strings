@@ -54,7 +54,7 @@
 "SelectDate" = "Choisir une date";
 "Info" = "Info";
 "LoginRequired" = "Login requis";
-"LoginInAppRequired" = "Login requis. Ouvrez PocketCampus et connectez-vous.";
+"LoginInAppRequired" = "Login requis.\nOuvrez PocketCampus et connectez-vous dans les réglages.";
 
 //Accessbility
 

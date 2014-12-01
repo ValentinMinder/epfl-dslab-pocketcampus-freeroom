@@ -236,6 +236,8 @@
 		3283C4CB1A1CE80E00B7ED55 /* AlumniPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4CF1A1CE80E00B7ED55 /* AlumniPlugin.strings */; };
 		3283C4CC1A1CE80E00B7ED55 /* AlumniPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4CF1A1CE80E00B7ED55 /* AlumniPlugin.strings */; };
 		3283C4CD1A1CE80E00B7ED55 /* AlumniPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4CF1A1CE80E00B7ED55 /* AlumniPlugin.strings */; };
+		3283C4D41A1D012F00B7ED55 /* CloudPrintPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3283C4D21A1D012F00B7ED55 /* CloudPrintPreviewViewController.m */; };
+		3283C4D51A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4D31A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib */; };
 		328501B419E5768F0049356E /* MapLayersBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 328501B219E5768F0049356E /* MapLayersBarButton.png */; };
 		328501B519E5768F0049356E /* MapLayersBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328501B319E5768F0049356E /* MapLayersBarButton@2x.png */; };
 		32870F9E19B674AE00A3BC68 /* CloudPrintRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32870F9D19B674AE00A3BC68 /* CloudPrintRequestViewController.m */; };
@@ -264,6 +266,8 @@
 		328A72E3184A503C002C5A6B /* PCSplashView.m in Sources */ = {isa = PBXBuildFile; fileRef = 328A72E2184A503C002C5A6B /* PCSplashView.m */; };
 		328D3828174794B5006FE6F3 /* EventsTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328D3827174794B5006FE6F3 /* EventsTagsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 328D38291747A8C9006FE6F3 /* EventsTagView.xib */; };
+		329262F91A253F7C0023CF01 /* CloudPrintPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3283C4D21A1D012F00B7ED55 /* CloudPrintPreviewViewController.m */; };
+		329262FA1A261EC40023CF01 /* CloudPrintPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4D31A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib */; };
 		32930A7517F882010025F864 /* LGARefreshControl+PCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A7417F882010025F864 /* LGARefreshControl+PCAdditions.m */; };
 		32930AB817F898910025F864 /* ZUUIRevealController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930AA717F898910025F864 /* ZUUIRevealController.m */; };
 		3293AD2015D1BC7C0097D414 /* PCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293AD1F15D1BC7C0097D414 /* PCAboutViewController.m */; };
@@ -916,6 +920,9 @@
 		3282C283181179E2002A4FAE /* EventsLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EventsLarge@2x.png"; sourceTree = "<group>"; };
 		3283C4CE1A1CE80E00B7ED55 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AlumniPlugin.strings; sourceTree = "<group>"; };
 		3283C4D01A1CE80F00B7ED55 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AlumniPlugin.strings; sourceTree = "<group>"; };
+		3283C4D11A1D012F00B7ED55 /* CloudPrintPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintPreviewViewController.h; sourceTree = "<group>"; };
+		3283C4D21A1D012F00B7ED55 /* CloudPrintPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintPreviewViewController.m; sourceTree = "<group>"; };
+		3283C4D31A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CloudPrintPreviewViewController.xib; sourceTree = "<group>"; };
 		328501B219E5768F0049356E /* MapLayersBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MapLayersBarButton.png; sourceTree = "<group>"; };
 		328501B319E5768F0049356E /* MapLayersBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapLayersBarButton@2x.png"; sourceTree = "<group>"; };
 		32870F9C19B674AE00A3BC68 /* CloudPrintRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintRequestViewController.h; sourceTree = "<group>"; };
@@ -2433,6 +2440,9 @@
 				325F1FB019FA8C060019CFCB /* CloudPrintExtensionInfoViewController.h */,
 				325F1FB119FA8C060019CFCB /* CloudPrintExtensionInfoViewController.m */,
 				325F1FCA19FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib */,
+				3283C4D11A1D012F00B7ED55 /* CloudPrintPreviewViewController.h */,
+				3283C4D21A1D012F00B7ED55 /* CloudPrintPreviewViewController.m */,
+				3283C4D31A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -3226,6 +3236,7 @@
 				320F859B194EED8C00BF3228 /* ArrowRightBarButton.png in Resources */,
 				3289F2B9183FAB8C00D833C2 /* LocationArrow2Active.png in Resources */,
 				32DE5B2117F1F8D900E03423 /* DirectoryLarge.png in Resources */,
+				3283C4D51A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib in Resources */,
 				326E3E3D1963FF7F00017F0C /* CellEmptyPicture.png in Resources */,
 				320F859A194EED8C00BF3228 /* ArrowLeftBarButton@2x.png in Resources */,
 				32574ED6182140AE008F3163 /* DirectoryEmptyPictureSmall.png in Resources */,
@@ -3363,6 +3374,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				325F1FBC19FA95470019CFCB /* CloudPrintExtensionSafari@2x.png in Resources */,
+				329262FA1A261EC40023CF01 /* CloudPrintPreviewViewController.xib in Resources */,
 				32CE952119DDBB270071F987 /* Images.xcassets in Resources */,
 				3207A38719ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib in Resources */,
 				32F9619D19C63227006A4C46 /* InfoPlist.strings in Resources */,
@@ -3569,6 +3581,7 @@
 				32456C0A184373DE00993F8B /* TransportNextDeparturesCell.m in Sources */,
 				324151F415377B4C00CCFB22 /* MapItemAnnotation.m in Sources */,
 				3232C45919B8A0BF002BA3C6 /* CloudPrintModelAdditions.m in Sources */,
+				3283C4D41A1D012F00B7ED55 /* CloudPrintPreviewViewController.m in Sources */,
 				3275435F153872DF00C94F3D /* MapUtils.m in Sources */,
 				326F5A7219BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.m in Sources */,
 				32CCB4C8155520FE00220282 /* AuthenticationController.m in Sources */,
@@ -3731,6 +3744,7 @@
 				32F9618E19C630DF006A4C46 /* CloudPrintService.m in Sources */,
 				32F9618F19C630DF006A4C46 /* CloudPrintModelAdditions.m in Sources */,
 				32F9619019C630DF006A4C46 /* CloudPrintMultiPageLayoutCell.m in Sources */,
+				329262F91A253F7C0023CF01 /* CloudPrintPreviewViewController.m in Sources */,
 				325F1FB519FA8C0D0019CFCB /* CloudPrintExtensionInfoViewController.m in Sources */,
 				32F9619119C630DF006A4C46 /* CloudPrintMultiPageLayoutButton.m in Sources */,
 				32CE951A19DD90E10071F987 /* CloudPrintRequestViewController.m in Sources */,
