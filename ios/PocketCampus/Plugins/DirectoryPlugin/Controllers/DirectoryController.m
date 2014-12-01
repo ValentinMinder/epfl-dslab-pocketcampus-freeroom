@@ -158,6 +158,10 @@ static DirectoryController* instance __weak = nil;
         @catch (NSException *exception) {
             CLSNSLog(@"!! ERROR when converting parameters to Person object: %@", exception);
         }
+    } else if (action.length == 0) {
+        UIViewController* viewController = [[DirectorySearchViewController alloc] init];
+        viewController.title = [[self class] localizedName];
+        return viewController;
     }
     return nil;
 }
