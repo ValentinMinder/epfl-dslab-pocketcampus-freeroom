@@ -145,6 +145,10 @@
     <value>pages par feuille</value>
     <comment>Combobox header</comment>
   </data>
+  <data name="Print" xml:space="preserve">
+    <value>imprimer</value>
+    <comment>Button text</comment>
+  </data>
   <data name="PrintAllPages" xml:space="preserve">
     <value>Toutes les pages</value>
     <comment>Radiobutton text</comment>

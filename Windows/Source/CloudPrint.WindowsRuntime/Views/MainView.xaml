@@ -27,9 +27,20 @@
                        Style="{StaticResource AppHeaderTextBlockStyle}" />
         </Border>
 
-        <TextBlock Grid.Row="1"
-                   Text="{Binding FileName}"
-                   Style="{StaticResource AppLargeTextBlockStyle}" />
+        <!-- File name and "Print" button -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="{Binding FileName}"
+                       Style="{StaticResource AppLargeTextBlockStyle}" />
+            
+            <Button Grid.Column="1"
+                    Command="{Binding PrintCommand}"
+                    Content="{CustomResource Main.Print}" />
+        </Grid>
 
         <ScrollViewer Grid.Row="2">
             <StackPanel>
