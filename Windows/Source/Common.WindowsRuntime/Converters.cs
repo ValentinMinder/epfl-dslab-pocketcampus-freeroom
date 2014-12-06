@@ -33,10 +33,16 @@ namespace PocketCampus.Common
         }
     }
 
+    // The parameter can be either a full format string, or only the format part.
     public sealed class StringFormatConverter : ValueConverter<object, string, string>
     {
         public override string Convert( object value, string parameter )
         {
+            if ( parameter.Contains( ( "{0" ) ) )
+            {
+                return string.Format( parameter, value );
+            }
+
             return string.Format( "{0:" + parameter + "}", value );
         }
     }

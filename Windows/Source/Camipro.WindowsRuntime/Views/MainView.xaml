@@ -32,8 +32,7 @@
                     <!-- Amount -->
                     <TextBlock Grid.Column="1"
                                Text="{Binding Amount, 
-                                              Converter={StaticResource StringFormat},
-                                              ConverterParameter='0.00'}"
+                                              Converter={StaticResource MoneyFormat}}"
                                Style="{StaticResource AppNormalTextBlockStyle}" 
                                Foreground="{Binding Amount, 
                                                     Converter={StaticResource MoneyToBrush}}" />
@@ -43,7 +42,7 @@
                                Grid.ColumnSpan="2"
                                Text="{Binding Date,
                                               Converter={StaticResource StringFormat},
-                                              ConverterParameter='f'}"
+                                              ConverterParameter='{}{0:m}, {0:t}'}"
                                Style="{StaticResource AppSubtleTextBlockStyle}" />
                 </Grid>
             </DataTemplate>
