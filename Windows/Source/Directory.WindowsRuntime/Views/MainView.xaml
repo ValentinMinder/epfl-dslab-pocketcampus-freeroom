@@ -116,8 +116,9 @@
                                ItemTemplate="{StaticResource PersonTemplate}" />
 
         <!-- "No search results" message, displayed only if the query is empty -->
-        <cc:Placeholder For="{Binding SearchResults}">
-            <TextBlock Text="{CustomResource Main.NoSearchResults}"
+        <cc:Placeholder Grid.Row="2"
+                        For="{Binding SearchResults}">
+            <TextBlock Text="{CustomResource Main.NoResults}"
                        Style="{StaticResource AppCenterTextBlockStyle}"
                        Visibility="{Binding Query, Converter={StaticResource NonDefaultToVisibility}}" />
         </cc:Placeholder>
