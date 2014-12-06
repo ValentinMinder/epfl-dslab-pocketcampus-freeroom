@@ -26,6 +26,13 @@
         <Extension Category="windows.protocol">
           <Protocol Name="pocketcampus" />
         </Extension>
+        <Extension Category="windows.shareTarget">
+          <ShareTarget m2:Description="ms-resource:AppShareDescription">
+            <SupportedFileTypes>
+              <FileType>.pdf</FileType>
+            </SupportedFileTypes>
+          </ShareTarget>
+        </Extension>
       </Extensions>
     </Application>
   </Applications>

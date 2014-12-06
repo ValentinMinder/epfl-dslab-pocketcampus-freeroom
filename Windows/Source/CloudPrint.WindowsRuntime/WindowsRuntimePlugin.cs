@@ -3,7 +3,11 @@
 // File author: Solal Pirelli
 
 using System;
+using PocketCampus.CloudPrint.Services;
+using PocketCampus.CloudPrint.ViewModels;
+using PocketCampus.CloudPrint.Views;
 using PocketCampus.Common;
+using ThinMvvm;
 using ThinMvvm.WindowsRuntime;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
@@ -30,6 +34,10 @@ namespace PocketCampus.CloudPrint
 
         public void Initialize( IWindowsRuntimeNavigationService navigationService )
         {
+            Container.Bind<IFileLoader, FileLoader>();
+            Container.Bind<IFileUploader, FileUploader>();
+
+            navigationService.Bind<MainViewModel, MainView>();
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
+using PocketCampus.CloudPrint;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
@@ -10,7 +13,10 @@ using ThinMvvm;
 using ThinMvvm.Logging;
 using ThinMvvm.WindowsRuntime;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Phone.UI.Input;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -136,6 +142,41 @@ namespace PocketCampus.Main
                 var protArgs = (ProtocolActivatedEventArgs) args;
                 _protocolHandler.NavigateToCustomUri( protArgs.Uri );
             }
+        }
+
+        protected override async void OnShareTargetActivated( ShareTargetActivatedEventArgs args )
+        {
+            Uri fileUri;
+            string fileName;
+            var formats = args.ShareOperation.Data.AvailableFormats;
+            if ( formats.Contains( StandardDataFormats.WebLink ) )
+            {
+                fileUri = await args.ShareOperation.Data.GetWebLinkAsync();
+                fileName = Path.GetFileName( fileUri.LocalPath );
+            }
+            else if ( formats.Contains( StandardDataFormats.StorageItems ) )
+            {
+                var files = await args.ShareOperation.Data.GetStorageItemsAsync();
+
+                // TODO support multiple files.
+                // (atomic printing would be nice for groups of files)
+
+                var file = files[0];
+                fileUri = new Uri( file.Path, UriKind.Absolute );
+                fileName = file.Name;
+            }
+            else
+            {
+                // Error.
+                // But since we can't display share errors on WP, it has to be silently ignored.
+                return;
+            }
+
+            await Task.Run( () =>
+            {
+                // TODO this doesn't work.
+                CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync( CoreDispatcherPriority.Normal, () => Messenger.Send( new PrintRequest( fileName, fileUri ) ) );
+            } );
         }
     }
 }

@@ -3,6 +3,8 @@
 // File author: Solal Pirelli
 
 using System.Collections.Generic;
+using PocketCampus.CloudPrint.Services;
+using PocketCampus.CloudPrint.ViewModels;
 using PocketCampus.Common;
 using ThinMvvm;
 
@@ -22,11 +24,14 @@ namespace PocketCampus.CloudPrint
 
         public bool RequiresAuthentication
         {
-            get { return false; }
+            get { return true; }
         }
 
         public void Initialize( INavigationService navigationService )
         {
+            Container.Bind<IPrintService, PrintService>();
+
+            Messenger.Register<PrintRequest>( navigationService.NavigateTo<MainViewModel, PrintRequest> );
         }
 
         // This plugin cannot be navigated to directly

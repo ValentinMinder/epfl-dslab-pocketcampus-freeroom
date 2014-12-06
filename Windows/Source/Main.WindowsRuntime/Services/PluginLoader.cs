@@ -13,6 +13,7 @@ namespace PocketCampus.Main.Services
         {
             new Authentication.WindowsRuntimePlugin(),
             new Camipro.WindowsRuntimePlugin(),
+            new CloudPrint.WindowsRuntimePlugin(),
             new Directory.WindowsRuntimePlugin(),
             new Events.WindowsRuntimePlugin(),
             new Food.WindowsRuntimePlugin(),

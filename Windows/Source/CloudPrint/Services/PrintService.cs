@@ -5,9 +5,9 @@ using ThriftSharp;
 
 namespace PocketCampus.CloudPrint.Services
 {
-    public abstract class PrintService : ThriftServiceImplementation<IPrintService>, IPrintService
+    public sealed class PrintService : ThriftServiceImplementation<IPrintService>, IPrintService
     {
-        protected PrintService( IServerAccess access ) : base( access.CreateCommunication( "cloudprint" ) ) { }
+        public PrintService( IServerAccess access ) : base( access.CreateCommunication( "cloudprint" ) ) { }
 
         public Task<PrintDocumentResponse> PrintAsync( PrintDocumentRequest request )
         {

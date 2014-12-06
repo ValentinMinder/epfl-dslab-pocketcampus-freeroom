@@ -121,6 +121,10 @@
     <value>PocketCampus EPFL</value>
     <comment>Application name</comment>
   </data>
+  <data name="AppShareDescription" xml:space="preserve">
+    <value>Print at EPFL</value>
+    <comment>Application description for the Share contract</comment>
+  </data>
   <data name="PagesHeader" xml:space="preserve">
     <value>POCKETCAMPUS EPFL</value>
     <comment>Header</comment>

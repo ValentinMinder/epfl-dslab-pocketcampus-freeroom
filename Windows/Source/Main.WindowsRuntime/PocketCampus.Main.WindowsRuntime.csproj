@@ -149,6 +149,14 @@
       <Project>{2ab0060f-5611-4aeb-9210-d8496cfc421d}</Project>
       <Name>PocketCampus.Camipro</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CloudPrint.WindowsRuntime\PocketCampus.CloudPrint.WindowsRuntime.csproj">
+      <Project>{79df6f47-e728-4a56-8172-762356bc54d2}</Project>
+      <Name>PocketCampus.CloudPrint.WindowsRuntime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CloudPrint\PocketCampus.CloudPrint.csproj">
+      <Project>{dccdead5-49b4-47ff-a78b-56c01f9a25c5}</Project>
+      <Name>PocketCampus.CloudPrint</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\PocketCampus.Common.csproj">
       <Project>{f780f0dd-8a14-4e72-9525-a11d792cbfab}</Project>
       <Name>PocketCampus.Common</Name>
