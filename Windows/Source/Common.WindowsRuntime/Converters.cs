@@ -79,6 +79,14 @@ namespace PocketCampus.Common
         }
     }
 
+    public sealed class EnumToValuesConverter : ValueConverter<Enum, Array>
+    {
+        public override Array Convert( Enum value )
+        {
+            return Enum.GetValues( value.GetType() );
+        }
+    }
+
     public sealed class EnumToStringConverter : ValueConverter<Enum, string>
     {
         public override string Convert( Enum value )

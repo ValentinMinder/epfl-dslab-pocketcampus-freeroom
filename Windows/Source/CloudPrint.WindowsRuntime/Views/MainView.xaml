@@ -1,0 +1,112 @@
+﻿<cc:PageBase x:Class="PocketCampus.CloudPrint.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cc="using:PocketCampus.Common.Controls">
+    <cc:PageBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate x:Key="ComboBoxEnumItemTemplate">
+                <TextBlock Text="{Binding Converter={StaticResource EnumToString}}" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </cc:PageBase.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- Page header & title -->
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+            <TextBlock Text="{CustomResource Main.ViewHeader}"
+                       Style="{StaticResource AppHeaderTextBlockStyle}" />
+        </Border>
+
+        <TextBlock Grid.Row="1"
+                   Text="{Binding FileName}"
+                   Style="{StaticResource AppLargeTextBlockStyle}" />
+
+        <ScrollViewer Grid.Row="2">
+            <StackPanel>
+                <!-- Color config -->
+                <ComboBox ItemsSource="{Binding ColorConfig, 
+                                                Converter={StaticResource EnumToValues}}"
+                          ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
+                          SelectedItem="{Binding ColorConfig}"
+                          Header="{CustomResource Main.ColorConfig}" />
+
+                <!-- Copies config part 1: number of copies -->
+                <TextBox InputScope="Number"
+                         Text="{Binding CopiesConfig.Count}"
+                         Header="{CustomResource Main.CopiesCount}" />
+                
+                <!-- Double-sided option -->
+                <ComboBox ItemsSource="{Binding DoubleSidedConfig, 
+                                                Converter={StaticResource EnumToValues}}"
+                          ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
+                          SelectedItem="{Binding DoubleSidedConfig}"
+                          Header="{CustomResource Main.DoubleSidedConfig}" />
+
+                <!-- Multi-page config part 1: pages per sheet -->
+                <ComboBox ItemsSource="{Binding MultiPageConfig.PagesPerSheet, 
+                                                Converter={StaticResource EnumToValues}}"
+                          ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
+                          SelectedItem="{Binding MultiPageConfig.PagesPerSheet}"
+                          Header="{CustomResource Main.PagesPerSheet}" />
+                
+                <!-- Page orientation -->
+                <ComboBox ItemsSource="{Binding PageOrientation, 
+                                                Converter={StaticResource EnumToValues}}"
+                          ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
+                          SelectedItem="{Binding PageOrientation}"
+                          Header="{CustomResource Main.PageOrientation}" />
+
+                <!-- Print all pages -->
+                <RadioButton GroupName="PageRange"
+                             IsChecked="{Binding PrintAllPages, 
+                                                 Mode=TwoWay}"
+                             Content="{CustomResource Main.PrintAllPages}" />
+                <RadioButton GroupName="PageRange">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{CustomResource Main.PrintFrom}"
+                                   Style="{StaticResource AppNormalTextBlockStyle}" />
+                        
+                        <TextBox Grid.Column="1"
+                                 InputScope="Number"
+                                 Text="{Binding PageRange.From}" />
+                        
+                        <TextBlock Grid.Column="2"
+                                   Text="{CustomResource Main.PrintTo}"
+                                   Style="{StaticResource AppNormalTextBlockStyle}" />
+                        
+                        <TextBox Grid.Column="3"
+                                 InputScope="Number"
+                                 Text="{Binding PageRange.To}" />
+                    </Grid>
+                </RadioButton>
+
+                <!-- Copies config part 2: collate copies -->
+                <CheckBox IsChecked="{Binding CopiesConfig.Collate}"
+                          Content="{CustomResource Main.CollateCopies}" />
+                
+                <!-- Multi-page config part 2: pages per sheet -->
+                <ComboBox ItemsSource="{Binding MultiPageConfig.Layout, 
+                                                Converter={StaticResource EnumToValues}}"
+                          ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
+                          SelectedItem="{Binding MultiPageConfig.Layout}"
+                          Header="{CustomResource Main.PagesLayout}" />
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</cc:PageBase>

@@ -26,6 +26,7 @@
     <my:StringFormatConverter x:Key="StringFormat" />
     <my:MoneyFormatConverter x:Key="MoneyFormat" />
     <my:DateToWeekStringConverter x:Key="DateToWeek" />
+    <my:EnumToValuesConverter x:Key="EnumToValues" />
     <my:EnumToStringConverter x:Key="EnumToString" />
     <my:DefaultToVisibilityConverter x:Key="DefaultToVisibility" />
     <my:DefaultToVisibilityConverter x:Key="NonDefaultToVisibility"

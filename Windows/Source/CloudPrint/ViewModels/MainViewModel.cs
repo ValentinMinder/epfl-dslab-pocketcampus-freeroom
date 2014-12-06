@@ -15,10 +15,13 @@ namespace PocketCampus.CloudPrint.ViewModels
         private PrintRequestStatus _status;
         private ColorConfig _colorConfig;
         private CopiesConfig _copiesConfig;
-        private DoubleSidedConfig? _doubleSidedConfig;
+        private DoubleSidedConfig _doubleSidedConfig;
         private MultiPageConfig _multiPageConfig;
         private PageOrientation _pageOrientation;
+        private bool _printAllPages;
         private PageRange _pageRange;
+
+        public string FileName { get; private set; }
 
         public PrintRequestStatus Status
         {
@@ -38,7 +41,7 @@ namespace PocketCampus.CloudPrint.ViewModels
             set { SetProperty( ref _copiesConfig, value ); }
         }
 
-        public DoubleSidedConfig? DoubleSidedConfig
+        public DoubleSidedConfig DoubleSidedConfig
         {
             get { return _doubleSidedConfig; }
             set { SetProperty( ref _doubleSidedConfig, value ); }
@@ -54,6 +57,12 @@ namespace PocketCampus.CloudPrint.ViewModels
         {
             get { return _pageOrientation; }
             set { SetProperty( ref _pageOrientation, value ); }
+        }
+
+        public bool PrintAllPages
+        {
+            get { return _printAllPages; }
+            set { SetProperty( ref _printAllPages, value ); }
         }
 
         public PageRange PageRange
@@ -76,6 +85,8 @@ namespace PocketCampus.CloudPrint.ViewModels
             _fileLoader = fileLoader;
             _fileUploader = fileUploader;
             _request = request;
+
+            FileName = request.DocumentName;
         }
 
         private async Task PrintAsync()
@@ -86,11 +97,23 @@ namespace PocketCampus.CloudPrint.ViewModels
             {
                 ColorConfig = ColorConfig,
                 CopiesConfig = CopiesConfig,
-                DoubleSidedConfig = DoubleSidedConfig,
-                MultiPageConfig = MultiPageConfig,
-                Orientation = PageOrientation,
-                Range = PageRange
+                Orientation = PageOrientation
             };
+
+            if ( MultiPageConfig.PagesPerSheet != PagesPerSheet.One )
+            {
+                serverRequest.MultiPageConfig = MultiPageConfig;
+            }
+
+            if ( DoubleSidedConfig != DoubleSidedConfig.SingleSide )
+            {
+                serverRequest.DoubleSidedConfig = DoubleSidedConfig;
+            }
+
+            if ( !PrintAllPages )
+            {
+                serverRequest.Range = PageRange;
+            }
 
             if ( _request.DocumentId == null )
             {

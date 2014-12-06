@@ -85,6 +85,9 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\FileUploader.cs" />
+    <Compile Include="Views\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowsRuntimePlugin.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +110,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <PRIResource Include="Strings\en\PageOrientation.resw" />
+    <PRIResource Include="Strings\en\MultiPageLayout.resw" />
+    <PRIResource Include="Strings\en\PagesPerSheet.resw" />
+    <PRIResource Include="Strings\en\DoubleSidedConfig.resw" />
+    <PRIResource Include="Strings\en\ColorConfig.resw" />
+    <PRIResource Include="Strings\en\Main.resw" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common.WindowsRuntime\PocketCampus.Common.WindowsRuntime.csproj">
@@ -122,14 +131,21 @@
       <Name>PocketCampus.CloudPrint</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Resources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
