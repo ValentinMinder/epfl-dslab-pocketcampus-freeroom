@@ -64,24 +64,24 @@
                    Margin="19,16,19,0" />
 
         <!-- Status -->
-        <Grid Grid.Row="5">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-
-            <TextBlock Text="{Binding AuthenticationStatus, 
-                                      Converter={StaticResource EnumToString}}"
-                       Style="{StaticResource AppCenterTextBlockStyle}"
-                       VerticalAlignment="Bottom" />
-
-            <cc:Switch Grid.Row="1"
-                       Value="{Binding AuthenticationStatus}">
+        <Grid Grid.Row="5"
+              HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            
+            <cc:Switch Value="{Binding AuthenticationStatus}">
                 <cc:SwitchCase Values="Authenticating">
-                    <ProgressBar IsIndeterminate="True"
-                                 VerticalAlignment="Top" />
+                    <ProgressRing IsActive="True" />
                 </cc:SwitchCase>
             </cc:Switch>
+
+            <TextBlock Grid.Column="1"
+                       Text="{Binding AuthenticationStatus, 
+                                      Converter={StaticResource EnumToString}}"
+                       Style="{StaticResource AppCenterTextBlockStyle}" />
+
         </Grid>
 
         <!-- "Log in" button -->

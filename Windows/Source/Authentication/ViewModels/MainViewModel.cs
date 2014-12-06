@@ -30,7 +30,6 @@ namespace PocketCampus.Authentication.ViewModels
         private AuthenticationStatus _authenticationStatus;
 
 
-        // Can be GASPAR or SCIPER
         public string UserName
         {
             get { return _userName; }
