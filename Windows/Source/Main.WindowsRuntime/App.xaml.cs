@@ -12,6 +12,8 @@ using ThinMvvm.WindowsRuntime;
 using Windows.ApplicationModel.Activation;
 using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Resources;
 
 namespace PocketCampus.Main
@@ -80,6 +82,22 @@ namespace PocketCampus.Main
                 e.Handled = true;
                 _navigationService.NavigateBack();
             };
+        }
+
+        protected override Frame CreateRootFrame()
+        {
+            var frame = base.CreateRootFrame();
+            frame.ContentTransitions = new TransitionCollection
+            {
+                new NavigationThemeTransition
+                {
+                    DefaultNavigationTransitionInfo = new CommonNavigationTransitionInfo
+                    {
+                        IsStaggeringEnabled = true
+                    }
+                }
+            };
+            return frame;
         }
 
         protected override async void Launch( LaunchActivatedEventArgs e )

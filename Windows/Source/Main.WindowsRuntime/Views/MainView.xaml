@@ -10,7 +10,8 @@
                              Style="{StaticResource AppTileButtonStyle}"
                              Margin="0,0,17,17"
                              Width="104"
-                             Height="104">
+                             Height="104"
+                             CommonNavigationTransitionInfo.IsStaggerElement="True">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition />
