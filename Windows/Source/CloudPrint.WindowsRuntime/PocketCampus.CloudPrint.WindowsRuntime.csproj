@@ -110,6 +110,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <PRIResource Include="Strings\fr\PagesPerSheet.resw" />
+    <PRIResource Include="Strings\fr\PageOrientation.resw" />
+    <PRIResource Include="Strings\fr\MultiPageLayout.resw" />
+    <PRIResource Include="Strings\fr\Main.resw" />
+    <PRIResource Include="Strings\fr\DoubleSidedConfig.resw" />
+    <PRIResource Include="Strings\fr\ColorConfig.resw" />
     <PRIResource Include="Strings\en\PageOrientation.resw" />
     <PRIResource Include="Strings\en\MultiPageLayout.resw" />
     <PRIResource Include="Strings\en\PagesPerSheet.resw" />

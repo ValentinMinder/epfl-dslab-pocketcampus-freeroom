@@ -117,48 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CollateCopies" xml:space="preserve">
-    <value>Collate copies (e.g. 1, 2, 3, 1, 2, 3, ...)</value>
-    <comment>Checkbox text</comment>
+  <data name="BottomToTopLeftToRight" xml:space="preserve">
+    <value>bas en haut, gauche à droite</value>
   </data>
-  <data name="ColorConfig" xml:space="preserve">
-    <value>color options</value>
-    <comment>Combobox header</comment>
+  <data name="BottomToTopRightToLeft" xml:space="preserve">
+    <value>bas en haut, droite à gauche</value>
   </data>
-  <data name="CopiesConfig" xml:space="preserve">
-    <value>number of copies</value>
-    <comment>Textbox header</comment>
+  <data name="LeftToRightBottomToTop" xml:space="preserve">
+    <value>gauche à droite, bas en haut</value>
   </data>
-  <data name="DoubleSidedConfig" xml:space="preserve">
-    <value>side options</value>
-    <comment>Combobox header</comment>
+  <data name="LeftToRightTopToBottom" xml:space="preserve">
+    <value>gauche à droite, haut en bas</value>
   </data>
-  <data name="PageOrientation" xml:space="preserve">
-    <value>page orientation</value>
-    <comment>Combobox header</comment>
+  <data name="RightToLeftBottomToTop" xml:space="preserve">
+    <value>droite à gauche, bas en haut</value>
   </data>
-  <data name="PagesLayout" xml:space="preserve">
-    <value>pages layout</value>
-    <comment>Combobox header</comment>
+  <data name="RightToLeftTopToBottom" xml:space="preserve">
+    <value>droite à gauche, haut en bas</value>
   </data>
-  <data name="PagesPerSheet" xml:space="preserve">
-    <value>pages per sheet</value>
-    <comment>Combobox header</comment>
+  <data name="TopToBottomLeftToRight" xml:space="preserve">
+    <value>haut en bas, gauche à droite</value>
   </data>
-  <data name="PrintAllPages" xml:space="preserve">
-    <value>Print all pages</value>
-    <comment>Radiobutton text</comment>
-  </data>
-  <data name="RangeFrom" xml:space="preserve">
-    <value>Print from</value>
-    <comment>Sentence beginning</comment>
-  </data>
-  <data name="RangeTo" xml:space="preserve">
-    <value>to</value>
-    <comment>Sentence middle</comment>
-  </data>
-  <data name="ViewHeader" xml:space="preserve">
-    <value>CLOUDPRINT</value>
-    <comment>Page header</comment>
+  <data name="TopToBottomRightToLeft" xml:space="preserve">
+    <value>haut en bas, droite à gauche</value>
   </data>
 </root>
