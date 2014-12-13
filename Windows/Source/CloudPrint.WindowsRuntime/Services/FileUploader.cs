@@ -12,8 +12,6 @@ namespace PocketCampus.CloudPrint.Services
     {
         private const string PluginName = "raw-cloudprint";
         private const string FileContentName = "file";
-        private const string ContentDispositionHeader = "Content-Disposition";
-        private const string ContentDispositionHeaderFormat = "attachment; filename={0}";
 
         private readonly IServerSettings _settings;
         private readonly IHttpHeaders _headers;
@@ -35,9 +33,14 @@ namespace PocketCampus.CloudPrint.Services
             string downloadUrl = _settings.Configuration.ServerBaseUrl + PluginName;
             var uri = new Uri( downloadUrl, UriKind.Absolute );
 
-            var content = new HttpMultipartFormDataContent();
-            content.Add( new HttpStreamContent( fileContent.AsInputStream() ), FileContentName );
-            content.Headers.Add( ContentDispositionHeader, string.Format( ContentDispositionHeaderFormat, fileName ) );
+            var streamContent = new HttpStreamContent( fileContent.AsInputStream() );
+            var content = new HttpMultipartFormDataContent
+            {
+                { streamContent, FileContentName },
+            };
+            // It's important to set this here and not before;
+            // HttpMultipartFormDataContent overwrites the headers of its contents.
+            streamContent.Headers.ContentDisposition.FileName = fileName;
             var response = await client.PostAsync( uri, content );
             if ( response.StatusCode == HttpStatusCode.ProxyAuthenticationRequired )
             {
