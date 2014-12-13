@@ -128,7 +128,7 @@
     <value>color options</value>
     <comment>Combobox header</comment>
   </data>
-  <data name="CopiesConfig" xml:space="preserve">
+  <data name="CopiesCount" xml:space="preserve">
     <value>number of copies</value>
     <comment>Textbox header</comment>
   </data>

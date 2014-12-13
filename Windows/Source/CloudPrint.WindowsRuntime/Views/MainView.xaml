@@ -47,35 +47,44 @@
             <StackPanel Margin="19,0,19,38">
                 <!-- Color config -->
                 <ComboBox ItemsSource="{Binding Settings.ColorConfig, 
-                                                Converter={StaticResource EnumToValues}}"
+                                                Converter={StaticResource EnumToValues},
+                                                Mode=OneTime}"
                           ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
-                          SelectedItem="{Binding Settings.ColorConfig}"
+                          SelectedItem="{Binding Settings.ColorConfig,
+                                                 Mode=TwoWay}"
                           Header="{CustomResource Main.ColorConfig}" />
 
                 <!-- Copies config part 1: number of copies -->
                 <TextBox InputScope="Number"
-                         Text="{Binding Settings.CopiesConfig.Count}"
+                         Text="{Binding Settings.CopiesConfig.Count,
+                                        Mode=TwoWay}"
                          Header="{CustomResource Main.CopiesCount}" />
 
                 <!-- Double-sided option -->
                 <ComboBox ItemsSource="{Binding Settings.DoubleSidedConfig, 
-                                                Converter={StaticResource EnumToValues}}"
+                                                Converter={StaticResource EnumToValues},
+                                                Mode=OneTime}"
                           ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
-                          SelectedItem="{Binding Settings.DoubleSidedConfig}"
+                          SelectedItem="{Binding Settings.DoubleSidedConfig,
+                                                 Mode=TwoWay}"
                           Header="{CustomResource Main.DoubleSidedConfig}" />
 
                 <!-- Multi-page config part 1: pages per sheet -->
                 <ComboBox ItemsSource="{Binding Settings.MultiPageConfig.PagesPerSheet, 
-                                                Converter={StaticResource EnumToValues}}"
+                                                Converter={StaticResource EnumToValues},
+                                                Mode=OneTime}"
                           ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
-                          SelectedItem="{Binding Settings.MultiPageConfig.PagesPerSheet}"
+                          SelectedItem="{Binding Settings.MultiPageConfig.PagesPerSheet,
+                                                 Mode=TwoWay}"
                           Header="{CustomResource Main.PagesPerSheet}" />
 
                 <!-- Page orientation -->
                 <ComboBox ItemsSource="{Binding Settings.PageOrientation, 
-                                                Converter={StaticResource EnumToValues}}"
+                                                Converter={StaticResource EnumToValues},
+                                                Mode=OneTime}"
                           ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
-                          SelectedItem="{Binding Settings.PageOrientation}"
+                          SelectedItem="{Binding Settings.PageOrientation,
+                                                 Mode=TwoWay}"
                           Header="{CustomResource Main.PageOrientation}" />
 
                 <!-- Print all pages -->
@@ -104,20 +113,23 @@
                     <TextBox Grid.Column="1"
                              c:TextBoxEx.AssociatedToggle="{Binding ElementName=RangeButton}"
                              InputScope="Number"
-                             Text="{Binding Settings.PageRange.From}"
+                             Text="{Binding Settings.PageRange.From,
+                                            Mode=TwoWay}"
                              Header="{CustomResource Main.RangeFrom}"
                              Margin="9,0,19,0" />
 
                     <TextBox Grid.Column="2"
                              c:TextBoxEx.AssociatedToggle="{Binding ElementName=RangeButton}"
                              InputScope="Number"
-                             Text="{Binding Settings.PageRange.To}"
+                             Text="{Binding Settings.PageRange.To,
+                                            Mode=TwoWay}"
                              Header="{CustomResource Main.RangeTo}"
                              Margin="0" />
                 </Grid>
 
                 <!-- Copies config part 2: collate copies -->
-                <CheckBox IsChecked="{Binding Settings.CopiesConfig.Collate}">
+                <CheckBox IsChecked="{Binding Settings.CopiesConfig.Collate,
+                                              Mode=TwoWay}">
                     <StackPanel>
                         <TextBlock Text="{CustomResource Main.CollateCopies}" />
                         <TextBlock Text="{CustomResource Main.CollateCopiesExplanation}" 
@@ -127,9 +139,11 @@
 
                 <!-- Multi-page config part 2: pages per sheet -->
                 <ComboBox ItemsSource="{Binding Settings.MultiPageConfig.Layout, 
-                                                Converter={StaticResource EnumToValues}}"
+                                                Converter={StaticResource EnumToValues},
+                                                Mode=OneTime}"
                           ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
-                          SelectedItem="{Binding Settings.MultiPageConfig.Layout}"
+                          SelectedItem="{Binding Settings.MultiPageConfig.Layout,
+                                                 Mode=TwoWay}"
                           Header="{CustomResource Main.PagesLayout}" />
             </StackPanel>
         </ScrollViewer>
