@@ -20,7 +20,7 @@
                        Style="{Binding TextStyle}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Margin="0" />
+                       Margin="10,4" />
         </cc:SimpleButton>
 
         <!-- Current day -->
@@ -39,7 +39,7 @@
                        Style="{Binding TextStyle}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Margin="0" />
+                       Margin="10,4" />
         </cc:SimpleButton>
     </Grid>
 </UserControl>

@@ -19,7 +19,7 @@
                        Style="{Binding TextStyle}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Margin="0" />
+                       Margin="10,4" />
         </cc:SimpleButton>
         
         <TextBlock Grid.Column="1"
@@ -36,7 +36,7 @@
                        Style="{Binding TextStyle}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Margin="0" />
+                       Margin="10,4" />
         </cc:SimpleButton>
     </Grid>
 </UserControl>

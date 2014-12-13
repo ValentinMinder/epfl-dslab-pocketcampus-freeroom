@@ -413,20 +413,9 @@
                     <myc:Switch Value="{TemplateBinding Data}"
                                 Padding="{TemplateBinding Padding}">
                         <myc:SwitchCase Values="Loading">
-                            <Grid Background="{TemplateBinding Background}">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Text="{CustomResource Common.DataStatusDisplay.Loading}"
-                                           Style="{TemplateBinding TextStyle}"
-                                           VerticalAlignment="Bottom" />
-
-                                <ProgressBar Grid.Row="1"
-                                             IsIndeterminate="True"
-                                             VerticalAlignment="Top" />
-                            </Grid>
+                            <Border Background="{TemplateBinding Background}">
+                                <ProgressRing IsActive="True" />
+                            </Border>
                         </myc:SwitchCase>
                         <myc:SwitchCase Values="Error">
                             <Grid Background="{TemplateBinding Background}">
