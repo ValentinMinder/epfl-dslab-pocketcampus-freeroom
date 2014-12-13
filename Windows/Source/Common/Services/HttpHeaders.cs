@@ -32,7 +32,7 @@ namespace PocketCampus.Common.Services
             _current = new Dictionary<string, string>();
 
             _settings = settings;
-            _settings.ListenToProperty( x => x.Configuration, UpdateSessionHeader );
+            _settings.ListenToProperty( x => x.Session, UpdateSessionHeader );
             UpdateSessionHeader();
 
             // The language header will not change for the app's lifetime

@@ -45,6 +45,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthenticationRequiredException.cs" />
     <Compile Include="Models\ColorConfig.cs" />
     <Compile Include="Models\CopiesConfig.cs" />
     <Compile Include="Models\DoubleSidedConfig.cs" />

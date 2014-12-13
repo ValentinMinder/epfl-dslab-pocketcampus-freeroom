@@ -11,6 +11,7 @@ namespace PocketCampus.CloudPrint.Services
     public sealed class FileUploader : IFileUploader
     {
         private const string PluginName = "raw-cloudprint";
+        private const string FileContentName = "file";
         private const string ContentDispositionHeader = "Content-Disposition";
         private const string ContentDispositionHeaderFormat = "attachment; filename={0}";
 
@@ -30,13 +31,19 @@ namespace PocketCampus.CloudPrint.Services
             {
                 client.DefaultRequestHeaders.Add( pair.Key, pair.Value );
             }
-            client.DefaultRequestHeaders.Add( ContentDispositionHeader, string.Format( ContentDispositionHeaderFormat, fileName ) );
-
 
             string downloadUrl = _settings.Configuration.ServerBaseUrl + PluginName;
             var uri = new Uri( downloadUrl, UriKind.Absolute );
 
-            var response = await client.PostAsync( uri, new HttpStreamContent( fileContent.AsInputStream() ) );
+            var content = new HttpMultipartFormDataContent();
+            content.Add( new HttpStreamContent( fileContent.AsInputStream() ), FileContentName );
+            content.Headers.Add( ContentDispositionHeader, string.Format( ContentDispositionHeaderFormat, fileName ) );
+            var response = await client.PostAsync( uri, content );
+            if ( response.StatusCode == HttpStatusCode.ProxyAuthenticationRequired )
+            {
+                throw new AuthenticationRequiredException();
+            }
+            response.EnsureSuccessStatusCode();
             var responseStream = await response.Content.ReadAsInputStreamAsync();
 
             var serializer = new DataContractJsonSerializer( typeof( CloudPrintUploadResponse ) );

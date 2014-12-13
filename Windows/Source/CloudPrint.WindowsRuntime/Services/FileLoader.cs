@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -20,7 +21,9 @@ namespace PocketCampus.CloudPrint.Services
 
         private static async Task<Stream> GetFileStreamAsync( Uri fileUri )
         {
-            var file = await StorageFile.GetFileFromPathAsync( fileUri.ToString() );
+            // GetFileFromPathAsync requires backslashes...
+            string path = WebUtility.UrlDecode( fileUri.AbsolutePath ).Replace( '/', '\\' );
+            var file = await StorageFile.GetFileFromPathAsync( path );
             return ( await file.OpenReadAsync() ).AsStreamForRead();
         }
 

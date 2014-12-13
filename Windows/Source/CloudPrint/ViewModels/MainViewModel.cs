@@ -80,6 +80,10 @@ namespace PocketCampus.CloudPrint.ViewModels
                     var documentId = await _fileUploader.UploadFileAsync( _request.DocumentName, stream );
                     serverRequest.DocumentId = documentId;
                 }
+                catch ( AuthenticationRequiredException )
+                {
+                    ForceAuthentication();
+                }
                 catch
                 {
                     Status = PrintRequestStatus.UploadError;
@@ -102,8 +106,7 @@ namespace PocketCampus.CloudPrint.ViewModels
                 }
                 if ( response.Status == ResponseStatus.AuthenticationError )
                 {
-                    var newRequest = new PrintRequest( _request, Settings );
-                    Messenger.Send( new AuthenticationRequest( () => _navigationService.NavigateTo<MainViewModel, PrintRequest>( newRequest ) ) );
+                    ForceAuthentication();
                 }
             }
             catch
@@ -113,6 +116,13 @@ namespace PocketCampus.CloudPrint.ViewModels
             }
 
             Status = PrintRequestStatus.Success;
+        }
+
+        private void ForceAuthentication()
+        {
+            var newRequest = new PrintRequest( _request, Settings );
+            _navigationService.RemoveCurrentFromBackStack();
+            Messenger.Send( new AuthenticationRequest( () => _navigationService.NavigateTo<MainViewModel, PrintRequest>( newRequest ) ) );
         }
     }
 }

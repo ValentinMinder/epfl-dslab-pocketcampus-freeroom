@@ -16,6 +16,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.DataTransfer.ShareTarget;
 using Windows.Phone.UI.Input;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -167,13 +168,19 @@ namespace PocketCampus.Main
 
             if ( formats.Contains( StandardDataFormats.StorageItems ) )
             {
-                var files = await operation.Data.GetStorageItemsAsync();
+                var items = await operation.Data.GetStorageItemsAsync();
 
                 // TODO support multiple files.
                 // (atomic printing would be nice for groups of files)
 
-                var file = files[0];
-                return new PrintRequest( file.Name, new Uri( file.Path, UriKind.Absolute ) );
+                var file = items.OfType<StorageFile>().FirstOrDefault();
+                if ( file != null )
+                {
+                    // Passing the file as an URI is required, but it can't be converted
+                    // back to a StorageFile if it's not in our app's folders.
+                    var copy = await file.CopyAsync( ApplicationData.Current.LocalCacheFolder, file.Name, NameCollisionOption.GenerateUniqueName );
+                    return new PrintRequest( file.Name, new Uri( copy.Path, UriKind.Absolute ) );
+                }
             }
 
             // Error.
