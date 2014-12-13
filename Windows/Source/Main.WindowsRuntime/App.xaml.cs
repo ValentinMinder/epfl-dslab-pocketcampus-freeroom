@@ -13,10 +13,9 @@ using ThinMvvm;
 using ThinMvvm.Logging;
 using ThinMvvm.WindowsRuntime;
 using Windows.ApplicationModel.Activation;
-using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.DataTransfer.ShareTarget;
 using Windows.Phone.UI.Input;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -26,17 +25,22 @@ namespace PocketCampus.Main
 {
     public sealed partial class App
     {
-        private readonly IWindowsRuntimeNavigationService _navigationService;
-        private readonly IServerAccess _serverAccess;
-        private readonly IMainSettings _settings;
-        private readonly IPluginLoader _pluginLoader;
-        private readonly ProtocolHandler _protocolHandler;
+        private IWindowsRuntimeNavigationService _navigationService;
+        private IServerAccess _serverAccess;
+        private IMainSettings _settings;
+        private IPluginLoader _pluginLoader;
+        private ProtocolHandler _protocolHandler;
 
         public App()
         {
             RequestedTheme = ApplicationTheme.Light;
+        }
 
+        private void Initialize()
+        {
             CustomXamlResourceLoader.Current = new LocalizingResourceLoader();
+
+            LocalizationHelper.Initialize();
 
             DataViewModelOptions.AddNetworkExceptionType( typeof( WebException ) );
             DataViewModelOptions.AddNetworkExceptionType( typeof( OperationCanceledException ) );
@@ -57,7 +61,7 @@ namespace PocketCampus.Main
             Container.Bind<ILocationService, LocationService>();
             Container.Bind<ITileService, TileService>();
             Container.Bind<IDeviceIdentifier, DeviceIdentifier>();
-            Container.Bind<IAppRatingService, RatingService>();
+            Container.Bind<IAppRatingService, AppRatingService>();
             Container.Bind<ICredentialsStorage, CredentialsStorage>();
 
             // Logger
@@ -113,8 +117,7 @@ namespace PocketCampus.Main
 
             if ( !alreadyInitialized )
             {
-                // This must be done here, after window.current.content is set
-                LocalizationHelper.Initialize();
+                Initialize();
 
                 // Try to load the config; if it fails, it's not a big deal, there's always a saved one
                 try
@@ -146,37 +149,36 @@ namespace PocketCampus.Main
 
         protected override async void OnShareTargetActivated( ShareTargetActivatedEventArgs args )
         {
-            Uri fileUri;
-            string fileName;
-            var formats = args.ShareOperation.Data.AvailableFormats;
+            RootFrame = CreateRootFrame();
+            Window.Current.Content = RootFrame;
+            Initialize();
+            Messenger.Send( await MakeRequestAsync( args.ShareOperation ) );
+            Window.Current.Activate();
+        }
+
+        private static async Task<PrintRequest> MakeRequestAsync( ShareOperation operation )
+        {
+            var formats = operation.Data.AvailableFormats;
             if ( formats.Contains( StandardDataFormats.WebLink ) )
             {
-                fileUri = await args.ShareOperation.Data.GetWebLinkAsync();
-                fileName = Path.GetFileName( fileUri.LocalPath );
+                var uri = await operation.Data.GetWebLinkAsync();
+                return new PrintRequest( Path.GetFileName( uri.LocalPath ), uri );
             }
-            else if ( formats.Contains( StandardDataFormats.StorageItems ) )
+
+            if ( formats.Contains( StandardDataFormats.StorageItems ) )
             {
-                var files = await args.ShareOperation.Data.GetStorageItemsAsync();
+                var files = await operation.Data.GetStorageItemsAsync();
 
                 // TODO support multiple files.
                 // (atomic printing would be nice for groups of files)
 
                 var file = files[0];
-                fileUri = new Uri( file.Path, UriKind.Absolute );
-                fileName = file.Name;
-            }
-            else
-            {
-                // Error.
-                // But since we can't display share errors on WP, it has to be silently ignored.
-                return;
+                return new PrintRequest( file.Name, new Uri( file.Path, UriKind.Absolute ) );
             }
 
-            await Task.Run( () =>
-            {
-                // TODO this doesn't work.
-                CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync( CoreDispatcherPriority.Normal, () => Messenger.Send( new PrintRequest( fileName, fileUri ) ) );
-            } );
+            // Error.
+            // But since we can't display share errors on WP, it has to be silently ignored.
+            return null;
         }
     }
 }
