@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -160,12 +159,6 @@ namespace PocketCampus.Main
         private static async Task<PrintRequest> MakeRequestAsync( ShareOperation operation )
         {
             var formats = operation.Data.AvailableFormats;
-            if ( formats.Contains( StandardDataFormats.WebLink ) )
-            {
-                var uri = await operation.Data.GetWebLinkAsync();
-                return new PrintRequest( Path.GetFileName( uri.LocalPath ), uri );
-            }
-
             if ( formats.Contains( StandardDataFormats.StorageItems ) )
             {
                 var items = await operation.Data.GetStorageItemsAsync();
@@ -176,15 +169,14 @@ namespace PocketCampus.Main
                 var file = items.OfType<StorageFile>().FirstOrDefault();
                 if ( file != null )
                 {
-                    // Passing the file as an URI is required, but it can't be converted
-                    // back to a StorageFile if it's not in our app's folders.
+                    // Passing the file as an URI is required,
+                    // but it can't be converted back to a StorageFile if it's not in our app's folders.
                     var copy = await file.CopyAsync( ApplicationData.Current.LocalCacheFolder, file.Name, NameCollisionOption.GenerateUniqueName );
                     return new PrintRequest( file.Name, new Uri( copy.Path, UriKind.Absolute ) );
                 }
             }
 
-            // Error.
-            // But since we can't display share errors on WP, it has to be silently ignored.
+            // We can't display share errors on WP, so...
             return null;
         }
     }

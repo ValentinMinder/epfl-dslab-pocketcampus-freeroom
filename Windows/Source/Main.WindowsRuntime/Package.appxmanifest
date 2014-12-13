@@ -4,8 +4,8 @@
   <!-- The PhoneProductId is bound to the maps' Application ID -->
   <mp:PhoneIdentity PhoneProductId="28f8300e-8a84-4e3e-8d68-9a07c5b2a83a" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>PocketCampus.Main.WindowsRuntime</DisplayName>
-    <PublisherDisplayName>Solal</PublisherDisplayName>
+    <DisplayName>PocketCampus EPFL</DisplayName>
+    <PublisherDisplayName>PocketCampus.Org</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>
@@ -31,6 +31,7 @@
             <SupportedFileTypes>
               <FileType>.pdf</FileType>
             </SupportedFileTypes>
+            <DataFormat>StorageItems</DataFormat>
           </ShareTarget>
         </Extension>
       </Extensions>
