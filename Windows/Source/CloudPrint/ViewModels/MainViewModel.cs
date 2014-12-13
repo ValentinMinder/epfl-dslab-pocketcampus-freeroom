@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using PocketCampus.Authentication;
 using PocketCampus.CloudPrint.Models;
 using PocketCampus.CloudPrint.Services;
 using ThinMvvm;
@@ -7,68 +8,21 @@ namespace PocketCampus.CloudPrint.ViewModels
 {
     public sealed class MainViewModel : ViewModel<PrintRequest>
     {
+        private readonly INavigationService _navigationService;
         private readonly IPrintService _printService;
         private readonly IFileLoader _fileLoader;
         private readonly IFileUploader _fileUploader;
         private readonly PrintRequest _request;
 
         private PrintRequestStatus _status;
-        private ColorConfig _colorConfig;
-        private CopiesConfig _copiesConfig;
-        private DoubleSidedConfig _doubleSidedConfig;
-        private MultiPageConfig _multiPageConfig;
-        private PageOrientation _pageOrientation;
-        private bool _printAllPages;
-        private PageRange _pageRange;
 
         public string FileName { get; private set; }
+        public PrintSettings Settings { get; private set; }
 
         public PrintRequestStatus Status
         {
             get { return _status; }
             private set { SetProperty( ref _status, value ); }
-        }
-
-        public ColorConfig ColorConfig
-        {
-            get { return _colorConfig; }
-            set { SetProperty( ref _colorConfig, value ); }
-        }
-
-        public CopiesConfig CopiesConfig
-        {
-            get { return _copiesConfig; }
-            set { SetProperty( ref _copiesConfig, value ); }
-        }
-
-        public DoubleSidedConfig DoubleSidedConfig
-        {
-            get { return _doubleSidedConfig; }
-            set { SetProperty( ref _doubleSidedConfig, value ); }
-        }
-
-        public MultiPageConfig MultiPageConfig
-        {
-            get { return _multiPageConfig; }
-            set { SetProperty( ref _multiPageConfig, value ); }
-        }
-
-        public PageOrientation PageOrientation
-        {
-            get { return _pageOrientation; }
-            set { SetProperty( ref _pageOrientation, value ); }
-        }
-
-        public bool PrintAllPages
-        {
-            get { return _printAllPages; }
-            set { SetProperty( ref _printAllPages, value ); }
-        }
-
-        public PageRange PageRange
-        {
-            get { return _pageRange; }
-            set { SetProperty( ref _pageRange, value ); }
         }
 
 
@@ -78,15 +32,18 @@ namespace PocketCampus.CloudPrint.ViewModels
         }
 
 
-        public MainViewModel( IPrintService printService, IFileLoader fileLoader, IFileUploader fileUploader,
+        public MainViewModel( INavigationService navigationService, IPrintService printService,
+                              IFileLoader fileLoader, IFileUploader fileUploader,
                               PrintRequest request )
         {
+            _navigationService = navigationService;
             _printService = printService;
             _fileLoader = fileLoader;
             _fileUploader = fileUploader;
             _request = request;
 
             FileName = request.DocumentName;
+            Settings = request.Settings ?? PrintSettings.GetDefault();
         }
 
         private async Task PrintAsync()
@@ -95,24 +52,24 @@ namespace PocketCampus.CloudPrint.ViewModels
 
             var serverRequest = new PrintDocumentRequest
             {
-                ColorConfig = ColorConfig,
-                CopiesConfig = CopiesConfig,
-                Orientation = PageOrientation
+                ColorConfig = Settings.ColorConfig,
+                CopiesConfig = Settings.CopiesConfig,
+                Orientation = Settings.PageOrientation
             };
 
-            if ( MultiPageConfig.PagesPerSheet != PagesPerSheet.One )
+            if ( Settings.MultiPageConfig.PagesPerSheet != PagesPerSheet.One )
             {
-                serverRequest.MultiPageConfig = MultiPageConfig;
+                serverRequest.MultiPageConfig = Settings.MultiPageConfig;
             }
 
-            if ( DoubleSidedConfig != DoubleSidedConfig.SingleSide )
+            if ( Settings.DoubleSidedConfig != DoubleSidedConfig.SingleSide )
             {
-                serverRequest.DoubleSidedConfig = DoubleSidedConfig;
+                serverRequest.DoubleSidedConfig = Settings.DoubleSidedConfig;
             }
 
-            if ( !PrintAllPages )
+            if ( !Settings.PrintAllPages )
             {
-                serverRequest.Range = PageRange;
+                serverRequest.Range = Settings.PageRange;
             }
 
             if ( _request.DocumentId == null )
@@ -145,7 +102,8 @@ namespace PocketCampus.CloudPrint.ViewModels
                 }
                 if ( response.Status == ResponseStatus.AuthenticationError )
                 {
-                    // TODO don't forget to save state
+                    var newRequest = new PrintRequest( _request, Settings );
+                    Messenger.Send( new AuthenticationRequest( () => _navigationService.NavigateTo<MainViewModel, PrintRequest>( newRequest ) ) );
                 }
             }
             catch

@@ -12,7 +12,6 @@ using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
 using ThinMvvm;
 using ThinMvvm.Logging;
-using AuthenticationViewModel = PocketCampus.Authentication.ViewModels.MainViewModel;
 
 namespace PocketCampus.Main.ViewModels
 {
@@ -32,7 +31,7 @@ namespace PocketCampus.Main.ViewModels
         [LogId( "LogIn" )]
         public Command LogInCommand
         {
-            get { return this.GetCommand( () => _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( new AuthenticationRequest() ) ); }
+            get { return this.GetCommand( () => Messenger.Send( new AuthenticationRequest() ) ); }
         }
 
         [LogId( "LogOff" )]

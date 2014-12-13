@@ -45,41 +45,41 @@
         <ScrollViewer Grid.Row="2">
             <StackPanel>
                 <!-- Color config -->
-                <ComboBox ItemsSource="{Binding ColorConfig, 
+                <ComboBox ItemsSource="{Binding Settings.ColorConfig, 
                                                 Converter={StaticResource EnumToValues}}"
                           ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
-                          SelectedItem="{Binding ColorConfig}"
+                          SelectedItem="{Binding Settings.ColorConfig}"
                           Header="{CustomResource Main.ColorConfig}" />
 
                 <!-- Copies config part 1: number of copies -->
                 <TextBox InputScope="Number"
-                         Text="{Binding CopiesConfig.Count}"
+                         Text="{Binding Settings.CopiesConfig.Count}"
                          Header="{CustomResource Main.CopiesCount}" />
                 
                 <!-- Double-sided option -->
-                <ComboBox ItemsSource="{Binding DoubleSidedConfig, 
+                <ComboBox ItemsSource="{Binding Settings.DoubleSidedConfig, 
                                                 Converter={StaticResource EnumToValues}}"
                           ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
-                          SelectedItem="{Binding DoubleSidedConfig}"
+                          SelectedItem="{Binding Settings.DoubleSidedConfig}"
                           Header="{CustomResource Main.DoubleSidedConfig}" />
 
                 <!-- Multi-page config part 1: pages per sheet -->
-                <ComboBox ItemsSource="{Binding MultiPageConfig.PagesPerSheet, 
+                <ComboBox ItemsSource="{Binding Settings.MultiPageConfig.PagesPerSheet, 
                                                 Converter={StaticResource EnumToValues}}"
                           ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
-                          SelectedItem="{Binding MultiPageConfig.PagesPerSheet}"
+                          SelectedItem="{Binding Settings.MultiPageConfig.PagesPerSheet}"
                           Header="{CustomResource Main.PagesPerSheet}" />
                 
                 <!-- Page orientation -->
-                <ComboBox ItemsSource="{Binding PageOrientation, 
+                <ComboBox ItemsSource="{Binding Settings.PageOrientation, 
                                                 Converter={StaticResource EnumToValues}}"
                           ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
-                          SelectedItem="{Binding PageOrientation}"
+                          SelectedItem="{Binding Settings.PageOrientation}"
                           Header="{CustomResource Main.PageOrientation}" />
 
                 <!-- Print all pages -->
                 <RadioButton GroupName="PageRange"
-                             IsChecked="{Binding PrintAllPages, 
+                             IsChecked="{Binding Settings.PrintAllPages, 
                                                  Mode=TwoWay}"
                              Content="{CustomResource Main.PrintAllPages}" />
                 <RadioButton GroupName="PageRange">
@@ -95,7 +95,7 @@
                         
                         <TextBox Grid.Column="1"
                                  InputScope="Number"
-                                 Text="{Binding PageRange.From}" />
+                                 Text="{Binding Settings.PageRange.From}" />
                         
                         <TextBlock Grid.Column="2"
                                    Text="{CustomResource Main.PrintTo}"
@@ -103,19 +103,19 @@
                         
                         <TextBox Grid.Column="3"
                                  InputScope="Number"
-                                 Text="{Binding PageRange.To}" />
+                                 Text="{Binding Settings.PageRange.To}" />
                     </Grid>
                 </RadioButton>
 
                 <!-- Copies config part 2: collate copies -->
-                <CheckBox IsChecked="{Binding CopiesConfig.Collate}"
+                <CheckBox IsChecked="{Binding Settings.CopiesConfig.Collate}"
                           Content="{CustomResource Main.CollateCopies}" />
                 
                 <!-- Multi-page config part 2: pages per sheet -->
-                <ComboBox ItemsSource="{Binding MultiPageConfig.Layout, 
+                <ComboBox ItemsSource="{Binding Settings.MultiPageConfig.Layout, 
                                                 Converter={StaticResource EnumToValues}}"
                           ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
-                          SelectedItem="{Binding MultiPageConfig.Layout}"
+                          SelectedItem="{Binding Settings.MultiPageConfig.Layout}"
                           Header="{CustomResource Main.PagesLayout}" />
             </StackPanel>
         </ScrollViewer>

@@ -35,6 +35,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\Authentication\PocketCampus.Authentication.csproj">
+      <Project>{b1780e96-7e18-47c0-9e93-1086d9491815}</Project>
+      <Name>PocketCampus.Authentication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\PocketCampus.Common.csproj">
       <Project>{f780f0dd-8a14-4e72-9525-a11d792cbfab}</Project>
       <Name>PocketCampus.Common</Name>
@@ -55,6 +59,7 @@
     <Compile Include="Plugin.cs" />
     <Compile Include="PrintRequest.cs" />
     <Compile Include="PrintRequestStatus.cs" />
+    <Compile Include="PrintSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IFileLoader.cs" />
     <Compile Include="Services\IFileUploader.cs" />

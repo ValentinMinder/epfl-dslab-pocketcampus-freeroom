@@ -11,7 +11,6 @@ using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
 using ThinMvvm;
 using ThinMvvm.Logging;
-using AuthenticationViewModel = PocketCampus.Authentication.ViewModels.MainViewModel;
 
 namespace PocketCampus.Main.ViewModels
 {
@@ -101,8 +100,7 @@ namespace PocketCampus.Main.ViewModels
             }
             else if ( settings.SessionStatus == SessionStatus.NotLoggedIn )
             {
-                var authRequest = new AuthenticationRequest( () => plugin.NavigateTo( navigationService ) );
-                navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
+                Messenger.Send( new AuthenticationRequest( () => plugin.NavigateTo( navigationService ) ) );
             }
         }
     }

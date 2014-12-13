@@ -7,6 +7,7 @@ namespace PocketCampus.CloudPrint
         public string DocumentName { get; private set; }
         public Uri FileUri { get; private set; }
         public long? DocumentId { get; private set; }
+        public PrintSettings Settings { get; private set; }
 
         public PrintRequest( string documentName, Uri fileUri )
         {
@@ -18,6 +19,14 @@ namespace PocketCampus.CloudPrint
         {
             DocumentName = documentName;
             DocumentId = documentId;
+        }
+
+        public PrintRequest( PrintRequest original, PrintSettings settings )
+        {
+            DocumentName = original.DocumentName;
+            FileUri = original.FileUri;
+            DocumentId = original.DocumentId;
+            Settings = settings;
         }
     }
 }

@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using PocketCampus.Authentication.Services;
+using PocketCampus.Authentication.ViewModels;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using ThinMvvm;
@@ -32,6 +33,8 @@ namespace PocketCampus.Authentication
             Container.Bind<IAuthenticationService, AuthenticationService>();
             Container.Bind<IAuthenticator, TequilaAuthenticator>();
             Container.Bind<ISecureRequestHandler, SecureRequestHandler>();
+
+            Messenger.Register<AuthenticationRequest>( navigationService.NavigateTo<MainViewModel, AuthenticationRequest> );
         }
 
         // This plugin cannot be navigated to.
