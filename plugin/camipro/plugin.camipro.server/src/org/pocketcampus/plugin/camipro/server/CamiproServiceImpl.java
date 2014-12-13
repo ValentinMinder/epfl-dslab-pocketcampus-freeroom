@@ -1,11 +1,14 @@
 package org.pocketcampus.plugin.camipro.server;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 import org.apache.thrift.TException;
@@ -24,6 +27,12 @@ import org.pocketcampus.plugin.camipro.shared.StatsAndLoadingInfo;
 import org.pocketcampus.plugin.camipro.shared.Transaction;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
 /**
@@ -31,8 +40,8 @@ import com.google.gson.JsonSyntaxException;
  * 
  * The implementation of the server side of the Camipro Plugin.
  * 
- * It fetches the user's Camipro data from the Camipro servers.
- * And sends the e-banking information to the user by email.
+ * It fetches the user's Camipro data from the Camipro servers. And sends the
+ * e-banking information to the user by email.
  * 
  * @author Amer <amer.chamseddine@epfl.ch>
  * 
@@ -45,7 +54,7 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		System.out.println("Starting Camipro plugin server ...");
 		useAPI = true;
 	}
-
+	
 	@Override
 	public TequilaToken getTequilaTokenForCamipro() throws TException {
 		System.out.println("getTequilaToken");
@@ -71,21 +80,27 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 			return teqToken;
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new TException("Failed to getTequilaToken from upstream server");
+			throw new TException(
+					"Failed to getTequilaToken from upstream server");
 		}
 	}
 
 	@Override
-	public CamiproSession getCamiproSession(TequilaToken iTequilaToken) throws TException {
+	public CamiproSession getCamiproSession(TequilaToken iTequilaToken)
+			throws TException {
 		System.out.println("getCamiproSession");
-		// PocketCampusServer.pushNotifMap(iTequilaToken, "camipro", "chamsedd");
-		return new CamiproSession(iTequilaToken == null ? "" : iTequilaToken.getLoginCookie());
+		// PocketCampusServer.pushNotifMap(iTequilaToken, "camipro",
+		// "chamsedd");
+		return new CamiproSession(iTequilaToken == null ? ""
+				: iTequilaToken.getLoginCookie());
 	}
 
 	@Override
-	public BalanceAndTransactions getBalanceAndTransactions(CamiproRequest iRequest) throws TException {
+	public BalanceAndTransactions getBalanceAndTransactions(
+			CamiproRequest iRequest) throws TException {
 		System.out.println("getBalanceAndTransactions");
-		// PocketCampusServer.pushNotifSend("camipro", Arrays.asList(new String[]{"chamsedd"}), new HashMap<String, String>());
+		// PocketCampusServer.pushNotifSend("camipro", Arrays.asList(new
+		// String[]{"chamsedd"}), new HashMap<String, String>());
 		if (useAPI)
 			return getBalanceAndTransactionsWAPI(iRequest);
 
@@ -94,11 +109,13 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		cookie.importFromString(iRequest.getISessionId().getCamiproCookie());
 
 		try {
-			page = getPageWithCookie("https://cmp2www.epfl.ch/client/sertrans", cookie);
+			page = getPageWithCookie("https://cmp2www.epfl.ch/client/sertrans",
+					cookie);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return new BalanceAndTransactions(404);
-			// throw new TException("getBalanceAndTransactions: Failed to get data from Camipro upstream server");
+			// throw new
+			// TException("getBalanceAndTransactions: Failed to get data from Camipro upstream server");
 		}
 		if (page == null) {
 			System.out.println("not logged in");
@@ -110,19 +127,26 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		double tBalance = 0.0;
 		LinkedList<Transaction> tTransactions = new LinkedList<Transaction>();
 
-		page = getSubstringBetween(page, "<table class='table' width='600px' style='margin-bottom: 10px;'>", "</table>");
+		page = getSubstringBetween(
+				page,
+				"<table class='table' width='600px' style='margin-bottom: 10px;'>",
+				"</table>");
 		for (String i : page.split("</tr>")) {
 			if (i.indexOf("<td></td><td></td>") != -1) {
-				tBalance = Double.parseDouble(getSubstringBetween(i, "<td style='text-align:right;vertical-align:bottom;'><b>", "</b></td>"));
+				tBalance = Double
+						.parseDouble(getSubstringBetween(
+								i,
+								"<td style='text-align:right;vertical-align:bottom;'><b>",
+								"</b></td>"));
 			} else if (i.startsWith("<td style='text-align:left'>")) {
 				String[] trans = i.split("</td>");
 				if (trans.length < 4)
 					continue;
-				tTransactions.add(new Transaction(
-						getSubstringBetween(trans[0], ">", "<"),
-						getSubstringBetween(trans[1], ">", "<"),
-						getSubstringBetween(trans[2], ">", "<"),
-						Double.parseDouble(getSubstringBetween(trans[3], ">", "<"))));
+				tTransactions.add(new Transaction(getSubstringBetween(trans[0],
+						">", "<"), getSubstringBetween(trans[1], ">", "<"),
+						getSubstringBetween(trans[2], ">", "<"), Double
+								.parseDouble(getSubstringBetween(trans[3], ">",
+										"<"))));
 			}
 		}
 
@@ -134,7 +158,8 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 	}
 
 	@Override
-	public StatsAndLoadingInfo getStatsAndLoadingInfo(CamiproRequest iRequest) throws TException {
+	public StatsAndLoadingInfo getStatsAndLoadingInfo(CamiproRequest iRequest)
+			throws TException {
 		System.out.println("getStatsAndLoadingInfo");
 		if (useAPI)
 			return getStatsAndLoadingInfoWAPI(iRequest);
@@ -144,28 +169,36 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		cookie.importFromString(iRequest.getISessionId().getCamiproCookie());
 
 		try {
-			page = getPageWithCookie("https://cmp2www.epfl.ch/client/ebanking", cookie);
+			page = getPageWithCookie("https://cmp2www.epfl.ch/client/ebanking",
+					cookie);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return new StatsAndLoadingInfo(404);
-			// throw new TException("getStatsAndLoadingInfo: Failed to get data from Camipro upstream server");
+			// throw new
+			// TException("getStatsAndLoadingInfo: Failed to get data from Camipro upstream server");
 		}
 		if (page == null) {
 			System.out.println("not logged in");
 			return new StatsAndLoadingInfo(407);
 		}
 
-		String PaymentFor = getSubstringBetween(page, "name=\"PaymentFor\">", "<");
-		String ReferenceNbr = getLastSubstringBetween(page, "\"", "\" name=\"ReferenceNr\"");
-		String AccountNbr = getLastSubstringBetween(page, "\"", "\" name=\"Account\"");
+		String PaymentFor = getSubstringBetween(page, "name=\"PaymentFor\">",
+				"<");
+		String ReferenceNbr = getLastSubstringBetween(page, "\"",
+				"\" name=\"ReferenceNr\"");
+		String AccountNbr = getLastSubstringBetween(page, "\"",
+				"\" name=\"Account\"");
 
 		String Total1M = getSubstringBetween(page, "<h5>", "</h5>");
 		String Total3M = getLastSubstringBetween(page, "<h5>", "</h5>");
-		double dTotal1M = Double.parseDouble(getSubstringBetween(Total1M, "CHF ", "<"));
-		double dTotal3M = Double.parseDouble(getSubstringBetween(Total3M, "CHF ", " "));
+		double dTotal1M = Double.parseDouble(getSubstringBetween(Total1M,
+				"CHF ", "<"));
+		double dTotal3M = Double.parseDouble(getSubstringBetween(Total3M,
+				"CHF ", " "));
 
 		CardStatistics tCardStatistics = new CardStatistics(dTotal1M, dTotal3M);
-		CardLoadingWithEbankingInfo tCardLoadingWithEbankingInfo = new CardLoadingWithEbankingInfo(PaymentFor, AccountNbr, ReferenceNbr);
+		CardLoadingWithEbankingInfo tCardLoadingWithEbankingInfo = new CardLoadingWithEbankingInfo(
+				PaymentFor, AccountNbr, ReferenceNbr);
 
 		StatsAndLoadingInfo sl = new StatsAndLoadingInfo(200);
 		sl.setICardStatistics(tCardStatistics);
@@ -174,7 +207,8 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 	}
 
 	@Override
-	public SendMailResult sendLoadingInfoByEmail(CamiproRequest iRequest) throws TException {
+	public SendMailResult sendLoadingInfoByEmail(CamiproRequest iRequest)
+			throws TException {
 		System.out.println("sendLoadingInfoByEmail");
 		if (useAPI)
 			return sendLoadingInfoByEmailWAPI(iRequest);
@@ -186,9 +220,11 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		try {
 			System.out.println("request language " + iRequest.getILanguage());
 			// switch language first
-			page = getPageWithCookie("https://cmp2www.epfl.ch/client/ebanking-" + iRequest.getILanguage(), cookie);
+			page = getPageWithCookie("https://cmp2www.epfl.ch/client/ebanking-"
+					+ iRequest.getILanguage(), cookie);
 			// then get data
-			page = getPageWithCookie("https://cmp2www.epfl.ch/client/ebanking", cookie);
+			page = getPageWithCookie("https://cmp2www.epfl.ch/client/ebanking",
+					cookie);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return new SendMailResult(404);
@@ -204,7 +240,9 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 
 		// now send email
 		try {
-			page = getPageWithCookie("https://cmp2www.epfl.ch/client/services/ebanking_email.php?email=" + emailAddress, cookie);
+			page = getPageWithCookie(
+					"https://cmp2www.epfl.ch/client/services/ebanking_email.php?email="
+							+ emailAddress, cookie);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return new SendMailResult(404);
@@ -219,18 +257,19 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		return mr;
 	}
 
-	public BalanceAndTransactions getBalanceAndTransactionsWAPI(CamiproRequest iRequest) throws TException {
+	public BalanceAndTransactions getBalanceAndTransactionsWAPI(
+			CamiproRequest iRequest) throws TException {
 		// System.out.println(iRequest.toString());
 		String balPage = null;
 		String trxPage = null;
 		BalanceJson tBalance = null;
 		TransactionsJson tTransactions = null;
-		Gson gson = new Gson();
+		Gson gson = getGson();
 		Cookie cookie = new Cookie();
 		cookie.importFromString(iRequest.getISessionId().getCamiproCookie());
 
 		try {
-			balPage = getPageWithCookie("https://cmp2www.epfl.ch/ws/balance", cookie);
+			balPage = getPageWithCookie("https://cmp2www.epfl.ch/ws/balance",cookie);
 			trxPage = getPageWithCookie("https://cmp2www.epfl.ch/ws/transactions", cookie);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -248,7 +287,8 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 			e.printStackTrace();
 			return new BalanceAndTransactions(404);
 		}
-		if (!"Success".equals(tBalance.Status) || !"Success".equals(tTransactions.Status)) {
+		if (!"Success".equals(tBalance.Status)
+				|| !"Success".equals(tTransactions.Status)) {
 			System.out.println("camipro upstream server has failed");
 			return new BalanceAndTransactions(404);
 		}
@@ -256,10 +296,13 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		LinkedList<Transaction> decodedTrx = new LinkedList<Transaction>();
 		if (tTransactions.LastTransactionsList.LastTransactions != null)
 			for (TransactionsJson.TransactionsListJson.TransactionJson t : tTransactions.LastTransactionsList.LastTransactions) {
-				if(t.TransactionDate == null || t.TransactionType == null || t.ElementDescription == null) {
+				if (t.TransactionDate == null || t.TransactionType == null
+						|| t.ElementDescription == null) {
 					continue;
 				}
-				decodedTrx.add(new Transaction(transcribeDate(t.TransactionDate), t.TransactionType, t.ElementDescription, t.TransactionAmount));
+				decodedTrx.add(new Transaction(
+						transcribeDate(t.TransactionDate), t.TransactionType,
+						t.ElementDescription, t.TransactionAmount));
 			}
 
 		BalanceAndTransactions bt = new BalanceAndTransactions(200);
@@ -269,15 +312,17 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		return bt;
 	}
 
-	public StatsAndLoadingInfo getStatsAndLoadingInfoWAPI(CamiproRequest iRequest) throws TException {
+	public StatsAndLoadingInfo getStatsAndLoadingInfoWAPI(
+			CamiproRequest iRequest) throws TException {
 		String ebnkPage = null;
 		EbankingJson tEbanking = null;
-		Gson gson = new Gson();
+		Gson gson = getGson();
 		Cookie cookie = new Cookie();
 		cookie.importFromString(iRequest.getISessionId().getCamiproCookie());
 
 		try {
-			ebnkPage = getPageWithCookie("https://cmp2www.epfl.ch/ws/ebanking", cookie);
+			ebnkPage = getPageWithCookie("https://cmp2www.epfl.ch/ws/ebanking",
+					cookie);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return new StatsAndLoadingInfo(404);
@@ -298,8 +343,11 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 			return new StatsAndLoadingInfo(404);
 		}
 
-		CardStatistics tCardStatistics = new CardStatistics(tEbanking.TotalAmount1M, tEbanking.TotalAmount3M);
-		CardLoadingWithEbankingInfo tCardLoadingWithEbankingInfo = new CardLoadingWithEbankingInfo(tEbanking.PaidNameTo, tEbanking.AccountNr, tEbanking.BvrReadableReference);
+		CardStatistics tCardStatistics = new CardStatistics(
+				tEbanking.TotalAmount1M, tEbanking.TotalAmount3M);
+		CardLoadingWithEbankingInfo tCardLoadingWithEbankingInfo = new CardLoadingWithEbankingInfo(
+				tEbanking.PaidNameTo, tEbanking.AccountNr,
+				tEbanking.BvrReadableReference);
 
 		StatsAndLoadingInfo sl = new StatsAndLoadingInfo(200);
 		sl.setICardStatistics(tCardStatistics);
@@ -307,15 +355,18 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		return sl;
 	}
 
-	public SendMailResult sendLoadingInfoByEmailWAPI(CamiproRequest iRequest) throws TException {
+	public SendMailResult sendLoadingInfoByEmailWAPI(CamiproRequest iRequest)
+			throws TException {
 		String ebmPage = null;
 		EbankingemailJson tEbankingemail = null;
-		Gson gson = new Gson();
+		Gson gson = getGson();
 		Cookie cookie = new Cookie();
 		cookie.importFromString(iRequest.getISessionId().getCamiproCookie());
 
 		try {
-			ebmPage = getPageWithCookie("https://cmp2www.epfl.ch/ws/ebankingemail?lang=" + iRequest.getILanguage(), cookie);
+			ebmPage = getPageWithCookie(
+					"https://cmp2www.epfl.ch/ws/ebankingemail?lang="
+							+ iRequest.getILanguage(), cookie);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return new SendMailResult(404);
@@ -345,7 +396,14 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 	 * HELPER FUNCTIONS
 	 */
 
-	private String executeCommand(String cmd, String encoding) throws IOException {
+	private Gson getGson() {
+		GsonBuilder builder = new GsonBuilder();
+		builder.registerTypeAdapter(double.class, new EnglishDoubleDeserializer());
+		return builder.create();
+	}
+
+	private String executeCommand(String cmd, String encoding)
+			throws IOException {
 		Runtime run = Runtime.getRuntime();
 		Process pr = run.exec(cmd);
 		try {
@@ -358,7 +416,8 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		// HACK to avoid a dependency on Commons IO
 		Scanner scanner = null;
 		try {
-			scanner = new Scanner(pr.getInputStream(), encoding).useDelimiter("\\A");
+			scanner = new Scanner(pr.getInputStream(), encoding)
+					.useDelimiter("\\A");
 			return scanner.hasNext() ? scanner.next() : "";
 		} finally {
 			if (scanner != null) {
@@ -367,8 +426,10 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		}
 	}
 
-	private String getPageWithCookie(String url, Cookie cookie) throws IOException {
-		String resp = executeCommand("curl --cookie " + cookie.cookie() + " " + url, "UTF-8");
+	private String getPageWithCookie(String url, Cookie cookie)
+			throws IOException {
+		String resp = executeCommand("curl --cookie " + cookie.cookie() + " "
+				+ url, "UTF-8");
 		if (resp.length() == 0)
 			return null;
 		return resp;
@@ -386,7 +447,8 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		return orig;
 	}
 
-	private String getLastSubstringBetween(String orig, String before, String after) {
+	private String getLastSubstringBetween(String orig, String before,
+			String after) {
 		int a = orig.lastIndexOf(after);
 		if (a != -1) {
 			orig = orig.substring(0, a);
@@ -449,4 +511,26 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		public String Status;
 	}
 
+	/** Special deserializer that uses a set format to parse double, rather than depending on the current locale. */
+	private static final class EnglishDoubleDeserializer implements
+			JsonDeserializer<Double> {
+
+		private static final NumberFormat NUMBER_FORMAT = NumberFormat
+				.getInstance(Locale.ENGLISH);
+
+		@Override
+		public Double deserialize(JsonElement elem, Type type,
+				JsonDeserializationContext context) throws JsonParseException {
+			JsonPrimitive primitive = (JsonPrimitive) elem;
+			if (primitive.isNumber()) {
+				return primitive.getAsDouble();
+			}
+			try {
+				return NUMBER_FORMAT.parse(elem.getAsString()).doubleValue();
+			} catch (ParseException e) {
+				throw new JsonParseException("Unexpected number format.", e);
+			}
+		}
+
+	}
 }
