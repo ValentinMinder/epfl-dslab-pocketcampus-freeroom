@@ -147,5 +147,24 @@
                           Header="{CustomResource Main.PagesLayout}" />
             </StackPanel>
         </ScrollViewer>
+        
+        <cc:Switch Grid.Row="2"
+                   Grid.RowSpan="2"
+                   Value="{Binding Status}">
+            <cc:SwitchCase Values="Printing">
+                <Border Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                    <ProgressRing IsActive="True"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center" />
+                </Border>
+            </cc:SwitchCase>
+            <cc:SwitchCase Values="Success, UploadError, PrintingError">
+                <Border Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                    <TextBlock Text="{Binding Status,
+                                              Converter={StaticResource EnumToString}}"
+                               Style="{StaticResource AppCenterTextBlockStyle}" />
+                </Border>
+            </cc:SwitchCase>
+        </cc:Switch>
     </Grid>
 </cc:PageBase>

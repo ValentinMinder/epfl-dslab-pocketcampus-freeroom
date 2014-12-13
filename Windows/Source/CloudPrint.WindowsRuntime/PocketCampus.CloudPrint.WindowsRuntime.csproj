@@ -114,6 +114,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <PRIResource Include="Strings\fr\PrintRequestStatus.resw" />
+    <PRIResource Include="Strings\en\PrintRequestStatus.resw" />
     <PRIResource Include="Strings\fr\PagesPerSheet.resw" />
     <PRIResource Include="Strings\fr\PageOrientation.resw" />
     <PRIResource Include="Strings\fr\MultiPageLayout.resw" />

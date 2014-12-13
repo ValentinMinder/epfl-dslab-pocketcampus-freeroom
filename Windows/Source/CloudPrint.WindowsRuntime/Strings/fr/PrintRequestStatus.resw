@@ -117,25 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Authenticating" xml:space="preserve">
-    <value />
-    <comment>Empty string</comment>
-  </data>
-  <data name="Error" xml:space="preserve">
-    <value>Erreur.
-Réessayez plus tard.</value>
-    <comment>Sentence</comment>
-  </data>
   <data name="NotRequested" xml:space="preserve">
     <value />
     <comment>Empty string</comment>
   </data>
-  <data name="Success" xml:space="preserve">
+  <data name="Printing" xml:space="preserve">
     <value />
     <comment>Empty string</comment>
   </data>
-  <data name="WrongCredentials" xml:space="preserve">
-    <value>Ces identifiants sont invalides.</value>
+  <data name="PrintingError" xml:space="preserve">
+    <value>Erreur.
+Réessayez plus tard.</value>
+    <comment>Sentence</comment>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>C'est fait !
+Vous pouvez imprimer votre fichier à n'importe quelle imprimante publique de l'EPFL.</value>
+    <comment>Empty string</comment>
+  </data>
+  <data name="UploadError" xml:space="preserve">
+    <value>Erreur.
+Vérifiez votre connexion à Internet.</value>
     <comment>Sentence</comment>
   </data>
 </root>
