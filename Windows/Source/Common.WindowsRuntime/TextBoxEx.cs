@@ -2,6 +2,7 @@
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace PocketCampus.Common
 {
@@ -56,6 +57,34 @@ namespace PocketCampus.Common
                         box.IsEnabled = true;
                     }
                 }
+            };
+        }
+        #endregion
+
+        #region AssociatedToggle
+        // Does not support removal.
+
+        public static ToggleButton GetAssociatedToggle( DependencyObject obj )
+        {
+            return (ToggleButton) obj.GetValue( AssociatedToggleProperty );
+        }
+
+        public static void SetAssociatedToggle( DependencyObject obj, ToggleButton value )
+        {
+            obj.SetValue( AssociatedToggleProperty, value );
+        }
+
+        public static readonly DependencyProperty AssociatedToggleProperty =
+            DependencyProperty.RegisterAttached( "AssociatedToggle", typeof( ToggleButton ), typeof( TextBoxEx ), new PropertyMetadata( null, OnAssociatedToggleChanged ) );
+
+        private static void OnAssociatedToggleChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
+        {
+            var box = (TextBox) obj;
+            var button = (ToggleButton) args.NewValue;
+
+            box.GotFocus += ( _, __ ) =>
+            {
+                button.IsChecked = true;
             };
         }
         #endregion

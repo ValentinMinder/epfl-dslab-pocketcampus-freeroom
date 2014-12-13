@@ -118,8 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CollateCopies" xml:space="preserve">
-    <value>Collate copies (e.g. 1, 2, 3, 1, 2, 3, ...)</value>
+    <value>Collate copies</value>
     <comment>Checkbox text</comment>
+  </data>
+  <data name="CollateCopiesExplanation" xml:space="preserve">
+    <value>Collating copies will print pages from each copy in order, e.g. 1, 2, 3, 1, 2, 3 instead of 1, 1, 2, 2, 3, 3.</value>
   </data>
   <data name="ColorConfig" xml:space="preserve">
     <value>color options</value>
