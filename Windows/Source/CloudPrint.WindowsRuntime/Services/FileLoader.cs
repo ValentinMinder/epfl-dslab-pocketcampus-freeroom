@@ -19,17 +19,29 @@ namespace PocketCampus.CloudPrint.Services
             return GetOnlineStreamAsync( uri );
         }
 
+        public async Task DeleteFileAsync( Uri uri )
+        {
+            var file = await GetStorageFileAsync( uri );
+            await file.DeleteAsync();
+        }
+
         private static async Task<Stream> GetFileStreamAsync( Uri fileUri )
         {
-            // GetFileFromPathAsync requires backslashes...
-            string path = WebUtility.UrlDecode( fileUri.AbsolutePath ).Replace( '/', '\\' );
-            var file = await StorageFile.GetFileFromPathAsync( path );
-            return ( await file.OpenReadAsync() ).AsStreamForRead();
+            var file = await GetStorageFileAsync( fileUri );
+            var stream = await file.OpenReadAsync();
+            return stream.AsStreamForRead();
         }
 
         private static Task<Stream> GetOnlineStreamAsync( Uri uri )
         {
             return new HttpClient().GetStreamAsync( uri );
+        }
+
+        private static Task<StorageFile> GetStorageFileAsync( Uri fileUri )
+        {
+            // GetFileFromPathAsync requires backslashes...
+            string path = WebUtility.UrlDecode( fileUri.AbsolutePath ).Replace( '/', '\\' );
+            return StorageFile.GetFileFromPathAsync( path ).AsTask();
         }
     }
 }

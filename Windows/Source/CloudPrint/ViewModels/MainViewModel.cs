@@ -115,6 +115,7 @@ namespace PocketCampus.CloudPrint.ViewModels
                 return;
             }
 
+            await _fileLoader.DeleteFileAsync( _request.FileUri );
             Status = PrintRequestStatus.Success;
         }
 

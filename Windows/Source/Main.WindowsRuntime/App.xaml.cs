@@ -171,7 +171,7 @@ namespace PocketCampus.Main
                 {
                     // Passing the file as an URI is required,
                     // but it can't be converted back to a StorageFile if it's not in our app's folders.
-                    var copy = await file.CopyAsync( ApplicationData.Current.LocalCacheFolder, file.Name, NameCollisionOption.GenerateUniqueName );
+                    var copy = await file.CopyAsync( ApplicationData.Current.TemporaryFolder, file.Name, NameCollisionOption.GenerateUniqueName );
                     return new PrintRequest( file.Name, new Uri( copy.Path, UriKind.Absolute ) );
                 }
             }
