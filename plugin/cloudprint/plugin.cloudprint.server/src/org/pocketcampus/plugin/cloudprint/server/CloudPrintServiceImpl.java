@@ -58,7 +58,10 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 	public int checkState() throws IOException {
 		TempFileCleaner.cleanupIfNeeded();
 		int status = checkPrintersAndJobs();
-		return ((status == 0) ? 200 : (status + 500));
+		status = ((status == 0) ? 200 : (status + 500));
+		if(!checkStorage())
+			status += 5000;
+		return status;
 	}
 	
 	@Override
@@ -441,6 +444,35 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 			}
 		}
 		return status;
+	}
+	private boolean checkStorage() throws IOException {
+		Process proc = Runtime.getRuntime().exec(new String[]{ "df", "-h" });
+		String [] out = IOUtils.toString(proc.getInputStream(), "UTF-8").split("\n");
+		int i = -1, j = -1;
+		for(String l : out) {
+			if(i == -1) {
+				String [] cols = l.split("\\s+");
+				for(String c : cols) {
+					if(c.contains("%")) {
+						i = l.indexOf(c);
+						j = i + c.length();
+						break;
+					}
+				}
+				continue;
+			}
+			if(i >= 0 && i < l.length() && j >= 0 && j < l.length()) {
+				String f = l.substring(i, j);
+				if(f.contains("%")) {
+					int percent = Integer.parseInt(f.replace('%', ' ').trim());
+					if(percent > 90) {
+						System.out.println("PARTITION ALMOST FULL: " + l);
+						return false;
+					}
+				}
+			}
+		}
+		return true;
 	}
 	private final Map<String, PrintJobChecker> jobCheckers = generateInitialJobCheckersMap(); 
 	private Map<String, PrintJobChecker> generateInitialJobCheckersMap() {
