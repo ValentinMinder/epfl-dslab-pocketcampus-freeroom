@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.directory.android.req;
 
+import java.util.Iterator;
+
 import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.directory.android.*;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
@@ -15,11 +17,11 @@ import org.pocketcampus.plugin.directory.shared.DirectoryService.Iface;
  * @author Amer <amer.chamseddine@epfl.ch>
  *
  */
-public class SearchUniqueDirectoryRequest extends Request<DirectoryController, Iface, DirectoryRequest, DirectoryResponse> {
+public class SearchBySciperRequest extends Request<DirectoryController, Iface, DirectoryRequest, DirectoryResponse> {
 
 	private IDirectoryView caller;
 	
-	public SearchUniqueDirectoryRequest(IDirectoryView caller) {
+	public SearchBySciperRequest(IDirectoryView caller) {
 		this.caller = caller;
 	}
 	
@@ -27,7 +29,15 @@ public class SearchUniqueDirectoryRequest extends Request<DirectoryController, I
 	protected DirectoryResponse runInBackground(Iface client, DirectoryRequest param) throws Exception {
 		if("".equals(param.getQuery()))
 			return new DirectoryResponse(200);
-		return client.searchDirectory(param);
+		DirectoryResponse result = client.searchDirectory(param);
+		// sometime the query matches more than one person (e.g., on phone number)
+		Iterator<Person> i = result.getResults().iterator();
+		while(i.hasNext()) {
+			Person p = i.next();
+			if(!p.getSciper().equals(param.getQuery()))
+				i.remove();
+		}
+		return result;
 	}
 
 	@Override
