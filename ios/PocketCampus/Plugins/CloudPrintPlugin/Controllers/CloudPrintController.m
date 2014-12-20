@@ -187,18 +187,24 @@ static float const kProgressMax = 100;
 #pragma mark - Public
     
 + (BOOL)isSupportedFileWithLocalURL:(NSURL*)localURL {
-    
+    if (!localURL) {
+        return NO;
+    }
     NSString* path = localURL.path;
     if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
         return NO;
     }
-    
+
     // Method 1: try to find the "%PDF" header in the file
     NSError* error = nil;
-    NSString* string = [NSString stringWithContentsOfURL:localURL encoding:NSASCIIStringEncoding error:&error];
-    if (!error && string) {
-        NSUInteger index = 10 < string.length - 1 ? 10 : string.length - 1; //10 is normally too big, but taking some margin
-        return ([[string substringToIndex:index] rangeOfString:@"%PDF"].location != NSNotFound);
+    NSFileHandle* fileHandle = [NSFileHandle fileHandleForReadingFromURL:localURL error:&error];
+    if (error) {
+        return NO;
+    }
+    NSData* data = [fileHandle readDataOfLength:8]; //will read up to length or end of file if file size is smaller than length (see doc)
+    NSString* string = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+    if (string.length > 0) {
+        return ([string rangeOfString:@"%PDF"].location != NSNotFound);
     }
     
     // Method 2 if method 1 failed: rely on file extension
