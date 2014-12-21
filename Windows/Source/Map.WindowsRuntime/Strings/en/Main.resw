@@ -125,6 +125,10 @@
     <value>follow me</value>
     <comment>Button label</comment>
   </data>
+  <data name="NoSearchResults" xml:space="preserve">
+    <value>Your query returned no results.</value>
+    <comment>Sentence</comment>
+  </data>
   <data name="Search" xml:space="preserve">
     <value>search...</value>
     <comment>Textbox placeholder</comment>

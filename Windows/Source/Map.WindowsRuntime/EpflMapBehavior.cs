@@ -97,7 +97,7 @@ namespace PocketCampus.Map
                 _vm = (MainViewModel) _map.DataContext;
 
                 OnFloorChanged( _vm.Properties.Floor );
-                OnItemsChanged( _vm.SearchProvider.SearchResults );
+                OnItemsChanged( _vm.SearchResults );
 
                 _properties = _vm.Properties;
 
@@ -107,7 +107,7 @@ namespace PocketCampus.Map
                 UpdateLabelsOverlay();
 
                 _vm.Properties.ListenToProperty( x => x.Floor, () => OnFloorChanged( _vm.Properties.Floor ) );
-                _vm.SearchProvider.ListenToProperty( x => x.SearchResults, () => OnItemsChanged( _vm.SearchProvider.SearchResults ) );
+                _vm.ListenToProperty( x => x.SearchResults, () => OnItemsChanged( _vm.SearchResults ) );
 
                 var buildingsDataSource = EpflTileSources.GetForBuildings( _vm.Properties );
                 _map.TileSources.Add( new MapTileSource( buildingsDataSource ) );

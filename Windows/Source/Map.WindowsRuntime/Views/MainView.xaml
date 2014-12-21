@@ -51,16 +51,22 @@
         
         <StackPanel Grid.Row="1"
                     Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
-            <cc:SearchBox SearchCommand="{Binding SearchProvider.SearchCommand}"
+            <cc:SearchBox Query="{Binding Query,
+                                          Mode=TwoWay}" 
+                          SearchCommand="{Binding SearchCommand}"
                           PlaceholderText="{CustomResource Main.Search}"
                           Background="{StaticResource AppSecondaryHeaderBackgroundBrush}"
                           Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}"
                           Margin="19,0" />
             
-            <cc:DataStatusDisplay Data="{Binding SearchProvider.DataStatus}"
-                                  TextStyle="{StaticResource AppLargeTextBlockStyle}"
-                                  Background="Transparent"
-                                  Padding="19,4" />
+            <cc:Switch Value="{Binding SearchStatus}">
+                <cc:SwitchCase Values="NoResults">
+                    <TextBlock Text="{CustomResource Main.NoSearchResults}"
+                               Style="{StaticResource AppNormalTextBlockStyle}"
+                               Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}"
+                               Margin="19,0,19,8" />
+                </cc:SwitchCase>
+            </cc:Switch>
         </StackPanel>
 
         <map:MapControl x:Name="Map"
@@ -107,6 +113,9 @@
                           Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}"
                           Width="30"
                           Height="100" />
+
+        <cc:DataStatusDisplay Grid.Row="2"
+                              Data="{Binding DataStatus}" />
     </Grid>
     
     <cc:PageBase.BottomAppBar>

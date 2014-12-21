@@ -125,6 +125,10 @@
     <value>me suivre</value>
     <comment>Button label</comment>
   </data>
+  <data name="NoSearchResults" xml:space="preserve">
+    <value>Aucun résultat trouvé.</value>
+    <comment>Sentence</comment>
+  </data>
   <data name="Search" xml:space="preserve">
     <value>rechercher...</value>
     <comment>Textbox placeholder</comment>
