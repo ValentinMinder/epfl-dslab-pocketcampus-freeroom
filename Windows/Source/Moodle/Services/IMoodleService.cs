@@ -17,5 +17,8 @@ namespace PocketCampus.Moodle.Services
 
         [ThriftMethod( "getSections" )]
         Task<CourseSectionsResponse> GetSectionsAsync( [ThriftParameter( 1, "request" )] CourseSectionsRequest request, CancellationToken token );
+
+        [ThriftMethod( "printFile" )]
+        Task<PrintFileResponse> PrintFileAsync( [ThriftParameter( 1, "request" )] PrintFileRequest request, CancellationToken token );
     }
 }

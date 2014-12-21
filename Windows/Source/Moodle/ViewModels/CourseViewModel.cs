@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using PocketCampus.CloudPrint;
 using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Models;
 using PocketCampus.Moodle.Services;
@@ -27,6 +28,7 @@ namespace PocketCampus.Moodle.ViewModels
         private CourseSection[] _sections;
         private CourseSection _selectedSection;
         private DownloadStatus _downloadStatus;
+        private PrintStatus _printStatus;
 
 
         public Course Course { get; set; }
@@ -49,12 +51,25 @@ namespace PocketCampus.Moodle.ViewModels
             private set { SetProperty( ref _downloadStatus, value ); }
         }
 
+        public PrintStatus PrintStatus
+        {
+            get { return _printStatus; }
+            private set { SetProperty( ref _printStatus, value ); }
+        }
+
 
         [LogId( "DownloadAndOpenFile" )]
         [LogParameter( "$Param.Name" )]
         public AsyncCommand<MoodleFile> OpenFileCommand
         {
             get { return this.GetAsyncCommand<MoodleFile>( OpenFileAsync ); }
+        }
+
+        [LogId( "Print" )]
+        [LogParameter( "$Param.Name" )]
+        public AsyncCommand<MoodleFile> PrintFileCommand
+        {
+            get { return this.GetAsyncCommand<MoodleFile>( PrintFileAsync ); }
         }
 
         [LogId( "OpenLink" )]
@@ -165,6 +180,38 @@ namespace PocketCampus.Moodle.ViewModels
             catch
             {
                 DownloadStatus = DownloadStatus.Error;
+            }
+        }
+
+        private async Task PrintFileAsync( MoodleFile file )
+        {
+            if ( PrintStatus == PrintStatus.Printing )
+            {
+                return;
+            }
+
+            try
+            {
+                PrintStatus = PrintStatus.Printing;
+
+                var request = new PrintFileRequest
+                {
+                    FileUrl = file.DownloadUrl
+                };
+                var response = await _moodleService.PrintFileAsync( request, CurrentCancellationToken );
+
+                if ( response.Status != MoodleStatus.Success )
+                {
+                    throw new Exception( "Error while contacting the server." );
+                }
+
+                Messenger.Send( new PrintRequest( file.Name, response.DocumentId.Value ) );
+
+                PrintStatus = PrintStatus.NotRequested;
+            }
+            catch
+            {
+                PrintStatus = PrintStatus.Error;
             }
         }
 

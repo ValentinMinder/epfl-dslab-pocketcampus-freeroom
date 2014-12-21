@@ -33,6 +33,15 @@
                                    Style="{StaticResource AppLargeTextBlockStyle}"
                                    Margin="8,0,0,0" />
                     </Grid>
+                    
+                    <cc:SimpleButton.HoldingFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="{CustomResource Course.Print}"
+                                            Command="{Binding DataContext.PrintFileCommand,
+                                                              ElementName=Root}"
+                                            CommandParameter="{Binding}" />
+                        </MenuFlyout>
+                    </cc:SimpleButton.HoldingFlyout>
                 </cc:SimpleButton>
             </DataTemplate>
 

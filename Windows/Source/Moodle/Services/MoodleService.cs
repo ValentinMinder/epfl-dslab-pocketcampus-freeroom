@@ -26,5 +26,10 @@ namespace PocketCampus.Moodle.Services
         {
             return CallAsync<CourseSectionsRequest, CancellationToken, CourseSectionsResponse>( x => x.GetSectionsAsync, request, token );
         }
+
+        public Task<PrintFileResponse> PrintFileAsync( PrintFileRequest request, CancellationToken token )
+        {
+            return CallAsync<PrintFileRequest, CancellationToken, PrintFileResponse>( x => x.PrintFileAsync, request, token );
+        }
     }
 }
