@@ -132,19 +132,17 @@
             </cc:GroupedListView.ItemsViewSource>
         </cc:GroupedListView>
 
-        <cc:Placeholder Grid.Row="3"
-                        For="{Binding Menu}">
-            <cc:Condition Value="{Binding AreAllMealsFilteredOut}">
-                <cc:Condition.True>
-                    <TextBlock Text="{CustomResource Main.AllMealsAreFilteredOut}"
+        <cc:Switch Grid.Row="3"
+                   Value="{Binding MenuStatus}">
+            <cc:SwitchCase Values="NoResults">
+                <TextBlock Text="{CustomResource Main.EmptyMenu}"
                                Style="{StaticResource AppCenterTextBlockStyle}" />
-                </cc:Condition.True>
-                <cc:Condition.False>
-                    <TextBlock Text="{CustomResource Main.EmptyMenu}"
+            </cc:SwitchCase>
+            <cc:SwitchCase Values="AllResultsFilteredOut">
+                <TextBlock Text="{CustomResource Main.AllMealsAreFilteredOut}"
                                Style="{StaticResource AppCenterTextBlockStyle}" />
-                </cc:Condition.False>
-            </cc:Condition>
-        </cc:Placeholder>
+            </cc:SwitchCase>
+        </cc:Switch>
 
         <cc:DataStatusDisplay Grid.Row="3"
                               Data="{Binding DataStatus}"

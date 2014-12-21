@@ -31,7 +31,7 @@ namespace PocketCampus.Food.ViewModels
         private Restaurant[] _fullMenu;
 
         private Restaurant[] _menu;
-        private bool _areAllMealsFilteredOut;
+        private SearchStatus _menuStatus;
         private MealTime _mealTime;
         private DateTime _mealDate;
 
@@ -42,10 +42,10 @@ namespace PocketCampus.Food.ViewModels
             private set { SetProperty( ref _menu, value ); }
         }
 
-        public bool AreAllMealsFilteredOut
+        public SearchStatus MenuStatus
         {
-            get { return _areAllMealsFilteredOut; }
-            private set { SetProperty( ref _areAllMealsFilteredOut, value ); }
+            get { return _menuStatus; }
+            private set { SetProperty( ref _menuStatus, value ); }
         }
 
         public MealTime MealTime
@@ -189,7 +189,9 @@ namespace PocketCampus.Food.ViewModels
                      select restaurant.CopyWithMeals( meals ) )
                     .ToArray();
 
-            AreAllMealsFilteredOut = Menu.Length == 0 && _fullMenu.Length > 0;
+            MenuStatus = Menu.Length == 0
+                ? _fullMenu.Length == 0 ? SearchStatus.NoResults : SearchStatus.AllResultsFilteredOut
+                : SearchStatus.Finished;
         }
 
         private static MealTime GetMealTime( int hour )
