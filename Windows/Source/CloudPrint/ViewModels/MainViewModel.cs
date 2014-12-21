@@ -3,9 +3,11 @@ using PocketCampus.Authentication;
 using PocketCampus.CloudPrint.Models;
 using PocketCampus.CloudPrint.Services;
 using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.CloudPrint.ViewModels
 {
+    [LogId( "/cloudprint" )]
     public sealed class MainViewModel : ViewModel<PrintRequest>
     {
         private readonly INavigationService _navigationService;
@@ -25,7 +27,7 @@ namespace PocketCampus.CloudPrint.ViewModels
             private set { SetProperty( ref _status, value ); }
         }
 
-
+        [LogId( "Print" )]
         public AsyncCommand PrintCommand
         {
             get { return this.GetAsyncCommand( PrintAsync ); }
