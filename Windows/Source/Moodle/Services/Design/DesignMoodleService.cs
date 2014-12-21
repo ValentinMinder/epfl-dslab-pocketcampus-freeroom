@@ -200,6 +200,14 @@ namespace PocketCampus.Moodle.Services.Design
                 }
             } );
         }
+
+        public Task<PrintFileResponse> PrintFileAsync( PrintFileRequest request, CancellationToken token )
+        {
+            return Task.FromResult( new PrintFileResponse
+            {
+                Status = MoodleStatus.NetworkError
+            } );
+        }
     }
 }
 #endif

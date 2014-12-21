@@ -140,7 +140,12 @@ namespace PocketCampus.Main
 
         protected override void OnActivated( IActivatedEventArgs args )
         {
-            if ( args.Kind == ActivationKind.Protocol )
+            if ( args.Kind != ActivationKind.Protocol )
+            {
+                return;
+            }
+
+            using ( new Initializer( this ) )
             {
                 var protArgs = (ProtocolActivatedEventArgs) args;
                 _protocolHandler.NavigateToCustomUri( protArgs.Uri );
@@ -149,11 +154,10 @@ namespace PocketCampus.Main
 
         protected override async void OnShareTargetActivated( ShareTargetActivatedEventArgs args )
         {
-            RootFrame = CreateRootFrame();
-            Window.Current.Content = RootFrame;
-            Initialize();
-            Messenger.Send( await MakeRequestAsync( args.ShareOperation ) );
-            Window.Current.Activate();
+            using ( new Initializer( this ) )
+            {
+                Messenger.Send( await MakeRequestAsync( args.ShareOperation ) );
+            }
         }
 
         private static async Task<PrintRequest> MakeRequestAsync( ShareOperation operation )
@@ -178,6 +182,21 @@ namespace PocketCampus.Main
 
             // We can't display share errors on WP, so...
             return null;
+        }
+
+        private sealed class Initializer : IDisposable
+        {
+            public Initializer( App app )
+            {
+                RootFrame = app.CreateRootFrame();
+                Window.Current.Content = RootFrame;
+                app.Initialize();
+            }
+
+            public void Dispose()
+            {
+                Window.Current.Activate();
+            }
         }
     }
 }
