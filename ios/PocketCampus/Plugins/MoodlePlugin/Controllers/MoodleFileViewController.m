@@ -254,12 +254,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     if (self.navigationController.navigationBarHidden) {
         return;
     }
-    if (self.deleteActionSheet.isVisible || self.docController || self.printPopoverController) {
+    if (self.deleteActionSheet.isVisible || self.docController || self.printPopoverController.isPopoverVisible) {
         return;
     }
-    if ([PCUtils isIdiomPad] && ![(PluginSplitViewController*)(self.splitViewController) isMasterViewControllerHidden]) {
+    /*if ([PCUtils isIdiomPad] && ![(PluginSplitViewController*)(self.splitViewController) isMasterViewControllerHidden]) {
         return; //on iPad only hide nav bar when in full screen mode (master hidden)
-    }
+    }*/
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self setNeedsStatusBarAppearanceUpdate];
     self.webView.scrollView.contentInset = UIEdgeInsetsZero;

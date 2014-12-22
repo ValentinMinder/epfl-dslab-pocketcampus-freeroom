@@ -183,7 +183,8 @@ static NSInteger const kPageToTheEndValue = 10000;
     }];
     PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
     navController.view.tintColor = self.view.tintColor; //if in extension
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalPresentationStyle = UIModalPresentationCurrentContext; //present IN popover controller (on iPad)
+    navController.preferredContentSize = CGSizeMake(600.0, 600.0);
     [self presentViewController:navController animated:YES completion:NULL];
 }
 
