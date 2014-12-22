@@ -2092,11 +2092,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "438779643.874993"
+            timestampString = "440954873.783171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "886"
-            endingLineNumber = "886"
+            startingLineNumber = "889"
+            endingLineNumber = "889"
             landmarkName = "-adaptInitializedNavigationOrSplitViewControllerOfPluginController:"
             landmarkType = "5">
             <Actions>
@@ -2117,11 +2117,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "438779643.874993"
+            timestampString = "440954873.783171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "831"
-            endingLineNumber = "831"
+            startingLineNumber = "834"
+            endingLineNumber = "834"
             landmarkName = "-pluginControllerForPluginIdentifier:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2808,11 +2808,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "438779643.874993"
+            timestampString = "440954873.783171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "799"
-            endingLineNumber = "799"
+            startingLineNumber = "802"
+            endingLineNumber = "802"
             landmarkName = "-pluginControllerForPluginIdentifier:"
             landmarkType = "5">
             <Locations>

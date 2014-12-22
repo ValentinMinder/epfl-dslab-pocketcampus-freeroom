@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "438779643.874993"
+            timestampString = "440954873.783171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1111"
-            endingLineNumber = "1111"
+            startingLineNumber = "1114"
+            endingLineNumber = "1114"
             landmarkName = "-gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1750,11 +1750,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "438779643.874993"
+            timestampString = "440954873.783171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "753"
-            endingLineNumber = "753"
+            startingLineNumber = "756"
+            endingLineNumber = "756"
             landmarkName = "-setActivePluginWithIdentifier:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2713,11 +2713,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "438779643.874993"
+            timestampString = "440954873.783171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1140"
-            endingLineNumber = "1140"
+            startingLineNumber = "1143"
+            endingLineNumber = "1143"
             landmarkName = "-revealController:didRevealRearViewController:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2729,11 +2729,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "438779643.874993"
+            timestampString = "440954873.783171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1120"
-            endingLineNumber = "1120"
+            startingLineNumber = "1123"
+            endingLineNumber = "1123"
             landmarkName = "-gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4795,11 +4795,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "438021313.195625"
+            timestampString = "440955749.807273"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "571"
-            endingLineNumber = "571"
+            startingLineNumber = "573"
+            endingLineNumber = "573"
             landmarkName = "-startAuthenticationForToken:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5399,7 +5399,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-            timestampString = "438021313.195625"
+            timestampString = "440955749.807273"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "562"
@@ -5414,26 +5414,26 @@
                   symbolName = "-[AuthenticationController startAuthenticationForToken:]"
                   moduleName = "PocketCampus"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-                  timestampString = "438017435.153398"
+                  timestampString = "440955917.225243"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "561"
-                  endingLineNumber = "561"
-                  offsetFromSymbolStart = "2504">
+                  startingLineNumber = "562"
+                  endingLineNumber = "562"
+                  offsetFromSymbolStart = "2534">
                </Location>
                <Location
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "__56-[AuthenticationController startAuthenticationForToken:]_block_invoke_3362"
+                  symbolName = "__56-[AuthenticationController startAuthenticationForToken:]_block_invoke_3360"
                   moduleName = "PocketCampus"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-                  timestampString = "438017435.153594"
+                  timestampString = "440955917.225353"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "561"
-                  endingLineNumber = "561"
-                  offsetFromSymbolStart = "24">
+                  startingLineNumber = "562"
+                  endingLineNumber = "562"
+                  offsetFromSymbolStart = "32">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -5649,7 +5649,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Model/CloudPrintService.m"
@@ -5827,11 +5827,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "438779643.874993"
+            timestampString = "440954873.783171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1169"
-            endingLineNumber = "1169"
+            startingLineNumber = "1172"
+            endingLineNumber = "1172"
             landmarkName = "-revealController:didSwapToFrontViewController:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5955,11 +5955,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "438779643.874993"
+            timestampString = "440954873.783171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "992"
-            endingLineNumber = "992"
+            startingLineNumber = "995"
+            endingLineNumber = "995"
             landmarkName = "-rotateDeviceToPortraitIfNecessary"
             landmarkType = "5">
          </BreakpointContent>
@@ -6051,11 +6051,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "438779643.874993"
+            timestampString = "440954873.783171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1084"
-            endingLineNumber = "1084"
+            startingLineNumber = "1087"
+            endingLineNumber = "1087"
             landmarkName = "-gestureRecognizer:shouldReceiveTouch:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6067,11 +6067,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "438779643.874993"
+            timestampString = "440954873.783171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1107"
-            endingLineNumber = "1107"
+            startingLineNumber = "1110"
+            endingLineNumber = "1110"
             landmarkName = "-gestureRecognizer:shouldReceiveTouch:"
             landmarkType = "5">
             <Actions>
@@ -6251,11 +6251,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "438779643.874993"
+            timestampString = "440954873.783171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "603"
-            endingLineNumber = "603"
+            startingLineNumber = "606"
+            endingLineNumber = "606"
             landmarkName = "@implementation MainController"
             landmarkType = "3">
          </BreakpointContent>
@@ -6267,11 +6267,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "438779643.874993"
+            timestampString = "440954873.783171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "253"
-            endingLineNumber = "253"
+            startingLineNumber = "256"
+            endingLineNumber = "256"
             landmarkName = "-handlePocketCampusURL:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6856,7 +6856,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Model/CloudPrintService.m"

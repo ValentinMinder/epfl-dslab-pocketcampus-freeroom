@@ -186,10 +186,13 @@ static MainController<MainControllerPublic>* instance = nil;
 
 - (UIViewController*)currentTopMostViewController {
     if (!self.activePluginController) {
-        return self.mainMenuViewController;
+        return self.mainMenuViewController.presentedViewController ?: self.mainMenuViewController;
     }
     UIViewController* topViewController = [self rootViewControllerForPluginController:self.activePluginController];
     while (topViewController.presentedViewController) {
+        if (topViewController.presentedViewController.isBeingDismissed) {
+            break;
+        }
         topViewController = topViewController.presentedViewController;
     }
     return topViewController;

@@ -559,9 +559,11 @@ static AuthenticationController* instance __strong = nil;
         
 
         UIViewController* topViewController = [[MainController publicController] currentTopMostViewController];
-        [topViewController presentViewController:self.authenticationNavigationController animated:YES completion:^{
-            [self.authenticationViewController focusOnInput];
-        }];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((topViewController.presentedViewController ? 0.5 : 0.0) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [topViewController presentViewController:self.authenticationNavigationController animated:YES completion:^{
+                [self.authenticationViewController focusOnInput];
+            }];
+        });
 #else
         // Cannot present AuthenticationViewController in exentsion
         // => auth fails if no or wrong credentials. User should open main app.
