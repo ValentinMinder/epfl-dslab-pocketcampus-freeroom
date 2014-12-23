@@ -1,20 +1,20 @@
 package org.pocketcampus.plugin.satellite.server.tests;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
+import org.apache.commons.io.IOUtils;
+import org.junit.Test;
 import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.plugin.satellite.server.BeerMenuImpl;
-import org.pocketcampus.plugin.satellite.shared.*;
+import org.pocketcampus.plugin.satellite.shared.SatelliteBeer;
+import org.pocketcampus.plugin.satellite.shared.SatelliteBeerContainer;
+import org.pocketcampus.plugin.satellite.shared.SatelliteMenuPart;
 
 /**
  * Tests for BeerMenuImpl.
@@ -60,12 +60,7 @@ public final class BeerMenuTests {
 	}
 
 	private static Map<SatelliteBeerContainer, SatelliteMenuPart> getBeers() {
-		try {
-			return new BeerMenuImpl(new TestHttpClient()).get().getBeerList();
-		} catch (Exception e) {
-			fail("An exception occurred.");
-			return null;
-		}
+		return new BeerMenuImpl(new TestHttpClient()).get().getBeerList();
 	}
 
 	private static final class TestHttpClient implements HttpClient {
@@ -81,21 +76,13 @@ public final class BeerMenuTests {
 			throw new RuntimeException("post(String, byte[], Charset) should not be called.");
 		}
 
-		@SuppressWarnings("resource")
 		private static String getFileContents(String name) {
-			Scanner s = null;
-
 			try {
 				InputStream stream = new BeerMenuTests().getClass().getResourceAsStream(name);
-				BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-
-				// smart trick from http://stackoverflow.com/a/5445161
-				s = new Scanner(reader).useDelimiter("\\A");
-				return s.hasNext() ? s.next() : "";
-			} finally {
-				if (s != null) {
-					s.close();
-				}
+				return IOUtils.toString(stream, "UTF-8");
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
 			}
 		}
 	}

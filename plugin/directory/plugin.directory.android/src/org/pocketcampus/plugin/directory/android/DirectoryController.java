@@ -43,7 +43,7 @@ public class DirectoryController extends PluginController implements IDirectoryC
 	
 	String query;
 	SearchDirectoryRequest request;
-	SearchUniqueDirectoryRequest requestU;
+	SearchBySciperRequest requestU;
 
 		
 	/**
@@ -99,10 +99,10 @@ public class DirectoryController extends PluginController implements IDirectoryC
 	/**
 	 * Initiate uniquely identified person search
 	 */
-	synchronized public void searchUnique(IDirectoryView caller, String q) {
+	synchronized public void searchBySciper(IDirectoryView caller, String q) {
 		if(requestU != null && !requestU.getStatus().equals(AsyncTask.Status.FINISHED))
 			return;
-		requestU = new SearchUniqueDirectoryRequest(caller);
+		requestU = new SearchBySciperRequest(caller);
 		DirectoryRequest req = new DirectoryRequest(q);
 		req.setLanguage(Locale.getDefault().getLanguage());
 		requestU.start(this, mClientU, req);

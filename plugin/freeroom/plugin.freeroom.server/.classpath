@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.freeroom.shared"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/platform.server"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/platform.shared"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/org.json-20120521.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/EWSJavaAPI.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.9.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

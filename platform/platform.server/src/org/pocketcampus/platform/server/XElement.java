@@ -66,7 +66,7 @@ public final class XElement {
 		} catch (IOException e) {
 			// also should never happen
 			throw new RuntimeException("An IOException was thrown while reading from a String.", e);
-		} catch (SAXException _) {
+		} catch (SAXException e) {
 			throw new IllegalArgumentException("Invalid XML.");
 		}
 	}
@@ -131,7 +131,7 @@ public final class XElement {
 			ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 			transformer.transform(new DOMSource(element), new StreamResult(byteStream));
 			return byteStream.toByteArray();
-		} catch (TransformerException _) {
+		} catch (TransformerException e) {
 			// Bad, but this should never happen.
 			return null;
 		}

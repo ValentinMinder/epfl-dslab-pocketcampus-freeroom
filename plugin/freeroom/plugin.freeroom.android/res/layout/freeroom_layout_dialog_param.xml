@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for the parameters dialog. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/background_light"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <!-- Scroll View for the whole layout! -->
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@android:color/background_light"
+        android:orientation="vertical" >
+
+        <!-- scroll view unique child -->
+
+        <LinearLayout
+            android:id="@+id/freeroom_layout_dialog_param_main"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:orientation="vertical" >
+
+            <!-- Title for Home Screen Behavior -->
+
+            <TextView
+                android:id="@+id/freeroom_layout_dialog_param_home_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/freeroom_settings_home_screen"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/black" />
+
+            <!-- Data for Home Screen Behavior -->
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="vertical" >
+
+                <!-- Subtitle for Automatic search at Launch -->
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/freeroom_settings_automatic"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <!-- Room range for auto-search -->
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/freeroom_settings_room_range"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black" />
+
+                <RadioGroup
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <!-- to chose to display any free room (default) -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_home_any"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="onHomeBehaviourRoomSetAnyFreeRoom"
+                        android:text="@string/freeroom_settings_any_free"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <!-- to chose to display the favorites (NOT default) -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_home_fav"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="onHomeBehaviourRoomSetFavorites"
+                        android:text="@string/freeroom_settings_all_fav"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <!-- to chose to display the FREE favorites -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_home_favfree"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="onHomeBehaviourRoomSetFavoritesFree"
+                        android:text="@string/freeroom_settings_free_fav"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <!-- to chose to display the last request -->
+                    <!-- TODO: disabled while not coded -->
+                    <!-- <RadioButton -->
+                    <!-- android:id="@+id/freeroom_layout_param_home_last" -->
+                    <!-- android:layout_width="fill_parent" -->
+                    <!-- android:layout_height="wrap_content" -->
+                    <!-- android:onClick="onHomeBehaviourRoomSetLastRequest" -->
+                    <!-- android:text="@string/freeroom_settings_last_req" -->
+                    <!-- android:textAppearance="?android:attr/textAppearanceSmall" -->
+                    <!-- android:textColor="@android:color/black" /> -->
+                </RadioGroup>
+
+                <!-- Time range for auto-search -->
+
+                <TextView
+                    android:id="@+id/freeroom_layout_dialog_param_home_text_spec"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/freeroom_settings_time_range"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black" />
+
+                <RadioGroup
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <!-- Current hour search (default) -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_home_time_current"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="onHomeBehaviourTimeSetCurrent"
+                        android:text="@string/freeroom_settings_current"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <!-- Remaining day -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_home_time_end"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="onHomeBehaviourTimeSetEndOfDay"
+                        android:text="@string/freeroom_settings_end_day"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <!-- Whole day -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_home_time_whole"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="onHomeBehaviourTimeSetWholeDay"
+                        android:text="@string/freeroom_settings_whole_day"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <!-- Title for user-pref options. -->
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/freeroom_settings_userpref"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/black" />
+
+            <!-- Data for user-pref options. -->
+
+            <LinearLayout
+                android:id="@+id/freeroom_layout_dialog_param_userpref"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="vertical" >
+
+                <!-- Explanation for color-blind modes -->
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/freeroom_settings_color"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <!-- Checkbox for basic color-blind mode -->
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/background_light"
+                    android:orientation="vertical" >
+
+                    <!-- Examples of colors -->
+
+                    <TextView
+                        android:id="@+id/freeroom_layout_dialog_param_advanced_color_ex_free"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/freeroom_ic_dot_empty"
+                        android:gravity="center_vertical"
+                        android:text="@string/freeroom_settings_color_exemple_free"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/freeroom_layout_dialog_param_advanced_color_ex_part"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/freeroom_ic_dot_empty"
+                        android:gravity="center_vertical"
+                        android:text="@string/freeroom_settings_color_exemple_partoccupied"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/freeroom_layout_dialog_param_advanced_color_ex_occ"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/freeroom_ic_dot_empty"
+                        android:gravity="center_vertical"
+                        android:text="@string/freeroom_settings_color_exemple_occupied"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/freeroom_layout_dialog_param_advanced_color_ex_err"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/freeroom_ic_dot_empty"
+                        android:gravity="center_vertical"
+                        android:text="@string/freeroom_settings_color_exemple_error"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+                </LinearLayout>
+
+                <CheckBox
+                    android:id="@+id/freeroom_layout_dialog_param_colorblind_basic"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="onColorBlindBasicChecked"
+                    android:text="@string/freeroom_settings_colorblindcheck"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black"
+                    android:visibility="visible" />
+
+                <!-- Checkbox to activate advanced modes -->
+
+                <CheckBox
+                    android:id="@+id/freeroom_layout_dialog_param_colorblind_advanced"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="onColorBlindAdvancedChecked"
+                    android:text="@string/freeroom_settings_color_advanced"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black" />
+
+                <LinearLayout
+                    android:id="@+id/freeroom_layout_dialog_param_advanced_color"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/background_light"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <RadioGroup
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <!-- default (colored dots) -->
+
+                        <RadioButton
+                            android:id="@+id/freeroom_layout_param_color_default"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="onColorBlindModeSetDefault"
+                            android:text="@string/freeroom_settings_color_mode_default"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@android:color/black" />
+
+                        <!-- Dots discolored -->
+
+                        <RadioButton
+                            android:id="@+id/freeroom_layout_param_color_dots_disc"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="onColorBlindModeSetDotsDiscolored"
+                            android:text="@string/freeroom_settings_color_mode_dots_discolored"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@android:color/black" />
+
+                        <!-- Symbolic -->
+
+                        <RadioButton
+                            android:id="@+id/freeroom_layout_param_color_symbolic"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="onColorBlindModeSetSymbolic"
+                            android:text="@string/freeroom_settings_color_mode_symbolic"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@android:color/black" />
+
+                        <!-- Symbolic with colored lines -->
+
+                        <RadioButton
+                            android:id="@+id/freeroom_layout_param_color_symbolic_lines"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="onColorBlindModeSetSymbolicLines"
+                            android:text="@string/freeroom_settings_color_mode_symbolic_lines"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@android:color/black" />
+
+                        <!-- Symbolic with discolored lines -->
+
+                        <RadioButton
+                            android:id="@+id/freeroom_layout_param_color_symbolic_lines_disc"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="onColorBlindModeSetSymbolicLinesDiscolored"
+                            android:text="@string/freeroom_settings_color_mode_symbolic_lines_disc"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@android:color/black" />
+                    </RadioGroup>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Title for format/local options. -->
+            <!-- These settings wont appear but are still coded in the background -->
+            <!-- Dont remove them from xml unless you're sure of what you are doing! -->
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/freeroom_settings_format"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/black"
+                android:visibility="gone" />
+
+            <!-- Data for format/local options. -->
+
+            <LinearLayout
+                android:id="@+id/freeroom_layout_dialog_param_time_language"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <!-- Subtitle for time/date formatting -->
+
+                <TextView
+                    android:id="@+id/freeroom_layout_dialog_param_time_language_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/freeroom_settings_date"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <!-- Example of formatting according to selection -->
+
+                <TextView
+                    android:id="@+id/freeroom_layout_dialog_param_time_language_example"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="mock text example"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@android:color/black" />
+
+                <RadioGroup
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <!-- Default option. -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_time_language_def"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="onFormattingSetDefault"
+                        android:text="@string/freeroom_settings_date_default"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <!-- English formatting. -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_time_language_en"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="onFormattingSetEnglish"
+                        android:text="@string/freeroom_settings_date_US"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+
+                    <!-- French formatting. -->
+
+                    <RadioButton
+                        android:id="@+id/freeroom_layout_param_time_language_fr"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="onFormattingSetFrench"
+                        android:text="@string/freeroom_settings_date_EU"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black" />
+                </RadioGroup>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

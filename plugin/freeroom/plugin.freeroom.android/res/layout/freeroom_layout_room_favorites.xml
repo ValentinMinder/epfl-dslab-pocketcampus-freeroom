@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout to display the favorites rooms. -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/freeroom_layout_room_favorites"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="left"
+    android:orientation="horizontal"
+    android:padding="2dip" >
+
+    <!-- Image to display and add/remove favorites -->
+
+    <ImageView
+        android:id="@+id/freeroom_layout_favlist_fav"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/freeroom_layout_roomslist_img_fav"
+        android:src="@drawable/freeroom_ic_action_discard" />
+
+    <TextView
+        android:id="@+id/freeroom_layout_favlist_separator_1"
+        style="@style/Vertical_Divider"
+        android:layout_toLeftOf="@id/freeroom_layout_favlist_fav" />
+
+    <!-- Image to show the room on the map -->
+
+    <ImageView
+        android:id="@+id/freeroom_layout_favlist_map"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="right"
+        android:layout_toLeftOf="@id/freeroom_layout_favlist_separator_1"
+        android:contentDescription="@string/freeroom_layout_roomslist_img_map"
+        android:src="@drawable/freeroom_map_icon" />
+
+    <TextView
+        android:id="@+id/freeroom_layout_favlist_separator_2"
+        style="@style/Vertical_Divider"
+        android:layout_toLeftOf="@id/freeroom_layout_favlist_map" />
+
+    <!-- TextView to hold the name of the room -->
+
+    <TextView
+        android:id="@+id/freeroom_layout_favlist_text"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left"
+        android:layout_toLeftOf="@id/freeroom_layout_favlist_separator_2"
+        android:text="mock room name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/black" />
+
+</RelativeLayout>

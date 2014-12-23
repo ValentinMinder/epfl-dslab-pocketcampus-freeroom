@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout to add a room to the favorites rooms. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="left"
+    android:orientation="horizontal"
+    android:padding="2dip" >
+
+    <!-- TextView to hold the name of the room -->
+
+    <TextView
+        android:id="@+id/freeroom_layout_list_room_add_room"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left|center_vertical"
+        android:drawableLeft="@drawable/freeroom_ic_action_new_grey"
+        android:text="mock room name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/black" />
+
+</LinearLayout>

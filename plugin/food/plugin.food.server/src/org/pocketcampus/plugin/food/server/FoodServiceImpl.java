@@ -6,11 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.pocketcampus.platform.server.Authenticator;
 import org.pocketcampus.platform.server.CachingProxy;
 import org.pocketcampus.platform.server.HttpClientImpl;
-import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
+import org.pocketcampus.plugin.authentication.server.AuthenticatorImpl;
 import org.pocketcampus.plugin.food.shared.*;
-
 import org.apache.thrift.TException;
 import org.joda.time.*;
 
@@ -30,23 +30,27 @@ public class FoodServiceImpl implements FoodService.Iface {
 	private final Menu _menu;
 	private final PictureSource _pictureSource;
 	private final RestaurantLocator _locator;
+	private final Authenticator _authenticator;
 	private final LDAPInterface _ldap;
 
 	public FoodServiceImpl(RatingDatabase ratingDatabase, Menu menu,
 			PictureSource pictureSource, RestaurantLocator locator,
+			Authenticator authenticator,
 			LDAPInterface ldap) {
 		_ratingDatabase = ratingDatabase;
 		_menu = menu;
 		_pictureSource = pictureSource;
 		_locator = locator;
+		_authenticator = authenticator;
 		_ldap = ldap;
 	}
 
 	public FoodServiceImpl() {
-		this(new RatingDatabaseImpl(PAST_VOTE_MAX_DAYS), 
+		this(new RatingDatabaseImpl(PAST_VOTE_MAX_DAYS),
 				CachingProxy.create(new MenuImpl(new HttpClientImpl()), MENU_CACHE_DURATION, true),
-				CachingProxy.create(new PictureSourceImpl(), PICTURES_CACHE_DURATION, false), 
+				CachingProxy.create(new PictureSourceImpl(), PICTURES_CACHE_DURATION, false),
 				CachingProxy.create(new RestaurantLocatorImpl(), LOCATIONS_CACHE_DURATION, false),
+				new AuthenticatorImpl(),
 				getLdapObject());
 	}
 
@@ -79,8 +83,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 			restaurant.setRLocation(_locator.findByName(restaurant.getRName()));
 		}
 
-		String gaspar = (foodReq.isSetUserGaspar() ? foodReq.getUserGaspar() : AuthenticationServiceImpl.authGetUserGaspar());
-		System.out.println("Getting PriceTarget for " + gaspar);
+		String gaspar = foodReq.isSetUserGaspar() ? foodReq.getUserGaspar() : _authenticator.getGaspar();
 		response.setUserStatus(getPriceTarget(gaspar));
 
 		return response.setMealTypePictureUrls(_pictureSource.getMealTypePictures());
@@ -93,7 +96,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 				throw new TException("Invalid rating.");
 			}
 
-			return new VoteResponse( _ratingDatabase.vote(voteReq.getDeviceId(), voteReq.getMealId(), voteReq.getRating()));
+			return new VoteResponse(_ratingDatabase.vote(voteReq.getDeviceId(), voteReq.getMealId(), voteReq.getRating()));
 		} catch (SQLException e) {
 			throw new TException("An error occurred during a vote", e);
 		}
@@ -116,14 +119,16 @@ public class FoodServiceImpl implements FoodService.Iface {
 			return null;
 		}
 	}
+
 	private PriceTarget getPriceTarget(String username) {
-		if(username == null)
+		if (username == null)
 			return null;
-		if(_ldap == null)
+		if (_ldap == null)
 			throw new RuntimeException("What the heck, dude, _ldap is null");
 		List<PriceTarget> classes = new LinkedList<PriceTarget>();
 		try {
-			SearchResult searchResult = _ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + username + "@*)(uniqueidentifier=" + username + "))", (String[]) null);
+			SearchResult searchResult = _ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + username + "@*)(uniqueidentifier="
+					+ username + "))", (String[]) null);
 			for (SearchResultEntry e : searchResult.getSearchEntries()) {
 				String os = e.getAttributeValue("organizationalStatus");
 				if ("Etudiant".equals(os)) {
@@ -136,7 +141,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 				} else if ("Personnel".equals(os)) {
 					classes.add(PriceTarget.STAFF);
 				} else { // Hôte, etc.
-					//classes.add(PriceTarget.VISITOR);
+					// classes.add(PriceTarget.VISITOR);
 					// It seems if the person has _any_ entry in LDAP, they are considered staff...
 					classes.add(PriceTarget.STAFF);
 				}

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout to display user messages. -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="left"
+    android:orientation="horizontal"
+    android:padding="2dip" >
+
+    <!-- Image to report a bad message (not done) -->
+
+    <ImageView
+        android:id="@+id/freeroom_layout_message_report"
+        android:layout_width="17dip"
+        android:layout_height="17dip"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/freeroom_layout_roomslist_img_fav"
+        android:src="@drawable/freeroom_ic_action_discard"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/freeroom_layout_message_separator_1"
+        style="@style/Vertical_Divider"
+        android:layout_toLeftOf="@id/freeroom_layout_message_report"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:visibility="gone" />
+
+    <!-- TextView to hold the messages -->
+
+    <TextView
+        android:id="@+id/freeroom_layout_message_number"
+        android:layout_width="40dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="right"
+        android:layout_toLeftOf="@id/freeroom_layout_message_separator_1"
+        android:text="1x"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/freeroom_layout_message_separator_2"
+        style="@style/Vertical_Divider"
+        android:layout_toLeftOf="@id/freeroom_layout_message_number"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/freeroom_layout_message_text"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left"
+        android:layout_toLeftOf="@id/freeroom_layout_message_separator_2"
+        android:maxLength="30"
+        android:maxLines="1"
+        android:text="mock message"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/black" />
+
+</RelativeLayout>

@@ -1,20 +1,26 @@
 package org.pocketcampus.plugin.isacademia.server.tests;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
-import org.pocketcampus.plugin.isacademia.server.*;
-import org.pocketcampus.plugin.isacademia.shared.*;
-
-import org.joda.time.*;
+import org.apache.commons.io.IOUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDate;
+import org.junit.Test;
+import org.pocketcampus.plugin.isacademia.server.HttpsClient;
+import org.pocketcampus.plugin.isacademia.server.ScheduleImpl;
+import org.pocketcampus.plugin.isacademia.shared.IsaStatusCode;
+import org.pocketcampus.plugin.isacademia.shared.ScheduleResponse;
+import org.pocketcampus.plugin.isacademia.shared.StudyDay;
+import org.pocketcampus.plugin.isacademia.shared.StudyPeriod;
+import org.pocketcampus.plugin.isacademia.shared.StudyPeriodType;
 
 /**
  * Tests for ScheduleImpl.
@@ -91,21 +97,13 @@ public final class ScheduleTests {
 		}
 	}
 
-	@SuppressWarnings("resource")
 	private static String getFileContents(String name) {
-		Scanner s = null;
-
 		try {
 			InputStream stream = new ScheduleTests().getClass().getResourceAsStream(name);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-
-			// smart trick from http://stackoverflow.com/a/5445161
-			s = new Scanner(reader).useDelimiter("\\A");
-			return s.hasNext() ? s.next() : "";
-		} finally {
-			if (s != null) {
-				s.close();
-			}
+			return IOUtils.toString(stream, "UTF-8");
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 
