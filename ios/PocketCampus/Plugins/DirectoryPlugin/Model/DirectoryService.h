@@ -34,26 +34,9 @@
 
 #import "Person+Extras.h"
 
-/*
- * Possible action parameter for PocketCampus URL scheme for Directory
- */
-
-extern NSString* const kDirectoryURLActionSearch;
-extern NSString* const kDirectoryURLActionView;
-
-/*
- * Other parameters for PocketCampus URL scheme for Directory
- */
-extern NSString* const kDirectoryURLParameterQuery;
-
 @interface DirectoryService : PCService <PCServiceProtocol>
 
 /*
- - (NSArray *) searchPersons: (NSString *) nameOrSciper;  // throws LDAPException *, TException
- - (NSString *) getProfilePicture: (NSString *) sciper;  // throws NoPictureFound *, TException
- - (NSArray *) autocomplete: (NSString *) constraint;  // throws TException
- - (DirectoryToken *) getTequilaTokenForDirectory;  // throws TException
- - (NSString *) getDirectorySession: (DirectoryToken *) dirToken;  // throws TException
  - (DirectoryResponse *) searchDirectory: (DirectoryRequest *) req;  // throws TException
  */
 

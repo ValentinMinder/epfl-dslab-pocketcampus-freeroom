@@ -55,7 +55,7 @@ foreach(glob("$plugin_shared_dir/def/*.thrift") as $def_file) {
 	echo "Compiling $def_file for platform $platform\n";
 	// TODO read package name from thrift file and clear corresponding directory
 	if ($platform === "ios") {
-		system("$thrift_bin --gen cocoa -out $plugin_ios_dir $def_file");
+		system("$thrift_bin --gen cocoa:validate_required -out $plugin_ios_dir $def_file");
 	} else if ($platform === "android") {
 		system("$thrift_bin --gen java:hashcode,private-members -out $plugin_shared_dir/src $def_file");
 	} else {

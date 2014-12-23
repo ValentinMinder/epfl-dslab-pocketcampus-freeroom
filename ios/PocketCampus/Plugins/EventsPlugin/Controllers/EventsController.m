@@ -256,7 +256,7 @@ static EventsController* instance __weak = nil;
     NSString* exchangeToken = parameters[kEventsURLParameterExchangeToken];
     if (exchangeToken) {
         found = YES;
-        ExchangeRequest* req = [[ExchangeRequest alloc] initWithExchangeToken:exchangeToken userToken:nil userTickets:[self.eventsService allUserTickets]];
+        ExchangeRequest* req = [[ExchangeRequest alloc] initWithExchangeToken:exchangeToken userToken:nil userTickets:[[self.eventsService allUserTickets] mutableCopy]];
         [self.eventsService exchangeContactsForRequest:req delegate:self];
     }
     

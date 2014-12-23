@@ -447,7 +447,7 @@ static int i = 0;
     NSMutableArray* filteredSections = [NSMutableArray arrayWithCapacity:self.sectionsResponse.sections.count];
     for (MoodleCourseSection2* moodleSection in self.sectionsResponse.sections) {
         MoodleCourseSection2* moodleSectionCopy = [moodleSection copy]; //conforms to NSCopying in Additions category
-        moodleSectionCopy.resources = [moodleSection.resources filteredArrayUsingPredicate:predicate];
+        moodleSectionCopy.resources = [[moodleSection.resources filteredArrayUsingPredicate:predicate] mutableCopy];
         [filteredSections addObject:moodleSectionCopy];
     }
     return filteredSections;
