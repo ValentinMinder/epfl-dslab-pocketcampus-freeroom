@@ -29,17 +29,15 @@
 
 #import "MainMenuViewController.h"
 
+@import QuartzCore;
+
 #import "MainController.h"
 
 #import "MainMenuItem.h"
 
 #import "MainMenuItemCell.h"
 
-#import "PCValues.h"
-
-#import "PCUtils.h"
-
-#import <QuartzCore/QuartzCore.h>
+#import "PCAboutViewController.h"
 
 static NSString* const kMenuItemButtonIdentifier = @"MenuItemButton";
 static NSString* const kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
@@ -82,20 +80,28 @@ static const int kPluginsSection = 0;
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
     self.tableView.scrollsToTop = NO; //if not set to NO, front view controllers cannot be scrolled to top by tapping the status bar
     
-    //self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:self.settingsButton, self.pocketCampusTitle, nil];
     self.navigationItem.leftBarButtonItem = self.settingsButton;
     self.navigationItem.titleView = self.pocketCampusLabel;
+    self.tableView.tableFooterView = self.tableViewFooter;
     if ([PCUtils isIdiomPad]) {
         CGRect frame = self.navigationController.view.frame;
         frame.size.width = 320.0;
         self.navigationController.view.frame = frame;
         self.navigationController.view.autoresizingMask = self.navigationController.view.autoresizingMask & ~UIViewAutoresizingFlexibleWidth; //remove flexible width from mask (we want constant 320.0 width)
     }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.tableView flashScrollIndicators];
+    });
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -207,6 +213,16 @@ static const int kPluginsSection = 0;
     return _doneButton;
 }
 
+- (UIView*)tableViewFooter {
+    UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"InstitutionLogo"]];
+    imageView.contentMode = UIViewContentModeCenter;
+    imageView.bounds = CGRectMake(0, 0, imageView.bounds.size.width, 46.0);
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(institutionLogoTapped)];
+    imageView.userInteractionEnabled = YES;
+    [imageView addGestureRecognizer:tapGesture];
+    return imageView;
+}
+
 #pragma mark - Actions
 
 - (void)settingsButtonPressed {
@@ -215,6 +231,18 @@ static const int kPluginsSection = 0;
 
 - (void)doneButtonPressed {
     [self setEditing:NO];
+}
+
+- (void)institutionLogoTapped {
+    PCAboutViewController* aboutViewController = [PCAboutViewController new];
+    aboutViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissPresentedViewController)];
+    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:aboutViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navController animated:YES completion:NULL];
+}
+
+- (void)dismissPresentedViewController {
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark EyeButtonDelegate (MainMenuItemCell)

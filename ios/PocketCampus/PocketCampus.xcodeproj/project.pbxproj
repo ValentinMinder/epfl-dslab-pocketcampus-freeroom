@@ -232,6 +232,8 @@
 		3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3282C283181179E2002A4FAE /* EventsLarge@2x.png */; };
 		3283C4D41A1D012F00B7ED55 /* CloudPrintPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3283C4D21A1D012F00B7ED55 /* CloudPrintPreviewViewController.m */; };
 		3283C4D51A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4D31A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib */; };
+		328473F01A49B9DE0091DF26 /* InstitutionLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 328473EE1A49B9DE0091DF26 /* InstitutionLogo.png */; };
+		328473F11A49B9DE0091DF26 /* InstitutionLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328473EF1A49B9DE0091DF26 /* InstitutionLogo@2x.png */; };
 		328501B419E5768F0049356E /* MapLayersBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 328501B219E5768F0049356E /* MapLayersBarButton.png */; };
 		328501B519E5768F0049356E /* MapLayersBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328501B319E5768F0049356E /* MapLayersBarButton@2x.png */; };
 		32870F9E19B674AE00A3BC68 /* CloudPrintRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32870F9D19B674AE00A3BC68 /* CloudPrintRequestViewController.m */; };
@@ -909,6 +911,8 @@
 		3283C4D11A1D012F00B7ED55 /* CloudPrintPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintPreviewViewController.h; sourceTree = "<group>"; };
 		3283C4D21A1D012F00B7ED55 /* CloudPrintPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintPreviewViewController.m; sourceTree = "<group>"; };
 		3283C4D31A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CloudPrintPreviewViewController.xib; sourceTree = "<group>"; };
+		328473EE1A49B9DE0091DF26 /* InstitutionLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InstitutionLogo.png; sourceTree = "<group>"; };
+		328473EF1A49B9DE0091DF26 /* InstitutionLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "InstitutionLogo@2x.png"; sourceTree = "<group>"; };
 		328501B219E5768F0049356E /* MapLayersBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MapLayersBarButton.png; sourceTree = "<group>"; };
 		328501B319E5768F0049356E /* MapLayersBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapLayersBarButton@2x.png"; sourceTree = "<group>"; };
 		32870F9C19B674AE00A3BC68 /* CloudPrintRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintRequestViewController.h; sourceTree = "<group>"; };
@@ -1582,6 +1586,8 @@
 				32150DD7197D6D0400CCF2AB /* FolderIcon@2x.png */,
 				3200375718119B4100901F6A /* Info.png */,
 				3200375818119B4100901F6A /* Info@2x.png */,
+				328473EE1A49B9DE0091DF26 /* InstitutionLogo.png */,
+				328473EF1A49B9DE0091DF26 /* InstitutionLogo@2x.png */,
 				32150DD2197D693300CCF2AB /* LinkIcon.png */,
 				32150DD3197D693300CCF2AB /* LinkIcon@2x.png */,
 				3270B7EF18056E6F007EE85B /* ListBarButton.png */,
@@ -3102,6 +3108,7 @@
 				32AA25B41A0A9F1A00146D68 /* MealType_VEGETARIAN@3x.png in Resources */,
 				32B5871E156458FA0051C57E /* Camipro.png in Resources */,
 				32B5871F156458FA0051C57E /* Camipro@2x.png in Resources */,
+				328473F01A49B9DE0091DF26 /* InstitutionLogo.png in Resources */,
 				32710E951565129600DE6984 /* CamiproLarge.png in Resources */,
 				32AF214415B193A200BB445D /* TransportHelpView.xib in Resources */,
 				321F37E615B02FBE00E7BA6D /* HelpBarButton.png in Resources */,
@@ -3121,6 +3128,7 @@
 				32777B4615D1BFBC00A29F56 /* PCAbout.html in Resources */,
 				32675C2415F50F4A00880387 /* Config.plist in Resources */,
 				32CACD97183E366B00BD36F9 /* LocationArrow.png in Resources */,
+				328473F11A49B9DE0091DF26 /* InstitutionLogo@2x.png in Resources */,
 				327513331825465D0037FE00 /* FavoriteCornerSelected.png in Resources */,
 				32B3F3941621956C007A75C7 /* MainMenuView.xib in Resources */,
 				326F5A8219BDA2D0000693A2 /* CloudPrintStatusView.xib in Resources */,
