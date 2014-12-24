@@ -67,7 +67,7 @@
         institutionLogoImageView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.backgroundImageView addSubview:institutionLogoImageView];
         [self.backgroundImageView addConstraint:[NSLayoutConstraint constraintForCenterXtoSuperview:self.backgroundImageView forView:institutionLogoImageView constant:0.0]];
-        [self.backgroundImageView addConstraints:[NSLayoutConstraint constraintsToSuperview:self.backgroundImageView forView:institutionLogoImageView edgeInsets:UIEdgeInsetsMake(kNoInsetConstraint, kNoInsetConstraint, -9.0, kNoInsetConstraint)]];
+        [self.backgroundImageView addConstraints:[NSLayoutConstraint constraintsToSuperview:self.backgroundImageView forView:institutionLogoImageView edgeInsets:UIEdgeInsetsMake(kNoInsetConstraint, kNoInsetConstraint, -10.0, kNoInsetConstraint)]];
         
     }
     return self;

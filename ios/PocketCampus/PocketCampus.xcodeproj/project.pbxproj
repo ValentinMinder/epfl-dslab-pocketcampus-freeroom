@@ -411,6 +411,7 @@
 		32D1DE161846614500D0C866 /* TransportTripCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D1DE151846614500D0C866 /* TransportTripCell.m */; };
 		32D1DE18184663C700D0C866 /* TransportTripCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D1DE17184663C700D0C866 /* TransportTripCell.xib */; };
 		32D29719185B64FE006530B7 /* IsAcademiaPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32D2971C185B64FE006530B7 /* IsAcademiaPlugin.strings */; };
+		32D6A77B1A4AD6180085D3A5 /* InstitutionLogo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D6A77A1A4AD6180085D3A5 /* InstitutionLogo@3x.png */; };
 		32D8349C19A4CD8A00844901 /* PCGAITracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 322FB01717EC938E00D1A466 /* PCGAITracker.m */; };
 		32D8349D19A4CD8D00844901 /* NSDate+Addtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB441F17650268008C8282 /* NSDate+Addtions.m */; };
 		32D8349E19A4CFA400844901 /* AuthenticationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4B9155520FE00220282 /* AuthenticationController.m */; };
@@ -1124,6 +1125,7 @@
 		32D1DE17184663C700D0C866 /* TransportTripCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportTripCell.xib; sourceTree = "<group>"; };
 		32D2971B185B64FE006530B7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/IsAcademiaPlugin.strings; sourceTree = "<group>"; };
 		32D2971D185B6500006530B7 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/IsAcademiaPlugin.strings; sourceTree = "<group>"; };
+		32D6A77A1A4AD6180085D3A5 /* InstitutionLogo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "InstitutionLogo@3x.png"; sourceTree = "<group>"; };
 		32D97C9B15AF1BB8004384A5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		32DD524419B4DEAE00B5B241 /* CloudPrintController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintController.h; sourceTree = "<group>"; };
 		32DD524519B4DEAE00B5B241 /* CloudPrintController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintController.m; sourceTree = "<group>"; };
@@ -1588,6 +1590,7 @@
 				3200375818119B4100901F6A /* Info@2x.png */,
 				328473EE1A49B9DE0091DF26 /* InstitutionLogo.png */,
 				328473EF1A49B9DE0091DF26 /* InstitutionLogo@2x.png */,
+				32D6A77A1A4AD6180085D3A5 /* InstitutionLogo@3x.png */,
 				32150DD2197D693300CCF2AB /* LinkIcon.png */,
 				32150DD3197D693300CCF2AB /* LinkIcon@2x.png */,
 				3270B7EF18056E6F007EE85B /* ListBarButton.png */,
@@ -3160,6 +3163,7 @@
 				327513321825465D0037FE00 /* FavoriteCorner@2x.png in Resources */,
 				327585A51844C5B1004215FC /* ArrowSimpleRight@2x.png in Resources */,
 				32C509EB17FC6D73005A5635 /* SortBarButton@2x.png in Resources */,
+				32D6A77B1A4AD6180085D3A5 /* InstitutionLogo@3x.png in Resources */,
 				32150DD4197D693300CCF2AB /* LinkIcon.png in Resources */,
 				3289F2B8183FAB8C00D833C2 /* LocationArrow2@2x.png in Resources */,
 				320037521811843500901F6A /* CheckmarkRoundedSquare@2x.png in Resources */,

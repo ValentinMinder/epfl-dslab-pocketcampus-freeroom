@@ -622,6 +622,10 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     self.docController = nil;
 }
 
+- (void)documentInteractionControllerDidDismissOpenInMenu:(UIDocumentInteractionController *)controller {
+    self.docController = nil;
+}
+
 #pragma mark - UIWebViewDelegate
 
 - (void)webView:(UIWebView *)webView_ didFailLoadWithError:(NSError *)error {
