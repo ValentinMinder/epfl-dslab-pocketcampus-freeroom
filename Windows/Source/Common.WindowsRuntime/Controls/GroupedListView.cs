@@ -14,6 +14,7 @@ namespace PocketCampus.Common.Controls
         private static readonly Brush ZoomedOutBackgroundBrush = new SolidColorBrush( new Color { A = 192, R = 0, G = 0, B = 0 } );
         private static readonly Brush ZoomedOutForegroundBrush = new SolidColorBrush( Colors.White );
         private static readonly Thickness ZoomedOutViewPadding = new Thickness( 12 );
+        private const double ZoomedInViewLeftMargin = 19; // optional, used if HasLeftPadding is true
         private const double ZoomedInViewTopMargin = 16;
         private const double ZoomedInViewRightMargin = 19; // will be used to ensure the scrollbar isn't over the content
         private const double ZoomedInGroupFooterSize = 24;
@@ -74,6 +75,17 @@ namespace PocketCampus.Common.Controls
             DependencyProperty.Register( "GroupKeyPath", typeof( string ), typeof( GroupedListView ), new PropertyMetadata( null ) );
         #endregion
 
+        #region HasLeftPadding
+        public bool HasLeftPadding
+        {
+            get { return (bool) GetValue( HasLeftPaddingProperty ); }
+            set { SetValue( HasLeftPaddingProperty, value ); }
+        }
+
+        public static readonly DependencyProperty HasLeftPaddingProperty =
+            DependencyProperty.Register( "HasLeftPadding", typeof( bool ), typeof( GroupedListView ), new PropertyMetadata( false ) );
+        #endregion
+
         public GroupedListView()
         {
             Name = Guid.NewGuid().ToString();
@@ -102,7 +114,7 @@ namespace PocketCampus.Common.Controls
                     }
                 },
                 // HACK: The group header template contains a top margin, so we cancel the first one here
-                Padding = new Thickness( 0, ZoomedInViewTopMargin - ZoomedInGroupFooterSize, ZoomedInViewRightMargin, 0 )
+                Padding = new Thickness( HasLeftPadding ? ZoomedInViewLeftMargin : 0, ZoomedInViewTopMargin - ZoomedInGroupFooterSize, ZoomedInViewRightMargin, 0 )
             };
             // Weird way CollectionViewSources have to be used
             view.SetBinding

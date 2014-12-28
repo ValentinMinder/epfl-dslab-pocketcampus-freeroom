@@ -22,7 +22,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <!-- Beer name -->
+                    <!-- Name -->
                     <TextBlock Text="{Binding Name}"
                                Style="{StaticResource AppNormalTextBlockStyle}" />
 
@@ -55,7 +55,7 @@
 
             <DataTemplate x:Key="MenuPartTemplate">
                 <cc:GroupedListView ItemTemplate="{StaticResource BeerTemplate}"
-                                        GroupKeyPath="Key">
+                                    GroupKeyPath="Key">
                     <cc:GroupedListView.ItemsViewSource>
                         <CollectionViewSource Source="{Binding Value, 
                                                                Converter={StaticResource MenuPartToGroup}}"
