@@ -24,6 +24,11 @@
             <ItemsPanelTemplate x:Key="WrappingItemsPanel">
                 <WrapGrid Orientation="Horizontal" />
             </ItemsPanelTemplate>
+            
+            <!-- Special style for large text in the header, used in the landscape week picker -->
+            <Style x:Key="AppHeaderLargeTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource AppLargeTextBlockStyle}">
+                <Setter Property="Foreground" Value="{StaticResource AppHeaderForegroundBrush}" />
+            </Style>
 
             <!-- Period container style -->
             <Style x:Key="PeriodContainerStyle" TargetType="ContentControl">
@@ -207,7 +212,8 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="{CustomResource Main.ViewHeader}"
-                       Style="{StaticResource AppHeaderTextBlockStyle}" />
+                       Style="{StaticResource AppHeaderTextBlockStyle}"
+                       VerticalAlignment="Center" />
 
             <!-- Landscape week picker -->
             <myc:WeekPicker x:Name="LandscapeWeekPicker"
@@ -215,7 +221,7 @@
                             Value="{Binding WeekDate, 
                                             Mode=TwoWay}"
                             Visibility="Collapsed"
-                            TextStyle="{StaticResource AppLargeTextBlockStyle}"
+                            TextStyle="{StaticResource AppHeaderLargeTextBlockStyle}"
                             Margin="4,2" />
         </Grid>
 

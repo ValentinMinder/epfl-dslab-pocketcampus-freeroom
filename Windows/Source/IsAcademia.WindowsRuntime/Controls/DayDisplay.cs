@@ -10,6 +10,8 @@ using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
+// TODO: The algorithm used to detect collisions is brittle and untested... test/clean/fix it.
+
 namespace PocketCampus.IsAcademia.Controls
 {
     public sealed class DayDisplay : Panel
@@ -182,7 +184,6 @@ namespace PocketCampus.IsAcademia.Controls
                     var block = new TextBlock
                     {
                         Text = hour.ToString( HourFormat ),
-                        // TODO make that a parameter
                         Style = (Style) Application.Current.Resources["AppSubtleTextBlockStyle"],
                         VerticalAlignment = VerticalAlignment.Top,
                         HorizontalAlignment = HorizontalAlignment.Left,
@@ -290,8 +291,22 @@ namespace PocketCampus.IsAcademia.Controls
                 ColumnCount = periodsPerInterval.Max();
                 int[] remainingPeriods = (int[]) periodsPerInterval.Clone();
 
-                foreach ( var period in day.Periods )
+                // First order the periods by number of periods that collide, otherwise the algorithm fails.
+                // e.g.
+                //       ---------
+                // --------  -----
+                // if we don't handle the top one first, both it and the first bottom one will be in column 1.
+                var totalCollisionsPerPeriods =
+                    day.Periods.ToDictionary( p => p,
+                        p => day.Periods.Count( p2 =>
+                            ( p2.Start >= p.Start && p2.Start < p.End ) // start is inside the period
+                            || ( p2.End >= p.Start && p2.End < p.End ) // end is inside the period
+                            || ( p2.Start <= p.Start && p2.End >= p.End ) // start and end surround the period
+                            ) );
+
+                foreach ( var pair in totalCollisionsPerPeriods.OrderByDescending( p => p.Value ) )
                 {
+                    var period = pair.Key;
                     int collisions = 1;
                     int column = 0;
 
