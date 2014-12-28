@@ -85,6 +85,7 @@ namespace PocketCampus.CloudPrint.ViewModels
                 catch ( AuthenticationRequiredException )
                 {
                     ForceAuthentication();
+                    return;
                 }
                 catch
                 {
@@ -109,6 +110,7 @@ namespace PocketCampus.CloudPrint.ViewModels
                 if ( response.Status == ResponseStatus.AuthenticationError )
                 {
                     ForceAuthentication();
+                    return;
                 }
             }
             catch
@@ -117,7 +119,11 @@ namespace PocketCampus.CloudPrint.ViewModels
                 return;
             }
 
-            await _fileLoader.DeleteFileAsync( _request.FileUri );
+            if ( _request.FileUri != null )
+            {
+                await _fileLoader.DeleteFileAsync( _request.FileUri );
+            }
+
             Status = PrintRequestStatus.Success;
         }
 
