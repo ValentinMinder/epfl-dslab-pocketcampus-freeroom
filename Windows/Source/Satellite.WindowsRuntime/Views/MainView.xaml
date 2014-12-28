@@ -10,7 +10,9 @@
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate x:Key="BeerTemplate">
-                <Grid Margin="0,0,0,24">
+                <!-- HACK: Flyouts are too messed up on WinRT, use the tapped event and a dialog instead -->
+                <Grid Margin="0,0,0,24"
+                      Tapped="Beer_Tapped">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
@@ -30,21 +32,23 @@
                                               Converter={StaticResource MoneyFormat}}"
                                Style="{StaticResource AppNormalTextBlockStyle}" />
 
+                    <!-- Brewery/country name -->
                     <TextBlock Grid.Row="1"
                                Style="{StaticResource AppSubtleTextBlockStyle}">
                         <Run Text="{Binding BreweryName}" />
-                        <!-- HACK: No line breaks, otherwise spaces are inserted in the textblock. -->
-                        <Run Text="(" /><Run Text="{Binding CountryName}" /><Run Text=")" />
+                        <Run Text="{Binding CountryName,
+                                            Converter={StaticResource StringFormat}, 
+                                            ConverterParameter='{}({0})'}" />
                     </TextBlock>
 
+                    <!-- Alcohol rate -->
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
                                Style="{StaticResource AppSubtleTextBlockStyle}"
                                HorizontalAlignment="Right">
-                        <!-- HACK: Same as above; no line breaks to avoid spaces. -->
                         <Run Text="{Binding AlcoholRate, 
                                             Converter={StaticResource StringFormat}, 
-                                            ConverterParameter='0.0'}"/><Run Text="°" />
+                                            ConverterParameter='{}{0:0.0}°'}"/>
                     </TextBlock>
                 </Grid>
             </DataTemplate>
