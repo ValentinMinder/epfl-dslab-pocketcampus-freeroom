@@ -52,7 +52,8 @@ public final class TripsServiceImpl implements TripsService {
 	private static final DateTimeFormatter REQUEST_TIME_FORMAT = DateTimeFormat.forPattern("HH:mm");
 
 	// Values for the request
-	private static final String REQUEST_FILTER_ALL = "1111111111111111"; // Undocumented. Each 'bit' enables/disables a mode of transport.
+	private static final String REQUEST_FILTER_ALL = "1111111111111111"; // Undocumented. Each 'bit' enables/disables a
+																			// mode of transport.
 	private static final int REQUEST_PAST_RESULTS_COUNT = 0; // 0-6
 	private static final int REQUEST_FUTURE_RESULTS_COUNT = 6; // 0-6
 
@@ -96,7 +97,8 @@ public final class TripsServiceImpl implements TripsService {
 	private static final String TRIP_PROPERTY_LINE_NUMBER = "LINE";
 
 	// Special line values
-	private static final Set<String> LINE_NAMES_WITH_NUMBERS = new HashSet<String>(Arrays.asList(new String[] { "M", "S" }));
+	private static final Set<String> LINE_NAMES_WITH_NUMBERS = new HashSet<String>(Arrays.asList(new String[] { "M",
+			"S" }));
 
 	// Placeholder if a line name cannot be found
 	private static final String EMPTY_LINE_PLACEHOLDER = "???";
@@ -120,14 +122,16 @@ public final class TripsServiceImpl implements TripsService {
 	}
 
 	/** Gets trips from the specified station, to the specified station, at the specified date and time. */
-	public List<TransportTrip> getTrips(final TransportStation start, final TransportStation end, final DateTime datetime) throws IOException {
+	public List<TransportTrip> getTrips(final TransportStation start, final TransportStation end,
+			final DateTime datetime) throws IOException {
 		final XElement request = buildRequest(token, start, end, datetime);
 		final String responseXml = client.post(API_URL, request.toBytes(API_CHARSET), API_CHARSET);
 		return parseResponse(responseXml, start, end);
 	}
 
 	/** Builds the request XML. */
-	private static XElement buildRequest(final String token, final TransportStation start, final TransportStation end, final DateTime tripDeparture) {
+	private static XElement buildRequest(final String token, final TransportStation start, final TransportStation end,
+			final DateTime tripDeparture) {
 		final XElement root = HafasUtil.createRequestRoot(token);
 
 		final XElement container = root.addChild(REQUEST_CONTAINER);
@@ -148,15 +152,18 @@ public final class TripsServiceImpl implements TripsService {
 				.setAttribute(REQUEST_DATE_ATTRIBUTE, REQUEST_DATE_FORMAT.print(tripDeparture))
 				.setAttribute(REQUEST_TIME_ATTRIBUTE, REQUEST_TIME_FORMAT.print(tripDeparture));
 
-		container.addChild(REQUEST_FLAGS_ELEMENT)
+		container
+				.addChild(REQUEST_FLAGS_ELEMENT)
 				.setAttribute(REQUEST_FLAG_PAST_RESULTS_COUNT_ATTRIBUTE, Integer.toString(REQUEST_PAST_RESULTS_COUNT))
-				.setAttribute(REQUEST_FLAG_FUTURE_RESULTS_COUNT_ATTRIBUTE, Integer.toString(REQUEST_FUTURE_RESULTS_COUNT));
+				.setAttribute(REQUEST_FLAG_FUTURE_RESULTS_COUNT_ATTRIBUTE,
+						Integer.toString(REQUEST_FUTURE_RESULTS_COUNT));
 
 		return root;
 	}
 
 	/** Parses the response XML. */
-	private static List<TransportTrip> parseResponse(final String responseXml, final TransportStation start, final TransportStation end) {
+	private static List<TransportTrip> parseResponse(final String responseXml, final TransportStation start,
+			final TransportStation end) {
 		final XElement responseElem = XElement.parse(responseXml);
 		if (responseElem.child(RESPONSE_ERROR_ELEMENT) != null) {
 			return new ArrayList<TransportTrip>();
@@ -183,7 +190,8 @@ public final class TripsServiceImpl implements TripsService {
 	private static TransportTrip parseTrip(final XElement tripElem, final int id) {
 		final List<TransportConnection> connections = new ArrayList<TransportConnection>();
 
-		final XElement dateElem = tripElem.child(RESPONSE_TRIP_DATE_CONTAINER_ELEMENT).child(RESPONSE_TRIP_DATE_ELEMENT);
+		final XElement dateElem = tripElem.child(RESPONSE_TRIP_DATE_CONTAINER_ELEMENT)
+				.child(RESPONSE_TRIP_DATE_ELEMENT);
 		final LocalDate connectionDate = RESPONSE_DATE_FORMAT.parseLocalDate(dateElem.text());
 
 		final XElement connectionsListElem = tripElem.child(RESPONSE_TRIP_CONNECTIONS_ELEMENT);
@@ -211,7 +219,8 @@ public final class TripsServiceImpl implements TripsService {
 		final XElement walkElement = getWalkElement(connectionElem);
 		final boolean isWalk = walkElement != null;
 
-		final TransportConnection connection = new TransportConnection(departureStop.station, arrivalStop.station, isWalk);
+		final TransportConnection connection = new TransportConnection(departureStop.station, arrivalStop.station,
+				isWalk);
 
 		connection.setDepartureTime(departureStop.datetime.getMillis());
 		if (departureStop.platform != null) {
@@ -225,11 +234,13 @@ public final class TripsServiceImpl implements TripsService {
 
 		if (isWalk) {
 			final XElement timeElement = walkElement.child(RESPONSE_TRIP_CONNECTION_WALK_DURATION_ELEMENT);
-			final Period walkTime = RESPONSE_PERIOD_FORMAT.parsePeriod(timeElement.child(RESPONSE_TRIP_CONNECTION_WALK_DURATION_TIME_ATTRIBUTE).text());
+			final Period walkTime = RESPONSE_PERIOD_FORMAT.parsePeriod(timeElement.child(
+					RESPONSE_TRIP_CONNECTION_WALK_DURATION_TIME_ATTRIBUTE).text());
 
 			connection.setFootDuration(walkTime.toStandardMinutes().getMinutes());
 		} else {
-			final XElement propertiesElem = connectionElem.child(RESPONSE_TRIP_PROPERTIES_CONTAINER).child(RESPONSE_TRIP_PROPERTIES_ELEMENT);
+			final XElement propertiesElem = connectionElem.child(RESPONSE_TRIP_PROPERTIES_CONTAINER).child(
+					RESPONSE_TRIP_PROPERTIES_ELEMENT);
 			final String lineName = getConnectionProperty(propertiesElem, TRIP_PROPERTY_LINE_NAME);
 			final String lineNumber = getConnectionProperty(propertiesElem, TRIP_PROPERTY_LINE_NUMBER);
 			final String fullLineName = getFullLineName(lineName, lineNumber);
@@ -241,11 +252,12 @@ public final class TripsServiceImpl implements TripsService {
 	}
 
 	/**
-	 * Gets an XElement representing a walk section in the specified XElement representing a connection,
-	 * or null if no such element is present.
+	 * Gets an XElement representing a walk section in the specified XElement representing a connection, or null if no
+	 * such element is present.
 	 */
 	private static XElement getWalkElement(final XElement connectionElem) {
-		// We consider any "implicit" element, i.e. "go to station XYZ in 42 minutes", as a walk, even though it might be a very long walk.
+		// We consider any "implicit" element, i.e. "go to station XYZ in 42 minutes", as a walk, even though it might
+		// be a very long walk.
 		for (final String elementName : RESPONSE_TRIP_CONNECTION_WALK_ELEMENTS) {
 			final XElement walkElement = connectionElem.child(elementName);
 			if (walkElement != null) {
@@ -258,11 +270,11 @@ public final class TripsServiceImpl implements TripsService {
 	/** Gets a full line name from the specified line name and number. */
 	private static String getFullLineName(final String lineName, final String lineNumber) {
 		// Should never happen, but we can't rule it out...
-		if (lineName == null || lineNumber == null) {
+		if (lineName == null) {
 			return EMPTY_LINE_PLACEHOLDER;
 		}
 		// Trains don't have line numbers
-		if (lineNumber.equals("")) {
+		if (lineNumber == null || lineNumber.equals("")) {
 			return lineName;
 		}
 		// Special case for some lines (e.g. metro) whose number follows immediately, e.g. "M1" rather than "M 1".
@@ -274,9 +286,11 @@ public final class TripsServiceImpl implements TripsService {
 	}
 
 	/** Parses a Stop from an XElement. */
-	private static HafasTransportStop parseStop(final XElement stopElem, final boolean isDeparture, final LocalDate connectionDate) {
+	private static HafasTransportStop parseStop(final XElement stopElem, final boolean isDeparture,
+			final LocalDate connectionDate) {
 		final XElement container = stopElem.child(STOP_ELEMENT);
-		final XElement flagsElem = container.child(isDeparture ? STOP_DEPARTURE_FLAGS_ELEMENT : STOP_ARRIVAL_FLAGS_ELEMENT);
+		final XElement flagsElem = container.child(isDeparture ? STOP_DEPARTURE_FLAGS_ELEMENT
+				: STOP_ARRIVAL_FLAGS_ELEMENT);
 
 		final TransportStation station = HafasUtil.parseStation(container.child(STOP_STATION_ELEMENT));
 
@@ -286,14 +300,15 @@ public final class TripsServiceImpl implements TripsService {
 		}
 
 		final Period fromDayStart = RESPONSE_PERIOD_FORMAT.parsePeriod(flagsElem.child(STOP_FLAGS_TIME_ELEMENT).text());
-		
+
 		// Don't use toDateTimeAtStartOfDay().plus(fromDayStart), it will bug on DST changes
-		// since some periods of time either exist twice (00:00 + 13h00 == 12:00) or don't exist (00:00 + 13h00 == 14:00)
+		// since some periods of time either exist twice (00:00 + 13h00 == 12:00) or don't exist (00:00 + 13h00 ==
+		// 14:00)
 		final DateTime datetime = new DateTime(
 				connectionDate.getYear(), connectionDate.getMonthOfYear(), connectionDate.getDayOfMonth(),
 				fromDayStart.getHours(), fromDayStart.getMinutes(), fromDayStart.getSeconds())
 				.plusDays(fromDayStart.getDays());
-		
+
 		return new HafasTransportStop(station, datetime, platform);
 	}
 
@@ -304,7 +319,8 @@ public final class TripsServiceImpl implements TripsService {
 
 			if (propertyElem.attribute(TRIP_PROPERTY_NAME_ATTRIBUTE).equals(name)) {
 				for (final XElement valueElem : propertyElem.children(TRIP_PROPERTY_VALUE_CONTAINER)) {
-					if (valueElem.attribute(TRIP_PROPERTY_VALUE_CONTAINER_TYPE_ATTRIBUTE).equals(TRIP_PROPERTY_VALUE_CONTAINER_TYPE_NORMAL)) {
+					if (valueElem.attribute(TRIP_PROPERTY_VALUE_CONTAINER_TYPE_ATTRIBUTE).equals(
+							TRIP_PROPERTY_VALUE_CONTAINER_TYPE_NORMAL)) {
 						final XElement textElem = valueElem.child(TRIP_PROPERTY_VALUE_ELEMENT);
 						return textElem == null ? "" : textElem.text();
 					}
