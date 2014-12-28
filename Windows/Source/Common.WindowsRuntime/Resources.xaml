@@ -396,7 +396,8 @@
                                           Content="{TemplateBinding Content}"
                                           Foreground="{TemplateBinding Foreground}"
                                           HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Stretch" />
+                                          VerticalAlignment="Stretch"
+                                          Margin="{TemplateBinding Padding}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

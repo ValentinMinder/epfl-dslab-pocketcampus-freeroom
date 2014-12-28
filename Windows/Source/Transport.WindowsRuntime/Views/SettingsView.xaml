@@ -24,8 +24,10 @@
 
         <!-- Sort stops by position -->
         <CheckBox Grid.Row="1"
-                  Content="{CustomResource Settings.SortByPosition}"
                   IsChecked="{Binding Settings.SortByPosition}"
-                  Margin="19,16" />
+                  Margin="19,16">
+            <TextBlock Text="{CustomResource Settings.SortByPosition}"
+                       Style="{StaticResource AppNormalTextBlockStyle}" />
+        </CheckBox>
     </Grid>
 </cc:PageBase>
