@@ -7,7 +7,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <my:FileToIconElementConverter x:Key="FileToIcon" />
-    <my:DownloadStatusToProgressBarVisibilityConverter x:Key="DownloadStatusToProgressVisibility" />
+    <my:PathComponentsToStringConverter x:Key="PathComponentsToString" />
 
     <myDesign:Design x:Key="Design" />
 </ResourceDictionary>

@@ -14,21 +14,13 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace PocketCampus.Moodle
 {
-    public sealed class DownloadStatusToProgressBarVisibilityConverter : ValueConverter<DownloadStatus, bool>
-    {
-        public override bool Convert( DownloadStatus value )
-        {
-            return value == DownloadStatus.Downloading;
-        }
-    }
-
     public sealed class FileToIconElementConverter : ValueConverter<MoodleFile, UIElement>
     {
         private static readonly Dictionary<string, string> Aliases = new Dictionary<string, string>
         {
-            { "ppt", "pptx" },
-            { "doc", "docx" },
-            { "xls", "xlsx" }
+            {"ppt", "pptx"},
+            {"doc", "docx"},
+            {"xls", "xlsx"}
         };
 
         private const int DefaultSquareSize = 48;
@@ -67,7 +59,9 @@ namespace PocketCampus.Moodle
                     Stretch = Stretch.Uniform,
                     Child = new Image
                     {
-                        Source = new BitmapImage( new Uri( value.IconUrl.Replace( "{size}", DefaultSquareSize.ToString() ), UriKind.Absolute ) )
+                        Source =
+                            new BitmapImage( new Uri( value.IconUrl.Replace( "{size}", DefaultSquareSize.ToString() ),
+                                UriKind.Absolute ) )
                     }
                 };
             }
@@ -78,6 +72,16 @@ namespace PocketCampus.Moodle
                 IconHeight = IconHeight,
                 IconWidth = IconWidth
             };
+        }
+    }
+
+    public sealed class PathComponentsToStringConverter : ValueConverter<string[], string>
+    {
+        private const string Separator = " > ";
+
+        public override string Convert( string[] value )
+        {
+            return string.Join( Separator, value );
         }
     }
 }

@@ -6,8 +6,6 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-using PocketCampus.CloudPrint;
 using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Models;
 using PocketCampus.Moodle.Services;
@@ -20,15 +18,12 @@ namespace PocketCampus.Moodle.ViewModels
     public sealed class CourseViewModel : CachedDataViewModel<Course, CourseSectionsResponse>
     {
         private readonly ISecureRequestHandler _requestHandler;
+        private readonly INavigationService _navigationService;
         private readonly IMoodleService _moodleService;
-        private readonly IMoodleDownloader _downloader;
-        private readonly IFileStorage _storage;
         private readonly IBrowserService _browserService;
 
         private CourseSection[] _sections;
         private CourseSection _selectedSection;
-        private DownloadStatus _downloadStatus;
-        private PrintStatus _printStatus;
 
 
         public Course Course { get; set; }
@@ -45,33 +40,6 @@ namespace PocketCampus.Moodle.ViewModels
             private set { SetProperty( ref _selectedSection, value ); }
         }
 
-        public DownloadStatus DownloadStatus
-        {
-            get { return _downloadStatus; }
-            private set { SetProperty( ref _downloadStatus, value ); }
-        }
-
-        public PrintStatus PrintStatus
-        {
-            get { return _printStatus; }
-            private set { SetProperty( ref _printStatus, value ); }
-        }
-
-
-        [LogId( "DownloadAndOpenFile" )]
-        [LogParameter( "$Param.Name" )]
-        public AsyncCommand<MoodleFile> OpenFileCommand
-        {
-            get { return this.GetAsyncCommand<MoodleFile>( OpenFileAsync ); }
-        }
-
-        [LogId( "Print" )]
-        [LogParameter( "$Param.Name" )]
-        public AsyncCommand<MoodleFile> PrintFileCommand
-        {
-            get { return this.GetAsyncCommand<MoodleFile>( PrintFileAsync ); }
-        }
-
         [LogId( "OpenLink" )]
         [LogParameter( "$Param.Name" )]
         public Command<MoodleLink> OpenLinkCommand
@@ -79,16 +47,22 @@ namespace PocketCampus.Moodle.ViewModels
             get { return this.GetCommand<MoodleLink>( l => _browserService.NavigateTo( l.Url ) ); }
         }
 
+        [LogId( "ViewFile" )]
+        [LogParameter( "$Param.Name" )]
+        public Command<MoodleFile> ViewFileCommand
+        {
+            get { return this.GetCommand<MoodleFile>( _navigationService.NavigateTo<FileViewModel, MoodleFile> ); }
+        }
 
-        public CourseViewModel( IDataCache cache, ISecureRequestHandler requestHandler, IMoodleService moodleService,
-                               IMoodleDownloader downloader, IFileStorage storage, IBrowserService browserService,
-                               Course course )
+
+        public CourseViewModel( IDataCache cache, ISecureRequestHandler requestHandler, INavigationService navigationService,
+                                IMoodleService moodleService, IBrowserService browserService,
+                                Course course )
             : base( cache )
         {
             _requestHandler = requestHandler;
+            _navigationService = navigationService;
             _moodleService = moodleService;
-            _downloader = downloader;
-            _storage = storage;
             _browserService = browserService;
             Course = course;
         }
@@ -151,68 +125,6 @@ namespace PocketCampus.Moodle.ViewModels
             }
 
             return true;
-        }
-
-
-        private async Task OpenFileAsync( MoodleFile file )
-        {
-            if ( DownloadStatus == DownloadStatus.Downloading )
-            {
-                return;
-            }
-
-            try
-            {
-                if ( !( await _storage.IsStoredAsync( file ) ) )
-                {
-                    DownloadStatus = DownloadStatus.Downloading;
-
-                    var bytes = await _downloader.DownloadAsync( file );
-                    await _storage.StoreFileAsync( file, bytes );
-                    DownloadStatus = DownloadStatus.None;
-
-                }
-                if ( DownloadStatus == DownloadStatus.None )
-                {
-                    await _storage.OpenFileAsync( file );
-                }
-            }
-            catch
-            {
-                DownloadStatus = DownloadStatus.Error;
-            }
-        }
-
-        private async Task PrintFileAsync( MoodleFile file )
-        {
-            if ( PrintStatus == PrintStatus.Printing )
-            {
-                return;
-            }
-
-            try
-            {
-                PrintStatus = PrintStatus.Printing;
-
-                var request = new PrintFileRequest
-                {
-                    FileUrl = file.DownloadUrl
-                };
-                var response = await _moodleService.PrintFileAsync( request, CurrentCancellationToken );
-
-                if ( response.Status != MoodleStatus.Success )
-                {
-                    throw new Exception( "Error while contacting the server." );
-                }
-
-                Messenger.Send( new PrintRequest( file.Name, response.DocumentId.Value ) );
-
-                PrintStatus = PrintStatus.NotRequested;
-            }
-            catch
-            {
-                PrintStatus = PrintStatus.Error;
-            }
         }
 
         private static string GetSectionPath( CourseSection section )

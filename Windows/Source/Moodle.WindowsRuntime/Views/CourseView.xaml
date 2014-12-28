@@ -4,11 +4,7 @@
              xmlns:cc="using:PocketCampus.Common.Controls"
              xmlns:myc="using:PocketCampus.Moodle.Controls"
              xmlns:h2x="using:Html2Xaml"
-             DesignDataContext="{Binding Course, Source={StaticResource Design}}"
-             StatusBarText="{Binding DownloadStatus, 
-                                     Converter={StaticResource EnumToString}}">
-    <!-- FRAMEWORK BUG: Setting StatusBarShowsProgress to a Binding with a Converter 
-                        in the page resources fails. -->
+             DesignDataContext="{Binding Course, Source={StaticResource Design}}">
     <cc:PageBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -16,7 +12,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate x:Key="FileTemplate">
-                <cc:SimpleButton Command="{Binding DataContext.OpenFileCommand, 
+                <cc:SimpleButton Command="{Binding DataContext.ViewFileCommand, 
                                                    ElementName=Root}"
                                  CommandParameter="{Binding}"
                                  Margin="0,8,0,0">
@@ -33,15 +29,6 @@
                                    Style="{StaticResource AppLargeTextBlockStyle}"
                                    Margin="8,0,0,0" />
                     </Grid>
-                    
-                    <cc:SimpleButton.HoldingFlyout>
-                        <MenuFlyout>
-                            <MenuFlyoutItem Text="{CustomResource Course.Print}"
-                                            Command="{Binding DataContext.PrintFileCommand,
-                                                              ElementName=Root}"
-                                            CommandParameter="{Binding}" />
-                        </MenuFlyout>
-                    </cc:SimpleButton.HoldingFlyout>
                 </cc:SimpleButton>
             </DataTemplate>
 

@@ -35,6 +35,7 @@ namespace PocketCampus.Moodle
 
             navigationService.Bind<MainViewModel, MainView>();
             navigationService.Bind<CourseViewModel, CourseView>();
+            navigationService.Bind<FileViewModel, FileView>();
         }
     }
 }

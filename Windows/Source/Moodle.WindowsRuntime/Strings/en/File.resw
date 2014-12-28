@@ -117,8 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Print" xml:space="preserve">
-    <value>print at EPFL</value>
+  <data name="Cached" xml:space="preserve">
+    <value>This file has already been downloaded</value>
     <comment>Sentence</comment>
+  </data>
+  <data name="ForceDownload" xml:space="preserve">
+    <value>download it again</value>
+    <comment>Hyperlink text</comment>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Open</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Print at EPFL</value>
+    <comment>Button text</comment>
   </data>
 </root>
