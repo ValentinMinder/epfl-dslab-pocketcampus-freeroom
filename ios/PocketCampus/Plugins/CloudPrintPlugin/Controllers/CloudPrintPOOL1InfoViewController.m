@@ -47,6 +47,7 @@
     self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self.class) owner:nil options:nil] firstObject];
     if (self) {
         self.title = @"POOL1";
+        self.preferredContentSize = CGSizeZero;
     }
     return self;
 }

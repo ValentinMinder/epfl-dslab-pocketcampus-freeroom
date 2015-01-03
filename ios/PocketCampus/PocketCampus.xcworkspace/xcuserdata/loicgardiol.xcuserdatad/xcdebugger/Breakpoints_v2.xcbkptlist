@@ -3633,11 +3633,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleFileViewController.m"
-            timestampString = "441113152.627889"
+            timestampString = "442014585.381679"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "697"
-            endingLineNumber = "697"
+            startingLineNumber = "709"
+            endingLineNumber = "709"
             landmarkName = "-restoreScrollViewSateIfExists"
             landmarkType = "5">
          </BreakpointContent>
@@ -3649,11 +3649,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleFileViewController.m"
-            timestampString = "441113152.627889"
+            timestampString = "442014585.381679"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "701"
-            endingLineNumber = "701"
+            startingLineNumber = "713"
+            endingLineNumber = "713"
             landmarkName = "-restoreScrollViewSateIfExists"
             landmarkType = "5">
          </BreakpointContent>
@@ -3665,11 +3665,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleFileViewController.m"
-            timestampString = "441113152.627889"
+            timestampString = "442014585.381679"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "669"
-            endingLineNumber = "669"
+            startingLineNumber = "681"
+            endingLineNumber = "681"
             landmarkName = "-restoreScrollViewSateIfExists"
             landmarkType = "5">
          </BreakpointContent>
@@ -4334,11 +4334,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleFileViewController.m"
-            timestampString = "441113152.627889"
+            timestampString = "442014585.381679"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "712"
-            endingLineNumber = "712"
+            startingLineNumber = "724"
+            endingLineNumber = "724"
             landmarkName = "-dealloc"
             landmarkType = "5">
             <Actions>
@@ -5415,11 +5415,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "438643503.814269"
+            timestampString = "442015098.132712"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "181"
-            endingLineNumber = "181"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
             landmarkName = "+localizedName"
             landmarkType = "5">
             <Locations>
@@ -5461,11 +5461,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintRequestViewController.m"
-            timestampString = "440951680.874786"
+            timestampString = "442013432.942212"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "503"
-            endingLineNumber = "503"
+            startingLineNumber = "504"
+            endingLineNumber = "504"
             landmarkName = "-tableView:titleForFooterInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5591,11 +5591,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintRequestViewController.m"
-            timestampString = "440951680.874786"
+            timestampString = "442013432.942212"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "493"
-            endingLineNumber = "493"
+            startingLineNumber = "494"
+            endingLineNumber = "494"
             landmarkName = "-tableView:titleForFooterInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5639,11 +5639,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "438643503.814269"
+            timestampString = "442015098.132712"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
             landmarkName = "-init"
             landmarkType = "5">
          </BreakpointContent>
@@ -5655,11 +5655,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "438643503.814269"
+            timestampString = "442015098.132712"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
+            startingLineNumber = "187"
+            endingLineNumber = "187"
             landmarkName = "+identifierName"
             landmarkType = "5">
          </BreakpointContent>
@@ -5671,11 +5671,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "438643503.814269"
+            timestampString = "442015098.132712"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
+            startingLineNumber = "193"
+            endingLineNumber = "193"
             landmarkName = "+isSupportedFileWithLocalURL:"
             landmarkType = "5">
             <Locations>
@@ -6345,11 +6345,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "440782664.786351"
+            timestampString = "442015098.132712"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "458"
-            endingLineNumber = "458"
+            startingLineNumber = "472"
+            endingLineNumber = "472"
             landmarkName = "-handleJob:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6361,11 +6361,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "440782664.786351"
+            timestampString = "442015098.132712"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "342"
-            endingLineNumber = "342"
+            startingLineNumber = "356"
+            endingLineNumber = "356"
             landmarkName = "-handleJob:"
             landmarkType = "5">
             <Locations>
@@ -6407,11 +6407,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "440782664.786351"
+            timestampString = "442015098.132712"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "226"
-            endingLineNumber = "226"
+            startingLineNumber = "231"
+            endingLineNumber = "231"
             landmarkName = "+isSupportedFileWithLocalURL:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6423,11 +6423,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "440782664.786351"
+            timestampString = "442015098.132712"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "381"
-            endingLineNumber = "381"
+            startingLineNumber = "395"
+            endingLineNumber = "395"
             landmarkName = "-handleJob:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6439,11 +6439,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "440782664.786351"
+            timestampString = "442015098.132712"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "400"
-            endingLineNumber = "400"
+            startingLineNumber = "414"
+            endingLineNumber = "414"
             landmarkName = "-handleJob:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6517,11 +6517,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "440782664.786351"
+            timestampString = "442015098.132712"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "524"
-            endingLineNumber = "524"
+            startingLineNumber = "542"
+            endingLineNumber = "542"
             landmarkName = "-downloadDocumentForJob:progress:completion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6533,11 +6533,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "440782664.786351"
+            timestampString = "442015098.132712"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "522"
-            endingLineNumber = "522"
+            startingLineNumber = "540"
+            endingLineNumber = "540"
             landmarkName = "-downloadDocumentForJob:progress:completion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6565,11 +6565,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "440782664.786351"
+            timestampString = "442015098.132712"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "534"
-            endingLineNumber = "534"
+            startingLineNumber = "552"
+            endingLineNumber = "552"
             landmarkName = "-downloadDocumentForJob:progress:completion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6581,11 +6581,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "440782664.786351"
+            timestampString = "442015098.132712"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "521"
-            endingLineNumber = "521"
+            startingLineNumber = "539"
+            endingLineNumber = "539"
             landmarkName = "-downloadDocumentForJob:progress:completion:"
             landmarkType = "5">
             <Locations>
@@ -6627,11 +6627,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintPreviewViewController.m"
-            timestampString = "438781901.64345"
+            timestampString = "441999510.97397"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "207"
-            endingLineNumber = "207"
+            startingLineNumber = "208"
+            endingLineNumber = "208"
             landmarkName = "@implementation CloudPrintPreviewViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -6643,11 +6643,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintPreviewViewController.m"
-            timestampString = "438713506.158394"
+            timestampString = "441999510.97397"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "139"
+            endingLineNumber = "139"
             landmarkName = "-update"
             landmarkType = "5">
          </BreakpointContent>
@@ -6659,11 +6659,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintPreviewViewController.m"
-            timestampString = "438781901.64345"
+            timestampString = "441999510.97397"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
+            startingLineNumber = "204"
+            endingLineNumber = "204"
             landmarkName = "-updateImage"
             landmarkType = "5">
          </BreakpointContent>
@@ -6675,11 +6675,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintPreviewViewController.m"
-            timestampString = "438781936.495582"
+            timestampString = "441999510.97397"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
             landmarkName = "-setPrintDocumentRequest:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6818,6 +6818,38 @@
             startingLineNumber = "159"
             endingLineNumber = "159"
             landmarkName = "-uploadForPrintDocumentWithLocalURL:desiredFilename:jobUniqueId:success:progress:failure:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintRequestViewController.m"
+            timestampString = "441999056.648409"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "341"
+            endingLineNumber = "341"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
+            timestampString = "442015098.132712"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "514"
+            endingLineNumber = "514"
+            landmarkName = "-cleanJob:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

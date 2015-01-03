@@ -59,7 +59,7 @@
 
 @property (nonatomic, weak) UIViewController* currentViewController;
 
-- (void)setCurrentViewController:(UIViewController *)currentViewController animated:(BOOL)animated;
+- (void)setCurrentViewController:(UIViewController*)currentViewController animated:(BOOL)animated;
 
 @end
 
@@ -127,6 +127,11 @@
             //unsupported view controller
         }
     }
+}
+
+- (void)dealloc
+{
+    NSLog(@"Dealloc job: %@", self);
 }
 
 @end
@@ -267,6 +272,15 @@ static float const kProgressMax = 100;
     [self handleJob:job];
     
     return job.navController;
+}
+
+- (void)cancelPrintWithViewController:(UIViewController*)viewController {
+    for (NSString* jobUniqueId in [self.jobForJobUniqueId copy]) {
+        CloudPrintJob* job = self.jobForJobUniqueId[jobUniqueId];
+        if (job.navController == viewController) {
+            [self cleanJob:job];
+        }
+    }
 }
 
 #pragma mark - CloudPrintService
@@ -489,14 +503,18 @@ static float const kProgressMax = 100;
 
 - (void)job:(CloudPrintJob*)job completedWithStatusCode:(CloudPrintCompletionStatusCode)statusCode {
     @synchronized (self) {
-        [[AuthenticationController sharedInstance] removeLoginObserver:job];
-        [self deleteIfNecessaryDownloadedDocumentForJob:job];
+        [self cleanJob:job];
         if (job.completion) {
             job.completion(statusCode);
         }
-        if (job.request.jobUniqueId) {
-            [self.jobForJobUniqueId removeObjectForKey:job.request.jobUniqueId];
-        }
+    }
+}
+
+- (void)cleanJob:(CloudPrintJob*)job {
+    [[AuthenticationController sharedInstance] removeLoginObserver:job];
+    [self deleteIfNecessaryDownloadedDocumentForJob:job];
+    if (job.request.jobUniqueId) {
+        [self.jobForJobUniqueId removeObjectForKey:job.request.jobUniqueId];
     }
 }
 
@@ -539,6 +557,9 @@ static float const kProgressMax = 100;
 
 - (void)deleteIfNecessaryDownloadedDocumentForJob:(CloudPrintJob*)job {
     if (job.documentURL && job.documentLocalURL) { //means document was downloaded
+        if (![[NSFileManager defaultManager] fileExistsAtPath:job.documentLocalURL.path]) {
+            return;
+        }
         NSError* error = nil;
         [[NSFileManager defaultManager] removeItemAtURL:job.documentLocalURL error:&error];
         if (error) {
