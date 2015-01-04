@@ -129,11 +129,6 @@
     }
 }
 
-- (void)dealloc
-{
-    NSLog(@"Dealloc job: %@", self);
-}
-
 @end
 
 static CloudPrintController* instance __strong = nil;
