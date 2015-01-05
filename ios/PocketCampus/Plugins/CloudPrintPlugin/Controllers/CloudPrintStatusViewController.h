@@ -51,6 +51,8 @@ typedef NS_ENUM(NSInteger, CloudPrintStatusMessage) {
 
 /**
  * Executed when user taps on cancel
+ * If nil, no Cancel button is displayed
+ * Default: nil
  */
 @property (nonatomic, copy) void (^userCancelledBlock)();
 

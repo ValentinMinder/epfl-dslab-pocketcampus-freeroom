@@ -59,7 +59,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
     [self.tryAgainButton setTitle:NSLocalizedStringFromTable(@"TryAgain", @"CloudPrintPlugin", nil) forState:UIControlStateNormal];
     self.documentName = self.documentName;
     self.statusMessage = self.statusMessage;
@@ -129,6 +128,15 @@
     _progress = progress;
     [self updateProgress];
     [self.progress addObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted)) options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+- (void)setUserCancelledBlock:(void (^)())userCancelledBlock {
+    _userCancelledBlock = userCancelledBlock;
+    if (userCancelledBlock) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
+    } else {
+        self.navigationItem.leftBarButtonItem = nil;
+    }
 }
 
 - (void)setShowTryAgainButtonWithTappedBlock:(void (^)())showTryAgainButtonWithTappedBlock {

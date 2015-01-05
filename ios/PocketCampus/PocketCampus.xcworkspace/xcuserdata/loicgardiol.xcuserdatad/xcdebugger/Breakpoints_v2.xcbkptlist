@@ -1798,11 +1798,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCServiceRequest.m"
-            timestampString = "414525524.872549"
+            timestampString = "442151322.370432"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "387"
-            endingLineNumber = "387"
+            startingLineNumber = "389"
+            endingLineNumber = "389"
             landmarkName = "-startRequestAndReturnToDelegateCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1876,11 +1876,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCServiceRequest.m"
-            timestampString = "414525524.872549"
+            timestampString = "442151322.370432"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "391"
-            endingLineNumber = "391"
+            startingLineNumber = "393"
+            endingLineNumber = "393"
             landmarkName = "-startRequestAndReturnToDelegateCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1892,11 +1892,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCServiceRequest.m"
-            timestampString = "414525524.872549"
+            timestampString = "442151322.370432"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "249"
-            endingLineNumber = "249"
+            startingLineNumber = "251"
+            endingLineNumber = "251"
             landmarkName = "-returnToDelegateWithCachedResponseDic:completion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2666,52 +2666,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PocketCampus/Model/Common/PCServiceRequest.m"
-            timestampString = "414525524.872549"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "191"
-            endingLineNumber = "191"
-            landmarkName = "-main"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[ServiceRequest main]"
-                  moduleName = "PocketCampus"
-                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/PocketCampus/Model/Common/ServiceRequest.m"
-                  timestampString = "414521646.344602"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "192"
-                  endingLineNumber = "192"
-                  offsetFromSymbolStart = "1928">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[ServiceRequest main]"
-                  moduleName = "PocketCampus"
-                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/PocketCampus/Model/Common/ServiceRequest.m"
-                  timestampString = "414521646.344882"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "192"
-                  endingLineNumber = "192"
-                  offsetFromSymbolStart = "2056">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
             timestampString = "440954873.783171"
             startingColumnNumber = "9223372036854775807"
@@ -2985,13 +2939,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCServiceRequest.m"
-            timestampString = "414525524.872549"
+            timestampString = "442151322.370432"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
+            startingLineNumber = "178"
+            endingLineNumber = "178"
             landmarkName = "-main"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[PCServiceRequest main]"
+                  moduleName = "PocketCampus"
+                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/PocketCampus/Model/Common/PCServiceRequest.m"
+                  timestampString = "442151260.656314"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "177"
+                  endingLineNumber = "177"
+                  offsetFromSymbolStart = "1432">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__24-[PCServiceRequest main]_block_invoke99"
+                  moduleName = "PocketCampus"
+                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/PocketCampus/Model/Common/PCServiceRequest.m"
+                  timestampString = "442151260.656548"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "177"
+                  endingLineNumber = "177"
+                  offsetFromSymbolStart = "24">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3187,11 +3171,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCServiceRequest.m"
-            timestampString = "414852073.540797"
+            timestampString = "442151322.370432"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "477"
-            endingLineNumber = "477"
+            startingLineNumber = "479"
+            endingLineNumber = "479"
             landmarkName = "-indicateFailureToDelegateCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3251,11 +3235,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCServiceRequest.m"
-            timestampString = "414852073.540797"
+            timestampString = "442151322.370432"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "423"
-            endingLineNumber = "423"
+            startingLineNumber = "425"
+            endingLineNumber = "425"
             landmarkName = "-startRequestAndReturnToDelegateCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3553,11 +3537,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCServiceRequest.m"
-            timestampString = "417385404.414676"
+            timestampString = "442151322.370432"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "427"
-            endingLineNumber = "427"
+            startingLineNumber = "429"
+            endingLineNumber = "429"
             landmarkName = "-startRequestAndReturnToDelegateCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3569,11 +3553,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCServiceRequest.m"
-            timestampString = "417385402.052682"
+            timestampString = "442151322.370432"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "432"
-            endingLineNumber = "432"
+            startingLineNumber = "434"
+            endingLineNumber = "434"
             landmarkName = "-startRequestAndReturnToDelegateCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5383,11 +5367,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "442070435.422152"
+            timestampString = "442172256.856869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "181"
-            endingLineNumber = "181"
+            startingLineNumber = "199"
+            endingLineNumber = "199"
             landmarkName = "+localizedName"
             landmarkType = "5">
             <Locations>
@@ -5591,27 +5575,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "438643503.814269"
+            timestampString = "442172256.856869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
-            landmarkName = "-setCurrentViewController:animated:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "442070435.422152"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
             landmarkName = "-init"
             landmarkType = "5">
          </BreakpointContent>
@@ -5623,11 +5591,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "442070435.422152"
+            timestampString = "442172256.856869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
+            startingLineNumber = "200"
+            endingLineNumber = "200"
             landmarkName = "+identifierName"
             landmarkType = "5">
          </BreakpointContent>
@@ -5639,11 +5607,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "442070435.422152"
+            timestampString = "442172256.856869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
             landmarkName = "+isSupportedFileWithLocalURL:"
             landmarkType = "5">
             <Locations>
@@ -6313,11 +6281,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "442070435.422152"
+            timestampString = "442172256.856869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "467"
-            endingLineNumber = "467"
+            startingLineNumber = "486"
+            endingLineNumber = "486"
             landmarkName = "-handleJob:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6329,11 +6297,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "442070435.422152"
+            timestampString = "442172256.856869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "351"
-            endingLineNumber = "351"
+            startingLineNumber = "370"
+            endingLineNumber = "370"
             landmarkName = "-handleJob:"
             landmarkType = "5">
             <Locations>
@@ -6375,11 +6343,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "442070435.422152"
+            timestampString = "442172256.856869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "226"
-            endingLineNumber = "226"
+            startingLineNumber = "244"
+            endingLineNumber = "244"
             landmarkName = "+isSupportedFileWithLocalURL:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6391,11 +6359,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "442070435.422152"
+            timestampString = "442172256.856869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "390"
-            endingLineNumber = "390"
+            startingLineNumber = "409"
+            endingLineNumber = "409"
             landmarkName = "-handleJob:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6407,11 +6375,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "442070435.422152"
+            timestampString = "442172256.856869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "409"
-            endingLineNumber = "409"
+            startingLineNumber = "428"
+            endingLineNumber = "428"
             landmarkName = "-handleJob:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6485,11 +6453,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "442070435.422152"
+            timestampString = "442172256.856869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "537"
-            endingLineNumber = "537"
+            startingLineNumber = "556"
+            endingLineNumber = "556"
             landmarkName = "-downloadDocumentForJob:progress:completion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6501,11 +6469,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "442070435.422152"
+            timestampString = "442172256.856869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "535"
-            endingLineNumber = "535"
+            startingLineNumber = "554"
+            endingLineNumber = "554"
             landmarkName = "-downloadDocumentForJob:progress:completion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6517,11 +6485,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "438643197.635424"
+            timestampString = "442172256.856869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "113"
-            endingLineNumber = "113"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
             landmarkName = "-setCurrentViewController:animated:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6533,11 +6501,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "442070435.422152"
+            timestampString = "442172256.856869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "547"
-            endingLineNumber = "547"
+            startingLineNumber = "566"
+            endingLineNumber = "566"
             landmarkName = "-downloadDocumentForJob:progress:completion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6549,11 +6517,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "442070435.422152"
+            timestampString = "442172256.856869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "534"
-            endingLineNumber = "534"
+            startingLineNumber = "553"
+            endingLineNumber = "553"
             landmarkName = "-downloadDocumentForJob:progress:completion:"
             landmarkType = "5">
             <Locations>
@@ -6812,11 +6780,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
-            timestampString = "442070435.422152"
+            timestampString = "442172256.856869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "509"
-            endingLineNumber = "509"
+            startingLineNumber = "528"
+            endingLineNumber = "528"
             landmarkName = "-cleanJob:"
             landmarkType = "5">
          </BreakpointContent>

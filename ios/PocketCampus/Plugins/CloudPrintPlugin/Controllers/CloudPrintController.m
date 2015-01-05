@@ -57,6 +57,8 @@
 @property (nonatomic, strong) CloudPrintRequestViewController* requestViewController;
 @property (nonatomic, strong) CloudPrintStatusViewController* postRequestStatusViewController;
 
+@property (nonatomic, strong) NSTimer* pushCurrentViewControllerTimer;
+
 @property (nonatomic, weak) UIViewController* currentViewController;
 
 - (void)setCurrentViewController:(UIViewController*)currentViewController animated:(BOOL)animated;
@@ -97,6 +99,7 @@
 - (CloudPrintStatusViewController*)postRequestStatusViewController {
     if (!_postRequestStatusViewController) {
         _postRequestStatusViewController = [CloudPrintStatusViewController new];
+        _postRequestStatusViewController.navigationItem.hidesBackButton = YES;
     }
     return _postRequestStatusViewController;
 }
@@ -113,19 +116,34 @@
     if (newCurrentViewController == self.currentViewController) {
         return;
     }
-    if (newCurrentViewController.navigationController) {
-        [self.navController popToViewController:newCurrentViewController animated:animated];
+    
+    NSArray* viewControllers = nil;
+    if (newCurrentViewController == self.preRequestStatusViewController) {
+        viewControllers = @[self.preRequestStatusViewController];
+    } else if (newCurrentViewController == self.requestViewController) {
+        viewControllers = @[self.preRequestStatusViewController, self.requestViewController];
+    } else if (newCurrentViewController == self.postRequestStatusViewController) {
+        viewControllers = @[self.preRequestStatusViewController, self.requestViewController, self.postRequestStatusViewController];
     } else {
-        if (newCurrentViewController == self.requestViewController) {
-            [self.navController pushViewController:self.requestViewController animated:animated];
-        } else if (newCurrentViewController == self.postRequestStatusViewController) {
-            if (!self.requestViewController.navigationController) {
-                [self.navController pushViewController:self.requestViewController animated:NO];
-            }
-            [self.navController pushViewController:self.postRequestStatusViewController animated:animated];
-        } else {
-            //unsupported view controller
-        }
+        //unsupported view controller
+        return;
+    }
+    
+    if ([PCUtils isOSVersionSmallerThan:8.0]) {
+        // iOS 7 does not like when pushing/setting view controllers
+        // multiple times before animations are finished.
+        // So we need to wait and replace push/set operations.
+        NSTimeInterval interval = self.pushCurrentViewControllerTimer ? 1.0 : 0.0;
+        [self.pushCurrentViewControllerTimer invalidate];
+        __weak __typeof(self) welf = self;
+        self.pushCurrentViewControllerTimer = [NSTimer scheduledTimerWithTimeInterval:interval block:^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                welf.pushCurrentViewControllerTimer = nil;
+            });
+            [welf.navController setViewControllers:viewControllers animated:animated];
+        } repeats:NO];
+    } else {
+        [self.navController setViewControllers:viewControllers animated:animated];
     }
 }
 
@@ -290,6 +308,7 @@ static float const kProgressMax = 100;
     switch (response.statusCode) {
         case CloudPrintStatusCode_OK:
         {
+            job.postRequestStatusViewController.userCancelledBlock = nil; //hide Cancel button
             job.postRequestStatusViewController.progress.completedUnitCount = kProgressMax;
             job.postRequestStatusViewController.statusMessage = CloudPrintStatusMessageSuccess;
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.75 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ //give time for success message and animation
@@ -304,20 +323,20 @@ static float const kProgressMax = 100;
             [[AuthenticationController sharedInstance] addLoginObserver:wjob success:^{
                 wjob.requestViewController.userValidatedRequestBlock(wjob.request);
             } userCancelled:^{
-                [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:wjob.requestViewController];
+                [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) forJob:wjob];
                 [welf handleJob:wjob];
             } failure:^(NSError *error) {
                 if (error.code == kAuthenticationErrorCodeCouldNotAskForCredentials) {
-                    [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:wjob.requestViewController];
+                    [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) forJob:wjob];
                 } else {
-                    [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:wjob.requestViewController];
+                    [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) forJob:wjob];
                 }
                 [welf handleJob:wjob];
             }];
             break;
         }
         case CloudPrintStatusCode_PRINT_ERROR:
-            [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:job.requestViewController];
+            [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) forJob:job];
             [self handleJob:job];
             break;
         default:
@@ -331,13 +350,13 @@ static float const kProgressMax = 100;
         NSLog(@"!! ERROR: could not find job in printDocumentFailedForRequest: for job id: %@. Returning.", request.jobUniqueId);
         return;
     }
-    [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:job.requestViewController];
+    [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) forJob:job];
     [self handleJob:job];
 }
 
 - (void)serviceConnectionToServerFailed {
     for (CloudPrintJob* job in self.jobForJobUniqueId.allValues) {
-        [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) onViewController:job.requestViewController];
+        [self showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) forJob:job];
         [job setCurrentViewController:job.requestViewController animated:YES];
     }
 }
@@ -369,7 +388,7 @@ static float const kProgressMax = 100;
         [welf downloadDocumentForJob:wjob progress:&progress completion:^(NSError *error) {
             wjob.documentDownloadTask = nil;
             if (error) {
-                [welf showErrorAlertWithMessage:error.localizedDescription onViewController:wjob.preRequestStatusViewController];
+                [welf showErrorAlertWithMessage:error.localizedDescription forJob:wjob];
                 wjob.preRequestStatusViewController.statusMessage = CloudPrintStatusMessageError;
                 [wjob.preRequestStatusViewController setShowTryAgainButtonWithTappedBlock:^{
                     [welf handleJob:wjob];
@@ -423,9 +442,9 @@ static float const kProgressMax = 100;
                         [welf job:wjob completedWithStatusCode:CloudPrintCompletionStatusCodeUserCancelled];
                     } failure:^(NSError *error){
                         if (error.code == kAuthenticationErrorCodeCouldNotAskForCredentials) {
-                            [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) onViewController:wjob.preRequestStatusViewController];
+                            [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"LoginInAppRequired", @"PocketCampus", nil) forJob:wjob];
                         } else {
-                            [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:wjob.preRequestStatusViewController];
+                            [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) forJob:wjob];
                         }
                         wjob.preRequestStatusViewController.statusMessage = CloudPrintStatusMessageError;
                         [wjob.preRequestStatusViewController setShowTryAgainButtonWithTappedBlock:^{
@@ -436,7 +455,7 @@ static float const kProgressMax = 100;
                 }
                 case CloudPrintUploadFailureReasonNetworkError:
                 {
-                    [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) onViewController:wjob.preRequestStatusViewController];
+                    [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) forJob:wjob];
                     wjob.preRequestStatusViewController.statusMessage = CloudPrintStatusMessageError;
                     [wjob.preRequestStatusViewController setShowTryAgainButtonWithTappedBlock:^{
                         [welf handleJob:wjob];
@@ -445,7 +464,7 @@ static float const kProgressMax = 100;
                 }
                 default:
                 {
-                    [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) onViewController:wjob.preRequestStatusViewController];
+                    [welf showErrorAlertWithMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) forJob:wjob];
                     wjob.preRequestStatusViewController.statusMessage = CloudPrintStatusMessageError;
                     [wjob.preRequestStatusViewController setShowTryAgainButtonWithTappedBlock:^{
                         [welf handleJob:wjob];
@@ -488,7 +507,7 @@ static float const kProgressMax = 100;
         }];
         
         [wjob setCurrentViewController:wjob.postRequestStatusViewController animated:YES];
-        
+
         [wjob.cloudPrintService printDocumentWithRequest:wjob.request delegate:welf];
     }];
     
@@ -563,14 +582,12 @@ static float const kProgressMax = 100;
     }
 }
 
-- (void)showErrorAlertWithMessage:(NSString*)message onViewController:(UIViewController*)viewController {
+- (void)showErrorAlertWithMessage:(NSString*)message forJob:(CloudPrintJob*)job {
     if ([UIAlertController class]) {
-        UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:message preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController* alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:message preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:NULL];
-        [controller addAction:okAction];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [viewController presentViewController:controller animated:YES completion:NULL];
-        });
+        [alertController addAction:okAction];
+        [job.navController presentViewController:alertController animated:YES completion:NULL];
     } else {
 #ifndef TARGET_IS_EXTENSION
         [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];

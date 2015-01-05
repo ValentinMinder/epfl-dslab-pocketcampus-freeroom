@@ -73,9 +73,9 @@ typedef void (^CloudPrintCompletionBlock)(CloudPrintCompletionStatusCode printSt
 
 /**
  * @param viewController a view controller returned by one of the two methods above.
- * @discussion Must be called to release resources whenever the view controller is being dimissed
+ * @discussion Must be called to release resources whenever the view controller is being dimissed/released
  * (not going to be used anymore) NOT as part of the completion block passed originally.
- * Does nothing if viewController was already terminated or does not exist in printing view controllers.
+ * Does nothing if viewController was already cancelled or does not exist in printing view controllers.
  */
 - (void)cancelPrintWithViewController:(UIViewController*)viewController;
 
