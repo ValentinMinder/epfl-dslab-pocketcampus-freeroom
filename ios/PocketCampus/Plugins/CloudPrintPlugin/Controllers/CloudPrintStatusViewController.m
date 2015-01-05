@@ -59,6 +59,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    self.userCancelledBlock = nil; //hide back button
     [self.tryAgainButton setTitle:NSLocalizedStringFromTable(@"TryAgain", @"CloudPrintPlugin", nil) forState:UIControlStateNormal];
     self.documentName = self.documentName;
     self.statusMessage = self.statusMessage;
@@ -135,7 +137,7 @@
     if (userCancelledBlock) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
     } else {
-        self.navigationItem.leftBarButtonItem = nil;
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 30)]];
     }
 }
 

@@ -99,7 +99,6 @@
 - (CloudPrintStatusViewController*)postRequestStatusViewController {
     if (!_postRequestStatusViewController) {
         _postRequestStatusViewController = [CloudPrintStatusViewController new];
-        _postRequestStatusViewController.navigationItem.hidesBackButton = YES;
     }
     return _postRequestStatusViewController;
 }
