@@ -68,7 +68,7 @@
 @property (nonatomic, weak) PluginController<PluginControllerProtocol>* activePluginController;
 @property (nonatomic, strong) NSString* initialActivePluginIdentifier;
 @property (nonatomic, copy) NSURL* pcURLToHandle;
-@property (nonatomic, strong) NSMutableDictionary* pluginsControllers; //key: plugin identifier name, value: PluginController subclass.
+@property (nonatomic, strong) NSMutableDictionary* pluginControllerForIdentifierName; //key: plugin identifier name, value: PluginController subclass.
 @property (nonatomic) BOOL initDone;
 
 @property (nonatomic, strong) NSMutableSet* validatedPluginNamesCache;
@@ -123,7 +123,7 @@ static MainController<MainControllerPublic>* instance = nil;
     [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifierName];
     
     /* If not BACKGROUND_PLUGINS_ENABLED, check that active plugin controller can be released */
-    PluginController<PluginControllerProtocol>* pluginController = self.pluginsControllers[pluginIdentifierName];
+    PluginController<PluginControllerProtocol>* pluginController = self.pluginControllerForIdentifierName[pluginIdentifierName];
     if (!BACKGROUND_PLUGINS_ENABLED && self.activePluginController == pluginController && [pluginController respondsToSelector:@selector(canBeReleased)] && ![pluginController canBeReleased]) {
         return NO;
     }
@@ -143,7 +143,7 @@ static MainController<MainControllerPublic>* instance = nil;
 - (BOOL)requestLeavePlugin:(NSString*)pluginIdentifierName {
     [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifierName];
     
-    PluginController<PluginControllerProtocol>* pluginController = self.pluginsControllers[pluginIdentifierName];
+    PluginController<PluginControllerProtocol>* pluginController = self.pluginControllerForIdentifierName[pluginIdentifierName];
     
     if (!pluginController) {
         return YES; //plugin is not allocated and not active => desired effect achieved
@@ -157,7 +157,7 @@ static MainController<MainControllerPublic>* instance = nil;
         [self setActivePluginWithIdentifier:nil];
     }
     
-    [self.pluginsControllers removeObjectForKey:pluginIdentifierName]; //already been done by setActivePluginIdentifer if not BACKGROUND_PLUGINS_ENABLED
+    [self.pluginControllerForIdentifierName removeObjectForKey:pluginIdentifierName]; //already been done by setActivePluginIdentifer if not BACKGROUND_PLUGINS_ENABLED
     
     return YES;
 }
@@ -327,7 +327,7 @@ static MainController<MainControllerPublic>* instance = nil;
 - (void)postConfigInit {
     [self initAnalytics];
     [self initPluginsList];
-    self.pluginsControllers = [NSMutableDictionary dictionaryWithCapacity:self.pluginsList.count];
+    self.pluginControllerForIdentifierName = [NSMutableDictionary dictionaryWithCapacity:self.pluginsList.count];
     [self initMainMenu];
     [self initRevealController];
     [self initPluginObservers];
@@ -625,9 +625,9 @@ static MainController<MainControllerPublic>* instance = nil;
 - (void)appDidReceiveMemoryWarning {
     /* release backgrounded plugins */
     CLSNSLog(@"-> AppDidReceiveMemoryWarning: releasing backgrounded plugins if any...");
-    [[self.pluginsControllers copy] enumerateKeysAndObjectsUsingBlock:^(NSString* pluginIdentifier, PluginController* pluginController, BOOL *stop) {
+    [[self.pluginControllerForIdentifierName copy] enumerateKeysAndObjectsUsingBlock:^(NSString* pluginIdentifier, PluginController* pluginController, BOOL *stop) {
         if (pluginController != self.activePluginController) {
-            [self.pluginsControllers removeObjectForKey:pluginIdentifier];
+            [self.pluginControllerForIdentifierName removeObjectForKey:pluginIdentifier];
         }
     }];
 }
@@ -723,9 +723,12 @@ static MainController<MainControllerPublic>* instance = nil;
     
     if (!identifier) { //means switch to splash view controller
         if (self.activePluginController) {
-            [self.pluginsControllers removeObjectForKey:[self.activePluginController.class identifierName]];
+            [self.pluginControllerForIdentifierName removeObjectForKey:[self.activePluginController.class identifierName]];
         }
         [self.mainMenuViewController setSelectedPluginWithIdentifier:nil animated:YES];
+        if (self.revealController.presentedViewController) {
+            [self.revealController.presentedViewController.presentingViewController dismissViewControllerAnimated:NO completion:NULL];
+        }
         [self.revealController setFrontViewController:self.splashViewController animated:NO]; //do NOT put animated YES. If YES, executed call will start asynchronous animation and following lines will exectue before instead of after.
         if ([PCUtils isIdiomPad]) {
             if (self.revealController.currentFrontViewPosition != FrontViewPositionRight) {
@@ -740,8 +743,10 @@ static MainController<MainControllerPublic>* instance = nil;
     }
     
     [self throwExceptionIfPluginIdentifierNameIsNotValid:identifier];
-    
-    PluginController<PluginControllerProtocol>* pluginController = self.pluginsControllers[identifier];
+    if (self.revealController.presentedViewController) {
+        [self.revealController.presentedViewController.presentingViewController dismissViewControllerAnimated:NO completion:NULL];
+    }
+    PluginController<PluginControllerProtocol>* pluginController = self.pluginControllerForIdentifierName[identifier];
     if (pluginController) { // pluginController was backgrounded
         UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:pluginController];
         [self.revealController setFrontViewController:pluginRootViewController animated:NO]; //check on whether this is already the front one is done in the method implementation
@@ -760,7 +765,7 @@ static MainController<MainControllerPublic>* instance = nil;
         }
         
         [self manageBackgroundPlugins];
-        [self.pluginsControllers setObject:pluginController forKey:identifier];
+        self.pluginControllerForIdentifierName[identifier] = pluginController;
         [self.revealController setFrontViewController:pluginRootViewController animated:NO];
     }
     [self.mainMenuViewController setSelectedPluginWithIdentifier:identifier animated:YES];
@@ -1022,7 +1027,7 @@ static MainController<MainControllerPublic>* instance = nil;
     if (BACKGROUND_PLUGINS_ENABLED) {
         CLSNSLog(@"!! WARNING: background plugins management is not fully supported. Plugins will simply stay in memory until app receives memory warning.");
     } else {
-        [self.pluginsControllers removeAllObjects];
+        [self.pluginControllerForIdentifierName removeAllObjects];
     }
 }
 

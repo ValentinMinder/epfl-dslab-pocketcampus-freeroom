@@ -2067,47 +2067,6 @@
          <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
-            continueAfterRunningActions = "Yes"
-            filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "440954873.783171"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "889"
-            endingLineNumber = "889"
-            landmarkName = "-adaptInitializedNavigationOrSplitViewControllerOfPluginController:"
-            landmarkType = "5">
-            <Actions>
-               <BreakpointActionProxy
-                  ActionExtensionID = "Xcode.BreakpointAction.Log">
-                  <ActionContent
-                     message = "didHideRearViewController"
-                     conveyanceType = "0">
-                  </ActionContent>
-               </BreakpointActionProxy>
-            </Actions>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "440954873.783171"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "834"
-            endingLineNumber = "834"
-            landmarkName = "-pluginControllerForPluginIdentifier:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleController.m"
             timestampString = "419187587.810409"
@@ -2776,52 +2735,6 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "29"
             endingLineNumber = "29">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "440954873.783171"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "802"
-            endingLineNumber = "802"
-            landmarkName = "-pluginControllerForPluginIdentifier:"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[MainController existsPluginWithIdentifier:]"
-                  moduleName = "PocketCampus"
-                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/PocketCampus/Controllers/Main/MainController.m"
-                  timestampString = "408039776.600282"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "793"
-                  endingLineNumber = "793"
-                  offsetFromSymbolStart = "85">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[MainController existsPluginWithIdentifier:]"
-                  moduleName = "PocketCampus"
-                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/PocketCampus/Controllers/Main/MainController.m"
-                  timestampString = "408039776.60049"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "793"
-                  endingLineNumber = "793"
-                  offsetFromSymbolStart = "672">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "440954873.783171"
+            timestampString = "442234642.436592"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1114"
-            endingLineNumber = "1114"
+            startingLineNumber = "1119"
+            endingLineNumber = "1119"
             landmarkName = "-gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1749,22 +1749,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "440954873.783171"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "756"
-            endingLineNumber = "756"
-            landmarkName = "-setActivePluginWithIdentifier:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/PCSplashViewController.m"
             timestampString = "411143686.006257"
             startingColumnNumber = "9223372036854775807"
@@ -2667,11 +2651,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "440954873.783171"
+            timestampString = "442234642.436592"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1143"
-            endingLineNumber = "1143"
+            startingLineNumber = "1148"
+            endingLineNumber = "1148"
             landmarkName = "-revealController:didRevealRearViewController:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2683,11 +2667,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "440954873.783171"
+            timestampString = "442234642.436592"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1123"
-            endingLineNumber = "1123"
+            startingLineNumber = "1128"
+            endingLineNumber = "1128"
             landmarkName = "-gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5717,11 +5701,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "440954873.783171"
+            timestampString = "442234642.436592"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1172"
-            endingLineNumber = "1172"
+            startingLineNumber = "1177"
+            endingLineNumber = "1177"
             landmarkName = "-revealController:didSwapToFrontViewController:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5844,22 +5828,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "440954873.783171"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "995"
-            endingLineNumber = "995"
-            landmarkName = "-rotateDeviceToPortraitIfNecessary"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "PocketCampus/Views/Main/PCSplashView.m"
             timestampString = "441040981.017124"
             startingColumnNumber = "9223372036854775807"
@@ -5939,11 +5907,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "440954873.783171"
+            timestampString = "442234642.436592"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1087"
-            endingLineNumber = "1087"
+            startingLineNumber = "1092"
+            endingLineNumber = "1092"
             landmarkName = "-gestureRecognizer:shouldReceiveTouch:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5955,11 +5923,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "440954873.783171"
+            timestampString = "442234642.436592"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1110"
-            endingLineNumber = "1110"
+            startingLineNumber = "1115"
+            endingLineNumber = "1115"
             landmarkName = "-gestureRecognizer:shouldReceiveTouch:"
             landmarkType = "5">
             <Actions>
@@ -6129,38 +6097,6 @@
             startingLineNumber = "914"
             endingLineNumber = "914"
             landmarkName = "-mapView:regionDidChangeAnimated:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "440954873.783171"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "606"
-            endingLineNumber = "606"
-            landmarkName = "@implementation MainController"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "440954873.783171"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
-            landmarkName = "-handlePocketCampusURL:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
