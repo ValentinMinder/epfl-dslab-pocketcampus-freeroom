@@ -58,6 +58,7 @@
 @property (nonatomic, weak) UIWindow* window;
 @property (nonatomic, strong) PCURLSchemeHandler* urlSchemeHander;
 @property (nonatomic, strong) MainMenuViewController* mainMenuViewController;
+@property (nonatomic, weak) UINavigationController* settingsNavController;
 @property (nonatomic, strong) ZUUIRevealController* revealController;
 @property (nonatomic) CGFloat revealWidth;
 @property (nonatomic, strong) NSDictionary* plistDicForPluginIdentifier;
@@ -706,8 +707,9 @@ static MainController<MainControllerPublic>* instance = nil;
 #ifdef TARGET_IS_MAIN_APP
     [[PCGAITracker sharedTracker] trackAction:@"OpenSettings" inScreenWithName:@"/dashboard"];
     PCGlobalSettingsViewController* settingsViewController = [[PCGlobalSettingsViewController alloc] initWithMainController:self];
-    UINavigationController* settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
+    UINavigationController* settingsNavController = [[PCNavigationController alloc] initWithRootViewController:settingsViewController];
     settingsNavController.modalPresentationStyle = UIModalPresentationFormSheet;
+    self.settingsNavController = settingsNavController;
     [self.revealController presentViewController:settingsNavController animated:YES completion:NULL];
 #endif
 }
@@ -726,7 +728,7 @@ static MainController<MainControllerPublic>* instance = nil;
             [self.pluginControllerForIdentifierName removeObjectForKey:[self.activePluginController.class identifierName]];
         }
         [self.mainMenuViewController setSelectedPluginWithIdentifier:nil animated:YES];
-        if (self.revealController.presentedViewController) {
+        if (self.revealController.presentedViewController && self.revealController.presentedViewController != self.settingsNavController) {
             [self.revealController.presentedViewController.presentingViewController dismissViewControllerAnimated:NO completion:NULL];
         }
         [self.revealController setFrontViewController:self.splashViewController animated:NO]; //do NOT put animated YES. If YES, executed call will start asynchronous animation and following lines will exectue before instead of after.
@@ -743,7 +745,7 @@ static MainController<MainControllerPublic>* instance = nil;
     }
     
     [self throwExceptionIfPluginIdentifierNameIsNotValid:identifier];
-    if (self.revealController.presentedViewController) {
+    if (self.revealController.presentedViewController && self.revealController.presentedViewController != self.settingsNavController) {
         [self.revealController.presentedViewController.presentingViewController dismissViewControllerAnimated:NO completion:NULL];
     }
     PluginController<PluginControllerProtocol>* pluginController = self.pluginControllerForIdentifierName[identifier];
