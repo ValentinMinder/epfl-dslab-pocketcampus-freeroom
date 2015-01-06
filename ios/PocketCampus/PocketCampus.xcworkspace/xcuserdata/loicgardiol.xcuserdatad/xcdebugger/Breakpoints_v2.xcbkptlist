@@ -4320,11 +4320,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/NewsPlugin/Controllers/NewsListViewController.m"
-            timestampString = "433110894.850366"
+            timestampString = "442237128.460336"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
+            startingLineNumber = "286"
+            endingLineNumber = "286"
             landmarkName = "-dealloc"
             landmarkType = "5">
             <Actions>
