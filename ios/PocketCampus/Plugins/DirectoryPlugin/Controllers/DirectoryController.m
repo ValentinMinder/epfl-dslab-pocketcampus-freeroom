@@ -25,19 +25,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-//  DirectoryPlugin
 //  Created by Loïc Gardiol on 01.03.12.
 
-
 #import "DirectoryController.h"
-#import "PCUtils.h"
 #import "PluginNavigationController.h"
 #import "DirectorySearchViewController.h"
 #import "DirectoryPersonViewController.h"
 #import "DirectoryEmptyDetailViewController.h"
 #import "DirectoryService.h"
+
+NSString* const kDirectoryURLActionSearch = @"search";
+NSString* const kDirectoryURLActionView = @"view";
+
+NSString* const kDirectoryURLParameterQuery = @"q";
 
 static DirectoryController* instance __weak = nil;
 
@@ -158,6 +158,10 @@ static DirectoryController* instance __weak = nil;
         @catch (NSException *exception) {
             CLSNSLog(@"!! ERROR when converting parameters to Person object: %@", exception);
         }
+    } else if (action.length == 0) {
+        UIViewController* viewController = [[DirectorySearchViewController alloc] init];
+        viewController.title = [[self class] localizedName];
+        return viewController;
     }
     return nil;
 }

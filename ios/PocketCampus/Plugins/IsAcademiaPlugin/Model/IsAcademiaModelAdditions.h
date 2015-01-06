@@ -29,6 +29,19 @@
 
 #import "isacademia.h"
 
+@interface IsAcademiaModelAdditions : NSObject
+
+/**
+ * @return the Monday at 00:00 (Morning) that directly precedes date
+ * or date if it is it already.
+ * Eg.  2015-01-04 6:38 p.m. returns 2014-12-29 00:00 CET
+ *      2015-01-05 11:00 a.m returns 2015-01-05 00:00 CET
+ * @discussion returned values are cached for each date
+ */
++ (NSDate*)mondayReferenceDateForDate:(NSDate*)date;
+
+@end
+
 @interface ScheduleResponse (Additions)
 
 - (StudyDay*)studyDayForDate:(NSDate*)date;

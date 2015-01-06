@@ -300,8 +300,8 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     
     EventPoolRequest* poolRequest = [EventPoolRequest new];
     poolRequest.eventPoolId = self.poolId;
-    poolRequest.userTickets = [self.eventsService allUserTickets];
-    poolRequest.starredEventItems = starredItems;
+    poolRequest.userTickets = [[self.eventsService allUserTickets] mutableCopy];
+    poolRequest.starredEventItems = [starredItems mutableCopy];
     poolRequest.lang = [PCUtils userLanguageCode];
     poolRequest.periodInHours = self.selectedPeriod == kRightNowEventsPeriodProxyValue ? kRightNowEventsPeriod : self.selectedPeriod * 24;
     poolRequest.fetchPast = self.pastMode;

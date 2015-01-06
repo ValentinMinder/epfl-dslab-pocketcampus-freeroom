@@ -47,7 +47,7 @@
 
 static NSTimeInterval kHideNavbarSeconds = 5.0;
 
-@interface MoodleFileViewController ()<UIGestureRecognizerDelegate, UIWebViewDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate>
+@interface MoodleFileViewController ()<UIGestureRecognizerDelegate, UIWebViewDelegate, UIPopoverControllerDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate>
 
 @property (nonatomic, weak) IBOutlet UIWebView* webView;
 @property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
@@ -254,12 +254,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     if (self.navigationController.navigationBarHidden) {
         return;
     }
-    if (self.deleteActionSheet.isVisible || self.docController || self.printPopoverController) {
+    if (self.deleteActionSheet.isVisible || self.docController || self.printPopoverController.isPopoverVisible || self.printFileOperationInProgress) {
         return;
     }
-    if ([PCUtils isIdiomPad] && ![(PluginSplitViewController*)(self.splitViewController) isMasterViewControllerHidden]) {
+    /*if ([PCUtils isIdiomPad] && ![(PluginSplitViewController*)(self.splitViewController) isMasterViewControllerHidden]) {
         return; //on iPad only hide nav bar when in full screen mode (master hidden)
-    }
+    }*/
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self setNeedsStatusBarAppearanceUpdate];
     self.webView.scrollView.contentInset = UIEdgeInsetsZero;
@@ -515,6 +515,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
             UIViewController* printViewController = [[CloudPrintController sharedInstance] viewControllerForPrintWithDocumentName:self.moodleFile.filename printDocumentRequest:printRequest completion:^(CloudPrintCompletionStatusCode printStatusCode) {
                 if (welf.printPopoverController) {
                     [welf.printPopoverController dismissPopoverAnimated:YES];
+                    welf.printPopoverController = nil;
                 } else {
                     [welf dismissViewControllerAnimated:YES completion:NULL];
                 }
@@ -523,10 +524,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
             
             if ([PCUtils isIdiomPad]) {
                 if (self.printPopoverController.isPopoverVisible) {
+                    [[CloudPrintController sharedInstance] cancelPrintWithViewController:self.printPopoverController.contentViewController];
                     [self.printPopoverController dismissPopoverAnimated:NO];
                     self.printPopoverController = nil;
                 }
                 self.printPopoverController = [[UIPopoverController alloc] initWithContentViewController:printViewController];
+                self.printPopoverController.delegate = self;
                 [self.printPopoverController presentPopoverFromBarButtonItem:[self printButton] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             } else {
                 [self presentViewController:printViewController animated:YES completion:NULL];
@@ -616,9 +619,22 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     }
 }
 
+#pragma mark - UIPopoverControllerDelegate
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    if (popoverController == self.printPopoverController) {
+        [[CloudPrintController sharedInstance] cancelPrintWithViewController:self.printPopoverController.contentViewController];
+        self.printPopoverController = nil;
+    }
+}
+
 #pragma mark - UIDocumentInteractionControllerDelegate
 
 - (void)documentInteractionControllerDidDismissOptionsMenu:(UIDocumentInteractionController *)controller {
+    self.docController = nil;
+}
+
+- (void)documentInteractionControllerDidDismissOpenInMenu:(UIDocumentInteractionController *)controller {
     self.docController = nil;
 }
 

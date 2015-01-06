@@ -44,9 +44,9 @@ struct DirectoryResponse {
 }
 
 service DirectoryService {
-	list<Person> searchPersons(1: string nameOrSciper) throws (1: LDAPException le);
-	string getProfilePicture(1: string sciper) throws (1: NoPictureFound npf);
-	list<string> autocomplete(1:string constraint);
+	//list<Person> searchPersons(1: string nameOrSciper) throws (1: LDAPException le);
+	//string getProfilePicture(1: string sciper) throws (1: NoPictureFound npf);
+	//list<string> autocomplete(1:string constraint);
 	
 	DirectoryResponse searchDirectory(1: DirectoryRequest req);
 }

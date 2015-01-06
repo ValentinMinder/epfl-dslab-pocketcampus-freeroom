@@ -26,12 +26,22 @@
  */
 
 
-
 //  DirectoryPlugin
 //  Created by Loïc Gardiol on 01.03.12.
 
-
 #import "PluginController.h"
+
+/*
+ * Possible action parameter for PocketCampus URL scheme for Directory
+ */
+
+extern NSString* const kDirectoryURLActionSearch;
+extern NSString* const kDirectoryURLActionView;
+
+/*
+ * Other parameters for PocketCampus URL scheme for Directory
+ */
+extern NSString* const kDirectoryURLParameterQuery;
 
 @interface DirectoryController : PluginController<PluginControllerProtocol>
 

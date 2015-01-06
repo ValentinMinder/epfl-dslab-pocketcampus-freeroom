@@ -51,6 +51,7 @@
         self.statusMessage = CloudPrintStatusMessageLoading;
         self.progressView.progress = 0.0;
         self.progress = [NSProgress progressWithTotalUnitCount:1];
+        self.userCancelledBlock = nil; //hide back button
     }
     return self;
 }
@@ -59,7 +60,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     [self.tryAgainButton setTitle:NSLocalizedStringFromTable(@"TryAgain", @"CloudPrintPlugin", nil) forState:UIControlStateNormal];
     self.documentName = self.documentName;
     self.statusMessage = self.statusMessage;
@@ -129,6 +130,15 @@
     _progress = progress;
     [self updateProgress];
     [self.progress addObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted)) options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+- (void)setUserCancelledBlock:(void (^)())userCancelledBlock {
+    _userCancelledBlock = userCancelledBlock;
+    if (userCancelledBlock) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
+    } else {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 30)]];
+    }
 }
 
 - (void)setShowTryAgainButtonWithTappedBlock:(void (^)())showTryAgainButtonWithTappedBlock {

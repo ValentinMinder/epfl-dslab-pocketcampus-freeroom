@@ -681,32 +681,52 @@
     return NO;
 }
 
+- (BOOL)shouldAutomaticallyForwardAppearanceMethods {
+    return NO;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-	[self.frontViewController viewWillAppear:animated];
-	[self.rearViewController viewWillAppear:animated];
+    if (self.currentFrontViewPosition != FrontViewPositionRightMost) {
+        [self.frontViewController viewWillAppear:animated];
+    }
+    if (self.currentFrontViewPosition == FrontViewPositionRight || self.currentFrontViewPosition == FrontViewPositionRightMost) {
+        [self.rearViewController viewWillAppear:animated];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-	[self.frontViewController viewDidAppear:animated];
-	[self.rearViewController viewDidAppear:animated];
+    if (self.currentFrontViewPosition != FrontViewPositionRightMost) {
+        [self.frontViewController viewDidAppear:animated];
+    }
+    if (self.currentFrontViewPosition == FrontViewPositionRight || self.currentFrontViewPosition == FrontViewPositionRightMost) {
+        [self.rearViewController viewDidAppear:animated];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
-	[self.frontViewController viewWillDisappear:animated];
-	[self.rearViewController viewWillDisappear:animated];
+    if (self.currentFrontViewPosition != FrontViewPositionRightMost) {
+        [self.frontViewController viewWillDisappear:animated];
+    }
+    if (self.currentFrontViewPosition == FrontViewPositionRight || self.currentFrontViewPosition == FrontViewPositionRightMost) {
+        [self.rearViewController viewWillDisappear:animated];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];
-	[self.frontViewController viewDidDisappear:animated];
-	[self.rearViewController viewDidDisappear:animated];
+    if (self.currentFrontViewPosition != FrontViewPositionRightMost) {
+        [self.frontViewController viewDidDisappear:animated];
+    }
+    if (self.currentFrontViewPosition == FrontViewPositionRight || self.currentFrontViewPosition == FrontViewPositionRightMost) {
+        [self.rearViewController viewDidDisappear:animated];
+    }
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration

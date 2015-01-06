@@ -11,56 +11,79 @@
     a {
         color: #DC1010;
     }
+
+    #developers a {
+        color: black;
+    }
     
     h2 {
-        font-size: 20pt;
+        font-size: 18pt;
         font-weight: normal;
         color: #DC1010;
         padding: 0px;
         margin: 0px;
+        margin-top: 30px;
         margin-bottom: 5px;
     }
     
     h4 {
         font-weight: normal;
-        font-size: 11pt;
+        font-size: 10pt;
         color: #7C7C7C;
-        margin-top: 20px;
+        margin-top: 15px;
         margin-bottom: 5px;
     }
     
     h5 {
-        font-size: 14pt;
+        font-size: 13pt;
         font-weight: 300;
         color: #DC1010;
         margin: 0px;
         padding: 0px;
         margin-bottom: 10px;
     }
+
+    h6 {
+        font-size: 11pt;
+        font-weight: 300;
+        margin: 0px;
+        padding: 0px;
+        margin-bottom: 4px;
+    }
     
     p {
-        font-size: 13pt;
+        font-size: 12pt;
         font-weight: lighter;
         margin-top: 0px;
         padding-top: 0px;
     }
+
+    .institution_logo {
+        display: block;
+        margin: auto;
+        width: 90px;
+        height: 43px;
+        background-size: 100%;
+    }
     
-        </style>
+    </style>
     <body>
         <h2>PocketCampus EPFL</h2>
         <p>$PC_VERSION$</p>
-        <h4>DEVELOPPÉ PAR</h4>
+        <h6>L'app officielle pour les étudiants, collaborateurs et&nbsp;visiteurs de l'EPFL.</h6>
+        <h4>DÉVELOPPÉ PAR</h4>
         <h5><a href="http://pocketcampus.org">PocketCampus.Org</a></h5>
-        <p>
-        Loïc Gardiol<br>
-        Amer Chamseddine<br>
-        Silviu Andrica<br>
-        George Candea<br>
-        Solal Pirelli<br>
+        <p id="developers">
+            <a href="http://people.epfl.ch/loic.gardiol">Loïc Gardiol</a><br>
+            <a href="http://people.epfl.ch/amer.chamseddine">Amer Chamseddine</a><br>
+            <a href="http://people.epfl.ch/silviu.andrica">Silviu Andrica</a><br>
+            <a href="http://people.epfl.ch/george.candea">George Candea</a><br>
+            <a href="http://people.epfl.ch/solal.pirelli">Solal Pirelli</a><br>
         </p>
         <h4>CONTACT</h4>
         <p><a href="mailto:team@pocketcampus.org">team@pocketcampus.org</a></p>
         <h4>SUPPORT</h4>
         <p><a href="mailto:1234@epfl.ch">1234@epfl.ch</a></p>
+        <p><img class="institution_logo" src="$INSTITUTION_LOGO_PATH$"></p>
     </body>
 </html>

@@ -29,24 +29,26 @@
 
 #import "MainMenuViewController.h"
 
+@import QuartzCore;
+
 #import "MainController.h"
 
 #import "MainMenuItem.h"
 
 #import "MainMenuItemCell.h"
 
-#import "PCValues.h"
-
-#import "PCUtils.h"
-
-#import <QuartzCore/QuartzCore.h>
+#import "PCAboutViewController.h"
 
 static NSString* const kMenuItemButtonIdentifier = @"MenuItemButton";
 static NSString* const kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 
+static CGFloat const kTableViewFooterHeight = 54.0;
+
 static const int kPluginsSection = 0;
 
 @interface MainMenuViewController ()
+
+@property (nonatomic, weak) IBOutlet UIImageView* institutionLogoImageView;
 
 @property (nonatomic, weak) MainController* mainController;
 @property (nonatomic, strong) NSMutableArray* menuItems;
@@ -82,20 +84,40 @@ static const int kPluginsSection = 0;
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
     self.tableView.scrollsToTop = NO; //if not set to NO, front view controllers cannot be scrolled to top by tapping the status bar
     
-    //self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:self.settingsButton, self.pocketCampusTitle, nil];
     self.navigationItem.leftBarButtonItem = self.settingsButton;
     self.navigationItem.titleView = self.pocketCampusLabel;
+    
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(institutionLogoTapped)];
+    self.institutionLogoImageView.userInteractionEnabled = YES;
+    [self.institutionLogoImageView addGestureRecognizer:tapGesture];
+    
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kTableViewFooterHeight)];
+
+    
     if ([PCUtils isIdiomPad]) {
         CGRect frame = self.navigationController.view.frame;
         frame.size.width = 320.0;
         self.navigationController.view.frame = frame;
         self.navigationController.view.autoresizingMask = self.navigationController.view.autoresizingMask & ~UIViewAutoresizingFlexibleWidth; //remove flexible width from mask (we want constant 320.0 width)
     }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.tableView flashScrollIndicators];
+    });
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self adjustInstitutionLogoAlpha];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -173,6 +195,23 @@ static const int kPluginsSection = 0;
     self.menuItems = [menuItems mutableCopy];
 }
 
+- (void)adjustInstitutionLogoAlpha {
+    if (self.tableView.contentOffset.y == 0.0 && self.tableView.contentSize.height < (self.tableView.bounds.size.height - self.tableView.contentInset.top - self.tableView.contentInset.top)) {
+        self.institutionLogoImageView.alpha = 1.0;
+        return;
+    }
+    CGFloat offsetMax = self.tableView.contentSize.height + self.tableView.contentInset.bottom - self.tableView.bounds.size.height;
+    CGFloat diff = offsetMax - self.tableView.contentOffset.y;
+    static CGFloat const kOffsetAlphaStart = kTableViewFooterHeight / 2.0;
+    if (diff < 0.0) {
+        diff = 0.0;
+    }
+    if (diff > kOffsetAlphaStart) {
+        diff = kOffsetAlphaStart;
+    }
+    self.institutionLogoImageView.alpha = (kOffsetAlphaStart - diff) / kOffsetAlphaStart;
+}
+
 #pragma mark - Buttons
 
 - (UILabel*)pocketCampusLabel {
@@ -217,6 +256,18 @@ static const int kPluginsSection = 0;
     [self setEditing:NO];
 }
 
+- (void)institutionLogoTapped {
+    PCAboutViewController* aboutViewController = [PCAboutViewController new];
+    aboutViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissPresentedViewController)];
+    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:aboutViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navController animated:YES completion:NULL];
+}
+
+- (void)dismissPresentedViewController {
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
 #pragma mark EyeButtonDelegate (MainMenuItemCell)
 
 - (void)eyeButtonPressedForMenuItemCell:(MainMenuItemCell *)cell {
@@ -228,6 +279,12 @@ static const int kPluginsSection = 0;
         cell.menuItem.hidden = YES;
         [cell setEyeButtonState:EyeButtonStateDataHidden];
     }
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self adjustInstitutionLogoAlpha];
 }
 
 #pragma mark - UITableViewDelegate

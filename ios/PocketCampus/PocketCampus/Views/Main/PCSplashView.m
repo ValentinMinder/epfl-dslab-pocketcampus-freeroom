@@ -63,6 +63,11 @@
         [self.backgroundImageView addConstraint:self.drawingImageViewCenterYConstraint];
         [self.backgroundImageView addConstraint:[NSLayoutConstraint constraintForCenterXtoSuperview:self.backgroundImageView forView:self.drawingImageView constant:0.0]];
         
+        UIImageView* institutionLogoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"InstitutionLogo"]];
+        institutionLogoImageView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.backgroundImageView addSubview:institutionLogoImageView];
+        [self.backgroundImageView addConstraint:[NSLayoutConstraint constraintForCenterXtoSuperview:self.backgroundImageView forView:institutionLogoImageView constant:0.0]];
+        [self.backgroundImageView addConstraints:[NSLayoutConstraint constraintsToSuperview:self.backgroundImageView forView:institutionLogoImageView edgeInsets:UIEdgeInsetsMake(kNoInsetConstraint, kNoInsetConstraint, -10.0, kNoInsetConstraint)]];
         
     }
     return self;

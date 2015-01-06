@@ -60,7 +60,7 @@
 "LayoutDirection" = "Layout direction";
 "Color" = "Color";
 "ColorExplanations" = "Color printing is only available at certain printers.";
-"CollateExplanations" = "When pages are collated, they are printed the order [1,1,2,2] instead of [1,2,1,2] (example for 2 copies of a two-page document).";
+"CollateExplanations" = "When pages are collated, they are printed in the order [1,2,1,2] instead of [1,1,2,2] (example for 2 copies of a two-page document).";
 
 //Multi-page layouts
 "LEFT_TO_RIGHT_TOP_TO_BOTTOM" = "De gauche à droite puis haut en bas (par défaut)";

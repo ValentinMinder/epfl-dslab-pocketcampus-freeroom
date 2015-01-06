@@ -27,7 +27,6 @@
 
 //  Created by Loïc Gardiol on 05.05.12.
 
-
 #import "NewsListViewController.h"
 
 #import "NewsService.h"

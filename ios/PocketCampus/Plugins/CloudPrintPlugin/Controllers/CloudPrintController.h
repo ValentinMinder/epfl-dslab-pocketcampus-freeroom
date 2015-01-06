@@ -72,6 +72,14 @@ typedef void (^CloudPrintCompletionBlock)(CloudPrintCompletionStatusCode printSt
 - (UIViewController*)viewControllerForPrintWithDocumentName:(NSString*)docName printDocumentRequest:(PrintDocumentRequest*)request completion:(CloudPrintCompletionBlock)completion;
 
 /**
+ * @param viewController a view controller returned by one of the two methods above.
+ * @discussion Must be called to release resources whenever the view controller is being dimissed/released
+ * (not going to be used anymore) NOT as part of the completion block passed originally.
+ * Does nothing if viewController was already cancelled or does not exist in printing view controllers.
+ */
+- (void)cancelPrintWithViewController:(UIViewController*)viewController;
+
+/**
  * When plugin has been started as an extension, this property holds the etension context
  */
 @property (nonatomic, strong) NSExtensionContext* extensionContext;
