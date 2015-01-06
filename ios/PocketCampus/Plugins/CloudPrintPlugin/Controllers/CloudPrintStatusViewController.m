@@ -51,6 +51,7 @@
         self.statusMessage = CloudPrintStatusMessageLoading;
         self.progressView.progress = 0.0;
         self.progress = [NSProgress progressWithTotalUnitCount:1];
+        self.userCancelledBlock = nil; //hide back button
     }
     return self;
 }
@@ -60,7 +61,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-    self.userCancelledBlock = nil; //hide back button
     [self.tryAgainButton setTitle:NSLocalizedStringFromTable(@"TryAgain", @"CloudPrintPlugin", nil) forState:UIControlStateNormal];
     self.documentName = self.documentName;
     self.statusMessage = self.statusMessage;
