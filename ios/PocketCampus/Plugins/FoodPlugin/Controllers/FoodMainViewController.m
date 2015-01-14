@@ -574,6 +574,11 @@ static NSString* const kLastSelectedSegmentedIndexKey = @"FoodMainViewController
 #pragma mark - Dealloc
 
 - (void)dealloc {
+    [self.lgRefreshControl setTarget:nil selector:nil];
+    self.restaurantsTableView.delegate = nil;
+    self.restaurantsTableView.dataSource = nil;
+    self.mealTypesCollectionView.delegate = nil;
+    self.mealTypesCollectionView.dataSource = nil;
     [self.foodService cancelOperationsForDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     @try {
