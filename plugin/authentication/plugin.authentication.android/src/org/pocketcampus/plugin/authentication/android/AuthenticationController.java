@@ -14,6 +14,7 @@ import org.pocketcampus.plugin.authentication.R;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel.LocalCredentials;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel.TokenCredentialsComplex;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationController;
+import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
 import org.pocketcampus.plugin.authentication.android.req.AuthenticateTokenWithTequilaRequest;
 import org.pocketcampus.plugin.authentication.android.req.FetchUserAttributes;
 import org.pocketcampus.plugin.authentication.android.req.GetPcSessionRequest;
@@ -181,14 +182,14 @@ public class AuthenticationController extends PluginController implements IAuthe
 		}
 
 		if(mModel.getSelfAuth() && mModel.getPcSessionId() != null)
-			checkSession();
+			getUserAttributes(null, true);
 		else 
 			startAuth();
 		return START_NOT_STICKY;
 	}
 	
-	public void checkSession() {
-		new FetchUserAttributes(null).start(this, mClient, new UserAttributesRequest(mModel.getPcSessionId(), Arrays.asList("sciper")));
+	public void getUserAttributes(IAuthenticationView caller, boolean bypassCache) {
+		new FetchUserAttributes(caller).setBypassCache(bypassCache).start(this, mClient, new UserAttributesRequest(mModel.getPcSessionId(), Arrays.asList("firstname", "lastname")));
 	}
 	
 	public void startAuth() {
@@ -348,8 +349,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 	public void pcAuthenticationFinished(String sessId) {
 		Log.v("DEBUG", "pcAuthenticationFinished");
 		mModel.setPcSessionId(sessId);
-		pingBack(null, "selfauthok");
-		stopSelf();
+		getUserAttributes(null, true);
 	}
 	
 	public void sessionIsValid() {

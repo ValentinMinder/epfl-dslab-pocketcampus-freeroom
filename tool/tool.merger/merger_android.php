@@ -13,7 +13,7 @@
 
 chdir(dirname(__FILE__));
 
-$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Map", "Directory", "PushNotif", "Events", "CloudPrint", "IsAcademia");
+$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Map", "Directory", "PushNotif", "Events", "CloudPrint", "IsAcademia", "RecommendedApps", "FreeRoom");
 
 $libs_to_export = array(
 		"android-support-v4.jar",
@@ -22,6 +22,7 @@ $libs_to_export = array(
 		"httpclient-4.3.5.jar", "httpcore-4.3.2.jar", "httpmime-4.3.5.jar",
 		"libGoogleAnalyticsServices.jar", "libthrift-0.7.0.jar",
 		"osmdroid-android-3.0.3.jar",
+		"popup-menu-compat-lib.jar",
 		"servlet-api-3.0.jar", "slf4j-api-1.6.2.jar", 
 		"universal-image-loader-1.9.3.jar");
 

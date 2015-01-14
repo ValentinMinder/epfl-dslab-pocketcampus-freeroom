@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for the search dialog. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/freeroom_layout_dialog_search_main"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/background_light"
+    android:orientation="vertical"
+    android:padding="4dp" >
+
+    <!-- header will contain ALL the search inputs -->
+    <!-- to display previous searches -->
+
+    <ListView
+        android:id="@+id/freeroom_layout_dialog_search_prev_search_list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+</LinearLayout>

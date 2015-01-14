@@ -8,5 +8,5 @@ import org.pocketcampus.plugin.satellite.shared.*;
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public interface BeerMenu {
-	BeersResponse get() throws Exception;
+	BeersResponse get();
 }

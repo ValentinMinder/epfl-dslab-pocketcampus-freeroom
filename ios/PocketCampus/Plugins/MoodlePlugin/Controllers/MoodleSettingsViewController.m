@@ -142,6 +142,7 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
                     fileSizeString = nil;
                 } else {
                     fileSizeString = [NSByteCountFormatter stringFromByteCount:self.tmpTotalNbResourcesSize countStyle:NSByteCountFormatterCountStyleFile];
+                    fileSizeString = [fileSizeString stringByReplacingOccurrencesOfString:@" " withString:@"\u00A0"]; //replace space with unbreakable space, so that it does not happen that quantity is on one line while unit is on another.
                 }
             }
             if (fileSizeString) {

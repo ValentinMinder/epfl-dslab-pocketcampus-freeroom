@@ -11,11 +11,11 @@ import org.joda.time.Duration;
 /**
  * Implementation of SatelliteService.
  * 
- * @author Solal Pirelli <solal.pirelli@epfl.ch>
+ * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public final class SatelliteServiceImpl implements SatelliteService.Iface {
 	private static final Duration MENU_CACHE_DURATION = Duration.standardDays(1);
-	
+
 	private final BeerMenu _beerMenu;
 
 	public SatelliteServiceImpl(BeerMenu beerMenu) {
@@ -28,11 +28,7 @@ public final class SatelliteServiceImpl implements SatelliteService.Iface {
 
 	@Override
 	public BeersResponse getBeers() throws TException {
-		try {
-			return _beerMenu.get();
-		} catch (Exception e) {
-			throw new TException("Something went wrong during the parsing of beers.", e);
-		}
+		return _beerMenu.get();
 	}
 
 	// OLD STUFF - DO NOT TOUCH

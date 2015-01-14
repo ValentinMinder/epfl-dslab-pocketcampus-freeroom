@@ -60,8 +60,9 @@ public class EventsServiceImpl implements EventsService.Iface, StateChecker {
 	@Override
 	public int checkState() throws IOException {
 		try {
-			return getEventPool(new EventPoolRequest(Constants.CONTAINER_EVENT_ID).setPeriodInHours(1)).getStatus();
-		} catch (TException e) {
+			EventPool root = EventPoolDecoder.eventPoolFromDb(connMgr.getConnection(), Constants.CONTAINER_EVENT_ID);
+			return (root != null ? 200 : 550);
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return 500;
 		}

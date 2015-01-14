@@ -151,7 +151,7 @@
 }
 
 - (void)startGetEventItemRequest {    
-    EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:self.eventId userToken:nil userTickets:[self.eventsService allUserTickets] lang:[PCUtils userLanguageCode]];
+    EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:self.eventId userToken:nil userTickets:[[self.eventsService allUserTickets] mutableCopy] lang:[PCUtils userLanguageCode]];
     [self.eventsService getEventItemForRequest:req delegate:self];
     [self.loadingIndicator startAnimating];
     self.tableView.hidden = YES;

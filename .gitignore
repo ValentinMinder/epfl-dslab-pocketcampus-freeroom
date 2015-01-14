@@ -12,6 +12,7 @@ target/
 # Merged projects
 /android/PocketCampus
 /server/PocketCampusServer
+/server/PocketCampusServerTests
 
 # OS X
 .DS_Store

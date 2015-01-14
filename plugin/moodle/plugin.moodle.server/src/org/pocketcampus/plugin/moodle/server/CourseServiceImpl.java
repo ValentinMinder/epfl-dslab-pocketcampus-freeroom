@@ -210,7 +210,7 @@ public final class CourseServiceImpl implements CourseService {
 
 							moodleSection.setStartDate(startDate.getMillis());
 							moodleSection.setEndDate(endDate.getMillis());
-						} catch (IllegalArgumentException _) {
+						} catch (IllegalArgumentException e) {
 							// nothing; fall back to using the entire name
 						}
 					}

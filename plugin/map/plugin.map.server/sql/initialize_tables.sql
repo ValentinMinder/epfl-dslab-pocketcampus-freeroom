@@ -12,4 +12,5 @@ INSERT INTO `maplayers` (`layerId`, `nameForQuery`, `nameForQueryAllFloors`, `na
 (4, 'parkings_publics{floor}', 'parkings_publicsall', 'Public parking lots', 'Parkings publics'),
 (5, 'restauration{floor}', 'restaurationall', 'Restaurants', 'Restauration'),
 (6, 'bancomat{floor}', 'bancomatall', 'ATMs', 'Bancomats'),
-(7, 'information{floor}', 'informationall', 'Information', 'Information')
+(7, 'information{floor}', 'informationall', 'Information', 'Information'),
+(8, 'douches{floor}', 'douchesall', 'Showers', 'Douches')

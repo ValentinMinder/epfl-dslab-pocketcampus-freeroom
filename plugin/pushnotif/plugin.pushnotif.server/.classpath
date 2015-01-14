@@ -4,7 +4,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.pushnotif.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.shared"/>
-	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.7.0.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/javapns_2.2.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/gson-1.7.1.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/gcm-server.jar"/>
@@ -20,5 +19,6 @@
 	<classpathentry kind="lib" path="/platform.shared/lib/slf4j-api-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/slf4j-simple-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.9.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

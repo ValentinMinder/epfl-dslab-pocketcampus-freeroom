@@ -43,6 +43,7 @@ public class BackgroundChecker {
 					if(!lastState.equals(currentState)) {
 						lastState = currentState;
 						sendEmail(currentState, serverName);
+						sendSms(serverName);
 					}
 
 				}
@@ -53,9 +54,15 @@ public class BackgroundChecker {
 				boolean res = EmailSender.openSession();
 				res = res && EmailSender.sendEmail("alarm@pocketcampus.org", "server " + serverName + " state changed", state);
 				res = res && EmailSender.closeSession();
-				if(!res)
+				if(!res) {
 					System.err.println("DAMN! we couldn't even send an alarm email. we're screwed");
-
+				}
+			}
+			private void sendSms(String serverName) {
+				boolean res = SmsSender.sendSms("server " + serverName + " state changed");
+				if(!res) {
+					System.err.println("DAMN! we couldn't even send an alarm SMS. we're screwed");
+				}
 			}
 		};
 	}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for the add room dialog window. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/freeroom_layout_dialog_add_layout_main"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/background_light"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <!-- headers for title and close button -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        android:orientation="horizontal" >
+
+        <!-- Button to go out (adding done) -->
+
+        <Button
+            android:id="@+id/freeroom_layout_dialog_add_room_edit"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="5"
+            android:drawableLeft="@drawable/freeroom_ic_action_edit_small"
+            android:text="@string/freeroom_dialog_edit_room_title"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/black" />
+
+        <!-- Button to go out (adding done) -->
+
+        <Button
+            android:id="@+id/freeroom_layout_dialog_add_room_done"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="5"
+            android:drawableLeft="@drawable/freeroom_ic_action_accept_small"
+            android:text="@string/freeroom_dialog_edit_room_done"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/freeroom_layout_dialog_add_room_status"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="@string/freeroom_dialog_add_autocomplete_typein"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/darker_gray"
+        android:visibility="visible" />
+
+    <!-- InputBar should be added programmatically here -->
+
+</LinearLayout>

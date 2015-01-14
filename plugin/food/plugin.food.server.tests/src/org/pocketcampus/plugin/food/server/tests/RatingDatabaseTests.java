@@ -37,12 +37,14 @@ public final class RatingDatabaseTests {
 
 	// Inserting the menu works
 	@Test
+	@Ignore
 	public void insertMenu() throws Exception {
 		_database.insertMenu(getTestMenu(0), LocalDate.now(), MealTime.LUNCH);
 	}
 
 	// Duplicate menu insertions work
 	@Test
+	@Ignore
 	public void insertDuplicateMenu() throws Exception {
 		LocalDate now = LocalDate.now();
 		_database.insertMenu(getTestMenu(0), now, MealTime.LUNCH);
@@ -51,6 +53,7 @@ public final class RatingDatabaseTests {
 
 	// Voting works
 	@Test
+	@Ignore
 	public void oneVote() throws Exception {
 		_database.insertMenu(getTestMenu(0), LocalDate.now(), MealTime.LUNCH);
 
@@ -59,6 +62,7 @@ public final class RatingDatabaseTests {
 	
 	// Vote for meal in the future is refused
 	@Test
+	@Ignore
 	public void voteForFutureMeal() throws Exception {
 		_database.insertMenu(getTestMenu(0), LocalDate.now().plusDays(1), MealTime.LUNCH);
 
@@ -67,6 +71,7 @@ public final class RatingDatabaseTests {
 	
 	// Vote for meal in distant past is refused
 	@Test
+	@Ignore
 	public void voteForVeryOldMeal() throws Exception {
 		_database.insertMenu(getTestMenu(0), LocalDate.now().plusDays(-200), MealTime.LUNCH);
 
@@ -75,6 +80,7 @@ public final class RatingDatabaseTests {
 
 	// Different devices each voting once works
 	@Test
+	@Ignore
 	public void differentDevicesVoting() throws Exception {
 		_database.insertMenu(getTestMenu(0), LocalDate.now(), MealTime.LUNCH);
 
@@ -84,6 +90,7 @@ public final class RatingDatabaseTests {
 
 	// Different devices each voting once works
 	@Test
+	@Ignore
 	public void sameDeviceVotingForSameDateTimeIsRefused() throws Exception {
 		_database.insertMenu(getTestMenu(0), LocalDate.now(), MealTime.LUNCH);
 
@@ -93,6 +100,7 @@ public final class RatingDatabaseTests {
 
 	// Different devices each voting once works
 	@Test
+	@Ignore
 	public void sameDeviceVotingForDifferentTime() throws Exception {
 		LocalDate now = LocalDate.now();
 		_database.insertMenu(getTestMenu(0), now, MealTime.LUNCH);
@@ -104,6 +112,7 @@ public final class RatingDatabaseTests {
 
 	// Different devices each voting once works
 	@Test
+	@Ignore
 	public void sameDeviceVotingForDifferentDate() throws Exception {
 		LocalDate now = LocalDate.now();
 		_database.insertMenu(getTestMenu(0), now, MealTime.LUNCH);
@@ -115,6 +124,7 @@ public final class RatingDatabaseTests {
 
 	// Restaurant votes are fetched correctly
 	@Test
+	@Ignore
 	public void restaurantVotesAreSet() throws Exception {
 		List<EpflRestaurant> menu = getTestMenu(0);
 
@@ -129,6 +139,7 @@ public final class RatingDatabaseTests {
 
 	// Meal votes are fetched correctly
 	@Test
+	@Ignore
 	public void mealVotesAreSet() throws Exception {
 		List<EpflRestaurant> menu = getTestMenu(0);
 

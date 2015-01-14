@@ -174,6 +174,7 @@ static inline void ServiceRequestLog(PCServiceRequest* serviceRequest, NSString*
         [self throwIfCancelled];
         
         if (![PCUtils hasDeviceInternetConnection]) {
+            ServiceRequestLog(self, @"no internet connection. Stopping request and indicating connection error to delegate.");
             [self indicateConnectionErrorToDelegateCompletion:^{
                 [self finish];
             }];
@@ -229,6 +230,7 @@ static inline void ServiceRequestLog(PCServiceRequest* serviceRequest, NSString*
             return;
         }
         
+        ServiceRequestLog(self, @"other error: %@", error);
         [self indicateFailureToDelegateCompletion:^{
             [self finish];
         }];

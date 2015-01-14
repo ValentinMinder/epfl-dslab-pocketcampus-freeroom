@@ -65,6 +65,7 @@
         self.imageView.layer.shadowRadius = 4.0;
         self.imageView.layer.shadowOpacity = 0.5;
         self.imageView.layer.shadowOffset = CGSizeMake(0, 0);
+        self.preferredContentSize = CGSizeMake(600.0, 600.0);
         [self.prevPageButton setTitle:NSLocalizedStringFromTable(@"PreviousWithArrow", @"CloudPrintPlugin", nil) forState:UIControlStateNormal];
         [self.nextPageButton setTitle:NSLocalizedStringFromTable(@"NextWithArrow", @"CloudPrintPlugin", nil) forState:UIControlStateNormal];
         self.imageView.userInteractionEnabled = YES;

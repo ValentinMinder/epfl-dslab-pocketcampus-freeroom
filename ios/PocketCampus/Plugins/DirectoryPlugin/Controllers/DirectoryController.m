@@ -34,6 +34,11 @@
 #import "DirectoryEmptyDetailViewController.h"
 #import "DirectoryService.h"
 
+NSString* const kDirectoryURLActionSearch = @"search";
+NSString* const kDirectoryURLActionView = @"view";
+
+NSString* const kDirectoryURLParameterQuery = @"q";
+
 static DirectoryController* instance __weak = nil;
 
 @interface DirectoryController ()<UISplitViewControllerDelegate>

@@ -505,6 +505,18 @@ a:hover{
 	margin:0 0 0 11px;
 }
 
+.outer-center {
+    float: right;
+    right: 50%;
+    position: relative;
+}
+
+.inner-center {
+    float: right;
+    right: -50%;
+    position: relative;
+}
+
 /*-----------------------------------------------------------------------------------*/
 /*	Feature Icon Classes
 /*-----------------------------------------------------------------------------------*/
@@ -577,6 +589,7 @@ a:hover{
 .features h2.directory{background:url(../images/glyphish/directory.png) left center no-repeat;}
 .features h2.news{background:url(../images/glyphish/news.png) left center no-repeat;}
 .features h2.map{background:url(../images/glyphish/map.png) left center no-repeat;}
+.features h2.print{background:url(../images/glyphish/print.png) left center no-repeat;}
 .features h2.transport{background:url(../images/glyphish/transport.png) left center no-repeat;}
 .features h2.moodle{background:url(../images/glyphish/moodle.png) left center no-repeat;}
 .features h2.bikes{background:url(../images/glyphish/bikes.png) left center no-repeat;}

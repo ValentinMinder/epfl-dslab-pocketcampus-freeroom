@@ -35,6 +35,7 @@ public class FetchUserAttributes extends Request<AuthenticationController, Iface
 				caller.gotUserAttributes(result.getUserAttributes());
 			else
 				controller.sessionIsValid();
+			keepInCache();
 		} else if(result.getStatusCode() == AuthStatusCode.INVALID_SESSION) {
 			if(caller != null)
 				caller.gotUserAttributes(null);
@@ -48,7 +49,11 @@ public class FetchUserAttributes extends Request<AuthenticationController, Iface
 	@Override
 	protected void onError(AuthenticationController controller, Exception e) {
 		e.printStackTrace();
-		controller.notifyNetworkError();
+		if(foundInCache()) {
+			controller.getUserAttributes(caller, false);
+		} else {
+			controller.notifyNetworkError();
+		}
 	}
 	
 }
