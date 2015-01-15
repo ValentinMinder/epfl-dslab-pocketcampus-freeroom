@@ -179,8 +179,6 @@
 		3268063319AF44B800E8CD22 /* THTTPClient+MutableRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268063119AF44B800E8CD22 /* THTTPClient+MutableRequest.m */; };
 		326B9250150279E900DB4AEE /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B924F150279E900DB4AEE /* AddressBookUI.framework */; };
 		326B925215027A1400DB4AEE /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B925115027A1400DB4AEE /* AddressBook.framework */; };
-		326E3E3D1963FF7F00017F0C /* CellEmptyPicture.png in Resources */ = {isa = PBXBuildFile; fileRef = 326E3E3B1963FF7F00017F0C /* CellEmptyPicture.png */; };
-		326E3E3E1963FF7F00017F0C /* CellEmptyPicture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 326E3E3C1963FF7F00017F0C /* CellEmptyPicture@2x.png */; };
 		326F5A7219BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 326F5A7119BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.m */; };
 		326F5A7719BCDC65000693A2 /* CloudPrintMultiPageLayoutButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 326F5A7619BCDC65000693A2 /* CloudPrintMultiPageLayoutButton.m */; };
 		326F5A7919BCDC71000693A2 /* CloudPrintMultiPageLayoutButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 326F5A7819BCDC71000693A2 /* CloudPrintMultiPageLayoutButton.xib */; };
@@ -311,6 +309,44 @@
 		32A37A301A6826200079D208 /* TransportSmallBusGreen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A2F1A6826200079D208 /* TransportSmallBusGreen@3x.png */; };
 		32A37A321A6826290079D208 /* TransportSmallBus@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A311A6826290079D208 /* TransportSmallBus@3x.png */; };
 		32A37A341A6827160079D208 /* TransportFeetConnection@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A331A6827160079D208 /* TransportFeetConnection@3x.png */; };
+		32A37A361A6829360079D208 /* ArrowSimpleRight@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A351A6829360079D208 /* ArrowSimpleRight@3x.png */; };
+		32A37A381A6829E40079D208 /* ArrowUpRightCircleAccessory@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A371A6829E40079D208 /* ArrowUpRightCircleAccessory@3x.png */; };
+		32A37A3A1A6829EA0079D208 /* CameraBarButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A391A6829EA0079D208 /* CameraBarButton@3x.png */; };
+		32A37A3C1A682A1C0079D208 /* CheckmarkRoundedSquare@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A3B1A682A1C0079D208 /* CheckmarkRoundedSquare@3x.png */; };
+		32A37A3E1A682AB10079D208 /* CheckmarkRoundedSquareEmpty@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A3D1A682AB10079D208 /* CheckmarkRoundedSquareEmpty@3x.png */; };
+		32A37A401A682AB70079D208 /* ClockBarButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A3F1A682AB70079D208 /* ClockBarButton@3x.png */; };
+		32A37A421A682ADB0079D208 /* ClockBarButtonSelected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A411A682ADB0079D208 /* ClockBarButtonSelected@3x.png */; };
+		32A37A441A682B310079D208 /* ClockCell@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A431A682B310079D208 /* ClockCell@3x.png */; };
+		32A37A461A682B590079D208 /* Cross@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A451A682B590079D208 /* Cross@3x.png */; };
+		32A37A481A682C540079D208 /* Download@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A471A682C540079D208 /* Download@3x.png */; };
+		32A37A4A1A682CA80079D208 /* DownloadedCorner@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A491A682CA80079D208 /* DownloadedCorner@3x.png */; };
+		32A37A4C1A682CAF0079D208 /* DownloadedCornerSelected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A4B1A682CAF0079D208 /* DownloadedCornerSelected@3x.png */; };
+		32A37A4E1A682CE80079D208 /* FacebookLikeCellImage@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A4D1A682CE80079D208 /* FacebookLikeCellImage@3x.png */; };
+		32A37A501A682D630079D208 /* FavoriteCorner@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A4F1A682D630079D208 /* FavoriteCorner@3x.png */; };
+		32A37A521A682D690079D208 /* FavoriteCornerSelected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A511A682D690079D208 /* FavoriteCornerSelected@3x.png */; };
+		32A37A541A682F390079D208 /* FavoriteGlowNavBarButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A531A682F390079D208 /* FavoriteGlowNavBarButton@3x.png */; };
+		32A37A561A682F400079D208 /* FavoriteGlowNavBarButtonLandscape@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A551A682F400079D208 /* FavoriteGlowNavBarButtonLandscape@3x.png */; };
+		32A37A581A682F460079D208 /* FavoriteNavBarButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A571A682F460079D208 /* FavoriteNavBarButton@3x.png */; };
+		32A37A5A1A682F4B0079D208 /* FavoriteNavBarButtonLandscape@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A591A682F4B0079D208 /* FavoriteNavBarButtonLandscape@3x.png */; };
+		32A37A5C1A6830970079D208 /* FolderIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A5B1A6830970079D208 /* FolderIcon@3x.png */; };
+		32A37A5E1A6830A20079D208 /* HelpBarButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A5D1A6830A20079D208 /* HelpBarButton@3x.png */; };
+		32A37A601A6830C40079D208 /* Info@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A5F1A6830C40079D208 /* Info@3x.png */; };
+		32A37A621A6830E80079D208 /* LinkIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A611A6830E80079D208 /* LinkIcon@3x.png */; };
+		32A37A641A68310E0079D208 /* ListBarButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A631A68310E0079D208 /* ListBarButton@3x.png */; };
+		32A37A661A6831380079D208 /* LocationArrow@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A651A6831380079D208 /* LocationArrow@3x.png */; };
+		32A37A681A6831BC0079D208 /* LocationArrow2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A671A6831BC0079D208 /* LocationArrow2@3x.png */; };
+		32A37A6A1A6831C00079D208 /* LocationArrow2Active@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A691A6831C00079D208 /* LocationArrow2Active@3x.png */; };
+		32A37A6C1A6832600079D208 /* PocketCampusDrawing@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A6B1A6832600079D208 /* PocketCampusDrawing@3x.png */; };
+		32A37A6E1A6832960079D208 /* MainMenuNavbar@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A6D1A6832960079D208 /* MainMenuNavbar@3x.png */; };
+		32A37A701A6832F50079D208 /* MasterHidden@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A6F1A6832F50079D208 /* MasterHidden@3x.png */; };
+		32A37A721A6833060079D208 /* MasterVisible@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A711A6833060079D208 /* MasterVisible@3x.png */; };
+		32A37A741A6833370079D208 /* PrintBarButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A731A6833370079D208 /* PrintBarButton@3x.png */; };
+		32A37A761A6833650079D208 /* PrintBarButtonLandscape@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A751A6833650079D208 /* PrintBarButtonLandscape@3x.png */; };
+		32A37A781A6833D10079D208 /* SettingsBarButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A771A6833D10079D208 /* SettingsBarButton@3x.png */; };
+		32A37A7A1A68342B0079D208 /* SortBarButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A791A68342B0079D208 /* SortBarButton@3x.png */; };
+		32A37A7C1A68346E0079D208 /* FilterBarButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A7B1A68346E0079D208 /* FilterBarButton@3x.png */; };
+		32A37A7E1A6834860079D208 /* FilterBarButtonSelected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A7D1A6834860079D208 /* FilterBarButtonSelected@3x.png */; };
+		32A37A801A6835320079D208 /* AppLogoCellImage@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A7F1A6835320079D208 /* AppLogoCellImage@3x.png */; };
 		32A63A4B1535FFF400237841 /* TransportTripsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A63A4D1535FFF400237841 /* TransportTripsHeaderCell.xib */; };
 		32A77DC316A564460018976F /* UIPopoverController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC216A564460018976F /* UIPopoverController+Additions.m */; };
 		32A77DC616A565600018976F /* UIActionSheet+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC516A565600018976F /* UIActionSheet+Additions.m */; };
@@ -869,8 +905,6 @@
 		3268063119AF44B800E8CD22 /* THTTPClient+MutableRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "THTTPClient+MutableRequest.m"; sourceTree = "<group>"; };
 		326B924F150279E900DB4AEE /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		326B925115027A1400DB4AEE /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
-		326E3E3B1963FF7F00017F0C /* CellEmptyPicture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CellEmptyPicture.png; sourceTree = "<group>"; };
-		326E3E3C1963FF7F00017F0C /* CellEmptyPicture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CellEmptyPicture@2x.png"; sourceTree = "<group>"; };
 		326F5A7019BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintMultiPageLayoutCell.h; sourceTree = "<group>"; };
 		326F5A7119BCD8C5000693A2 /* CloudPrintMultiPageLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudPrintMultiPageLayoutCell.m; sourceTree = "<group>"; };
 		326F5A7519BCDC65000693A2 /* CloudPrintMultiPageLayoutButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudPrintMultiPageLayoutButton.h; sourceTree = "<group>"; };
@@ -1031,6 +1065,44 @@
 		32A37A2F1A6826200079D208 /* TransportSmallBusGreen@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TransportSmallBusGreen@3x.png"; sourceTree = "<group>"; };
 		32A37A311A6826290079D208 /* TransportSmallBus@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TransportSmallBus@3x.png"; sourceTree = "<group>"; };
 		32A37A331A6827160079D208 /* TransportFeetConnection@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TransportFeetConnection@3x.png"; sourceTree = "<group>"; };
+		32A37A351A6829360079D208 /* ArrowSimpleRight@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowSimpleRight@3x.png"; sourceTree = "<group>"; };
+		32A37A371A6829E40079D208 /* ArrowUpRightCircleAccessory@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowUpRightCircleAccessory@3x.png"; sourceTree = "<group>"; };
+		32A37A391A6829EA0079D208 /* CameraBarButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CameraBarButton@3x.png"; sourceTree = "<group>"; };
+		32A37A3B1A682A1C0079D208 /* CheckmarkRoundedSquare@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CheckmarkRoundedSquare@3x.png"; sourceTree = "<group>"; };
+		32A37A3D1A682AB10079D208 /* CheckmarkRoundedSquareEmpty@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CheckmarkRoundedSquareEmpty@3x.png"; sourceTree = "<group>"; };
+		32A37A3F1A682AB70079D208 /* ClockBarButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ClockBarButton@3x.png"; sourceTree = "<group>"; };
+		32A37A411A682ADB0079D208 /* ClockBarButtonSelected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ClockBarButtonSelected@3x.png"; sourceTree = "<group>"; };
+		32A37A431A682B310079D208 /* ClockCell@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ClockCell@3x.png"; sourceTree = "<group>"; };
+		32A37A451A682B590079D208 /* Cross@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cross@3x.png"; sourceTree = "<group>"; };
+		32A37A471A682C540079D208 /* Download@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Download@3x.png"; sourceTree = "<group>"; };
+		32A37A491A682CA80079D208 /* DownloadedCorner@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DownloadedCorner@3x.png"; sourceTree = "<group>"; };
+		32A37A4B1A682CAF0079D208 /* DownloadedCornerSelected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DownloadedCornerSelected@3x.png"; sourceTree = "<group>"; };
+		32A37A4D1A682CE80079D208 /* FacebookLikeCellImage@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FacebookLikeCellImage@3x.png"; sourceTree = "<group>"; };
+		32A37A4F1A682D630079D208 /* FavoriteCorner@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteCorner@3x.png"; sourceTree = "<group>"; };
+		32A37A511A682D690079D208 /* FavoriteCornerSelected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteCornerSelected@3x.png"; sourceTree = "<group>"; };
+		32A37A531A682F390079D208 /* FavoriteGlowNavBarButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteGlowNavBarButton@3x.png"; sourceTree = "<group>"; };
+		32A37A551A682F400079D208 /* FavoriteGlowNavBarButtonLandscape@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteGlowNavBarButtonLandscape@3x.png"; sourceTree = "<group>"; };
+		32A37A571A682F460079D208 /* FavoriteNavBarButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteNavBarButton@3x.png"; sourceTree = "<group>"; };
+		32A37A591A682F4B0079D208 /* FavoriteNavBarButtonLandscape@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteNavBarButtonLandscape@3x.png"; sourceTree = "<group>"; };
+		32A37A5B1A6830970079D208 /* FolderIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FolderIcon@3x.png"; sourceTree = "<group>"; };
+		32A37A5D1A6830A20079D208 /* HelpBarButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HelpBarButton@3x.png"; sourceTree = "<group>"; };
+		32A37A5F1A6830C40079D208 /* Info@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Info@3x.png"; sourceTree = "<group>"; };
+		32A37A611A6830E80079D208 /* LinkIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LinkIcon@3x.png"; sourceTree = "<group>"; };
+		32A37A631A68310E0079D208 /* ListBarButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ListBarButton@3x.png"; sourceTree = "<group>"; };
+		32A37A651A6831380079D208 /* LocationArrow@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrow@3x.png"; sourceTree = "<group>"; };
+		32A37A671A6831BC0079D208 /* LocationArrow2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrow2@3x.png"; sourceTree = "<group>"; };
+		32A37A691A6831C00079D208 /* LocationArrow2Active@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrow2Active@3x.png"; sourceTree = "<group>"; };
+		32A37A6B1A6832600079D208 /* PocketCampusDrawing@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PocketCampusDrawing@3x.png"; sourceTree = "<group>"; };
+		32A37A6D1A6832960079D208 /* MainMenuNavbar@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MainMenuNavbar@3x.png"; sourceTree = "<group>"; };
+		32A37A6F1A6832F50079D208 /* MasterHidden@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MasterHidden@3x.png"; sourceTree = "<group>"; };
+		32A37A711A6833060079D208 /* MasterVisible@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MasterVisible@3x.png"; sourceTree = "<group>"; };
+		32A37A731A6833370079D208 /* PrintBarButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PrintBarButton@3x.png"; sourceTree = "<group>"; };
+		32A37A751A6833650079D208 /* PrintBarButtonLandscape@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PrintBarButtonLandscape@3x.png"; sourceTree = "<group>"; };
+		32A37A771A6833D10079D208 /* SettingsBarButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsBarButton@3x.png"; sourceTree = "<group>"; };
+		32A37A791A68342B0079D208 /* SortBarButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SortBarButton@3x.png"; sourceTree = "<group>"; };
+		32A37A7B1A68346E0079D208 /* FilterBarButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FilterBarButton@3x.png"; sourceTree = "<group>"; };
+		32A37A7D1A6834860079D208 /* FilterBarButtonSelected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FilterBarButtonSelected@3x.png"; sourceTree = "<group>"; };
+		32A37A7F1A6835320079D208 /* AppLogoCellImage@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppLogoCellImage@3x.png"; sourceTree = "<group>"; };
 		32A63A4C1535FFF400237841 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TransportTripsHeaderCell.xib; sourceTree = "<group>"; };
 		32A77DC116A564460018976F /* UIPopoverController+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPopoverController+Additions.h"; sourceTree = "<group>"; };
 		32A77DC216A564460018976F /* UIPopoverController+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPopoverController+Additions.m"; sourceTree = "<group>"; };
@@ -1591,10 +1663,13 @@
 			children = (
 				323676C416BDB5300004D5AD /* AppLogoCellImage.png */,
 				323676C216BDB42D0004D5AD /* AppLogoCellImage@2x.png */,
+				32A37A7F1A6835320079D208 /* AppLogoCellImage@3x.png */,
 				327585A21844C5B1004215FC /* ArrowSimpleRight.png */,
 				327585A31844C5B1004215FC /* ArrowSimpleRight@2x.png */,
+				32A37A351A6829360079D208 /* ArrowSimpleRight@3x.png */,
 				327B0C22175199590011D81E /* ArrowUpRightCircleAccessory.png */,
 				327B0C23175199590011D81E /* ArrowUpRightCircleAccessory@2x.png */,
+				32A37A371A6829E40079D208 /* ArrowUpRightCircleAccessory@3x.png */,
 				32A37A211A681E780079D208 /* ArrowLeftBarButton.png */,
 				32A37A1A1A681E680079D208 /* ArrowLeftBarButton@2x.png */,
 				32A37A1B1A681E680079D208 /* ArrowLeftBarButton@3x.png */,
@@ -1603,83 +1678,116 @@
 				32A37A171A681E680079D208 /* ArrowRightBarButton@3x.png */,
 				32C509E417FC60B0005A5635 /* CameraBarButton.png */,
 				32C509E517FC60B0005A5635 /* CameraBarButton@2x.png */,
+				32A37A391A6829EA0079D208 /* CameraBarButton@3x.png */,
 				3200374F1811843500901F6A /* CheckmarkRoundedSquare.png */,
 				320037501811843500901F6A /* CheckmarkRoundedSquare@2x.png */,
+				32A37A3B1A682A1C0079D208 /* CheckmarkRoundedSquare@3x.png */,
 				3200375318118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png */,
 				3200375418118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png */,
+				32A37A3D1A682AB10079D208 /* CheckmarkRoundedSquareEmpty@3x.png */,
 				32FBAD1A1A09056100D5C515 /* ClockBarButton.png */,
 				32FBAD1B1A09056100D5C515 /* ClockBarButton@2x.png */,
+				32A37A3F1A682AB70079D208 /* ClockBarButton@3x.png */,
 				32FBAD1C1A09056100D5C515 /* ClockBarButtonSelected.png */,
 				32FBAD1D1A09056100D5C515 /* ClockBarButtonSelected@2x.png */,
+				32A37A411A682ADB0079D208 /* ClockBarButtonSelected@3x.png */,
 				32E67DBA16847A0900E5CFF6 /* ClockCell.png */,
 				32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */,
+				32A37A431A682B310079D208 /* ClockCell@3x.png */,
 				32AF954619B39F91008CB161 /* Cross.png */,
 				32AF954719B39F91008CB161 /* Cross@2x.png */,
-				326E3E3B1963FF7F00017F0C /* CellEmptyPicture.png */,
-				326E3E3C1963FF7F00017F0C /* CellEmptyPicture@2x.png */,
+				32A37A451A682B590079D208 /* Cross@3x.png */,
 				32ADC7171659AAEB0039F6A6 /* Download.png */,
 				32ADC7181659AAEB0039F6A6 /* Download@2x.png */,
+				32A37A471A682C540079D208 /* Download@3x.png */,
 				327412D8167E776A001E8C62 /* DownloadedCorner.png */,
 				327412D9167E776A001E8C62 /* DownloadedCorner@2x.png */,
+				32A37A491A682CA80079D208 /* DownloadedCorner@3x.png */,
 				327412DF167E7E56001E8C62 /* DownloadedCornerSelected.png */,
 				327412E0167E7E56001E8C62 /* DownloadedCornerSelected@2x.png */,
+				32A37A4B1A682CAF0079D208 /* DownloadedCornerSelected@3x.png */,
 				323676C616BDB6620004D5AD /* FacebookLikeCellImage.png */,
 				323676C716BDB6620004D5AD /* FacebookLikeCellImage@2x.png */,
+				32A37A4D1A682CE80079D208 /* FacebookLikeCellImage@3x.png */,
 				3275132D1825465D0037FE00 /* FavoriteCorner.png */,
 				3275132E1825465D0037FE00 /* FavoriteCorner@2x.png */,
+				32A37A4F1A682D630079D208 /* FavoriteCorner@3x.png */,
 				3275132F1825465D0037FE00 /* FavoriteCornerSelected.png */,
 				327513301825465D0037FE00 /* FavoriteCornerSelected@2x.png */,
+				32A37A511A682D690079D208 /* FavoriteCornerSelected@3x.png */,
 				329E1B3D16E696F80054C3A8 /* FavoriteGlowNavBarButton.png */,
 				329E1B3E16E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png */,
+				32A37A531A682F390079D208 /* FavoriteGlowNavBarButton@3x.png */,
 				32FFA798186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png */,
 				32FFA799186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape@2x.png */,
+				32A37A551A682F400079D208 /* FavoriteGlowNavBarButtonLandscape@3x.png */,
 				329E1B3916E693130054C3A8 /* FavoriteNavBarButton.png */,
 				329E1B3A16E693130054C3A8 /* FavoriteNavBarButton@2x.png */,
+				32A37A571A682F460079D208 /* FavoriteNavBarButton@3x.png */,
 				32FFA794186DDD5500237957 /* FavoriteNavBarButtonLandscape.png */,
 				32FFA795186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png */,
+				32A37A591A682F4B0079D208 /* FavoriteNavBarButtonLandscape@3x.png */,
+				32E0E313194B1FDD003251CC /* FilterBarButton.png */,
+				32E0E314194B1FDD003251CC /* FilterBarButton@2x.png */,
+				32A37A7B1A68346E0079D208 /* FilterBarButton@3x.png */,
+				32E0E317194B206D003251CC /* FilterBarButtonSelected.png */,
+				32E0E318194B206D003251CC /* FilterBarButtonSelected@2x.png */,
+				32A37A7D1A6834860079D208 /* FilterBarButtonSelected@3x.png */,
 				32150DD6197D6D0400CCF2AB /* FolderIcon.png */,
 				32150DD7197D6D0400CCF2AB /* FolderIcon@2x.png */,
+				32A37A5B1A6830970079D208 /* FolderIcon@3x.png */,
+				321F37E115B02FBE00E7BA6D /* HelpBarButton.png */,
+				321F37E215B02FBE00E7BA6D /* HelpBarButton@2x.png */,
+				32A37A5D1A6830A20079D208 /* HelpBarButton@3x.png */,
 				3200375718119B4100901F6A /* Info.png */,
 				3200375818119B4100901F6A /* Info@2x.png */,
+				32A37A5F1A6830C40079D208 /* Info@3x.png */,
 				328473EE1A49B9DE0091DF26 /* InstitutionLogo.png */,
 				328473EF1A49B9DE0091DF26 /* InstitutionLogo@2x.png */,
 				32D6A77A1A4AD6180085D3A5 /* InstitutionLogo@3x.png */,
 				32150DD2197D693300CCF2AB /* LinkIcon.png */,
 				32150DD3197D693300CCF2AB /* LinkIcon@2x.png */,
+				32A37A611A6830E80079D208 /* LinkIcon@3x.png */,
 				3270B7EF18056E6F007EE85B /* ListBarButton.png */,
 				3270B7F018056E6F007EE85B /* ListBarButton@2x.png */,
+				32A37A631A68310E0079D208 /* ListBarButton@3x.png */,
 				32CACD93183E366B00BD36F9 /* LocationArrow.png */,
 				32CACD94183E366B00BD36F9 /* LocationArrow@2x.png */,
+				32A37A651A6831380079D208 /* LocationArrow@3x.png */,
 				3289F2B3183FAB8C00D833C2 /* LocationArrow2.png */,
 				3289F2B4183FAB8C00D833C2 /* LocationArrow2@2x.png */,
+				32A37A671A6831BC0079D208 /* LocationArrow2@3x.png */,
 				3289F2B5183FAB8C00D833C2 /* LocationArrow2Active.png */,
 				3289F2B6183FAB8C00D833C2 /* LocationArrow2Active@2x.png */,
-				32CBF057163450E500FD92E5 /* PocketCampusDrawing.png */,
-				32CBF058163450E500FD92E5 /* PocketCampusDrawing@2x.png */,
+				32A37A691A6831C00079D208 /* LocationArrow2Active@3x.png */,
 				32B13A3D1634B0F4007B54A1 /* MainMenuNavbar.png */,
 				32B13A3E1634B0F4007B54A1 /* MainMenuNavbar@2x.png */,
+				32A37A6D1A6832960079D208 /* MainMenuNavbar@3x.png */,
 				32506D03181DC7AF003F08D7 /* MasterHidden.png */,
 				32506D04181DC7AF003F08D7 /* MasterHidden@2x.png */,
+				32A37A6F1A6832F50079D208 /* MasterHidden@3x.png */,
 				32506CFF181DC41E003F08D7 /* MasterVisible.png */,
 				32506D00181DC41E003F08D7 /* MasterVisible@2x.png */,
+				32A37A711A6833060079D208 /* MasterVisible@3x.png */,
+				32CBF057163450E500FD92E5 /* PocketCampusDrawing.png */,
+				32CBF058163450E500FD92E5 /* PocketCampusDrawing@2x.png */,
+				32A37A6B1A6832600079D208 /* PocketCampusDrawing@3x.png */,
 				326F5A8319BDCE8C000693A2 /* PrintBarButton.png */,
 				326F5A8419BDCE8C000693A2 /* PrintBarButton@2x.png */,
+				32A37A731A6833370079D208 /* PrintBarButton@3x.png */,
 				326F5A8719BDD815000693A2 /* PrintBarButtonLandscape.png */,
 				326F5A8819BDD815000693A2 /* PrintBarButtonLandscape@2x.png */,
+				32A37A751A6833650079D208 /* PrintBarButtonLandscape@3x.png */,
 				329CA501166D452E00F7B1AE /* SettingsBarButton.png */,
 				329CA502166D452E00F7B1AE /* SettingsBarButton@2x.png */,
+				32A37A771A6833D10079D208 /* SettingsBarButton@3x.png */,
 				32C509E817FC6D73005A5635 /* SortBarButton.png */,
 				32C509E917FC6D73005A5635 /* SortBarButton@2x.png */,
-				32E0E313194B1FDD003251CC /* FilterBarButton.png */,
-				32E0E314194B1FDD003251CC /* FilterBarButton@2x.png */,
-				32E0E317194B206D003251CC /* FilterBarButtonSelected.png */,
-				32E0E318194B206D003251CC /* FilterBarButtonSelected@2x.png */,
+				32A37A791A68342B0079D208 /* SortBarButton@3x.png */,
 				32E637E319D0D25400378788 /* SplashImage5_5inch@3x.png */,
 				32E637DF19D0CCB000378788 /* SplashImage4_7inch@2x.png */,
 				328A72DD184A4EE0002C5A6B /* SplashImage4inch@2x.png */,
 				328A72DE184A4EE0002C5A6B /* SplashImage@2x.png */,
-				321F37E115B02FBE00E7BA6D /* HelpBarButton.png */,
-				321F37E215B02FBE00E7BA6D /* HelpBarButton@2x.png */,
 			);
 			name = Images;
 			path = PocketCampus/Views/Images;
@@ -3116,9 +3224,11 @@
 				3243FBA218216BBC000F3CB5 /* FoodRestaurantInfoCell.xib in Resources */,
 				3247C3B71504F2E10079522A /* FoodPlugin.strings in Resources */,
 				3289D28A15094739008DD299 /* Directory.png in Resources */,
+				32A37A801A6835320079D208 /* AppLogoCellImage@3x.png in Resources */,
 				32AA25B11A0A9F1A00146D68 /* MealType_UNKNOWN@3x.png in Resources */,
 				32A379F81A6808BD0079D208 /* Camipro@3x.png in Resources */,
 				32AA259D1A0A9F1A00146D68 /* MealType_INDIAN.png in Resources */,
+				32A37A7E1A6834860079D208 /* FilterBarButtonSelected@3x.png in Resources */,
 				32AA25A31A0A9F1A00146D68 /* MealType_PASTA.png in Resources */,
 				3289D28B15094739008DD299 /* Directory@2x.png in Resources */,
 				32AA25981A0A9F1A00146D68 /* MealType_FISH@2x.png in Resources */,
@@ -3137,6 +3247,7 @@
 				325F1FC519FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.xib in Resources */,
 				320037511811843500901F6A /* CheckmarkRoundedSquare.png in Resources */,
 				32148A3E18101D6C00AF2F8E /* CamiproLarge@2x.png in Resources */,
+				32A37A681A6831BC0079D208 /* LocationArrow2@3x.png in Resources */,
 				326F5A8A19BDD815000693A2 /* PrintBarButtonLandscape@2x.png in Resources */,
 				32442FEE151CFDED00685D10 /* Transport.png in Resources */,
 				32442FEF151CFDED00685D10 /* Transport@2x.png in Resources */,
@@ -3146,6 +3257,7 @@
 				32506CFE181D4195003F08D7 /* MoodleLarge@2x.png in Resources */,
 				27B74CE619A205E6006B2F17 /* RecommendedApps.png in Resources */,
 				327513311825465D0037FE00 /* FavoriteCorner.png in Resources */,
+				32A37A381A6829E40079D208 /* ArrowUpRightCircleAccessory@3x.png in Resources */,
 				326F5A8519BDCE8C000693A2 /* PrintBarButton.png in Resources */,
 				324A599A151DFDF700977F33 /* TransportAddStationView.xib in Resources */,
 				32FBAD211A09056100D5C515 /* ClockBarButtonSelected@2x.png in Resources */,
@@ -3154,10 +3266,13 @@
 				3289F2BA183FAB8C00D833C2 /* LocationArrow2Active@2x.png in Resources */,
 				32A63A4B1535FFF400237841 /* TransportTripsHeaderCell.xib in Resources */,
 				32342A8017F43347009C05FA /* DirectoryEmptyPicture.png in Resources */,
+				32A37A7A1A68342B0079D208 /* SortBarButton@3x.png in Resources */,
 				32B3325817E5C708004F5E75 /* Images.xcassets in Resources */,
 				326494CB1A07B97900C63622 /* FoodMainViewController.xib in Resources */,
 				32AA25AB1A0A9F1A00146D68 /* MealType_POULTRY@3x.png in Resources */,
 				32AA25971A0A9F1A00146D68 /* MealType_FISH.png in Resources */,
+				32A37A401A682AB70079D208 /* ClockBarButton@3x.png in Resources */,
+				32A37A7C1A68346E0079D208 /* FilterBarButton@3x.png in Resources */,
 				32CAE432153628C100AB17CC /* TransportTripPartsView.xib in Resources */,
 				32125BBF1536F215009B8D37 /* TransportFeetConnection.png in Resources */,
 				32125BC01536F215009B8D37 /* TransportFeetConnection@2x.png in Resources */,
@@ -3166,12 +3281,12 @@
 				324151CC15373A1700CCFB22 /* MapPlugin.strings in Resources */,
 				326494CD1A07CC5100C63622 /* FoodMealTypeCell.xib in Resources */,
 				324151E015374FB100CCFB22 /* MapView-phone.xib in Resources */,
+				32A37A3E1A682AB10079D208 /* CheckmarkRoundedSquareEmpty@3x.png in Resources */,
 				32FBAD201A09056100D5C515 /* ClockBarButtonSelected.png in Resources */,
 				324151E515375BDD00CCFB22 /* Map.png in Resources */,
 				32FFA797186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png in Resources */,
 				324151E615375BDD00CCFB22 /* Map@2x.png in Resources */,
 				32A37A2C1A6823B50079D208 /* FloorDown@3x.png in Resources */,
-				326E3E3E1963FF7F00017F0C /* CellEmptyPicture@2x.png in Resources */,
 				32CCB4EA1555237500220282 /* MoodlePlugin.strings in Resources */,
 				32DD525619B4DEB600B5B241 /* CloudPrintPlugin.strings in Resources */,
 				3271887C1A67F25D00729D06 /* MapLayersBarButton.png in Resources */,
@@ -3180,10 +3295,12 @@
 				32CCB4EF1555237500220282 /* Moodle.png in Resources */,
 				32CCB4F01555237500220282 /* Moodle@2x.png in Resources */,
 				32AA25991A0A9F1A00146D68 /* MealType_FISH@3x.png in Resources */,
+				32A37A781A6833D10079D208 /* SettingsBarButton@3x.png in Resources */,
 				32342A8117F43347009C05FA /* DirectoryEmptyPicture@2x.png in Resources */,
 				32CCB500155546C100220282 /* NewsPlugin.strings in Resources */,
 				32875E61194CF3100071CDF8 /* PCWebView.xib in Resources */,
 				32CCB510155567CB00220282 /* News.png in Resources */,
+				32A37A3C1A682A1C0079D208 /* CheckmarkRoundedSquare@3x.png in Resources */,
 				32CCB511155567CB00220282 /* News@2x.png in Resources */,
 				3297E017155571F80054F790 /* NewsLarge.png in Resources */,
 				32A37A0E1A680F090079D208 /* IsAcademia@3x.png in Resources */,
@@ -3216,17 +3333,22 @@
 				3293AD2315D1BC930097D414 /* PCAboutView.xib in Resources */,
 				32777B4615D1BFBC00A29F56 /* PCAbout.html in Resources */,
 				32675C2415F50F4A00880387 /* Config.plist in Resources */,
+				32A37A3A1A6829EA0079D208 /* CameraBarButton@3x.png in Resources */,
 				32CACD97183E366B00BD36F9 /* LocationArrow.png in Resources */,
 				328473F11A49B9DE0091DF26 /* InstitutionLogo@2x.png in Resources */,
 				327513331825465D0037FE00 /* FavoriteCornerSelected.png in Resources */,
+				32A37A541A682F390079D208 /* FavoriteGlowNavBarButton@3x.png in Resources */,
 				32B3F3941621956C007A75C7 /* MainMenuView.xib in Resources */,
 				32A37A261A68203B0079D208 /* FoodSmileyHappy@3x.png in Resources */,
 				326F5A8219BDA2D0000693A2 /* CloudPrintStatusView.xib in Resources */,
+				32A37A481A682C540079D208 /* Download@3x.png in Resources */,
 				32AA25A91A0A9F1A00146D68 /* MealType_POULTRY.png in Resources */,
 				325C47AB1621D8FC006752B4 /* MainMenuItemCell.xib in Resources */,
 				325C47B4162200E8006752B4 /* BlankPluginView.xib in Resources */,
 				3200375918119B4100901F6A /* Info.png in Resources */,
 				327513341825465D0037FE00 /* FavoriteCornerSelected@2x.png in Resources */,
+				32A37A5E1A6830A20079D208 /* HelpBarButton@3x.png in Resources */,
+				32A37A4A1A682CA80079D208 /* DownloadedCorner@3x.png in Resources */,
 				32CBF059163450E500FD92E5 /* PocketCampusDrawing.png in Resources */,
 				326F5A8619BDCE8C000693A2 /* PrintBarButton@2x.png in Resources */,
 				32FBAD1F1A09056100D5C515 /* ClockBarButton@2x.png in Resources */,
@@ -3235,6 +3357,8 @@
 				32AA259B1A0A9F1A00146D68 /* MealType_GREEN_FORK@2x.png in Resources */,
 				327585A91844DE93004215FC /* TransportSmallBus@2x.png in Resources */,
 				32FF91EE19C62FC300559E1E /* CloudPrintAction-Info.plist in Resources */,
+				32A37A4E1A682CE80079D208 /* FacebookLikeCellImage@3x.png in Resources */,
+				32A37A521A682D690079D208 /* FavoriteCornerSelected@3x.png in Resources */,
 				32CBF05A163450E500FD92E5 /* PocketCampusDrawing@2x.png in Resources */,
 				32C509E617FC60B0005A5635 /* CameraBarButton.png in Resources */,
 				32E0E316194B1FDD003251CC /* FilterBarButton@2x.png in Resources */,
@@ -3245,7 +3369,6 @@
 				32DE5B2117F1F8D900E03423 /* DirectoryLarge.png in Resources */,
 				3283C4D51A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib in Resources */,
 				32A37A301A6826200079D208 /* TransportSmallBusGreen@3x.png in Resources */,
-				326E3E3D1963FF7F00017F0C /* CellEmptyPicture.png in Resources */,
 				32574ED6182140AE008F3163 /* DirectoryEmptyPictureSmall.png in Resources */,
 				327513321825465D0037FE00 /* FavoriteCorner@2x.png in Resources */,
 				32A37A141A6817CD0079D208 /* RecommendedApps@3x.png in Resources */,
@@ -3258,13 +3381,16 @@
 				320037521811843500901F6A /* CheckmarkRoundedSquare@2x.png in Resources */,
 				32ADC7191659AAEB0039F6A6 /* Download.png in Resources */,
 				32ADC71A1659AAEB0039F6A6 /* Download@2x.png in Resources */,
+				32A37A661A6831380079D208 /* LocationArrow@3x.png in Resources */,
 				32763231166511B700C33DF9 /* MapView-pad.xib in Resources */,
 				327BF2371666043100C67937 /* PushNotifPlugin.strings in Resources */,
 				32A37A281A6820400079D208 /* FoodSmileyMeh@3x.png in Resources */,
 				3267676419E2C96800365F6D /* RecommendedAppsForCategoryCell.xib in Resources */,
 				32AF954A19B39F91008CB161 /* Cross@2x.png in Resources */,
 				32D0B260166ABEA200F68304 /* FloorDown.png in Resources */,
+				32A37A641A68310E0079D208 /* ListBarButton@3x.png in Resources */,
 				32FF91F019C62FC300559E1E /* CloudPrintAction.storyboard in Resources */,
+				32A37A361A6829360079D208 /* ArrowSimpleRight@3x.png in Resources */,
 				32FFA79A186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png in Resources */,
 				32D0B261166ABEA200F68304 /* FloorDown@2x.png in Resources */,
 				32D0B262166ABEA200F68304 /* FloorUp.png in Resources */,
@@ -3275,6 +3401,8 @@
 				329CA504166D452E00F7B1AE /* SettingsBarButton@2x.png in Resources */,
 				32A37A341A6827160079D208 /* TransportFeetConnection@3x.png in Resources */,
 				32CE952519DDDF950071F987 /* CamiproWidget.storyboard in Resources */,
+				32A37A6C1A6832600079D208 /* PocketCampusDrawing@3x.png in Resources */,
+				32A37A4C1A682CAF0079D208 /* DownloadedCornerSelected@3x.png in Resources */,
 				32035BB5166E988600E134DD /* MoodleFileView.xib in Resources */,
 				324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */,
 				327412DA167E776A001E8C62 /* DownloadedCorner.png in Resources */,
@@ -3282,6 +3410,8 @@
 				32AA259A1A0A9F1A00146D68 /* MealType_GREEN_FORK.png in Resources */,
 				32AA25781A0A95D100146D68 /* MealType_MEAT@3x.png in Resources */,
 				325F1FB919FA95470019CFCB /* CloudPrintExtensionSafari.png in Resources */,
+				32A37A721A6833060079D208 /* MasterVisible@3x.png in Resources */,
+				32A37A441A682B310079D208 /* ClockCell@3x.png in Resources */,
 				32A37A021A680B620079D208 /* Food@3x.png in Resources */,
 				32A37A241A681F5C0079D208 /* DirectoryEmptyPictureSmall@3x.png in Resources */,
 				32AA25B01A0A9F1A00146D68 /* MealType_UNKNOWN@2x.png in Resources */,
@@ -3289,7 +3419,9 @@
 				32A379FC1A6809C90079D208 /* DirectoryLarge@3x.png in Resources */,
 				327412E1167E7E56001E8C62 /* DownloadedCornerSelected.png in Resources */,
 				327412E2167E7E56001E8C62 /* DownloadedCornerSelected@2x.png in Resources */,
+				32A37A5A1A682F4B0079D208 /* FavoriteNavBarButtonLandscape@3x.png in Resources */,
 				32AA25A01A0A9F1A00146D68 /* MealType_LEBANESE.png in Resources */,
+				32A37A741A6833370079D208 /* PrintBarButton@3x.png in Resources */,
 				32E67DBC16847A0900E5CFF6 /* ClockCell.png in Resources */,
 				32E67DBD16847A0900E5CFF6 /* ClockCell@2x.png in Resources */,
 				32E67DC01684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib in Resources */,
@@ -3301,18 +3433,21 @@
 				32D1DE18184663C700D0C866 /* TransportTripCell.xib in Resources */,
 				32E0E31A194B206D003251CC /* FilterBarButtonSelected@2x.png in Resources */,
 				322207F31688FFFA003F6622 /* NewsItem.html in Resources */,
+				32A37A601A6830C40079D208 /* Info@3x.png in Resources */,
 				32E0E315194B1FDD003251CC /* FilterBarButton.png in Resources */,
 				32506D01181DC41E003F08D7 /* MasterVisible.png in Resources */,
 				3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */,
 				32AF954819B39F91008CB161 /* Cross.png in Resources */,
 				323676C316BDB42D0004D5AD /* AppLogoCellImage@2x.png in Resources */,
 				32A37A201A681E680079D208 /* ArrowLeftBarButton@3x.png in Resources */,
+				32A37A581A682F460079D208 /* FavoriteNavBarButton@3x.png in Resources */,
 				32AA25AF1A0A9F1A00146D68 /* MealType_UNKNOWN.png in Resources */,
 				323676C516BDB5300004D5AD /* AppLogoCellImage.png in Resources */,
 				323676C816BDB6620004D5AD /* FacebookLikeCellImage.png in Resources */,
 				320480C518479D4E00116380 /* TransportSmallBusGreen.png in Resources */,
 				323676C916BDB6620004D5AD /* FacebookLikeCellImage@2x.png in Resources */,
 				8D964F08A876C676D9337E69 /* Events.png in Resources */,
+				32A37A701A6832F50079D208 /* MasterHidden@3x.png in Resources */,
 				38AE40F7B2AF51B65874011A /* Events@2x.png in Resources */,
 				32AA6CCA16DFF0D100783E9C /* EventsPlugin.strings in Resources */,
 				3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */,
@@ -3322,6 +3457,7 @@
 				32A37A2E1A6823BE0079D208 /* FloorUp@3x.png in Resources */,
 				326F5A7A19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib in Resources */,
 				329E1B4016E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png in Resources */,
+				32A37A621A6830E80079D208 /* LinkIcon@3x.png in Resources */,
 				32150DD5197D693300CCF2AB /* LinkIcon@2x.png in Resources */,
 				32F5308D16EAB02400F66484 /* EventItemInfo.html in Resources */,
 				326F5A8919BDD815000693A2 /* PrintBarButtonLandscape.png in Resources */,
@@ -3332,18 +3468,24 @@
 				32150DD8197D6D0400CCF2AB /* FolderIcon.png in Resources */,
 				328A131E18296E2D00F4C622 /* FoodSmileyHappy@2x.png in Resources */,
 				32AA25B21A0A9F1A00146D68 /* MealType_VEGETARIAN.png in Resources */,
+				32A37A5C1A6830970079D208 /* FolderIcon@3x.png in Resources */,
 				32503AA5195EE4F1007B709E /* PCDatePickerView.xib in Resources */,
 				32F7218C171B0BB4005755A2 /* CamiproView~ipad.xib in Resources */,
 				27B74CE819A206C8006B2F17 /* RecommendedAppsPlugin.strings in Resources */,
 				32FBAD1E1A09056100D5C515 /* ClockBarButton.png in Resources */,
+				32A37A6A1A6831C00079D208 /* LocationArrow2Active@3x.png in Resources */,
+				32A37A501A682D630079D208 /* FavoriteCorner@3x.png in Resources */,
 				32150DD9197D6D0400CCF2AB /* FolderIcon@2x.png in Resources */,
+				32A37A561A682F400079D208 /* FavoriteGlowNavBarButtonLandscape@3x.png in Resources */,
 				328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */,
 				32C509EA17FC6D73005A5635 /* SortBarButton.png in Resources */,
 				325F1FBB19FA95470019CFCB /* CloudPrintExtensionSafari@2x.png in Resources */,
 				32DE5B2517F1FB6800E03423 /* DirectoryPersonView.xib in Resources */,
 				32A37A1D1A681E680079D208 /* ArrowRightBarButton.png in Resources */,
+				32A37A461A682B590079D208 /* Cross@3x.png in Resources */,
 				32AA25A81A0A9F1A00146D68 /* MealType_PIZZA@3x.png in Resources */,
 				32A379FE1A680A7C0079D208 /* Events@3x.png in Resources */,
+				32A37A421A682ADB0079D208 /* ClockBarButtonSelected@3x.png in Resources */,
 				32A37A0A1A680D970079D208 /* News@3x.png in Resources */,
 				32AEEC831747C11C006DBA2F /* CamiproView~iphone.xib in Resources */,
 				32A37A1E1A681E680079D208 /* ArrowRightBarButton@2x.png in Resources */,
@@ -3360,8 +3502,10 @@
 				328A132218296E2D00F4C622 /* FoodSmileyMeh@2x.png in Resources */,
 				328A72E0184A4EE0002C5A6B /* SplashImage@2x.png in Resources */,
 				32CE952319DDDE180071F987 /* CamiproWidget-Info.plist in Resources */,
+				32A37A6E1A6832960079D208 /* MainMenuNavbar@3x.png in Resources */,
 				32074B7D17FB09CA009804CE /* NewsLarge@2x.png in Resources */,
 				32A37A101A68105A0079D208 /* Transport@3x.png in Resources */,
+				32A37A761A6833650079D208 /* PrintBarButtonLandscape@3x.png in Resources */,
 				32CACD98183E366B00BD36F9 /* LocationArrow@2x.png in Resources */,
 				32AA259E1A0A9F1A00146D68 /* MealType_INDIAN@2x.png in Resources */,
 				32A37A061A680CBA0079D208 /* Moodle@3x.png in Resources */,

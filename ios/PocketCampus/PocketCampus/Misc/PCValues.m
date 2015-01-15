@@ -54,11 +54,6 @@
     return [UIImage imageNamed:landscapePhone ? @"PrintBarButtonLandscape" : @"PrintBarButton"];
 }
 
-+ (UIImage*)resizableCellEmptyImage {
-    UIImage* image = [UIImage imageNamed:@"CellEmptyPicture"];
-    return [image resizableImageWithCapInsets:UIEdgeInsetsMake(1, 1, 1, 1)];
-}
-
 + (UIColor*)defaultBlueTintColor {
     return [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
 }
