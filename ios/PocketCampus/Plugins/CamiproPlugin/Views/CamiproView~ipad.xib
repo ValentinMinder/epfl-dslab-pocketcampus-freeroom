@@ -23,7 +23,7 @@
             <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" alpha="0.39999999999999997" contentMode="scaleToFill" image="CamiproLarge.png" translatesAutoresizingMaskIntoConstraints="NO" id="15">
+                <imageView userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="scaleToFill" image="CamiproLarge.png" translatesAutoresizingMaskIntoConstraints="NO" id="15">
                     <rect key="frame" x="306" y="392" width="150" height="150"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="150" id="AN9-iG-sjv"/>
