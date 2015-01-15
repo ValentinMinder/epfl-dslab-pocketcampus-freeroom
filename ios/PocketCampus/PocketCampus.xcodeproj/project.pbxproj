@@ -37,10 +37,6 @@
 		3207A38719ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3207A38919ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib */; };
 		3207A38B19ED625E0041DF0B /* map.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151D415373B5900CCFB22 /* map.m */; };
 		320A05B215B02C240057B15C /* PCGlobalSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320A05B115B02C240057B15C /* PCGlobalSettingsViewController.m */; };
-		320F8599194EED8C00BF3228 /* ArrowLeftBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 320F8595194EED8C00BF3228 /* ArrowLeftBarButton.png */; };
-		320F859A194EED8C00BF3228 /* ArrowLeftBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320F8596194EED8C00BF3228 /* ArrowLeftBarButton@2x.png */; };
-		320F859B194EED8C00BF3228 /* ArrowRightBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 320F8597194EED8C00BF3228 /* ArrowRightBarButton.png */; };
-		320F859C194EED8C00BF3228 /* ArrowRightBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320F8598194EED8C00BF3228 /* ArrowRightBarButton@2x.png */; };
 		32102B6615050B9D0076537E /* food.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6515050B9D0076537E /* food.m */; };
 		32102B6C15050C000076537E /* FoodService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6B15050C000076537E /* FoodService.m */; };
 		3210FD1A197C050000EEDCBF /* MoodleResourceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3210FD19197C050000EEDCBF /* MoodleResourceCell.m */; };
@@ -299,6 +295,22 @@
 		32A37A101A68105A0079D208 /* Transport@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A0F1A68105A0079D208 /* Transport@3x.png */; };
 		32A37A121A6810AA0079D208 /* Map@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A111A6810AA0079D208 /* Map@3x.png */; };
 		32A37A141A6817CD0079D208 /* RecommendedApps@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A131A6817CD0079D208 /* RecommendedApps@3x.png */; };
+		32A37A161A681D2B0079D208 /* DirectoryEmptyPicture@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A151A681D2B0079D208 /* DirectoryEmptyPicture@3x.png */; };
+		32A37A1C1A681E680079D208 /* ArrowRightBarButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A171A681E680079D208 /* ArrowRightBarButton@3x.png */; };
+		32A37A1D1A681E680079D208 /* ArrowRightBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A181A681E680079D208 /* ArrowRightBarButton.png */; };
+		32A37A1E1A681E680079D208 /* ArrowRightBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A191A681E680079D208 /* ArrowRightBarButton@2x.png */; };
+		32A37A1F1A681E680079D208 /* ArrowLeftBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A1A1A681E680079D208 /* ArrowLeftBarButton@2x.png */; };
+		32A37A201A681E680079D208 /* ArrowLeftBarButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A1B1A681E680079D208 /* ArrowLeftBarButton@3x.png */; };
+		32A37A221A681E780079D208 /* ArrowLeftBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A211A681E780079D208 /* ArrowLeftBarButton.png */; };
+		32A37A241A681F5C0079D208 /* DirectoryEmptyPictureSmall@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A231A681F5C0079D208 /* DirectoryEmptyPictureSmall@3x.png */; };
+		32A37A261A68203B0079D208 /* FoodSmileyHappy@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A251A68203B0079D208 /* FoodSmileyHappy@3x.png */; };
+		32A37A281A6820400079D208 /* FoodSmileyMeh@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A271A6820400079D208 /* FoodSmileyMeh@3x.png */; };
+		32A37A2A1A6820440079D208 /* FoodSmileySad@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A291A6820440079D208 /* FoodSmileySad@3x.png */; };
+		32A37A2C1A6823B50079D208 /* FloorDown@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A2B1A6823B50079D208 /* FloorDown@3x.png */; };
+		32A37A2E1A6823BE0079D208 /* FloorUp@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A2D1A6823BE0079D208 /* FloorUp@3x.png */; };
+		32A37A301A6826200079D208 /* TransportSmallBusGreen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A2F1A6826200079D208 /* TransportSmallBusGreen@3x.png */; };
+		32A37A321A6826290079D208 /* TransportSmallBus@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A311A6826290079D208 /* TransportSmallBus@3x.png */; };
+		32A37A341A6827160079D208 /* TransportFeetConnection@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A37A331A6827160079D208 /* TransportFeetConnection@3x.png */; };
 		32A63A4B1535FFF400237841 /* TransportTripsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A63A4D1535FFF400237841 /* TransportTripsHeaderCell.xib */; };
 		32A77DC316A564460018976F /* UIPopoverController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC216A564460018976F /* UIPopoverController+Additions.m */; };
 		32A77DC616A565600018976F /* UIActionSheet+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC516A565600018976F /* UIActionSheet+Additions.m */; };
@@ -652,10 +664,6 @@
 		320A05B015B02C240057B15C /* PCGlobalSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCGlobalSettingsViewController.h; sourceTree = "<group>"; };
 		320A05B115B02C240057B15C /* PCGlobalSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCGlobalSettingsViewController.m; sourceTree = "<group>"; };
 		320DFC24164697AE00849907 /* PCMasterSplitDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCMasterSplitDelegate.h; sourceTree = "<group>"; };
-		320F8595194EED8C00BF3228 /* ArrowLeftBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ArrowLeftBarButton.png; path = "../../../../../graphics/Glyphish 6/Glyphish 6 Icons (PNG)/Gray/ArrowLeftBarButton.png"; sourceTree = "<group>"; };
-		320F8596194EED8C00BF3228 /* ArrowLeftBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ArrowLeftBarButton@2x.png"; path = "../../../../../graphics/Glyphish 6/Glyphish 6 Icons (PNG)/Gray/ArrowLeftBarButton@2x.png"; sourceTree = "<group>"; };
-		320F8597194EED8C00BF3228 /* ArrowRightBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ArrowRightBarButton.png; path = "../../../../../graphics/Glyphish 6/Glyphish 6 Icons (PNG)/Gray/ArrowRightBarButton.png"; sourceTree = "<group>"; };
-		320F8598194EED8C00BF3228 /* ArrowRightBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ArrowRightBarButton@2x.png"; path = "../../../../../graphics/Glyphish 6/Glyphish 6 Icons (PNG)/Gray/ArrowRightBarButton@2x.png"; sourceTree = "<group>"; };
 		32102B6415050B9D0076537E /* food.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = food.h; sourceTree = "<group>"; };
 		32102B6515050B9D0076537E /* food.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = food.m; sourceTree = "<group>"; };
 		32102B6A15050C000076537E /* FoodService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodService.h; sourceTree = "<group>"; };
@@ -1007,6 +1015,22 @@
 		32A37A0F1A68105A0079D208 /* Transport@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Transport@3x.png"; sourceTree = "<group>"; };
 		32A37A111A6810AA0079D208 /* Map@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Map@3x.png"; sourceTree = "<group>"; };
 		32A37A131A6817CD0079D208 /* RecommendedApps@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RecommendedApps@3x.png"; sourceTree = "<group>"; };
+		32A37A151A681D2B0079D208 /* DirectoryEmptyPicture@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DirectoryEmptyPicture@3x.png"; sourceTree = "<group>"; };
+		32A37A171A681E680079D208 /* ArrowRightBarButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowRightBarButton@3x.png"; sourceTree = "<group>"; };
+		32A37A181A681E680079D208 /* ArrowRightBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowRightBarButton.png; sourceTree = "<group>"; };
+		32A37A191A681E680079D208 /* ArrowRightBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowRightBarButton@2x.png"; sourceTree = "<group>"; };
+		32A37A1A1A681E680079D208 /* ArrowLeftBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowLeftBarButton@2x.png"; sourceTree = "<group>"; };
+		32A37A1B1A681E680079D208 /* ArrowLeftBarButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowLeftBarButton@3x.png"; sourceTree = "<group>"; };
+		32A37A211A681E780079D208 /* ArrowLeftBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowLeftBarButton.png; sourceTree = "<group>"; };
+		32A37A231A681F5C0079D208 /* DirectoryEmptyPictureSmall@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DirectoryEmptyPictureSmall@3x.png"; sourceTree = "<group>"; };
+		32A37A251A68203B0079D208 /* FoodSmileyHappy@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FoodSmileyHappy@3x.png"; sourceTree = "<group>"; };
+		32A37A271A6820400079D208 /* FoodSmileyMeh@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FoodSmileyMeh@3x.png"; sourceTree = "<group>"; };
+		32A37A291A6820440079D208 /* FoodSmileySad@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FoodSmileySad@3x.png"; sourceTree = "<group>"; };
+		32A37A2B1A6823B50079D208 /* FloorDown@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FloorDown@3x.png"; sourceTree = "<group>"; };
+		32A37A2D1A6823BE0079D208 /* FloorUp@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FloorUp@3x.png"; sourceTree = "<group>"; };
+		32A37A2F1A6826200079D208 /* TransportSmallBusGreen@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TransportSmallBusGreen@3x.png"; sourceTree = "<group>"; };
+		32A37A311A6826290079D208 /* TransportSmallBus@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TransportSmallBus@3x.png"; sourceTree = "<group>"; };
+		32A37A331A6827160079D208 /* TransportFeetConnection@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TransportFeetConnection@3x.png"; sourceTree = "<group>"; };
 		32A63A4C1535FFF400237841 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TransportTripsHeaderCell.xib; sourceTree = "<group>"; };
 		32A77DC116A564460018976F /* UIPopoverController+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPopoverController+Additions.h"; sourceTree = "<group>"; };
 		32A77DC216A564460018976F /* UIPopoverController+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPopoverController+Additions.m"; sourceTree = "<group>"; };
@@ -1397,13 +1421,13 @@
 		27B74CDD19A205E6006B2F17 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				27B74CDE19A205E6006B2F17 /* Images */,
 				3267676019E2C96800365F6D /* RecommendedAppsForCategoryCell.h */,
 				3267676119E2C96800365F6D /* RecommendedAppsForCategoryCell.m */,
 				3267676219E2C96800365F6D /* RecommendedAppsForCategoryCell.xib */,
 				3267676519E2CE4800365F6D /* RecommendedAppCollectionViewCell.h */,
 				3267676619E2CE4800365F6D /* RecommendedAppCollectionViewCell.m */,
 				3267676719E2CE4800365F6D /* RecommendedAppCollectionViewCell.xib */,
-				27B74CDE19A205E6006B2F17 /* Images */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1571,10 +1595,12 @@
 				327585A31844C5B1004215FC /* ArrowSimpleRight@2x.png */,
 				327B0C22175199590011D81E /* ArrowUpRightCircleAccessory.png */,
 				327B0C23175199590011D81E /* ArrowUpRightCircleAccessory@2x.png */,
-				320F8595194EED8C00BF3228 /* ArrowLeftBarButton.png */,
-				320F8596194EED8C00BF3228 /* ArrowLeftBarButton@2x.png */,
-				320F8597194EED8C00BF3228 /* ArrowRightBarButton.png */,
-				320F8598194EED8C00BF3228 /* ArrowRightBarButton@2x.png */,
+				32A37A211A681E780079D208 /* ArrowLeftBarButton.png */,
+				32A37A1A1A681E680079D208 /* ArrowLeftBarButton@2x.png */,
+				32A37A1B1A681E680079D208 /* ArrowLeftBarButton@3x.png */,
+				32A37A181A681E680079D208 /* ArrowRightBarButton.png */,
+				32A37A191A681E680079D208 /* ArrowRightBarButton@2x.png */,
+				32A37A171A681E680079D208 /* ArrowRightBarButton@3x.png */,
 				32C509E417FC60B0005A5635 /* CameraBarButton.png */,
 				32C509E517FC60B0005A5635 /* CameraBarButton@2x.png */,
 				3200374F1811843500901F6A /* CheckmarkRoundedSquare.png */,
@@ -1760,8 +1786,10 @@
 				32A37A111A6810AA0079D208 /* Map@3x.png */,
 				32D0B25C166ABEA100F68304 /* FloorDown.png */,
 				32D0B25D166ABEA200F68304 /* FloorDown@2x.png */,
+				32A37A2B1A6823B50079D208 /* FloorDown@3x.png */,
 				32D0B25E166ABEA200F68304 /* FloorUp.png */,
 				32D0B25F166ABEA200F68304 /* FloorUp@2x.png */,
+				32A37A2D1A6823BE0079D208 /* FloorUp@3x.png */,
 				327188791A67F25D00729D06 /* MapLayersBarButton.png */,
 				3271887A1A67F25D00729D06 /* MapLayersBarButton@2x.png */,
 				3271887B1A67F25D00729D06 /* MapLayersBarButton@3x.png */,
@@ -1884,10 +1912,13 @@
 				32A37A031A680B660079D208 /* FoodLarge@3x.png */,
 				328A131118296E2D00F4C622 /* FoodSmileyHappy.png */,
 				328A131218296E2D00F4C622 /* FoodSmileyHappy@2x.png */,
+				32A37A251A68203B0079D208 /* FoodSmileyHappy@3x.png */,
 				328A131518296E2D00F4C622 /* FoodSmileyMeh.png */,
 				328A131618296E2D00F4C622 /* FoodSmileyMeh@2x.png */,
+				32A37A271A6820400079D208 /* FoodSmileyMeh@3x.png */,
 				328A131918296E2D00F4C622 /* FoodSmileySad.png */,
 				328A131A18296E2D00F4C622 /* FoodSmileySad@2x.png */,
+				32A37A291A6820440079D208 /* FoodSmileySad@3x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -2614,8 +2645,10 @@
 				32A379FB1A6809C90079D208 /* DirectoryLarge@3x.png */,
 				32342A7E17F43347009C05FA /* DirectoryEmptyPicture.png */,
 				32342A7F17F43347009C05FA /* DirectoryEmptyPicture@2x.png */,
+				32A37A151A681D2B0079D208 /* DirectoryEmptyPicture@3x.png */,
 				32574ED4182140AE008F3163 /* DirectoryEmptyPictureSmall.png */,
 				32574ED5182140AE008F3163 /* DirectoryEmptyPictureSmall@2x.png */,
+				32A37A231A681F5C0079D208 /* DirectoryEmptyPictureSmall@3x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -2705,10 +2738,13 @@
 				32A37A0F1A68105A0079D208 /* Transport@3x.png */,
 				327585A61844DE93004215FC /* TransportSmallBus.png */,
 				327585A71844DE93004215FC /* TransportSmallBus@2x.png */,
+				32A37A311A6826290079D208 /* TransportSmallBus@3x.png */,
 				320480C318479D4E00116380 /* TransportSmallBusGreen.png */,
 				320480C418479D4E00116380 /* TransportSmallBusGreen@2x.png */,
+				32A37A2F1A6826200079D208 /* TransportSmallBusGreen@3x.png */,
 				32125BBD1536F215009B8D37 /* TransportFeetConnection.png */,
 				32125BBE1536F215009B8D37 /* TransportFeetConnection@2x.png */,
+				32A37A331A6827160079D208 /* TransportFeetConnection@3x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -3070,6 +3106,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3247495017F33B0D00698A9D /* DirectoryPersonBaseInfoCell.xib in Resources */,
+				32A37A1F1A681E680079D208 /* ArrowLeftBarButton@2x.png in Resources */,
 				32975CF019A34EB600146390 /* InfoPlist.strings in Resources */,
 				3296570B14FF9DDB00C44C12 /* PocketCampus.strings in Resources */,
 				3200375518118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png in Resources */,
@@ -3093,8 +3130,10 @@
 				32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */,
 				32A37A121A6810AA0079D208 /* Map@3x.png in Resources */,
 				32AA25AC1A0A9F1A00146D68 /* MealType_THAI.png in Resources */,
+				32A37A1C1A681E680079D208 /* ArrowRightBarButton@3x.png in Resources */,
 				32506D02181DC41E003F08D7 /* MasterVisible@2x.png in Resources */,
 				32290AD118200A25005869E7 /* FoodSplashDetailView.xib in Resources */,
+				32A37A161A681D2B0079D208 /* DirectoryEmptyPicture@3x.png in Resources */,
 				325F1FC519FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.xib in Resources */,
 				320037511811843500901F6A /* CheckmarkRoundedSquare.png in Resources */,
 				32148A3E18101D6C00AF2F8E /* CamiproLarge@2x.png in Resources */,
@@ -3131,6 +3170,7 @@
 				324151E515375BDD00CCFB22 /* Map.png in Resources */,
 				32FFA797186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png in Resources */,
 				324151E615375BDD00CCFB22 /* Map@2x.png in Resources */,
+				32A37A2C1A6823B50079D208 /* FloorDown@3x.png in Resources */,
 				326E3E3E1963FF7F00017F0C /* CellEmptyPicture@2x.png in Resources */,
 				32CCB4EA1555237500220282 /* MoodlePlugin.strings in Resources */,
 				32DD525619B4DEB600B5B241 /* CloudPrintPlugin.strings in Resources */,
@@ -3163,10 +3203,10 @@
 				321F37E615B02FBE00E7BA6D /* HelpBarButton.png in Resources */,
 				32E637E419D0D25400378788 /* SplashImage5_5inch@3x.png in Resources */,
 				321F37E715B02FBE00E7BA6D /* HelpBarButton@2x.png in Resources */,
+				32A37A2A1A6820440079D208 /* FoodSmileySad@3x.png in Resources */,
 				325F1FBE19FA99AB0019CFCB /* CamiproInfoWidgetCell.xib in Resources */,
 				32506D06181DC7AF003F08D7 /* MasterHidden@2x.png in Resources */,
 				27B74CE719A205E6006B2F17 /* RecommendedApps@2x.png in Resources */,
-				320F859C194EED8C00BF3228 /* ArrowRightBarButton@2x.png in Resources */,
 				327585A81844DE93004215FC /* TransportSmallBus.png in Resources */,
 				32AF214815B197DE00BB445D /* TransportHelp.html in Resources */,
 				3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */,
@@ -3180,6 +3220,7 @@
 				328473F11A49B9DE0091DF26 /* InstitutionLogo@2x.png in Resources */,
 				327513331825465D0037FE00 /* FavoriteCornerSelected.png in Resources */,
 				32B3F3941621956C007A75C7 /* MainMenuView.xib in Resources */,
+				32A37A261A68203B0079D208 /* FoodSmileyHappy@3x.png in Resources */,
 				326F5A8219BDA2D0000693A2 /* CloudPrintStatusView.xib in Resources */,
 				32AA25A91A0A9F1A00146D68 /* MealType_POULTRY.png in Resources */,
 				325C47AB1621D8FC006752B4 /* MainMenuItemCell.xib in Resources */,
@@ -3199,16 +3240,16 @@
 				32E0E316194B1FDD003251CC /* FilterBarButton@2x.png in Resources */,
 				32B13A3F1634B0F4007B54A1 /* MainMenuNavbar.png in Resources */,
 				32B13A401634B0F4007B54A1 /* MainMenuNavbar@2x.png in Resources */,
-				320F859B194EED8C00BF3228 /* ArrowRightBarButton.png in Resources */,
 				3289F2B9183FAB8C00D833C2 /* LocationArrow2Active.png in Resources */,
 				3271887D1A67F25D00729D06 /* MapLayersBarButton@2x.png in Resources */,
 				32DE5B2117F1F8D900E03423 /* DirectoryLarge.png in Resources */,
 				3283C4D51A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib in Resources */,
+				32A37A301A6826200079D208 /* TransportSmallBusGreen@3x.png in Resources */,
 				326E3E3D1963FF7F00017F0C /* CellEmptyPicture.png in Resources */,
-				320F859A194EED8C00BF3228 /* ArrowLeftBarButton@2x.png in Resources */,
 				32574ED6182140AE008F3163 /* DirectoryEmptyPictureSmall.png in Resources */,
 				327513321825465D0037FE00 /* FavoriteCorner@2x.png in Resources */,
 				32A37A141A6817CD0079D208 /* RecommendedApps@3x.png in Resources */,
+				32A37A321A6826290079D208 /* TransportSmallBus@3x.png in Resources */,
 				327585A51844C5B1004215FC /* ArrowSimpleRight@2x.png in Resources */,
 				32C509EB17FC6D73005A5635 /* SortBarButton@2x.png in Resources */,
 				32D6A77B1A4AD6180085D3A5 /* InstitutionLogo@3x.png in Resources */,
@@ -3219,6 +3260,7 @@
 				32ADC71A1659AAEB0039F6A6 /* Download@2x.png in Resources */,
 				32763231166511B700C33DF9 /* MapView-pad.xib in Resources */,
 				327BF2371666043100C67937 /* PushNotifPlugin.strings in Resources */,
+				32A37A281A6820400079D208 /* FoodSmileyMeh@3x.png in Resources */,
 				3267676419E2C96800365F6D /* RecommendedAppsForCategoryCell.xib in Resources */,
 				32AF954A19B39F91008CB161 /* Cross@2x.png in Resources */,
 				32D0B260166ABEA200F68304 /* FloorDown.png in Resources */,
@@ -3229,7 +3271,9 @@
 				32D0B263166ABEA200F68304 /* FloorUp@2x.png in Resources */,
 				329CA503166D452E00F7B1AE /* SettingsBarButton.png in Resources */,
 				32AA259F1A0A9F1A00146D68 /* MealType_INDIAN@3x.png in Resources */,
+				32A37A221A681E780079D208 /* ArrowLeftBarButton.png in Resources */,
 				329CA504166D452E00F7B1AE /* SettingsBarButton@2x.png in Resources */,
+				32A37A341A6827160079D208 /* TransportFeetConnection@3x.png in Resources */,
 				32CE952519DDDF950071F987 /* CamiproWidget.storyboard in Resources */,
 				32035BB5166E988600E134DD /* MoodleFileView.xib in Resources */,
 				324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */,
@@ -3239,6 +3283,7 @@
 				32AA25781A0A95D100146D68 /* MealType_MEAT@3x.png in Resources */,
 				325F1FB919FA95470019CFCB /* CloudPrintExtensionSafari.png in Resources */,
 				32A37A021A680B620079D208 /* Food@3x.png in Resources */,
+				32A37A241A681F5C0079D208 /* DirectoryEmptyPictureSmall@3x.png in Resources */,
 				32AA25B01A0A9F1A00146D68 /* MealType_UNKNOWN@2x.png in Resources */,
 				327412DB167E776A001E8C62 /* DownloadedCorner@2x.png in Resources */,
 				32A379FC1A6809C90079D208 /* DirectoryLarge@3x.png in Resources */,
@@ -3261,6 +3306,7 @@
 				3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */,
 				32AF954819B39F91008CB161 /* Cross.png in Resources */,
 				323676C316BDB42D0004D5AD /* AppLogoCellImage@2x.png in Resources */,
+				32A37A201A681E680079D208 /* ArrowLeftBarButton@3x.png in Resources */,
 				32AA25AF1A0A9F1A00146D68 /* MealType_UNKNOWN.png in Resources */,
 				323676C516BDB5300004D5AD /* AppLogoCellImage.png in Resources */,
 				323676C816BDB6620004D5AD /* FacebookLikeCellImage.png in Resources */,
@@ -3273,6 +3319,7 @@
 				329E1B3B16E693130054C3A8 /* FavoriteNavBarButton.png in Resources */,
 				329E1B3C16E693130054C3A8 /* FavoriteNavBarButton@2x.png in Resources */,
 				329E1B3F16E696F80054C3A8 /* FavoriteGlowNavBarButton.png in Resources */,
+				32A37A2E1A6823BE0079D208 /* FloorUp@3x.png in Resources */,
 				326F5A7A19BCF135000693A2 /* CloudPrintMultiPageLayoutCell.xib in Resources */,
 				329E1B4016E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png in Resources */,
 				32150DD5197D693300CCF2AB /* LinkIcon@2x.png in Resources */,
@@ -3294,10 +3341,12 @@
 				32C509EA17FC6D73005A5635 /* SortBarButton.png in Resources */,
 				325F1FBB19FA95470019CFCB /* CloudPrintExtensionSafari@2x.png in Resources */,
 				32DE5B2517F1FB6800E03423 /* DirectoryPersonView.xib in Resources */,
+				32A37A1D1A681E680079D208 /* ArrowRightBarButton.png in Resources */,
 				32AA25A81A0A9F1A00146D68 /* MealType_PIZZA@3x.png in Resources */,
 				32A379FE1A680A7C0079D208 /* Events@3x.png in Resources */,
 				32A37A0A1A680D970079D208 /* News@3x.png in Resources */,
 				32AEEC831747C11C006DBA2F /* CamiproView~iphone.xib in Resources */,
+				32A37A1E1A681E680079D208 /* ArrowRightBarButton@2x.png in Resources */,
 				325F1FC719FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib in Resources */,
 				32A37A041A680B660079D208 /* FoodLarge@3x.png in Resources */,
 				32C450B01824137B000C99A3 /* FoodMealCell.xib in Resources */,
@@ -3326,7 +3375,6 @@
 				32A379FA1A6809B80079D208 /* Directory@3x.png in Resources */,
 				3289F2B7183FAB8C00D833C2 /* LocationArrow2.png in Resources */,
 				32AA25AE1A0A9F1A00146D68 /* MealType_THAI@3x.png in Resources */,
-				320F8599194EED8C00BF3228 /* ArrowLeftBarButton.png in Resources */,
 				320480C618479D4E00116380 /* TransportSmallBusGreen@2x.png in Resources */,
 				324FD733176574DD0003EE30 /* CamiproTransactionCell.xib in Resources */,
 				32AA25761A0A95D100146D68 /* MealType_MEAT.png in Resources */,

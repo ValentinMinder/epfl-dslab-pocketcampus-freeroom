@@ -391,7 +391,8 @@
         if (viewController) {
             [self.navigationController pushViewController:viewController animated:YES];
         } else {
-            [[UIApplication sharedApplication] openURL:url];
+            PCWebViewController* webViewController = [[PCWebViewController alloc] initWithURL:url title:nil];
+            [self.navigationController pushViewController:webViewController animated:YES];
             [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         }
     } else {
