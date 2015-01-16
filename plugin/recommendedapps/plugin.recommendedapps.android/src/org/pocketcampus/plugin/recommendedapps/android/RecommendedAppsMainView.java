@@ -70,7 +70,6 @@ public class RecommendedAppsMainView extends PluginView implements
 		mLayout = new StandardTitledLayout(this);
 
 		// The ActionBar is added automatically when you call setContentView
-		setContentView(mLayout);
 		mLayout.hideTitle();
 
 		mLayout.setText(getString(R.string.recommendedapps_downloading));
@@ -98,37 +97,18 @@ public class RecommendedAppsMainView extends PluginView implements
 
 	@Override
 	public void networkErrorHappened() {
-		mLayout.setText(getString(R.string.recommendedapps_connection_error_happened));
-		Toast.makeText(
-				getApplicationContext(),
-				getResources().getString(
-						R.string.recommendedapps_connection_error_happened),
-				Toast.LENGTH_SHORT).show();
-
+		setUnrecoverableErrorOccurred(getString(R.string.recommendedapps_connection_error_happened));
 	}
 
 	@Override
 	public void serverDown() {
-		mLayout.setText(getString(R.string.recommendedapps_error_recommendedapps_down));
-		Toast.makeText(
-				getApplicationContext(),
-				getResources().getString(
-						R.string.recommendedapps_error_recommendedapps_down),
-				Toast.LENGTH_SHORT).show();
-
+		setUnrecoverableErrorOccurred(getString(R.string.recommendedapps_error_recommendedapps_down));
 	}
 
 	@Override
 	public void recommendedAppsRefreshed() {
-		int stubImage = android.R.drawable.ic_popup_sync;
-		int imageForEmptyUri = android.R.drawable.ic_menu_gallery;
-		int imageOnFail = android.R.drawable.ic_menu_report_image;
+		setContentView(mLayout);
 
-		final DisplayImageOptions options = new DisplayImageOptions.Builder()
-				.showStubImage(stubImage)
-				.showImageForEmptyUri(imageForEmptyUri)
-				.showImageOnFail(imageOnFail).cacheInMemory().cacheOnDisc()
-				.build();
 		System.out.println(mModel.apps());
 		System.out.println(mModel.categories());
 
@@ -148,15 +128,29 @@ public class RecommendedAppsMainView extends PluginView implements
 			((TextView) categoryLayout
 					.findViewById(R.id.recommendedAppCategoryName))
 					.setText(category.getCategoryName());
-			((TextView) categoryLayout
-					.findViewById(R.id.recommendedAppCategoryDescription))
-					.setText(category.getCategoryDescription());
+
+			if (category.getCategoryDescription() != null && category.getCategoryDescription().length() > 0) {
+				((TextView) categoryLayout
+						.findViewById(R.id.recommendedAppCategoryDescription))
+						.setText(category.getCategoryDescription());
+			} else {
+				categoryLayout.findViewById(
+						R.id.recommendedAppCategoryDescription).setVisibility(
+						View.GONE);
+			}
 			LinearLayout appLayout = (LinearLayout) categoryLayout
 					.findViewById(R.id.recommendedAppCategoryApps);
 			for (int appId : category.getAppIds()) {
 				final RecommendedApp app = apps.get(appId);
 				final LinearLayout appThumbLayout = (LinearLayout) inflater
 						.inflate(R.layout.appstore_appthumbnail, null);
+
+				((TextView) appThumbLayout
+						.findViewById(R.id.recommendedAppName)).setText(app
+						.getAppName());
+				((TextView) appThumbLayout
+						.findViewById(R.id.recommendedAppDescription))
+						.setText(app.getAppDescription());
 
 				appLayout.addView(appThumbLayout);
 				appThumbLayout.setOnClickListener(new OnClickListener() {
@@ -167,15 +161,18 @@ public class RecommendedAppsMainView extends PluginView implements
 						final String appPackageName = app.getAppStoreQuery();
 
 						if (isAppInstalled(appPackageName)) {
-							String startingAppParameter = app.getAppOpenURLPattern();
-							if(startingAppParameter != null){
-								
-								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(startingAppParameter)));
+							String startingAppParameter = app
+									.getAppOpenURLPattern();
+							if (startingAppParameter != null) {
+
+								startActivity(new Intent(Intent.ACTION_VIEW,
+										Uri.parse(startingAppParameter)));
 							} else {
 								Intent launchIntent = getPackageManager()
-										.getLaunchIntentForPackage(appPackageName);
+										.getLaunchIntentForPackage(
+												appPackageName);
 								startActivity(launchIntent);
-								
+
 							}
 							return;
 						}
@@ -267,8 +264,7 @@ public class RecommendedAppsMainView extends PluginView implements
 									.displayImage(
 											jsonResponse.getString("icon_72"),
 											(ImageView) appThumbLayout
-													.findViewById(R.id.recommendedAppLogo),
-											options);
+													.findViewById(R.id.recommendedAppLogo));
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

@@ -1,104 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/authentication_customloginpageLayout"
-    style="@style/Dialog"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
-     
-    
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/authentication_dialog_top"
-        style="@style/Dialog.Top"
+    <org.droidparts.widget.ClearableEditText
+        android:id="@+id/authentication_username"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:hint="@string/authentication_string_username_hint"
+        android:singleLine="true" >
+
+        <requestFocus />
+    </org.droidparts.widget.ClearableEditText>
+
+    <org.droidparts.widget.ClearableEditText
+        android:id="@+id/authentication_password"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:hint="@string/authentication_string_password_hint"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/authentication_notfromepfl"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="0dp"
+        android:gravity="right"
+        android:text="@string/authentication_not_from_epfl"
+        android:textStyle="bold" />
 
-            <TextView
-            android:id="@+id/authentication_dialog_title"
-            style="@style/DialogText.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/authentication_plugin_title" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/authentication_dialog_middle"
-        style="@style/Dialog.Middle"
+    <CheckBox
+        android:id="@+id/authentication_staylogged_cb"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/authentication_dialog_top"
-        android:gravity="center"
-        android:orientation="vertical" >
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:checked="true"
+        android:text="@string/authentication_string_staysignedin"
+        android:textColor="@android:color/primary_text_light" />
 
-	
-	    <EditText
-	        android:id="@+id/authentication_username"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="5dp"
-	        android:layout_marginLeft="5dp"
-	        android:layout_marginRight="5dp"
-	        android:hint="@string/authentication_string_username_hint"
-	        android:singleLine="true" >
-	
-	        <requestFocus />
-	    </EditText>
-	
-	    <EditText
-	        android:id="@+id/authentication_password"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="15dp"
-	        android:layout_marginLeft="5dp"
-	        android:layout_marginRight="5dp"
-	        android:hint="@string/authentication_string_password_hint"
-	        android:inputType="textPassword" />
-
-	    <TextView 
-	        android:id="@+id/authentication_notfromepfl"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:gravity="right"
-	        android:layout_marginTop="0dp"
-	        android:layout_marginLeft="5dp"
-	        android:layout_marginRight="5dp"
-	        android:textStyle="bold"
-	        android:text="@string/authentication_not_from_epfl"
-	        />
-	    
-	    <CheckBox
-	        android:id="@+id/authentication_staylogged_cb"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="5dp"
-	        android:layout_marginLeft="5dp"
-	        android:layout_marginRight="5dp"
-	        android:checked="true"
-	        android:textColor="@android:color/primary_text_light"
-	        android:text="@string/authentication_string_staysignedin" />
-	    
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/authentication_dialog_bottom"
-        style="@style/Dialog.Bottom"
+    <Button
+        android:id="@+id/authentication_loginbutton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/authentication_dialog_middle"
-        android:orientation="horizontal" >
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginTop="3dp"
+        android:background="@color/epfl_corrected_red"
+        android:enabled="true"
+        android:text="@string/authentication_string_login"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:typeface="sans" />
 
-	    <Button
-	        android:id="@+id/authentication_loginbutton"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="3dp"
-	        android:layout_marginLeft="100dp"
-	        android:layout_marginRight="100dp"
-	        android:enabled="true"
-	        android:text="@string/authentication_string_login" />
-    </LinearLayout>
-        
-
-</RelativeLayout>
+</LinearLayout>

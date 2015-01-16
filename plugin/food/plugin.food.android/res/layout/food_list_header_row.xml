@@ -1,61 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-	android:background="@color/smoke"
-    android:padding="0dip" >
-    
-        
-		    
-		<TextView  
-			android:id="@+id/food_list_header_title"  
-			android:layout_width="fill_parent"   
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="5dip"  
-			android:layout_marginTop="2dip"  
-			android:paddingTop="0dip"  
-			android:paddingBottom="0dip"  
-			android:paddingLeft="0dip"  
-			android:textColor="@android:color/white"
-			android:background="@color/smoke"
-			android:text="Helo"
-			style="?android:attr/listSeparatorTextViewStyle" 
-		/>      
-		
-		
-		<TextView  
-			android:id="@+id/food_list_header_satisfaction"
-			android:layout_below="@+id/food_list_header_title"
-			android:layout_alignLeft="@+id/food_list_header_title"  
-			android:layout_alignParentBottom="true"
-			android:layout_width="wrap_content"   
-			android:layout_height="wrap_content"  
-			android:layout_marginLeft="10dip"  
-			android:layout_marginBottom="3dip"  
-			android:paddingTop="0dip"  
-			android:paddingBottom="3dip"  
-			android:paddingLeft="0dip"
-			android:textColor="@android:color/white"
-			android:background="@color/smoke"
-			android:text="Alo"
-		/>      
-	    
+    style="@style/PocketCampusRow" >
 
-		<TextView  
-			android:id="@+id/food_list_header_map"
-			android:layout_below="@+id/food_list_header_title"
-			android:layout_toRightOf="@+id/food_list_header_satisfaction"  
-			android:layout_width="wrap_content"   
-			android:layout_height="wrap_content"  
-			android:layout_marginLeft="15dip"  
-			android:paddingTop="0dip"  
-			android:paddingBottom="0dip"  
-			android:paddingLeft="0dip"  
-			android:textColor="#f48484"
-			android:background="@color/smoke"
-			android:text="mappp"
-		/>      
-	    
-		
+    <TextView
+        android:id="@+id/food_list_header_title"
+        style="@style/PocketCampusListSectionHeader"
+        android:text="Restaurant" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/food_list_header_title"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/food_list_header_title"
+        android:orientation="horizontal"
+        android:paddingLeft="5dip">
+
+        <TextView
+            android:id="@+id/food_list_header_satisfaction"
+            style="@style/PocketCampusListItemSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:text="Alo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/food_list_header_map"
+            style="@style/PocketCampusListItemSubTitle"
+            android:text="mappp"
+            android:textColor="@color/epfl_corrected_red" />
+    </LinearLayout>
 
 </RelativeLayout>

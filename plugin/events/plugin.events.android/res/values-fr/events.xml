@@ -23,5 +23,9 @@
 	<string name="events_email_popup_title">Envoyer par e-mail</string>
 	<string name="events_email_popup_body">Adresse e-mail pour envoyer vos éléments favoris</string>
 	<string name="events_ok">OK</string>
+	<string name="events_camera">Scanner le code QR</string>
+	<string name="events_email">Envoyer par email</string>
+	<string name="events_choose_period">Changer la période</string>
+	<string name="events_past_events">Voir evènements passés</string>
     		
 </resources>

@@ -9,6 +9,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import android.content.Context;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -50,7 +51,7 @@ public class LazyAdapter extends BaseAdapter {
 	    //noImage = android.R.drawable.ic_menu_recent_history;
 	    //noImage = android.R.drawable.ic_menu_add;
 	    noImage = android.R.drawable.ic_menu_gallery;
-	    imageOnLoading = android.R.drawable.ic_popup_sync;
+//	    imageOnLoading = android.R.drawable.ic_popup_sync;
 	    imageForEmptyUri = android.R.drawable.ic_menu_gallery;
 	    imageOnFail = android.R.drawable.ic_menu_report_image;
 		createOptions();
@@ -125,8 +126,9 @@ public class LazyAdapter extends BaseAdapter {
       
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
-        if(convertView==null)
+        if(convertView==null){
             vi = inflater.inflate(resourceToInflate, null);
+        }
         
         Map<String, ?> song = data.get(position);
         

@@ -13,14 +13,14 @@
 
 chdir(dirname(__FILE__));
 
-$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Map", "Directory", "PushNotif", "Events", "CloudPrint", "IsAcademia", "RecommendedApps", "FreeRoom");
+$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food"/*, "Transport"*/, "News", "Map", "Directory", "PushNotif", "Events", /*"CloudPrint",*/ "IsAcademia", "RecommendedApps"/*, "FreeRoom"*/);
 
 $libs_to_export = array(
 		"android-support-v4.jar",
 		"commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar",
 		"gcm.jar",
 		"httpclient-4.3.5.jar", "httpcore-4.3.2.jar", "httpmime-4.3.5.jar",
-		"libGoogleAnalyticsServices.jar", "libthrift-0.7.0.jar",
+		"libGoogleAnalyticsServices.jar", "libthrift-0.9.2.jar", "javax.annotation.jar", 
 		"osmdroid-android-3.0.3.jar",
 		"popup-menu-compat-lib.jar",
 		"servlet-api-3.0.jar", "slf4j-api-1.6.2.jar", 
@@ -79,13 +79,13 @@ function generate_android_manifest($output_dir, $is_lib){
 	$app = $doc->createElement("application");
 	$manif->appendChild($app);
 	$app->setAttribute("android:label", "@string/app_name");
-	$app->setAttribute("android:theme", "@style/PocketCampusTheme");
+	$app->setAttribute("android:theme", "@style/PocketCampusActionBarTheme");
 	$app->setAttribute("android:icon", "@drawable/app_icon");
 	$app->setAttribute("android:name", "org.pocketcampus.platform.android.core.GlobalContext");
 
 	$sdk = $doc->createElement("uses-sdk");
 	$manif->appendChild($sdk);
-	$sdk->setAttribute("android:minSdkVersion", "8");
+	$sdk->setAttribute("android:minSdkVersion", "15");
 
 	if(!$is_lib) {
 		foreach($plugins_to_merge as $plgn) {
@@ -213,7 +213,7 @@ EOS;
 }
 
 function generate_project_properties($output_dir, $is_lib, $refs){
-	$content = "target=android-10\n";
+	$content = "target=android-15\n";
 	if($is_lib)
 		$content .= "android.library=true\n";
 	$i = 1;

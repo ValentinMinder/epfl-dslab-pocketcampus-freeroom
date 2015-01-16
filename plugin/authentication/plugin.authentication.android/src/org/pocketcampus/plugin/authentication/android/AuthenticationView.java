@@ -20,7 +20,6 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -65,14 +64,6 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	}
 	
 	/**
-	 * Disables the Activity Title.
-	 */
-	@Override
-	protected void onPreCreate() {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-	}
-	
-	/**
 	 * Builds the Activity/View.
 	 * 
 	 * Called once the view is connected to the controller.
@@ -86,7 +77,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		mModel = (AuthenticationModel) controller.getModel();
 		
 		// The ActionBar is added automatically when you call setContentView, unless we disable it :-)
-		disableActionBar();
+//		disableActionBar();
 	}
 	
 	@Override

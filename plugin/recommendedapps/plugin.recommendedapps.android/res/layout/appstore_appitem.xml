@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    style="@style/PocketCampusRow"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
         <ImageView
+            style="@style/PocketCampusThumbnail"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
             android:src="@drawable/recommendedapps_info" />
 
         <TextView
             android:id="@+id/recommendedAppDisclaimer"
-            android:layout_height="match_parent"
+            style="@style/PocketCampusListItemSubTitle"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
+            android:maxLines="100"
             android:text="@string/recommendedapps_disclaimer" >
         </TextView>
     </LinearLayout>

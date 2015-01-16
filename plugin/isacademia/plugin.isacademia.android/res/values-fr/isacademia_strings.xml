@@ -2,23 +2,19 @@
 <resources>
 
     <string name="isacademia_plugin_title">IS-Academia</string>
-    
     <string name="isacademia_schedule_for">Horaires du %s</string>
     <string name="isacademia_no_classes_on">Pas de cours le %s</string>
     <string name="isacademia_network_error">Une erreur de connexion s\'est produite\nlors du chargement des horaires du\n%s</string>
-    
     <string name="isacademia_go_to_date">Aller à</string>
-    
     <string name="isacademia_period_type_LECTURE">Cours</string>
     <string name="isacademia_period_type_EXERCISES">Exercises</string>
     <string name="isacademia_period_type_LAB">Labo</string>
     <string name="isacademia_period_type_PROJECT">Projet</string>
     <string name="isacademia_period_type_ORAL_EXAM">Oral</string>
     <string name="isacademia_period_type_WRITTEN_EXAM">Ecrit</string>
-
     <string name="isacademia_show_on_map">Visualiser sur la carte</string>
-    
     <string name="isacademia_error_isacademia_down">PocketCampus a essayé de se connecter aux serveurs IsAcademia, mais ils semblent hors-ligne.</string>
-    
-    
+    <string name="isacademia_yesterday">See yesterday\'s schedule</string>
+    <string name="isacademia_tomorrow">See tomorrow\'s schedule</string>
+
 </resources>

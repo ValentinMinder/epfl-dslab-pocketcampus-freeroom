@@ -24,7 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.markupartist.android.widget.ActionBar.Action;
+import com.markupartist.android.widget.Action;
 
 /**
  * 
@@ -57,7 +57,13 @@ public class DashboardView extends PluginView {
 			public int getDrawable() {
 				return R.drawable.dashboard_settings;
 			}
+			@Override
+			public String getDescription() {
+				return getString(R.string.dashboard_settings);
+			}
+			
 		});
+		getActionBar().setDisplayHomeAsUpEnabled(false);
 	}
 	
 	@Override

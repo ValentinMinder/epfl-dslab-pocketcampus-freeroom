@@ -6,30 +6,28 @@
 
     <ImageView
         android:id="@+id/recommendedAppLogo"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginLeft="10dp"
-        android:layout_gravity="center_vertical"/>
+        style="@style/PocketCampusThumbnail"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:layout_gravity="top" />
 
     <LinearLayout
-        android:layout_width="120dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="10dp"
+        android:layout_width="170dp"
+        android:layout_height="70dp"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/recommendedAppName"
+            style="@style/PocketCampusListItemTitle"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:text="App name"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:text="App name" />
 
         <TextView
-            android:layout_marginTop="10dp"
             android:id="@+id/recommendedAppDescription"
+            style="@style/PocketCampusListItemSubTitle"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:text="App description" />
+            android:maxLines="5"
+            android:text="App\ndescription" />
     </LinearLayout>
+
 </LinearLayout>

@@ -7,7 +7,6 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/platform.shared"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.7.0.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.android"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

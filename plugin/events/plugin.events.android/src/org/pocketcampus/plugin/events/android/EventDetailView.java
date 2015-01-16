@@ -302,14 +302,12 @@ public class EventDetailView extends PluginView implements IEventsView {
 	
 	@Override
 	public void networkErrorHappened() {
-		Toast.makeText(getApplicationContext(), getResources().getString(
-				R.string.sdk_connection_error_happened), Toast.LENGTH_SHORT).show();
+		setUnrecoverableErrorOccurred(getString(R.string.sdk_connection_error_happened));
 	}
 	
 	@Override
 	public void mementoServersDown() {
-		Toast.makeText(getApplicationContext(), getResources().getString(
-				R.string.sdk_upstream_server_down), Toast.LENGTH_SHORT).show();
+		setUnrecoverableErrorOccurred(getString(R.string.sdk_upstream_server_down));
 	}
 
 	@Override

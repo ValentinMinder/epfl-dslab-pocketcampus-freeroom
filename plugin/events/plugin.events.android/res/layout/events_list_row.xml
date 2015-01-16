@@ -1,88 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    style="@style/PocketCampusRow" >
 
-    android:orientation="horizontal"
-    android:padding="5dip" >
+    <!-- ListRow Left sied Thumbnail image -->
 
-	<!--  ListRow Left sied Thumbnail image -->
-	<LinearLayout android:id="@+id/event_thumbnail_container" 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:padding="3dip"		
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/pocketcampus_image_border" 
-	    android:layout_marginRight="5dip">
-        
-		<ImageView     
-			android:id="@+id/event_thumbnail"   
-	        android:layout_width="50dip"
-	        android:layout_height="50dip"/>
-        
-	</LinearLayout>
-    
-	<!-- Title Of Song-->
+    <ImageView
+        android:id="@+id/event_thumbnail"
+        style="@style/PocketCampusThumbnail"
+        android:layout_width="64dip"
+        android:layout_height="64dip" />
+
+    <!-- Title Of Song -->
+
     <TextView
         android:id="@+id/event_title"
-        android:singleLine="true"
-        android:scrollHorizontally="true"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/event_thumbnail_container"
-        android:layout_toRightOf="@+id/event_thumbnail_container"
-        android:text="Rihanna Love the way lie"
-        android:textColor="#040404"
-        android:typeface="sans" 
-        android:layout_marginRight="30dip"
+        style="@style/PocketCampusListItemTitle"
+        android:layout_alignTop="@id/event_thumbnail"
         android:layout_marginTop="-5dip"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:layout_toRightOf="@id/event_thumbnail"
+        android:text="Rihanna Love the way lie" />
 
-	<!-- Artist Name -->
+    <!-- Artist Name -->
+
     <TextView
         android:id="@+id/event_speaker"
-        android:singleLine="true"
-        android:scrollHorizontally="true"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        style="@style/PocketCampusListItemSubTitle"
         android:layout_below="@id/event_title"
-        android:textColor="#343434"
-        android:textSize="13sp"
-        android:layout_marginTop="1dip"
-        android:layout_marginRight="15dip"
-        android:layout_toRightOf="@+id/event_thumbnail_container"
-        android:text="Just gona stand there and ..." />
+        android:layout_toRightOf="@id/event_thumbnail" />
 
-	<!-- Rightend Duration -->
+    <!-- Rightend Duration -->
+
     <TextView
         android:id="@+id/event_time"
+        style="@style/PocketCampusListItemSubTitle"
+        android:layout_below="@id/event_speaker"
+        android:layout_toRightOf="@id/event_thumbnail"
+        android:text="5:45" />
+
+    <!-- Rightend Arrow -->
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignBottom="@id/event_thumbnail_container"
-        android:gravity="right"
-        android:text="5:45"
-        android:layout_marginRight="5dip"
-        android:textSize="13sp"
-        android:textColor="#10bcc9"
-        android:textStyle="bold"/>
-      
-     <!-- Rightend Arrow -->    
-     <ImageView android:layout_width="wrap_content"
-     	android:layout_height="wrap_content"
-     	android:src="@drawable/pocketcampus_list_arrow"
-     	android:layout_alignParentRight="true"
-     	android:layout_centerVertical="true"/>
-     
-     <!-- android:src="@android:drawable/star_off" -->
-     <ImageView
-         android:id="@+id/event_fav_star"
-         android:layout_width="25dip"
-         android:layout_height="25dip"
-         android:layout_marginTop="-3dip"
-         android:layout_alignParentRight="true"
-         android:layout_alignParentTop="true"
-          />
-     
+        android:layout_centerVertical="true"
+        android:src="@drawable/pocketcampus_list_arrow" />
+
 </RelativeLayout>
