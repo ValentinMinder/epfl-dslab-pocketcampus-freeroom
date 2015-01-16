@@ -36,6 +36,7 @@ extern NSString* const kPCUtilsExtensionFolder;
 @interface PCUtils : NSObject
 
 + (BOOL)isRetinaDevice;
++ (BOOL)is3_5inchDevice;
 + (BOOL)is4inchDevice;
 + (BOOL)is4_7inchDevice;
 + (BOOL)is5_5inchDevice;

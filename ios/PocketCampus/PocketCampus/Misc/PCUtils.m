@@ -39,28 +39,23 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 @implementation PCUtils
 
 + (BOOL)isRetinaDevice{
-    return ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))?1:0;
+    return [UIScreen mainScreen].scale >= 2.0;
+}
+
++ (BOOL)is3_5inchDevice {
+    return ([UIScreen mainScreen].bounds.size.height == 480);
 }
 
 + (BOOL)is4inchDevice {
-    if ([UIScreen mainScreen].bounds.size.height == 568) {
-        return YES;
-    }
-    return NO;
+    return ([UIScreen mainScreen].bounds.size.height == 568);
 }
 
 + (BOOL)is4_7inchDevice {
-    if ([UIScreen mainScreen].bounds.size.height == 667) {
-        return YES;
-    }
-    return NO;
+    return ([UIScreen mainScreen].bounds.size.height == 667);
 }
 
 + (BOOL)is5_5inchDevice {
-    if ([UIScreen mainScreen].bounds.size.height == 736) {
-        return YES;
-    }
-    return NO;
+    return ([UIScreen mainScreen].bounds.size.height == 736);
 }
 
 + (BOOL)isIdiomPad {
