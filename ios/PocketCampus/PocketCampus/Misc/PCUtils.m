@@ -66,6 +66,22 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
     return pad;
 }
 
++ (NSString*)pathForImageResource:(NSString*)resourceName {
+    [PCUtils throwExceptionIfObject:resourceName notKindOfClass:[NSString class]];
+    return [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%@%@", resourceName, [PCUtils postfixForResources]] ofType:@"png"];
+}
+
++ (NSString*)postfixForResources {
+    CGFloat scale = [UIScreen mainScreen].scale;
+    if (scale == 2.0) {
+        return @"@2x";
+    }
+    if (scale == 3.0) {
+        return @"@3x";
+    }
+    return @"";
+}
+
 + (BOOL)isOSVersionSmallerThan:(float)version {
     return [[UIDevice currentDevice].systemVersion floatValue] < version;
 }

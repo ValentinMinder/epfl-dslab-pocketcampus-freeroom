@@ -41,6 +41,17 @@ extern NSString* const kPCUtilsExtensionFolder;
 + (BOOL)is4_7inchDevice;
 + (BOOL)is5_5inchDevice;
 + (BOOL)isIdiomPad;
+
+/**
+ * Similar to [[NSBundle mainBundle] pathForResource:] but will add retina postfix if necessary
+ */
++ (NSString*)pathForImageResource:(NSString*)resourceName;
+
+/**
+ * @return "@2x", "@3x" or "" (empty string) depending on device's screeen
+ */
++ (NSString*)postfixForResources;
+
 + (BOOL)isOSVersionSmallerThan:(float)version;
 + (BOOL)isOSVersionGreaterThanOrEqualTo:(float)version;
 + (float)OSVersion;
