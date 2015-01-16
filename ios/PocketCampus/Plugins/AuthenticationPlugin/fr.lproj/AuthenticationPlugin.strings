@@ -12,8 +12,8 @@
 "Logout" = "Déconnexion";
 "LoggedInAsWithFormat" = "Connecté en tant que «%@»";
 
-"GasparAccountRequiredFor" = "Votre compte Gaspar est requis pour\ncertains services comme Camipro, Moodle ou IS-Academia.";
-"PasswordSavedAndPolicy" = "Votre mot de passe est stocké de manière\nsécurisée dans le trousseau iOS.\n\nLe mot de passe est envoyé directement au serveur d'authentification de l'EPFL (Tequila) via une connection sécurisée.";
+"GasparAccountRequiredFor" = "Votre compte Gaspar est requis pour certains services comme Camipro, Moodle ou IS-Academia.";
+"PasswordSavedAndPolicy" = "Votre mot de passe est stocké de manière sécurisée dans le trousseau iOS.\n\nLe mot de passe est envoyé directement au serveur d'authentification de l'EPFL (Tequila) via une connection sécurisée.";
 "PasswordNotSavedAndPolicy" = "Votre mot de passe n'a pas été sauvegardé. Vous devrez l'entrer à nouveau après 1 heure d'inactivité.";
 "WillSavePasswordAndPolicy" = "Votre mot de passe sera stocké de manière\nsécurisée dans le trousseau iOS et envoyé directement au serveur d'authentification de l'EPFL (Tequila) via une connection sécurisée.";
 "WillNotSavePasswordAndPolicy" = "Vous devrez à nouveau entrer votre mot de passe après 1 heure d'inactivité.\n\nLe mot de passe sera envoyé directement au serveur d'authentification de l'EPFL (Tequila) via une connection sécurisée.";
