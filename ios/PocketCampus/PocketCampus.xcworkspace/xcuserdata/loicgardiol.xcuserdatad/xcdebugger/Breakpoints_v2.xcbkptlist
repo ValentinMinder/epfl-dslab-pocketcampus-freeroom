@@ -104,11 +104,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainMenuViewController.m"
-            timestampString = "443096917.993041"
+            timestampString = "443098512.211545"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "345"
-            endingLineNumber = "345"
+            startingLineNumber = "348"
+            endingLineNumber = "348"
             landmarkName = "-tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
