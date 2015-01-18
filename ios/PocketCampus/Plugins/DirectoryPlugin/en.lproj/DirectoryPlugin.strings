@@ -2,7 +2,7 @@
 
 "PluginName" = "Directory";
 "SearchFieldPlaceholder" = "Name, sciper, unit, phone";
-"NoResult" = "No result";
+"NoResult" = "No results";
 "OfficeLabel" = "office";
 "NoContactSelected" = "No contact selected";
 "PhotoButtonTitle" = "Photo";
