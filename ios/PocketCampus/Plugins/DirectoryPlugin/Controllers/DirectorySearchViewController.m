@@ -197,16 +197,8 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
 - (void)showNoResultMessage {
     [self.barActivityIndicator stopAnimating];
     self.tableView.hidden = YES;
-    self.backgroundIcon.hidden = YES;
-    
-    NSString* noResultString = NSLocalizedStringFromTable(@"NoResult", @"DirectoryPlugin", nil);
-    NSString* tryExactSpellingString = NSLocalizedStringFromTable(@"TryExactSpelling", @"DirectoryPlugin", nil);
-    NSString* finalString = [NSString stringWithFormat:@"%@\n%@", noResultString, tryExactSpellingString];
-    NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:finalString];
-    [attrString addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] range:[finalString rangeOfString:noResultString]];
-    [attrString addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1] range:[finalString rangeOfString:tryExactSpellingString]];
-    
-    self.messageLabel.attributedText = attrString;
+    self.backgroundIcon.hidden = YES;    
+    self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"NoResult", @"DirectoryPlugin", nil) attributes:@{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]}];
     self.messageLabel.hidden = NO;
 }
 
