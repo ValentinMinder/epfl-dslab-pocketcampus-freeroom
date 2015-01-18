@@ -71,9 +71,10 @@
                 <constraint firstAttribute="trailing" secondItem="15" secondAttribute="trailing" constant="10" id="5Ba-st-oaJ"/>
                 <constraint firstItem="6" firstAttribute="top" secondItem="1" secondAttribute="top" constant="64" id="93S-lr-wyA"/>
                 <constraint firstItem="15" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="ERk-ly-9Pa"/>
+                <constraint firstItem="15" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6" secondAttribute="bottom" constant="20" id="Emb-xK-Jak"/>
                 <constraint firstAttribute="trailing" secondItem="7" secondAttribute="trailing" id="Ixk-rS-ZI1"/>
+                <constraint firstAttribute="centerY" secondItem="15" secondAttribute="centerY" priority="750" constant="120" id="RaE-vb-yHR"/>
                 <constraint firstAttribute="centerX" secondItem="22" secondAttribute="centerX" id="VXG-Fu-NAf"/>
-                <constraint firstItem="15" firstAttribute="centerY" secondItem="22" secondAttribute="centerY" id="YYV-MZ-cYx"/>
                 <constraint firstItem="6" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="awp-4B-Di0"/>
                 <constraint firstItem="6" firstAttribute="trailing" secondItem="18" secondAttribute="trailing" constant="42" id="c8p-2P-GeD"/>
                 <constraint firstAttribute="trailing" secondItem="6" secondAttribute="trailing" id="gQ8-Df-ui2"/>
@@ -83,6 +84,7 @@
                 <constraint firstItem="6" firstAttribute="centerY" secondItem="18" secondAttribute="centerY" id="uBm-gO-Yb0"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+            <point key="canvasLocation" x="113" y="253"/>
         </view>
     </objects>
     <resources>

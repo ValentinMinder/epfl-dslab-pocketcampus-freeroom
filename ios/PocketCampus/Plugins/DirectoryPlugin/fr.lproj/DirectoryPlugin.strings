@@ -2,7 +2,8 @@
 
 "PluginName" = "Annuaire";
 "SearchFieldPlaceholder" = "Nom, sciper, unité, téléphone";
-"SearchNoResult" = "Aucun résultat\nEssayez avec l'orthographe exacte (accents)";
+"NoResult" = "Aucun résultat";
+"TryExactSpelling" = "Avez-vous essayé avec la bonne accentuation ?";
 "OfficeLabel" = "bureau";
 "NoContactSelected" = "Aucun contact séléctionné";
 "PhotoButtonTitle" = "Photo";
