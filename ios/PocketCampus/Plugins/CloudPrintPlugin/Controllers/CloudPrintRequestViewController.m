@@ -183,7 +183,8 @@ static NSInteger const kPageToTheEndValue = 10000;
     }];
     PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
     navController.view.tintColor = self.view.tintColor; //if in extension
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.preferredContentSize = CGSizeZero; //so that it does not override preferredContentSize if viewController
+    navController.modalPresentationStyle = UIModalPresentationCurrentContext; //present IN popover controller (on iPad)
     [self presentViewController:navController animated:YES completion:NULL];
 }
 
@@ -191,7 +192,7 @@ static NSInteger const kPageToTheEndValue = 10000;
     if (sender == self.nbCopiesStepper) {
         if (!self.printRequest.multipleCopies) {
             self.printRequest.multipleCopies = [CloudPrintMultipleCopies new];
-            self.printRequest.multipleCopies.collate = NO;
+            self.printRequest.multipleCopies.collate = YES; //default, want [1,2,1,2]
         }
         self.printRequest.multipleCopies.numberOfCopies = (int)(self.nbCopiesStepper.value);
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kNbCopiesRowIndex inSection:kCopiesAndRangeSectionIndex]] withRowAnimation:UITableViewRowAnimationNone];
@@ -338,7 +339,8 @@ static NSInteger const kPageToTheEndValue = 10000;
                     [welf dismissViewControllerAnimated:YES completion:NULL];
                 }];
                 PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
-                navController.modalPresentationStyle = UIModalPresentationFormSheet;
+                navController.preferredContentSize = CGSizeZero;
+                navController.modalPresentationStyle = UIModalPresentationCurrentContext;
                 [self presentViewController:navController animated:YES completion:NULL];
             }
             break;
@@ -492,11 +494,11 @@ static NSInteger const kPageToTheEndValue = 10000;
 
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     switch (section) {
-        case kCopiesAndRangeSectionIndex:
+        /*case kCopiesAndRangeSectionIndex:
             if (self.printRequest.multipleCopies.numberOfCopies > 1 && self.printRequest.multipleCopies.collate) {
                 return NSLocalizedStringFromTable(@"CollateExplanations", @"CloudPrintPlugin", nil);
             }
-            break;
+            break;*/
         case kColorSectionIndex:
             return NSLocalizedStringFromTable(@"ColorExplanations", @"CloudPrintPlugin", nil);
     }

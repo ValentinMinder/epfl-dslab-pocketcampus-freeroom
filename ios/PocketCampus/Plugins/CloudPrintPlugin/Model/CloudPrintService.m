@@ -92,7 +92,7 @@ static NSString* const kCloudPrintRawUploadFileParameterNameKey = @"file";
 }
 
 - (void)printPreviewWithRequest:(PrintDocumentRequest*)request delegate:(id<CloudPrintServiceDelegate>)delegate {
-    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstanceWithCustomTimeoutInterval:60.0] service:self delegate:delegate]; //print preview can be very long for big document
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstanceWithCustomTimeoutInterval:90.0] service:self delegate:delegate]; //print preview can be very long for big document
     operation.userInfo = @{kCloudPrintServiceJobUniqueIdServiceRequestUserInfoKey:request.jobUniqueId};
     operation.serviceClientSelector = @selector(printPreview:);
     operation.delegateDidReturnSelector = @selector(printPreviewForRequest:didReturn:);

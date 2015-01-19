@@ -29,6 +29,52 @@
 
 #import "NSDate+Addtions.h"
 
+@implementation IsAcademiaModelAdditions
+
++ (NSDate*)mondayReferenceDateForDate:(NSDate*)date {
+    [PCUtils throwExceptionIfObject:date notKindOfClass:[NSDate class]];
+    
+    static NSCache* mondayForDate = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        mondayForDate = [NSCache new];
+    });
+    
+    NSDate* cachedValue = mondayForDate[date];
+    if (cachedValue) {
+        return cachedValue;
+    }
+    
+    NSCalendar* gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    gregorianCalendar.locale = [NSLocale currentLocale];
+    NSDateComponents* comps = [gregorianCalendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekdayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:date];
+    [comps setHour:0];
+    [comps setMinute:0];
+    [comps setSecond:0];
+    NSDate* normalizedDate = [gregorianCalendar dateFromComponents:comps];
+    static NSInteger const kMonday = 2;
+    if (comps.weekday == kMonday) {
+        mondayForDate[date] = normalizedDate;
+        return normalizedDate; //already Monday
+    }
+    
+    NSDate* monday = nil;
+    NSDateComponents* backToMondayComps = [NSDateComponents new];
+    backToMondayComps.day = kMonday - comps.weekday;
+    monday = [gregorianCalendar dateByAddingComponents:backToMondayComps toDate:normalizedDate options:0];
+    if ([date compare:monday] == NSOrderedAscending) {
+        // Means monday is after date, meaning coming Monday was computed
+        // instead of previous one. => need to decrement 1 week
+        NSDateComponents* minusOneWeekComps = [NSDateComponents new];
+        [minusOneWeekComps setWeekOfYear:-1];
+        monday = [gregorianCalendar dateByAddingComponents:minusOneWeekComps toDate:monday options:0];
+    }
+    mondayForDate[date] = monday;
+    return monday;
+}
+
+@end
+
 @implementation ScheduleResponse (Additions)
 
 - (StudyDay*)studyDayForDate:(NSDate*)date {

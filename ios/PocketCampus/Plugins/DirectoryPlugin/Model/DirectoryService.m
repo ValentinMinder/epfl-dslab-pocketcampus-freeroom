@@ -29,11 +29,6 @@
 
 #import "DirectoryService.h"
 
-NSString* const kDirectoryURLActionSearch = @"search";
-NSString* const kDirectoryURLActionView = @"view";
-
-NSString* const kDirectoryURLParameterQuery = @"q";
-
 @implementation DirectoryService
 
 static DirectoryService* instance __weak = nil;

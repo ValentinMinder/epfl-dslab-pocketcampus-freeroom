@@ -92,6 +92,12 @@ $resp["ENABLED_PLUGINS"] = array("Camipro", "Moodle", "Food", "Transport", "News
 //$resp["SERVER_URI"] = "v3r1";
 $resp["FOOD_RATINGS_ENABLED"] = 1; //0 = disabled, 1 = enabled
 
+// iOS6 does not support https
+if($platform == "ios" && comparble_version($app_version) < comparble_version("2.0")) {
+	$resp["SERVER_PROTOCOL"] = "http";
+	$resp["SERVER_PORT"] = "14610";
+}
+
 echo echo_compatible($resp);
 
 ?>

@@ -200,7 +200,7 @@ static id instance __strong = nil;
     
     NSArray* offlineScreens = [[PCPersistenceManager sharedDefaults] objectForKey:kOfflineScreensUserDefaultsArrayKey];
     if (offlineScreens.count > 0) {
-        CLSNSLog(@"-> Now tracking %u offline screens(s): %@", offlineScreens.count, offlineScreens);
+        CLSNSLog(@"-> Now tracking %u offline screens(s):", offlineScreens.count);
         found = YES;
         for (__strong NSString* offlineScreen in offlineScreens) {
             if (offlineScreen) {
@@ -214,7 +214,7 @@ static id instance __strong = nil;
     
     NSArray* offlineActions = [[PCPersistenceManager sharedDefaults] objectForKey:kOfflineActionsUserDefaultsArrayKey];
     if (offlineActions.count > 0) {
-        CLSNSLog(@"Now tracking %u offline action(s): %@", offlineActions.count, offlineActions);
+        CLSNSLog(@"Now tracking %u offline action(s):", offlineActions.count);
         found = YES;
         for (NSDictionary* offlineActionDic in offlineActions) {
             NSString* action = offlineActionDic[kActionUserDefaultsStringKey];

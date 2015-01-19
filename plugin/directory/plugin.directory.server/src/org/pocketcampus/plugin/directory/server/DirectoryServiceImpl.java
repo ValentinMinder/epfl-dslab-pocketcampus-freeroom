@@ -161,7 +161,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 
 				// search with pagination
 				// http://snipplr.com/view/52024/
-				SearchRequest searchRequest = new SearchRequest("o=epfl,c=ch", SearchScope.SUB, searchQuery, attWanted);
+				SearchRequest searchRequest = new SearchRequest("c=ch", SearchScope.SUB, searchQuery, attWanted);
 				searchRequest.setControls(new Control[] { new SimplePagedResultsControl(PAGE_SIZE, pag.cookie) });
 				searchResult = ldap.search(searchRequest);
 				pag.cookie = null;
@@ -176,7 +176,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 			} else {
 
 				// search the ldap
-				searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, NB_RESULT_LIMIT, 0, false, searchQuery, attWanted);
+				searchResult = ldap.search("c=ch", SearchScope.SUB, DereferencePolicy.FINDING, NB_RESULT_LIMIT, 0, false, searchQuery, attWanted);
 				// if attWanted is null, this will print out all the info the ldap can give
 				// System.out.println(searchResult.getSearchEntries().get(0).toLDIFString());
 
@@ -187,7 +187,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 			{
 				if (!e.hasAttribute("employeeType") || "Ignore".equals(e.getAttributeValue("employeeType")))
 					continue;
-
+				
 				// getting the interessant part of the url
 				String t[] = new String[2];
 				String web = e.getAttributeValue("labeledURI");
@@ -214,9 +214,9 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 				p.setPictureUrl("http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + p.getSciper());
 
 				String unitAcro = e.getAttributeValue("ou");
-				String [] units = e.getAttributeValues("ou" + attributeKeyAppendix);
-				String [] titles = e.getAttributeValues("description" + attributeKeyAppendix);
-				DirectoryPersonRole role = new DirectoryPersonRole(last(units), titles != null ? last(titles) : "");
+				String [] unit = e.getAttributeValues("ou" + attributeKeyAppendix);
+				String title = e.getAttributeValue("description" + attributeKeyAppendix);
+				DirectoryPersonRole role = new DirectoryPersonRole(unit != null ? last(unit) : unitAcro, title != null ? title : "");
 				Map<String, DirectoryPersonRole> roles = new HashMap<String, DirectoryPersonRole>();
 				roles.put(unitAcro, role);
 				p.setRoles(roles);
