@@ -2,7 +2,7 @@
 
 "PluginName" = "Directory";
 "SearchFieldPlaceholder" = "Name, sciper, unit, phone";
-"SearchNoResult" = "No result\nHave you tried with the exact spelling (accents) ?";
+"NoResult" = "No results";
 "OfficeLabel" = "office";
 "NoContactSelected" = "No contact selected";
 "PhotoButtonTitle" = "Photo";
