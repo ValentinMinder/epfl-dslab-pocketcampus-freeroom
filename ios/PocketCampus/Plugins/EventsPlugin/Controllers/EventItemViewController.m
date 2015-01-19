@@ -382,18 +382,14 @@
     }
     EventPool* eventPool = self.childrenPools[indexPath.row];
     
-    UIViewController* viewController;
+    UIViewController* viewController = nil;
     
     if (eventPool.overrideLink) {
         NSURL* url = [NSURL URLWithString:eventPool.overrideLink];
         id<MainControllerPublic> mainController = [MainController publicController];
-        UIViewController* viewController = [[mainController urlSchemeHandlerSharedInstance] viewControllerForPocketCampusURL:url];
-        if (viewController) {
-            [self.navigationController pushViewController:viewController animated:YES];
-        } else {
-            PCWebViewController* webViewController = [[PCWebViewController alloc] initWithURL:url title:nil];
-            [self.navigationController pushViewController:webViewController animated:YES];
-            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+        viewController = [[mainController urlSchemeHandlerSharedInstance] viewControllerForPocketCampusURL:url];
+        if (!viewController) {
+            viewController = [[PCWebViewController alloc] initWithURL:url title:nil];
         }
     } else {
         viewController = [[EventPoolViewController alloc] initWithEventPool:eventPool];
