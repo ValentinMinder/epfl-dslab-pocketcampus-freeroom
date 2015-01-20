@@ -135,7 +135,7 @@ if(isset($_POST[POST_QUESTION])) {
                 if (nameInput.value.length > 0) {
                     charsLeft -= 2;
                 }
-                nbCharsLeftDiv.innerHTML = charsLeft + " caractère(s) restant(s)" + fullString.length;
+                nbCharsLeftDiv.innerHTML = charsLeft + " caractère(s) restant(s)";
             }
             
             nameInput.oninput = validateInput;
