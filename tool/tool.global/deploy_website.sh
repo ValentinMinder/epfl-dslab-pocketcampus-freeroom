@@ -6,13 +6,13 @@
 if [ -z "$1" ]
 then
 	echo "Usage options:"
-	echo "    ./tool/tool.global/deploy_website.sh dev";
+	echo "    ./tool/tool.global/deploy_website.sh test";
 	echo "    ./tool/tool.global/deploy_website.sh prod1";
 	echo "    ./tool/tool.global/deploy_website.sh prod2";
 	exit
 fi
 
-if [ "$1" == "dev" ]
+if [ "$1" == "test" ]
 then
 	server="kissrv120.epfl.ch"
 elif [ "$1" == "prod1" ]
@@ -22,7 +22,7 @@ elif [ "$1" == "prod2" ]
 then
 	server="kissrv119.epfl.ch"
 else
-	echo "Unknown server (possible options: dev, prod1, prod2)";
+	echo "Unknown server (possible options: test, prod1, prod2)";
 	exit
 fi
 
