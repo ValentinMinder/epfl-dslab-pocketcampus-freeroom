@@ -243,7 +243,7 @@ SET
 	`eventTitle_fr`	= NULL, 
 	`eventPlace` 	= NULL, 
 	`eventSpeaker` 	= NULL, 
-	`eventDetails` 	= 'Vous pouvez poser une question que les organisateurs de l\'événements verront en direct: <a href="http://pocketcampus.epfl.ch/backend/comment/question.php">rédiger une question</a>', 
+	`eventDetails` 	= 'Vous pouvez poser une question que les organisateurs de l\'événements verront en direct.<br><br><a href="http://pocketcampus.epfl.ch/backend/comment/question.php"><b>Rédiger une question</b></a>', 
 	`eventDetails_fr` = NULL, 
 	`parentPool` 	= 26000020, 
 	`eventUri` 		= NULL, 
