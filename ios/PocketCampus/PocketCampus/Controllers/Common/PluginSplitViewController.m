@@ -89,14 +89,15 @@
 
 - (UIBarButtonItem*)toggleMasterViewBarButtonItem {
     UIImage* image = [UIImage imageNamed:self.isMasterViewControllerHidden ? @"MasterHidden" : @"MasterVisible"];
-    UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStyleBordered target:self action:@selector(toggleMasterVideoControllerHidden:)];
+    UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStyleBordered target:self action:@selector(toggleMasterViewControllerHidden:)];
     button.accessibilityLabel = self.isMasterViewControllerHidden ? NSLocalizedStringFromTable(@"ShowMaster", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"HideMaster", @"PocketCampus", nil);
     return button;
 }
 
 #pragma mark - Master view controller visibility management
 
-- (void)toggleMasterVideoControllerHidden:(UIBarButtonItem*)button {
+- (void)toggleMasterViewControllerHidden:(UIBarButtonItem*)button {
+    [self trackAction:@"ToggleMasterViewControllerHidden"];
     button.image = [UIImage imageNamed:self.isMasterViewControllerHidden ? @"MasterVisible" : @"MasterHidden"];
     button.accessibilityLabel = self.isMasterViewControllerHidden ? NSLocalizedStringFromTable(@"HideMaster", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"ShowMaster", @"PocketCampus", nil);
     [self setMasterViewControllerHidden:!self.isMasterViewControllerHidden animated:YES];

@@ -79,7 +79,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     if (self) {
         self.gaiScreenName = @"/moodle/course/document";
         self.moodleFile = moodleFile;
-        self.title = moodleFile.name; //enough space to display title if iPad
+        self.title = moodleFile.name;
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.lastKnownContentSize = CGSizeZero;
     }
@@ -108,7 +108,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     UIBarButtonItem* actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
     actionButton.enabled = NO;
     [rightButtons addObject:actionButton];
-    
     
     UIBarButtonItem* printButton = [[UIBarButtonItem alloc] initWithImage:[PCValues imageForPrintBarButtonLandscapePhone:NO] landscapeImagePhone:[PCValues imageForPrintBarButtonLandscapePhone:YES] style:UIBarButtonItemStyleBordered target:self action:@selector(printButtonTapped)];
     printButton.accessibilityHint = NSLocalizedStringFromTable(@"PrintThisDocumentAtEPFL", @"MoodlePlugin", nil);
