@@ -9,7 +9,7 @@ SET
 	`eventThumbnail` = 'http://pocketcampus.epfl.ch/events/forumit2015_1/images/logo.jpg', 
 	`eventTitle` 	= 'Forum des Systèmes d\'Information', 
 	`eventTitle_fr`	= NULL, 
-	`eventPlace` 	= "STCC - Garden 5ABC", 
+	`eventPlace` 	= 'STCC - Garden 5ABC', 
 	`eventSpeaker` 	= NULL, 
 	`eventDetails` 	= NULL, 
 	`eventDetails_fr` = NULL, 
@@ -20,7 +20,7 @@ SET
 	`broadcastInFeeds` = 'ic', 
 	`locationHref` 	= NULL, 
 	`detailsLink` 	= NULL, 
-	`secondLine` 	= NULL, 
+	`secondLine` 	= 'STCC - Garden 5ABC', 
 	`timeSnippet` 	= NULL, 
 	`hideEventInfo` = 1, 
 	`hideTitle` 	= NULL, 
@@ -276,7 +276,6 @@ SET
 	`noResultText` 	= 'Coming soon.', 
 	`overrideLink` 	= NULL, 
 	`parentEvent` 	= 126000000;
-
 
 
 REPLACE INTO `eventpools` 

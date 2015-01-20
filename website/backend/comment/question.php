@@ -13,7 +13,8 @@ $questionError = false;
 
 if(isset($_POST[POST_QUESTION])) {
     $question = $_POST[POST_QUESTION];
-    if (strlen($question) > 0) {
+    $question = str_replace("\r\n", "\n", $question);
+    if (mb_strlen($question, 'UTF-8') > 0) {
         \Codebird\Codebird::setConsumerKey("Nm6VfYfd5i1x68ZcDsVxNc34f", "mDEdN9kHYk1T8eL4du51eqUjJbxoqImTGuofvEnM6lNIM2fu8u");
         $cb = \Codebird\Codebird::getInstance();
         $cb->setToken("2976691042-sr9sWJUZcoQhfusZytvf79PVA1V9OdeOPjCP58N", "ojNmS535XMCyTmWXYusahFafVUIclxekeCnyR11fIz1Ok");
@@ -26,7 +27,7 @@ if(isset($_POST[POST_QUESTION])) {
             }
         }
         
-        if (strlen($tweet) <= TWEET_MAX_LENGTH) {
+        if (mb_strlen($tweet, 'UTF-8') <= TWEET_MAX_LENGTH) {
             $params = array(
                 'status' => $tweet
             );
@@ -134,7 +135,7 @@ if(isset($_POST[POST_QUESTION])) {
                 if (nameInput.value.length > 0) {
                     charsLeft -= 2;
                 }
-                nbCharsLeftDiv.innerHTML = charsLeft + " caractère(s) restant(s)";
+                nbCharsLeftDiv.innerHTML = charsLeft + " caractère(s) restant(s)" + fullString.length;
             }
             
             nameInput.oninput = validateInput;
