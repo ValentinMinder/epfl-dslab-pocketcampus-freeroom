@@ -116,7 +116,7 @@ if(isset($_POST[POST_QUESTION])) {
         
         window.onload = function(){
             
-            var STR_MAX_LENGTH = 138;
+            var STR_MAX_LENGTH = 140;
             
             var nameInput = document.getElementById("name");
             var questionInput = document.getElementById("question");
@@ -125,13 +125,16 @@ if(isset($_POST[POST_QUESTION])) {
             
             var validateInput = function () {
                 var fullString = nameInput.value+questionInput.value;
-                if (fullString.length < STR_MAX_LENGTH && fullString.length > 0 && questionInput.value.length > 0) {
+                if (fullString.length <= STR_MAX_LENGTH && fullString.length > 0 && questionInput.value.length > 0) {
                     submit.removeAttribute("disabled");
                 } else {
                     submit.setAttribute("disabled", "1");
                 }
-                var charsLeft = 
-                nbCharsLeftDiv.innerHTML = (STR_MAX_LENGTH - fullString.length) + " characters left";
+                var charsLeft = (STR_MAX_LENGTH - fullString.length);
+                if (nameInput.value.length > 0) {
+                    charsLeft -= 2;
+                }
+                nbCharsLeftDiv.innerHTML = charsLeft + " caractère(s) restant(s)";
             }
             
             nameInput.oninput = validateInput;
@@ -144,15 +147,15 @@ if(isset($_POST[POST_QUESTION])) {
     </head>
 <body>
     <form action="question.php" method="post">
-        <div class="top_message" id="question_successfull" style="display: <?php if ($didTweet) { echo "block"; } else { echo "none"; } ?>">Your question was successfully posted</div>
-        <div class="top_message" id="question_error" style="display: <?php if ($questionError) { echo "block"; } else { echo "none"; } ?>">The question cannot be empty or is too long</div>
-        <input id="name" type="text" name="name" placeholder="Your name (optional)" value="<?php echo $_POST['name']; ?>">
+        <div class="top_message" id="question_successfull" style="display: <?php if ($didTweet) { echo "block"; } else { echo "none"; } ?>">Question envoyée avec succès</div>
+        <div class="top_message" id="question_error" style="display: <?php if ($questionError) { echo "block"; } else { echo "none"; } ?>">Erreur: la question est trop longue ou vide.</div>
+        <input id="name" type="text" name="name" placeholder="Votre nom (optionnel)" value="<?php echo $_POST['name']; ?>">
         <br>
-        <textarea id="question" name="question" placeholder="Your question"></textarea>
+        <textarea id="question" name="question" placeholder="Votre question"></textarea>
         <br>
         <div id="nb_chars_left"></div>
         <br>
-        <input id="submit" type="submit" value="Send the question" disabled>
+        <input id="submit" type="submit" value="Envoyer la question" disabled>
     </form>
 </body>
 </html>
