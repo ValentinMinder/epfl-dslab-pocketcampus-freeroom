@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PocketCampusRow"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/transport_departure_station"
+        style="@style/PocketCampusListItemTitle"
+        android:text="EPFL"
+        android:textColor="@color/epfl_corrected_red" />
+
+    <ListView
+        android:id="@+id/transport_departure_times_list"
+        style="@style/PocketCampusListViewStyle" >
+    </ListView>
+
+</LinearLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <org.droidparts.widget.ClearableEditText
+        android:id="@+id/transport_add_searchinput"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:hint="@string/transport_add_station"
+        android:inputType="textPersonName" >
+
+        <requestFocus />
+    </org.droidparts.widget.ClearableEditText>
+
+    <ListView
+        android:id="@+id/transport_add_listview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+</LinearLayout>

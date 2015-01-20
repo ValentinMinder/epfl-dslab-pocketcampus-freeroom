@@ -61,9 +61,6 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		mLayout.hideFirstTitle();
 		mLayout.hideSecondTitle();
 
-		addActionToActionBar(new StatsAction());
-		addActionToActionBar(new EBankingAction());
-		addActionToActionBar(new RefreshAction());
 		setActionBarTitle(getString(R.string.camipro_plugin_title));
 	}
 
@@ -133,7 +130,11 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	public void transactionsUpdated() {
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-		
+		removeAllActionsFromActionBar();
+		addActionToActionBar(new StatsAction());
+		addActionToActionBar(new EBankingAction());
+		addActionToActionBar(new RefreshAction());
+
 		List<Transaction> ltb = mModel.getTransactions();
 		if (ltb == null)
 			return;
@@ -231,9 +232,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 	@Override
 	public void authenticationFailed() {
-		Toast.makeText(getApplicationContext(),
-				getResources().getString(R.string.sdk_authentication_failed),
-				Toast.LENGTH_SHORT).show();
+		setUnrecoverableErrorOccurred(getString(R.string.sdk_authentication_failed));
 	}
 
 	@Override
@@ -360,9 +359,9 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 			startActivity(i);
 			trackEvent("OpenRefill", null);
 		}
-		
+
 		@Override
-		public String getDescription(){
+		public String getDescription() {
 			return getString(R.string.camipro_string_recharge);
 		}
 	}
@@ -386,7 +385,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		public String getDescription() {
 			return getString(R.string.camipro_statistics_section_title);
 		}
-		
+
 	}
 
 	/**

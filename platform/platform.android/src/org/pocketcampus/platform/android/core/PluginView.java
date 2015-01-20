@@ -45,9 +45,7 @@ public abstract class PluginView extends Activity {
 		void onViewBound(PluginController controller);
 	}
 
-	protected boolean getController(
-			Class<? extends PluginController> controllerClass,
-			ViewBoundCallback callback) {
+	protected boolean getController(Class<? extends PluginController> controllerClass, ViewBoundCallback callback) {
 		Intent intent = new Intent(getApplicationContext(), controllerClass);
 		mServiceConnection = makeServiceConnection(callback);
 		return bindService(intent, mServiceConnection, BIND_AUTO_CREATE);
@@ -96,12 +94,10 @@ public abstract class PluginView extends Activity {
 
 		mServiceConnection = makeServiceConnection(callback);
 
-		boolean isBound = bindService(intent, mServiceConnection,
-				BIND_AUTO_CREATE);
+		boolean isBound = bindService(intent, mServiceConnection, BIND_AUTO_CREATE);
 
 		if (!isBound) {
-			throw new RuntimeException("View couldn't bind to service! "
-					+ intent);
+			throw new RuntimeException("View couldn't bind to service! " + intent);
 		}
 
 		setContentView(R.layout.sdk_loading_info);
@@ -123,14 +119,12 @@ public abstract class PluginView extends Activity {
 	 * @param savedInstanceState
 	 * @param controller
 	 */
-	protected abstract void onDisplay(Bundle savedInstanceState,
-			PluginController controller);
+	protected abstract void onDisplay(Bundle savedInstanceState, PluginController controller);
 
 	protected abstract String screenName();
 
 	public void trackEvent(String action, String label) {
-		GATracker.getInstance().sendEvent(GA_EVENT_CATEG,
-				screenName() + "-" + action, label, null);
+		GATracker.getInstance().sendEvent(GA_EVENT_CATEG, screenName() + "-" + action, label, null);
 	}
 
 	/**
@@ -198,14 +192,11 @@ public abstract class PluginView extends Activity {
 	 * @param savedInstanceState
 	 * @return
 	 */
-	private ServiceConnection makeServiceConnection(
-			final ViewBoundCallback callback) {
+	private ServiceConnection makeServiceConnection(final ViewBoundCallback callback) {
 		return new ServiceConnection() {
 			@Override
-			public void onServiceConnected(ComponentName className,
-					IBinder service) {
-				PluginController controller = ((ControllerBinder) service)
-						.getController();
+			public void onServiceConnected(ComponentName className, IBinder service) {
+				PluginController controller = ((ControllerBinder) service).getController();
 				controller.getModel().addListener(PluginView.this);
 				mControllers.add(controller);
 				callback.onViewBound(controller);
@@ -398,6 +389,13 @@ public abstract class PluginView extends Activity {
 
 	public void setLoadingContentScreen() {
 		setContentView(R.layout.sdk_loading_info);
+		removeAllActionsFromActionBar();
+	}
+
+	public void setLoadingContentScreen(String message) {
+		setContentView(R.layout.sdk_loading_info);
+		((TextView) findViewById(R.id.sdk_loading_message)).setText(message);
+		removeAllActionsFromActionBar();
 	}
 
 	public void setUnrecoverableErrorOccurred(String errorMessage) {

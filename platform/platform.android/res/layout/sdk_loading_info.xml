@@ -14,6 +14,7 @@
         android:layout_gravity="center" />
 
     <TextView
+        android:id="@+id/sdk_loading_message"
         android:layout_marginTop="20dip"
         style="@style/PocketCampusListItemTitle"
         android:text="@string/sdk_please_wait_loading"

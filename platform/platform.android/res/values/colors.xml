@@ -14,7 +14,7 @@
     <color name="white">@android:color/white</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="darker_gray">@android:color/darker_gray</color>
-    
+    <color name="green_apple">#629632</color>
 
     <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
     <!-- SHOULD BE MERGED FROM THE LAUNCHER!!! -->

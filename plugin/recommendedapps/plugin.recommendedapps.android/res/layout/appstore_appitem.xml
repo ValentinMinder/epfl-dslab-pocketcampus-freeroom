@@ -10,8 +10,8 @@
 
         <ImageView
             style="@style/PocketCampusThumbnail"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/recommendedapps_info" />
 

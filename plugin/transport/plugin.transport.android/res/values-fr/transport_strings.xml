@@ -34,10 +34,21 @@
 
     <!-- Error -->
     <string name="transport_network_error">Impossible de se connecter.</string>
-
+    <string name="transport_loading">Attendre</string>
     <!-- From last year -->
     <string name="transport_to">à</string>
     <string name="transport_walk_in_min">min. de marche</string>
     <string name="transport_by_feet">À pied</string>
+    <string name="transport_select_departure_station">Selecter station de départ</string>
+    <string name="transport_dep_short">Dep.</string>
+    <string name="transport_arr_short">Arr.</string>
+    <string name="transport_dur_short">Dur.</string>
+    <string name="transport_chg_short">Chg.</string>
+    <string name="transport_line_short">1ére ligne</string>
+    <string name="transport_platform">voie</string>
+    <string name="transport_using">Prendre</string>
+    <string name="transport_locating_you">Finding the public transport station closest to you.</string>
+    <string name="transport_get_default_stations">Retrieving the default public transport stations.</string>
+    <string name="transport_automatic">Automatically select the closest one</string>
 
 </resources>

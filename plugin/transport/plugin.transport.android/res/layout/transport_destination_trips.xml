@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        style="@style/PocketCampusRow"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/transport_details_departure_time"
+            style="@style/PocketCampusListItemSubTitle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/transport_dep_short"
+            android:textAllCaps="true" />
+
+        <TextView
+            android:id="@+id/transport_details_arrival_time"
+            style="@style/PocketCampusListItemSubTitle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/transport_arr_short"
+            android:textAllCaps="true" />
+
+        <TextView
+            android:id="@+id/transport_details_duration_time"
+            style="@style/PocketCampusListItemSubTitle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/transport_dur_short"
+            android:textAllCaps="true" />
+
+        <TextView
+            android:id="@+id/transport_details_nb_changes"
+            style="@style/PocketCampusListItemSubTitle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/transport_chg_short"
+            android:textAllCaps="true" />
+
+        <TextView
+            android:id="@+id/transport_details_first_line"
+            style="@style/PocketCampusListItemSubTitle"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:text="@string/transport_line_short"
+            android:textAllCaps="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:src="@drawable/pocketcampus_list_arrow"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/transport_destination_trips_listview"
+        style="@style/PocketCampusListViewStyle" >
+    </ListView>
+
+</LinearLayout>

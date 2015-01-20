@@ -38,6 +38,18 @@
     <!-- From last year -->
     <string name="transport_to">to</string>
     <string name="transport_walk_in_min">min. walk</string>
-    <string name="transport_by_feet">Walking</string>
-
+    <string name="transport_by_feet">Walk</string>
+    <string name="transport_select_departure_station">Select departure station</string>
+    <string name="transport_dep_short">Dep.</string>
+    <string name="transport_arr_short">Arr.</string>
+    <string name="transport_dur_short">Dur.</string>
+    <string name="transport_chg_short">Chg.</string>
+    <string name="transport_line_short">1st line</string>
+    <string name="transport_platform">at platform</string>
+    <string name="transport_using">Take</string>
+    <string name="transport_loading">Loading</string>
+    <string name="transport_locating_you">Finding the public transport station closest to you.</string>
+    <string name="transport_get_default_stations">Retrieving the default public transport stations.</string>
+    
+    <string name="transport_automatic">Automatically select the closest one</string>
 </resources>

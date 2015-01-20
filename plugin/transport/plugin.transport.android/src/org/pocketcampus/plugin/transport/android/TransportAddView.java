@@ -1,24 +1,27 @@
 package org.pocketcampus.plugin.transport.android;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
-import org.pocketcampus.platform.android.ui.adapter.LabeledArrayAdapter;
-import org.pocketcampus.platform.android.ui.element.InputBarElement;
-import org.pocketcampus.platform.android.ui.element.OnKeyPressedListener;
-import org.pocketcampus.platform.android.ui.labeler.ILabeler;
-import org.pocketcampus.platform.android.ui.layout.StandardTitledLayout;
-import org.pocketcampus.platform.android.ui.list.LabeledListViewElement;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.utils.Preparated;
+import org.pocketcampus.platform.android.utils.Preparator;
 import org.pocketcampus.plugin.transport.R;
+import org.pocketcampus.plugin.transport.android.iface.ErrorCause;
+import org.pocketcampus.plugin.transport.android.iface.ITransportModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
-import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
+import org.pocketcampus.plugin.transport.shared.TransportTrip;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
+import android.widget.ListView;
 
 /**
  * The view of the Transport plugin which lets the user add a favorite station.
@@ -36,34 +39,16 @@ import android.widget.AdapterView.OnItemClickListener;
  * the server before sending auto completed stations, it would add a too long
  * delay for the user to get them, so we decided to keep it that way.
  * 
- * @author Oriane <oriane.rodriguez@epfl.ch>
- * @author Pascal <pascal.scheiben@epfl.ch>
- * @author Florian <florian.laurent@epfl.ch>
+ * @author silviu@pocketcampus.org
  */
 public class TransportAddView extends PluginView implements ITransportView {
 	/** The plugin controller. */
 	private TransportController mController;
-	/** The plugin model. */
-	private TransportModel mModel;
-	/** The main layout consisting of two inner layouts and a title. */
-	private StandardTitledLayout mLayout;
-	/** An <code>InputBarElement</code> to type a station. */
-	private InputBarElement mInputBar;
-	/** The list to display auto completed stations. */
-	private LabeledListViewElement mListView;
-	/** The adapter containing the stations displayed in the list. */
-	LabeledArrayAdapter mAdapter;
 
-	/**
-	 * A labeler telling the view how to display a <code>TransportStation</code>
-	 * .
-	 */
-	private ILabeler<TransportStation> mLocationLabeler = new ILabeler<TransportStation>() {
-		@Override
-		public String getLabel(TransportStation obj) {
-			return obj.getName();
-		}
-	};
+	final long REFRESH_DELAY = 500;
+	private Timer refreshTimer;
+	private long lastKeyPress = 0;
+	private boolean stopRefresh;
 
 	/**
 	 * Defines what the main controller is for this view.
@@ -81,120 +66,143 @@ public class TransportAddView extends PluginView implements ITransportView {
 	 * completed stations as the user is typing.
 	 */
 	@Override
-	protected void onDisplay(Bundle savedInstanceState,
-			PluginController controller) {
+	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 
 		mController = (TransportController) controller;
-		mModel = (TransportModel) mController.getModel();
 		// Display the view
-		displayView();
-		// Create the list of next departures
-		createStationsList();
-		setActionBarTitle(getString(R.string.transport_plugin_name));
+		setContentView(R.layout.transport_add);
+		setActionBarTitle(getResources().getString(R.string.transport_add_station));
+		setKeyListener();
 	}
-	
+
 	@Override
 	protected String screenName() {
 		return "/transport/addStation";
 	}
 
-	/**
-	 * Creates the layout with the input bar in which the user can type a
-	 * station, and sets the listener to get auto completion when a key is
-	 * pressed.
-	 */
-	private void displayView() {
-		// Layout
-		mLayout = new StandardTitledLayout(this);
-		mLayout.setTitle(getResources().getString(
-				R.string.transport_add_station));
-
-		// Input bar
-		mInputBar = new InputBarElement(this);
-		mInputBar.setInputHint(getResources().getString(
-				R.string.transport_set_stations_message));
-
-		mInputBar.setOnKeyPressedListener(new OnKeyPressedListener() {
-			@Override
-			public void onKeyPressed(String text) {
-				mController.getAutocompletions(text);
+	private void setKeyListener() {
+		final EditText searchBar = (EditText) findViewById(R.id.transport_add_searchinput);
+		searchBar.addTextChangedListener(new TextWatcher() {
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
 			}
-		});
 
-		// Add the input bar to the layout
-		mLayout.addFillerView(mInputBar);
-		setContentView(mLayout);
-	}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
 
-	/**
-	 * Creates the list that containing all auto completed stations and sets the
-	 * click listener on a station.
-	 */
-	private void createStationsList() {
-		mListView = new LabeledListViewElement(this);
-		mInputBar.addView(mListView);
-
-		mListView.setOnItemClickListener(new OnItemClickListener() {
-
-			/**
-			 * When the user clicks on a station, we ask the controller for next
-			 * departures from EPFL to this station and close this
-			 * <code>Activity</code>.
-			 */
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View view, int pos,
-					long id) {
-				TransportStation station = (TransportStation) adapter
-						.getItemAtPosition(pos);
-
-				trackEvent("Add", station.getName());
-
-				// Request for the next departures from EPFL to the station
-				// the user just clicked
-				mController.nextDepartures("EPFL", station.getName());
-				// Go back to the main View
-				finish();
+			public void afterTextChanged(Editable s) {
+				lastKeyPress = System.currentTimeMillis();
 			}
 		});
 	}
 
-	/**
-	 * Refreshes the adapter containing the current auto completed stations.
-	 */
-	@Override
-	public void autoCompletedStationsUpdated() {
-		mAdapter = new LabeledArrayAdapter(this,
-				mModel.getAutoCompletedStations(), mLocationLabeler);
-		mListView.setAdapter(mAdapter);
-		mListView.invalidate();
+	private void performSearchIfNeeded() {
+		String s = ((EditText) findViewById(R.id.transport_add_searchinput)).getText().toString();
+		if (mController.searchForStations(s)) {
+			trackEvent("Search", s);
+		}
 	}
 
-	/**
-	 * Called when an error happens upon contacting the server.
-	 */
+	private TimerTask getRefreshTask() {
+		return new TimerTask() {
+			public void run() {
+				if (stopRefresh)
+					return;
+				long interval = System.currentTimeMillis() - lastKeyPress;
+				refreshTimer = new Timer();
+				if (interval > REFRESH_DELAY) {
+					runOnUiThread(new Runnable() {
+						public void run() {
+							performSearchIfNeeded();
+						}
+					});
+					refreshTimer.schedule(getRefreshTask(), REFRESH_DELAY);
+				} else {
+					refreshTimer.schedule(getRefreshTask(), REFRESH_DELAY - interval);
+				}
+			}
+		};
+	}
+
 	@Override
 	public void networkErrorHappened() {
+		throw new RuntimeException("Should not be called here");
+	}
+
+	@Override
+	public void searchForStationsFinished(String searchQuery, List<TransportStation> result) {
+		final ITransportModel model = (ITransportModel) mController.getModel();
+		result.removeAll(model.getPersistedTransportStations());
+		Preparated<TransportStation> preparated = new Preparated<TransportStation>(result,
+				new Preparator<TransportStation>() {
+
+					@Override
+					public Object content(int res, final TransportStation item) {
+						return new LazyAdapter.Actuated(item.getName(), new LazyAdapter.Actuator() {
+							@Override
+							public void triggered() {
+								model.addTransportStationToPersistedStorage(item);
+								finish();
+							}
+						});
+					}
+
+					@Override
+					public int[] resources() {
+						return new int[] { R.id.transport_add_station_name };
+					}
+
+					@Override
+					public void finalize(Map<String, Object> map, TransportStation item) {
+					}
+				});
+
+		LazyAdapter adapter = new LazyAdapter(this, preparated.getMap(), R.layout.transport_add_row,
+				preparated.getKeys(), preparated.getResources());
+		((ListView) findViewById(R.id.transport_add_listview)).setAdapter(adapter);
+	}
+
+	@Override
+	public void searchForStationsFailed(String searchQuery, ErrorCause cause) {
+
+	}
+
+	@Override
+	public void searchForTripsFinished(TransportStation from, TransportStation to, List<TransportTrip> result) {
+	}
+
+	@Override
+	public void searchForTripsFailed(TransportStation from, TransportStation to, ErrorCause cause) {
+	}
+
+	@Override
+	public void getDefaultStationsFinished(List<TransportStation> result) {
+	}
+
+	@Override
+	public void getDefaultStationsFailed(ErrorCause cause) {
 	}
 
 	/**
-	 * Not used in this view.
+	 * This is called when the Activity is resumed.
+	 * 
+	 * If the user presses back on the Authentication window, This Activity is
+	 * resumed but we do not have the credentials. In this case we close the
+	 * Activity.
 	 */
 	@Override
-	public void favoriteStationsUpdated() {
+	protected void onResume() {
+		super.onResume();
+
+		stopRefresh = false;
+		refreshTimer = new Timer();
+		refreshTimer.schedule(getRefreshTask(), REFRESH_DELAY);
 	}
 
-	/**
-	 * Not used in this view.
-	 */
 	@Override
-	public void connectionsUpdated(QueryTripsResult result) {
-	}
+	protected void onPause() {
+		super.onPause();
 
-	/**
-	 * Not used in this view.
-	 */
-	@Override
-	public void stationsFromNamesUpdated(List<TransportStation> result) {
+		stopRefresh = true;
 	}
 
 }
