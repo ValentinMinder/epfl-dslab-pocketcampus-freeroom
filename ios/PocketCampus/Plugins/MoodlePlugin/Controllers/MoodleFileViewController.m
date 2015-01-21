@@ -101,18 +101,14 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     
     if ([PCUtils isIdiomPad]) {
         self.navigationItem.leftBarButtonItem = [(PluginSplitViewController*)(self.splitViewController) toggleMasterViewBarButtonItem];
-    }
-    
-    NSMutableArray* rightButtons = [NSMutableArray arrayWithCapacity:2];
+     }
     
     UIBarButtonItem* actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
     actionButton.enabled = NO;
-    [rightButtons addObject:actionButton];
     
     UIBarButtonItem* printButton = [[UIBarButtonItem alloc] initWithImage:[PCValues imageForPrintBarButtonLandscapePhone:NO] landscapeImagePhone:[PCValues imageForPrintBarButtonLandscapePhone:YES] style:UIBarButtonItemStyleBordered target:self action:@selector(printButtonTapped)];
     printButton.accessibilityHint = NSLocalizedStringFromTable(@"PrintThisDocumentAtEPFL", @"MoodlePlugin", nil);
     printButton.enabled = NO;
-    [rightButtons addObject:printButton];
     
     BOOL isFavorite = [self.moodleService isFavoriteMoodleItem:self.moodleFile];
     UIImage* favoriteImage = [PCValues imageForFavoriteNavBarButtonLandscapePhone:NO glow:isFavorite];
@@ -120,14 +116,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     
     UIBarButtonItem* favoriteButton = [[UIBarButtonItem alloc] initWithImage:favoriteImage landscapeImagePhone:favoriteImageLandscape style:UIBarButtonItemStylePlain target:self action:@selector(favoriteButtonPressed)];
     favoriteButton.accessibilityLabel = isFavorite ? NSLocalizedStringFromTable(@"RemoveDocumentFromFavorites", @"MoodlePlugin", nil) : NSLocalizedStringFromTable(@"AddDocumentToFavorites", @"MoodlePlugin", nil);
-    [rightButtons addObject:favoriteButton];
     
     UIBarButtonItem* deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteButtonPressed)];
     deleteButton.enabled = NO;
     deleteButton.accessibilityHint = NSLocalizedStringFromTable(@"DeleteDocumentFromLocalStorage", @"MoodlePlugin", nil);
-    [rightButtons addObject:deleteButton];
     
-    self.navigationItem.rightBarButtonItems = rightButtons;
+    self.navigationItem.rightBarButtonItems = @[actionButton, printButton, favoriteButton, deleteButton];
     
     if ([self.moodleService isMoodleFileDownloaded:self.moodleFile]) {
         self.centerMessageLabel.hidden = YES;

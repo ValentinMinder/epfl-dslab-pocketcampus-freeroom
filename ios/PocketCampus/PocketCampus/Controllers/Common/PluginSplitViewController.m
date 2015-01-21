@@ -43,7 +43,6 @@
 
 @implementation PluginSplitViewController
 
-
 - (id)initWithMasterViewController:(UIViewController*)masterViewController detailViewController:(UIViewController*)detailViewController {
     self = [super init];
     if (self) {
@@ -55,10 +54,6 @@
         
     }
     return self;
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -85,7 +80,7 @@
     self.viewControllers = @[self.masterViewController, detailViewController];
 }
 
-#pragma mark - Toggle button generation
+#pragma mark - Toggle buttons generation
 
 - (UIBarButtonItem*)toggleMasterViewBarButtonItem {
     UIImage* image = [UIImage imageNamed:self.isMasterViewControllerHidden ? @"MasterHidden" : @"MasterVisible"];
@@ -107,7 +102,6 @@
     [self setMasterViewControllerHidden:hidden animated:NO];
 }
 
-
 - (void)setMasterViewControllerHidden:(BOOL)hidden animated:(BOOL)animated {
     if ((_masterViewControllerHidden && hidden) || (!_masterViewControllerHidden && !hidden)) {
         return;
@@ -118,9 +112,10 @@
     
     CGFloat duration = animated ? 0.3 : 0.0;
     
-    if ([self respondsToSelector:@selector(preferredDisplayMode)]) {
+    if ([self respondsToSelector:@selector(setPreferredDisplayMode:)]) {
         // >= iOS 8.0
         [UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            // Doc says it animates by default, but not it is not verfied in practice
             self.preferredDisplayMode = hidden ? UISplitViewControllerDisplayModePrimaryHidden : UISplitViewControllerDisplayModeAllVisible;
         } completion:NULL];
         return;
@@ -157,6 +152,19 @@
             detailViewControler.view.frame = CGRectMake(detailFrame.origin.x, detailFrame.origin.y, detailNewWidth, detailFrame.size.height);
         } completion:NULL];
     }
+}
+
+- (void)showMasterViewControllerAsOverlay {
+    if (![self respondsToSelector:@selector(preferredDisplayMode)]) {
+        return;
+    }
+    if (!self.isMasterViewControllerHidden) {
+        return;
+    }
+    [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        // Doc says it animates by default, but not it is not verfied in practice
+        self.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+    } completion:NULL];
 }
 
 - (BOOL)prefersStatusBarHidden {
