@@ -27,6 +27,7 @@
                 style="@style/PocketCampusListItemTitle"
                 android:layout_marginRight="0dip"
                 android:layout_marginTop="0dip"
+                android:maxLines="100"
                 android:text="Rihanna Love the way lie Rihanna Love the way lie Rihanna Love the way lie Rihanna Love the way lie " />
 
             <!-- subtitle -->
@@ -34,6 +35,7 @@
             <TextView
                 android:id="@+id/news_item_feed_name"
                 style="@style/PocketCampusListItemSubTitle"
+                android:maxLines="100"
                 android:text="Rihanna Love the way lie Rihanna Love the way lie Rihanna Love the way lie Rihanna Love the way lie " />
         </LinearLayout>
     </LinearLayout>

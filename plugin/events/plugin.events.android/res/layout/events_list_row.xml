@@ -8,7 +8,8 @@
         android:id="@+id/event_thumbnail"
         style="@style/PocketCampusThumbnail"
         android:layout_width="64dip"
-        android:layout_height="64dip" />
+        android:layout_height="64dip"
+        android:src="@drawable/events_icon" />
 
     <!-- Title Of Song -->
 

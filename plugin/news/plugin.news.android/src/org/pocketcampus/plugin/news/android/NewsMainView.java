@@ -91,8 +91,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	}
 
 	@Override
-	protected void onDisplay(Bundle savedInstanceState,
-			PluginController controller) {
+	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 
 		// Get and cast the controller and model
 		mController = (NewsController) controller;
@@ -100,7 +99,6 @@ public class NewsMainView extends PluginView implements INewsView {
 
 		// The ActionBar is added automatically when you call setContentView
 		// disableActionBar();
-		
 
 		setActionBarTitle(getString(R.string.news_plugin_title));
 	}
@@ -146,25 +144,21 @@ public class NewsMainView extends PluginView implements INewsView {
 	}
 
 	private void updateFilter() {
-		filteredFeeds = difference(feedsInRS.keySet(),
-				mModel.getDislikedFeeds());
+		filteredFeeds = difference(feedsInRS.keySet(), mModel.getDislikedFeeds());
 
 	}
 
 	private void updateActionBar() {
 		removeAllActionsFromActionBar();
-		final int restoFilterIcon = (difference(feedsInRS.keySet(),
-				filteredFeeds).size() == 0 ? R.drawable.pocketcampus_filter
+		final int restoFilterIcon = (difference(feedsInRS.keySet(), filteredFeeds).size() == 0 ? R.drawable.pocketcampus_filter
 				: R.drawable.pocketcampus_filter_sel);
 		if (feedsInRS.size() > 0) {
 			addActionToActionBar(new Action() {
 				public void performAction(View view) {
 					trackEvent("Filter", null);
-					showMultiChoiceDialogSbN(NewsMainView.this, feedsInRS,
-							getString(R.string.news_string_filter),
+					showMultiChoiceDialogSbN(NewsMainView.this, feedsInRS, getString(R.string.news_string_filter),
 							filteredFeeds, new MultiChoiceHandler<String>() {
-								public void saveSelection(String t,
-										boolean isChecked) {
+								public void saveSelection(String t, boolean isChecked) {
 									if (isChecked)
 										mModel.removeDislikedFeed(t);
 									else
@@ -196,7 +190,7 @@ public class NewsMainView extends PluginView implements INewsView {
 		setContentView(R.layout.news_main);
 		mList = (ListView) findViewById(R.id.news_main_list);
 		displayingList = true;
-		
+
 		updateFilter();
 		updateActionBar();
 
@@ -228,57 +222,50 @@ public class NewsMainView extends PluginView implements INewsView {
 			}
 		}
 
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this,
-				R.layout.sdk_separated_list_header2);
+		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.sdk_separated_list_header2);
 		// List<NewsFeed> newsFeeds = mModel.getNewsFeeds();
 		// Collections.sort(newsFeeds, NewsController.getNewsFeedComp4sort());
 		List<Long> keys = new LinkedList<Long>(items.keySet());
 		Collections.sort(keys);
 		for (final long i : keys) {
 
-			Collections.sort(items.get(i),
-					NewsController.getNewsFeedItemComp4sort());
-			Preparated<NewsFeedItem> p = new Preparated<NewsFeedItem>(
-					items.get(i), new Preparator<NewsFeedItem>() {
-						public int[] resources() {
-							return new int[] { R.id.news_feed_item_title,
-									R.id.news_feed_thumbnail,
-									R.id.news_item_feed_name,
-									R.id.news_feed_item_date };
-						}
+			Collections.sort(items.get(i), NewsController.getNewsFeedItemComp4sort());
+			Preparated<NewsFeedItem> p = new Preparated<NewsFeedItem>(items.get(i), new Preparator<NewsFeedItem>() {
+				public int[] resources() {
+					return new int[] { R.id.news_feed_item_title, R.id.news_feed_thumbnail, R.id.news_item_feed_name,
+							R.id.news_feed_item_date };
+				}
 
-						public Object content(int res, final NewsFeedItem e) {
-							switch (res) {
-							case R.id.news_feed_item_title:
-								return e.getTitle();
-							case R.id.news_feed_thumbnail:
-								return NewsController.getResizedPicUrl(
-										e.getImageUrl(), 24);
-							case R.id.news_item_feed_name:
-								return feedsInRS.get(reverseMap.get(e
-										.getItemId()));
-							case R.id.news_feed_item_date:
-								if (i == MILLISECONDS_DAY)
-									return null;
-								return new SimpleDateFormat(
-										"dd MMM",
-										getResources().getConfiguration().locale)
-										.format(new Date(e.getDate()));
-							default:
-								return null;
-							}
-						}
+				public Object content(int res, final NewsFeedItem e) {
+					switch (res) {
+					case R.id.news_feed_item_title:
+						return e.getTitle();
+					case R.id.news_feed_thumbnail:
+						return NewsController.getResizedPicUrl(e.getImageUrl(), 24);
+					case R.id.news_item_feed_name:
+						return feedsInRS.get(reverseMap.get(e.getItemId()));
+					case R.id.news_feed_item_date:
+						if (i == MILLISECONDS_DAY)
+							return null;
+						return new SimpleDateFormat("dd MMM", getResources().getConfiguration().locale)
+								.format(new Date(e.getDate()));
+					default:
+						return null;
+					}
+				}
 
-						public void finalize(Map<String, Object> map,
-								NewsFeedItem item) {
-							map.put(MAP_KEY_NEWSITEMID, "" + item.getItemId());
-							map.put(MAP_KEY_NEWSITEMTITLE, item.getTitle());
-						}
-					});
-			adapter.addSection(
-					getHeaderTitle(i),
-					new LazyAdapter(this, p.getMap(), R.layout.news_list_row, p
-							.getKeys(), p.getResources()));
+				public void finalize(Map<String, Object> map, NewsFeedItem item) {
+					map.put(MAP_KEY_NEWSITEMID, "" + item.getItemId());
+					map.put(MAP_KEY_NEWSITEMTITLE, item.getTitle());
+				}
+			});
+
+			LazyAdapter lazyAdapter = new LazyAdapter(this, p.getMap(), R.layout.news_list_row, p.getKeys(),
+					p.getResources());
+			lazyAdapter.setStubImage(R.drawable.news_icon);
+			lazyAdapter.setNoImage(R.drawable.news_icon);
+			lazyAdapter.setImageOnFail(R.drawable.news_icon);
+			adapter.addSection(getHeaderTitle(i), lazyAdapter);
 		}
 
 		// if(newsFeeds.size() == 0) {
@@ -294,25 +281,20 @@ public class NewsMainView extends PluginView implements INewsView {
 		}
 		mList.setAdapter(adapter);
 
-		mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader
-				.getInstance(), true, true));
+		mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
 
 		mList.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				Object o = arg0.getItemAtPosition(arg2);
 				if (o instanceof Map<?, ?>) {
-					String eId = ((Map<?, ?>) o).get(MAP_KEY_NEWSITEMID)
-							.toString();
-					String eTitle = ((Map<?, ?>) o).get(MAP_KEY_NEWSITEMTITLE)
-							.toString();
+					String eId = ((Map<?, ?>) o).get(MAP_KEY_NEWSITEMID).toString();
+					String eTitle = ((Map<?, ?>) o).get(MAP_KEY_NEWSITEMTITLE).toString();
 					Intent i = new Intent(NewsMainView.this, NewsItemView.class);
 					i.putExtra(NewsItemView.EXTRAS_KEY_NEWSITEMID, eId);
 					NewsMainView.this.startActivity(i);
 					trackEvent("OpenNewsItem", eId + "-" + eTitle);
 				} else {
-					Toast.makeText(getApplicationContext(), o.toString(),
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
@@ -343,8 +325,7 @@ public class NewsMainView extends PluginView implements INewsView {
 
 	@Override
 	public void networkErrorCacheExists() {
-		Toast.makeText(getApplicationContext(),
-				getResources().getString(R.string.sdk_connection_no_cache_yes),
+		Toast.makeText(getApplicationContext(), getResources().getString(R.string.sdk_connection_no_cache_yes),
 				Toast.LENGTH_SHORT).show();
 		mController.requestNewsFeeds(this, true);
 	}

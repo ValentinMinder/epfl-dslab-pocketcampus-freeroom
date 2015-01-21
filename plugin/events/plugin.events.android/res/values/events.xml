@@ -40,4 +40,6 @@
 	<string name="events_email">Send by email</string>
 	<string name="events_choose_period">Choose time period</string>
 	<string name="events_past_events">See past events</string>
+	
+	<string name="events_past_events_title">Past events</string>
 </resources>

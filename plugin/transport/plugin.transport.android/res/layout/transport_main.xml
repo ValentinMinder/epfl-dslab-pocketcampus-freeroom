@@ -3,11 +3,22 @@
     style="@style/PocketCampusRow"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/transport_departure_station"
-        style="@style/PocketCampusListItemTitle"
-        android:text="EPFL"
-        android:textColor="@color/epfl_corrected_red" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/PocketCampusListItemTitle"
+            android:layout_width="wrap_content"
+            android:text="@string/transport_departure_from" />
+
+        <TextView
+            android:id="@+id/transport_departure_station"
+            style="@style/PocketCampusListItemTitle"
+            android:text="EPFL"
+            android:textColor="@color/epfl_corrected_red" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/transport_departure_times_list"

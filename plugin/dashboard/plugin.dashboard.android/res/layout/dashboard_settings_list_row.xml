@@ -1,42 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/PocketCampusRow"
     android:orientation="horizontal" >
 
-    <!-- ListRow Left sied Thumbnail image -->
-
-    <LinearLayout
-        android:id="@+id/dashboard_settings_item_thumbnail_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginRight="5dip"
-        android:padding="3dip" >
-
-        <ImageView
-            android:id="@+id/dashboard_settings_item_thumbnail"
-            android:layout_width="32dip"
-            android:layout_height="32dip" />
-    </LinearLayout>
-
-    <!-- Title Of Song -->
+    <ImageView
+        android:id="@+id/dashboard_settings_item_thumbnail"
+        style="@style/PocketCampusThumbnail"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/dashboard_icon" />
 
     <TextView
         android:id="@+id/dashboard_settings_item_title"
         style="@style/PocketCampusListItemTitle"
-        android:layout_alignBottom="@+id/dashboard_settings_item_thumbnail_container"
-        android:layout_alignTop="@+id/dashboard_settings_item_thumbnail_container"
-        android:layout_toRightOf="@+id/dashboard_settings_item_thumbnail_container"
-        android:gravity="center_vertical"
-        android:text="Rihanna Love the way lie, here next to me, I love it very much, etc." />
-
-    <!-- Rightend Arrow -->
+        android:layout_width="0dp"
+        android:layout_height="32dip"
+        android:layout_gravity="start|center_vertical"
+        android:layout_weight="1"
+        android:text="Evaluer sur Play Store" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
         android:src="@drawable/pocketcampus_list_arrow" />
 
-</RelativeLayout>
+</LinearLayout>

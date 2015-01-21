@@ -26,6 +26,7 @@
             <TextView
                 android:id="@+id/event_list_complex_title"
                 style="@style/PocketCampusListItemTitle"
+                android:maxLines="100"
                 android:text="Rihanna Love the way lie Rihanna Love the way lie Rihanna Love the way lie Rihanna Love the way lie " />
 
             <!-- subtitle -->
@@ -33,6 +34,7 @@
             <TextView
                 android:id="@+id/event_list_complex_subtitle"
                 style="@style/PocketCampusListItemSubTitle"
+                android:maxLines="100"
                 android:text="Rihanna Love the way lie Rihanna Love the way lie Rihanna Love the way lie Rihanna Love the way lie " />
         </LinearLayout>
     </LinearLayout>
