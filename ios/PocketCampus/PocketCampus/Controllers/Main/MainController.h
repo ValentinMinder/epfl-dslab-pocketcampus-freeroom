@@ -79,6 +79,9 @@ typedef enum {
 /**
  * @return the view controller that is currently visible,
  * i.e. on which you can safely present a view controller and it be visible.
+ * @discussion WARNING: you must check the returned view controller's presentedViewController
+ * proprety. If it is not nil, it means that a view controller is currently being dismissed
+ * and you must delay you presentation by at least 0.5 seconds.
  */
 - (UIViewController*)currentTopMostViewController;
 

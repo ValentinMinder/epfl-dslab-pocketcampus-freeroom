@@ -38,7 +38,7 @@
 - (instancetype)initWithMapView:(MKMapView*)mapView;
 
 /**
- * Returns wether NOW mapMap is in a state where fetching/drawing mapRect with zoomScale is possible
+ * Should return wether NOW mapView is in a state where fetching/drawing mapRect with zoomScale is possible
  * Typically NO if mapRect is outside visibleMapRect or zoomScale not equal to mapView current's zoomScale
  */
 - (BOOL)shouldDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale;

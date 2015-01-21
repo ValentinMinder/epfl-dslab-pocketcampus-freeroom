@@ -1,50 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/authentication_customloginpageLayout"
-    style="@style/Dialog"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
-     
-    
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/authentication_dialog_top"
-        style="@style/Dialog.Top"
-        android:layout_width="fill_parent"
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:padding="50dip" />
 
-            <TextView
-            android:id="@+id/authentication_dialog_title"
-            style="@style/DialogText.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/authentication_plugin_title" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/authentication_dialog_middle"
-        style="@style/Dialog.Middle"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/authentication_dialog_top"
-        android:gravity="center"
-        android:minHeight="100dp"
-        android:orientation="vertical" >
-
-	
-		
-		    <ProgressBar
-		        android:id="@+id/progressBar1"
-		        style="?android:attr/progressBarStyleLarge"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_centerVertical="true"
-		        android:layout_centerHorizontal="true" />
-		
-
-	    
-    </LinearLayout>
-
-
-</RelativeLayout>
+</LinearLayout>

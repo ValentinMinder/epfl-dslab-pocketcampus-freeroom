@@ -270,7 +270,7 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 									.authority(
 											"directory.plugin.pocketcampus.org")
 									.appendPath("search")
-									.appendQueryParameter("q",
+									.appendQueryParameter("sciper",
 											((Person) obj).getSciper());
 							Intent i = new Intent(Intent.ACTION_VIEW, builder
 									.build());

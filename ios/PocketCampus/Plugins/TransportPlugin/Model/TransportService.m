@@ -129,7 +129,7 @@ static TransportService* instance __weak = nil;
     }
     PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     [operation setQueuePriority:priority];
-    operation.serviceClientSelector = @selector(getTrips::);
+    operation.serviceClientSelector = @selector(getTrips:to:);
     operation.delegateDidReturnSelector = @selector(tripsFrom:to:didReturn:);
     operation.delegateDidFailSelector = @selector(tripsFailedFrom:to:);
     [operation addObjectArgument:from];

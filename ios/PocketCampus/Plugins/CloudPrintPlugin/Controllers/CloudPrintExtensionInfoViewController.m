@@ -41,6 +41,7 @@
     self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self.class) owner:nil options:nil] firstObject];
     if (self) {
         self.title = NSLocalizedStringFromTable(@"Printing", @"CloudPrintPlugin", nil);
+        self.preferredContentSize = CGSizeMake(400.0, 600.0);
     }
     return self;
 }
