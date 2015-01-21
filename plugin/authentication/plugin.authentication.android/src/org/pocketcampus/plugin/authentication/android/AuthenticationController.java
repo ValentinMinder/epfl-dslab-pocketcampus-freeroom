@@ -17,7 +17,9 @@ import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationContr
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
 import org.pocketcampus.plugin.authentication.android.req.AuthenticateTokenWithTequilaRequest;
 import org.pocketcampus.plugin.authentication.android.req.FetchUserAttributes;
+import org.pocketcampus.plugin.authentication.android.req.GetPcSessionFromTequilaReq;
 import org.pocketcampus.plugin.authentication.android.req.GetPcSessionRequest;
+import org.pocketcampus.plugin.authentication.android.req.GetPcTokenFromTequilaReq;
 import org.pocketcampus.plugin.authentication.android.req.GetPcTokenRequest;
 import org.pocketcampus.plugin.authentication.android.req.GetServiceDetailsRequest;
 import org.pocketcampus.plugin.authentication.android.req.LoginToTequilaRequest;
@@ -25,10 +27,12 @@ import org.pocketcampus.plugin.authentication.shared.AuthSessionRequest;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Client;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface;
 import org.pocketcampus.plugin.authentication.shared.UserAttributesRequest;
+import org.pocketcampus.plugin.authentication.shared.authenticationConstants;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -101,6 +105,8 @@ public class AuthenticationController extends PluginController implements IAuthe
 			return null;
 		}
 	};
+	
+	public static final String OAUTH2_AUTH_URL = "https://dev-tequila.epfl.ch/cgi-bin/OAuth2IdP/auth?response_type=code&redirect_uri=https%3A%2F%2Fpocketcampus.epfl.ch%2F&client_id=1b74e3837e50e21afaf2005f%40epfl.ch&scope=" + TextUtils.join(",", authenticationConstants.OAUTH2_SCOPES);
 
 	/**
 	 *  This name must match given in the Server.java file in plugin.launcher.server.
@@ -299,7 +305,8 @@ public class AuthenticationController extends PluginController implements IAuthe
 		if(mModel.getTequilaToken() != null)
 			new GetServiceDetailsRequest().start(this, threadSafeClient, mModel.getTequilaToken());
 		else 
-			new GetPcTokenRequest().start(this, mClient, null);
+			//new GetPcTokenRequest().start(this, mClient, null);
+			new GetPcTokenFromTequilaReq().start(this, mClient, null);
 	}
 
 	public void allowService(boolean always) {
@@ -337,9 +344,10 @@ public class AuthenticationController extends PluginController implements IAuthe
 	public void tokenAuthenticationFinished() {
 		Log.v("DEBUG", "tokenAuthenticationFinished");
 		if(mModel.getSelfAuth()) {
-			AuthSessionRequest req = new AuthSessionRequest(mModel.getTequilaToken());
-			req.setRememberMe(mModel.getStorePassword());
-			new GetPcSessionRequest().start(this, mClient, req);
+			//AuthSessionRequest req = new AuthSessionRequest(mModel.getTequilaToken());
+			//req.setRememberMe(mModel.getStorePassword());
+			//new GetPcSessionRequest().start(this, mClient, req);
+			new GetPcSessionFromTequilaReq().start(this, mClient, mModel.getTequilaToken());
 		} else {
 			pingBack(mModel.getTequilaToken(), ( mModel.getStorePassword() ? null : "forcereauth" ));
 			stopSelf();

@@ -116,6 +116,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		setServiceAllowedLevel("Moodle", 1);
 		setServiceAllowedLevel("QAforum", 1);
 		setServiceAllowedLevel("authentication@pocketcampus", 1);
+		setServiceAllowedLevel("Tequila OAuth2 IdP", 1);
 		//setServiceAllowedLevel("moodle", 1);
 		//setServiceAllowedLevel("camipro", 1);
 		//setServiceAllowedLevel("isacademia", 1);

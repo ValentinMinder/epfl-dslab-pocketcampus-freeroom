@@ -4,35 +4,12 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
     
-<RelativeLayout 
-    android:id="@+id/authentication_customloginpageLayout"
-    style="@style/Dialog"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
-     
+
     
-
+    
     <LinearLayout
-        android:id="@+id/authentication_dialog_top"
-        style="@style/Dialog.Top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-            <TextView
-            android:id="@+id/authentication_dialog_title"
-            style="@style/DialogText.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/authentication_plugin_title" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/authentication_dialog_middle"
-        style="@style/Dialog.Middle"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/authentication_dialog_top"
         android:gravity="center"
         android:orientation="vertical" >
 
@@ -71,65 +48,80 @@
 		        android:layout_height="wrap_content"
 		        android:gravity="center"
 		        android:textColor="@android:color/primary_text_light" />
-		
-		    	
-	    	    	
+
+		    <LinearLayout
+		        style="?android:attr/buttonBarStyle"
+		        android:divider="?android:dividerVertical"
+		        android:showDividers="middle"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+		        android:orientation="horizontal" >
+
+		        <Button
+		            android:id="@+id/authentication_alwaysallowbutton"
+		            style="?android:attr/buttonBarButtonStyle"
+		            android:layout_width="0dp"
+		            android:layout_height="55dp"
+		            android:layout_marginLeft="2dp"
+		            android:layout_marginRight="2dp"
+		            android:layout_marginTop="3dp"
+		            android:layout_weight="0.25"
+		            android:enabled="true"
+		            android:gravity="center"
+		            android:text="@string/authentication_string_alwaysallow"
+		            android:textSize="14sp" />
+
+		        <Button
+		            android:id="@+id/authentication_allowbutton"
+		            style="?android:attr/buttonBarButtonStyle"
+		            android:layout_width="0dp"
+		            android:layout_height="55dp"
+		            android:layout_marginLeft="2dp"
+		            android:layout_marginRight="2dp"
+		            android:layout_marginTop="3dp"
+		            android:layout_weight="0.25"
+		            android:enabled="true"
+		            android:gravity="center"
+		            android:text="@string/authentication_string_allow"
+		            android:textSize="14sp" />
+
+		        <Button
+		            android:id="@+id/authentication_denybutton"
+		            style="?android:attr/buttonBarButtonStyle"
+		            android:layout_width="0dp"
+		            android:layout_height="55dp"
+		            android:layout_marginLeft="2dp"
+		            android:layout_marginRight="2dp"
+		            android:layout_marginTop="3dp"
+		            android:layout_weight="0.25"
+		            android:enabled="true"
+		            android:gravity="center"
+		            android:text="@string/authentication_string_deny"
+		            android:textSize="14sp" />
+
+		        <Button
+		            android:id="@+id/authentication_alwaysdenybutton"
+		            style="?android:attr/buttonBarButtonStyle"
+		            android:layout_width="0dp"
+		            android:layout_height="55dp"
+		            android:layout_marginLeft="2dp"
+		            android:layout_marginRight="2dp"
+		            android:layout_marginTop="3dp"
+		            android:layout_weight="0.25"
+		            android:enabled="true"
+		            android:gravity="center"
+		            android:text="@string/authentication_string_alwaysdeny"
+		            android:textSize="14sp" />
+		    </LinearLayout>
+
+<!--             android:background="@color/epfl_corrected_red" -->
+<!--         android:textColor="@color/white" -->
+    
+    
+        	
     </LinearLayout>
 
-
     
     
-    <LinearLayout
-        android:id="@+id/authentication_dialog_bottom"
-        style="@style/Dialog.Bottom"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/authentication_dialog_middle"
-        android:gravity="center"
-        android:orientation="horizontal" >
-
-	    <Button
-	        android:id="@+id/authentication_alwaysallowbutton"
-	        android:layout_width="75dp"
-	        android:layout_height="55dp"
-	        android:gravity="center"
-	        android:layout_marginTop="3dp"
-	        android:layout_marginLeft="0dp"
-	        android:layout_marginRight="0dp"
-	        android:enabled="true"
-	        android:text="@string/authentication_string_alwaysallow" />
-	    <Button
-	        android:id="@+id/authentication_allowbutton"
-	        android:layout_width="75dp"
-	        android:layout_height="55dp"
-	        android:gravity="center"
-	        android:layout_marginTop="3dp"
-	        android:layout_marginLeft="0dp"
-	        android:layout_marginRight="0dp"
-	        android:enabled="true"
-	        android:text="@string/authentication_string_allow" />
-		<Button
-	        android:id="@+id/authentication_denybutton"
-	        android:layout_width="75dp"
-	        android:layout_height="55dp"
-	        android:gravity="center"
-	        android:layout_marginTop="3dp"
-	        android:layout_marginLeft="0dp"
-	        android:layout_marginRight="0dp"
-	        android:enabled="true"
-	        android:text="@string/authentication_string_deny" />
-		<Button
-	        android:id="@+id/authentication_alwaysdenybutton"
-	        android:layout_width="75dp"
-	        android:layout_height="55dp"
-	        android:gravity="center"
-	        android:layout_marginTop="3dp"
-	        android:layout_marginLeft="0dp"
-	        android:layout_marginRight="0dp"
-	        android:enabled="true"
-	        android:text="@string/authentication_string_alwaysdeny" />
-	</LinearLayout>
-    
-
-</RelativeLayout>
 </ScrollView>

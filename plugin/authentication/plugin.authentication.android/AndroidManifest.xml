@@ -30,19 +30,6 @@
             <!-- </intent-filter> -->
 
 
-            <!-- Communication with other plugins -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="authentication.plugin.pocketcampus.org"
-                    android:scheme="pocketcampus-authenticate" />
-                <!-- <category android:name="android.intent.category.DEFAULT" /> -->
-                <!-- <action android:name="pocketcampus.intent.action.AUTHENTICATION_LAUNCH" /> -->
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -59,7 +46,18 @@
                     android:scheme="https" />
             </intent-filter>
 
-            <!-- Communication with Tequila -->
+        </activity>
+        <activity
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.authentication.android.AuthenticationOAuth2View"
+            android:excludeFromRecents="true"
+            android:icon="@drawable/app_icon"
+            android:label="@string/authentication_plugin_title"
+            android:logo="@drawable/authentication_icon_white"
+            android:launchMode="singleTask"
+            android:screenOrientation="nosensor"
+            android:theme="@style/PocketCampusActionBarTheme"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -67,9 +65,11 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="login.pocketcampus.org"
-                    android:scheme="pocketcampus-redirect" />
+                    android:host="dev-tequila.epfl.ch"
+                    android:path="/cgi-bin/OAuth2IdP/auth"
+                    android:scheme="https" />
             </intent-filter>
+
         </activity>
         <activity
             android:name="org.pocketcampus.plugin.authentication.android.AuthenticationStatusView"

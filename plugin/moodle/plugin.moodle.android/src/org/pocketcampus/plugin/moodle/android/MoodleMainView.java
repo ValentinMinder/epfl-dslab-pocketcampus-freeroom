@@ -68,7 +68,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		// Get and cast the controller and model
 		mController = (MoodleController) controller;
 		mModel = (MoodleModel) controller.getModel();
-		setActionBarTitle(getString(R.string.moodle_plugin_title));
+		//setActionBarTitle(getString(R.string.moodle_plugin_title));
 	}
 
 	/**
