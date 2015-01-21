@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="350dp"
+    android:layout_width="300dp"
     android:layout_height="110dp"
     android:orientation="vertical" >
 
@@ -27,9 +27,10 @@
     <TextView
         android:id="@+id/recommendedAppDescription"
         style="@style/PocketCampusListItemSubTitle"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:maxLines="3"
         android:paddingLeft="5dip"
-        android:text="Best App ever\nIt makes the other apps look silly\nDoesn&apos;t it?\nDon&apos;t you think so?\nI do" />
+        android:text="Arriving by public transportation and exploring the city centre by bicycle or e-bike – this is the vision that PubliBike is putting into action in Switzerland. In a first step, railway stations will be equipped with bicycles and e-bikes. This service is offered by project partners PostBus, Swiss Railways SBB and Rent a Bike to support urban sustainable mobility.
+" />
 
 </LinearLayout>

@@ -46,8 +46,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * @author Amer <amer.chamseddine@epfl.ch>
  * 
  */
-public class RecommendedAppsMainView extends PluginView implements
-		IRecommendedAppsView {
+public class RecommendedAppsMainView extends PluginView implements IRecommendedAppsView {
 
 	private RecommendedAppsController mController;
 	private RecommendedAppsModel mModel;
@@ -60,8 +59,7 @@ public class RecommendedAppsMainView extends PluginView implements
 	}
 
 	@Override
-	protected void onDisplay(Bundle savedInstanceState,
-			PluginController controller) {
+	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		// Get and cast the controller and model
 		mController = (RecommendedAppsController) controller;
 		mModel = (RecommendedAppsModel) controller.getModel();
@@ -114,43 +112,31 @@ public class RecommendedAppsMainView extends PluginView implements
 
 		Map<Integer, RecommendedApp> apps = mModel.apps();
 
-		LayoutInflater inflater = (LayoutInflater) getBaseContext()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		LinearLayout storeLayout = (LinearLayout) inflater.inflate(
-				R.layout.recommended_apps_main, null);
-		LinearLayout linearLayout = (LinearLayout) storeLayout
-				.findViewById(R.id.recommendedAppCategoryList);
+		LinearLayout storeLayout = (LinearLayout) inflater.inflate(R.layout.recommended_apps_main, null);
+		LinearLayout linearLayout = (LinearLayout) storeLayout.findViewById(R.id.recommendedAppCategoryList);
 
 		for (RecommendedAppCategory category : mModel.categories()) {
-			LinearLayout categoryLayout = (LinearLayout) inflater.inflate(
-					R.layout.recommended_apps_appcategory, null);
-			((TextView) categoryLayout
-					.findViewById(R.id.recommendedAppCategoryName))
-					.setText(category.getCategoryName());
+			LinearLayout categoryLayout = (LinearLayout) inflater.inflate(R.layout.recommended_apps_appcategory, null);
+			((TextView) categoryLayout.findViewById(R.id.recommendedAppCategoryName)).setText(category
+					.getCategoryName());
 
 			if (category.getCategoryDescription() != null && category.getCategoryDescription().length() > 0) {
-				((TextView) categoryLayout
-						.findViewById(R.id.recommendedAppCategoryDescription))
-						.setText(category.getCategoryDescription());
+				((TextView) categoryLayout.findViewById(R.id.recommendedAppCategoryDescription)).setText(category
+						.getCategoryDescription());
 			} else {
-				categoryLayout.findViewById(
-						R.id.recommendedAppCategoryDescription).setVisibility(
-						View.GONE);
+				categoryLayout.findViewById(R.id.recommendedAppCategoryDescription).setVisibility(View.GONE);
 			}
-			LinearLayout appLayout = (LinearLayout) categoryLayout
-					.findViewById(R.id.recommendedAppCategoryApps);
+			LinearLayout appLayout = (LinearLayout) categoryLayout.findViewById(R.id.recommendedAppCategoryApps);
 			for (int appId : category.getAppIds()) {
 				final RecommendedApp app = apps.get(appId);
-				final LinearLayout appThumbLayout = (LinearLayout) inflater
-						.inflate(R.layout.recommended_apps_appthumbnail, null);
+				final LinearLayout appThumbLayout = (LinearLayout) inflater.inflate(
+						R.layout.recommended_apps_appthumbnail, null);
 
-				((TextView) appThumbLayout
-						.findViewById(R.id.recommendedAppName)).setText(app
-						.getAppName());
-				((TextView) appThumbLayout
-						.findViewById(R.id.recommendedAppDescription))
-						.setText(app.getAppDescription());
+				((TextView) appThumbLayout.findViewById(R.id.recommendedAppName)).setText(app.getAppName());
+				((TextView) appThumbLayout.findViewById(R.id.recommendedAppDescription)).setText(app
+						.getAppDescription());
 
 				appLayout.addView(appThumbLayout);
 				appThumbLayout.setOnClickListener(new OnClickListener() {
@@ -161,30 +147,23 @@ public class RecommendedAppsMainView extends PluginView implements
 						final String appPackageName = app.getAppStoreQuery();
 
 						if (isAppInstalled(appPackageName)) {
-							String startingAppParameter = app
-									.getAppOpenURLPattern();
+							String startingAppParameter = app.getAppOpenURLPattern();
 							if (startingAppParameter != null) {
 
-								startActivity(new Intent(Intent.ACTION_VIEW,
-										Uri.parse(startingAppParameter)));
+								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(startingAppParameter)));
 							} else {
-								Intent launchIntent = getPackageManager()
-										.getLaunchIntentForPackage(
-												appPackageName);
+								Intent launchIntent = getPackageManager().getLaunchIntentForPackage(appPackageName);
 								startActivity(launchIntent);
 
 							}
 							return;
 						}
 						try {
-							startActivity(new Intent(Intent.ACTION_VIEW, Uri
-									.parse("market://details?id="
-											+ appPackageName)));
+							startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="
+									+ appPackageName)));
 						} catch (android.content.ActivityNotFoundException anfe) {
-							startActivity(new Intent(
-									Intent.ACTION_VIEW,
-									Uri.parse("http://play.google.com/store/apps/details?id="
-											+ appPackageName)));
+							startActivity(new Intent(Intent.ACTION_VIEW, Uri
+									.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
 						}
 					}
 				});
@@ -197,14 +176,12 @@ public class RecommendedAppsMainView extends PluginView implements
 						HttpURLConnection connection = null;
 						try {
 							URL url = new URL(
-									"https://42matters.com/api/1/apps/lookup.json?access_token=862cc1618ee8bd7aec6e90edb75c9848c4357c27&p="
+									"https://42matters.com/api/1/apps/lookup.json?access_token=e1f2f56694733a945fd0f773b426c50c9c74c9e7&p="
 											+ params[0]);
-							connection = (HttpURLConnection) url
-									.openConnection();
+							connection = (HttpURLConnection) url.openConnection();
 							connection.connect();
 							if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-								return "Server returned HTTP "
-										+ connection.getResponseCode() + " "
+								return "Server returned HTTP " + connection.getResponseCode() + " "
 										+ connection.getResponseMessage();
 							}
 							int fileLength = connection.getContentLength();
@@ -252,19 +229,12 @@ public class RecommendedAppsMainView extends PluginView implements
 						try {
 							JSONObject jsonResponse = new JSONObject(result);
 
-							((TextView) appThumbLayout
-									.findViewById(R.id.recommendedAppName))
-									.setText(jsonResponse.getString("title"));
-							((TextView) appThumbLayout
-									.findViewById(R.id.recommendedAppDescription))
-									.setText(jsonResponse
-											.getString("description"));
-							ImageLoader
-									.getInstance()
-									.displayImage(
-											jsonResponse.getString("icon_72"),
-											(ImageView) appThumbLayout
-													.findViewById(R.id.recommendedAppLogo));
+							((TextView) appThumbLayout.findViewById(R.id.recommendedAppName)).setText(jsonResponse
+									.getString("title"));
+							((TextView) appThumbLayout.findViewById(R.id.recommendedAppDescription))
+									.setText(jsonResponse.getString("description"));
+							ImageLoader.getInstance().displayImage(jsonResponse.getString("icon_72"),
+									(ImageView) appThumbLayout.findViewById(R.id.recommendedAppLogo));
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
