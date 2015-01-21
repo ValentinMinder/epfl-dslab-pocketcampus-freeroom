@@ -17,6 +17,7 @@
         <TextView
             android:id="@+id/food_dialog_h2"
             style="@style/PocketCampusListItemTitle"
+            android:maxLines="100"
             android:layout_marginBottom="15sp"
             android:layout_marginRight="20sp"
             android:layout_marginTop="5sp" 
