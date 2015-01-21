@@ -237,10 +237,13 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)rescheduleHideNavbarTimer {
     [self.hideNavbarTimer invalidate];
-    MoodleFileViewController* weakSelf __weak = self;
+    __weak __typeof(self) welf = self;
     self.hideNavbarTimer = [NSTimer scheduledTimerWithTimeInterval:kHideNavbarSeconds block:^{
-        [weakSelf hideNavbar];
+        if ([[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsAutomaticallyHideNavBarSettingBoolKey]) {
+            [welf hideNavbar];
+        }
     } repeats:YES];
+
 }
 
 - (void)hideNavbar {
@@ -253,6 +256,9 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     /*if ([PCUtils isIdiomPad] && ![(PluginSplitViewController*)(self.splitViewController) isMasterViewControllerHidden]) {
         return; //on iPad only hide nav bar when in full screen mode (master hidden)
     }*/
+    if ([[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsHideMasterWithNavBarSettingBoolKey]) {
+        [(PluginSplitViewController*)(self.splitViewController) setMasterViewControllerHidden:YES animated:YES];
+    }
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self setNeedsStatusBarAppearanceUpdate];
     self.webView.scrollView.contentInset = UIEdgeInsetsZero;
@@ -266,6 +272,9 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 - (void)showNavbarAnimated:(BOOL)animated {
     if (!self.navigationController.navigationBarHidden) {
         return;
+    }
+    if ([[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsHideMasterWithNavBarSettingBoolKey]) {
+        [(PluginSplitViewController*)(self.splitViewController) setMasterViewControllerHidden:NO animated:animated];
     }
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [self.navigationController setNeedsStatusBarAppearanceUpdate];

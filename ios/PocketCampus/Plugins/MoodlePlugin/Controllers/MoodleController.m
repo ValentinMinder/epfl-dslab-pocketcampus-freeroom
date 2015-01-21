@@ -53,6 +53,9 @@ static MoodleController* instance __weak = nil;
     if (![defaults objectForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey]) {
         [defaults setBool:YES forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
     }
+    if (![defaults objectForKey:kMoodleDocsAutomaticallyHideNavBarSettingBoolKey]) {
+        [defaults setBool:YES forKey:kMoodleDocsAutomaticallyHideNavBarSettingBoolKey];
+    }
 }
 
 - (id)init {

@@ -51,7 +51,7 @@
             _masterNavigationController.delegate = self;
         }
         self.viewControllers = @[masterViewController, detailViewController];
-        
+        self.presentsWithGesture = NO;
     }
     return self;
 }
@@ -109,6 +109,12 @@
     [self willChangeValueForKey:NSStringFromSelector(@selector(isMasterViewControllerHidden))];
     _masterViewControllerHidden = hidden;
     [self didChangeValueForKey:NSStringFromSelector(@selector(isMasterViewControllerHidden))];
+    
+    if (hidden) {
+        [[MainController publicController] beginIgnoringRevealMainMenuGesture];
+    } else {
+        [[MainController publicController] endIgnoringRevealMainMenuGesture];
+    }
     
     CGFloat duration = animated ? 0.3 : 0.0;
     

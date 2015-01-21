@@ -23,8 +23,13 @@
 
 //MoodleSettingsViewController
 "MoodleSettings" = "Réglages Moodle";
+"Reading" = "Lecture";
 "KeepDocsPosition" = "Restaurer la lecture";
 "KeepDocsPositionExplanation" = "Quand cette fonction est activée, les documents s'ouvrent directement à l'endroit où vous les laisser.";
+"AutomaticallyHideNavBar" = "Masquer automatiquement la barre de navigation";
+"AutomaticallyHideNavBarExplanation" = "Quand cette fonction est activée, la barre de navigation est automatiquement masquée après quelques secondes. Touchez le document avec 3 doigts pour l'afficher et la masquer rapidement.";
+"HideMasterWithNavBar" = "La liste disparaît avec la barre de navigation";
+"HideMasterWithNavBarExplanation" = "Quand cette fonction est activée, la liste des documents (colonne de gauche) est masquée en même temps que la barre de navigation.";
 "DeleteAllDownloadedDocuments" = "Supprimer tous les doc. téléchargés";
 "DownloadedDocumentsCurrentlyUsingBytesWithFormat" = "Les documents téléchargés utilisent actuellement %@ d'espace de stockage.";
 "Computing" = "Calcul";

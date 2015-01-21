@@ -23,8 +23,13 @@
 
 //MoodleSettingsViewController
 "MoodleSettings" = "Moodle settings";
+"Reading" = "Reading";
 "KeepDocsPosition" = "Restore reading position";
 "KeepDocsPositionExplanation" = "When enabled, documents automatically open where you leave them off.";
+"AutomaticallyHideNavBar" = "Auto-hide the navigation bar";
+"AutomaticallyHideNavBarExplanation" = "When enabled, the navigation (top) bar automatically hides in the documents view after a few seconds. Tap the document with 3 fingers to show and hide it quickly.";
+"HideMasterWithNavBar" = "The list hides with the nav. bar";
+"HideMasterWithNavBarExplanation" = "When enabled, the documents list (the left column) hides together with the navigation bar.";
 "DeleteAllDownloadedDocuments" = "Delete all downloaded documents";
 "DownloadedDocumentsCurrentlyUsingBytesWithFormat" = "Downloaded documents are currently using %@ of space.";
 "Computing" = "Calculating";
