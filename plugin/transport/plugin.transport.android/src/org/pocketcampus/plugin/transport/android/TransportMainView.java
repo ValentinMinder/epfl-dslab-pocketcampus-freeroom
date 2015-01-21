@@ -13,9 +13,11 @@ import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuator;
 import org.pocketcampus.platform.android.utils.DialogUtils.SingleChoiceHandler;
+import org.pocketcampus.platform.android.utils.Callback;
 import org.pocketcampus.platform.android.utils.Preparated;
 import org.pocketcampus.platform.android.utils.Preparator;
 import org.pocketcampus.plugin.transport.R;
+import org.pocketcampus.plugin.transport.R.color;
 import org.pocketcampus.plugin.transport.android.iface.ErrorCause;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
 import org.pocketcampus.plugin.transport.android.iface.TransportTrips;
@@ -230,7 +232,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 					}
 					int index = 0;
 					if (item.getTrips().size() > index) {
-						return getNiceLogo(item.getTrips().get(index));
+						return new LazyAdapter.Customizer(getNiceLogo(item.getTrips().get(index)),
+								new Callback<View>() {
+									public void callback(View t) {
+										((TextView) t).setTextColor(getResources().getColor(R.color.green_apple));
+									}
+								});
 					}
 					return null;
 				}
@@ -259,19 +266,34 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 				case R.id.transport_departure_time0: {
 					if (item.isError()) {
+						String original = null;
 						switch (item.getErrorCause()) {
 						case NetworkError:
-							return getString(R.string.sdk_connection_error_happened);
+							original = getString(R.string.sdk_connection_error_happened);
+							break;
 						case ServersDown:
-							return getString(R.string.sdk_upstream_server_down);
+							original = getString(R.string.sdk_upstream_server_down);
 						}
+						return new LazyAdapter.Customizer(original, new Callback<View>() {
+
+							public void callback(View t) {
+								((TextView) t).setTextColor(getResources().getColor(R.color.epfl_corrected_red));
+							}
+						});
+
 					}
 					if (item.isLoading()) {
 						return getString(R.string.transport_loading);
 					}
 					int index = 0;
 					if (item.getTrips().size() > index) {
-						return timeString(item.getTrips().get(index).getDepartureTime());
+						return new LazyAdapter.Customizer(timeString(item.getTrips().get(index).getDepartureTime()),
+								new Callback<View>() {
+									public void callback(View t) {
+										((TextView) t).setTextColor(getResources().getColor(R.color.green_apple));
+									}
+								});
+
 					}
 					return null;
 				}
