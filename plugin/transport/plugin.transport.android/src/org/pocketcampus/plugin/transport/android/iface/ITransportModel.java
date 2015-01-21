@@ -66,4 +66,6 @@ public interface ITransportModel {
 	public TransportTrips getTripsFor(TransportTripSearchRequest request);
 
 	public void addTransportStationToPersistedStorage(TransportStation station);
+	
+	public void removeTransportStationFromPersistedStorage(TransportStation station);
 }

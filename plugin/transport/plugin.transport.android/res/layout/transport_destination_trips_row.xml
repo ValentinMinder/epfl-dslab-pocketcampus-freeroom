@@ -6,35 +6,35 @@
 
     <TextView
         android:id="@+id/transport_details_departure_time"
-        style="@style/PocketCampusListItemSubTitle"
+        style="@style/PocketCampusTransportDetailsRow"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:text="11:10" />
 
     <TextView
         android:id="@+id/transport_details_arrival_time"
-        style="@style/PocketCampusListItemSubTitle"
+        style="@style/PocketCampusTransportDetailsRow"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:text="11:20" />
 
     <TextView
         android:id="@+id/transport_details_duration_time"
-        style="@style/PocketCampusListItemSubTitle"
+        style="@style/PocketCampusTransportDetailsRow"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:text="0:15" />
 
     <TextView
         android:id="@+id/transport_details_nb_changes"
-        style="@style/PocketCampusListItemSubTitle"
+        style="@style/PocketCampusTransportDetailsRow"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:text="1" />
 
     <TextView
         android:id="@+id/transport_details_first_line"
-        style="@style/PocketCampusListItemSubTitle"
+        style="@style/PocketCampusTransportDetailsRow"
         android:layout_width="0dp"
         android:layout_weight="1.5"
         android:text="B 701" />

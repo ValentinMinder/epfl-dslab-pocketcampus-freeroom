@@ -18,12 +18,12 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-             >
+            android:orientation="horizontal" >
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -51,12 +51,14 @@
                     android:id="@+id/transport_departure_time1"
                     style="@style/PocketCampusListItemTitle"
                     android:layout_width="wrap_content"
+                    android:maxLines="1"
                     android:text="06:52" />
 
                 <TextView
                     android:id="@+id/transport_departure_line1"
                     style="@style/PocketCampusListItemSubTitle"
                     android:layout_width="wrap_content"
+                    android:maxLines="1"
                     android:text="Bus 18" />
             </LinearLayout>
 
@@ -70,12 +72,14 @@
                     android:id="@+id/transport_departure_time2"
                     style="@style/PocketCampusListItemTitle"
                     android:layout_width="wrap_content"
+                    android:maxLines="1"
                     android:text="23:59" />
 
                 <TextView
                     android:id="@+id/transport_departure_line2"
                     style="@style/PocketCampusListItemSubTitle"
                     android:layout_width="wrap_content"
+                    android:maxLines="1"
                     android:text="Bus 18" />
             </LinearLayout>
         </LinearLayout>

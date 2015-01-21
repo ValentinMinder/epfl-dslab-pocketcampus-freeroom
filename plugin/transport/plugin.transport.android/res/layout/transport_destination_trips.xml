@@ -10,7 +10,7 @@
 
         <TextView
             android:id="@+id/transport_details_departure_time"
-            style="@style/PocketCampusListItemSubTitle"
+            style="@style/PocketCampusTransportDetailsRow"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="@string/transport_dep_short"
@@ -18,7 +18,7 @@
 
         <TextView
             android:id="@+id/transport_details_arrival_time"
-            style="@style/PocketCampusListItemSubTitle"
+            style="@style/PocketCampusTransportDetailsRow"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="@string/transport_arr_short"
@@ -26,7 +26,7 @@
 
         <TextView
             android:id="@+id/transport_details_duration_time"
-            style="@style/PocketCampusListItemSubTitle"
+            style="@style/PocketCampusTransportDetailsRow"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="@string/transport_dur_short"
@@ -34,7 +34,7 @@
 
         <TextView
             android:id="@+id/transport_details_nb_changes"
-            style="@style/PocketCampusListItemSubTitle"
+            style="@style/PocketCampusTransportDetailsRow"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="@string/transport_chg_short"
@@ -42,7 +42,7 @@
 
         <TextView
             android:id="@+id/transport_details_first_line"
-            style="@style/PocketCampusListItemSubTitle"
+            style="@style/PocketCampusTransportDetailsRow"
             android:layout_width="0dp"
             android:layout_weight="1.5"
             android:text="@string/transport_line_short"

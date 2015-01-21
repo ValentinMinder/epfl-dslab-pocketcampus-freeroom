@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/transport_edit_remove_row"
+    style="@style/PocketCampusRow"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/transport_edit_remove_station_name"
+        style="@style/PocketCampusListItemTitle"
+        android:text="Lausanne-Flon" />
+
+</LinearLayout>

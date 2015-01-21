@@ -80,6 +80,8 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	public void addTransportStationToPersistedStorage(TransportStation station) {
 		if (!userTransportStations.contains(station)) {
 			userTransportStations.add(0, station);
+			departureStationChangedTo(departureStation);
+
 			Set<String> stations = mStationPrefs.getStringSet(STATION_NAMES, new HashSet<String>());
 			String stationName = station.getName();
 			stations.add(stationName);
@@ -184,6 +186,9 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	@Override
 	public void departureStationChangedTo(TransportStation station) {
 		cachedQueryTrips.clear();
+		if (station == null) {
+			return;
+		}
 		arrivalStations = new ArrayList<TransportStation>(userTransportStations);
 		arrivalStations.remove(station);
 		departureStation = station;
@@ -209,6 +214,34 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	@Override
 	public TransportTrips getTripsFor(TransportTripSearchRequest request) {
 		return cachedQueryTrips.get(request);
+	}
+
+	@Override
+	public void removeTransportStationFromPersistedStorage(TransportStation station) {
+		Set<String> stations = mStationPrefs.getStringSet(STATION_NAMES, new HashSet<String>());
+		String stationName = station.getName();
+		stations.remove(stationName);
+		mStationPrefsEditor.putStringSet(STATION_NAMES, stations);
+		mStationPrefsEditor.remove(stationName + STATION_ID);
+		mStationPrefsEditor.remove(stationName + STATION_LATITUDE);
+		mStationPrefsEditor.remove(stationName + STATION_LONGITUDE);
+		if (!mStationPrefsEditor.commit()) {
+			Log.d(getClass().getName(), "Failed to commit to shared prefs");
+		}
+
+		userTransportStations.remove(station);
+		if (departureStation.equals(station)) {
+			if (userTransportStations.size() > 0) {
+				TransportStation newDeparture = userTransportStations.get(0);
+				departureStationChangedTo(newDeparture);
+			} else {
+				departureStationChangedTo(null);
+			}
+		} else {
+			TransportTripSearchRequest request = new TransportTripSearchRequest(departureStation, station);
+			cachedQueryTrips.remove(request);
+			arrivalStations.remove(station);
+		}
 	}
 
 }

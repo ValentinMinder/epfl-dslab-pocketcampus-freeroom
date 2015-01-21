@@ -25,7 +25,7 @@
 	<string name="food_text_novotes">pas de votes</string>
 					
 	<string name="food_button_vote_inline">voter</string>
-	<string name="food_button_seemap_inline">afficher dans plan</string>
+	<string name="food_button_seemap_inline">Voir sur plan</string>
 	<string name="food_button_vote">Voter</string>
 	<string name="food_button_send">Soumettre</string>
 	<string name="food_button_googletranslate">Traduire avec Google Translate</string>

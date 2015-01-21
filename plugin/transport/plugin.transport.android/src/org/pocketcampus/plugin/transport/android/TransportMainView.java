@@ -148,13 +148,13 @@ public class TransportMainView extends PluginView implements ITransportView {
 			@Override
 			public void performAction(View view) {
 				trackEvent("UserStations", null);
-				Intent i = new Intent(TransportMainView.this, TransportEditView.class);
+				Intent i = new Intent(TransportMainView.this, TransportRemoveView.class);
 				startActivity(i);
 			}
 
 			@Override
 			public int getDrawable() {
-				return R.drawable.transport_edit;
+				return R.drawable.transport_remove;
 			}
 
 			@Override
@@ -506,6 +506,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 	@Override
 	public void getDefaultStationsFinished(List<TransportStation> result) {
+		locationLastRefresh = 0;
 		setDepartureStation();
 	}
 

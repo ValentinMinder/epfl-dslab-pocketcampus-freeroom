@@ -46,7 +46,7 @@
             android:screenOrientation="nosensor" >
         </activity>
         <activity
-            android:name="org.pocketcampus.plugin.transport.android.TransportEditView"
+            android:name="org.pocketcampus.plugin.transport.android.TransportRemoveView"
             android:logo="@drawable/transport_icon_white"
             android:screenOrientation="nosensor" >
         </activity>
