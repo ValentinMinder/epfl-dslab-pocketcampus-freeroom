@@ -85,6 +85,17 @@ typedef enum {
  */
 - (UIViewController*)currentTopMostViewController;
 
+/**
+ * Disables the screen edge pan gesture that allows to reveal the main menu
+ * The gesture is automatically and always enabled back when changing plugin.
+ */
+- (void)beginIgnoringRevealMainMenuGesture;
+
+/**
+ * Re-enables the screen edge pan gesture that allows to reveal the main menu
+ */
+- (void)endIgnoringRevealMainMenuGesture;
+
 - (PCURLSchemeHandler*)urlSchemeHandlerSharedInstance;
 
 - (BOOL)handlePocketCampusURL:(NSURL*)url;

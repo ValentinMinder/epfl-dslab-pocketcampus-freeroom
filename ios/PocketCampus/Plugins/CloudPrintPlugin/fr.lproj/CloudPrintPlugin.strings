@@ -36,7 +36,7 @@
 "POOL1Printers" = "Imprimantes POOL1";
 "OpenPCandShowMyPrintLayerExplanations" = "Le plan ne peut pas être affiché depuis ici. Ouvrez PocketCampus > Plan, puis affichez le layer «Imprimantes».";
 "DidYouKnowExtensionTitle" = "Impression depuis d'autres apps";
-"DidYouKnowExtensionSubtitle" = "Saviez-vous qu'il est possible d'imprimer des PDFs depuis les autres apps ? Touchez pour plus d'info.";
+"DidYouKnowExtensionSubtitle" = "Saviez-vous qu'il est possible d'utiliser EPFL Print pour imprimer des PDFs depuis d'autres apps ? Touchez pour plus d'info.";
 "1Copy" = "1 copie";
 "NbCopiesWithFormat" = "%d copies";
 "Pages" = "Pages";

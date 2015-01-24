@@ -75,8 +75,8 @@
 // LGALibrary
 #define COCOAPODS_POD_AVAILABLE_LGALibrary
 #define COCOAPODS_VERSION_MAJOR_LGALibrary 1
-#define COCOAPODS_VERSION_MINOR_LGALibrary 2
-#define COCOAPODS_VERSION_PATCH_LGALibrary 5
+#define COCOAPODS_VERSION_MINOR_LGALibrary 3
+#define COCOAPODS_VERSION_PATCH_LGALibrary 0
 
 // MBProgressHUD
 #define COCOAPODS_POD_AVAILABLE_MBProgressHUD
@@ -99,8 +99,8 @@
 // TTTAttributedLabel
 #define COCOAPODS_POD_AVAILABLE_TTTAttributedLabel
 #define COCOAPODS_VERSION_MAJOR_TTTAttributedLabel 1
-#define COCOAPODS_VERSION_MINOR_TTTAttributedLabel 11
-#define COCOAPODS_VERSION_PATCH_TTTAttributedLabel 0
+#define COCOAPODS_VERSION_MINOR_TTTAttributedLabel 13
+#define COCOAPODS_VERSION_PATCH_TTTAttributedLabel 1
 
 // TUSafariActivity
 #define COCOAPODS_POD_AVAILABLE_TUSafariActivity

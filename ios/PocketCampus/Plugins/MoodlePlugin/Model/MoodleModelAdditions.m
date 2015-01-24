@@ -36,6 +36,10 @@
 
 NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey = @"SaveDocsPositionGeneralSettingBool";
 
+NSString* const kMoodleDocsAutomaticallyHideNavBarSettingBoolKey = @"DocsAutomaticallyHideNavBarSettingBool";
+
+NSString* const kMoodleDocsHideMasterWithNavBarSettingBoolKey = @"DocsHideMasterWithNavBarSettingBool";
+
 @implementation MoodleCourseSection2 (Additions)
 
 - (BOOL)isCurrent {

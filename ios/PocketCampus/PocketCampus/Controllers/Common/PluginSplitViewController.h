@@ -46,9 +46,16 @@
 @property (nonatomic, getter = isMasterViewControllerHidden) BOOL masterViewControllerHidden;
 
 - (id)initWithMasterViewController:(UIViewController*)masterViewController detailViewController:(UIViewController*)detailViewController;
+
 - (void)setMasterViewControllerHidden:(BOOL)hidden animated:(BOOL)animated;
 
-/*
+/**
+ * If masterViewControllerHidden is YES, shows the master view controller as overlay. Does nothing otherise.
+ * Use can dismiss by swiping.
+ */
+- (void)showMasterViewControllerAsOverlay NS_AVAILABLE_IOS(8_0);
+
+/**
  * Detail view controllers can set their left bar button item to such a button
  * Tapping it with show/hide the master view controller so that detail view controller is full screen
  * The action of the button is already set.
@@ -60,21 +67,21 @@
  */
 - (UIBarButtonItem*)toggleMasterViewBarButtonItem;
 
-/*
+/**
  * UIViewController override
  * Returns YES if both master view and controller and detail view controller return YES
  * If masterViewControllerHidden is YES, returns result of detail view controller only
  */
 - (BOOL)prefersStatusBarHidden;
 
-/*
+/**
  * UIViewController override
  * Returns detail view controller preferredStatusBarStyle if isMasterViewControllerHidden is YES
  * returns master view controller preferredStatusBarStyle otherwise
  */
 - (UIStatusBarStyle)preferredStatusBarStyle;
 
-/*
+/**
  * UIViewController override
  * Returns detail view controller preferredStatusBarUpdateAnimation if isMasterViewControllerHidden is YES
  * returns master view controller preferredStatusBarUpdateAnimation otherwise

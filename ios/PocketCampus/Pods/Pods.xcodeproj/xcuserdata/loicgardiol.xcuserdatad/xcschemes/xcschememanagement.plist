@@ -8,169 +8,141 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>8</integer>
 		</dict>
 		<key>Pods-CDZQRScanningViewController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>9</integer>
 		</dict>
 		<key>Pods-GoogleAnalytics-iOS-SDK.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>10</integer>
 		</dict>
 		<key>Pods-JTTargetActionBlock.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>11</integer>
 		</dict>
 		<key>Pods-LGALibrary.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>12</integer>
 		</dict>
 		<key>Pods-MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>13</integer>
 		</dict>
 		<key>Pods-NSTimer-Blocks.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>14</integer>
 		</dict>
 		<key>Pods-SSKeychain.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>15</integer>
 		</dict>
 		<key>Pods-TTTAttributedLabel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>18</integer>
 		</dict>
 		<key>Pods-TUSafariActivity.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>19</integer>
 		</dict>
 		<key>Pods-TapkuLibrary.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>16</integer>
 		</dict>
 		<key>Pods-thrift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>17</integer>
 		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>7</integer>
 		</dict>
 		<key>TUSafariActivity.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>20</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>29254232D931D5E53D9BF680</key>
+		<key>136FEE184171AD2E31814E64</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2C9ED5274D25D6B2DAE44CBF</key>
+		<key>2A1843AB856148CC78DC7AF9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4946DA0689EFFB71FAF81734</key>
+		<key>2A80604A9DA816DB60990604</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>75B2CD0D52AECCA2149043F8</key>
+		<key>2CBB0A870A7CEAA1F95767A3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7804FE92783C13C8B9165776</key>
+		<key>4450EC33490D98C9E1DE15D4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7B299688970211E4D6D77276</key>
+		<key>5EDD9F6F01F026CFFFD7162C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8B95D351652D6ABF2C5EE710</key>
+		<key>A63760FA0A7F1137C2DAE898</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B06EBB750447FA3B7487A9BF</key>
+		<key>B5777AA7ECE6E6914EAD80D4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B17FDD3C144B536D5AB56990</key>
+		<key>BE8BA3DC4365DFBB6EAC1DB3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B2EB45275D654DB040D85C58</key>
+		<key>CB33A16E6A2632D9EB9501D9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B430AA12A877FB37B1A756D7</key>
+		<key>D2605D6E45CE2B8DF561BB94</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BF7F8FC3525B848760D1B3AF</key>
+		<key>E28A46238F5EC0218F12BBDF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CF77E6BE4E263AD3EF695B2C</key>
+		<key>EFA438F9F66D68AC630BDD24</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D954151882F43D8928E72B00</key>
+		<key>FF76C034249DF40788FD457C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

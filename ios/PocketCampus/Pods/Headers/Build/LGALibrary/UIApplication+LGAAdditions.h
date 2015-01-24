@@ -1,0 +1,1 @@
+../../../LGALibrary/Pod/Classes/UIApplication+LGAAdditions.h

@@ -45,7 +45,9 @@
 
 #import "MBProgressHUD.h"
 
-static NSTimeInterval kHideNavbarSeconds = 5.0;
+#import "UIApplication+LGAAdditions.h"
+
+static NSTimeInterval kHideNavbarSeconds = 6.0;
 
 @interface MoodleFileViewController ()<UIGestureRecognizerDelegate, UIWebViewDelegate, UIPopoverControllerDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate>
 
@@ -79,7 +81,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     if (self) {
         self.gaiScreenName = @"/moodle/course/document";
         self.moodleFile = moodleFile;
-        self.title = moodleFile.name; //enough space to display title if iPad
+        self.title = moodleFile.name;
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.lastKnownContentSize = CGSizeZero;
     }
@@ -99,21 +101,15 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     
     self.webView.scalesPageToFit = YES; //otherwise, pinch-to-zoom is disabled
     
-    if ([PCUtils isIdiomPad]) {
-        self.navigationItem.leftBarButtonItem = [(PluginSplitViewController*)(self.splitViewController) toggleMasterViewBarButtonItem];
-    }
-    
-    NSMutableArray* rightButtons = [NSMutableArray arrayWithCapacity:2];
+    [self updateMasterToggleBarButtonItem];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMasterToggleBarButtonItem) name:NSUserDefaultsDidChangeNotification object:nil];
     
     UIBarButtonItem* actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
     actionButton.enabled = NO;
-    [rightButtons addObject:actionButton];
-    
     
     UIBarButtonItem* printButton = [[UIBarButtonItem alloc] initWithImage:[PCValues imageForPrintBarButtonLandscapePhone:NO] landscapeImagePhone:[PCValues imageForPrintBarButtonLandscapePhone:YES] style:UIBarButtonItemStyleBordered target:self action:@selector(printButtonTapped)];
     printButton.accessibilityHint = NSLocalizedStringFromTable(@"PrintThisDocumentAtEPFL", @"MoodlePlugin", nil);
     printButton.enabled = NO;
-    [rightButtons addObject:printButton];
     
     BOOL isFavorite = [self.moodleService isFavoriteMoodleItem:self.moodleFile];
     UIImage* favoriteImage = [PCValues imageForFavoriteNavBarButtonLandscapePhone:NO glow:isFavorite];
@@ -121,14 +117,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     
     UIBarButtonItem* favoriteButton = [[UIBarButtonItem alloc] initWithImage:favoriteImage landscapeImagePhone:favoriteImageLandscape style:UIBarButtonItemStylePlain target:self action:@selector(favoriteButtonPressed)];
     favoriteButton.accessibilityLabel = isFavorite ? NSLocalizedStringFromTable(@"RemoveDocumentFromFavorites", @"MoodlePlugin", nil) : NSLocalizedStringFromTable(@"AddDocumentToFavorites", @"MoodlePlugin", nil);
-    [rightButtons addObject:favoriteButton];
     
     UIBarButtonItem* deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteButtonPressed)];
     deleteButton.enabled = NO;
     deleteButton.accessibilityHint = NSLocalizedStringFromTable(@"DeleteDocumentFromLocalStorage", @"MoodlePlugin", nil);
-    [rightButtons addObject:deleteButton];
     
-    self.navigationItem.rightBarButtonItems = rightButtons;
+    self.navigationItem.rightBarButtonItems = @[actionButton, printButton, favoriteButton, deleteButton];
     
     if ([self.moodleService isMoodleFileDownloaded:self.moodleFile]) {
         self.centerMessageLabel.hidden = YES;
@@ -242,12 +236,35 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 #pragma mark - Navbar visibility
 
+- (void)updateMasterToggleBarButtonItem {
+    if ([[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsHideMasterWithNavBarSettingBoolKey]) {
+        self.navigationItem.leftBarButtonItem = nil;
+        if (self.navigationController.navigationBarHidden) {
+            [(PluginSplitViewController*)(self.splitViewController) setMasterViewControllerHidden:YES animated:YES];
+        } else {
+            [(PluginSplitViewController*)(self.splitViewController) setMasterViewControllerHidden:NO animated:YES];
+        }
+    } else {
+        self.navigationItem.leftBarButtonItem = [(PluginSplitViewController*)(self.splitViewController) toggleMasterViewBarButtonItem];
+    }
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
 - (void)rescheduleHideNavbarTimer {
     [self.hideNavbarTimer invalidate];
-    MoodleFileViewController* weakSelf __weak = self;
+    __weak __typeof(self) welf = self;
     self.hideNavbarTimer = [NSTimer scheduledTimerWithTimeInterval:kHideNavbarSeconds block:^{
-        [weakSelf hideNavbar];
+        if (![[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsAutomaticallyHideNavBarSettingBoolKey]) {
+            return;
+        }
+        NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
+        NSTimeInterval lastTouchTimestamp = [UIApplication sharedApplication].lga_lastTouchTimestamp;
+        if (currentTimestamp - lastTouchTimestamp < kHideNavbarSeconds) {
+            return;
+        }
+        [welf hideNavbar];
     } repeats:YES];
+
 }
 
 - (void)hideNavbar {
@@ -260,6 +277,9 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     /*if ([PCUtils isIdiomPad] && ![(PluginSplitViewController*)(self.splitViewController) isMasterViewControllerHidden]) {
         return; //on iPad only hide nav bar when in full screen mode (master hidden)
     }*/
+    if ([[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsHideMasterWithNavBarSettingBoolKey]) {
+        [(PluginSplitViewController*)(self.splitViewController) setMasterViewControllerHidden:YES animated:YES];
+    }
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self setNeedsStatusBarAppearanceUpdate];
     self.webView.scrollView.contentInset = UIEdgeInsetsZero;
@@ -273,6 +293,9 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 - (void)showNavbarAnimated:(BOOL)animated {
     if (!self.navigationController.navigationBarHidden) {
         return;
+    }
+    if ([[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsHideMasterWithNavBarSettingBoolKey]) {
+        [(PluginSplitViewController*)(self.splitViewController) setMasterViewControllerHidden:NO animated:animated];
     }
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [self.navigationController setNeedsStatusBarAppearanceUpdate];

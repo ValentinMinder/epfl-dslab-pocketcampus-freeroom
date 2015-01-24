@@ -74,9 +74,12 @@ static EventsController* instance __weak = nil;
             }
             
             self.eventsService = [EventsService sharedInstanceToRetain];
+            
+//#warning REMOVE
+            //[self.eventsService addUserTicket:@"amer"];
+            
             /*#warning TO REMOVE
             [self.eventsService addUserTicket:@"d3f760d257605db44b40ea81fb69040e"]; //Loïc Privacy Congress 2013
-            [self.eventsService addUserTicket:@"amer"]; //Loïc Privacy Congress 2013
             [self.eventsService addUserTicket:@"2c79be552072699bd4abac2af98efeac"]; //Loïc EDIC Open House 2014
             [self.eventsService addUserTicket:@"6298eb264f3cb42f6faa7b6a7f5c5482"]; //Loïc IC Reasearch Day 2013*/
             
