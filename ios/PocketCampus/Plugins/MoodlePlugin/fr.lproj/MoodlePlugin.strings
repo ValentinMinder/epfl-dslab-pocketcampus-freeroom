@@ -27,7 +27,7 @@
 "KeepDocsPosition" = "Restaurer la lecture";
 "KeepDocsPositionExplanation" = "Quand cette fonction est activée, les documents s'ouvrent directement à l'endroit où vous les laisser.";
 "AutomaticallyHide" = "Masquer automatiquement";
-"AutomaticallyHideNavBarExplanation" = "Quand cette fonction est activée, la barre de navigation dans la vue document (barre du haut) est masquée automatiquement après quelques secondes d'inactivités.\n\nAstuce: touchez le document avec 3 doigts pour afficher et masquer la barre rapidement.";
+"AutomaticallyHideNavBarExplanation" = "Quand cette fonction est activée, la barre de navigation dans la vue document (barre du haut) est masquée automatiquement après quelques secondes d'inactivité.\n\nAstuce: touchez le document avec 3 doigts pour afficher et masquer la barre rapidement.";
 "DocumentsList" = "Liste des documents";
 "HideMasterWithNavBar" = "Masquer avec la barre de nav.";
 "HideMasterWithNavBarExplanation" = "Quand cette fonction est activée, la liste des documents (colonne de gauche) est masquée en même temps que la barre de navigation.";
