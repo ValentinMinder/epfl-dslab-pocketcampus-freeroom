@@ -87,19 +87,15 @@ static NSUInteger const kDeleteAllDownloadedDocumentsSection = 3;
 
 #pragma mark - UITableViewDelegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([PCUtils isOSVersionSmallerThan:8.0] && (indexPath.section == kAutoHideNavBarSection || indexPath.section == kHideMasterWithNavBarSection)) {
-        // iOS 7 does not automatically resize table view cell to fit content
-        return 60.0;
-    } else {
-        return [super tableView:tableView heightForRowAtIndexPath:indexPath];
-    }
-}
-
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case kReadingSection:
-            return NSLocalizedStringFromTable(@"General", @"PocketCampus", nil);
+            return NSLocalizedStringFromTable(@"Reading", @"MoodlePlugin", nil);
+        case kAutoHideNavBarSection:
+            return NSLocalizedStringFromTable(@"NavigationBar", @"PocketCampus", nil);
+        case kHideMasterWithNavBarSection:
+            return  [PCUtils isIdiomPad] ? NSLocalizedStringFromTable(@"DocumentsList", @"MoodlePlugin", nil) : nil;
+            
     }
     return nil;
 }
@@ -181,7 +177,6 @@ static NSUInteger const kDeleteAllDownloadedDocumentsSection = 3;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = NSLocalizedStringFromTable(@"KeepDocsPosition", @"MoodlePlugin", nil);
             cell.textLabel.adjustsFontSizeToFitWidth = YES;
-            cell.textLabel.numberOfLines = 2;
             UISwitch* toggle = [UISwitch new];
             __weak __typeof(self) welf = self;
             __weak __typeof(toggle) woggle = toggle;
@@ -197,9 +192,8 @@ static NSUInteger const kDeleteAllDownloadedDocumentsSection = 3;
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = NSLocalizedStringFromTable(@"AutomaticallyHideNavBar", @"MoodlePlugin", nil);
+            cell.textLabel.text = NSLocalizedStringFromTable(@"AutomaticallyHide", @"MoodlePlugin", nil);
             cell.textLabel.adjustsFontSizeToFitWidth = YES;
-            cell.textLabel.numberOfLines = 2;
             UISwitch* toggle = [UISwitch new];
             __weak __typeof(self) welf = self;
             __weak __typeof(toggle) woggle = toggle;
@@ -217,7 +211,6 @@ static NSUInteger const kDeleteAllDownloadedDocumentsSection = 3;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = NSLocalizedStringFromTable(@"HideMasterWithNavBar", @"MoodlePlugin", nil);
             cell.textLabel.adjustsFontSizeToFitWidth = YES;
-            cell.textLabel.numberOfLines = 2;
             UISwitch* toggle = [UISwitch new];
             __weak __typeof(self) welf = self;
             __weak __typeof(toggle) woggle = toggle;

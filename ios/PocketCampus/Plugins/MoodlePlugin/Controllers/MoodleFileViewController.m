@@ -99,9 +99,8 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     
     self.webView.scalesPageToFit = YES; //otherwise, pinch-to-zoom is disabled
     
-    if ([PCUtils isIdiomPad]) {
-        self.navigationItem.leftBarButtonItem = [(PluginSplitViewController*)(self.splitViewController) toggleMasterViewBarButtonItem];
-     }
+    [self updateMasterToggleBarButtonItem];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMasterToggleBarButtonItem) name:NSUserDefaultsDidChangeNotification object:nil];
     
     UIBarButtonItem* actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
     actionButton.enabled = NO;
@@ -234,6 +233,20 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 }
 
 #pragma mark - Navbar visibility
+
+- (void)updateMasterToggleBarButtonItem {
+    if ([[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsHideMasterWithNavBarSettingBoolKey]) {
+        self.navigationItem.leftBarButtonItem = nil;
+        if (self.navigationController.navigationBarHidden) {
+            [(PluginSplitViewController*)(self.splitViewController) setMasterViewControllerHidden:YES animated:YES];
+        } else {
+            [(PluginSplitViewController*)(self.splitViewController) setMasterViewControllerHidden:NO animated:YES];
+        }
+    } else {
+        self.navigationItem.leftBarButtonItem = [(PluginSplitViewController*)(self.splitViewController) toggleMasterViewBarButtonItem];
+    }
+    [self setNeedsStatusBarAppearanceUpdate];
+}
 
 - (void)rescheduleHideNavbarTimer {
     [self.hideNavbarTimer invalidate];

@@ -56,6 +56,7 @@
 "LoginRequired" = "Login required";
 "LoginInAppRequired" = "Login required.\nPlease open PocketCampus and login in the settings.";
 "General" = "General";
+"NavigationBar" = "Navigation bar";
 
 
 //Accessbility
