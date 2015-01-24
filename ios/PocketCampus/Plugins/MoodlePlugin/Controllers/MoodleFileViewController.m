@@ -45,7 +45,9 @@
 
 #import "MBProgressHUD.h"
 
-static NSTimeInterval kHideNavbarSeconds = 5.0;
+#import "UIApplication+LGAAdditions.h"
+
+static NSTimeInterval kHideNavbarSeconds = 6.0;
 
 @interface MoodleFileViewController ()<UIGestureRecognizerDelegate, UIWebViewDelegate, UIPopoverControllerDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate>
 
@@ -252,9 +254,15 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     [self.hideNavbarTimer invalidate];
     __weak __typeof(self) welf = self;
     self.hideNavbarTimer = [NSTimer scheduledTimerWithTimeInterval:kHideNavbarSeconds block:^{
-        if ([[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsAutomaticallyHideNavBarSettingBoolKey]) {
-            [welf hideNavbar];
+        if (![[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsAutomaticallyHideNavBarSettingBoolKey]) {
+            return;
         }
+        NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
+        NSTimeInterval lastTouchTimestamp = [UIApplication sharedApplication].lga_lastTouchTimestamp;
+        if (currentTimestamp - lastTouchTimestamp < kHideNavbarSeconds) {
+            return;
+        }
+        [welf hideNavbar];
     } repeats:YES];
 
 }

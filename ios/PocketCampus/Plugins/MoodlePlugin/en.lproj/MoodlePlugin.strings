@@ -27,7 +27,7 @@
 "KeepDocsPosition" = "Restore reading position";
 "KeepDocsPositionExplanation" = "When enabled, documents automatically open where you leave them off.";
 "AutomaticallyHide" = "Hide automatically";
-"AutomaticallyHideNavBarExplanation" = "When enabled, the navigation (top) bar automatically hides in the documents view after a few seconds.\n\nTip: tap the document with 3 fingers to show and hide the bar quickly.";
+"AutomaticallyHideNavBarExplanation" = "When enabled, the navigation (top) bar automatically hides in the documents view after a few seconds of inactivity.\n\nTip: tap the document with 3 fingers to show and hide the bar quickly.";
 "DocumentsList" = "Documents list";
 "HideMasterWithNavBar" = "Hide with the navigation bar";
 "HideMasterWithNavBarExplanation" = "When enabled, the list of documents (the left column) hides together with the navigation bar.";

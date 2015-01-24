@@ -32,7 +32,7 @@ PODS:
   - SSKeychain (1.2.2)
   - TapkuLibrary (0.3.7)
   - thrift (0.9.2)
-  - TTTAttributedLabel (1.13.0)
+  - TTTAttributedLabel (1.13.1)
   - TUSafariActivity (1.0.2)
 
 DEPENDENCIES:
@@ -69,7 +69,7 @@ SPEC CHECKSUMS:
   SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9
   TapkuLibrary: 57999a6f61960402986ed98db14706613d9d5bf2
   thrift: b31bac6c80965a986810a4fc015890b6426ee078
-  TTTAttributedLabel: a847b59a75c92d59f4eabc9cc1745704cff2dc36
+  TTTAttributedLabel: 71843ac4178e1ebd6b0950b54325146726a124ae
   TUSafariActivity: 63c6b0584d1f0a731e955c0e4d9c89cde63bedc2
 
 COCOAPODS: 0.35.0
