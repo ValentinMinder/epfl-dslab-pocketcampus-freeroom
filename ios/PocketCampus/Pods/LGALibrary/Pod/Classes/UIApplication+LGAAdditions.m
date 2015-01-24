@@ -48,11 +48,9 @@
 - (void)lga_sendEvent:(UIEvent*)event {
     [self lga_sendEvent:event]; //calling original implementation
     
-    if (event.allTouches.count > 0) {
-        UITouchPhase phase = ((UITouch*)[event.allTouches anyObject]).phase;
-        if (phase == UITouchPhaseBegan) {
-            self.lga_lastTouchTimestamp = [[NSDate date] timeIntervalSince1970];
-        }
+    UITouch* touch = [event.allTouches anyObject];
+    if (touch && touch.phase == UITouchPhaseBegan) {
+        self.lga_lastTouchTimestamp = [[NSDate date] timeIntervalSince1970];
     }
 }
 
