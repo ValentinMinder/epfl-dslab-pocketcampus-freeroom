@@ -7,6 +7,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ms-appx:///PocketCampus.Common.WindowsRuntime/Resources.xaml" />
+                <ResourceDictionary Source="/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
             <myDesign:Design x:Key="Design" />

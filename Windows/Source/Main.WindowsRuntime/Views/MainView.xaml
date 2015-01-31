@@ -46,15 +46,13 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         
+        <!-- Title -->
         <Border Background="{StaticResource AppHeaderBackgroundBrush}">
-            <Viewbox StretchDirection="DownOnly"
-                     Margin="19,5">
-                <TextBlock Text="{CustomResource Main.ViewTitle}"
-                           Style="{StaticResource HeaderTextBlockStyle}"
-                           Foreground="{StaticResource AppHeaderForegroundBrush}" />
-            </Viewbox>
+            <TextBlock Text="{CustomResource Main.ViewTitle}"
+                       Style="{StaticResource AppTitleTextBlockStyle}" />
         </Border>
         
+        <!-- Plugins -->
         <GridView Grid.Row="1"
                   ItemsSource="{Binding Plugins}"
                   ItemTemplate="{StaticResource PluginTemplate}"

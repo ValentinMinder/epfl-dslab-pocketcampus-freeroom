@@ -129,7 +129,7 @@
     <comment>Button label</comment>
   </data>
   <data name="ViewTitle" xml:space="preserve">
-    <value>PocketCampus EPFL</value>
+    <value>PocketCampus</value>
     <comment>Title</comment>
   </data>
 </root>

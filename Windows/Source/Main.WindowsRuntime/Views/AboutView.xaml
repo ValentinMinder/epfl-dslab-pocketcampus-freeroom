@@ -23,7 +23,7 @@
             <TextBlock Text="{Binding AppVersion}"
                        Style="{StaticResource AppLargeTextBlockStyle}" />
         </StackPanel>
-
+        
         <!-- Developers -->
         <StackPanel Margin="19,10">
             <TextBlock Text="{CustomResource About.DevelopersHeader}"
@@ -77,6 +77,9 @@
                 </TextBlock>
             </HyperlinkButton>
         </StackPanel>
+
+        <!-- EPFL logo -->
+        <ContentControl Template="{StaticResource EpflLogo}" />
     </StackPanel>
 
     <!-- App bar -->
