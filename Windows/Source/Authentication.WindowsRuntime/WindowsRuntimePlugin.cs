@@ -2,7 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using PocketCampus.Authentication.ViewModels;
 using PocketCampus.Authentication.Views;
 using PocketCampus.Common;
@@ -14,12 +13,12 @@ namespace PocketCampus.Authentication
     {
         public string Name
         {
-            get { throw new NotSupportedException(); }
+            get { return null; }
         }
 
         public string Icon
         {
-            get { throw new NotSupportedException(); }
+            get { return null; }
         }
 
         public void Initialize( IWindowsRuntimeNavigationService navigationService )
