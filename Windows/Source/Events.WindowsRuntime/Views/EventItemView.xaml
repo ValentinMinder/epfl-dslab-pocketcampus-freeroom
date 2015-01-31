@@ -14,7 +14,8 @@
             <DataTemplate x:Key="ItemPoolTemplate">
                 <cc:SimpleButton Command="{Binding DataContext.ViewPoolCommand, 
                                                    ElementName=Root}"
-                                 CommandParameter="{Binding}">
+                                 CommandParameter="{Binding}"
+                                 Margin="0,12,8,12">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -36,7 +37,7 @@
         </ResourceDictionary>
     </cc:PageBase.Resources>
     
-    <Grid>
+    <Grid x:Name="Root">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -86,11 +87,11 @@
                                Status="{Binding CacheStatus}" />
 
         <!-- Everything needs to scroll, sometimes some values are extremely long -->
-        <ScrollViewer Grid.Row="3"
-                      Margin="19,0">
+        <ScrollViewer Grid.Row="3">
             <StackPanel>
                 <!-- Information -->
-                <StackPanel Visibility="{Binding Item.HideInformation, 
+                <StackPanel Margin="19,0"
+                            Visibility="{Binding Item.HideInformation, 
                                                  Converter={StaticResource DefaultToVisibility}}">
                     <!-- Date -->
                     <StackPanel Margin="0,16,0,0"
@@ -143,18 +144,18 @@
                 <!-- Large image -->
                 <Image Source="{Binding Item.PictureUrl}"
                        Visibility="{Binding Item.PictureUrl, 
-                                            Converter={StaticResource NonDefaultToVisibility}}"
-                       Margin="-19,0" />
+                                            Converter={StaticResource NonDefaultToVisibility}}" />
 
                 <!-- Details, in HTML -->
                 <RichTextBlock h2x:Properties.Html="{Binding Item.Details}"
                                Style="{StaticResource AppNormalRichTextBlockStyle}"
                                Visibility="{Binding Item.Details, 
                                                     Converter={StaticResource NonDefaultToVisibility}}"
-                               Margin="0,16" />
+                               Margin="19,16" />
 
                 <!-- "More details" button -->
-                <HyperlinkButton Command="{Binding ViewMoreDetailsCommand}"
+                <HyperlinkButton Margin="19,0"
+                                 Command="{Binding ViewMoreDetailsCommand}"
                                  Visibility="{Binding Item.DetailsUrl, 
                                                       Converter={StaticResource NonDefaultToVisibility}}">
                     <TextBlock Style="{StaticResource AppSubtleTextBlockStyle}">

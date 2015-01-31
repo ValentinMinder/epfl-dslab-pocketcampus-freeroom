@@ -51,10 +51,13 @@ namespace PocketCampus.Events.ViewModels
             get { return _isFavorite; }
             set
             {
-                SetProperty( ref _isFavorite, value );
+                if ( value != _isFavorite )
+                {
+                    string eventName = value ? "MarkFavorite" : "UnmarkFavorite";
+                    Messenger.Send( new EventLogRequest( eventName, Item.LogId ) );
+                }
 
-                string eventName = value ? "MarkFavorite" : "UnmarkFavorite";
-                Messenger.Send( new EventLogRequest( eventName, Item.LogId ) );
+                SetProperty( ref _isFavorite, value );
             }
         }
 
