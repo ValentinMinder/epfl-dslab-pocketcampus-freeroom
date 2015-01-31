@@ -1,9 +1,9 @@
 ﻿<cc:PageBase x:Class="PocketCampus.Moodle.Views.CourseView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="using:PocketCampus.Common"
              xmlns:cc="using:PocketCampus.Common.Controls"
              xmlns:myc="using:PocketCampus.Moodle.Controls"
-             xmlns:h2x="using:Html2Xaml"
              DesignDataContext="{Binding Course, Source={StaticResource Design}}">
     <cc:PageBase.Resources>
         <ResourceDictionary>
@@ -101,7 +101,7 @@
             <DataTemplate x:Key="SectionTemplate">
                 <ScrollViewer>
                     <StackPanel>
-                        <RichTextBlock h2x:Properties.Html="{Binding Details}"
+                        <RichTextBlock c:RichTextBlockEx.Html="{Binding Details}"
                                        Style="{StaticResource AppNormalRichTextBlockStyle}"
                                        Margin="0,5,19,0" />
 

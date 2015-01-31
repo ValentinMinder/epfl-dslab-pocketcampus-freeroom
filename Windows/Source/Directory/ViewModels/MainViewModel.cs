@@ -50,7 +50,17 @@ namespace PocketCampus.Directory.ViewModels
         [LogId( "Search" )]
         public AsyncCommand SearchCommand
         {
-            get { return this.GetAsyncCommand( () => SearchAsync( Query, true ) ); }
+            get
+            {
+                return this.GetAsyncCommand( async () =>
+                {
+                    await SearchAsync( Query );
+                    if ( SearchResults != null && SearchResults.Count == 1 )
+                    {
+                        _navigationService.NavigateTo<PersonViewModel, Person>( SearchResults[0] );
+                    }
+                } );
+            }
         }
 
         [LogId( "SearchForMore" )]
@@ -74,7 +84,7 @@ namespace PocketCampus.Directory.ViewModels
             _navigationService = navigationService;
             _request = request;
 
-            this.ListenToProperty( x => x.Query, async () => await SearchAsync( Query, false ) );
+            this.ListenToProperty( x => x.Query, async () => await SearchAsync( Query ) );
         }
 
 
@@ -82,17 +92,18 @@ namespace PocketCampus.Directory.ViewModels
         {
             if ( _request.Query != null )
             {
-                await SearchAsync( _request.Query, true );
-                if ( _searchResults.Count == 1 )
+                await SearchAsync( _request.Query );
+                if ( SearchResults != null && SearchResults.Count == 1 )
                 {
                     _navigationService.RemoveCurrentFromBackStack();
+                    _navigationService.NavigateTo<PersonViewModel, Person>( SearchResults[0] );
                 }
             }
 
             await base.OnNavigatedToAsync();
         }
 
-        private async Task SearchAsync( string query, bool navigateToSingleResult )
+        private async Task SearchAsync( string query )
         {
             if ( string.IsNullOrWhiteSpace( query ) )
             {
@@ -102,10 +113,6 @@ namespace PocketCampus.Directory.ViewModels
 
             if ( query == _lastQuery )
             {
-                if ( navigateToSingleResult && SearchResults != null && SearchResults.Count == 1 )
-                {
-                    _navigationService.NavigateTo<PersonViewModel, Person>( SearchResults[0] );
-                }
                 return;
             }
 
@@ -130,11 +137,6 @@ namespace PocketCampus.Directory.ViewModels
                 {
                     _currentPaginationToken = response.PaginationToken;
                     SearchResults = new ObservableCollection<Person>( response.Results );
-
-                    if ( navigateToSingleResult && SearchResults.Count == 1 )
-                    {
-                        _navigationService.NavigateTo<PersonViewModel, Person>( SearchResults[0] );
-                    }
                 }
             } );
         }
