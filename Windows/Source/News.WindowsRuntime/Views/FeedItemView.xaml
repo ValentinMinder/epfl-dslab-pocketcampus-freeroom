@@ -23,6 +23,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 
@@ -32,15 +33,16 @@
                                TextWrapping="WrapWholeWords" />
                 </Border>
                 
-                <cc:CacheStatusDisplay Status="{Binding CacheStatus}"
+                <cc:CacheStatusDisplay Grid.Row="1"
+                                       Status="{Binding CacheStatus}"
                                        RetryCommand="{Binding RefreshCommand}" />
                 
-                <Image Grid.Row="1"
+                <Image Grid.Row="2"
                        Source="{Binding Item.ImageUrl,
                                         Converter={StaticResource ImageDisplay}}"
                        Width="384" />
                 
-                <RichTextBlock Grid.Row="2"
+                <RichTextBlock Grid.Row="3"
                                c:RichTextBlockEx.Html="{Binding ItemContent.Content}"
                                Style="{StaticResource AppNormalRichTextBlockStyle}"
                                TextAlignment="Justify"
