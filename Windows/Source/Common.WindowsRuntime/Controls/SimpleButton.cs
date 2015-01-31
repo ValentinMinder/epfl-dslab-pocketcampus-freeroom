@@ -94,21 +94,10 @@ namespace PocketCampus.Common.Controls
                 }
             };
 
-            PointerEntered += ( _, __ ) =>
-            {
-                if ( IsEnabled )
-                {
-                    VisualStateManager.GoToState( this, "PointerOver", true );
-                }
-            };
-
-            PointerExited += ( _, __ ) =>
-            {
-                if ( IsEnabled )
-                {
-                    VisualStateManager.GoToState( this, "Normal", true );
-                }
-            };
+            PointerEntered += ( _, __ ) => SetState( "PointerOver" );
+            PointerReleased += ( _, __ ) => SetState( "Normal" );
+            PointerCanceled += ( _, __ ) => SetState( "Normal" );
+            PointerCaptureLost += ( _, __ ) => SetState( "Normal" );
 
             Holding += ( _, __ ) =>
             {
@@ -125,6 +114,14 @@ namespace PocketCampus.Common.Controls
             IsEnabled = Command.CanExecute( CommandParameter );
 
             VisualStateManager.GoToState( this, IsEnabled ? "Normal" : "Disabled", true );
+        }
+
+        private void SetState( string stateName )
+        {
+            if ( IsEnabled )
+            {
+                VisualStateManager.GoToState( this, stateName, true );
+            }
         }
     }
 }
