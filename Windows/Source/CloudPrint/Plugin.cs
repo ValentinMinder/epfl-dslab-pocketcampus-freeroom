@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
 using System.Collections.Generic;
 using PocketCampus.CloudPrint.Services;
 using PocketCampus.CloudPrint.ViewModels;
@@ -35,9 +36,15 @@ namespace PocketCampus.CloudPrint
         }
 
         // This plugin cannot be navigated to directly
-        public void NavigateTo( INavigationService navigationService ) { }
+        public void NavigateTo( INavigationService navigationService )
+        {
+            throw new NotSupportedException();
+        }
 
         // This plugin cannot be navigated to directly
-        public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService ) { }
+        public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService )
+        {
+            throw new NotSupportedException();
+        }
     }
 }

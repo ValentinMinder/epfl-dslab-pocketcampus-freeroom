@@ -39,7 +39,9 @@ namespace PocketCampus.Transport
         }
 
 
-        // This plugin does not handle external navigation.
-        public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService ) { }
+        public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService )
+        {
+            NavigateTo( navigationService );
+        }
     }
 }

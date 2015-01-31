@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
 using System.Collections.Generic;
 using PocketCampus.Authentication.Services;
 using PocketCampus.Authentication.ViewModels;
@@ -38,9 +39,15 @@ namespace PocketCampus.Authentication
         }
 
         // This plugin cannot be navigated to.
-        public void NavigateTo( INavigationService navigationService ) { }
+        public void NavigateTo( INavigationService navigationService )
+        {
+            throw new NotSupportedException();
+        }
 
         // This plugin does not handle navigation from external sources.
-        public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService ) { }
+        public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService )
+        {
+            throw new NotSupportedException();
+        }
     }
 }

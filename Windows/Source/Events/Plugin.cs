@@ -83,6 +83,10 @@ namespace PocketCampus.Events
                     var itemRequest = new ViewEventItemRequest( itemId, false );
                     navigationService.NavigateTo<EventItemViewModel, ViewEventItemRequest>( itemRequest );
                     break;
+
+                default:
+                    NavigateTo( navigationService );
+                    break;
             }
         }
     }

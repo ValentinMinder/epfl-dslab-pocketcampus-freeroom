@@ -50,6 +50,10 @@ namespace PocketCampus.Map
             {
                 navigationService.NavigateTo<MainViewModel, MapSearchRequest>( new MapSearchRequest( parameters[SearchQueryParameter] ) );
             }
+            else
+            {
+                NavigateTo( navigationService );
+            }
         }
     }
 }

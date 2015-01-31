@@ -54,6 +54,10 @@ namespace PocketCampus.Directory
                 case ViewPersonQuery:
                     navigationService.NavigateTo<PersonViewModel, Person>( Person.Parse( parameters ) );
                     break;
+
+                default:
+                    NavigateTo( navigationService );
+                    break;
             }
         }
     }
