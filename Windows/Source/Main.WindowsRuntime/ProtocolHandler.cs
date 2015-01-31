@@ -50,7 +50,9 @@ namespace PocketCampus.Main
         {
             var pluginName = uri.Host.Replace( PluginSuffix, "" );
             var actionName = uri.AbsolutePath.Substring( 1 ); // remove first '/'
-            var parameters = new WwwFormUrlDecoder( uri.Query ).ToDictionary( e => e.Name, e => e.Value );
+            var parameters = string.IsNullOrEmpty( uri.Query ) ?
+                             new Dictionary<string, string>()
+                           : new WwwFormUrlDecoder( uri.Query ).ToDictionary( e => e.Name, e => e.Value );
 
             return Tuple.Create( pluginName, actionName, parameters );
         }
