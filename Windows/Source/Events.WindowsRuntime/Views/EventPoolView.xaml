@@ -112,6 +112,12 @@
             </cc:GroupedListView.ItemsViewSource>
         </cc:GroupedListView>
         
+        <cc:Placeholder Grid.Row="2"
+                        For="{Binding ItemGroups}">
+            <TextBlock Text="{Binding Pool.NoEventsFallbackText}"
+                       Style="{StaticResource AppCenterTextBlockStyle}" />
+        </cc:Placeholder>
+        
         <cc:DataStatusDisplay Grid.Row="2"
                               Data="{Binding DataStatus}"
                               Cache="{Binding CacheStatus}"
