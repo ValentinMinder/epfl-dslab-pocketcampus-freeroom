@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebSettings;
@@ -301,6 +302,14 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 
 	private void done() {
 		showLoading();
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		if(featureId == 0){
+			onBackPressed();
+		}
+		return super.onMenuItemSelected(featureId, item);
 	}
 
 	/**
