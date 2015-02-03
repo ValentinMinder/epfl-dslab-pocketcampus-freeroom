@@ -1,29 +1,28 @@
 package org.pocketcampus.plugin.transport.android;
 
-import java.util.List;
-
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportController;
-import org.pocketcampus.plugin.transport.android.req.AutoCompleteRequest;
-import org.pocketcampus.plugin.transport.android.req.StationsFromNamesRequest;
-import org.pocketcampus.plugin.transport.android.req.NextDeparturesRequest;
+import org.pocketcampus.plugin.transport.android.iface.ITransportModel;
+import org.pocketcampus.plugin.transport.android.req.GetDefaultStationsRequest;
+import org.pocketcampus.plugin.transport.android.req.SearchForStationsRequest;
+import org.pocketcampus.plugin.transport.android.req.SearchForTripsRequest;
 import org.pocketcampus.plugin.transport.shared.TransportService.Client;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
-import org.pocketcampus.plugin.transport.shared.TransportService.getLocationsFromNames_args;
-import org.pocketcampus.plugin.transport.shared.TransportService.getTrips_args;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
+import org.pocketcampus.plugin.transport.shared.TransportStationSearchRequest;
+import org.pocketcampus.plugin.transport.shared.TransportTripSearchRequest;
+
+import android.os.AsyncTask;
 
 /**
  * The main controller of the Transport plugin. Takes care of interactions
  * between the model and the views and gets data from the server.
  * 
- * @author Oriane <oriane.rodriguez@epfl.ch>
- * @author Pascal <pascal.scheiben@epfl.ch>
- * @author Florian <florian.laurent@epfl.ch>
+ * @author silviu@pocketcampus.org
  * 
  */
-public class TransportController extends PluginController implements
-		ITransportController {
+public class TransportController extends PluginController implements ITransportController {
 	/** The plugin model. */
 	private TransportModel mModel;
 	/**
@@ -33,13 +32,16 @@ public class TransportController extends PluginController implements
 	 */
 	private String mPluginName = "transport";
 
+	private SearchForStationsRequest request;
+	private String query;
+
 	/**
 	 * Called when first opening the Transport plugin. Initiates the model of
 	 * the plugin.
 	 */
 	@Override
 	public void onCreate() {
-		mModel = new TransportModel();
+		mModel = new TransportModel(this);
 	}
 
 	/**
@@ -50,58 +52,33 @@ public class TransportController extends PluginController implements
 		return mModel;
 	}
 
-	/**
-	 * Initiates a request to the server for the auto completion for the letters
-	 * that the user is typed.
-	 * 
-	 * @param constraint
-	 *            The letters that the user typed.
-	 */
 	@Override
-	public void getAutocompletions(String constraint) {
-		if (constraint != null) {
-			new AutoCompleteRequest().start(this,
-					(Iface) getClient(new Client.Factory(), mPluginName),
-					constraint);
-		}
+	public void getDefaultStations() {
+		new GetDefaultStationsRequest().start(this, (Iface) getClient(new Client.Factory(), mPluginName), null);
 	}
 
-	/**
-	 * Initiates a request to the server for the next departures between any two
-	 * stations.
-	 * 
-	 * @param departure
-	 *            The departure station.
-	 * 
-	 * @param arrival
-	 *            The arrival station.
-	 */
 	@Override
-	public void nextDepartures(String departure, String arrival) {
-		if (departure != null && arrival != null) {
-			getTrips_args args = new getTrips_args(departure, arrival);
-			new NextDeparturesRequest().start(this,
-					(Iface) getClient(new Client.Factory(), mPluginName), args);
+	public boolean searchForStations(String stationName) {
+		if (stationName.trim().length() == 0) {
+			return false;
 		}
+		if (request != null && !request.getStatus().equals(AsyncTask.Status.FINISHED))
+			return false;
+		if (query != null && query.equals(stationName))
+			return false;
+		query = stationName;
+		request = new SearchForStationsRequest();
+		TransportStationSearchRequest req = new TransportStationSearchRequest(stationName);
+		request.start(this, (Iface) getClient(new Client.Factory(), mPluginName), req);
+		return true;
 	}
 
-	/**
-	 * Initiates a request to the server for a list of
-	 * <code>TransportStation</code> corresponding to the list of
-	 * <code>String</code> which is sent as parameter.
-	 * 
-	 * @param list
-	 *            The list of <code>String</code> for which we want the
-	 *            corresponding stations.
-	 */
 	@Override
-	public void getStationsFromNames(List<String> list) {
-		if (list != null && !list.isEmpty()) {
-			getLocationsFromNames_args args = new getLocationsFromNames_args(
-					list);
-			new StationsFromNamesRequest().start(this,
-					(Iface) getClient(new Client.Factory(), mPluginName), args);
-		}
-	}
+	public void searchForTrips(TransportStation from, TransportStation to) {
+		TransportTripSearchRequest request = new TransportTripSearchRequest(from, to);
+		ITransportModel model = (ITransportModel) getModel();
+		model.getTripsFor(request).setLoading(true);
+		new SearchForTripsRequest().start(this, (Iface) getClient(new Client.Factory(), mPluginName), request);
 
+	}
 }

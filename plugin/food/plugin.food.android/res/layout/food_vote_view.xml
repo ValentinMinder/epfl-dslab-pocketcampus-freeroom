@@ -4,91 +4,59 @@
     android:layout_height="wrap_content"
     android:padding="5dip" >
 
-	
-	<LinearLayout  
-		android:orientation="vertical"
-		>
-	    	
-	    
-	
-	    <TextView
-	        android:id="@+id/food_dialog_h1"
-	        android:textColor="#040404"
-	        android:typeface="sans" 
-	        android:text="Helo"
-	        android:layout_marginLeft="10sp"
-	        android:layout_marginRight="10sp"
-	        android:layout_marginTop="5sp"
-	        android:layout_marginBottom="5sp"
-	        android:textSize="18sp"
-	        android:textStyle="bold"/>
-	
-	    <TextView
-	        android:id="@+id/food_dialog_h2"
-	        android:layout_marginLeft="20sp"
-	        android:layout_marginRight="20sp"
-	        android:layout_marginTop="5sp"
-	        android:layout_marginBottom="15sp"
-	        android:text="Helo"
-	        android:textColor="#343434"
-			/>
-	    
-		
-		<LinearLayout  
-			android:orientation="horizontal"
-			android:gravity="center_horizontal"
-			>
-	        
-	    
-		
-			<LinearLayout 
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:padding="3dip"		
-				android:id="@+id/food_smiley_sad"   
-			    android:layout_marginRight="5dip">
-		        
-				<ImageView     
-			        android:background="@color/white" 
-					android:src="@drawable/food_smiley_sad"/>
-		        				
-			</LinearLayout>
-		    
-			
-		
-			<LinearLayout  
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:padding="3dip"		
-				android:id="@+id/food_smiley_soso"   
-			    android:layout_marginRight="5dip">
-		        
-				<ImageView     
-			        android:background="@color/white" 
-					android:src="@drawable/food_smiley_soso"/>
-		        				
-			</LinearLayout>
-		
-		
-			<LinearLayout
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:padding="3dip"		
-				android:id="@+id/food_smiley_happy"   
-			    android:layout_marginRight="5dip">
-		        
-				<ImageView     
-			        android:background="@color/white" 
-					android:src="@drawable/food_smiley_happy"/>
-		        				
-			</LinearLayout>
-		    			
-		</LinearLayout>
-				
-		
-	</LinearLayout>
-			
+    <LinearLayout android:orientation="vertical" >
 
-	
-     
+        <TextView
+            android:id="@+id/food_dialog_h1"
+            style="@style/PocketCampusListSectionHeader"
+            android:layout_marginBottom="5sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop="5sp"
+            android:background="@color/transparent" />
+
+        <TextView
+            android:id="@+id/food_dialog_h2"
+            style="@style/PocketCampusListItemTitle"
+            android:maxLines="100"
+            android:layout_marginBottom="15sp"
+            android:layout_marginRight="20sp"
+            android:layout_marginTop="5sp" 
+            android:paddingLeft="5dip"/>
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/food_smiley_sad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dip"
+                android:padding="10dip" >
+
+                <ImageView android:src="@drawable/food_smiley_sad" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/food_smiley_soso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dip"
+                android:padding="10dip" >
+
+                <ImageView android:src="@drawable/food_smiley_soso" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/food_smiley_happy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dip"
+                android:padding="10dip" >
+
+                <ImageView android:src="@drawable/food_smiley_happy" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
 </RelativeLayout>

@@ -8,14 +8,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.pocketcampus.R;
 import org.pocketcampus.platform.android.ui.dialog.StyledDialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -50,7 +48,7 @@ public class DialogUtils {
 	private static <T extends Comparable<? super T>> void showSingleChoiceDialog(Context context, CharSequence title, T selected, final SingleChoiceHandler<T> handler, final List<T> keysList, List<? extends CharSequence> valuesList) {
 		int selPos = keysList.indexOf(selected);
 		AlertDialog dialog = new AlertDialog.Builder(context)
-				.setCustomTitle(buildDialogTitle(context, title))
+				.setTitle(title)
 				.setSingleChoiceItems(
 						valuesList.toArray(new CharSequence[]{}), selPos, 
 						new DialogInterface.OnClickListener() {
@@ -82,7 +80,7 @@ public class DialogUtils {
 			selPos[i] = selected.contains(keysList.get(i));
 		}
 		AlertDialog dialog = new AlertDialog.Builder(context)
-				.setCustomTitle(buildDialogTitle(context, title))
+				.setTitle(title)
 				.setMultiChoiceItems(
 						valuesList.toArray(new CharSequence[]{}), selPos, 
 						new OnMultiChoiceClickListener() {
@@ -96,11 +94,12 @@ public class DialogUtils {
 	}
 
 	public static View buildDialogTitle(Context con, CharSequence title) {
-		LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View v = inflater.inflate(R.layout.sdk_actionbar_dialog, new LinearLayout(con));
-		TextView tv = (TextView) v.findViewById(R.id.actionbar_title);
-		tv.setText(title);
-		return v;
+//		LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//		View v = inflater.inflate(R.layout.sdk_actionbar_dialog, new LinearLayout(con));
+//		TextView tv = (TextView) v.findViewById(R.id.actionbar_title);
+//		tv.setText(title);
+//		return v;
+		return null;
 	}
 
 	public static void showInputDialog(Context context, CharSequence title, CharSequence message, String buttonText, final TextInputHandler handler) {
@@ -126,7 +125,7 @@ public class DialogUtils {
 	}
 	
 	public static void alert(Context c, CharSequence title, CharSequence message) {
-        StyledDialog.Builder sdb = new StyledDialog.Builder(c);
+        AlertDialog.Builder sdb = new AlertDialog.Builder(c);
         sdb.setTitle(title);
         sdb.setMessage(message);
         sdb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -134,7 +133,6 @@ public class DialogUtils {
             	dialogInterface.dismiss();
             }
         });
-        sdb.setCanceledOnTouchOutside(true);
         sdb.create().show();
 	}
 	

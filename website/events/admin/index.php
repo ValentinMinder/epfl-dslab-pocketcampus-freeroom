@@ -42,6 +42,7 @@ require_once("php_headers.php"); // will set $conn to database
 				<li><a href="2014suri.php">SuRI 2014</a></li>
 				<li><a href="ecocloud14.php">EcoCloud 2014</a></li>
 				<li><a href="fmcad2014.php">FMCAD 2014</a></li>
+				<li><a href="forumit.php">Forum IT 2015</a></li>
 			</ul>
 			<hr>
 			<ul>

@@ -3,8 +3,7 @@ package org.pocketcampus.platform.android.ui.adapter;
 import java.util.List;
 import java.util.Map;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import org.pocketcampus.platform.android.utils.Callback;
 
 import android.content.Context;
 import android.text.Html;
@@ -16,6 +15,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class LazyAdapter extends BaseAdapter {
     
@@ -50,7 +52,7 @@ public class LazyAdapter extends BaseAdapter {
 	    //noImage = android.R.drawable.ic_menu_recent_history;
 	    //noImage = android.R.drawable.ic_menu_add;
 	    noImage = android.R.drawable.ic_menu_gallery;
-	    imageOnLoading = android.R.drawable.ic_popup_sync;
+//	    imageOnLoading = android.R.drawable.ic_popup_sync;
 	    imageForEmptyUri = android.R.drawable.ic_menu_gallery;
 	    imageOnFail = android.R.drawable.ic_menu_report_image;
 		createOptions();
@@ -122,11 +124,22 @@ public class LazyAdapter extends BaseAdapter {
     public static interface Actuator {
     	void triggered();
     }
+    
+    public static class Customizer {
+		public Customizer(Object original, Callback<View> callback) {
+			this.original = original;
+			this.callback = callback;
+		}
+
+		public Object original;
+		public Callback<View> callback;
+	}
       
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
-        if(convertView==null)
+        if(convertView==null){
             vi = inflater.inflate(resourceToInflate, null);
+        }
         
         Map<String, ?> song = data.get(position);
         
@@ -134,19 +147,26 @@ public class LazyAdapter extends BaseAdapter {
         	View containerView = vi.findViewById(toViews[i]);
         	Object contentData = song.get(fromKeys[i]);
         	
-        	if(containerView != null && contentData != null && contentData instanceof Actuated) {
-        		final Actuator actuator = ((Actuated) contentData).callback;
-        		contentData = ((Actuated) contentData).original;
-    			containerView.setOnClickListener(new OnClickListener() {
+        	if (containerView == null)
+				continue;
+        	
+        	Callback<View> customizer = null;
+			if (contentData != null && contentData instanceof Customizer) {
+				customizer = ((Customizer) contentData).callback;
+				contentData = ((Customizer) contentData).original;
+			}
+
+			if (contentData != null && contentData instanceof Actuated) {
+				final Actuator actuator = ((Actuated) contentData).callback;
+				contentData = ((Actuated) contentData).original;
+				containerView.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
 						actuator.triggered();
 					}
 				});
-        	}
+			}
         	
-        	if(containerView == null) {
-        		// don't know what to do
-        	} else if(containerView instanceof TextView) {
+			if (containerView instanceof TextView) {
         		if(contentData == null) {
         			((TextView) containerView).setVisibility(View.GONE);
         		} else {
@@ -169,6 +189,10 @@ public class LazyAdapter extends BaseAdapter {
         		if(View.VISIBLE == ((ImageView) containerView).getVisibility())
         			imageLoader.displayImage(imgUrl, (ImageView) containerView, options);
         	}
+        	 
+			if (customizer != null)
+				customizer.callback(containerView);
+        	 
         }
 
         return vi;

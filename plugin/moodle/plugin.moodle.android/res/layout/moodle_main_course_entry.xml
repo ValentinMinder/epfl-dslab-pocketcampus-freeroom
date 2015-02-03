@@ -8,18 +8,14 @@
 
     <TextView
         android:id="@+id/moodle_courselist_coursetitle"
+        style="@style/PocketCampusListItemTitle"
         android:maxLines="2"
         android:scrollHorizontally="true"
-        android:layout_width="fill_parent"
         android:minHeight="50dip"
         android:gravity="center_vertical"
         android:text="Rihanna Love the way lie, here next to me, I love it very much, etc."
-        android:textColor="#040404"
-        android:typeface="sans" 
         android:layout_marginRight="30dip"
-        android:layout_marginTop="-5dip"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:layout_marginTop="-5dip"/>
 
     
      <!-- Rightend Arrow -->    

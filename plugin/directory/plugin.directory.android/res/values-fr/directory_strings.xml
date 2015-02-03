@@ -33,5 +33,6 @@
      <string name="directory_ambiguous_query">Requête ambiguë</string>
      <string name="directory_popup_title">Coordonnées</string>
      
+     <string name="directory_add_to_contacts">Ajouter aux contacts</string>
      
 </resources>

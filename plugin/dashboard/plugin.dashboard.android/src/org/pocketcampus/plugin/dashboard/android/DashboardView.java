@@ -24,7 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.markupartist.android.widget.ActionBar.Action;
+import com.markupartist.android.widget.Action;
 
 /**
  * 
@@ -35,8 +35,8 @@ import com.markupartist.android.widget.ActionBar.Action;
  */
 public class DashboardView extends PluginView {
 
-	private DashboardController	mController;
-	
+	private DashboardController mController;
+
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return DashboardController.class;
@@ -45,32 +45,48 @@ public class DashboardView extends PluginView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		mController = (DashboardController) controller;
-				
+
 		mController.registerPushNotif();
 		mController.fetchDynamicConfig(this);
-		
+
 		addActionToActionBar(new Action() {
 			public void performAction(View view) {
 				trackEvent("OpenSettings", null);
 				startActivity(new Intent(DashboardView.this, DashboardSettingsView.class));
 			}
+
 			public int getDrawable() {
 				return R.drawable.dashboard_settings;
 			}
+
+			@Override
+			public String getDescription() {
+				return getString(R.string.dashboard_settings);
+			}
+
 		});
+		getActionBar().setDisplayHomeAsUpEnabled(false);
 	}
-	
+
 	@Override
 	protected void onResume() {
 		displayPlugins();
-		
+
 		super.onResume();
 	}
-	
+
 	public void displayPlugins() {
-		
+
 		setContentView(R.layout.dashboard_main);
-		
+		findViewById(R.id.dashboard_epfl_logo).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(DashboardView.this, DashboardAboutView.class);
+				startActivity(intent);
+			}
+		});
+
 		// Creates and fills in the <code>PluginDashboard</code>.
 		PluginDashboard dash = new PluginDashboard(this);
 		ArrayList<PluginInfo> pluginManifests = ((GlobalContext) getApplication()).getAllPluginInfos();
@@ -86,20 +102,14 @@ public class DashboardView extends PluginView {
 	protected String screenName() {
 		return "/dashboard";
 	}
-	
-	
-	
-	
-	
-	
+
 	/************
 	 * HELPER
 	 */
-	
-	
+
 	public class PluginDashboard {
-		private DashboardLayout	mDashboard;
-		private Context	mContext;
+		private DashboardLayout mDashboard;
+		private Context mContext;
 		private LayoutInflater mInflater;
 
 		public PluginDashboard(Context context) {
@@ -110,7 +120,9 @@ public class DashboardView extends PluginView {
 
 		/**
 		 * Adds icons for multiple plugins to the dashboard.
-		 * @param pluginInfos <code>PluginManifest</code>s of the plugins to add
+		 * 
+		 * @param pluginInfos
+		 *            <code>PluginManifest</code>s of the plugins to add
 		 */
 		public void addPlugins(ArrayList<PluginInfo> pluginInfos) {
 			Comparator<PluginInfo> comparator = new Comparator<PluginInfo>() {
@@ -119,16 +131,18 @@ public class DashboardView extends PluginView {
 					return lhs.getLabel().compareToIgnoreCase(rhs.getLabel());
 				}
 			};
-			Collections.sort(pluginInfos, comparator );
-			
-			for(PluginInfo pluginInfo : pluginInfos) {
+			Collections.sort(pluginInfos, comparator);
+
+			for (PluginInfo pluginInfo : pluginInfos) {
 				addPlugin(pluginInfo);
 			}
 		}
 
 		/**
 		 * Adds a plugin to the dashboard.
-		 * @param pluginInfo <code>PluginManifest</code> of the plugin to add
+		 * 
+		 * @param pluginInfo
+		 *            <code>PluginManifest</code> of the plugin to add
 		 */
 		public void addPlugin(final PluginInfo pluginInfo) {
 			// fills in and adds the launcher view
@@ -141,15 +155,15 @@ public class DashboardView extends PluginView {
 			final TextView launcherText = (TextView) launcherView.findViewById(R.id.launcher_text);
 			launcherText.setText(pluginInfo.getLabel());
 			launcherText.setBackgroundColor(0x00ffffff);
-			
+
 			mDashboard.addView(launcherView);
-			
+
 			launcherView.setOnTouchListener(new OnTouchListener() {
 				public boolean onTouch(View v, MotionEvent event) {
-					if(event.getAction() == MotionEvent.ACTION_DOWN) {
+					if (event.getAction() == MotionEvent.ACTION_DOWN) {
 						launcherText.setTextColor(0x80808080);
 						launcherImage.setAlpha(0x80);
-					} else if(event.getAction() == MotionEvent.ACTION_UP) {
+					} else if (event.getAction() == MotionEvent.ACTION_UP) {
 						launcherText.setTextColor(0xff000000);
 						launcherImage.setAlpha(0xff);
 					}
@@ -157,7 +171,7 @@ public class DashboardView extends PluginView {
 					return false;
 				}
 			});
-			
+
 			// adds the click listener
 			launcherView.setOnClickListener(new OnClickListener() {
 				@Override
@@ -165,22 +179,23 @@ public class DashboardView extends PluginView {
 					trackEvent("OpenPlugin", pluginInfo.getId());
 					((GlobalContext) mContext.getApplicationContext()).displayPlugin(mContext, pluginInfo);
 					launcherView.setBackgroundColor(0x80808080);
-					setContentView(R.layout.dashboard_plugin_button); // HACK clear the screen
+					setContentView(R.layout.dashboard_plugin_button); // HACK
+																		// clear
+																		// the
+																		// screen
 				}
 			});
 		}
 
 		/**
 		 * Returns the dashboard's <code>View</code>.
+		 * 
 		 * @return
 		 */
 		public View getView() {
 			return mDashboard;
 		}
 
-
-
 	}
 
-	
 }

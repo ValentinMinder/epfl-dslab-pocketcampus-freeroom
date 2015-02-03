@@ -1,5 +1,7 @@
 namespace java org.pocketcampus.plugin.authentication.shared
 
+const list<string> OAUTH2_SCOPES = ["Tequila.profile", "Moodle.read", "ISA.read"];
+
 enum AuthStatusCode {
   // The request was successful
   OK = 200,
@@ -46,9 +48,11 @@ struct UserAttributesRequest {
 }
 
 service AuthenticationService {
-    AuthTokenResponse getAuthTequilaToken();
-    AuthSessionResponse getAuthSession(1: AuthSessionRequest req);
-    LogoutResponse destroyAllUserSessions(1: LogoutRequest req);
-    UserAttributesResponse getUserAttributes(1: UserAttributesRequest req);
-    AuthSessionResponse getAuthSessionId(1: string tequilaToken); // deprecated
+	AuthSessionResponse getOAuth2TokensFromCode(1: AuthSessionRequest req);
+	
+	AuthTokenResponse getAuthTequilaToken();
+	AuthSessionResponse getAuthSession(1: AuthSessionRequest req);
+	LogoutResponse destroyAllUserSessions(1: LogoutRequest req);
+	UserAttributesResponse getUserAttributes(1: UserAttributesRequest req);
+	AuthSessionResponse getAuthSessionId(1: string tequilaToken); // deprecated
 }

@@ -1,6 +1,8 @@
 package org.pocketcampus.plugin.authentication.server;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.platform.shared.PCConstants;
+import org.pocketcampus.platform.shared.utils.StringUtils;
 import org.pocketcampus.plugin.authentication.shared.AuthSessionRequest;
 import org.pocketcampus.plugin.authentication.shared.AuthSessionResponse;
 import org.pocketcampus.plugin.authentication.shared.AuthStatusCode;
@@ -19,10 +22,15 @@ import org.pocketcampus.plugin.authentication.shared.LogoutRequest;
 import org.pocketcampus.plugin.authentication.shared.LogoutResponse;
 import org.pocketcampus.plugin.authentication.shared.UserAttributesRequest;
 import org.pocketcampus.plugin.authentication.shared.UserAttributesResponse;
+import org.pocketcampus.plugin.authentication.shared.authenticationConstants;
 
 import ch.epfl.tequila.client.model.ClientConfig;
 import ch.epfl.tequila.client.model.TequilaPrincipal;
 import ch.epfl.tequila.client.service.TequilaService;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * AuthenticationServiceImpl
@@ -36,11 +44,13 @@ import ch.epfl.tequila.client.service.TequilaService;
  */
 public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 
+	private static final String OAUTH2_TOKEN_URL = "https://dev-tequila.epfl.ch/cgi-bin/OAuth2IdP/token?client_id=1b74e3837e50e21afaf2005f@epfl.ch&client_secret=603dc99ce2cc0eee7cc4040baccca9ed&redirect_uri=https://pocketcampus.epfl.ch/&grant_type=authorization_code";
+	
 	private final SessionManager _manager;
 
 	public AuthenticationServiceImpl() {
 		System.out.println("Starting Authentication plugin server ...");
-		_manager = new SessionManagerImpl();
+		_manager = new SessionManagerOAuth2();
 	}
 
 	@Override
@@ -52,6 +62,26 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 		return new AuthTokenResponse(AuthStatusCode.OK).setTequilaToken(token);
 	}
 
+	@Override
+	public AuthSessionResponse getOAuth2TokensFromCode(AuthSessionRequest req) throws TException {
+		System.out.println("getOAuth2TokensFromCode");
+		try {
+			JsonObject map = new JsonObject();
+			for (String scope : authenticationConstants.OAUTH2_SCOPES) {
+				HttpURLConnection conn = (HttpURLConnection) new URL(OAUTH2_TOKEN_URL + "&scope=" + scope + "&code=" + req.getTequilaToken()).openConnection();
+				JsonObject obj = new JsonParser().parse(StringUtils.fromStream(conn.getInputStream(), "UTF-8")).getAsJsonObject();
+				if(obj.get("error") != null) {
+					return new AuthSessionResponse(AuthStatusCode.INVALID_SESSION);
+				}
+				map.addProperty(obj.get("scope").getAsString(), obj.get("access_token").getAsString());
+			}
+			return new AuthSessionResponse(AuthStatusCode.OK).setSessionId(new Gson().toJson(map));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return new AuthSessionResponse(AuthStatusCode.NETWORK_ERROR);
+		}
+	}
+	
 	@Override
 	public AuthSessionResponse getAuthSession(AuthSessionRequest req) throws TException {
 		System.out.println("getAuthSession");
