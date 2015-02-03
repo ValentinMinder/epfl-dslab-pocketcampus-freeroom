@@ -272,7 +272,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	 * Displays the waiting screen.
 	 */
 	private void showLoading() {
-		setContentView(R.layout.authentication_redirectionpage);
+		super.setLoadingContentScreen("");
 	}
 
 	/**
