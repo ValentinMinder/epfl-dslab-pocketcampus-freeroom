@@ -48,16 +48,9 @@
 
     <Button
         android:id="@+id/authentication_loginbutton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        style="@style/PocketCampusButton"
         android:layout_marginLeft="100dp"
         android:layout_marginRight="100dp"
-        android:layout_marginTop="3dp"
-        android:background="@color/epfl_corrected_red"
-        android:enabled="true"
-        android:text="@string/authentication_string_login"
-        android:textColor="@color/white"
-        android:textSize="22sp"
-        android:typeface="sans" />
+        android:text="@string/authentication_string_login" />
 
 </LinearLayout>

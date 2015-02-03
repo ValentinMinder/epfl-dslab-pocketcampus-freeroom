@@ -1,81 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="org.pocketcampus.plugin.cloudprint"
-      android:versionCode="1"
-      android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="8" />
+    package="org.pocketcampus.plugin.cloudprint"
+    android:versionCode="1"
+    android:versionName="1.0" >
 
-    <application android:label="@string/app_name"
-        android:theme="@style/PocketCampusTheme"
+    <uses-sdk android:minSdkVersion="15" />
+
+    <application
+        android:name="org.pocketcampus.platform.android.core.GlobalContext"
         android:icon="@drawable/cloudprint_icon"
-        android:name="org.pocketcampus.platform.android.core.GlobalContext">
-        
-        
-		<activity android:name="org.pocketcampus.plugin.cloudprint.android.CloudPrintMainView"
-			xmlns:android="http://schemas.android.com/apk/res/android"
-			android:icon="@drawable/app_icon"
-			android:screenOrientation="nosensor"
-			android:label="@string/cloudprint_plugin_title"
-			android:launchMode="singleTask"
-			 android:theme="@android:style/Theme.Dialog"
-			 android:excludeFromRecents="true">
-<!-- 			<intent-filter> -->
-<!-- 				<action android:name="android.intent.action.MAIN" /> -->
-<!-- 				<category android:name="android.intent.category.LAUNCHER" /> -->
-<!-- 				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" /> -->
-<!-- 			</intent-filter> -->
-			
-			<intent-filter>
-		        <action android:name="android.intent.action.SEND" />
-		        <category android:name="android.intent.category.DEFAULT" />
-		        <data android:mimeType="application/pdf" />
-		    </intent-filter>
-			    
+        android:label="@string/app_name"
+        android:theme="@style/PocketCampusActionBarTheme" >
+        <activity
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.cloudprint.android.CloudPrintMainView"
+            android:excludeFromRecents="true"
+            android:icon="@drawable/app_icon"
+            android:label="@string/cloudprint_plugin_title"
+            android:launchMode="singleTask"
+            android:screenOrientation="nosensor"
+            android:theme="@style/PocketCampusActionBarTheme" >
 
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="pocketcampus"
-				    android:host="cloudprint.plugin.pocketcampus.org"
-				    android:pathPrefix="/print" />
-			</intent-filter>
-			
-		</activity>
-		
-		   	    
-		<service android:name="org.pocketcampus.plugin.cloudprint.android.CloudPrintController"
-			xmlns:android="http://schemas.android.com/apk/res/android">
-			<intent-filter>
-				<action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
-				<action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
-				<category android:name="org.pocketcampus" />
-				<data  android:scheme="pocketcampus" android:host="cloudprint.plugin.pocketcampus.org" />
-			</intent-filter>
-		    		    
-		</service>
-        
-		    
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" /> -->
+            <!-- </intent-filter> -->
 
-		<receiver android:name="org.pocketcampus.plugin.cloudprint.android.CloudPrintController$Logouter" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/pdf" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="cloudprint.plugin.pocketcampus.org"
+                    android:pathPrefix="/print"
+                    android:scheme="pocketcampus" />
+            </intent-filter>
+        </activity>
+
+        <service
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.cloudprint.android.CloudPrintController" >
+            <intent-filter>
+                <action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
+                <action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
+
+                <category android:name="org.pocketcampus" />
+
+                <data
+                    android:host="cloudprint.plugin.pocketcampus.org"
+                    android:scheme="pocketcampus" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name="org.pocketcampus.plugin.cloudprint.android.CloudPrintController$Logouter" >
             <intent-filter>
                 <action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
             </intent-filter>
-        </receiver>		    
-		    
-		<receiver android:name="org.pocketcampus.plugin.cloudprint.android.CloudPrintController$AuthListener" >
+        </receiver>
+        <receiver android:name="org.pocketcampus.plugin.cloudprint.android.CloudPrintController$AuthListener" >
             <intent-filter>
                 <action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
             </intent-filter>
-        </receiver>		    
-		    		
-	</application>
-    
-        
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        </receiver>
+    </application>
 
-	<uses-permission android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA" />
-					
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA" />
+
 </manifest>

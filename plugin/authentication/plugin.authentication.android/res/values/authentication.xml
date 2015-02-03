@@ -19,7 +19,7 @@
     <string name="authentication_string_alwaysdeny">Always Deny</string>
 
     <string name="authentication_string_serviceaccessaccount">The following service is requesting access to your account. PocketCampus is not affiliated with this application. We recommend that you grant access only if you trust the service.</string>
-    <string name="authentication_string_isrequestingaccessto">is requesting access to</string>
+    <string name="authentication_string_isrequestingaccessto">is requesting access to your</string>
     
     
     <string name="authentication_permission_description">This permission should be used when a third-party application wants to authenticate users with Tequila</string>

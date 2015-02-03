@@ -125,7 +125,7 @@ public class DialogUtils {
 	}
 	
 	public static void alert(Context c, CharSequence title, CharSequence message) {
-        StyledDialog.Builder sdb = new StyledDialog.Builder(c);
+        AlertDialog.Builder sdb = new AlertDialog.Builder(c);
         sdb.setTitle(title);
         sdb.setMessage(message);
         sdb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -133,7 +133,6 @@ public class DialogUtils {
             	dialogInterface.dismiss();
             }
         });
-        sdb.setCanceledOnTouchOutside(true);
         sdb.create().show();
 	}
 	
