@@ -194,17 +194,12 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 #endif
 }
 
-+ (NSDictionary*)urlStringParameters:(NSString*)urlString {
-    
++ (NSDictionary*)parametersDictionaryForURLString:(NSString*)urlString {
     [self throwExceptionIfObject:urlString notKindOfClass:[NSString class]];
-    
-    NSMutableDictionary* queryStringDictionary = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary* queryStringDictionary = [NSMutableDictionary dictionary];
     @try {
-        
         NSArray* urlComponents = [urlString componentsSeparatedByString:@"?"];
-        
         NSArray* paramsComponents = [urlComponents[1] componentsSeparatedByString:@"&"];
-        
         for (NSString* keyValuePair in paramsComponents) {
             NSArray* pairComponents = [keyValuePair componentsSeparatedByString:@"="];
             NSString* key = pairComponents[0];
@@ -217,7 +212,7 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
     @catch (NSException *exception) {
         return nil;
     }
-    return  [queryStringDictionary copy]; //non-mutable copy
+    return queryStringDictionary;
 }
 
 + (void)fileOrFolderSizeWithPath:(NSString*)path completion:(void (^)(unsigned long long totalNbBytes, BOOL error))completion {
