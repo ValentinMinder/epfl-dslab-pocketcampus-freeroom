@@ -33,6 +33,7 @@
         android:layout_marginTop="0dp"
         android:gravity="right"
         android:text="@string/authentication_not_from_epfl"
+        android:visibility="gone"
         android:textStyle="bold" />
 
     <CheckBox
