@@ -90,11 +90,11 @@ namespace PocketCampus.Events.ViewModels
         {
             get { return this.GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
         }
-#warning CanExecute disabled!
+
         [LogId( "RequestEmail" )]
         public AsyncCommand RequestFavoriteEmailCommand
         {
-            get { return this.GetAsyncCommand( RequestFavoriteEmailAsync/*, () => Pool.EnableFavoriteEmailRequest == true*/ ); }
+            get { return this.GetAsyncCommand( RequestFavoriteEmailAsync, () => Pool.EnableFavoriteEmailRequest == true ); }
         }
 
         [LogId( "ShowCodeScanner" )]
