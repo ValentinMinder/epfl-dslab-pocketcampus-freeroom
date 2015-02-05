@@ -36,10 +36,9 @@
             </DataTemplate>
         </ResourceDictionary>
     </cc:PageBase.Resources>
-    
+
     <Grid x:Name="Root">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -51,45 +50,44 @@
                        Style="{StaticResource AppHeaderTextBlockStyle}" />
         </Border>
 
-        <!-- Name, description and image thumbnail -->
-        <Grid Grid.Row="1"
-              Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <StackPanel>
-                <!-- Name -->
-                <TextBlock Text="{Binding Item.Name}"
-                           TextWrapping="Wrap"
-                           Style="{StaticResource AppSecondaryTitleTextBlockStyle}"
-                           Visibility="{Binding Item.HideName,
-                                                Converter={StaticResource DefaultToVisibility}}" />
-
-                <!-- Short details -->
-                <TextBlock Text="{Binding Item.ShortDetails}"
-                           TextWrapping="Wrap"
-                           Style="{StaticResource AppSecondaryTitleTextBlockStyle}"
-                           FontSize="{StaticResource TextStyleMediumFontSize}" />
-            </StackPanel>
-
-            <!-- Thumbnail -->
-            <Image Grid.Column="1"
-                   Source="{Binding Item.ThumbnailUrl}"
-                   VerticalAlignment="Top"
-                   Width="100"
-                   Visibility="{Binding Item.HideThumbnail, 
-                                        Converter={StaticResource DefaultToVisibility}}"/>
-        </Grid>
-
         <!-- Cache status -->
-        <cc:CacheStatusDisplay Grid.Row="2"
+        <cc:CacheStatusDisplay Grid.Row="1"
                                Status="{Binding CacheStatus}" />
 
         <!-- Everything needs to scroll, sometimes some values are extremely long -->
         <ScrollViewer Grid.Row="3">
             <StackPanel>
+                <!-- Name, description and image thumbnail -->
+                <Grid Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <!-- Name -->
+                        <TextBlock Text="{Binding Item.Name}"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource AppSecondaryTitleTextBlockStyle}"
+                                   Visibility="{Binding Item.HideName,
+                                                        Converter={StaticResource DefaultToVisibility}}" />
+
+                        <!-- Short details -->
+                        <TextBlock Text="{Binding Item.ShortDetails}"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource AppSecondaryTitleTextBlockStyle}"
+                                   FontSize="{StaticResource TextStyleMediumFontSize}" />
+                    </StackPanel>
+
+                    <!-- Thumbnail -->
+                    <Image Grid.Column="1"
+                           Source="{Binding Item.ThumbnailUrl}"
+                           VerticalAlignment="Top"
+                           Width="100"
+                           Visibility="{Binding Item.HideThumbnail, 
+                                                Converter={StaticResource DefaultToVisibility}}"/>
+                </Grid>
+
                 <!-- Information -->
                 <StackPanel Margin="19,0"
                             Visibility="{Binding Item.HideInformation, 
@@ -100,7 +98,7 @@
                                                      Converter={StaticResource NonDefaultToVisibility}}">
                         <TextBlock Text="{CustomResource EventItem.Date}"
                                    Style="{StaticResource AppSubtleTextBlockStyle}" />
-                        
+
                         <TextBlock Text="{Binding Item,
                                                   Converter={StaticResource EventToDate}}"
                                    Style="{StaticResource AppLargeTextBlockStyle}" />
@@ -179,7 +177,7 @@
                               Cache="{Binding CacheStatus}"
                               RetryCommand="{Binding RefreshCommand}" />
     </Grid>
-    
+
     <cc:PageBase.BottomAppBar>
         <CommandBar ClosedDisplayMode="Minimal">
             <CommandBar.PrimaryCommands>
