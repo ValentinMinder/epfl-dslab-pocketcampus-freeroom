@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Threading.Tasks;
-using PocketCampus.Events.Controls;
+using PocketCampus.Events.ExtraViews;
 using Windows.ApplicationModel.Resources;
-using Windows.Devices.Enumeration;
 using Windows.UI.Popups;
-using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.Events.Services
 {
@@ -14,26 +13,13 @@ namespace PocketCampus.Events.Services
 
         public async void ScanCode()
         {
-            var videoDevices = await DeviceInformation.FindAllAsync( DeviceClass.VideoCapture );
-            if ( videoDevices.Count == 0 )
+            if ( await CodeScanView.GetBackCameraAsync() == null )
             {
                 await new MessageDialog( _resources.GetString( "NoCaptureDevices" ) ).ShowAsync();
                 return;
             }
 
-            var taskSource = new TaskCompletionSource<bool>();
-
-            var scanner = new CodeScannerControl();
-            scanner.Closed += ( _, __ ) => taskSource.SetResult( true );
-
-            var popup = new Popup
-            {
-                Child = scanner,
-                IsOpen = true
-            };
-
-            await taskSource.Task;
-            popup.IsOpen = false;
+            ( (Frame) Window.Current.Content ).Navigate( typeof( CodeScanView ) );
         }
     }
 }

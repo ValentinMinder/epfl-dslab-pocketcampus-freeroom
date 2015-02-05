@@ -1,0 +1,68 @@
+﻿<Page x:Class="PocketCampus.Events.ExtraViews.CodeScanView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <SolidColorBrush x:Key="OverlayBackgroundBrush"
+                             Color="#88000000" />
+            <SolidColorBrush x:Key="OverlayForegroundBrush"
+                             Color="White" />
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <!-- Root grid -->
+    <Grid Background="{StaticResource PhoneBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- "Initializing camera" text (covered by the camera preview when it's initialized) -->
+        <TextBlock Grid.Row="1"
+                   Text="{CustomResource CodeScanner.InitializingCamera}"
+                   Style="{StaticResource AppCenterTextBlockStyle}" />
+
+        <!-- Camera preview -->
+        <CaptureElement x:Name="CameraPreview"
+                        Grid.RowSpan="3"
+                        Stretch="UniformToFill"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch" />
+
+        <!-- Help text -->
+        <Border Background="{StaticResource OverlayBackgroundBrush}">
+            <TextBlock Text="{CustomResource CodeScanner.HelpText}"
+                       Style="{StaticResource AppLargeTextBlockStyle}"
+                       Foreground="{StaticResource OverlayForegroundBrush}"
+                       Margin="19,4" />
+        </Border>
+
+        <!-- "Not a PocketCampus code" message -->
+        <Border x:Name="WrongCodeMessage"
+                Grid.Row="2"
+                Visibility="Collapsed"
+                Background="{StaticResource OverlayBackgroundBrush}">
+            <TextBlock Text="{CustomResource CodeScanner.WrongCode}"
+                       Style="{StaticResource AppLargeTextBlockStyle}"
+                       Foreground="{StaticResource OverlayForegroundBrush}"
+                       Margin="19,4" />
+        </Border>
+
+        <!-- Error message -->
+        <Border x:Name="ErrorMessage"
+                Grid.Row="2"
+                Visibility="Collapsed"
+                VerticalAlignment="Top"
+                Background="{StaticResource OverlayBackgroundBrush}">
+            <TextBlock Text="{CustomResource CodeScanner.CameraError}"
+                       Style="{StaticResource AppLargeTextBlockStyle}"
+                       Foreground="{StaticResource OverlayForegroundBrush}"
+                       Margin="19,4" />
+        </Border>
+    </Grid>
+</Page>

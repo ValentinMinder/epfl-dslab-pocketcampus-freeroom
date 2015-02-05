@@ -15,7 +15,7 @@
                 <cc:SimpleButton Command="{Binding DataContext.ViewItemCommand, 
                                                    ElementName=Root}"
                                  CommandParameter="{Binding}"
-                                 Margin="0,12,8,12">
+                                 Margin="19,12,8,12">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -85,42 +85,73 @@
             </DataTemplate>
         </ResourceDictionary>
     </cc:PageBase.Resources>
-    
+
     <Grid x:Name="Root">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
+
         <Border Background="{StaticResource AppHeaderBackgroundBrush}">
             <TextBlock Text="{CustomResource PagesHeader}"
                        Style="{StaticResource AppHeaderTextBlockStyle}" />
         </Border>
-        
+
         <cc:CacheStatusDisplay Grid.Row="1"
                                Status="{Binding CacheStatus}"
                                RetryCommand="{Binding RefreshCommand}" />
-        
+
         <cc:GroupedListView Grid.Row="2"
                             ItemTemplate="{StaticResource EventItemTemplate}"
-                            GroupKeyPath="CategoryName"
-                            Margin="19,0,0,0">
+                            GroupKeyPath="CategoryName">
             <cc:GroupedListView.ItemsViewSource>
                 <CollectionViewSource Source="{Binding ItemGroups}"
                                       IsSourceGrouped="True" />
             </cc:GroupedListView.ItemsViewSource>
         </cc:GroupedListView>
-        
+
         <cc:Placeholder Grid.Row="2"
                         For="{Binding ItemGroups}">
             <TextBlock Text="{Binding Pool.NoEventsFallbackText}"
                        Style="{StaticResource AppCenterTextBlockStyle}" />
         </cc:Placeholder>
-        
+
         <cc:DataStatusDisplay Grid.Row="2"
                               Data="{Binding DataStatus}"
                               Cache="{Binding CacheStatus}"
                               RetryCommand="{Binding RefreshCommand}" />
     </Grid>
+
+    <!-- See code-behind for visibilities -->
+    <cc:PageBase.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Minimal">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton x:Name="CategoriesButton"
+                              Icon="Filter"
+                              Label="{CustomResource EventPool.FilterCategories}"
+                              Command="{Binding FilterByCategoryCommand}" />
+
+                <AppBarButton x:Name="TagsButton"
+                              Icon="Tag"
+                              Label="{CustomResource EventPool.FilterTags}"
+                              Command="{Binding FilterByTagCommand}" />
+
+                <AppBarButton x:Name="SettingsButton"
+                              Icon="Setting"
+                              Label="{CustomResource EventPool.ViewSettings}"
+                              Command="{Binding ViewSettingsCommand}" />
+
+                <AppBarButton x:Name="ScanCodeButton"
+                              Icon="Camera"
+                              Label="{CustomResource EventPool.ScanCode}"
+                              Command="{Binding ScanCodeCommand}" />
+            </CommandBar.PrimaryCommands>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="RequestFavoriteEmailButton"
+                              Label="{CustomResource EventPool.RequestFavoriteEmail}"
+                              Command="{Binding RequestFavoriteEmailCommand}" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </cc:PageBase.BottomAppBar>
 </cc:PageBase>

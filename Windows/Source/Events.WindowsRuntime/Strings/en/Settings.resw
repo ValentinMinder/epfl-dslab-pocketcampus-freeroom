@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="SearchInPast" xml:space="preserve">
-    <value>show past events</value>
+    <value>search past events</value>
     <comment>Checkbox text</comment>
   </data>
   <data name="SearchPeriod" xml:space="preserve">

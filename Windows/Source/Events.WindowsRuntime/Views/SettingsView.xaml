@@ -34,8 +34,9 @@
 
         <!-- Search period -->
         <ComboBox Grid.Row="1"
-                  ItemsSource="{Binding SearchPeriods}"
-                  SelectedItem="{Binding Settings.SearchPeriod}"
+                  ItemsSource="{Binding AvailableSearchPeriods}"
+                  SelectedItem="{Binding Settings.SearchPeriod,
+                                         Mode=TwoWay}"
                   ItemTemplate="{StaticResource SearchPeriodTemplate}"
                   Header="{CustomResource Settings.SearchPeriod}"
                   Margin="19,16" />

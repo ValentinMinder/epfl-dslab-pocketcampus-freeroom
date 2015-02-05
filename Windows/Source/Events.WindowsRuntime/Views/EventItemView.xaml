@@ -15,7 +15,7 @@
                 <cc:SimpleButton Command="{Binding DataContext.ViewPoolCommand, 
                                                    ElementName=Root}"
                                  CommandParameter="{Binding}"
-                                 Margin="0,12,8,12">
+                                 Margin="19,12,8,12">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />

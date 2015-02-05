@@ -117,25 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CameraError" xml:space="preserve">
-    <value>Erreur lors de l'initialisation de la caméra. Désolé.</value>
-    <comment>Sentence</comment>
+  <data name="FilterCategories" xml:space="preserve">
+    <value>catégories</value>
+    <comment>Button label</comment>
   </data>
-  <data name="HelpText" xml:space="preserve">
-    <value>Scannez un code QR PocketCampus</value>
-    <comment>Sentence</comment>
+  <data name="FilterTags" xml:space="preserve">
+    <value>tags</value>
+    <comment>Button label</comment>
   </data>
-  <data name="InitializingCamera" xml:space="preserve">
-    <value>Initialisation de la caméra...</value>
-    <comment>Sentence</comment>
+  <data name="RequestFavoriteEmail" xml:space="preserve">
+    <value>m'envoyer mes favoris...</value>
+    <comment>Menu item</comment>
   </data>
-  <data name="NoCaptureDevices" xml:space="preserve">
-    <value>Votre appareil n'a pas d'appareil photo.
-Vous ne pouvez pas scanner de codes QR. Désolé.</value>
-    <comment>Dialog content</comment>
+  <data name="ScanCode" xml:space="preserve">
+    <value>scanner un code</value>
+    <comment>Button label</comment>
   </data>
-  <data name="WrongCode" xml:space="preserve">
-    <value>Ce code QR n'est pas pour PocketCampus.</value>
-    <comment>Sentence</comment>
+  <data name="ViewSettings" xml:space="preserve">
+    <value>paramètres</value>
+    <comment>Button label</comment>
   </data>
 </root>

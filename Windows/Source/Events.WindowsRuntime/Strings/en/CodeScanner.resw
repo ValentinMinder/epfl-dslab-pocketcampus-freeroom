@@ -117,9 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CameraError" xml:space="preserve">
+    <value>Error while initializing the camera. Sorry.</value>
+    <comment>Sentence</comment>
+  </data>
+  <data name="HelpText" xml:space="preserve">
+    <value>Scan a PocketCampus QR code.</value>
+    <comment>Sentence</comment>
+  </data>
+  <data name="InitializingCamera" xml:space="preserve">
+    <value>Initializing the camera...</value>
+    <comment>Sentence</comment>
+  </data>
   <data name="NoCaptureDevices" xml:space="preserve">
     <value>It looks like your device doesn't have a camera.
 You can't scan QR codes. Sorry about that.</value>
     <comment>Dialog content</comment>
+  </data>
+  <data name="WrongCode" xml:space="preserve">
+    <value>That QR code is not for PocketCampus.</value>
+    <comment>Sentence</comment>
   </data>
 </root>
