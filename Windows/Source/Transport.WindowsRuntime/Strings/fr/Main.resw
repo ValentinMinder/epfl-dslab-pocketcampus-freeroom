@@ -122,7 +122,7 @@
     <comment>Button label</comment>
   </data>
   <data name="Departure" xml:space="preserve">
-    <value>de</value>
+    <value>départ</value>
     <comment>Combo box header</comment>
   </data>
   <data name="DeparturePosition" xml:space="preserve">
