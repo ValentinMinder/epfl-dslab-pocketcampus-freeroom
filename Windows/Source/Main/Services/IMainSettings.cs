@@ -8,6 +8,6 @@ namespace PocketCampus.Main.Services
 {
     public interface IMainSettings : IServerSettings
     {
-        bool UseColoredTile { get; set; }
+        TileColoring TileColoring { get; set; }
     }
 }

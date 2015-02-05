@@ -11,7 +11,11 @@ namespace PocketCampus.Main.Services.Design
 {
     public sealed class DesignMainSettings : DesignServerSettings, IMainSettings
     {
-        public bool UseColoredTile { get; set; }
+        public TileColoring TileColoring
+        {
+            get { return TileColoring.ColorOnTransparent; }
+            set { }
+        }
     }
 }
 #endif

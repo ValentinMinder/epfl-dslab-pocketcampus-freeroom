@@ -117,41 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DestroyAllSessions" xml:space="preserve">
-    <value>log out of all devices</value>
-    <comment>Button text</comment>
+  <data name="ColorOnTransparent" xml:space="preserve">
+    <value>colorée</value>
+    <comment>Description</comment>
   </data>
-  <data name="DestroyAllSessionsExplanation" xml:space="preserve">
-    <value>this will log you out of all devices on which you use PocketCampus.</value>
-    <comment>Sentence</comment>
+  <data name="FullColors" xml:space="preserve">
+    <value>colorée avec arrière-plan</value>
+    <comment>Description</comment>
   </data>
-  <data name="LoggedIn" xml:space="preserve">
-    <value>You're logged in as</value>
-    <comment>Sentence part</comment>
-  </data>
-  <data name="LoggedInTemporarilyExplanation" xml:space="preserve">
-    <value>you will be logged out after you become inactive.
-your password has not been saved.</value>
-    <comment>Sentence</comment>
-  </data>
-  <data name="LogIn" xml:space="preserve">
-    <value>log in</value>
-    <comment>Button text</comment>
-  </data>
-  <data name="LogOut" xml:space="preserve">
-    <value>log out</value>
-    <comment>Button text</comment>
-  </data>
-  <data name="NotLoggedIn" xml:space="preserve">
-    <value>You're not logged in.</value>
-    <comment>Sentence</comment>
-  </data>
-  <data name="ViewTitle" xml:space="preserve">
-    <value>settings</value>
-    <comment>Title</comment>
-  </data>
-  <data name="TileColoring" xml:space="preserve">
-    <value>tile color</value>
-    <comment>Combobox header</comment>
+  <data name="WhiteOnTransparent" xml:space="preserve">
+    <value>blanche</value>
+    <comment>Description</comment>
   </data>
 </root>

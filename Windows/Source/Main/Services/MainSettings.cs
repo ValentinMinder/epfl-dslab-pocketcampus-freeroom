@@ -22,12 +22,6 @@ namespace PocketCampus.Main.Services
             set { Set( value ); }
         }
 
-        public bool UseColoredTile
-        {
-            get { return Get<bool>(); }
-            set { Set( value ); }
-        }
-
         public string Session
         {
             get { return Get<string>(); }
@@ -37,6 +31,12 @@ namespace PocketCampus.Main.Services
         public ServerConfiguration Configuration
         {
             get { return Get<ServerConfiguration>(); }
+            set { Set( value ); }
+        }
+
+        public TileColoring TileColoring
+        {
+            get { return Get<TileColoring>(); }
             set { Set( value ); }
         }
 
@@ -52,7 +52,7 @@ namespace PocketCampus.Main.Services
                                                                        "Camipro", "Directory", "Events", "Food", "IsAcademia", 
                                                                        "Map", "Moodle", "News", "Satellite", "Transport" ) },
                 { x => x.SessionStatus, () => SessionStatus.NotLoggedIn },
-                { x => x.UseColoredTile, () => true },
+                { x => x.TileColoring, () => TileColoring.FullColors },
                 { x => x.Session, () => null },
                 { x => x.Sessions, () => new Dictionary<string, string>() }
             };

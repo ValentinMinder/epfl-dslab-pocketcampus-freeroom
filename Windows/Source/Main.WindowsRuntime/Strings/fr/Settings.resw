@@ -146,16 +146,12 @@ votre mot de passe n'a pas été sauvegardé.</value>
     <value>Vous n'êtes pas connecté.</value>
     <comment>Sentence</comment>
   </data>
-  <data name="UseColoredTile" xml:space="preserve">
-    <value>utiliser une tuile colorée</value>
-    <comment>Checkbox text</comment>
-  </data>
-  <data name="UseColoredTileExplanation" xml:space="preserve">
-    <value>désactivez cette option si la tuile colorée rend mal sur votre écran Démarrer</value>
-    <comment>Sentence</comment>
-  </data>
   <data name="ViewTitle" xml:space="preserve">
     <value>paramètres</value>
     <comment>Title</comment>
+  </data>
+  <data name="TileColoring" xml:space="preserve">
+    <value>couleur de la tuile</value>
+    <comment>Combobox header</comment>
   </data>
 </root>

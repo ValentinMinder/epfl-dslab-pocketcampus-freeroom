@@ -3,13 +3,16 @@
 // File author: Solal Pirelli
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using PocketCampus.Common;
 using PocketCampus.Common.Controls;
+using Windows.Data.Xml.Dom;
 using Windows.Graphics.Display;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.UI;
+using Windows.UI.Notifications;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -23,6 +26,26 @@ namespace PocketCampus.Main.Services
         private const int TilePixelSize = 150;
         private const int TilePadding = 35;
         private const string TileFileSuffix = "_tile.png";
+
+
+        private const string TileXmlFormat = @"
+<tile>
+  <visual version=""2"">
+    <binding template=""TileSquare150x150Image"">
+      <image id=""1"" src=""ms-appx:///Assets{0}/Logo.png"" />
+    </binding>
+    <binding template=""TileSquare71x71Image"">
+      <image id=""1"" src=""ms-appx:///Assets{0}/Square71x71Logo.png"" />
+    </binding>
+  </visual>
+</tile>";
+        private static readonly Dictionary<TileColoring, string> TilePaths = new Dictionary<TileColoring, string>
+        {
+            { TileColoring.FullColors, "" },
+            { TileColoring.ColorOnTransparent, "/AlternateTiles/ColorOnTransparent" },
+            { TileColoring.WhiteOnTransparent, "/AlternateTiles/WhiteOnTransparent" }
+        };
+
 
         public async void CreateTile( IPlugin plugin )
         {
@@ -65,15 +88,20 @@ namespace PocketCampus.Main.Services
                 await encoder.FlushAsync();
             }
 
-
             var tile = new SecondaryTile( plugin.Id, winPlugin.Name, plugin.Id, fileUri, TileSize.Square150x150 );
             tile.VisualElements.ShowNameOnSquare150x150Logo = true;
             await tile.RequestCreateAsync();
         }
 
-        public void SetTileColoring( bool useColor )
+        public void SetTileColoring( TileColoring coloring )
         {
-            // TODO
+            var xml = new XmlDocument();
+            xml.LoadXml( string.Format( TileXmlFormat, TilePaths[coloring] ) );
+
+            var manager = TileUpdateManager.CreateTileUpdaterForApplication();
+            manager.EnableNotificationQueue( true );
+            manager.Clear();
+            manager.AddToSchedule( new ScheduledTileNotification( xml, DateTimeOffset.Now.AddSeconds( 1 ) ) );
         }
     }
 }

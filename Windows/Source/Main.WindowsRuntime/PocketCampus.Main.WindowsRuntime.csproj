@@ -117,6 +117,18 @@
     <Content Include="analytics.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Assets\AlternateTiles\ColorOnTransparent\Logo.scale-100.png" />
+    <Content Include="Assets\AlternateTiles\ColorOnTransparent\Logo.scale-140.png" />
+    <Content Include="Assets\AlternateTiles\ColorOnTransparent\Logo.scale-240.png" />
+    <Content Include="Assets\AlternateTiles\ColorOnTransparent\Square71x71Logo.scale-100.png" />
+    <Content Include="Assets\AlternateTiles\ColorOnTransparent\Square71x71Logo.scale-140.png" />
+    <Content Include="Assets\AlternateTiles\ColorOnTransparent\Square71x71Logo.scale-240.png" />
+    <Content Include="Assets\AlternateTiles\WhiteOnTransparent\Logo.scale-100.png" />
+    <Content Include="Assets\AlternateTiles\WhiteOnTransparent\Logo.scale-140.png" />
+    <Content Include="Assets\AlternateTiles\WhiteOnTransparent\Logo.scale-240.png" />
+    <Content Include="Assets\AlternateTiles\WhiteOnTransparent\Square71x71Logo.scale-100.png" />
+    <Content Include="Assets\AlternateTiles\WhiteOnTransparent\Square71x71Logo.scale-140.png" />
+    <Content Include="Assets\AlternateTiles\WhiteOnTransparent\Square71x71Logo.scale-240.png" />
     <Content Include="Assets\Logo.scale-100.png" />
     <Content Include="Assets\Logo.scale-140.png" />
     <Content Include="Assets\Logo.scale-240.png" />
@@ -280,6 +292,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <PRIResource Include="Strings\fr\TileColoring.resw" />
+    <PRIResource Include="Strings\en\TileColoring.resw" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="GoogleAnalytics">

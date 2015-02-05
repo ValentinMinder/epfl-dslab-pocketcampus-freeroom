@@ -13,7 +13,7 @@ namespace PocketCampus.Main.Services.Design
     {
         public void CreateTile( IPlugin plugin ) { }
 
-        public void SetTileColoring( bool useColor ) { }
+        public void SetTileColoring( TileColoring coloring ) { }
     }
 }
 #endif

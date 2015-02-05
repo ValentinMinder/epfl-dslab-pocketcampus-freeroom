@@ -27,6 +27,10 @@ namespace PocketCampus.Main.ViewModels
 
         public ICredentialsStorage Credentials { get; private set; }
 
+        public TileColoring[] AvailableTileColorings
+        {
+            get { return EnumEx.GetValues<TileColoring>(); }
+        }
 
         [LogId( "LogIn" )]
         public Command LogInCommand
@@ -56,7 +60,7 @@ namespace PocketCampus.Main.ViewModels
             _navigationService = navigationService;
             _authenticationService = authenticationService;
 
-            Settings.ListenToProperty( x => x.UseColoredTile, () => tileService.SetTileColoring( Settings.UseColoredTile ) );
+            Settings.ListenToProperty( x => x.TileColoring, () => tileService.SetTileColoring( Settings.TileColoring ) );
         }
 
 

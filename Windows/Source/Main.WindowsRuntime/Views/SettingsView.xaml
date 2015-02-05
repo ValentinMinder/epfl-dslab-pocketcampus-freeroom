@@ -3,6 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:cc="using:PocketCampus.Common.Controls"
              DesignDataContext="{Binding Settings, Source={StaticResource Design}}">
+    <cc:PageBase.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="TileColoringTemplate">
+                <TextBlock Text="{Binding Converter={StaticResource EnumToString}}" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </cc:PageBase.Resources>
+    
     <StackPanel>
         <!-- Page header & title -->
         <Border Background="{StaticResource AppHeaderBackgroundBrush}">
@@ -79,14 +87,12 @@
             </cc:SwitchCase>
         </cc:Switch>
 
-        <!-- "Use colored tile" checkbox & explanation -->
-        <CheckBox IsChecked="{Binding Settings.UseColoredTile, Mode=TwoWay}"
-                  Margin="19,0">
-            <StackPanel>
-                <TextBlock Text="{CustomResource Settings.UseColoredTile}" />
-                <TextBlock Text="{CustomResource Settings.UseColoredTileExplanation}"
-                           Style="{StaticResource AppSubtleTextBlockStyle}" />
-            </StackPanel>
-        </CheckBox>
+        <!-- Tile color picker -->
+        <ComboBox ItemsSource="{Binding AvailableTileColorings}"
+                  SelectedItem="{Binding Settings.TileColoring,
+                                         Mode=TwoWay}"
+                  ItemTemplate="{StaticResource TileColoringTemplate}"
+                  Header="{CustomResource Settings.TileColoring}"
+                  Margin="19,16" />
     </StackPanel>
 </cc:PageBase>
