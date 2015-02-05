@@ -1,5 +1,6 @@
 ﻿using System;
 using PocketCampus.Events.ExtraViews;
+using ThinMvvm;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -10,6 +11,15 @@ namespace PocketCampus.Events.Services
     public sealed class CodeScanner : ICodeScanner
     {
         private static readonly ResourceLoader _resources = ResourceLoader.GetForViewIndependentUse( "PocketCampus.Events.WindowsRuntime/CodeScanner" );
+
+        // HACK: We need a navigation service to remove the last view after a successful scan,
+        //       but it needs to be accessed from the scanning view, so...
+        public static INavigationService NavigationService { get; private set; }
+
+        public CodeScanner( INavigationService navigationService )
+        {
+            NavigationService = navigationService;
+        }
 
         public async void ScanCode()
         {

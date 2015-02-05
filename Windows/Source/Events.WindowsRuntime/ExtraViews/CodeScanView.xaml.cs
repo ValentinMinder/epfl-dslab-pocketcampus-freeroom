@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using PocketCampus.Common;
+using PocketCampus.Events.Services;
 using ThinMvvm;
 using ThinMvvm.Logging;
 using Windows.Devices.Enumeration;
@@ -89,34 +90,37 @@ namespace PocketCampus.Events.ExtraViews
         {
             _enableScan = false;
             _camera.Dispose();
-
             HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
+
+            Frame.GoBack();
         }
 
         private async Task ScanPreviewBuffer()
         {
             try
             {
-                var stream = new InMemoryRandomAccessStream();
-                // Fairly small values to avoid scanning very large images
-                var props = new ImageEncodingProperties
+                using ( var stream = new InMemoryRandomAccessStream() )
                 {
-                    Subtype = "BMP",
-                    Width = 600,
-                    Height = 800
-                };
-                await _camera.CapturePhotoToStreamAsync( props, stream );
+                    // Fairly small values to avoid scanning very large images
+                    var props = new ImageEncodingProperties
+                    {
+                        Subtype = "BMP",
+                        Width = 600,
+                        Height = 800
+                    };
+                    await _camera.CapturePhotoToStreamAsync( props, stream );
 
-                var bitmap = new WriteableBitmap( (int) props.Width, (int) props.Height );
-                stream.Seek( 0 );
-                await bitmap.SetSourceAsync( stream );
+                    var bitmap = new WriteableBitmap( (int) props.Width, (int) props.Height );
+                    stream.Seek( 0 );
+                    await bitmap.SetSourceAsync( stream );
 
-                var reader = new BarcodeReader();
-                var result = reader.Decode( bitmap );
+                    var reader = new BarcodeReader();
+                    var result = reader.Decode( bitmap );
 
-                if ( result != null )
-                {
-                    ProcessResultText( result.Text );
+                    if ( result != null )
+                    {
+                        ProcessResultText( result.Text );
+                    }
                 }
             }
             catch
@@ -130,8 +134,9 @@ namespace PocketCampus.Events.ExtraViews
             if ( url != null && url.StartsWith( CustomUrlPrefix ) )
             {
                 Messenger.Send( new EventLogRequest( "QRCodeScanned", url.Replace( CustomUrlLogPrefix, "" ) ) );
-                LauncherEx.Launch( new Uri( url, UriKind.Absolute ) );
+                CodeScanner.NavigationService.RemoveCurrentFromBackStack();
                 Close();
+                LauncherEx.Launch( new Uri( url, UriKind.Absolute ) );
             }
             else
             {
