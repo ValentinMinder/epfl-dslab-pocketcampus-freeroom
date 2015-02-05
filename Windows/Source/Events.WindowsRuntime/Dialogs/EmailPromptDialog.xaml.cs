@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using PocketCampus.Common;
+using Windows.UI.Xaml.Controls;
 
 namespace PocketCampus.Events.Dialogs
 {
@@ -10,6 +11,15 @@ namespace PocketCampus.Events.Dialogs
         public EmailPromptDialog()
         {
             InitializeComponent();
+
+            // FRAMEWORK BUG: CustomResource cannot be used on top-level elements like ContentDialog.Title
+            var loader = LocalizationHelper.GetLoaderForCurrentAssembly( "EmailPrompt" );
+            Title = loader.GetString( "Title" );
+            PrimaryButtonText = loader.GetString( "SuccessButton" );
+            SecondaryButtonText = loader.GetString( "CancelButton" );
+
+            PrimaryButtonClick += SuccessButtonClick;
+            SecondaryButtonClick += CancelButtonClick;
         }
 
 
