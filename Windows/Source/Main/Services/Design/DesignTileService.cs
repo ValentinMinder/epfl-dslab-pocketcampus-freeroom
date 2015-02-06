@@ -11,7 +11,7 @@ namespace PocketCampus.Main.Services.Design
 {
     public sealed class DesignTileService : ITileService
     {
-        public void CreateTile( IPlugin plugin ) { }
+        public void CreateTile( IPlugin plugin, TileColoring coloring ) { }
 
         public void SetTileColoring( TileColoring coloring ) { }
     }

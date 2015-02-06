@@ -8,7 +8,7 @@ namespace PocketCampus.Main.Services
 {
     public interface ITileService
     {
-        void CreateTile( IPlugin plugin );
+        void CreateTile( IPlugin plugin, TileColoring coloring );
         void SetTileColoring( TileColoring coloring );
     }
 }

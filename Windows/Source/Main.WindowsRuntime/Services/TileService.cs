@@ -19,6 +19,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
+// N.B.: ForegroundText is currently ignored on Windows Phone.
+
 namespace PocketCampus.Main.Services
 {
     public sealed class TileService : ITileService
@@ -26,6 +28,12 @@ namespace PocketCampus.Main.Services
         private const int TilePixelSize = 150;
         private const int TilePadding = 35;
         private const string TileFileSuffix = "_tile.png";
+        private static readonly Dictionary<TileColoring, TileProperties> ColoringProperties = new Dictionary<TileColoring, TileProperties>
+        {
+            { TileColoring.FullColors, new TileProperties( Colors.White, Color.FromArgb( 0xFF, 0x36, 0x36, 0x36 ), ForegroundText.Dark ) },
+            { TileColoring.ColorOnTransparent, new TileProperties( Colors.Transparent, Colors.White, ForegroundText.Light ) },
+            { TileColoring.WhiteOnTransparent, new TileProperties( Colors.Transparent, Colors.White, ForegroundText.Light ) },
+        };
 
 
         private const string TileXmlFormat = @"
@@ -47,16 +55,18 @@ namespace PocketCampus.Main.Services
         };
 
 
-        public async void CreateTile( IPlugin plugin )
+        public async void CreateTile( IPlugin plugin, TileColoring coloring )
         {
             var winPlugin = (IWindowsRuntimePlugin) plugin;
+
+            var tileProps = ColoringProperties[coloring];
 
             var icon = new Icon
             {
                 Data = winPlugin.Icon,
                 IconWidth = TilePixelSize,
                 IconHeight = TilePixelSize,
-                Foreground = new SolidColorBrush( Colors.White ),
+                Foreground = tileProps.Foreground,
                 Padding = new Thickness( TilePadding )
             };
 
@@ -89,6 +99,8 @@ namespace PocketCampus.Main.Services
             }
 
             var tile = new SecondaryTile( plugin.Id, winPlugin.Name, plugin.Id, fileUri, TileSize.Square150x150 );
+            tile.VisualElements.BackgroundColor = tileProps.Background;
+            tile.VisualElements.ForegroundText = tileProps.ForegroundText;
             tile.VisualElements.ShowNameOnSquare150x150Logo = true;
             await tile.RequestCreateAsync();
         }
@@ -102,6 +114,21 @@ namespace PocketCampus.Main.Services
             manager.EnableNotificationQueue( true );
             manager.Clear();
             manager.AddToSchedule( new ScheduledTileNotification( xml, DateTimeOffset.Now.AddSeconds( 1 ) ) );
+        }
+
+
+        private sealed class TileProperties
+        {
+            public Color Background { get; private set; }
+            public Brush Foreground { get; private set; }
+            public ForegroundText ForegroundText { get; private set; }
+
+            public TileProperties( Color background, Color foreground, ForegroundText foregroundText )
+            {
+                Background = background;
+                Foreground = new SolidColorBrush( foreground );
+                ForegroundText = foregroundText;
+            }
         }
     }
 }

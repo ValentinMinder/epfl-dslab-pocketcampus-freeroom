@@ -19,7 +19,7 @@ namespace PocketCampus.Main.ViewModels
     {
         private readonly INavigationService _navigationService;
         private readonly IPluginLoader _pluginLoader;
-        private readonly IServerSettings _settings;
+        private readonly IMainSettings _settings;
         private readonly ITileService _tileService;
 
         private IPlugin[] _plugins;
@@ -48,7 +48,7 @@ namespace PocketCampus.Main.ViewModels
         [LogParameter( "$Param.Id" )]
         public Command<IPlugin> CreatePluginTileCommand
         {
-            get { return this.GetCommand<IPlugin>( _tileService.CreateTile ); }
+            get { return this.GetCommand<IPlugin>( p => _tileService.CreateTile( p, _settings.TileColoring ) ); }
         }
 
         [LogId( "OpenPlugin" )]
@@ -59,7 +59,7 @@ namespace PocketCampus.Main.ViewModels
         }
 
 
-        public MainViewModel( INavigationService navigationService, IPluginLoader pluginLoader, IServerSettings settings, ITileService tileCreator )
+        public MainViewModel( INavigationService navigationService, IPluginLoader pluginLoader, IMainSettings settings, ITileService tileCreator )
         {
             _navigationService = navigationService;
             _pluginLoader = pluginLoader;
