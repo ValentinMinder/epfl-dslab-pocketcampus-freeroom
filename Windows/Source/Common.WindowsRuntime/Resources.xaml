@@ -262,7 +262,7 @@
     <!-- Pivot style fix, inspired from http://modernography.wordpress.com/2014/07/31/fixing-pivot-control-layout-issues/
          No more title, since we need it outside of the "loading..." -->
     <x:Int32 x:Key="PivotHeaderItemCharacterSpacing">0</x:Int32>
-    <Thickness x:Key="PivotItemMargin">19,0,0,0</Thickness>
+    <Thickness x:Key="PivotItemMargin">0,0,0,0</Thickness>
     <Thickness x:Key="PivotHeaderItemMargin">19,-6.5,5,0</Thickness>
     <Style TargetType="Pivot">
         <Setter Property="Template">

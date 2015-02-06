@@ -20,7 +20,7 @@
             <DataTemplate x:Key="FeedItemTemplate">
                 <cc:SimpleButton Command="{Binding DataContext.ViewFeedItemCommand, ElementName=Root}"
                                  CommandParameter="{Binding}">
-                    <Grid Margin="0,0,0,24">
+                    <Grid Margin="19,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition MaxWidth="125" />
                             <ColumnDefinition />
@@ -68,8 +68,7 @@
         
         <cc:GroupedListView Grid.Row="2"
                             ItemTemplate="{StaticResource FeedItemTemplate}"
-                            GroupKeyPath="Name"
-                            HasLeftPadding="True">
+                            GroupKeyPath="Name">
             <cc:GroupedListView.ItemsViewSource>
                 <CollectionViewSource Source="{Binding Feeds}"
                                       IsSourceGrouped="True"

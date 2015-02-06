@@ -14,9 +14,8 @@
             <DataTemplate x:Key="EventItemTemplate">
                 <cc:SimpleButton Command="{Binding DataContext.ViewItemCommand, 
                                                    ElementName=Root}"
-                                 CommandParameter="{Binding}"
-                                 Margin="19,12,8,12">
-                    <Grid>
+                                 CommandParameter="{Binding}">
+                    <Grid Margin="19,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="16" />

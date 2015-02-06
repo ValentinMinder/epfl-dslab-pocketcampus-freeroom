@@ -15,7 +15,7 @@
                                  CommandParameter="{Binding}"
                                  Padding="19,12">
                     <TextBlock Text="{Binding Name}"
-                               Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
+                               Style="{StaticResource AppLargeTextBlockStyle}" />
                 </cc:SimpleButton>
             </DataTemplate>
         </ResourceDictionary>

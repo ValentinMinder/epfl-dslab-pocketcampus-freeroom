@@ -13,12 +13,11 @@ namespace PocketCampus.Common.Controls
     {
         private static readonly Brush ZoomedOutBackgroundBrush = new SolidColorBrush( new Color { A = 192, R = 0, G = 0, B = 0 } );
         private static readonly Brush ZoomedOutForegroundBrush = new SolidColorBrush( Colors.White );
-        private static readonly Thickness ZoomedOutViewPadding = new Thickness( 12 );
-        private const double ZoomedInViewLeftMargin = 19; // optional, used if HasLeftPadding is true
-        private const double ZoomedInViewTopMargin = 16;
-        private const double ZoomedInViewRightMargin = 19; // will be used to ensure the scrollbar isn't over the content
-        private const double ZoomedInGroupFooterSize = 24;
-        private const double ItemBottomMargin = 24;
+        private static readonly Thickness ZoomedOutViewPadding = new Thickness( 19, 19, 0, 0 );
+        private const double ZoomedInViewTopMargin = 12;
+        private const double ZoomedInGroupFooterSize = 19;
+        private const double ZoomedInGroupLeftMargin = 12;
+        private const double ZoomedOutGroupBottomMargin = 19;
 
         #region ItemsViewSource
         public CollectionViewSource ItemsViewSource
@@ -75,17 +74,6 @@ namespace PocketCampus.Common.Controls
             DependencyProperty.Register( "GroupKeyPath", typeof( string ), typeof( GroupedListView ), new PropertyMetadata( null ) );
         #endregion
 
-        #region HasLeftPadding
-        public bool HasLeftPadding
-        {
-            get { return (bool) GetValue( HasLeftPaddingProperty ); }
-            set { SetValue( HasLeftPaddingProperty, value ); }
-        }
-
-        public static readonly DependencyProperty HasLeftPaddingProperty =
-            DependencyProperty.Register( "HasLeftPadding", typeof( bool ), typeof( GroupedListView ), new PropertyMetadata( false ) );
-        #endregion
-
         public GroupedListView()
         {
             Name = Guid.NewGuid().ToString();
@@ -114,7 +102,7 @@ namespace PocketCampus.Common.Controls
                     }
                 },
                 // HACK: The group header template contains a top margin, so we cancel the first one here
-                Padding = new Thickness( HasLeftPadding ? ZoomedInViewLeftMargin : 0, ZoomedInViewTopMargin - ZoomedInGroupFooterSize, ZoomedInViewRightMargin, 0 )
+                Padding = new Thickness( 0, ZoomedInViewTopMargin - ZoomedInGroupFooterSize, 0, 0 )
             };
             // Weird way CollectionViewSources have to be used
             view.SetBinding
@@ -164,7 +152,7 @@ namespace PocketCampus.Common.Controls
                     <TextBlock Text=""{Binding " + GroupKeyPath + @"}""
                                Style=""{StaticResource AppGroupHeaderTextBlockStyle}""
                                Foreground=""{ThemeResource ApplicationForegroundThemeBrush}""
-                               Margin=""0," + ZoomedInGroupFooterSize + @",0,0"" />
+                               Margin=""" + ZoomedInGroupLeftMargin + "," + ZoomedInGroupFooterSize + @",0,0"" />
                 </DataTemplate>" );
             }
 
@@ -174,9 +162,10 @@ namespace PocketCampus.Common.Controls
                     <TextBlock Text=""{Binding " + GroupKeyPath + @"}""
                                Style=""{StaticResource AppGroupHeaderTextBlockStyle}""
                                Foreground=""{ThemeResource ApplicationForegroundThemeBrush}""
-                               Margin=""0," + ZoomedInGroupFooterSize + @",0,0"" />
+                               Margin=""" + ZoomedInGroupLeftMargin + "," + ZoomedInGroupFooterSize + @",0,0"" />
                     <ContentControl Content=""{Binding}""
-                                    ContentTemplate=""{Binding GroupSubheaderTemplate, ElementName=" + Name + @"}"" />
+                                    ContentTemplate=""{Binding GroupSubheaderTemplate, ElementName=" + Name + @"}""
+                                    Margin=""" + ZoomedInGroupLeftMargin + @",0,0,0"" />
                 </StackPanel>
             </DataTemplate>" );
         }
@@ -187,7 +176,7 @@ namespace PocketCampus.Common.Controls
            @"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
                 <TextBlock Text=""{Binding Group." + GroupKeyPath + @"}""
                            FontSize=""{StaticResource TextStyleExtraLargeFontSize}""
-                           Margin=""0,0,0," + ItemBottomMargin + @""" />
+                           Margin=""0,0,0," + ZoomedOutGroupBottomMargin + @""" />
             </DataTemplate>" );
         }
     }

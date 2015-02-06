@@ -12,7 +12,7 @@
 
             <!-- Meal template -->
             <DataTemplate x:Key="MealTemplate">
-                <Grid Margin="0,8,0,16">
+                <Grid Margin="19,12">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition />
@@ -123,8 +123,7 @@
         <cc:GroupedListView Grid.Row="3"
                             ItemTemplate="{StaticResource MealTemplate}"
                             GroupKeyPath="Name"
-                            GroupSubheaderTemplate="{StaticResource RestaurantSubheaderTemplate}"
-                            Margin="19,0,0,0">
+                            GroupSubheaderTemplate="{StaticResource RestaurantSubheaderTemplate}">
             <cc:GroupedListView.ItemsViewSource>
                 <CollectionViewSource Source="{Binding Menu}"
                                       IsSourceGrouped="True"

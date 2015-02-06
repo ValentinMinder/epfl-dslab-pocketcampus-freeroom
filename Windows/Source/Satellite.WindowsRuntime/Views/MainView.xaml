@@ -11,7 +11,7 @@
 
             <DataTemplate x:Key="BeerTemplate">
                 <!-- HACK: Flyouts are too messed up on WinRT, use the tapped event and a dialog instead -->
-                <Grid Margin="0,0,0,24"
+                <Grid Margin="19,12"
                       Tapped="Beer_Tapped">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />

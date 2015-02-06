@@ -14,9 +14,8 @@
             <DataTemplate x:Key="FileTemplate">
                 <cc:SimpleButton Command="{Binding DataContext.ViewFileCommand, 
                                                    ElementName=Root}"
-                                 CommandParameter="{Binding}"
-                                 Margin="0,8,0,0">
-                    <Grid>
+                                 CommandParameter="{Binding}">
+                    <Grid Margin="19,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
@@ -35,9 +34,8 @@
             <DataTemplate x:Key="LinkTemplate">
                 <cc:SimpleButton Command="{Binding DataContext.OpenLinkCommand, 
                                                    ElementName=Root}"
-                                 CommandParameter="{Binding}"
-                                 Margin="0,8,0,0">
-                    <Grid>
+                                 CommandParameter="{Binding}">
+                    <Grid Margin="19,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
@@ -57,10 +55,9 @@
 
             <DataTemplate x:Key="FolderTemplate">
                 <ToggleSwitch x:Name="Switch"
-                              Style="{StaticResource AppHeaderedToggleSwitchStyle}"
-                              Margin="0,8,0,0">
+                              Style="{StaticResource AppHeaderedToggleSwitchStyle}">
                     <ToggleSwitch.Header>
-                        <Grid>
+                        <Grid Margin="19,12,19,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
@@ -81,7 +78,7 @@
                     <ToggleSwitch.OnContent>
                         <ItemsControl ItemsSource="{Binding Files}"
                                       ItemTemplate="{StaticResource FileTemplate}"
-                                      Margin="19,0,0,0" />
+                                      Margin="19,0,19,12" />
                     </ToggleSwitch.OnContent>
 
                     <ToggleSwitch.OffContent>
@@ -103,11 +100,11 @@
                     <StackPanel>
                         <RichTextBlock c:RichTextBlockEx.Html="{Binding Details}"
                                        Style="{StaticResource AppNormalRichTextBlockStyle}"
-                                       Margin="0,5,19,0" />
+                                       Margin="19,12,19,0" />
 
                         <ItemsControl ItemsSource="{Binding Resources}"
                                       ItemTemplate="{StaticResource ResourceTemplate}"
-                                      Margin="0,0,19,95" />
+                                      Margin="0,0,0,95" />
                     </StackPanel>
                 </ScrollViewer>
             </DataTemplate>
