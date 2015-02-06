@@ -23,7 +23,7 @@ namespace PocketCampus.Main.Services
     public sealed class HttpClient : IHttpClient
     {
         private const string UserAgentFormat = "PocketCampus/{0} ({1}; {2} {3})";
-        private static readonly TimeSpan Timeout = TimeSpan.FromSeconds( 5 );
+        private static readonly TimeSpan Timeout = TimeSpan.FromSeconds( 3 );
         private static readonly Encoding DefaultEncoding = Encoding.UTF8;
 
         // HACK: HttpClient is thread-safe, so we use one shared instance to avoid disposal problems
