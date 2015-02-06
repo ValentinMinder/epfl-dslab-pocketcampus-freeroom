@@ -147,9 +147,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\ThinMvvm.WindowsRuntime.0.9.29.0\lib\portable-win81+WindowsPhoneApp81\ThinMvvm.WindowsRuntime.dll</HintPath>
     </Reference>
-    <Reference Include="ThriftSharp, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ThriftSharp, Version=2.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\ThriftSharp.2.3.0.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThriftSharp.dll</HintPath>
+      <HintPath>..\..\packages\ThriftSharp.2.3.1.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThriftSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
