@@ -2,18 +2,15 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using PocketCampus.Common;
 using Windows.Graphics.Display;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace PocketCampus.News
 {
     /// <summary>
-    /// Converts feed item images to ImageSources.
+    /// Converts feed item images to URLs.
     /// </summary>
-    public sealed class ImageDisplayConverter : ValueConverter<string, ImageSource>
+    public sealed class ImageDisplayConverter : ValueConverter<string, string>
     {
         private static readonly double ScreenScaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
 
@@ -31,7 +28,7 @@ namespace PocketCampus.News
         /// </summary>
         public int Height { get; set; }
 
-        public override ImageSource Convert( string value )
+        public override string Convert( string value )
         {
             if ( value == null )
             {
@@ -41,8 +38,7 @@ namespace PocketCampus.News
             int scaledWidth = (int) ( ScreenScaleFactor * Width );
             int scaledHeight = (int) ( ScreenScaleFactor * Height );
 
-            string url = value.Replace( WidthPlaceholder, scaledWidth.ToString() ).Replace( HeightPlaceholder, scaledHeight.ToString() );
-            return new BitmapImage( new Uri( url, UriKind.Absolute ) );
+            return value.Replace( WidthPlaceholder, scaledWidth.ToString() ).Replace( HeightPlaceholder, scaledHeight.ToString() );
         }
     }
 }

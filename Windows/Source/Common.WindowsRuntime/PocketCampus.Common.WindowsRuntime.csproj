@@ -46,6 +46,7 @@
     <Compile Include="Controls\CacheStatusDisplay.cs" />
     <Compile Include="Controls\Condition.cs" />
     <Compile Include="Controls\Icon.cs" />
+    <Compile Include="Controls\ImageWithPlaceholder.cs" />
     <Compile Include="Controls\Placeholder.cs" />
     <Compile Include="Controls\Switch.cs" />
     <Compile Include="Controls\DataStatusDisplay.cs" />

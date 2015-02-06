@@ -38,15 +38,14 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-                        <!-- Default picture (hidden by the actual picture if there is one) -->
-                        <Viewbox>
-                            <TextBlock Foreground="{StaticResource ApplicationForegroundThemeBrush}"
-                                       FontFamily="Segoe UI Symbol"
-                                       Text="&#xE13D;" />
-                        </Viewbox>
-
-                        <!-- Picture (may not exist) -->
-                        <Image Source="{Binding PictureUrl}" />
+                        <!-- Picture -->
+                        <cc:ImageWithPlaceholder Source="{Binding PictureUrl}">
+                            <Viewbox>
+                                <TextBlock Foreground="{StaticResource ApplicationForegroundThemeBrush}"
+                                           FontFamily="Segoe UI Symbol"
+                                           Text="&#xE13D;" />
+                            </Viewbox>
+                        </cc:ImageWithPlaceholder>
 
                         <Grid Grid.Column="1"
                               Margin="16,0,0,0">

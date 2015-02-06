@@ -26,15 +26,12 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-                        <!-- HACK: Progress ring behind the image, hidden if there is an image -->
-                        <ProgressRing IsActive="True"
-                                      Height="80"
-                                      Width="125" />
-
-                        <Image Source="{Binding ImageUrl,
-                                                Converter={StaticResource ImageDisplay}}"
-                               Height="80"
-                               Width="125" />
+                        <cc:ImageWithPlaceholder Source="{Binding ImageUrl,
+                                                                  Converter={StaticResource ImageDisplay}}"
+                                                 Height="80"
+                                                 Width="125">
+                            <ProgressRing IsActive="True" />
+                        </cc:ImageWithPlaceholder>
 
                         <StackPanel Grid.Column="1"
                                     Margin="8,0,0,0">
