@@ -76,13 +76,13 @@ namespace PocketCampus.Events.ViewModels
         [LogId( "ShowCategories" )]
         public Command FilterByCategoryCommand
         {
-            get { return this.GetCommand( () => _navigationService.NavigateTo<CategoryFilterViewModel, EventPool>( Pool ), () => Pool.DisableCategoryFiltering != true ); }
+            get { return this.GetCommand( () => _navigationService.NavigateTo<CategoryFilterViewModel, EventPool>( Pool ), () => Pool != null && Pool.DisableCategoryFiltering != true ); }
         }
 
         [LogId( "ShowTags" )]
         public Command FilterByTagCommand
         {
-            get { return this.GetCommand( () => _navigationService.NavigateTo<TagFilterViewModel, EventPool>( Pool ), () => Pool.DisableTagFiltering != true ); }
+            get { return this.GetCommand( () => _navigationService.NavigateTo<TagFilterViewModel, EventPool>( Pool ), () => Pool != null && Pool.DisableTagFiltering != true ); }
         }
 
         [LogId( "ShowSettings" )]
@@ -94,13 +94,13 @@ namespace PocketCampus.Events.ViewModels
         [LogId( "RequestEmail" )]
         public AsyncCommand RequestFavoriteEmailCommand
         {
-            get { return this.GetAsyncCommand( RequestFavoriteEmailAsync, () => Pool.EnableFavoriteEmailRequest == true ); }
+            get { return this.GetAsyncCommand( RequestFavoriteEmailAsync, () => Pool != null && Pool.EnableFavoriteEmailRequest == true ); }
         }
 
         [LogId( "ShowCodeScanner" )]
         public Command ScanCodeCommand
         {
-            get { return this.GetCommand( _codeScanner.ScanCode, () => Pool.EnableCodeScanning == true ); }
+            get { return this.GetCommand( _codeScanner.ScanCode, () => Pool != null && Pool.EnableCodeScanning == true ); }
         }
 
 
