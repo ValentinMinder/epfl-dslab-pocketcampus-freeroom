@@ -4,7 +4,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using PocketCampus.Common;
 using PocketCampus.Common.Controls;
 using Windows.Data.Xml.Dom;
@@ -28,7 +30,7 @@ namespace PocketCampus.Main.Services
         private const int TilePixelSize = 150;
         private const int TilePadding = 35;
         private const string TileFileSuffix = "_tile.png";
-        private static readonly Dictionary<TileColoring, TileProperties> ColoringProperties = new Dictionary<TileColoring, TileProperties>
+        private static readonly Dictionary<TileColoring, TileProperties> SecondaryTileProperties = new Dictionary<TileColoring, TileProperties>
         {
             { TileColoring.FullColors, new TileProperties( Colors.White, Color.FromArgb( 0xFF, 0x36, 0x36, 0x36 ), ForegroundText.Dark ) },
             { TileColoring.ColorOnTransparent, new TileProperties( Colors.Transparent, Colors.White, ForegroundText.Light ) },
@@ -47,19 +49,64 @@ namespace PocketCampus.Main.Services
     </binding>
   </visual>
 </tile>";
-        private static readonly Dictionary<TileColoring, string> TilePaths = new Dictionary<TileColoring, string>
+        private static readonly Dictionary<TileColoring, string> PrimaryTilePaths = new Dictionary<TileColoring, string>
         {
             { TileColoring.FullColors, "" },
             { TileColoring.ColorOnTransparent, "/AlternateTiles/ColorOnTransparent" },
             { TileColoring.WhiteOnTransparent, "/AlternateTiles/WhiteOnTransparent" }
         };
 
+        private readonly IPluginLoader _pluginLoader;
+
+        public TileService( IPluginLoader pluginLoader )
+        {
+            _pluginLoader = pluginLoader;
+        }
+
 
         public async void CreateTile( IPlugin plugin, TileColoring coloring )
         {
+            var tile = await GetTileAsync( plugin, coloring );
+            await tile.RequestCreateAsync();
+        }
+
+        public async void SetTileColoring( TileColoring coloring )
+        {
+            UpdatePrimaryTile( coloring );
+            await UpdateSecondaryTilesAsync( coloring );
+        }
+
+
+        private void UpdatePrimaryTile( TileColoring coloring )
+        {
+            var xml = new XmlDocument();
+            xml.LoadXml( string.Format( TileXmlFormat, PrimaryTilePaths[coloring] ) );
+
+            var manager = TileUpdateManager.CreateTileUpdaterForApplication();
+            manager.EnableNotificationQueue( true );
+            manager.Clear();
+            manager.AddToSchedule( new ScheduledTileNotification( xml, DateTimeOffset.Now.AddSeconds( 1 ) ) );
+        }
+
+        private async Task UpdateSecondaryTilesAsync( TileColoring coloring )
+        {
+            var existingTiles = await SecondaryTile.FindAllAsync();
+            var tileProps = SecondaryTileProperties[coloring];
+            foreach ( var plugin in _pluginLoader.GetPlugins() )
+            {
+                if ( existingTiles.Any( t => t.TileId == plugin.Id ) )
+                {
+                    var tile = await GetTileAsync( plugin, coloring );
+                    await tile.UpdateAsync();
+                }
+            }
+        }
+
+        private async Task<SecondaryTile> GetTileAsync( IPlugin plugin, TileColoring coloring )
+        {
             var winPlugin = (IWindowsRuntimePlugin) plugin;
 
-            var tileProps = ColoringProperties[coloring];
+            var tileProps = SecondaryTileProperties[coloring];
 
             var icon = new Icon
             {
@@ -75,7 +122,7 @@ namespace PocketCampus.Main.Services
             var tempContainer = new Border { Child = icon, Opacity = 0 };
             Grid.SetColumnSpan( tempContainer, int.MaxValue );
             Grid.SetRowSpan( tempContainer, int.MaxValue );
-            var currentRoot = (Grid) ( (Page) ( (Frame) Window.Current.Content ).Content ).Content;
+            var currentRoot = (Panel) ( (Page) ( (Frame) Window.Current.Content ).Content ).Content;
             currentRoot.Children.Add( tempContainer );
 
             var bitmap = new RenderTargetBitmap();
@@ -102,18 +149,7 @@ namespace PocketCampus.Main.Services
             tile.VisualElements.BackgroundColor = tileProps.Background;
             tile.VisualElements.ForegroundText = tileProps.ForegroundText;
             tile.VisualElements.ShowNameOnSquare150x150Logo = true;
-            await tile.RequestCreateAsync();
-        }
-
-        public void SetTileColoring( TileColoring coloring )
-        {
-            var xml = new XmlDocument();
-            xml.LoadXml( string.Format( TileXmlFormat, TilePaths[coloring] ) );
-
-            var manager = TileUpdateManager.CreateTileUpdaterForApplication();
-            manager.EnableNotificationQueue( true );
-            manager.Clear();
-            manager.AddToSchedule( new ScheduledTileNotification( xml, DateTimeOffset.Now.AddSeconds( 1 ) ) );
+            return tile;
         }
 
 
