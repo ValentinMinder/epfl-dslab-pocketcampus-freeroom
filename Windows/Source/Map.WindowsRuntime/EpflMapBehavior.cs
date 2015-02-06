@@ -112,6 +112,9 @@ namespace PocketCampus.Map
                 var buildingsDataSource = EpflTileSources.GetForBuildings( _vm.Properties );
                 _map.TileSources.Add( new MapTileSource( buildingsDataSource ) );
             };
+
+            // HACK: Force the map to always face North, so that buildings labels are shown properly.
+            _map.HeadingChanged += ( _, __ ) => _map.Heading = 0;
         }
 
         public void Detach()
