@@ -75,21 +75,21 @@
     <Style x:Key="AppHeaderTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource AppHeaderForegroundBrush}" />
         <Setter Property="FontSize" Value="{StaticResource TextStyleMediumFontSize}" />
-        <Setter Property="Margin" Value="19,5,0,5" />
+        <Setter Property="Margin" Value="19,6,0,4" />
     </Style>
 
     <!-- Title text -->
     <Style x:Key="AppTitleTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource AppHeaderForegroundBrush}" />
         <Setter Property="FontSize" Value="{StaticResource TextStyleExtraLargePlusFontSize}" />
-        <Setter Property="Margin" Value="19,0,0,5" />
+        <Setter Property="Margin" Value="19,6,0,4" />
     </Style>
 
     <!-- Secondary title text -->
     <Style x:Key="AppSecondaryTitleTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource AppSecondaryHeaderForegroundBrush}" />
         <Setter Property="FontSize" Value="{StaticResource TextStyleExtraLargeFontSize}" />
-        <Setter Property="Margin" Value="19,0,0,5" />
+        <Setter Property="Margin" Value="19,6,0,4" />
     </Style>
 
 
