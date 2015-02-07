@@ -197,17 +197,17 @@
     <Content Include="Images\MealType_Vegetarian.png" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ThinMvvm, Version=0.9.29.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ThinMvvm, Version=0.10.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\ThinMvvm.0.9.29.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.0.10.4.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
     </Reference>
-    <Reference Include="ThinMvvm.Logging, Version=0.9.29.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ThinMvvm.Logging, Version=0.10.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\ThinMvvm.Logging.0.9.29.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.Logging.0.10.4.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="ThinMvvm.WindowsRuntime, Version=0.9.29.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ThinMvvm.WindowsRuntime, Version=0.10.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\ThinMvvm.WindowsRuntime.0.9.29.0\lib\portable-win81+WindowsPhoneApp81\ThinMvvm.WindowsRuntime.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.WindowsRuntime.0.10.4.0\lib\portable-win81+WindowsPhoneApp81\ThinMvvm.WindowsRuntime.dll</HintPath>
     </Reference>
     <Reference Include="ThriftSharp, Version=2.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

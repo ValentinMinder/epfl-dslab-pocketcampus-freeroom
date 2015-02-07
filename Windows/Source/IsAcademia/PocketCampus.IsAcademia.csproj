@@ -61,10 +61,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThinMvvm">
-      <HintPath>..\..\packages\ThinMvvm.0.9.29.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.0.10.4.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
     </Reference>
     <Reference Include="ThinMvvm.Logging">
-      <HintPath>..\..\packages\ThinMvvm.Logging.0.9.29.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.Logging.0.10.4.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
     </Reference>
     <Reference Include="ThriftSharp">
       <HintPath>..\..\packages\ThriftSharp.2.3.1.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThriftSharp.dll</HintPath>
