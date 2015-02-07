@@ -110,9 +110,10 @@ namespace PocketCampus.Map.ViewModels
         }
 
 
-        public override async Task OnNavigatedToAsync()
+        public override Task OnNavigatedToAsync()
         {
-            await base.OnNavigatedToAsync();
+            // HACK: No call to base, we don't want the "try to refresh on the first navigation" behavior here
+            //       Inheriting from DataViewModel is weird anyway...
 
             if ( Properties.Center == null )
             {
@@ -125,12 +126,15 @@ namespace PocketCampus.Map.ViewModels
                 Properties.UserPosition = null;
                 LocationStatus = GeoLocationStatus.NotRequested;
             }
+
+            return Task.FromResult( 0 );
         }
 
         private async void ExecuteRequest( MapSearchRequest request )
         {
             if ( request.Query != null )
             {
+                Query = request.Query;
                 await SearchAsync( request.Query );
             }
             else if ( request.Item != null )
