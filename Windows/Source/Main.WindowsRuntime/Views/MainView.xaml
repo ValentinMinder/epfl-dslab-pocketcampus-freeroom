@@ -59,9 +59,9 @@
 
             <!-- EPFL logo -->
             <Viewbox Grid.Column="1"
-                     Width="90"
-                     Stretch="Uniform"
-                     Margin="19,0,19,4">
+                     Height="28"
+                     VerticalAlignment="Center"
+                     Margin="19,0">
                 <ContentControl Template="{StaticResource MonochromeEpflLogo}" />
             </Viewbox>
         </Grid>
