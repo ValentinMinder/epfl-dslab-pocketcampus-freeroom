@@ -47,10 +47,24 @@
         </Grid.RowDefinitions>
         
         <!-- Title -->
-        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+        <Grid Background="{StaticResource AppHeaderBackgroundBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
             <TextBlock Text="{CustomResource Main.ViewTitle}"
-                       Style="{StaticResource AppTitleTextBlockStyle}" />
-        </Border>
+                       Style="{StaticResource AppTitleTextBlockStyle}"
+                       VerticalAlignment="Center" />
+
+            <!-- EPFL logo -->
+            <Viewbox Grid.Column="1"
+                     Width="90"
+                     Stretch="Uniform"
+                     Margin="19,0,19,4">
+                <ContentControl Template="{StaticResource MonochromeEpflLogo}" />
+            </Viewbox>
+        </Grid>
         
         <!-- Plugins -->
         <GridView Grid.Row="1"
