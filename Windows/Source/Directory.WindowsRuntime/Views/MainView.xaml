@@ -30,9 +30,8 @@
             <DataTemplate x:Key="PersonTemplate">
                 <cc:SimpleButton Command="{Binding DataContext.ViewPersonCommand, ElementName=Root}"
                                  CommandParameter="{Binding}"
-                                 Height="100"
-                                 Margin="19,16,19,0">
-                    <Grid>
+                                 Height="100">
+                    <Grid Margin="19,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
