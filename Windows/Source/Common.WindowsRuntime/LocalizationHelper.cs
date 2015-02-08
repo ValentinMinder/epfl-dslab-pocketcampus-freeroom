@@ -1,4 +1,8 @@
-﻿using System.Reflection;
+﻿// Copyright (c) PocketCampus.Org 2014-15
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using System.Reflection;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

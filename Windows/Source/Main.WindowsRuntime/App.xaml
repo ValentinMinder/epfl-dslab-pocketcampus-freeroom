@@ -1,4 +1,8 @@
-﻿<mvvm:AppBase x:Class="PocketCampus.Main.App"
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<mvvm:AppBase x:Class="PocketCampus.Main.App"
               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:mvvm="using:ThinMvvm.WindowsRuntime"

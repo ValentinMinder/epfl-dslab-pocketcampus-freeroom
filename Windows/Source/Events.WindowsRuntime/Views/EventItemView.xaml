@@ -1,4 +1,8 @@
-﻿<cc:PageBase x:Class="PocketCampus.Events.Views.EventItemView"
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<cc:PageBase x:Class="PocketCampus.Events.Views.EventItemView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:c="using:PocketCampus.Common"

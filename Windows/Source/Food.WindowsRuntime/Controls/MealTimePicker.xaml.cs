@@ -1,4 +1,8 @@
-﻿using PocketCampus.Food.Models;
+﻿// Copyright (c) PocketCampus.Org 2014-15
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using PocketCampus.Food.Models;
 using ThinMvvm;
 using ThinMvvm.Logging;
 using Windows.UI.Xaml;

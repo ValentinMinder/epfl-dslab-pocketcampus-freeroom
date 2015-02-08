@@ -1,4 +1,8 @@
-﻿using Microsoft.Xaml.Interactivity;
+﻿// Copyright (c) PocketCampus.Org 2014-15
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using Microsoft.Xaml.Interactivity;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 

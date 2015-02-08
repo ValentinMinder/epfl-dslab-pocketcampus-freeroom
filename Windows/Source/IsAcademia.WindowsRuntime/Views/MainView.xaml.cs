@@ -1,4 +1,8 @@
-﻿using PocketCampus.IsAcademia.ViewModels;
+﻿// Copyright (c) PocketCampus.Org 2014-15
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using PocketCampus.IsAcademia.ViewModels;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 

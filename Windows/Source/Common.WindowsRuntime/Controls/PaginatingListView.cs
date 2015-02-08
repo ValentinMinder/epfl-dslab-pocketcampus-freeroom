@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿// Copyright (c) PocketCampus.Org 2014-15
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using System.Collections;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c) PocketCampus.Org 2014-15
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using System;
 using PocketCampus.Satellite.Models;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;

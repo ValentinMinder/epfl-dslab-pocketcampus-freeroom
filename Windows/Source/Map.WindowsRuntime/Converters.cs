@@ -1,4 +1,8 @@
-﻿using PocketCampus.Common;
+﻿// Copyright (c) PocketCampus.Org 2014-15
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using PocketCampus.Common;
 using Windows.Devices.Geolocation;
 
 namespace PocketCampus.Map

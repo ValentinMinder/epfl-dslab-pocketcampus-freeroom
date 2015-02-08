@@ -1,4 +1,8 @@
-﻿using Windows.UI.Xaml;
+﻿// Copyright (c) PocketCampus.Org 2014-15
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using Windows.UI.Xaml;
 
 namespace PocketCampus.Food.Controls
 {

@@ -1,4 +1,8 @@
-﻿using PocketCampus.CloudPrint.Models;
+﻿// Copyright (c) PocketCampus.Org 2014-15
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using PocketCampus.CloudPrint.Models;
 using ThinMvvm;
 
 namespace PocketCampus.CloudPrint

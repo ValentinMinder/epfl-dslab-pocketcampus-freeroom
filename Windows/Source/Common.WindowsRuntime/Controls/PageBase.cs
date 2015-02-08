@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c) PocketCampus.Org 2014-15
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using System;
 using Windows.ApplicationModel;
 using Windows.Graphics.Display;
 using Windows.UI;

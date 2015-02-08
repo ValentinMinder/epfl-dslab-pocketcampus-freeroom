@@ -1,4 +1,8 @@
-﻿#if DEBUG
+﻿// Copyright (c) PocketCampus.Org 2014-15
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+#if DEBUG
 using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Map.Models;

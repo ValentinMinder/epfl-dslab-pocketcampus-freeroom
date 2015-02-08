@@ -1,4 +1,8 @@
-﻿<UserControl x:Class="PocketCampus.Common.Controls.NumericUpDown"
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<UserControl x:Class="PocketCampus.Common.Controls.NumericUpDown"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:myControls="using:PocketCampus.Common.Controls">

@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿// Copyright (c) PocketCampus.Org 2014-15
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using System.Threading.Tasks;
 using PocketCampus.CloudPrint.Models;
 using ThriftSharp;
 
