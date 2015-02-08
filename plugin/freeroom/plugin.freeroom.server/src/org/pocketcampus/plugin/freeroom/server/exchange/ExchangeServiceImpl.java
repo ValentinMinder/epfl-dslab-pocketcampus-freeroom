@@ -43,30 +43,6 @@ public class ExchangeServiceImpl {
 	}
 
 	/**
-	 * Reset all the exchange ids to NULL.
-	 * 
-	 * @return
-	 */
-	private boolean resetExchangeData() {
-		Connection conn = null;
-		try {
-			if (connDB == null) {
-				conn = connMgr.getConnection();
-			} else {
-				conn = connDB;
-			}
-			PreparedStatement query;
-			String b = "UPDATE `fr-roomsoccupancy` SET EWAid = NULL WHERE *";
-			query = conn.prepareStatement(b);
-			query.execute();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-
-	/**
 	 * Set the exchange ID of the room represented by it's doorCodeWithoutSpace.
 	 * 
 	 * @param concatName

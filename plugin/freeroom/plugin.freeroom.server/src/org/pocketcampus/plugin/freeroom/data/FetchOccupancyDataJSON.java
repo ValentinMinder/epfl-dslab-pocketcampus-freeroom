@@ -1,13 +1,10 @@
 package org.pocketcampus.plugin.freeroom.data;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Scanner;
 import java.util.logging.Level;
 
 import org.json.JSONArray;
@@ -35,16 +32,12 @@ public class FetchOccupancyDataJSON {
 
 	private final String KEY_ALIAS = "name";
 	private final String KEY_ALIAS_WITHOUT_SPACE = "code";
-	private final String KEY_DOORCODE = "EPDLCode";
 	private final String KEY_UID = "sourceId";
 	private final String KEY_CAPACITY = "capacity";
 	private final String KEY_CAPACITY_EXTRA = "extraCapacity";
-	private final String KEY_DINCAT = "typeDIN";
 
-	private final String KEY_OCCUPANCY = "meetingType";
 	private final String KEY_OCCUPANCY_START = "startDateTime";
 	private final String KEY_OCCUPANCY_LENGTH = "duration";
-	private final String KEY_OCCUPANCY_ROOMS = "rooms";
 
 	private ConnectionManager connMgr = null;
 	private String DB_URL;
@@ -317,21 +310,6 @@ public class FetchOccupancyDataJSON {
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return 0;
-		}
-	}
-
-	private String readFromFile(String name) {
-		try {
-			Scanner sc = new Scanner(new File(name));
-			StringBuffer json = new StringBuffer();
-			while (sc.hasNextLine()) {
-				json.append(sc.nextLine());
-			}
-
-			return json.toString();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
 		}
 	}
 

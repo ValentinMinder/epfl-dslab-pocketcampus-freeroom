@@ -111,7 +111,7 @@ public class NewsSourceTests {
 			Scanner s = null;
 
 			try {
-				InputStream stream = new TestHttpClient().getClass().getResourceAsStream(name);
+				InputStream stream = TestHttpClient.class.getResourceAsStream(name);
 				s = new Scanner(stream, "UTF-8").useDelimiter("\\A");
 				return s.hasNext() ? s.next() : "";
 			} finally {

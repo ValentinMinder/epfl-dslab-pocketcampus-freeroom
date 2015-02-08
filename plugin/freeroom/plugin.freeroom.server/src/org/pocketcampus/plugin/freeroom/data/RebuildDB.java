@@ -1,9 +1,6 @@
 package org.pocketcampus.plugin.freeroom.data;
 
-import java.util.Calendar;
-
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
-import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeLoading;
 
 /**
  * Used to rebuild the list of rooms in the database, should not be used too

@@ -19,8 +19,6 @@ import java.util.logging.Logger;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.server.database.ConnectionManager;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-import org.pocketcampus.plugin.freeroom.data.AutoUpdate;
-import org.pocketcampus.plugin.freeroom.data.PeriodicallyUpdate;
 import org.pocketcampus.plugin.freeroom.server.utils.CheckRequests;
 import org.pocketcampus.plugin.freeroom.server.utils.OccupancySorted;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
@@ -80,8 +78,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private String ROOMS_LIST_URL;
 	private String ROOM_DETAILS_URL;
 
-	private AutoUpdate updater;
-
 	// be careful when changing this, it might lead to invalid data already
 	// stored !
 	// this is what is used to differentiate a room from a student occupation in
@@ -122,12 +118,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			e.printStackTrace();
 		}
 
-		updater = new AutoUpdate();
-
-		// USEME: Periodically update
-		// new Thread(new PeriodicallyUpdate(DB_URL, DB_USER, DB_PASSWORD,
-		// this)).start();
-		//
 		// USEME: Rebuild rooms list in DB, need to tune parameter for tsStart
 		// and tsEnd, (Start/End of semester)
 		// Calendar mCalendar = Calendar.getInstance();
@@ -167,19 +157,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	/**
 	 * Pre-format the message for logging
 	 * 
-	 * @param message
-	 *            The message
-	 * @param path
-	 *            The path to the file where the bug happened
-	 * @return A pre-formatted message containing the path and the message.
-	 */
-	private String formatPathMessageLogAndroid(String message, String path) {
-		return path + " / " + message;
-	}
-
-	/**
-	 * Pre-format the message for loggin
-	 * 
 	 * @param method
 	 *            The method to be logged
 	 * @param arguments
@@ -192,7 +169,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	}
 
 	/**
-	 * Pre-format the message for loggin
+	 * Pre-format the message for logging
 	 * 
 	 * @param method
 	 *            The method to be logged
@@ -771,8 +748,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			throws TException {
 		if (request == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING, "Receiving null FRRequest");
-			return new FROccupancyReply(FRStatusCode.HTTP_BAD_REQUEST,
-					"FRRequest is null");
+			return new FROccupancyReply(FRStatusCode.HTTP_BAD_REQUEST)
+                    .setStatusComment("FRRequest is null");
 		}
 
 		FROccupancyReply reply = CheckRequests.checkFRRequest(request);
@@ -781,22 +758,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return reply;
 		} else {
 			reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
-		}
-
-		// check for updates
-		if (updater.checkUpdate()) {
-			Connection connUpdate;
-			try {
-				connUpdate = connMgrUpdate.getConnection();
-				connUpdate
-						.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-				new Thread(new PeriodicallyUpdate(this, updater, connUpdate))
-						.start();
-			} catch (SQLException e) {
-				log(Level.WARNING,
-						"Cannot create connection to the database for updating");
-				e.printStackTrace();
-			}
 		}
 
 		// round the given period to full hours to have a nice display on UI.
@@ -817,8 +778,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (FRTimes.validCalendarsString(period, System.currentTimeMillis(),
 				allowWeekends, allowEvenings).length() != 0) {
 			// if something is wrong in the request
-			return new FROccupancyReply(FRStatusCode.HTTP_BAD_REQUEST,
-					"Bad timestamps! Your client sent a bad request, sorry");
+			return new FROccupancyReply(FRStatusCode.HTTP_BAD_REQUEST)
+            .setStatusComment("Bad timestamps! Your client sent a bad request, sorry");
 		}
 
 		boolean onlyFreeRoom = request.isOnlyFreeRooms();
@@ -832,8 +793,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				occupancies = getOccupancyOfAnyFreeRoom(tsStart, tsEnd, group,
 						userLanguage);
 			} else {
-				return new FROccupancyReply(FRStatusCode.HTTP_BAD_REQUEST,
-						"The search for any free room must contains onlyFreeRoom = true");
+				return new FROccupancyReply(FRStatusCode.HTTP_BAD_REQUEST)
+						.setStatusComment("The search for any free room must contains onlyFreeRoom = true");
 			}
 		} else {
 			// or the user specified a specific list of rooms he wants to check
@@ -842,8 +803,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 		if (occupancies == null) {
-			return new FROccupancyReply(FRStatusCode.HTTP_INTERNAL_ERROR,
-					FRStatusCode.HTTP_INTERNAL_ERROR + "");
+			return new FROccupancyReply(FRStatusCode.HTTP_INTERNAL_ERROR)
+					.setStatusComment(FRStatusCode.HTTP_INTERNAL_ERROR + "");
 		}
 
 		occupancies = Utils.sortRooms(occupancies);
@@ -856,9 +817,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	/**
 	 * Return the occupancy of all the free rooms during a given period.
-	 * 
-	 * @param onlyFreeRooms
-	 *            Should always be true
+	 *
 	 * @param tsStart
 	 *            The start of the period, should be rounded, see public
 	 *            getOccupancy
@@ -871,7 +830,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private HashMap<String, List<FRRoomOccupancy>> getOccupancyOfAnyFreeRoom(
 			long tsStart, long tsEnd, int userGroup, String userLanguage) {
 
-		HashMap<String, List<FRRoomOccupancy>> result = new HashMap<String, List<FRRoomOccupancy>>();
 		Connection connectBDD;
 		try {
 			connectBDD = connMgr.getConnection();
@@ -1026,8 +984,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 					OCCUPANCY_TYPE type = OCCUPANCY_TYPE.valueOf(resultQuery
 							.getString("type"));
-					boolean available = (type == OCCUPANCY_TYPE.USER) ? true
-							: false;
+					boolean available = type == OCCUPANCY_TYPE.USER;
 					int capacity = resultQuery.getInt("capacity");
 
 					int calculCapacity = capacity > 0 ? capacity
@@ -1191,8 +1148,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (request == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Receiving null AutoCompleteRequest");
-			return new FRAutoCompleteReply(FRStatusCode.HTTP_BAD_REQUEST,
-					"AutocompleteRequest is null");
+			return new FRAutoCompleteReply(FRStatusCode.HTTP_BAD_REQUEST)
+                    .setStatusComment("AutocompleteRequest is null");
 		}
 
 		FRAutoCompleteReply reply = CheckRequests
@@ -1209,8 +1166,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				.getUserLanguage());
 
 		if (constraint.length() < Constants.MIN_AUTOCOMPL_LENGTH) {
-			return new FRAutoCompleteReply(FRStatusCode.HTTP_BAD_REQUEST,
-					"Constraints should be at least "
+			return new FRAutoCompleteReply(FRStatusCode.HTTP_BAD_REQUEST)
+					.setStatusComment("Constraints should be at least "
 							+ Constants.MIN_AUTOCOMPL_LENGTH
 							+ " characters long.");
 		}
@@ -1305,16 +1262,16 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				rooms.add(frRoom);
 			}
 
-			reply = new FRAutoCompleteReply(FRStatusCode.HTTP_OK, ""
-					+ HttpURLConnection.HTTP_OK);
+			reply = new FRAutoCompleteReply(FRStatusCode.HTTP_OK)
+					.setStatusComment( ""+HttpURLConnection.HTTP_OK);
 			reply.setListRoom(Utils.sortRoomsByBuilding(rooms));
 
 			String logMessage = "constraint=" + constraint + ",forbiddenRooms="
 					+ forbiddenRooms;
 			log(Level.INFO, formatServerLogInfo("autoCompleteRoom", logMessage));
 		} catch (SQLException e) {
-			reply = new FRAutoCompleteReply(FRStatusCode.HTTP_INTERNAL_ERROR,
-					"" + HttpURLConnection.HTTP_INTERNAL_ERROR);
+			reply = new FRAutoCompleteReply(FRStatusCode.HTTP_INTERNAL_ERROR)
+                    .setStatusComment("" + HttpURLConnection.HTTP_INTERNAL_ERROR);
 			e.printStackTrace();
 			log(LOG_SIDE.SERVER, Level.SEVERE,
 					"SQL error for autocomplete request with constraint "
@@ -1322,77 +1279,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 		return reply;
 	}
-
-	// @Override
-	// public FRAutoCompleteUserMessageReply autoCompleteUserMessage(
-	// FRAutoCompleteUserMessageRequest request) throws TException {
-	// if (request == null) {
-	// log(LOG_SIDE.SERVER, Level.WARNING,
-	// "Receiving null AutoCompleteUserMessageRequest");
-	// return new FRAutoCompleteUserMessageReply(
-	// FRStatusCode.HTTP_BAD_REQUEST,
-	// "AutocompleteUserMessageRequest is null");
-	// }
-	//
-	// FRAutoCompleteUserMessageReply reply = CheckRequests
-	// .checkAutoCompleteUserMessageRequest(request);
-	// if (reply.getStatus() != FRStatusCode.HTTP_OK) {
-	// log(LOG_SIDE.SERVER, Level.WARNING, reply.getStatusComment());
-	// return reply;
-	// } else {
-	// reply.setStatusComment(HttpURLConnection.HTTP_OK + "");
-	// }
-	//
-	// String constraint = request.getConstraint().replaceAll("\\s+", "");
-	// String uid = request.getRoom().getUid();
-	// FRPeriod period = request.getPeriod();
-	//
-	// if (period.getTimeStampEnd() < period.getTimeStampStart()) {
-	// return new FRAutoCompleteUserMessageReply(
-	// FRStatusCode.HTTP_BAD_REQUEST,
-	// "The end of the period should be after the start");
-	// }
-	//
-	// String requestSQL = "SELECT co.message "
-	// + "FROM `fr-checkOccupancy` co "
-	// + "WHERE co.uid = ? AND co.timestampStart >= ? AND co.timestampEnd <= ? "
-	// + "AND LOWER(co.message) LIKE (?) ORDER BY co.message ASC";
-	//
-	// try {
-	// ArrayList<String> messages = new ArrayList<String>();
-	//
-	// Connection connectBDD = connMgr.getConnection();
-	//
-	// PreparedStatement query = connectBDD.prepareStatement(requestSQL);
-	// query.setString(1, uid);
-	// query.setLong(2, period.getTimeStampStart());
-	// query.setLong(3, period.getTimeStampEnd());
-	// query.setString(4, "%" + constraint.toLowerCase() + "%");
-	//
-	// ResultSet result = query.executeQuery();
-	//
-	// while (result.next()) {
-	// messages.add(result.getString("message"));
-	// }
-	//
-	// String logMessage = "constraint=" + constraint;
-	// log(Level.INFO,
-	// formatServerLogInfo("autoCompleteUserMessage", logMessage));
-	// reply.setMessages(messages);
-	// } catch (SQLException e) {
-	// ;
-	// e.printStackTrace();
-	// log(LOG_SIDE.SERVER, Level.SEVERE,
-	// "SQL error when autocompleting user message for uid = "
-	// + uid + " period = " + period + " constraint = "
-	// + constraint);
-	// return new FRAutoCompleteUserMessageReply(
-	// FRStatusCode.HTTP_INTERNAL_ERROR,
-	// "Error when autocompleting");
-	// }
-	//
-	// return reply;
-	// }
 
 	/**
 	 * The client can specify a user occupancy during a given period, multiple
@@ -1405,8 +1291,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (request == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Receiving null ImWorkingRequest");
-			return new FRImWorkingReply(FRStatusCode.HTTP_BAD_REQUEST,
-					"ImWorkingReply is null");
+			return new FRImWorkingReply(FRStatusCode.HTTP_BAD_REQUEST)
+					.setStatusComment("ImWorkingReply is null");
 		}
 
 		FRImWorkingReply reply = CheckRequests.checkImWorkingRequest(request);
@@ -1435,7 +1321,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			log(Level.INFO,
 					formatServerLogInfo("indicateImWorking", logMessage));
 		}
-		return new FRImWorkingReply(code, " ");
+		return new FRImWorkingReply(code);
 
 	}
 
@@ -1445,8 +1331,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (request == null) {
 			log(LOG_SIDE.SERVER, Level.WARNING,
 					"Receiving null WhoIsWorkingRequest");
-			return new FRWhoIsWorkingReply(FRStatusCode.HTTP_BAD_REQUEST,
-					"WhoIsWorkingRequest is null");
+			return new FRWhoIsWorkingReply(FRStatusCode.HTTP_BAD_REQUEST)
+                    .setStatusComment("WhoIsWorkingRequest is null");
 		}
 
 		FRWhoIsWorkingReply reply = CheckRequests
@@ -1463,8 +1349,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		List<String> listMessages = getUserMessages(period,
 				request.getRoomUID());
 		if (listMessages == null) {
-			return new FRWhoIsWorkingReply(FRStatusCode.HTTP_INTERNAL_ERROR,
-					HttpURLConnection.HTTP_INTERNAL_ERROR + "");
+			return new FRWhoIsWorkingReply(FRStatusCode.HTTP_INTERNAL_ERROR)
+                    .setStatusComment(""+HttpURLConnection.HTTP_INTERNAL_ERROR);
 		} else {
 			reply.setMessages(Utils.removeGroupMessages(listMessages));
 
