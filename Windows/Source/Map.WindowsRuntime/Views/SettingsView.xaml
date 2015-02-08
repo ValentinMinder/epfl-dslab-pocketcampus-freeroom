@@ -2,7 +2,7 @@
      See LICENSE file for more details
      File author: Solal Pirelli -->
 
-s<cc:PageBase x:Class="PocketCampus.Map.Views.SettingsView"
+<cc:PageBase x:Class="PocketCampus.Map.Views.SettingsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:cc="using:PocketCampus.Common.Controls"
