@@ -115,7 +115,7 @@ struct FROccupancyRequest {
 struct FROccupancyReply {
 	1: required FRStatusCode status;
 	//useful for debugging
-	2: optional string statusComment;
+	2: required string statusComment;
 	//map from building to list of occupancies in the building
 	// nothing to do with room uid
 	// example: "CO", "BC"
@@ -140,7 +140,7 @@ struct FRAutoCompleteRequest {
 
 struct FRAutoCompleteReply {
 	1: required FRStatusCode status;
-	2: optional string statusComment;
+	2: required string statusComment;
 	// map from building name to list of rooms in this building (available in freeroom)
 	4: optional map<string, list<FRRoom>> listRoom;
 }
@@ -166,7 +166,7 @@ struct FRImWorkingRequest {
 
 struct FRImWorkingReply {
 	1: required FRStatusCode status;
-	2: optional string statusComment;
+	2: required string statusComment;
 }
 
 struct FRWhoIsWorkingRequest {
@@ -176,7 +176,7 @@ struct FRWhoIsWorkingRequest {
 
 struct FRWhoIsWorkingReply {
 	1: required FRStatusCode status;
-	2: optional string statusComment;
+	2: required string statusComment;
 	//map a message to the number of time it appears
 	// could be transformed to a map from subject to count.
 	3: optional list<FRMessageFrequency> messages;

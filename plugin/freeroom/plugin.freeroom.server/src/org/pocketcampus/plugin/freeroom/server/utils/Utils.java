@@ -1,376 +1,296 @@
 package org.pocketcampus.plugin.freeroom.server.utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import org.pocketcampus.plugin.freeroom.shared.FRMessageFrequency;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriodOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
-import org.pocketcampus.plugin.freeroom.shared.FRMessageFrequency;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This is an utility class doing useful conversions, and defining a few
  * constants.
- * 
+ *
  * @author FreeRoom Project Team (2014/05)
  * @author Julien WEBER <julien.weber@epfl.ch>
  * @author Valentin MINDER <valentin.minder@epfl.ch>
- * 
  */
 public class Utils {
-	public static final int GROUP_STUDENT = 1;
-	public static final int GROUP_STAFF = 20;
-	public static String[] supportedLanguages = {"en", "fr"};
-	public static String defaultLanguage = "en";
-	
-	public static final List<String> mediacomList = Arrays.asList("875", "876",
-			"9001", "877", "878", "880", "1884", "1886", "1887", "1888",
-			"1895", "1835", "1898", "1837", "1891", "1896", "2043", "2044",
-			"2045", "2046", "2047", "2124", "2125", "2126", "2127", "12205",
-			"12206", "12207", "12208", "9208", "9209", "9210", "9275", "9276",
-			"9277", "9278", "9281", "9313", "9054", "9055", "4911", "4913",
-			"4914", "4915", "3014", "3137", "3208", "3623", "3624", "3625",
-			"3702", "3738");
+    public static final int GROUP_STUDENT = 1;
+    public static final int GROUP_STAFF = 20;
+    public static String[] supportedLanguages = {"en", "fr"};
+    public static String defaultLanguage = "en";
 
-	private static final String FILENAME_FORBIDDEN_WORDS = "forbiddenWords.txt";
-	private static ArrayList<String> forbiddenWords = null;
+    public static final List<String> mediacomList = Arrays.asList("875", "876",
+            "9001", "877", "878", "880", "1884", "1886", "1887", "1888",
+            "1895", "1835", "1898", "1837", "1891", "1896", "2043", "2044",
+            "2045", "2046", "2047", "2124", "2125", "2126", "2127", "12205",
+            "12206", "12207", "12208", "9208", "9209", "9210", "9275", "9276",
+            "9277", "9278", "9281", "9313", "9054", "9055", "4911", "4913",
+            "4914", "4915", "3014", "3137", "3208", "3623", "3624", "3625",
+            "3702", "3738");
 
-	private static void loadForbiddenWords() {
-		if (forbiddenWords != null) {
-			return;
-		}
-		forbiddenWords = new ArrayList<String>();
+    /**
+     * Extract the building from the doorCode
+     *
+     * @param doorCode The doorCode from which we extract the building, it is assumed
+     *                 to be well formatted (with space separating the building from
+     *                 the zone and number e.g BC 01) otherwise it takes the first
+     *                 characters of the string until it hits a number.
+     * @return The building of the given door code if the door code is correct
+     * as defined above or the door code itself if no matches has been
+     * found.
+     */
+    public static String extractBuilding(String doorCode) {
+        String mDoorCode = doorCode.trim();
+        int firstSpace = mDoorCode.indexOf(" ");
+        if (firstSpace > 0) {
+            mDoorCode = mDoorCode.substring(0, firstSpace);
+        } else {
+            Pattern mBuildingPattern = Pattern
+                    .compile("^([A-Za-z]+)[^A-Za-z]$");
+            Matcher mMatcher = mBuildingPattern.matcher(doorCode);
 
-		Scanner sc = new Scanner(
-				Utils.class.getResourceAsStream(FILENAME_FORBIDDEN_WORDS));
-		while (sc.hasNextLine()) {
-			String line = sc.nextLine();
-			forbiddenWords.add(line.toLowerCase());
-		}
-		sc.close();
-	}
+            if (mMatcher.matches()) {
+                return mMatcher.group(0);
+            } else {
+                return mDoorCode;
+            }
+        }
+        return mDoorCode;
+    }
 
-	/**
-	 * Extract the building from the doorCode
-	 * 
-	 * @param doorCode
-	 *            The doorCode from which we extract the building, it is assumed
-	 *            to be well formatted (with space separating the building from
-	 *            the zone and number e.g BC 01) otherwise it takes the first
-	 *            characters of the string until it hits a number.
-	 * @return The building of the given door code if the door code is correct
-	 *         as defined above or the door code itself if no matches has been
-	 *         found.
-	 */
-	public static String extractBuilding(String doorCode) {
-		String mDoorCode = doorCode.trim();
-		int firstSpace = mDoorCode.indexOf(" ");
-		if (firstSpace > 0) {
-			mDoorCode = mDoorCode.substring(0, firstSpace);
-		} else {
-			Pattern mBuildingPattern = Pattern
-					.compile("^([A-Za-z]+)[^A-Za-z]$");
-			Matcher mMatcher = mBuildingPattern.matcher(doorCode);
+    /**
+     * From a list of rooms it creates a HashMap that maps a building to a list
+     * of rooms (contained in this building).
+     *
+     * @param rooms The rooms to sort
+     * @return The HashMap as defined above, an empty HashMap is rooms is null
+     * or is empty
+     */
+    public static Map<String, List<FRRoom>> sortRoomsByBuilding(
+            List<FRRoom> rooms) {
+        if (rooms == null || rooms.isEmpty()) {
+            return new HashMap<String, List<FRRoom>>();
+        }
 
-			if (mMatcher.matches()) {
-				return mMatcher.group(0);
-			} else {
-				return mDoorCode;
-			}
-		}
-		return mDoorCode;
-	}
+        Iterator<FRRoom> iter = rooms.iterator();
+        HashMap<String, List<FRRoom>> sortedResult = new HashMap<String, List<FRRoom>>();
 
-	/**
-	 * From a list of rooms it creates a HashMap that maps a building to a list
-	 * of rooms (contained in this building).
-	 * 
-	 * @param rooms
-	 *            The rooms to sort
-	 * @return The HashMap as defined above, an empty HashMap is rooms is null
-	 *         or is empty
-	 */
-	public static Map<String, List<FRRoom>> sortRoomsByBuilding(
-			List<FRRoom> rooms) {
-		if (rooms == null || rooms.isEmpty()) {
-			return new HashMap<String, List<FRRoom>>();
-		}
+        while (iter.hasNext()) {
+            FRRoom frRoom = iter.next();
 
-		Iterator<FRRoom> iter = rooms.iterator();
-		HashMap<String, List<FRRoom>> sortedResult = new HashMap<String, List<FRRoom>>();
-		ArrayList<String> buildingsList = new ArrayList<String>();
+            String building = extractBuilding(frRoom.getDoorCode());
 
-		while (iter.hasNext()) {
-			FRRoom frRoom = iter.next();
+            List<FRRoom> roomsNumbers = sortedResult.get(building);
+            if (roomsNumbers == null) {
+                roomsNumbers = new ArrayList<FRRoom>();
+                sortedResult.put(building, roomsNumbers);
+            }
+            roomsNumbers.add(frRoom);
+        }
 
-			String building = extractBuilding(frRoom.getDoorCode());
+        return sortedResult;
+    }
 
-			List<FRRoom> roomsNumbers = sortedResult.get(building);
-			if (roomsNumbers == null) {
-				buildingsList.add(building);
-				roomsNumbers = new ArrayList<FRRoom>();
-				sortedResult.put(building, roomsNumbers);
-			}
-			roomsNumbers.add(frRoom);
-		}
+    /**
+     * Remove duplicates in a list of rooms
+     *
+     * @param uidList The list to check
+     * @return The list with unique ids without duplicates
+     */
+    public static List<String> removeDuplicate(List<String> uidList) {
+        HashSet<String> uidSet = new HashSet<String>();
+        uidSet.addAll(uidList);
+        return new ArrayList<String>(uidSet);
+    }
 
-		return sortedResult;
-	}
+    public static int determineGroupAccessRoom(String uid) {
+        return mediacomList.contains(uid) ? GROUP_STUDENT : GROUP_STAFF;
+    }
 
-	/**
-	 * Remove duplicates in a list of rooms
-	 * 
-	 * @param uidList
-	 *            The list to check
-	 * @return The list with unique ids without duplicates
-	 */
-	public static List<String> removeDuplicate(List<String> uidList) {
-		HashSet<String> uidSet = new HashSet<String>();
-		uidSet.addAll(uidList);
-		return new ArrayList<String>(uidSet);
-	}
+    /**
+     * The HashMap is organized by the following relation(building -> list of
+     * rooms) and each list of rooms is sorted independently. Sort the rooms
+     * according to some criteria. See the comparator roomsFreeComparator.
+     *
+     * @param occ The HashMap to be sorted
+     * @return The HashMap sorted
+     */
+    public static HashMap<String, List<FRRoomOccupancy>> sortRooms(
+            HashMap<String, List<FRRoomOccupancy>> occ) {
+        if (occ == null) {
+            return null;
+        }
 
-	public static boolean checkValidUID(String uid) {
-		Pattern mUIDPattern = Pattern.compile("^[0-9]+$");
-		Matcher mMatcher = mUIDPattern.matcher(uid);
+        for (String key : occ.keySet()) {
+            List<FRRoomOccupancy> value = occ.get(key);
+            Collections.sort(value, roomsFreeComparator);
+        }
 
-		return mMatcher.matches();
-	}
+        return occ;
+    }
 
-	public static int determineGroupAccessRoom(String uid) {
-		return mediacomList.contains(uid) ? GROUP_STUDENT : GROUP_STAFF;
-	}
+    /**
+     * Comparator used to sort rooms according to some criteria. First put the
+     * rooms entirely free , then the partially occupied and then the rooms
+     * unavailable. Entirely free rooms are sorted by probable occupancy
+     * (users), partially occupied are sorted first by percentage of room
+     * occupation (i.e how many hours compared to the total period the room is
+     * occupied) then by probable occupancy (users). Totally occupied rooms
+     * are not sorted.
+     */
+    private static Comparator<FRRoomOccupancy> roomsFreeComparator = new Comparator<FRRoomOccupancy>() {
 
-	/**
-	 * Check if the given message is good
-	 * 
-	 * @param userMessage
-	 *            The message to check
-	 * @return true if null or1 the sentence does not contain any of the
-	 *         blacklisted word, false otherwise
-	 */
-	public static boolean checkUserMessage(String userMessage) {
-		if (userMessage == null) {
-			return true;
-		}
+        @Override
+        public int compare(FRRoomOccupancy o0, FRRoomOccupancy o1) {
 
-		loadForbiddenWords();
+            boolean onlyFree1 = !o0.isIsOccupiedAtLeastOnce();
+            boolean onlyFree2 = !o1.isIsOccupiedAtLeastOnce();
 
-		String lowerCaseMessage = userMessage.toLowerCase();
-		// split received message into words, and check each word
-		String[] words = lowerCaseMessage.split("\\s+");
-		for (String w : words) {
-			if (forbiddenWords.contains(w)) {
-				return false;
-			}
-		}
-		return true;
-	}
+            if (onlyFree1 && onlyFree2) {
+                return compareOnlyFree(o0.getRatioWorstCaseProbableOccupancy(),
+                        o1.getRatioWorstCaseProbableOccupancy());
+            } else if (onlyFree1) {
+                return -1;
+            } else if (onlyFree2) {
+                return 1;
+            } else {
+                double rate1 = rateOccupied(o0.getOccupancy());
+                double rate2 = rateOccupied(o1.getOccupancy());
+                return comparePartiallyOccupied(rate1, rate2,
+                        o0.getRatioWorstCaseProbableOccupancy(),
+                        o1.getRatioWorstCaseProbableOccupancy());
+            }
+        }
 
-	/**
-	 * The HashMap is organized by the following relation(building -> list of
-	 * rooms) and each list of rooms is sorted independently. Sort the rooms
-	 * according to some criteria. See the comparator roomsFreeComparator.
-	 * 
-	 * @param occ
-	 *            The HashMap to be sorted
-	 * @return The HashMap sorted
-	 */
-	public static HashMap<String, List<FRRoomOccupancy>> sortRooms(
-			HashMap<String, List<FRRoomOccupancy>> occ) {
-		if (occ == null) {
-			return null;
-		}
+        private int comparePartiallyOccupied(double rate1, double rate2,
+                                             double prob1, double prob2) {
+            if (rate1 == rate2) {
+                return equalPartiallyOccupied(prob1, prob2);
+            } else if (rate1 < rate2) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
 
-		for (String key : occ.keySet()) {
-			List<FRRoomOccupancy> value = occ.get(key);
-			Collections.sort(value, roomsFreeComparator);
-		}
+        private int equalPartiallyOccupied(double prob1, double prob2) {
+            if (prob1 < prob2) {
+                return -1;
+            } else if (prob1 > prob2) {
+                return 1;
+            }
+            return 0;
+        }
 
-		return occ;
-	}
+        /**
+         * Count the number of hours in the ActualOccupation given
+         *
+         * @param acc
+         *            The ActualOccupation to be counted.
+         * @return The number of hours in the ActualOccupation
+         */
+        private int countNumberHour(FRPeriodOccupation acc) {
+            long tsStart = acc.getPeriod().getTimeStampStart();
+            long tsEnd = acc.getPeriod().getTimeStampEnd();
+            Calendar mCalendar = Calendar.getInstance();
+            mCalendar.setTimeInMillis(tsStart);
+            int startHour = mCalendar.get(Calendar.HOUR_OF_DAY);
+            mCalendar.setTimeInMillis(tsEnd);
+            int endHour = mCalendar.get(Calendar.HOUR_OF_DAY);
+            return Math.abs(endHour - startHour);
+        }
 
-	/**
-	 * Comparator used to sort rooms according to some criteria. First put the
-	 * rooms entirely free , then the partially occupied and then the rooms
-	 * unavailable. Entirely free rooms are sorted by probable occupancy
-	 * (users), partially occupied are sorted first by percentage of room
-	 * occupation (i.e how many hours compared to the total period the room is
-	 * occupied) then by probable occupancy (users). Totally occupied rooms
-	 * are not sorted.
-	 */
-	private static Comparator<FRRoomOccupancy> roomsFreeComparator = new Comparator<FRRoomOccupancy>() {
+        /**
+         * Rate occupied is the ratio between occupied hours to total hours in the period.
+         */
+        private double rateOccupied(List<FRPeriodOccupation> occupations) {
+            int count = 0;
+            int total = 0;
+            for (FRPeriodOccupation acc : occupations) {
+                int nbHours = countNumberHour(acc);
+                if (!acc.isAvailable()) {
+                    count += nbHours;
+                }
+                total += nbHours;
 
-		@Override
-		public int compare(FRRoomOccupancy o0, FRRoomOccupancy o1) {
+            }
+            return total > 0 ? (double) count / total : 0.0;
+        }
 
-			boolean onlyFree1 = !o0.isIsOccupiedAtLeastOnce();
-			boolean onlyFree2 = !o1.isIsOccupiedAtLeastOnce();
-			boolean occupied1 = o0.isIsOccupiedAtLeastOnce();
-			boolean occupied2 = o1.isIsOccupiedAtLeastOnce();
+        private int compareOnlyFree(double prob1, double prob2) {
+            if (prob1 < prob2) {
+                return -1;
+            } else if (prob1 > prob2) {
+                return +1;
+            }
+            return 0;
+        }
+    };
 
-			if (onlyFree1 && onlyFree2) {
-				return compareOnlyFree(o0.getRatioWorstCaseProbableOccupancy(),
-						o1.getRatioWorstCaseProbableOccupancy());
-			} else if (onlyFree1 && !onlyFree2) {
-				return -1;
-			} else if (!onlyFree1 && onlyFree2) {
-				return 1;
-			} else if (occupied1 && occupied2) {
-				double rate1 = rateOccupied(o0.getOccupancy());
-				double rate2 = rateOccupied(o1.getOccupancy());
-				return comparePartiallyOccupied(rate1, rate2,
-						o0.getRatioWorstCaseProbableOccupancy(),
-						o1.getRatioWorstCaseProbableOccupancy());
-			} else if (occupied1) {
-				return -1;
-			} else if (occupied2) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}
+    public static ArrayList<FRMessageFrequency> removeGroupMessages(
+            List<String> listMessages) {
+        if (listMessages == null) {
+            return null;
+        }
 
-		private int comparePartiallyOccupied(double rate1, double rate2,
-				double prob1, double prob2) {
-			if (rate1 == rate2) {
-				return equalPartiallyOccupied(prob1, prob2);
-			} else if (rate1 < rate2) {
-				return -1;
-			} else {
-				return 1;
-			}
-		}
+        HashMap<String, Integer> answer = new HashMap<String, Integer>();
+        for (String message : listMessages) {
+            if (message != null) {
+                String lowerCaseMessage = message.toLowerCase();
+                Integer count = answer.get(lowerCaseMessage);
+                if (count == null) {
+                    answer.put(lowerCaseMessage, 1);
+                } else {
+                    answer.put(lowerCaseMessage, count + 1);
+                }
+            }
+        }
+        return convertMapToListMessageFrequency(answer);
+    }
 
-		private int equalPartiallyOccupied(double prob1, double prob2) {
-			if (prob1 < prob2) {
-				return -1;
-			} else if (prob1 > prob2) {
-				return 1;
-			}
-			return 0;
-		}
+    public static ArrayList<FRMessageFrequency> convertMapToListMessageFrequency(
+            HashMap<String, Integer> map) {
+        ArrayList<FRMessageFrequency> answer = new ArrayList<FRMessageFrequency>();
 
-		/**
-		 * Count the number of hours in the ActualOccupation given
-		 * 
-		 * @param acc
-		 *            The ActualOccupation to be counted.
-		 * @return The number of hours in the ActualOccupation
-		 */
-		private int countNumberHour(FRPeriodOccupation acc) {
-			long tsStart = acc.getPeriod().getTimeStampStart();
-			long tsEnd = acc.getPeriod().getTimeStampEnd();
-			Calendar mCalendar = Calendar.getInstance();
-			mCalendar.setTimeInMillis(tsStart);
-			int startHour = mCalendar.get(Calendar.HOUR_OF_DAY);
-			mCalendar.setTimeInMillis(tsEnd);
-			int endHour = mCalendar.get(Calendar.HOUR_OF_DAY);
-			return Math.abs(endHour - startHour);
-		}
+        for (Entry<String, Integer> e : map.entrySet()) {
+            answer.add(new FRMessageFrequency(e.getKey(), e.getValue()));
+        }
 
-		/**
-		 * Rate occupied is the ratio between occupied hours to total hours in the period.
-		 * @param occupations
-		 * @return
-		 */
-		private double rateOccupied(List<FRPeriodOccupation> occupations) {
-			int count = 0;
-			int total = 0;
-			for (FRPeriodOccupation acc : occupations) {
-				int nbHours = countNumberHour(acc);
-				if (!acc.isAvailable()) {
-					count += nbHours;
-				}
-				total += nbHours;
+        Collections.sort(answer);
+        return answer;
+    }
 
-			}
-			return total > 0 ? (double) count / total : 0.0;
-		}
+    /**
+     * Add an alias to the room only if it's not null, and not the same as the
+     * existing door code.
+     *
+     * @param room  the room
+     * @param alias the alias
+     */
+    public static void addAliasIfNeeded(FRRoom room, String alias) {
+        if (alias != null) {
+            if (!room.getDoorCode().trim().replaceAll("\\s+", "")
+                    .equalsIgnoreCase(alias.trim().replaceAll("\\s+", ""))) {
+                room.setDoorCodeAlias(alias);
+            }
+        }
+    }
 
-		private int compareOnlyFree(double prob1, double prob2) {
-			if (prob1 < prob2) {
-				return -1;
-			} else if (prob1 > prob2) {
-				return +1;
-			}
-			return 0;
-		}
-	};
+    public static String getSupportedLanguage(String lang) {
+        if (lang == null) {
+            return defaultLanguage;
+        }
 
-	public static ArrayList<FRMessageFrequency> removeGroupMessages(
-			List<String> listMessages) {
-		if (listMessages == null) {
-			return null;
-		}
-
-		HashMap<String, Integer> answer = new HashMap<String, Integer>();
-		for (String message : listMessages) {
-			if (message != null) {
-				String lowerCaseMessage = message.toLowerCase();
-				Integer count = answer.get(lowerCaseMessage);
-				if (count == null) {
-					answer.put(lowerCaseMessage, 1);
-				} else {
-					answer.put(lowerCaseMessage, count + 1);
-				}
-			}
-		}
-		return convertMapToListMessageFrequency(answer);
-	}
-
-	public static ArrayList<FRMessageFrequency> convertMapToListMessageFrequency(
-			HashMap<String, Integer> map) {
-		ArrayList<FRMessageFrequency> answer = new ArrayList<FRMessageFrequency>();
-
-		for (Entry<String, Integer> e : map.entrySet()) {
-			answer.add(new FRMessageFrequency(e.getKey(), e.getValue()));
-		}
-
-		Collections.sort(answer);
-		return answer;
-	}
-
-	/**
-	 * Add an alias to the room only if it's not null, and not the same as the
-	 * existing door code.
-	 * 
-	 * @param room
-	 *            the room
-	 * @param alias
-	 *            the alias
-	 */
-	public static void addAliasIfNeeded(FRRoom room, String alias) {
-		if (alias != null) {
-			if (!room.getDoorCode().trim().replaceAll("\\s+", "")
-					.equalsIgnoreCase(alias.trim().replaceAll("\\s+", ""))) {
-				room.setDoorCodeAlias(alias);
-			}
-		}
-	}
-	
-	public static String getSupportedLanguage(String lang) {
-		if (lang == null) {
-			return defaultLanguage;
-		}
-		
-		for (String sl : supportedLanguages) {
-			if (lang.toLowerCase().equals(sl)) {
-				return lang.toLowerCase();
-			}
-		}
-		return defaultLanguage;
-	}
+        for (String sl : supportedLanguages) {
+            if (lang.toLowerCase().equals(sl)) {
+                return lang.toLowerCase();
+            }
+        }
+        return defaultLanguage;
+    }
 }

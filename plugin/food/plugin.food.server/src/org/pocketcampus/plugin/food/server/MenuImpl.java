@@ -88,7 +88,7 @@ public final class MenuImpl implements Menu {
 		}
 
 		List<EpflRestaurant> restaurants = new ArrayList<EpflRestaurant>();
-		JsonMenu jmenu = new GsonBuilder().create().fromJson(json, JsonMenu.class);
+		JsonMenu jmenu = (JsonMenu) new GsonBuilder().create().fromJson(json, JsonMenu.class);
 
 		for (JsonMeal jmeal : jmenu.menus) {
 			EpflMeal meal = new EpflMeal();
