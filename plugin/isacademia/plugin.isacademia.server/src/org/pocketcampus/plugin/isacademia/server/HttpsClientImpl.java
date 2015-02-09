@@ -1,17 +1,16 @@
 package org.pocketcampus.plugin.isacademia.server;
 
+import org.pocketcampus.platform.shared.utils.StringUtils;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-
-import org.pocketcampus.platform.shared.utils.StringUtils;
 
 /**
  * Implementation of HttpsClient.

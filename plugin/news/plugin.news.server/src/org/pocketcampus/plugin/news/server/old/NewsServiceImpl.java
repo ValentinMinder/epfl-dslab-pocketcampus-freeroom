@@ -1,17 +1,10 @@
 package org.pocketcampus.plugin.news.server.old;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.thrift.TException;
 import org.pocketcampus.plugin.news.shared.Feed;
 import org.pocketcampus.plugin.news.shared.NewsItem;
+
+import java.util.*;
 
 /**
  * 

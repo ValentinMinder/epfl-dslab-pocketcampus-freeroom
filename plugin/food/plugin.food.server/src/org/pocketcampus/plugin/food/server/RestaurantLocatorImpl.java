@@ -1,10 +1,10 @@
 package org.pocketcampus.plugin.food.server;
 
-import java.text.Normalizer;
-import java.util.List;
-
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.map.shared.MapItem;
+
+import java.text.Normalizer;
+import java.util.List;
 
 public class RestaurantLocatorImpl implements RestaurantLocator {
 	@SuppressWarnings("unchecked")

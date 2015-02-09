@@ -1,15 +1,15 @@
 package org.pocketcampus.plugin.map.server;
 
+import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.plugin.map.shared.MapLayer;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.pocketcampus.platform.server.database.ConnectionManager;
-import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-import org.pocketcampus.plugin.map.shared.MapLayer;
 
 public class MapDatabase {
 

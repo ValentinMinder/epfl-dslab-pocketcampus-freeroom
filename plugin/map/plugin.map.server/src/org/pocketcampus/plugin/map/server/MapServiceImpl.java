@@ -1,16 +1,12 @@
 package org.pocketcampus.plugin.map.server;
 
+import org.apache.thrift.TException;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.plugin.map.shared.*;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.thrift.TException;
-import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-import org.pocketcampus.plugin.map.shared.MapItem;
-import org.pocketcampus.plugin.map.shared.MapLayer;
-import org.pocketcampus.plugin.map.shared.MapLayersResponse;
-import org.pocketcampus.plugin.map.shared.MapService;
-import org.pocketcampus.plugin.map.shared.MapStatusCode;
 
 public class MapServiceImpl implements MapService.Iface {
 	

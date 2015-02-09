@@ -1,10 +1,10 @@
 package org.pocketcampus.plugin.map.server.database;
 
+import org.pocketcampus.plugin.map.server.ServerException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import org.pocketcampus.plugin.map.server.ServerException;
 
 public class ConnectionManager implements IConnectionManager {
 	private String url;

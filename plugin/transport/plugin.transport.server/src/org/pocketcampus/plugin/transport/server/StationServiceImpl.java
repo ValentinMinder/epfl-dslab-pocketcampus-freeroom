@@ -1,15 +1,16 @@
 package org.pocketcampus.plugin.transport.server;
 
+import org.pocketcampus.platform.server.HttpClient;
+import org.pocketcampus.platform.server.XElement;
+import org.pocketcampus.plugin.transport.shared.TransportGeoPoint;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import org.pocketcampus.platform.server.HttpClient;
-import org.pocketcampus.platform.server.XElement;
-import org.pocketcampus.plugin.transport.shared.*;
 
 /**
  * Implementation of StationService using the SBB's API (HAFAS).

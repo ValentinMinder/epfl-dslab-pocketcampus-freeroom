@@ -1,5 +1,11 @@
 package org.pocketcampus.plugin.food.server;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
+import org.joda.time.LocalDate;
+import org.pocketcampus.platform.server.HttpClient;
+import org.pocketcampus.plugin.food.shared.*;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -7,14 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.pocketcampus.platform.server.HttpClient;
-import org.pocketcampus.plugin.food.shared.*;
-
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParseException;
-
-import org.joda.time.LocalDate;
 
 /**
  * Parses meals from the official meal list's HTML.

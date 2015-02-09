@@ -1,9 +1,9 @@
 package org.pocketcampus.plugin.map.server.database.handlers.exceptions;
 
-import java.sql.SQLException;
-
 import org.pocketcampus.plugin.map.server.ServerException;
 import org.pocketcampus.plugin.map.server.logging.Logger;
+
+import java.sql.SQLException;
 
 /**
  * Handler for <b>{@code SQLException}</b>.<br />

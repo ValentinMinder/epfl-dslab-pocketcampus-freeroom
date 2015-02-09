@@ -1,10 +1,10 @@
 package org.pocketcampus.plugin.map.server.database.handlers.requests;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.pocketcampus.plugin.map.server.ServerException;
 import org.pocketcampus.plugin.map.server.logging.Logger;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Various useful methods used by the request handlers

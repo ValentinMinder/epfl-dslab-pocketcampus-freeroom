@@ -1,12 +1,12 @@
 package org.pocketcampus.plugin.food.server;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.platform.shared.utils.StringUtils;
 import org.pocketcampus.plugin.food.shared.MealType;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class PictureSourceImpl implements PictureSource {
 	private static final Map<MealType, String> MEAL_TYPE_PICTURE_URLS = new HashMap<MealType, String>();

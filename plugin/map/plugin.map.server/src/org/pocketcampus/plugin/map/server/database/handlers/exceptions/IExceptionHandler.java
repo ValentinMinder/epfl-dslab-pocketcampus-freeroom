@@ -1,8 +1,8 @@
 package org.pocketcampus.plugin.map.server.database.handlers.exceptions;
 
-import java.sql.SQLException;
-
 import org.pocketcampus.plugin.map.server.ServerException;
+
+import java.sql.SQLException;
 
 /**
  * A class implements {@code IExceptionHandler} interface to indicate that it can handle

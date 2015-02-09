@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.satellite.server;
 
-import org.pocketcampus.plugin.satellite.shared.*;
+import org.pocketcampus.plugin.satellite.shared.BeersResponse;
 
 /**
  * Gets Satellite's beer menu.

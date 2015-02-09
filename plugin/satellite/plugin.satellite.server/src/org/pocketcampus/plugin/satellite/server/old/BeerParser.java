@@ -1,12 +1,12 @@
 package org.pocketcampus.plugin.satellite.server.old;
 
-import java.io.IOException;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.pocketcampus.plugin.satellite.shared.Beer;
+
+import java.io.IOException;
 
 /**
  * A class to parse the beer of the month on the Satellite web site.

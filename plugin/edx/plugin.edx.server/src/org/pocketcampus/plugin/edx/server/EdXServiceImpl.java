@@ -1,21 +1,7 @@
 package org.pocketcampus.plugin.edx.server;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
@@ -37,30 +23,17 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.pocketcampus.platform.shared.utils.Cookie;
 import org.pocketcampus.platform.shared.utils.StringUtils;
-import org.pocketcampus.plugin.edx.shared.EdXService;
-import org.pocketcampus.plugin.edx.shared.EdxCourse;
-import org.pocketcampus.plugin.edx.shared.EdxItemHtml;
-import org.pocketcampus.plugin.edx.shared.EdxItemProblem;
-import org.pocketcampus.plugin.edx.shared.EdxItemType;
-import org.pocketcampus.plugin.edx.shared.EdxItemVideo;
-import org.pocketcampus.plugin.edx.shared.EdxLoginReq;
-import org.pocketcampus.plugin.edx.shared.EdxLoginResp;
-import org.pocketcampus.plugin.edx.shared.EdxModule;
-import org.pocketcampus.plugin.edx.shared.EdxReq;
-import org.pocketcampus.plugin.edx.shared.EdxResp;
-import org.pocketcampus.plugin.edx.shared.EdxSection;
-import org.pocketcampus.plugin.edx.shared.EdxSequence;
-import org.pocketcampus.plugin.edx.shared.MsgPsgGetActiveRoomsReq;
-import org.pocketcampus.plugin.edx.shared.MsgPsgGetActiveRoomsResp;
-import org.pocketcampus.plugin.edx.shared.MsgPsgMessage;
-import org.pocketcampus.plugin.edx.shared.MsgPsgMessageType;
-import org.pocketcampus.plugin.edx.shared.MsgPsgReceiveBroadcastReq;
-import org.pocketcampus.plugin.edx.shared.MsgPsgReceiveBroadcastResp;
-import org.pocketcampus.plugin.edx.shared.MsgPsgSendBroadcastReq;
-import org.pocketcampus.plugin.edx.shared.MsgPsgSendBroadcastResp;
+import org.pocketcampus.plugin.edx.shared.*;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * EdXServiceImpl

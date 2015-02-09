@@ -1,8 +1,7 @@
 package org.pocketcampus.plugin.isacademia.server;
 
-import org.pocketcampus.plugin.isacademia.shared.*;
-
-import org.joda.time.*;
+import org.joda.time.LocalDate;
+import org.pocketcampus.plugin.isacademia.shared.ScheduleResponse;
 
 /**
  * Retrieves a student's schedule.

@@ -1,5 +1,11 @@
 package org.pocketcampus.plugin.events.server.importers;
 
+import com.google.gson.Gson;
+import org.pocketcampus.platform.server.HttpClientImpl;
+import org.pocketcampus.plugin.events.server.utils.MyQuery;
+import org.pocketcampus.plugin.events.server.utils.Utils;
+import org.pocketcampus.plugin.events.shared.Constants;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.Connection;
@@ -10,13 +16,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.pocketcampus.platform.server.HttpClientImpl;
-import org.pocketcampus.plugin.events.server.utils.MyQuery;
-import org.pocketcampus.plugin.events.server.utils.Utils;
-import org.pocketcampus.plugin.events.shared.Constants;
-
-import com.google.gson.Gson;
 
 public class EventItemImporter {
 

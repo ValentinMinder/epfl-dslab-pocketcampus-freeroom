@@ -1,20 +1,21 @@
 package org.pocketcampus.plugin.food.server.tests;
 
-import static org.junit.Assert.*;
-
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
+import org.joda.time.LocalDate;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-
 import org.pocketcampus.platform.server.Authenticator;
 import org.pocketcampus.plugin.food.server.*;
 import org.pocketcampus.plugin.food.shared.*;
 import org.pocketcampus.plugin.map.shared.MapItem;
-import org.joda.time.*;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for FoodServiceImpl.

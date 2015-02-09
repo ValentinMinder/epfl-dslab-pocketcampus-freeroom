@@ -1,13 +1,13 @@
 package org.pocketcampus.plugin.freeroom.data;
 
+import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
+import org.pocketcampus.plugin.freeroom.shared.Constants;
+import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.logging.Level;
-
-import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
-import org.pocketcampus.plugin.freeroom.shared.Constants;
-import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
  * Runnable used to be launched periodically to fetch and update data in the

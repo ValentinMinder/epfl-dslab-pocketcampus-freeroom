@@ -1,13 +1,6 @@
 package org.pocketcampus.plugin.map.server;
 
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.google.gson.Gson;
 import org.pocketcampus.plugin.map.common.CoordinateConverter;
 import org.pocketcampus.plugin.map.common.Position;
 import org.pocketcampus.plugin.map.server.jsonitems.BasicSearchResponse;
@@ -15,7 +8,13 @@ import org.pocketcampus.plugin.map.server.jsonitems.GeometryR;
 import org.pocketcampus.plugin.map.server.jsonitems.SearchProperties;
 import org.pocketcampus.plugin.map.shared.MapItem;
 
-import com.google.gson.Gson;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**

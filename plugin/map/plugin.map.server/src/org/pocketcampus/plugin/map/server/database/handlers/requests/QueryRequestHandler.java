@@ -1,13 +1,13 @@
 package org.pocketcampus.plugin.map.server.database.handlers.requests;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.pocketcampus.plugin.map.server.ServerException;
 import org.pocketcampus.plugin.map.server.database.IConnectionManager;
 import org.pocketcampus.plugin.map.server.database.handlers.exceptions.SQLExceptionHandler;
 import org.pocketcampus.plugin.map.server.logging.Logger;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Implementation of RequestHandler specialized in SQL statements which return

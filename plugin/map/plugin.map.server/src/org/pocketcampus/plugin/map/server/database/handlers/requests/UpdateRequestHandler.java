@@ -1,11 +1,11 @@
 package org.pocketcampus.plugin.map.server.database.handlers.requests;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 import org.pocketcampus.plugin.map.server.ServerException;
 import org.pocketcampus.plugin.map.server.database.IConnectionManager;
 import org.pocketcampus.plugin.map.server.database.handlers.exceptions.SQLExceptionHandler;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  * Implementation of RequestHandler specialized in SQL DML and SQL DDL statements,

@@ -1,28 +1,18 @@
 package org.pocketcampus.plugin.authentication.server;
 
+import ch.epfl.tequila.client.model.ClientConfig;
+import ch.epfl.tequila.client.model.TequilaPrincipal;
+import ch.epfl.tequila.client.service.TequilaService;
+import org.apache.thrift.TException;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.platform.shared.PCConstants;
+import org.pocketcampus.plugin.authentication.shared.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.thrift.TException;
-import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-import org.pocketcampus.platform.shared.PCConstants;
-import org.pocketcampus.plugin.authentication.shared.AuthSessionRequest;
-import org.pocketcampus.plugin.authentication.shared.AuthSessionResponse;
-import org.pocketcampus.plugin.authentication.shared.AuthStatusCode;
-import org.pocketcampus.plugin.authentication.shared.AuthTokenResponse;
-import org.pocketcampus.plugin.authentication.shared.AuthenticationService;
-import org.pocketcampus.plugin.authentication.shared.LogoutRequest;
-import org.pocketcampus.plugin.authentication.shared.LogoutResponse;
-import org.pocketcampus.plugin.authentication.shared.UserAttributesRequest;
-import org.pocketcampus.plugin.authentication.shared.UserAttributesResponse;
-
-import ch.epfl.tequila.client.model.ClientConfig;
-import ch.epfl.tequila.client.model.TequilaPrincipal;
-import ch.epfl.tequila.client.service.TequilaService;
 
 /**
  * AuthenticationServiceImpl

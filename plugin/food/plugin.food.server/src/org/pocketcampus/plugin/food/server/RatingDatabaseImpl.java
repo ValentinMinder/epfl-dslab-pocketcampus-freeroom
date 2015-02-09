@@ -1,18 +1,17 @@
 package org.pocketcampus.plugin.food.server;
 
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.plugin.food.shared.*;
+
 import java.sql.*;
 import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-
-import org.pocketcampus.platform.server.database.ConnectionManager;
-import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-import org.pocketcampus.plugin.food.shared.*;
 
 /**
  * The database holding the ratings.

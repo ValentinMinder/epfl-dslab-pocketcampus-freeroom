@@ -1,16 +1,15 @@
 package org.pocketcampus.plugin.authentication.server;
 
+import ch.epfl.tequila.client.model.TequilaPrincipal;
+import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
-
-import org.pocketcampus.platform.server.database.ConnectionManager;
-import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-
-import ch.epfl.tequila.client.model.TequilaPrincipal;
 
 /**
  * SessionManager to manage PC sessions.

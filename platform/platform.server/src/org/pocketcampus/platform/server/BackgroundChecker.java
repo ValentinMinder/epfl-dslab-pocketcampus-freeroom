@@ -1,9 +1,9 @@
 package org.pocketcampus.platform.server;
 
-import java.util.List;
-
 import org.apache.commons.io.IOUtils;
 import org.pocketcampus.platform.server.launcher.ServiceInfo;
+
+import java.util.List;
 
 public class BackgroundChecker {
 

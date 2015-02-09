@@ -1,21 +1,22 @@
 package org.pocketcampus.plugin.food.server;
 
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+import com.google.gson.JsonParseException;
+import com.unboundid.ldap.sdk.*;
+import org.apache.thrift.TException;
+import org.joda.time.Days;
+import org.joda.time.Duration;
+import org.joda.time.LocalDate;
 import org.pocketcampus.platform.server.Authenticator;
 import org.pocketcampus.platform.server.CachingProxy;
 import org.pocketcampus.platform.server.HttpClientImpl;
 import org.pocketcampus.plugin.authentication.server.AuthenticatorImpl;
 import org.pocketcampus.plugin.food.shared.*;
-import org.apache.thrift.TException;
-import org.joda.time.*;
 
-import com.google.gson.JsonParseException;
-import com.unboundid.ldap.sdk.*;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Provides information about the meals, and allows users to rate them.

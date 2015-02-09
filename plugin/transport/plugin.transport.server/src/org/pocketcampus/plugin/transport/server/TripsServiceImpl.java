@@ -1,13 +1,5 @@
 package org.pocketcampus.plugin.transport.server;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.WordUtils;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -18,7 +10,14 @@ import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.platform.server.XElement;
-import org.pocketcampus.plugin.transport.shared.*;
+import org.pocketcampus.plugin.transport.shared.TransportConnection;
+import org.pocketcampus.plugin.transport.shared.TransportLine;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
+import org.pocketcampus.plugin.transport.shared.TransportTrip;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.*;
 
 /**
  * Implementation of TripsService using the SBB's API (HAFAS).

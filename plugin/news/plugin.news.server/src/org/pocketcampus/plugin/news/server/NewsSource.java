@@ -1,8 +1,8 @@
 package org.pocketcampus.plugin.news.server;
 
-import java.util.Map;
-
 import org.joda.time.DateTime;
+
+import java.util.Map;
 
 /**
  * News source.

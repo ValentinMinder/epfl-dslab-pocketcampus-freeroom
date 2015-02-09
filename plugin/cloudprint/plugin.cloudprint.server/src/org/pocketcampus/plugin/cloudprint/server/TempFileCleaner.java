@@ -1,8 +1,8 @@
 package org.pocketcampus.plugin.cloudprint.server;
 
-import java.io.IOException;
-
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+
+import java.io.IOException;
 
 public class TempFileCleaner {
 

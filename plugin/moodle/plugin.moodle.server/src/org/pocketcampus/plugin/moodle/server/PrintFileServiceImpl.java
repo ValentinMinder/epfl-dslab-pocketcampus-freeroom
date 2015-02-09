@@ -1,12 +1,6 @@
 package org.pocketcampus.plugin.moodle.server;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
+import com.google.gson.Gson;
 import org.apache.commons.io.IOUtils;
 import org.pocketcampus.platform.server.Authenticator;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
@@ -17,7 +11,12 @@ import org.pocketcampus.plugin.moodle.shared.MoodlePrintFileRequest2;
 import org.pocketcampus.plugin.moodle.shared.MoodlePrintFileResponse2;
 import org.pocketcampus.plugin.moodle.shared.MoodleStatusCode2;
 
-import com.google.gson.Gson;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Implementation of PrintService.

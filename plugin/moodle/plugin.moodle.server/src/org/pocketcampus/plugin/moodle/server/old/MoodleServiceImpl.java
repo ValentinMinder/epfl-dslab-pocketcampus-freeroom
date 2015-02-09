@@ -1,39 +1,27 @@
 package org.pocketcampus.plugin.moodle.server.old;
 
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.thrift.TException;
+import org.eclipse.jetty.util.MultiMap;
+import org.eclipse.jetty.util.UrlEncoded;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.platform.shared.utils.Cookie;
+import org.pocketcampus.platform.shared.utils.PostDataBuilder;
+import org.pocketcampus.platform.shared.utils.StringUtils;
+import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
+import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.NodeJson.ItemJson;
+import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.SectionNode.ModuleNode;
+import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.SectionNode.ModuleNode.ModuleContent;
+import org.pocketcampus.plugin.moodle.shared.*;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.thrift.TException;
-import org.eclipse.jetty.util.MultiMap;
-import org.eclipse.jetty.util.UrlEncoded;
-import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
-import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.NodeJson.ItemJson;
-import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.SectionNode.ModuleNode;
-import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.SectionNode.ModuleNode.ModuleContent;
-import org.pocketcampus.plugin.moodle.shared.TequilaToken;
-import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-import org.pocketcampus.platform.shared.utils.Cookie;
-import org.pocketcampus.platform.shared.utils.PostDataBuilder;
-import org.pocketcampus.platform.shared.utils.StringUtils;
-import org.pocketcampus.plugin.moodle.shared.CoursesListReply;
-import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
-import org.pocketcampus.plugin.moodle.shared.MoodleRequest;
-import org.pocketcampus.plugin.moodle.shared.MoodleResource;
-import org.pocketcampus.plugin.moodle.shared.MoodleSection;
-import org.pocketcampus.plugin.moodle.shared.MoodleSession;
-import org.pocketcampus.plugin.moodle.shared.SectionsListReply;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 
 /**
  * MoodleServiceImpl

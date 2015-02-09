@@ -1,11 +1,11 @@
 package org.pocketcampus.plugin.transport.server;
 
+import org.pocketcampus.platform.server.XElement;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.pocketcampus.platform.server.XElement;
-import org.pocketcampus.plugin.transport.shared.TransportStation;
 
 // The SBB HAFAS API's schema is available at http://fahrplan.sbb.ch/xsd/hafasXMLInterface.xsd
 

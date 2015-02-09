@@ -1,5 +1,12 @@
 package org.pocketcampus.plugin.news.server.old;
 
+import org.pocketcampus.plugin.news.shared.Feed;
+import org.pocketcampus.plugin.news.shared.NewsItem;
+import org.xml.sax.Attributes;
+import org.xml.sax.helpers.DefaultHandler;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
@@ -9,14 +16,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.pocketcampus.plugin.news.shared.Feed;
-import org.pocketcampus.plugin.news.shared.NewsItem;
-import org.xml.sax.Attributes;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * RssParser class. <br />

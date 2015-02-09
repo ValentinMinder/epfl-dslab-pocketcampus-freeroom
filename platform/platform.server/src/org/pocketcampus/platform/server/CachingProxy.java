@@ -1,12 +1,15 @@
 package org.pocketcampus.platform.server;
 
-import java.lang.reflect.*;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.HashMap;
-
-import org.joda.time.*;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.pocketcampus.platform.shared.utils.SoftMap;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Creates proxies that (softly) cache method results from interfaces for a specified amount of time.

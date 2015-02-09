@@ -1,22 +1,10 @@
 package org.pocketcampus.plugin.events.server;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.server.EmailSender;
-import org.pocketcampus.platform.server.StateChecker;
 import org.pocketcampus.platform.server.EmailSender.EmailTemplateInfo;
 import org.pocketcampus.platform.server.EmailSender.SendEmailInfo;
+import org.pocketcampus.platform.server.StateChecker;
 import org.pocketcampus.platform.server.database.ConnectionManager;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.events.server.decoders.EventItemDecoder;
@@ -24,20 +12,14 @@ import org.pocketcampus.plugin.events.server.decoders.EventPoolDecoder;
 import org.pocketcampus.plugin.events.server.importers.MementoImporter;
 import org.pocketcampus.plugin.events.server.utils.DBUtils;
 import org.pocketcampus.plugin.events.server.utils.Utils;
-import org.pocketcampus.plugin.events.shared.AdminSendRegEmailReply;
-import org.pocketcampus.plugin.events.shared.AdminSendRegEmailRequest;
-import org.pocketcampus.plugin.events.shared.Constants;
-import org.pocketcampus.plugin.events.shared.EventItem;
-import org.pocketcampus.plugin.events.shared.EventItemReply;
-import org.pocketcampus.plugin.events.shared.EventItemRequest;
-import org.pocketcampus.plugin.events.shared.EventPool;
-import org.pocketcampus.plugin.events.shared.EventPoolReply;
-import org.pocketcampus.plugin.events.shared.EventPoolRequest;
-import org.pocketcampus.plugin.events.shared.EventsService;
-import org.pocketcampus.plugin.events.shared.ExchangeReply;
-import org.pocketcampus.plugin.events.shared.ExchangeRequest;
-import org.pocketcampus.plugin.events.shared.SendEmailReply;
-import org.pocketcampus.plugin.events.shared.SendEmailRequest;
+import org.pocketcampus.plugin.events.shared.*;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * 

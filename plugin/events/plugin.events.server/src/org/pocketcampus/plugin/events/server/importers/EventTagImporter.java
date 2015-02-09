@@ -1,15 +1,14 @@
 package org.pocketcampus.plugin.events.server.importers;
 
+import com.google.gson.Gson;
+import org.pocketcampus.platform.server.HttpClientImpl;
+import org.pocketcampus.plugin.events.server.utils.MyQuery;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
-import org.pocketcampus.platform.server.HttpClientImpl;
-import org.pocketcampus.plugin.events.server.utils.MyQuery;
-
-import com.google.gson.Gson;
 
 public class EventTagImporter {
 

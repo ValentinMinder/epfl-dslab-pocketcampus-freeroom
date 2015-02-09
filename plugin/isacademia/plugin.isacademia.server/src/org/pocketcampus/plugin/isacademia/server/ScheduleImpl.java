@@ -1,19 +1,17 @@
 package org.pocketcampus.plugin.isacademia.server;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
-import org.pocketcampus.plugin.isacademia.shared.*;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.pocketcampus.platform.server.XElement;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-import org.joda.time.*;
-import org.joda.time.format.*;
+import org.pocketcampus.plugin.isacademia.shared.*;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.*;
 
 /**
  * Retrieves a student's schedule from IS-Academia.

@@ -1,12 +1,13 @@
 package org.pocketcampus.plugin.satellite.server;
 
 import org.apache.thrift.TException;
-
+import org.joda.time.Duration;
 import org.pocketcampus.platform.server.CachingProxy;
 import org.pocketcampus.platform.server.HttpClientImpl;
-import org.pocketcampus.plugin.satellite.shared.*;
-
-import org.joda.time.Duration;
+import org.pocketcampus.plugin.satellite.shared.Affluence;
+import org.pocketcampus.plugin.satellite.shared.Beer;
+import org.pocketcampus.plugin.satellite.shared.BeersResponse;
+import org.pocketcampus.plugin.satellite.shared.SatelliteService;
 
 /**
  * Implementation of SatelliteService.

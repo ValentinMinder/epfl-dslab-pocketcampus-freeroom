@@ -1,21 +1,20 @@
 package org.pocketcampus.plugin.moodle.server;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Locale;
-
+import com.google.gson.Gson;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.pocketcampus.plugin.moodle.shared.*;
 import org.pocketcampus.platform.server.Authenticator;
 import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.platform.shared.utils.PostDataBuilder;
+import org.pocketcampus.plugin.moodle.shared.*;
 
-import com.google.gson.*;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Implementation of CourseService using Moodle's REST API.

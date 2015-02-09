@@ -1,14 +1,14 @@
 package org.pocketcampus.plugin.satellite.server;
 
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-
 import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.platform.server.XElement;
 import org.pocketcampus.plugin.satellite.shared.*;
+
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Gets Satellite's beer menu from their XML feed.

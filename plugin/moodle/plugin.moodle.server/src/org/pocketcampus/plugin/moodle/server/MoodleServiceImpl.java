@@ -1,29 +1,17 @@
 package org.pocketcampus.plugin.moodle.server;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.server.HttpClientImpl;
 import org.pocketcampus.platform.server.RawPlugin;
 import org.pocketcampus.platform.server.StateChecker;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.authentication.server.AuthenticatorImpl;
-import org.pocketcampus.plugin.moodle.shared.CoursesListReply;
-import org.pocketcampus.plugin.moodle.shared.MoodleCourseSectionsRequest2;
-import org.pocketcampus.plugin.moodle.shared.MoodleCourseSectionsResponse2;
-import org.pocketcampus.plugin.moodle.shared.MoodleCoursesRequest2;
-import org.pocketcampus.plugin.moodle.shared.MoodleCoursesResponse2;
-import org.pocketcampus.plugin.moodle.shared.MoodlePrintFileRequest2;
-import org.pocketcampus.plugin.moodle.shared.MoodlePrintFileResponse2;
-import org.pocketcampus.plugin.moodle.shared.MoodleRequest;
-import org.pocketcampus.plugin.moodle.shared.MoodleService;
-import org.pocketcampus.plugin.moodle.shared.MoodleSession;
-import org.pocketcampus.plugin.moodle.shared.SectionsListReply;
-import org.pocketcampus.plugin.moodle.shared.TequilaToken;
+import org.pocketcampus.plugin.moodle.shared.*;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Moodle service that fetches courses, sections and files.

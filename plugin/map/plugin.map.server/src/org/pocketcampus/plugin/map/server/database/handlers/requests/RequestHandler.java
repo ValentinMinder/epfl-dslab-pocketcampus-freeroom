@@ -1,14 +1,14 @@
 package org.pocketcampus.plugin.map.server.database.handlers.requests;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 import org.pocketcampus.plugin.map.server.ServerException;
 import org.pocketcampus.plugin.map.server.database.ConnectionManager;
 import org.pocketcampus.plugin.map.server.database.IConnectionManager;
 import org.pocketcampus.plugin.map.server.database.handlers.exceptions.SQLExceptionHandler;
 import org.pocketcampus.plugin.map.server.logging.Logger;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  * Provides a generic structure to simplify database requests and exceptions management.
