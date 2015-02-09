@@ -121,7 +121,7 @@ public final class NewsSourceImpl implements NewsSource {
 		Collections.sort(feeds, new Comparator<Feed>() {
 			@Override
 			public int compare(Feed feed1, Feed feed2) {
-				int result = Boolean.valueOf(feed2.isMain).compareTo(Boolean.valueOf(feed1.isMain)); // yes, the order is right
+				int result = Boolean.valueOf(feed2.isMain).compareTo(feed1.isMain); // yes, the order is right
 				if (result == 0) {
 					return feed1.name.compareTo(feed2.name);
 				}

@@ -1,7 +1,7 @@
 package org.pocketcampus.platform.server;
 
-import org.apache.commons.io.IOUtils;
 import org.pocketcampus.platform.server.launcher.ServiceInfo;
+import org.pocketcampus.platform.shared.utils.StringUtils;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class BackgroundChecker {
 				String serverName = "unknown";
 				try {
 					Process proc = Runtime.getRuntime().exec(new String[]{ "hostname" });
-					serverName = IOUtils.toString(proc.getInputStream(), "UTF-8");
+					serverName = StringUtils.fromStream(proc.getInputStream(), "UTF-8");
 				} catch (Throwable e) {
 					e.printStackTrace();
 				}

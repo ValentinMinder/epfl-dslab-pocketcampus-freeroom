@@ -30,9 +30,7 @@ public class SmsSender {
 				System.out.println(result);
 			}
 			return ok;
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
+		} catch (JSONException | IOException e) {
 			e.printStackTrace();
 		}
 		return false;
