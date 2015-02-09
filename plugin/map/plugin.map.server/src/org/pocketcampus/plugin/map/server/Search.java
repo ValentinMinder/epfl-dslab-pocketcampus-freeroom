@@ -26,7 +26,6 @@ public class Search {
 	 * Queries the plan.epfl.ch website and return the results
 	 * @param text the query.
 	 * @param max the maximum number of results.
-	 * @return A list of MapElementBean containing the results.
 	 */
 	public static List<MapItem> searchTextOnEpflWebsite(String text, int max) {
 		List<MapItem> list = new LinkedList<MapItem>();
