@@ -8,4 +8,4 @@ using System.Reflection;
 [assembly: AssemblyCopyright( "Copyright © PocketCampus.Org 2014-15" )]
 [assembly: AssemblyCulture( "" )]
 
-[assembly: AssemblyVersion( "2.4.*" )]
+[assembly: AssemblyVersion( "2.5.0.*" )]
