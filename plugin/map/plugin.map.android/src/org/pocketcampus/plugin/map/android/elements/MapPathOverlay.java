@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.map.android.elements;
 import java.util.List;
 
 import org.osmdroid.views.overlay.PathOverlay;
-import org.pocketcampus.plugin.map.common.Position;
+import org.pocketcampus.plugin.map.android.utils.Position;
 
 import android.content.Context;
 
