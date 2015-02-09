@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Resources;
 
 [assembly: AssemblyTitle( "PocketCampus.Transport.WindowsRuntime" )]
-[assembly: AssemblyCopyright( "Copyright © PocketCampus.Org 2014" )]
+[assembly: AssemblyCopyright( "Copyright © PocketCampus.Org 2014-15" )]
 [assembly: AssemblyCulture( "" )]
 [assembly: NeutralResourcesLanguage( "en" )]
 

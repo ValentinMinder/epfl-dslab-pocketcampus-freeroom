@@ -7,7 +7,7 @@ using System.Resources;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle( "PocketCampus.Directory.WindowsRuntime" )]
-[assembly: AssemblyCopyright( "Copyright © PocketCampus.Org 2014" )]
+[assembly: AssemblyCopyright( "Copyright © PocketCampus.Org 2014-15" )]
 [assembly: AssemblyCulture( "" )]
 [assembly: NeutralResourcesLanguageAttribute( "en" )]
 
